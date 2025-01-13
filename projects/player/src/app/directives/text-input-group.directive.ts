@@ -45,6 +45,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
       this.mathKeyboardService
         .toggle(focusedTextInput as { inputElement: MathfieldElement; focused: boolean },
           elementComponent);
+      this.forceCloseKeyboard();
     } else if (!(elementComponent instanceof MathFieldComponent)) {
       if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
         promises.push(this.keyboardService
@@ -69,9 +70,23 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
             this.isKeypadOpen = this.keypadService.isOpen;
             if (this.keyboardService.isOpen || this.keypadService.isOpen) {
               this.inputElement = this.getInputElement(focusedTextInput.inputElement);
+              this.forceCloseMathKeyboard();
             }
           });
       }
+    }
+  }
+
+  private forceCloseKeyboard(): void {
+    if (this.mathKeyboardService.isOpen && this.keyboardService.isOpen) {
+      this.keyboardService.close();
+      this.unsubscribeFromKeyboardEvents();
+    }
+  }
+
+  private forceCloseMathKeyboard(): void {
+    if (this.mathKeyboardService.isOpen && this.keyboardService.isOpen) {
+      this.mathKeyboardService.close();
     }
   }
 

@@ -41,7 +41,7 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
     if (!this.markingRange) {
       this.toggleMarked(this.markColor);
     } else {
-      this.toggleRange(this.markColor);
+      this.toggleRange();
     }
   }
 
@@ -69,16 +69,11 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  private toggleRange(markColor: string): void {
+  private toggleRange(): void {
     const actualValue = this.markingRange?.value as MarkingRange | null;
     if (actualValue === null) {
-      if (this.color && this.color === TextElement.selectionColors[markColor]) {
-        this.unmark();
-        this.markingRange?.next(null);
-      } else {
-        this.subscribeForPointerUp();
-        this.markingRange?.next({ first: this.id, second: null });
-      }
+      this.subscribeForPointerUp();
+      this.markingRange?.next({ first: this.id, second: null });
     } else {
       this.markingRange?.next({ ...actualValue, second: this.id });
     }

@@ -17,7 +17,8 @@ import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
     <div class="image-wrapper" [ngClass]="{'column': label.imgPosition === 'above',
                                      'column-reverse': label.imgPosition === 'below',
                                      'row': label.imgPosition === 'left',
-                                     'row-reverse': label.imgPosition === 'right'}">
+                                     'row-reverse': label.imgPosition === 'right',
+                                     'hide-content': hideContent}">
       <img *ngIf="label.imgSrc"
            [style.object-fit]="'scale-down'"
            [style.max-width.%]="100"
@@ -66,8 +67,12 @@ import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
     .audio-button:hover {
       color: #006064;
     }
+    .hide-content .text, .hide-content img {
+      visibility: hidden;
+    }
   `]
 })
 export class TextImagePanelComponent {
   @Input() label!: TextImageLabel | DragNDropValueObject;
+  @Input() hideContent: boolean = false;
 }

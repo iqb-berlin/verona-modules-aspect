@@ -15,55 +15,7 @@ import { DragOperatorService } from './drag-operator.service';
 
 @Component({
   selector: 'aspect-drop-list',
-  template: `
-    <span *ngIf="clozeContext" [style.width.px]="0">&nbsp;</span>
-    <!-- TODO testen, ob touchstart keine Probleme macht -->
-    <div class="drop-list" id="{{elementModel.id}}" #droplist [attr.data-list-alias]="elementModel.alias"
-         [class.cloze-context]="clozeContext"
-         [class.hovered]="!elementModel.isSortList && isHovered"
-         [class.isHighlighted]="isHighlighted"
-         [class.column]="elementModel.orientation === 'vertical'"
-         [class.row]="elementModel.orientation === 'horizontal'"
-         [class.float]="elementModel.orientation === 'flex'"
-         [style.outline-color]="elementModel.highlightReceivingDropListColor"
-         [style.border-color]="elementModel.highlightReceivingDropListColor"
-         [style.color]="elementModel.styling.fontColor"
-         [style.font-size.px]="elementModel.styling.fontSize"
-         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-         [style.background-color]="elementModel.styling.backgroundColor"
-         (touchstart)="elementFormControl.markAsTouched()"
-         (mouseenter)="dragOpService.isDragActive && dragEnter()"
-         (mouseleave)="dragOpService.isDragActive && dragLeave()"
-         (click)="elementFormControl.markAsTouched()">
-      <div *ngFor="let item of viewModel; let i = index;" class="list-item-wrapper">
-        <div *ngIf="!clozeContext && elementModel.showNumbering" class="numbering">
-          {{ i + (elementModel.startNumberingAtZero ? 0 : 1) }}.
-        </div>
-        <div class="drop-list-item" [class.image-item]="item.imgSrc"
-             #listItem
-             aspect-draggable data-aspect-draggable="true"
-             (dragStart)="dragStart($event, item, i, this)"
-             (dragMove)="dragMove($event)"
-             (dragEnd)="dragEnd()"
-             (mouseenter)="dragOpService.isDragActive && listItemDragEnter(i)"
-             [style.color]="elementModel.styling.fontColor"
-             [style.font-size.px]="elementModel.styling.fontSize"
-             [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-             [style.background-color]="elementModel.styling.itemBackgroundColor"
-             [class.read-only]="elementModel.readOnly">
-          <aspect-text-image-panel [label]="item"></aspect-text-image-panel>
-        </div>
-      </div>
-    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-               class="error-message">
-      {{elementFormControl.errors | errorTransform: elementModel}}
-    </mat-error>
-    </div>
-  `,
+  templateUrl: './drop-list.component.html',
   styleUrls: ['./drop-list.component.css']
 })
 export class DropListComponent extends FormElementComponent implements OnInit {
@@ -71,6 +23,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   @Input() clozeContext: boolean = false;
   @ViewChildren('listItem') droplistItems: QueryList<ElementRef> | undefined;
 
+  // Needed for sortlists, where the displayed items are (temporarily) not the same as the actual form value
   viewModel!: DragNDropValueObject[];
   dragImageRef: ComponentRef<DragImageComponent> | undefined;
   isHovered = false;

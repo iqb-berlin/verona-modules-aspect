@@ -10,7 +10,8 @@ export class DropLogic {
       onlyOneItem: dropListComp.elementModel.onlyOneItem,
       connectedTo: [...dropListComp.elementModel.connectedTo],
       copyOnDrop: dropListComp.elementModel.copyOnDrop,
-      allowReplacement: dropListComp.elementModel.allowReplacement
+      allowReplacement: dropListComp.elementModel.allowReplacement,
+      permanentPlaceholders: dropListComp.elementModel.permanentPlaceholders
     };
   }
 
@@ -33,7 +34,7 @@ export class DropLogic {
     return DropLogic.checkIsSourceList(sourceList, targetList) &&
       DropLogic.checkConnected(sourceList, targetList, ignoreConnection) &&
       DropLogic.checkOnlyOneItem(draggedItem, targetList, allLists) &&
-      DropLogic.checkAddForeignItemToCopyList(draggedItem, targetList);
+      DropLogic.checkAddForeignItemToCopyOrCCList(draggedItem, targetList);
   }
 
   /* Only allow drops in other lists, except for sortlists. */
@@ -86,10 +87,10 @@ export class DropLogic {
     return targetList.copyOnDrop && draggedItem.originListID === targetList.id;
   }
 
-  /* Don't allow moving item into copy list that does not originate from there. */
-  private static checkAddForeignItemToCopyList(draggedItem: DragNDropValueObject | undefined,
-                                               targetList: DropListMock): boolean {
-    return !(targetList.copyOnDrop && draggedItem?.originListID !== targetList.id);
+  /* Don't allow moving item into copy or CC list that does not originate from there. */
+  private static checkAddForeignItemToCopyOrCCList(draggedItem: DragNDropValueObject | undefined,
+                                                   targetList: DropListMock): boolean {
+    return !((targetList.copyOnDrop || targetList.permanentPlaceholders) && draggedItem?.originListID !== targetList.id);
   }
 }
 
@@ -101,4 +102,5 @@ export interface DropListMock {
   connectedTo: string[];
   copyOnDrop: boolean;
   allowReplacement: boolean;
+  permanentPlaceholders: boolean;
 }

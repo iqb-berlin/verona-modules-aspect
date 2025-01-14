@@ -272,7 +272,9 @@
     "showTopHelperRows": "obere Helferzeilen",
     "allowFirstLineCrossOut": "Durchstreichen in erster Zeile",
     "trackedVariables": "Ergebnisvariablen",
-    "isSortList": "Sortierliste"
+    "isSortList": "Sortierliste",
+    "permanentPlaceholders": "Platzhalter anzeigen",
+    "permanentPlaceholdersCC": "Platzhalter mit Durchschrift"
   },
   "hotspot": {
     "top": "Abstand von oben",

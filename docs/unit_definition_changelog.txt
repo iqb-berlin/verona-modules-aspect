@@ -211,3 +211,8 @@ iqb-aspect-definition@1.0.0
   - new property:showSoftwareKeyboard
   - new property:addInputAssistanceToKeyboard
   - new property:hideNativeKeyboard
+
+4.9.0
+- DropList:
+  - new property: permanentPlaceholders
+  - new property: permanentPlaceholdersCC

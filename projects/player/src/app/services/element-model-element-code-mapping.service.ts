@@ -37,7 +37,7 @@ export class ElementModelElementCodeMappingService {
       case 'drop-list':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectByAlias(id)) as DragNDropValueObject[] :
-          (elementModel as InputElement).value;
+          [...(elementModel as any).value];
       case 'hotspot-image':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as boolean[])

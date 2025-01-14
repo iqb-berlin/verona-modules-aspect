@@ -1,5 +1,15 @@
 Allgemein
 =========
+## editor/2.7.2+player/2.7.2
+### Fehlerbehebungen
+- Ablegeliste:
+  - Behebt Fehler beim Ablegen von Optionen auf Touch-Geräten (Problem in Version 2.7.1)
+- Formel (Bereich):
+  - Unterbindet auf Touch-Geräten, wenn eingestellt, das Öffnen der Software-Tastatur des Betriebssystems
+  - Korrigiert Umbrüche in Text-Bereiche vor und hinter Formeln
+  - Stellt sicher, dass Formeltastatur und IQB-Tastatur nicht gleichzeitig geöffnet werden können
+  - Behebt Aktualisierungsfehler beim Speichern von Formeln
+
 ## editor/2.7.1+player/2.7.1
 ### Fehlerbehebungen
 - Behebt Fehler beim erneuten Laden von Aufgaben mit mehreren Geogebra-Elementen

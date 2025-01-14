@@ -33,7 +33,7 @@ describe('Button element', { testIsolation: false }, () => {
     cy.contains('Knopf').click();
     cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-page-2');
     selectFromDropdown('Aktion', 'Seitennavigation');
-    selectFromDropdown('Aktionsparameter', '2');
+    selectFromDropdown('Aktionsparameter', 'Seite 2');
   });
 
   it('creates image button in editor', () => {

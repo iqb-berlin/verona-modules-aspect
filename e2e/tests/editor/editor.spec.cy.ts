@@ -44,7 +44,7 @@ describe('Basic Unit', () => {
     addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('textarea').clear().type('PageRef');
     selectFromDropdown('Aktion', 'Seitennavigation');
-    selectFromDropdown('Aktionsparameter', '2');
+    selectFromDropdown('Aktionsparameter', 'Seite 2');
 
     // Crosscheck: Delete not referenced page
     navigateToPage(3);

@@ -121,11 +121,8 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   onFocusIn() {
-    // give iqb keyboard time to animate
-    setTimeout(() => {
-      this.focusIn.emit(this.mathFieldElement);
-      window.mathVirtualKeyboard.show({ firstLayer: true, resetShift: true });
-    }, 250);
+    this.focusIn.emit(this.mathFieldElement);
+    window.mathVirtualKeyboard.show({ firstLayer: true, resetShift: true });
   }
 
   private setKeyboardLayout(): void {

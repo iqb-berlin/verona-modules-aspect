@@ -8,6 +8,7 @@ declare global {
       openPlayer(): Chainable<JQuery<HTMLElement>>;
       openEditor(): Chainable<JQuery<HTMLElement>>;
       switchToTabbedViewMode(): Chainable<JQuery<HTMLElement>>;
+      getByAlias(alias: string): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

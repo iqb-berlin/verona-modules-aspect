@@ -12,6 +12,7 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
 import { MathfieldElement } from '@iqb/mathlive';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Directive()
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
@@ -44,6 +45,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
       this.mathKeyboardService
         .toggle(focusedTextInput as { inputElement: MathfieldElement; focused: boolean },
           elementComponent);
+      this.forceCloseKeyboard();
     } else if (!(elementComponent instanceof MathFieldComponent)) {
       if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
         promises.push(this.keyboardService
@@ -68,9 +70,23 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
             this.isKeypadOpen = this.keypadService.isOpen;
             if (this.keyboardService.isOpen || this.keypadService.isOpen) {
               this.inputElement = this.getInputElement(focusedTextInput.inputElement);
+              this.forceCloseMathKeyboard();
             }
           });
       }
+    }
+  }
+
+  private forceCloseKeyboard(): void {
+    if (this.mathKeyboardService.isOpen && this.keyboardService.isOpen) {
+      this.keyboardService.close();
+      this.unsubscribeFromKeyboardEvents();
+    }
+  }
+
+  private forceCloseMathKeyboard(): void {
+    if (this.mathKeyboardService.isOpen && this.keyboardService.isOpen) {
+      this.mathKeyboardService.close();
     }
   }
 
@@ -97,10 +113,13 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
 
   private subscribeForKeypadEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
     this.keypadEnterKeySubscription = this.keypadService.enterKey
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
     this.keypadDeleteCharactersSubscription = this.keypadService.deleteCharacters
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
     this.keypadSelectSubscription = this.keypadService.select
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.select(key));
   }
 
@@ -112,8 +131,10 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
 
   private subscribeForKeyboardEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
     this.keyboardEnterKeySubscription = this.keyboardService.enterKey
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
     this.keyboardDeleteCharactersSubscription = this.keyboardService.deleteCharacters
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
   }
 
@@ -270,11 +291,14 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     return this.getInputElementValue().substring(endPosition);
   }
 
-  setSelection(start: number, end: number, backSpaceAtFirstPosition?: boolean): void {
+  private setSelection(start: number, end: number, backSpaceAtFirstPosition?: boolean): void {
     if (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) {
       this.inputElement.setSelectionRange(start, end);
     } else if (!backSpaceAtFirstPosition) {
-      setTimeout(() => RangeSelectionService.setSelectionRange(this.inputElement, start, end));
+      setTimeout(() => {
+        RangeSelectionService.setSelectionRange(this.inputElement, start, end);
+        this.inputElement.dispatchEvent(new Event('input'));
+      });
     }
   }
 

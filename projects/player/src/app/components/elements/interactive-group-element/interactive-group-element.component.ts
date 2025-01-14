@@ -216,10 +216,13 @@ export class InteractiveGroupElementComponent
     cell: MathTableCell
   ): void {
     this.keypadEnterKeySubscription = this.keypadService.enterKey
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, row, cell));
     this.keypadDeleteCharactersSubscription = this.keypadService.deleteCharacters
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => this.enterKey('Delete', row, cell));
     this.keypadSelectSubscription = this.keypadService.select
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, row, cell));
   }
 
@@ -234,8 +237,10 @@ export class InteractiveGroupElementComponent
     cell: MathTableCell
   ): void {
     this.keyboardEnterKeySubscription = this.keyboardService.enterKey
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, row, cell));
     this.keyboardDeleteCharactersSubscription = this.keyboardService.deleteCharacters
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => this.enterKey('Delete', row, cell));
   }
 

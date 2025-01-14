@@ -61,7 +61,7 @@
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
          [class.read-only]="true">
-      <aspect-text-image-panel [label]="item" [hideContent]="elementModel.permanentPlaceholdersCC"></aspect-text-image-panel>
+      <aspect-text-image-panel [label]="item" [hideContent]="!elementModel.permanentPlaceholdersCC"></aspect-text-image-panel>
     </div>
   </ng-template>
 

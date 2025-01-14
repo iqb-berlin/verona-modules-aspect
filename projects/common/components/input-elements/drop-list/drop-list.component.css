@@ -17,6 +17,7 @@
 
 .drop-list.row {
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .drop-list.column {

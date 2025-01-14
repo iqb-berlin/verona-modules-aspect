@@ -1,6 +1,6 @@
 <span *ngIf="clozeContext" [style.width.px]="0">&nbsp;</span>
 <!-- TODO testen, ob touchstart keine Probleme macht -->
-<div class="drop-list" id="{{elementModel.alias}}" #droplist
+<div class="drop-list" id="{{elementModel.id}}" #droplist [attr.data-list-alias]="elementModel.alias"
      [class.cloze-context]="clozeContext"
      [class.hovered]="!elementModel.isSortList && isHovered"
      [class.isHighlighted]="isHighlighted"

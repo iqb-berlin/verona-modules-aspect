@@ -109,7 +109,7 @@ import { DialogService } from '../../../../../services/dialog.service';
       margin-bottom: 10px;
       padding: 10px;
       max-height: 200px;
-      overflow: scroll;
+      overflow: auto;
     }
   `]
 })

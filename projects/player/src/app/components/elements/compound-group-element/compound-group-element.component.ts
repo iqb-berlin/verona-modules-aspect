@@ -244,7 +244,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   private broadcastMarkingColorChange(color: string | undefined, childModel: TextElement): void {
     this.markingPanelService
-      .broadcastMarkingColorChange({
+      .broadcastMarkingColorData({
         color: color,
         id: childModel.id,
         markingMode: childModel.markingMode,

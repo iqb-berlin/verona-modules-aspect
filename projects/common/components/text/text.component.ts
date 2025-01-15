@@ -19,7 +19,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
                elementModel.highlightableOrange"
         [sticky]="true"
         [selectedColor]="selectedColor.value || 'none'"
-        [hasDeleteButton]="elementModel.markingMode !== 'word'"
+        [markingMode]="elementModel.markingMode"
         [showHint]="showHint"
         [elementModel]="elementModel"
         (markingDataChanged)="selectedColor.next($event.colorName); markingDataChanged.emit($event)">

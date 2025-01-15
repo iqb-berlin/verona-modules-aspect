@@ -14,7 +14,7 @@ export interface Markable {
   color: string | null;
 }
 
-export interface MarkingColor {
+export interface MarkingColorData {
   id: string,
   color: string | undefined,
   markingMode: 'selection' | 'word' | 'range',

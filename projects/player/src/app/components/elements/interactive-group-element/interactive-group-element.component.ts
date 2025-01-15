@@ -49,7 +49,7 @@ export class InteractiveGroupElementComponent
   keyboardDeleteCharactersSubscription!: Subscription;
 
   selectedColor: string | undefined;
-  hasDeleteButton: boolean = false;
+  markingMode: 'selection' | 'word' | 'range' = 'selection';
   showHint: boolean = false;
   private ngUnsubscribe: Subject<void> = new Subject();
 
@@ -121,7 +121,7 @@ export class InteractiveGroupElementComponent
       .subscribe(markingColor => {
         if (markingColor.markingPanels.includes(this.elementModel.id)) {
           this.selectedColor = markingColor.color;
-          this.hasDeleteButton = (markingColor.markingMode !== 'word');
+          this.markingMode = markingColor.markingMode;
         }
       });
   }

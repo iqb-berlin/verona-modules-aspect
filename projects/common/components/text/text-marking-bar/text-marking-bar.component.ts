@@ -12,23 +12,26 @@ import { MarkingData } from 'common/models/marking-data';
          [class.sticky]="sticky">
       <aspect-text-marking-button *ngIf="elementModel.highlightableYellow"
                                   [color]="selectionColors.yellow"
+                                  [markingMode]="markingMode"
                                   [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.yellow"
                                   mode="mark"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
       <aspect-text-marking-button *ngIf="elementModel.highlightableTurquoise"
                                   [color]="selectionColors.turquoise"
+                                  [markingMode]="markingMode"
                                   [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.turquoise"
                                   mode="mark"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
       <aspect-text-marking-button *ngIf="elementModel.highlightableOrange"
                                   [color]="selectionColors.orange"
+                                  [markingMode]="markingMode"
                                   [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.orange"
                                   mode="mark"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
-      <aspect-text-marking-button *ngIf="hasDeleteButton"
+      <aspect-text-marking-button *ngIf="markingMode !== 'word'"
                                   [color]="selectionColors.delete"
                                   [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.delete"
                                   mode="delete"
@@ -46,7 +49,7 @@ import { MarkingData } from 'common/models/marking-data';
 export class TextMarkingBarComponent {
   @Input() elementModel!: TextElement | MarkingPanelElement;
   @Input() sticky!: boolean;
-  @Input() hasDeleteButton!: boolean;
+  @Input() markingMode!: 'selection' | 'word' | 'range';
   @Output() markingDataChanged = new EventEmitter<MarkingData>();
   @Input() showHint!: boolean;
   @Input() selectedColor!: string;

@@ -1,13 +1,13 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';
-import { MarkingColor, MarkingRangeData } from 'player/src/app/models/markable.interface';
+import { MarkingColorData, MarkingRangeData } from 'player/src/app/models/markable.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarkingPanelService {
   markingPanelMarkingDataChanged: EventEmitter<MarkingPanelMarkingData> = new EventEmitter<MarkingPanelMarkingData>();
-  markingColorChanged: EventEmitter<MarkingColor> = new EventEmitter<MarkingColor>();
+  markingColorChanged: EventEmitter<MarkingColorData> = new EventEmitter<MarkingColorData>();
   markingRangeChanged: EventEmitter<MarkingRangeData> = new EventEmitter<MarkingRangeData>();
 
   broadcastRangeClicks(markingRangeData: MarkingRangeData): void {
@@ -18,7 +18,7 @@ export class MarkingPanelService {
     this.markingPanelMarkingDataChanged.emit(markingPanelMarkingData);
   }
 
-  broadcastMarkingColorChange(param: MarkingColor) : void {
-    this.markingColorChanged.emit(param);
+  broadcastMarkingColorData(markingColor: MarkingColorData) : void {
+    this.markingColorChanged.emit(markingColor);
   }
 }

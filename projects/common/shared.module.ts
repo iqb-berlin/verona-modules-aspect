@@ -36,6 +36,9 @@ import {
   AreaSegmentComponent
 } from 'common/components/input-elements/text-area-math/area-segment.component';
 import { AreaRowHeightPipe } from 'common/components/input-elements/text-area-math/area-row-height.pipe';
+import {
+  TextMarkingButtonSvgComponent
+} from 'common/components/text/text-marking-bar/text-marking-button-svg.component';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -119,7 +122,8 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     DraggableDirective,
     ImageFullscreenDirective,
     AreaSegmentComponent,
-    AreaRowHeightPipe
+    AreaRowHeightPipe,
+    TextMarkingButtonSvgComponent
   ],
   declarations: [
     ButtonComponent,

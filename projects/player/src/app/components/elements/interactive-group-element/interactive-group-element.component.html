@@ -35,7 +35,7 @@
   *ngIf="elementModel.type === 'marking-panel'"
   #elementComponent
   [showHint]="showHint"
-  [hasDeleteButton]="hasDeleteButton"
+  [markingMode]="markingMode"
   [selectedColor]="selectedColor"
   [elementModel]="elementModel | cast: MarkingPanelElement"
   (markingPanelMarkingDataChanged)="markingPanelService.broadcastMarkingData($event)">

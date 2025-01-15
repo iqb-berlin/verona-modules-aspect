@@ -82,7 +82,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
 
   broadcastMarkingColorChange(color: string | undefined): void {
     this.markingPanelService
-      .broadcastMarkingColorChange({
+      .broadcastMarkingColorData({
         color: color,
         id: this.elementModel.id,
         markingMode: (this.elementModel as TextElement).markingMode,

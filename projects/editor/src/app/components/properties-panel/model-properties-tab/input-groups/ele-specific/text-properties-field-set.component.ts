@@ -30,7 +30,7 @@ import { DialogService } from '../../../../../services/dialog.service';
   template: `
     <div class="fx-column-start-stretch">
       Text
-      <div class="text-text"
+      <div class="text-text" (click)="showTextEditDialog()" [style.cursor]="'pointer'"
            [innerHTML]="combinedProperties.text | safeResourceHTML">
       </div>
       <button mat-fab color="primary" [style.align-self]="'center'" [style.margin-bottom.px]="20"

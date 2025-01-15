@@ -3,10 +3,10 @@ import { addList, connectLists, dragTo } from './droplist-util';
 describe('Droplist element', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
+      cy.openEditor();
     });
 
     it('creates several droplists and only one copy capability', () => {
-      cy.openEditor();
       addList('Nicht Kopieren Liste', ['AAA'], {
         highlightReceivingDropList: true,
         copyElement: false
@@ -23,11 +23,10 @@ describe('Droplist element', { testIsolation: false }, () => {
       connectLists('Zielliste', 'NichtKopierenListe');
       connectLists('KopierenListe', 'Zielliste');
       connectLists('Zielliste', 'KopierenListe');
-      cy.saveUnit('e2e/downloads/droplist-copy.json');
     });
 
     after('save an unit definition', () => {
-
+      cy.saveUnit('e2e/downloads/droplist-copy.json');
     });
   });
 
@@ -39,25 +38,25 @@ describe('Droplist element', { testIsolation: false }, () => {
 
     it('copies one element to the empty droplist', () => {
       dragTo('NichtKopierenListe', 'AAA', 'Zielliste');
-      cy.get('#NichtKopierenListe').children().should('have.length', 0);
+      cy.getByAlias('NichtKopierenListe').children().should('have.length', 0);
       dragTo('KopierenListe', 'BBB', 'Zielliste');
-      cy.get('#KopierenListe').children().should('have.length', 1);
-      cy.get('#KopierenListe').contains('BBB');
-      cy.get('#Zielliste').children().should('have.length', 2);
-      cy.get('#Zielliste').contains('AAA');
-      cy.get('#Zielliste').contains('BBB');
+      cy.getByAlias('KopierenListe').children().should('have.length', 1);
+      cy.getByAlias('KopierenListe').contains('BBB');
+      cy.getByAlias('Zielliste').children().should('have.length', 2);
+      cy.getByAlias('Zielliste').contains('AAA');
+      cy.getByAlias('Zielliste').contains('BBB');
     });
 
     it('put back a element', () => {
       dragTo('Zielliste', 'AAA', 'KopierenListe');
-      cy.get('#NichtKopierenListe').children().should('have.length', 0);
-      cy.get('#KopierenListe').children().should('have.length', 1);
-      cy.get('#Zielliste').children().should('have.length', 2);
+      cy.getByAlias('NichtKopierenListe').children().should('have.length', 0);
+      cy.getByAlias('KopierenListe').children().should('have.length', 1);
+      cy.getByAlias('Zielliste').children().should('have.length', 2);
 
       dragTo('Zielliste', 'BBB', 'KopierenListe');
-      cy.get('#NichtKopierenListe').children().should('have.length', 0);
-      cy.get('#KopierenListe').children().should('have.length', 1);
-      cy.get('#Zielliste').children().should('have.length', 1);
+      cy.getByAlias('NichtKopierenListe').children().should('have.length', 0);
+      cy.getByAlias('KopierenListe').children().should('have.length', 1);
+      cy.getByAlias('Zielliste').children().should('have.length', 1);
     });
   });
 });

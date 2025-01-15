@@ -17,7 +17,7 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   highlightableOrange: boolean = false;
   position?: PositionProperties;
 
-  static title: string = 'Markierungselement';
+  static title: string = 'Textmarkierung';
   static icon: string = 'border_color';
 
   constructor(element?: Partial<MarkingPanelProperties>, idService?: AbstractIDService) {

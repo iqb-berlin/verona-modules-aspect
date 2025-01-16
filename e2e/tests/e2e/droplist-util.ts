@@ -12,6 +12,7 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.onlyOneItem) setCheckbox('Nur ein Element');
   if (settings?.allowReplacement) setCheckbox('Verdrängen erlauben');
   if (settings?.copyElement) setCheckbox('Elemente kopieren');
+  if (settings?.writeProtected) setCheckbox('Schreibschutz');
 }
 
 export function addOption(optionName: string): void {
@@ -34,7 +35,6 @@ export function dragTo(list: string, item: string, targetList: string): void {
   // Moving the mouse is actually not necessary, since the mouseenter event is not triggered.
   // It is triggered manually in the next step.
   // cy.get('.drag-preview').trigger('mousemove', { force: true, clientX: 640, clientY: 199 });
-
   // Leave first, to change a variable and actually handle mouseenter events
   cy.getByAlias(`${list}`)
     .trigger('mouseleave');

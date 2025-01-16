@@ -16,10 +16,10 @@ export class MarkableSupport {
   private ngUnsubscribe = new Subject<void>();
 
   // eslint-disable-next-line max-len
-  private static wordsWithWhitespace: RegExp = /[^(\p{L}|\d\-')]*(\p{L}|\d|[-'])+[^(\p{L}|\d\-')]*|[^(\p{L}|\d\-')]+(\p{L}|\d|[-'])*[^(\p{L}|\d\-')]*|[^(\p{L}|\d\-')]*(\p{L}|\d|[-'])*[^(\p{L}|\d\-')]+/gu;
-  private static prefix: RegExp = /[^(\p{L}|\d\-')]+(?=(\p{L}|\d|[-'])+)/u;
+  private static wordsWithWhitespace: RegExp = /[^\p{L}|\d\-']*(\p{L}|\d|[-'])+[^\p{L}|\d\-']*|[^\p{L}|\d\-']+(\p{L}|\d|[-'])*[^\p{L}|\d\-']*|[^\p{L}|\d\-']*(\p{L}|\d|[-'])*[^\p{L}|\d\-']+/gu;
+  private static prefix: RegExp = /[^\p{L}|\d\-']+(?=(\p{L}|\d|[-'])+)/u;
   private static word: RegExp = /(\p{L}|\d|[-'])+/u;
-  private static suffix: RegExp = /[^(\p{L}|\d\-')]+$/u;
+  private static suffix: RegExp = /[^\p{L}|\d\-']+$/u;
 
   constructor(
     renderer: Renderer2,

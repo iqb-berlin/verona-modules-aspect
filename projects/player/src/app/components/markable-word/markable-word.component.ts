@@ -72,15 +72,15 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
   private toggleRange(): void {
     const actualValue = this.markingRange?.value as MarkingRange | null;
     if (actualValue === null) {
-      this.subscribeForPointerUp();
+      this.subscribeForMouseUp();
       this.markingRange?.next({ first: this.id, second: null });
     } else {
       this.markingRange?.next({ ...actualValue, second: this.id });
     }
   }
 
-  private subscribeForPointerUp(): void {
-    this.nativeEventService.pointerUp
+  private subscribeForMouseUp(): void {
+    this.nativeEventService.mouseUp
       .pipe(takeUntil(this.ngUnsubscribe), first())
       .subscribe(() => this.cleanMarking());
   }

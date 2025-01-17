@@ -59,6 +59,10 @@ export function setCheckbox(labelText: string): void {
     .click();
 }
 
+export function clickElement(text: string): void {
+  cy.contains(text).click();
+}
+
 export function selectFromDropdown(dropdownName: string, optionName: string, closeOverlay: boolean = false) {
   cy.get('aspect-element-model-properties-component')
     .contains('mat-form-field', dropdownName).find('mat-select').click();

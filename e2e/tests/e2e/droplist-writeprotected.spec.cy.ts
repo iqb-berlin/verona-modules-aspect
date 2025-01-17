@@ -29,25 +29,28 @@ describe('Droplist element', { testIsolation: false }, () => {
     });
 
     it('drags to write-protected list. ', () => {
+      // # Ticket 751
       dragTo('Startliste', 'AAA', 'ZiellisteSchutz');
-      dragTo('Startliste', 'AAA', 'ZiellisteSchutz');
+      cy.getByAlias('ZiellisteSchutz').children()
+        .should('have.length', 1);
       // Handle the exception for function dragTo, with no pointer-events:none
       Cypress.on('fail', (error) => {
         if (!error.message.includes('pointer-events: none')) {
           throw error
         }
-      })
+      });
       dragTo('ZiellisteSchutz','AAA','Startliste');
       cy.getByAlias('ZiellisteSchutz').children()
-        .should('have.length', 2);
+        .should('have.length', 1);
     });
 
     it('drags to non write-protected list. ', () => {
       dragTo('Startliste', 'AAA', 'Zielliste');
-      dragTo('Startliste', 'AAA', 'Zielliste');
-      dragTo('Zielliste','AAA','Startliste');
       cy.getByAlias('Zielliste').children()
         .should('have.length', 1);
+      dragTo('Zielliste','AAA','Startliste');
+      cy.getByAlias('Zielliste').children()
+        .should('have.length', 0);
     });
   });
 });

@@ -35,7 +35,7 @@ describe('Droplist element', { testIsolation: false }, () => {
         .contains('0.').should('not.exist');
     });
 
-    it('checks the enumerated list starting by zero. ', () => {
+    it('checks the enumerated list starting from zero. ', () => {
       cy.getByAlias('ListeZero')
         .contains('1.');
       cy.getByAlias('ListeZero')

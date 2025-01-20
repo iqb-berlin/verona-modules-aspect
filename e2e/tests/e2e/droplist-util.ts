@@ -13,6 +13,7 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.allowReplacement) setCheckbox('Verdrängen erlauben');
   if (settings?.copyElement) setCheckbox('Elemente kopieren');
   if (settings?.writeProtected) setCheckbox('Schreibschutz');
+  if (settings?.mandatory) setCheckbox('Pflichtfeld');
 }
 
 export function addOption(optionName: string): void {

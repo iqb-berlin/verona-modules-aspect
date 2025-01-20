@@ -122,6 +122,10 @@ export abstract class UIElement implements UIElementProperties {
     }];
   }
 
+  getIdentifiers(): { id: string, alias: string }[] {
+    return [{ id: this.id, alias: this.alias }];
+  }
+
   abstract getElementComponent(): Type<ElementComponent>;
 
   static createOptionLabel(optionText: string, addImg: boolean = false) {

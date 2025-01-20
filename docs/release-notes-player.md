@@ -1,5 +1,9 @@
 Player
 ======
+## player/2.7.3
+### Fehlerbehebungen
+- Behebt Wiederherstellungsfehler von Geogebra-Variablen beim erneuten Öffnen einer Aufgabe
+
 ## 2.6.4
 ### Neue Funktionen
 - Beim Seitenwechsel werden aktive Buttons zum Markieren von Texten zurückgesetzt 

@@ -1,0 +1,45 @@
+import { addList} from './droplist-util';
+
+describe('Droplist element', { testIsolation: false }, () => {
+  context('editor', () => {
+    before('opens an editor', () => {
+      cy.openEditor();
+    });
+
+    it('creates several droplists, the second with numeration and the third with numeration list starting from 0', () => {
+      addList('Liste ohne Nummerierung', ['AAA','BBB'], {}, 'Liste');
+      addList('Liste mit Nummerierung', ['CCC','DDD'], {numeration: true}, 'ListeNummerierung');
+      addList('Liste mit Nummerierung bei 0 beginnen', ['EEE','FFF'], {numeration: true, numerationZero: true}, 'ListeZero');
+    });
+
+    after('saves an unit definition', () => {
+      cy.saveUnit('e2e/downloads/droplist-numeration.json');
+    });
+  });
+
+  context('player', () => {
+    before('opens a player', () => {
+      cy.openPlayer();
+      cy.loadUnit('../downloads/droplist-numeration.json');
+    });
+
+    it('checks the non numerated list. ', () => {
+      cy.getByAlias('Liste')
+        .contains('1.').should('not.exist');
+    });
+
+    it('checks the enumerated list. ', () => {
+      cy.getByAlias('ListeNummerierung')
+        .contains('1.');
+      cy.getByAlias('ListeNummerierung')
+        .contains('0.').should('not.exist');
+    });
+
+    it('checks the enumerated list starting by zero. ', () => {
+      cy.getByAlias('ListeZero')
+        .contains('1.');
+      cy.getByAlias('ListeZero')
+        .contains('0.');
+    });
+  });
+});

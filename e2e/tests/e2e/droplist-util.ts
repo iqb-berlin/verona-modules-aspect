@@ -14,6 +14,8 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.copyElement) setCheckbox('Elemente kopieren');
   if (settings?.writeProtected) setCheckbox('Schreibschutz');
   if (settings?.mandatory) setCheckbox('Pflichtfeld');
+  if (settings?.numeration) setCheckbox('Nummerierung anzeigen');
+  if (settings?.numerationZero) setCheckbox('Nummerierung bei 0 beginnen');
 }
 
 export function addOption(optionName: string): void {

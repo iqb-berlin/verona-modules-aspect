@@ -19,8 +19,8 @@ import { FormControl } from '@angular/forms';
 })
 export class UnitMenuComponent {
   @Input() scrollPages!: Page[];
-  @Input() elementCodes!: Response[];
-  @Input() stateVariableCodes!: Response[];
+  @Input() elementCodes!: (Response & { alias: string })[];
+  @Input() stateVariableCodes!: (Response & { alias: string })[];
 
   private postTarget: Window = window;
   formControl = new FormControl('');
@@ -56,10 +56,14 @@ export class UnitMenuComponent {
   }
 
   reloadUnit(): void {
+    const elementCodes: Response[] = this.elementCodes
+      .map(ec => ({ id: ec.alias, status: ec.status, value: ec.value }));
+    const stateVariableCodes: Response[] = this.elementCodes
+      .map(ec => ({ id: ec.alias, status: ec.status, value: ec.value }));
     this.vopStartCommandMessage.unitState = {
       dataParts: {
-        elementCodes: JSON.stringify(this.elementCodes),
-        stateVariableCodes: JSON.stringify(this.stateVariableCodes)
+        elementCodes: JSON.stringify(elementCodes),
+        stateVariableCodes: JSON.stringify(stateVariableCodes)
       }
     };
     this.setStartPage();

@@ -17,7 +17,7 @@ import { Component, Input } from '@angular/core';
           </g>
         </g>
       </svg>
-    } @else if (buttonType === 'range') {
+    } @else if (buttonType === 'word') {
       <svg
         height="24px"
         viewBox="0 0 24 24"
@@ -30,7 +30,7 @@ import { Component, Input } from '@angular/core';
         <path
           d="m 10.5,24 h 3 v -4 h -3 z M 13.06,5.19 16.81,8.94 7.75,18 H 4 v -3.75 z m 4.82,2.68 -3.75,-3.75 1.83,-1.83 c 0.39,-0.39 1.02,-0.39 1.41,0 l 2.34,2.34 c 0.39,0.39 0.39,1.02 0,1.41 z M 8.5,23.999816 2,24.000183 v -4 l 6.5,-3.66e-4 z M 22,24 H 15.5 V 20 H 22 Z"/>
       </svg>
-    } @else if (buttonType === 'word') {
+    } @else if (buttonType === 'range') {
       <svg
         height="24px"
         viewBox="0 0 24 24"

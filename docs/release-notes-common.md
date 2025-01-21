@@ -1,9 +1,12 @@
 Allgemein
 =========
-## editor/2.8.0+player/2.8.0
+## next
 ### Neue Funktionen
 - Text: Neue Markierfunktionalität
-- In einem Text können durch zwei Mausklicks oder zwei Berührung Bereiche von Wörtern markiert werden
+  - In einem Text können durch zwei Mausklicks oder zwei Berührung Bereiche von Wörtern markiert werden
+- Ablegelisten: Neue Eigenschaften "Platzhalter anzeigen" und "Platzhalter mit Durchschrift"
+  - Wenn gesetzt, wird für entfernte Elemente Platz reserviert und optional eine verblasste Version des Elements angezeigt.
+
 
 ## editor/2.7.2+player/2.7.2
 ### Fehlerbehebungen

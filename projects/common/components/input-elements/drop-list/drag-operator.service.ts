@@ -157,7 +157,8 @@ export class DragOperatorService {
       originList.refreshViewModel();
       originList.cdr.detectChanges();
     }
-    // TODO haut logisch noch nicht ganz hin mit den festen Indize
+
+    // Try to put the item in its original index
     const targetIndex = this.dragOperation?.sortingPlaceholderIndex !== undefined ?
       this.dragOperation?.sortingPlaceholderIndex :
       targetList.elementFormControl.value.length;

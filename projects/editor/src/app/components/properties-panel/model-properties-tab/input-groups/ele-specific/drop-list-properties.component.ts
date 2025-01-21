@@ -93,6 +93,7 @@ export class GetValidDropListsPipe implements PipeTransform {
       </mat-form-field>
 
       <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.isSortList !== undefined"
+                    [disabled]="$any(combinedProperties.permanentPlaceholders)"
                     [checked]="$any(combinedProperties.isSortList)"
                     (change)="updateModel.emit({ property: 'isSortList', value: $event.checked })">
         {{'propertiesPanel.isSortList' | translate }}
@@ -105,15 +106,32 @@ export class GetValidDropListsPipe implements PipeTransform {
       </mat-checkbox>
 
       <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.allowReplacement !== undefined"
+                    [disabled]="$any(combinedProperties.permanentPlaceholders)"
                     [checked]="$any(combinedProperties.allowReplacement)"
                     (change)="updateAllowReplacement($event.checked)">
         {{'allowReplacement' | translate }}
       </mat-checkbox>
 
       <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.copyOnDrop !== undefined"
+                    [disabled]="$any(combinedProperties.permanentPlaceholders)"
                     [checked]="$any(combinedProperties.copyOnDrop)"
                     (change)="updateModel.emit({ property: 'copyOnDrop', value: $event.checked })">
         {{'propertiesPanel.copyOnDrop' | translate }}
+      </mat-checkbox>
+
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.permanentPlaceholders !== undefined"
+                    [disabled]="$any(combinedProperties.copyOnDrop) ||
+                                $any(combinedProperties.isSortList) ||
+                                $any(combinedProperties.allowReplacement)"
+                    [checked]="$any(combinedProperties.permanentPlaceholders)"
+                    (change)="updateModel.emit({ property: 'permanentPlaceholders', value: $event.checked })">
+        {{'propertiesPanel.permanentPlaceholders' | translate }}
+      </mat-checkbox>
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.permanentPlaceholdersCC !== undefined"
+                    [disabled]="!combinedProperties.permanentPlaceholders"
+                    [checked]="$any(combinedProperties.permanentPlaceholdersCC)"
+                    (change)="updateModel.emit({ property: 'permanentPlaceholdersCC', value: $event.checked })">
+        {{'propertiesPanel.permanentPlaceholdersCC' | translate }}
       </mat-checkbox>
 
       <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.showNumbering !== undefined"

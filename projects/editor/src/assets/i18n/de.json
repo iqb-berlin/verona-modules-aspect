@@ -222,11 +222,11 @@
     "borderWidth": "Stärke",
     "borderStyle": "Stil",
     "selectionColor": "Auswahlfarbe",
-    "flex": "Dynamisch zentriert",
+    "flex": "horizontal zentriert",
     "fixedSize": "Feste Abmessungen",
     "columnCount": "Anzahl der Spalten",
     "vertical": "vertikal",
-    "horizontal": "horizontal",
+    "horizontal": "horizontal linksbündig",
     "fill": "Ausgefüllt",
     "outline": "Umrandet",
     "dynamicWidth": "Dynamische Breite",
@@ -272,7 +272,9 @@
     "showTopHelperRows": "obere Helferzeilen",
     "allowFirstLineCrossOut": "Durchstreichen in erster Zeile",
     "trackedVariables": "Ergebnisvariablen",
-    "isSortList": "Sortierliste"
+    "isSortList": "Sortierliste",
+    "permanentPlaceholders": "Platzhalter anzeigen",
+    "permanentPlaceholdersCC": "Platzhalter mit Durchschrift"
   },
   "hotspot": {
     "top": "Abstand von oben",

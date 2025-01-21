@@ -97,7 +97,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   reset(): void {
     this.appDefinition = this.elementModel.appDefinition;
     this.initApplet();
-    this.geometryUpdated.next();
+    // needs time to reload
+    setTimeout(() => {
+      this.geometryUpdated.next();
+    });
   }
 
   private initApplet(): void {

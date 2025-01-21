@@ -59,7 +59,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       .subscribe(() => this.loadApplet());
 
     this.geometryUpdated
-      .pipe(debounceTime(500), takeUntil(this.ngUnsubscribe))
+      .pipe(debounceTime(100), takeUntil(this.ngUnsubscribe))
       .subscribe(() => this.elementValueChanged.emit({
         id: this.elementModel.id,
         value: {

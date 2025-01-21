@@ -38,7 +38,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
       this.stateVariableStateService.elementCodeChanged
     )
       .pipe(
-        debounceTime(500),
+        debounceTime(100),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe((): void => this.sendVopStateChangedNotification());

@@ -1,5 +1,9 @@
 Player
 ======
+## player/2.7.4
+### Änderungen
+- Reduziert die Verzögerung für das Senden von Änderungsmitteilungen
+
 ## player/2.7.3
 ### Fehlerbehebungen
 - Behebt Wiederherstellungsfehler von Geogebra-Variablen beim erneuten Öffnen einer Aufgabe

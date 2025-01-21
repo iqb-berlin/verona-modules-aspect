@@ -15,6 +15,7 @@
      [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
      [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
      [style.background-color]="elementModel.styling.backgroundColor"
+     [class.read-only]="elementModel.readOnly"
      (touchstart)="elementFormControl.markAsTouched()"
      (mouseenter)="dragOpService.isDragActive && dragEnter()"
      (mouseleave)="dragOpService.isDragActive && dragLeave()"

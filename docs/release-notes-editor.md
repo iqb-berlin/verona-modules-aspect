@@ -1,8 +1,16 @@
 Editor
 ======
+## 2.8.0-beta
+### Änderungen
+- Ablegelisten - Ausrichtung:
+  - "Dynamisch zentriert" heißt jetzt "horizontal zentriert" und bricht automatisch um
+  - "horizontal" heißt jetzt "horizontal linksbündig"
+- kleinere Verbesserungen im Layout, sodass es weniger unnötige Scrollbars, Zeilenumbrüche und überfließende Bilder in Chromium-Browsern gibt
+
+
 ## 2.7.0
-## Neue Funktionen
-- Elemente, die keine auswertbaren Werte annehmen können, erscheinen nun in der Liste der Variablen für die Kodierung mit dem type "no-value". 
+### Neue Funktionen
+- Elemente, die keine auswertbaren Werte annehmen können, erscheinen nun in der Liste der Variablen für die Kodierung mit dem type "no-value".
   Dies gilt auch für Zustandsvariablen.  
 
 ## 2.6.3

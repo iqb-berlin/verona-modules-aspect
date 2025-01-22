@@ -1,5 +1,5 @@
 import {
-  Directive, Input, OnDestroy, OnInit
+  Directive, HostListener, Input, OnDestroy, OnInit
 } from '@angular/core';
 import {
   BehaviorSubject, debounceTime, merge, Subject
@@ -18,6 +18,11 @@ import { ValidationService } from '../services/validation.service';
   selector: '[aspectUnitState]'
 })
 export class UnitStateDirective implements OnInit, OnDestroy {
+  @HostListener('window:unload')
+  onUnload(): void {
+    this.sendVopStateChangedNotification();
+  }
+
   private ngUnsubscribe = new Subject<void>();
   @Input() presentationProgressStatus!: BehaviorSubject<Progress>;
 
@@ -76,6 +81,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.sendVopStateChangedNotification();
     this.unitStateService.reset();
     this.stateVariableStateService.reset();
     this.mediaPlayerService.reset();

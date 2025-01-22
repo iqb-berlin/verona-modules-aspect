@@ -1,5 +1,9 @@
 Player
 ======
+## 2.8.0-beta
+### Neue Funktionen
+- Beim Aufgabenwechsel wird der Zustand der aktuellen Aufgabe zur Sicherung an den Host (i. d. R. Testcenter) gesendet
+
 ## player/2.7.4
 ### Änderungen
 - Reduziert die Verzögerung für das Senden von Änderungsmitteilungen

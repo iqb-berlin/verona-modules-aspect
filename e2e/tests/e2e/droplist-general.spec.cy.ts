@@ -1,4 +1,4 @@
-import { addList } from './droplist-util';
+import {addList, enableInteration} from './droplist-util';
 import { clickElement } from "../util";
 
 describe('Droplist element', { testIsolation: false }, () => {
@@ -23,6 +23,10 @@ describe('Droplist element', { testIsolation: false }, () => {
       clickElement('Bestätigen');
       cy.getByAlias('drop-list_1').should('not.exist');
     });
+
+    it('enables interaktion', () => {
+      enableInteration();
+    })
 
     after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/droplist-general.json');

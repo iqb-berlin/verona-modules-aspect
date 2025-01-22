@@ -26,6 +26,21 @@ export function addOption(optionName: string): void {
     .type(`${optionName}{enter}`);
 }
 
+export function enableInteration(){
+  cy.contains('mat-checkbox','Elementinteraktion erlauben')
+    .find('input').click();
+}
+
+export function moveToColumn(column: string):void  {
+  cy.contains('mat-icon', 'format_shapes').click();
+  cy.contains('fieldset', 'Position')
+    .contains('mat-form-field','Spalte')
+    .find('input')
+    .clear()
+    .type(column);
+  cy.contains('mat-icon', 'build').click();
+}
+
 export function connectLists(sourceList: string, targetList: string): void {
   cy.get(`aspect-editor-dynamic-overlay:has([data-list-alias="${sourceList}")`).click();
   selectFromDropdown('Verbundene Ablegelisten', targetList, true);

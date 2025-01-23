@@ -1,10 +1,11 @@
 import {
-  Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild
+  Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
-import { BehaviorSubject } from 'rxjs';
-import { MarkingData } from 'common/models/marking-data';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { MarkingRange, MarkingData } from 'common/models/marking-data';
 import { ValueChangeElement } from 'common/interfaces';
+import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
@@ -18,7 +19,8 @@ import { ElementComponent } from '../../directives/element-component.directive';
                elementModel.highlightableOrange"
         [sticky]="true"
         [selectedColor]="selectedColor.value || 'none'"
-        [hasDeleteButton]="elementModel.markingMode === 'selection'"
+        [markingMode]="elementModel.markingMode"
+        [showHint]="showHint"
         [elementModel]="elementModel"
         (markingDataChanged)="selectedColor.next($event.colorName); markingDataChanged.emit($event)">
       </aspect-text-marking-bar>
@@ -58,7 +60,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
     '::ng-deep sub {line-height: 0;}'
   ]
 })
-export class TextComponent extends ElementComponent implements OnInit {
+export class TextComponent extends ElementComponent implements OnInit, OnDestroy {
   @Input() elementModel!: TextElement;
   @Input() savedText!: string;
   @Output() selectedColorChanged = new EventEmitter<string | undefined>();
@@ -66,12 +68,26 @@ export class TextComponent extends ElementComponent implements OnInit {
   @Output() textSelectionStart = new EventEmitter<PointerEvent>();
   @Output() markingDataChanged = new EventEmitter<MarkingData>();
 
+  markingRange!: BehaviorSubject<MarkingRange | null> | null;
   selectedColor: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+  showHint = false;
+
+  private ngUnsubscribe: Subject<void> = new Subject();
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
   ngOnInit(): void {
-    this.selectedColor.subscribe(color => this.selectedColorChanged.emit(color));
+    this.selectedColor
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(color => this.selectedColorChanged.emit(color));
+    if (this.elementModel.markingMode === 'range') {
+      this.markingRange = new BehaviorSubject<MarkingRange | null>(null);
+      this.markingRange
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(range => {
+          this.showHint = range !== null && range.second === null;
+        });
+    }
   }
 
   startTextSelection(event: PointerEvent): void {
@@ -82,5 +98,10 @@ export class TextComponent extends ElementComponent implements OnInit {
       this.elementModel.highlightableOrange))) {
       this.textSelectionStart.emit(event);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -58,8 +58,8 @@ export class UnitMenuComponent {
   reloadUnit(): void {
     const elementCodes: Response[] = this.elementCodes
       .map(ec => ({ id: ec.alias, status: ec.status, value: ec.value }));
-    const stateVariableCodes: Response[] = this.elementCodes
-      .map(ec => ({ id: ec.alias, status: ec.status, value: ec.value }));
+    const stateVariableCodes: Response[] = this.stateVariableCodes
+      .map(sv => ({ id: sv.alias, status: sv.status, value: sv.value }));
     this.vopStartCommandMessage.unitState = {
       dataParts: {
         elementCodes: JSON.stringify(elementCodes),

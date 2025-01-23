@@ -30,7 +30,7 @@ import { DialogService } from '../../../../../services/dialog.service';
   template: `
     <div class="fx-column-start-stretch">
       Text
-      <div class="text-text"
+      <div class="text-text" (click)="showTextEditDialog()" [style.cursor]="'pointer'"
            [innerHTML]="combinedProperties.text | safeResourceHTML">
       </div>
       <button mat-fab color="primary" [style.align-self]="'center'" [style.margin-bottom.px]="20"
@@ -84,7 +84,7 @@ import { DialogService } from '../../../../../services/dialog.service';
                                   !combinedProperties.highlightableTurquoise &&
                                   !combinedProperties.highlightableOrange)"
                       (selectionChange)="updateModel.emit({ property: 'markingMode', value: $event.value })">
-            <mat-option *ngFor="let option of ['selection', 'word']"
+            <mat-option *ngFor="let option of ['selection', 'word', 'range']"
                         [value]="option">
               {{ 'propertiesPanel.markingMode-' + option | translate }}
             </mat-option>
@@ -109,7 +109,7 @@ import { DialogService } from '../../../../../services/dialog.service';
       margin-bottom: 10px;
       padding: 10px;
       max-height: 200px;
-      overflow: scroll;
+      overflow: auto;
     }
   `]
 })

@@ -1,9 +1,17 @@
 @for (markable of markables; track markable; let  i = $index) {
   @if (markable.prefix) {
-    <span class="prevent-select">{{markable.prefix}}</span>
+    <aspect-markable-delimiter class="prevent-select"
+                           [neighbourColor]="(markable.id > 0) && markingRange ?
+                                             allMarkables[markable.id - 1].color :
+                                             null"
+                           [text]=markable.prefix
+                           [color]="markable.color">
+    </aspect-markable-delimiter>
   }
   @if (markable.word) {
     <aspect-markable-word class="prevent-select"
+                          [id]="markable.id"
+                          [markingRange]="markingRange"
                           [text]="markable.word"
                           [markColor]="selectedColor.value"
                           [(color)]="markable.color"
@@ -11,7 +19,13 @@
     </aspect-markable-word>
   }
   @if (markable.suffix) {
-    <span class="prevent-select">{{markable.suffix}}</span>
+    <aspect-markable-delimiter class="prevent-select"
+                           [neighbourColor]="(markable.id < allMarkables.length - 1) && markingRange ?
+                                             allMarkables[markable.id + 1].color :
+                                             null"
+                           [text]="markable.suffix"
+                           [color]="markable.color">
+    </aspect-markable-delimiter>
   }
 }
 

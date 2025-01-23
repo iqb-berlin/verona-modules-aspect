@@ -34,7 +34,8 @@
 <aspect-marking-panel
   *ngIf="elementModel.type === 'marking-panel'"
   #elementComponent
-  [hasDeleteButton]="hasDeleteButton"
+  [showHint]="showHint"
+  [markingMode]="markingMode"
   [selectedColor]="selectedColor"
   [elementModel]="elementModel | cast: MarkingPanelElement"
   (markingPanelMarkingDataChanged)="markingPanelService.broadcastMarkingData($event)">

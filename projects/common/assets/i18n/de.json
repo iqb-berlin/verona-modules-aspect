@@ -4,5 +4,6 @@
   "imageNotFound": "Bild nicht gefunden",
   "confirm": "Bestätigen",
   "cancel": "Abbrechen",
-  "geometry_reset": "neu anfangen"
+  "geometry_reset": "neu anfangen",
+  "markingHint": "Ende des Bereichs bestimmen"
 }

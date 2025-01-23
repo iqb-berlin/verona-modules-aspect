@@ -23,7 +23,8 @@ describe('DropLogic', () => {
       onlyOneItem: false,
       connectedTo: ['droplist_2'],
       copyOnDrop: false,
-      allowReplacement: false
+      allowReplacement: false,
+      permanentPlaceholders: false
     },
     droplist_2: {
       id: 'droplist_2',
@@ -32,7 +33,8 @@ describe('DropLogic', () => {
       onlyOneItem: false,
       connectedTo: [],
       copyOnDrop: false,
-      allowReplacement: false
+      allowReplacement: false,
+      permanentPlaceholders: false
     }
   };
 
@@ -45,7 +47,8 @@ describe('DropLogic', () => {
         onlyOneItem: false,
         connectedTo: ['droplist_2'],
         copyOnDrop: false,
-        allowReplacement: false
+        allowReplacement: false,
+        permanentPlaceholders: false
       },
       droplist_2: {
         id: 'droplist_2',
@@ -54,7 +57,8 @@ describe('DropLogic', () => {
         onlyOneItem: false,
         connectedTo: [],
         copyOnDrop: false,
-        allowReplacement: false
+        allowReplacement: false,
+        permanentPlaceholders: false
       }
     };
   });
@@ -142,7 +146,8 @@ describe('DropLogic', () => {
       allowReplacement: true,
       value: [{ ...dragItemPreset, id: 'testID2', originListID: 'droplist_2' }],
       isSortList: false,
-      copyOnDrop: false
+      copyOnDrop: false,
+      permanentPlaceholders: false
     };
     const list2 = {
       id: 'droplist_2',
@@ -151,7 +156,8 @@ describe('DropLogic', () => {
       allowReplacement: true,
       value: [{ ...dragItemPreset, id: 'testID1', originListID: 'droplist_1' }],
       isSortList: false,
-      copyOnDrop: false
+      copyOnDrop: false,
+      permanentPlaceholders: false
     };
     const list3 = {
       id: 'droplist_3',
@@ -160,7 +166,8 @@ describe('DropLogic', () => {
       allowReplacement: true,
       value: [dragItem],
       isSortList: false,
-      copyOnDrop: false
+      copyOnDrop: false,
+      permanentPlaceholders: false
     };
 
     const allLists: { [id: string]: DropListMock } = {
@@ -169,5 +176,24 @@ describe('DropLogic', () => {
       droplist_3: list3
     };
     expect(DropLogic.isDropAllowed(dragItem, 'droplist_3', 'droplist_2', allLists)).toBe(false);
+  });
+
+  it('fail if moving a foreign item to a CC list', () => {
+    const allLists = { ...allListsPreset };
+    allLists.droplist_2.permanentPlaceholders = true;
+    allLists.droplist_2.value = [dragItemPreset];
+    expect(DropLogic.isDropAllowed(dragItemPreset, 'droplist_1', 'droplist_2', allLists))
+      .toBe(false);
+  });
+
+  it('passes if moving a CC\'d item to a CC list', () => {
+    const allLists = { ...allListsPreset };
+    const draggedItem = { ...dragItemPreset, originListID: 'droplist_2' };
+    allLists.droplist_2.permanentPlaceholders = true;
+    allLists.droplist_2.value = [dragItemPreset];
+    expect(DropLogic.isDropAllowed(draggedItem, 'droplist_1', 'droplist_2', allLists))
+      .toBe(true);
+    expect(DropLogic.isDropAllowed(draggedItem, 'droplist_1', 'droplist_1', allLists))
+      .toBe(false);
   });
 });

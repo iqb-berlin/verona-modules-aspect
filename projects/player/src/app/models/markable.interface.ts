@@ -1,3 +1,5 @@
+import { MarkingRange } from 'common/models/marking-data';
+
 export interface MarkablesContainer {
   node: Node;
   markables: Markable[]
@@ -12,9 +14,15 @@ export interface Markable {
   color: string | null;
 }
 
-export interface MarkingColor {
+export interface MarkingColorData {
   id: string,
   color: string | undefined,
   markingMode: 'selection' | 'word' | 'range',
   markingPanels: string[]
+}
+
+export interface MarkingRangeData {
+  id: string,
+  markingPanels: string[],
+  markingRange: MarkingRange | null
 }

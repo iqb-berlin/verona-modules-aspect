@@ -1,6 +1,7 @@
 import {
-  Component, EventEmitter, Input, Output, QueryList, ViewChildren
+  Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
@@ -153,6 +154,9 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
                [style.height]="'1em'"
                [style.vertical-align]="'middle'">
         </ng-container>
+        <ng-container *ngIf="$any(subPart).type === 'math-formula'">
+          <span [innerHTML]="domSanitizer.bypassSecurityTrustHtml($any(subPart).attrs.formulaHTML)"></span>
+        </ng-container>
         <aspect-compound-child-overlay
           *ngIf="ClozeElement.validChildElements | arrayIncludes:subPart.type"
           [style.display]="'inline-block'"
@@ -183,6 +187,10 @@ export class ClozeComponent extends CompoundElementComponent {
 
   protected readonly ClozeElement = ClozeElement;
   editorMode: boolean = false;
+
+  constructor(public elementRef: ElementRef, public domSanitizer: DomSanitizer) {
+    super(elementRef);
+  }
 
   getFormElementChildrenComponents(): ElementComponent[] {
     return this.compoundChildren.map((child: ClozeChildOverlay) => child.childComponent);

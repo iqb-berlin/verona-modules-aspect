@@ -1,12 +1,27 @@
 Allgemein
 =========
+## 2.8.0-beta
+### Neue Funktionen
+- Text: Neue Markierfunktionalität
+  - In einem Text können durch zwei Mausklicks oder zwei Berührung Bereiche von Wörtern markiert werden
+- Ablegelisten: Neue Eigenschaften "Platzhalter anzeigen" und "Platzhalter mit Durchschrift"
+  - Wenn gesetzt, wird für entfernte Elemente Platz reserviert und optional eine verblasste Version des Elements angezeigt.
+
+### Fehlerbehebungen
+- Lückentexte können jetzt Formeln darstellen
+- Ablegelisten:
+  - Listen mit Schreibschutz akzeptieren keine abgelegten Elemente mehr
+- Wort korrigieren:
+  - mit Schreibschutz wird der Text nicht mehr durchgestrichen, wenn man das Eingabefeld fokussiert
+
+
 ## editor/2.7.2+player/2.7.2
 ### Fehlerbehebungen
 - Ablegeliste:
   - Behebt Fehler beim Ablegen von Optionen auf Touch-Geräten (Problem in Version 2.7.1)
 - Formel (Bereich):
   - Unterbindet auf Touch-Geräten, wenn eingestellt, das Öffnen der Software-Tastatur des Betriebssystems
-  - Korrigiert Umbrüche in Text-Bereiche vor und hinter Formeln
+  - Korrigiert Umbrüche in Text-Bereichen vor und hinter Formeln
   - Stellt sicher, dass Formeltastatur und IQB-Tastatur nicht gleichzeitig geöffnet werden können
   - Behebt Aktualisierungsfehler beim Speichern von Formeln
 

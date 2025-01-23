@@ -66,43 +66,46 @@ export class UnitComponent implements OnInit {
 
   private configureUnit(message: VopStartCommand): void {
     this.reset();
-    if (message.unitDefinition) {
-      try {
-        LogService.debug('player: unitDefinition', message.unitDefinition);
-        const unitDefinition = JSON.parse(message.unitDefinition as string);
-        this.checkUnitDefinitionVersion(unitDefinition);
-        const unit: Unit = new Unit(unitDefinition);
-        this.pages = unit.pages;
-        this.sectionNumbering = {
-          enableSectionNumbering: unit.enableSectionNumbering,
-          sectionNumberingPosition: unit.sectionNumberingPosition
-        };
-        this.showUnitNavNext = unit.showUnitNavNext;
-        this.setPlayerConfig(message.playerConfig || {});
-        this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
-        this.veronaPostService.sessionID = message.sessionId;
-        this.initElementCodes(message, unit);
-        this.elementModelElementCodeMappingService.dragNDropValueObjects = [
-          ...unit.getAllElements('drop-list'),
-          ...unit.getAllElements('drop-list-simple')]
-          .map(element => ((element as InputElement).value as DragNDropValueObject[])).flat();
-        this.setStartPage();
-      } catch (e: unknown) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-        if (e instanceof InstantiationEror) {
+    setTimeout(() => {
+      if (message.unitDefinition) {
+        try {
+          LogService.debug('player: unitDefinition', message.unitDefinition);
+          const unitDefinition = JSON.parse(message.unitDefinition as string);
+          this.checkUnitDefinitionVersion(unitDefinition);
+          const unit: Unit = new Unit(unitDefinition);
+          this.pages = unit.pages;
+          this.sectionNumbering = {
+            enableSectionNumbering: unit.enableSectionNumbering,
+            sectionNumberingPosition: unit.sectionNumberingPosition
+          };
+          this.showUnitNavNext = unit.showUnitNavNext;
+          this.setPlayerConfig(message.playerConfig || {});
+          this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
+          this.veronaPostService.sessionID = message.sessionId;
+          this.initElementCodes(message, unit);
+          this.elementModelElementCodeMappingService.dragNDropValueObjects = [
+            ...unit.getAllElements('drop-list'),
+            ...unit.getAllElements('drop-list-simple')]
+            .map(element => ((element as InputElement).value as DragNDropValueObject[]))
+            .flat();
+          this.setStartPage();
+        } catch (e: unknown) {
           // eslint-disable-next-line no-console
-          console.error('Failing element blueprint: ', e.faultyBlueprint);
-          this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
-        } else if (e instanceof Error) {
-          this.showErrorDialog(e.message);
-        } else {
-          this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
+          console.error(e);
+          if (e instanceof InstantiationEror) {
+            // eslint-disable-next-line no-console
+            console.error('Failing element blueprint: ', e.faultyBlueprint);
+            this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
+          } else if (e instanceof Error) {
+            this.showErrorDialog(e.message);
+          } else {
+            this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
+          }
         }
+      } else {
+        LogService.warn('player: message has no unitDefinition');
       }
-    } else {
-      LogService.warn('player: message has no unitDefinition');
-    }
+    });
   }
 
   private setPlayerConfig(playerConfig: PlayerConfig): void {

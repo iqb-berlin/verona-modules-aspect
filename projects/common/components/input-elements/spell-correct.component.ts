@@ -45,9 +45,9 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                 [style.width.%]="100"
                 [style.margin-top]="'-20px'"
-                [style.text-decoration-line]="(inputElement && inputElement.focused) ||
+                [style.text-decoration-line]="!elementModel.readOnly && ((inputElement && inputElement.focused) ||
                                               (inputElement && !!inputElement.value) ||
-                                              (elementFormControl && elementFormControl.value === '') ?
+                                              (elementFormControl && elementFormControl.value === '')) ?
                                               'line-through' : ''"
                 (click)="elementFormControl.value === null ?
                             inputElement.focus() :

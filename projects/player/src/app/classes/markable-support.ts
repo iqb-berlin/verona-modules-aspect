@@ -4,23 +4,44 @@ import { Markable, MarkablesContainer } from 'player/src/app/models/markable.int
 import {
   MarkablesContainerComponent
 } from 'player/src/app/components/markables-container/markables-container.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MarkingRange } from 'common/models/marking-data';
+import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 
 export class MarkableSupport {
   private renderer: Renderer2;
   private applicationRef: ApplicationRef;
+  private markingPanelService: MarkingPanelService;
+  private ngUnsubscribe = new Subject<void>();
 
   // eslint-disable-next-line max-len
-  private static wordsWithWhitespace: RegExp = /[^(\p{L}|\d)]*(\p{L}|\d)+[^(\p{L}|\d)]*|[^(\p{L}|\d)]+(\p{L}|\d)*[^(\p{L}|\d)]*|[^(\p{L}|\d)]*(\p{L}|\d)*[^(\p{L}|\d)]+/gu;
-  private static prefix: RegExp = /[^(\p{L}|\d)]+(?=(\p{L}|\d)+)/u;
-  private static word: RegExp = /(\p{L}|\d)+/u;
-  private static suffix: RegExp = /[^(\p{L}|\d)]+$/u;
+  private static markables: RegExp = /[^\p{L}\d\-']*[\p{L}\d\-']+[^\p{L}\d\-']*|[^\p{L}\d\-']+[\p{L}\d\-']*[^\p{L}\d\-']*|[^\p{L}\d\-']*[\p{L}\d\-']*[^\p{L}\d\-']+/gu;
+  private static prefix: RegExp = /[^\p{L}\d\-']+(?=[\p{L}\d\-']+)/u;
+  private static word: RegExp = /[\p{L}\d\-']+/u;
+  private static suffix: RegExp = /[^\p{L}\d\-']+$/u;
 
   constructor(
     renderer: Renderer2,
-    applicationRef: ApplicationRef
+    applicationRef: ApplicationRef,
+    markingPanelService: MarkingPanelService
   ) {
     this.renderer = renderer;
     this.applicationRef = applicationRef;
+    this.markingPanelService = markingPanelService;
+  }
+
+  registerRangeClicks(elementComponent: TextComponent): void {
+    elementComponent.markingRange?.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((markingRange: MarkingRange | null) => {
+        this.markingPanelService.broadcastRangeClicks(
+          {
+            id: elementComponent.elementModel.id,
+            markingPanels: elementComponent.elementModel.markingPanels,
+            markingRange: markingRange
+          }
+        );
+      });
   }
 
   createMarkables(savedMarks: string[], elementComponent: TextComponent): void {
@@ -63,16 +84,20 @@ export class MarkableSupport {
       environmentInjector,
       hostElement: markableContainerElement
     });
+    componentRef.instance.allMarkables = markables;
     componentRef.instance.markables = markablesContainer.markables;
     componentRef.instance.selectedColor = elementComponent.selectedColor;
-    componentRef.instance.markablesChange.subscribe(() => {
-      elementComponent.elementValueChanged.emit(
-        {
-          id: elementComponent.elementModel.id,
-          value: markables
-        }
-      );
-    });
+    componentRef.instance.markingRange = elementComponent.markingRange;
+    componentRef.instance.markablesChange
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        elementComponent.elementValueChanged.emit(
+          {
+            id: elementComponent.elementModel.id,
+            value: markables
+          }
+        );
+      });
     this.applicationRef.attachView(componentRef.hostView);
   }
 
@@ -93,7 +118,7 @@ export class MarkableSupport {
   }
 
   private static getMarkables(text: string, startIndex: number, savedMarks: string[]): Markable[] {
-    const wordsWithWhitespace = text?.match(MarkableSupport.wordsWithWhitespace);
+    const wordsWithWhitespace = text?.match(MarkableSupport.markables);
     return wordsWithWhitespace?.map((wordWithWhitespace: string, index: number) => {
       const prefix = wordWithWhitespace.match(MarkableSupport.prefix);
       const word = wordWithWhitespace.match(MarkableSupport.word);
@@ -128,5 +153,10 @@ export class MarkableSupport {
   private static getColorValueById(id: number, savedMarks: string[]): string | null {
     return savedMarks.map(savedMark => savedMark.split('-'))
       .find(mark => mark[0] === id.toString())?.[2] || null;
+  }
+
+  reset(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -26,6 +26,8 @@ export class DropListElement extends InputElement implements DropListProperties 
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
   allowReplacement: boolean = false;
+  permanentPlaceholders: boolean = false;
+  permanentPlaceholdersCC: boolean = true;
   orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical'; // TODO besser floating
   showNumbering: boolean = false;
   startNumberingAtZero: boolean = false;
@@ -60,6 +62,8 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.connectedTo = [...element.connectedTo];
       this.copyOnDrop = element.copyOnDrop;
       this.allowReplacement = element.allowReplacement;
+      this.permanentPlaceholders = element.permanentPlaceholders;
+      this.permanentPlaceholdersCC = element.permanentPlaceholdersCC;
       this.orientation = element.orientation;
       this.showNumbering = element.showNumbering;
       this.startNumberingAtZero = element.startNumberingAtZero;
@@ -96,6 +100,8 @@ export class DropListElement extends InputElement implements DropListProperties 
       if (element?.highlightReceivingDropListColor) {
         this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
       }
+      if (element?.permanentPlaceholders) this.permanentPlaceholders = element.permanentPlaceholders;
+      if (element?.permanentPlaceholdersCC) this.permanentPlaceholdersCC = element.permanentPlaceholdersCC;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         height: 100,
         minHeight: 57,
@@ -207,6 +213,8 @@ export interface DropListProperties extends InputElementProperties {
   connectedTo: string[];
   copyOnDrop: boolean;
   allowReplacement: boolean;
+  permanentPlaceholders: boolean,
+  permanentPlaceholdersCC: boolean,
   orientation: 'vertical' | 'horizontal' | 'flex';
   showNumbering: boolean;
   startNumberingAtZero: boolean;
@@ -227,6 +235,8 @@ function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprin
     blueprint.connectedTo !== undefined &&
     blueprint.copyOnDrop !== undefined &&
     blueprint.allowReplacement !== undefined &&
+    blueprint.permanentPlaceholders !== undefined &&
+    blueprint.permanentPlaceholdersCC !== undefined &&
     blueprint.orientation !== undefined &&
     blueprint.showNumbering !== undefined &&
     blueprint.startNumberingAtZero !== undefined &&

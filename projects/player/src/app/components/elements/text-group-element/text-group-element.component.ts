@@ -47,7 +47,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   ) {
     super();
     this.textMarkingSupport = new TextMarkingSupport(nativeEventService, anchorService);
-    this.markableSupport = new MarkableSupport(renderer, applicationRef);
+    this.markableSupport = new MarkableSupport(renderer, applicationRef, this.markingPanelService);
     this.subscribeToMarkingPanelMarkingDataChanged();
   }
 
@@ -62,6 +62,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   ngAfterViewInit(): void {
     if (this.elementModel.markingMode === 'word' || this.elementModel.markingMode === 'range') {
       this.markableSupport.createMarkables(this.savedMarks, this.elementComponent);
+      this.markableSupport.registerRangeClicks(this.elementComponent);
     }
     this.registerAtUnitStateService(
       this.elementModel.id,
@@ -81,7 +82,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
 
   broadcastMarkingColorChange(color: string | undefined): void {
     this.markingPanelService
-      .broadcastMarkingColorChange({
+      .broadcastMarkingColorData({
         color: color,
         id: this.elementModel.id,
         markingMode: (this.elementModel as TextElement).markingMode,
@@ -130,6 +131,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   }
 
   ngOnDestroy(): void {
+    this.markableSupport.reset();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.textMarkingSupport.destroy();

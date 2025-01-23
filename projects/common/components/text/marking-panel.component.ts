@@ -15,10 +15,10 @@ import { MarkingPanelMarkingData } from 'common/models/marking-data';
   template: `
     <aspect-text-marking-bar [elementModel]="elementModel"
                              [selectedColor]="selectedColor || 'none'"
-                             [hasDeleteButton]="hasDeleteButton"
-                             (markingDataChanged)="markingPanelMarkingDataChanged.emit(
-                                                     { id: elementModel.id, markingData: $event }
-                                                   )">
+                             [markingMode]="markingMode"
+                             [showHint]="showHint"
+                             (markingDataChanged)="markingPanelMarkingDataChanged.emit({ id: elementModel.id,
+                                                                                         markingData: $event })">
     </aspect-text-marking-bar>
   `,
   styles: []
@@ -26,7 +26,7 @@ import { MarkingPanelMarkingData } from 'common/models/marking-data';
 export class MarkingPanelComponent extends ElementComponent {
   @Input() elementModel!: MarkingPanelElement;
   @Input() selectedColor!: string | undefined;
-  @Input() hasDeleteButton!: boolean;
-  @Output() markingPanelMarkingDataChanged: EventEmitter<MarkingPanelMarkingData> = new EventEmitter<MarkingPanelMarkingData>();
-  protected readonly setTimeout = setTimeout;
+  @Input() markingMode!: 'selection' | 'word' | 'range';
+  @Input() showHint!: boolean;
+  @Output() markingPanelMarkingDataChanged: EventEmitter<MarkingPanelMarkingData> = new EventEmitter();
 }

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MarkablesContainerComponent } from './markables-container.component';
 
 describe('MarkablesContainerComponent', () => {

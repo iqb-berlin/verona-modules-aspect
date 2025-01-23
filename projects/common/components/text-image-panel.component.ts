@@ -17,11 +17,10 @@ import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
     <div class="image-wrapper" [ngClass]="{'column': label.imgPosition === 'above',
                                      'column-reverse': label.imgPosition === 'below',
                                      'row': label.imgPosition === 'left',
-                                     'row-reverse': label.imgPosition === 'right'}">
+                                     'row-reverse': label.imgPosition === 'right',
+                                     'hide-content': hideContent}">
       <img *ngIf="label.imgSrc"
-           [style.object-fit]="'scale-down'"
-           [style.max-width.%]="100"
-           [src]="label.imgSrc | safeResourceUrl" alt="Image Placeholder">
+          [src]="label.imgSrc | safeResourceUrl" alt="Image Placeholder">
       <div *ngIf="label.text !== ''" class="text" [innerHTML]="label.text | safeResourceHTML"></div>
     </div>
   `,
@@ -36,6 +35,11 @@ import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
       display: flex;
       justify-content: inherit;
       max-height: 100%;
+    }
+    .image-wrapper img {
+      object-fit: scale-down;
+      max-width: 100%;
+      height: 100%;
     }
     .column {flex-direction: column;}
     .column-reverse {flex-direction: column-reverse;}
@@ -66,8 +70,12 @@ import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
     .audio-button:hover {
       color: #006064;
     }
+    .hide-content .text, .hide-content img {
+      visibility: hidden;
+    }
   `]
 })
 export class TextImagePanelComponent {
   @Input() label!: TextImageLabel | DragNDropValueObject;
+  @Input() hideContent: boolean = false;
 }

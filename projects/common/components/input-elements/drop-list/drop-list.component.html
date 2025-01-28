@@ -42,7 +42,7 @@
          aspect-draggable data-aspect-draggable="true"
          (dragStart)="dragStart($event, item, elementFormControl.value.indexOf(item), this)"
          (dragMove)="dragMove($event)"
-         (dragEnd)="dragEnd()"
+         (dragEnd)="dragEnd()" (dragCancel)="endDragOperation()"
          (mouseenter)="dragOpService.isDragActive && listItemDragEnter(i)"
          [style.color]="elementModel.styling.fontColor"
          [style.font-size.px]="elementModel.styling.fontSize"

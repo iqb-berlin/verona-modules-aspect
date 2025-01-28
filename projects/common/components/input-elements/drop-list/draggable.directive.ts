@@ -13,7 +13,10 @@ import {
 export class DraggableDirective {
   @Output() dragStart = new EventEmitter<DragStartEvent>();
   @Output() dragMove = new EventEmitter<DragEvent>();
-  @Output() dragEnd = new EventEmitter<DragEvent>();
+  @Output() dragEnd = new EventEmitter<void>();
+  @Output() dragCancel = new EventEmitter<void>();
+
+  activeTouchId: number | null = null;
 
   private unlistenMouseMove: (() => void) | undefined;
   private unlistenMouseUp: (() => void) | undefined;
@@ -30,6 +33,15 @@ export class DraggableDirective {
 
     const sourceItem: HTMLElement | null = (event.target as HTMLElement).closest('.drop-list-item');
     if (!sourceItem) return;
+
+    if (isTouchEvent(event)) {
+      if (this.activeTouchId !== null) {
+        this.onTouchCancel();
+        return;
+      }
+      if (event.touches.length > 1) return;
+      this.activeTouchId = event.touches?.[0].identifier;
+    }
 
     this.dragStart.emit({
       sourceElement: sourceItem,
@@ -49,10 +61,7 @@ export class DraggableDirective {
         });
         this.unlistenMouseUp = this.renderer2.listen('document', 'mouseup', (e: MouseEvent) => {
           e.preventDefault();
-          this.dragEnd.emit({
-            x: e.clientX,
-            y: e.clientY
-          });
+          this.dragEnd.emit();
           this.unlistenMouseMove?.();
           this.unlistenMouseUp?.();
         });
@@ -63,19 +72,30 @@ export class DraggableDirective {
   @HostListener('touchmove', ['$event'])
   onTouchMove(event: TouchEvent) {
     event.preventDefault();
-    this.dragMove.emit({
-      x: event.touches?.[0].clientX,
-      y: event.touches?.[0].clientY
-    });
+    if (event.touches.length > 1 || (event.touches[0].identifier !== this.activeTouchId)) {
+      this.onTouchCancel();
+    } else {
+      this.dragMove.emit({
+        x: event.touches?.[0].clientX,
+        y: event.touches?.[0].clientY
+      });
+    }
   }
 
   @HostListener('touchend', ['$event'])
   onTouchEnd(event: TouchEvent) {
-    event.preventDefault();
-    this.dragEnd.emit({
-      x: event.changedTouches?.[0].clientX,
-      y: event.changedTouches?.[0].clientY
-    });
+    if (event.changedTouches?.[0].identifier !== this.activeTouchId) {
+      this.onTouchCancel();
+    } else {
+      this.activeTouchId = null;
+      this.dragEnd.emit();
+    }
+  }
+
+  @HostListener('touchcancel', ['$event'])
+  onTouchCancel() {
+    this.activeTouchId = null;
+    this.dragCancel.emit();
   }
 }
 

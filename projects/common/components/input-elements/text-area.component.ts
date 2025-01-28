@@ -55,6 +55,9 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     </mat-form-field>
   `,
   styles: [`
+    :host ::ng-deep .no-label .mdc-notched-outline__notch {
+      display: none;
+    }
     :host ::ng-deep .mat-mdc-form-field-infix  {
       z-index: 1;
     }

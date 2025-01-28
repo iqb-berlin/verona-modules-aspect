@@ -14,8 +14,8 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.copyOnDrop) setCheckbox('Elemente kopieren');
   if (settings?.readOnly) setCheckbox('Schreibschutz');
   if (settings?.required) setCheckbox('Pflichtfeld');
-  if (settings?.numeration) setCheckbox('Nummerierung anzeigen');
-  if (settings?.numerationZero) setCheckbox('Nummerierung bei 0 beginnen');
+  if (settings?.showNumbering) setCheckbox('Nummerierung anzeigen');
+  if (settings?.startNumberingAtZero) setCheckbox('Nummerierung bei 0 beginnen');
 }
 
 export function addOption(optionName: string): void {
@@ -26,7 +26,7 @@ export function addOption(optionName: string): void {
     .type(`${optionName}{enter}`);
 }
 
-export function moveToColumn(column: string):void  {
+export function moveToColumn(column: string): void {
   cy.contains('mat-icon', 'format_shapes').click();
   cy.contains('fieldset', 'Position')
     .contains('mat-form-field','Spalte')
@@ -51,7 +51,6 @@ export function dragTo(list: string, item: string, targetList: string): void {
   // Leave first, to change a variable and actually handle mouseenter events
   cy.getByAlias(`${list}`)
     .trigger('mouseleave');
-
   cy.getByAlias(`${targetList}`)
     .trigger('mouseenter');
   cy.get('.drag-preview')

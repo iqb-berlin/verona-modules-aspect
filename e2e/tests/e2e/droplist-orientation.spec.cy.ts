@@ -12,19 +12,12 @@ describe('Droplist element', { testIsolation: false }, () => {
       selectFromDropdown('Ausrichtung', 'horizontal linksbündig');
       addList('Vertikal ausgerichtete Liste', ['CCC','DDD'], {}, 'VertikalListe');
       selectFromDropdown('Ausrichtung', 'vertikal');
-      addList('Horizontal zentriertete Liste', ['EEE','FFF'], {}, 'ListeZero');
+      addList('Horizontal zentriertete ausgerichtete Liste', ['EEE','FFF'], {}, 'ListeZero');
       selectFromDropdown('Ausrichtung', 'horizontal zentriert');
     });
 
     after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/droplist-orientation.json');
-    });
-  });
-
-  context('player', () => {
-    before('opens a player', () => {
-      cy.openPlayer();
-      cy.loadUnit('../downloads/droplist-orientation.json');
     });
   });
 });

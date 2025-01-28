@@ -6,7 +6,7 @@ describe('Droplist element', { testIsolation: false }, () => {
       cy.openEditor();
     });
 
-    it('creates several droplists and only one copy capability', () => {
+    it('creates several droplists, and only one has copy capability', () => {
       addList('Nicht Kopieren Liste', ['AAA'], {
         highlightReceivingDropList: true,
         copyOnDrop: false
@@ -31,7 +31,7 @@ describe('Droplist element', { testIsolation: false }, () => {
   });
 
   context('player', () => {
-    before('opens a player', () => {
+    before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
       cy.loadUnit('../downloads/droplist-copy.json');
     });
@@ -47,7 +47,7 @@ describe('Droplist element', { testIsolation: false }, () => {
       cy.getByAlias('Zielliste').contains('BBB');
     });
 
-    it('put back a element', () => {
+    it('put back an element', () => {
       dragTo('Zielliste', 'AAA', 'KopierenListe');
       cy.getByAlias('NichtKopierenListe').children().should('have.length', 0);
       cy.getByAlias('KopierenListe').children().should('have.length', 1);

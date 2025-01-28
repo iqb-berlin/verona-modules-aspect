@@ -16,6 +16,7 @@ Allgemein
   - Listen mit Schreibschutz akzeptieren keine abgelegten Elemente mehr
 - Wort korrigieren:
   - mit Schreibschutz wird der Text nicht mehr durchgestrichen, wenn man das Eingabefeld fokussiert
+- Eingabebereich: ohne Beschriftung wird der Fokusrahmen mit durchgezogener Linie dargestellt 
 
 
 ## editor/2.7.2+player/2.7.2

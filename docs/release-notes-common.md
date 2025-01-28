@@ -1,6 +1,6 @@
 Allgemein
 =========
-## 2.8.0
+## editor/2.8.0+player/2.8.0
 ### Neue Funktionen
 - Text: Neue Markierfunktionalität
   - In einem Text können durch zwei Mausklicks oder zwei Berührung Bereiche von Wörtern markiert werden

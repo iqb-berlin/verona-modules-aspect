@@ -1,6 +1,6 @@
 Player
 ======
-## 2.8.0-beta
+## 2.8.0
 ### Neue Funktionen
 - Beim Aufgabenwechsel wird der Zustand der aktuellen Aufgabe zur Sicherung an den Host (i. d. R. Testcenter) gesendet
 

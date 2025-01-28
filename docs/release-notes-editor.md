@@ -1,6 +1,6 @@
 Editor
 ======
-## 2.8.0-beta
+## 2.8.0
 ### Änderungen
 - Ablegelisten - Ausrichtung:
   - "Dynamisch zentriert" heißt jetzt "horizontal zentriert"

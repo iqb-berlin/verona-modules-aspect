@@ -48,9 +48,11 @@ export function dragTo(list: string, item: string, targetList: string): void {
   // Moving the mouse is actually not necessary, since the mouseenter event is not triggered.
   // It is triggered manually in the next step.
   // cy.get('.drag-preview').trigger('mousemove', { force: true, clientX: 640, clientY: 199 });
+
   // Leave first, to change a variable and actually handle mouseenter events
   cy.getByAlias(`${list}`)
     .trigger('mouseleave');
+
   cy.getByAlias(`${targetList}`)
     .trigger('mouseenter');
   cy.get('.drag-preview')

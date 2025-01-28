@@ -8,12 +8,12 @@ describe('Droplist element', { testIsolation: false }, () => {
     });
 
     it('creates several droplists with different orientations', () => {
-      addList('Horizontal ausgerichtete Liste', ['AAA','BBB'], {}, 'Liste');
-      selectFromDropdown('Ausrichtung', 'horizontal');
+      addList('Horizontal linksbündig ausgerichtete Liste', ['AAA','BBB'], {}, 'Liste');
+      selectFromDropdown('Ausrichtung', 'horizontal linksbündig');
       addList('Vertikal ausgerichtete Liste', ['CCC','DDD'], {}, 'VertikalListe');
       selectFromDropdown('Ausrichtung', 'vertikal');
-      addList('Dynamisch zentriertete Liste', ['EEE','FFF'], {}, 'ListeZero');
-      selectFromDropdown('Ausrichtung', 'Dynamisch zentriert');
+      addList('Horizontal zentriertete Liste', ['EEE','FFF'], {}, 'ListeZero');
+      selectFromDropdown('Ausrichtung', 'horizontal zentriert');
     });
 
     after('saves an unit definition', () => {

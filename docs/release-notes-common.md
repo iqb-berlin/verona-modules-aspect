@@ -7,6 +7,9 @@ Allgemein
 - Ablegelisten: Neue Eigenschaften "Platzhalter anzeigen" und "Platzhalter mit Durchschrift"
   - Wenn gesetzt, wird für entfernte Elemente Platz reserviert und optional eine verblasste Version des Elements angezeigt.
 
+## Änderungen
+  - Ausrichtung "horizontal linksbündig" (ehemals "horizontal") bricht automatisch um
+
 ### Fehlerbehebungen
 - Lückentexte können jetzt Formeln darstellen
 - Ablegelisten:

@@ -3,7 +3,7 @@ Editor
 ## 2.8.0-beta
 ### Änderungen
 - Ablegelisten - Ausrichtung:
-  - "Dynamisch zentriert" heißt jetzt "horizontal zentriert" und bricht automatisch um
+  - "Dynamisch zentriert" heißt jetzt "horizontal zentriert"
   - "horizontal" heißt jetzt "horizontal linksbündig"
 - kleinere Verbesserungen im Layout, sodass es weniger unnötige Scrollbars, Zeilenumbrüche und überfließende Bilder in Chromium-Browsern gibt
 

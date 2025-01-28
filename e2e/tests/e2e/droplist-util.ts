@@ -11,9 +11,9 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.sortList) setCheckbox('Sortierliste');
   if (settings?.onlyOneItem) setCheckbox('Nur ein Element');
   if (settings?.allowReplacement) setCheckbox('Verdrängen erlauben');
-  if (settings?.copyElement) setCheckbox('Elemente kopieren');
-  if (settings?.writeProtected) setCheckbox('Schreibschutz');
-  if (settings?.mandatory) setCheckbox('Pflichtfeld');
+  if (settings?.copyOnDrop) setCheckbox('Elemente kopieren');
+  if (settings?.readOnly) setCheckbox('Schreibschutz');
+  if (settings?.required) setCheckbox('Pflichtfeld');
   if (settings?.numeration) setCheckbox('Nummerierung anzeigen');
   if (settings?.numerationZero) setCheckbox('Nummerierung bei 0 beginnen');
 }
@@ -24,11 +24,6 @@ export function addOption(optionName: string): void {
     .find('textarea')
     .clear()
     .type(`${optionName}{enter}`);
-}
-
-export function enableInteration(){
-  cy.contains('mat-checkbox','Elementinteraktion erlauben')
-    .find('input').click();
 }
 
 export function moveToColumn(column: string):void  {

@@ -9,11 +9,11 @@ describe('Droplist element', { testIsolation: false }, () => {
     it('creates several droplists and only one copy capability', () => {
       addList('Nicht Kopieren Liste', ['AAA'], {
         highlightReceivingDropList: true,
-        copyElement: false
+        copyOnDrop: false
       }, 'NichtKopierenListe');
       addList('Kopieren Liste', ['BBB'], {
         highlightReceivingDropList: true,
-        copyElement: true
+        copyOnDrop: true
       }, 'KopierenListe');
       addList('Zielliste', [], {
         highlightReceivingDropList: true

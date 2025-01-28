@@ -8,7 +8,7 @@ describe('Droplist element', { testIsolation: false }, () => {
 
     it('creates several droplists, the second protected edition', () => {
       addList('Startliste', ['AAA'], {copyElement: true}, 'Startliste');
-      addList('Zielliste mit Schreibschutz', [], {writeProtected: true}, 'ZiellisteSchutz');
+      addList('Zielliste mit Schreibschutz', [], {readOnly: true}, 'ZiellisteSchutz');
       addList('Zielliste ohne Schreibschutz', [], {}, 'Zielliste');
 
       connectLists('Startliste', 'ZiellisteSchutz');
@@ -18,33 +18,29 @@ describe('Droplist element', { testIsolation: false }, () => {
     });
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/droplist-writeprotected.json');
+      cy.saveUnit('e2e/downloads/droplist-readonly.json');
     });
   });
 
   context('player', () => {
     before('opens a player', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/droplist-writeprotected.json');
+      cy.loadUnit('../downloads/droplist-readonly.json');
     });
 
-    it('drags to write-protected list. ', () => {
-      // # Ticket 751
+    it('drags to read only list. ', () => {
       dragTo('Startliste', 'AAA', 'ZiellisteSchutz');
       cy.getByAlias('ZiellisteSchutz').children()
-        .should('have.length', 1);
+        .should('have.length', 0);
       // Handle the exception for function dragTo, with no pointer-events:none
       Cypress.on('fail', (error) => {
         if (!error.message.includes('pointer-events: none')) {
           throw error
         }
       });
-      dragTo('ZiellisteSchutz','AAA','Startliste');
-      cy.getByAlias('ZiellisteSchutz').children()
-        .should('have.length', 1);
     });
 
-    it('drags to non write-protected list. ', () => {
+    it('drags to non read only list. ', () => {
       dragTo('Startliste', 'AAA', 'Zielliste');
       cy.getByAlias('Zielliste').children()
         .should('have.length', 1);

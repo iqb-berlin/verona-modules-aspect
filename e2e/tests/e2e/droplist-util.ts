@@ -16,6 +16,8 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.required) setCheckbox('Pflichtfeld');
   if (settings?.showNumbering) setCheckbox('Nummerierung anzeigen');
   if (settings?.startNumberingAtZero) setCheckbox('Nummerierung bei 0 beginnen');
+  if (settings?.permanentPlaceholders) setCheckbox('Platzhalter anzeigen');
+  if (settings?.permanentPlaceholdersCC) setCheckbox('Platzhalter mit Durchschrift');
 }
 
 export function addOption(optionName: string): void {

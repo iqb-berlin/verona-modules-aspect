@@ -14,6 +14,24 @@ describe('Checkbox', { testIsolation: false }, () => {
         .type('Kontrollkästchen');
     });
 
+    it('creates a previously checked box', () => {
+      cy.contains('Kontrollkästchen').click();
+      cy.contains('mat-form-field', 'Beschriftung')
+        .find('textarea')
+        .clear()
+        .type('vorgelegte Kontrollkästchen');
+      cy.contains('mat-button-toggle','wahr').click();
+    });
+
+    it('creates a checkbox that is crossed out if selected', () => {
+      cy.contains('Kontrollkästchen').click();
+      cy.contains('mat-form-field', 'Beschriftung')
+        .find('textarea')
+        .clear()
+        .type('Kontrollkästchen mit Auswahl durchstreichen');
+      setCheckbox('Auswahl durchstreichen');
+    });
+
     it('creates a required to check checkbox', () => {
       cy.contains('Kontrollkästchen').click();
       cy.contains('mat-form-field', 'Beschriftung')
@@ -38,10 +56,19 @@ describe('Checkbox', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/checkbox.json');
     });
 
-    it('checks the box', () => {
+    it('checks the common box', () => {
       cy.contains('aspect-checkbox','Kontrollkästchen')
         .find('input')
         .click();
+    });
+
+    it('checks the box that does the strikethrough, and checks that the mat-checkbox has cross-out property', () => {
+      cy.contains('aspect-checkbox','Kontrollkästchen mit Auswahl durchstreichen')
+        .find('input')
+        .click();
+      cy.contains('aspect-checkbox','Kontrollkästchen mit Auswahl durchstreichen')
+        .find('mat-checkbox')
+        .should('have.class', 'cross-out');
     });
 
     it('checks the required box', () => {
@@ -50,7 +77,7 @@ describe('Checkbox', { testIsolation: false }, () => {
         .click();
     });
 
-    it('unchecks the required box and checks that the warning is present', () => {
+    it('unchecks the required box, and checks that the warning is present', () => {
       cy.contains('aspect-checkbox','Kontrollkästchen mit Pflichtfeld')
         .find('input')
         .click();

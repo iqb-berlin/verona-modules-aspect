@@ -1,44 +1,33 @@
-import {setCheckbox} from "../util";
+import {addOptions} from "./options-util";
 
-describe('Checkbox', { testIsolation: false }, () => {
+describe('Checkbox element', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
       cy.openEditor();
     });
 
     it('creates a common checkbox', () => {
-      cy.contains('Kontrollkästchen').click();
-      cy.contains('mat-form-field', 'Beschriftung')
-        .find('textarea')
-        .clear()
-        .type('Kontrollkästchen');
+      addOptions('Kontrollkästchen','Kontrollkästchen',[],[],{}, 'control1');
+    });
+
+    it('creates a readonly checkbox', () => {
+      // TODO: Isn't this equal to a normal checkbox?
+      addOptions('Kontrollkästchen','Kontrollkästchen mit Schreibschutz',[],[],{readOnly:true}, 'control2');
     });
 
     it('creates a previously checked box', () => {
-      cy.contains('Kontrollkästchen').click();
-      cy.contains('mat-form-field', 'Beschriftung')
-        .find('textarea')
-        .clear()
-        .type('vorgelegte Kontrollkästchen');
+      addOptions('Kontrollkästchen','vorgelegte Kontrollkästchen',[],[],{}, 'control3');
       cy.contains('mat-button-toggle','wahr').click();
     });
 
     it('creates a checkbox that is crossed out if selected', () => {
-      cy.contains('Kontrollkästchen').click();
-      cy.contains('mat-form-field', 'Beschriftung')
-        .find('textarea')
-        .clear()
-        .type('Kontrollkästchen mit Auswahl durchstreichen');
-      setCheckbox('Auswahl durchstreichen');
+      addOptions('Kontrollkästchen','Kontrollkästchen mit Auswahl durchstreichen',
+        [],[],{crossOutChecked:true}, 'control4');
     });
 
     it('creates a required to check checkbox', () => {
-      cy.contains('Kontrollkästchen').click();
-      cy.contains('mat-form-field', 'Beschriftung')
-        .find('textarea')
-        .clear()
-        .type('Kontrollkästchen mit Pflichtfeld');
-      setCheckbox('Pflichtfeld');
+      addOptions('Kontrollkästchen','Kontrollkästchen mit Pflichtfeld',
+        [],[],{required:true}, 'control5');
       cy.contains('mat-form-field', 'Warnmeldung')
         .find('input')
         .clear()

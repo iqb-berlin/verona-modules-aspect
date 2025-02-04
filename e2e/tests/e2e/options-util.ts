@@ -1,15 +1,27 @@
-import {addElement, addTextElement} from "../util";
+import {addElement, setCheckbox} from "../util";
 
-export function addLikert(title: string, options: string[] = [], rows: string[] = [], id: string): void {
-  cy.contains('Optionentabelle').click();
-  cy.contains('mat-form-field','Beschriftung')
+export function addDescription(type: string, title: string,
+                          settings?: Record<string, boolean>, id?: string): void {
+  addElement(type,undefined,id);
+  cy.contains('mat-form-field', 'Beschriftung')
     .find('textarea')
     .clear()
-    .type(id);
-  cy.contains('mat-form-field','Beschriftung (sekundär)')
+    .type(title);
+  if (settings?.readOnly) setCheckbox('Schreibschutz');
+  if (settings?.required) setCheckbox('Pflichtfeld');
+  if (settings?.crossOutChecked) setCheckbox('Auswahl durchstreichen');
+}
+
+export function addOptions(type: string, title: string, options: string[] = [], rows: string[] = [],
+                           settings?: Record<string, boolean>, id?: string): void {
+  addElement(type,undefined,id);
+  cy.contains('mat-form-field', 'Beschriftung')
     .find('textarea')
     .clear()
-    .type(`Beschreibung von ${id}`);
+    .type(title);
+  if (settings?.readOnly) setCheckbox('Schreibschutz');
+  if (settings?.required) setCheckbox('Pflichtfeld');
+  if (settings?.crossOutChecked) setCheckbox('Auswahl durchstreichen');
   options.forEach(option => addOption(option));
   rows.forEach(row => addRow(row));
 }
@@ -30,3 +42,4 @@ export function addRow(rowName: string): void {
     .clear()
     .type(`${rowName}{enter}`);
 }
+

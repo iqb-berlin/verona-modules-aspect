@@ -1,4 +1,4 @@
-import {addLikert} from "./options-util";
+import {addOptions} from "./options-util";
 
 describe('Radio element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,7 +7,11 @@ describe('Radio element', { testIsolation: false }, () => {
     });
 
     it('creates radio list with text', () => {
-      addLikert('Optionentabelle', ['option A', 'option B'],['row 1', 'row 2', 'row 3'], 'Optionentabelle1');
+      addOptions('Optionentabelle', 'Optionentabelle1',['option A', 'option B'],['row 1', 'row 2', 'row 3'],{},'option1')
+      cy.contains('mat-form-field','Beschriftung (sekundär)')
+        .find('textarea')
+        .clear()
+        .type('Beschreibung sekundär von Optionentabelle1');
     });
 
     it('modifies the alignment of the first option to the 8th column', () => {

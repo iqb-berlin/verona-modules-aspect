@@ -12,16 +12,7 @@ export function addDescription(type: string, title: string,
   if (settings?.crossOutChecked) setCheckbox('Auswahl durchstreichen');
 }
 
-export function addOptions(type: string, title: string, options: string[] = [], rows: string[] = [],
-                           settings?: Record<string, boolean>, id?: string): void {
-  addElement(type,undefined,id);
-  cy.contains('mat-form-field', 'Beschriftung')
-    .find('textarea')
-    .clear()
-    .type(title);
-  if (settings?.readOnly) setCheckbox('Schreibschutz');
-  if (settings?.required) setCheckbox('Pflichtfeld');
-  if (settings?.crossOutChecked) setCheckbox('Auswahl durchstreichen');
+export function addOptions(options: string[] = [], rows: string[] = []): void {
   options.forEach(option => addOption(option));
   rows.forEach(row => addRow(row));
 }
@@ -43,3 +34,6 @@ export function addRow(rowName: string): void {
     .type(`${rowName}{enter}`);
 }
 
+export function moveSlider(slider:string,value:number):void {
+  cy.contains('aspect-slider',slider).find('input').invoke('val',value).trigger('change');
+}

@@ -1,4 +1,4 @@
-import {addOptions} from "./options-util";
+import {addDescription, addOptions} from "./options-util";
 
 describe('Radio element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,7 +7,8 @@ describe('Radio element', { testIsolation: false }, () => {
     });
 
     it('creates radio list with text', () => {
-      addOptions('Optionentabelle', 'Optionentabelle1',['option A', 'option B'],['row 1', 'row 2', 'row 3'],{},'option1')
+      addDescription('Optionentabelle', 'Optionentabelle1',{},'option1')
+      addOptions(['option A', 'option B'],['row 1', 'row 2', 'row 3'])
       cy.contains('mat-form-field','Beschriftung (sekundär)')
         .find('textarea')
         .clear()

@@ -1,4 +1,4 @@
-import {addDescription} from "./options-util";
+import {addDescription, moveSlider} from "./options-util";
 
 describe('Slider element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -32,12 +32,13 @@ describe('Slider element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/slider.json');
     });
 
-    it('', () => {
-
+    it('checks readonly slider', () => {
+      // This fails, should not be able to move, but it does
+      moveSlider('Schieberegler mit Schreibschutz',100);
     });
 
-    it('', () => {
-
+    it('sets the mandatory slider to 50', () => {
+      moveSlider('Schieberegler mit Pflichtfeld',50);
     });
   });
 });

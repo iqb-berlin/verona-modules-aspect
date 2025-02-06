@@ -10,6 +10,7 @@ export function addDescription(type: string, title: string,
   if (settings?.readOnly) setCheckbox('Schreibschutz');
   if (settings?.required) setCheckbox('Pflichtfeld');
   if (settings?.crossOutChecked) setCheckbox('Auswahl durchstreichen');
+  if (settings?.strikeOtherOptions) setCheckbox('Nicht gewählte Optionen durchstreichen');
 }
 
 export function addOptions(options: string[] = [], rows: string[] = []): void {

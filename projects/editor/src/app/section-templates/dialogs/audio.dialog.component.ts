@@ -12,13 +12,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgIf } from '@angular/common';
 import { FileService } from 'common/services/file.service';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
-import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/audio-row.component';
+import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/audio-row.component';
 
 @Component({
   selector: 'aspect-editor-audio-wizard-dialog',
   standalone: true,
   imports: [
-    NgIf,
     MatDialogModule,
     MatExpansionModule,
     MatButtonModule,

@@ -209,12 +209,7 @@ export class UnitService {
   /* May remove existing connections! */
   connectAllDropLists(sectionParam?: Section) {
     const section: Section = sectionParam || this.getSelectedSection();
-    const dropLists: DropListElement[] = section.getAllElements('drop-list') as DropListElement[];
-    const dropListIDs = dropLists.map(list => list.id);
-    dropLists.forEach(dropList => {
-      dropList.connectedTo = [...dropListIDs];
-      dropList.connectedTo.splice(dropListIDs.indexOf(dropList.id), 1);
-    });
+    section.connectAllDropLists();
   }
 
   moveSectionToNewpage(pageIndex: number, sectionIndex: number): void {

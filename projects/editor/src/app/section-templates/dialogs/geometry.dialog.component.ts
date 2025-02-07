@@ -32,7 +32,7 @@ import { FormsModule } from '@angular/forms';
     <div mat-dialog-title>Assistent: GeoGebra</div>
     <div mat-dialog-content>
       <h3>Text</h3>
-      <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
+      <aspect-rich-text-editor [(content)]="text" [style.min-height.px]="300"
                                [placeholder]="'Hier steht die Fragestellung.'"></aspect-rich-text-editor>
 
       <mat-divider></mat-divider>
@@ -57,7 +57,7 @@ import { FormsModule } from '@angular/forms';
 
     </div>
     <div mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ text1, geometryAppDefinition, geometryFileName, text2, showHelper }">
+      <button mat-button [mat-dialog-close]="{ text, geometryAppDefinition, geometryFileName, showHelper }">
         {{'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
@@ -70,10 +70,9 @@ import { FormsModule } from '@angular/forms';
   `
 })
 export class GeometryWizardDialogComponent {
-  text1: string = '';
+  text: string = '';
   geometryAppDefinition: string | undefined;
   geometryFileName: string | undefined;
-  text2: string = '';
   showHelper: boolean = true;
 
   async changeSrc() {

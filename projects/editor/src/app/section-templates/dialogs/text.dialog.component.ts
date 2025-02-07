@@ -68,8 +68,8 @@ export class TextWizardDialogComponent {
   text1: string = '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" ' +
     'indentsize="20"><span style="font-size: 24px"><strong>Hier steht die Überschrift.</strong></span></p>' +
     '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 20px; margin-top: 0" indent="0" indentsize="20">' +
-    '<span style="font-size: 20px">Hier steht der/die Autor*in.</span></p><p style="padding-left: 0px; text-indent: 0px;' +
-    ' margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">' +
+    '<span style="font-size: 20px">Hier steht der/die Autor*in.</span></p><p style="padding-left: 0px;' +
+    'text-indent: 0px; margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">' +
     'Hier steht der Text.</span></p>';
 
   text2: string = '';

@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { NgIf } from '@angular/common';
-import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/audio-row.component';
+import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/audio-row.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
@@ -32,7 +32,6 @@ import { DragNDropValueObject, TextLabel } from 'common/interfaces';
     FormsModule,
     MatRadioModule,
     NgIf,
-    AudioRowComponent,
     MatExpansionModule,
     MatCheckboxModule
   ],

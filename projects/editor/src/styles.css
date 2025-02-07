@@ -86,3 +86,9 @@ u>span {
   flex: 1 1 0;
   box-sizing: border-box;
 }
+
+/*Dark mode*/
+/*html {*/
+/*  filter: invert(1) hue-rotate(180deg);*/
+/*}*/
+

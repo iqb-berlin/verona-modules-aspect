@@ -34,11 +34,14 @@ describe('Slider element', { testIsolation: false }, () => {
 
     it('checks readonly slider', () => {
       // This fails, should not be able to move, but it does
-      moveSlider('Schieberegler mit Schreibschutz',100);
+      cy.get('aspect-slider:contains("Schieberegler mit Schreibschutz")')
+        .find('input[type="range"]').invoke('val',"100").trigger("change");
+      // moveSlider('Schieberegler mit Schreibschutz','100');
+      // cy.get('Schieberegler mit Schreibschutz').find('input').invoke('val','100').trigger('change');
     });
 
     it('sets the mandatory slider to 50', () => {
-      moveSlider('Schieberegler mit Pflichtfeld',50);
+      moveSlider('Schieberegler mit Pflichtfeld','50');
     });
   });
 });

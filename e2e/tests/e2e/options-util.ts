@@ -35,6 +35,7 @@ export function addRow(rowName: string): void {
     .type(`${rowName}{enter}`);
 }
 
-export function moveSlider(slider:string,value:number):void {
-  cy.contains('aspect-slider',slider).find('input').invoke('val',value).trigger('change');
+export function moveSlider(slider:string,value:string):void {
+  cy.get(`aspect-slider:contains(${slider})`)
+    .find('input').invoke('val',value).trigger("change");
 }

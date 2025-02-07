@@ -5,21 +5,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { NgIf } from '@angular/common';
 import { FileService } from 'common/services/file.service';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/audio-row.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'aspect-editor-audio-wizard-dialog',
   standalone: true,
   imports: [
     MatDialogModule,
-    MatExpansionModule,
     MatButtonModule,
     MatTooltipModule,
     MatFormFieldModule,
@@ -30,16 +29,21 @@ import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/audi
     TranslateModule,
     MatSelectModule,
     RichTextEditorComponent,
-    AudioRowComponent
+    AudioRowComponent,
+    MatRadioModule,
+    MatToolbarModule
   ],
   template: `
     <div mat-dialog-title>Assistent: Stimulus: Audio</div>
     <div mat-dialog-content>
-      <mat-accordion>
-        <mat-expansion-panel (afterExpand)="variant = 'a'" (closed)="variant = undefined">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Instruktion und Hörtext in einem Audio</mat-panel-title>
-          </mat-expansion-panel-header>
+      <mat-toolbar>
+        <mat-radio-group [(ngModel)]="templateVariant">
+          <mat-radio-button [value]="'single'">Instruktion und Hörtext in einem Audio</mat-radio-button>
+          <mat-radio-button [value]="'multi'">Instruktion und Hörtext getrennt</mat-radio-button>
+        </mat-radio-group>
+      </mat-toolbar>
+
+      @if (templateVariant === 'single') {
           <h3>Audio</h3>
           <aspect-editor-wizard-audio [src]="src1" [(maxRuns)]="maxRuns1" (changeMediaSrc)="changeMediaSrc('src1')">
           </aspect-editor-wizard-audio>
@@ -47,13 +51,7 @@ import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/audi
           <aspect-rich-text-editor class="text2" [(content)]="text2" [showReducedControls]="true"
                                    [placeholder]="'Hier steht die Quelle.'">
           </aspect-rich-text-editor>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel (afterExpand)="variant = 'b'" (closed)="variant = undefined">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Instruktion und Hörtext getrennt</mat-panel-title>
-          </mat-expansion-panel-header>
-
+      } @else {
           <h3>Instruktionsaudio</h3>
           <aspect-editor-wizard-audio [src]="src1" [(maxRuns)]="maxRuns1" (changeMediaSrc)="changeMediaSrc('src1')">
           </aspect-editor-wizard-audio>
@@ -78,31 +76,32 @@ import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/audi
           </mat-form-field>
 
           <h3>Situierung, Frage, Operator, Hinweise, o.Ä.</h3>
-          <aspect-rich-text-editor [(content)]="text" [showReducedControls]="true"></aspect-rich-text-editor>
-
-        </mat-expansion-panel>
-      </mat-accordion>
+          <aspect-rich-text-editor [(content)]="text" [showReducedControls]="true" [preventAutoFocus]="true">
+          </aspect-rich-text-editor>
+      }
     </div>
     <div mat-dialog-actions>
       <button mat-button
-              [disabled]="variant == undefined ||
-                          (variant === 'a' && src1 == undefined) ||
-                          (variant === 'b' && (lang === undefined || src1 == undefined || src2 == undefined))"
-              [mat-dialog-close]="{ variant, src1, fileName1, maxRuns1, src2, fileName2, maxRuns2, lang, text }">
+              [disabled]="(templateVariant === 'single' && src1 == undefined) ||
+                          (templateVariant === 'multi' && (lang === undefined ||
+                            src1 == undefined || src2 == undefined))"
+              [mat-dialog-close]="{ templateVariant: templateVariant, src1, fileName1, maxRuns1, src2, fileName2,
+                                    maxRuns2, lang, text }">
         {{ 'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </div>
   `,
   styles: `
-    .mat-mdc-dialog-content {display: flex;}
+    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     h3 {text-decoration: underline;}
     .audio-row {display: flex; flex-direction: row; justify-content: space-around;}
-    :host ::ng-deep .mat-expansion-panel-body > mat-form-field, aspect-rich-text-editor {margin-left: 30px;}
+    mat-toolbar {min-height: 60px;}
+    mat-toolbar mat-radio-group {display: flex; gap: 10px;}
   `
 })
 export class AudioWizardDialogComponent {
-  variant: 'a' | 'b' | undefined;
+  templateVariant: 'single' | 'multi' = 'single';
   src1: string | undefined;
   fileName1: string | undefined;
   maxRuns1: number = 1;

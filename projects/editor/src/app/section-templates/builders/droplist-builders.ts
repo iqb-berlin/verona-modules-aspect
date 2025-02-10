@@ -2,6 +2,10 @@ import { DragNDropValueObject, PositionedUIElement, TextLabel } from 'common/int
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { Section, SectionProperties } from 'common/models/section';
 import { IDService } from 'editor/src/app/services/id.service';
+import {
+  TwoPageImagesTemplateOptions,
+  TwoPageTemplateOptions
+} from 'editor/src/app/section-templates/droplist-interfaces';
 import { TemplateService } from '../template.service';
 
 export function createDroplistSection(alignment: 'column' | 'row', text1: string, headingSourceList: string,
@@ -9,7 +13,7 @@ export function createDroplistSection(alignment: 'column' | 'row', text1: string
                                       optionLength: 'long' | 'medium' | 'short' | 'very-short',
                                       headingTargetLists: string,
                                       targetLength: 'medium' | 'short' | 'very-short', targetLabels: TextLabel[],
-                                      idService: IDService) {
+                                      idService: IDService): Section {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
       'text',
@@ -190,9 +194,9 @@ function getDrolistColSizesHorizontal(optionLength: 'medium' | 'short' | 'very-s
   }
 }
 
-export function createSortlistSection(text1: string, options: DragNDropValueObject[],
+export function createSortlistSection(text1: string, headingSourceList: string, options: DragNDropValueObject[],
                                       optionLength: 'long' | 'medium' | 'short' | 'very-short',
-                                      numbering: boolean, idService: IDService) {
+                                      numbering: boolean, idService: IDService): Section {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
       'text',
@@ -227,4 +231,57 @@ export function createSortlistSection(text1: string, options: DragNDropValueObje
   const section = new Section(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;
+}
+
+export function createTwopageSection(options: TwoPageTemplateOptions, idService: IDService): [Section, Section] {
+  const section1Elements: PositionedUIElement[] = [
+    TemplateService.createElement('text', { gridRow: 1, gridColumn: 1 }, { text: options.text1 }, idService),
+    TemplateService.createElement('text', { gridRow: 2, gridColumn: 1 },
+                                  { text: options.headingSourceList, styling: { bold: true } }, idService),
+    TemplateService.createElement('drop-list', { gridRow: 3, gridColumn: 1 },
+                                  {
+                                    value: options.options.map(option => ({
+                                      text: option.text,
+                                      originListID: 'id_placeholder'
+                                    })),
+                                    orientation: 'vertical',
+                                    highlightReceivingDropList: true
+                                  },
+                                  idService)
+  ];
+  const section = new Section(undefined, idService);
+  section1Elements.forEach(el => section.addElement(el));
+  const section2Elements: PositionedUIElement[] = [
+    TemplateService.createElement('text', { gridRow: 1, gridColumn: 1 }, { text: options.text2 }, idService),
+    TemplateService.createElement('text', { gridRow: 2, gridColumn: 1 },
+                                  { text: options.headingTargetLists, styling: { bold: true } }, idService)
+  ];
+  options.targetLabels.forEach((label: TextLabel, i: number) => {
+    const labelEl = TemplateService.createElement(
+      'drop-list', { gridRow: 4 + i * 2 - (options.labelsBelow ? 1 : 0), gridColumn: 1 },
+      {
+        dimensions: { minHeight: 58 } as DimensionProperties,
+        orientation: 'vertical',
+        onlyOneItem: true,
+        allowReplacement: true,
+        highlightReceivingDropList: true
+      }, idService);
+    if (!options.labelsBelow) section2Elements.push(labelEl);
+    section2Elements.push(TemplateService.createElement(
+      'text', { gridRow: (3 + i * 2) + (options.labelsBelow ? 1 : 0), gridColumn: 1 }, { text: label.text }, idService)
+    );
+    if (options.labelsBelow) section2Elements.push(labelEl);
+  });
+  section2Elements.push(
+    TemplateService.createElement('text', { gridRow: 3 + options.targetLabels.length * 2, gridColumn: 1 },
+                                  { text: options.text3 }, idService));
+  const section2 = new Section(undefined, idService);
+  section2Elements.forEach(el => section2.addElement(el));
+  return [section, section2];
+}
+
+export function createTwopageImagesSection(options: TwoPageImagesTemplateOptions, idService: IDService): [Section, Section] {
+  const section = new Section(undefined, idService);
+  const section2 = new Section(undefined, idService);
+  return [section, section2];
 }

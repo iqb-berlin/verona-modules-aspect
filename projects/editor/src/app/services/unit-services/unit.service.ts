@@ -27,6 +27,7 @@ export class UnitService {
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   tablePropUpdated: Subject<string> = new Subject<string>();
   sectionCountUpdated: Subject<void> = new Subject<void>();
+  pageOrderChanged: Subject<void> = new Subject<void>();
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
   allowExpertMode: boolean = true;

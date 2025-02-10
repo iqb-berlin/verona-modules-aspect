@@ -60,7 +60,7 @@ export class UiElementToolboxComponent {
   }
 
   applyTemplate(templateName: string) {
-    this.templateService.applySectionTemplate(templateName);
+    this.templateService.applyTemplate(templateName);
   }
 
   protected readonly ClozeElement = ClozeElement;

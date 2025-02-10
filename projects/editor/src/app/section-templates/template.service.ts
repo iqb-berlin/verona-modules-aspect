@@ -28,6 +28,12 @@ import * as AudioBuilders from 'editor/src/app/section-templates/builders/audio-
 import * as GeometryBuilders from 'editor/src/app/section-templates/builders/geometry-builders';
 import * as MathtableBuilders from 'editor/src/app/section-templates/builders/mathtable-builders';
 import { CONSTANTS } from './constants';
+import {
+  DroplistTemplateOptions,
+  isClassicTemplate,
+  isSortTemplate, isTwoPageImagesTemplate, isTwoPageTemplate
+} from 'editor/src/app/section-templates/droplist-interfaces';
+import { Page, PageProperties } from 'common/models/page';
 
 @Injectable({
   providedIn: 'root'
@@ -41,21 +47,40 @@ export class TemplateService {
 
   static helpTooltipImageSrc = CONSTANTS.lightbulb;
 
-  async applySectionTemplate(templateName: string) {
-    const templateSection: Section = await this.createTemplateSection(templateName);
+  async applyTemplate(templateName: string) {
+    const templateSections: Section | [Section, Section] = await this.createTemplateSections(templateName);
 
     const selectedPage = this.unitService.getSelectedPage();
     const selectedSectionIndex = this.selectionService.selectedSectionIndex;
-    if (this.unitService.getSelectedSection().isEmpty()) {
-      selectedPage.replaceSection(selectedSectionIndex, templateSection);
+    if (!Array.isArray(templateSections)) {
+      TemplateService.addSectionToPage(templateSections, selectedPage, selectedSectionIndex);
     } else {
-      selectedPage.addSection(templateSection, selectedSectionIndex + 1);
+      const targetPage = selectedPage.alwaysVisible ? this.unitService.unit.pages[1] : selectedPage;
+      if (!this.unitService.unit.pages[0].alwaysVisible) {
+        this.createAlwaysVisiblePage();
+      }
+      TemplateService.addSectionToPage(templateSections[1], this.unitService.unit.pages[0], 0);
+      TemplateService.addSectionToPage(templateSections[0], targetPage, selectedSectionIndex);
     }
     this.unitService.updateSectionCounter();
     this.unitService.updateUnitDefinition();
   }
 
-  private createTemplateSection(templateName: string): Promise<Section> {
+  private createAlwaysVisiblePage(): void {
+    this.unitService.unit.pages.push(new Page({ alwaysVisible: true } as PageProperties));
+    this.unitService.unit.movePageToFront(this.unitService.unit.pages.length - 1);
+    this.unitService.pageOrderChanged.next();
+  }
+
+  private static addSectionToPage(section: Section, page: Page, selectedSectionIndex: number): void {
+    if (page.sections[selectedSectionIndex].isEmpty()) {
+      page.replaceSection(selectedSectionIndex, section);
+    } else {
+      page.addSection(section);
+    }
+  }
+
+  private createTemplateSections(templateName: string): Promise<Section | [Section, Section]> {
     return new Promise(resolve => {
       switch (templateName) {
         case 'text':
@@ -158,20 +183,22 @@ export class TemplateService {
           break;
         case 'droplist':
           this.dialog.open(DroplistWizardDialogComponent, { autoFocus: false })
-            .afterClosed().subscribe((result: {
-              variant: 'classic' | 'sort', alignment: 'column' | 'row', text1: string, headingSourceList: string,
-              options: DragNDropValueObject[], optionLength: 'long' | 'medium' | 'short' | 'very-short',
-              headingTargetLists: string, targetLength: 'medium' | 'short' | 'very-short',
-              targetLabels: TextLabel[], numbering: boolean }) => {
-              if (result?.variant === 'classic') {
-                resolve(DroplistBuilders.createDroplistSection(result.alignment, result.text1, result.headingSourceList,
-                                                               result.options, result.optionLength,
-                                                               result.headingTargetLists, result.targetLength,
+            .afterClosed().subscribe((result: DroplistTemplateOptions) => {
+              if (isClassicTemplate(result)) {
+                resolve(DroplistBuilders.createDroplistSection(result.targetLabelAlignment, result.text1, result.headingSourceList,
+                                                               result.options, result.optionWidth,
+                                                               result.headingTargetLists, result.targetWidth,
                                                                result.targetLabels, this.idService));
               }
-              if (result?.variant === 'sort') {
-                resolve(DroplistBuilders.createSortlistSection(result.text1, result.options, result.optionLength,
+              if (isSortTemplate(result)) {
+                resolve(DroplistBuilders.createSortlistSection(result.text1, result.headingSourceList, result.options, result.optionWidth,
                                                                result.numbering, this.idService));
+              }
+              if (isTwoPageTemplate(result)) {
+                resolve(DroplistBuilders.createTwopageSection(result, this.idService));
+              }
+              if (isTwoPageImagesTemplate(result)) {
+                resolve(DroplistBuilders.createTwopageImagesSection(result, this.idService));
               }
             });
           break;

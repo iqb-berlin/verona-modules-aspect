@@ -23,7 +23,7 @@ import { TextElement } from 'common/models/elements/text/text';
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
-import { TemplateService } from 'editor/src/app/services/template.service';
+import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { UIElementType } from 'common/interfaces';
 import { SelectionService } from '../../services/selection.service';
 import { UnitService } from '../../services/unit-services/unit.service';
@@ -60,7 +60,7 @@ export class UiElementToolboxComponent {
   }
 
   applyTemplate(templateName: string) {
-    this.templateService.applyTemplate(templateName);
+    this.templateService.applySectionTemplate(templateName);
   }
 
   protected readonly ClozeElement = ClozeElement;

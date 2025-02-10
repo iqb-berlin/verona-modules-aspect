@@ -28,6 +28,23 @@
     },
     "ignorePatterns": ["**/dist/*.*", "**/scripts/*.*", "**/test-data/*.*", "./dist/**/*", "./node_modules/**/*"],
     "rules": {
+      "function-call-argument-newline": "OFF",
+      "@typescript-eslint/indent": [
+        "error",
+        2,
+        {
+          "SwitchCase": 1,
+          "FunctionDeclaration": {
+            "parameters": "first"
+          },
+          "FunctionExpression": {
+            "parameters": "first"
+          },
+          "CallExpression": {
+            "arguments": "first"
+          }
+        }
+      ],
       "class-methods-use-this": [
         "error",
         {

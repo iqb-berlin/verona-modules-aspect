@@ -61,6 +61,11 @@ export class Unit implements UnitProperties {
   deletePage(pageIndex: number): void {
     this.pages.splice(pageIndex, 1);
   }
+
+  movePageToFront(pageIndex: number) {
+    const page = this.pages.splice(pageIndex, 1);
+    this.pages.splice(0, 0, page[0]);
+  }
 }
 
 function isValid(blueprint?: UnitProperties): boolean {

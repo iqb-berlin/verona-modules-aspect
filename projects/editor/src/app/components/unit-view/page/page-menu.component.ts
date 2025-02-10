@@ -105,10 +105,7 @@ export class PageMenu implements OnDestroy {
 
   private movePageToFront(page: Page): void {
     const pageIndex = this.unitService.unit.pages.indexOf(page);
-    if (pageIndex !== 0) {
-      this.unitService.unit.pages.splice(pageIndex, 1);
-      this.unitService.unit.pages.splice(0, 0, page);
-    }
+    this.unitService.unit.movePageToFront(pageIndex);
   }
 
   ngOnDestroy(): void {

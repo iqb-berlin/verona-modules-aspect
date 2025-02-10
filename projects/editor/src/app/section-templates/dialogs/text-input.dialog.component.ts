@@ -10,6 +10,7 @@ import { NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'aspect-editor-input-wizard-dialog',
@@ -25,7 +26,8 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
     MatSelectModule,
     FormsModule,
     MatRadioModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCheckboxModule
   ],
   template: `
     <div mat-dialog-title>Assistent: Antwortfeld(er)</div>
@@ -81,10 +83,15 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
           </mat-form-field>
         </ng-container>
       </div>
+
+      <h3>Formeleingabe</h3>
+      <mat-checkbox [(ngModel)]="useMathFields">
+        Formeleingabefelder verwenden
+      </mat-checkbox>
     </div>
     <div mat-dialog-actions>
       <button mat-button
-              [mat-dialog-close]="{ text, answerCount, useTextAreas, numbering, fieldLength, expectedCharsCount }">
+              [mat-dialog-close]="{ text, answerCount, useTextAreas, numbering, fieldLength, expectedCharsCount, useMathFields }">
         {{ 'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
@@ -105,4 +112,5 @@ export class InputWizardDialogComponent {
   numbering: 'latin' | 'decimal' | 'bullets' | 'none' = 'latin';
   fieldLength: 'very-small' | 'small' | 'medium' | 'large' = 'large';
   expectedCharsCount: number = 90;
+  useMathFields: boolean = false;
 }

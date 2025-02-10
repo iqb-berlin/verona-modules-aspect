@@ -9,7 +9,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { UIElement } from 'common/models/elements/element';
 import { TextWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text.dialog.component';
 import { LikertWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/likert.dialog.component';
-import { InputWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/input.dialog.component';
+import { InputWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text-input.dialog.component';
 import { RadioImagesWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio2.dialog.component';
 import { Text2WizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text2.dialog.component';
 import { AudioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/audio.dialog.component';
@@ -113,7 +113,8 @@ export class TemplateService {
               useTextAreas: boolean,
               numbering: 'latin' | 'decimal' | 'bullets' | 'none',
               fieldLength: 'very-small' | 'small' | 'medium' | 'large',
-              expectedCharsCount: number
+              expectedCharsCount: number,
+              useMathFields: boolean
             }) => {
               if (result) resolve(TextInputBuilders.createInputSection(result, this.idService));
             });

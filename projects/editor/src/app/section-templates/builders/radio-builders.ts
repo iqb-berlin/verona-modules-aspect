@@ -4,19 +4,19 @@ import { TemplateService } from 'editor/src/app/section-templates/template.servi
 import { IDService } from 'editor/src/app/services/id.service';
 
 export function createRadioSection(label1: string, label2: string, options: TextLabel[],
-                                   idService: IDService): Section {
+                                   addExtraInput: boolean, text1: string, idService: IDService): Section {
   const sectionElements = [
-    TemplateService.createElement(
-      'text',
-      { gridRow: 1, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
-      { text: label1 },
-      idService),
-    TemplateService.createElement(
-      'radio',
-      { gridRow: 2, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
-      { label: label2, options: options },
-      idService)
+    TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
+                                  { text: label1 }, idService),
+    TemplateService.createElement('radio', { gridRow: 2, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
+                                  { label: label2, options: options }, idService)
   ];
+  if (addExtraInput) {
+    sectionElements.push(
+      TemplateService.createElement('text', { gridRow: 3, gridColumn: 1 }, { text: text1 }, idService));
+    sectionElements.push(
+      TemplateService.createElement('text-area', { gridRow: 4, gridColumn: 1 }, {}, idService));
+  }
   const section = new Section(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -22,7 +24,9 @@ import { Label } from 'common/interfaces';
     OptionListPanelComponent,
     MatButtonModule,
     TranslateModule,
-    RichTextEditorComponent
+    RichTextEditorComponent,
+    MatCheckboxModule,
+    NgIf
   ],
   template: `
     <div mat-dialog-title>Assistent: MC mit Text</div>
@@ -45,6 +49,14 @@ import { Label } from 'common/interfaces';
                                 [itemList]="options"
                                 [localMode]="true">
       </aspect-option-list-panel>
+
+      <h3>Begründung</h3>
+      <mat-checkbox [(ngModel)]="addExtraInput">
+        Begründungsfeld anfügen
+      </mat-checkbox>
+      <aspect-rich-text-editor *ngIf="addExtraInput" class="input1"
+                               [(content)]="text1" [placeholder]="'Begründe deine Entscheidung.'">
+      </aspect-rich-text-editor>
     </div>
     <div mat-dialog-actions>
       <button mat-button [mat-dialog-close]="{ label1, label2, options }">{{'confirm' | translate }}</button>
@@ -62,4 +74,6 @@ export class RadioWizardDialogComponent {
   label1: string = '';
   label2: string = '';
   options: Label[] = [];
+  addExtraInput: boolean = false;
+  text1: string = '';
 }

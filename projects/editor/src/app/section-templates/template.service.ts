@@ -121,9 +121,11 @@ export class TemplateService {
           break;
         case 'radio':
           this.dialog.open(RadioWizardDialogComponent, {})
-            .afterClosed().subscribe((result: { label1: string, label2: string, options: TextLabel[] }) => {
+            .afterClosed().subscribe((result: { label1: string, label2: string, options: TextLabel[],
+              addExtraInput: boolean, text1: string }) => {
               if (result) {
-                resolve(RadioBuilders.createRadioSection(result.label1, result.label2, result.options, this.idService));
+                resolve(RadioBuilders.createRadioSection(result.label1, result.label2, result.options,
+                                                         result.addExtraInput, result.text1, this.idService));
               }
             });
           break;

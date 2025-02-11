@@ -22,13 +22,10 @@ describe('Text element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-range.json');
     });
 
-    it('highlights two section in different colors', () => {
-    });
-
-    it('removes the second highlight selection of a text ', () => {
+    it('highlights one section', () => {
       cy.get('aspect-text-group-element')
         .find('button.marking-button').eq(0).click();
-      selectRange();
+      selectRange(50,70,70,100);
     });
   });
 });

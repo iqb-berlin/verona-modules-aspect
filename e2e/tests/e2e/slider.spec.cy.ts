@@ -1,4 +1,4 @@
-import {addDescription, moveSlider} from "./options-util";
+import {addDescriptionOptions, moveSlider} from "./options-util";
 
 describe('Slider element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,17 +7,17 @@ describe('Slider element', { testIsolation: false }, () => {
     });
 
     it('creates a common slider', () => {
-      addDescription('Schieberegler', 'Schieberegler',{},'schieberegler');
+      addDescriptionOptions('Schieberegler', 'Schieberegler',{},'schieberegler');
 
     });
 
     it('creates a slider that can not move', () => {
-      addDescription('Schieberegler', 'Schieberegler mit Schreibschutz',
+      addDescriptionOptions('Schieberegler', 'Schieberegler mit Schreibschutz',
         {readOnly:true},'schiebereglerSchreibschutz');
     });
 
     it('creates a mandatory slider', () => {
-      addDescription('Schieberegler', 'Schieberegler mit Pflichtfeld',
+      addDescriptionOptions('Schieberegler', 'Schieberegler mit Pflichtfeld',
         {required:true},'schiebereglerPflichtfeld');
     });
 

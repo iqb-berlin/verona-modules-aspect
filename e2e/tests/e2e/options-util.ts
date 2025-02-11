@@ -1,7 +1,7 @@
 import {addElement, addTextElement, selectFromDropdown, setCheckbox} from "../util";
 
-export function addDescription(type: string, title: string,
-                          settings?: Record<string, boolean>, id?: string): void {
+export function addDescriptionOptions(type: string, title: string,
+                                      settings?: Record<string, boolean>, id?: string): void {
   addElement(type,undefined,id);
   cy.contains('mat-form-field', 'Beschriftung')
     .find('textarea')
@@ -78,18 +78,23 @@ export function createText(numParagraphs: number, numSentences: number, numColum
   selectFromDropdown('Markierungsmodus',modus);
 }
 
-export function selectRange(): void {
-  cy.get('.text-container').contains('idunt')
-    .trigger('mousedown')
-    .then(($el) => {
-      const el = $el[0]
-      const document = el.ownerDocument;
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      // @ts-ignore
-      document.getSelection().removeAllRanges(range);
-      // @ts-ignore
-      document.getSelection().addRange(range);
-    })
-    .trigger('mouseup')
+export function selectRange(startX:number, startY:number, endX: number, endY:number): void {
+  // cy.get('.text-container').contains('idunt')
+  //   .trigger('mousedown')
+  //   .then(($el) => {
+  //     const el = $el[0]
+  //     const document = el.ownerDocument;
+  //     const range = document.createRange();
+  //     range.selectNodeContents(el);
+  //     document.getSelection().removeAllRanges(range);
+  //     document.getSelection().addRange(range);
+  //   })
+  //   .trigger('mouseup')
+  cy.get('.text-container').eq(0)
+    .trigger('mousedown', startX, startY, {button: 0, force:true} )
+    .trigger('mousemove', endX, endY, {button: 0,force:true});
+  cy.wait(50);
+  cy.get('body')
+    .trigger('mousemove',endX, endY, {button: 0,force:true})
+    .trigger('mouseup',endX,endY, {button:0 ,force:true});
 }

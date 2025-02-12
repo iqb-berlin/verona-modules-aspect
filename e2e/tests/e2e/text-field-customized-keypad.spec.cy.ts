@@ -1,5 +1,5 @@
 import {addBasicProperties} from "../util";
-import {addHelpTextField, addMusterTextField, addSettingsTextField} from "./input-util";
+import {addHelp, addMuster, addSettings} from "./text-field-util";
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -9,9 +9,9 @@ describe('Text field element', { testIsolation: false }, () => {
 
     it('creates a text field with customized keypad', () => {
       addBasicProperties('Eingabefeld','Eigene Zeichen',{required:true});
-      addSettingsTextField(3,20,'',{clearable:true, hasKeyboardIcon:true});
-      addMusterTextField('ö12');
-      addHelpTextField('Eigene Zeichen', 'rechts', undefined, "öäü12" );
+      addSettings(3,20,'',{clearable:true, hasKeyboardIcon:true});
+      addMuster('ö12');
+      addHelp('Eigene Zeichen', 'rechts', undefined, "öäü12" );
     });
     after('save an unit definition', () => {
       cy.saveUnit('e2e/downloads/text-field-customized-keypad.json');

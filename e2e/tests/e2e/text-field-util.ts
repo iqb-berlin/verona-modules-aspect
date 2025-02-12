@@ -1,8 +1,8 @@
 import {selectFromDropdown, setCheckbox} from "../util";
 
-export function addSettingsTextField(minLength: number, maxLength:number,
-                                     pattern: string ="",
-                                     settings?: Record<string, boolean>, appearance: string="Umrandet"): void {
+export function addSettings(minLength: number, maxLength:number,
+                            pattern: string ="",
+                            settings?: Record<string, boolean>, appearance: string="Umrandet"): void {
   if (pattern !="")
     cy.contains('mat-form-field', 'Vorbelegung')
     .find('input')
@@ -23,7 +23,7 @@ export function addSettingsTextField(minLength: number, maxLength:number,
   if (settings?.hasKeyboardIcon) setCheckbox('Tastatursymbol anzeigen');
 }
 
-export function addMusterTextField(pattern:string, patternWarnMessage?: string){
+export function addMuster(pattern:string, patternWarnMessage?: string){
   cy.contains('mat-form-field', 'Muster')
     .find('input')
     .type(pattern);
@@ -34,8 +34,8 @@ export function addMusterTextField(pattern:string, patternWarnMessage?: string){
   }
 }
 
-export function addHelpTextField(keyboard:string="",position: string="schwebend",
-                                 floatingPosition?:string, ownCharacters?:string, options?: Record<string, boolean>):void {
+export function addHelp(keyboard:string="", position: string="schwebend",
+                        floatingPosition?:string, ownCharacters?:string, options?: Record<string, boolean>):void {
   selectFromDropdown('Eingabehilfe auswählen',keyboard);
   selectFromDropdown('Eingabehilfeposition',position)
   if (position=="schwebend")

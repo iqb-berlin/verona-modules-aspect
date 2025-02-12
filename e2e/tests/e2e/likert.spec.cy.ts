@@ -1,4 +1,5 @@
-import {addDescriptionOptions, addOptions} from "./options-util";
+import {addOptions} from "./likert-util";
+import {addBasicProperties} from "../util";
 
 describe('Radio element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,7 +8,7 @@ describe('Radio element', { testIsolation: false }, () => {
     });
 
     it('creates radio list with text', () => {
-      addDescriptionOptions('Optionentabelle', 'Optionentabelle1',{},'option1')
+      addBasicProperties('Optionentabelle', 'Optionentabelle1',{})
       addOptions(['option A', 'option B'],['row 1', 'row 2', 'row 3'])
       cy.contains('mat-form-field','Beschriftung (sekundär)')
         .find('textarea')

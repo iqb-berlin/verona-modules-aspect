@@ -1,4 +1,4 @@
-import {addDescriptionOptions, moveSlider} from "./options-util";
+import {addBasicProperties} from "../util";
 
 describe('Slider element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,18 +7,18 @@ describe('Slider element', { testIsolation: false }, () => {
     });
 
     it('creates a common slider', () => {
-      addDescriptionOptions('Schieberegler', 'Schieberegler',{},'schieberegler');
+      addBasicProperties('Schieberegler', 'Schieberegler',{});
 
     });
 
     it('creates a slider that can not move', () => {
-      addDescriptionOptions('Schieberegler', 'Schieberegler mit Schreibschutz',
-        {readOnly:true},'schiebereglerSchreibschutz');
+      addBasicProperties('Schieberegler', 'Schieberegler mit Schreibschutz',
+        {readOnly:true});
     });
 
     it('creates a mandatory slider', () => {
-      addDescriptionOptions('Schieberegler', 'Schieberegler mit Pflichtfeld',
-        {required:true},'schiebereglerPflichtfeld');
+      addBasicProperties('Schieberegler', 'Schieberegler mit Pflichtfeld',
+        {required:true});
     });
 
     after('saves an unit definition', () => {
@@ -35,13 +35,12 @@ describe('Slider element', { testIsolation: false }, () => {
     it('checks readonly slider', () => {
       // This fails, should not be able to move, but it does
       cy.get('aspect-slider:contains("Schieberegler mit Schreibschutz")')
-        .find('input[type="range"]').invoke('val',"100").trigger("change");
-      // moveSlider('Schieberegler mit Schreibschutz','100');
-      // cy.get('Schieberegler mit Schreibschutz').find('input').invoke('val','100').trigger('change');
+        .find('input[type="range"]').invoke('val',50).trigger("change");
     });
 
     it('sets the mandatory slider to 50', () => {
-      moveSlider('Schieberegler mit Pflichtfeld','50');
+      cy.get('aspect-slider:contains("Schieberegler mit Pflichtfeld")')
+        .find('input[type="range"]').invoke('val',50).trigger("change");
     });
   });
 });

@@ -1,5 +1,5 @@
-import {addOptions} from "./options-util";
-import {selectFromDropdown, setCheckbox} from "../util";
+import {addOptions} from "./likert-util";
+import {addBasicProperties, selectFromDropdown, setCheckbox} from "../util";
 
 describe('Radio button group element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,30 +7,18 @@ describe('Radio button group element', { testIsolation: false }, () => {
       cy.openEditor();
     });
 
-    it('creates several radio button groups', () => {
+    it('creates several radio button groups with no preselected option', () => {
       cy.contains('Optionsfelder').trigger('mouseover');
-      cy.contains('mit Text').click();
-      cy.contains('mat-form-field', 'Beschriftung')
-        .find('textarea')
-        .clear()
-        .type('Vertikal ausgerichtete Optionsfelder');
+      addBasicProperties('mit Text','Vertikal ausgerichtete Optionsfelder')
       addOptions(['AA','BB']);
 
       cy.contains('Optionsfelder').trigger('mouseover');
-      cy.contains('mit Text').click();
-      cy.contains('mat-form-field', 'Beschriftung')
-        .find('textarea')
-        .clear()
-        .type('Horizontal ausgerichtete Optionsfelder');
+      addBasicProperties('mit Text','Horizontal ausgerichtete Optionsfelder');
       addOptions(['CC','DD']);
       selectFromDropdown('Ausrichtung', 'horizontal');
 
       cy.contains('Optionsfelder').trigger('mouseover');
-      cy.contains('mit Text').click();
-      cy.contains('mat-form-field', 'Beschriftung')
-        .find('textarea')
-        .clear()
-        .type('Optionsfelder mit Nicht gewählte Optionen durchstreichen');
+      addBasicProperties('mit Text','Optionsfelder mit Nicht gewählte Optionen durchstreichen');
       addOptions(['EE','FF','GG']);
       setCheckbox('Nicht gewählte Optionen durchstreichen');
     });
@@ -46,17 +34,19 @@ describe('Radio button group element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/radio.json');
     });
 
-    it('checks radio buttons', () => {
-      cy.contains('.radio-button-label','AA').click();
+    it('checks the two radio button groups', () => {
+      cy.contains('.radio-button-label', 'AA').click();
       cy.get('mat-radio-button.mat-mdc-radio-checked')
-        .contains('.radio-button-label','BB')
+        .contains('.radio-button-label', 'BB')
         .should('not.exist');
 
-      cy.contains('.radio-button-label','DD').click();
+      cy.contains('.radio-button-label', 'DD').click();
       cy.get('mat-radio-button.mat-mdc-radio-checked')
-        .contains('.radio-button-label','DD')
+        .contains('.radio-button-label', 'DD')
         .should('exist');
+    });
 
+    it('checks radio button in the third group, and checks that other options are striked ', () => {
       cy.contains('.radio-button-label','EE').click();
       cy.get('mat-radio-button.strike')
         .contains('.radio-button-label','FF')

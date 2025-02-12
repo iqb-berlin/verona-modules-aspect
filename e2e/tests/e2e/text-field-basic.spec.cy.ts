@@ -1,5 +1,5 @@
 import {addBasicProperties} from "../util";
-import { addMusterTextField, addSettingsTextField} from "./input-util";
+import { addMuster, addSettings} from "./text-field-util";
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -9,8 +9,8 @@ describe('Text field element', { testIsolation: false }, () => {
 
     it('creates a numeric textfield', () => {
       addBasicProperties('Eingabefeld','Ziffern eingabe',{required:true});
-      addSettingsTextField(4,20,'z.B. 1',{clearable:true});
-      addMusterTextField('1234567');
+      addSettings(4,20,'z.B. 1',{clearable:true});
+      addMuster('1234567');
     });
 
     after('save an unit definition', () => {

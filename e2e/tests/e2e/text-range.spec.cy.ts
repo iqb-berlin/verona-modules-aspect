@@ -1,4 +1,4 @@
-import {createText, selectRange} from "./options-util";
+import {addText, selectRange} from "./text-util";
 
 describe('Text element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,7 +7,7 @@ describe('Text element', { testIsolation: false }, () => {
     });
 
     it('creates a text element with range mode', () => {
-      createText(3,2,2,'Auswahl', {highlightableYellow: true,
+      addText(3,2,2,'Auswahl', {highlightableYellow: true,
         hasSelectionPopup:true, highlightableTurquoise:true})
     });
 

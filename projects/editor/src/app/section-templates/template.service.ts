@@ -16,6 +16,7 @@ import { AudioWizardDialogComponent } from 'editor/src/app/section-templates/dia
 import { GeometryWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/geometry.dialog.component';
 import { DroplistWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/droplist.dialog.component';
 import { MathTableWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/mathtable.dialog.component';
+import { Text3WizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text3.dialog.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import {
   DragNDropValueObject, PositionedUIElement, TextImageLabel, TextLabel, UIElementType
@@ -79,6 +80,16 @@ export class TemplateService {
             .afterClosed().subscribe((result: { text1: string, showHelper: boolean }) => {
               if (result) resolve(TextBuilders.createText2Section(result.text1, result.showHelper, this.idService));
             });
+          break;
+        case 'text3':
+          this.dialog.open(Text3WizardDialogComponent, {})
+            .afterClosed().subscribe(
+              (result: { text1: string, text2: string, text3: string, text4: string, text5: string }) => {
+                if (result) {
+                  resolve(TextBuilders.createText3Section(result.text1, result.text2, result.text3,
+                                                          result.text4, result.text5, this.idService));
+                }
+              });
           break;
         case 'input':
           this.dialog.open(InputWizardDialogComponent, {})

@@ -1,15 +1,61 @@
-import {addElement, setCheckbox} from "../util";
+import {selectFromDropdown, setCheckbox} from "../util";
 
-export function addDescriptionInput(type: string, title: string,
-                               settings?: Record<string, boolean>, id?: string): void {
-  addElement(type,undefined,id);
-  cy.contains('mat-form-field', 'Beschriftung')
-    .find('textarea')
+export function addSettingsTextField(minLength: number, maxLength:number,
+                                     pattern: string ="",
+                                     settings?: Record<string, boolean>, appearance: string="Umrandet"): void {
+  if (pattern !="")
+    cy.contains('mat-form-field', 'Vorbelegung')
+    .find('input')
+    .type(pattern);
+  selectFromDropdown('Aussehen', appearance);
+  cy.contains('mat-form-field', 'Minimallänge')
+    .find('input')
     .clear()
-    .type(title);
-  if (settings?.readOnly) setCheckbox('Schreibschutz');
-  if (settings?.required) setCheckbox('Pflichtfeld');
-  if (settings?.clearable) setCheckbox('Knopf zum Leerenanzeigen');
+    .clear()
+    .type(String(minLength));
+  cy.contains('mat-form-field', 'Maximallänge')
+    .find('input')
+    .clear()
+    .clear()
+    .type(String(maxLength));
+  if (settings?.isLimitedToMaxLength) setCheckbox('Eingabe auf Maximalläange begrenzem');
+  if (settings?.clearable) setCheckbox('Knopf zum Leeren anzeigen');
   if (settings?.hasKeyboardIcon) setCheckbox('Tastatursymbol anzeigen');
-  if (settings?.pattern) setCheckbox('Tastatur mit Eingabehilfe erweitern');
+}
+
+export function addMusterTextField(pattern:string, patternWarnMessage?: string){
+  cy.contains('mat-form-field', 'Muster')
+    .find('input')
+    .type(pattern);
+  if (patternWarnMessage) {
+    cy.contains('mat-form-field', 'Muster Warnmeldung')
+      .find('input')
+      .type(patternWarnMessage);
+  }
+}
+
+export function addHelpTextField(keyboard:string="",position: string="schwebend",
+                                 floatingPosition?:string, ownCharacters?:string, options?: Record<string, boolean>):void {
+  selectFromDropdown('Eingabehilfe auswählen',keyboard);
+  selectFromDropdown('Eingabehilfeposition',position)
+  if (position=="schwebend")
+    if (floatingPosition != null) {
+      selectFromDropdown('Schwebende Startposition', floatingPosition)
+    }
+  if (keyboard=="Eigene Zeichen"){
+    if (ownCharacters != null) {
+      cy.contains('mat-form-field', 'Zeichenkette')
+        .find('input')
+        .type(ownCharacters);
+    }
+  }
+  if (options?.disableOtherCharacters) setCheckbox('Bearbeitung anderer Zeichen verhindern');
+  if (options?.addArrowButtons) setCheckbox('Pfeitasten hinzufügen');
+
+  // check with Richard
+  // can not find any functionality and can not find attribute in text-field.ts
+  // to delete ?
+  if (options?.showKeyboard) setCheckbox('Tastatur einblenden');
+  if (options?.disable) setCheckbox('Betriebssystem-Tastatur unterbinden');
+  if (options?.help) setCheckbox('Tastatur mit Eingabehilfe erweitern');
 }

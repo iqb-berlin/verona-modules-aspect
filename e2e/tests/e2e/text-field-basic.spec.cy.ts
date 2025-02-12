@@ -1,5 +1,5 @@
-import {addDescriptionOptions} from "./options-util";
-import {selectFromDropdown} from "../util";
+import {addBasicProperties} from "../util";
+import { addMusterTextField, addSettingsTextField} from "./input-util";
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,32 +7,10 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.openEditor();
     });
 
-    it('creates a textfield', () => {
-      // cy.contains('Eingabefeld').click();
-      addDescriptionOptions('Eingabefeld','Eingabefeld A',{},'textfield1')
-
-      // Preentered text
-      cy.contains('mat-form-field', 'Vorbelegung')
-        .find('input')
-        .type('Hola');
-
-      // select Aussehen
-      selectFromDropdown('Aussehen', 'Ausgefüllt');
-      // selectFromDropdown('Aussehen', 'Umrandet');
-
-      // enter length
-      cy.contains('mat-form-field', 'Minimallänge')
-        .find('input')
-        .clear()
-        .clear()
-        .type('4');
-      cy.contains('mat-form-field', 'Maximallänge')
-        .find('input')
-        .clear()
-        .clear()
-        .type('20');
-      selectFromDropdown('Eingabehilfe auswählen','Ziffern');
-      selectFromDropdown('Eingabehilfeposition','rechts')
+    it('creates a numeric textfield', () => {
+      addBasicProperties('Eingabefeld','Ziffern eingabe',{required:true});
+      addSettingsTextField(4,20,'z.B. 1',{clearable:true});
+      addMusterTextField('1234567');
     });
 
     after('save an unit definition', () => {
@@ -46,7 +24,33 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-field-basic.json');
     });
 
-    it('s', () => {
+    it('types an answer that is too short', () => {
+      cy.contains('mat-form-field','Ziffern eingabe')
+        .find('mat-error').should('not.exist');
+      cy.contains('mat-form-field','Ziffern eingabe')
+        .find('input')
+        .clear()
+        .type('123{enter}');
+      cy.contains('mat-form-field','Ziffern eingabe')
+        .find('mat-error').should('exist');
+    });
+
+    it('types the wrong answer', () => {
+      cy.contains('mat-form-field','Ziffern eingabe')
+        .find('input')
+        .clear()
+        .type('4444{enter}');
+      cy.contains('mat-form-field','Ziffern eingabe')
+        .find('mat-error').should('exist');
+    });
+
+    it('types the correct answer', () => {
+      cy.contains('mat-form-field','Ziffern eingabe')
+        .find('input')
+        .clear()
+        .type('1234567{enter}');
+      cy.contains('mat-form-field','Ziffern eingabe')
+        .find('mat-error').should('not.exist');
     });
   });
 });

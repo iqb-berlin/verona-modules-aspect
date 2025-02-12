@@ -6,7 +6,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 
 export function createInputSection(config: { text: string, answerCount: number, useTextAreas: boolean,
   numbering: 'latin' | 'decimal' | 'bullets' | 'none', fieldLength: 'very-small' | 'small' | 'medium' | 'large',
-  expectedCharsCount: number }, idService: IDService): Section {
+  expectedCharsCount: number, useMathFields: boolean }, idService: IDService): Section {
   const useNumbering = config.answerCount > 1 && config.numbering !== 'none';
 
   const sectionElements: PositionedUIElement[] = [
@@ -39,7 +39,8 @@ export function createInputSection(config: { text: string, answerCount: number, 
     if (i === config.answerCount - 1) marginBottom = config.useTextAreas ? 10 : 0;
     sectionElements.push(
       TemplateService.createElement(
-        config.useTextAreas ? 'text-area' : 'text-field',
+        config.useTextAreas ? `text-area${config.useMathFields ? '-math' : ''}` :
+          `${config.useMathFields ? 'math' : 'text'}-field`,
         {
           gridRow: i + 2,
           gridColumn: useNumbering ? 2 : 1,

@@ -1,21 +1,23 @@
-import {addDescriptionOptions, addOptions} from "./options-util";
+import { addOptions } from './likert-util';
+import { addElement, addProperties } from '../util';
 
-describe('Radio element', { testIsolation: false }, () => {
+describe('Likert element', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
       cy.openEditor();
     });
 
-    it('creates radio list with text', () => {
-      addDescriptionOptions('Optionentabelle', 'Optionentabelle1',{},'option1')
-      addOptions(['option A', 'option B'],['row 1', 'row 2', 'row 3'])
-      cy.contains('mat-form-field','Beschriftung (sekundär)')
+    it('creates likert with text', () => {
+      addElement('Optionentabelle');
+      addProperties('Optionentabelle1', {});
+      addOptions(['option A', 'option B'], ['row 1', 'row 2', 'row 3']);
+      cy.contains('mat-form-field', 'Beschriftung (sekundär)')
         .find('textarea')
         .clear()
         .type('Beschreibung sekundär von Optionentabelle1');
     });
 
-    it('modifies the alignment of the first option to the 8th column', () => {
+    it('modifies the ratio of the first column to eight', () => {
       cy.contains('mat-form-field', 'Anteil der ersten Spalte')
         .find('input')
         .clear()
@@ -35,16 +37,16 @@ describe('Radio element', { testIsolation: false }, () => {
     });
 
     it('selects options for each rows', () => {
-      cy.contains('aspect-likert','Optionentabelle1')
+      cy.contains('aspect-likert', 'Optionentabelle1')
         .find('mat-radio-button').eq(0).click();
-      cy.contains('aspect-likert','Optionentabelle1')
+      cy.contains('aspect-likert', 'Optionentabelle1')
         .find('mat-radio-button').eq(3).click();
-      cy.contains('aspect-likert','Optionentabelle1')
+      cy.contains('aspect-likert', 'Optionentabelle1')
         .find('mat-radio-button').eq(5).click();
     });
 
     it('changes the selection to option B for the first row', () => {
-      cy.contains('aspect-likert','Optionentabelle1')
+      cy.contains('aspect-likert', 'Optionentabelle1')
         .find('mat-radio-button').eq(1).click();
     });
   });

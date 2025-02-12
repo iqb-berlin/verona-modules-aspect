@@ -1,5 +1,5 @@
-import {addBasicProperties} from "../util";
-import {addHelpTextField, addMusterTextField, addSettingsTextField} from "./input-util";
+import { addElement, addProperties } from '../util';
+import { addHelp, addMuster, addSettings } from './text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -8,10 +8,11 @@ describe('Text field element', { testIsolation: false }, () => {
     });
 
     it('creates a text field with customized keypad', () => {
-      addBasicProperties('Eingabefeld','Eigene Zeichen',{required:true});
-      addSettingsTextField(3,20,'',{clearable:true, hasKeyboardIcon:true});
-      addMusterTextField('ö12');
-      addHelpTextField('Eigene Zeichen', 'rechts', undefined, "öäü12" );
+      addElement('Eingabefeld');
+      addProperties('Eigene Zeichen', { required: true });
+      addSettings(3, 20, '', { clearable: true, hasKeyboardIcon: true });
+      addMuster('ö12');
+      addHelp('Eigene Zeichen', 'rechts', undefined, 'öäü12');
     });
     after('save an unit definition', () => {
       cy.saveUnit('e2e/downloads/text-field-customized-keypad.json');
@@ -26,26 +27,26 @@ describe('Text field element', { testIsolation: false }, () => {
 
     it('clicks at the text field, and appears the keypad with customized characters', () => {
       cy.get('aspect-keypad').should('not.exist');
-      cy.contains('mat-form-field','Eigene Zeichen').click();
+      cy.contains('mat-form-field', 'Eigene Zeichen').click();
       cy.get('aspect-keypad').contains('ö').should('exist');
-      cy.get('aspect-keypad').contains('p').should('not.exist')
+      cy.get('aspect-keypad').contains('p').should('not.exist');
     });
 
     it('types the wrong answer', () => {
-      cy.contains('mat-form-field','Eigene Zeichen')
+      cy.contains('mat-form-field', 'Eigene Zeichen')
         .find('input')
         .clear()
         .type('4444{enter}');
-      cy.contains('mat-form-field','Eigene Zeichen')
+      cy.contains('mat-form-field', 'Eigene Zeichen')
         .find('mat-error').should('exist');
     });
 
     it('types the correct answer', () => {
-      cy.contains('mat-form-field','Eigene Zeichen')
+      cy.contains('mat-form-field', 'Eigene Zeichen')
         .find('input')
         .clear()
         .type('ö12{enter}');
-      cy.contains('mat-form-field','Eigene Zeichen')
+      cy.contains('mat-form-field', 'Eigene Zeichen')
         .find('mat-error').should('not.exist');
     });
   });

@@ -7,8 +7,8 @@ describe('Droplist element', { testIsolation: false }, () => {
     });
 
     it('creates several droplists, and the second  is a read only list', () => {
-      addList('Startliste', ['AAA'], {copyElement: true}, 'Startliste');
-      addList('Zielliste mit Schreibschutz', [], {readOnly: true}, 'ZiellisteSchutz');
+      addList('Startliste', ['AAA'], { copyElement: true }, 'Startliste');
+      addList('Zielliste mit Schreibschutz', [], { readOnly: true }, 'ZiellisteSchutz');
       addList('Zielliste ohne Schreibschutz', [], {}, 'Zielliste');
 
       connectLists('Startliste', 'ZiellisteSchutz');
@@ -33,7 +33,7 @@ describe('Droplist element', { testIsolation: false }, () => {
       cy.getByAlias('ZiellisteSchutz').children()
         .should('have.length', 0);
       // Handle the exception for function dragTo, with no pointer-events:none
-      Cypress.on('fail', (error) => {
+      Cypress.on('fail', error => {
         if (!error.message.includes('pointer-events: none')) {
           throw error;
         }
@@ -44,7 +44,7 @@ describe('Droplist element', { testIsolation: false }, () => {
       dragTo('Startliste', 'AAA', 'Zielliste');
       cy.getByAlias('Zielliste').children()
         .should('have.length', 1);
-      dragTo('Zielliste','AAA','Startliste');
+      dragTo('Zielliste', 'AAA', 'Startliste');
       cy.getByAlias('Zielliste').children()
         .should('have.length', 0);
     });

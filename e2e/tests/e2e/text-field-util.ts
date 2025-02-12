@@ -1,12 +1,13 @@
-import {selectFromDropdown, setCheckbox} from "../util";
+import { selectFromDropdown, setCheckbox } from '../util';
 
-export function addSettingsTextField(minLength: number, maxLength:number,
-                                     pattern: string ="",
-                                     settings?: Record<string, boolean>, appearance: string="Umrandet"): void {
-  if (pattern !="")
+export function addSettings(minLength: number, maxLength:number,
+                            pattern: string = '',
+                            settings?: Record<string, boolean>, appearance: string = 'Umrandet'): void {
+  if (!(pattern === '')) {
     cy.contains('mat-form-field', 'Vorbelegung')
-    .find('input')
-    .type(pattern);
+      .find('input')
+      .type(pattern);
+  }
   selectFromDropdown('Aussehen', appearance);
   cy.contains('mat-form-field', 'Minimallänge')
     .find('input')
@@ -23,7 +24,7 @@ export function addSettingsTextField(minLength: number, maxLength:number,
   if (settings?.hasKeyboardIcon) setCheckbox('Tastatursymbol anzeigen');
 }
 
-export function addMusterTextField(pattern:string, patternWarnMessage?: string){
+export function addMuster(pattern:string, patternWarnMessage?: string) {
   cy.contains('mat-form-field', 'Muster')
     .find('input')
     .type(pattern);
@@ -34,15 +35,16 @@ export function addMusterTextField(pattern:string, patternWarnMessage?: string){
   }
 }
 
-export function addHelpTextField(keyboard:string="",position: string="schwebend",
-                                 floatingPosition?:string, ownCharacters?:string, options?: Record<string, boolean>):void {
-  selectFromDropdown('Eingabehilfe auswählen',keyboard);
-  selectFromDropdown('Eingabehilfeposition',position)
-  if (position=="schwebend")
+export function addHelp(keyboard:string = '', position: string = 'schwebend',
+                        floatingPosition?:string, ownCharacters?:string, options?: Record<string, boolean>):void {
+  selectFromDropdown('Eingabehilfe auswählen', keyboard);
+  selectFromDropdown('Eingabehilfeposition', position);
+  if (position === 'schwebend') {
     if (floatingPosition != null) {
-      selectFromDropdown('Schwebende Startposition', floatingPosition)
+      selectFromDropdown('Schwebende Startposition', floatingPosition);
     }
-  if (keyboard=="Eigene Zeichen"){
+  }
+  if (keyboard === 'Eigene Zeichen') {
     if (ownCharacters != null) {
       cy.contains('mat-form-field', 'Zeichenkette')
         .find('input')
@@ -52,9 +54,9 @@ export function addHelpTextField(keyboard:string="",position: string="schwebend"
   if (options?.disableOtherCharacters) setCheckbox('Bearbeitung anderer Zeichen verhindern');
   if (options?.addArrowButtons) setCheckbox('Pfeitasten hinzufügen');
 
-  // check with Richard
+  // TODO check with Richard
   // can not find any functionality and can not find attribute in text-field.ts
-  // to delete ?
+  // options to delete ?
   if (options?.showKeyboard) setCheckbox('Tastatur einblenden');
   if (options?.disable) setCheckbox('Betriebssystem-Tastatur unterbinden');
   if (options?.help) setCheckbox('Tastatur mit Eingabehilfe erweitern');

@@ -1,4 +1,4 @@
-import {addDescriptionOptions} from "./options-util";
+import { addElement, addProperties, setCheckbox } from '../util';
 
 describe('Checkbox element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,27 +7,30 @@ describe('Checkbox element', { testIsolation: false }, () => {
     });
 
     it('creates a common checkbox', () => {
-      addDescriptionOptions('Kontrollkästchen','Kontrollkästchen',{}, 'control1');
+      addElement('Kontrollkästchen');
+      addProperties('Kontrollkästchen', {});
     });
 
     it('creates a readonly checkbox', () => {
-      // TODO: Isn't this equal to a normal checkbox?
-      addDescriptionOptions('Kontrollkästchen','Kontrollkästchen mit Schreibschutz',{readOnly:true}, 'control2');
+      addElement('Kontrollkästchen');
+      addProperties('Kontrollkästchen mit Schreibschutz', { readOnly: true });
     });
 
     it('creates a previously checked box', () => {
-      addDescriptionOptions('Kontrollkästchen','vorgelegte Kontrollkästchen',{}, 'control3');
-      cy.contains('mat-button-toggle','wahr').click();
+      addElement('Kontrollkästchen');
+      addProperties('vorgelegte Kontrollkästchen', {});
+      cy.contains('mat-button-toggle', 'wahr').click();
     });
 
     it('creates a checkbox that is crossed out if selected', () => {
-      addDescriptionOptions('Kontrollkästchen','Kontrollkästchen mit Auswahl durchstreichen',
-        {crossOutChecked:true}, 'control4');
+      addElement('Kontrollkästchen');
+      addProperties('Kontrollkästchen mit Auswahl durchstreichen', {});
+      setCheckbox('Auswahl durchstreichen');
     });
 
     it('creates a required to check checkbox', () => {
-      addDescriptionOptions('Kontrollkästchen','Kontrollkästchen mit Pflichtfeld',
-        {required:true}, 'control5');
+      addElement('Kontrollkästchen');
+      addProperties('Kontrollkästchen mit Pflichtfeld', { required: true });
       cy.contains('mat-form-field', 'Warnmeldung')
         .find('input')
         .clear()
@@ -46,32 +49,32 @@ describe('Checkbox element', { testIsolation: false }, () => {
     });
 
     it('checks the common box', () => {
-      cy.contains('aspect-checkbox','Kontrollkästchen')
+      cy.contains('aspect-checkbox', 'Kontrollkästchen')
         .find('input')
         .click();
     });
 
     it('checks the box that does the strikethrough, and checks that the mat-checkbox has cross-out property', () => {
-      cy.contains('aspect-checkbox','Kontrollkästchen mit Auswahl durchstreichen')
+      cy.contains('aspect-checkbox', 'Kontrollkästchen mit Auswahl durchstreichen')
         .find('input')
         .click();
-      cy.contains('aspect-checkbox','Kontrollkästchen mit Auswahl durchstreichen')
+      cy.contains('aspect-checkbox', 'Kontrollkästchen mit Auswahl durchstreichen')
         .find('mat-checkbox')
         .should('have.class', 'cross-out');
     });
 
     it('checks the required box', () => {
-      cy.contains('aspect-checkbox','Kontrollkästchen mit Pflichtfeld')
+      cy.contains('aspect-checkbox', 'Kontrollkästchen mit Pflichtfeld')
         .find('input')
         .click();
     });
 
     it('unchecks the required box, and checks that the warning is present', () => {
-      cy.contains('aspect-checkbox','Kontrollkästchen mit Pflichtfeld')
+      cy.contains('aspect-checkbox', 'Kontrollkästchen mit Pflichtfeld')
         .find('input')
         .click();
-      cy.contains('aspect-checkbox','Kontrollkästchen mit Pflichtfeld').click();
-      cy.contains('aspect-checkbox','Kontrollkästchen mit Pflichtfeld')
+      cy.contains('aspect-checkbox', 'Kontrollkästchen mit Pflichtfeld').click();
+      cy.contains('aspect-checkbox', 'Kontrollkästchen mit Pflichtfeld')
         .find('mat-error')
         .contains('Dieses Kontrollkästchen muss angekreuzt werden');
     });

@@ -1,4 +1,4 @@
-import {createText} from "./options-util";
+import { addText } from './text-util';
 
 describe('Text element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,7 +7,7 @@ describe('Text element', { testIsolation: false }, () => {
     });
 
     it('creates a text element with range mode', () => {
-      createText(3,2,2,'Bereich', {highlightableYellow: true, highlightableTurquoise:true})
+      addText(3, 2, 2, 'Bereich', { highlightableYellow: true, highlightableTurquoise: true });
     });
 
     after('save an unit definition', () => {

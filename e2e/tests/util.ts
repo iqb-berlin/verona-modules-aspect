@@ -75,6 +75,15 @@ export function addPostMessageStub() {
   });
 }
 
+export function addProperties(description: string, settings?: Record<string, boolean>): void {
+  cy.contains('mat-form-field', 'Beschriftung')
+    .find('textarea')
+    .clear()
+    .type(description);
+  if (settings?.readOnly) setCheckbox('Schreibschutz');
+  if (settings?.required) setCheckbox('Pflichtfeld');
+}
+
 export function assertValueChanged(id: string, value: any): void {
   const regex = new RegExp(
     `\\{"id":"${id}","status":"VALUE_CHANGED","value":${value}\\}`
@@ -102,12 +111,4 @@ export function assertValueChanged(id: string, value: any): void {
   //       })
   //     }));
 
-export function addBasicProperties(type: string, description: string, settings?: Record<string, boolean>): void{
-  addElement(type);
-  cy.contains('mat-form-field', 'Beschriftung')
-    .find('textarea')
-    .clear()
-    .type(description);
-  if (settings?.readOnly) setCheckbox('Schreibschutz');
-  if (settings?.required) setCheckbox('Pflichtfeld');
-}
+

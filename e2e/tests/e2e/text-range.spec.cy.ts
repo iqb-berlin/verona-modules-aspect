@@ -1,4 +1,4 @@
-import {createText, selectRange} from "./options-util";
+import { addText, selectRange } from './text-util';
 
 describe('Text element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,8 +7,11 @@ describe('Text element', { testIsolation: false }, () => {
     });
 
     it('creates a text element with range mode', () => {
-      createText(3,2,2,'Auswahl', {highlightableYellow: true,
-        hasSelectionPopup:true, highlightableTurquoise:true})
+      addText(3, 2, 2, 'Auswahl', {
+        highlightableYellow: true,
+        hasSelectionPopup: true,
+        highlightableTurquoise: true
+      });
     });
 
     after('save an unit definition', () => {
@@ -25,7 +28,8 @@ describe('Text element', { testIsolation: false }, () => {
     it('highlights one section', () => {
       cy.get('aspect-text-group-element')
         .find('button.marking-button').eq(0).click();
-      selectRange(50,70,70,100);
+      // TODO does not work
+      selectRange(50, 70, 70, 100);
     });
   });
 });

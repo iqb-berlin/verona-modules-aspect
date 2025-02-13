@@ -1,16 +1,14 @@
-import { DragNDropValueObject, TextLabel } from 'common/interfaces';
-
 export interface DroplistTemplateOptions {
   templateVariant: 'classic' | '2pages' | '2pages-images' | 'sort';
   text1: string;
   headingSourceList: string;
-  options: DragNDropValueObject[];
+  options: string[];
   optionWidth: 'long' | 'medium' | 'short' | 'very-short';
 }
 
 export interface ClassicTemplateOptions extends DroplistTemplateOptions {
   headingTargetLists: string;
-  targetLabels: TextLabel[];
+  targetLabels: string[];
   targetLabelAlignment: 'column' | 'row';
   targetWidth: 'medium' | 'short' | 'very-short';
 }
@@ -31,18 +29,13 @@ export interface TwoPageTemplateOptions extends DroplistTemplateOptions {
   text2: string;
   text3: string;
   headingTargetLists: string;
-  targetLabels: TextLabel[];
+  targetLabels: string[];
   labelsBelow: boolean;
+  srcUseImages: boolean;
+  imageSize: 'medium' | 'small';
+  targetUseImages: boolean;
 }
 
 export function isTwoPageTemplate(template: DroplistTemplateOptions): template is TwoPageTemplateOptions {
   return template.templateVariant === '2pages';
-}
-
-export interface TwoPageImagesTemplateOptions extends TwoPageTemplateOptions {
-  imageWidth: 'medium' | 'small';
-}
-
-export function isTwoPageImagesTemplate(template: DroplistTemplateOptions): template is TwoPageImagesTemplateOptions {
-  return template.templateVariant === '2pages-images';
 }

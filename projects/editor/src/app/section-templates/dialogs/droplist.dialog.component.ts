@@ -8,15 +8,23 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {
-  ClassicTemplateOptions, SortTemplateOptions, TwoPageImagesTemplateOptions, TwoPageTemplateOptions
+  CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray
+} from '@angular/cdk/drag-drop';
+import {
+  ClassicTemplateOptions, SortTemplateOptions, TwoPageTemplateOptions
 } from 'editor/src/app/section-templates/droplist-interfaces';
+import { Label } from 'common/interfaces';
+import { FileService } from 'common/services/file.service';
+import { MatInputModule } from '@angular/material/input';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
   selector: 'aspect-editor-droplist-wizard-dialog',
@@ -27,7 +35,6 @@ import {
     MatButtonModule,
     RichTextEditorComponent,
     MatDividerModule,
-    OptionListPanelComponent,
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
@@ -37,7 +44,13 @@ import {
     MatExpansionModule,
     MatCheckboxModule,
     MatToolbarModule,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    CdkDrag,
+    CdkDropList,
+    NgForOf,
+    MatInputModule,
+    TextFieldModule,
+    MatIconModule
   ],
   template: `
     <div mat-dialog-title>Assistent: Drag & Drop einseitig</div>
@@ -46,7 +59,7 @@ import {
         <mat-radio-group [(ngModel)]="options.templateVariant">
           <mat-radio-button [value]="'classic'">Zuordnung</mat-radio-button>
           <mat-radio-button [value]="'2pages'">Zuordnung (2-seitig)</mat-radio-button>
-          <mat-radio-button [value]="'2pages-images'">Zuordnung Bilder (2-seitig)</mat-radio-button>
+          <!--          <mat-radio-button [value]="'2pages-images'">Zuordnung Bilder (2-seitig)</mat-radio-button>-->
           <mat-radio-button [value]="'sort'">Sortieren</mat-radio-button>
         </mat-radio-group>
       </mat-toolbar>
@@ -60,7 +73,8 @@ import {
           <mat-label>ungefähre Länge der Elemente</mat-label>
           <mat-select [(ngModel)]="options.optionWidth">
             <mat-option *ngIf="options.targetLabelAlignment === 'column'"
-                        [value]="'long'">lang (< 8 Wörter)</mat-option>
+                        [value]="'long'">lang (< 8 Wörter)
+            </mat-option>
             <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
             <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
             <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
@@ -73,7 +87,8 @@ import {
           <mat-label>ungefähre Länge der Zielbeschriftungen</mat-label>
           <mat-select [(ngModel)]="options.targetWidth">
             <mat-option *ngIf="options.targetLabelAlignment === 'column'"
-                        [value]="'long'">lang (< 8 Wörter)</mat-option>
+                        [value]="'long'">lang (< 8 Wörter)
+            </mat-option>
             <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
             <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
             <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
@@ -131,14 +146,6 @@ import {
         <aspect-rich-text-editor [(content)]="options.text3" [style.min-height.px]="300"
                                  [placeholder]="'Quelle'" [preventAutoFocus]="true">
         </aspect-rich-text-editor>
-      } @else if (options.templateVariant == '2pages-images') {
-        <mat-form-field [style.width.px]="300">
-          <mat-label>Größe der Bilder</mat-label>
-          <mat-select [(ngModel)]="options.imageWidth">
-            <mat-option [value]="'small'">150px x 150px</mat-option>
-            <mat-option [value]="'medium'">200px x 200px</mat-option>
-          </mat-select>
-        </mat-form-field>
       }
 
       <ng-template #introText>
@@ -153,10 +160,19 @@ import {
         <aspect-rich-text-editor [(content)]="options.headingSourceList" [showReducedControls]="true"
                                  [style.min-height.px]="200" [preventAutoFocus]="true"></aspect-rich-text-editor>
         <h4>Elemente</h4>
-        <aspect-option-list-panel [textFieldLabel]="'Neues Element'"
-                                  [itemList]="options.options"
-                                  [localMode]="true">
-        </aspect-option-list-panel>
+        @if (options.templateVariant === '2pages') {
+          <mat-checkbox [(ngModel)]="options.srcUseImages">Bilder</mat-checkbox>
+        }
+        @if (options.templateVariant === '2pages' && options.srcUseImages) {
+          <mat-radio-group [(ngModel)]="options.imageSize">
+            <mat-radio-button [value]="'small'">150px x 150px</mat-radio-button>
+            <mat-radio-button [value]="'medium'">200px x 200px</mat-radio-button>
+          </mat-radio-group>
+        }
+        <ng-container
+          *ngTemplateOutlet="elementInputs; context: { list: options.options,
+                                                       useImages: options.srcUseImages }">
+        </ng-container>
       </ng-template>
       <ng-template #targetList>
         <h3>Ziellisten</h3>
@@ -164,10 +180,47 @@ import {
         <aspect-rich-text-editor [(content)]="options.headingTargetLists" [showReducedControls]="true"
                                  [style.min-height.px]="200" [preventAutoFocus]="true"></aspect-rich-text-editor>
         <h4>Zielbeschriftungen</h4>
-        <aspect-option-list-panel [textFieldLabel]="'Neue Zielbeschriftung'"
-                                  [itemList]="options.targetLabels"
-                                  [localMode]="true">
-        </aspect-option-list-panel>
+        @if (options.templateVariant === '2pages') {
+          <mat-checkbox [(ngModel)]="options.targetUseImages">Bilder</mat-checkbox>
+        }
+        <ng-container
+          *ngTemplateOutlet="elementInputs; context: { list: options.targetLabels,
+                                                       useImages: options.targetUseImages }">
+        </ng-container>
+      </ng-template>
+
+      <ng-template #elementInputs let-list="list" let-useImages="useImages">
+        @if (options.templateVariant !== '2pages' || !useImages) {
+          <mat-form-field appearance="outline">
+            <textarea #newItem matInput cdkTextareaAutosize type="text"
+                      (keydown.enter)="$event.stopPropagation(); $event.preventDefault();"
+                      (keyup.enter)="list.push(newItem.value); newItem.select()"></textarea>
+            <button mat-icon-button matSuffix color="primary"
+                    [disabled]="newItem.value === ''"
+                    (click)="list.push(newItem.value); newItem.select()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-form-field>
+        } @else {
+          <button mat-stroked-button (click)="imageUpload.click();">Bild hochladen</button>
+          <input type="file" hidden accept="image/*" #imageUpload id="button-image-upload"
+                 (change)="loadImage(list, imageUpload)">
+        }
+        <div class="drop-list" cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="drop($event)">
+          <div *ngFor="let item of list; let i = index" cdkDrag cdkDragLockAxis="y" class="drop-list-option">
+            @if (useImages) {
+              <img [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
+            } @else {
+              {{ item }}
+            }
+            <button mat-icon-button color="primary" (click)="editItem(list, i)">
+              <mat-icon>build</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="removeListItem(list, i)">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
       </ng-template>
     </div>
     <div mat-dialog-actions>
@@ -180,35 +233,52 @@ import {
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
-    .mat-mdc-dialog-content > mat-form-field {align-self: flex-start;}
-    mat-toolbar {min-height: 60px;}
-    mat-toolbar mat-radio-group {display: flex; gap: 10px;}
-    /*:host ::ng-deep .editor-control-panel {transform: scale(0.9);} !* TODO *!*/
-  `
+  styleUrl: 'droplist.dialog.component.css'
 })
 export class DroplistWizardDialogComponent {
-  options: ClassicTemplateOptions & SortTemplateOptions & TwoPageTemplateOptions & TwoPageImagesTemplateOptions;
+  options: ClassicTemplateOptions & SortTemplateOptions & TwoPageTemplateOptions;
 
-  constructor() {
+  constructor(private dialogService: DialogService) {
     this.options = {
-      templateVariant: 'classic',
+      templateVariant: '2pages',
       targetLabelAlignment: 'column',
       text1: 'Frage',
       text2: 'Situierung',
       text3: 'Quelle',
       headingSourceList: 'Elementliste',
-      options: [],
+      options: ['aaa', 'bbb'],
       optionWidth: 'short',
       headingTargetLists: 'Ziele',
       targetWidth: 'short',
-      targetLabels: [],
+      targetLabels: ['ziel 1', 'ziel 2'],
       numbering: false,
-      imageWidth: 'medium',
-      labelsBelow: false
+      imageSize: 'medium',
+      labelsBelow: false,
+      srcUseImages: false,
+      targetUseImages: false
     };
+  }
+
+  async loadImage(list: string[], eventTarget: HTMLInputElement): Promise<void> {
+    const imgSrc = await FileService.readFileAsText(eventTarget.files?.[0] as File, true);
+    list.push(imgSrc);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.options.options, event.previousIndex, event.currentIndex);
+  }
+
+  editItem(list: string[], i: number) {
+    this.dialogService.showLabelEditDialog({ text: list[i] })
+      .subscribe((result: Label) => {
+        if (result) {
+          this.options.options[i] = result.text;
+        }
+      });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  removeListItem(list: string[], i: number) {
+    list.splice(i, 1);
   }
 }

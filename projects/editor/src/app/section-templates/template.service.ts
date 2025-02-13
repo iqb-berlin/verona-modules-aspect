@@ -19,8 +19,9 @@ import { MathTableWizardDialogComponent } from 'editor/src/app/section-templates
 import { Text3WizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text3.dialog.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import {
-  DragNDropValueObject, PositionedUIElement, TextImageLabel, TextLabel, UIElementType
+  PositionedUIElement, TextImageLabel, TextLabel, UIElementType
 } from 'common/interfaces';
+import { Page, PageProperties } from 'common/models/page';
 import * as TextBuilders from 'editor/src/app/section-templates/builders/text-builders';
 import * as TextInputBuilders from 'editor/src/app/section-templates/builders/text-input-builders';
 import * as RadioBuilders from 'editor/src/app/section-templates/builders/radio-builders';
@@ -28,13 +29,12 @@ import * as DroplistBuilders from 'editor/src/app/section-templates/builders/dro
 import * as AudioBuilders from 'editor/src/app/section-templates/builders/audio-builders';
 import * as GeometryBuilders from 'editor/src/app/section-templates/builders/geometry-builders';
 import * as MathtableBuilders from 'editor/src/app/section-templates/builders/mathtable-builders';
-import { CONSTANTS } from './constants';
 import {
   DroplistTemplateOptions,
   isClassicTemplate,
-  isSortTemplate, isTwoPageImagesTemplate, isTwoPageTemplate
+  isSortTemplate, isTwoPageTemplate
 } from 'editor/src/app/section-templates/droplist-interfaces';
-import { Page, PageProperties } from 'common/models/page';
+import { CONSTANTS } from './constants';
 
 @Injectable({
   providedIn: 'root'
@@ -199,20 +199,18 @@ export class TemplateService {
           this.dialog.open(DroplistWizardDialogComponent, { autoFocus: false })
             .afterClosed().subscribe((result: DroplistTemplateOptions) => {
               if (isClassicTemplate(result)) {
-                resolve(DroplistBuilders.createDroplistSection(result.targetLabelAlignment, result.text1, result.headingSourceList,
-                                                               result.options, result.optionWidth,
-                                                               result.headingTargetLists, result.targetWidth,
-                                                               result.targetLabels, this.idService));
+                resolve(DroplistBuilders.createDroplistSection(result.targetLabelAlignment, result.text1,
+                                                               result.headingSourceList, result.options,
+                                                               result.optionWidth, result.headingTargetLists,
+                                                               result.targetWidth, result.targetLabels,
+                                                               this.idService));
               }
               if (isSortTemplate(result)) {
-                resolve(DroplistBuilders.createSortlistSection(result.text1, result.headingSourceList, result.options, result.optionWidth,
-                                                               result.numbering, this.idService));
+                resolve(DroplistBuilders.createSortlistSection(result.text1, result.headingSourceList, result.options,
+                                                               result.optionWidth, result.numbering, this.idService));
               }
               if (isTwoPageTemplate(result)) {
                 resolve(DroplistBuilders.createTwopageSection(result, this.idService));
-              }
-              if (isTwoPageImagesTemplate(result)) {
-                resolve(DroplistBuilders.createTwopageImagesSection(result, this.idService));
               }
             });
           break;

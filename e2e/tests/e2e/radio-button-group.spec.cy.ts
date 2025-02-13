@@ -51,7 +51,7 @@ describe('Radio button group element', { testIsolation: false }, () => {
         .should('exist');
     });
 
-    it('checks radio button in the third group, and checks that other options are vcrossed out ', () => {
+    it('checks radio button in the third group, and checks that other options are crossed out ', () => {
       cy.contains('.radio-button-label', 'EE').click();
       cy.get('mat-radio-button.strike')
         .contains('.radio-button-label', 'FF')

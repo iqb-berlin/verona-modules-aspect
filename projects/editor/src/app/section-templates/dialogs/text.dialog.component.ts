@@ -28,17 +28,7 @@ import { MatButtonModule } from '@angular/material/button';
       <mat-divider></mat-divider>
 
       <h3>Markieren</h3>
-      <div class="radios">
-        <mat-checkbox [(ngModel)]="highlightableYellow">
-          {{'propertiesPanel.highlightableYellow' | translate }}
-        </mat-checkbox>
-        <mat-checkbox [(ngModel)]="highlightableTurquoise">
-          {{'propertiesPanel.highlightableTurquoise' | translate }}
-        </mat-checkbox>
-        <mat-checkbox [(ngModel)]="highlightableOrange">
-          {{'propertiesPanel.highlightableOrange' | translate }}
-        </mat-checkbox>
-      </div>
+      <mat-checkbox [(ngModel)]="allowMarking">Markieren zur Texterschließung erlauben</mat-checkbox>
 
       <mat-divider></mat-divider>
 
@@ -49,7 +39,7 @@ import { MatButtonModule } from '@angular/material/button';
     </div>
     <div mat-dialog-actions>
       <button mat-button
-              [mat-dialog-close]="{ text1, text2, highlightableOrange, highlightableTurquoise, highlightableYellow }">
+              [mat-dialog-close]="{ text1, text2, allowMarking }">
         {{'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
@@ -73,7 +63,8 @@ export class TextWizardDialogComponent {
     'Hier steht der Text.</span></p>';
 
   text2: string = '';
-  highlightableOrange: boolean = false;
-  highlightableTurquoise: boolean = false;
-  highlightableYellow: boolean = false;
+  allowMarking: boolean = false;
+  // highlightableOrange: boolean = false;
+  // highlightableTurquoise: boolean = false;
+  // highlightableYellow: boolean = false;
 }

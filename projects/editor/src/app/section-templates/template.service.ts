@@ -89,13 +89,10 @@ export class TemplateService {
             .afterClosed().subscribe((result: {
               text1: string,
               text2: string,
-              highlightableOrange: boolean,
-              highlightableTurquoise: boolean,
-              highlightableYellow: boolean
+              allowMarking: boolean
             }) => {
               if (result) {
-                resolve(TextBuilders.createTextSection(result.text1, result.text2, result.highlightableOrange,
-                                                       result.highlightableTurquoise, result.highlightableYellow,
+                resolve(TextBuilders.createTextSection(result.text1, result.text2, result.allowMarking,
                                                        this.idService));
               }
             });

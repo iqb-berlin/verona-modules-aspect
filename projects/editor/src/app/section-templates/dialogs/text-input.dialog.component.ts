@@ -40,7 +40,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
       <h3>Anzahl Antwortfelder</h3>
       <mat-form-field class="align-start">
-        <input matInput type="number" min="1" max="9" [(ngModel)]="answerCount">
+        <input matInput type="number" min="1" max="9" [(ngModel)]="answerCount" (change)="updateSubQuestions()">
       </mat-form-field>
 
       <mat-divider></mat-divider>
@@ -55,19 +55,30 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         </mat-select>
       </mat-form-field>
 
+      <mat-checkbox [(ngModel)]="numberingWithText" (change)="updateSubQuestions()">
+        Nummerierung mit Text erweitern
+      </mat-checkbox>
+
+      @for (text of subQuestions; track $index) {
+        <mat-form-field appearance="outline">
+          <mat-label>Text {{$index + 1}}</mat-label>
+          <textarea matInput cdkTextareaAutosize type="text" [(ngModel)]="subQuestions[$index]"></textarea>
+        </mat-form-field>
+      }
+
       <mat-divider></mat-divider>
 
       <h3>Antwortfeldgröße</h3>
       <div class="row">
-        <mat-radio-group [(ngModel)]="useTextAreas">
+        <mat-radio-group [(ngModel)]="multilineInputs">
           <mat-radio-button [value]="false">Einzeilig</mat-radio-button>
           <mat-radio-button [value]="true">Mehrzeilig</mat-radio-button>
         </mat-radio-group>
 
-        <ng-container *ngIf="!useTextAreas">
+        <ng-container *ngIf="!multilineInputs">
           <mat-form-field [style]="'width: 270px;'">
             <mat-label>Länge der Antworten</mat-label>
-            <mat-select [(ngModel)]="fieldLength" [disabled]="useTextAreas">
+            <mat-select [(ngModel)]="fieldLength" [disabled]="multilineInputs">
               <mat-option [value]="'large'">lang (<12 Wörter)</mat-option>
               <mat-option [value]="'medium'">mittel (<7 Wörter)</mat-option>
               <mat-option [value]="'small'">kurz (<3 Wörter)</mat-option>
@@ -75,11 +86,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
             </mat-select>
           </mat-form-field>
         </ng-container>
-        <ng-container *ngIf="useTextAreas">
+        <ng-container *ngIf="multilineInputs">
           <mat-form-field [style]="'width: 270px;'">
             <mat-label>Erwartete Zeichenanzahl</mat-label>
             <input matInput type="number" maxlength="4"
-                   [(ngModel)]="expectedCharsCount" [disabled]="!useTextAreas">
+                   [(ngModel)]="expectedCharsCount" [disabled]="!multilineInputs">
           </mat-form-field>
         </ng-container>
       </div>
@@ -91,7 +102,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     </div>
     <div mat-dialog-actions>
       <button mat-button
-              [mat-dialog-close]="{ text, answerCount, useTextAreas, numbering, fieldLength, expectedCharsCount, useMathFields }">
+              [mat-dialog-close]="{ text, answerCount, multilineInputs:multilineInputs, numbering, fieldLength,
+                                    expectedCharsCount, useMathFields, numberingWithText, subQuestions }">
         {{ 'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
@@ -108,9 +120,24 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 export class InputWizardDialogComponent {
   text: string = '';
   answerCount: number = 1;
-  useTextAreas: boolean = false;
   numbering: 'latin' | 'decimal' | 'bullets' | 'none' = 'latin';
+  numberingWithText: boolean = false;
+  subQuestions: string[] = [];
   fieldLength: 'very-small' | 'small' | 'medium' | 'large' = 'large';
+  multilineInputs: boolean = false;
   expectedCharsCount: number = 90;
   useMathFields: boolean = false;
+
+  updateSubQuestions() {
+    if (!this.numberingWithText) {
+      this.subQuestions = [];
+    } else {
+      const subQuestionLength = this.subQuestions.length;
+      if (this.answerCount > subQuestionLength) {
+        this.subQuestions = this.subQuestions.concat(new Array<string>(this.answerCount - subQuestionLength).fill(''));
+      } else {
+        this.subQuestions = this.subQuestions.slice(0, this.answerCount);
+      }
+    }
+  }
 }

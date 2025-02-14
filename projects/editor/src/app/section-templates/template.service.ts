@@ -122,7 +122,9 @@ export class TemplateService {
               numbering: 'latin' | 'decimal' | 'bullets' | 'none',
               fieldLength: 'very-small' | 'small' | 'medium' | 'large',
               expectedCharsCount: number,
-              useMathFields: boolean
+              useMathFields: boolean,
+              numberingWithText: boolean,
+              subQuestions: string[]
             }) => {
               if (result) resolve(TextInputBuilders.createInputSection(result, this.idService));
             });

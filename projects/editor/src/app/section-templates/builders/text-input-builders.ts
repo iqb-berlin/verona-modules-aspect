@@ -6,7 +6,8 @@ import { IDService } from 'editor/src/app/services/id.service';
 
 export function createInputSection(config: { text: string, answerCount: number, useTextAreas: boolean,
   numbering: 'latin' | 'decimal' | 'bullets' | 'none', fieldLength: 'very-small' | 'small' | 'medium' | 'large',
-  expectedCharsCount: number, useMathFields: boolean }, idService: IDService): Section {
+  expectedCharsCount: number, useMathFields: boolean, numberingWithText: boolean, subQuestions: string[] },
+                                   idService: IDService): Section {
   const useNumbering = config.answerCount > 1 && config.numbering !== 'none';
 
   const sectionElements: PositionedUIElement[] = [
@@ -15,7 +16,7 @@ export function createInputSection(config: { text: string, answerCount: number, 
       {
         gridRow: 1,
         gridColumn: 1,
-        gridColumnRange: useNumbering ? 2 : 1,
+        gridColumnRange: (useNumbering && !config.numberingWithText) ? 2 : 1,
         marginBottom: { value: config.useTextAreas ? 10 : 0, unit: 'px' }
       },
       { text: config.text },
@@ -26,14 +27,16 @@ export function createInputSection(config: { text: string, answerCount: number, 
   const numberingChars : string[] = prepareNumberingChars(config.answerCount, config.numbering);
   for (let i = 0; i < config.answerCount; i++) {
     if (useNumbering) {
+      let numberingText = `${numberingChars[i]}`;
+      if (config.numberingWithText) {
+        numberingText += ` ${config.subQuestions[i]}`;
+      }
       sectionElements.push(
         TemplateService.createElement(
           'text',
-          { gridRow: i + 2, gridColumn: 1, marginTop: { value: 16, unit: 'px' } },
-          { text: `${numberingChars[i]}` },
-          idService
-        )
-      );
+          { gridRow: 2 + (config.numberingWithText ? i * 2 : i), gridColumn: 1, marginTop: { value: 16, unit: 'px' } },
+          { text: numberingText },
+          idService));
     }
     let marginBottom = config.useTextAreas ? -6 : -25;
     if (i === config.answerCount - 1) marginBottom = config.useTextAreas ? 10 : 0;
@@ -42,8 +45,8 @@ export function createInputSection(config: { text: string, answerCount: number, 
         config.useTextAreas ? `text-area${config.useMathFields ? '-math' : ''}` :
           `${config.useMathFields ? 'math' : 'text'}-field`,
         {
-          gridRow: i + 2,
-          gridColumn: useNumbering ? 2 : 1,
+          gridRow: 2 + (config.numberingWithText ? 1 + i * 2 : i),
+          gridColumn: (useNumbering && !config.numberingWithText) ? 2 : 1,
           marginBottom: { value: marginBottom, unit: 'px' }
         },
         {
@@ -70,8 +73,8 @@ export function createInputSection(config: { text: string, answerCount: number, 
   }
 
   const section = new Section({
-    ...useNumbering && { autoColumnSize: false },
-    ...useNumbering && { gridColumnSizes: [{ value: 25, unit: 'px' }, { value: 1, unit: 'fr' }] }
+    ...(useNumbering && !config.numberingWithText) && { autoColumnSize: false },
+    ...(useNumbering && !config.numberingWithText) && { gridColumnSizes: [{ value: 25, unit: 'px' }, { value: 1, unit: 'fr' }] }
   } as SectionProperties, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;

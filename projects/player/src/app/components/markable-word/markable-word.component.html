@@ -12,6 +12,7 @@
                                   markingRange?.value?.first === id &&
                                   markingRange?.value?.second === null"
       [style.background-color]="color && (!markingRange?.value ||
+                                         (markingRange?.value?.second !== null) ||
                                          (markColor === 'delete') ||
                                          (markingRange?.value?.first !== id && markingRange?.value?.second === null)) ?
                                          color: null"

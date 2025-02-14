@@ -3,10 +3,26 @@ import { addList, connectLists, dragTo } from './droplist-util';
 describe('Droplist element', { testIsolation: false }, () => {
   it('creates several droplists with only-one and replacement', () => {
     cy.openEditor();
-    addList('Startliste 1', ['AAA'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste1');
-    addList('Startliste 2', ['BBB'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste2');
-    addList('Startliste 3', ['CCC'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste3');
-    addList('Zielliste', [], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Zielliste');
+    addList('Startliste 1', ['AAA'], {
+      highlightReceivingDropList: true,
+      onlyOneItem: true,
+      allowReplacement: true
+    }, 'Startliste1');
+    addList('Startliste 2', ['BBB'], {
+      highlightReceivingDropList: true,
+      onlyOneItem: true,
+      allowReplacement: true
+    }, 'Startliste2');
+    addList('Startliste 3', ['CCC'], {
+      highlightReceivingDropList: true,
+      onlyOneItem: true,
+      allowReplacement: true
+    }, 'Startliste3');
+    addList('Zielliste', [], {
+      highlightReceivingDropList: true,
+      onlyOneItem: true,
+      allowReplacement: true
+    }, 'Zielliste');
 
     connectLists('Startliste1', 'Zielliste');
     connectLists('Startliste2', 'Startliste3');

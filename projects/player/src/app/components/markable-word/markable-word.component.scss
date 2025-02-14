@@ -3,26 +3,26 @@
 }
 
 @mixin selectionAnimation($animation) {
-  animation: $animation 1s;
+  animation: $animation 1.5s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-play-state: running;
 }
 
 @keyframes yellowColorChange {
-  10% { background: #f9f871; }
+  50% { background: #f9f871; }
 }
 
 @keyframes turquoiseColorChange {
-  10% { background: #9de8eb; }
+  50% { background: #9de8eb; }
 }
 
 @keyframes orangeColorChange {
-  10% { background: #ffa06a; }
+  50% { background: #ffa06a; }
 }
 
 @keyframes deleteColorChange {
-  10% { background: lightgrey; }
+  50% { background: lightgrey; }
 }
 
 .is-selected-yellow {

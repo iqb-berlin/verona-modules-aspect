@@ -74,6 +74,7 @@ import { ValueChangeElement } from 'common/interfaces';
     </ng-template>
   `,
   styles: [
+    ':host {display: inline-block;}',
     '.wrapper {display: flex; flex-direction: row;}',
     '.wrapper button {align-self: end; border-radius: 50%; margin-left: 10px;}',
     'table {border-spacing: 0; border-collapse: collapse;}',
@@ -195,8 +196,8 @@ export class MathTableComponent extends ElementComponent implements OnInit {
   private createMultiplicationModel(): MathTableRow[] {
     if (this.elementModel.terms.length < 2) return [];
     const width = Math.max(this.elementModel.terms[0].length + this.elementModel.terms[1].length + 3,
-      this.elementModel.result.length,
-      this.elementModel.resultHelperRow.length);
+                           this.elementModel.result.length,
+                           this.elementModel.resultHelperRow.length);
     return [
       MathTableComponent.createMultiplicationRow(width, this.elementModel.terms[0], this.elementModel.terms[1]),
       MathTableComponent.createNormalRow(width, ''),

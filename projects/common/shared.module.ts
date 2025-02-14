@@ -20,7 +20,7 @@ import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
@@ -96,35 +96,6 @@ import { DragImageComponent } from './components/input-elements/drop-list/drag-i
 import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    DragDropModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    TranslateModule,
-    MatSliderModule,
-    MatButtonToggleModule,
-    MatProgressSpinnerModule,
-    MathEditorModule,
-    MatListModule,
-    CdkConnectedOverlay,
-    CdkOverlayOrigin,
-    DraggableDirective,
-    ImageFullscreenDirective,
-    AreaSegmentComponent,
-    AreaRowHeightPipe,
-    TextMarkingButtonSvgComponent
-  ],
   declarations: [
     ButtonComponent,
     TriggerComponent,
@@ -224,8 +195,38 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     TextImagePanelComponent,
     TextAreaMathComponent,
     MathTableComponent
+  ], imports: [
+    CommonModule,
+    DragDropModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    TranslateModule,
+    MatSliderModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MathEditorModule,
+    MatListModule,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin,
+    DraggableDirective,
+    ImageFullscreenDirective,
+    AreaSegmentComponent,
+    AreaRowHeightPipe,
+    TextMarkingButtonSvgComponent],
+  providers: [
+    provideHttpClient(withInterceptorsFromDi())
   ]
 })
+
 export class SharedModule {}
 
 export abstract class APIService {

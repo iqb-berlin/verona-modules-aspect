@@ -23,10 +23,22 @@
   "eslintConfig": {
     "extends": "@iqb/eslint-config",
     "parserOptions": {
-    "ignores": ["**/dist/*.*", "**/scripts/*.*", "**/test-data/*.*", "./dist/*", "./node_modules"],
+      "ignores": [
+        "**/dist/*.*",
+        "**/scripts/*.*",
+        "**/test-data/*.*",
+        "./dist/*",
+        "./node_modules"
+      ],
       "project": "./tsconfig.json"
     },
-    "ignorePatterns": ["**/dist/*.*", "**/scripts/*.*", "**/test-data/*.*", "./dist/**/*", "./node_modules/**/*"],
+    "ignorePatterns": [
+      "**/dist/*.*",
+      "**/scripts/*.*",
+      "**/test-data/*.*",
+      "./dist/**/*",
+      "./node_modules/**/*"
+    ],
     "rules": {
       "function-call-argument-newline": "OFF",
       "@typescript-eslint/indent": [
@@ -76,17 +88,17 @@
     ]
   },
   "dependencies": {
-    "@angular/animations": "^17.3.9",
+    "@angular/animations": "^18.2.13",
     "@angular/cdk": "^16.2.1",
-    "@angular/common": "^17.3.9",
-    "@angular/compiler": "^17.3.9",
-    "@angular/core": "^17.3.9",
-    "@angular/elements": "^17.3.9",
-    "@angular/forms": "^17.3.9",
+    "@angular/common": "^18.2.13",
+    "@angular/compiler": "^18.2.13",
+    "@angular/core": "^18.2.13",
+    "@angular/elements": "^18.2.13",
+    "@angular/forms": "^18.2.13",
     "@angular/material": "^16.2.1",
-    "@angular/platform-browser": "^17.3.9",
-    "@angular/platform-browser-dynamic": "^17.3.9",
-    "@angular/router": "^17.3.9",
+    "@angular/platform-browser": "^18.2.13",
+    "@angular/platform-browser-dynamic": "^18.2.13",
+    "@angular/router": "^18.2.13",
     "@iqb/responses": "^3.3.2",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
@@ -125,9 +137,9 @@
     "zone.js": "~0.14.6"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.3.7",
-    "@angular/cli": "^17.3.7",
-    "@angular/compiler-cli": "^17.3.9",
+    "@angular-devkit/build-angular": "^18.2.14",
+    "@angular/cli": "^18.2.14",
+    "@angular/compiler-cli": "^18.2.13",
     "@iqb/eslint-config": "^2.1.1",
     "@types/jasmine": "~5.1.4",
     "@types/katex": "^0.16.7",

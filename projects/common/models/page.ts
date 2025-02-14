@@ -41,8 +41,11 @@ export class Page {
       if (page?.alwaysVisible !== undefined) this.alwaysVisible = page.alwaysVisible;
       if (page?.alwaysVisiblePagePosition !== undefined) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
       if (page?.alwaysVisibleAspectRatio !== undefined) this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
-      this.sections = page?.sections
-        .map(section => new Section(section, idService)) || [new Section(undefined, idService)];
+      if (page?.sections !== undefined) {
+        this.sections = page.sections.map(section => new Section(section, idService));
+      } else {
+        this.sections = [new Section(undefined, idService)];
+      }
     }
   }
 

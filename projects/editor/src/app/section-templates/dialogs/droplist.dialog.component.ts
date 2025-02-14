@@ -8,13 +8,23 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
-import { NgIf } from '@angular/common';
+import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
-import { DragNDropValueObject, TextLabel } from 'common/interfaces';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {
+  CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray
+} from '@angular/cdk/drag-drop';
+import {
+  ClassicTemplateOptions, SortTemplateOptions, TwoPageTemplateOptions
+} from 'editor/src/app/section-templates/droplist-interfaces';
+import { Label } from 'common/interfaces';
+import { FileService } from 'common/services/file.service';
+import { MatInputModule } from '@angular/material/input';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
   selector: 'aspect-editor-droplist-wizard-dialog',
@@ -25,7 +35,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatButtonModule,
     RichTextEditorComponent,
     MatDividerModule,
-    OptionListPanelComponent,
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
@@ -34,138 +43,242 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     NgIf,
     MatExpansionModule,
     MatCheckboxModule,
-    MatToolbarModule
+    MatToolbarModule,
+    NgTemplateOutlet,
+    CdkDrag,
+    CdkDropList,
+    NgForOf,
+    MatInputModule,
+    TextFieldModule,
+    MatIconModule
   ],
   template: `
     <div mat-dialog-title>Assistent: Drag & Drop einseitig</div>
     <div mat-dialog-content>
-
       <mat-toolbar>
-        <mat-radio-group [(ngModel)]="templateVariant">
+        <mat-radio-group [(ngModel)]="options.templateVariant">
           <mat-radio-button [value]="'classic'">Zuordnung</mat-radio-button>
+          <mat-radio-button [value]="'2pages'">Zuordnung (2-seitig)</mat-radio-button>
+          <!--          <mat-radio-button [value]="'2pages-images'">Zuordnung Bilder (2-seitig)</mat-radio-button>-->
           <mat-radio-button [value]="'sort'">Sortieren</mat-radio-button>
         </mat-radio-group>
       </mat-toolbar>
 
-      @if (templateVariant === 'classic') {
-          <h3>Ausrichtung</h3>
-          <mat-radio-group [(ngModel)]="alignment">
-            <mat-radio-button [value]="'column'">Elementliste über Ziellisten</mat-radio-button>
-            <mat-radio-button [value]="'row'">
-              Elementliste neben Ziellisten (nur für kurze Elemente oder einseitige Aufgaben)
-            </mat-radio-button>
-          </mat-radio-group>
+      @if (options.templateVariant === 'classic') {
+        <ng-container *ngTemplateOutlet="introText"></ng-container>
+        <mat-divider></mat-divider>
 
-          <mat-divider></mat-divider>
+        <ng-container *ngTemplateOutlet="startList"></ng-container>
+        <mat-form-field [style.width.px]="300">
+          <mat-label>ungefähre Länge der Elemente</mat-label>
+          <mat-select [(ngModel)]="options.optionWidth">
+            <mat-option *ngIf="options.targetLabelAlignment === 'column'"
+                        [value]="'long'">lang (< 8 Wörter)
+            </mat-option>
+            <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
+            <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
+            <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-divider></mat-divider>
 
-          <h3>Frage/Instruktion</h3>
-          <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
-                                   [placeholder]="'Hier steht die Fragestellung.'" [preventAutoFocus]="true">
-          </aspect-rich-text-editor>
+        <ng-container *ngTemplateOutlet="targetList"></ng-container>
+        <mat-form-field [style.width.px]="350">
+          <mat-label>ungefähre Länge der Zielbeschriftungen</mat-label>
+          <mat-select [(ngModel)]="options.targetWidth">
+            <mat-option *ngIf="options.targetLabelAlignment === 'column'"
+                        [value]="'long'">lang (< 8 Wörter)
+            </mat-option>
+            <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
+            <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
+            <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-          <mat-divider></mat-divider>
+        <h3>Ausrichtung</h3>
+        <mat-radio-group [(ngModel)]="options.targetLabelAlignment">
+          <mat-radio-button [value]="'column'">Elementliste über Ziellisten</mat-radio-button>
+          <mat-radio-button [value]="'row'">
+            Elementliste neben Ziellisten (nur für kurze Elemente oder einseitige Aufgaben)
+          </mat-radio-button>
+        </mat-radio-group>
+      } @else if (options.templateVariant == 'sort') {
+        <ng-container *ngTemplateOutlet="introText"></ng-container>
+        <mat-divider></mat-divider>
 
-          <h3>Überschrift Elementliste</h3>
-          <aspect-rich-text-editor [(content)]="headingSourceList" [showReducedControls]="true"
-                                   [style.min-height.px]="200" [preventAutoFocus]="true"></aspect-rich-text-editor>
+        <ng-container *ngTemplateOutlet="startList"></ng-container>
+        <mat-form-field [style.width.px]="300">
+          <mat-label>ungefähre Länge der Elemente</mat-label>
+          <mat-select [(ngModel)]="options.optionWidth">
+            <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
+            <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
+            <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-divider></mat-divider>
 
-          <mat-divider></mat-divider>
+        <h3>Nummerierung</h3>
+        <mat-checkbox [(ngModel)]="options.numbering">
+          Nummerierung aktivieren
+        </mat-checkbox>
+      } @else if (options.templateVariant == '2pages') {
+        <ng-container *ngTemplateOutlet="introText"></ng-container>
+        <mat-divider></mat-divider>
 
-          <h3>Elemente</h3>
-          <aspect-option-list-panel [textFieldLabel]="'Neues Element'"
-                                    [itemList]="options"
-                                    [localMode]="true">
-          </aspect-option-list-panel>
-          <mat-form-field [style.width.px]="300">
-            <mat-label>ungefähre Länge der Elemente</mat-label>
-            <mat-select [(ngModel)]="optionLength">
-              <mat-option *ngIf="alignment === 'column'" [value]="'long'">lang (< 8 Wörter)</mat-option>
-              <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
-              <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
-              <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <ng-container *ngTemplateOutlet="startList"></ng-container>
+        <mat-divider></mat-divider>
 
-          <mat-divider></mat-divider>
+        <h3>Situierung</h3>
+        <aspect-rich-text-editor [(content)]="options.text2" [style.min-height.px]="300"
+                                 [placeholder]="'Hier steht die Situierung.'" [preventAutoFocus]="true">
+        </aspect-rich-text-editor>
 
-          <h3>Überschrift Ziellisten</h3>
-          <aspect-rich-text-editor [(content)]="headingTargetLists" [showReducedControls]="true"
-                                   [style.min-height.px]="200" [preventAutoFocus]="true"></aspect-rich-text-editor>
-          <mat-divider></mat-divider>
+        <ng-container *ngTemplateOutlet="targetList"></ng-container>
+        <mat-divider></mat-divider>
 
-          <h3>Zielbeschriftungen</h3>
-          <aspect-option-list-panel [textFieldLabel]="'Neue Zielbeschriftung'"
-                                    [itemList]="targetLabels"
-                                    [localMode]="true">
-          </aspect-option-list-panel>
-          <mat-form-field [style.width.px]="350">
-            <mat-label>ungefähre Länge der Zielbeschriftungen</mat-label>
-            <mat-select [(ngModel)]="targetLength">
-              <mat-option *ngIf="alignment === 'column'" [value]="'long'">lang (< 8 Wörter)</mat-option>
-              <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
-              <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
-              <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
-            </mat-select>
-          </mat-form-field>
-      } @else {
-          <h3>Frage/Instruktion</h3>
-          <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
-                                   [placeholder]="'Hier steht die Fragestellung.'"
-                                   [preventAutoFocus]="true"></aspect-rich-text-editor>
+        <h3>Ausrichtung</h3>
+        <mat-radio-group [(ngModel)]="options.labelsBelow">
+          <mat-radio-button [value]="false">Zieltext ueber Ablage</mat-radio-button>
+          <mat-radio-button [value]="true">Ablage ueber Zieltext</mat-radio-button>
+        </mat-radio-group>
 
-          <mat-divider></mat-divider>
-
-          <h3>Nummerierung</h3>
-          <mat-checkbox [(ngModel)]="numbering">
-            Nummerierung aktivieren
-          </mat-checkbox>
-
-          <mat-divider></mat-divider>
-
-          <h3>Elemente</h3>
-          <aspect-option-list-panel [textFieldLabel]="'Neues Element'"
-                                    [itemList]="options"
-                                    [localMode]="true">
-          </aspect-option-list-panel>
-          <mat-form-field [style.width.px]="300">
-            <mat-label>ungefähre Länge der Elemente</mat-label>
-            <mat-select [(ngModel)]="optionLength">
-              <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
-              <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
-              <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <h3>Quelle</h3>
+        <aspect-rich-text-editor [(content)]="options.text3" [style.min-height.px]="300"
+                                 [placeholder]="'Quelle'" [preventAutoFocus]="true">
+        </aspect-rich-text-editor>
       }
+
+      <ng-template #introText>
+        <h3>Frage/Instruktion</h3>
+        <aspect-rich-text-editor [(content)]="options.text1" [style.min-height.px]="300"
+                                 [placeholder]="'Hier steht die Fragestellung.'" [preventAutoFocus]="true">
+        </aspect-rich-text-editor>
+      </ng-template>
+      <ng-template #startList>
+        <h3>Elementliste</h3>
+        <h4>Überschrift</h4>
+        <aspect-rich-text-editor [(content)]="options.headingSourceList" [showReducedControls]="true"
+                                 [style.min-height.px]="200" [preventAutoFocus]="true"></aspect-rich-text-editor>
+        <h4>Elemente</h4>
+        @if (options.templateVariant === '2pages') {
+          <mat-checkbox [(ngModel)]="options.srcUseImages">Bilder</mat-checkbox>
+        }
+        @if (options.templateVariant === '2pages' && options.srcUseImages) {
+          <mat-radio-group [(ngModel)]="options.imageSize">
+            <mat-radio-button [value]="'small'">150px x 150px</mat-radio-button>
+            <mat-radio-button [value]="'medium'">200px x 200px</mat-radio-button>
+          </mat-radio-group>
+        }
+        <ng-container
+          *ngTemplateOutlet="elementInputs; context: { list: options.options,
+                                                       useImages: options.srcUseImages }">
+        </ng-container>
+      </ng-template>
+      <ng-template #targetList>
+        <h3>Ziellisten</h3>
+        <h4>Überschrift</h4>
+        <aspect-rich-text-editor [(content)]="options.headingTargetLists" [showReducedControls]="true"
+                                 [style.min-height.px]="200" [preventAutoFocus]="true"></aspect-rich-text-editor>
+        <h4>Zielbeschriftungen</h4>
+        @if (options.templateVariant === '2pages') {
+          <mat-checkbox [(ngModel)]="options.targetUseImages">Bilder</mat-checkbox>
+        }
+        <ng-container
+          *ngTemplateOutlet="elementInputs; context: { list: options.targetLabels,
+                                                       useImages: options.targetUseImages }">
+        </ng-container>
+      </ng-template>
+
+      <ng-template #elementInputs let-list="list" let-useImages="useImages">
+        @if (options.templateVariant !== '2pages' || !useImages) {
+          <mat-form-field appearance="outline">
+            <textarea #newItem matInput cdkTextareaAutosize type="text"
+                      (keydown.enter)="$event.stopPropagation(); $event.preventDefault();"
+                      (keyup.enter)="list.push(newItem.value); newItem.select()"></textarea>
+            <button mat-icon-button matSuffix color="primary"
+                    [disabled]="newItem.value === ''"
+                    (click)="list.push(newItem.value); newItem.select()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-form-field>
+        } @else {
+          <button mat-stroked-button (click)="imageUpload.click();">Bild hochladen</button>
+          <input type="file" hidden accept="image/*" #imageUpload id="button-image-upload"
+                 (change)="loadImage(list, imageUpload)">
+        }
+        <div class="drop-list" cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="drop($event)">
+          <div *ngFor="let item of list; let i = index" cdkDrag cdkDragLockAxis="y" class="drop-list-option">
+            @if (useImages) {
+              <img [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
+            } @else {
+              {{ item }}
+            }
+            <button mat-icon-button color="primary" (click)="editItem(list, i)">
+              <mat-icon>build</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="removeListItem(list, i)">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
+      </ng-template>
     </div>
     <div mat-dialog-actions>
       <button mat-button
-              [disabled]="(templateVariant == 'classic' && (!optionLength || !targetLength)) ||
-                          (templateVariant == 'sort' && !optionLength)"
-              [mat-dialog-close]="{ templateVariant, alignment, text1, headingSourceList, options, optionLength,
-                                    headingTargetLists, targetLength, targetLabels, numbering }">
+              [disabled]="(options.templateVariant == 'classic' && (!options.optionWidth || !options.targetWidth)) ||
+                          (options.templateVariant == 'sort' && !options.optionWidth)"
+              [mat-dialog-close]="options">
         {{ 'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
-    .mat-mdc-dialog-content > mat-form-field {align-self: flex-start;}
-    mat-toolbar {min-height: 60px;}
-    mat-toolbar mat-radio-group {display: flex; gap: 10px;}
-  `
+  styleUrl: 'droplist.dialog.component.css'
 })
 export class DroplistWizardDialogComponent {
-  templateVariant: 'classic' | 'sort' = 'classic';
-  alignment: 'column' | 'row' = 'column';
-  text1: string = '';
-  headingSourceList: string = '';
-  options: DragNDropValueObject[] = [];
-  optionLength: 'long' | 'medium' | 'short' | 'very-short' | undefined;
-  headingTargetLists: string = '';
-  targetLength: 'long' | 'medium' | 'short' | 'very-short' | undefined;
-  targetLabels: TextLabel[] = [];
-  numbering: boolean = false;
+  options: ClassicTemplateOptions & SortTemplateOptions & TwoPageTemplateOptions;
+
+  constructor(private dialogService: DialogService) {
+    this.options = {
+      templateVariant: '2pages',
+      targetLabelAlignment: 'column',
+      text1: 'Frage',
+      text2: 'Situierung',
+      text3: 'Quelle',
+      headingSourceList: 'Elementliste',
+      options: ['aaa', 'bbb'],
+      optionWidth: 'short',
+      headingTargetLists: 'Ziele',
+      targetWidth: 'short',
+      targetLabels: ['ziel 1', 'ziel 2'],
+      numbering: false,
+      imageSize: 'medium',
+      labelsBelow: false,
+      srcUseImages: false,
+      targetUseImages: false
+    };
+  }
+
+  async loadImage(list: string[], eventTarget: HTMLInputElement): Promise<void> {
+    const imgSrc = await FileService.readFileAsText(eventTarget.files?.[0] as File, true);
+    list.push(imgSrc);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.options.options, event.previousIndex, event.currentIndex);
+  }
+
+  editItem(list: string[], i: number) {
+    this.dialogService.showLabelEditDialog({ text: list[i] })
+      .subscribe((result: Label) => {
+        if (result) {
+          this.options.options[i] = result.text;
+        }
+      });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  removeListItem(list: string[], i: number) {
+    list.splice(i, 1);
+  }
 }

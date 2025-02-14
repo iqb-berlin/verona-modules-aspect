@@ -35,7 +35,7 @@ describe('Text element', { testIsolation: false }, () => {
       cy.get('aspect-markable-word').eq(35).click();
     });
 
-    it('removes the second highlight selection of a text ', () => {
+    it('removes the second highlight selection', () => {
       cy.get('aspect-text-group-element')
         .find('button.marking-button').eq(2).click();
       cy.get('aspect-markable-word').eq(30).click();

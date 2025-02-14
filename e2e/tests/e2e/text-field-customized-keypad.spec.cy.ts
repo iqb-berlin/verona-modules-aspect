@@ -39,9 +39,10 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen').click();
       cy.get('aspect-keypad').contains('1').should('exist');
       cy.get('aspect-keypad').contains('7').should('not.exist');
+
     });
 
-    it('types the wrong answer in the first text field', () => {
+    it('types a wrong answer in the first text field', () => {
       cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen')
         .find('input')
         .clear()
@@ -59,7 +60,7 @@ describe('Text field element', { testIsolation: false }, () => {
         .find('mat-error').should('not.exist');
     });
 
-    it('types the wrong answer with allowed characters in the second text field', () => {
+    it('types a wrong answer with allowed characters in the second text field', () => {
       cy.contains('mat-form-field', 'Eingabefeld mit Bearbeitung anderer Zeichen verhindern')
         .find('input').click();
       cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen')
@@ -70,7 +71,7 @@ describe('Text field element', { testIsolation: false }, () => {
         .clear()
         .type('5555{enter}');
       cy.contains('mat-form-field', 'Eingabefeld mit Bearbeitung anderer Zeichen verhindern')
-        .find('mat-error').should('exist');
+        .find('mat-error').should('contain.text','Eingabe entspricht nicht der Vorgabe');
     });
 
     it('should not type non allowed characters in the second text field', () => {
@@ -79,7 +80,7 @@ describe('Text field element', { testIsolation: false }, () => {
         .clear()
         .type('7777{enter}');
       cy.contains('mat-form-field', 'Eingabefeld mit Bearbeitung anderer Zeichen verhindern')
-        .find('mat-error').contains('7777').should('not.exist');
+        .find('mat-error').should('contain.text', 'Eingabe erforderlich');
     });
   });
 });

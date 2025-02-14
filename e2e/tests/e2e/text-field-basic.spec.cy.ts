@@ -7,7 +7,7 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.openEditor();
     });
 
-    it('creates a numeric textfield', () => {
+    it('creates a numeric text field', () => {
       addElement('Eingabefeld');
       addProperties('Ziffern eingabe', { required: true });
       addSettings(4, 20, 'z.B. 1', { clearable: true });
@@ -36,7 +36,7 @@ describe('Text field element', { testIsolation: false }, () => {
         .find('mat-error').should('exist');
     });
 
-    it('types the wrong answer', () => {
+    it('types a wrong answer', () => {
       cy.contains('mat-form-field', 'Ziffern eingabe')
         .find('input')
         .clear()

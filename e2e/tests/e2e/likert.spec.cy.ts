@@ -36,7 +36,7 @@ describe('Likert element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/likert.json');
     });
 
-    it('selects options for each rows', () => {
+    it('selects option for each row', () => {
       cy.contains('aspect-likert', 'Optionentabelle1')
         .find('mat-radio-button').eq(0).click();
       cy.contains('aspect-likert', 'Optionentabelle1')

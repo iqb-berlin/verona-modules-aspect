@@ -31,7 +31,7 @@ describe('Droplist element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/droplist-permanent.json');
     });
 
-    it('drags from and to permanent placeholder CC list', () => {
+    it('drags from watermark permanent placeholder to goal list, and drags it back', () => {
       dragTo('PlatzhalterlisteCC', 'AAA', 'Zielliste');
       cy.getByAlias('Zielliste').children()
         .should('have.length', 1);
@@ -45,7 +45,7 @@ describe('Droplist element', { testIsolation: false }, () => {
         .should('have.length', 2);
     });
 
-    it('drags from and to permanent placeholder list', () => {
+    it('drags from permanent placeholder to goal list, and drags it back', () => {
       dragTo('Platzhalterliste', 'CCC', 'Zielliste');
       cy.getByAlias('Zielliste').children()
         .should('have.length', 1);
@@ -59,7 +59,7 @@ describe('Droplist element', { testIsolation: false }, () => {
         .should('have.length', 2);
     });
 
-    it('drags from and to standard list', () => {
+    it('drags from common list to goal list, and drags it back', () => {
       dragTo('Standardliste', 'EEE', 'Zielliste');
       cy.getByAlias('Zielliste').children()
         .should('have.length', 1);

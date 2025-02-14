@@ -42,6 +42,8 @@ describe('Slider element', { testIsolation: false }, () => {
       // TODO invoke do not work
       cy.get('aspect-slider:contains("Schieberegler mit Pflichtfeld")')
         .find('input[type="range"]').invoke('val', 50).trigger('change');
+      cy.get('aspect-slider:contains("Schieberegler mit Pflichtfeld")')
+        .find('input[type="range"]').invoke('show');
     });
   });
 });

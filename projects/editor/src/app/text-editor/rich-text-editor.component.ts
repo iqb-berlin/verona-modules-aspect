@@ -44,6 +44,7 @@ import { ParagraphExtension } from './extensions/paragraph-extension';
 import { FontSize } from './extensions/font-size';
 import { BulletListExtension } from './extensions/bullet-list';
 import { OrderedListExtension } from './extensions/ordered-list';
+import { HorizontalRuleExtension } from './extensions/horizontal-rule';
 import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
@@ -115,6 +116,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     InlineImage,
     BlockImage,
     Blockquote,
+    HorizontalRuleExtension,
     Tooltip,
     MathFormulaExtension(this.injector)
   ];
@@ -339,6 +341,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   toggleBlockquote(): void {
     this.editor.commands.toggleBlockquote();
+  }
+
+  insertLine(shortLine?: boolean): void {
+    shortLine ? this.editor.commands.setHorizontalRuleShort() : this.editor.commands.setHorizontalRule();
   }
 
   insertToggleButton(): void {

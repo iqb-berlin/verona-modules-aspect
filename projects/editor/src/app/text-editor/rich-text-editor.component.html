@@ -185,6 +185,12 @@
 
   <fieldset class="input-group">
     <legend>Sonderelemente</legend>
+    <aspect-combo-button [inputType]="'list'"
+                         [availableValues]="['kurze Variante']"
+                         [tooltip]="'horizontale Linie'" [icon]="'horizontal_rule'"
+                         (applySelection)="insertLine()"
+                         (selectionChanged)="insertLine(true)">
+    </aspect-combo-button>
     <button *ngIf="!showReducedControls" mat-icon-button
             matTooltip="Tooltip" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('tooltip')"

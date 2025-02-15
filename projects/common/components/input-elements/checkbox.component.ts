@@ -13,7 +13,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <mat-checkbox #checkbox class="example-margin"
                       [formControl]="elementFormControl"
                       [checked]="$any(elementModel.value)"
-                      [class.cross-out]="elementModel.crossOutChecked && elementFormControl.value"
+                      [class.strike]="elementModel.crossOutChecked && elementFormControl.value"
                       [style.color]="elementModel.styling.fontColor"
                       [style.font-size.px]="elementModel.styling.fontSize"
                       [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
@@ -41,21 +41,18 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       font-size: inherit;
       font-weight: inherit;
     }
-    :host ::ng-deep mat-checkbox .mdc-form-field {
-      align-items: flex-start;
-    }
-    :host ::ng-deep mat-checkbox .mdc-form-field .mdc-label {
-      padding-top: calc((var(--mdc-checkbox-state-layer-size) - 18px) / 2);
-    }
     .error-message {
       position: absolute;
       display: block;
       margin-top: 5px;
       font-size: 75%;
     }
-    .cross-out {
+    .strike {
       text-decoration: line-through;
       text-decoration-thickness: 3px;
+    }
+    :host ::ng-deep .strike .mdc-form-field.mat-internal-form-field {
+      text-decoration: inherit;
     }
     .svg-checkbox {width: 100%; height: 100%;}
     .svg-checkbox:hover {background-color: lightgrey;}

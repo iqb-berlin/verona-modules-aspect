@@ -15,6 +15,7 @@ import { InstantiationEror } from 'common/errors';
 export class CheckboxElement extends InputElement implements CheckboxProperties {
   type: UIElementType = 'checkbox';
   label: string = 'Beschriftung';
+  imgSrc: string | null = null;
   value: boolean = false;
   crossOutChecked: boolean = false;
   styling: BasicStyles;
@@ -26,6 +27,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
     super({ type: 'checkbox', ...element }, idService);
     if (isCheckboxProperties(element)) {
       this.label = element.label;
+      this.imgSrc = element.imgSrc;
       this.value = element.value;
       this.crossOutChecked = element.crossOutChecked;
       this.styling = { ...element.styling };
@@ -73,6 +75,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
 
 export interface CheckboxProperties extends InputElementProperties {
   label: string;
+  imgSrc: string | null;
   value: boolean;
   crossOutChecked: boolean;
   styling: BasicStyles;
@@ -81,6 +84,7 @@ export interface CheckboxProperties extends InputElementProperties {
 function isCheckboxProperties(blueprint?: Partial<CheckboxProperties>): blueprint is CheckboxProperties {
   if (!blueprint) return false;
   return blueprint.label !== undefined &&
+    blueprint.imgSrc !== undefined &&
     blueprint.crossOutChecked !== undefined &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
 }

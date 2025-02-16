@@ -58,6 +58,11 @@ export class ElementModelPropertiesComponent implements OnDestroy {
       });
   }
 
+  async changeImgSrc(): Promise<void> {
+    const image = await FileService.loadImage();
+    this.updateModel.emit({ property: 'imgSrc', value: image.content });
+  }
+
   async changeMediaSrc(elementType: string) {
     let media = { name: '', content: '' };
     switch (elementType) {

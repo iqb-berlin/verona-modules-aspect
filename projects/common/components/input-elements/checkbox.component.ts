@@ -12,6 +12,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            [style.background-color]="elementModel.styling.backgroundColor">
         <mat-checkbox #checkbox class="example-margin"
                       [formControl]="elementFormControl"
+                      [class.image]="elementModel.imgSrc"
                       [checked]="$any(elementModel.value)"
                       [class.strike]="elementModel.crossOutChecked && elementFormControl.value"
                       [style.color]="elementModel.styling.fontColor"
@@ -20,7 +21,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                       [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                       [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                       (click)="elementModel.readOnly ? $event.preventDefault() : null">
-          <div [innerHTML]="elementModel.label | safeResourceHTML"></div>
+          @if (elementModel.imgSrc) {
+            <img [src]="elementModel.imgSrc" alt="Bildplatzhalter">
+          } @else {
+            <div [innerHTML]="elementModel.label | safeResourceHTML"></div>
+          }
         </mat-checkbox>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                    class="error-message">
@@ -37,6 +42,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [`
+    :host ::ng-deep mat-checkbox.image .mdc-form-field.mat-internal-form-field {
+      flex-direction: column-reverse;
+    }
     :host ::ng-deep .mdc-form-field {
       font-size: inherit;
       font-weight: inherit;

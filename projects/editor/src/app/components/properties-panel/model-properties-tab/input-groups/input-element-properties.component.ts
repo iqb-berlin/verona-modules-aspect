@@ -15,6 +15,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
         <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
         <textarea matInput type="text"
                   [value]="$any(combinedProperties.label)"
+                  [disabled]="$any(combinedProperties.imgSrc)"
                   (input)="updateModel.emit({ property: 'label', value: $any($event.target).value })">
             </textarea>
       </mat-form-field>

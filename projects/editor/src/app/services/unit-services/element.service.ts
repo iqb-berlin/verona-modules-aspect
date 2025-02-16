@@ -261,6 +261,8 @@ export class ElementService {
       case 'button':
       case 'dropdown':
       case 'checkbox':
+        if (element.imgSrc) break; // Do nothing if image is set, as changing the image is not possible
+      // eslint-disable-next-line no-fallthrough
       case 'radio':
         this.dialogService.showTextEditDialog(element.label as string).subscribe((result: string) => {
           if (result) {

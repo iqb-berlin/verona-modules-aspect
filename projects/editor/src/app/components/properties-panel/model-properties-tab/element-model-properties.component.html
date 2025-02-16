@@ -42,6 +42,14 @@
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
+  <button *ngIf="combinedProperties.imgSrc !== undefined"
+          class="media-src-button" [style.align-self]="'center'"
+          mat-fab color="primary"
+          [matTooltip]="'Bild statt Textbeschriftung'" [matTooltipPosition]="'right'"
+          (click)="changeImgSrc()">
+    <mat-icon>image</mat-icon>
+  </button>
+
   <button *ngIf="combinedProperties.src"
           class="media-src-button" [style.align-self]="'center'"
           mat-fab color="primary"

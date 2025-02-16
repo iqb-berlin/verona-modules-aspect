@@ -315,3 +315,5 @@
                [style.font-size.px]="defaultFontSize"
                (ngModelChange)="contentChange.emit($event)">
 </tiptap-editor>
+{{ editor.storage.characterCount.characters() }} Zeichen /
+{{ editor.storage.characterCount.words() }} {{ editor.storage.characterCount.words() == 1 ? 'Wort' : 'Wörter' }}

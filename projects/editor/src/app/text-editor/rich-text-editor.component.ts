@@ -50,6 +50,7 @@ import DropListComponentExtension from './angular-node-views/drop-list-component
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
 import CheckboxComponentExtension from './angular-node-views/checkbox-component-extension';
 import MathFormulaExtension from './angular-node-views/math-formula-extension';
+import { CharacterCount } from '@tiptap/extension-character-count';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -117,6 +118,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     BlockImage,
     Blockquote,
     HorizontalRuleExtension,
+    CharacterCount,
     Tooltip,
     MathFormulaExtension(this.injector)
   ];

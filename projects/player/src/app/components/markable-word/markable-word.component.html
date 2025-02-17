@@ -11,9 +11,8 @@
       [class.is-selected-delete]="markColor === 'delete' &&
                                   markingRange?.value?.first === id &&
                                   markingRange?.value?.second === null"
-      [style.background-color]="color && (!markingRange?.value ||
-                                         (markingRange?.value?.second !== null) ||
-                                         (markColor === 'delete') ||
-                                         (markingRange?.value?.first !== id && markingRange?.value?.second === null)) ?
-                                         color: null"
+      [style.background-color]="markingRange?.value?.first === id &&
+                                markingRange?.value?.second === null ? null : color"
       (click)="onWordClick()">{{text}}</span>
+
+

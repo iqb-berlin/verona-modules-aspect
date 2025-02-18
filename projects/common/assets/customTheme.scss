@@ -15,7 +15,7 @@ $aspect-accent: mat.m2-define-palette(mat.$m2-cyan-palette, 900);
 $aspect-theme: mat.m2-define-light-theme((
   color: (primary: $aspect-primary, accent: $aspect-accent)
 ));
-aspect-editor-dynamic-overlay {
+aspect-editor-dynamic-overlay, aspect-player {
   @include mat.checkbox-color($aspect-theme);
   @include mat.radio-color($aspect-theme);
   @include mat.slider-color($aspect-theme);

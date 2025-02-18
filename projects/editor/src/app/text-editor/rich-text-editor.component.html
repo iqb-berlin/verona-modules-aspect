@@ -185,18 +185,6 @@
 
   <fieldset class="input-group">
     <legend>Sonderelemente</legend>
-    <aspect-combo-button [inputType]="'list'"
-                         [availableValues]="['kurze Linie (20%)']"
-                         [tooltip]="'horizontale Linie'" [icon]="'horizontal_rule'"
-                         (applySelection)="insertLine()"
-                         (selectionChanged)="insertLine(true)">
-    </aspect-combo-button>
-    <button *ngIf="!showReducedControls" mat-icon-button
-            matTooltip="Tooltip" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
-            [class.active]="editor.isActive('tooltip')"
-            (click)="showTooltipPropertiesDialog()">
-      <mat-icon>announcement</mat-icon>
-    </button>
     <button mat-icon-button class="special-chars-button" matTooltip="Sonderzeichen" [matTooltipShowDelay]="300"
             [matMenuTriggerFor]="specialCharsMenu">
       <mat-icon>emoji_symbols</mat-icon>
@@ -264,14 +252,27 @@
       <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
       <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
     </mat-menu>
+    <button mat-icon-button matTooltip="Formel" [matTooltipShowDelay]="300"
+            (click)="insertFormula()">
+      <mat-icon>functions</mat-icon>
+    </button>
+    <aspect-combo-button *ngIf="!showReducedControls"
+                         [inputType]="'list'"
+                         [availableValues]="['kurze Linie (20%)']"
+                         [tooltip]="'horizontale Linie'" [icon]="'horizontal_rule'"
+                         (applySelection)="insertLine()"
+                         (selectionChanged)="insertLine(true)">
+    </aspect-combo-button>
     <button *ngIf="!showReducedControls" mat-icon-button matTooltip="Zitat" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('blockquote')"
             (click)="toggleBlockquote()">
       <mat-icon>format_quote</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Formel" [matTooltipShowDelay]="300"
-            (click)="insertFormula()">
-      <mat-icon>functions</mat-icon>
+    <button *ngIf="!showReducedControls" mat-icon-button
+            matTooltip="Tooltip" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+            [class.active]="editor.isActive('tooltip')"
+            (click)="showTooltipPropertiesDialog()">
+      <mat-icon>announcement</mat-icon>
     </button>
     <aspect-combo-button *ngIf="!clozeMode && !showReducedControls"
                          [inputType]="'color'" [selectedValue]="selectedAnchorColor"

@@ -17,6 +17,7 @@ import { GeometryWizardDialogComponent } from 'editor/src/app/section-templates/
 import { DroplistWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/droplist.dialog.component';
 import { MathTableWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/mathtable.dialog.component';
 import { Text3WizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text3.dialog.component';
+import { CheckboxWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/checkbox.dialog.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import {
   PositionedUIElement, TextImageLabel, TextLabel, UIElementType
@@ -25,6 +26,7 @@ import { Page, PageProperties } from 'common/models/page';
 import * as TextBuilders from 'editor/src/app/section-templates/builders/text-builders';
 import * as TextInputBuilders from 'editor/src/app/section-templates/builders/text-input-builders';
 import * as RadioBuilders from 'editor/src/app/section-templates/builders/radio-builders';
+import * as CheckboxBuilders from 'editor/src/app/section-templates/builders/checkbox-builders';
 import * as DroplistBuilders from 'editor/src/app/section-templates/builders/droplist-builders';
 import * as AudioBuilders from 'editor/src/app/section-templates/builders/audio-builders';
 import * as GeometryBuilders from 'editor/src/app/section-templates/builders/geometry-builders';
@@ -155,6 +157,14 @@ export class TemplateService {
               if (result) {
                 resolve(RadioBuilders.createLikertSection(result.text1, result.text2, result.options, result.rows,
                                                           this.idService));
+              }
+            });
+          break;
+        case 'checkbox':
+          this.dialog.open(CheckboxWizardDialogComponent, {})
+            .afterClosed().subscribe((result: { text1: string, options: string[], useImages: boolean }) => {
+              if (result) {
+                resolve(CheckboxBuilders.createCheckboxSection(result.text1, result.options, result.useImages, this.idService));
               }
             });
           break;

@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
+import { CONSTANTS } from '../constants';
 
 @Component({
   selector: 'aspect-editor-text-wizard-dialog',
@@ -50,21 +51,11 @@ import { MatButtonModule } from '@angular/material/button';
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3 {text-decoration: underline;}
     .input1 {min-height: 400px;}
-    .radios {display: flex; flex-direction: row; gap: 10px;}
     .text2 {min-height: 200px;}
   `
 })
 export class TextWizardDialogComponent {
-  text1: string = '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" ' +
-    'indentsize="20"><span style="font-size: 24px"><strong>Hier steht die Überschrift.</strong></span></p>' +
-    '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 20px; margin-top: 0" indent="0" indentsize="20">' +
-    '<span style="font-size: 20px">Hier steht der/die Autor*in.</span></p><p style="padding-left: 0px;' +
-    'text-indent: 0px; margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">' +
-    'Hier steht der Text.</span></p>';
-
+  text1: string = CONSTANTS.textStimulus;
   text2: string = '';
   allowMarking: boolean = false;
-  // highlightableOrange: boolean = false;
-  // highlightableTurquoise: boolean = false;
-  // highlightableYellow: boolean = false;
 }

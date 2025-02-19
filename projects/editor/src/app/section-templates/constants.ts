@@ -312,5 +312,6 @@ x+OxVt3IOEJVBYX5biQSRVGs1it9KL2U4Ha76TwVxDRNq2z50AKTWZgCRKOxTJ8WAkXLvvqamvnw3rx8
 w4f7TbfRmI6/JUCB18WYiuKU9fQy3/OVjS4aMJqmMW3aNHbu3Ek0Gs0hvktiCZ3Rw4oYWpyHx22VB1LS0tzErh1bWbJkSSpe/U0AI4SgtrYWv9/P/v37sw
 ZQRREU+7wpKUKaJu2n/Kz540p+9dyP+eKi+1i0aNF5S9Vwzl9IP7MRiUR46qmnePTRR1mwYAHz589n5MiR1i4oi93qOi0tLezbt4/169ezd+9eHnroIRYs
 WEBVVdV5dyVxsf7cm2EYbN26leeff56VK1cyfvx4pkyZQkFBAYFAgD179rBjx45U5nnvvfeYOXPmebUSRzq8uEPXdXny5En5yCOPSFVVpaqqsrCwMNV6E
-ELIhQsXykAgcEHvS1wqfyCwvb2d1157jdbWVkpLS6murqa0tJTi4mIqKipSpcSFGv8LfyImffebTbQAAAAASUVORK5CYII=`
+ELIhQsXykAgcEHvS1wqfyCwvb2d1157jdbWVkpLS6murqa0tJTi4mIqKipSpcSFGv8LfyImffebTbQAAAAASUVORK5CYII=`,
+  textStimulus: '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 24px"><strong>Hier steht die Überschrift.</strong></span></p><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 20px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">Hier steht der/die Autor*in.</span></p><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">Hier steht der Text.</span></p><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"></p><hr style="width: 20%; margin-left: 0;" short="true"><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" indentsize="20"><span style="font-size: 18px">Platzhalter Fußnote</span></p>'
 };

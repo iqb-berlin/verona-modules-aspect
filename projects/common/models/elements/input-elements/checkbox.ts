@@ -36,6 +36,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
         throw new InstantiationEror('Error at Checkbox instantiation', element);
       }
       if (element?.label !== undefined) this.label = element.label;
+      if (element?.imgSrc !== undefined) this.imgSrc = element.imgSrc;
       if (element?.value !== undefined) this.value = element.value;
       if (element?.crossOutChecked !== undefined) this.crossOutChecked = element.crossOutChecked;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({

@@ -160,7 +160,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/player/src/styles.css",
+              "projects/player/src/styles.scss",
               "projects/common/assets/customTheme.scss"
             ],
             "scripts": []
@@ -233,7 +233,7 @@
               }
             ],
             "styles": [
-              "projects/player/src/styles.css"
+              "projects/player/src/styles.scss"
             ],
             "scripts": [],
             "fileReplacements": [

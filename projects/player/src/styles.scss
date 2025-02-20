@@ -1,0 +1,136 @@
+body {
+  overflow: hidden;
+  margin: 0 !important;
+}
+
+.inline-container{
+  display: inline;
+}
+
+.active-anchor {
+  scroll-margin: 100px 0;
+}
+
+.active-anchor > mark, .active-anchor > aspect-marked[style*="background-color: rgb(249, 248, 113)"],
+.active-nested-anchor > mark, .active-nested-anchor > aspect-marked[style*="background-color: rgb(249, 248, 113)"],
+.active-anchor aspect-markable-word > span[style*="background-color: rgb(249, 248, 113)"],
+.active-nested-anchor aspect-markable-word > span[style*="background-color: rgb(249, 248, 113)"],
+.active-anchor aspect-markable-delimiter > span[style*="background-color: rgb(249, 248, 113)"],
+.active-nested-anchor aspect-markable-delimiter > span[style*="background-color: rgb(249, 248, 113)"] {
+  background-color: #bfbe57 !important;
+}
+
+
+.active-anchor > mark, .active-anchor > aspect-marked[style*="background-color: rgb(157, 232, 235)"],
+.active-nested-anchor > mark, .active-nested-anchor > aspect-marked[style*="background-color: rgb(157, 232, 235)"],
+.active-anchor aspect-markable-word > span[style*="background-color: rgb(157, 232, 235)"],
+.active-nested-anchor aspect-markable-word > span[style*="background-color: rgb(157, 232, 235)"],
+.active-anchor aspect-markable-delimiter > span[style*="background-color: rgb(157, 232, 235)"],
+.active-nested-anchor aspect-markable-delimiter > span[style*="background-color: rgb(157, 232, 235)"] {
+  background-color: #80bdbf !important;
+}
+
+
+.active-anchor > mark, .active-anchor > aspect-marked[style*="background-color: rgb(255, 160, 106)"],
+.active-nested-anchor > mark, .active-nested-anchor > aspect-marked[style*="background-color: rgb(255, 160, 106)"],
+.active-anchor aspect-markable-word > span[style*="background-color: rgb(255, 160, 106)"],
+.active-nested-anchor aspect-markable-word > span[style*="background-color: rgb(255, 160, 106)"],
+.active-anchor aspect-markable-delimiter > span[style*="background-color: rgb(255, 160, 106)"],
+.active-nested-anchor aspect-markable-delimiter > span[style*="background-color: rgb(255, 160, 106)"] {
+  background-color: #bf7850 !important;
+}
+
+aspect-anchor:not(.active-anchor):not(.active-nested-anchor) {
+  background-color: unset !important;
+}
+
+@mixin selectionAnimation($animation) {
+  animation: $animation 1.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+
+@keyframes yellowDarkColorChange {
+  50% { background: #bfbe57; }
+}
+
+@keyframes turquoiseDarkColorChange {
+  50% { background: #80bdbf; }
+}
+
+@keyframes orangeDarkColorChange {
+  50% { background: #bf7850; }
+}
+
+@keyframes deleteDarkColorChange {
+  50% { background: grey; }
+}
+
+@keyframes yellowColorChange {
+  50% { background: #f9f871; }
+}
+
+@keyframes turquoiseColorChange {
+  50% { background: #9de8eb; }
+}
+
+@keyframes orangeColorChange {
+  50% { background: #ffa06a; }
+}
+
+@keyframes deleteColorChange {
+  50% { background: lightgrey; }
+}
+
+.is-selected-yellow {
+  @include selectionAnimation(yellowColorChange);
+}
+
+.is-selected-turquoise {
+  @include selectionAnimation(turquoiseColorChange);
+}
+
+.is-selected-orange {
+  @include selectionAnimation(orangeColorChange);
+}
+
+.is-selected-delete {
+  @include selectionAnimation(deleteColorChange);
+}
+
+
+.active-anchor .is-selected-yellow,
+.active-nested-anchor .is-selected-yellow {
+  @include selectionAnimation(yellowDarkColorChange);
+}
+
+
+.active-anchor .is-selected-turquoise,
+.active-nested-anchor .is-selected-turquoise {
+  @include selectionAnimation(turquoiseDarkColorChange);
+}
+
+.active-anchor .is-selected-orange,
+.active-nested-anchor .is-selected-orange {
+  @include selectionAnimation(orangeDarkColorChange);
+}
+
+.active-anchor .is-selected-delete,
+.active-nested-anchor .is-selected-delete {
+  @include selectionAnimation(deleteDarkColorChange);
+}
+
+
+.dragging-active {
+  cursor: grabbing;
+}
+
+.dragging-active * {
+  cursor: inherit !important;
+}
+
+/*Fix underline color to be the same as parent u-element*/
+u>span {
+  text-decoration: underline;
+}

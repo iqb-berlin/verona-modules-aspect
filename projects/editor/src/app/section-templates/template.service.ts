@@ -31,12 +31,17 @@ import * as DroplistBuilders from 'editor/src/app/section-templates/builders/dro
 import * as AudioBuilders from 'editor/src/app/section-templates/builders/audio-builders';
 import * as GeometryBuilders from 'editor/src/app/section-templates/builders/geometry-builders';
 import * as MathtableBuilders from 'editor/src/app/section-templates/builders/mathtable-builders';
+import * as StimulusBuilders from 'editor/src/app/section-templates/builders/stimulus/stimulus-builders';
 import {
   DroplistTemplateOptions,
   isClassicTemplate,
   isSortTemplate, isTwoPageTemplate
 } from 'editor/src/app/section-templates/droplist-interfaces';
 import { CONSTANTS } from './constants';
+import {
+  StimulusWizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/stimulus/stimulus.dialog.component';
+import { EmailStimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -86,6 +91,16 @@ export class TemplateService {
   private createTemplateSections(templateName: string): Promise<Section | [Section, Section]> {
     return new Promise(resolve => {
       switch (templateName) {
+        case 'stimulus':
+          this.dialog.open(StimulusWizardDialogComponent, {})
+            .afterClosed().subscribe((result: EmailStimulusOptions & { variant: 'email' | 'message' }) => {
+              if (result && result.variant === 'email') {
+                resolve(StimulusBuilders.createEmailSection(result, this.idService));
+              } else if (result && result.variant === 'message') {
+                resolve(StimulusBuilders.createMessageSection(result, this.idService));
+              }
+            });
+          break;
         case 'text':
           this.dialog.open(TextWizardDialogComponent, {})
             .afterClosed().subscribe((result: {

@@ -298,7 +298,12 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   copySectionToClipboard() {
-    this.clipboard.copy(JSON.stringify(this.section));
+    this.clipboard.copy(JSON.stringify(this.section, (key, value) => {
+      if (key === 'idService') {
+        return undefined;
+      }
+      return value;
+    }));
     this.messageService.showSuccess('Abschnitt in Zwischenablage kopiert');
   }
 

@@ -22,36 +22,33 @@ export function createTextSection(text1: string, text2: string, allowMarking: bo
   return section;
 }
 
+// Disable linting rules to have smaller code
+/* eslint-disable object-property-newline */
+/* eslint-disable @typescript-eslint/indent */
 // Markieren
-export function createText2Section(text1: string, showHelper: boolean, idService: IDService): Section {
+export function createText2Section(text1: string, showHelper: boolean, markingMode: 'word' | 'range',
+                                   idService: IDService): Section {
   const sectionElements: PositionedUIElement[] = [
-    TemplateService.createElement(
-      'text',
-      {
-        gridRow: 1,
-        gridColumn: 1,
-        gridRowRange: showHelper ? 2 : 1,
-        marginBottom: { value: 40, unit: 'px' }
-      },
-      {
-        text: text1
-      },
-      idService)
+    TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, gridRowRange: showHelper ? 2 : 1,
+                                            marginBottom: { value: 40, unit: 'px' } },
+                                  { text: text1 }, idService)
   ];
   if (showHelper) {
     sectionElements.push(
-      TemplateService.createElement(
-        'button',
-        { gridRow: 1, gridColumn: 2 },
-        {
-          imageSrc: TemplateService.helpTooltipImageSrc,
-          tooltipText: 'Drücke kurz auf den Knopf mit dem Stift. Drücke danach auf den Anfang ' +
-            'eines Wortes. Halte gedrückt und ziehe im Text so weit, wie du markieren möchtest.',
-          tooltipPosition: 'left'
-        },
-        idService)
+      TemplateService.createElement('button', { gridRow: 1, gridColumn: 2 }, {
+        imageSrc: TemplateService.helpTooltipImageSrc,
+        tooltipText: markingMode === 'word' ?
+          'Drücke auf den Knopf mit dem Stift. Drücke dann einzeln auf jedes Wort, das du markieren möchtest.' :
+          'Drücke auf den Knopf mit dem Stift. Drücke dann auf das erste und danach auf das letzte Wort des ' +
+          'Bereichs, den du markieren möchtest.',
+        tooltipPosition: 'left'
+      },
+      idService)
     );
   }
+  sectionElements.push(
+    TemplateService.createElement('marking-panel', { gridRow: 3, gridColumn: 1 }, {}, idService)
+  );
   const section = new Section({
     ...showHelper && { autoColumnSize: false },
     ...showHelper && { gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 45, unit: 'px' }] }

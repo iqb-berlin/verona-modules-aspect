@@ -11,7 +11,7 @@ import { TextWizardDialogComponent } from 'editor/src/app/section-templates/dial
 import { LikertWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/likert.dialog.component';
 import { InputWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text-input.dialog.component';
 import { RadioImagesWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio2.dialog.component';
-import { Text2WizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text2.dialog.component';
+import { MarkingPanelDialogComponent } from 'editor/src/app/section-templates/dialogs/marking-panel.dialog.component';
 import { AudioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/audio.dialog.component';
 import { GeometryWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/geometry.dialog.component';
 import { DroplistWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/droplist.dialog.component';
@@ -37,11 +37,12 @@ import {
   isClassicTemplate,
   isSortTemplate, isTwoPageTemplate
 } from 'editor/src/app/section-templates/droplist-interfaces';
-import { CONSTANTS } from './constants';
 import {
   StimulusWizardDialogComponent
 } from 'editor/src/app/section-templates/dialogs/stimulus/stimulus.dialog.component';
 import { EmailStimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
+import { TextElement } from 'common/models/elements/text/text';
+import { CONSTANTS } from './constants';
 
 @Injectable({
   providedIn: 'root'
@@ -114,12 +115,29 @@ export class TemplateService {
               }
             });
           break;
-        case 'text2':
-          this.dialog.open(Text2WizardDialogComponent, {})
-            .afterClosed().subscribe((result: { text1: string, showHelper: boolean }) => {
-              if (result) resolve(TextBuilders.createText2Section(result.text1, result.showHelper, this.idService));
+        case 'text2': {
+          const availableTextElements = this.unitService.unit.getAllElements('text') as TextElement[];
+          this.dialog.open(MarkingPanelDialogComponent,
+                           { data: { availableTextIDs: availableTextElements.map(text => text.alias) } })
+            .afterClosed()
+            .subscribe((result: {
+              text1: string, showHelper: boolean, markingMode: 'word' | 'range', connectedText: string | undefined
+            }) => {
+              if (result) {
+                const createdSection =
+                  TextBuilders.createText2Section(result.text1, result.showHelper, result.markingMode, this.idService);
+                // This connects an existing text element to the created marking panel
+                if (result.connectedText) {
+                  const createdMarkingPanelID = createdSection.getAllElements('marking-panel')[0].id;
+                  availableTextElements
+                    .filter((el: UIElement) => el.alias === result.connectedText)[0]
+                    .markingPanels.push(createdMarkingPanelID);
+                }
+                resolve(createdSection);
+              }
             });
           break;
+        }
         case 'text3':
           this.dialog.open(Text3WizardDialogComponent, {})
             .afterClosed().subscribe(

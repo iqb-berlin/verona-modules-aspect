@@ -3,25 +3,6 @@ import { PositionedUIElement } from 'common/interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 
-// Stimulus Text
-export function createTextSection(text1: string, text2: string, allowMarking: boolean, idService: IDService): Section {
-  const section = new Section(undefined, idService);
-  section.addElement(TemplateService.createElement(
-    'text',
-    { gridRow: 1, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
-    {
-      text: text1,
-      highlightableOrange: allowMarking,
-      highlightableTurquoise: allowMarking,
-      markingMode: 'range'
-    },
-    idService));
-  section.addElement(TemplateService.createElement('text', { gridRow: 2, gridColumn: 1 },
-                                                   { text: text2, styling: { fontSize: 14, lineHeight: 100 } },
-                                                   idService));
-  return section;
-}
-
 // Disable linting rules to have smaller code
 /* eslint-disable object-property-newline */
 /* eslint-disable @typescript-eslint/indent */

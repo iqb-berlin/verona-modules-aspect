@@ -7,7 +7,6 @@ import { Section } from 'common/models/section';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { UIElement } from 'common/models/elements/element';
-import { TextWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text.dialog.component';
 import { LikertWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/likert.dialog.component';
 import { InputWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text-input.dialog.component';
 import { RadioImagesWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio2.dialog.component';
@@ -40,7 +39,11 @@ import {
 import {
   StimulusWizardDialogComponent
 } from 'editor/src/app/section-templates/dialogs/stimulus/stimulus.dialog.component';
-import { EmailStimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
+import {
+  EmailStimulusOptions,
+  MessageStimulusOptions,
+  TextStimulusOptions
+} from 'editor/src/app/section-templates/stimulus-interfaces';
 import { TextElement } from 'common/models/elements/text/text';
 import { CONSTANTS } from './constants';
 
@@ -93,27 +96,26 @@ export class TemplateService {
     return new Promise(resolve => {
       switch (templateName) {
         case 'stimulus':
-          this.dialog.open(StimulusWizardDialogComponent, {})
-            .afterClosed().subscribe((result: EmailStimulusOptions & { variant: 'email' | 'message' }) => {
-              if (result && result.variant === 'email') {
-                resolve(StimulusBuilders.createEmailSection(result, this.idService));
-              } else if (result && result.variant === 'message') {
-                resolve(StimulusBuilders.createMessageSection(result, this.idService));
-              }
-            });
-          break;
-        case 'text':
-          this.dialog.open(TextWizardDialogComponent, {})
-            .afterClosed().subscribe((result: {
-              text1: string,
-              text2: string,
-              allowMarking: boolean
-            }) => {
-              if (result) {
-                resolve(TextBuilders.createTextSection(result.text1, result.text2, result.allowMarking,
-                                                       this.idService));
-              }
-            });
+          this.dialog.open(StimulusWizardDialogComponent, { autoFocus: 'dialog' })
+            .afterClosed().subscribe(
+              (result: {
+                variant: 'text' | 'email' | 'message',
+                options: TextStimulusOptions | EmailStimulusOptions | MessageStimulusOptions
+              }) => {
+                if (!result) return;
+                switch (result.variant) {
+                  case 'text':
+                    resolve(StimulusBuilders.createTextSection(result.options as TextStimulusOptions, this.idService));
+                    break;
+                  case 'email':
+                    resolve(StimulusBuilders.createEmailSection(result.options as EmailStimulusOptions, this.idService));
+                    break;
+                  case 'message':
+                    resolve(StimulusBuilders.createMessageSection(result.options as MessageStimulusOptions, this.idService));
+                    break;
+                  // no default
+                }
+              });
           break;
         case 'text2': {
           const availableTextElements = this.unitService.unit.getAllElements('text') as TextElement[];

@@ -1,3 +1,9 @@
+export interface TextStimulusOptions {
+  text1: string;
+  text2: string;
+  allowMarking: boolean
+}
+
 export interface EmailStimulusOptions {
   instruction: string;
   from: string;

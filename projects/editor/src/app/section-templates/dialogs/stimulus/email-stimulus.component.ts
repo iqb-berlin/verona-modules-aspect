@@ -34,11 +34,11 @@ import { MatInput } from '@angular/material/input';
     <mat-form-field><mat-label>Empfänger</mat-label><input matInput [(ngModel)]="options.to"></mat-form-field>
     <mat-form-field><mat-label>Betreff</mat-label><input matInput [(ngModel)]="options.subject"></mat-form-field>
 
-    <aspect-rich-text-editor class="input1" [(content)]="options.body"></aspect-rich-text-editor>
+    <aspect-rich-text-editor class="input1" [(content)]="options.body" [preventAutoFocus]="true"></aspect-rich-text-editor>
     <mat-checkbox [(ngModel)]="options.allowMarking">Markieren zur Texterschließung erlauben</mat-checkbox>
 
     <aspect-rich-text-editor class="small-text" [(content)]="options.subText" [showReducedControls]="true"
-                             [placeholder]="'Hier steht die Quelle.'">
+                             [placeholder]="'Hier steht die Quelle.'" [preventAutoFocus]="true">
     </aspect-rich-text-editor>
   `,
   styles: `

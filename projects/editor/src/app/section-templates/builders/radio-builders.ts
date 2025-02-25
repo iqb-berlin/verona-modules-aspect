@@ -1,19 +1,19 @@
-import { TextImageLabel, TextLabel } from 'common/interfaces';
+import { TextImageLabel } from 'common/interfaces';
 import { Section } from 'common/models/section';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
 
-export function createRadioSection(label1: string, label2: string, options: TextLabel[],
-                                   addExtraInput: boolean, text1: string, idService: IDService): Section {
+export function createTextRadioSection(options: TextRadioOptions, idService: IDService): Section {
   const sectionElements = [
     TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
-                                  { text: label1 }, idService),
+                                  { text: options.label1 }, idService),
     TemplateService.createElement('radio', { gridRow: 2, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
-                                  { label: label2, options: options }, idService)
+                                  { label: options.label2, options: options }, idService)
   ];
-  if (addExtraInput) {
+  if (options.addExtraInput) {
     sectionElements.push(
-      TemplateService.createElement('text', { gridRow: 3, gridColumn: 1 }, { text: text1 }, idService));
+      TemplateService.createElement('text', { gridRow: 3, gridColumn: 1 }, { text: options.text1 }, idService));
     sectionElements.push(
       TemplateService.createElement('text-area', { gridRow: 4, gridColumn: 1 }, {}, idService));
   }
@@ -22,18 +22,17 @@ export function createRadioSection(label1: string, label2: string, options: Text
   return section;
 }
 
-export function createRadioImagesSection(label1: string, options: TextLabel[], itemsPerRow: number,
-                                         idService: IDService): Section {
+export function createImageRadioSection(options: ImageRadioOptions, idService: IDService): Section {
   const sectionElements = [
     TemplateService.createElement(
       'text',
       { gridRow: 1, gridColumn: 1, marginBottom: { value: 5, unit: 'px' } },
-      { text: label1 },
+      { text: options.label1 },
       idService),
     TemplateService.createElement(
       'radio-group-images',
       { gridRow: 2, gridColumn: 1 },
-      { label: '', options: options, itemsPerRow: itemsPerRow },
+      { label: '', options: options, itemsPerRow: options.itemsPerRow },
       idService)
   ];
   const section = new Section(undefined, idService);

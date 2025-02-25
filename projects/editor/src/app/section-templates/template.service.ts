@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RadioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio.dialog.component';
+import { RadioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio/radio.dialog.component';
 import { ElementFactory } from 'common/util/element.factory';
 import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { Section } from 'common/models/section';
@@ -9,7 +9,6 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/likert.dialog.component';
 import { InputWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text-input.dialog.component';
-import { RadioImagesWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio2.dialog.component';
 import { MarkingPanelDialogComponent } from 'editor/src/app/section-templates/dialogs/marking-panel.dialog.component';
 import { GeometryWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/geometry.dialog.component';
 import { DroplistWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/droplist.dialog.component';
@@ -18,7 +17,7 @@ import { Text3WizardDialogComponent } from 'editor/src/app/section-templates/dia
 import { CheckboxWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/checkbox.dialog.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import {
-  PositionedUIElement, TextImageLabel, TextLabel, UIElementType
+  PositionedUIElement, TextImageLabel, UIElementType
 } from 'common/interfaces';
 import { Page, PageProperties } from 'common/models/page';
 import * as TextBuilders from 'editor/src/app/section-templates/builders/text-builders';
@@ -43,6 +42,7 @@ import {
   MessageStimulusOptions,
   TextStimulusOptions
 } from 'editor/src/app/section-templates/stimulus-interfaces';
+import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
 import { TextElement } from 'common/models/elements/text/text';
 import { CONSTANTS } from './constants';
 
@@ -178,20 +178,18 @@ export class TemplateService {
           break;
         case 'radio':
           this.dialog.open(RadioWizardDialogComponent, {})
-            .afterClosed().subscribe((result: { label1: string, label2: string, options: TextLabel[],
-              addExtraInput: boolean, text1: string }) => {
-              if (result) {
-                resolve(RadioBuilders.createRadioSection(result.label1, result.label2, result.options,
-                                                         result.addExtraInput, result.text1, this.idService));
-              }
-            });
-          break;
-        case 'radio_images':
-          this.dialog.open(RadioImagesWizardDialogComponent, {})
-            .afterClosed().subscribe((result: { label1: string, options: TextLabel[], itemsPerRow: number }) => {
-              if (result) {
-                resolve(RadioBuilders.createRadioImagesSection(result.label1, result.options, result.itemsPerRow,
-                                                               this.idService));
+            .afterClosed().subscribe((result: {
+              variant: 'text' | 'image',
+              options: TextRadioOptions | ImageRadioOptions
+            }) => {
+              if (!result) return;
+              switch (result.variant) {
+                case 'text':
+                  resolve(RadioBuilders.createTextRadioSection(result.options as TextRadioOptions, this.idService));
+                  break;
+                case 'image':
+                  resolve(RadioBuilders.createImageRadioSection(result.options as ImageRadioOptions, this.idService));
+                // no default
               }
             });
           break;

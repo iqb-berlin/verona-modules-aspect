@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { MessageStimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/message-stimulus.component';
 import { MatActionList, MatListItem } from '@angular/material/list';
 import { TextStimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/text-stimulus.component';
+import { Audio1StimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio1-stimulus.component';
+import { Audio2StimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio2-stimulus.component';
 
 @Component({
   selector: 'aspect-editor-stimulus-wizard-dialog',
@@ -20,7 +22,9 @@ import { TextStimulusComponent } from 'editor/src/app/section-templates/dialogs/
     MessageStimulusComponent,
     MatActionList,
     MatListItem,
-    TextStimulusComponent
+    TextStimulusComponent,
+    Audio1StimulusComponent,
+    Audio2StimulusComponent
   ],
   template: `
     <div mat-dialog-title>Assistent: Stimulus</div>
@@ -30,6 +34,8 @@ import { TextStimulusComponent } from 'editor/src/app/section-templates/dialogs/
           <button mat-list-item (click)="templateVariant = 'text'">Text</button>
           <button mat-list-item (click)="templateVariant = 'email'">Email</button>
           <button mat-list-item (click)="templateVariant = 'message'">Message</button>
+          <button mat-list-item (click)="templateVariant = 'audio1'">Instruktion und Hörtext in einem Audio</button>
+          <button mat-list-item (click)="templateVariant = 'audio2'">Instruktion und Hörtext getrennt</button>
         </mat-action-list>
       }
       @if (templateVariant == 'text') {
@@ -38,6 +44,10 @@ import { TextStimulusComponent } from 'editor/src/app/section-templates/dialogs/
         <aspect-editor-email-stimulus></aspect-editor-email-stimulus>
       } @else if (templateVariant == 'message') {
         <aspect-editor-message-stimulus></aspect-editor-message-stimulus>
+      } @else if (templateVariant == 'audio1') {
+        <aspect-editor-audio1-stimulus></aspect-editor-audio1-stimulus>
+      } @else if (templateVariant == 'audio2') {
+        <aspect-editor-audio2-stimulus></aspect-editor-audio2-stimulus>
       }
     </div>
     <div mat-dialog-actions>
@@ -55,7 +65,9 @@ export class StimulusWizardDialogComponent {
   @ViewChild(TextStimulusComponent) textComp!: TextStimulusComponent;
   @ViewChild(EmailStimulusComponent) emailComp!: EmailStimulusComponent;
   @ViewChild(MessageStimulusComponent) messageComp!: MessageStimulusComponent;
-  templateVariant: 'text' | 'email' | 'message' | undefined;
+  @ViewChild(Audio1StimulusComponent) audio1Comp!: Audio1StimulusComponent;
+  @ViewChild(Audio2StimulusComponent) audio2Comp!: Audio2StimulusComponent;
+  templateVariant: 'text' | 'email' | 'message' | 'audio1' | 'audio2' | undefined;
 
   constructor(private dialogRef: MatDialogRef<StimulusWizardDialogComponent>) {}
 
@@ -65,6 +77,8 @@ export class StimulusWizardDialogComponent {
       case 'text': options = this.textComp.options; break;
       case 'email': options = this.emailComp.options; break;
       case 'message': options = this.messageComp.options; break;
+      case 'audio1': options = this.audio1Comp.options; break;
+      case 'audio2': options = this.audio2Comp.options; break;
       // no default
     }
     this.dialogRef.close({

@@ -11,7 +11,6 @@ import { LikertWizardDialogComponent } from 'editor/src/app/section-templates/di
 import { InputWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text-input.dialog.component';
 import { RadioImagesWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio2.dialog.component';
 import { MarkingPanelDialogComponent } from 'editor/src/app/section-templates/dialogs/marking-panel.dialog.component';
-import { AudioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/audio.dialog.component';
 import { GeometryWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/geometry.dialog.component';
 import { DroplistWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/droplist.dialog.component';
 import { MathTableWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/mathtable.dialog.component';
@@ -27,7 +26,6 @@ import * as TextInputBuilders from 'editor/src/app/section-templates/builders/te
 import * as RadioBuilders from 'editor/src/app/section-templates/builders/radio-builders';
 import * as CheckboxBuilders from 'editor/src/app/section-templates/builders/checkbox-builders';
 import * as DroplistBuilders from 'editor/src/app/section-templates/builders/droplist-builders';
-import * as AudioBuilders from 'editor/src/app/section-templates/builders/audio-builders';
 import * as GeometryBuilders from 'editor/src/app/section-templates/builders/geometry-builders';
 import * as MathtableBuilders from 'editor/src/app/section-templates/builders/mathtable-builders';
 import * as StimulusBuilders from 'editor/src/app/section-templates/builders/stimulus/stimulus-builders';
@@ -40,6 +38,7 @@ import {
   StimulusWizardDialogComponent
 } from 'editor/src/app/section-templates/dialogs/stimulus/stimulus.dialog.component';
 import {
+  Audio1StimulusOptions, Audio2StimulusOptions,
   EmailStimulusOptions,
   MessageStimulusOptions,
   TextStimulusOptions
@@ -99,8 +98,9 @@ export class TemplateService {
           this.dialog.open(StimulusWizardDialogComponent, { autoFocus: 'dialog' })
             .afterClosed().subscribe(
               (result: {
-                variant: 'text' | 'email' | 'message',
-                options: TextStimulusOptions | EmailStimulusOptions | MessageStimulusOptions
+                variant: 'text' | 'email' | 'message' | 'audio1' | 'audio2',
+                options: TextStimulusOptions | EmailStimulusOptions | MessageStimulusOptions |
+                Audio1StimulusOptions | Audio2StimulusOptions
               }) => {
                 if (!result) return;
                 switch (result.variant) {
@@ -108,10 +108,20 @@ export class TemplateService {
                     resolve(StimulusBuilders.createTextSection(result.options as TextStimulusOptions, this.idService));
                     break;
                   case 'email':
-                    resolve(StimulusBuilders.createEmailSection(result.options as EmailStimulusOptions, this.idService));
+                    resolve(StimulusBuilders.createEmailSection(result.options as EmailStimulusOptions,
+                                                                this.idService));
                     break;
                   case 'message':
-                    resolve(StimulusBuilders.createMessageSection(result.options as MessageStimulusOptions, this.idService));
+                    resolve(StimulusBuilders.createMessageSection(result.options as MessageStimulusOptions,
+                                                                  this.idService));
+                    break;
+                  case 'audio1':
+                    resolve(StimulusBuilders.createAudio1Section(result.options as Audio1StimulusOptions,
+                                                                 this.idService));
+                    break;
+                  case 'audio2':
+                    resolve(StimulusBuilders.createAudio2Section(result.options as Audio2StimulusOptions,
+                                                                 this.idService));
                     break;
                   // no default
                 }
@@ -200,22 +210,6 @@ export class TemplateService {
             .afterClosed().subscribe((result: { text1: string, options: string[], useImages: boolean }) => {
               if (result) {
                 resolve(CheckboxBuilders.createCheckboxSection(result.text1, result.options, result.useImages, this.idService));
-              }
-            });
-          break;
-        case 'audio':
-          this.dialog.open(AudioWizardDialogComponent, { autoFocus: false })
-            .afterClosed().subscribe((result: {
-              variant: 'a' | 'b', src1: string, fileName1: string, maxRuns1: number, src2: string, fileName2: string,
-              maxRuns2: number, lang: 'german' | 'english' | 'french', text: string, text2: string }) => {
-              if (result?.variant === 'a') {
-                resolve(AudioBuilders.createAudioSectionA(result.src1, result.fileName1, result.maxRuns1,
-                                                          result.text2, this.idService));
-              }
-              if (result?.variant === 'b') {
-                resolve(AudioBuilders.createAudioSectionB(result.src1, result.fileName1, result.maxRuns1, result.src2,
-                                                          result.fileName2, result.maxRuns2, result.lang, result.text,
-                                                          result.text2, this.idService));
               }
             });
           break;

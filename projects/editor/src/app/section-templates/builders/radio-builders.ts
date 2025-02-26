@@ -9,13 +9,14 @@ export function createTextRadioSection(options: TextRadioOptions, idService: IDS
     TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
                                   { text: options.label1 }, idService),
     TemplateService.createElement('radio', { gridRow: 2, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
-                                  { label: options.label2, options: options }, idService)
+                                  { label: options.label2, options: options.options }, idService)
   ];
   if (options.addExtraInput) {
     sectionElements.push(
       TemplateService.createElement('text', { gridRow: 3, gridColumn: 1 }, { text: options.text1 }, idService));
-    sectionElements.push(
-      TemplateService.createElement('text-area', { gridRow: 4, gridColumn: 1 }, {}, idService));
+      sectionElements.push(
+        TemplateService.createElement(options.extraInputMathfield ? 'text-area-math' : 'text-area',
+                                      { gridRow: 4, gridColumn: 1 }, {}, idService));
   }
   const section = new Section(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
@@ -32,9 +33,16 @@ export function createImageRadioSection(options: ImageRadioOptions, idService: I
     TemplateService.createElement(
       'radio-group-images',
       { gridRow: 2, gridColumn: 1 },
-      { label: '', options: options, itemsPerRow: options.itemsPerRow },
+      { label: '', options: options.options, itemsPerRow: options.itemsPerRow },
       idService)
   ];
+  if (options.addExtraInput) {
+    sectionElements.push(
+      TemplateService.createElement('text', { gridRow: 3, gridColumn: 1 }, { text: options.text1 }, idService));
+    sectionElements.push(
+      TemplateService.createElement(options.extraInputMathfield ? 'text-area-math' : 'text-area',
+                                    { gridRow: 4, gridColumn: 1 }, {}, idService));
+  }
   const section = new Section(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;

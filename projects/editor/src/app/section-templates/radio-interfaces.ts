@@ -6,10 +6,14 @@ export interface TextRadioOptions {
   options: Label[];
   addExtraInput: boolean;
   text1: string;
+  extraInputMathfield: boolean;
 }
 
 export interface ImageRadioOptions {
   label1: string;
   options: TextImageLabel[];
   itemsPerRow: number;
+  addExtraInput: boolean;
+  text1: string;
+  extraInputMathfield: boolean;
 }

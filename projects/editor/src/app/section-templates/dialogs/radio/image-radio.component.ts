@@ -6,6 +6,8 @@ import { OptionListPanelComponent } from 'editor/src/app/components/properties-p
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
 import { ImageRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'aspect-editor-imageradio-stimulus',
@@ -16,7 +18,9 @@ import { ImageRadioOptions } from 'editor/src/app/section-templates/radio-interf
     MatDivider,
     MatFormField,
     OptionListPanelComponent,
-    RichTextEditorComponent
+    RichTextEditorComponent,
+    MatCheckbox,
+    NgIf
   ],
   template: `
     <h3>Frage</h3>
@@ -41,6 +45,17 @@ import { ImageRadioOptions } from 'editor/src/app/section-templates/radio-interf
     </mat-form-field>
     <p>4 Bilder pro Zeile: empfohlen für kleine Bilder oder einseitige Aufgaben<br>
       2 Bilder pro Zeile: empfohlen für zweiseitige Aufgaben oder große Bilder</p>
+
+    <h3>Begründung</h3>
+    <mat-checkbox [(ngModel)]="options.addExtraInput">
+      Begründungsfeld anfügen
+    </mat-checkbox>
+    <aspect-rich-text-editor class="input1" [disabled]="!options.addExtraInput"
+                             [(content)]="options.text1" [placeholder]="'Begründe deine Entscheidung.'">
+    </aspect-rich-text-editor>
+    <mat-checkbox [(ngModel)]="options.extraInputMathfield" [disabled]="!options.addExtraInput">
+      Formeleingabefeld verwenden
+    </mat-checkbox>
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
@@ -52,6 +67,9 @@ export class ImageRadioComponent {
   options: ImageRadioOptions = {
     label1: '',
     options: [],
-    itemsPerRow: 4
+    itemsPerRow: 4,
+    addExtraInput: false,
+    text1: '',
+    extraInputMathfield: false
   };
 }

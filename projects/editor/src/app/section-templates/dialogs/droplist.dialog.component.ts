@@ -25,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { MatActionList, MatListItem } from '@angular/material/list';
 
 @Component({
   selector: 'aspect-editor-droplist-wizard-dialog',
@@ -50,21 +51,22 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
     NgForOf,
     MatInputModule,
     TextFieldModule,
-    MatIconModule
+    MatIconModule,
+    MatActionList,
+    MatListItem
   ],
   template: `
     <div mat-dialog-title>Assistent: Drag & Drop einseitig</div>
     <div mat-dialog-content>
-      <mat-toolbar>
-        <mat-radio-group [(ngModel)]="options.templateVariant">
-          <mat-radio-button [value]="'classic'">Zuordnung</mat-radio-button>
-          <mat-radio-button [value]="'2pages'">Zuordnung (2-seitig)</mat-radio-button>
-          <!--          <mat-radio-button [value]="'2pages-images'">Zuordnung Bilder (2-seitig)</mat-radio-button>-->
-          <mat-radio-button [value]="'sort'">Sortieren</mat-radio-button>
-        </mat-radio-group>
-      </mat-toolbar>
+      @if (templateVariant == undefined) {
+        <mat-action-list>
+          <button mat-list-item (click)="templateVariant = 'classic'">Zuordnung</button>
+          <button mat-list-item (click)="templateVariant = '2pages'">Zuordnung (2-seitig)</button>
+          <button mat-list-item (click)="templateVariant = 'sort'">Sortieren</button>
+        </mat-action-list>
+      }
 
-      @if (options.templateVariant === 'classic') {
+      @if (templateVariant === 'classic') {
         <ng-container *ngTemplateOutlet="introText"></ng-container>
         <mat-divider></mat-divider>
 
@@ -102,7 +104,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
             Elementliste neben Ziellisten (nur für kurze Elemente oder einseitige Aufgaben)
           </mat-radio-button>
         </mat-radio-group>
-      } @else if (options.templateVariant == 'sort') {
+      } @else if (templateVariant == 'sort') {
         <ng-container *ngTemplateOutlet="introText"></ng-container>
         <mat-divider></mat-divider>
 
@@ -121,7 +123,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
         <mat-checkbox [(ngModel)]="options.numbering">
           Nummerierung aktivieren
         </mat-checkbox>
-      } @else if (options.templateVariant == '2pages') {
+      } @else if (templateVariant == '2pages') {
         <ng-container *ngTemplateOutlet="introText"></ng-container>
         <mat-divider></mat-divider>
 
@@ -136,11 +138,20 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
         <ng-container *ngTemplateOutlet="targetList"></ng-container>
         <mat-divider></mat-divider>
 
-        <h3>Ausrichtung</h3>
-        <mat-radio-group [(ngModel)]="options.labelsBelow">
-          <mat-radio-button [value]="false">Zieltext ueber Ablage</mat-radio-button>
-          <mat-radio-button [value]="true">Ablage ueber Zieltext</mat-radio-button>
-        </mat-radio-group>
+        @if (!options.targetUseImages && !options.srcUseImages) {
+          <h3>Ausrichtung</h3>
+          <mat-radio-group [(ngModel)]="options.labelsBelow">
+            <mat-radio-button [value]="false">Zielbeschriftung oben</mat-radio-button>
+            <mat-radio-button [value]="true">Zielbeschriftung unten</mat-radio-button>
+          </mat-radio-group>
+        }
+        @if (!options.targetUseImages && options.srcUseImages) {
+          <h3>Ausrichtung</h3>
+          <mat-radio-group [(ngModel)]="options.targetListAlignment">
+            <mat-radio-button [value]="'row'">zeilenweise</mat-radio-button>
+            <mat-radio-button [value]="'grid'">Raster (2er-Reihen)</mat-radio-button>
+          </mat-radio-group>
+        }
 
         <h3>Quelle</h3>
         <aspect-rich-text-editor [(content)]="options.text3" [style.min-height.px]="300"
@@ -160,10 +171,10 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
         <aspect-rich-text-editor [(content)]="options.headingSourceList" [showReducedControls]="true"
                                  [style.min-height.px]="200" [preventAutoFocus]="true"></aspect-rich-text-editor>
         <h4>Elemente</h4>
-        @if (options.templateVariant === '2pages') {
+        @if (templateVariant === '2pages') {
           <mat-checkbox [(ngModel)]="options.srcUseImages">Bilder</mat-checkbox>
         }
-        @if (options.templateVariant === '2pages' && options.srcUseImages) {
+        @if (templateVariant === '2pages' && options.srcUseImages) {
           <mat-radio-group [(ngModel)]="options.imageSize">
             <mat-radio-button [value]="'small'">150px x 150px</mat-radio-button>
             <mat-radio-button [value]="'medium'">200px x 200px</mat-radio-button>
@@ -180,7 +191,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
         <aspect-rich-text-editor [(content)]="options.headingTargetLists" [showReducedControls]="true"
                                  [style.min-height.px]="200" [preventAutoFocus]="true"></aspect-rich-text-editor>
         <h4>Zielbeschriftungen</h4>
-        @if (options.templateVariant === '2pages') {
+        @if (templateVariant === '2pages') {
           <mat-checkbox [(ngModel)]="options.targetUseImages">Bilder</mat-checkbox>
         }
         <ng-container
@@ -190,7 +201,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
       </ng-template>
 
       <ng-template #elementInputs let-list="list" let-useImages="useImages">
-        @if (options.templateVariant !== '2pages' || !useImages) {
+        @if (templateVariant !== '2pages' || !useImages) {
           <mat-form-field appearance="outline">
             <textarea #newItem matInput cdkTextareaAutosize type="text"
                       (keydown.enter)="$event.stopPropagation(); $event.preventDefault();"
@@ -225,9 +236,9 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
     </div>
     <div mat-dialog-actions>
       <button mat-button
-              [disabled]="(options.templateVariant == 'classic' && (!options.optionWidth || !options.targetWidth)) ||
-                          (options.templateVariant == 'sort' && !options.optionWidth)"
-              [mat-dialog-close]="options">
+              [disabled]="(templateVariant == 'classic' && (!options.optionWidth || !options.targetWidth)) ||
+                          (templateVariant == 'sort' && !options.optionWidth)"
+              [mat-dialog-close]="{ variant: templateVariant, options }">
         {{ 'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
@@ -236,11 +247,11 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
   styleUrl: 'droplist.dialog.component.css'
 })
 export class DroplistWizardDialogComponent {
+  templateVariant: 'classic' | '2pages' | 'sort' | undefined;
   options: ClassicTemplateOptions & SortTemplateOptions & TwoPageTemplateOptions;
 
   constructor(private dialogService: DialogService) {
     this.options = {
-      templateVariant: '2pages',
       targetLabelAlignment: 'column',
       text1: 'Frage',
       text2: 'Situierung',
@@ -250,10 +261,11 @@ export class DroplistWizardDialogComponent {
       optionWidth: 'short',
       headingTargetLists: 'Ziele',
       targetWidth: 'short',
-      targetLabels: ['ziel 1', 'ziel 2'],
+      targetLabels: ['ziel 1', 'ziel 2', 'ziel 3', 'ziel 4', 'ziel 5'],
       numbering: false,
       imageSize: 'medium',
       labelsBelow: false,
+      targetListAlignment: 'grid',
       srcUseImages: false,
       targetUseImages: false
     };

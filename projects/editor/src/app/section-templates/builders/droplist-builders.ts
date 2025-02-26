@@ -3,16 +3,12 @@ import { DimensionProperties } from 'common/models/elements/property-group-inter
 import { Section, SectionProperties } from 'common/models/section';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
+  ClassicTemplateOptions, SortTemplateOptions,
   TwoPageTemplateOptions
 } from 'editor/src/app/section-templates/droplist-interfaces';
 import { TemplateService } from '../template.service';
 
-export function createDroplistSection(alignment: 'column' | 'row', text1: string, headingSourceList: string,
-                                      options: string[],
-                                      optionLength: 'long' | 'medium' | 'short' | 'very-short',
-                                      headingTargetLists: string,
-                                      targetLength: 'medium' | 'short' | 'very-short', targetLabels: string[],
-                                      idService: IDService): Section {
+export function createDroplistSection(options: ClassicTemplateOptions, idService: IDService): Section {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
       'text',
@@ -22,7 +18,7 @@ export function createDroplistSection(alignment: 'column' | 'row', text1: string
         gridColumnRange: 2,
         marginBottom: { value: 20, unit: 'px' }
       },
-      { text: text1 },
+      { text: options.text1 },
       idService),
     TemplateService.createElement(
       'text',
@@ -33,7 +29,7 @@ export function createDroplistSection(alignment: 'column' | 'row', text1: string
         marginBottom: { value: 20, unit: 'px' }
       },
       {
-        text: alignment === 'column' ? headingSourceList : headingTargetLists,
+        text: options.targetLabelAlignment === 'column' ? options.headingSourceList : options.headingTargetLists,
         styling: { bold: true }
       },
       idService),
@@ -41,38 +37,38 @@ export function createDroplistSection(alignment: 'column' | 'row', text1: string
       'drop-list',
       {
         gridRow: 3,
-        gridColumn: alignment === 'column' ? 1 : 3,
-        ...alignment === 'row' && { gridRowRange: targetLabels.length },
-        gridColumnRange: alignment === 'column' ? 2 : 1,
-        marginBottom: { value: alignment === 'column' ? 20 : 40, unit: 'px' },
-        ...alignment === 'row' && { marginLeft: { value: 5, unit: 'px' } }
+        gridColumn: options.targetLabelAlignment === 'column' ? 1 : 3,
+        ...options.targetLabelAlignment === 'row' && { gridRowRange: options.targetLabels.length },
+        gridColumnRange: options.targetLabelAlignment === 'column' ? 2 : 1,
+        marginBottom: { value: options.targetLabelAlignment === 'column' ? 20 : 40, unit: 'px' },
+        ...options.targetLabelAlignment === 'row' && { marginLeft: { value: 5, unit: 'px' } }
       },
       {
         dimensions: { minHeight: 58 } as DimensionProperties,
-        value: options.map(option => ({
+        value: options.options.map(option => ({
           text: option,
           originListID: 'id_placeholder'
         })),
-        orientation: alignment === 'column' ? 'flex' : 'vertical',
+        orientation: options.targetLabelAlignment === 'column' ? 'flex' : 'vertical',
         highlightReceivingDropList: true
       },
       idService),
     TemplateService.createElement(
       'text',
       {
-        gridRow: alignment === 'column' ? 4 : 2,
-        gridColumn: alignment === 'column' ? 1 : 3,
+        gridRow: options.targetLabelAlignment === 'column' ? 4 : 2,
+        gridColumn: options.targetLabelAlignment === 'column' ? 1 : 3,
         gridColumnRange: 2,
         marginBottom: { value: 20, unit: 'px' }
       },
       {
-        text: alignment === 'column' ? headingTargetLists : headingSourceList,
+        text: options.targetLabelAlignment === 'column' ? options.headingTargetLists : options.headingSourceList,
         styling: { bold: true }
       },
       idService)
   ];
-  const targetListOffset = alignment === 'column' ? 5 : 3;
-  targetLabels.forEach((label: string, i: number) => {
+  const targetListOffset = options.targetLabelAlignment === 'column' ? 5 : 3;
+  options.targetLabels.forEach((label: string, i: number) => {
     sectionElements.push(TemplateService.createElement(
       'text',
       {
@@ -89,7 +85,7 @@ export function createDroplistSection(alignment: 'column' | 'row', text1: string
       {
         gridRow: i + targetListOffset,
         gridColumn: 2,
-        marginBottom: { value: i === (targetLabels.length - 1) ? 40 : 5, unit: 'px' }
+        marginBottom: { value: i === (options.targetLabels.length - 1) ? 40 : 5, unit: 'px' }
       },
       {
         dimensions: { minHeight: 58 } as DimensionProperties,
@@ -104,10 +100,10 @@ export function createDroplistSection(alignment: 'column' | 'row', text1: string
 
   const section = new Section({
     autoColumnSize: false,
-    gridColumnSizes: alignment === 'column' ?
-      getDrolistColSizesVertical(optionLength, targetLength) :
+    gridColumnSizes: options.targetLabelAlignment === 'column' ?
+      getDrolistColSizesVertical(options.optionWidth, options.targetWidth) :
       getDrolistColSizesHorizontal(
-        optionLength as 'medium' | 'short' | 'very-short', targetLength)
+        options.optionWidth as 'medium' | 'short' | 'very-short', options.targetWidth)
   } as SectionProperties, idService);
   sectionElements.forEach(el => section.addElement(el));
   section.connectAllDropLists();
@@ -193,9 +189,7 @@ function getDrolistColSizesHorizontal(optionLength: 'medium' | 'short' | 'very-s
   }
 }
 
-export function createSortlistSection(text1: string, headingSourceList: string, options: string[],
-                                      optionLength: 'long' | 'medium' | 'short' | 'very-short',
-                                      numbering: boolean, idService: IDService): Section {
+export function createSortlistSection(options: SortTemplateOptions, idService: IDService): Section {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
       'text',
@@ -205,7 +199,7 @@ export function createSortlistSection(text1: string, headingSourceList: string, 
         gridColumnRange: 1,
         marginBottom: { value: 20, unit: 'px' }
       },
-      { text: text1 },
+      { text: options.text1 },
       idService),
     TemplateService.createElement(
       'drop-list',
@@ -213,16 +207,16 @@ export function createSortlistSection(text1: string, headingSourceList: string, 
       {
         dimensions: {
           // eslint-disable-next-line no-nested-ternary
-          maxWidth: optionLength === 'medium' ? 500 : optionLength === 'short' ? 250 : 125
+          maxWidth: options.optionWidth === 'medium' ? 500 : options.optionWidth === 'short' ? 250 : 125
         } as DimensionProperties,
-        value: options.map(option => ({
+        value: options.options.map(option => ({
           text: option,
           originListID: 'id_placeholder'
         })),
         orientation: 'vertical',
         isSortList: true,
         highlightReceivingDropList: true,
-        showNumbering: numbering
+        showNumbering: options.numbering
       },
       idService)
   ];
@@ -262,21 +256,11 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
   ];
 
   if (options.srcUseImages) {
-    section2Elements.push(...createImageTargets(options, idService));
+    section2Elements.push(...options.targetListAlignment === 'row' ? createImageTargets(options, idService) :
+      createTargetGrid(options, idService));
   } else {
-    section2Elements.push(...createTextTargets(options, idService));
+    section2Elements.push(...createTextRowTargets(options, idService));
   }
-
-  section2Elements.push(
-    TemplateService.createElement(
-      'text',
-      {
-        gridRow: 3 + options.targetLabels.length * 2 - (options.srcUseImages ? 2 : 0),
-        gridColumn: 1,
-        gridColumnRange: 2 + (options.targetUseImages ? 1 : 0)
-      },
-      { text: options.text3 },
-      idService));
 
   const section2 = new Section({
     autoColumnSize: false,
@@ -291,7 +275,7 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
   return [section, section2];
 }
 
-function createTextTargets(options: TwoPageTemplateOptions, idService: IDService): PositionedUIElement[] {
+function createTextRowTargets(options: TwoPageTemplateOptions, idService: IDService): PositionedUIElement[] {
   const elements: PositionedUIElement[] = [];
   options.targetLabels.forEach((label: string, i: number) => {
     const droplistEl = TemplateService.createElement(
@@ -309,6 +293,16 @@ function createTextTargets(options: TwoPageTemplateOptions, idService: IDService
     );
     if (options.labelsBelow) elements.push(droplistEl);
   });
+  elements.push(TemplateService.createElement(
+    'text',
+    {
+      gridRow: 3 + options.targetLabels.length * 2,
+      gridColumn: 1,
+      gridColumnRange: 2 + (options.targetUseImages ? 1 : 0)
+    },
+    { text: options.text3 },
+    idService)
+  );
   return elements;
 }
 
@@ -334,5 +328,45 @@ function createImageTargets(options: TwoPageTemplateOptions, idService: IDServic
       }, idService)
     );
   });
+  elements.push(TemplateService.createElement(
+    'text',
+    {
+      gridRow: options.targetLabels.length + 3,
+      gridColumn: 1,
+      gridColumnRange: 2 + (options.targetUseImages ? 1 : 0)
+    },
+    { text: options.text3 },
+    idService)
+  );
+  return elements;
+}
+
+function createTargetGrid(options: TwoPageTemplateOptions, idService: IDService): PositionedUIElement[] {
+  const elements: PositionedUIElement[] = [];
+  options.targetLabels.forEach((label: string, i: number) => {
+    elements.push(TemplateService.createElement(
+      'text', { gridRow: (Math.floor(i / 2) * 2 + 3), gridColumn: (i % 2) + 1 }, { text: label }, idService)
+    );
+    elements.push(TemplateService.createElement(
+      'drop-list', { gridRow: (Math.floor(i / 2) * 2 + 4), gridColumn: (i % 2) + 1 },
+      {
+        dimensions: { minHeight: 58 } as DimensionProperties,
+        orientation: 'vertical',
+        onlyOneItem: true,
+        allowReplacement: true,
+        highlightReceivingDropList: true
+      }, idService)
+    );
+  });
+  elements.push(TemplateService.createElement(
+    'text',
+    {
+      gridRow: options.targetLabels.length + 3 + (options.targetLabels.length % 2),
+      gridColumn: 1,
+      gridColumnRange: 2
+    },
+    { text: options.text3 },
+    idService)
+  );
   return elements;
 }

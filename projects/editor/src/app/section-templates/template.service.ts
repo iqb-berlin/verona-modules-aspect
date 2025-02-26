@@ -29,9 +29,7 @@ import * as GeometryBuilders from 'editor/src/app/section-templates/builders/geo
 import * as MathtableBuilders from 'editor/src/app/section-templates/builders/mathtable-builders';
 import * as StimulusBuilders from 'editor/src/app/section-templates/builders/stimulus/stimulus-builders';
 import {
-  DroplistTemplateOptions,
-  isClassicTemplate,
-  isSortTemplate, isTwoPageTemplate
+  ClassicTemplateOptions, SortTemplateOptions, TwoPageTemplateOptions
 } from 'editor/src/app/section-templates/droplist-interfaces';
 import {
   StimulusWizardDialogComponent
@@ -233,20 +231,21 @@ export class TemplateService {
           break;
         case 'droplist':
           this.dialog.open(DroplistWizardDialogComponent, { autoFocus: false })
-            .afterClosed().subscribe((result: DroplistTemplateOptions) => {
-              if (isClassicTemplate(result)) {
-                resolve(DroplistBuilders.createDroplistSection(result.targetLabelAlignment, result.text1,
-                                                               result.headingSourceList, result.options,
-                                                               result.optionWidth, result.headingTargetLists,
-                                                               result.targetWidth, result.targetLabels,
-                                                               this.idService));
-              }
-              if (isSortTemplate(result)) {
-                resolve(DroplistBuilders.createSortlistSection(result.text1, result.headingSourceList, result.options,
-                                                               result.optionWidth, result.numbering, this.idService));
-              }
-              if (isTwoPageTemplate(result)) {
-                resolve(DroplistBuilders.createTwopageSection(result, this.idService));
+            .afterClosed().subscribe((result: {
+              variant: 'classic' | '2pages' | 'sort',
+              options: ClassicTemplateOptions | SortTemplateOptions | TwoPageTemplateOptions
+            }) => {
+              if (!result) return;
+              switch (result.variant) {
+                case 'classic':
+                  resolve(DroplistBuilders.createDroplistSection(result.options as ClassicTemplateOptions, this.idService));
+                  break;
+                case 'sort':
+                  resolve(DroplistBuilders.createSortlistSection(result.options as SortTemplateOptions, this.idService));
+                  break;
+                case '2pages':
+                  resolve(DroplistBuilders.createTwopageSection(result.options as TwoPageTemplateOptions, this.idService));
+                // no default
               }
             });
           break;

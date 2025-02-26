@@ -79,6 +79,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() placeholder: string = '';
   @Input() preventAutoFocus: boolean = false;
   @Input() disabled: boolean = false;
+  @Input() controlPanelFolded: boolean = false;
   @Output() contentChange = new EventEmitter<string | Record<string, any>>();
 
   selectedFontColor = 'black';

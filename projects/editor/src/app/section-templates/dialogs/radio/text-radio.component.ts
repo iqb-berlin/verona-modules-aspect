@@ -24,14 +24,16 @@ import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfa
   ],
   template: `
     <h3>Frage</h3>
-    <aspect-rich-text-editor class="input1" [(content)]="options.label1" [placeholder]="'Hier steht die Fragestellung.'">
+    <aspect-rich-text-editor class="input1" [(content)]="options.label1"
+                             [placeholder]="'Hier steht die Fragestellung.'" [controlPanelFolded]="true">
     </aspect-rich-text-editor>
 
     <mat-divider></mat-divider>
 
     <h3>Satzanfang (optional)</h3>
-    <mat-form-field appearance="fill">
-      <textarea matInput type="text" [(ngModel)]="options.label2" placeholder="Hier kann ein Satzanfang stehen."></textarea>
+    <mat-form-field appearance="fill" [style.width.%]="60">
+      <textarea matInput type="text" [(ngModel)]="options.label2" placeholder="Hier kann ein Satzanfang stehen.">
+      </textarea>
     </mat-form-field>
 
     <mat-divider></mat-divider>
@@ -47,7 +49,8 @@ import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfa
       Begründungsfeld anfügen
     </mat-checkbox>
     <aspect-rich-text-editor class="input1" [disabled]="!options.addExtraInput"
-                             [(content)]="options.text1" [placeholder]="'Begründe deine Entscheidung.'">
+                             [(content)]="options.text1" [placeholder]="'Begründe deine Entscheidung.'"
+                             [controlPanelFolded]="true">
     </aspect-rich-text-editor>
     <mat-checkbox [(ngModel)]="options.extraInputMathfield" [disabled]="!options.addExtraInput">
       Formeleingabefeld verwenden

@@ -1,5 +1,14 @@
-<div class="editor-control-panel" [class.disabled]="disabled">
 
+
+@if (controlPanelFolded) {
+  <button type="button" class="fold-button" (click)="controlPanelFolded = false">
+    <mat-icon>keyboard_arrow_up</mat-icon>
+  </button>
+} @else {
+  <button type="button" class="fold-button" (click)="controlPanelFolded = true">
+    <mat-icon [style]="'transform: rotate(180deg);'">keyboard_arrow_up</mat-icon>
+  </button>
+  <div class="editor-control-panel" [class.disabled]="disabled">
   <fieldset class="input-group">
     <legend>Schriftauszeichnung</legend>
     <button mat-icon-button matTooltip="Fett" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
@@ -282,6 +291,8 @@
     </aspect-combo-button>
   </fieldset>
 </div>
+}
+
 <div *ngIf="clozeMode" class="fx-row-space-around-center" >
     <button mat-button matTooltip="Eingabefeld" [matTooltipShowDelay]="300"
             (click)="insertTextField()">

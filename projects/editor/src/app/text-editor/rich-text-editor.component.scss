@@ -8,6 +8,7 @@ tiptap-editor {
   display: flex;
   overflow: auto;
   min-height: 80px;
+  min-width: 700px;
 }
 
 :host ::ng-deep div.ProseMirror {
@@ -18,6 +19,23 @@ tiptap-editor {
   max-width: 1040px;
   padding: 5px;
 }
+
+.fold-button {
+  margin-bottom: -1px;
+  clip-path: ellipse(60% 70% at 50% 90%);
+  padding-top: 10px;
+  border: none;
+  background-color: #FAFAFA;
+}
+
+.fold-button:hover {
+  background-color: lightgrey;
+}
+
+.fold-button mat-icon {
+  color: gray;
+}
+
 
 .editor-control-panel {
   padding: 5px;

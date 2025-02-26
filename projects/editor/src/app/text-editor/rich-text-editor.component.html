@@ -1,4 +1,4 @@
-<div class="editor-control-panel">
+<div class="editor-control-panel" [class.disabled]="disabled">
 
   <fieldset class="input-group">
     <legend>Schriftauszeichnung</legend>
@@ -310,7 +310,7 @@
     </button>
 </div>
 
-<tiptap-editor [editor]="editor" [ngModel]="content"
+<tiptap-editor [editor]="editor" [ngModel]="content" [disabled]="disabled"
                [outputFormat]="clozeMode ? 'json' : 'html'"
                [class.small-input]="showReducedControls"
                [style.font-size.px]="defaultFontSize"

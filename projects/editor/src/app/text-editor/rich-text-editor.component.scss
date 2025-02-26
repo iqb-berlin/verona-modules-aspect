@@ -46,6 +46,10 @@ tiptap-editor {
   margin: 0 5px;
 }
 
+.editor-control-panel.disabled {
+  pointer-events: none;
+}
+
 // ### Adjust Material select ###
 :host ::ng-deep .editor-control-panel .input-group .dropdown .mat-mdc-text-field-wrapper {
   max-height: 100%;

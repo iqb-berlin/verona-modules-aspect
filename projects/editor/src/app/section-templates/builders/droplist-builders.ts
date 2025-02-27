@@ -11,23 +11,10 @@ import { TemplateService } from '../template.service';
 export function createDroplistSection(options: ClassicTemplateOptions, idService: IDService): Section {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
-      'text',
-      {
-        gridRow: 1,
-        gridColumn: 1,
-        gridColumnRange: 2,
-        marginBottom: { value: 20, unit: 'px' }
-      },
-      { text: options.text1 },
-      idService),
+      'text', { gridRow: 1, gridColumn: 1, gridColumnRange: 2, marginBottom: { value: 20, unit: 'px' } },
+      { text: options.text1 }, idService),
     TemplateService.createElement(
-      'text',
-      {
-        gridRow: 2,
-        gridColumn: 1,
-        gridColumnRange: 2,
-        marginBottom: { value: 20, unit: 'px' }
-      },
+      'text', { gridRow: 2, gridColumn: 1, gridColumnRange: 2, marginBottom: { value: 20, unit: 'px' } },
       {
         text: options.targetLabelAlignment === 'column' ? options.headingSourceList : options.headingTargetLists,
         styling: { bold: true }
@@ -50,7 +37,9 @@ export function createDroplistSection(options: ClassicTemplateOptions, idService
           originListID: 'id_placeholder'
         })),
         orientation: options.targetLabelAlignment === 'column' ? 'flex' : 'vertical',
-        highlightReceivingDropList: true
+        highlightReceivingDropList: true,
+        permanentPlaceholders: true,
+        permanentPlaceholdersCC: true
       },
       idService),
     TemplateService.createElement(
@@ -239,7 +228,9 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
                                       originListID: 'id_placeholder'
                                     })),
                                     orientation: options.srcUseImages ? 'flex' : 'vertical',
-                                    highlightReceivingDropList: true
+                                    highlightReceivingDropList: true,
+                                    permanentPlaceholders: true,
+                                    permanentPlaceholdersCC: !options.srcUseImages
                                   },
                                   idService)
   ];

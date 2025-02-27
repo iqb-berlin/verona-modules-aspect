@@ -6,8 +6,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   template: `
     <h2 mat-dialog-title>Text bearbeiten</h2>
     <mat-dialog-content>
-      <aspect-rich-text-editor [(content)]="data.content"
-                               [clozeMode]="data.clozeMode"
+      <aspect-rich-text-editor [(content)]="data.content" [showWordCounter]="true"
+                               [clozeMode]="data.clozeMode" [autoFocus]="true" [controlPanelFolded]="false"
                                [defaultFontSize]="data.defaultFontSize">
       </aspect-rich-text-editor>
     </mat-dialog-content>

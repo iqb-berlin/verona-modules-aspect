@@ -77,9 +77,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() clozeMode: boolean = false;
   @Input() showReducedControls: boolean = false;
   @Input() placeholder: string = '';
-  @Input() preventAutoFocus: boolean = false;
+  @Input() autoFocus: boolean = false;
   @Input() disabled: boolean = false;
-  @Input() controlPanelFolded: boolean = false;
+  @Input() controlPanelFolded: boolean = true;
+  @Input() showWordCounter: boolean = false;
   @Output() contentChange = new EventEmitter<string | Record<string, any>>();
 
   selectedFontColor = 'black';
@@ -151,7 +152,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.preventAutoFocus) this.editor.commands.focus();
+    if (this.autoFocus) this.editor.commands.focus();
   }
 
   toggleBold(): void {

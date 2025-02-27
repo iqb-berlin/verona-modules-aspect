@@ -31,9 +31,9 @@ import { Audio2StimulusComponent } from 'editor/src/app/section-templates/dialog
     <div mat-dialog-content>
       @if (templateVariant == undefined) {
         <mat-action-list>
-          <button mat-list-item (click)="templateVariant = 'text'">Text</button>
-          <button mat-list-item (click)="templateVariant = 'email'">Email</button>
-          <button mat-list-item (click)="templateVariant = 'message'">Message</button>
+          <button mat-list-item (click)="templateVariant = 'text'; isValid = true;">Text</button>
+          <button mat-list-item (click)="templateVariant = 'email'; isValid = true;">Email</button>
+          <button mat-list-item (click)="templateVariant = 'message'; isValid = true;">Mobiltelefon</button>
           <button mat-list-item (click)="templateVariant = 'audio1'">Instruktion und Hörtext in einem Audio</button>
           <button mat-list-item (click)="templateVariant = 'audio2'">Instruktion und Hörtext getrennt</button>
         </mat-action-list>
@@ -45,20 +45,19 @@ import { Audio2StimulusComponent } from 'editor/src/app/section-templates/dialog
       } @else if (templateVariant == 'message') {
         <aspect-editor-message-stimulus></aspect-editor-message-stimulus>
       } @else if (templateVariant == 'audio1') {
-        <aspect-editor-audio1-stimulus></aspect-editor-audio1-stimulus>
+        <aspect-editor-audio1-stimulus (validityChange)="onValidityChange($event)"></aspect-editor-audio1-stimulus>
       } @else if (templateVariant == 'audio2') {
-        <aspect-editor-audio2-stimulus></aspect-editor-audio2-stimulus>
+        <aspect-editor-audio2-stimulus (validityChange)="onValidityChange($event)"></aspect-editor-audio2-stimulus>
       }
     </div>
     <div mat-dialog-actions>
-      <button mat-button [disabled]="!templateVariant" (click)="confirmAndClose()">{{ 'confirm' | translate }}</button>
+      <button mat-button [disabled]="!templateVariant || !isValid" (click)="confirmAndClose()">
+        {{ 'confirm' | translate }}\
+      </button>
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </div>
   `,
   styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
   `
 })
 export class StimulusWizardDialogComponent {
@@ -68,8 +67,13 @@ export class StimulusWizardDialogComponent {
   @ViewChild(Audio1StimulusComponent) audio1Comp!: Audio1StimulusComponent;
   @ViewChild(Audio2StimulusComponent) audio2Comp!: Audio2StimulusComponent;
   templateVariant: 'text' | 'email' | 'message' | 'audio1' | 'audio2' | undefined;
+  isValid: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<StimulusWizardDialogComponent>) {}
+
+  onValidityChange(valid: boolean) {
+    this.isValid = valid;
+  }
 
   confirmAndClose(): void {
     let options;

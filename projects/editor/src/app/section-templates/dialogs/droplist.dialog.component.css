@@ -1,6 +1,6 @@
 .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-.mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-h3 {text-decoration: underline;}
+.mat-mdc-dialog-content > *:not(h3, .variant-choice) {margin-left: 30px;}
+h3:not(:first-child) {margin-top: 40px;}
 .mat-mdc-dialog-content > mat-form-field {align-self: flex-start;}
 mat-toolbar {min-height: 60px;}
 mat-toolbar mat-radio-group {display: flex; gap: 10px;}
@@ -8,7 +8,7 @@ mat-toolbar mat-radio-group {display: flex; gap: 10px;}
 .drop-list {
   border: solid 1px #ccc;
   border-radius: 4px;
-  margin-bottom: 15px;
+  /*margin-bottom: 15px;*/
 }
 .drop-list:empty {
   border: none;
@@ -30,4 +30,9 @@ mat-toolbar mat-radio-group {display: flex; gap: 10px;}
 }
 .cdk-drag-preview button:first-of-type {
   margin-left: auto;
+}
+
+.image-checkbox {
+  margin-top: -15px;
+  margin-bottom: 10px;
 }

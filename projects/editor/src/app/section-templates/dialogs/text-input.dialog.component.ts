@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -20,7 +19,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TranslateModule,
     RichTextEditorComponent,
     MatDialogModule,
-    MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -33,17 +31,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     <div mat-dialog-title>Assistent: Antwortfeld(er)</div>
     <div mat-dialog-content>
       <h3>Frage</h3>
-      <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'"
-                               [style.min-height.px]="280"></aspect-rich-text-editor>
-
-      <mat-divider></mat-divider>
+      <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'">
+      </aspect-rich-text-editor>
 
       <h3>Anzahl Antwortfelder</h3>
       <mat-form-field class="align-start">
         <input matInput type="number" min="1" max="9" [(ngModel)]="answerCount" (change)="updateSubQuestions()">
       </mat-form-field>
-
-      <mat-divider></mat-divider>
 
       <h3>Nummerierung</h3>
       <mat-form-field class="align-start">
@@ -55,18 +49,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox [(ngModel)]="numberingWithText" (change)="updateSubQuestions()">
+      <mat-checkbox [style.margin-bottom.px]="15" [(ngModel)]="numberingWithText" (change)="updateSubQuestions()">
         Nummerierung mit Text erweitern
       </mat-checkbox>
 
       @for (text of subQuestions; track $index) {
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="sub-questions">
           <mat-label>Text {{$index + 1}}</mat-label>
-          <textarea matInput cdkTextareaAutosize type="text" [(ngModel)]="subQuestions[$index]"></textarea>
+          <textarea matInput type="text" [(ngModel)]="subQuestions[$index]"></textarea>
         </mat-form-field>
       }
-
-      <mat-divider></mat-divider>
 
       <h3>Antwortfeldgröße</h3>
       <div class="row">
@@ -112,8 +104,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
+    h3:not(:first-child) {margin-top: 40px;}
     mat-form-field {align-self: flex-start;}
+    .sub-questions {width: 70%;}
     .row {display: flex; flex-direction: row; gap: 25px;}
   `
 })

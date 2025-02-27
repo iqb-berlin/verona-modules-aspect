@@ -1,5 +1,5 @@
 import { Audio1StimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
 import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio-row.component';
@@ -23,12 +23,13 @@ import { FileService } from 'common/services/file.service';
     </aspect-rich-text-editor>
   `,
   styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
+    *:not(h3, mat-divider) {margin-left: 30px;}
+    h3:not(:first-child) {margin-top: 40px;}
   `
 })
 export class Audio1StimulusComponent {
+  @Output() validityChange = new EventEmitter<boolean>();
+
   options: Audio1StimulusOptions = {
     src1: undefined,
     fileName1: undefined,
@@ -40,6 +41,7 @@ export class Audio1StimulusComponent {
     await FileService.loadAudio().then(file => {
       this.options.src1 = file.content;
       this.options.fileName1 = file.name;
+      this.validityChange.emit(true);
     });
   }
 }

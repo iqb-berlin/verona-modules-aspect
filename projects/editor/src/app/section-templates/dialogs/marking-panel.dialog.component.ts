@@ -32,9 +32,10 @@ import { MatOption, MatSelect } from '@angular/material/select';
     <div mat-dialog-title>Assistent: Markieren</div>
     <div mat-dialog-content>
       <h3>Text</h3>
-      <aspect-rich-text-editor class="input1" [(content)]="text1" [placeholder]="'Hier steht die Fragestellung.'">
+      <aspect-rich-text-editor [(content)]="text1" [placeholder]="'Hier steht die Fragestellung.'">
       </aspect-rich-text-editor>
 
+      <h3>Verbundener Stimulustext</h3>
       <mat-form-field>
         <mat-label>Verfügbare Textelemente</mat-label>
         <mat-select [(ngModel)]="connectedText">
@@ -44,13 +45,14 @@ import { MatOption, MatSelect } from '@angular/material/select';
         </mat-select>
       </mat-form-field>
 
+      <h3>Markiermodus</h3>
       <mat-radio-group [(ngModel)]="markingMode">
         <mat-radio-button [value]="'word'">wortweise</mat-radio-button>
         <mat-radio-button [value]="'range'">bereichsweise</mat-radio-button>
       </mat-radio-group>
 
-      <h3>Tooltipp</h3>
-      <mat-checkbox [(ngModel)]="showHelper">Anzeigen</mat-checkbox>
+      <h3>Hilfe</h3>
+      <mat-checkbox [(ngModel)]="showHelper">Bild mit Hilfstext anfügen</mat-checkbox>
     </div>
     <div mat-dialog-actions>
       <button mat-button [mat-dialog-close]="{ text1, showHelper, markingMode, connectedText }">
@@ -62,8 +64,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
-    .input1 {min-height: 300px;}
+    h3:not(:first-child) {margin-top: 40px;}
   `
 })
 export class MarkingPanelDialogComponent {

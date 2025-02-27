@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +13,6 @@ import { MatButtonModule } from '@angular/material/button';
     TranslateModule,
     MatDialogModule,
     RichTextEditorComponent,
-    MatDividerModule,
     MatCheckboxModule,
     FormsModule,
     MatButtonModule
@@ -56,8 +54,8 @@ import { MatButtonModule } from '@angular/material/button';
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
-    .input1 {min-height: 300px;}
+    h3:not(:first-child) {margin-top: 40px;}
+    .input1 {min-height: 200px;}
   `
 })
 export class Text3WizardDialogComponent {

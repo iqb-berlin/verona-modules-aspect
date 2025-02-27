@@ -1,9 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MatDivider } from '@angular/material/divider';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { NgIf } from '@angular/common';
 import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
@@ -13,11 +11,9 @@ import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfa
   selector: 'aspect-editor-textradio-stimulus',
   standalone: true,
   imports: [
-    NgIf,
     FormsModule,
     MatInput,
     MatCheckbox,
-    MatDivider,
     MatFormField,
     OptionListPanelComponent,
     RichTextEditorComponent
@@ -25,23 +21,21 @@ import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfa
   template: `
     <h3>Frage</h3>
     <aspect-rich-text-editor class="input1" [(content)]="options.label1"
-                             [placeholder]="'Hier steht die Fragestellung.'" [controlPanelFolded]="true">
+                             [placeholder]="'Hier steht die Fragestellung.'">
     </aspect-rich-text-editor>
-
-    <mat-divider></mat-divider>
 
     <h3>Satzanfang (optional)</h3>
     <mat-form-field appearance="fill" [style.width.%]="60">
-      <textarea matInput type="text" [(ngModel)]="options.label2" placeholder="Hier kann ein Satzanfang stehen.">
+      <textarea matInput type="text" [style.margin-left]="'unset'"
+                [(ngModel)]="options.label2" placeholder="Hier kann ein Satzanfang stehen.">
       </textarea>
     </mat-form-field>
-
-    <mat-divider></mat-divider>
 
     <h3>Optionen</h3>
     <aspect-option-list-panel class="options" [textFieldLabel]="'Neue Option'"
                               [itemList]="options.options"
-                              [localMode]="true">
+                              [localMode]="true"
+                              (itemListUpdated)="checkValidity()">
     </aspect-option-list-panel>
 
     <h3>Begründung</h3>
@@ -57,17 +51,15 @@ import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfa
     </mat-checkbox>
   `,
   styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
-    .large-text {min-height: 400px;}
-    .small-text {min-height: 200px;}
-    mat-checkbox {
-      margin: 10px 0;
-    }
+    :host {display: flex; flex-direction: column;}
+    *:not(h3, mat-divider) {margin-left: 30px;}
+    h3:not(:first-child) {margin-top: 40px;}
+    mat-checkbox {margin: 10px 0;}
   `
 })
 export class TextRadioComponent {
+  @Output() validityChange = new EventEmitter<boolean>();
+
   options: TextRadioOptions = {
     label1: '',
     label2: '',
@@ -76,4 +68,12 @@ export class TextRadioComponent {
     text1: '',
     extraInputMathfield: false
   };
+
+  checkValidity(): void {
+    if (this.options.options.length > 0) {
+      this.validityChange.emit(true);
+    } else {
+      this.validityChange.emit(false);
+    }
+  }
 }

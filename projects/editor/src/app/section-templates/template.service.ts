@@ -175,7 +175,7 @@ export class TemplateService {
             });
           break;
         case 'radio':
-          this.dialog.open(RadioWizardDialogComponent, {})
+          this.dialog.open(RadioWizardDialogComponent, { autoFocus: 'dialog' })
             .afterClosed().subscribe((result: {
               variant: 'text' | 'image',
               options: TextRadioOptions | ImageRadioOptions

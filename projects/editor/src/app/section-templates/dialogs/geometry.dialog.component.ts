@@ -3,7 +3,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -20,7 +19,6 @@ import { FormsModule } from '@angular/forms';
     TranslateModule,
     MatButtonModule,
     RichTextEditorComponent,
-    MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -32,14 +30,12 @@ import { FormsModule } from '@angular/forms';
     <div mat-dialog-title>Assistent: GeoGebra</div>
     <div mat-dialog-content>
       <h3>Text</h3>
-      <aspect-rich-text-editor [(content)]="text" [style.min-height.px]="300"
-                               [placeholder]="'Hier steht die Fragestellung.'"></aspect-rich-text-editor>
-
-      <mat-divider></mat-divider>
+      <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'">
+      </aspect-rich-text-editor>
 
       <h3>GeoGebra-Datei</h3>
       <mat-form-field matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
-                      appearance="fill" [style.align-self]="'flex-start'">
+                      appearance="fill" [style.align-self]="'flex-start'" [style.width.%]="40">
         <mat-label>{{ 'propertiesPanel.appDefinition' | translate }}</mat-label>
         <input matInput disabled
                [value]="geometryAppDefinition ? 'Definition vorhanden' : 'keine Definition vorhanden'">
@@ -48,16 +44,15 @@ import { FormsModule } from '@angular/forms';
         </button>
       </mat-form-field>
 
-      <mat-divider></mat-divider>
-
-      <h3>Tooltipp</h3>
+      <h3>Hilfe</h3>
       <mat-checkbox [(ngModel)]="showHelper">
-        Tooltipp für Zeichenaufgaben
+        Bild mit Hilfstext für Zeichenaufgaben anfügen
       </mat-checkbox>
 
     </div>
     <div mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ text, geometryAppDefinition, geometryFileName, showHelper }">
+      <button mat-button [disabled]="geometryAppDefinition == undefined"
+              [mat-dialog-close]="{ text, geometryAppDefinition, geometryFileName, showHelper }">
         {{'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
@@ -65,8 +60,8 @@ import { FormsModule } from '@angular/forms';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
+    .mat-mdc-dialog-content > *:not(h3) {margin-left: 30px;}
+    h3:not(:first-child) {margin-top: 40px;}
   `
 })
 export class GeometryWizardDialogComponent {

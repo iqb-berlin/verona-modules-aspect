@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { NgForOf, NgIf } from '@angular/common';
-import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'aspect-editor-mathtable-wizard-dialog',
@@ -27,8 +26,7 @@ import { MatDividerModule } from '@angular/material/divider';
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    MatInputModule,
-    MatDividerModule
+    MatInputModule
   ],
   template: `
     <div mat-dialog-title>Assistent: Rechenkästchen</div>
@@ -42,8 +40,6 @@ import { MatDividerModule } from '@angular/material/divider';
           <mat-option [value]="'multiplication'">Multiplikation mit mehrstelligen Zahlen</mat-option>
         </mat-select>
       </mat-form-field>
-
-      <mat-divider></mat-divider>
 
       <h3>{{ 'termRows' | translate }}</h3>
       <div *ngFor="let term of terms; let i = index; trackBy: trackTerm" class="terms">
@@ -73,8 +69,8 @@ import { MatDividerModule } from '@angular/material/divider';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider, .add-button) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
+    .mat-mdc-dialog-content > *:not(h3, .add-button) {margin-left: 30px;}
+    h3:not(:first-child) {margin-top: 40px;}
     .terms {display: flex; flex-direction: row;}
   `
 })

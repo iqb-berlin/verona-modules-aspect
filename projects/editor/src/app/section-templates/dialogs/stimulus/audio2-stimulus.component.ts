@@ -1,13 +1,11 @@
 import { Audio2StimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
 import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio-row.component';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatOption } from '@angular/material/autocomplete';
-import { MatSelect } from '@angular/material/select';
 import { FileService } from 'common/services/file.service';
 import { MatTooltip } from '@angular/material/tooltip';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
   selector: 'aspect-editor-audio2-stimulus',
@@ -16,11 +14,9 @@ import { MatTooltip } from '@angular/material/tooltip';
     FormsModule,
     RichTextEditorComponent,
     AudioRowComponent,
-    MatFormField,
-    MatLabel,
-    MatOption,
-    MatSelect,
-    MatTooltip
+    MatTooltip,
+    MatRadioButton,
+    MatRadioGroup
   ],
   template: `
     <h3>Instruktionsaudio</h3>
@@ -39,34 +35,33 @@ import { MatTooltip } from '@angular/material/tooltip';
     </aspect-rich-text-editor>
 
     <h3>Sprache</h3>
-    <mat-form-field [matTooltip]="'Mit dieser Einstellung werden kurze Texte oberhalb des Audios generiert.'">
-      <mat-label>Sprache auswählen</mat-label>
-      <mat-select required [(ngModel)]="options.lang">
-        <mat-option [value]="'german'">Deutsch</mat-option>
-        <mat-option [value]="'english'">Englisch</mat-option>
-        <mat-option [value]="'french'">Französisch</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-radio-group [(ngModel)]="options.lang"
+                     [matTooltip]="'Mit dieser Einstellung werden kurze Texte oberhalb des Audios generiert.'">
+      <mat-radio-button [value]="'german'">Deutsch</mat-radio-button>
+      <mat-radio-button [value]="'english'">Englisch</mat-radio-button>
+      <mat-radio-button [value]="'french'">Französisch</mat-radio-button>
+    </mat-radio-group>
 
     <h3>Situierung, Frage, Operator, Hinweise, o.Ä.</h3>
-    <aspect-rich-text-editor [(content)]="options.text2" [showReducedControls]="true" [preventAutoFocus]="true">
+    <aspect-rich-text-editor [(content)]="options.text2" [showReducedControls]="true">
     </aspect-rich-text-editor>
   `,
   styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
+    *:not(h3, mat-divider) {margin-left: 30px;}
+    h3:not(:first-child) {margin-top: 40px;}
   `
 })
 export class Audio2StimulusComponent {
-  options: ModifiedAudio2StimulusOptions = {
+  @Output() validityChange = new EventEmitter<boolean>();
+
+  options: Audio2StimulusOptions = {
     src1: undefined,
     fileName1: undefined,
     maxRuns1: 1,
     src2: undefined,
     fileName2: undefined,
     maxRuns2: 2,
-    lang: undefined,
+    lang: 'german',
     text: '',
     text2: '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 10px; margin-top: 0"' +
       ' indentsize="20"><span style="color: black; font-size: 20px">Hier steht die Situierung.</span></p>' +
@@ -81,10 +76,13 @@ export class Audio2StimulusComponent {
     await FileService.loadAudio().then(file => {
       this.options[src] = file.content;
       this.options[src === 'src1' ? 'fileName1' : 'fileName2'] = file.name;
+      this.checkValidity();
     });
   }
-}
 
-type ModifiedAudio2StimulusOptions = Omit<Audio2StimulusOptions, 'lang'> & {
-  lang?: 'german' | 'english' | 'french';
-};
+  checkValidity(): void {
+    if (this.options.src1 !== undefined && this.options.src2 !== undefined) {
+      this.validityChange.emit(true);
+    }
+  }
+}

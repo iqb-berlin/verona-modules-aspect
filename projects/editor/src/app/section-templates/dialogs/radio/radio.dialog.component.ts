@@ -54,29 +54,32 @@ import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/ra
         </mat-action-list>
       }
       @if (templateVariant == 'text') {
-        <aspect-editor-textradio-stimulus></aspect-editor-textradio-stimulus>
+        <aspect-editor-textradio-stimulus (validityChange)="onValidityChange($event)">
+        </aspect-editor-textradio-stimulus>
       } @else if (templateVariant == 'image') {
-        <aspect-editor-imageradio-stimulus></aspect-editor-imageradio-stimulus>
+        <aspect-editor-imageradio-stimulus (validityChange)="onValidityChange($event)">
+        </aspect-editor-imageradio-stimulus>
       }
     </div>
     <div mat-dialog-actions>
-      <button mat-button [disabled]="!templateVariant" (click)="confirmAndClose()">{{'confirm' | translate }}</button>
+      <button mat-button [disabled]="!templateVariant || !isValid" (click)="confirmAndClose()">{{'confirm' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
   styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3 {text-decoration: underline;}
-    .input1 {min-height: 280px;}
   `
 })
 export class RadioWizardDialogComponent {
   @ViewChild(TextRadioComponent) textComp!: TextRadioComponent;
   @ViewChild(ImageRadioComponent) imageComp!: ImageRadioComponent;
   templateVariant: 'text' | 'image' | undefined;
+  isValid: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<RadioWizardDialogComponent>) {}
+
+  onValidityChange(valid: boolean) {
+    this.isValid = valid;
+  }
 
   confirmAndClose(): void {
     let options;

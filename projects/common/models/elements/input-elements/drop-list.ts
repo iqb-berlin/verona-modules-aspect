@@ -96,12 +96,14 @@ export class DropListElement extends InputElement implements DropListProperties 
       if (element?.orientation) this.orientation = element.orientation;
       if (element?.showNumbering !== undefined) this.showNumbering = element.showNumbering;
       if (element?.startNumberingAtZero !== undefined) this.startNumberingAtZero = element.startNumberingAtZero;
-      if (element?.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
+      if (element?.highlightReceivingDropList !== undefined) this.highlightReceivingDropList = element.highlightReceivingDropList;
       if (element?.highlightReceivingDropListColor) {
         this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
       }
-      if (element?.permanentPlaceholders) this.permanentPlaceholders = element.permanentPlaceholders;
-      if (element?.permanentPlaceholdersCC) this.permanentPlaceholdersCC = element.permanentPlaceholdersCC;
+      if (element?.permanentPlaceholders !== undefined) this.permanentPlaceholders = element.permanentPlaceholders;
+      if (element?.permanentPlaceholdersCC !== undefined) {
+        this.permanentPlaceholdersCC = element.permanentPlaceholdersCC;
+      }
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         height: 100,
         minHeight: 57,

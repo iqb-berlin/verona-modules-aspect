@@ -1,5 +1,30 @@
 Editor
 ======
+## 2.9.0
+### Neue Funktionen
+- Kontrollkästchen:
+  - Können jetzt mit Bildern versehen werden. Dadurch ändert sich automatisch die Anordnung auf vertikal. Außerdem kann auf das Bild geklickt werden, um eine Auswahl vorzunehmen. Wenn einmal auf Bilder umgeschaltet wurde, gibt es keinen Weg zurück zu Texten. Dafür müsste ein neues Element angelegt werden.
+- Texteditor:
+  - Die Schaltflächen der Editoroptionen (sind an den meisten Stellen versteckt und) können ein- und ausgeklappt werden.
+  - Neues Feature: Wortzähler
+    - Wird beim Bearbeiten von normalen Textelementen angezeigt
+  - Neues Feature: horizontale Linie
+    - 2 Varianten: ganze Breite oder 20% der Textbreite
+- Assistenten:
+  - Überarbeitete Anordnung: Einige Assisten wurden in einen Dialog zusammengefasst, z.B. MC. Die Auswahl der konketen Variante wurde überarbeitet und passiert jetzt über einfache Knöpfe.
+  - Aussehen der Dialog überarbeitet
+  - Neue Assistenten: Stimulus Email, Stimulus Mobiltelefon, Kontrollkästchen, Aufgabenidee
+  Die Stimulusassistenten funktionieren anders als alle anderen und bieten keine Eingabemöglichkeiten für alle Felder an. Sie fragen lediglich die Sprache ab und generieren dann den Abschnitt mit Platzhalten, die dann geändert werden müssen. Das bietet den Vorteil, dass man direkt sieht welchen Teil der Vorlage man bearbeitet.
+  - MC kann zusätzlich ein Begründungsfeld anhängen
+  - Drag and Drop:
+    - verwendet überall wo es sinnvoll ist die neue Platzhaltereinstellung. Nicht bei Bildern.
+    - Neue Variante: 2-seitig. Funktioniert ähnlich der 1-seitigen Variante, aber hat einige weitere Anordnungsoptionen und kann Bilder verwenden.
+  - Markieren hat 2 Varianten: "Wortweise Markieren" und "Bereichsweise Markieren"
+  - Markieren kann nun ein bestehendes Textelement referenzieren und das generierte Markierungselement wird automatisch am Text hinterlegt.
+  - Antwortfelder können zusätzlich zur Nummerierung Texte enthalten. Außerdem können Mathe-Eingabefelder verwendet werden.
+### Fehlerbehebungen
+- Export von Abschnitten enthält weniger unnötige Daten
+
 ## 2.8.0
 ### Änderungen
 - Ablegelisten - Ausrichtung:

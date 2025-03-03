@@ -1,5 +1,12 @@
 Allgemein
 =========
+## editor/2.9.0+player/2.9.0
+### Neue Funktionen
+- Kontrollkästchen:
+  - Können jetzt mit Bildern versehen werden. Dadurch ändert sich automatisch die Anordnung auf vertikal. Außerdem kann auf das Bild geklickt werden, um eine Auswahl vorzunehmen.
+### Fehlerbehebungen
+- Text und Positionierung des "Hier geht’s weiter"-Knopf korrigiert
+
 ## editor/2.8.0+player/2.8.0
 ### Neue Funktionen
 - Text: Neue Markierfunktionalität

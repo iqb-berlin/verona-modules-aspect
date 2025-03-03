@@ -43,8 +43,7 @@ import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfa
       Begründungsfeld anfügen
     </mat-checkbox>
     <aspect-rich-text-editor class="input1" [disabled]="!options.addExtraInput"
-                             [(content)]="options.text1" [placeholder]="'Begründe deine Entscheidung.'"
-                             [controlPanelFolded]="true">
+                             [(content)]="options.text1" [controlPanelFolded]="true">
     </aspect-rich-text-editor>
     <mat-checkbox [(ngModel)]="options.extraInputMathfield" [disabled]="!options.addExtraInput">
       Formeleingabefeld verwenden
@@ -65,12 +64,12 @@ export class TextRadioComponent {
     label2: '',
     options: [],
     addExtraInput: false,
-    text1: '',
+    text1: 'Begründe deine Entscheidung.',
     extraInputMathfield: false
   };
 
   checkValidity(): void {
-    if (this.options.options.length > 0) {
+    if (this.options.options.length > 1) {
       this.validityChange.emit(true);
     } else {
       this.validityChange.emit(false);

@@ -20,8 +20,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
   ],
   template: `
     <h3>Frage</h3>
-    <aspect-rich-text-editor class="input1" [(content)]="options.label1"
-                             [placeholder]="'Hier steht die Fragestellung.'">
+    <aspect-rich-text-editor [(content)]="options.label1" [placeholder]="'Hier steht die Fragestellung.'">
     </aspect-rich-text-editor>
 
     <h3>Optionen</h3>
@@ -41,8 +40,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
     <mat-checkbox [(ngModel)]="options.addExtraInput">
       Begründungsfeld anfügen
     </mat-checkbox>
-    <aspect-rich-text-editor class="input1" [disabled]="!options.addExtraInput"
-                             [(content)]="options.text1" [placeholder]="'Begründe deine Entscheidung.'">
+    <aspect-rich-text-editor [disabled]="!options.addExtraInput" [(content)]="options.text1">
     </aspect-rich-text-editor>
     <mat-checkbox [(ngModel)]="options.extraInputMathfield" [disabled]="!options.addExtraInput">
       Formeleingabefeld verwenden
@@ -62,12 +60,12 @@ export class ImageRadioComponent {
     options: [],
     itemsPerRow: 4,
     addExtraInput: false,
-    text1: '',
+    text1: 'Begründe deine Entscheidung.',
     extraInputMathfield: false
   };
 
   checkValidity(): void {
-    if (this.options.options.length > 0) {
+    if (this.options.options.length > 1) {
       this.validityChange.emit(true);
     } else {
       this.validityChange.emit(false);

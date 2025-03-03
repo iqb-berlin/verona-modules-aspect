@@ -46,7 +46,9 @@ import { ElementOverlay } from './element-overlay.directive';
     '.temporaryHighlight {z-index: 100; background-color: lightblue;}',
     '.centered-horizontal {display: flex; justify-content: center;}',
     '.centered-vertical {display: flex; align-items: center;}',
-    ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}'
+    ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}',
+    // special fix for custom element in shadow dom
+    ':host ::ng-deep .prevent-interaction math-field::part(container) {pointer-events: none !important;}'
   ]
 })
 export class DynamicOverlayComponent extends ElementOverlay {

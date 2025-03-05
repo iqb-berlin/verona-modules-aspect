@@ -6,8 +6,9 @@ describe('Droplist element', { testIsolation: false }, () => {
 
     addList('normale Liste', ['AAA', 'BBB'], { highlightReceivingDropList: true }, 'normaleListe');
     addList('Sortierliste mit Hervorhebung (connected to drop-list_1)', ['DDD'],
-      { highlightReceivingDropList: true, sortList: true }, 'Sortierliste1');
-    addList('Sortierliste OHNE Hervorhebung (connected to drop-list_1)', ['EEE', 'FFF', 'GGG'], { sortList: true }, 'Sortierliste2');
+            { highlightReceivingDropList: true, sortList: true }, 'Sortierliste1');
+    addList('Sortierliste OHNE Hervorhebung (connected to drop-list_1)', ['EEE', 'FFF', 'GGG'],
+            { sortList: true }, 'Sortierliste2');
 
     connectLists('Sortierliste1', 'normaleListe');
     connectLists('Sortierliste2', 'normaleListe');

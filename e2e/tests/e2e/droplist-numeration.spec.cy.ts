@@ -1,4 +1,4 @@
-import { addList} from './droplist-util';
+import { addList } from './droplist-util';
 
 describe('Droplist element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -6,10 +6,12 @@ describe('Droplist element', { testIsolation: false }, () => {
       cy.openEditor();
     });
 
-    it('creates several droplists, the second with numeration and the third with numeration list starting from 0', () => {
-      addList('Liste ohne Nummerierung', ['AAA','BBB'], {}, 'Liste');
-      addList('Liste mit Nummerierung', ['CCC','DDD'], {showNumbering: true}, 'ListeNummerierung');
-      addList('Liste mit Nummerierung bei 0 beginnen', ['EEE','FFF'], {showNumbering: true, startNumberingAtZero: true}, 'ListeZero');
+    it('creates several droplists, the second with numeration,' +
+      ' and the third with numeration list starting from 0', () => {
+      addList('Liste ohne Nummerierung', ['AAA', 'BBB'], {}, 'Liste');
+      addList('Liste mit Nummerierung', ['CCC', 'DDD'], { showNumbering: true }, 'ListeNummerierung');
+      addList('Liste mit Nummerierung bei 0 beginnen', ['EEE', 'FFF'],
+              { showNumbering: true, startNumberingAtZero: true }, 'ListeZero');
     });
 
     after('saves an unit definition', () => {

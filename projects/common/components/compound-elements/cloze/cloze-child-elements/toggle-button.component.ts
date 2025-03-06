@@ -63,7 +63,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
       justify-content: center;
       box-sizing: border-box;
     }
-
+    :host ::ng-deep mat-pseudo-checkbox {display: none;}
     :host ::ng-deep .mat-button-toggle-label-content {
       line-height: unset !important;
     }

@@ -139,9 +139,10 @@ export class TemplateService {
                 // This connects an existing text element to the created marking panel
                 if (result.connectedText) {
                   const createdMarkingPanelID = createdSection.getAllElements('marking-panel')[0].id;
-                  availableTextElements
-                    .filter((el: UIElement) => el.alias === result.connectedText)[0]
-                    .markingPanels.push(createdMarkingPanelID);
+                  const chosenTextElement = availableTextElements
+                    .filter((el: UIElement) => el.alias === result.connectedText)[0];
+                  chosenTextElement.markingPanels.push(createdMarkingPanelID);
+                  chosenTextElement.markingMode = result.markingMode;
                 }
                 resolve(createdSection);
               }

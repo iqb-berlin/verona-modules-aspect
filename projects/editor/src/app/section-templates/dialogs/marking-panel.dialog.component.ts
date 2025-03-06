@@ -68,7 +68,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
   `
 })
 export class MarkingPanelDialogComponent {
-  text1: string = 'Hier steht die Fragestellung'; /* TODO weg */
+  text1: string = '';
   showHelper: boolean = true;
   markingMode: 'word' | 'range' = 'word';
   connectedText: string | undefined;

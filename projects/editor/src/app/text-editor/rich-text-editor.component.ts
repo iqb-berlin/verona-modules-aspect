@@ -121,7 +121,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     BlockImage,
     Blockquote,
     HorizontalRuleExtension,
-    CharacterCount,
+    CharacterCount.configure(),
     Tooltip,
     MathFormulaExtension(this.injector)
   ];

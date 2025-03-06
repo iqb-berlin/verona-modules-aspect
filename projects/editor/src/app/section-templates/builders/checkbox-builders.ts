@@ -5,13 +5,14 @@ import { IDService } from 'editor/src/app/services/id.service';
 export function createCheckboxSection(text1: string, options: string[], useImages: boolean,
                                       idService: IDService): Section {
   const sectionElements = [
-    TemplateService.createElement('text', { gridRow: 1, gridColumn: 1 },
+    TemplateService.createElement('text',
+                                  { gridRow: 1, gridColumn: 1, gridColumnRange: useImages ? options.length : 1 },
                                   { text: text1 }, idService)
   ];
   if (!useImages) {
     options.forEach((option: string, i: number) => {
       sectionElements.push(
-        TemplateService.createElement('checkbox', { gridRow: i + 1, gridColumn: 1 }, { label: option }, idService)
+        TemplateService.createElement('checkbox', { gridRow: i + 2, gridColumn: 1 }, { label: option }, idService)
       );
     });
   } else {

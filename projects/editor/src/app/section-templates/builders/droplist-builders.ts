@@ -1,6 +1,7 @@
 import { PositionedUIElement } from 'common/interfaces';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { Section, SectionProperties } from 'common/models/section';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
   ClassicTemplateOptions, SortTemplateOptions,
@@ -219,23 +220,24 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
   const section1Elements: PositionedUIElement[] = [
     TemplateService.createElement('text', { gridRow: 1, gridColumn: 1 }, { text: options.text1 }, idService),
     TemplateService.createElement('text', { gridRow: 2, gridColumn: 1 },
-                                  { text: options.headingSourceList, styling: { bold: true } }, idService),
-    TemplateService.createElement('drop-list', { gridRow: 3, gridColumn: 1 },
-                                  {
-                                    value: options.options.map(option => ({
-                                      text: options.srcUseImages ? '' : option,
-                                      imgSrc: options.srcUseImages ? option : undefined,
-                                      originListID: 'id_placeholder'
-                                    })),
-                                    orientation: options.srcUseImages ? 'flex' : 'vertical',
-                                    highlightReceivingDropList: true,
-                                    permanentPlaceholders: true,
-                                    permanentPlaceholdersCC: !options.srcUseImages
-                                  },
-                                  idService)
+                                  { text: options.headingSourceList, styling: { bold: true } }, idService)
   ];
-  const section = new Section(undefined, idService);
-  section1Elements.forEach(el => section.addElement(el));
+  const startListEle: DropListElement = TemplateService.createElement(
+    'drop-list',
+    { gridRow: 3, gridColumn: 1 },
+    {
+      value: options.options.map(option => ({
+        text: options.srcUseImages ? '' : option,
+        imgSrc: options.srcUseImages ? option : undefined,
+        originListID: 'id_placeholder'
+      })),
+      orientation: options.srcUseImages ? 'flex' : 'vertical',
+      highlightReceivingDropList: true,
+      permanentPlaceholders: true,
+      permanentPlaceholdersCC: !options.srcUseImages
+    },
+    idService) as DropListElement;
+  section1Elements.push(startListEle as PositionedUIElement);
 
   const section2Elements: PositionedUIElement[] = [
     TemplateService.createElement('text',
@@ -263,6 +265,20 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
       [{ value: 1, unit: 'fr' }, { value: 165, unit: 'px' }]
   } as SectionProperties, idService);
   section2Elements.forEach(el => section2.addElement(el));
+
+  // connect all target lists
+  section2.connectAllDropLists();
+  const targetLists: DropListElement[] =
+    section2Elements.filter(el => el.type === 'drop-list') as DropListElement[];
+  // connect all targets lists to startlist
+  targetLists.forEach(el => {
+    (el as DropListElement).connectedTo.push(startListEle.id);
+  });
+  // connect startlist to all target lists
+  startListEle.connectedTo = targetLists.map(list => list.id);
+
+  const section = new Section(undefined, idService);
+  section1Elements.forEach(el => section.addElement(el));
   return [section, section2];
 }
 

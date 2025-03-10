@@ -125,11 +125,13 @@ export class Section {
     }, this.idService);
   }
 
+  /* May remove existing connections! */
   connectAllDropLists(): void {
     const dropLists: DropListElement[] = this.getAllElements('drop-list') as DropListElement[];
     const dropListIDs = dropLists.map(list => list.id);
     dropLists.forEach(dropList => {
       dropList.connectedTo = [...dropListIDs];
+      // remove self
       dropList.connectedTo.splice(dropListIDs.indexOf(dropList.id), 1);
     });
   }

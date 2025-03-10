@@ -207,12 +207,6 @@ export class UnitService {
     this.expertMode = checked;
   }
 
-  /* May remove existing connections! */
-  connectAllDropLists(sectionParam?: Section) {
-    const section: Section = sectionParam || this.getSelectedSection();
-    section.connectAllDropLists();
-  }
-
   moveSectionToNewpage(pageIndex: number, sectionIndex: number): void {
     const sectionsLength = this.unit.pages[pageIndex].sections.length;
     const sectionsToMove = this.unit.pages[pageIndex].sections

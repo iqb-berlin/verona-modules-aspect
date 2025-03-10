@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { FileService } from 'common/services/file.service';
 
 @Component({
-  selector: 'aspect-editor-radio-wizard-dialog',
+  selector: 'aspect-editor-checkbox-wizard-dialog',
   standalone: true,
   imports: [
     TranslateModule,
@@ -35,7 +35,7 @@ import { FileService } from 'common/services/file.service';
     MatLabel
   ],
   template: `
-    <div mat-dialog-title>Assistent: MC mit Text</div>
+    <div mat-dialog-title>Assistent: Kontrollkästchen</div>
     <div mat-dialog-content>
       <h3>Frage</h3>
       <aspect-rich-text-editor [(content)]="text1" [placeholder]="'Hier steht die Fragestellung.'">

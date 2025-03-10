@@ -32,7 +32,7 @@ import { Audio2StimulusComponent } from 'editor/src/app/section-templates/dialog
       @if (templateVariant == undefined) {
         <mat-action-list>
           <button mat-list-item (click)="templateVariant = 'text'; isValid = true;">Text</button>
-          <button mat-list-item (click)="templateVariant = 'email'; isValid = true;">Email</button>
+          <button mat-list-item (click)="templateVariant = 'email'; isValid = true;">E-Mail</button>
           <button mat-list-item (click)="templateVariant = 'message'; isValid = true;">Mobiltelefon</button>
           <button mat-list-item (click)="templateVariant = 'audio1'">Instruktion und Hörtext in einem Audio</button>
           <button mat-list-item (click)="templateVariant = 'audio2'">Instruktion und Hörtext getrennt</button>

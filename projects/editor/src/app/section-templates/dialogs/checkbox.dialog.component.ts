@@ -35,7 +35,7 @@ import { FileService } from 'common/services/file.service';
     MatLabel
   ],
   template: `
-    <div mat-dialog-title>Assistent: Kontrollkästchen</div>
+    <h2 mat-dialog-title>Assistent: Kontrollkästchen</h2>
     <div mat-dialog-content>
       <h3>Frage</h3>
       <aspect-rich-text-editor [(content)]="text1" [placeholder]="'Hier steht die Fragestellung.'">

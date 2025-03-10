@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ],
   template: `
-    <div mat-dialog-title>Aufgabenidee</div>
+    <h2 mat-dialog-title>Aufgabenidee</h2>
     <div mat-dialog-content>
       <h3>Beschreibung der Aufgabenidee:</h3>
       <aspect-rich-text-editor class="input1" [(content)]="text1"

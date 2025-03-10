@@ -45,7 +45,7 @@ import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/ra
     ImageRadioComponent
   ],
   template: `
-    <div mat-dialog-title>Assistent: MC</div>
+    <h2 mat-dialog-title>Assistent: MC</h2>
     <div mat-dialog-content>
       @if (templateVariant == undefined) {
         <mat-action-list>

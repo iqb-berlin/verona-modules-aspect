@@ -28,7 +28,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule
   ],
   template: `
-    <div mat-dialog-title>Assistent: Antwortfeld(er)</div>
+    <h2 mat-dialog-title>Assistent: Antwortfeld(er)</h2>
     <div mat-dialog-content>
       <h3>Frage</h3>
       <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'">

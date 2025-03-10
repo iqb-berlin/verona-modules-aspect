@@ -29,7 +29,7 @@ import { NgForOf, NgIf } from '@angular/common';
     MatInputModule
   ],
   template: `
-    <div mat-dialog-title>Assistent: Rechenkästchen</div>
+    <h2 mat-dialog-title>Assistent: Rechenkästchen</h2>
     <div mat-dialog-content>
       <h3>Rechenart</h3>
       <mat-form-field [style.width.px]="250">

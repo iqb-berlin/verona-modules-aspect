@@ -27,13 +27,15 @@ import { Audio2StimulusComponent } from 'editor/src/app/section-templates/dialog
     Audio2StimulusComponent
   ],
   template: `
-    <div mat-dialog-title>Assistent: Stimulus</div>
+    <h2 mat-dialog-title>Assistent: Stimulus</h2>
     <div mat-dialog-content>
       @if (templateVariant == undefined) {
         <mat-action-list>
+          <h3>Lesestimulus</h3>
           <button mat-list-item (click)="templateVariant = 'text'; isValid = true;">Text</button>
           <button mat-list-item (click)="templateVariant = 'email'; isValid = true;">E-Mail</button>
           <button mat-list-item (click)="templateVariant = 'message'; isValid = true;">Mobiltelefon</button>
+          <h3>Audiostimulus</h3>
           <button mat-list-item (click)="templateVariant = 'audio1'">Instruktion und Hörtext in einem Audio</button>
           <button mat-list-item (click)="templateVariant = 'audio2'">Instruktion und Hörtext getrennt</button>
         </mat-action-list>

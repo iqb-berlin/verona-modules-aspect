@@ -29,7 +29,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
     MatOption
   ],
   template: `
-    <div mat-dialog-title>Assistent: Markieren</div>
+    <h2 mat-dialog-title>Assistent: Markieren</h2>
     <div mat-dialog-content>
       <h3>Text</h3>
       <aspect-rich-text-editor [(content)]="text1" [placeholder]="'Hier steht die Fragestellung.'">

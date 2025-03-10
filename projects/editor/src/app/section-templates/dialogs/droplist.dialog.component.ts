@@ -54,7 +54,7 @@ import { MatActionList, MatListItem } from '@angular/material/list';
     MatListItem
   ],
   template: `
-    <div mat-dialog-title>Assistent: Drag & Drop</div>
+    <h2 mat-dialog-title>Assistent: Drag & Drop</h2>
     <div mat-dialog-content>
       @if (templateVariant == undefined) {
         <mat-action-list class="variant-choice">

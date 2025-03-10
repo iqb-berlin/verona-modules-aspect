@@ -27,7 +27,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   template: `
-    <div mat-dialog-title>Assistent: GeoGebra</div>
+    <h2 mat-dialog-title>Assistent: GeoGebra</h2>
     <div mat-dialog-content>
       <h3>Text</h3>
       <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'">

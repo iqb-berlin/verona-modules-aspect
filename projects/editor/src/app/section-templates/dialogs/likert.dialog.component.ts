@@ -23,7 +23,7 @@ import { TextImageLabel } from 'common/interfaces';
     MatButtonModule
   ],
   template: `
-    <div mat-dialog-title>Assistent: CMC</div>
+    <h2 mat-dialog-title>Assistent: CMC</h2>
     <div mat-dialog-content>
       <h3>Text</h3>
       <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"

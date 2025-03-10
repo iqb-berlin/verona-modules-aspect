@@ -26,7 +26,7 @@ export function createDroplistSection(options: ClassicTemplateOptions, idService
       {
         gridRow: 3,
         gridColumn: options.targetLabelAlignment === 'column' ? 1 : 3,
-        ...options.targetLabelAlignment === 'row' && { gridRowRange: options.targetLabels.length },
+        ...options.targetLabelAlignment === 'row' && { gridRowRange: options.targetLabels.length + 1 },
         gridColumnRange: options.targetLabelAlignment === 'column' ? 2 : 1,
         marginBottom: { value: options.targetLabelAlignment === 'column' ? 20 : 40, unit: 'px' },
         ...options.targetLabelAlignment === 'row' && { marginLeft: { value: 5, unit: 'px' } }

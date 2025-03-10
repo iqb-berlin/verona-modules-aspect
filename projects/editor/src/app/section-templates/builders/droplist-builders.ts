@@ -78,7 +78,7 @@ export function createDroplistSection(options: ClassicTemplateOptions, idService
         marginBottom: { value: i === (options.targetLabels.length - 1) ? 40 : 5, unit: 'px' }
       },
       {
-        dimensions: { minHeight: 58 } as DimensionProperties,
+        dimensions: { minHeight: 58, maxWidth: getWidth(options.optionWidth) } as DimensionProperties,
         orientation: 'vertical',
         onlyOneItem: true,
         allowReplacement: true,
@@ -98,6 +98,16 @@ export function createDroplistSection(options: ClassicTemplateOptions, idService
   sectionElements.forEach(el => section.addElement(el));
   section.connectAllDropLists();
   return section;
+}
+
+function getWidth(width: 'long' | 'medium' | 'short' | 'very-short'): number {
+  switch (width) {
+    case 'very-short': return 125;
+    case 'short': return 250;
+    case 'medium': return 500;
+    case 'long': return 750;
+    default: throw Error(`Unexpected option width:${width}`);
+  }
 }
 
 function getDrolistColSizesVertical(optionLength: 'long' | 'medium' | 'short' | 'very-short',

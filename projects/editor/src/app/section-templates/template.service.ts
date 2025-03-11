@@ -164,7 +164,7 @@ export class TemplateService {
             .afterClosed().subscribe((result: {
               text: string,
               answerCount: number,
-              useTextAreas: boolean,
+              multilineInputs: boolean,
               numbering: 'latin' | 'decimal' | 'bullets' | 'none',
               fieldLength: 'very-small' | 'small' | 'medium' | 'large',
               expectedCharsCount: number,

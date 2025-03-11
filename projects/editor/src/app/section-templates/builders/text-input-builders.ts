@@ -4,7 +4,7 @@ import { DimensionProperties } from 'common/models/elements/property-group-inter
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
 
-export function createInputSection(config: { text: string, answerCount: number, useTextAreas: boolean,
+export function createInputSection(config: { text: string, answerCount: number, multilineInputs: boolean,
   numbering: 'latin' | 'decimal' | 'bullets' | 'none', fieldLength: 'very-small' | 'small' | 'medium' | 'large',
   expectedCharsCount: number, useMathFields: boolean, numberingWithText: boolean, subQuestions: string[] },
                                    idService: IDService): Section {
@@ -17,7 +17,7 @@ export function createInputSection(config: { text: string, answerCount: number, 
         gridRow: 1,
         gridColumn: 1,
         gridColumnRange: (useNumbering && !config.numberingWithText) ? 2 : 1,
-        marginBottom: { value: config.useTextAreas ? 10 : 0, unit: 'px' }
+        marginBottom: { value: config.multilineInputs ? 10 : 0, unit: 'px' }
       },
       { text: config.text },
       idService
@@ -38,11 +38,16 @@ export function createInputSection(config: { text: string, answerCount: number, 
           { text: numberingText },
           idService));
     }
-    let marginBottom = config.useTextAreas ? -6 : -25;
-    if (i === config.answerCount - 1) marginBottom = config.useTextAreas ? 10 : 0;
+    let marginBottom = 0;
+    if (!config.useMathFields) {
+      marginBottom = config.multilineInputs ? -6 : -25;
+      if (i === config.answerCount - 1) marginBottom = config.multilineInputs ? 10 : 0;
+    } else {
+      marginBottom = 10;
+    }
     sectionElements.push(
       TemplateService.createElement(
-        config.useTextAreas ? `text-area${config.useMathFields ? '-math' : ''}` :
+        config.multilineInputs ? `text-area${config.useMathFields ? '-math' : ''}` :
           `${config.useMathFields ? 'math' : 'text'}-field`,
         {
           gridRow: 2 + (config.numberingWithText ? 1 + i * 2 : i),
@@ -50,12 +55,12 @@ export function createInputSection(config: { text: string, answerCount: number, 
           marginBottom: { value: marginBottom, unit: 'px' }
         },
         {
-          ...!config.useTextAreas && {
+          ...!config.multilineInputs && {
             dimensions: {
               maxWidth: getWidth(config.fieldLength)
             } as DimensionProperties
           },
-          ...!config.useTextAreas ? {
+          ...!config.multilineInputs ? {
             showSoftwareKeyboard: true,
             addInputAssistanceToKeyboard: true,
             label: ''

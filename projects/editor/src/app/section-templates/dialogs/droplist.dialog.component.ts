@@ -181,12 +181,12 @@ import { MatActionList, MatListItem } from '@angular/material/list';
                                  [showReducedControls]="true">
         </aspect-rich-text-editor>
         <h4>Zielbeschriftungen</h4>
-        @if (templateVariant === '2pages') {
+        @if (templateVariant === '2pages' && options.srcUseImages) {
           <mat-checkbox class="image-checkbox" [(ngModel)]="options.targetUseImages">Bilder</mat-checkbox>
         }
         <ng-container
           *ngTemplateOutlet="elementInputs; context: { list: options.targetLabels,
-                                                       useImages: options.targetUseImages }">
+                                                       useImages: options.srcUseImages && options.targetUseImages }">
         </ng-container>
       </ng-template>
 

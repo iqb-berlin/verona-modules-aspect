@@ -228,8 +228,9 @@ export function createSortlistSection(options: SortTemplateOptions, idService: I
 
 export function createTwopageSection(options: TwoPageTemplateOptions, idService: IDService): [Section, Section] {
   const section1Elements: PositionedUIElement[] = [
-    TemplateService.createElement('text', { gridRow: 1, gridColumn: 1 }, { text: options.text1 }, idService),
-    TemplateService.createElement('text', { gridRow: 2, gridColumn: 1 },
+    TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
+                                  { text: options.text1 }, idService),
+    TemplateService.createElement('text', { gridRow: 2, gridColumn: 1, marginBottom: { value: 20, unit: 'px' } },
                                   { text: options.headingSourceList, styling: { bold: true } }, idService)
   ];
   const startListEle: DropListElement = TemplateService.createElement(
@@ -251,22 +252,29 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
 
   const section2Elements: PositionedUIElement[] = [
     TemplateService.createElement('text',
-                                  { gridRow: 1, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0) },
+                                  { gridRow: 1, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 30, unit: 'px' } },
                                   { text: options.text2 }, idService),
     TemplateService.createElement('text',
-                                  { gridRow: 2, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0) },
+                                  { gridRow: 2, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 20, unit: 'px' } },
                                   { text: options.headingTargetLists, styling: { bold: true } }, idService)
   ];
 
   if (options.srcUseImages) {
-    section2Elements.push(...options.targetListAlignment === 'row' ? createImageTargets(options, idService) :
-      createTargetGrid(options, idService));
+    if (options.targetUseImages) {
+      section2Elements.push(...createImageTargets(options, idService));
+    } else {
+      if (options.targetListAlignment === 'row') {
+        section2Elements.push(...createImageTargets(options, idService));
+      } else {
+        section2Elements.push(...createTargetGrid(options, idService));
+      }
+    }
   } else {
     section2Elements.push(...createTextRowTargets(options, idService));
   }
 
   const section2 = new Section({
-    autoColumnSize: false,
+    autoColumnSize: options.srcUseImages && !options.targetUseImages && options.targetListAlignment === 'grid',
     // eslint-disable-next-line no-nested-ternary
     gridColumnSizes: options.targetUseImages ?
       (options.imageSize === 'small' ?
@@ -296,7 +304,8 @@ function createTextRowTargets(options: TwoPageTemplateOptions, idService: IDServ
   const elements: PositionedUIElement[] = [];
   options.targetLabels.forEach((label: string, i: number) => {
     const droplistEl = TemplateService.createElement(
-      'drop-list', { gridRow: 4 + i * 2 - (options.labelsBelow ? 1 : 0), gridColumn: 1 },
+      'drop-list', { gridRow: 4 + i * 2 - (options.labelsBelow ? 1 : 0), gridColumn: 1,
+        marginBottom: { value: options.labelsBelow ? 5 : 20, unit: 'px' } },
       {
         dimensions: { minHeight: 58 } as DimensionProperties,
         orientation: 'vertical',
@@ -306,7 +315,12 @@ function createTextRowTargets(options: TwoPageTemplateOptions, idService: IDServ
       }, idService);
     if (!options.labelsBelow) elements.push(droplistEl);
     elements.push(TemplateService.createElement(
-      'text', { gridRow: (3 + i * 2) + (options.labelsBelow ? 1 : 0), gridColumn: 1 }, { text: label }, idService)
+      'text',
+      {
+        gridRow: (3 + i * 2) + (options.labelsBelow ? 1 : 0),
+        gridColumn: 1,
+        marginBottom: { value: options.labelsBelow ? 20 : 5, unit: 'px' }
+      }, { text: label }, idService)
     );
     if (options.labelsBelow) elements.push(droplistEl);
   });
@@ -317,7 +331,7 @@ function createTextRowTargets(options: TwoPageTemplateOptions, idService: IDServ
       gridColumn: 1,
       gridColumnRange: 2 + (options.targetUseImages ? 1 : 0)
     },
-    { text: options.text3 },
+    { text: options.text3, styling: { fontSize: 14 } },
     idService)
   );
   return elements;

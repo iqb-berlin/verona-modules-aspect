@@ -2,16 +2,15 @@ import {
   Component, Input
 } from '@angular/core';
 import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
+import { AudioPlayerService } from 'common/services/audio-player.service';
 
 @Component({
   selector: 'aspect-text-image-panel',
   template: `
     <div *ngIf="$any(label).audioSrc"
          class="audio-button"
-         (click)="player.play()">
-      <audio #player
-             [src]="$any(label).audioSrc | safeResourceUrl">
-      </audio>
+         (touchstart)="audioPlayerService.play($any(label).audioSrc)"
+         (mousedown)="audioPlayerService.play($any(label).audioSrc)">
       <mat-icon data-draggable-audio="true">play_arrow</mat-icon>
     </div>
     <div class="image-wrapper" [ngClass]="{'column': label.imgPosition === 'above',
@@ -78,4 +77,6 @@ import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
 export class TextImagePanelComponent {
   @Input() label!: TextImageLabel | DragNDropValueObject;
   @Input() hideContent: boolean = false;
+
+  constructor(public audioPlayerService: AudioPlayerService) {}
 }

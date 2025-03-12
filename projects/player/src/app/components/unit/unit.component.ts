@@ -141,12 +141,14 @@ export class UnitComponent implements OnInit {
     this.unitStateService
       .setElementCodes(message.unitState?.dataParts?.elementCodes ?
         JSON.parse(message.unitState.dataParts.elementCodes) : [],
-      unitDefinition.getAllElements().map(element => element.getIdentifiers()).flat());
+                       unitDefinition.getAllElements()
+                         .map(element => element.getIdentifiers()).flat());
 
     this.stateVariableStateService
       .setElementCodes(message.unitState?.dataParts?.stateVariableCodes ?
         JSON.parse(message.unitState.dataParts.stateVariableCodes) : [],
-      unitDefinition.stateVariables.map(stateVariable => ({ id: stateVariable.id, alias: stateVariable.alias })));
+                       unitDefinition.stateVariables
+                         .map(stateVariable => ({ id: stateVariable.id, alias: stateVariable.alias })));
 
     unitDefinition.stateVariables
       .map(stateVariable => this.stateVariableStateService

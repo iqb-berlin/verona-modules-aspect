@@ -11,24 +11,22 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
       <aspect-media-player-control-bar *ngIf="elementModel.src"
                                        class="correct-position"
                                        [player]="player"
+                                       [isLoaded]="isLoaded"
                                        [project]="project"
                                        [active]="active"
                                        [id]="elementModel.id"
                                        [savedPlaybackTime]="savedPlaybackTime"
                                        [playerProperties]="elementModel.player"
                                        [dependencyDissolved]="dependencyDissolved"
+                                       (mediaPlayStatusChanged)="mediaPlayStatusChanged.emit($event)"
                                        [backgroundColor]="elementModel.styling.backgroundColor"
                                        (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                        (elementValueChanged)="elementValueChanged.emit($event)">
         <video #player
                [style.width.%]="100"
-               [src]="elementModel.src | safeResourceUrl"
+               [src]="elementModel.src"
                disablepictureinpicture="true"
-               (contextmenu)="$event.preventDefault()"
-               (loadedmetadata)="isLoaded.next(true)"
-               (error)="throwError('video-not-loading', $event.message)"
-               (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
-               (pause)="mediaPlayStatusChanged.emit(null)">
+               (contextmenu)="$event.preventDefault()">
         </video>
       </aspect-media-player-control-bar>
       <aspect-spinner [isLoaded]="isLoaded"

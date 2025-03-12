@@ -2,6 +2,7 @@ import {
   OnInit, OnChanges, SimpleChanges, OnDestroy, Component, EventEmitter, Input, Output
 } from '@angular/core';
 import {
+  BehaviorSubject,
   fromEvent, Subject, tap, throttleTime
 } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,6 +17,7 @@ import { ValueChangeElement } from 'common/interfaces';
 })
 export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
+  @Input() mediaSrc!: string;
   @Input() id!: string;
   @Input() savedPlaybackTime!: number;
   @Input() playerProperties!: PlayerProperties;
@@ -23,10 +25,13 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   @Input() active!: boolean;
   @Input() dependencyDissolved!: boolean;
   @Input() backgroundColor: string = '#f1f1f1';
+  @Input() isLoaded!: BehaviorSubject<boolean>;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() mediaValidStatusChanged = new EventEmitter<string>();
+  @Output() mediaPlayStatusChanged = new EventEmitter<string | null>();
 
   duration: number = 0;
+  playerDuration: number = 0;
   currentTime: number = 0;
   currentRestTime: number = 0;
   started: boolean = false;
@@ -41,10 +46,16 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   playbackTime: number = 0;
   valid: boolean = false;
   muted: boolean = false;
+  durationErrorTimeoutId: number | null = null;
 
   private ngUnsubscribe = new Subject<void>();
 
   ngOnInit(): void {
+    setTimeout(() => this.init());
+  }
+
+  private init(): void {
+    this.setPlayerSrc(this.mediaSrc);
     this.playbackTime = this.savedPlaybackTime || this.playerProperties.playbackTime;
     this.started = this.playbackTime > 0;
     this.runCounter = Math.floor(this.playbackTime);
@@ -53,8 +64,9 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       .pipe(
         takeUntil(this.ngUnsubscribe),
         tap(() => {
-          this.currentTime = this.player.currentTime / 60;
-          this.currentRestTime = this.player.duration ? (this.player.duration - this.player.currentTime) / 60 : 0;
+          this.currentTime = this.player.currentTime ? this.player.currentTime / 60 : this.getPlayerCurrentTime() / 60;
+          this.currentRestTime = this.playerDuration && this.playerDuration > this.player.currentTime ?
+            (this.playerDuration - this.player.currentTime) / 60 : 0;
         }),
         throttleTime(5000)
       )
@@ -62,12 +74,15 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     this.player.onpause = () => {
       this.playing = false;
       this.pausing = true;
+      this.mediaPlayStatusChanged.emit(null);
+      setTimeout(() => this.setPlayerSrc(''));
     };
     this.player.onplaying = () => {
       this.playing = true;
       this.pausing = false;
       this.started = true;
       this.showHint = false;
+      this.mediaPlayStatusChanged.emit(this.id);
     };
     this.player.onended = () => {
       this.checkValidState(this.runCounter + 1);
@@ -170,11 +185,10 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private _play(): void {
+    this.setPlayerSrc(this.mediaSrc);
     this.player.play().then(() => {
       setTimeout(() => this.sendPlaybackTimeChangedWithDelay(0));
-    },
-    // eslint-disable-next-line no-console
-    () => console.error('player: cannot play this media file'));
+    });
   }
 
   private sendPlaybackTimeChangedWithDelay(delay: number): void {
@@ -197,29 +211,58 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private toPlaybackTime(): number {
-    this.playbackTime = this.player.duration ?
-      this.runCounter + this.player.currentTime / this.player.duration : this.playbackTime;
+    this.playbackTime = this.playerDuration ?
+      this.runCounter + this.player.currentTime / this.playerDuration : this.playbackTime;
     return this.playbackTime;
+  }
+
+  private getPlayerCurrentTime(): number {
+    return (this.playbackTime - this.runCounter) * this.playerDuration;
   }
 
   private initTimeValues(): void {
     if (!this.duration) {
-      if ((this.player.duration !== Infinity) && this.player.duration) {
-        this.duration = this.player.duration / 60;
-        this.player.currentTime = (this.playbackTime - this.runCounter) * this.player.duration;
-        this.currentRestTime = (this.player.duration - this.player.currentTime) / 60;
+      const playerDuration = this.player.duration;
+      if ((playerDuration !== Infinity) && playerDuration) {
+        this.playerDuration = playerDuration;
+        this.duration = this.playerDuration / 60;
+        this.player.currentTime = this.getPlayerCurrentTime();
+        this.currentRestTime = (this.playerDuration - this.player.currentTime) / 60;
         this.checkDisabledState(this.runCounter);
         this.checkValidState(this.runCounter);
         this.sendPlaybackTimeChanged();
+        this.clearDurationErrorTimeOut();
+        this.isLoaded.next(true);
+        setTimeout(() => this.setPlayerSrc(''));
       } else {
         this.duration = 0;
         this.runCounter = 0;
-        throw new AspectError('media-duration-error', 'Media duration is not available');
+        this.durationErrorTimeoutId = window.setTimeout(() => {
+          if (this.duration === 0) {
+            this.isLoaded.next(true);
+            throw new AspectError('media-duration-error', 'Media duration is not available');
+          }
+        }, 1000);
       }
     }
   }
 
+  private clearDurationErrorTimeOut(): void {
+    if (this.durationErrorTimeoutId !== null) {
+      clearTimeout(this.durationErrorTimeoutId);
+      this.durationErrorTimeoutId = null;
+    }
+  }
+
+  private setPlayerSrc(src: string): void {
+    if (this.player.src !== src && this.mediaSrc) {
+      this.player.src = src;
+      this.player.currentTime = this.getPlayerCurrentTime();
+    }
+  }
+
   ngOnDestroy(): void {
+    this.clearDurationErrorTimeOut();
     this.pause();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

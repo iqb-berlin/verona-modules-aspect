@@ -22,6 +22,8 @@ Editor
   - Markieren hat 2 Varianten: "Wortweise Markieren" und "Bereichsweise Markieren"
   - Markieren kann nun ein bestehendes Textelement referenzieren und das generierte Markierungselement wird automatisch am Text hinterlegt.
   - Antwortfelder können zusätzlich zur Nummerierung Texte enthalten. Außerdem können Mathe-Eingabefelder verwendet werden.
+### Änderungen
+- Anfändermodus: Maximalbreite für Ablegelisten einstellbar
 ### Fehlerbehebungen
 - Export von Abschnitten enthält weniger unnötige Daten
 - Formelfeld ist standardmäßig nicht interagierbar

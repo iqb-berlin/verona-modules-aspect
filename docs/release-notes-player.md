@@ -3,7 +3,7 @@ Player
 ## 2.9.0
 ### Fehlerbehebungen
 - Korrigiert bei Rechenkästchen die Position von schwebenden, hinten positionierten Eingabehilfen
-- Behebt das Flackern vorhandener Markierungen beim Erstellen neuer Bereichs-Markierungen 
+- Behebt das Flackern vorhandener Markierungen beim Erstellen neuer Bereichs-Markierungen
 
 ## 2.8.0
 ### Neue Funktionen

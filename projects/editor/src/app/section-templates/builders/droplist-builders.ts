@@ -350,7 +350,7 @@ function createImageTargets(options: TwoPageTemplateOptions, idService: IDServic
       );
     }
     elements.push(TemplateService.createElement(
-      'drop-list', { gridRow: 3 + i, gridColumn: 2 + (options.targetUseImages ? 1 : 0) },
+      'drop-list', { gridRow: 3 + i, gridColumn: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 5, unit: 'px' } },
       {
         dimensions: { minHeight: options.imageSize === 'small' ? 167 : 217 } as DimensionProperties,
         onlyOneItem: true,

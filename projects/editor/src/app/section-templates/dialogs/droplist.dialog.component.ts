@@ -256,7 +256,7 @@ export class DroplistWizardDialogComponent {
       numbering: false,
       imageSize: 'medium',
       labelsBelow: false,
-      targetListAlignment: 'grid',
+      targetListAlignment: 'row',
       srcUseImages: false,
       targetUseImages: false
     };

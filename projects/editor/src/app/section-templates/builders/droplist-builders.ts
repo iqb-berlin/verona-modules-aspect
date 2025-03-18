@@ -342,7 +342,7 @@ function createImageTargets(options: TwoPageTemplateOptions, idService: IDServic
   options.targetLabels.forEach((label: string, i: number) => {
     if (options.targetUseImages) {
       elements.push(TemplateService.createElement(
-        'image', { gridRow: 3 + i, gridColumn: 2 }, { src: label }, idService)
+        'image', { gridRow: 3 + i, gridColumn: 2, marginTop: { value: 9, unit: 'px' } }, { src: label }, idService)
       );
     } else {
       elements.push(TemplateService.createElement(
@@ -350,7 +350,8 @@ function createImageTargets(options: TwoPageTemplateOptions, idService: IDServic
       );
     }
     elements.push(TemplateService.createElement(
-      'drop-list', { gridRow: 3 + i, gridColumn: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 5, unit: 'px' } },
+      'drop-list',
+      { gridRow: 3 + i, gridColumn: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 5, unit: 'px' } },
       {
         dimensions: { minHeight: options.imageSize === 'small' ? 167 : 217 } as DimensionProperties,
         onlyOneItem: true,
@@ -376,12 +377,30 @@ function createTargetGrid(options: TwoPageTemplateOptions, idService: IDService)
   const elements: PositionedUIElement[] = [];
   options.targetLabels.forEach((label: string, i: number) => {
     elements.push(TemplateService.createElement(
-      'text', { gridRow: (Math.floor(i / 2) * 2 + 3), gridColumn: (i % 2) + 1 }, { text: label }, idService)
+      'text',
+      { gridRow: (Math.floor(i / 2) * 2 + 3), gridColumn: (i % 2) + 1 },
+      {
+        text: '<p style="text-align: center; padding-left: 0; text-indent: 0; margin-bottom: 0; margin-top: 0" ' +
+              `indentsize="20">${label}</p>`,
+        styling: { bold: true }
+      },
+      idService)
     );
     elements.push(TemplateService.createElement(
-      'drop-list', { gridRow: (Math.floor(i / 2) * 2 + 4), gridColumn: (i % 2) + 1 },
+      'drop-list',
       {
-        dimensions: { minHeight: 58 } as DimensionProperties,
+        gridRow: (Math.floor(i / 2) * 2 + 4),
+        gridColumn: (i % 2) + 1,
+        marginBottom: { value: 30, unit: 'px' }
+      },
+      {
+        dimensions: {
+          isWidthFixed: true,
+          width: options.imageSize === 'small' ? 167 : 217,
+          isHeightFixed: true,
+          height: options.imageSize === 'small' ? 167 : 217,
+          minHeight: 58
+        } as DimensionProperties,
         orientation: 'vertical',
         onlyOneItem: true,
         allowReplacement: true,

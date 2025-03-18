@@ -129,14 +129,14 @@ import { MatActionList, MatListItem } from '@angular/material/list';
         <ng-container *ngTemplateOutlet="targetList"></ng-container>
 
         @if (!options.targetUseImages && !options.srcUseImages) {
-          <h3>Ausrichtung</h3>
+          <h4>Ausrichtung</h4>
           <mat-radio-group [(ngModel)]="options.labelsBelow">
             <mat-radio-button [value]="false">Zielbeschriftung oben</mat-radio-button>
             <mat-radio-button [value]="true">Zielbeschriftung unten</mat-radio-button>
           </mat-radio-group>
         }
         @if (!options.targetUseImages && options.srcUseImages) {
-          <h3>Ausrichtung</h3>
+          <h4>Ausrichtung</h4>
           <mat-radio-group [(ngModel)]="options.targetListAlignment">
             <mat-radio-button [value]="'row'">zeilenweise</mat-radio-button>
             <mat-radio-button [value]="'grid'">Raster (2er-Reihen)</mat-radio-button>

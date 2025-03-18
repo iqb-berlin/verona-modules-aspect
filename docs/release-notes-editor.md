@@ -24,6 +24,7 @@ Editor
   - Antwortfelder können zusätzlich zur Nummerierung Texte enthalten. Außerdem können Mathe-Eingabefelder verwendet werden.
 ### Fehlerbehebungen
 - Export von Abschnitten enthält weniger unnötige Daten
+- Formelfeld ist standardmäßig nicht interagierbar
 
 ## 2.8.0
 ### Änderungen

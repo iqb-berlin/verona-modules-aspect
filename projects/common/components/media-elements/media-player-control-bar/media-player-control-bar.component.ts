@@ -32,6 +32,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
 
   duration: number = 0;
   playerDuration: number = 0;
+  playerCurrentTime: number = 0;
   currentTime: number = 0;
   currentRestTime: number = 0;
   started: boolean = false;
@@ -64,13 +65,11 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       .pipe(
         takeUntil(this.ngUnsubscribe),
         tap(() => {
-          this.currentTime = this.player.currentTime ? this.player.currentTime / 60 : this.getPlayerCurrentTime() / 60;
-          this.currentRestTime = this.playerDuration && this.playerDuration > this.player.currentTime ?
-            (this.playerDuration - this.player.currentTime) / 60 : 0;
+          this.onTimeUpdate();
         }),
         throttleTime(5000)
       )
-      .subscribe(() => this.sendPlaybackTimeChanged());
+      .subscribe(() => this.sendPlaybackTime());
     this.player.onpause = () => {
       this.playing = false;
       this.pausing = true;
@@ -86,6 +85,10 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     };
     this.player.onended = () => {
       this.checkValidState(this.runCounter + 1);
+      this.setPlaybackTime(this.runCounter + 1);
+      this.sendPlaybackTimeChanged(this.playbackTime);
+      this.playerCurrentTime = 0;
+      this.currentTime = 0;
       if (!this.checkDisabledState(this.runCounter + 1)) {
         this.runCounter += 1;
         if (this.playerProperties.loop) {
@@ -116,7 +119,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   pause(): void {
-    this.sendPlaybackTimeChanged();
+    this.sendPlaybackTime();
     this.player.pause();
   }
 
@@ -126,7 +129,11 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   setCurrentTime(currenTime: number) {
-    this.player.currentTime = currenTime * 60;
+    if (this.playing) {
+      this.player.currentTime = currenTime * 60;
+    } else {
+      this.playerCurrentTime = currenTime * 60;
+    }
   }
 
   toggleTime(): void {
@@ -146,7 +153,6 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private checkValidState(runCounter: number): boolean {
     this.valid = this.playerProperties.minRuns === 0 ? true : runCounter >= this.playerProperties.minRuns;
     if (this.valid) {
-      this.sendPlaybackTimeChanged();
       this.mediaValidStatusChanged.emit(this.id);
     }
     return this.valid;
@@ -155,6 +161,19 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private checkDisabledState(runCounter: number): boolean {
     this.disabled = !this.playerProperties.maxRuns ? false : this.playerProperties.maxRuns <= runCounter;
     return this.disabled;
+  }
+
+  private onTimeUpdate(): void {
+    const playerDuration = this.player.duration;
+    // sometimes audios change their duration
+    if ((playerDuration !== Infinity) && playerDuration && playerDuration > this.playerDuration) {
+      this.playerDuration = playerDuration;
+      this.duration = this.playerDuration / 60;
+    }
+    this.playerCurrentTime = this.player.currentTime;
+    this.currentTime = this.playerCurrentTime ? this.playerCurrentTime / 60 : this.getPlayerCurrentTime() / 60;
+    this.currentRestTime = this.playerDuration && this.playerDuration > this.playerCurrentTime ?
+      (this.playerDuration - this.player.currentTime) / 60 : 0;
   }
 
   private initDelays(): void {
@@ -187,33 +206,36 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private _play(): void {
     this.setPlayerSrc(this.mediaSrc);
     this.player.play().then(() => {
-      setTimeout(() => this.sendPlaybackTimeChangedWithDelay(0));
+      setTimeout(() => this.sendPlaybackTimeWithDelay(0));
     });
   }
 
-  private sendPlaybackTimeChangedWithDelay(delay: number): void {
+  private sendPlaybackTimeWithDelay(delay: number): void {
     setTimeout(() => {
-      if (this.player.currentTime) {
-        this.sendPlaybackTimeChanged();
+      if (this.playerCurrentTime) {
+        this.sendPlaybackTime();
       } else if (delay < 1000) {
-        this.sendPlaybackTimeChangedWithDelay(delay + 100);
+        this.sendPlaybackTimeWithDelay(delay + 100);
       }
     }, delay);
   }
 
-  private sendPlaybackTimeChanged() {
-    if (this.player.currentTime > 0 || this.runCounter > 0) {
-      this.elementValueChanged.emit({
-        id: this.id,
-        value: this.toPlaybackTime()
-      });
+  private sendPlaybackTime() {
+    if (this.playerCurrentTime > 0 || this.runCounter > 0) {
+      this.setPlaybackTime(this.runCounter + this.playerCurrentTime / this.playerDuration);
+      this.sendPlaybackTimeChanged(this.playbackTime);
     }
   }
 
-  private toPlaybackTime(): number {
-    this.playbackTime = this.playerDuration ?
-      this.runCounter + this.player.currentTime / this.playerDuration : this.playbackTime;
-    return this.playbackTime;
+  private sendPlaybackTimeChanged(playBackTime: number) {
+    this.elementValueChanged.emit({
+      id: this.id,
+      value: playBackTime
+    });
+  }
+
+  private setPlaybackTime(playbackTime: number): void {
+    this.playbackTime = playbackTime;
   }
 
   private getPlayerCurrentTime(): number {
@@ -226,11 +248,12 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       if ((playerDuration !== Infinity) && playerDuration) {
         this.playerDuration = playerDuration;
         this.duration = this.playerDuration / 60;
-        this.player.currentTime = this.getPlayerCurrentTime();
-        this.currentRestTime = (this.playerDuration - this.player.currentTime) / 60;
+        this.playerCurrentTime = this.getPlayerCurrentTime();
+        this.player.currentTime = this.playerCurrentTime;
+        this.currentRestTime = (this.playerDuration - this.playerCurrentTime) / 60;
         this.checkDisabledState(this.runCounter);
         this.checkValidState(this.runCounter);
-        this.sendPlaybackTimeChanged();
+        this.sendPlaybackTime();
         this.clearDurationErrorTimeOut();
         this.isLoaded.next(true);
         setTimeout(() => this.setPlayerSrc(''));
@@ -257,7 +280,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private setPlayerSrc(src: string): void {
     if (this.player.src !== src && this.mediaSrc) {
       this.player.src = src;
-      this.player.currentTime = this.getPlayerCurrentTime();
+      this.player.currentTime = this.playerCurrentTime;
     }
   }
 

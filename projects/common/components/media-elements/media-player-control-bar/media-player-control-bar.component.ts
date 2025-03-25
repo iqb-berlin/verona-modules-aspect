@@ -278,7 +278,12 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private setPlayerSrc(src: string): void {
-    if (this.player.src !== src && this.mediaSrc) {
+    if (this.playerProperties.loop) { // when looping audios we need to set the src every time
+      if (src && this.mediaSrc && this.player.src !== src) {
+        this.player.src = src;
+        this.player.currentTime = this.playerCurrentTime;
+      }
+    } else if (this.player.src !== src && this.mediaSrc) {
       this.player.src = src;
       this.player.currentTime = this.playerCurrentTime;
     }

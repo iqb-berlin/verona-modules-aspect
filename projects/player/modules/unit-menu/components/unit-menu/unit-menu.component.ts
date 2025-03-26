@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 import {
+  NavigationTarget,
   PagingMode,
   UnitState,
   VopPageNavigationCommand,
@@ -86,9 +87,14 @@ export class UnitMenuComponent {
     this.postMessage(this.vopPlayerConfigChangedNotificationMessage);
   }
 
+  enableNavigationTargets(targets?: NavigationTarget[]): void {
+    this.vopPlayerConfigChangedNotificationMessage.playerConfig.enabledNavigationTargets = targets;
+    this.postMessage(this.vopPlayerConfigChangedNotificationMessage);
+  }
+
   private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState): void {
     this.vopStartCommandMessage.unitDefinition = unitDefinition;
-    this.vopStartCommandMessage.playerConfig = { pagingMode };
+    this.vopStartCommandMessage.playerConfig = { ...this.vopStartCommandMessage.playerConfig, pagingMode };
     this.setStartPage();
     this.vopStartCommandMessage.unitState = unitSate;
     this.postMessage(this.vopStartCommandMessage);

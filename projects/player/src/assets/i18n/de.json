@@ -25,5 +25,10 @@
   "loadScroll": "Unit im 'Scroll'-Modus laden",
   "loadSnap": "Unit im 'Snap'-Modus laden",
   "reloadUnit": "Unit inkl. Zustand erneut laden",
-  "startPageIndex": "Index der Startseite"
+  "startPageIndex": "Index der Startseite",
+  "allowNone": "Keine Unit-Navigation erlauben",
+  "allowNext": "Navigation zur nächtsen Unit erlauben",
+  "allowPrevious": "Navigation zur vorigen Unit erlauben",
+  "allowNextPrevious": "Navigation zur vorigen und nächsten Unit erlauben",
+  "allowAll": "Unit-Navigation erlauben"
 }

@@ -55,6 +55,32 @@
       <mat-icon>vertical_align_bottom</mat-icon>
       <span>{{ 'applySnap' | translate }}</span>
     </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item
+            (click)="enableNavigationTargets([])">
+      <mat-icon>cancel</mat-icon>
+      <span>{{ 'allowNone' | translate }}</span>
+    </button>
+    <button mat-menu-item
+            (click)="enableNavigationTargets(['next'])">
+      <mat-icon>arrow_forward</mat-icon>
+      <span>{{ 'allowNext' | translate }}</span>
+    </button>
+    <button mat-menu-item
+            (click)="enableNavigationTargets(['previous'])">
+      <mat-icon>arrow_back</mat-icon>
+      <span>{{ 'allowPrevious' | translate }}</span>
+    </button>
+    <button mat-menu-item
+            (click)="enableNavigationTargets(['next', 'previous'])">
+      <mat-icon>sync_alt</mat-icon>
+      <span>{{ 'allowNextPrevious' | translate }}</span>
+    </button>
+    <button mat-menu-item
+            (click)="enableNavigationTargets()">
+      <mat-icon>emoji_emotions</mat-icon>
+      <span>{{ 'allowAll' | translate }}</span>
+    </button>
   }
 
 
@@ -67,13 +93,14 @@
     </button>
   </ng-container>
 
-  <ng-container *ngIf="scrollPages && scrollPages.length > 1">
+  @if (scrollPages && scrollPages.length > 1) {
     <mat-divider></mat-divider>
-    <button mat-menu-item *ngFor="let page of scrollPages; let i = index;"
-            (click)="goToPage(i)">
-      <mat-icon>web_stories</mat-icon>
-      <span>{{ 'pageIndication' | translate: {index: i + 1} }}</span>
-    </button>
-  </ng-container>
-
+    @for (page of scrollPages; track page; let i = $index) {
+    <button mat-menu-item
+              (click)="goToPage(i)">
+        <mat-icon>web_stories</mat-icon>
+        <span>{{ 'pageIndication' | translate: {index: i + 1} }}</span>
+      </button>
+    }
+  }
 </mat-menu>

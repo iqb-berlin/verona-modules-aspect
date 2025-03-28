@@ -1,5 +1,11 @@
 Allgemein
 =========
+## editor/2.9.1+player/2.9.1
+### Fehlerbehebungen
+- Audios:
+  - Aufgaben mit vielen Audios können nun auf iPads geladen werden, ohne deren Abspielbarkeit zu beeinträchtigen
+  - Audios innerhalb von Drag&Drop-Elementen können nun auch auf Touch-Devices abgespielt werden
+
 ## editor/2.9.0+player/2.9.0
 ### Neue Funktionen
 - Kontrollkästchen:

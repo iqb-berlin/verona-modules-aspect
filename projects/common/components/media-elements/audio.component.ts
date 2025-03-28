@@ -7,6 +7,8 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
   template: `
     <aspect-media-player-control-bar *ngIf="elementModel.src"
                                      [player]="player"
+                                     [isLoaded]="isLoaded"
+                                     [mediaSrc]="elementModel.src"
                                      [project]="project"
                                      [id]="elementModel.id"
                                      [savedPlaybackTime]="savedPlaybackTime"
@@ -14,15 +16,11 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                                      [active]="active"
                                      [dependencyDissolved]="dependencyDissolved"
                                      [backgroundColor]="elementModel.styling.backgroundColor"
+                                     (mediaPlayStatusChanged)="mediaPlayStatusChanged.emit($event)"
                                      (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                      (elementValueChanged)="elementValueChanged.emit($event)">
       <audio #player
-             [style.width.%]="100"
-             [src]="elementModel.src | safeResourceUrl"
-             (loadedmetadata)="isLoaded.next(true)"
-             (error)="throwError('audio-not-loading', $event.message)"
-             (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
-             (pause)="mediaPlayStatusChanged.emit(null)">
+             [style.width.%]="100">
       </audio>
     </aspect-media-player-control-bar>
     <aspect-spinner [isLoaded]="isLoaded"

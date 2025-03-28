@@ -16,6 +16,8 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.required) setCheckbox('Pflichtfeld');
   if (settings?.showNumbering) setCheckbox('Nummerierung anzeigen');
   if (settings?.startNumberingAtZero) setCheckbox('Nummerierung bei 0 beginnen');
+  if (settings?.permanentPlaceholders) setCheckbox('Platzhalter anzeigen');
+  if (settings?.permanentPlaceholdersCC) setCheckbox('Platzhalter mit Durchschrift');
 }
 
 export function addOption(optionName: string): void {
@@ -29,7 +31,7 @@ export function addOption(optionName: string): void {
 export function moveToColumn(column: string): void {
   cy.contains('mat-icon', 'format_shapes').click();
   cy.contains('fieldset', 'Position')
-    .contains('mat-form-field','Spalte')
+    .contains('mat-form-field', 'Spalte')
     .find('input')
     .clear()
     .type(column);
@@ -61,14 +63,14 @@ export function dragTo(list: string, item: string, targetList: string): void {
 
 export function dragToByTouch(list: string, item: string, targetList: string): void {
   cy.getByAlias(targetList)
-    .then(($targetEl) => {
+    .then($targetEl => {
       const targetRect = $targetEl[0].getBoundingClientRect();
       const targetX = targetRect.left + targetRect.width / 2;
       const targetY = targetRect.top + targetRect.height / 2;
 
       cy.getByAlias(list)
         .get(`.drop-list-item:contains("${item}")`)
-        .then(($startEl) => {
+        .then($startEl => {
           const startRect = $startEl[0].getBoundingClientRect();
           const startX = startRect.left + startRect.width / 2;
           const startY = startRect.top + startRect.height / 2;

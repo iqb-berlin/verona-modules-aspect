@@ -7,9 +7,9 @@ describe('Droplist element', { testIsolation: false }, () => {
     });
 
     it('creates several droplists, and the last is a required list', () => {
-      addList('Startliste', ['AAA'], {copyElement: true}, 'Startliste');
+      addList('Startliste', ['AAA'], { copyElement: true }, 'Startliste');
       addList('Zielliste ohne Pflichtfeld', [], {}, 'Zielliste');
-      addList('Zielliste mit Pflichtfeld', [], {required: true}, 'ZiellistePflichtfeld');
+      addList('Zielliste mit Pflichtfeld', [], { required: true }, 'ZiellistePflichtfeld');
 
       connectLists('Startliste', 'Zielliste');
       connectLists('Startliste', 'ZiellistePflichtfeld');

@@ -45,7 +45,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     :host ::ng-deep mat-checkbox.image .mdc-form-field.mat-internal-form-field {
       flex-direction: column-reverse;
     }
-    :host ::ng-deep .mdc-form-field {
+    :host ::ng-deep .mdc-form-field.mat-internal-form-field {
       font-size: inherit;
       font-weight: inherit;
     }

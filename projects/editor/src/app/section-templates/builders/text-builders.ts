@@ -19,8 +19,8 @@ export function createText2Section(text1: string, showHelper: boolean, markingMo
       TemplateService.createElement('button', { gridRow: 1, gridColumn: 2 }, {
         imageSrc: TemplateService.helpTooltipImageSrc,
         tooltipText: markingMode === 'word' ?
-          'Drücke auf den Knopf mit dem Stift. Drücke dann einzeln auf jedes Wort, das du markieren möchtest.' :
-          'Drücke auf den Knopf mit dem Stift. Drücke dann auf das erste und danach auf das letzte Wort des ' +
+          'Drücke auf das Symbol mit dem Stift. Drücke dann einzeln auf jedes Wort, das du markieren möchtest.' :
+          'Drücke auf das Symbol mit dem Stift. Drücke dann auf das erste und danach auf das letzte Wort des ' +
           'Bereichs, den du markieren möchtest.',
         tooltipPosition: 'left'
       },

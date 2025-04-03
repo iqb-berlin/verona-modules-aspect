@@ -1,5 +1,9 @@
 Editor
 ======
+## next
+### Änderungen
+- Markierassistent: Generierte Texte von Knopf auf Symbol geändert.
+
 ## 2.9.0
 ### Neue Funktionen
 - Kontrollkästchen:

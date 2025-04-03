@@ -3,6 +3,8 @@ Editor
 ## next
 ### Änderungen
 - Markierassistent: Generierte Texte von Knopf auf Symbol geändert.
+### Fehlerbehebungen
+- Liest den Wert von "Navigationsknopf zur nächsten Unit anfügen" korrekt ein.
 
 ## 2.9.0
 ### Neue Funktionen

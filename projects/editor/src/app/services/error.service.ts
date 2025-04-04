@@ -10,7 +10,7 @@ export class ErrorService implements ErrorHandler {
 
   handleError(error: Error): void {
     if (error instanceof IDError) {
-      this.messageService.showError(error.message);
+      error.highSeverity ? this.messageService.showPrompt(error.message) : this.messageService.showError(error.message);
     } else {
       this.messageService.showErrorPrompt(error);
       // eslint-disable-next-line no-console

@@ -1,4 +1,5 @@
 import { IDTypes } from 'common/interfaces';
+import { IDError } from 'common/errors';
 
 export class IdRegistry {
   registeredIDs: string[] = [];
@@ -14,7 +15,7 @@ export class IdRegistry {
   }
 
   registerID(id: string): void {
-    if (!this.isIdAvailable(id)) throw new Error(`ID already registered: ${id}`);
+    if (!this.isIdAvailable(id)) throw new IDError(`ID bereits vergeben: ${id}`, 0, true);
     this.registeredIDs.push(id);
   }
 

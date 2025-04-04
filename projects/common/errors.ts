@@ -2,9 +2,12 @@
 import { UIElementProperties } from 'common/interfaces';
 
 export class IDError extends Error {
-  constructor(message: string, public code?: number) {
+  highSeverity: boolean = false;
+
+  constructor(message: string, public code?: number, highSeverity: boolean = false) {
     super(message);
     this.name = 'IDError';
+    this.highSeverity = highSeverity;
   }
 }
 

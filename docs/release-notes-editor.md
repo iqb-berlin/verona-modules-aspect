@@ -1,10 +1,12 @@
 Editor
 ======
-## next
+## 2.9.2
 ### Änderungen
 - Markierassistent: Generierte Texte von Knopf auf Symbol geändert.
 ### Fehlerbehebungen
 - Liest den Wert von "Navigationsknopf zur nächsten Unit anfügen" korrekt ein.
+- Liest den Wert der Ausrichtung der Abschnittsnummerierung korrekt ein.
+- Es können keine doppelten Aliase mehr vergeben werden bei verschiedenen Elementtypen
 
 ## 2.9.0
 ### Neue Funktionen

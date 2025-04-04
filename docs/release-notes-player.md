@@ -1,5 +1,9 @@
 Player
 ======
+## 2.9.2
+### Fehlerbehebungen
+- Schriftgröße von Kontrollkästchenbeschriftung hat den eingestellten Wert.
+
 ## 2.9.0
 ### Fehlerbehebungen
 - Korrigiert bei Rechenkästchen die Position von schwebenden, hinten positionierten Eingabehilfen

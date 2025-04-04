@@ -131,7 +131,7 @@
                               (change)="setSectionNumbering($event)">
                   Nummerierung aktivieren
                 </mat-checkbox>
-                <mat-checkbox [disabled]="!numberingInput.checked" [checked]="unitService.unit.sectionNumberingPosition"
+                <mat-checkbox [disabled]="!numberingInput.checked" [checked]="unitService.unit.sectionNumberingPosition == 'above'"
                               (change)="setSectionNumberingPosition($event)">
                   vertikale Ausrichtung
                 </mat-checkbox>

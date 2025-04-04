@@ -22,10 +22,10 @@ export class StateVariableEditorComponent {
 
   checkId(alias: string): void {
     if (alias !== this.stateVariable.alias) {
-      this.error = !this.idService.isAliasAvailable(alias, 'state-variable');
+      this.error = !this.idService.isAliasAvailable(alias);
       if (!this.error) {
-        this.idService.unregister(this.stateVariable.alias, 'state-variable', false, true);
-        this.idService.register(alias, 'state-variable', false, true);
+        this.idService.unregister(this.stateVariable.alias, false, true);
+        this.idService.register(alias, false, true);
         this.stateVariable.alias = alias;
         this.stateVariableChange.emit(this.stateVariable);
       }

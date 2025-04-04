@@ -17,22 +17,23 @@ describe('IDService', () => {
   });
 
   it('idService should return next id when one is already taken', () => {
-    idRegistry.registerID('text_1', 'text');
+    idRegistry.registerID('text_1');
     expect(idRegistry.getAndRegisterNewID('text')).toBe('text_2');
   });
 
   it('isIdAvailable should return false when id is already taken', () => {
-    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(true);
-    idRegistry.registerID('text_1', 'text');
-    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(false);
-    expect(idRegistry.isIdAvailable('text_2', 'text')).toBe(true);
+    expect(idRegistry.isIdAvailable('text_1')).toBe(true);
+    idRegistry.registerID('text_1');
+    expect(idRegistry.isIdAvailable('text_1')).toBe(false);
+    expect(idRegistry.isIdAvailable('text_2')).toBe(true);
+    expect(idRegistry.isIdAvailable('text_1')).toBe(false);
   });
 
   it('isIdAvailable should return true when ID is returned (freed up)', () => {
-    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(true);
-    idRegistry.registerID('text_1', 'text');
-    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(false);
-    idRegistry.unregisterID('text_1', 'text');
-    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(true);
+    expect(idRegistry.isIdAvailable('text_1')).toBe(true);
+    idRegistry.registerID('text_1');
+    expect(idRegistry.isIdAvailable('text_1')).toBe(false);
+    idRegistry.unregisterID('text_1');
+    expect(idRegistry.isIdAvailable('text_1')).toBe(true);
   });
 });

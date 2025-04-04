@@ -1,38 +1,35 @@
 import { IDTypes } from 'common/interfaces';
 
 export class IdRegistry {
-  registeredIDs: { [key in IDTypes]?: string[] } = {};
+  registeredIDs: string[] = [];
 
   getAndRegisterNewID(idType: IDTypes, unique: boolean = false): string {
     const id = unique ? this.getNewUniqueID(idType) : this.getNewID(idType);
-    this.registerID(id, idType);
+    this.registerID(id);
     return id;
   }
 
-  isIdAvailable(id: string, idType: IDTypes): boolean {
-    return !this.registeredIDs[idType]?.includes(id);
+  isIdAvailable(id: string): boolean {
+    return !this.registeredIDs.includes(id);
   }
 
-  registerID(id: string, idType: IDTypes): void {
-    if (this.registeredIDs[idType]?.includes(id)) throw new Error(`ID already registered: ${id}`);
-    (this.registeredIDs[idType] ??= []).push(id);
+  registerID(id: string): void {
+    if (!this.isIdAvailable(id)) throw new Error(`ID already registered: ${id}`);
+    this.registeredIDs.push(id);
   }
 
-  unregisterID(id: string, idType: IDTypes): void {
-    const registeredElementIDs = this.registeredIDs[idType];
-    if (registeredElementIDs) {
-      registeredElementIDs.splice(registeredElementIDs.indexOf(id, 0), 1);
-    }
+  unregisterID(id: string): void {
+    this.registeredIDs.splice(this.registeredIDs.indexOf(id), 1);
   }
 
   reset(): void {
-    this.registeredIDs = {};
+    this.registeredIDs = [];
   }
 
   private getNewID(idType: IDTypes): string {
     let suffix = 1;
     let id = `${idType}_${suffix}`;
-    while (!this.isIdAvailable(id, idType)) {
+    while (!this.isIdAvailable(id)) {
       suffix += 1;
       id = `${idType}_${suffix}`;
     }
@@ -43,7 +40,7 @@ export class IdRegistry {
     const suffix1 = Date.now();
     let suffix2 = 1;
     let id = `${idType}_${suffix1}_${suffix2}`;
-    while (!this.isIdAvailable(id, idType)) {
+    while (!this.isIdAvailable(id)) {
       suffix2 += 1;
       id = `${idType}_${suffix1}_${suffix2}`;
     }

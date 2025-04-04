@@ -130,10 +130,10 @@ export class DropListElement extends InputElement implements DropListProperties 
 
   updateValueObject(valueIndex: number, value: DragNDropValueObject): void {
     if (value.alias !== this.value[valueIndex].alias) {
-      if (!this.idService?.isAliasAvailable(value.alias, 'value')) {
+      if (!this.idService?.isAliasAvailable(value.alias)) {
         throw new IDError('ID ist bereits vergeben');
       }
-      this.idService?.changeAlias(this.value[valueIndex].alias, value.alias, 'value');
+      this.idService?.changeAlias(this.value[valueIndex].alias, value.alias);
     }
     this.value[valueIndex] = value;
     this.fixOriginIDs();
@@ -194,16 +194,16 @@ export class DropListElement extends InputElement implements DropListProperties 
 
   private registerValueIDs(): void {
     this.value.forEach(val => {
-      this.idService?.register(val.id, 'value', true, false);
-      this.idService?.register(val.alias, 'value', false, true);
+      this.idService?.register(val.id, true, false);
+      this.idService?.register(val.alias, false, true);
     });
   }
 
   unregisterIDs(): void {
     super.unregisterIDs();
     this.value.forEach(val => {
-      this.idService?.unregister(val.id, 'value', true, false);
-      this.idService?.unregister(val.alias, 'value', false, true);
+      this.idService?.unregister(val.id, true, false);
+      this.idService?.unregister(val.alias, false, true);
     });
   }
 }

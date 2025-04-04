@@ -107,7 +107,7 @@ export class SectionInsertDialogComponent implements OnInit {
   }
 
   private findElementsWithDuplicateID(elements: UIElement[]): UIElement[] {
-    return elements.filter(element => !this.idService.isAliasAvailable(element.id, element.type));
+    return elements.filter(element => !this.idService.isAliasAvailable(element.id));
   }
 
   ngOnDestroy(): void {

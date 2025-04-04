@@ -330,13 +330,13 @@ export class SectionMenuComponent implements OnDestroy {
 
   private fixElementIDs(elements: UIElement[]): void {
     elements
-      .filter(element => !this.idService.isIDAvailable(element.id, element.type))
+      .filter(element => !this.idService.isIDAvailable(element.id))
       .forEach(el => {
         el.id = this.idService.getAndRegisterNewID(el.type);
       });
 
     elements
-      .filter(element => !this.idService.isAliasAvailable(element.alias, element.type))
+      .filter(element => !this.idService.isAliasAvailable(element.alias))
       .forEach(el => {
         el.alias = this.idService.getAndRegisterNewID(el.type, true);
       });
@@ -344,12 +344,12 @@ export class SectionMenuComponent implements OnDestroy {
 
   private fixValueIDs(values: DragNDropValueObject[]): void {
     values
-      .filter(value => !this.idService.isIDAvailable(value.id, 'value'))
+      .filter(value => !this.idService.isIDAvailable(value.id))
       .forEach(val => {
         val.id = this.idService.getAndRegisterNewID('value');
       });
     values
-      .filter(value => !this.idService.isAliasAvailable(value.alias, 'value'))
+      .filter(value => !this.idService.isAliasAvailable(value.alias))
       .forEach(val => {
         val.alias = this.idService.getAndRegisterNewID('value', true);
       });

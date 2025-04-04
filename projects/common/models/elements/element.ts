@@ -70,7 +70,7 @@ export abstract class UIElement implements UIElementProperties {
     }
     if (property === 'alias') {
       if (!this.idService) throw new Error('IDService not available');
-      if (!this.idService.isAliasAvailable(value as string, this.type)) { // prohibit existing IDs
+      if (!this.idService.isAliasAvailable(value as string)) {
         throw new IDError('ID ist bereits vergeben');
       }
       if ((value as string).length > 20) {
@@ -79,8 +79,8 @@ export abstract class UIElement implements UIElementProperties {
       if ((value as string).includes(' ')) {
         throw new IDError('ID enthält unerlaubtes Leerzeichen');
       }
-      this.idService.unregister(this.alias, this.type, false, true);
-      this.idService.register(value as string, this.type, false, true);
+      this.idService.unregister(this.alias, false, true);
+      this.idService.register(value as string, false, true);
     }
     this[property] = value;
   }
@@ -143,14 +143,14 @@ export abstract class UIElement implements UIElementProperties {
 
   registerIDs(): void {
     if (!this.idService) throw new Error(`IDService not available: ${this.type} ${this.id}`);
-    this.idService.register(this.id, this.type, true, false);
-    this.idService.register(this.alias, this.type, false, true);
+    this.idService.register(this.id, true, false);
+    this.idService.register(this.alias, false, true);
   }
 
   unregisterIDs(): void {
     if (!this.idService) throw new Error(`IDService not available: ${this.type} ${this.id}`);
-    this.idService.unregister(this.id, this.type, true, false);
-    this.idService.unregister(this.alias, this.type, false, true);
+    this.idService.unregister(this.id, true, false);
+    this.idService.unregister(this.alias, false, true);
   }
 }
 

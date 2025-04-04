@@ -78,10 +78,10 @@ export type IDTypes = UIElementType | 'value' | 'state-variable';
 
 export interface AbstractIDService {
   getAndRegisterNewID: (idType: IDTypes, alias?: boolean) => string;
-  register: (id: string, idType: IDTypes, useIDRegistry: boolean, useAliasRegistry: boolean) => void;
-  unregister: (id: string, idType: IDTypes, useIDRegistry: boolean, useAliasRegistry: boolean) => void;
-  isAliasAvailable: (id: string, idType: IDTypes) => boolean;
-  changeAlias: (oldID: string, newID: string, idType: IDTypes) => void
+  register: (id: string, useIDRegistry: boolean, useAliasRegistry: boolean) => void;
+  unregister: (id: string, useIDRegistry: boolean, useAliasRegistry: boolean) => void;
+  isAliasAvailable: (id: string) => boolean;
+  changeAlias: (oldID: string, newID: string) => void
 }
 
 export type InputElementValue =

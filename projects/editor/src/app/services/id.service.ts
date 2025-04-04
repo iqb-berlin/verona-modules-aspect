@@ -20,27 +20,27 @@ export class IDService {
     return isAlias ? this.aliasRegistry.getAndRegisterNewID(idType) : this.idRegistry.getAndRegisterNewID(idType, true);
   }
 
-  isIDAvailable(id: string, idType: IDTypes): boolean {
-    return this.idRegistry.isIdAvailable(id, idType);
+  isIDAvailable(id: string): boolean {
+    return this.idRegistry.isIdAvailable(id);
   }
 
-  isAliasAvailable(id: string, idType: IDTypes): boolean {
-    return this.aliasRegistry.isIdAvailable(id, idType);
+  isAliasAvailable(id: string): boolean {
+    return this.aliasRegistry.isIdAvailable(id);
   }
 
-  changeAlias(oldID: string, newID: string, idType: IDTypes): void {
-    this.unregister(oldID, idType, false, true);
-    this.register(newID, idType, false, true);
+  changeAlias(oldID: string, newID: string): void {
+    this.unregister(oldID, false, true);
+    this.register(newID, false, true);
   }
 
-  register(id: string, idType: IDTypes, useIDRegistry: boolean, useAliasRegistry: boolean) {
-    if (useIDRegistry) this.idRegistry.registerID(id, idType);
-    if (useAliasRegistry) this.aliasRegistry.registerID(id, idType);
+  register(id: string, useIDRegistry: boolean, useAliasRegistry: boolean) {
+    if (useIDRegistry) this.idRegistry.registerID(id);
+    if (useAliasRegistry) this.aliasRegistry.registerID(id);
   }
 
-  unregister(id: string, idType: IDTypes, useIDRegistry: boolean, useAliasRegistry: boolean): void {
-    if (useIDRegistry) this.idRegistry.unregisterID(id, idType);
-    if (useAliasRegistry) this.aliasRegistry.unregisterID(id, idType);
+  unregister(id: string, useIDRegistry: boolean, useAliasRegistry: boolean): void {
+    if (useIDRegistry) this.idRegistry.unregisterID(id);
+    if (useAliasRegistry) this.aliasRegistry.unregisterID(id);
   }
 
   reset(): void {

@@ -38,7 +38,7 @@ describe('Text element', { testIsolation: false }, () => {
       cy.get('aspect-text-group-element')
         .find('aspect-markable-word').eq(30).click();
       cy.get('aspect-text-group-element')
-        .get('aspect-markable-word').eq(45).click();
+        .get('aspect-markable-word').eq(31).click();
     });
 
     it('removes some marked words', () => {

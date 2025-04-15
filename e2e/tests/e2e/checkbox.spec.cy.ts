@@ -58,9 +58,10 @@ describe('Checkbox element', { testIsolation: false }, () => {
       cy.contains('aspect-checkbox', 'Kontrollkästchen mit Auswahl durchstreichen')
         .find('input')
         .click();
+      cy.wait(100);
       cy.contains('aspect-checkbox', 'Kontrollkästchen mit Auswahl durchstreichen')
         .find('mat-checkbox')
-        .should('have.class', 'cross-out');
+        .should('have.class', 'strike');
     });
 
     it('checks the required box', () => {

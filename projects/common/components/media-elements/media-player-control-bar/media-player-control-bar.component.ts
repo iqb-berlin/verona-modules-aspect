@@ -52,7 +52,11 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private ngUnsubscribe = new Subject<void>();
 
   ngOnInit(): void {
-    setTimeout(() => this.init());
+    if (this.mediaSrc) {
+      setTimeout(() => this.init()); // audios are not loaded in time (ipad has problem with loading many audios)
+    } else {
+      this.init(); // videos
+    }
   }
 
   private init(): void {
@@ -165,7 +169,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
 
   private onTimeUpdate(): void {
     const playerDuration = this.player.duration;
-    // sometimes audios change their duration
+    // sometimes medias change their duration
     if ((playerDuration !== Infinity) && playerDuration && playerDuration > this.playerDuration) {
       this.playerDuration = playerDuration;
       this.duration = this.playerDuration / 60;
@@ -265,7 +269,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
             this.isLoaded.next(true);
             throw new AspectError('media-duration-error', 'Media duration is not available');
           }
-        }, 1000);
+        }, 3000);
       }
     }
   }

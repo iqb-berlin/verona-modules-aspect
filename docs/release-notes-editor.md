@@ -1,5 +1,10 @@
 Editor
 ======
+## 2.9.3
+### Fehlerbehebungen
+- Abschnittsnummerierung
+  - Behebt Darstellungsfehler der Option "vertikale Ausrichtung"
+
 ## 2.9.2
 ### Änderungen
 - Markierassistent: Generierte Texte von Knopf auf Symbol geändert.

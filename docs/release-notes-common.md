@@ -1,5 +1,12 @@
 Allgemein
 =========
+## editor/2.9.3+player/2.9.3
+### Fehlerbehebungen
+- Optionsfelder, Optionentabelle und Ablegeliste 
+  - Behebt unter iOS Anzeigefehler von Bildern beim Laden einer Aufgabe
+- Video
+  - Behebt unter Firefox Initialisierungsfehler von Videos beim Laden einer Aufgabe (Problem in Version 2.9.1/2.9.2)
+
 ## editor/2.9.1+player/2.9.1
 ### Fehlerbehebungen
 - Audios:

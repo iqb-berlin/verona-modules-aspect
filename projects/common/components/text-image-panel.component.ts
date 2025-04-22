@@ -37,7 +37,7 @@ import { AudioPlayerService } from 'common/services/audio-player.service';
     }
     .image-wrapper img {
       object-fit: scale-down;
-      max-width: 100%;
+      width: 100%;
       height: 100%;
     }
     .column {flex-direction: column;}

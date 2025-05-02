@@ -25,6 +25,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
   private timerStateVariable: StorableTimer | null = null;
+  private isVisible: boolean = false;
 
   constructor(
     private elementRef: ElementRef,
@@ -34,10 +35,14 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.section.visibilityRules.length) {
-      this.addSubscription();
+      this.displayHiddenSection();
+      if (this.section.enableReHide || !this.isVisible) {
+        this.addSubscription();
+      }
     } else {
+      this.isVisible = true;
       // prevent ExpressionChangedAfterItHasBeenCheckedError in snap and scroll mode
-      setTimeout(() => this.emitIsVisibleIndexChange(true));
+      setTimeout(() => this.emitIsVisibleIndexChange(this.isVisible));
     }
   }
 
@@ -48,7 +53,6 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private addSubscription(): void {
-    this.displayHiddenSection();
     merge(
       this.unitStateService.elementCodeChanged,
       this.stateVariableStateService.elementCodeChanged
@@ -57,8 +61,17 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       .subscribe(code => {
         if (this.isRuleCode(code)) {
           this.displayHiddenSection();
+          if (this.isVisible && !this.section.enableReHide) {
+            this.removeSubscription();
+          }
         }
       });
+  }
+
+  private removeSubscription(): void {
+    this.destroyTimerStateVariable();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   private get isTimerStateFullFilled(): boolean {
@@ -123,19 +136,15 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     }
   }
 
-  private setVisibility(visible: boolean): void {
-    this.elementRef.nativeElement.style.display = visible ? 'unset' : 'none';
-    if (visible) {
+  private setVisibility(isVisible: boolean): void {
+    this.isVisible = isVisible;
+    this.elementRef.nativeElement.style.display = this.isVisible ? 'unset' : 'none';
+    if (this.isVisible) {
       if (this.section.animatedVisibility) {
         this.scrollIntoView();
       }
-      if (!this.section.enableReHide) {
-        this.destroyTimerStateVariable();
-        this.ngUnsubscribe.next();
-        this.ngUnsubscribe.complete();
-      }
     }
-    this.emitIsVisibleIndexChange(visible);
+    this.emitIsVisibleIndexChange(this.isVisible);
   }
 
   private getAnyElementCodeById(id: string): Response | undefined {
@@ -210,8 +219,6 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroyTimerStateVariable();
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.removeSubscription();
   }
 }

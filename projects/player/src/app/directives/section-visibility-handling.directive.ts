@@ -24,7 +24,6 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   @Output() isVisibleIndexChange = new EventEmitter<IsVisibleIndex>();
 
   private ngUnsubscribe = new Subject<void>();
-  private rulesAreFulfilled: boolean = false;
   private timerStateVariable: StorableTimer | null = null;
 
   constructor(
@@ -109,10 +108,9 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private displayHiddenSection(): void {
-    if (this.areVisibilityRulesFulfilled() || this.rulesAreFulfilled) {
+    if (this.areVisibilityRulesFulfilled()) {
       if (this.section.visibilityDelay && !this.section.enableReHide) {
         if (!this.timerStateVariable) {
-          this.rulesAreFulfilled = true;
           this.initTimerStateVariable(this.stateVariableStateService
             .getElementCodeById(this.timerStateVariableId)?.value as number || 0);
         }

@@ -16,7 +16,7 @@ export class StorableTimer extends Storable {
 
   run(): void {
     if (!this.interval) {
-      this.interval = setInterval(() => {
+      this.interval = window.setInterval(() => {
         this.value += 1000;
         this.timerStateValueChanged.emit({ id: this.id, value: this.value });
         if (this.value >= this.duration) {

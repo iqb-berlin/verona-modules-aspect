@@ -1,5 +1,9 @@
 Player
 ======
+## 2.9.4
+### Neue Funktionen
+- Der Zustand von Abschnitten mit Regeln zur Sichtbarkeit wird in eigener Variable gespeichert
+
 ## 2.9.2
 ### Fehlerbehebungen
 - Schriftgröße von Kontrollkästchenbeschriftung hat den eingestellten Wert.

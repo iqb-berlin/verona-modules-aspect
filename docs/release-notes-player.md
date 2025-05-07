@@ -3,6 +3,7 @@ Player
 ## 2.9.4
 ### Neue Funktionen
 - Der Zustand von Abschnitten mit Regeln zur Sichtbarkeit wird in eigener Variable gespeichert
+- Kennzeichnet die Elemente mit Datenattributen für ID und Alias, um sie im Replay der Kodierbox identifizieren zu können
 
 ## 2.9.2
 ### Fehlerbehebungen

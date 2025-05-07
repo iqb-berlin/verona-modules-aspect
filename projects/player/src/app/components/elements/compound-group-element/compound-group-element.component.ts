@@ -154,6 +154,8 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   registerCompoundChildren(children: ElementComponent[]): void {
     children.forEach(child => {
+      child.domElement.setAttribute('data-element-id', child.elementModel.id);
+      child.domElement.setAttribute('data-element-alias', child.elementModel.alias);
       const childModel = child.elementModel;
       let initialValue: ResponseValueType;
       switch (childModel.type) {

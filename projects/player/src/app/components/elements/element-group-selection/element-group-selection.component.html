@@ -7,7 +7,9 @@
      [style.min-height]="!elementModel.dimensions?.isHeightFixed && elementModel.dimensions?.minHeight ?
                             elementModel.dimensions?.minHeight + 'px' : null"
      [style.max-height]="!elementModel.dimensions?.isHeightFixed && elementModel.dimensions?.maxHeight ?
-                            elementModel.dimensions?.maxHeight + 'px' : null">
+                            elementModel.dimensions?.maxHeight + 'px' : null"
+     [attr.data-element-id]="elementModel.id"
+     [attr.data-element-alias]="elementModel.alias">
   <aspect-text-input-group-element
       *ngIf="'textInputGroup' === selectedGroup"
       [elementModel]="elementModel"

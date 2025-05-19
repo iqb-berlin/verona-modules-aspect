@@ -16,13 +16,13 @@ describe('Checkbox element', { testIsolation: false }, () => {
       addProperties('Kontrollkästchen mit Schreibschutz', { readOnly: true });
     });
 
-    it('creates a previously checked box', () => {
+    it('creates a default value true checkbox', () => {
       addElement('Kontrollkästchen');
-      addProperties('vorgelegte Kontrollkästchen', {});
+      addProperties('vorbelegte Kontrollkästchen', {});
       cy.contains('mat-button-toggle', 'wahr').click();
     });
 
-    it('creates a checkbox that is crossed out if selected', () => {
+    it('creates a checkbox that is strikethrough if selected', () => {
       addElement('Kontrollkästchen');
       addProperties('Kontrollkästchen mit Auswahl durchstreichen', {});
       setCheckbox('Auswahl durchstreichen');
@@ -50,11 +50,24 @@ describe('Checkbox element', { testIsolation: false }, () => {
 
     it('checks the common box', () => {
       cy.contains('aspect-checkbox', 'Kontrollkästchen')
+        .find('mat-checkbox')
+        .should('not.have.class', 'mat-mdc-checkbox-checked');
+      cy.contains('aspect-checkbox', 'Kontrollkästchen')
         .find('input')
         .click();
+      cy.contains('aspect-checkbox', 'Kontrollkästchen')
+        .find('mat-checkbox')
+        .should('have.class', 'mat-mdc-checkbox-checked');
     });
 
-    it('checks the box that does the strikethrough, and checks that the mat-checkbox has cross-out property', () => {
+    it('checks that the readonly checkbox can not be checked', () => {
+      cy.contains('aspect-checkbox', 'Kontrollkästchen mit Schreibschutz')
+        .find('input')
+        .click({force:true})
+        .should('not.be.checked');
+    });
+
+    it('checks the box that does the strikethrough, and checks that the checkbox is strikethrough', () => {
       cy.contains('aspect-checkbox', 'Kontrollkästchen mit Auswahl durchstreichen')
         .find('input')
         .click();

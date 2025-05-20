@@ -102,4 +102,11 @@ export function assertValueChanged(id: string, value: any): void {
   //       })
   //     }));
 
-
+export function addProperties(label: string, settings?: Record<string, boolean>): void {
+  cy.contains('mat-form-field', 'Beschriftung')
+    .find('textarea')
+    .clear()
+    .type(label);
+  if (settings?.readOnly) setCheckbox('Schreibschutz');
+  if (settings?.required) setCheckbox('Pflichtfeld');
+}

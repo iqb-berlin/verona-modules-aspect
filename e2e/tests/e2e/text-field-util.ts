@@ -1,16 +1,16 @@
 import { selectFromDropdown, setCheckbox } from '../util';
 
-export function addSettings({minLength, maxLength, pattern = '', settings, appearance = 'Umrandet'}: {
+export function addSettings({minLength, maxLength, defaultText, settings, appearance = 'Umrandet'}: {
   minLength?: number,
   maxLength?: number,
-  pattern?: string,
+  defaultText?: string,
   settings?: Record<string, boolean>,
   appearance?: string
 }): void {
-  if (!(pattern === '')) {
+  if (defaultText) {
     cy.contains('mat-form-field', 'Vorbelegung')
       .find('input')
-      .type(pattern);
+      .type(defaultText);
   }
   selectFromDropdown('Aussehen', appearance);
   cy.contains('mat-form-field', 'Minimallänge')
@@ -28,7 +28,7 @@ export function addSettings({minLength, maxLength, pattern = '', settings, appea
   if (settings?.hasKeyboardIcon) setCheckbox('Tastatursymbol anzeigen');
 }
 
-export function addMuster(pattern:string, patternWarnMessage?: string) {
+export function addPattern(pattern:string, patternWarnMessage?: string) {
   cy.contains('mat-form-field', 'Muster')
     .find('input')
     .type(pattern);
@@ -64,4 +64,19 @@ export function addHelp(keyboard:string = '', position: string = 'schwebend',
   if (options?.showKeyboard) setCheckbox('Tastatur einblenden');
   if (options?.disable) setCheckbox('Betriebssystem-Tastatur unterbinden');
   if (options?.help) setCheckbox('Tastatur mit Eingabehilfe erweitern');
+}
+
+export function textFieldRegexValidation(fieldName: string, input: string, error?: string) {
+  cy.contains('mat-form-field', fieldName)
+    .find('input')
+    .clear()
+    .type(`${input}{enter}`);
+  if (error) {
+    cy.contains('mat-form-field', fieldName)
+      .find('mat-error').should('exist')
+      .contains(error);
+  }else{
+    cy.contains('mat-form-field', fieldName)
+      .find('mat-error').should('not.exist');
+  }
 }

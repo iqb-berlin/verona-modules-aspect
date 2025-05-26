@@ -1,5 +1,5 @@
 import { addElement, addProperties } from '../util';
-import { addMuster, addSettings } from './text-field-util';
+import {addPattern, addSettings, textFieldRegexValidation} from './text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,24 +7,24 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.openEditor();
     });
 
-    it('creates a numeric text field', () => {
+    it('creates a text field that accepts only the characters 1234567', () => {
       addElement('Eingabefeld');
       addProperties('Geben Sie dem Geheimcode ein', { required: true });
-      addSettings({minLength: 4, maxLength: 20, pattern: 'z.B. 1111'});
-      addMuster('1234567');
+      addSettings({minLength: 4, maxLength: 20, defaultText: 'z.B. 1111'});
+      addPattern('1234567');
     });
 
-    it('creates a text field with clean option', ()=> {
+    it('creates a text field with clear option', ()=> {
       addElement('Eingabefeld');
       addProperties('Nennen Sie das Hobby');
-      addSettings({minLength: 4, maxLength: 20, pattern: 'z.B. Schwimmen', settings: {clearable: true}});
-      addMuster('Wanderung');
+      addSettings({minLength: 4, maxLength: 20, defaultText: 'z.B. Schwimmen', settings: {clearable: true}});
+      addPattern('Wanderung');
     });
 
     it('creates a text field with squared border and keyboard icon', ()=> {
       addElement('Eingabefeld');
       addProperties('Ausgefüllt Textfield mit Schreibeschutz', { readOnly: true });
-      addSettings({appearance: 'Ausgefüllt'});
+      addSettings({settings: {hasKeyboardIcon:true},appearance: 'Ausgefüllt'});
     });
 
     after('save an unit definition', () => {
@@ -38,48 +38,34 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-field-basic.json');
     });
 
-    it('types an answer that is too short', () => {
+    it('checks the valid regex of the first text field', () => {
       cy.contains('mat-form-field', 'Geben Sie dem Geheimcode ein')
         .find('mat-error').should('not.exist');
-      cy.contains('mat-form-field', 'Geben Sie dem Geheimcode ein')
-        .find('input')
-        .clear()
-        .type('123{enter}');
-      cy.contains('mat-form-field', 'Geben Sie dem Geheimcode ein')
-        .find('mat-error').should('exist')
-        .contains('Eingabe zu kurz; Eingabe entspricht nicht der Vorgabe');
+      // Case 1: answer too short
+      textFieldRegexValidation('Geben Sie dem Geheimcode ein',
+        '123',
+        'Eingabe zu kurz; Eingabe entspricht nicht der Vorgabe')
+      // case 2: wrong answer
+      textFieldRegexValidation('Geben Sie dem Geheimcode ein',
+        '4444',
+        'Eingabe entspricht nicht der Vorgabe')
+      // case 3: correct answer
+      textFieldRegexValidation('Geben Sie dem Geheimcode ein',
+        '1234567')
     });
 
-    it('types a wrong answer', () => {
-      cy.contains('mat-form-field', 'Geben Sie dem Geheimcode ein')
-        .find('input')
-        .clear()
-        .type('4444{enter}');
-      cy.contains('mat-form-field', 'Geben Sie dem Geheimcode ein')
-        .find('mat-error').should('exist')
-        .contains('Eingabe entspricht nicht der Vorgabe');
-    });
-
-    it('types the correct answer', () => {
-      cy.contains('mat-form-field', 'Geben Sie dem Geheimcode ein')
-        .find('input')
-        .clear()
-        .type('1234567{enter}');
-      cy.contains('mat-form-field', 'Geben Sie dem Geheimcode ein')
-        .find('mat-error').should('not.exist');
-    });
-
-    it('checks the character text field has button clear and is not readonly', () => {
+    it('checks the second text field has button clear', () => {
       cy.contains('mat-form-field', 'Nennen Sie das Hobby')
         .find('button:contains("close")')
         .click();
+    });
+
+    it('checks that the second text field is not readonly', () => {
       cy.contains('mat-form-field', 'Nennen Sie das Hobby')
         .find('input')
         .should('not.have.attr','readonly');
-      cy.contains('mat-form-field', 'Nennen Sie das Hobby')
-        .find('input')
-        .clear()
-        .type('Wanderung');
+      textFieldRegexValidation('Nennen Sie das Hobby',
+        'Wanderung')
     });
 
     it('checks that the squared text field is readonly', () => {

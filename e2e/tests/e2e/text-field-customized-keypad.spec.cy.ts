@@ -1,5 +1,5 @@
 import { addElement, addProperties } from '../util';
-import { addHelp, addMuster, addSettings } from './text-field-util';
+import { addHelp, addPattern, addSettings } from './text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -11,7 +11,7 @@ describe('Text field element', { testIsolation: false }, () => {
       addElement('Eingabefeld');
       addProperties('Eingabefeld mit eigene Zeichen', { required: true });
       addSettings({minLength: 3, maxLength: 20,settings:{ clearable: true, hasKeyboardIcon: true }});
-      addMuster('123');
+      addPattern('123');
       addHelp('Eigene Zeichen', 'rechts', undefined, '12345');
     });
 
@@ -19,7 +19,7 @@ describe('Text field element', { testIsolation: false }, () => {
       addElement('Eingabefeld');
       addProperties('Eingabefeld mit Bearbeitung anderer Zeichen verhindern', { required: true });
       addSettings({minLength: 3, maxLength: 20,settings:{ clearable: true, hasKeyboardIcon: true }});
-      addMuster('123');
+      addPattern('123');
       addHelp('Eigene Zeichen', 'rechts', undefined, '12345', {disableOtherCharacters:true});
     });
 

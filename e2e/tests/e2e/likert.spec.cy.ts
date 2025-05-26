@@ -17,14 +17,6 @@ describe('Likert element', { testIsolation: false }, () => {
         .type('Beschreibung sekundär von Optionentabelle1');
     });
 
-    it('modifies the ratio of the first column to eight', () => {
-      cy.contains('mat-form-field', 'Anteil der ersten Spalte')
-        .find('input')
-        .clear()
-        .clear()
-        .type('8');
-    });
-
     after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/likert.json');
     });

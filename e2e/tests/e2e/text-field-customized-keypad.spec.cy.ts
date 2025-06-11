@@ -1,5 +1,5 @@
 import { addElement, addProperties } from '../util';
-import { addHelp, addPattern, addSettings } from './text-field-util';
+import { addHelp } from './text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -10,17 +10,13 @@ describe('Text field element', { testIsolation: false }, () => {
     it('creates a text field with customized keypad', () => {
       addElement('Eingabefeld');
       addProperties('Eingabefeld mit eigene Zeichen', { required: true });
-      addSettings({minLength: 3, maxLength: 20,settings:{ clearable: true, hasKeyboardIcon: true }});
-      addPattern('123');
-      addHelp('Eigene Zeichen', 'rechts', undefined, '12345');
+      addHelp('Eigene Zeichen', 'rechts','12345');
     });
 
     it('creates a text field with the same customized keypad disabling other characters', () => {
       addElement('Eingabefeld');
       addProperties('Eingabefeld mit Bearbeitung anderer Zeichen verhindern', { required: true });
-      addSettings({minLength: 3, maxLength: 20,settings:{ clearable: true, hasKeyboardIcon: true }});
-      addPattern('123');
-      addHelp('Eigene Zeichen', 'rechts', undefined, '12345', {disableOtherCharacters:true});
+      addHelp('Eigene Zeichen', 'rechts', '12345', {disableOtherCharacters:true});
     });
 
     after('save an unit definition', () => {
@@ -34,42 +30,21 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-field-customized-keypad.json');
     });
 
-    it('clicks at the first text field, and appears the keypad with customized characters', () => {
+    it('checks that the keypad has customized characters', () => {
       cy.get('aspect-keypad').should('not.exist');
       cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen').click();
       cy.get('aspect-keypad').contains('1').should('exist');
       cy.get('aspect-keypad').contains('7').should('not.exist');
     });
 
-    it('types characters non allowed characters in the first text field', () => {
+    it('should allow non allowed characters in the firsttext field', () => {
       cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen')
         .find('input')
         .clear()
-        .type('6789{enter}');
-      cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen')
-        .find('mat-error').should('contain.text', 'Eingabe entspricht nicht der Vorgabe');
-    });
-
-    it('types the correct answer in the first text field', () => {
-      cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen')
-        .find('input')
-        .clear()
-        .type('123{enter}');
+        .type('7777{enter}');
+      cy.contains('mat-form-field', 'Eingabefeld mit Bearbeitung anderer Zeichen verhindern').click();
       cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen')
         .find('mat-error').should('not.exist');
-    });
-
-    it('types a wrong answer with allowed characters in the second text field', () => {
-      cy.contains('mat-form-field', 'Eingabefeld mit Bearbeitung anderer Zeichen verhindern')
-        .find('input').click();
-      cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen')
-        .find('input').click();
-      cy.contains('mat-form-field', 'Eingabefeld mit Bearbeitung anderer Zeichen verhindern')
-        .find('input')
-        .clear()
-        .type('5555{enter}');
-      cy.contains('mat-form-field', 'Eingabefeld mit Bearbeitung anderer Zeichen verhindern')
-        .find('mat-error').should('contain.text','Eingabe entspricht nicht der Vorgabe');
     });
 
     it('should not allow type non allowed characters in the second text field', () => {
@@ -77,6 +52,7 @@ describe('Text field element', { testIsolation: false }, () => {
         .find('input')
         .clear()
         .type('7777{enter}');
+      cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen').click();
       cy.contains('mat-form-field', 'Eingabefeld mit Bearbeitung anderer Zeichen verhindern')
         .find('mat-error').should('contain.text', 'Eingabe erforderlich');
     });

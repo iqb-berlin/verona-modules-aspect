@@ -1,30 +1,51 @@
 import { addElement, addProperties } from '../util';
-import {addPattern, addSettings, textFieldRegexValidation} from './text-field-util';
+import {addRegexPattern, addSettings, textFieldValidation} from './text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
+      cy.viewport(1600, 900);
       cy.openEditor();
     });
 
-    it('creates a text field that accepts only the characters 1234567', () => {
+    it('creates a readonly text field', ()=> {
       addElement('Eingabefeld');
-      addProperties('Geben Sie dem Geheimcode ein', { required: true });
-      addSettings({minLength: 4, maxLength: 20, defaultText: 'z.B. 1111'});
-      addPattern('1234567');
+      addProperties('Eingabefeld mit Schreibeschutz', { readOnly: true });
+    });
+
+    it('creates a required text field', ()=> {
+      addElement('Eingabefeld');
+      addProperties('Pflichtfeld Eingabefeld',  { required: true });
+    });
+
+    it('creates a text field with a minimum length of 3 characters', ()=> {
+      addElement('Eingabefeld');
+      addProperties('Eingabefeld mit einer Minimallänge von 3 Zeichen');
+      addSettings({minLength: 3});
+    });
+
+    it('creates a text field with a maximum length of 10 characters', ()=> {
+      addElement('Eingabefeld');
+      addProperties('Eingabefeld mit einer Maximallänge von 10 Zeichen');
+      addSettings({maxLength: 10});
     });
 
     it('creates a text field with clear option', ()=> {
       addElement('Eingabefeld');
-      addProperties('Nennen Sie das Hobby');
-      addSettings({minLength: 4, maxLength: 20, defaultText: 'z.B. Schwimmen', settings: {clearable: true}});
-      addPattern('Wanderung');
+      addProperties('Eingabefeld mit Löschtaste');
+      addSettings({settings: {clearable: true}});
     });
 
-    it('creates a text field with squared border and keyboard icon', ()=> {
+    it('creates a text field with keyboard icon', () => {
       addElement('Eingabefeld');
-      addProperties('Ausgefüllt Textfield mit Schreibeschutz', { readOnly: true });
-      addSettings({settings: {hasKeyboardIcon:true},appearance: 'Ausgefüllt'});
+      addProperties('Eingabefeld mit Tastatur Icon');
+      addSettings({settings: {hasKeyboardIcon: true}});
+    });
+
+    it('creates a text field that accepts only the pattern 1[a-z]000', () => {
+      addElement('Eingabefeld');
+      addProperties('Eingabefeld mit 1[a-z]000 Muster');
+      addRegexPattern('1[a-z]000');
     });
 
     after('save an unit definition', () => {
@@ -38,40 +59,56 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-field-basic.json');
     });
 
-    it('checks the valid regex of the first text field', () => {
-      cy.contains('mat-form-field', 'Geben Sie dem Geheimcode ein')
-        .find('mat-error').should('not.exist');
-      // Case 1: answer too short
-      textFieldRegexValidation('Geben Sie dem Geheimcode ein',
-        '123',
-        'Eingabe zu kurz; Eingabe entspricht nicht der Vorgabe')
-      // case 2: wrong answer
-      textFieldRegexValidation('Geben Sie dem Geheimcode ein',
-        '4444',
-        'Eingabe entspricht nicht der Vorgabe')
-      // case 3: correct answer
-      textFieldRegexValidation('Geben Sie dem Geheimcode ein',
-        '1234567')
-    });
-
-    it('checks the second text field has button clear', () => {
-      cy.contains('mat-form-field', 'Nennen Sie das Hobby')
-        .find('button:contains("close")')
-        .click();
-    });
-
-    it('checks that the second text field is not readonly', () => {
-      cy.contains('mat-form-field', 'Nennen Sie das Hobby')
-        .find('input')
-        .should('not.have.attr','readonly');
-      textFieldRegexValidation('Nennen Sie das Hobby',
-        'Wanderung')
-    });
-
-    it('checks that the squared text field is readonly', () => {
-      cy.contains('mat-form-field', 'Ausgefüllt Textfield mit Schreibeschutz')
+    it('checks that the first text field is readonly ', () => {
+      cy.contains('mat-form-field', 'Eingabefeld mit Schreibeschutz')
         .find('input')
         .should('have.attr','readonly');
+    });
+
+    it('checks the required text field', () => {
+      cy.contains('mat-form-field', 'Pflichtfeld Eingabefeld').click();
+      cy.contains('mat-form-field', 'Eingabefeld mit Schreibeschutz').click();
+      cy.contains('mat-form-field', 'Pflichtfeld Eingabefeld')
+        .find('mat-error').should('exist')
+        .contains('Eingabe erforderlich');
+    });
+
+    it('checks that the minimal length Warning is present', () => {
+      cy.contains('mat-form-field', 'Eingabefeld mit einer Minimallänge von 3 Zeichen')
+        .find('mat-error').should('not.exist');
+      textFieldValidation('Eingabefeld mit einer Minimallänge von 3 Zeichen',
+        '12',
+        'Eingabe zu kurz')
+    });
+
+    it('checks that the maximal length Warning ist present', () => {
+      cy.contains('mat-form-field', 'Eingabefeld mit einer Maximallänge von 10 Zeichen')
+        .find('mat-error').should('not.exist');
+      textFieldValidation('Eingabefeld mit einer Maximallänge von 10 Zeichen',
+        '12345678910',
+        'Eingabe zu lang')
+    });
+
+    it('checks the regex of the text field', () => {
+      cy.contains('mat-form-field', 'Eingabefeld mit 1[a-z]000 Muster')
+          .find('mat-error').should('not.exist');
+      textFieldValidation('Eingabefeld mit 1[a-z]000 Muster',
+        '6000',
+        'Eingabe entspricht nicht der Vorgabe')
+      textFieldValidation('Eingabefeld mit 1[a-z]000 Muster',
+        '1a000')
+    });
+
+    it('checks the text field that has a clear button', () => {
+      cy.contains('mat-form-field', 'Eingabefeld mit Löschtaste')
+        .find('button:contains("close")').should('exist');
+    });
+
+    // The icon disappears
+    it('checks that the last text field has a keyboard icon', () => {
+      cy.contains('mat-form-field', 'Eingabefeld mit Tastatur Icon')
+        .find('mat-icon:contains("keyboard_outline")')
+        .should('exist');
     });
   });
 });

@@ -1,20 +1,28 @@
 <ng-content></ng-content>
-<aspect-player-layout *ngIf="pages?.length"
-                      aspectUnitState
-                      [presentationProgressStatus]="presentationProgressStatus"
-                      aspectPlayerState
-                      [isVisibleIndexPages]="pagesLayout.isVisibleIndexPages"
-                      [currentPageIndex]="pagesLayout.selectedIndex">
-  <aspect-pages-layout #pagesLayout
-                       [style.height.%]="100"
-                       [sectionNumbering]="sectionNumbering"
-                       [pages]="pages"
-                       [alwaysVisiblePage]="pages | alwaysVisiblePage"
-                       [alwaysVisiblePagePosition]="(pages | alwaysVisiblePage)?.alwaysVisiblePagePosition || 'left'"
-                       [scrollPages]="pages | scrollPages"
-                       [hasScrollPages]="(pages | scrollPages).length > 0"
-                       [scrollPageMode]="playerConfig.pagingMode || 'separate'"
-                       [showUnitNavNext]="showUnitNavNext"
-                       [isPresentedPagesComplete]="presentationProgressStatus.value === 'complete'">
-  </aspect-pages-layout>
-</aspect-player-layout>
+@if (pages.length && (!playerConfig.printMode || playerConfig.printMode === 'off')) {
+  <aspect-player-layout *ngIf="pages?.length"
+                        aspectUnitState
+                        [presentationProgressStatus]="presentationProgressStatus"
+                        aspectPlayerState
+                        [isVisibleIndexPages]="pagesLayout.isVisibleIndexPages"
+                        [currentPageIndex]="pagesLayout.selectedIndex">
+    <aspect-pages-layout #pagesLayout
+                         [style.height.%]="100"
+                         [sectionNumbering]="sectionNumbering"
+                         [pages]="pages"
+                         [alwaysVisiblePage]="pages | alwaysVisiblePage"
+                         [alwaysVisiblePagePosition]="(pages | alwaysVisiblePage)?.alwaysVisiblePagePosition || 'left'"
+                         [scrollPages]="pages | scrollPages"
+                         [hasScrollPages]="(pages | scrollPages).length > 0"
+                         [scrollPageMode]="playerConfig.pagingMode || 'separate'"
+                         [showUnitNavNext]="showUnitNavNext"
+                         [isPresentedPagesComplete]="presentationProgressStatus.value === 'complete'">
+    </aspect-pages-layout>
+  </aspect-player-layout>
+} @else if (pages.length) {
+  <div [class.standalone-print]="isStandalone">
+    <aspect-print-layout [pages]="pages"
+                         [printMode]="playerConfig.printMode || 'on'">
+    </aspect-print-layout>
+  </div>
+}

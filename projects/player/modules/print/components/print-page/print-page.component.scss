@@ -1,0 +1,18 @@
+.section{
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  z-index: 0;
+}
+
+.print-page{
+  margin: auto;
+}
+
+.static-section{
+  display: block;
+}
+
+.concat-scroll-padding {
+  height: 200px;
+}

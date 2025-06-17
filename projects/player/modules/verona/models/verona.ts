@@ -3,6 +3,7 @@ import { ResponseStatusType } from '@iqb/responses';
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 export type Progress = 'none' | 'some' | 'complete';
 export type PagingMode = 'separate' | 'buttons' | 'concat-scroll' | 'concat-scroll-snap';
+export type PrintMode = 'off' | 'on' | 'on-with-ids';
 export enum ElementCodeStatusValue {
   UNSET = 0, NOT_REACHED = 1, DISPLAYED = 2, VALUE_CHANGED = 3, INVALID = 4,
   DERIVE_ERROR = 5, CODING_COMPLETE = 6, NO_CODING = 7, CODING_INCOMPLETE = 8,
@@ -15,7 +16,7 @@ export interface StatusChangeElement {
 }
 
 export interface PlayerConfig {
-  printMode?: 'off' | 'on' | 'on-with-ids';
+  printMode?: PrintMode;
   unitNumber?: number;
   unitTitle?: number;
   unitId?: number;

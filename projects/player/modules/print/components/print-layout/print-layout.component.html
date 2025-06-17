@@ -1,0 +1,7 @@
+@for (page of pages; track page; let i = $index) {
+  <aspect-print-page
+    [printMode]="printMode"
+    [page]="page"
+    [pageIndex]="i">
+  </aspect-print-page>
+}

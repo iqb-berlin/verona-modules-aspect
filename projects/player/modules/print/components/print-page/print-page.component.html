@@ -1,0 +1,16 @@
+<div class="print-page" *ngIf ="page"
+  [style.width.px]="page.hasMaxWidth ? page.maxWidth : null"
+  [style.padding.px]="page.margin"
+  [style.background-color]="page.backgroundColor">
+  <aspect-print-section
+    *ngFor="let section of page.sections; let i = index"
+    class="section"
+    [class.static-section]="!section.dynamicPositioning"
+    [style.background-color]="section.dynamicPositioning ? null : section.backgroundColor"
+    [style.min-height]="section.dynamicPositioning ? 'auto' : section.height + 'px'"
+    [printMode]="printMode"
+    [pageIndex]=pageIndex
+    [section]="section"
+    [sectionNumbering]="sectionNumbering">
+  </aspect-print-section>
+</div>

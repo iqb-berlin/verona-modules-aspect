@@ -13,24 +13,35 @@
            [formControl]="formControl">
   </mat-form-field>
   <button mat-menu-item
-          (click)="load('separate')">
+          (click)="load('separate', 'off')">
     <mat-icon>file_upload</mat-icon>
     <span>{{ 'loadSeparate' | translate }}</span>
   </button>
   <button mat-menu-item
-          (click)="load('buttons')">
+          (click)="load('buttons', 'off')">
     <mat-icon>file_upload</mat-icon>
     <span>{{ 'loadButtons' | translate }}</span>
   </button>
   <button mat-menu-item
-          (click)="load('concat-scroll')">
+          (click)="load('concat-scroll', 'off')">
     <mat-icon>file_upload</mat-icon>
     <span>{{ 'loadScroll' | translate }}</span>
   </button>
   <button mat-menu-item
-          (click)="load('concat-scroll-snap')">
+          (click)="load('concat-scroll-snap', 'off')">
     <mat-icon>file_upload</mat-icon>
     <span>{{ 'loadSnap' | translate }}</span>
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item
+          (click)="load('separate', 'on')">
+    <mat-icon>print</mat-icon>
+    <span>{{ 'loadPrint' | translate }}</span>
+  </button>
+  <button mat-menu-item
+          (click)="load('separate', 'on-with-ids')">
+    <mat-icon>print</mat-icon>
+    <span>{{ 'loadPrintWithIds' | translate }}</span>
   </button>
 
   @if (scrollPages && scrollPages.length) {
@@ -82,7 +93,6 @@
       <span>{{ 'allowAll' | translate }}</span>
     </button>
   }
-
 
   <ng-container *ngIf="elementCodes && elementCodes.length">
     <mat-divider></mat-divider>

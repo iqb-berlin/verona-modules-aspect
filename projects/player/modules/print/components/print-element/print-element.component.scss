@@ -4,19 +4,10 @@
   font-size: 12px;
   font-weight: bold;
   color: #333;
-  background: transparent;
+  background: #fff4c299;
   border: 1px solid #888888;
   border-radius: 3px;
   padding: 5px;
-  margin-top: -20px;
-  margin-left: -60px;
-}
-
-.child-label{
-  color: #222;
-  font-weight: normal;
-}
-
-::ng-deep .tooltip-multiline {
-  white-space: pre-line;
+  margin-top: -60px;
+  margin-left: -40px;
 }

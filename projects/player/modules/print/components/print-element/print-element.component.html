@@ -10,23 +10,11 @@
                             elementModel.dimensions?.maxHeight + 'px' : null"
      [attr.data-element-id]="elementModel.id"
      [attr.data-element-alias]="elementModel.alias">
-  <ng-template #elementComponentContainer></ng-template>
+    <ng-template #elementComponentContainer></ng-template>
   @if (printMode === 'on-with-ids') {
-    <div class="element-label"
-         [matTooltip]="tooltipText"
-         matTooltipClass="tooltip-multiline"
-         [matTooltipPosition]="'right'">
+    <span class="element-label">
       {{elementModel.alias}}
-      @if (children.length) {
-        <hr>
-      }
-      @for (child of children; track child; let i = $index) {
-        <div class="child-label">
-          {{child.alias}}
-        </div>
-      }
-    </div>
+    </span>
   }
 </div>
-
 

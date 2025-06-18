@@ -1,5 +1,6 @@
 @for (page of pages; track page; let i = $index) {
   <aspect-print-page
+    [sectionNumbering]="sectionNumbering"
     [printMode]="printMode"
     [page]="page"
     [pageIndex]="i">

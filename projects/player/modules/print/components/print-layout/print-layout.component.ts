@@ -10,4 +10,5 @@ import { PrintMode } from 'player/modules/verona/models/verona';
 export class PrintLayoutComponent {
   @Input() pages!: Page[];
   @Input() printMode!: PrintMode;
+  @Input() sectionNumbering!: { enableSectionNumbering: boolean, sectionNumberingPosition: 'left' | 'above' };
 }

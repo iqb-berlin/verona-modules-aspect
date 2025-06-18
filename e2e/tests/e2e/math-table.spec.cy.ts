@@ -6,7 +6,7 @@ describe('Text element', { testIsolation: false }, () => {
       cy.openEditor();
     });
 
-    it('creates an addition math-table', () => {
+    it('creates an addition math-table with the result', () => {
       addTextElement('Addition Rechenkästchen');
       addElement('Rechenkästchen');
       selectFromDropdown('Operation', 'Addition');
@@ -54,7 +54,13 @@ describe('Text element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/math-table.json');
     });
 
-    it('checks that the substraction math-table is editable', () => {
+    it('checks that the result row of the addition math-table is not editable',() => {
+      cy.get('table').eq(0).within(()=>{
+        cy.get('tr:last-child>td').should('have.attr','contenteditable','false');
+      })
+    });
+
+    it('checks that the result row of the substraction math-table is editable', () => {
       cy.get('table>tr:last-child').eq(1)
         .find('td').eq(1).type('1');
       cy.get('table>tr:last-child').eq(1)
@@ -70,6 +76,12 @@ describe('Text element', { testIsolation: false }, () => {
 
     it('deletes one extra line for the multiplication math-table', () => {
       cy.contains('button','delete').click();
+    });
+
+    it('checks that all positions of the variables Layout math-table are not editable', () => {
+      cy.get('table').eq(3).within(()=>{
+        cy.get('tr>td').should('have.attr','contenteditable','false');
+      })
     });
   });
 });

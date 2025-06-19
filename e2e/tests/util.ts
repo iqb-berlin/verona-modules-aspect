@@ -110,3 +110,8 @@ export function addProperties(label: string, settings?: Record<string, boolean>)
   if (settings?.readOnly) setCheckbox('Schreibschutz');
   if (settings?.required) setCheckbox('Pflichtfeld');
 }
+
+export function addElementHover(element: string, option: string) {
+  cy.contains('button', element).trigger('mouseover');
+  cy.contains('button', option).click();
+}

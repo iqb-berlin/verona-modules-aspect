@@ -11,10 +11,10 @@
      [attr.data-element-id]="elementModel.id"
      [attr.data-element-alias]="elementModel.alias">
     <ng-template #elementComponentContainer></ng-template>
-  @if (printMode === 'on-with-ids') {
-    <span class="element-label">
-      {{elementModel.alias}}
-    </span>
-  }
+    @if (printMode === 'on-with-ids') {
+      <span class="element-label">
+        {{elementModel.alias}}
+      </span>
+    }
 </div>
 

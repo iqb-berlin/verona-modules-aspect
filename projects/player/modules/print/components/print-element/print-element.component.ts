@@ -29,18 +29,20 @@ export class PrintElementComponent implements OnInit {
         this.elementComponentContainer.createComponent(this.elementModel.getElementComponent()).instance;
       this.printElementComponent.elementModel = this.elementModel;
 
-      if (this.printElementComponent instanceof CompoundElementComponent) {
-        (this.printElementComponent as CompoundElementComponent).childrenAdded
-          .subscribe((children: ElementComponent[]) => {
-            children.forEach(child => {
-              child.domElement.setAttribute('data-element-id', child.elementModel.id);
-              child.domElement.setAttribute('data-element-alias', child.elementModel.alias);
-              const label: HTMLElement = this.renderer.createElement('span');
-              label.innerHTML = child.elementModel.alias;
-              this.renderer.addClass(label, 'element-label');
-              this.renderer.appendChild(child.domElement, label);
+      if (this.printMode === 'on-with-ids') {
+        if (this.printElementComponent instanceof CompoundElementComponent) {
+          (this.printElementComponent as CompoundElementComponent).childrenAdded
+            .subscribe((children: ElementComponent[]) => {
+              children.forEach(child => {
+                child.domElement.setAttribute('data-element-id', child.elementModel.id);
+                child.domElement.setAttribute('data-element-alias', child.elementModel.alias);
+                const label: HTMLElement = this.renderer.createElement('span');
+                label.innerHTML = child.elementModel.alias;
+                this.renderer.addClass(label, 'element-label');
+                this.renderer.appendChild(child.domElement, label);
+              });
             });
-          });
+        }
       }
     }
   }

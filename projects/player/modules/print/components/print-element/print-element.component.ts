@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnInit, Renderer2, ViewChild, ViewContainerRef
+  Component, Input, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -20,8 +20,7 @@ export class PrintElementComponent implements OnInit {
              { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
 
   printElementComponent!: ElementComponent;
-  constructor(private renderer: Renderer2) {
-  }
+  elementComponents: ElementComponent[] = [];
 
   ngOnInit(): void {
     if (this.elementModel) {
@@ -33,15 +32,16 @@ export class PrintElementComponent implements OnInit {
         if (this.printElementComponent instanceof CompoundElementComponent) {
           (this.printElementComponent as CompoundElementComponent).childrenAdded
             .subscribe((children: ElementComponent[]) => {
+              setTimeout(() => {
+                this.elementComponents = [this.printElementComponent, ...children];
+              });
               children.forEach(child => {
                 child.domElement.setAttribute('data-element-id', child.elementModel.id);
                 child.domElement.setAttribute('data-element-alias', child.elementModel.alias);
-                const label: HTMLElement = this.renderer.createElement('span');
-                label.innerHTML = child.elementModel.alias;
-                this.renderer.addClass(label, 'element-label');
-                this.renderer.appendChild(child.domElement, label);
               });
             });
+        } else {
+          this.elementComponents = [this.printElementComponent];
         }
       }
     }

@@ -7,19 +7,25 @@ import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { PrintElementComponent } from 'player/modules/print/components/print-element/print-element.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
+import { CdkConnectedOverlay, CdkOverlayOrigin, CdkScrollable } from '@angular/cdk/overlay';
+import { PrintLabelComponent } from 'player/modules/print/components/print-label/print-label.component';
 
 @NgModule({
   declarations: [
     PrintLayoutComponent,
     PrintPageComponent,
     PrintSectionComponent,
-    PrintElementComponent
+    PrintElementComponent,
+    PrintLabelComponent
   ],
   imports: [
     CommonModule,
     MeasurePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin,
+    CdkScrollable
   ],
   exports: [
     PrintLayoutComponent

@@ -20,7 +20,7 @@
     </aspect-pages-layout>
   </aspect-player-layout>
 } @else if (pages.length) {
-  <div [class.standalone-print]="isStandalone">
+  <div cdkScrollable [class.standalone-print]="isStandalone">
     <aspect-print-layout [pages]="pages"
                          [sectionNumbering]="sectionNumbering"
                          [printMode]="playerConfig.printMode || 'on'">

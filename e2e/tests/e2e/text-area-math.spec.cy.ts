@@ -31,10 +31,13 @@ describe('text-area-math element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-area-math.json');
     });
 
-    it('checks the text-area-math', () => {
+    it('checks the text-area-math is editable', () => {
       cy.contains('aspect-element-group-selection', 'Standard Formel Bereich').within(() => {
         cy.get('button:contains("Formel einfügen")').click({force: true});
         cy.get('math-field').shadow().find('.ML__content').click().type('1+x=2');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', '1');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', '+');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', '2');
       });
     });
 
@@ -42,12 +45,23 @@ describe('text-area-math element', { testIsolation: false }, () => {
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Schreibschutz').within(() => {
         cy.get('button:contains("Formel einfügen")').click({force: true});
         cy.get('math-field').shadow().find('.ML__content').click().type('x+y=4');
+        // But we could type
+        // cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'x');
+        // cy.get('math-field').shadow().find('.ML__base').should('not.contain', '+');
+        // cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'y');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', 'x');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', '+');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', 'y');
       });
     });
 
     it('checks that the text-area-math does not show the error message', () => {
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld').click();
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Schreibschutz').click();
+      // It has no error message
+      cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld')
+        .find('mat-error').should('not.exist');
+      // cy.contains('aspect-element-group-selection', 'Formel Feld mit Reich').find('mat-error').should('exist');
     });
   });
 });

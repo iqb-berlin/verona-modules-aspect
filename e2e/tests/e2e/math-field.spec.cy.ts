@@ -31,23 +31,31 @@ describe('math-field element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/math-field.json');
     });
 
-    it('checks the math-field', () => {
+    it('checks the math-field is editable ', () => {
       cy.contains('aspect-element-group-selection', 'Standard Formel Feld').within(() => {
-        cy.get('button:contains("Formel einfügen")').click({force: true});
         cy.get('math-field').shadow().find('.ML__content').click().type('1+x=2');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', '1');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', '+');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', '2');
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', '7');
       });
+
     });
 
     it('checks that the readonly math-field can not be edited', () => {
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Schreibschutz').within(() => {
-        cy.get('button:contains("Formel einfügen")').click({force: true});
         cy.get('math-field').shadow().find('.ML__content').click().type('x+y=4');
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'x');
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', '+');
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'y');
       });
     });
 
     it('checks that the math-field does not show the error message', () => {
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Pflichtfeld').click();
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Schreibschutz').click();
+      cy.contains('aspect-element-group-selection', 'Formel Feld mit Pflichtfeld')
+        .find('mat-error').should('exist');
     });
   });
 });

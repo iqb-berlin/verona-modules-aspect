@@ -1,5 +1,12 @@
 Player
 ======
+## 2.10.0
+### Neue Funktionen
+- Unterstützt den Print-Modus der Verona-Spezifikation 6.0
+  - Wird der Player im Studio in der Druckvorschau aufgerufen, werden alle Seiten einer Unit 
+    gestapelt dargestellt. Das Ausblenden von Seiten und Seiten wird in dieser Ansicht unterdrückt. 
+    Optional kann in der Druckansicht der Alias der Elemente eingeblendet werden.  
+
 ## 2.9.4
 ### Neue Funktionen
 - Der Zustand von Abschnitten mit Regeln zur Sichtbarkeit wird in eigener Variable gespeichert

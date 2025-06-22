@@ -16,7 +16,6 @@ describe('PrintSectionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PrintSectionComponent);
     component = fixture.componentInstance;
-    component.pages = [];
     fixture.detectChanges();
   });
 

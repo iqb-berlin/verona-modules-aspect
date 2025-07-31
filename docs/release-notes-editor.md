@@ -1,5 +1,9 @@
 Editor
 ======
+## 2.10.0
+### Änderungen
+- Die Fläche zur Anzeige eines Hinweises bei Audio-/Video-Elementen wird nur dargestellt, wenn ein Hinweis eingetragen wird
+
 ## 2.9.3
 ### Fehlerbehebungen
 - Abschnittsnummerierung

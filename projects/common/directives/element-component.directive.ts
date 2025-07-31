@@ -17,7 +17,7 @@ export abstract class ElementComponent implements AfterContentChecked {
   }
 
   ngAfterContentChecked(): void {
-    this.project = this.elementRef.nativeElement.closest('aspect-element-group-selection') ? 'player' : 'editor';
+    this.project = this.elementRef.nativeElement.closest('aspect-unit') ? 'player' : 'editor';
   }
 
   // eslint-disable-next-line class-methods-use-this

@@ -25,6 +25,10 @@ import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigatio
 import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
 import { ErrorService } from 'player/src/app/services/error.service';
 import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
+import {
+  MathKeyboardContainerComponent
+} from 'player/src/app/components/math-keyboard-container/math-keyboard-container.component';
+import { PrintModule } from 'player/modules/print/print.module';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -67,9 +71,6 @@ import { ExternalAppGroupElementComponent } from
 import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-keys.pipe';
 import { HasNextPagePipe } from './pipes/has-next-page.pipe';
 import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
-import {
-  MathKeyboardContainerComponent
-} from 'player/src/app/components/math-keyboard-container/math-keyboard-container.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import {
     ScrollingModule,
     UnitMenuModule,
     MeasurePipe,
+    PrintModule,
     TableComponent,
     MarkablesContainerComponent,
     IsEnabledNavigationTargetPipe,

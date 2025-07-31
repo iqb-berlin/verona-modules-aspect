@@ -1,0 +1,13 @@
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayPanelClass]="'print-label-overlay'"
+  [cdkConnectedOverlayOrigin]="elementComponent.elementRef"
+  [cdkConnectedOverlayOpen]="true"
+  [cdkConnectedOverlayPositions]="overlayPositions"
+>
+  <div class="element-label">
+    {{elementComponent.elementModel.alias}}
+  </div>
+</ng-template>
+
+

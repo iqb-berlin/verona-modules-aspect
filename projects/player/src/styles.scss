@@ -134,3 +134,17 @@ aspect-anchor:not(.active-anchor):not(.active-nested-anchor) {
 u>span {
   text-decoration: underline;
 }
+
+.print-label-overlay {
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  background: #fff4c299;
+  border: 1px solid #888888;
+  border-radius: 3px;
+  padding: 5px;
+  margin-top: -60px;
+  margin-left: -40px;
+}
+

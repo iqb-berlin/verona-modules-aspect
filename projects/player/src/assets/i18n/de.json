@@ -24,6 +24,8 @@
   "loadButtons": "Unit im 'Buttons'-Modus laden",
   "loadScroll": "Unit im 'Scroll'-Modus laden",
   "loadSnap": "Unit im 'Snap'-Modus laden",
+  "loadPrint": "Unit im 'Druck'-Modus laden",
+  "loadPrintWithIds": "Unit im 'Druck mit Ids'-Modus laden",
   "reloadUnit": "Unit inkl. Zustand erneut laden",
   "startPageIndex": "Index der Startseite",
   "allowNone": "Keine Unit-Navigation erlauben",

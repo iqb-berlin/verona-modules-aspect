@@ -1,0 +1,60 @@
+<div class="section-wrapper"
+     [ngClass]="sectionNumbering?.sectionNumberingPosition === 'left' ? 'row-align' : 'column-align'">
+  <div *ngIf="sectionNumbering?.enableSectionNumbering" [style.min-width.px]="35" [style.font-size.px]="20">
+    <b *ngIf="sectionCounter">{{sectionCounter}}.</b>
+  </div>
+  <ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
+</div>
+
+<ng-template #staticElements>
+  <div class="static-section">
+  <ng-container *ngFor="let element of section.elements">
+    <aspect-print-element
+        class="static-element fixed-size-content"
+        [class.no-pointer-events]="element.type === 'frame'"
+        [style.width.px]="element.dimensions.width"
+        [style.height.px]="element.dimensions.height"
+        [style.left.px]="element.position.xPosition"
+        [style.top.px]="element.position.yPosition"
+        [style.z-index]="element.position.zIndex"
+        [elementModel]="element"
+        [printMode]="printMode"
+        [pageIndex]="pageIndex">
+    </aspect-print-element>
+  </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #dynamicElements>
+  <div class="dynamic-section"
+       [style.grid-template-columns]="section.autoColumnSize ? undefined : section.gridColumnSizes | measure"
+       [style.grid-template-rows]="section.autoRowSize ? undefined : section.gridRowSizes | measure"
+       [style.grid-auto-columns]="section.autoColumnSize ? 'auto' : undefined"
+       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
+       [style.background-color]="section.backgroundColor"
+       [style.height.px]="section.autoRowSize ? undefined : section.height">
+     <ng-container *ngFor="let element of section.elements">
+       <aspect-print-element
+         [class.no-pointer-events]="element.type === 'frame'"
+         [class.centered-horizontal]="element.dimensions.isWidthFixed"
+         [class.centered-vertical]="element.dimensions.isHeightFixed"
+         [style.margin-left]="[element.position.marginLeft] | measure"
+         [style.margin-right]="[element.position.marginRight] | measure"
+         [style.margin-top]="[element.position.marginTop] | measure"
+         [style.margin-bottom]="[element.position.marginBottom] | measure"
+         [style.grid-column-start]="element.position.gridColumn"
+         [style.grid-column-end]="element.position.gridColumn ?
+           element.position.gridColumn + element.position.gridColumnRange:
+           null"
+         [style.grid-row-start]="element.position.gridRow"
+         [style.grid-row-end]="element.position.gridRow ?
+           element.position.gridRow + element.position.gridRowRange:
+           null"
+         [style.z-index]="element.position.zIndex"
+         [elementModel]="element"
+         [printMode]="printMode"
+         [pageIndex]="pageIndex">
+      </aspect-print-element>
+    </ng-container>
+  </div>
+</ng-template>

@@ -1,0 +1,19 @@
+<div cdkOverlayOrigin
+     [style.width]="elementModel.dimensions?.isWidthFixed ? elementModel.dimensions?.width + 'px' : '100%'"
+     [style.height]="elementModel.dimensions?.isHeightFixed ? elementModel.dimensions?.height + 'px' : '100%'"
+     [style.min-width]="!elementModel.dimensions?.isWidthFixed && elementModel.dimensions?.minWidth ?
+                          elementModel.dimensions?.minWidth + 'px' : null"
+     [style.max-width]="!elementModel.dimensions?.isWidthFixed && elementModel.dimensions?.maxWidth ?
+                          elementModel.dimensions?.maxWidth + 'px' : null"
+     [style.min-height]="!elementModel.dimensions?.isHeightFixed && elementModel.dimensions?.minHeight ?
+                            elementModel.dimensions?.minHeight + 'px' : null"
+     [style.max-height]="!elementModel.dimensions?.isHeightFixed && elementModel.dimensions?.maxHeight ?
+                            elementModel.dimensions?.maxHeight + 'px' : null"
+     [attr.data-element-id]="elementModel.id"
+     [attr.data-element-alias]="elementModel.alias">
+    <ng-template #elementComponentContainer></ng-template>
+</div>
+@for (elementComponent of elementComponents; track elementComponent) {
+  <aspect-print-label [elementComponent]="elementComponent"></aspect-print-label>
+}
+

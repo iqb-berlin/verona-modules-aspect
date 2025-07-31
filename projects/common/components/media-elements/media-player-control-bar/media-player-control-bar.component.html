@@ -83,7 +83,7 @@
     </mat-slider>
   </ng-container>
 </div>
-<div *ngIf="showHint || project === 'editor'"
+<div *ngIf="showHint || (project === 'editor' && playerProperties.hintLabel)"
      class="status-bar mat-typography">
   {{playerProperties.hintLabel}}
 </div>

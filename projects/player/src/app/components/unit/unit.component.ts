@@ -1,4 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, Input, OnInit
+} from '@angular/core';
 import {
   PlayerConfig,
   Progress,
@@ -34,6 +36,7 @@ import { InstantiationEror } from 'common/errors';
   styleUrls: ['./unit.component.scss']
 })
 export class UnitComponent implements OnInit {
+  @Input() isStandalone!: boolean;
   pages: Page[] = [];
   playerConfig: PlayerConfig = {};
   showUnitNavNext: boolean = false;

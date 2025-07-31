@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 import {
   NavigationTarget,
-  PagingMode,
+  PagingMode, PrintMode,
   UnitState,
   VopPageNavigationCommand,
   VopPlayerConfigChangedNotification,
@@ -50,9 +50,9 @@ export class UnitMenuComponent {
     target: '0'
   };
 
-  async load(pagingMode: PagingMode): Promise<void> {
+  async load(pagingMode: PagingMode, printMode: PrintMode): Promise<void> {
     await FileService.loadFile(['.json', '.voud']).then(unitDefinition => {
-      this.loadUnit(unitDefinition.content, pagingMode, {});
+      this.loadUnit(unitDefinition.content, pagingMode, {}, printMode);
     });
   }
 
@@ -92,9 +92,9 @@ export class UnitMenuComponent {
     this.postMessage(this.vopPlayerConfigChangedNotificationMessage);
   }
 
-  private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState): void {
+  private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState, printMode: PrintMode = 'off'): void {
     this.vopStartCommandMessage.unitDefinition = unitDefinition;
-    this.vopStartCommandMessage.playerConfig = { ...this.vopStartCommandMessage.playerConfig, pagingMode };
+    this.vopStartCommandMessage.playerConfig = { ...this.vopStartCommandMessage.playerConfig, pagingMode, printMode };
     this.setStartPage();
     this.vopStartCommandMessage.unitState = unitSate;
     this.postMessage(this.vopStartCommandMessage);

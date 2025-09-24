@@ -12,9 +12,11 @@ export class IsDisabledDirective implements OnChanges {
   constructor(private ngControl : NgControl) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.isDisabled && this.ngControl) {
-      const action = changes.isDisabled.currentValue ? 'disable' : 'enable';
-      this.ngControl?.control?.[action]();
-    }
+    setTimeout(() => { // give time for form control to initialize
+      if (changes.isDisabled && this.ngControl) {
+        const action = changes.isDisabled.currentValue ? 'disable' : 'enable';
+        this.ngControl?.control?.[action]();
+      }
+    });
   }
 }

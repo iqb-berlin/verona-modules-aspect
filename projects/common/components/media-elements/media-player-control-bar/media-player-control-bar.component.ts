@@ -1,5 +1,5 @@
 import {
-  OnInit, OnChanges, SimpleChanges, OnDestroy, Component, EventEmitter, Input, Output
+  OnInit, OnChanges, OnDestroy, Component, EventEmitter, Input, Output
 } from '@angular/core';
 import {
   BehaviorSubject,
@@ -48,6 +48,8 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   valid: boolean = false;
   muted: boolean = false;
   durationErrorTimeoutId: number | null = null;
+  hintTimeOutId: number | null = null;
+  autoPlayTimeOutId: number | null = null;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -112,8 +114,8 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     this.player.muted = this.muted;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.project !== 'editor' && changes.dependencyDissolved && changes.dependencyDissolved.currentValue) {
+  ngOnChanges(): void {
+    if (this.project !== 'editor' && this.dependencyDissolved) {
       this.initDelays();
     }
   }
@@ -188,8 +190,8 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private initAutostart(): void {
-    if (this.playerProperties.autostart) {
-      setTimeout(() => {
+    if (this.playerProperties.autostart && !this.autoPlayTimeOutId) {
+      this.autoPlayTimeOutId = setTimeout(() => {
         if (this.dependencyDissolved && !this.disabled) {
           this._play();
         }
@@ -198,8 +200,8 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private initHint(): void {
-    if (this.playerProperties.hintLabel) {
-      setTimeout(() => {
+    if (this.playerProperties.hintLabel && !this.hintTimeOutId) {
+      this.hintTimeOutId = setTimeout(() => {
         if (!this.started && this.dependencyDissolved) {
           this.showHint = true;
         }

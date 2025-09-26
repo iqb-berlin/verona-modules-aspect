@@ -40,11 +40,23 @@ import { MarkingData } from 'common/models/marking-data';
       <span *ngIf="showHint"
             class="hint">{{'markingHint' | translate}}</span>
     </div>`,
-  styles: [
-    '.sticky {position: sticky; top: 0; }',
-    '.marking-bar {margin-bottom: 13px;}',
-    '.hint {font-size: 16px; margin-left: 15px; color: #f44336; position: absolute; margin-top: 10px;}'
-  ]
+  styles: `
+    .sticky {
+      position: sticky;
+      top: 0;
+    }
+    .marking-bar {
+      margin-bottom: 13px;
+    }
+    .hint {
+      font-size: 16px;
+      margin-left: 10px;
+      color: #f44336;
+      position: absolute;
+      margin-top: 10px;
+      background-color: white;
+      padding: 5px
+    }`
 })
 export class TextMarkingBarComponent {
   @Input() elementModel!: TextElement | MarkingPanelElement;

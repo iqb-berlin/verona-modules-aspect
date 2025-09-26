@@ -54,6 +54,7 @@ import { ValueChangeElement } from 'common/interfaces';
           </tr>
         </table>
         <button *ngIf="elementModel.operation === 'multiplication'"
+                class="row-button"
                 [matTooltip]="'weitere Zeile einfügen'"
                 [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
                 [style.width.px]="elementModel.styling.fontSize * 2.5"
@@ -62,6 +63,7 @@ import { ValueChangeElement } from 'common/interfaces';
           <mat-icon>add</mat-icon>
         </button>
         <button *ngIf="elementModel.operation === 'multiplication'"
+                class="row-button"
                 [matTooltip]="'letzte Zeile entfernen'"
                 [disabled]="tableModel.length == 4"
                 [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
@@ -84,7 +86,9 @@ import { ValueChangeElement } from 'common/interfaces';
     'table.underline-first-row tr:first-child {border-bottom: 3px solid black;}',
     'table.underline-third-row tr:nth-child(3) {border-bottom: 3px solid black;}',
     'table.has-result-row tr:last-child {border-top: 3px solid black;}',
-    '.terms-missing-warning {font-size: larger; color: red;}'
+    '.terms-missing-warning {font-size: larger; color: red;}',
+    '.row-button:not(:disabled) {color: black; border: 2px solid black}',
+    '.row-button:disabled {border: 2px solid #bbb}'
   ]
 })
 export class MathTableComponent extends ElementComponent implements OnInit {

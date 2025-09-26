@@ -55,7 +55,7 @@ import { MarkingData } from 'common/models/marking-data';
       position: absolute;
       margin-top: 10px;
       background-color: white;
-      padding: 5px
+      padding: 5px;
     }`
 })
 export class TextMarkingBarComponent {

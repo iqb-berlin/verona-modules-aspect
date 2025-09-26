@@ -45,10 +45,12 @@
 
   <fieldset class="input-group">
     <legend>Schrift</legend>
-    <mat-form-field *ngIf="!showReducedControls" appearance="outline" class="dropdown">
+    <mat-form-field *ngIf="!showReducedControls" [floatLabel]="'always'" appearance="outline"
+                    class="dropdown" [style.width.px]="115">
       <mat-label>Größe</mat-label>
-      <mat-select panelClass="select-overlay"
+      <mat-select panelClass="select-overlay" placeholder="Standard"
                   [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize" >
+        <mat-option (click)="applyFontSize(null)" [value]="null">Standard</mat-option>
         <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
         <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
         <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>

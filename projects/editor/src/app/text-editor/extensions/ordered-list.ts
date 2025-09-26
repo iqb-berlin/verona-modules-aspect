@@ -4,7 +4,7 @@ declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     orderedListExtension: {
       setOrderedListStyle: (newStyle: string) => ReturnType,
-      setOrderedListFontSize: (fontSize: string) => ReturnType
+      setOrderedListFontSize: (fontSize: string | null) => ReturnType
     };
   }
 }
@@ -35,7 +35,7 @@ export const OrderedListExtension = OrderedList.extend({
       setOrderedListStyle: (newStyle: string) => ({ commands }) => (
         commands.updateAttributes(this.name, { listStyle: newStyle })
       ),
-      setOrderedListFontSize: (fontSize: string) => ({ commands }) => (
+      setOrderedListFontSize: (fontSize: string | null) => ({ commands }) => (
         commands.updateAttributes(this.name, { fontSize: fontSize })
       )
     };

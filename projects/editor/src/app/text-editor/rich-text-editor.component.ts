@@ -87,7 +87,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   selectedHighlightColor = 'lightgrey';
   selectedAnchorColor = '#dccce6';
   selectedAnchorIdText = '';
-  selectedFontSize = '20px';
+  selectedFontSize: string | null = null;
   selectedIndentSize = 20;
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
@@ -197,7 +197,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     this.editor.chain().toggleSubscript().focus().run();
   }
 
-  applyFontSize(size: string): void {
+  applyFontSize(size: string | null): void {
     this.selectedFontSize = size;
     this.editor.commands.setFontSize(size);
   }

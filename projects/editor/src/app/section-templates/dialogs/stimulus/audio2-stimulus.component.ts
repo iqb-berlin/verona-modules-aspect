@@ -67,7 +67,7 @@ export class Audio2StimulusComponent {
       ' indentsize="20"><span style="color: black; font-size: 20px">Hier steht die Situierung.</span></p>' +
       '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 10px; margin-top: 0" indent="0" ' +
       'indentsize="20"><span style="color: black; font-size: 20px">Hier stehen Frage und Operator (ggf. ' +
-      'inklusive technische Handhabung).</span></p><p style="padding-left: 0px; text-indent: 0px; ' +
+      'inklusive technischer Handhabung).</span></p><p style="padding-left: 0px; text-indent: 0px; ' +
       'margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="color: black; font-size: 20px">' +
       'Hier steht eventuell ein Hinweis.</span></p>'
   };

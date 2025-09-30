@@ -120,7 +120,7 @@ export function createAudio2Section(options: Audio2StimulusOptions, idService: I
   sectionElements.push(TemplateService.createElement(
     'text',
     { gridRow: 3, gridColumn: 1, marginBottom: { value: 20, unit: 'px' } },
-    { text: options.text },
+    { text: options.text, styling: { fontSize: 14, lineHeight: 100 } },
     idService
   ));
   sectionElements.push(TemplateService.createElement(

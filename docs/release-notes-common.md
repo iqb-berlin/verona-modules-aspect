@@ -1,5 +1,13 @@
 Allgemein
 =========
+## editor/2.10.1+player/2.10.1
+### Fehlerbehebungen
+- Schieberegler
+  - Korrigiert die Einstellung "Schreibschutz"
+- Rechenkästchen
+  - Vereinheitlicht die Farbgebung der Schaltflächen zum Hinzufügen und Löschen von Zeilen in verschiedenen Browsern
+
+
 ## editor/2.9.3+player/2.9.3
 ### Fehlerbehebungen
 - Optionsfelder, Optionentabelle und Ablegeliste 

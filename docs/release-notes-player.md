@@ -1,5 +1,13 @@
 Player
 ======
+## 2.10.1
+### Fehlerbehebungen
+- Audios und Videos
+  - Korrigiert das Einblenden des Hinweises zum Starten
+### Änderungen
+- Textmarkierung
+  - Hinweistext zur Auswahl des Endes einer Textmarkierung verwendet Weiß als Hintergrundfarbe
+
 ## 2.10.0
 ### Neue Funktionen
 - Unterstützt den Print-Modus der Verona-Spezifikation 6.0

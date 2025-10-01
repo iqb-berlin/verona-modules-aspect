@@ -6,11 +6,12 @@ Allgemein
   - Korrigiert die Einstellung "Schreibschutz"
 - Rechenkästchen
   - Vereinheitlicht die Farbgebung der Schaltflächen zum Hinzufügen und Löschen von Zeilen in verschiedenen Browsern
-
+- Lückentext
+  - Text von Auswahlelementen innerhalb von Zitaten korrigiert.
 
 ## editor/2.9.3+player/2.9.3
 ### Fehlerbehebungen
-- Optionsfelder, Optionentabelle und Ablegeliste 
+- Optionsfelder, Optionentabelle und Ablegeliste
   - Behebt unter iOS Anzeigefehler von Bildern beim Laden einer Aufgabe
 - Video
   - Behebt unter Firefox Initialisierungsfehler von Videos beim Laden einer Aufgabe (Problem in Version 2.9.1/2.9.2)
@@ -44,7 +45,7 @@ Allgemein
   - Listen mit Schreibschutz akzeptieren keine abgelegten Elemente mehr
 - Wort korrigieren:
   - mit Schreibschutz wird der Text nicht mehr durchgestrichen, wenn man das Eingabefeld fokussiert
-- Eingabebereich: ohne Beschriftung wird der Fokusrahmen mit durchgezogener Linie dargestellt 
+- Eingabebereich: ohne Beschriftung wird der Fokusrahmen mit durchgezogener Linie dargestellt
 
 
 ## editor/2.7.2+player/2.7.2

@@ -1,5 +1,11 @@
 Editor
 ======
+## 2.10.1
+### Fehlerbehebungen
+- Schriftgröße in Textelementen wird, wenn unverändert, als "Standard" angezeigt und kann auf Standard zurückgestellt werden.
+  Das soll Verdeutlichen, dass die allgemeine Schriftgröße des Elements verwendet wird (Tab Gestaltung). Durch das Einstellen von Standard kann man die allgemeine Einstellung wieder greifen lassen, was vorher nicht ging, sobald man einmal die Größe verändert hatte.
+- Assistent "Stimulus - Instruktion und Hörtext getrennt": Textformat und Inhalt korrigiert
+
 ## 2.10.0
 ### Änderungen
 - Die Fläche zur Anzeige eines Hinweises bei Audio-/Video-Elementen wird nur dargestellt, wenn ein Hinweis eingetragen wird
@@ -56,7 +62,7 @@ Editor
 ## 2.7.0
 ### Neue Funktionen
 - Elemente, die keine auswertbaren Werte annehmen können, erscheinen nun in der Liste der Variablen für die Kodierung mit dem type "no-value".
-  Dies gilt auch für Zustandsvariablen.  
+  Dies gilt auch für Zustandsvariablen.
 
 ## 2.6.3
 ### Fehlerbehebungen
@@ -207,7 +213,7 @@ Editor
 - Legt für Kinderelemente von Optionstabellen und Lückentexten beim Einfügen von kopierten Abschnitten neue IDs an. verhindert damit den Fehler "Doppelte Ids"
 - Korrigiert die Vorauswahl bei Optionstabellen
 - Hintergrundfarbe von Eingabefeldern verdeckt nicht länger den eingegebenen Text
-- Korrigiert bei doppelter Eingabe die Darstellung von Rechenzeichen bei Rechenkästchen  
+- Korrigiert bei doppelter Eingabe die Darstellung von Rechenzeichen bei Rechenkästchen
 
 ### Änderungen
 - Die voreingestellte Schriftfarbe im Text-Editors ist schwarz
@@ -263,7 +269,7 @@ Editor
 ## 2.1.0
 ### Neue Funktionen
 - Für die Bedingungen zur Sichtbarkeit von Abschnitten kann nun die
-  logische Verknüpfung festgelegt werden: UND / ODER  
+  logische Verknüpfung festgelegt werden: UND / ODER
 
 ### Fehlerbehebungen
 - Element-IDs gelöschter Abschnitte werden korrekt verfügbar gemacht
@@ -396,7 +402,7 @@ Editor
 
 ## 1.36.0
 ### Neue Funktionen
-- Bietet unterschiedliche Startpositionen für schwebende Eingabehilfen an  
+- Bietet unterschiedliche Startpositionen für schwebende Eingabehilfen an
 
 ## 1.35.3
 ### Verbesserungen
@@ -416,12 +422,10 @@ Editor
 - Setzt bei allen Kindelementen von Lückentexten die Vorbelegung der Höhe auf 30
 
 ## 1.35.1
-
 ### Verbesserungen
-- Das Aussehen von Formelelementen kann im Eigenschaftsfenster geändert werden   
+- Das Aussehen von Formelelementen kann im Eigenschaftsfenster geändert werden
 
 ## 1.35.0
-
 ### Neue Funktionen
 - "Bildbereiche" als neues Element
   Auf einem Hintergrundbild können durch den User ausfüllbare und

@@ -6,6 +6,7 @@ import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'aspect-editor-unit-view',
@@ -19,6 +20,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
+              private dialogService: DialogService,
               public pageService: PageService,
               public pageChangeService: PageChangeService) { }
 
@@ -53,6 +55,10 @@ export class UnitViewComponent implements OnInit, OnDestroy {
 
   toggleViewMode(): void {
     this.showPagesAsList = !this.showPagesAsList;
+  }
+
+  openOverview() {
+    this.dialogService.openOverviewDialog(this.unitService.unit.getAllElements());
   }
 
   setSectionNumbering(event: MatCheckboxChange) {

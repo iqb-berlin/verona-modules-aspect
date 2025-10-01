@@ -41,6 +41,7 @@ import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dia
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
+import { OverviewDialogComponent } from '../components/dialogs/overview-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -221,6 +222,15 @@ export class DialogService {
       data: { tooltipText, tooltipPosition },
       width: '500px',
       autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  openOverviewDialog(elements: UIElement[]) {
+    const dialogRef = this.dialog.open(OverviewDialogComponent, {
+      data: { elements },
+      width: '500px',
+      // autoFocus: false
     });
     return dialogRef.afterClosed();
   }

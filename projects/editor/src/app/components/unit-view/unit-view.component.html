@@ -121,11 +121,15 @@
 
         <mat-tab [disabled]="true" class="align-right">
           <ng-template mat-tab-label>
-            <button mat-icon-button [matMenuTriggerFor]="numberingMenu">
+            <button mat-icon-button [matMenuTriggerFor]="numberingMenu" #menuTrigger="matMenuTrigger">
               <mat-icon>settings</mat-icon>
             </button>
             <mat-menu #numberingMenu="matMenu" (click)="$event.stopPropagation()">
               <div [style.padding]="'0 20px 10px'" (click)="$event.stopPropagation()">
+                <h3>Übersicht</h3>
+                <button mat-stroked-button (click)="openOverview(); menuTrigger.closeMenu()">
+                  Elementliste öffnen
+                </button>
                 <h3>Abschnittsnummerierung</h3>
                 <mat-checkbox #numberingInput [checked]="unitService.unit.enableSectionNumbering"
                               (change)="setSectionNumbering($event)">

@@ -6,6 +6,8 @@ import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { OverviewDialogComponent } from 'editor/src/app/components/dialogs/overview-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'aspect-editor-unit-view',
@@ -19,6 +21,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
+              private dialog: MatDialog,
               public pageService: PageService,
               public pageChangeService: PageChangeService) { }
 
@@ -53,6 +56,15 @@ export class UnitViewComponent implements OnInit, OnDestroy {
 
   toggleViewMode(): void {
     this.showPagesAsList = !this.showPagesAsList;
+  }
+
+  openOverview() {
+    const dialogRef = this.dialog.open(OverviewDialogComponent, {
+      width: '70%',
+      height: '70%',
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
   }
 
   setSectionNumbering(event: MatCheckboxChange) {

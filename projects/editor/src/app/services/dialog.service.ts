@@ -229,7 +229,7 @@ export class DialogService {
   openOverviewDialog(elements: UIElement[]) {
     const dialogRef = this.dialog.open(OverviewDialogComponent, {
       data: { elements },
-      width: '500px',
+      width: '80%',
       // autoFocus: false
     });
     return dialogRef.afterClosed();

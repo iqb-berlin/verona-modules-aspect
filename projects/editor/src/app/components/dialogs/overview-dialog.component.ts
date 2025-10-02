@@ -18,6 +18,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { MatSelect } from "@angular/material/select";
+import { MatOptionModule } from "@angular/material/core";
 
 @Component({
   selector: 'aspect-overview-dialog',
@@ -42,17 +44,36 @@ import { MatInput } from '@angular/material/input';
     MatSortModule,
     MatFormField,
     MatLabel,
-    MatInput
+    MatInput,
+    MatSelect,
+    MatOptionModule
   ],
   template: `
     <mat-dialog-content>
-        <button mat-button>
-          Relevant für PC
-        </button>
-        <mat-form-field>
-          <mat-label>Filter</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-        </mat-form-field>
+        <div class="controls-area">
+          <mat-form-field>
+            <mat-label>Eigenschaft</mat-label>
+            <mat-select>
+              @for (option of elementOptions; track option) {
+                <mat-option [value]="option" (click)="selectedEditableProperty = option">{{option.title}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          BLA:{{selectedEditableProperty}}
+
+          @if (selectedEditableProperty?.control === 'bool') {
+            <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          }
+
+          <mat-form-field class="filter-field">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+          </mat-form-field>
+        </div>
         <table mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
@@ -69,8 +90,6 @@ import { MatInput } from '@angular/material/input';
             </td>
           </ng-container>
 
-<!--          <mat-text-column name="alias"></mat-text-column>-->
-<!--          <mat-text-column name="type"></mat-text-column>-->
           <ng-container matColumnDef="alias">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
             <td mat-cell *matCellDef="let element"> {{element.alias}} </td>
@@ -81,7 +100,12 @@ import { MatInput } from '@angular/material/input';
           </ng-container>
           <ng-container matColumnDef="isRelevantForPresentationComplete">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>IsRelevant</th>
-            <td mat-cell *matCellDef="let element"> {{element.isRelevantForPresentationComplete}} </td>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox [style.pointer-events]="'none'" (click)="$event.stopPropagation()"
+                [checked]="element.isRelevantForPresentationComplete">
+              </mat-checkbox>
+            </td>
+
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
@@ -99,6 +123,13 @@ import { MatInput } from '@angular/material/input';
     </mat-dialog-actions>
   `,
   styles: `
+    mat-dialog-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .controls-area {
+      display: flex;
+    }
     .mat-mdc-row .mat-mdc-cell {
       border-bottom: 1px solid transparent;
       border-top: 1px solid transparent;
@@ -106,6 +137,9 @@ import { MatInput } from '@angular/material/input';
     }
     .mat-mdc-row:hover .mat-mdc-cell {
       border-color: currentColor;
+    }
+    .filter-field {
+      margin-left: auto;
     }
   `
 })
@@ -115,6 +149,9 @@ export class OverviewDialogComponent implements AfterViewInit {
   columnsToDisplay = ['select', 'alias', 'type', 'isRelevantForPresentationComplete'];
   dataSource = new MatTableDataSource<UIElement>(this.data.elements);
   selection = new SelectionModel<UIElement>(true, []);
+
+  elementOptions: EditableProperty [] = [{ title: 'isRelevantForPresentationComplete', control: 'bool' }];
+  selectedEditableProperty?: EditableProperty;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { elements: UIElement[] }) { }
 
@@ -138,4 +175,9 @@ export class OverviewDialogComponent implements AfterViewInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+}
+
+interface EditableProperty {
+  title: string;
+  control: 'text' | 'bool';
 }

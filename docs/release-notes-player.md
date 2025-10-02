@@ -1,5 +1,10 @@
 Player
 ======
+## next
+### Fehlerbehebungen
+- Eingabebereich
+  - Bei Verwendung der IQB-Tastatur und der Eingabehilfe scrollt ein Eingabereich den eingegebenen Text zur aktuellen Cursorposition
+
 ## 2.10.1
 ### Fehlerbehebungen
 - Audios und Videos

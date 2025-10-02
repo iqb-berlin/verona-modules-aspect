@@ -43,8 +43,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     const promises: Promise<boolean>[] = [];
     if (isMathInput) {
       this.mathKeyboardService
-        .toggle(focusedTextInput as { inputElement: MathfieldElement; focused: boolean },
-          elementComponent);
+        .toggle(focusedTextInput as { inputElement: MathfieldElement; focused: boolean }, elementComponent);
       this.forceCloseKeyboard();
     } else if (!(elementComponent instanceof MathFieldComponent)) {
       if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
@@ -294,11 +293,53 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   private setSelection(start: number, end: number, backSpaceAtFirstPosition?: boolean): void {
     if (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) {
       this.inputElement.setSelectionRange(start, end);
+      this.scrollToSelectedText(start);
     } else if (!backSpaceAtFirstPosition) {
       setTimeout(() => {
         RangeSelectionService.setSelectionRange(this.inputElement, start, end);
         this.inputElement.dispatchEvent(new Event('input'));
       });
+    }
+  }
+
+  private getInputWidth(style: CSSStyleDeclaration): number {
+    const paddingLeft = parseInt(style.paddingLeft, 10) || 0;
+    const paddingRight = parseInt(style.paddingRight, 10) || 0;
+    const borderLeft = parseInt(style.borderLeftWidth, 10) || 0;
+    const borderRight = parseInt(style.borderRightWidth, 10) || 0;
+    return this.inputElement.clientWidth - paddingLeft - paddingRight - borderLeft - borderRight;
+  }
+
+  private calculateVerticalPositionOfStart(text: string): number {
+    const style = window.getComputedStyle(this.inputElement);
+    const inputWidth = this.getInputWidth(style);
+    const fontSize = parseInt(style.fontSize, 10) || 20; // Default font size of elements: 20px
+    const lineHeight = (parseInt(style.lineHeight, 10) || fontSize * 1.35); // Default line height of elements: 135%
+    return TextInputGroupDirective.getLinesCount(text, inputWidth, fontSize / 2) * lineHeight;
+  }
+
+  private static getLinesCount(text: string, inputWidth: number, avgCharWidth: number): number {
+    const lines = text.split('\n');
+    let totalLines = 0;
+
+    lines.forEach(line => {
+      // Estimate how many times this line wraps
+      const lineWidth = line.length * avgCharWidth;
+      const wrappedLines = Math.max(1, Math.ceil(lineWidth / inputWidth));
+      totalLines += wrappedLines;
+    });
+    return totalLines;
+  }
+
+  private scrollToSelectedText(start: number): void {
+    if (this.inputElement instanceof HTMLTextAreaElement) {
+      const verticalPosition = this
+        .calculateVerticalPositionOfStart(this.inputElement.value.substring(0, start));
+      const visibleHeight = this.inputElement.clientHeight;
+      if (verticalPosition < this.inputElement.scrollTop ||
+        verticalPosition > this.inputElement.scrollTop + visibleHeight) {
+        this.inputElement.scrollTop = Math.max(0, verticalPosition - visibleHeight / 2);
+      }
     }
   }
 

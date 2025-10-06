@@ -1,6 +1,6 @@
 ---
 name: Fehlermeldung
-about: Create a report to help us improve
+about: ''
 title: ''
 labels: Bug
 assignees: ''
@@ -12,13 +12,13 @@ Klare und kurze Beschreibung des Problems
 
 **Nachstellen**
 Schritte zum Nachstellen des Verhaltens:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. Lege Element '...' an
+2. Stelle Eigenschaft '....' auf Wert '...' ein
+3. Öffne Vorschau
+4. Fehlermeldung erscheint
 
 **Erwartetes Verhalten**
-Welches Verhalten wurde erwartet und was wurde stattdessen festgestellt
+Welches Verhalten wurde erwartet und was wurde stattdessen festgestellt.
 
 **Screenshots, Links, erschienene Fehlermeldungen**
 - Bei Links auf Aufgaben im Studio bitte darauf achten, dass diese für uns sichtbar sind.
@@ -30,4 +30,3 @@ Welches Verhalten wurde erwartet und was wurde stattdessen festgestellt
 - Browser [e.g. chrome, safari] mit Version
 
 **Weitere Information**
-Add any other context about the problem here.

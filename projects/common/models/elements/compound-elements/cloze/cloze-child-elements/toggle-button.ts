@@ -26,6 +26,9 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     selectionColor: string;
   };
 
+  static icon: string = 'radio_button_checked';
+
+
   constructor(element?: Partial<ToggleButtonProperties>, idService?: AbstractIDService) {
     super({ type: 'toggle-button', ...element }, idService);
     if (isToggleButtonProperties(element)) {

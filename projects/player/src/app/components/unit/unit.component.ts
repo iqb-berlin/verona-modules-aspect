@@ -64,7 +64,20 @@ export class UnitComponent implements OnInit {
     this.veronaSubscriptionService.vopStartCommand
       .subscribe((message: VopStartCommand) => this.configureUnit(message));
     this.veronaSubscriptionService.vopPlayerConfigChangedNotification
-      .subscribe((message: VopPlayerConfigChangedNotification) => this.setPlayerConfig(message.playerConfig || {}));
+      .subscribe((message: VopPlayerConfigChangedNotification) => this.onVopPlayerConfigChangedNotification(message));
+  }
+
+  private onVopPlayerConfigChangedNotification(message: VopPlayerConfigChangedNotification): void {
+    SectionCounter.reset();
+    this.setPlayerConfig(message.playerConfig || {});
+  }
+
+  private updateSectionNumbering(unit: Unit): void {
+    SectionCounter.reset();
+    this.sectionNumbering = {
+      enableSectionNumbering: unit.enableSectionNumbering,
+      sectionNumberingPosition: unit.sectionNumberingPosition
+    };
   }
 
   private configureUnit(message: VopStartCommand): void {
@@ -77,11 +90,8 @@ export class UnitComponent implements OnInit {
           this.checkUnitDefinitionVersion(unitDefinition);
           const unit: Unit = new Unit(unitDefinition);
           this.pages = unit.pages;
-          this.sectionNumbering = {
-            enableSectionNumbering: unit.enableSectionNumbering,
-            sectionNumberingPosition: unit.sectionNumberingPosition
-          };
           this.showUnitNavNext = unit.showUnitNavNext;
+          this.updateSectionNumbering(unit);
           this.setPlayerConfig(message.playerConfig || {});
           this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
           this.veronaPostService.sessionID = message.sessionId;
@@ -163,7 +173,6 @@ export class UnitComponent implements OnInit {
     this.pages = [];
     this.playerConfig = {};
     this.anchorService.reset();
-    SectionCounter.reset();
     this.changeDetectorRef.detectChanges();
   }
 }

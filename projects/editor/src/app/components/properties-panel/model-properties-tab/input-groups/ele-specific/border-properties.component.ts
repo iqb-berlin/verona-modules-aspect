@@ -4,16 +4,14 @@ import {
 import { UIElement } from 'common/models/elements/element';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'aspect-border-properties',
-    imports: [
-        MatCheckboxModule,
-        TranslateModule,
-        NgIf
-    ],
-    template: `
+  selector: 'aspect-border-properties',
+  imports: [
+    MatCheckboxModule,
+    TranslateModule
+  ],
+  template: `
     <div class="fx-column-start-stretch">
       <mat-checkbox [checked]="$any(combinedProperties).hasBorderTop"
                     (change)="updateModel.emit({ property: 'hasBorderTop', value: $event.checked })">

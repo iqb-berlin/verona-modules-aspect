@@ -15,86 +15,86 @@ import { Subject } from 'rxjs';
 import { PositionedUIElement, UIElementType } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-table',
-    imports: [
-        SharedModule,
-        TableChildOverlay,
-        MatMenuModule,
-        MeasurePipe
-    ],
-    template: `
-    <div class="grid-container" [style.display]="'grid'"
-         [style.grid-template-columns]="elementModel.gridColumnSizes | measure"
-         [style.grid-template-rows]="elementModel.gridRowSizes | measure"
-         [style.grid-auto-columns]="'auto'"
-         [style.grid-auto-rows]="'auto'"
-         [style.background-color]="elementModel.styling.backgroundColor">
-      <ng-container *ngFor="let row of elementGrid; let i = index;">
-        <div *ngFor="let column of row; let j = index;"
-             class="cell-container"
-             [style.border-style]="elementModel.styling.borderStyle"
-             [style.border-top-style]="(!elementModel.tableEdgesEnabled && i === 0) || (i > 0) ?
+  selector: 'aspect-table',
+  imports: [
+    SharedModule,
+    TableChildOverlay,
+    MatMenuModule,
+    MeasurePipe
+  ],
+  template: `
+  <div class="grid-container" [style.display]="'grid'"
+       [style.grid-template-columns]="elementModel.gridColumnSizes | measure"
+       [style.grid-template-rows]="elementModel.gridRowSizes | measure"
+       [style.grid-auto-columns]="'auto'"
+       [style.grid-auto-rows]="'auto'"
+       [style.background-color]="elementModel.styling.backgroundColor">
+    <ng-container *ngFor="let row of elementGrid; let i = index;">
+      <div *ngFor="let column of row; let j = index;"
+           class="cell-container"
+           [style.border-style]="elementModel.styling.borderStyle"
+           [style.border-top-style]="(!elementModel.tableEdgesEnabled && i === 0) || (i > 0) ?
+                                     'none' : elementModel.styling.borderStyle"
+           [style.border-bottom-style]="(!elementModel.tableEdgesEnabled && i === elementGrid.length - 1) ?
+                                        'none' : elementModel.styling.borderStyle"
+           [style.border-left-style]="(!elementModel.tableEdgesEnabled && j === 0) || (j > 0) ?
+                                     'none' : elementModel.styling.borderStyle"
+           [style.border-right-style]="(!elementModel.tableEdgesEnabled && j === row.length - 1) ?
                                        'none' : elementModel.styling.borderStyle"
-             [style.border-bottom-style]="(!elementModel.tableEdgesEnabled && i === elementGrid.length - 1) ?
-                                          'none' : elementModel.styling.borderStyle"
-             [style.border-left-style]="(!elementModel.tableEdgesEnabled && j === 0) || (j > 0) ?
-                                       'none' : elementModel.styling.borderStyle"
-             [style.border-right-style]="(!elementModel.tableEdgesEnabled && j === row.length - 1) ?
-                                         'none' : elementModel.styling.borderStyle"
-             [style.border-width.px]="elementModel.styling.borderWidth"
-             [style.border-color]="elementModel.styling.borderColor"
-             [style.border-radius.px]="elementModel.styling.borderRadius"
-             [style.grid-row-start]="i + 1"
-             [style.grid-column-start]="j + 1">
-          <ng-container *ngIf="elementGrid[i][j] === undefined && editorMode">
-            <button mat-mini-fab color="primary" class="button"
-                    [matMenuTriggerFor]="menu">
-              <mat-icon>add</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="addElement('text', i, j)">Text</button>
-              <button mat-menu-item (click)="addElement('text-field', i, j)">Eingabefeld</button>
-              <button mat-menu-item (click)="addElement('checkbox', i, j)">Kontrollkästchen</button>
-              <button mat-menu-item (click)="addElement('drop-list', i, j)">Ablegeliste</button>
-              <button mat-menu-item (click)="addElement('image', i, j)">Bild</button>
-              <button mat-menu-item (click)="addElement('audio', i, j)">Audio</button>
-            </mat-menu>
-          </ng-container>
-          <div *ngIf="elementGrid[i][j] !== undefined" class="element-container">
-            <div class="element-title">
-              <ng-container *ngIf="editorMode">
-                {{$any($any(elementGrid[i][j]).constructor).title}}
-              </ng-container>
-              <ng-container *ngIf="editorMode && $any(elementGrid[i][j]).alias !== 'alias-placeholder'">
-                - {{$any(elementGrid[i][j]).alias}}
-              </ng-container>
-            </div>
-            <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"
-                                        [parentForm]="parentForm"
-                                        [savedTexts]="savedTexts"
-                                        [savedPlaybackTimes]="savedPlaybackTimes"
-                                        [mediaStatusChanged]="mediaStatusChanged"
-                                        [actualPlayingId]="actualPlayingId"
-                                        [editorMode]="editorMode"
-                                        (elementSelected)="childElementSelected.emit($event)">
-            </aspect-table-child-overlay>
-            <button *ngIf="editorMode" class="remove-button" mat-mini-fab color="primary"
-                    (click)="removeElement(i, j)">
-              <mat-icon>remove</mat-icon>
-            </button>
+           [style.border-width.px]="elementModel.styling.borderWidth"
+           [style.border-color]="elementModel.styling.borderColor"
+           [style.border-radius.px]="elementModel.styling.borderRadius"
+           [style.grid-row-start]="i + 1"
+           [style.grid-column-start]="j + 1">
+        <ng-container *ngIf="elementGrid[i][j] === undefined && editorMode">
+          <button mat-mini-fab color="primary" class="button"
+                  [matMenuTriggerFor]="menu">
+            <mat-icon>add</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="addElement('text', i, j)">Text</button>
+            <button mat-menu-item (click)="addElement('text-field', i, j)">Eingabefeld</button>
+            <button mat-menu-item (click)="addElement('checkbox', i, j)">Kontrollkästchen</button>
+            <button mat-menu-item (click)="addElement('drop-list', i, j)">Ablegeliste</button>
+            <button mat-menu-item (click)="addElement('image', i, j)">Bild</button>
+            <button mat-menu-item (click)="addElement('audio', i, j)">Audio</button>
+          </mat-menu>
+        </ng-container>
+        <div *ngIf="elementGrid[i][j] !== undefined" class="element-container">
+          <div class="element-title">
+            <ng-container *ngIf="editorMode">
+              {{$any($any(elementGrid[i][j]).constructor).title}}
+            </ng-container>
+            <ng-container *ngIf="editorMode && $any(elementGrid[i][j]).alias !== 'alias-placeholder'">
+              - {{$any(elementGrid[i][j]).alias}}
+            </ng-container>
           </div>
+          <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"
+                                      [parentForm]="parentForm"
+                                      [savedTexts]="savedTexts"
+                                      [savedPlaybackTimes]="savedPlaybackTimes"
+                                      [mediaStatusChanged]="mediaStatusChanged"
+                                      [actualPlayingId]="actualPlayingId"
+                                      [editorMode]="editorMode"
+                                      (elementSelected)="childElementSelected.emit($event)">
+          </aspect-table-child-overlay>
+          <button *ngIf="editorMode" class="remove-button" mat-mini-fab color="primary"
+                  (click)="removeElement(i, j)">
+            <mat-icon>remove</mat-icon>
+          </button>
         </div>
-      </ng-container>
-    </div>
-  `,
-    styles: [`
-    .cell-container {display: flex; min-height: 50px;}
-    .element-container {width: 100%; height: 100%; position: relative;}
-    .cell-container > button {align-self: flex-end; justify-self: flex-start;}
-    aspect-table-child-overlay {width: 100%; height: 100%;}
-    .remove-button {position: absolute; bottom: 0;}
-    .element-title {position: absolute; z-index: 1; background-color: white;}
-  `]
+      </div>
+    </ng-container>
+  </div>
+`,
+  styles: [`
+  .cell-container {display: flex; min-height: 50px;}
+  .element-container {width: 100%; height: 100%; position: relative;}
+  .cell-container > button {align-self: flex-end; justify-self: flex-start;}
+  aspect-table-child-overlay {width: 100%; height: 100%;}
+  .remove-button {position: absolute; bottom: 0;}
+  .element-title {position: absolute; z-index: 1; background-color: white;}
+`]
 })
 export class TableComponent extends CompoundElementComponent implements OnInit {
   @Input() elementModel!: TableElement;

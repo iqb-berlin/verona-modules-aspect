@@ -3,8 +3,6 @@ import {
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
 import { UntypedFormGroup } from '@angular/forms';
@@ -12,34 +10,28 @@ import { DropListComponent } from 'common/components/input-elements/drop-list/dr
 import { AudioComponent } from 'common/components/media-elements/audio.component';
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
-import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'aspect-table-child-overlay',
-    imports: [
-        NgIf,
-        MatButtonModule,
-        MatIconModule
-    ],
-    template: `
-    <div class="wrapper"
-         [style.border]="isSelected ? 'purple solid 1px' : ''"
-         (click)="elementSelected.emit(this); $event.stopPropagation();">
-      <ng-template #elementContainer></ng-template>
-    </div>
-  `,
-    styles: `
-    .wrapper {width: 100%; height: 100%;}
-    :host ::ng-deep aspect-text-field {width: 100%; height: 100%;}
-    :host ::ng-deep aspect-audio .control-bar {height: 100%; margin-top: 0; justify-content: center;}
-    :host ::ng-deep aspect-audio .status-bar {display: none;}
-    :host ::ng-deep aspect-audio .control-bar {background-color: unset;}
-    :host ::ng-deep aspect-audio .control-bar > button {background-color: var(--background-color);}
-    :host ::ng-deep aspect-audio .control-bar button mat-icon {margin: 0;}
-    :host ::ng-deep aspect-text .text-container {
-      height: 100%; display: flex; flex-direction: column; justify-content: center; padding-left: 8px; padding-right: 8px;
-    }
-  `
+  selector: 'aspect-table-child-overlay',
+  template: `
+  <div class="wrapper"
+       [style.border]="isSelected ? 'purple solid 1px' : ''"
+       (click)="elementSelected.emit(this); $event.stopPropagation();">
+    <ng-template #elementContainer></ng-template>
+  </div>
+`,
+  styles: `
+  .wrapper {width: 100%; height: 100%;}
+  :host ::ng-deep aspect-text-field {width: 100%; height: 100%;}
+  :host ::ng-deep aspect-audio .control-bar {height: 100%; margin-top: 0; justify-content: center;}
+  :host ::ng-deep aspect-audio .status-bar {display: none;}
+  :host ::ng-deep aspect-audio .control-bar {background-color: unset;}
+  :host ::ng-deep aspect-audio .control-bar > button {background-color: var(--background-color);}
+  :host ::ng-deep aspect-audio .control-bar button mat-icon {margin: 0;}
+  :host ::ng-deep aspect-text .text-container {
+    height: 100%; display: flex; flex-direction: column; justify-content: center; padding-left: 8px; padding-right: 8px;
+  }
+`
 })
 export class TableChildOverlay implements OnInit {
   @Input() element!: UIElement;

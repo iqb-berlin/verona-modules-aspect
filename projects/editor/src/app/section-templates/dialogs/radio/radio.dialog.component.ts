@@ -1,49 +1,33 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { Audio1StimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio1-stimulus.component';
-import { Audio2StimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio2-stimulus.component';
-import { EmailStimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/email-stimulus.component';
 import { MatActionList, MatListItem } from '@angular/material/list';
-import { MessageStimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/message-stimulus.component';
-import { TextStimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/text-stimulus.component';
 import { TextRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/text-radio.component';
 import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/image-radio.component';
 
 @Component({
-    selector: 'aspect-editor-radio-wizard-dialog',
-    imports: [
-        MatDialogModule,
-        MatDividerModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        OptionListPanelComponent,
-        MatButtonModule,
-        TranslateModule,
-        RichTextEditorComponent,
-        MatCheckboxModule,
-        NgIf,
-        Audio1StimulusComponent,
-        Audio2StimulusComponent,
-        EmailStimulusComponent,
-        MatActionList,
-        MatListItem,
-        MessageStimulusComponent,
-        TextStimulusComponent,
-        TextRadioComponent,
-        ImageRadioComponent
-    ],
-    template: `
+  selector: 'aspect-editor-radio-wizard-dialog',
+  imports: [
+    MatDialogModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    TranslateModule,
+    MatCheckboxModule,
+    MatActionList,
+    MatListItem,
+    TextRadioComponent,
+    ImageRadioComponent
+  ],
+  template: `
     <h2 mat-dialog-title>Assistent: MC</h2>
     <div mat-dialog-content>
       @if (templateVariant == undefined) {
@@ -65,8 +49,7 @@ import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/ra
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
-    styles: `
-  `
+  styles: ``
 })
 export class RadioWizardDialogComponent {
   @ViewChild(TextRadioComponent) textComp!: TextRadioComponent;

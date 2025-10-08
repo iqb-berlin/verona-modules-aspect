@@ -2,7 +2,7 @@ import {
   Component, Input, Output, EventEmitter,
   ViewChildren, QueryList, ViewChild
 } from '@angular/core';
-import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { NgForOf } from '@angular/common';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { Section } from 'common/models/section';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
@@ -17,18 +17,16 @@ import {
 import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
 
 @Component({
-    selector: 'aspect-editor-dynamic-section',
-    imports: [
-        NgClass,
-        NgIf,
-        MeasurePipe,
-        DynamicSectionHelperGridComponent,
-        DynamicOverlayComponent,
-        NgForOf,
-        CdkDropList,
-        ElementGridChangeListenerDirective
-    ],
-    template: `
+  selector: 'aspect-editor-dynamic-section',
+  imports: [
+    MeasurePipe,
+    DynamicSectionHelperGridComponent,
+    DynamicOverlayComponent,
+    NgForOf,
+    CdkDropList,
+    ElementGridChangeListenerDirective
+  ],
+  template: `
     <div [style.display]="'grid'"
          [style.grid-template-columns]="section.autoColumnSize ? '' : section.gridColumnSizes | measure"
          [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes | measure"
@@ -85,9 +83,7 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
       </aspect-editor-dynamic-overlay>
     </div>
   `,
-    styles: `
-
-  `
+  styles: ``
 })
 export class DynamicSectionComponent {
   @Input() section!: Section;

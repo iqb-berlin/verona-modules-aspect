@@ -3,7 +3,7 @@ import { UIElement } from 'common/models/elements/element';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgForOf } from '@angular/common';
 import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,18 +15,17 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { Subject } from 'rxjs';
 
 @Component({
-    selector: 'aspect-table-properties',
-    imports: [
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatInputModule,
-        NgForOf,
-        NgIf,
-        SizeInputPanelComponent,
-        TranslateModule,
-        MatButtonModule
-    ],
-    template: `
+  selector: 'aspect-table-properties',
+  imports: [
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgForOf,
+    SizeInputPanelComponent,
+    TranslateModule,
+    MatButtonModule
+  ],
+  template: `
     <button mat-raised-button [style.align-self]="'center'" [style.margin-top.px]="5" [style.margin-bottom.px]="15"
             (click)="elementService.showDefaultEditDialog()">
       Elemente anpassen
@@ -72,7 +71,7 @@ import { Subject } from 'rxjs';
       Tabellenränder zeichnen
     </mat-checkbox>
   `,
-    styles: ':host {display: flex; flex-direction: column;}'
+  styles: ':host {display: flex; flex-direction: column;}'
 })
 export class TablePropertiesComponent implements OnInit, OnDestroy {
   @Input() combinedProperties!: UIElement;

@@ -15,21 +15,20 @@ import { TextComponent } from 'common/components/text/text.component';
 import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'aspect-table-child-overlay',
-  standalone: true,
-  imports: [
-    NgIf,
-    MatButtonModule,
-    MatIconModule
-  ],
-  template: `
+    selector: 'aspect-table-child-overlay',
+    imports: [
+        NgIf,
+        MatButtonModule,
+        MatIconModule
+    ],
+    template: `
     <div class="wrapper"
          [style.border]="isSelected ? 'purple solid 1px' : ''"
          (click)="elementSelected.emit(this); $event.stopPropagation();">
       <ng-template #elementContainer></ng-template>
     </div>
   `,
-  styles: `
+    styles: `
     .wrapper {width: 100%; height: 100%;}
     :host ::ng-deep aspect-text-field {width: 100%; height: 100%;}
     :host ::ng-deep aspect-audio .control-bar {height: 100%; margin-top: 0; justify-content: center;}

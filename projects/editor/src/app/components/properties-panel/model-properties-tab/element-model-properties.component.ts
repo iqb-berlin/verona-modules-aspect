@@ -15,9 +15,10 @@ import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
 
 @Component({
-  selector: 'aspect-element-model-properties-component',
-  templateUrl: './element-model-properties.component.html',
-  styleUrls: ['./element-model-properties.component.css']
+    selector: 'aspect-element-model-properties-component',
+    templateUrl: './element-model-properties.component.html',
+    styleUrls: ['./element-model-properties.component.css'],
+    standalone: false
 })
 export class ElementModelPropertiesComponent implements OnDestroy {
   @Input() combinedProperties!: CombinedProperties;

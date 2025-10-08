@@ -39,24 +39,23 @@ import {
 import { UIElementValue } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-ele-specific-props',
-  standalone: true,
-  imports: [
-    NgIf,
-    MathFieldPropsComponent,
-    BorderPropertiesComponent,
-    MathTablePropertiesComponent,
-    ButtonPropertiesComponent,
-    DropListPropertiesComponent,
-    BorderPropertiesComponent,
-    GeometryPropsComponent,
-    HotspotPropsComponent,
-    SliderPropertiesComponent,
-    TextPropsComponent,
-    TablePropertiesComponent,
-    MarkingPanelPropertiesComponent
-  ],
-  template: `
+    selector: 'aspect-ele-specific-props',
+    imports: [
+        NgIf,
+        MathFieldPropsComponent,
+        BorderPropertiesComponent,
+        MathTablePropertiesComponent,
+        ButtonPropertiesComponent,
+        DropListPropertiesComponent,
+        BorderPropertiesComponent,
+        GeometryPropsComponent,
+        HotspotPropsComponent,
+        SliderPropertiesComponent,
+        TextPropsComponent,
+        TablePropertiesComponent,
+        MarkingPanelPropertiesComponent
+    ],
+    template: `
     <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
                              [combinedProperties]="combinedProperties"
                              (updateModel)="updateModel.emit($event)">

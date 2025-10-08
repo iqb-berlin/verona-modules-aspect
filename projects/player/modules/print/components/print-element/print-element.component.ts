@@ -7,9 +7,10 @@ import { PrintMode } from 'player/modules/verona/models/verona';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 
 @Component({
-  selector: 'aspect-print-element',
-  templateUrl: './print-element.component.html',
-  styleUrls: ['./print-element.component.scss']
+    selector: 'aspect-print-element',
+    templateUrl: './print-element.component.html',
+    styleUrls: ['./print-element.component.scss'],
+    standalone: false
 })
 export class PrintElementComponent implements OnInit {
   @Input() printMode!: PrintMode;

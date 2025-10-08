@@ -3,7 +3,8 @@ import { UIElement } from 'common/models/elements/element';
 import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
 
 @Pipe({
-  name: 'hasReturnKey'
+    name: 'hasReturnKey',
+    standalone: false
 })
 export class HasReturnKeyPipe implements PipeTransform {
   transform(elementModel: UIElement): boolean {

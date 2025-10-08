@@ -3,8 +3,8 @@ import { FrameElement } from 'common/models/elements/frame/frame';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
-  selector: 'aspect-frame',
-  template: `
+    selector: 'aspect-frame',
+    template: `
     <div [style.width]="'calc(100% - ' + (elementModel.styling.borderWidth * 2) + 'px)'"
          [style.height]="'calc(100% - ' + (elementModel.styling.borderWidth * 2) + 'px)'"
          [style.border-width.px]="elementModel.styling.borderWidth"
@@ -16,7 +16,8 @@ import { ElementComponent } from '../../directives/element-component.directive';
          [style.border-left-style]="elementModel.hasBorderLeft ? elementModel.styling.borderStyle : 'none'"
          [style.border-right-style]="elementModel.hasBorderRight ? elementModel.styling.borderStyle : 'none'">
     </div>
-  `
+  `,
+    standalone: false
 })
 export class FrameComponent extends ElementComponent {
   @Input() elementModel!: FrameElement;

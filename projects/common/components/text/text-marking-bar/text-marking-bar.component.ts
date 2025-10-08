@@ -6,8 +6,8 @@ import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { MarkingData } from 'common/models/marking-data';
 
 @Component({
-  selector: 'aspect-text-marking-bar',
-  template: `
+    selector: 'aspect-text-marking-bar',
+    template: `
     <div class="marking-bar"
          [class.sticky]="sticky">
       <aspect-text-marking-button *ngIf="elementModel.highlightableYellow"
@@ -40,7 +40,7 @@ import { MarkingData } from 'common/models/marking-data';
       <span *ngIf="showHint"
             class="hint">{{'markingHint' | translate}}</span>
     </div>`,
-  styles: `
+    styles: `
     .sticky {
       position: sticky;
       top: 0;
@@ -56,7 +56,8 @@ import { MarkingData } from 'common/models/marking-data';
       margin-top: 10px;
       background-color: white;
       padding: 5px;
-    }`
+    }`,
+    standalone: false
 })
 export class TextMarkingBarComponent {
   @Input() elementModel!: TextElement | MarkingPanelElement;

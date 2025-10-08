@@ -2,8 +2,9 @@ import { Directive, HostListener } from '@angular/core';
 import { BaseTooltipDirective } from 'common/components/tooltip/base-tooltip.directive';
 
 @Directive({
-  selector: '[tooltipEventTooltip]',
-  exportAs: 'TooltipEventTooltip'
+    selector: '[tooltipEventTooltip]',
+    exportAs: 'TooltipEventTooltip',
+    standalone: false
 })
 export class TooltipEventTooltipDirective extends BaseTooltipDirective {
   @HostListener('pointerEnterTooltip', ['$event'])

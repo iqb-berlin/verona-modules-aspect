@@ -14,9 +14,10 @@ import { DragImageComponent } from './drag-image.component';
 import { DragOperatorService } from './drag-operator.service';
 
 @Component({
-  selector: 'aspect-drop-list',
-  templateUrl: './drop-list.component.html',
-  styleUrls: ['./drop-list.component.css']
+    selector: 'aspect-drop-list',
+    templateUrl: './drop-list.component.html',
+    styleUrls: ['./drop-list.component.css'],
+    standalone: false
 })
 export class DropListComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: DropListElement;

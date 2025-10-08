@@ -17,22 +17,21 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-geometry-props',
-  standalone: true,
-  imports: [
-    NgIf,
-    NgForOf,
-    MatInputModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatTooltipModule,
-    TranslateModule,
-    MatButtonModule,
-    MatSelectModule,
-    FormsModule,
-    AsyncPipe
-  ],
-  template: `
+    selector: 'aspect-geometry-props',
+    imports: [
+        NgIf,
+        NgForOf,
+        MatInputModule,
+        MatIconModule,
+        MatCheckboxModule,
+        MatTooltipModule,
+        TranslateModule,
+        MatButtonModule,
+        MatSelectModule,
+        FormsModule,
+        AsyncPipe
+    ],
+    template: `
     <mat-form-field matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
                     appearance="fill">
       <mat-label>{{ 'propertiesPanel.appDefinition' | translate }}</mat-label>

@@ -4,9 +4,10 @@ import { SectionCounter } from 'common/util/section-counter';
 import { PrintMode } from 'player/modules/verona/models/verona';
 
 @Component({
-  selector: 'aspect-print-section',
-  templateUrl: './print-section.component.html',
-  styleUrls: ['./print-section.component.scss']
+    selector: 'aspect-print-section',
+    templateUrl: './print-section.component.html',
+    styleUrls: ['./print-section.component.scss'],
+    standalone: false
 })
 export class PrintSectionComponent implements OnInit {
   @Input() printMode!: PrintMode;

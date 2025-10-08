@@ -7,8 +7,8 @@ import { BehaviorSubject } from 'rxjs';
 import { MathInputComponent } from 'common/math-editor/math-input.component';
 
 @Component({
-  selector: 'aspect-text-area-math-segment',
-  template: `
+    selector: 'aspect-text-area-math-segment',
+    template: `
     @if (type === 'math') {
       <aspect-math-input #inputComponent
                          [fullWidth]="false"
@@ -30,12 +30,11 @@ import { MathInputComponent } from 'common/math-editor/math-input.component';
       </aspect-area-input>
     }
   `,
-  standalone: true,
-  imports: [
-    AreaTextInputComponent,
-    MathEditorModule
-  ],
-  styles: []
+    imports: [
+        AreaTextInputComponent,
+        MathEditorModule
+    ],
+    styles: []
 })
 export class AreaSegmentComponent {
   @Input() showSoftwareKeyboard!: boolean;

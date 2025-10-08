@@ -23,9 +23,10 @@ import { ElementGroupDirective } from '../../../directives/element-group.directi
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 
 @Component({
-  selector: 'aspect-text-group-element',
-  templateUrl: './text-group-element.component.html',
-  styleUrls: ['./text-group-element.component.scss']
+    selector: 'aspect-text-group-element',
+    templateUrl: './text-group-element.component.html',
+    styleUrls: ['./text-group-element.component.scss'],
+    standalone: false
 })
 export class TextGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: TextComponent;

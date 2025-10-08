@@ -15,7 +15,8 @@ import { MediaPlayerService } from '../services/media-player.service';
 import { ValidationService } from '../services/validation.service';
 
 @Directive({
-  selector: '[aspectUnitState]'
+    selector: '[aspectUnitState]',
+    standalone: false
 })
 export class UnitStateDirective implements OnInit, OnDestroy {
   @HostListener('window:unload')

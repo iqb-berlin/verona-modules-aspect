@@ -11,19 +11,26 @@ describe('InteractiveGroupElementComponent', () => {
   let component: InteractiveGroupElementComponent;
   let fixture: ComponentFixture<InteractiveGroupElementComponent>;
 
-  @Component({ selector: 'aspect-button', template: '' })
+  @Component({
+    selector: 'aspect-button', template: '',
+    standalone: false
+})
   class ButtonStubComponent {
     @Input() elementModel!: ButtonElement;
   }
 
-  @Component({ selector: 'aspect-floating-keypad', template: '' })
+  @Component({
+    selector: 'aspect-floating-keypad', template: '',
+    standalone: false
+})
   class MockFloatingKeyPadComponent {
     @Input() isKeypadOpen!: boolean;
   }
 
   @Pipe({
-    name: 'isEnabledNavigationTarget'
-  })
+    name: 'isEnabledNavigationTarget',
+    standalone: false
+})
   class MockIsEnabledNavigationTarget implements PipeTransform {
     transform(): boolean {
       return true;

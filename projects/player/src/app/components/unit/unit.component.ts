@@ -31,9 +31,10 @@ import { DragNDropValueObject } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
 @Component({
-  selector: 'aspect-unit',
-  templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.scss']
+    selector: 'aspect-unit',
+    templateUrl: './unit.component.html',
+    styleUrls: ['./unit.component.scss'],
+    standalone: false
 })
 export class UnitComponent implements OnInit {
   @Input() isStandalone!: boolean;

@@ -5,8 +5,8 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-text-field-element-properties',
-  template: `
+    selector: 'aspect-text-field-element-properties',
+    template: `
     <mat-form-field *ngIf="unitService.expertMode && combinedProperties.appearance !== undefined" appearance="fill">
       <mat-label>{{'propertiesPanel.appearance' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.appearance"
@@ -90,7 +90,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
                   (change)="updateModel.emit({ property: 'hasKeyboardIcon', value: $event.checked })">
       {{'propertiesPanel.hasKeyboardIcon' | translate }}
     </mat-checkbox>
-  `
+  `,
+    standalone: false
 })
 
 export class TextFieldElementPropertiesComponent {

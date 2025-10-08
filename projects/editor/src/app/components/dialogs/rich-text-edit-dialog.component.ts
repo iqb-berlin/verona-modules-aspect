@@ -2,8 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'aspect-rich-text-edit-dialog',
-  template: `
+    selector: 'aspect-rich-text-edit-dialog',
+    template: `
     <h2 mat-dialog-title>Text bearbeiten</h2>
     <mat-dialog-content>
       <aspect-rich-text-editor [(content)]="data.content" [showWordCounter]="true"
@@ -16,10 +16,11 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-  styles: `
+    styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     aspect-rich-text-editor {min-height: 450px;}
-  `
+  `,
+    standalone: false
 })
 export class RichTextEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {

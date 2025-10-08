@@ -19,20 +19,19 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-math-table-properties',
-  standalone: true,
-  imports: [
-    NgIf,
-    NgForOf,
-    MatInputModule,
-    MatSelectModule,
-    TranslateModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatCheckboxModule
-  ],
-  template: `
+    selector: 'aspect-math-table-properties',
+    imports: [
+        NgIf,
+        NgForOf,
+        MatInputModule,
+        MatSelectModule,
+        TranslateModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatCheckboxModule
+    ],
+    template: `
     <div [style.display]="'flex'" [style.flex-direction]="'column'">
       <mat-form-field *ngIf="unitService.expertMode">
         <mat-label>Operation</mat-label>
@@ -118,7 +117,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       </mat-menu>
     </div>
   `,
-  styles: [`
+    styles: [`
     .term-list {
       display: flex;
       flex-direction: row;
@@ -134,7 +133,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       font-size: smaller;
     }
   `
-  ]
+    ]
 })
 export class MathTablePropertiesComponent {
   @Input() combinedProperties!: UIElement;

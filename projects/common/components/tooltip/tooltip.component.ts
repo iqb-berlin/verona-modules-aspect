@@ -2,8 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TooltipPosition } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-tooltip',
-  template: `
+    selector: 'aspect-tooltip',
+    template: `
     <div #tooltip
          class="tooltip"
          [style.left.px]="left"
@@ -15,7 +15,8 @@ import { TooltipPosition } from 'common/interfaces';
       </div>
     </div>
   `,
-  styleUrls: ['./tooltip.component.scss']
+    styleUrls: ['./tooltip.component.scss'],
+    standalone: false
 })
 export class TooltipComponent {
   tooltipText: string = '';

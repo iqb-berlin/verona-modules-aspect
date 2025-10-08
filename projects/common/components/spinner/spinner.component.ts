@@ -5,11 +5,12 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'aspect-spinner',
-  template: `
+    selector: 'aspect-spinner',
+    template: `
     <mat-spinner *ngIf="isLoading"></mat-spinner>
   `,
-  styles: ['mat-spinner {margin: auto; position: relative; z-index: 100; top: -50%;}']
+    styles: ['mat-spinner {margin: auto; position: relative; z-index: 100; top: -50%;}'],
+    standalone: false
 })
 export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() isLoaded!: BehaviorSubject<boolean>;

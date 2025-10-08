@@ -3,7 +3,8 @@ import { ValidationErrors } from '@angular/forms';
 import { UIElement } from 'common/models/elements/element';
 
 @Pipe({
-  name: 'errorTransform'
+    name: 'errorTransform',
+    standalone: false
 })
 export class ErrorTransformPipe implements PipeTransform {
   transform(validationErrors: ValidationErrors, elementModel: UIElement): string {

@@ -4,8 +4,8 @@ import {
 import { StateVariable } from 'common/models/state-variable';
 
 @Component({
-  selector: 'aspect-action-param-state-variable',
-  template: `
+    selector: 'aspect-action-param-state-variable',
+    template: `
     <div class="fx-column-start-stretch">
       <mat-form-field>
         <mat-label>{{ 'stateVariableId' | translate }}</mat-label>
@@ -25,7 +25,8 @@ import { StateVariable } from 'common/models/state-variable';
                (ngModelChange)="stateVariableChange.emit(stateVariable)">
       </mat-form-field>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ActionParamStateVariableComponent {
   @Input() stateVariable!: StateVariable;

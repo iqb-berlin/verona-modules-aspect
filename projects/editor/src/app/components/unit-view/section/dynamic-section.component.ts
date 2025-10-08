@@ -17,19 +17,18 @@ import {
 import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
 
 @Component({
-  selector: 'aspect-editor-dynamic-section',
-  standalone: true,
-  imports: [
-    NgClass,
-    NgIf,
-    MeasurePipe,
-    DynamicSectionHelperGridComponent,
-    DynamicOverlayComponent,
-    NgForOf,
-    CdkDropList,
-    ElementGridChangeListenerDirective
-  ],
-  template: `
+    selector: 'aspect-editor-dynamic-section',
+    imports: [
+        NgClass,
+        NgIf,
+        MeasurePipe,
+        DynamicSectionHelperGridComponent,
+        DynamicOverlayComponent,
+        NgForOf,
+        CdkDropList,
+        ElementGridChangeListenerDirective
+    ],
+    template: `
     <div [style.display]="'grid'"
          [style.grid-template-columns]="section.autoColumnSize ? '' : section.gridColumnSizes | measure"
          [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes | measure"
@@ -86,7 +85,7 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
       </aspect-editor-dynamic-overlay>
     </div>
   `,
-  styles: `
+    styles: `
 
   `
 })

@@ -13,7 +13,10 @@ describe('CompoundGroupElementComponent', () => {
   let component: CompoundGroupElementComponent;
   let fixture: ComponentFixture<CompoundGroupElementComponent>;
 
-  @Component({ selector: 'aspect-likert', template: '' })
+  @Component({
+    selector: 'aspect-likert', template: '',
+    standalone: false
+})
   class LikertStubComponent {
     @Input() elementModel!: LikertElement;
     @Input() parentForm!: UntypedFormGroup;

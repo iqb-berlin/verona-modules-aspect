@@ -13,7 +13,10 @@ describe('PlayerLayoutComponent', () => {
   let component: PlayerLayoutComponent;
   let fixture: ComponentFixture<PlayerLayoutComponent>;
 
-  @Directive({ selector: '[aspectPlayerState]' })
+  @Directive({
+    selector: '[aspectPlayerState]',
+    standalone: false
+})
   class PlayerStateStubDirective {
     @Input() validPages!: Record<string, string>;
     @Input() currentPageIndex!: number;
@@ -25,7 +28,10 @@ describe('PlayerLayoutComponent', () => {
     }
   }
 
-  @Component({ selector: 'aspect-pages-layout', template: '' })
+  @Component({
+    selector: 'aspect-pages-layout', template: '',
+    standalone: false
+})
   class PagesLayoutStubComponent {
     @Input() pages!: Page[];
     @Input() scrollPageMode!: PagingMode;
@@ -35,7 +41,10 @@ describe('PlayerLayoutComponent', () => {
     @Input() alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right';
   }
 
-  @Component({ selector: 'aspect-math-keyboard-container', template: '' })
+  @Component({
+    selector: 'aspect-math-keyboard-container', template: '',
+    standalone: false
+})
   class MockMathKeyboardContainerComponent {}
 
   beforeEach(async () => {

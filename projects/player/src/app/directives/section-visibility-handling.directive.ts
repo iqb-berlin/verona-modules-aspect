@@ -14,7 +14,8 @@ import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface
 import { ValueChangeElement } from 'common/interfaces';
 
 @Directive({
-  selector: '[aspectSectionVisibilityHandling]'
+    selector: '[aspectSectionVisibilityHandling]',
+    standalone: false
 })
 export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   @Input() section!: Section;

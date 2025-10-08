@@ -5,9 +5,10 @@ import { KeyLayout } from 'player/modules/key-input/configs/key-layout';
 import { InputAssistancePreset } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-keyboard',
-  templateUrl: './keyboard.component.html',
-  styleUrls: ['./keyboard.component.scss']
+    selector: 'aspect-keyboard',
+    templateUrl: './keyboard.component.html',
+    styleUrls: ['./keyboard.component.scss'],
+    standalone: false
 })
 export class KeyboardComponent implements OnInit {
   @Input() preset!: InputAssistancePreset;

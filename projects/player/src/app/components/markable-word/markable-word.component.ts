@@ -8,11 +8,10 @@ import { NativeEventService } from 'player/src/app/services/native-event.service
 import { first, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'aspect-markable-word',
-  standalone: true,
-  imports: [],
-  templateUrl: './markable-word.component.html',
-  styleUrl: './markable-word.component.scss'
+    selector: 'aspect-markable-word',
+    imports: [],
+    templateUrl: './markable-word.component.html',
+    styleUrl: './markable-word.component.scss'
 })
 export class MarkableWordComponent implements OnInit, OnDestroy {
   @Input() id!: number;

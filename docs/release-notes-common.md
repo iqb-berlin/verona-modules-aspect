@@ -1,5 +1,9 @@
 Allgemein
 =========
+## next
+### Neue Funktionen
+- Neue Eingabehilfe mit 24 Zeichen "Reaktionsgleichung Chemie"
+
 ## editor/2.10.1+player/2.10.1
 ### Fehlerbehebungen
 - Schieberegler

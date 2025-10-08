@@ -31,8 +31,8 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                     (selectionChange)="updateInputAssistancePreset($event.value)">
           <ng-container *ngIf="combinedProperties.type !== 'math-table'">
             <mat-option *ngFor="let option of [null, 'french', 'numbers', 'numbersAndOperators',
-                                              'numbersAndBasicOperators', 'comparisonOperators', 'squareDashDot',
-                                              'placeValue', 'space', 'comma', 'custom']"
+                                              'numbersAndBasicOperators', 'comparisonOperators', 'chemicalEquation',
+                                              'squareDashDot', 'placeValue', 'space', 'comma', 'custom']"
                         [value]="option">
               {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
             </mat-option>

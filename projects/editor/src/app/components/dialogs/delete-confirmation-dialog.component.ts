@@ -4,8 +4,8 @@ import { ReferenceList } from 'editor/src/app/services/reference-manager';
 import { UIElement } from 'common/models/elements/element';
 
 @Component({
-  selector: 'aspect-confirmation-dialog',
-  template: `
+    selector: 'aspect-confirmation-dialog',
+    template: `
     <div mat-dialog-title>Löschen bestätigen</div>
     <div mat-dialog-content>
       {{data.text}}
@@ -26,10 +26,11 @@ import { UIElement } from 'common/models/elements/element';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
     `,
-  styles: [
-    ':host ::ng-deep mat-icon {margin-right: 6px !important;}',
-    'fieldset {margin-top: 10px !important;}'
-  ]
+    styles: [
+        ':host ::ng-deep mat-icon {margin-right: 6px !important;}',
+        'fieldset {margin-top: 10px !important;}'
+    ],
+    standalone: false
 })
 export class DeleteConfirmationDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string, elementList?: UIElement[], refs?: ReferenceList[] }) { }

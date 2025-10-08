@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'aspect-text-marking-button-svg',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'aspect-text-marking-button-svg',
+    imports: [],
+    template: `
     @if (buttonType === 'delete') {
       <svg x="0px" y="0px" width="24px" height="24px" viewBox="0 0 360 360">
         <g>

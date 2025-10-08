@@ -12,21 +12,20 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'aspect-editor-geometry-wizard-dialog',
-  standalone: true,
-  imports: [
-    MatDialogModule,
-    TranslateModule,
-    MatButtonModule,
-    RichTextEditorComponent,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatCheckboxModule,
-    FormsModule
-  ],
-  template: `
+    selector: 'aspect-editor-geometry-wizard-dialog',
+    imports: [
+        MatDialogModule,
+        TranslateModule,
+        MatButtonModule,
+        RichTextEditorComponent,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatCheckboxModule,
+        FormsModule
+    ],
+    template: `
     <h2 mat-dialog-title>Assistent: GeoGebra</h2>
     <div mat-dialog-content>
       <h3>Text</h3>
@@ -58,7 +57,7 @@ import { FormsModule } from '@angular/forms';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
+    styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

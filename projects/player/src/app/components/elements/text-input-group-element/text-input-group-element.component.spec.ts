@@ -11,7 +11,10 @@ describe('TextInputGroupElementComponent', () => {
   let component: TextInputGroupElementComponent;
   let fixture: ComponentFixture<TextInputGroupElementComponent>;
 
-  @Component({ selector: 'aspect-text-field', template: '' })
+  @Component({
+    selector: 'aspect-text-field', template: '',
+    standalone: false
+})
   class TextFieldStubComponent {
     @Input() elementModel!: TextFieldElement;
     @Input() parentForm!: UntypedFormGroup;

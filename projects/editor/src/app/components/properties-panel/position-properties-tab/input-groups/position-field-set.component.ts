@@ -7,8 +7,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { UIElementValue } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-position-field-set',
-  template: `
+    selector: 'aspect-position-field-set',
+    template: `
     <fieldset>
       <legend>Position</legend>
       <div *ngIf="!unitService.unit
@@ -132,10 +132,11 @@ import { UIElementValue } from 'common/interfaces';
       </ng-container>
     </fieldset>
   `,
-  styles: [
-    'mat-form-field {width: 140px;}',
-    '.flex-row {display: flex; flex-direction: row; gap: 10px;}'
-  ]
+    styles: [
+        'mat-form-field {width: 140px;}',
+        '.flex-row {display: flex; flex-direction: row; gap: 10px;}'
+    ],
+    standalone: false
 })
 export class PositionFieldSetComponent {
   @Input() positionProperties!: PositionProperties;

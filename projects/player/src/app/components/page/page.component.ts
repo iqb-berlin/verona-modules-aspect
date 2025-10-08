@@ -8,9 +8,10 @@ import { VeronaPostService } from 'player/modules/verona/services/verona-post.se
 import { NavigationService } from 'player/src/app/services/navigation.service';
 
 @Component({
-  selector: 'aspect-page',
-  templateUrl: './page.component.html',
-  styleUrls: ['./page.component.scss']
+    selector: 'aspect-page',
+    templateUrl: './page.component.html',
+    styleUrls: ['./page.component.scss'],
+    standalone: false
 })
 
 export class PageComponent {

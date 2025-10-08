@@ -4,8 +4,8 @@ import {
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 
 @Component({
-  selector: 'aspect-input-assistance-properties',
-  template: `
+    selector: 'aspect-input-assistance-properties',
+    template: `
     <fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
       <legend>Eingabehilfe</legend>
       <mat-checkbox [checked]="$any(combinedProperties.showSoftwareKeyboard)"
@@ -128,7 +128,8 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
         {{'propertiesPanel.hasReturnKey' | translate }}
       </mat-checkbox>
     </fieldset>
-  `
+  `,
+    standalone: false
 })
 
 export class InputAssistancePropertiesComponent {

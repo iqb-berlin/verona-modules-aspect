@@ -10,8 +10,8 @@ import { Page } from 'common/models/page';
 import { TextElement } from 'common/models/elements/text/text';
 
 @Component({
-  selector: 'aspect-action-properties',
-  template: `
+    selector: 'aspect-action-properties',
+    template: `
     <fieldset>
         <legend>{{'propertiesPanel.action' | translate}}</legend>
         <div class="fx-column-start-stretch">
@@ -78,7 +78,8 @@ import { TextElement } from 'common/models/elements/text/text';
           </mat-form-field>
         </div>
       </fieldset>
-  `
+  `,
+    standalone: false
 })
 
 export class ActionPropertiesComponent {
@@ -102,7 +103,8 @@ export class ActionPropertiesComponent {
 }
 
 @Pipe({
-  name: 'getStateVariable'
+    name: 'getStateVariable',
+    standalone: false
 })
 export class GetStateVariablePipe implements PipeTransform {
   transform(actionParam: unknown, stateVariables: StateVariable[]): StateVariable {
@@ -112,7 +114,8 @@ export class GetStateVariablePipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'scrollPageIndex'
+    name: 'scrollPageIndex',
+    standalone: false
 })
 export class ScrollPageIndexPipe implements PipeTransform {
   transform(pages: Page[], index: number): number | null {

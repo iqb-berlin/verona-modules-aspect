@@ -7,9 +7,10 @@ import { PageChangeService } from 'common/services/page-change.service';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 
 @Component({
-  selector: 'aspect-page-scroll-button',
-  templateUrl: './page-scroll-button.component.html',
-  styleUrls: ['./page-scroll-button.component.scss']
+    selector: 'aspect-page-scroll-button',
+    templateUrl: './page-scroll-button.component.html',
+    styleUrls: ['./page-scroll-button.component.scss'],
+    standalone: false
 })
 export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
   @HostListener('scroll', ['$event.target'])

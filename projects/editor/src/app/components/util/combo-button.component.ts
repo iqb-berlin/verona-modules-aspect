@@ -9,17 +9,16 @@ import { NgForOf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'aspect-combo-button',
-  standalone: true,
-  imports: [
-    NgForOf,
-    MatButtonModule,
-    MatTooltipModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule
-  ],
-  template: `
+    selector: 'aspect-combo-button',
+    imports: [
+        NgForOf,
+        MatButtonModule,
+        MatTooltipModule,
+        MatInputModule,
+        MatSelectModule,
+        MatIconModule
+    ],
+    template: `
     <div class="wrapper">
       <button class="apply-button" mat-button [matTooltip]="tooltip"
               [style.background-color]="inputType === 'list' && isActive ? 'lightgrey' : 'unset'"
@@ -37,7 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
       </mat-select>
     </div>
   `,
-  styles: [`
+    styles: [`
     .wrapper {
       display: flex;
       flex-direction: row;
@@ -55,7 +54,7 @@ import { MatIconModule } from '@angular/material/icon';
       background-color: WhiteSmoke;
     }
   `
-  ]
+    ]
 })
 export class ComboButtonComponent {
   @Input() inputType!: 'color' | 'list';

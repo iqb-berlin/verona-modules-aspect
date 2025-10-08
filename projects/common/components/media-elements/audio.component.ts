@@ -3,8 +3,8 @@ import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { MediaPlayerElementComponent } from '../../directives/media-player-element-component.directive';
 
 @Component({
-  selector: 'aspect-audio',
-  template: `
+    selector: 'aspect-audio',
+    template: `
     <aspect-media-player-control-bar *ngIf="elementModel.src"
                                      [player]="player"
                                      [isLoaded]="isLoaded"
@@ -27,9 +27,10 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                     (timeOut)="throwError('audio-timeout', 'Failed to load audio in time')">
     </aspect-spinner>
   `,
-  styles: `
+    styles: `
     :host {width: 100%; height: 100%;}
-  `
+  `,
+    standalone: false
 })
 export class AudioComponent extends MediaPlayerElementComponent {
   @Input() elementModel!: AudioElement;

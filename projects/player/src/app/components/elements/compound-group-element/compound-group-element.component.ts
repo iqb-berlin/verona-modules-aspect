@@ -48,9 +48,10 @@ import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
 
 @Component({
-  selector: 'aspect-compound-group-element',
-  templateUrl: './compound-group-element.component.html',
-  styleUrls: ['./compound-group-element.component.scss']
+    selector: 'aspect-compound-group-element',
+    templateUrl: './compound-group-element.component.html',
+    styleUrls: ['./compound-group-element.component.scss'],
+    standalone: false
 })
 export class CompoundGroupElementComponent extends TextInputGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;

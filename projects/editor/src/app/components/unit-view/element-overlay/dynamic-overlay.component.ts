@@ -5,13 +5,12 @@ import { CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
 import { ElementOverlay } from './element-overlay.directive';
 
 @Component({
-  selector: 'aspect-editor-dynamic-overlay',
-  standalone: true,
-  imports: [
-    CdkDrag,
-    CdkDragPlaceholder
-  ],
-  template: `
+    selector: 'aspect-editor-dynamic-overlay',
+    imports: [
+        CdkDrag,
+        CdkDragPlaceholder
+    ],
+    template: `
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->
     <div #draggableElement class="draggable-element"
@@ -39,17 +38,17 @@ import { ElementOverlay } from './element-overlay.directive';
       </div>
     </div>
   `,
-  styles: [
-    '.draggable-element {width: 100%; height: 100%;}',
-    '.draggable-element.disabled-drag {cursor: unset;}',
-    '.draggable-element:not(.disabled-drag):active {cursor: grabbing}',
-    '.temporaryHighlight {z-index: 100; background-color: lightblue;}',
-    '.centered-horizontal {display: flex; justify-content: center;}',
-    '.centered-vertical {display: flex; align-items: center;}',
-    ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}',
-    // special fix for custom element in shadow dom
-    ':host ::ng-deep .prevent-interaction math-field::part(container) {pointer-events: none !important;}'
-  ]
+    styles: [
+        '.draggable-element {width: 100%; height: 100%;}',
+        '.draggable-element.disabled-drag {cursor: unset;}',
+        '.draggable-element:not(.disabled-drag):active {cursor: grabbing}',
+        '.temporaryHighlight {z-index: 100; background-color: lightblue;}',
+        '.centered-horizontal {display: flex; justify-content: center;}',
+        '.centered-vertical {display: flex; align-items: center;}',
+        ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}',
+        // special fix for custom element in shadow dom
+        ':host ::ng-deep .prevent-interaction math-field::part(container) {pointer-events: none !important;}'
+    ]
 })
 export class DynamicOverlayComponent extends ElementOverlay {
   @Input() dynamicPositioning!: boolean;

@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'aspect-text-marking-button',
-  template: `
+    selector: 'aspect-text-marking-button',
+    template: `
     <button type="button"
             class="marking-button"
             [style.border-color]="isMarkingSelected ? 'black' : color"
@@ -15,10 +15,11 @@ import {
                 class="marking-icon">
       </aspect-text-marking-button-svg>
     </button>`,
-  styles: [
-    '.marking-button {color: #333; margin-left: 5px; margin-top: 2px; border: 2px solid;}',
-    '.marking-icon {margin-top: -4px}'
-  ]
+    styles: [
+        '.marking-button {color: #333; margin-left: 5px; margin-top: 2px; border: 2px solid;}',
+        '.marking-icon {margin-top: -4px}'
+    ],
+    standalone: false
 })
 export class TextMarkingButtonComponent {
   @Input() isMarkingSelected!: boolean;

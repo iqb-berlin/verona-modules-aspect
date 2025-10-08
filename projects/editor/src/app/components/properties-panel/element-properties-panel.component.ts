@@ -18,9 +18,10 @@ import { UnitService } from '../../services/unit-services/unit.service';
 export type CombinedProperties = UIElement & { idList?: string[] };
 
 @Component({
-  selector: 'aspect-element-properties',
-  templateUrl: './element-properties-panel.component.html',
-  styleUrls: ['./element-properties-panel.component.css']
+    selector: 'aspect-element-properties',
+    templateUrl: './element-properties-panel.component.html',
+    styleUrls: ['./element-properties-panel.component.css'],
+    standalone: false
 })
 export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   selectedElements: UIElement[] = [];

@@ -6,14 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { CONSTANTS } from '../../constants';
 
 @Component({
-  selector: 'aspect-editor-text-stimulus',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatCheckbox,
-    RichTextEditorComponent
-  ],
-  template: `
+    selector: 'aspect-editor-text-stimulus',
+    imports: [
+        FormsModule,
+        MatCheckbox,
+        RichTextEditorComponent
+    ],
+    template: `
     <h3>Text</h3>
     <aspect-rich-text-editor class="input1" [style.min-height.px]="400" [style.max-height.px]="700"
                              [(content)]="options.text1" [controlPanelFolded]="false" [showWordCounter]="true">
@@ -27,7 +26,7 @@ import { CONSTANTS } from '../../constants';
                              [placeholder]="'Hier steht die Quelle.'">
     </aspect-rich-text-editor>
   `,
-  styles: `
+    styles: `
     *:not(h3) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}
   `

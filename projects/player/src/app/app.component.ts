@@ -7,9 +7,10 @@ import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
 
 @Component({
-  selector: 'aspect-player',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'aspect-player',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   isStandalone: boolean;

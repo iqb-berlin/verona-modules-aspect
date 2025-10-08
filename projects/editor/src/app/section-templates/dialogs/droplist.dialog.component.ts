@@ -27,33 +27,32 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MatActionList, MatListItem } from '@angular/material/list';
 
 @Component({
-  selector: 'aspect-editor-droplist-wizard-dialog',
-  standalone: true,
-  imports: [
-    MatDialogModule,
-    TranslateModule,
-    MatButtonModule,
-    RichTextEditorComponent,
-    MatFormFieldModule,
-    MatOptionModule,
-    MatSelectModule,
-    FormsModule,
-    MatRadioModule,
-    NgIf,
-    MatExpansionModule,
-    MatCheckboxModule,
-    MatToolbarModule,
-    NgTemplateOutlet,
-    CdkDrag,
-    CdkDropList,
-    NgForOf,
-    MatInputModule,
-    TextFieldModule,
-    MatIconModule,
-    MatActionList,
-    MatListItem
-  ],
-  template: `
+    selector: 'aspect-editor-droplist-wizard-dialog',
+    imports: [
+        MatDialogModule,
+        TranslateModule,
+        MatButtonModule,
+        RichTextEditorComponent,
+        MatFormFieldModule,
+        MatOptionModule,
+        MatSelectModule,
+        FormsModule,
+        MatRadioModule,
+        NgIf,
+        MatExpansionModule,
+        MatCheckboxModule,
+        MatToolbarModule,
+        NgTemplateOutlet,
+        CdkDrag,
+        CdkDropList,
+        NgForOf,
+        MatInputModule,
+        TextFieldModule,
+        MatIconModule,
+        MatActionList,
+        MatListItem
+    ],
+    template: `
     <h2 mat-dialog-title>Assistent: Drag & Drop</h2>
     <div mat-dialog-content>
       @if (templateVariant == undefined) {
@@ -235,7 +234,7 @@ import { MatActionList, MatListItem } from '@angular/material/list';
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </div>
   `,
-  styleUrl: 'droplist.dialog.component.css'
+    styleUrl: 'droplist.dialog.component.css'
 })
 export class DroplistWizardDialogComponent {
   templateVariant: 'classic' | '2pages' | 'sort' | undefined;

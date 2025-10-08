@@ -3,8 +3,8 @@ import { TextFieldElement } from 'common/models/elements/input-elements/text-fie
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
-  selector: 'aspect-text-field',
-  template: `
+    selector: 'aspect-text-field',
+    template: `
     <ng-container *ngIf="!tableMode">
       <mat-form-field [class.small-input]="elementModel.label === ''"
                       [style.width.%]="100"
@@ -75,7 +75,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
              (blur)="focusChanged.emit({ inputElement: input, focused: false })">
     </ng-container>
   `,
-  styles: [`
+    styles: [`
     :host ::ng-deep .small-input div.mdc-notched-outline {
         top: 0.45em;
         bottom: 0.45em;
@@ -108,7 +108,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       padding: 0 10px;
       font-family: inherit;
     }
-  `]
+  `],
+    standalone: false
 })
 export class TextFieldComponent extends TextInputComponent {
   @Input() elementModel!: TextFieldElement;

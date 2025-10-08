@@ -3,9 +3,10 @@ import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/util/section-counter';
 
 @Component({
-  selector: 'aspect-section',
-  templateUrl: './section.component.html',
-  styleUrls: ['./section.component.scss']
+    selector: 'aspect-section',
+    templateUrl: './section.component.html',
+    styleUrls: ['./section.component.scss'],
+    standalone: false
 })
 export class SectionComponent implements OnInit {
   @Input() section!: Section;

@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'markList'
+    name: 'markList',
+    standalone: false
 })
 export class MarkListPipe implements PipeTransform {
   transform(markList: Record<string, any>): string[] {

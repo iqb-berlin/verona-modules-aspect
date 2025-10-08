@@ -21,14 +21,20 @@ describe('FloatingMarkingBarComponent', () => {
     }
   }
 
-  @Pipe({ name: 'hasReturnKey' })
+  @Pipe({
+    name: 'hasReturnKey',
+    standalone: false
+})
   class MockHasReturnKeyPipe implements PipeTransform {
     transform(): boolean {
       return false;
     }
   }
 
-  @Pipe({ name: 'asOverlayOrigin' })
+  @Pipe({
+    name: 'asOverlayOrigin',
+    standalone: false
+})
   class MockAsOverlayOriginPipe implements PipeTransform {
     transform(elementComponent: ElementComponent): CdkOverlayOrigin {
       return elementComponent as CdkOverlayOrigin;

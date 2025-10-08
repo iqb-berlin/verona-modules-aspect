@@ -16,18 +16,17 @@ import { SelectionService } from '../../../../../services/selection.service';
 import { DialogService } from '../../../../../services/dialog.service';
 
 @Component({
-  selector: 'aspect-text-props',
-  standalone: true,
-  imports: [
-    NgIf,
-    SharedModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatOptionModule,
-    MatSelectModule,
-    HighlightPropertiesComponent
-  ],
-  template: `
+    selector: 'aspect-text-props',
+    imports: [
+        NgIf,
+        SharedModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatOptionModule,
+        MatSelectModule,
+        HighlightPropertiesComponent
+    ],
+    template: `
     <div class="fx-column-start-stretch">
       Text
       <div class="text-text" (click)="showTextEditDialog()" [style.cursor]="'pointer'"
@@ -104,7 +103,7 @@ import { DialogService } from '../../../../../services/dialog.service';
       </fieldset>
     </div>
   `,
-  styles: [`
+    styles: [`
     .text-text {
       margin-bottom: 10px;
       padding: 10px;

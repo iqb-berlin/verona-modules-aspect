@@ -8,17 +8,16 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
-  selector: 'aspect-editor-audio2-stimulus',
-  standalone: true,
-  imports: [
-    FormsModule,
-    RichTextEditorComponent,
-    AudioRowComponent,
-    MatTooltip,
-    MatRadioButton,
-    MatRadioGroup
-  ],
-  template: `
+    selector: 'aspect-editor-audio2-stimulus',
+    imports: [
+        FormsModule,
+        RichTextEditorComponent,
+        AudioRowComponent,
+        MatTooltip,
+        MatRadioButton,
+        MatRadioGroup
+    ],
+    template: `
     <h3>Instruktionsaudio</h3>
     <aspect-editor-wizard-audio [src]="options.src1" [(maxRuns)]="options.maxRuns1"
                                 (changeMediaSrc)="changeMediaSrc('src1')">
@@ -46,7 +45,7 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
     <aspect-rich-text-editor [(content)]="options.text2" [showReducedControls]="true">
     </aspect-rich-text-editor>
   `,
-  styles: `
+    styles: `
     *:not(h3, mat-divider) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}
   `

@@ -10,9 +10,10 @@ import { OverviewDialogComponent } from 'editor/src/app/components/dialogs/overv
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'aspect-editor-unit-view',
-  templateUrl: './unit-view.component.html',
-  styleUrls: ['./unit-view.component.css']
+    selector: 'aspect-editor-unit-view',
+    templateUrl: './unit-view.component.html',
+    styleUrls: ['./unit-view.component.css'],
+    standalone: false
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
   pagesLoaded = true;

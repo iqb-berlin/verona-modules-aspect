@@ -4,8 +4,8 @@ import {
 import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-image-magnifier',
-  template: `
+    selector: 'aspect-image-magnifier',
+    template: `
     <div class="hide-cursor">
       <div class="magnifier-glass"
            [style.backgroundImage]="'url(' + image.src + ')'"
@@ -19,11 +19,12 @@ import { ValueChangeElement } from 'common/interfaces';
       </div>
     </div>
   `,
-  styles: [
-    ':host { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }',
-    '.magnifier-glass{ position: absolute; border: 1px solid #000; pointer-events: none;}',
-    '.hide-cursor{ width: 100%; height: 100%; cursor: none }'
-  ]
+    styles: [
+        ':host { position: absolute; top: 0; bottom: 0; right: 0; left: 0; }',
+        '.magnifier-glass{ position: absolute; border: 1px solid #000; pointer-events: none;}',
+        '.hide-cursor{ width: 100%; height: 100%; cursor: none }'
+    ],
+    standalone: false
 })
 export class ImageMagnifierComponent {
   @Input() image!: HTMLImageElement;

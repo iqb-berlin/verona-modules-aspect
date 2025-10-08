@@ -11,7 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 
 @Directive({
-  selector: '[aspectPlayerState]'
+    selector: '[aspectPlayerState]',
+    standalone: false
 })
 export class PlayerStateDirective implements OnChanges, OnInit, OnDestroy {
   @Input() isVisibleIndexPages!: BehaviorSubject<IsVisibleIndex[]>;

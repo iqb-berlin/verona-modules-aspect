@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { AngularNodeViewComponent } from 'ngx-tiptap';
 
 @Component({
-  selector: 'aspect-nodeview-drop-list',
-  template: `
+    selector: 'aspect-nodeview-drop-list',
+    template: `
     <div [style.display]="'inline-block'"
          [style.vertical-align]="'middle'"
          [matTooltip]="'ID: ' + node.attrs.model.id"
@@ -14,6 +14,7 @@ import { AngularNodeViewComponent } from 'ngx-tiptap';
                         [clozeContext]="true">
       </aspect-drop-list>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class DropListNodeviewComponent extends AngularNodeViewComponent {}

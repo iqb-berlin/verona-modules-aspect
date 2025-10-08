@@ -3,8 +3,8 @@ import { RadioButtonGroupElement } from 'common/models/elements/input-elements/r
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-  selector: 'aspect-radio-button-group',
-  template: `
+    selector: 'aspect-radio-button-group',
+    template: `
     <div class="mat-form-field"
          [style.width.%]="100"
          [style.height.%]="100"
@@ -38,7 +38,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-radio-group>
     </div>
   `,
-  styles: [`
+    styles: [`
     mat-radio-group {
       display: flex;
     }
@@ -58,7 +58,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     .error-message {
       font-size: 12px; line-height: 100%;
     }
-  `]
+  `],
+    standalone: false
 })
 export class RadioButtonGroupComponent extends FormElementComponent {
   @Input() elementModel!: RadioButtonGroupElement;

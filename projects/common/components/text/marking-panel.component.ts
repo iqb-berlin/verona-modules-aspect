@@ -7,12 +7,11 @@ import { SharedModule } from 'common/shared.module';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';
 
 @Component({
-  selector: 'aspect-marking-panel',
-  standalone: true,
-  imports: [
-    SharedModule
-  ],
-  template: `
+    selector: 'aspect-marking-panel',
+    imports: [
+        SharedModule
+    ],
+    template: `
     <aspect-text-marking-bar [elementModel]="elementModel"
                              [selectedColor]="selectedColor || 'none'"
                              [markingMode]="markingMode"
@@ -21,7 +20,7 @@ import { MarkingPanelMarkingData } from 'common/models/marking-data';
                                                                                          markingData: $event })">
     </aspect-text-marking-bar>
   `,
-  styles: []
+    styles: []
 })
 export class MarkingPanelComponent extends ElementComponent {
   @Input() elementModel!: MarkingPanelElement;

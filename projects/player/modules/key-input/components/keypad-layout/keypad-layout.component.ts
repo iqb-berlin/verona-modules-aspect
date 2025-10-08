@@ -6,9 +6,10 @@ import { KeyInputRestrictionDirective } from '../../directives/key-input-restric
 import { KeyInputLayout } from '../../configs/key-layout';
 
 @Component({
-  selector: 'aspect-keypad-layout',
-  templateUrl: './keypad-layout.component.html',
-  styleUrls: ['./keypad-layout.component.css']
+    selector: 'aspect-keypad-layout',
+    templateUrl: './keypad-layout.component.html',
+    styleUrls: ['./keypad-layout.component.css'],
+    standalone: false
 })
 export class KeypadLayoutComponent extends KeyInputRestrictionDirective implements OnInit {
   @Input() preset!: InputAssistancePreset;

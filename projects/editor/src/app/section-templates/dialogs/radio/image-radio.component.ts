@@ -8,17 +8,16 @@ import { ImageRadioOptions } from 'editor/src/app/section-templates/radio-interf
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'aspect-editor-imageradio-stimulus',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatInput,
-    MatFormField,
-    OptionListPanelComponent,
-    RichTextEditorComponent,
-    MatCheckbox
-  ],
-  template: `
+    selector: 'aspect-editor-imageradio-stimulus',
+    imports: [
+        FormsModule,
+        MatInput,
+        MatFormField,
+        OptionListPanelComponent,
+        RichTextEditorComponent,
+        MatCheckbox
+    ],
+    template: `
     <h3>Frage</h3>
     <aspect-rich-text-editor [(content)]="options.label1" [placeholder]="'Hier steht die Fragestellung.'">
     </aspect-rich-text-editor>
@@ -46,7 +45,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
       Formeleingabefeld verwenden
     </mat-checkbox>
   `,
-  styles: `
+    styles: `
     :host {display: flex; flex-direction: column;}
     *:not(h3, mat-divider) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

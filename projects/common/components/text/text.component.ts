@@ -9,8 +9,8 @@ import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
-  selector: 'aspect-text',
-  template: `
+    selector: 'aspect-text',
+    template: `
     <div [style.width.%]="100"
          [style.height.%]="100">
       <aspect-text-marking-bar
@@ -44,21 +44,22 @@ import { ElementComponent } from '../../directives/element-component.directive';
       </div>
     </div>
   `,
-  styles: [
-    '::ng-deep .yellow-selection ::selection {background-color: #f9f871}',
-    '::ng-deep .turquoise-selection ::selection {background-color: #9de8eb}',
-    '::ng-deep .orange-selection ::selection {background-color: #ffa06a}',
-    '::ng-deep .delete-selection ::selection {background-color: lightgrey}',
-    '::ng-deep .text-container p strong {letter-spacing: 0.02em; font-weight: 750;}',
-    '::ng-deep .text-container p:empty::after {content: \'\'; display: inline-block;}', // render empty p
-    '::ng-deep .text-container h1 {font-weight: bold; font-size: 20px;}',
-    '::ng-deep .text-container h2 {font-weight: bold; font-size: 18px;}',
-    '::ng-deep .text-container h3 {font-weight: bold; font-size: 16px;}',
-    '::ng-deep .text-container h4 {font-weight: normal; font-size: 16px;}',
-    ':host ::ng-deep mark {color: inherit}',
-    '::ng-deep sup {line-height: 0;}',
-    '::ng-deep sub {line-height: 0;}'
-  ]
+    styles: [
+        '::ng-deep .yellow-selection ::selection {background-color: #f9f871}',
+        '::ng-deep .turquoise-selection ::selection {background-color: #9de8eb}',
+        '::ng-deep .orange-selection ::selection {background-color: #ffa06a}',
+        '::ng-deep .delete-selection ::selection {background-color: lightgrey}',
+        '::ng-deep .text-container p strong {letter-spacing: 0.02em; font-weight: 750;}',
+        '::ng-deep .text-container p:empty::after {content: \'\'; display: inline-block;}', // render empty p
+        '::ng-deep .text-container h1 {font-weight: bold; font-size: 20px;}',
+        '::ng-deep .text-container h2 {font-weight: bold; font-size: 18px;}',
+        '::ng-deep .text-container h3 {font-weight: bold; font-size: 16px;}',
+        '::ng-deep .text-container h4 {font-weight: normal; font-size: 16px;}',
+        ':host ::ng-deep mark {color: inherit}',
+        '::ng-deep sup {line-height: 0;}',
+        '::ng-deep sub {line-height: 0;}'
+    ],
+    standalone: false
 })
 export class TextComponent extends ElementComponent implements OnInit, OnDestroy {
   @Input() elementModel!: TextElement;

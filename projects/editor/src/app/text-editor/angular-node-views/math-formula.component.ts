@@ -9,13 +9,12 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import katex from 'katex';
 
 @Component({
-  selector: 'aspect-nodeview-math-formula',
-  standalone: true,
-  imports: [
-    NgIf,
-    FormsModule
-  ],
-  template: `
+    selector: 'aspect-nodeview-math-formula',
+    imports: [
+        NgIf,
+        FormsModule
+    ],
+    template: `
     @if (!editMode) {
       <span class="formula-field" [innerHTML]="sanitizedFormula" (click)="toggleEditMode()"></span>
     } @else {
@@ -24,7 +23,7 @@ import katex from 'katex';
             (blur)="updateFormula($any($event.target).innerText);">{{formula}}</span>
     }
   `,
-  styles: [`
+    styles: [`
     .formula-field {
       background-color: lightblue;
       display: inline-block;
@@ -36,7 +35,7 @@ import katex from 'katex';
       content: "\\200b";
     }
   `
-  ]
+    ]
 })
 export class MathFormulaNodeviewComponent extends AngularNodeViewComponent implements OnInit {
   @ViewChild('editField') editField!: ElementRef<HTMLSpanElement>;

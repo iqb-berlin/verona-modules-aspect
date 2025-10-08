@@ -5,9 +5,10 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { TextComponent } from 'common/components/text/text.component';
 
 @Component({
-  selector: 'aspect-floating-marking-bar',
-  templateUrl: './floating-marking-bar.component.html',
-  styleUrls: ['./floating-marking-bar.component.scss']
+    selector: 'aspect-floating-marking-bar',
+    templateUrl: './floating-marking-bar.component.html',
+    styleUrls: ['./floating-marking-bar.component.scss'],
+    standalone: false
 })
 export class FloatingMarkingBarComponent implements OnChanges {
   @Input() elementComponent!: TextComponent;

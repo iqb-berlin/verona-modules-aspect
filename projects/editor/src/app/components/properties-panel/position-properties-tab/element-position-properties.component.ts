@@ -8,8 +8,8 @@ import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 
 @Component({
-  selector: 'aspect-position-and-dimension-properties',
-  template: `
+    selector: 'aspect-position-and-dimension-properties',
+    template: `
     <div class="fx-column-start-stretch">
       <aspect-position-field-set
         *ngIf="positionProperties"
@@ -42,7 +42,8 @@ import { SelectionService } from '../../../services/selection.service';
         </div>
       </ng-container>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ElementPositionPropertiesComponent {
   @Input() dimensions!: DimensionProperties | null | undefined;

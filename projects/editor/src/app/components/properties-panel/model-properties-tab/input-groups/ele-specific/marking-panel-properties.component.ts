@@ -8,14 +8,13 @@ import {
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/highlight-properties.component';
 
 @Component({
-  selector: 'aspect-marking-panel-properties',
-  standalone: true,
-  imports: [
-    NgIf,
-    SharedModule,
-    HighlightPropertiesComponent
-  ],
-  template: `
+    selector: 'aspect-marking-panel-properties',
+    imports: [
+        NgIf,
+        SharedModule,
+        HighlightPropertiesComponent
+    ],
+    template: `
     <div *ngIf="combinedProperties.type === 'marking-panel'" class="fx-column-start-stretch">
       Fernsteuerung
       <fieldset class="fx-column-start-stretch">
@@ -27,7 +26,7 @@ import {
       </fieldset>
     </div>
   `,
-  styles: [`
+    styles: [`
   `]
 })
 export class MarkingPanelPropertiesComponent {

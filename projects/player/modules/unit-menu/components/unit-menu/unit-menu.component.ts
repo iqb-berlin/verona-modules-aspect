@@ -13,10 +13,11 @@ import { Response } from '@iqb/responses';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'aspect-unit-menu',
-  templateUrl: './unit-menu.component.html',
-  styleUrls: ['./unit-menu.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'aspect-unit-menu',
+    templateUrl: './unit-menu.component.html',
+    styleUrls: ['./unit-menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitMenuComponent {
   @Input() scrollPages!: Page[];

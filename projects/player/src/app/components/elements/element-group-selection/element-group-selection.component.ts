@@ -4,9 +4,10 @@ import { UIElementType } from 'common/interfaces';
 import { ElementGroupInterface, ElementGroupName } from '../../../models/element-group.interface';
 
 @Component({
-  selector: 'aspect-element-group-selection',
-  templateUrl: './element-group-selection.component.html',
-  styleUrls: ['./element-group-selection.component.scss']
+    selector: 'aspect-element-group-selection',
+    templateUrl: './element-group-selection.component.html',
+    styleUrls: ['./element-group-selection.component.scss'],
+    standalone: false
 })
 export class ElementGroupSelectionComponent implements OnInit {
   @Input() elementModel!: UIElement;

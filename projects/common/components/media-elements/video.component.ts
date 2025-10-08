@@ -3,8 +3,8 @@ import { VideoElement } from 'common/models/elements/media-elements/video';
 import { MediaPlayerElementComponent } from '../../directives/media-player-element-component.directive';
 
 @Component({
-  selector: 'aspect-video',
-  template: `
+    selector: 'aspect-video',
+    template: `
     <div [class]="elementModel.scale ? 'fit-video' : 'max-size-video'"
          [style.width.%]="100"
          [style.height.%]="100">
@@ -34,11 +34,12 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
       </aspect-spinner>
     </div>
   `,
-  styles: [
-    '.correct-position{ display: block; margin-top: -4px; }',
-    '.max-size-video{ width: fit-content; max-height: fit-content }',
-    '.fit-video{ width: 100%; height: 100%; object-fit: contain}'
-  ]
+    styles: [
+        '.correct-position{ display: block; margin-top: -4px; }',
+        '.max-size-video{ width: fit-content; max-height: fit-content }',
+        '.fit-video{ width: 100%; height: 100%; object-fit: contain}'
+    ],
+    standalone: false
 })
 export class VideoComponent extends MediaPlayerElementComponent {
   @Input() elementModel!: VideoElement;

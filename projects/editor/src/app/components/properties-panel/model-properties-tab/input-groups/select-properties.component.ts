@@ -6,8 +6,8 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-select-properties',
-  template: `
+    selector: 'aspect-select-properties',
+    template: `
     <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.strikeOtherOptions !== undefined"
                   [checked]="$any(combinedProperties.strikeOtherOptions)"
                   (change)="updateModel.emit({ property: 'strikeOtherOptions', value: $event.checked })">
@@ -43,7 +43,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
         {{'numberGreater0' | translate}}
       </mat-error>
     </mat-form-field>
-  `
+  `,
+    standalone: false
 })
 export class SelectPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;

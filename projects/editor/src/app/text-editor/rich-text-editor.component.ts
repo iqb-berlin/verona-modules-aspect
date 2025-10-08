@@ -53,23 +53,22 @@ import MathFormulaExtension from './angular-node-views/math-formula-extension';
 import { CharacterCount } from '@tiptap/extension-character-count';
 
 @Component({
-  selector: 'aspect-rich-text-editor',
-  standalone: true,
-  imports: [
-    NgIf,
-    MatButtonModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ComboButtonComponent,
-    FormsModule,
-    MatInputModule,
-    MatMenuModule,
-    NgxTiptapModule
-  ],
-  templateUrl: './rich-text-editor.component.html',
-  styleUrls: ['./rich-text-editor.component.scss']
+    selector: 'aspect-rich-text-editor',
+    imports: [
+        NgIf,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ComboButtonComponent,
+        FormsModule,
+        MatInputModule,
+        MatMenuModule,
+        NgxTiptapModule
+    ],
+    templateUrl: './rich-text-editor.component.html',
+    styleUrls: ['./rich-text-editor.component.scss']
 })
 export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() content!: string | Record<string, any>;

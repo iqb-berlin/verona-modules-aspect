@@ -17,9 +17,10 @@ import { ElementModelElementCodeMappingService } from '../../../services/element
 import { UnitStateService } from '../../../services/unit-state.service';
 
 @Component({
-  selector: 'aspect-input-group-element',
-  templateUrl: './input-group-element.component.html',
-  styleUrls: ['./input-group-element.component.scss']
+    selector: 'aspect-input-group-element',
+    templateUrl: './input-group-element.component.html',
+    styleUrls: ['./input-group-element.component.scss'],
+    standalone: false
 })
 export class InputGroupElementComponent extends ElementFormGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;

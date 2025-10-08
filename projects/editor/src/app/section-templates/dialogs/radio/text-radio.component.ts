@@ -8,17 +8,16 @@ import { FormsModule } from '@angular/forms';
 import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
 
 @Component({
-  selector: 'aspect-editor-textradio-stimulus',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatInput,
-    MatCheckbox,
-    MatFormField,
-    OptionListPanelComponent,
-    RichTextEditorComponent
-  ],
-  template: `
+    selector: 'aspect-editor-textradio-stimulus',
+    imports: [
+        FormsModule,
+        MatInput,
+        MatCheckbox,
+        MatFormField,
+        OptionListPanelComponent,
+        RichTextEditorComponent
+    ],
+    template: `
     <h3>Frage</h3>
     <aspect-rich-text-editor class="input1" [(content)]="options.label1"
                              [placeholder]="'Hier steht die Fragestellung.'">
@@ -49,7 +48,7 @@ import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfa
       Formeleingabefeld verwenden
     </mat-checkbox>
   `,
-  styles: `
+    styles: `
     :host {display: flex; flex-direction: column;}
     *:not(h3, mat-divider) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

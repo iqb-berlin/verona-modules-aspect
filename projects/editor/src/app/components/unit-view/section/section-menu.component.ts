@@ -28,23 +28,22 @@ import { DialogService } from '../../../services/dialog.service';
 import { SelectionService } from '../../../services/selection.service';
 
 @Component({
-  selector: 'aspect-section-menu',
-  standalone: true,
-  imports: [
-    MatMenuModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatListModule,
-    MatButtonModule,
-    TranslateModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    NgIf,
-    MatInputModule,
-    SizeInputPanelComponent,
-    NgForOf
-  ],
-  template: `
+    selector: 'aspect-section-menu',
+    imports: [
+        MatMenuModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatListModule,
+        MatButtonModule,
+        TranslateModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        NgIf,
+        MatInputModule,
+        SizeInputPanelComponent,
+        NgForOf
+    ],
+    template: `
     <button mat-mini-fab [matMenuTriggerFor]="elementListMenu"
             [matTooltip]="'Elementliste'"
             [matTooltipPosition]="'left'">
@@ -208,13 +207,13 @@ import { SelectionService } from '../../../services/selection.service';
       <mat-icon>clear</mat-icon>
     </button>
   `,
-  styles: [
-    '.layoutMenu {padding: 5px; width: 250px;}',
-    'aspect-size-input-panel {max-width: 100%;}',
-    '.layoutMenu fieldset {display: flex; flex-direction: column; align-items: flex-start;}',
-    '.menuItem {margin-bottom: 5px;}',
-    '::ng-deep .activeAfterID-menu .mat-mdc-form-field {width:90%; margin-left: 10px;}'
-  ]
+    styles: [
+        '.layoutMenu {padding: 5px; width: 250px;}',
+        'aspect-size-input-panel {max-width: 100%;}',
+        '.layoutMenu fieldset {display: flex; flex-direction: column; align-items: flex-start;}',
+        '.menuItem {margin-bottom: 5px;}',
+        '::ng-deep .activeAfterID-menu .mat-mdc-form-field {width:90%; margin-left: 10px;}'
+    ]
 })
 export class SectionMenuComponent implements OnDestroy {
   @Input() section!: Section;

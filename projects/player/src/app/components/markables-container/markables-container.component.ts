@@ -9,15 +9,14 @@ import { MarkableDelimiterComponent } from 'player/src/app/components/markable-d
 import { JsonPipe } from '@angular/common';
 
 @Component({
-  selector: 'aspect-markables-container',
-  standalone: true,
-  imports: [
-    MarkableWordComponent,
-    MarkableDelimiterComponent,
-    JsonPipe
-  ],
-  templateUrl: './markables-container.component.html',
-  styleUrl: './markables-container.component.scss'
+    selector: 'aspect-markables-container',
+    imports: [
+        MarkableWordComponent,
+        MarkableDelimiterComponent,
+        JsonPipe
+    ],
+    templateUrl: './markables-container.component.html',
+    styleUrl: './markables-container.component.scss'
 })
 export class MarkablesContainerComponent {
   @Input() selectedColor!: BehaviorSubject<string | undefined>;

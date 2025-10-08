@@ -9,17 +9,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'aspect-editor-wizard-audio',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatIconModule,
-    FormsModule
-  ],
-  template: `
+    selector: 'aspect-editor-wizard-audio',
+    imports: [
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatIconModule,
+        FormsModule
+    ],
+    template: `
     <audio controls [src]=src [style.opacity]="src ? 1 : 0.5"></audio>
     <button mat-fab color="primary"
             [matTooltip]="'Medienquelle ändern'" [matTooltipPosition]="'right'"
@@ -31,7 +30,7 @@ import { FormsModule } from '@angular/forms';
       <input matInput type="number" min="1" [(ngModel)]="maxRuns" (ngModelChange)="maxRunsChange.emit($event)">
     </mat-form-field>
   `,
-  styles: `
+    styles: `
     :host {display: flex; flex-direction: row; justify-content: space-around;}
     audio {align-self: center; margin-bottom: 20px;}
   `

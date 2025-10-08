@@ -9,7 +9,10 @@ describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
 
-  @Component({ selector: 'aspect-unit', template: '' })
+  @Component({
+    selector: 'aspect-unit', template: '',
+    standalone: false
+})
   class UnitStubComponent {
   }
   class ApiStubService {

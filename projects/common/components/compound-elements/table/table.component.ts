@@ -15,15 +15,14 @@ import { Subject } from 'rxjs';
 import { PositionedUIElement, UIElementType } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-table',
-  standalone: true,
-  imports: [
-    SharedModule,
-    TableChildOverlay,
-    MatMenuModule,
-    MeasurePipe
-  ],
-  template: `
+    selector: 'aspect-table',
+    imports: [
+        SharedModule,
+        TableChildOverlay,
+        MatMenuModule,
+        MeasurePipe
+    ],
+    template: `
     <div class="grid-container" [style.display]="'grid'"
          [style.grid-template-columns]="elementModel.gridColumnSizes | measure"
          [style.grid-template-rows]="elementModel.gridRowSizes | measure"
@@ -88,7 +87,7 @@ import { PositionedUIElement, UIElementType } from 'common/interfaces';
       </ng-container>
     </div>
   `,
-  styles: [`
+    styles: [`
     .cell-container {display: flex; min-height: 50px;}
     .element-container {width: 100%; height: 100%; position: relative;}
     .cell-container > button {align-self: flex-end; justify-self: flex-start;}

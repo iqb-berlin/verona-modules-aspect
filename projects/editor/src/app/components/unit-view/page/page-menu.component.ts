@@ -21,26 +21,25 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageService } from 'editor/src/app/services/unit-services/page.service';
 
 @Component({
-  selector: 'aspect-unit-view-page-menu',
-  standalone: true,
-  imports: [
-    MatCheckboxModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatOptionModule,
-    MatSelectModule,
-    NgForOf,
-    NgIf,
-    ReactiveFormsModule,
-    TranslateModule,
-    FormsModule,
-    MatTooltipModule
-  ],
-  templateUrl: 'page-menu.component.html',
-  styles: `
+    selector: 'aspect-unit-view-page-menu',
+    imports: [
+        MatCheckboxModule,
+        MatDividerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatOptionModule,
+        MatSelectModule,
+        NgForOf,
+        NgIf,
+        ReactiveFormsModule,
+        TranslateModule,
+        FormsModule,
+        MatTooltipModule
+    ],
+    templateUrl: 'page-menu.component.html',
+    styles: `
     :host {
       display: flex;
       flex-direction: column;

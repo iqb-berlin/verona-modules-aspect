@@ -13,8 +13,9 @@ describe('PageLabelDirective', () => {
       <div id="header"
            [style.height.px]="100">FIRST CHILD</div>
       <div>Content</div>
-    </div>`
-  })
+    </div>`,
+    standalone: false
+})
   class TestComponent {
     @Input()headerIsHidden = true;
     headerHeight = 0;

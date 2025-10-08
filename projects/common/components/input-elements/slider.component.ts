@@ -3,8 +3,8 @@ import { SliderElement } from 'common/models/elements/input-elements/slider';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-  selector: 'aspect-slider',
-  template: `
+    selector: 'aspect-slider',
+    template: `
     <div [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.styling.backgroundColor">
@@ -58,7 +58,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
     </div>
   `,
-  styles: [`
+    styles: [`
     :host ::ng-deep .slider-bar-style.mat-mdc-slider .mdc-slider__thumb-knob {
       border-radius: 0;
       border: 0 none;
@@ -130,7 +130,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       border-bottom: 8px solid transparent;
       border-left: 20px solid #555;
     }
-  `]
+  `],
+    standalone: false
 })
 export class SliderComponent extends FormElementComponent {
   @Input() elementModel!: SliderElement;

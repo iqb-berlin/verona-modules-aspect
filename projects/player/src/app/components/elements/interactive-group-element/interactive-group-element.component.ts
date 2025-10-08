@@ -25,9 +25,10 @@ import { ElementModelElementCodeMappingService } from '../../../services/element
 import { NavigationService } from '../../../services/navigation.service';
 
 @Component({
-  selector: 'aspect-interactive-group-element',
-  templateUrl: './interactive-group-element.component.html',
-  styleUrls: ['./interactive-group-element.component.scss']
+    selector: 'aspect-interactive-group-element',
+    templateUrl: './interactive-group-element.component.html',
+    styleUrls: ['./interactive-group-element.component.scss'],
+    standalone: false
 })
 export class InteractiveGroupElementComponent
   extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {

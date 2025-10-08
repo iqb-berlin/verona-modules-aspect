@@ -3,8 +3,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TooltipPosition } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-tooltip-properties-dialog',
-  template: `
+    selector: 'aspect-tooltip-properties-dialog',
+    template: `
     <mat-dialog-content>
       <div class="fx-column-start-stretch">
         <mat-form-field>
@@ -36,7 +36,8 @@ import { TooltipPosition } from 'common/interfaces';
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
-  `
+  `,
+    standalone: false
 })
 export class TooltipPropertiesDialogComponent {
   tooltipText: string;

@@ -4,8 +4,8 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
-  selector: 'aspect-element-style-properties',
-  template: `
+    selector: 'aspect-element-style-properties',
+    template: `
     <div class="fx-column-start-stretch" *ngIf="styles">
       <mat-form-field *ngIf="styles.helperRowColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
@@ -200,7 +200,8 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
                (change)="styles.borderRadius = styles.borderRadius ? styles.borderRadius : 0">
       </mat-form-field>
     </fieldset>
-  `
+  `,
+    standalone: false
 })
 export class ElementStylePropertiesComponent {
   @Input() styles!: Stylings | undefined;

@@ -9,8 +9,8 @@ import { BasicStyles } from 'common/models/elements/property-group-interfaces';
 import { Measurement } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-likert',
-  template: `
+    selector: 'aspect-likert',
+    template: `
     <div *ngIf="elementModel.rows.length === 0 && elementModel.options.length === 0">
       Keine Zeilen oder Spalten vorhanden
     </div>
@@ -66,7 +66,7 @@ import { Measurement } from 'common/interfaces';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .likert-column-label {
       text-align: center;
       justify-content: center;
@@ -93,7 +93,8 @@ import { Measurement } from 'common/interfaces';
     .label {
       margin-bottom: 10px;
     }
-  `]
+  `],
+    standalone: false
 })
 export class LikertComponent extends CompoundElementComponent {
   @ViewChildren(LikertRadioButtonGroupComponent) compoundChildren!: QueryList<LikertRadioButtonGroupComponent>;
@@ -105,7 +106,8 @@ export class LikertComponent extends CompoundElementComponent {
 }
 
 @Pipe({
-  name: 'LikertRowBackgroundColor'
+    name: 'LikertRowBackgroundColor',
+    standalone: false
 })
 export class LikertRowBackgroundColorPipe implements PipeTransform {
   transform(lineColoring: boolean, lineColoringColor: string, firstLineColoring: boolean,

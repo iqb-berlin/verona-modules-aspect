@@ -12,22 +12,21 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'aspect-editor-input-wizard-dialog',
-  standalone: true,
-  imports: [
-    NgIf,
-    TranslateModule,
-    RichTextEditorComponent,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    FormsModule,
-    MatRadioModule,
-    MatButtonModule,
-    MatCheckboxModule
-  ],
-  template: `
+    selector: 'aspect-editor-input-wizard-dialog',
+    imports: [
+        NgIf,
+        TranslateModule,
+        RichTextEditorComponent,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        FormsModule,
+        MatRadioModule,
+        MatButtonModule,
+        MatCheckboxModule
+    ],
+    template: `
     <h2 mat-dialog-title>Assistent: Antwortfeld(er)</h2>
     <div mat-dialog-content>
       <h3>Frage</h3>
@@ -101,7 +100,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
+    styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

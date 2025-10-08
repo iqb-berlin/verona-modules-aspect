@@ -12,7 +12,10 @@ describe('MediaPlayerGroupElementComponent', () => {
   let component: MediaPlayerGroupElementComponent;
   let fixture: ComponentFixture<MediaPlayerGroupElementComponent>;
 
-  @Component({ selector: 'aspect-audio', template: '' })
+  @Component({
+    selector: 'aspect-audio', template: '',
+    standalone: false
+})
   class AudioStubComponent {
     @Input() elementModel!: AudioElement;
     @Input() savedPlaybackTime!: number;

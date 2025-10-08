@@ -6,18 +6,19 @@ import { VeronaAPIService, StartCommand } from './services/verona-api.service';
 import { UnitService } from './services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-editor',
-  template: `
+    selector: 'aspect-editor',
+    template: `
     <div class="mainView fx-column-start-stretch">
       <aspect-toolbar *ngIf="isStandalone"></aspect-toolbar>
       <aspect-editor-unit-view class="fx-flex"></aspect-editor-unit-view>
     </div>
   `,
-  styles: [`
+    styles: [`
     .mainView {
       height: 100%;
     }
-  `]
+  `],
+    standalone: false
 })
 
 export class AppComponent implements OnInit {

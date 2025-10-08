@@ -4,8 +4,8 @@ import {
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 
 @Component({
-  selector: 'aspect-preset-value-properties',
-  template: `
+    selector: 'aspect-preset-value-properties',
+    template: `
     <mat-form-field *ngIf="combinedProperties.type === 'text-area'"
                     class="wide-form-field" appearance="fill">
       <mat-label>{{'preset' | translate }}</mat-label>
@@ -45,7 +45,8 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                                   (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
       </aspect-math-input>
     </ng-container>
-  `
+  `,
+    standalone: false
 })
 export class PresetValuePropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;

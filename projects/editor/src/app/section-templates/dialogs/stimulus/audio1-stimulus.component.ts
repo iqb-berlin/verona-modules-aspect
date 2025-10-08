@@ -6,14 +6,13 @@ import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/stim
 import { FileService } from 'common/services/file.service';
 
 @Component({
-  selector: 'aspect-editor-audio1-stimulus',
-  standalone: true,
-  imports: [
-    FormsModule,
-    RichTextEditorComponent,
-    AudioRowComponent
-  ],
-  template: `
+    selector: 'aspect-editor-audio1-stimulus',
+    imports: [
+        FormsModule,
+        RichTextEditorComponent,
+        AudioRowComponent
+    ],
+    template: `
     <h3>Audio</h3>
     <aspect-editor-wizard-audio [src]="options.src1" [(maxRuns)]="options.maxRuns1" (changeMediaSrc)="changeMediaSrc()">
     </aspect-editor-wizard-audio>
@@ -22,7 +21,7 @@ import { FileService } from 'common/services/file.service';
                              [placeholder]="'Hier steht die Quelle.'">
     </aspect-rich-text-editor>
   `,
-  styles: `
+    styles: `
     *:not(h3, mat-divider) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}
   `

@@ -4,8 +4,9 @@ import {
 import { BaseTooltipDirective } from 'common/components/tooltip/base-tooltip.directive';
 
 @Directive({
-  selector: '[pointerEventTooltip]',
-  exportAs: 'PointerEventTooltip'
+    selector: '[pointerEventTooltip]',
+    exportAs: 'PointerEventTooltip',
+    standalone: false
 })
 export class PointerEventTooltipDirective extends BaseTooltipDirective {
   @HostListener('pointerenter')

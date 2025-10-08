@@ -8,29 +8,30 @@ import { KeypadService } from '../../../services/keypad.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 
 @Component({
-  selector: 'aspect-player-layout',
-  templateUrl: './player-layout.component.html',
-  styleUrls: ['./player-layout.component.scss'],
-  animations: [
-    trigger('keypadSlideInOut', [
-      transition(':enter', [
-        style({ width: 0 }),
-        animate(200, style({ width: '*' }))
-      ]),
-      transition(':leave', [
-        animate(200, style({ width: 0 }))
-      ])
-    ]),
-    trigger('keyboardSlideInOut', [
-      transition(':enter', [
-        style({ height: 0 }),
-        animate(200, style({ height: '*' }))
-      ]),
-      transition(':leave', [
-        animate(200, style({ height: 0 }))
-      ])
-    ])
-  ]
+    selector: 'aspect-player-layout',
+    templateUrl: './player-layout.component.html',
+    styleUrls: ['./player-layout.component.scss'],
+    animations: [
+        trigger('keypadSlideInOut', [
+            transition(':enter', [
+                style({ width: 0 }),
+                animate(200, style({ width: '*' }))
+            ]),
+            transition(':leave', [
+                animate(200, style({ width: 0 }))
+            ])
+        ]),
+        trigger('keyboardSlideInOut', [
+            transition(':enter', [
+                style({ height: 0 }),
+                animate(200, style({ height: '*' }))
+            ]),
+            transition(':leave', [
+                animate(200, style({ height: 0 }))
+            ])
+        ])
+    ],
+    standalone: false
 })
 export class PlayerLayoutComponent implements OnDestroy {
   isKeypadAnimationDisabled: boolean = false;

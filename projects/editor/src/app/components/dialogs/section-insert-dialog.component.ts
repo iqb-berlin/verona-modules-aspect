@@ -8,7 +8,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  template: `
+    template: `
     <h2 mat-dialog-title>Seitenabschnitt einfügen</h2>
     <mat-dialog-content>
       <mat-radio-group [style]="'display: flex; flex-direction: column'"
@@ -49,11 +49,12 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-  styles: [
-    '.paste-area {width: 250px; height: 60px; border: 1px solid; overflow: hidden}',
-    '.radio-child-item {margin-left: 35px; font-size: smaller;}',
-    ':host ::ng-deep mat-radio-button .mdc-label {font-size: larger;}'
-  ]
+    styles: [
+        '.paste-area {width: 250px; height: 60px; border: 1px solid; overflow: hidden}',
+        '.radio-child-item {margin-left: 35px; font-size: smaller;}',
+        ':host ::ng-deep mat-radio-button .mdc-label {font-size: larger;}'
+    ],
+    standalone: false
 })
 export class SectionInsertDialogComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();

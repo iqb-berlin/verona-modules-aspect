@@ -17,14 +17,13 @@ import { SectionCounter } from 'common/util/section-counter';
 import { PositionedUIElement } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-editor-section-view',
-  standalone: true,
-  imports: [
-    NgIf, NgClass,
-    CdkDropList,
-    SectionMenuComponent, StaticSectionComponent, DynamicSectionComponent
-  ],
-  template: `
+    selector: 'aspect-editor-section-view',
+    imports: [
+        NgIf, NgClass,
+        CdkDropList,
+        SectionMenuComponent, StaticSectionComponent, DynamicSectionComponent
+    ],
+    template: `
     <aspect-section-menu [class.hidden]="!isOnSelectedPage || selectionService.selectedSectionIndex !== sectionIndex"
                          class="section-menu fx-column-start-stretch"
                          [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
@@ -69,7 +68,7 @@ import { PositionedUIElement } from 'common/interfaces';
       </aspect-editor-dynamic-section>
     </div>
   `,
-  styles: `
+    styles: `
     .hidden {
       display: none !important;
     }

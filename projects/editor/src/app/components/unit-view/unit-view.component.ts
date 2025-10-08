@@ -8,9 +8,10 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'aspect-editor-unit-view',
-  templateUrl: './unit-view.component.html',
-  styleUrls: ['./unit-view.component.css']
+    selector: 'aspect-editor-unit-view',
+    templateUrl: './unit-view.component.html',
+    styleUrls: ['./unit-view.component.css'],
+    standalone: false
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
   pagesLoaded = true;

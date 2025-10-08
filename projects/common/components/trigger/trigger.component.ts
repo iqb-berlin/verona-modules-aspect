@@ -5,15 +5,15 @@ import {
 import { TriggerElement, TriggerActionEvent } from 'common/models/elements/trigger/trigger';
 
 @Component({
-  selector: 'aspect-trigger',
-  template: `
+    selector: 'aspect-trigger',
+    template: `
     <div>
       <div *ngIf="project === 'editor'"
             class="hidden-trigger">
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .hidden-trigger {
       height: 20px;
       background-image: linear-gradient(
@@ -22,7 +22,8 @@ import { TriggerElement, TriggerActionEvent } from 'common/models/elements/trigg
       background-size: 10px 10px;
       border: 1px solid #999;
     }
-  `]
+  `],
+    standalone: false
 })
 
 export class TriggerComponent extends ElementComponent {

@@ -7,8 +7,8 @@ import { PlayerProperties } from 'common/models/elements/property-group-interfac
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-player-edit-dialog',
-  template: `
+    selector: 'aspect-player-edit-dialog',
+    template: `
     <mat-dialog-content [style.height.%]="90">
       <mat-tab-group>
         <mat-tab label="{{ 'player.appearance' | translate }}">
@@ -140,7 +140,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-  styles: [`
+    styles: [`
     mat-tab-group {
       height: 100%;
     }
@@ -149,7 +149,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       margin-top: 10px;
       height: 100%;
     }
-  `]
+  `],
+    standalone: false
 })
 export class PlayerEditDialogComponent {
   newPlayerConfig: PlayerProperties = { ...this.data.playerProps };
@@ -158,7 +159,8 @@ export class PlayerEditDialogComponent {
 }
 
 @Pipe({
-  name: 'getValidAudioVideoAliasAndIDs'
+    name: 'getValidAudioVideoAliasAndIDs',
+    standalone: false
 })
 export class GetValidAudioVideoAliasAndIDsPipe implements PipeTransform {
   constructor(private unitService: UnitService) {}

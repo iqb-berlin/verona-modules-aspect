@@ -14,8 +14,8 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { IQB_MATH_KEYBOARD_LAYOUTS } from 'common/math-editor/keyboard-layout.config';
 
 @Component({
-  selector: 'aspect-math-input',
-  template: `
+    selector: 'aspect-math-input',
+    template: `
     <mat-button-toggle-group *ngIf="enableModeSwitch"
                              [value]="mathFieldElement.mode"
                              (change)="setParseMode($event)">
@@ -31,7 +31,7 @@ import { IQB_MATH_KEYBOARD_LAYOUTS } from 'common/math-editor/keyboard-layout.co
          (focusout)="onFocusOut()">
     </div>
   `,
-  styles: [`
+    styles: [`
     mat-button-toggle-group {
       height: auto;
     }
@@ -56,7 +56,8 @@ import { IQB_MATH_KEYBOARD_LAYOUTS } from 'common/math-editor/keyboard-layout.co
     :host ::ng-deep .mat-button-toggle-label-content {
       line-height: unset;
     }`
-  ]
+    ],
+    standalone: false
 })
 export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() value!: string;

@@ -3,8 +3,8 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 
 @Component({
-  selector: 'aspect-toggle-button',
-  template: `
+    selector: 'aspect-toggle-button',
+    template: `
     <aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
                                       [elementModel]="elementModel"
                                       [elementFormControl]="elementFormControl">
@@ -49,7 +49,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
       </mat-button-toggle>
     </mat-button-toggle-group>
   `,
-  styles: [`
+    styles: [`
     :host {display:flex !important; width: 100%; height: 100%;}
     .errors {
       border: 2px solid #f44336 !important;
@@ -86,7 +86,8 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
       justify-content: center;
       align-items: center;
     }
-  `]
+  `],
+    standalone: false
 })
 export class ToggleButtonComponent extends FormElementComponent {
   @Input() elementModel!: ToggleButtonElement;

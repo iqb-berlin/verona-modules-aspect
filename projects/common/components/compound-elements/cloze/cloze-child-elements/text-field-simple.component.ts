@@ -7,8 +7,8 @@ import {
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
-  selector: 'aspect-text-field-simple',
-  template: `
+    selector: 'aspect-text-field-simple',
+    template: `
     <aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
       [elementModel]="elementModel"
       [elementFormControl]="elementFormControl">
@@ -36,13 +36,14 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
            (focus)="focusChanged.emit({ inputElement: input, focused: true })"
            (blur)="focusChanged.emit({ inputElement: input, focused: false })">
   `,
-  styles: [
-    '.cloze-child {border: 1px solid #ccc; border-radius: 4px;}',
-    'input {width: 100%; height: 100%; padding: 0 2px; box-sizing: border-box; font-family: inherit;}',
-    'input:hover {border: 1px solid currentColor;}',
-    'input:focus {border: 1px solid #3f51b5; outline: 0}',
-    '.errors {border: 2px solid #f44336 !important;}'
-  ]
+    styles: [
+        '.cloze-child {border: 1px solid #ccc; border-radius: 4px;}',
+        'input {width: 100%; height: 100%; padding: 0 2px; box-sizing: border-box; font-family: inherit;}',
+        'input:hover {border: 1px solid currentColor;}',
+        'input:focus {border: 1px solid #3f51b5; outline: 0}',
+        '.errors {border: 2px solid #f44336 !important;}'
+    ],
+    standalone: false
 })
 export class TextFieldSimpleComponent extends TextInputComponent {
   @Input() elementModel!: TextFieldSimpleElement;

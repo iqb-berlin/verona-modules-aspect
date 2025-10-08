@@ -20,31 +20,30 @@ import { TextRadioComponent } from 'editor/src/app/section-templates/dialogs/rad
 import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/image-radio.component';
 
 @Component({
-  selector: 'aspect-editor-radio-wizard-dialog',
-  standalone: true,
-  imports: [
-    MatDialogModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    OptionListPanelComponent,
-    MatButtonModule,
-    TranslateModule,
-    RichTextEditorComponent,
-    MatCheckboxModule,
-    NgIf,
-    Audio1StimulusComponent,
-    Audio2StimulusComponent,
-    EmailStimulusComponent,
-    MatActionList,
-    MatListItem,
-    MessageStimulusComponent,
-    TextStimulusComponent,
-    TextRadioComponent,
-    ImageRadioComponent
-  ],
-  template: `
+    selector: 'aspect-editor-radio-wizard-dialog',
+    imports: [
+        MatDialogModule,
+        MatDividerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        OptionListPanelComponent,
+        MatButtonModule,
+        TranslateModule,
+        RichTextEditorComponent,
+        MatCheckboxModule,
+        NgIf,
+        Audio1StimulusComponent,
+        Audio2StimulusComponent,
+        EmailStimulusComponent,
+        MatActionList,
+        MatListItem,
+        MessageStimulusComponent,
+        TextStimulusComponent,
+        TextRadioComponent,
+        ImageRadioComponent
+    ],
+    template: `
     <h2 mat-dialog-title>Assistent: MC</h2>
     <div mat-dialog-content>
       @if (templateVariant == undefined) {
@@ -66,7 +65,7 @@ import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/ra
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
+    styles: `
   `
 })
 export class RadioWizardDialogComponent {

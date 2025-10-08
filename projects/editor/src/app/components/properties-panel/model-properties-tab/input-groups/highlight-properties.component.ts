@@ -8,15 +8,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'aspect-highlight-properties',
-  standalone: true,
-  imports: [
-    MatCheckboxModule,
-    NgIf,
-    TranslateModule,
-    MatFormFieldModule
-  ],
-  template: `
+    selector: 'aspect-highlight-properties',
+    imports: [
+        MatCheckboxModule,
+        NgIf,
+        TranslateModule,
+        MatFormFieldModule
+    ],
+    template: `
     <mat-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
                   [disabled]="disabled"
                   [checked]="$any(combinedProperties.highlightableYellow)"

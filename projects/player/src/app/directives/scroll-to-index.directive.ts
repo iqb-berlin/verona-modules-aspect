@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: '[aspectScrollToIndex]'
+    selector: '[aspectScrollToIndex]',
+    standalone: false
 })
 export class ScrollToIndexDirective implements OnInit, OnDestroy {
   @Input() selectIndex!: Subject<number>;

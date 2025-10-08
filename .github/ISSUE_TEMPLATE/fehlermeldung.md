@@ -1,6 +1,6 @@
 ---
 name: Fehlermeldung
-about: ''
+about: 'Etwas funktioniert nicht, wie erwartet.'
 title: ''
 labels: Bug
 assignees: ''

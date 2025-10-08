@@ -1,0 +1,67 @@
+mat-dialog-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .controls-area {
+      display: flex;
+    }
+    fieldset { /* Actually just used for a group label */
+      border-style: none;
+    }
+    .editable-property-panel {
+      display: flex;
+      align-items: center;
+    }
+    .property-edit-control-area {
+      width: 100px;
+      display: flex;
+      justify-content: center;
+    }
+    .property-edit-control-area > * {
+      align-self: center;
+    }
+
+    /* Center headings START */
+    .mat-mdc-header-cell {
+      text-align: center;
+    }
+    :host ::ng-deep .mat-mdc-header-cell div {
+      justify-content: center;
+    }
+    :host ::ng-deep tbody td {
+      text-align: center;
+    }
+    :host ::ng-deep .mat-sort-header-arrow {
+      position: absolute;
+      right: 0px;
+    }
+
+    .mat-mdc-row .mat-mdc-cell {
+      cursor: pointer;
+    }
+    .mat-mdc-row:hover .mat-mdc-cell {
+      background-color: lightgray;
+    }
+    .align-right {
+      margin-left: auto;
+    }
+    .mat-mdc-no-data-row {
+      text-align: center;
+      font-size: large;
+    }
+    .mat-mdc-no-data-row .mat-cell {
+      padding: 30px;
+    }
+    :host ::ng-deep mat-form-field.selected .mat-mdc-text-field-wrapper {
+      background-color: #9de8eb;
+    }
+    .action-button-cell {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+    .action-button-cell button {
+      display: flex;
+      align-items: center;
+    }
+

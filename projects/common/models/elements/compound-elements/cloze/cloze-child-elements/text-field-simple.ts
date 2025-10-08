@@ -28,6 +28,9 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     lineHeight: number;
   };
 
+  static icon: string = 'edit';
+
+
   constructor(element?: Partial<TextFieldSimpleProperties>, idService?: AbstractIDService) {
     super({ type: 'text-field-simple', ...element }, idService);
     if (isTextFieldSimpleProperties(element)) {

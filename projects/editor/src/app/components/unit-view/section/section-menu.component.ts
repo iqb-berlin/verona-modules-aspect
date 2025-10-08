@@ -12,8 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgForOf, NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { NgForOf, NgIf } from '@angular/common';
+import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
 import { Section } from 'common/models/section';
 import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
@@ -22,7 +23,6 @@ import { DragNDropValueObject } from 'common/interfaces';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
-import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
 import { UnitService } from '../../../services/unit-services/unit.service';
 import { DialogService } from '../../../services/dialog.service';
 import { SelectionService } from '../../../services/selection.service';
@@ -39,175 +39,12 @@ import { SelectionService } from '../../../services/selection.service';
     TranslateModule,
     MatCheckboxModule,
     MatFormFieldModule,
-    NgIf,
     MatInputModule,
-    SizeInputPanelComponent,
-    NgForOf
+    NgForOf,
+    NgIf,
+    SizeInputPanelComponent
   ],
-  template: `
-    <button mat-mini-fab [matMenuTriggerFor]="elementListMenu"
-            [matTooltip]="'Elementliste'"
-            [matTooltipPosition]="'left'">
-      <mat-icon>list</mat-icon>
-    </button>
-    <mat-menu #elementListMenu="matMenu" xPosition="before">
-      <mat-action-list [style.padding.px]="5">
-        <ng-container *ngIf="section.elements.length === 0">
-          Keine Elemente im Abschnitt
-        </ng-container>
-        <mat-list-item *ngFor="let element of section.elements"
-                       (mouseover)="onUnitListElHover(element)"
-                       (mouseleave)="onUnitListElLeave()"
-                       (click)="onUnitListElClick(element)">
-          <mat-icon matListItemIcon [style.margin-right.px]="10">
-            {{ $any(element.constructor).icon }}
-          </mat-icon>
-          <div matListItemTitle>
-            <i>{{ element.alias }}</i>
-          </div>
-
-        </mat-list-item>
-      </mat-action-list>
-    </mat-menu>
-
-    <button *ngIf="unitService.expertMode" mat-mini-fab [matTooltip]="'Hintergrundfarbe'" [matTooltipPosition]="'left'"
-            (click)="openColorPicker()">
-      <mat-icon>palette</mat-icon>
-    </button>
-    <input *ngIf="unitService.expertMode" #colorPicker type="color" [style.display]="'none'"
-           [value]="$any(section.backgroundColor)"
-           (change)="updateModel('backgroundColor', $any($event.target).value)">
-
-    <button mat-mini-fab [color]="section.ignoreNumbering ? 'primary' : 'accent'"
-            (click)="ignoreNumbering()"
-            [matTooltip]="'Von der Nummerierung ausnehmen'" [matTooltipPosition]="'left'">
-      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
-        <path d="m576-80-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56
-                 56-104-104L576-80ZM120-320v-80h280v80H120Zm0-160v-80h440v80H120Zm0-160v-80h440v80H120Z"/>
-      </svg>
-    </button>
-
-    <button *ngIf="unitService.expertMode" mat-mini-fab
-            (click)="showVisibilityRulesDialog()"
-            [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
-      <mat-icon>disabled_visible</mat-icon>
-    </button>
-
-    <button *ngIf="unitService.expertMode" mat-mini-fab [matMenuTriggerFor]="layoutMenu"
-            [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
-      <mat-icon>space_dashboard</mat-icon>
-    </button>
-    <mat-menu #layoutMenu="matMenu" xPosition="before">
-      <div (click)="$event.stopPropagation()" class="layoutMenu">
-        <mat-checkbox class="menuItem" [checked]="section.dynamicPositioning"
-                      (click)="$any($event).stopPropagation()"
-                      (change)="updateModel('dynamicPositioning', $event.checked)">
-          {{'section-menu.dynamic-positioning' | translate }}
-        </mat-checkbox>
-        <ng-container *ngIf="!section.dynamicPositioning">
-          <mat-form-field class="section-height-input" appearance="outline">
-            <mat-label>{{'section-menu.height' | translate }}</mat-label>
-            <input matInput type="number"
-                   [value]="$any(section.height)"
-                   (click)="$any($event).stopPropagation()"
-                   (change)="updateModel('height', $any($event.target).value || 0)">
-          </mat-form-field>
-        </ng-container>
-        <div *ngIf="section.dynamicPositioning">
-          <fieldset>
-            <legend>{{'section-menu.rows' | translate }}</legend>
-            <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
-                          (click)="$any($event).stopPropagation()"
-                          (change)="updateModel('autoRowSize', $event.checked)">
-              {{'section-menu.autoRowSize' | translate }}
-            </mat-checkbox>
-            <ng-container *ngIf="!section.autoRowSize">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'section-menu.height' | translate }}</mat-label>
-                <input matInput type="number"
-                       [value]="$any(section.height)"
-                       (click)="$any($event).stopPropagation()"
-                       (change)="updateModel('height', $any($event.target).value || 0)">
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>{{'section-menu.rowCount' | translate }}</mat-label>
-                <input matInput type="number"
-                       [value]="$any(section.gridRowSizes.length)"
-                       (click)="$any($event).stopPropagation()"
-                       (change)="modifySizeArray('gridRowSizes', $any($event).target.value || 0)">
-              </mat-form-field>
-              <ng-container *ngFor="let size of section.gridRowSizes ; let i = index">
-                <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
-                                         [value]="size.value"
-                                         [unit]="size.unit"
-                                         [allowedUnits]="['px', 'fr']"
-                                         (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
-                </aspect-size-input-panel>
-              </ng-container>
-            </ng-container>
-          </fieldset>
-          <fieldset>
-            <legend>{{'section-menu.columns' | translate }}</legend>
-            <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
-                          (click)="$any($event).stopPropagation()"
-                          (change)="updateModel('autoColumnSize', $event.checked)">
-              {{'section-menu.autoColumnSize' | translate }}
-            </mat-checkbox>
-            <ng-container *ngIf="!section.autoColumnSize">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
-                <input matInput type="number"
-                       [value]="$any(section.gridColumnSizes.length)"
-                       (click)="$any($event).stopPropagation()"
-                       (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0)">
-              </mat-form-field>
-              <ng-container *ngFor="let size of section.gridColumnSizes; let i = index">
-                <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
-                                         [value]="size.value"
-                                         [unit]="size.unit"
-                                         [allowedUnits]="['px', 'fr']"
-                                         (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
-                </aspect-size-input-panel>
-              </ng-container>
-            </ng-container>
-          </fieldset>
-        </div>
-      </div>
-    </mat-menu>
-
-    <button *ngIf="unitService.expertMode" mat-mini-fab
-            [matTooltip]="'Abschnitt kopieren'" [matTooltipPosition]="'left'"
-            (click)="copySection()">
-      <mat-icon>content_copy</mat-icon>
-    </button>
-    <button *ngIf="unitService.expertMode" mat-mini-fab
-            [matTooltip]="'Abschnitt einfügen'" [matTooltipPosition]="'left'"
-            (click)="showSectionInsertDialog()">
-      <mat-icon>content_paste</mat-icon>
-    </button>
-    <button *ngIf="sectionIndex !== 0 || pageIndex > 0" mat-mini-fab
-            [matTooltip]="'Nach oben verschieben'" [matTooltipPosition]="'left'"
-            (click)="this.moveSection('up')">
-      <mat-icon>north</mat-icon>
-    </button>
-    <button *ngIf="((sectionIndex < lastSectionIndex) ||
-                   (pageIndex < unitService.unit.pages.length - 1)) &&
-                   !(sectionIndex === lastSectionIndex && unitService.unit.pages[pageIndex].alwaysVisible)"
-            mat-mini-fab [matTooltip]="'Nach unten verschieben'" [matTooltipPosition]="'left'"
-            (click)="this.moveSection('down')">
-      <mat-icon>south</mat-icon>
-    </button>
-    <button *ngIf="unitService.expertMode" mat-mini-fab [matTooltip]="'Duplizieren'" [matTooltipPosition]="'left'"
-            (click)="duplicateSection()">
-      <mat-icon>control_point_duplicate</mat-icon>
-    </button>
-    <button *ngIf="lastSectionIndex > 0" mat-mini-fab
-            [matTooltip]="'Löschen'" [matTooltipPosition]="'left'"
-            (click)="deleteSection()">
-      <mat-icon>clear</mat-icon>
-    </button>
-  `,
+  templateUrl: './section-menu.component.html',
   styles: [
     '.layoutMenu {padding: 5px; width: 250px;}',
     'aspect-size-input-panel {max-width: 100%;}',
@@ -228,6 +65,8 @@ export class SectionMenuComponent implements OnDestroy {
   @ViewChild('colorPicker') colorPicker!: ElementRef;
   private ngUnsubscribe = new Subject<void>();
 
+  sectionElements: UIElement[] = [];
+
   constructor(public unitService: UnitService,
               private sectionService: SectionService,
               private selectionService: SelectionService,
@@ -242,13 +81,19 @@ export class SectionMenuComponent implements OnDestroy {
     this.sectionService.updateSectionProperty(this.section, property, value);
   }
 
+  updateElementList() {
+    this.sectionElements = this.section.getAllElements();
+  }
+
   onUnitListElClick(element: UIElement): void {
     this.elementHoverEnd.emit();
     this.elementSelected.emit(element.id);
   }
 
   onUnitListElHover(element: UIElement): void {
-    this.elementHovered.emit(element.id);
+    /* compound children have no position and finding the correct
+    * component to hightlight is too complicated right now. */
+    if (element.position) this.elementHovered.emit(element.id);
   }
 
   onUnitListElLeave(): void {

@@ -6,24 +6,23 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgForOf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-    selector: 'aspect-hotspot-props',
-    imports: [
-        NgIf,
-        TranslateModule,
-        CdkDrag,
-        CdkDropList,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatIconModule,
-        NgForOf
-    ],
-    template: `
+  selector: 'aspect-hotspot-props',
+  imports: [
+    TranslateModule,
+    CdkDrag,
+    CdkDropList,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    NgForOf
+  ],
+  template: `
     <fieldset class="fx-column-start-stretch">
       <legend>{{'propertiesPanel.hotspots' | translate }}</legend>
       <button [style.align-self]="'center'" mat-mini-fab matSuffix color="primary" [style.bottom.px]="3"

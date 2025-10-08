@@ -69,6 +69,17 @@ export class KeyLayout {
           ]
         };
       }
+      case 'chemicalEquation': {
+        return {
+          default: [
+            ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇'],
+            ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷'],
+            ['⁺', '⁻', '→', '↔', '⇌', '+', '(', ')']
+          ],
+          shift: [[]],
+          additional: [[]]
+        };
+      }
       case 'squareDashDot': {
         return {
           default: [

@@ -117,7 +117,7 @@ TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | State
 PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[] | UIElement[];
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
-| 'comparisonOperators' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';
+| 'comparisonOperators' | 'chemicalEquation' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';
 
 export interface UIElementProperties {
   type: UIElementType;

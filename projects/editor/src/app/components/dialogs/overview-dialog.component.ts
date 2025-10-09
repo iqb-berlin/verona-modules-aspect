@@ -119,6 +119,8 @@ import { IDEditDialogComponent } from './id-edit-dialog.component';
           </fieldset>
         </div>
 
+        Ausgewählte Elemente: {{ elementSelection.selected.length }}
+
         <table mat-table [dataSource]="tableData" matSort>
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>

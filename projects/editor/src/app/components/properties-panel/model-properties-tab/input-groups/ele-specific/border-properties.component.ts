@@ -4,15 +4,12 @@ import {
 import { UIElement } from 'common/models/elements/element';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'aspect-border-properties',
-  standalone: true,
   imports: [
     MatCheckboxModule,
-    TranslateModule,
-    NgIf
+    TranslateModule
   ],
   template: `
     <div class="fx-column-start-stretch">

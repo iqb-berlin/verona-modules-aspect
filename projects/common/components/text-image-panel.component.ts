@@ -5,8 +5,8 @@ import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
 import { AudioPlayerService } from 'common/services/audio-player.service';
 
 @Component({
-  selector: 'aspect-text-image-panel',
-  template: `
+    selector: 'aspect-text-image-panel',
+    template: `
     <div *ngIf="$any(label).audioSrc"
          class="audio-button"
          (touchstart)="audioPlayerService.play($any(label).audioSrc)"
@@ -23,7 +23,7 @@ import { AudioPlayerService } from 'common/services/audio-player.service';
       <div *ngIf="label.text !== ''" class="text" [innerHTML]="label.text | safeResourceHTML"></div>
     </div>
   `,
-  styles: [`
+    styles: [`
     :host {
       align-self: center;
       justify-content: inherit;
@@ -72,7 +72,8 @@ import { AudioPlayerService } from 'common/services/audio-player.service';
     .hide-content .text, .hide-content img {
       visibility: hidden;
     }
-  `]
+  `],
+    standalone: false
 })
 export class TextImagePanelComponent {
   @Input() label!: TextImageLabel | DragNDropValueObject;

@@ -5,8 +5,8 @@ import { UIElement } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-input-element-properties',
-  template: `
+    selector: 'aspect-input-element-properties',
+    template: `
     <fieldset class="fx-column-start-stretch">
       <legend>Eingabeelement</legend>
       <!-- DropList label is unused -->
@@ -37,7 +37,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
                (input)="updateModel.emit({ property: 'requiredWarnMessage', value: $any($event.target).value })">
       </mat-form-field>
     </fieldset>
-  `
+  `,
+    standalone: false
 })
 export class InputElementPropertiesComponent {
   @Input() combinedProperties!: UIElement;

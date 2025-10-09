@@ -5,8 +5,8 @@ import { ButtonElement, ButtonEvent } from 'common/models/elements/button/button
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
-  selector: 'aspect-button',
-  template: `
+    selector: 'aspect-button',
+    template: `
     <a *ngIf="!elementModel.imageSrc && elementModel.asLink"
        href="{{elementModel.action+'-'+elementModel.actionParam}}"
        [style.background-color]="elementModel.styling.backgroundColor"
@@ -64,12 +64,13 @@ import { ElementComponent } from '../../directives/element-component.directive';
                     buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam })) :
                     false">
   `,
-  styles: [
-    ':host {display: flex; width: 100%; height: 100%;}',
-    '.full-size {width: 100%; height: 100%;}',
-    '.image {object-fit: contain;}',
-    '.mdc-button {min-width: unset;}'
-  ]
+    styles: [
+        ':host {display: flex; width: 100%; height: 100%;}',
+        '.full-size {width: 100%; height: 100%;}',
+        '.image {object-fit: contain;}',
+        '.mdc-button {min-width: unset;}'
+    ],
+    standalone: false
 })
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;

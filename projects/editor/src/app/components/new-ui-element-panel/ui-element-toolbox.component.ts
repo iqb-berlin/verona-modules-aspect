@@ -29,9 +29,10 @@ import { SelectionService } from '../../services/selection.service';
 import { UnitService } from '../../services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-ui-element-toolbox',
-  templateUrl: './ui-element-toolbox.component.html',
-  styleUrls: ['./ui-element-toolbox.component.css']
+    selector: 'aspect-ui-element-toolbox',
+    templateUrl: './ui-element-toolbox.component.html',
+    styleUrls: ['./ui-element-toolbox.component.css'],
+    standalone: false
 })
 export class UiElementToolboxComponent {
   hoverRadioButton: boolean = false;

@@ -3,8 +3,8 @@ import { HotspotImageElement } from 'common/models/elements/input-elements/hotsp
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-  selector: 'aspect-hotspot-image',
-  template: `
+    selector: 'aspect-hotspot-image',
+    template: `
     <div *ngIf="elementModel.src"
          [style.width.%]="100"
          [style.height.%]="100"
@@ -88,18 +88,19 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
     </div>
   `,
-  styles: [
-    '.triangle-half {height: 100%; width: 50%; overflow: hidden; position: absolute; pointer-events: none;}',
-    '.triangle-container {overflow: hidden; position: absolute; pointer-events: none;}',
-    '.triangle-half-inner {transform-origin: 0 100%; width: 500%; height: 500%; bottom: 0; left: 0;}',
-    '.triangle-half-bottom-border {top: 0; height: 100%; width: 100%; border-bottom-style: solid;}',
-    '.border {border-style: solid;}',
-    '.border-left {border-left-style: solid;}',
-    '.circle {border-radius: 50%;}',
-    '.hotspot {position: absolute; box-sizing: border-box;}',
-    '.active-hotspot {cursor: pointer; pointer-events: all;}',
-    '.image-container {position: relative;}'
-  ]
+    styles: [
+        '.triangle-half {height: 100%; width: 50%; overflow: hidden; position: absolute; pointer-events: none;}',
+        '.triangle-container {overflow: hidden; position: absolute; pointer-events: none;}',
+        '.triangle-half-inner {transform-origin: 0 100%; width: 500%; height: 500%; bottom: 0; left: 0;}',
+        '.triangle-half-bottom-border {top: 0; height: 100%; width: 100%; border-bottom-style: solid;}',
+        '.border {border-style: solid;}',
+        '.border-left {border-left-style: solid;}',
+        '.circle {border-radius: 50%;}',
+        '.hotspot {position: absolute; box-sizing: border-box;}',
+        '.active-hotspot {cursor: pointer; pointer-events: all;}',
+        '.image-container {position: relative;}'
+    ],
+    standalone: false
 })
 export class HotspotImageComponent extends FormElementComponent {
   @Input() elementModel!: HotspotImageElement;

@@ -3,8 +3,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReferenceList } from 'editor/src/app/services/reference-manager';
 
 @Component({
-  selector: 'aspect-delete-reference-dialog',
-  template: `
+    selector: 'aspect-delete-reference-dialog',
+    template: `
     <div mat-dialog-title [style.color]="'red'">Element wird referenziert</div>
     <div mat-dialog-content>
       <aspect-reference-list [refs]="data.refs"></aspect-reference-list>
@@ -21,10 +21,11 @@ import { ReferenceList } from 'editor/src/app/services/reference-manager';
       </button>
     </div>
     `,
-  styles: [
-    '.mat-mdc-dialog-content {display: flex; flex-direction: column;}',
-    ':host ::ng-deep mat-icon {margin-right: 6px !important;}'
-  ]
+    styles: [
+        '.mat-mdc-dialog-content {display: flex; flex-direction: column;}',
+        ':host ::ng-deep mat-icon {margin-right: 6px !important;}'
+    ],
+    standalone: false
 })
 export class DeleteReferenceDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { refs: ReferenceList[] }) { }

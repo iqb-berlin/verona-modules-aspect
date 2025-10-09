@@ -10,7 +10,10 @@ describe('InputGroupElementComponent', () => {
   let component: InputGroupElementComponent;
   let fixture: ComponentFixture<InputGroupElementComponent>;
 
-  @Component({ selector: 'aspect-radio-button-group', template: '' })
+  @Component({
+    selector: 'aspect-radio-button-group', template: '',
+    standalone: false
+})
   class RadioStubComponent {
     @Input() elementModel!: RadioButtonGroupElement;
     @Input() parentForm!: UntypedFormGroup;

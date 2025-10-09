@@ -2,7 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CdkOverlayOrigin } from '@angular/cdk/overlay';
 
-@Pipe({ name: 'asOverlayOrigin' })
+@Pipe({
+    name: 'asOverlayOrigin',
+    standalone: false
+})
 
 export class AsOverlayOriginPipe implements PipeTransform {
   transform(elementComponent: ElementComponent): CdkOverlayOrigin {

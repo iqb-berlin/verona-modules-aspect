@@ -12,8 +12,8 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
 import { Label, OptionElement, TextImageLabel, TextLabel } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-options-field-set',
-  template: `
+    selector: 'aspect-options-field-set',
+    template: `
     <!--dropdown, radio-button-group-->
     <aspect-option-list-panel *ngIf="combinedProperties.options !== undefined"
                               [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
@@ -39,7 +39,8 @@ import { Label, OptionElement, TextImageLabel, TextLabel } from 'common/interfac
                               (itemRemoved)="removeLikertRow($event)"
                               (itemEdited)="editLikertRow($event)">
     </aspect-option-list-panel>
-  `
+  `,
+    standalone: false
 })
 export class OptionsFieldSetComponent {
   @Input() combinedProperties!: CombinedProperties;

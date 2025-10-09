@@ -6,9 +6,10 @@ import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 
 @Component({
-  selector: 'aspect-base-group-element',
-  templateUrl: './base-group-element.component.html',
-  styleUrls: ['./base-group-element.component.scss']
+    selector: 'aspect-base-group-element',
+    templateUrl: './base-group-element.component.html',
+    styleUrls: ['./base-group-element.component.scss'],
+    standalone: false
 })
 export class BaseGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponentContainer',

@@ -5,14 +5,13 @@ import { MatListModule } from '@angular/material/list';
 import { NgForOf } from '@angular/common';
 
 @Component({
-  selector: 'aspect-element-list',
-  standalone: true,
-  imports: [
-    NgForOf,
-    MatIconModule,
-    MatListModule
-  ],
-  template: `
+    selector: 'aspect-element-list',
+    imports: [
+        NgForOf,
+        MatIconModule,
+        MatListModule
+    ],
+    template: `
     <mat-list>
       <mat-list-item *ngFor="let element of elements">
         <mat-icon matListItemIcon>
@@ -24,10 +23,10 @@ import { NgForOf } from '@angular/common';
       </mat-list-item>
     </mat-list>
   `,
-  styles: [
-    'mat-icon {color: inherit !important;}',
-    '.mat-mdc-list-item-title {color: inherit !important;}'
-  ]
+    styles: [
+        'mat-icon {color: inherit !important;}',
+        '.mat-mdc-list-item-title {color: inherit !important;}'
+    ]
 })
 export class ElementListComponent {
   @Input() elements!: UIElement[];

@@ -7,7 +7,10 @@ describe('PageScrollButtonComponent', () => {
   let component: PageScrollButtonComponent;
   let fixture: ComponentFixture<PageScrollButtonComponent>;
 
-  @Component({ selector: 'aspect-section', template: '' })
+  @Component({
+    selector: 'aspect-section', template: '',
+    standalone: false
+})
   class SectionComponent {
     @Input() section!: Section;
     @Input() pageIndex!: number;

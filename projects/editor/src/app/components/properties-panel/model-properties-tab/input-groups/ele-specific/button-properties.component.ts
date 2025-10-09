@@ -13,20 +13,19 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'aspect-button-properties',
-  standalone: true,
-  imports: [
-    NgIf,
-    NgForOf,
-    TranslateModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    FormsModule
-  ],
-  template: `
+    selector: 'aspect-button-properties',
+    imports: [
+        NgIf,
+        NgForOf,
+        TranslateModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        FormsModule
+    ],
+    template: `
     <ng-container *ngIf="combinedProperties.asLink !== undefined">
       <fieldset>
         <legend>{{ 'propertiesPanel.presentation' | translate }}</legend>
@@ -111,7 +110,7 @@ import { FormsModule } from '@angular/forms';
       </fieldset>
     </ng-container>
   `,
-  styles: [`
+    styles: [`
     .checked {
       background-color: #ccc;
     }

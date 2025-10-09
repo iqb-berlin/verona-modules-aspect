@@ -5,8 +5,8 @@ import { DimensionProperties, PositionProperties } from 'common/models/elements/
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
-  selector: 'aspect-dimension-field-set',
-  template: `
+    selector: 'aspect-dimension-field-set',
+    template: `
     <fieldset>
       <legend>Dimensionen</legend>
       <ng-container *ngIf="unitService.unit.pages[selectionService.selectedPageIndex]
@@ -148,7 +148,8 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
         </mat-form-field>
       </ng-template>
     </fieldset>
-  `
+  `,
+    standalone: false
 })
 
 export class DimensionFieldSetComponent {

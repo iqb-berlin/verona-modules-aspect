@@ -14,27 +14,26 @@ import { FormsModule } from '@angular/forms';
 import { FileService } from 'common/services/file.service';
 
 @Component({
-  selector: 'aspect-editor-checkbox-wizard-dialog',
-  standalone: true,
-  imports: [
-    TranslateModule,
-    MatDialogModule,
-    MatButton,
-    RichTextEditorComponent,
-    MatCheckbox,
-    CdkDrag,
-    CdkDropList,
-    CdkTextareaAutosize,
-    MatFormField,
-    MatIcon,
-    MatIconButton,
-    MatInput,
-    MatSuffix,
-    NgForOf,
-    FormsModule,
-    MatLabel
-  ],
-  template: `
+    selector: 'aspect-editor-checkbox-wizard-dialog',
+    imports: [
+        TranslateModule,
+        MatDialogModule,
+        MatButton,
+        RichTextEditorComponent,
+        MatCheckbox,
+        CdkDrag,
+        CdkDropList,
+        CdkTextareaAutosize,
+        MatFormField,
+        MatIcon,
+        MatIconButton,
+        MatInput,
+        MatSuffix,
+        NgForOf,
+        FormsModule,
+        MatLabel
+    ],
+    template: `
     <h2 mat-dialog-title>Assistent: Kontrollkästchen</h2>
     <div mat-dialog-content>
       <h3>Frage</h3>
@@ -80,7 +79,7 @@ import { FileService } from 'common/services/file.service';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
+    styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

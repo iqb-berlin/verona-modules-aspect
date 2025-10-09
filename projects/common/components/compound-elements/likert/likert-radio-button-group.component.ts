@@ -3,8 +3,8 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 
 @Component({
-  selector: 'aspect-likert-radio-button-group',
-  template: `
+    selector: 'aspect-likert-radio-button-group',
+    template: `
     <mat-radio-group [style.display]="'grid'"
                      [style.justify-items]="'center'"
                      [formControl]="elementFormControl"
@@ -37,7 +37,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
       </mat-radio-button>
     </mat-radio-group>
   `,
-  styles: [`
+    styles: [`
     .fx-row-start-stretch {
       box-sizing: border-box;
       display: flex;
@@ -52,7 +52,8 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
       justify-content: flex-start;
       align-items: stretch;
     }
-  `]
+  `],
+    standalone: false
 })
 export class LikertRadioButtonGroupComponent extends FormElementComponent {
   @Input() elementModel!: LikertRowElement;

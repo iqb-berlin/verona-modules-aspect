@@ -11,22 +11,21 @@ import { Audio1StimulusComponent } from 'editor/src/app/section-templates/dialog
 import { Audio2StimulusComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio2-stimulus.component';
 
 @Component({
-  selector: 'aspect-editor-stimulus-wizard-dialog',
-  standalone: true,
-  imports: [
-    TranslateModule,
-    MatDialogModule,
-    FormsModule,
-    MatButtonModule,
-    EmailStimulusComponent,
-    MessageStimulusComponent,
-    MatActionList,
-    MatListItem,
-    TextStimulusComponent,
-    Audio1StimulusComponent,
-    Audio2StimulusComponent
-  ],
-  template: `
+    selector: 'aspect-editor-stimulus-wizard-dialog',
+    imports: [
+        TranslateModule,
+        MatDialogModule,
+        FormsModule,
+        MatButtonModule,
+        EmailStimulusComponent,
+        MessageStimulusComponent,
+        MatActionList,
+        MatListItem,
+        TextStimulusComponent,
+        Audio1StimulusComponent,
+        Audio2StimulusComponent
+    ],
+    template: `
     <h2 mat-dialog-title>Assistent: Stimulus</h2>
     <div mat-dialog-content>
       @if (templateVariant == undefined) {
@@ -59,7 +58,7 @@ import { Audio2StimulusComponent } from 'editor/src/app/section-templates/dialog
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
+    styles: `
   `
 })
 export class StimulusWizardDialogComponent {

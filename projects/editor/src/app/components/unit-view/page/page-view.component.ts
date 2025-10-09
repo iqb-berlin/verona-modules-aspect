@@ -11,9 +11,9 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
 import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
 
 @Component({
-  selector: 'aspect-editor-page-view',
-  templateUrl: './page-view.component.html',
-  styles: `
+    selector: 'aspect-editor-page-view',
+    templateUrl: './page-view.component.html',
+    styles: `
     :host {
       display: flex;
     }
@@ -32,7 +32,8 @@ import { SectionComponent } from 'editor/src/app/components/unit-view/section/se
     .page-label {
       display: inline; vertical-align: super; font-size: large;
     }
-  `
+  `,
+    standalone: false
 })
 export class PageViewComponent implements OnInit, OnDestroy {
   @Input() page!: Page;

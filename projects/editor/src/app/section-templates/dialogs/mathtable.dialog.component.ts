@@ -13,22 +13,21 @@ import { MatInputModule } from '@angular/material/input';
 import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'aspect-editor-mathtable-wizard-dialog',
-  standalone: true,
-  imports: [
-    NgIf,
-    NgForOf,
-    MatDialogModule,
-    TranslateModule,
-    MatFormFieldModule,
-    MatOptionModule,
-    MatSelectModule,
-    FormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule
-  ],
-  template: `
+    selector: 'aspect-editor-mathtable-wizard-dialog',
+    imports: [
+        NgIf,
+        NgForOf,
+        MatDialogModule,
+        TranslateModule,
+        MatFormFieldModule,
+        MatOptionModule,
+        MatSelectModule,
+        FormsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule
+    ],
+    template: `
     <h2 mat-dialog-title>Assistent: Rechenkästchen</h2>
     <div mat-dialog-content>
       <h3>Rechenart</h3>
@@ -67,7 +66,7 @@ import { NgForOf, NgIf } from '@angular/common';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
+    styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, .add-button) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

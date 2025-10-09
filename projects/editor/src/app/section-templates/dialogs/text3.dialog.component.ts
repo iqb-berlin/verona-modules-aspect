@@ -7,17 +7,16 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'aspect-editor-text2-wizard-dialog',
-  standalone: true,
-  imports: [
-    TranslateModule,
-    MatDialogModule,
-    RichTextEditorComponent,
-    MatCheckboxModule,
-    FormsModule,
-    MatButtonModule
-  ],
-  template: `
+    selector: 'aspect-editor-text2-wizard-dialog',
+    imports: [
+        TranslateModule,
+        MatDialogModule,
+        RichTextEditorComponent,
+        MatCheckboxModule,
+        FormsModule,
+        MatButtonModule
+    ],
+    template: `
     <h2 mat-dialog-title>Aufgabenidee</h2>
     <div mat-dialog-content>
       <h3>Beschreibung der Aufgabenidee:</h3>
@@ -51,7 +50,7 @@ import { MatButtonModule } from '@angular/material/button';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
+    styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

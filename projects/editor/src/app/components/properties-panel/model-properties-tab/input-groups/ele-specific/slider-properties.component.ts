@@ -9,16 +9,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-slider-properties',
-  standalone: true,
-  imports: [
-    NgIf,
-    TranslateModule,
-    MatInputModule,
-    FormsModule,
-    MatCheckboxModule
-  ],
-  template: `
+    selector: 'aspect-slider-properties',
+    imports: [
+        NgIf,
+        TranslateModule,
+        MatInputModule,
+        FormsModule,
+        MatCheckboxModule
+    ],
+    template: `
     <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
       <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>
       <input matInput type="number" #minValue="ngModel"

@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Page } from 'common/models/page';
 
 @Pipe({
-  name: 'alwaysVisiblePage'
+    name: 'alwaysVisiblePage',
+    standalone: false
 })
 export class AlwaysVisiblePagePipe implements PipeTransform {
 

@@ -3,9 +3,10 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { ConnectedPosition, Overlay, RepositionScrollStrategy } from '@angular/cdk/overlay';
 
 @Component({
-  selector: 'aspect-print-label',
-  templateUrl: './print-label.component.html',
-  styleUrl: './print-label.component.scss'
+    selector: 'aspect-print-label',
+    templateUrl: './print-label.component.html',
+    styleUrl: './print-label.component.scss',
+    standalone: false
 })
 export class PrintLabelComponent {
   @Input() elementComponent!: ElementComponent;

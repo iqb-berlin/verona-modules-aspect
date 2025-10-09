@@ -9,8 +9,8 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
 
 // TODO background color implementieren
 @Component({
-  selector: 'aspect-cloze',
-  template: `
+    selector: 'aspect-cloze',
+    template: `
     <div [style.width.%]="100"
          [style.height]="'auto'"
          [style.column-count]="elementModel.columnCount">
@@ -171,14 +171,15 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
       </ng-container>
     </ng-template>
   `,
-  styles: [
-    'p {margin: 0}',
-    ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
-    '::ng-deep p:empty::after {content: \'\'; display: inline-block;}', // render empty p
-    'p span {font-size: inherit}',
-    'sup, sub {line-height: 0;}',
-    '.droplist-child {vertical-align: middle;}'
-  ]
+    styles: [
+        'p {margin: 0}',
+        ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
+        '::ng-deep p:empty::after {content: \'\'; display: inline-block;}', // render empty p
+        'p span {font-size: inherit}',
+        'sup, sub {line-height: 0;}',
+        '.droplist-child {vertical-align: middle;}'
+    ],
+    standalone: false
 })
 export class ClozeComponent extends CompoundElementComponent {
   @Input() elementModel!: ClozeElement;

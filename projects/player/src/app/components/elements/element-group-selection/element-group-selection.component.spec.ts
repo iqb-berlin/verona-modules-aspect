@@ -24,43 +24,64 @@ describe('ElementGroupSelectionComponent', () => {
   let component: ElementGroupSelectionComponent;
   let fixture: ComponentFixture<ElementGroupSelectionComponent>;
 
-  @Component({ selector: 'aspect-text-group-element', template: '' })
+  @Component({
+    selector: 'aspect-text-group-element', template: '',
+    standalone: false
+})
   class ElementTextGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-input-group-element', template: '' })
+  @Component({
+    selector: 'aspect-input-group-element', template: '',
+    standalone: false
+})
   class ElementInputGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-text-input-group-element', template: '' })
+  @Component({
+    selector: 'aspect-text-input-group-element', template: '',
+    standalone: false
+})
   class ElementTextInputGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-media-player-group-element', template: '' })
+  @Component({
+    selector: 'aspect-media-player-group-element', template: '',
+    standalone: false
+})
   class ElementMediaPlayerGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-compound-group-element', template: '' })
+  @Component({
+    selector: 'aspect-compound-group-element', template: '',
+    standalone: false
+})
   class ElementCompoundGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-base-group-element', template: '' })
+  @Component({
+    selector: 'aspect-base-group-element', template: '',
+    standalone: false
+})
   class ElementBaseGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-interactive-group-element', template: '' })
+  @Component({
+    selector: 'aspect-interactive-group-element', template: '',
+    standalone: false
+})
   class ElementInteractiveGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;

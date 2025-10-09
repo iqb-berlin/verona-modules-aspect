@@ -6,15 +6,12 @@ import { Markable } from 'player/src/app/models/markable.interface';
 import { BehaviorSubject } from 'rxjs';
 import { MarkingRange } from 'common/models/marking-data';
 import { MarkableDelimiterComponent } from 'player/src/app/components/markable-delimiter/markable-delimiter.component';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'aspect-markables-container',
-  standalone: true,
   imports: [
     MarkableWordComponent,
-    MarkableDelimiterComponent,
-    JsonPipe
+    MarkableDelimiterComponent
   ],
   templateUrl: './markables-container.component.html',
   styleUrl: './markables-container.component.scss'

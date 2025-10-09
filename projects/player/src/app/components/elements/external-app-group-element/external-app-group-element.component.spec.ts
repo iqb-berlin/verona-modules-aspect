@@ -10,7 +10,10 @@ describe('ExternalAppGroupElementComponent', () => {
   let component: ExternalAppGroupElementComponent;
   let fixture: ComponentFixture<ExternalAppGroupElementComponent>;
 
-  @Component({ selector: 'aspect-geometry', template: '' })
+  @Component({
+    selector: 'aspect-geometry', template: '',
+    standalone: false
+})
   class GeometryStubComponent {
     @Input() elementModel!: GeometryElement;
     @Input() appDefinition!: string;

@@ -4,8 +4,8 @@ import { StateVariable } from 'common/models/state-variable';
 import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
-  templateUrl: './state-variables-dialog.component.html',
-  styles: [`
+    templateUrl: './state-variables-dialog.component.html',
+    styles: [`
     .add-button {
       width: 100%;
       height: 25px;
@@ -16,7 +16,8 @@ import { IDService } from 'editor/src/app/services/id.service';
       color: white;
       margin-top: -5px;
     }
-  `]
+  `],
+    standalone: false
 })
 export class StateVariablesDialogComponent {
   stateVariables: StateVariable[];

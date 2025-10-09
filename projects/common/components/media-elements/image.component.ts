@@ -6,8 +6,8 @@ import { ValueChangeElement } from 'common/interfaces';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
-  selector: 'aspect-image',
-  template: `
+    selector: 'aspect-image',
+    template: `
     <div *ngIf="elementModel.src"
          [style.width.%]="100"
          [style.height.%]="100"
@@ -34,12 +34,13 @@ import { ElementComponent } from '../../directives/element-component.directive';
       </aspect-image-magnifier>
     </div>
   `,
-  styles: [
-    '.allow-fullscreen {cursor: zoom-in}',
-    '.image-container {position: relative}',
-    '.max-size-image {max-width: 100%; max-height: 100%}',
-    '.fit-image {width: 100%; height: 100%; object-fit: contain}'
-  ]
+    styles: [
+        '.allow-fullscreen {cursor: zoom-in}',
+        '.image-container {position: relative}',
+        '.max-size-image {max-width: 100%; max-height: 100%}',
+        '.fit-image {width: 100%; height: 100%; object-fit: contain}'
+    ],
+    standalone: false
 })
 export class ImageComponent extends ElementComponent {
   @Input() elementModel!: ImageElement;

@@ -7,8 +7,8 @@ import { TextAreaElement } from 'common/models/elements/input-elements/text-area
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
-  selector: 'aspect-text-area',
-  template: `
+    selector: 'aspect-text-area',
+    template: `
     <mat-form-field
       [ngClass]="{ 'no-label' : !elementModel.label}"
       [style.width.%]="100"
@@ -54,7 +54,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       </mat-error>
     </mat-form-field>
   `,
-  styles: [`
+    styles: [`
     :host ::ng-deep .no-label .mdc-notched-outline__notch {
       display: none;
     }
@@ -72,7 +72,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       right: 0;
       font-size: 150%;
     }
-  `]
+  `],
+    standalone: false
 })
 export class TextAreaComponent extends TextInputComponent {
   @Input() elementModel!: TextAreaElement;
@@ -80,7 +81,8 @@ export class TextAreaComponent extends TextInputComponent {
 }
 
 @Directive({
-  selector: '[autoHeight]'
+    selector: '[autoHeight]',
+    standalone: false
 })
 export class AutoHeightDirective implements AfterViewInit {
   @Input() autoHeight!: boolean;

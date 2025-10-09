@@ -35,22 +35,21 @@ export class GetValidDropListsPipe implements PipeTransform {
 }
 
 @Component({
-  selector: 'aspect-drop-list-properties',
-  standalone: true,
-  imports: [
-    NgIf,
-    TranslateModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    OptionListPanelComponent,
-    FormsModule,
-    MatButtonModule,
-    NgForOf,
-    MatTooltipModule,
-    GetValidDropListsPipe
-  ],
-  template: `
+    selector: 'aspect-drop-list-properties',
+    imports: [
+        NgIf,
+        TranslateModule,
+        MatInputModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        OptionListPanelComponent,
+        FormsModule,
+        MatButtonModule,
+        NgForOf,
+        MatTooltipModule,
+        GetValidDropListsPipe
+    ],
+    template: `
     <div *ngIf="combinedProperties.type === 'drop-list'"
          class="fx-column-start-stretch">
       <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'Neue Option'"

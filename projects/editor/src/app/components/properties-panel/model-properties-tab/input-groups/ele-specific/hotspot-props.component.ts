@@ -6,16 +6,14 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgForOf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'aspect-hotspot-props',
-  standalone: true,
   imports: [
-    NgIf,
     TranslateModule,
     CdkDrag,
     CdkDropList,

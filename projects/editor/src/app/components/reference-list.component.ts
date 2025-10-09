@@ -9,15 +9,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { ElementListComponent } from 'editor/src/app/components/element-list.component';
 
 @Component({
-  selector: 'aspect-reference-list',
-  standalone: true,
-  imports: [
-    NgForOf,
-    MatListModule,
-    MatIconModule,
-    ElementListComponent
-  ],
-  template: `
+    selector: 'aspect-reference-list',
+    imports: [
+        NgForOf,
+        MatListModule,
+        MatIconModule,
+        ElementListComponent
+    ],
+    template: `
     <ng-container *ngFor="let refGroup of refs ? refs : data">
       <span>
         <b>{{ refGroup.element.alias }}</b> wird referenziert von:
@@ -25,9 +24,9 @@ import { ElementListComponent } from 'editor/src/app/components/element-list.com
       <aspect-element-list [elements]="refGroup.refs"></aspect-element-list>
     </ng-container>
   `,
-  styles: [
-    '.mat-mdc-list-item-title {color: inherit !important;}'
-  ]
+    styles: [
+        '.mat-mdc-list-item-title {color: inherit !important;}'
+    ]
 })
 export class ReferenceListComponent {
   @Input() refs: ReferenceList[] | undefined;

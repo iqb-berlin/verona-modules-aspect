@@ -12,14 +12,20 @@ describe('PageComponent', () => {
   let component: PageComponent;
   let fixture: ComponentFixture<PageComponent>;
 
-  @Component({ selector: 'aspect-section', template: '' })
+  @Component({
+    selector: 'aspect-section', template: '',
+    standalone: false
+})
   class SectionComponent {
     @Input() section!: Section;
     @Input() pageIndex!: number;
     @Input() sectionNumbering!: boolean;
   }
 
-  @Directive({ selector: '[aspectSectionVisibilityHandling]' })
+  @Directive({
+    selector: '[aspectSectionVisibilityHandling]',
+    standalone: false
+})
   class SectionVisibilityHandling {
     @Input() mediaStatusChanged!: Subject<string>;
     @Input() section!: Section;
@@ -27,13 +33,19 @@ describe('PageComponent', () => {
     @Input() sectionIndex!: number;
   }
 
-  @Directive({ selector: '[aspectInViewDetection]' })
+  @Directive({
+    selector: '[aspectInViewDetection]',
+    standalone: false
+})
   class InViewDetection {
     @Input() detectionType!: 'top' | 'bottom';
     @Output() intersecting = new EventEmitter();
   }
 
-  @Pipe({ name: 'isEnabledNavigationTarget' })
+  @Pipe({
+    name: 'isEnabledNavigationTarget',
+    standalone: false
+})
   class MockIsEnabledNavigationTargetPipe implements PipeTransform {
     transform(): boolean {
       return true;

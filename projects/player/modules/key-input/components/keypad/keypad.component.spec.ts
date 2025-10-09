@@ -7,7 +7,10 @@ import { InputAssistancePreset } from 'common/interfaces';
 describe('KeypadComponent', () => {
   let component: KeypadComponent;
   let fixture: ComponentFixture<KeypadComponent>;
-  @Component({ selector: 'aspect-keypad-layout', template: '' })
+  @Component({
+    selector: 'aspect-keypad-layout', template: '',
+    standalone: false
+})
   class KeypadLayoutComponent {
     @Input() preset!: InputAssistancePreset;
     @Input() layout!: KeyInputLayout;

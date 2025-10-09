@@ -14,8 +14,8 @@ import { ValueChangeElement } from 'common/interfaces';
 declare const GGBApplet: any;
 
 @Component({
-  selector: 'aspect-geometry',
-  template: `
+    selector: 'aspect-geometry',
+    template: `
     <button *ngIf="this.elementModel.showResetIcon"
             mat-stroked-button class="reset-button"
             (click)="reset()">
@@ -27,12 +27,13 @@ declare const GGBApplet: any;
                     (timeOut)="throwError('geometry-timeout', 'Failed to load geometry in time')">
     </aspect-spinner>
   `,
-  styles: [
-    ':host {display: block; width: 100%; height: 100%;}',
-    ':host {position: relative;}',
-    ':host .reset-icon {width: 1.5rem; height: 1.5rem; font-size: 1.5rem;}',
-    '.reset-button {margin-bottom: 3px;}'
-  ]
+    styles: [
+        ':host {display: block; width: 100%; height: 100%;}',
+        ':host {position: relative;}',
+        ':host .reset-icon {width: 1.5rem; height: 1.5rem; font-size: 1.5rem;}',
+        '.reset-button {margin-bottom: 3px;}'
+    ],
+    standalone: false
 })
 export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {
   @Input() elementModel!: GeometryElement;

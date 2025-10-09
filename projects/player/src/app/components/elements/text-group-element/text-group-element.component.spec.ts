@@ -14,7 +14,10 @@ describe('TextGroupElementComponent', () => {
   let component: TextGroupElementComponent;
   let fixture: ComponentFixture<TextGroupElementComponent>;
 
-  @Component({ selector: 'aspect-text', template: '' })
+  @Component({
+    selector: 'aspect-text', template: '',
+    standalone: false
+})
   class TextStubComponent {
     @Input() elementModel!: TextElement;
     @Input() savedText!: string;

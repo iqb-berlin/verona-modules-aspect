@@ -269,6 +269,7 @@ export class OverviewDialogComponent implements AfterViewInit {
 
   applyFilters() {
     this.tableData.filter = JSON.stringify(this.elementFilters);
+    this.elementSelection.clear();
   }
 
   updateAvailableSections(): void {
@@ -310,7 +311,7 @@ export class OverviewDialogComponent implements AfterViewInit {
   toggleAllRows() {
     this.isAllSelected() ?
       this.elementSelection.clear() :
-      this.tableData.data.forEach(row => this.elementSelection.select(row));
+      this.tableData.filteredData.forEach(row => this.elementSelection.select(row));
   }
 }
 

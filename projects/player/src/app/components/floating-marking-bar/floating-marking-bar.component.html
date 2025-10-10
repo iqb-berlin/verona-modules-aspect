@@ -3,7 +3,7 @@
       elementComponent.elementModel.highlightableTurquoise ||
       elementComponent.elementModel.highlightableOrange"
     cdkConnectedOverlay
-    [cdkConnectedOverlayOrigin]="elementComponent | asOverlayOrigin"
+    [cdkConnectedOverlayOrigin]="elementComponent.elementRef"
     [cdkConnectedOverlayPositions]="overlayPositions"
     [cdkConnectedOverlayOpen]="isMarkingBarOpen">
   <div class="marking-bar-container"

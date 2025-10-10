@@ -3,7 +3,7 @@
     cdkConnectedOverlay
     cdkConnectedOverlayPush
     [cdkConnectedOverlayScrollStrategy]="repositionScrollStrategy"
-    [cdkConnectedOverlayOrigin]="keypadService.elementComponent | asOverlayOrigin"
+    [cdkConnectedOverlayOrigin]="keypadService.elementComponent.elementRef"
     [cdkConnectedOverlayPositions]="overlayPositions"
     [cdkConnectedOverlayOpen]="isKeypadOpen && keypadService.position === 'floating'">
   <aspect-keypad

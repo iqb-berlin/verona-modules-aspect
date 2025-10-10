@@ -10,7 +10,7 @@ describe('Text field element', { testIsolation: false }, () => {
 
     it('creates a readonly text field', ()=> {
       addElement('Eingabefeld');
-      addProperties('Eingabefeld mit Schreibeschutz', { readOnly: true });
+      addProperties('Eingabefeld mit Schreibschutz', { readOnly: true });
     });
 
     it('creates a required text field', ()=> {
@@ -60,14 +60,14 @@ describe('Text field element', { testIsolation: false }, () => {
     });
 
     it('checks that the first text field is readonly ', () => {
-      cy.contains('mat-form-field', 'Eingabefeld mit Schreibeschutz')
+      cy.contains('mat-form-field', 'Eingabefeld mit Schreibschutz')
         .find('input')
         .should('have.attr','readonly');
     });
 
     it('checks the required text field', () => {
       cy.contains('mat-form-field', 'Pflichtfeld Eingabefeld').click();
-      cy.contains('mat-form-field', 'Eingabefeld mit Schreibeschutz').click();
+      cy.clickOutside();
       cy.contains('mat-form-field', 'Pflichtfeld Eingabefeld')
         .find('mat-error').should('exist')
         .contains('Eingabe erforderlich');

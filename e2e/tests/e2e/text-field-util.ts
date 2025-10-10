@@ -47,7 +47,7 @@ export function addRegexPattern(pattern:string, patternWarnMessage?: string) {
   }
 }
 
-export function addHelp(keyboard:string = '', position: string = 'schwebend',
+export function inputAssistance(keyboard:string = '', position: string = 'schwebend',
                         ownCharacters?:string, options?: Record<string, boolean>):void {
   selectFromDropdown('Eingabehilfe auswählen', keyboard);
   selectFromDropdown('Eingabehilfeposition', position);

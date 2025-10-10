@@ -1,5 +1,5 @@
 import { addElement, addProperties } from '../util';
-import { addHelp } from './text-field-util';
+import { inputAssistance } from './text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -10,13 +10,13 @@ describe('Text field element', { testIsolation: false }, () => {
     it('creates a text field with customized keypad', () => {
       addElement('Eingabefeld');
       addProperties('Eingabefeld mit eigene Zeichen', { required: true });
-      addHelp('Eigene Zeichen', 'rechts','12345');
+      inputAssistance('Eigene Zeichen', 'rechts','12345');
     });
 
     it('creates a text field with the same customized keypad disabling other characters', () => {
       addElement('Eingabefeld');
       addProperties('Eingabefeld mit Bearbeitung anderer Zeichen verhindern', { required: true });
-      addHelp('Eigene Zeichen', 'rechts', '12345', {disableOtherCharacters:true});
+      inputAssistance('Eigene Zeichen', 'rechts', '12345', {disableOtherCharacters:true});
     });
 
     after('save an unit definition', () => {

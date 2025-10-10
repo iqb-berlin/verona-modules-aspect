@@ -94,3 +94,7 @@ Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json'
 Cypress.Commands.add('getByAlias', (alias: string) => {
   return cy.get(`[data-list-alias="${alias}"]`);
 });
+
+Cypress.Commands.add('clickOutside', ():void => {
+  cy.get('body').click(0,0);
+});

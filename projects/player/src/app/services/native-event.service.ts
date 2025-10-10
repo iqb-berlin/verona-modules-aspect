@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, DOCUMENT } from '@angular/core';
 import {
   from, fromEvent, Observable, Subject
 } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable({

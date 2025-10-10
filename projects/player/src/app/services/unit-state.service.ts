@@ -2,10 +2,11 @@ import {
   Inject,
   Injectable,
   Renderer2,
-  RendererFactory2
+  RendererFactory2,
+  DOCUMENT
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 import { Progress, StatusChangeElement, ElementCodeStatusValue } from 'player/modules/verona/models/verona';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';

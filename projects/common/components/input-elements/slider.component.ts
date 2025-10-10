@@ -80,13 +80,13 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       grid-row: 1/2;
     }
     .slider-color {
-      --mdc-slider-handle-color: #006064;
-      --mdc-slider-focus-handle-color: #006064;
-      --mdc-slider-hover-handle-color: #006064;
-      --mdc-slider-active-track-color: #006064;
-      --mdc-slider-inactive-track-color: #006064;
-      --mdc-slider-with-tick-marks-active-container-color: #fff;
-      --mdc-slider-with-tick-marks-inactive-container-color: #006064;
+      --mat-slider-handle-color: #006064;
+      --mat-slider-focus-handle-color: #006064;
+      --mat-slider-hover-handle-color: #006064;
+      --mat-slider-active-track-color: #006064;
+      --mat-slider-inactive-track-color: #006064;
+      --mat-slider-with-tick-marks-active-container-color: #fff;
+      --mat-slider-with-tick-marks-inactive-container-color: #006064;
       --mat-mdc-slider-ripple-color: #006064;
       --mat-mdc-slider-hover-ripple-color: null;
       --mat-mdc-slider-focus-ripple-color: null;

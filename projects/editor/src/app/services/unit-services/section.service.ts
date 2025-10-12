@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { PositionedUIElement, UIElementValue } from 'common/interfaces';
-import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { ArrayUtils } from 'common/util/array';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
-  addSection(page: Page, section?: Section, sectionIndex?: number): void {
+  addSection(page: EditorPage, section?: Section, sectionIndex?: number): void {
     if (section) section.getAllElements().forEach(el => el.registerIDs());
     page.addSection(section, sectionIndex);
     this.selectionService.selectedSectionIndex =

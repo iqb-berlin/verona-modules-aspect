@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Page } from 'common/models/page';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ArrayUtils } from 'common/util/array';
+import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class PageService {
               private selectionService: SelectionService) { }
 
   addPage(): void {
-    this.unitService.unit.pages.push(new Page());
+    this.unitService.unit.pages.push(new EditorPage());
     this.unitService.updateSectionCounter();
     this.unitService.updateUnitDefinition();
   }

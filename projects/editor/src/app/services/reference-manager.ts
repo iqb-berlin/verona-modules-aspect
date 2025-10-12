@@ -4,10 +4,10 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
-import { Page } from 'common/models/page';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { TextElement } from 'common/models/elements/text/text';
 import { VideoElement } from 'common/models/elements/media-elements/video';
+import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 export class ReferenceManager {
   /* Element types that may have references */
@@ -93,7 +93,7 @@ export class ReferenceManager {
     return [];
   }
 
-  getPageElementsReferences(page: Page): ReferenceList[] {
+  getPageElementsReferences(page: EditorPage): ReferenceList[] {
     const ignoredElementIDs = page.getAllElements()
       .filter(element => ReferenceManager.REFERENCE_ELEMENT_TYPES.includes(element.type))
       .map(element => element.id);

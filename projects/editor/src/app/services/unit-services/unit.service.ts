@@ -7,7 +7,6 @@ import { UIElement } from 'common/models/elements/element';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
-import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/util/section-counter';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
@@ -16,12 +15,13 @@ import { VeronaAPIService } from '../verona-api.service';
 import { SelectionService } from '../selection.service';
 import { IDService } from '../id.service';
 import { UnitDefinitionSanitizer } from '../sanitizer';
+import { EditorPage, EditorUnit } from 'editor/src/app/models/editor-unit';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UnitService {
-  unit: Unit;
+  unit: EditorUnit;
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
@@ -38,7 +38,7 @@ export class UnitService {
               private messageService: MessageService,
               private dialogService: DialogService,
               private idService: IDService) {
-    this.unit = new Unit(undefined, this.idService);
+    this.unit = new EditorUnit(undefined, this.idService);
     this.referenceManager = new ReferenceManager(this.unit);
   }
 
@@ -67,7 +67,7 @@ export class UnitService {
         if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message);
       }
     } else {
-      this.unit = new Unit(undefined, this.idService);
+      this.unit = new EditorUnit(undefined, this.idService);
       this.referenceManager = new ReferenceManager(this.unit);
     }
   }
@@ -75,7 +75,7 @@ export class UnitService {
   private loadUnit(parsedUnitDefinition?: string): void {
     this.idService.reset();
     this.selectionService.reset();
-    this.unit = new Unit(parsedUnitDefinition as unknown as UnitProperties, this.idService);
+    this.unit = new EditorUnit(parsedUnitDefinition as unknown as UnitProperties, this.idService);
     this.referenceManager = new ReferenceManager(this.unit);
 
     const invalidRefs = this.referenceManager.getAllInvalidRefs();
@@ -129,7 +129,7 @@ export class UnitService {
 
   /* Check references and confirm */
   prepareDelete(deletedObjectType: 'page' | 'section' | 'elements',
-                object: Page | Section | UIElement[],
+                object: EditorPage | Section | UIElement[],
                 pageIndex?: number): Promise<boolean> {
     return new Promise((resolve) => {
       let refs: ReferenceList[] = [];
@@ -212,7 +212,7 @@ export class UnitService {
     const sectionsToMove = this.unit.pages[pageIndex].sections
       .splice(sectionIndex, sectionsLength - sectionIndex);
 
-    const newPage = new Page();
+    const newPage = new EditorPage();
     sectionsToMove.forEach(section => newPage.addSection(section));
     newPage.deleteSection(0);
 

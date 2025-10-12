@@ -3,12 +3,12 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Page } from 'common/models/page';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
+import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Component({
     selector: 'aspect-editor-page-view',
@@ -36,7 +36,7 @@ import { SectionComponent } from 'editor/src/app/components/unit-view/section/se
     standalone: false
 })
 export class PageViewComponent implements OnInit, OnDestroy {
-  @Input() page!: Page;
+  @Input() page!: EditorPage;
   @Input() pageIndex!: number;
   @Input() singlePageMode: boolean = false;
   @Input() isLastPage: boolean = false;

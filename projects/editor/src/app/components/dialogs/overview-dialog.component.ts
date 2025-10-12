@@ -21,8 +21,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
+import { EditorPage } from 'editor/src/app/models/editor-unit';
 import { UnitService } from '../../services/unit-services/unit.service';
 import { ElementService } from '../../services/unit-services/element.service';
 import { IDEditDialogComponent } from './id-edit-dialog.component';
@@ -246,7 +246,7 @@ export class OverviewDialogComponent implements AfterViewInit {
 
   getTableData(): GroupedUIElement[] {
     const groupedElements: GroupedUIElement[] = [];
-    this.unitService.unit.pages.forEach((page: Page, pageIndex: number) => {
+    this.unitService.unit.pages.forEach((page: EditorPage, pageIndex: number) => {
       page.sections.forEach((section: Section, sectionIndex: number) => {
         section.getAllElements().forEach((el: UIElement) => {
           el.pageIndex = pageIndex;
@@ -279,7 +279,7 @@ export class OverviewDialogComponent implements AfterViewInit {
       this.unitService.unit.pages.filter((_, index) => this.pageFilter.includes(index)) :
       this.unitService.unit.pages;
     const mostSectionsOnPage = selectedPages
-      .reduce((prev: Page, current: Page) => (current.sections.length > prev.sections.length ? current : prev))
+      .reduce((prev: EditorPage, current: EditorPage) => (current.sections.length > prev.sections.length ? current : prev))
       .sections.length;
     this.availableSections = Array.from({ length: mostSectionsOnPage });
   }

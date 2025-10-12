@@ -12,13 +12,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Page } from 'common/models/page';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { Subject } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageService } from 'editor/src/app/services/unit-services/page.service';
+import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Component({
     selector: 'aspect-unit-view-page-menu',
@@ -63,7 +63,7 @@ import { PageService } from 'editor/src/app/services/unit-services/page.service'
   `
 })
 export class PageMenu implements OnDestroy {
-  @Input() page!: Page;
+  @Input() page!: EditorPage;
   @Input() pageIndex!: number;
   @Output() pageOrderChanged = new EventEmitter<void>();
   @Output() alwaysVisiblePageModified = new EventEmitter();
@@ -83,7 +83,7 @@ export class PageMenu implements OnDestroy {
     this.pageService.deletePage(this.pageIndex);
   }
 
-  updateModel(page: Page, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
+  updateModel(page: EditorPage, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
     if (isInputValid && value != null) {
       if (property === 'alwaysVisible') {
         if (value === true) {
@@ -102,7 +102,7 @@ export class PageMenu implements OnDestroy {
     }
   }
 
-  private movePageToFront(page: Page): void {
+  private movePageToFront(page: EditorPage): void {
     const pageIndex = this.unitService.unit.pages.indexOf(page);
     this.unitService.unit.movePageToFront(pageIndex);
   }

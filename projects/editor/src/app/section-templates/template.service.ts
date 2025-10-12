@@ -19,7 +19,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import {
   PositionedUIElement, TextImageLabel, UIElementType
 } from 'common/interfaces';
-import { Page, PageProperties } from 'common/models/page';
+import { PageProperties } from 'common/models/page';
 import * as TextBuilders from 'editor/src/app/section-templates/builders/text-builders';
 import * as TextInputBuilders from 'editor/src/app/section-templates/builders/text-input-builders';
 import * as RadioBuilders from 'editor/src/app/section-templates/builders/radio-builders';
@@ -43,6 +43,7 @@ import {
 import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
 import { TextElement } from 'common/models/elements/text/text';
 import { CONSTANTS } from './constants';
+import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Injectable({
   providedIn: 'root'
@@ -76,12 +77,12 @@ export class TemplateService {
   }
 
   private createAlwaysVisiblePage(): void {
-    this.unitService.unit.pages.push(new Page({ alwaysVisible: true } as PageProperties));
+    this.unitService.unit.pages.push(new EditorPage({ alwaysVisible: true } as PageProperties));
     this.unitService.unit.movePageToFront(this.unitService.unit.pages.length - 1);
     this.unitService.pageOrderChanged.next();
   }
 
-  private static addSectionToPage(section: Section, page: Page, selectedSectionIndex: number): void {
+  private static addSectionToPage(section: Section, page: EditorPage, selectedSectionIndex: number): void {
     if (page.sections[selectedSectionIndex].isEmpty()) {
       page.replaceSection(selectedSectionIndex, section);
     } else {

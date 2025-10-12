@@ -84,10 +84,6 @@ export class Section {
     this.elements.push(element);
   }
 
-  deleteElement(id: string): void {
-    this.elements = this.elements.filter(el => el.id !== id);
-  }
-
   /* Includes children of children, i.e. compound children. */
   getAllElements(elementType?: string): UIElement[] {
     let allElements: UIElement[] =

@@ -15,10 +15,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { Section } from 'common/models/section';
-import { Page, PageProperties } from 'common/models/page';
+import { PageProperties } from 'common/models/page';
 import { ClozeElement, ClozeProperties } from 'common/models/elements/compound-elements/cloze/cloze';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
-import { Unit, UnitProperties } from 'common/models/unit';
+import { UnitProperties } from 'common/models/unit';
+import { EditorPage, EditorUnit } from '../models/editor-unit';
 
 describe('ReferenceManager', () => {
   class ApiStubService {
@@ -42,7 +43,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find no refs for single element', () => {
-    const refMan = new ReferenceManager(new Unit(singleElement as UnitProperties));
+    const refMan = new ReferenceManager(new EditorUnit(singleElement as UnitProperties));
     const element = {
       type: 'drop-list',
       id: 'drop-list_1',
@@ -55,7 +56,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find refs when deleting element (connected droplist)', () => {
-    const refMan = new ReferenceManager(new Unit(elementRef as UnitProperties));
+    const refMan = new ReferenceManager(new EditorUnit(elementRef as UnitProperties));
     const element = {
       type: 'drop-list',
       id: 'drop-list_1731317829457_1',
@@ -77,7 +78,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find 2 refs when deleting 2 elements', () => {
-    const refMan = new ReferenceManager(new Unit(elementRef2 as UnitProperties));
+    const refMan = new ReferenceManager(new EditorUnit(elementRef2 as UnitProperties));
     const element1 = {
       type: 'drop-list',
       id: 'drop-list_1731317829457_1',
@@ -110,7 +111,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find ref when deleting section', () => {
-    const refMan = new ReferenceManager(new Unit(section1 as UnitProperties));
+    const refMan = new ReferenceManager(new EditorUnit(section1 as UnitProperties));
     const section = JSON.parse(JSON.stringify(section1)).pages[0].sections[0] as Section;
     const refs = refMan.getSectionElementsReferences([section]);
 
@@ -125,7 +126,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find refs when deleting section but ignore refs within same section', () => {
-    const refMan = new ReferenceManager(new Unit(section2 as UnitProperties));
+    const refMan = new ReferenceManager(new EditorUnit(section2 as UnitProperties));
     const section = JSON.parse(JSON.stringify(section2)).pages[0].sections[0] as Section;
     const refs = refMan.getSectionElementsReferences([section]);
 
@@ -139,8 +140,8 @@ describe('ReferenceManager', () => {
   });
 
   it('should ignore refs within same page', () => {
-    const refMan = new ReferenceManager(new Unit(pageRefs as UnitProperties));
-    const page = new Page(JSON.parse(JSON.stringify(pageRefs)).pages[0] as PageProperties);
+    const refMan = new ReferenceManager(new EditorUnit(pageRefs as UnitProperties));
+    const page = new EditorPage(JSON.parse(JSON.stringify(pageRefs)).pages[0] as PageProperties);
     const refs = refMan.getPageElementsReferences(page);
 
     expect(refs.length)
@@ -153,7 +154,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find cloze refs but ignore refs within same cloze', () => {
-    const refMan = new ReferenceManager(new Unit(cloze as UnitProperties));
+    const refMan = new ReferenceManager(new EditorUnit(cloze as UnitProperties));
     const clozeElement = new ClozeElement(
       JSON.parse(JSON.stringify(cloze)).pages[0].sections[0].elements[0] as ClozeProperties);
     const refs = refMan.getElementsReferences([clozeElement]);
@@ -168,7 +169,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find page refs via buttons', () => {
-    const refMan = new ReferenceManager(new Unit(pageNav as UnitProperties));
+    const refMan = new ReferenceManager(new EditorUnit(pageNav as UnitProperties));
     const refs = refMan.getButtonReferencesForPage(0);
 
     expect(refs.length)

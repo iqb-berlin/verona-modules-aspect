@@ -6,8 +6,8 @@ import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { Page } from 'common/models/page';
 import { TextElement } from 'common/models/elements/text/text';
+import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Component({
     selector: 'aspect-action-properties',
@@ -118,8 +118,8 @@ export class GetStateVariablePipe implements PipeTransform {
     standalone: false
 })
 export class ScrollPageIndexPipe implements PipeTransform {
-  transform(pages: Page[], index: number): number | null {
-    if (pages.find((page: Page): boolean => page.alwaysVisible)) {
+  transform(pages: EditorPage[], index: number): number | null {
+    if (pages.find((page: EditorPage): boolean => page.alwaysVisible)) {
       return index - 1;
     }
     return index;

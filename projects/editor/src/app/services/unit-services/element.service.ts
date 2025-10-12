@@ -135,25 +135,9 @@ export class ElementService {
   async deleteElements(elements: UIElement[]): Promise<void> {
     if (await this.unitService.prepareDelete('elements', elements)) {
       elements.forEach(el => el.unregisterIDs());
-      const elementSections = this.findElementsInSections(elements);
-      elementSections.forEach(x => {
-        this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[x.sectionIndex]
-          .deleteElement(x.element.id);
-      });
+      this.unitService.unit.deleteElements(elements);
       this.unitService.updateUnitDefinition();
     }
-  }
-
-  private findElementsInSections(elements: UIElement[]): { sectionIndex: number, element: UIElement }[] {
-    const elementSections: { sectionIndex: number, element: UIElement }[] = [];
-    elements.forEach(element => {
-      this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections.forEach((section, i) => {
-        if (section.elements.map(el => el.id).includes(element.id)) {
-          elementSections.push({ sectionIndex: i, element });
-        }
-      });
-    });
-    return elementSections;
   }
 
   updateElementsProperty(elements: UIElement[], property: string, value: UIElementValue): void {

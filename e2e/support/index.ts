@@ -9,6 +9,7 @@ declare global {
       openEditor(): Chainable<JQuery<HTMLElement>>;
       switchToTabbedViewMode(): Chainable<JQuery<HTMLElement>>;
       getByAlias(alias: string): Chainable<JQuery<HTMLElement>>;
+      clickOutside(): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

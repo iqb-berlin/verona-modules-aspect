@@ -88,17 +88,17 @@
     ]
   },
   "dependencies": {
-    "@angular/animations": "^18.2.13",
-    "@angular/cdk": "^18.2.14",
-    "@angular/common": "^18.2.13",
-    "@angular/compiler": "^18.2.13",
-    "@angular/core": "^18.2.13",
-    "@angular/elements": "^18.2.13",
-    "@angular/forms": "^18.2.13",
-    "@angular/material": "^18.2.14",
-    "@angular/platform-browser": "^18.2.13",
-    "@angular/platform-browser-dynamic": "^18.2.13",
-    "@angular/router": "^18.2.13",
+    "@angular/animations": "^20.3.4",
+    "@angular/cdk": "^20.2.8",
+    "@angular/common": "^20.3.4",
+    "@angular/compiler": "^20.3.4",
+    "@angular/core": "^20.3.4",
+    "@angular/elements": "^20.3.4",
+    "@angular/forms": "^20.3.4",
+    "@angular/material": "^20.2.8",
+    "@angular/platform-browser": "^20.3.4",
+    "@angular/platform-browser-dynamic": "^20.3.4",
+    "@angular/router": "^20.3.4",
     "@iqb/mathlive": "^0.4.1",
     "@iqb/responses": "^3.3.2",
     "@ngx-translate/core": "^15.0.0",
@@ -136,12 +136,12 @@
     "prosemirror-state": "^1.4.3",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.2",
-    "zone.js": "~0.14.6"
+    "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.2.14",
-    "@angular/cli": "^18.2.14",
-    "@angular/compiler-cli": "^18.2.13",
+    "@angular-devkit/build-angular": "^20.3.5",
+    "@angular/cli": "^20.3.5",
+    "@angular/compiler-cli": "^20.3.4",
     "@iqb/eslint-config": "^2.1.1",
     "@types/jasmine": "~5.1.4",
     "@types/katex": "^0.16.7",
@@ -155,6 +155,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-spec-reporter": "^0.0.36",
-    "typescript": "~5.4.5"
+    "typescript": "~5.8.3"
   }
 }

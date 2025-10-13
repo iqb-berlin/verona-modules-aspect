@@ -6,8 +6,8 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-math-table',
-  template: `
+    selector: 'aspect-math-table',
+    template: `
     <div *ngIf="elementModel.terms.length == 0 ||
                 elementModel.operation === 'multiplication' && elementModel.terms.length < 2; else elseBlock"
          class="terms-missing-warning">
@@ -75,21 +75,22 @@ import { ValueChangeElement } from 'common/interfaces';
       </div>
     </ng-template>
   `,
-  styles: [
-    ':host {display: inline-block;}',
-    '.wrapper {display: flex; flex-direction: row;}',
-    '.wrapper button {align-self: end; border-radius: 50%; margin-left: 10px;}',
-    'table {border-spacing: 0; border-collapse: collapse;}',
-    'td {border: 1px solid grey; text-align: center; caret-color: transparent;}',
-    'td.strike-through {text-decoration: line-through; text-decoration-thickness: 3px;}',
-    'td:focus {background-color: #00606425; outline: unset;}',
-    'table.underline-first-row tr:first-child {border-bottom: 3px solid black;}',
-    'table.underline-third-row tr:nth-child(3) {border-bottom: 3px solid black;}',
-    'table.has-result-row tr:last-child {border-top: 3px solid black;}',
-    '.terms-missing-warning {font-size: larger; color: red;}',
-    '.row-button:not(:disabled) {color: black; border: 2px solid black}',
-    '.row-button:disabled {border: 2px solid #bbb}'
-  ]
+    styles: [
+        ':host {display: inline-block;}',
+        '.wrapper {display: flex; flex-direction: row;}',
+        '.wrapper button {align-self: end; border-radius: 50%; margin-left: 10px;}',
+        'table {border-spacing: 0; border-collapse: collapse;}',
+        'td {border: 1px solid grey; text-align: center; caret-color: transparent;}',
+        'td.strike-through {text-decoration: line-through; text-decoration-thickness: 3px;}',
+        'td:focus {background-color: #00606425; outline: unset;}',
+        'table.underline-first-row tr:first-child {border-bottom: 3px solid black;}',
+        'table.underline-third-row tr:nth-child(3) {border-bottom: 3px solid black;}',
+        'table.has-result-row tr:last-child {border-top: 3px solid black;}',
+        '.terms-missing-warning {font-size: larger; color: red;}',
+        '.row-button:not(:disabled) {color: black; border: 2px solid black}',
+        '.row-button:disabled {border: 2px solid #bbb}'
+    ],
+    standalone: false
 })
 export class MathTableComponent extends ElementComponent implements OnInit {
   @ViewChildren('input') cells!: QueryList<ElementRef>;

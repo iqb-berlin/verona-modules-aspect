@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'aspect-unit-nav-next',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'aspect-unit-nav-next',
+    imports: [],
+    template: `
     <div class="unit-nav-next fx-row-end-center">
       <span class="button-text">Hier geht’s weiter.</span>
       <span class="svg-container" (click)="navigate.emit()">
@@ -15,7 +14,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
       </span>
     </div>
   `,
-  styles: `
+    styles: `
     .unit-nav-next {
       font-size: 20px;
     }

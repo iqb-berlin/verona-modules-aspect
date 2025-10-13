@@ -11,9 +11,10 @@ import { AspectError } from 'common/classes/aspect-error';
 import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-media-player-control-bar',
-  templateUrl: './media-player-control-bar.component.html',
-  styleUrls: ['./media-player-control-bar.component.scss']
+    selector: 'aspect-media-player-control-bar',
+    templateUrl: './media-player-control-bar.component.html',
+    styleUrls: ['./media-player-control-bar.component.scss'],
+    standalone: false
 })
 export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;

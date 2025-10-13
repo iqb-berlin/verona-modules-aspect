@@ -1,11 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { TextComponent } from 'common/components/text/text.component';
 import { APIService } from 'common/shared.module';
 import { Pipe, PipeTransform } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import * as text_130 from '../../../../../../test-data/element-models/text_130.json';
 import { FloatingMarkingBarComponent } from './floating-marking-bar.component';
 
@@ -21,17 +20,13 @@ describe('FloatingMarkingBarComponent', () => {
     }
   }
 
-  @Pipe({ name: 'hasReturnKey' })
+  @Pipe({
+    name: 'hasReturnKey',
+    standalone: false
+})
   class MockHasReturnKeyPipe implements PipeTransform {
     transform(): boolean {
       return false;
-    }
-  }
-
-  @Pipe({ name: 'asOverlayOrigin' })
-  class MockAsOverlayOriginPipe implements PipeTransform {
-    transform(elementComponent: ElementComponent): CdkOverlayOrigin {
-      return elementComponent as CdkOverlayOrigin;
     }
   }
 
@@ -39,7 +34,6 @@ describe('FloatingMarkingBarComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockHasReturnKeyPipe,
-        MockAsOverlayOriginPipe,
         FloatingMarkingBarComponent
       ],
       imports: [

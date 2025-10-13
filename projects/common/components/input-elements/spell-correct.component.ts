@@ -6,8 +6,8 @@ import { SpellCorrectElement } from 'common/models/elements/input-elements/spell
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
-  selector: 'aspect-spell-correct',
-  template: `
+    selector: 'aspect-spell-correct',
+    template: `
     <div [style.width.%]="100"
          [style.height.%]="100">
       <div class="fx-column-start-stretch"
@@ -63,7 +63,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     :host ::ng-deep .mat-mdc-form-field-infix  {
       z-index: 1;
     }
@@ -83,7 +83,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       justify-content: flex-start;
       align-items: stretch;
     }
-  `]
+  `],
+    standalone: false
 })
 export class SpellCorrectComponent extends TextInputComponent {
   @Input() elementModel!: SpellCorrectElement;

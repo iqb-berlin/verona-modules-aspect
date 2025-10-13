@@ -3,8 +3,8 @@ import { SliderElement } from 'common/models/elements/input-elements/slider';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-  selector: 'aspect-slider',
-  template: `
+    selector: 'aspect-slider',
+    template: `
     <div [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.styling.backgroundColor">
@@ -58,7 +58,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
     </div>
   `,
-  styles: [`
+    styles: [`
     :host ::ng-deep .slider-bar-style.mat-mdc-slider .mdc-slider__thumb-knob {
       border-radius: 0;
       border: 0 none;
@@ -80,13 +80,13 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       grid-row: 1/2;
     }
     .slider-color {
-      --mdc-slider-handle-color: #006064;
-      --mdc-slider-focus-handle-color: #006064;
-      --mdc-slider-hover-handle-color: #006064;
-      --mdc-slider-active-track-color: #006064;
-      --mdc-slider-inactive-track-color: #006064;
-      --mdc-slider-with-tick-marks-active-container-color: #fff;
-      --mdc-slider-with-tick-marks-inactive-container-color: #006064;
+      --mat-slider-handle-color: #006064;
+      --mat-slider-focus-handle-color: #006064;
+      --mat-slider-hover-handle-color: #006064;
+      --mat-slider-active-track-color: #006064;
+      --mat-slider-inactive-track-color: #006064;
+      --mat-slider-with-tick-marks-active-container-color: #fff;
+      --mat-slider-with-tick-marks-inactive-container-color: #006064;
       --mat-mdc-slider-ripple-color: #006064;
       --mat-mdc-slider-hover-ripple-color: null;
       --mat-mdc-slider-focus-ripple-color: null;
@@ -130,7 +130,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       border-bottom: 8px solid transparent;
       border-left: 20px solid #555;
     }
-  `]
+  `],
+    standalone: false
 })
 export class SliderComponent extends FormElementComponent {
   @Input() elementModel!: SliderElement;

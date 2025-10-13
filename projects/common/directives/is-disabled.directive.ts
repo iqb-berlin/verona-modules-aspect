@@ -4,7 +4,8 @@ import {
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[isDisabled]'
+    selector: '[isDisabled]',
+    standalone: false
 })
 export class IsDisabledDirective implements OnChanges {
   @Input() isDisabled!: boolean;

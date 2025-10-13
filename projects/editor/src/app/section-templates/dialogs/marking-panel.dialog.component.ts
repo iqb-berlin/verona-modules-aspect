@@ -11,24 +11,23 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 
 @Component({
-  selector: 'aspect-editor-text2-wizard-dialog',
-  standalone: true,
-  imports: [
-    TranslateModule,
-    MatDialogModule,
-    RichTextEditorComponent,
-    MatDividerModule,
-    MatCheckboxModule,
-    FormsModule,
-    MatButtonModule,
-    MatRadioButton,
-    MatRadioGroup,
-    MatFormField,
-    MatSelect,
-    MatLabel,
-    MatOption
-  ],
-  template: `
+    selector: 'aspect-editor-text2-wizard-dialog',
+    imports: [
+        TranslateModule,
+        MatDialogModule,
+        RichTextEditorComponent,
+        MatDividerModule,
+        MatCheckboxModule,
+        FormsModule,
+        MatButtonModule,
+        MatRadioButton,
+        MatRadioGroup,
+        MatFormField,
+        MatSelect,
+        MatLabel,
+        MatOption
+    ],
+    template: `
     <h2 mat-dialog-title>Assistent: Markieren</h2>
     <div mat-dialog-content>
       <h3>Text</h3>
@@ -61,7 +60,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
-  styles: `
+    styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

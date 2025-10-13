@@ -31,9 +31,8 @@ export class ImageFullscreenDirective {
 }
 
 @Component({
-  standalone: true,
-  imports: [MatDialogModule],
-  template: `
+    imports: [MatDialogModule],
+    template: `
     <mat-dialog-content (click)="dialogRef.close()">
       <img [style.padding.px]="5" [src]="data.src" [alt]="data.alt">
     </mat-dialog-content>

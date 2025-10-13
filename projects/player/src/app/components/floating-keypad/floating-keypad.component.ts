@@ -8,7 +8,8 @@ import { KeypadService } from '../../services/keypad.service';
 @Component({
   selector: 'aspect-floating-keypad',
   templateUrl: './floating-keypad.component.html',
-  styleUrls: ['./floating-keypad.component.scss']
+  styleUrls: ['./floating-keypad.component.scss'],
+  standalone: false
 })
 export class FloatingKeypadComponent implements OnChanges {
   @Input() isKeypadOpen!: boolean;

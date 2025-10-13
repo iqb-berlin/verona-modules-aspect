@@ -3,8 +3,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Component({
-  selector: 'aspect-hotspot-edit-dialog',
-  template: `
+    selector: 'aspect-hotspot-edit-dialog',
+    template: `
     <mat-dialog-content class="fx-column-start-stretch fx-fix-gap-10">
       <div class="fx-row-start-stretch fx-fix-gap-10">
         <mat-form-field class="fx-flex-50" appearance="fill">
@@ -95,7 +95,7 @@ import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-  styles: [`
+    styles: [`
     .fx-fix-gap-10 {
       gap: 10px;
     }
@@ -105,7 +105,8 @@ import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
       box-sizing: border-box;
       max-width: 50%;
     }
-  `]
+  `],
+    standalone: false
 })
 export class HotspotEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { hotspot: Hotspot }) { }

@@ -10,13 +10,12 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
 import { UIElementType } from 'common/interfaces';
 
 @Component({
-  selector: '[app-dynamic-section-helper-grid]',
-  standalone: true,
-  imports: [
-    NgForOf,
-    CdkDropList
-  ],
-  template: `
+    selector: '[app-dynamic-section-helper-grid]',
+    imports: [
+        NgForOf,
+        CdkDropList
+    ],
+    template: `
     <ng-container *ngFor="let row of rowCountArray; let x = index;">
       <ng-container *ngFor="let column of columnCountArray; let y = index;">
         <div class="grid-placeholder"
@@ -37,9 +36,9 @@ import { UIElementType } from 'common/interfaces';
 
     <ng-content></ng-content>
   `,
-  styles: [
-    '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center; z-index: -100;}'
-  ]
+    styles: [
+        '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center; z-index: -100;}'
+    ]
 })
 export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   @Input() autoColumnSize!: boolean;

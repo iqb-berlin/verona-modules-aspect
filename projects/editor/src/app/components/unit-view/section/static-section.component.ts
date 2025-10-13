@@ -12,13 +12,12 @@ import { NgForOf } from '@angular/common';
 import { UIElementType } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-editor-static-section',
-  standalone: true,
-  imports: [
-    NgForOf,
-    StaticOverlayComponent
-  ],
-  template: `
+    selector: 'aspect-editor-static-section',
+    imports: [
+        NgForOf,
+        StaticOverlayComponent
+    ],
+    template: `
     <div #sectionElement class="section-wrapper"
          [style.outline]="isSelected ? '2px solid #ff4081': '1px dotted'"
          [style.z-index]="isSelected ? 1 : 0"
@@ -32,9 +31,9 @@ import { UIElementType } from 'common/interfaces';
       </aspect-editor-static-overlay>
     </div>
   `,
-  styles: [
-    '.section-wrapper {position: relative; width: 100%; overflow: hidden;}'
-  ]
+    styles: [
+        '.section-wrapper {position: relative; width: 100%; overflow: hidden;}'
+    ]
 })
 export class StaticSectionComponent {
   @Input() section!: Section;

@@ -3,16 +3,13 @@ import {
   ElementRef, SecurityContext
 } from '@angular/core';
 import { AngularNodeViewComponent } from 'ngx-tiptap';
-import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import katex from 'katex';
 
 @Component({
   selector: 'aspect-nodeview-math-formula',
-  standalone: true,
   imports: [
-    NgIf,
     FormsModule
   ],
   template: `
@@ -22,8 +19,7 @@ import katex from 'katex';
       <span #editField class="formula-field" contenteditable="true"
             (keydown.enter)="updateFormula($any($event.target).innerText);"
             (blur)="updateFormula($any($event.target).innerText);">{{formula}}</span>
-    }
-  `,
+    }`,
   styles: [`
     .formula-field {
       background-color: lightblue;
@@ -35,8 +31,7 @@ import katex from 'katex';
     span:empty:before {
       content: "\\200b";
     }
-  `
-  ]
+  `]
 })
 export class MathFormulaNodeviewComponent extends AngularNodeViewComponent implements OnInit {
   @ViewChild('editField') editField!: ElementRef<HTMLSpanElement>;

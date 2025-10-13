@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'mathDegrees'
+    name: 'mathDegrees',
+    standalone: false
 })
 export class MathDegreesPipe implements PipeTransform {
   transform(radian: number): number {

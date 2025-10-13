@@ -7,7 +7,8 @@ import { Subject } from 'rxjs';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Directive({
-  selector: '[aspectInViewDetection]'
+    selector: '[aspectInViewDetection]',
+    standalone: false
 })
 export class InViewDetectionDirective implements AfterViewInit, OnDestroy {
   @Input() detectionType!: 'top' | 'bottom';

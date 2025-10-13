@@ -60,14 +60,13 @@ export class MessageService {
 }
 
 @Component({
-  selector: 'aspect-reference-list-snackbar',
-  standalone: true,
-  imports: [
-    ReferenceListComponent,
-    MatSnackBarModule,
-    MatButtonModule
-  ],
-  template: `
+    selector: 'aspect-reference-list-snackbar',
+    imports: [
+        ReferenceListComponent,
+        MatSnackBarModule,
+        MatButtonModule
+    ],
+    template: `
     <div [style.padding.px]="16">
       <aspect-reference-list matSnackBarLabel [refs]="refs || data"></aspect-reference-list>
       <span matSnackBarActions>
@@ -77,14 +76,14 @@ export class MessageService {
       </span>
     </div>
   `,
-  styles: [`
+    styles: [`
     button {
       color: var(--mat-snack-bar-button-color) !important;
       --mat-mdc-button-persistent-ripple-color: currentColor !important;
     }
-    aspect-reference-list {color: var(--mdc-snackbar-supporting-text-color);}
+    aspect-reference-list {color: var(--mat-snackbar-supporting-text-color);}
     `
-  ]
+    ]
 })
 export class ReferenceListSnackbarComponent {
   @Input() refs: ReferenceList[] | undefined;
@@ -94,17 +93,16 @@ export class ReferenceListSnackbarComponent {
 }
 
 @Component({
-  selector: 'aspect-invalid-reference-elements-list-snackbar',
-  standalone: true,
-  imports: [
-    NgIf,
-    NgForOf,
-    MatListModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatButtonModule
-  ],
-  template: `
+    selector: 'aspect-invalid-reference-elements-list-snackbar',
+    imports: [
+        NgIf,
+        NgForOf,
+        MatListModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatButtonModule
+    ],
+    template: `
     Invalide Referenzen bei folgenden <br> Elementen wurden entfernt:
     <mat-list>
       <mat-list-item *ngFor="let element of data">
@@ -134,7 +132,7 @@ export class ReferenceListSnackbarComponent {
       </button>
     </span>
   `,
-  styles: [`
+    styles: [`
     :host {font-size: large;}
     button {
       color: var(--mat-snack-bar-button-color) !important;
@@ -143,7 +141,7 @@ export class ReferenceListSnackbarComponent {
     mat-icon {color: inherit !important;}
     .mat-mdc-list-item-title {color: inherit !important;}
     `
-  ]
+    ]
 })
 export class FixedReferencesSnackbarComponent {
   constructor(public snackBarRef: MatSnackBarRef<FixedReferencesSnackbarComponent>,
@@ -151,14 +149,13 @@ export class FixedReferencesSnackbarComponent {
 }
 
 @Component({
-  selector: 'aspect-unexpected-error-snackbar',
-  standalone: true,
-  imports: [
-    NgIf,
-    MatSnackBarModule,
-    MatButtonModule
-  ],
-  template: `
+    selector: 'aspect-unexpected-error-snackbar',
+    imports: [
+        NgIf,
+        MatSnackBarModule,
+        MatButtonModule
+    ],
+    template: `
     <h2>Unerwarteter Fehler</h2>
     <button *ngIf="!areDetailsShown" (click)="showDetails()">
       Details ansehen
@@ -176,7 +173,7 @@ export class FixedReferencesSnackbarComponent {
       </button>
     </span>
   `,
-  styles: [`
+    styles: [`
     :host {
       display: flex;
       flex-direction: column;
@@ -191,7 +188,7 @@ export class FixedReferencesSnackbarComponent {
       background-color: white;
     }
     `
-  ]
+    ]
 })
 export class UnexpectedErrorSnackbarComponent {
   areDetailsShown = false;

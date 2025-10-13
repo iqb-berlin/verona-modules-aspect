@@ -12,7 +12,6 @@ import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { AsOverlayOriginPipe } from 'player/src/app/pipes/as-overlay-origin.pipe';
 import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { PageNavButtonComponent } from 'player/src/app/components/page-nav-button/page-nav-button.component';
 import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe';
@@ -89,7 +88,6 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     TextInputGroupElementComponent,
     CompoundGroupElementComponent,
     CastPipe,
-    AsOverlayOriginPipe,
     HasReturnKeyPipe,
     TextGroupElementComponent,
     BaseGroupElementComponent,

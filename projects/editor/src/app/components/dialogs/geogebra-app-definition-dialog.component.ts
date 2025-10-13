@@ -3,8 +3,8 @@ import { FileService } from 'common/services/file.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-geogebra-app-definition-dialog',
-  template: `
+    selector: 'app-geogebra-app-definition-dialog',
+    template: `
     <mat-dialog-content class="fx-column-start-stretch">
       <div class="paste-area" contenteditable="true"
            (paste)="validateBase64($event.clipboardData?.getData('Text'))">
@@ -22,7 +22,7 @@ import { MatDialogRef } from '@angular/material/dialog';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-  styles: [`
+    styles: [`
     .paste-area {
       width: 400px;
       height: 100px;
@@ -39,7 +39,8 @@ import { MatDialogRef } from '@angular/material/dialog';
     .status-area {
       margin-top: 10px;
     }
-  `]
+  `],
+    standalone: false
 })
 export class GeogebraAppDefinitionDialogComponent {
   statusMessage: { text: string; color: string } | undefined;

@@ -3,8 +3,8 @@ import { BasicStyles } from 'common/models/elements/property-group-interfaces';
 import { DragNDropValueObject } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-drag-image',
-  template: `
+    selector: 'aspect-drag-image',
+    template: `
       <div *ngIf="draggedItem"
            class="drag-preview list-item" [class.image-item]="draggedItem.imgSrc" [class.cloze-context]="clozeContext"
            [style.left.px]="dragImageX" [style.top.px]="dragImageY"
@@ -18,7 +18,7 @@ import { DragNDropValueObject } from 'common/interfaces';
         <aspect-text-image-panel [label]="draggedItem"></aspect-text-image-panel>
       </div>
   `,
-  styles: [`
+    styles: [`
     .drag-preview {
       position: fixed;
       display: block;
@@ -35,7 +35,8 @@ import { DragNDropValueObject } from 'common/interfaces';
       padding: 0;
     }
   `
-  ]
+    ],
+    standalone: false
 })
 export class DragImageComponent {
   @Input() clozeContext: boolean = false;

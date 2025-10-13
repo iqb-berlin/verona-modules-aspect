@@ -8,7 +8,10 @@ describe('KeypadLayoutComponent', () => {
   let component: KeypadLayoutComponent;
   let fixture: ComponentFixture<KeypadLayoutComponent>;
 
-  @Component({ selector: 'aspect-keypad-key', template: '' })
+  @Component({
+    selector: 'aspect-keypad-key', template: '',
+    standalone: false
+})
   class KeypadKeyComponent {
     @Input() key!: string;
     @Input() verticalOval!: boolean;

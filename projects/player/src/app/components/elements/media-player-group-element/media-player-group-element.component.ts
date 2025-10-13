@@ -12,9 +12,10 @@ import { ElementGroupDirective } from '../../../directives/element-group.directi
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 
 @Component({
-  selector: 'aspect-media-player-group-element',
-  templateUrl: './media-player-group-element.component.html',
-  styleUrls: ['./media-player-group-element.component.scss']
+    selector: 'aspect-media-player-group-element',
+    templateUrl: './media-player-group-element.component.html',
+    styleUrls: ['./media-player-group-element.component.scss'],
+    standalone: false
 })
 export class MediaPlayerGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: MediaPlayerElementComponent;

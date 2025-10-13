@@ -3,7 +3,7 @@ import { UIElement } from 'common/models/elements/element';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgForOf } from '@angular/common';
 import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,13 +16,11 @@ import { Subject } from 'rxjs';
 
 @Component({
   selector: 'aspect-table-properties',
-  standalone: true,
   imports: [
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
     NgForOf,
-    NgIf,
     SizeInputPanelComponent,
     TranslateModule,
     MatButtonModule
@@ -73,8 +71,7 @@ import { Subject } from 'rxjs';
       Tabellenränder zeichnen
     </mat-checkbox>
   `,
-  styles:
-    ':host {display: flex; flex-direction: column;}'
+  styles: ':host {display: flex; flex-direction: column;}'
 })
 export class TablePropertiesComponent implements OnInit, OnDestroy {
   @Input() combinedProperties!: UIElement;

@@ -6,7 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { NativeEventService } from '../services/native-event.service';
 
 @Directive({
-  selector: '[aspectPageLabel]'
+    selector: '[aspectPageLabel]',
+    standalone: false
 })
 export class PageLabelDirective implements OnInit, AfterViewInit, OnDestroy {
   @Input() isHidden!: boolean;

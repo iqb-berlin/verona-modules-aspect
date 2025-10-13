@@ -5,9 +5,10 @@ import { Page } from 'common/models/page';
 import { PagingMode, PrintMode } from 'player/modules/verona/models/verona';
 
 @Component({
-  selector: 'aspect-print-page',
-  templateUrl: './print-page.component.html',
-  styleUrls: ['./print-page.component.scss']
+    selector: 'aspect-print-page',
+    templateUrl: './print-page.component.html',
+    styleUrls: ['./print-page.component.scss'],
+    standalone: false
 })
 
 export class PrintPageComponent {

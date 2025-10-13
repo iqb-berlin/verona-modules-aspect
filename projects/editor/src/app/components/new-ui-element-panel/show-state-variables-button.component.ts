@@ -3,8 +3,8 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'aspect-show-state-variables-button',
-  template: `<button mat-flat-button
+    selector: 'aspect-show-state-variables-button',
+    template: `<button mat-flat-button
                      class="show-state-variables-button"
                      color="primary"
                      matBadgeColor="accent"
@@ -14,7 +14,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
     <mat-icon>integration_instructions</mat-icon>
     <span>{{'stateVariable' | translate}}</span>
   </button>`,
-  styles: [`
+    styles: [`
     button {
       text-align: left;
       font-size: medium;
@@ -27,7 +27,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
     :host ::ng-deep .mat-badge-medium.mat-badge-above .mat-badge-content {
       top: 8px;
     }
-  `]
+  `],
+    standalone: false
 })
 
 export class ShowStateVariablesButtonComponent {

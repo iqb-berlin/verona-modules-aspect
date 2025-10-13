@@ -4,8 +4,8 @@ import {
 import { UIElement } from 'common/models/elements/element';
 
 @Component({
-  selector: 'aspect-scale-and-zoom-properties',
-  template: `
+    selector: 'aspect-scale-and-zoom-properties',
+    template: `
     <div class="fx-column-start-stretch" [style.gap.px]="5">
       <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
                     [checked]="$any(combinedProperties.scale)"
@@ -52,7 +52,7 @@ import { UIElement } from 'common/models/elements/element';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .disabled-label {
       color: rgba(0, 0, 0, 0.26);
     }
@@ -60,7 +60,8 @@ import { UIElement } from 'common/models/elements/element';
     mat-slider {
         max-width: 90%;
     }
-  `]
+  `],
+    standalone: false
 })
 export class ScaleAndZoomPropertiesComponent {
   @Input() combinedProperties!: UIElement;

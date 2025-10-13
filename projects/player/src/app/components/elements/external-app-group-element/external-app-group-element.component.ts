@@ -11,8 +11,9 @@ import { GeometryComponent } from 'common/components/geometry/geometry.component
 import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-external-app-group-element',
-  templateUrl: './external-app-group-element.component.html'
+    selector: 'aspect-external-app-group-element',
+    templateUrl: './external-app-group-element.component.html',
+    standalone: false
 })
 export class ExternalAppGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: GeometryComponent;

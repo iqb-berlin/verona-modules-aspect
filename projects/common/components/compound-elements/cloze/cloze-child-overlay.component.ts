@@ -12,8 +12,8 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
-  selector: 'aspect-compound-child-overlay',
-  template: `
+    selector: 'aspect-compound-child-overlay',
+    template: `
     <div [style.border]="isSelected ? 'purple solid 1px' : ''"
          [style.display]="'flex'"
          [style.width]="element.dimensions?.isWidthFixed ? element.dimensions?.width+'px' : null"
@@ -51,11 +51,12 @@ import { ValueChangeElement } from 'common/interfaces';
       </aspect-checkbox>
     </div>
   `,
-  styles: [
-    ':host div > * {display: block;}',
-    ':host ::ng-deep mat-checkbox .mdc-form-field {vertical-align: baseline;}',
-    ':host ::ng-deep mat-checkbox .mdc-checkbox {display: none;}'
-  ]
+    styles: [
+        ':host div > * {display: block;}',
+        ':host ::ng-deep mat-checkbox .mdc-form-field {vertical-align: baseline;}',
+        ':host ::ng-deep mat-checkbox .mdc-checkbox {display: none;}'
+    ],
+    standalone: false
 })
 export class ClozeChildOverlay {
   @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement;

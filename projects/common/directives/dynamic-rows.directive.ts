@@ -13,7 +13,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[dynamicRows]'
+    selector: '[dynamicRows]',
+    standalone: false
 })
 export class DynamicRowsDirective implements OnInit, AfterViewInit, OnChanges {
   @Input() fontSize!: number;

@@ -3,8 +3,8 @@ import { CheckboxElement } from 'common/models/elements/input-elements/checkbox'
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-  selector: 'aspect-checkbox',
-  template: `
+    selector: 'aspect-checkbox',
+    template: `
     <ng-container *ngIf="!tableMode">
       <div class="mat-form-field"
            [style.width.%]="100"
@@ -41,7 +41,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </svg>
     </div>
   `,
-  styles: [`
+    styles: [`
     :host ::ng-deep mat-checkbox.image .mdc-form-field.mat-internal-form-field {
       flex-direction: column-reverse;
     }
@@ -65,7 +65,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     .svg-checkbox {width: 100%; height: 100%;}
     .svg-checkbox:hover {background-color: lightgrey;}
     .svg-checkbox-cross {width: 100%; height: 100%;}
- `]
+ `],
+    standalone: false
 })
 export class CheckboxComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: CheckboxElement;

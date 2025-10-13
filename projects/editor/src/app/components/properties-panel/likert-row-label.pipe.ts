@@ -4,7 +4,8 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import { TextImageLabel } from 'common/interfaces';
 
 @Pipe({
-  name: 'LikertRowLabel'
+    name: 'LikertRowLabel',
+    standalone: false
 })
 export class LikertRowLabelPipe implements PipeTransform {
   // eslint-disable-next-line class-methods-use-this

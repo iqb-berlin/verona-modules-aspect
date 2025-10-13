@@ -81,7 +81,7 @@ export class MessageService {
       color: var(--mat-snack-bar-button-color) !important;
       --mat-mdc-button-persistent-ripple-color: currentColor !important;
     }
-    aspect-reference-list {color: var(--mdc-snackbar-supporting-text-color);}
+    aspect-reference-list {color: var(--mat-snackbar-supporting-text-color);}
     `
     ]
 })

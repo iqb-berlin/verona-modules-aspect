@@ -216,7 +216,8 @@ iqb-aspect-definition@1.0.0
 - DropList:
   - new property: permanentPlaceholders
   - new property: permanentPlaceholdersCC
-
-4.10.0
 - Checkbox
   - new property: imgSrc
+
+4.10.0
+- InputAssistancePreset: + 'chemicalEquation'

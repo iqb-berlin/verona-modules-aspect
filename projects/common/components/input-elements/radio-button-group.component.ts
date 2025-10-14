@@ -52,6 +52,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       font-size: inherit;
       font-weight: inherit;
     }
+    :host ::ng-deep mat-radio-button .mdc-form-field {
+      align-items: flex-start;
+    }
+    :host ::ng-deep mat-radio-button .mdc-form-field .mdc-label {
+      padding-top: calc((var(--mdc-radio-state-layer-size) - 20px) / 2);
+    }
     :host ::ng-deep .strike .mdc-form-field {
       text-decoration: line-through;
     }

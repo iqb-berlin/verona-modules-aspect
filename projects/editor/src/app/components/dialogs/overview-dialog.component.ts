@@ -124,14 +124,14 @@ import { IDEditDialogComponent } from './id-edit-dialog.component';
         <table mat-table [dataSource]="tableData" matSort>
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                            [checked]="elementSelection.hasValue() && isAllSelected()"
-                            [indeterminate]="elementSelection.hasValue() && !isAllSelected()">
+              <mat-checkbox (change)="toggleAllRows()"
+                            [checked]="tableSelection == 'all'"
+                            [indeterminate]="tableSelection == 'some'">
               </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
               <mat-checkbox (click)="$event.stopPropagation()"
-                            (change)="$event ? elementSelection.toggle(row) : null"
+                            (change)="selectRow(row)"
                             [checked]="elementSelection.isSelected(row)">
               </mat-checkbox>
             </td>
@@ -208,7 +208,7 @@ export class OverviewDialogComponent implements AfterViewInit {
   pageFilter: number[];
   sectionFilter: number[] = [];
   availableSections: number[] = [];
-  isAllPagesSelected: boolean = true;
+  tableSelection: 'none' | 'some' | 'all' = 'none';
 
   columnsToDisplay = ['select', 'pageIndex', 'sectionIndex', 'alias', 'type', 'isRelevantForPresentationComplete', 'actions'];
   tableData!: MatTableDataSource<GroupedUIElement>;
@@ -272,6 +272,7 @@ export class OverviewDialogComponent implements AfterViewInit {
   applyFilters() {
     this.tableData.filter = JSON.stringify(this.elementFilters);
     this.elementSelection.clear();
+    this.updateTableSelection();
   }
 
   updateAvailableSections(): void {
@@ -304,16 +305,26 @@ export class OverviewDialogComponent implements AfterViewInit {
     });
   }
 
-  isAllSelected() {
-    const numSelected = this.elementSelection.selected.length;
-    const numRows = this.tableData.data.length;
-    return numSelected === numRows;
-  }
-
   toggleAllRows() {
-    this.isAllSelected() ?
+    this.tableSelection === 'all' ?
       this.elementSelection.clear() :
       this.tableData.filteredData.forEach(row => this.elementSelection.select(row));
+    this.updateTableSelection();
+  }
+
+  selectRow(row: any): void {
+    this.elementSelection.toggle(row);
+    this.updateTableSelection();
+  }
+
+  updateTableSelection(): void {
+    if (this.elementSelection.selected.length === 0) {
+      this.tableSelection = 'none';
+      return;
+    }
+    const numSelected = this.elementSelection.selected.length;
+    const numRows = this.tableData.filteredData.length;
+    this.tableSelection = numSelected === numRows ? 'all' : 'some';
   }
 }
 

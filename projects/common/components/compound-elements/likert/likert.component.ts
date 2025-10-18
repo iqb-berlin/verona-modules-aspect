@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import {
   Component, Input, Pipe, PipeTransform, QueryList, ViewChildren
 } from '@angular/core';
@@ -5,12 +6,10 @@ import { CompoundElementComponent } from 'common/directives/compound-element.dir
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
-import { BasicStyles } from 'common/models/elements/property-group-interfaces';
-import { Measurement } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-likert',
-    template: `
+  selector: 'aspect-likert',
+  template: `
     <div *ngIf="elementModel.rows.length === 0 && elementModel.options.length === 0">
       Keine Zeilen oder Spalten vorhanden
     </div>
@@ -66,7 +65,7 @@ import { Measurement } from 'common/interfaces';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .likert-column-label {
       text-align: center;
       justify-content: center;
@@ -94,7 +93,7 @@ import { Measurement } from 'common/interfaces';
       margin-bottom: 10px;
     }
   `],
-    standalone: false
+  standalone: false
 })
 export class LikertComponent extends CompoundElementComponent {
   @ViewChildren(LikertRadioButtonGroupComponent) compoundChildren!: QueryList<LikertRadioButtonGroupComponent>;
@@ -106,8 +105,8 @@ export class LikertComponent extends CompoundElementComponent {
 }
 
 @Pipe({
-    name: 'LikertRowBackgroundColor',
-    standalone: false
+  name: 'LikertRowBackgroundColor',
+  standalone: false
 })
 export class LikertRowBackgroundColorPipe implements PipeTransform {
   transform(lineColoring: boolean, lineColoringColor: string, firstLineColoring: boolean,

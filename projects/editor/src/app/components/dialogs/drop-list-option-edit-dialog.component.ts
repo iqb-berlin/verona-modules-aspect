@@ -4,8 +4,8 @@ import { FileService } from 'common/services/file.service';
 import { DragNDropValueObject } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-drop-list-option-edit-dialog',
-    template: `
+  selector: 'aspect-drop-list-option-edit-dialog',
+  template: `
     <div class="wrapper">
       <h2 mat-dialog-title>Ablegelistenoption anpassen</h2>
       <mat-dialog-content class="content">
@@ -62,7 +62,7 @@ import { DragNDropValueObject } from 'common/interfaces';
       </mat-dialog-actions>
     </div>
   `,
-    styles: [`
+  styles: [`
     .wrapper {
       display:flex;
       flex-direction: column;
@@ -91,7 +91,7 @@ import { DragNDropValueObject } from 'common/interfaces';
       width: 50%;
     }
   `],
-    standalone: false
+  standalone: false
 })
 export class DropListOptionEditDialogComponent {
   newLabel = { ...this.data.value };

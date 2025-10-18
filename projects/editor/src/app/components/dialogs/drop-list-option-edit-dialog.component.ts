@@ -9,10 +9,8 @@ import { DragNDropValueObject } from 'common/interfaces';
     <div class="wrapper">
       <h2 mat-dialog-title>Ablegelistenoption anpassen</h2>
       <mat-dialog-content class="content">
-        <mat-form-field>
-          <mat-label>{{'text' | translate }}</mat-label>
-          <input matInput type="text" [(ngModel)]="newLabel.text">
-        </mat-form-field>
+        <aspect-rich-text-editor [(content)]="newLabel.text" [showReducedControls]="true">
+        </aspect-rich-text-editor>
         <mat-form-field>
           <mat-label>{{'id' | translate }}</mat-label>
           <input matInput type="text" [(ngModel)]="newLabel.alias">

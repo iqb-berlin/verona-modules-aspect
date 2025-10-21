@@ -50,8 +50,6 @@ export class Section {
       this.enableReHide = section.enableReHide;
       this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
       this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
-      this.elements = section.elements
-        .map(element => ElementFactory.createElement(element, idService)) as PositionedUIElement[];
       this.ignoreNumbering = section.ignoreNumbering;
     } else {
       if (environment.strictInstantiation) {
@@ -69,11 +67,16 @@ export class Section {
       if (section?.enableReHide !== undefined) this.enableReHide = section.enableReHide;
       if (section?.logicalConnectiveOfRules !== undefined) this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
       if (section?.visibilityRules !== undefined) this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
-      this.elements = section?.elements !== undefined ?
-        section.elements.map(element => ElementFactory.createElement(element, idService)) as PositionedUIElement[] :
-        [];
       if (section?.ignoreNumbering !== undefined) this.ignoreNumbering = section.ignoreNumbering;
     }
+    this.elements = this.createElements(section, idService);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  protected createElements(section?: SectionProperties, idService?: AbstractIDService): PositionedUIElement[] {
+    return section?.elements !== undefined ?
+      section.elements.map(element => ElementFactory.createElement(element, idService)) as PositionedUIElement[] :
+      [];
   }
 
   setProperty(property: string, value: UIElementValue): void {

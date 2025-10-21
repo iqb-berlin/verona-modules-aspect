@@ -6,12 +6,12 @@ import { Section } from 'common/models/section';
 import { AbstractIDService } from 'common/interfaces';
 
 export class EditorUnit extends Unit {
-  override pages: EditorPage[];
+  override pages!: EditorPage[];
 
-  constructor(unit?: UnitProperties, idService?: AbstractIDService) {
-    super(unit, idService);
-    this.pages = unit?.pages
-      .map(page => new EditorPage(page, idService)) || [new EditorPage(undefined, idService)];
+  // eslint-disable-next-line class-methods-use-this
+  protected override createPages(unit?: UnitProperties, idService?: AbstractIDService): EditorPage[] {
+    return unit?.pages.map(page => new EditorPage(page, idService)) ||
+        [new EditorPage(undefined, idService)];
   }
 
   deleteElements(elements: UIElement[]): void {
@@ -20,15 +20,14 @@ export class EditorUnit extends Unit {
 }
 
 export class EditorPage extends Page {
-  override sections: EditorSection[];
+  override sections!: EditorSection[];
 
-  constructor(page?: PageProperties, idService?: AbstractIDService) {
-    super(page, idService);
+  // eslint-disable-next-line class-methods-use-this
+  protected override createSections(page?: PageProperties, idService?: AbstractIDService): EditorSection[] {
     if (page?.sections !== undefined) {
-      this.sections = page.sections.map(section => new EditorSection(section, idService));
-    } else {
-      this.sections = [new EditorSection(undefined, idService)];
+      return page.sections.map(section => new EditorSection(section, idService));
     }
+    return [new EditorSection(undefined, idService)];
   }
 
   deleteElements(elements: UIElement[]): void {

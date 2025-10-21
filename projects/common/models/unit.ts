@@ -7,6 +7,7 @@ import { VersionManager } from 'common/services/version-manager';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { AbstractIDService } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { IDService } from 'editor/src/app/services/id.service';
 
 export class Unit implements UnitProperties {
   type = 'aspect-unit-definition';
@@ -22,8 +23,7 @@ export class Unit implements UnitProperties {
       this.version = unit.version;
       this.stateVariables = unit.stateVariables
         .map(variable => new StateVariable(variable.id, variable.alias ?? variable.id, variable.value));
-      this.pages = unit.pages
-        .map(page => new Page(page, idService));
+      this.pages = this.createPages(unit, idService);
       this.enableSectionNumbering = unit.enableSectionNumbering;
       this.sectionNumberingPosition = unit.sectionNumberingPosition;
       this.showUnitNavNext = unit.showUnitNavNext;
@@ -36,12 +36,17 @@ export class Unit implements UnitProperties {
         this.stateVariables = unit.stateVariables
           .map(variable => new StateVariable(variable.id, variable.alias ?? variable.id, variable.value));
       }
-      this.pages = unit?.pages
-        .map(page => new Page(page, idService)) || [new Page(undefined, idService)];
+      this.pages = this.createPages(unit, idService);
       if (unit?.enableSectionNumbering !== undefined) this.enableSectionNumbering = unit.enableSectionNumbering;
       if (unit?.sectionNumberingPosition !== undefined) this.sectionNumberingPosition = unit.sectionNumberingPosition;
       if (unit?.showUnitNavNext !== undefined) this.showUnitNavNext = unit.showUnitNavNext;
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  protected createPages(unit?: UnitProperties, idService?: AbstractIDService): Page[] {
+    return unit?.pages.map(page => new Page(page, idService)) ||
+        [new Page(undefined, idService)];
   }
 
   getAllElements(elementType?: string): UIElement[] {

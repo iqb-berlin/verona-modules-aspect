@@ -29,7 +29,6 @@ export class Page {
       this.alwaysVisible = page.alwaysVisible;
       this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
       this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
-      this.sections = page.sections.map(section => new Section(section, idService));
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Page instantiation');
@@ -41,12 +40,16 @@ export class Page {
       if (page?.alwaysVisible !== undefined) this.alwaysVisible = page.alwaysVisible;
       if (page?.alwaysVisiblePagePosition !== undefined) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
       if (page?.alwaysVisibleAspectRatio !== undefined) this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
-      if (page?.sections !== undefined) {
-        this.sections = page.sections.map(section => new Section(section, idService));
-      } else {
-        this.sections = [new Section(undefined, idService)];
-      }
     }
+    this.sections = this.createSections(page, idService);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  protected createSections(page?: PageProperties, idService?: AbstractIDService): Section[] {
+    if (page?.sections !== undefined) {
+      return page.sections.map(section => new Section(section, idService));
+    }
+    return [new Section(undefined, idService)];
   }
 
   getAllElements(elementType?: string): UIElement[] {

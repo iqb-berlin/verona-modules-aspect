@@ -221,3 +221,7 @@ iqb-aspect-definition@1.0.0
 
 4.10.0
 - InputAssistancePreset: + 'chemicalEquation'
+- MathFieldElement
+  - new property: mathKeyboardPresets
+- TextAreaMathElement
+  - new property: mathKeyboardPresets

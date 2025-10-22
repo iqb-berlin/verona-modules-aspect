@@ -9,12 +9,15 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import {
+  AbstractIDService, InputElementProperties, MathKeyboardPreset, UIElementType
+} from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
 export class MathFieldElement extends InputElement implements MathFieldProperties {
   type: UIElementType = 'math-field';
   enableModeSwitch: boolean = false;
+  mathKeyboardPresets: MathKeyboardPreset[] = ['math', 'symbols', 'latin', 'greek'];
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -27,6 +30,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     super({ type: 'math-field', ...element }, idService);
     if (isMathFieldProperties(element)) {
       this.enableModeSwitch = element.enableModeSwitch;
+      this.mathKeyboardPresets = element.mathKeyboardPresets;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
@@ -34,6 +38,9 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
         throw new InstantiationEror('Error at Mathfield instantiation', element);
       }
       if (element?.enableModeSwitch !== undefined) this.enableModeSwitch = element.enableModeSwitch;
+      if (element?.mathKeyboardPresets !== undefined) {
+        this.mathKeyboardPresets = element.mathKeyboardPresets;
+      }
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
@@ -64,6 +71,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
 
 export interface MathFieldProperties extends InputElementProperties {
   enableModeSwitch: boolean;
+  mathKeyboardPresets: MathKeyboardPreset[];
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -73,6 +81,7 @@ export interface MathFieldProperties extends InputElementProperties {
 function isMathFieldProperties(blueprint?: Partial<MathFieldProperties>): blueprint is MathFieldProperties {
   if (!blueprint) return false;
   return blueprint.enableModeSwitch !== undefined &&
+    blueprint.mathKeyboardPresets !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling?.lineHeight !== undefined;

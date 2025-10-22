@@ -40,6 +40,11 @@
       [elementModel]="elementModel"
       [pageIndex]="pageIndex">
   </aspect-interactive-group-element>
+  <aspect-action-group-element
+    *ngIf="'actionGroup' === selectedGroup"
+    [elementModel]="elementModel"
+    [pageIndex]="pageIndex">
+  </aspect-action-group-element>
   <aspect-external-app-group-element
       *ngIf="'externalAppGroup' === selectedGroup"
       [elementModel]="elementModel"

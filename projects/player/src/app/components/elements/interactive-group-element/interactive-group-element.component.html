@@ -1,12 +1,3 @@
-<aspect-button
-    *ngIf="elementModel.type === 'button'"
-    #elementComponent
-    [class.hide-navigation]="!((elementModel | cast: ButtonElement).action |
-                            isEnabledNavigationTarget: (elementModel | cast: ButtonElement).actionParam:
-                            navigationService.enabledNavigationTargets.value)"
-    [elementModel]="elementModel | cast: ButtonElement"
-    (buttonActionEvent)="applyButtonAction($event)">
-</aspect-button>
 <aspect-image
     *ngIf="elementModel.type === 'image'"
     #elementComponent
@@ -22,15 +13,6 @@
   (focusChanged)="toggleKeyInput($event)"
   (elementValueChanged)="changeElementCodeValue($event)">
 </aspect-math-table>
-<aspect-trigger
-  *ngIf="elementModel.type === 'trigger'"
-  #elementComponent
-  [elementModel]="elementModel | cast: TriggerElement"
-  (triggerActionEvent)="applyTriggerAction($event)"
-  aspectInViewDetection
-  detectionType="top"
-  (intersecting)="elementComponent.emitEvent()">>
-</aspect-trigger>
 <aspect-marking-panel
   *ngIf="elementModel.type === 'marking-panel'"
   #elementComponent

@@ -4,10 +4,10 @@ import { UIElementType } from 'common/interfaces';
 import { ElementGroupInterface, ElementGroupName } from '../../../models/element-group.interface';
 
 @Component({
-    selector: 'aspect-element-group-selection',
-    templateUrl: './element-group-selection.component.html',
-    styleUrls: ['./element-group-selection.component.scss'],
-    standalone: false
+  selector: 'aspect-element-group-selection',
+  templateUrl: './element-group-selection.component.html',
+  styleUrls: ['./element-group-selection.component.scss'],
+  standalone: false
 })
 export class ElementGroupSelectionComponent implements OnInit {
   @Input() elementModel!: UIElement;
@@ -25,7 +25,8 @@ export class ElementGroupSelectionComponent implements OnInit {
     },
     { name: 'compoundGroup', types: ['cloze', 'likert', 'table'] },
     { name: 'textGroup', types: ['text'] },
-    { name: 'interactiveGroup', types: ['button', 'image', 'math-table', 'trigger', 'marking-panel'] },
+    { name: 'interactiveGroup', types: ['image', 'math-table', 'marking-panel'] },
+    { name: 'actionGroup', types: ['button', 'trigger'] },
     { name: 'externalAppGroup', types: ['geometry'] }
   ];
 

@@ -2,13 +2,9 @@ import {
   AfterViewInit, Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements/button/button';
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
-import { TriggerActionEvent, TriggerElement } from 'common/models/elements/trigger/trigger';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { UIElement } from 'common/models/elements/element';
-import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
-import { AnchorService } from 'player/src/app/services/anchor.service';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { MathTableCell, MathTableElement, MathTableRow } from 'common/models/elements/input-elements/math-table';
 import { KeypadService } from 'player/src/app/services/keypad.service';
@@ -25,19 +21,17 @@ import { ElementModelElementCodeMappingService } from '../../../services/element
 import { NavigationService } from '../../../services/navigation.service';
 
 @Component({
-    selector: 'aspect-interactive-group-element',
-    templateUrl: './interactive-group-element.component.html',
-    styleUrls: ['./interactive-group-element.component.scss'],
-    standalone: false
+  selector: 'aspect-interactive-group-element',
+  templateUrl: './interactive-group-element.component.html',
+  styleUrls: ['./interactive-group-element.component.scss'],
+  standalone: false
 })
 export class InteractiveGroupElementComponent
   extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   MarkingPanelElement!: MarkingPanelElement;
-  ButtonElement!: ButtonElement;
   ImageElement!: ImageElement;
   MathTableElement!: MathTableElement;
-  TriggerElement!: TriggerElement;
 
   tableModel: MathTableRow[] = [];
 
@@ -56,10 +50,8 @@ export class InteractiveGroupElementComponent
 
   constructor(
     public unitStateService: UnitStateService,
-    public veronaPostService: VeronaPostService,
     public navigationService: NavigationService,
     private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-    private anchorService: AnchorService,
     private stateVariableStateService: StateVariableStateService,
     public keypadService: KeypadService,
     private keyboardService: KeyboardService,
@@ -136,41 +128,6 @@ export class InteractiveGroupElementComponent
       });
   }
 
-  applyButtonAction(buttonEvent: ButtonEvent): void {
-    switch (buttonEvent.action) {
-      case 'unitNav':
-        this.veronaPostService.sendVopUnitNavigationRequestedNotification(
-          (buttonEvent.param as UnitNavParam)
-        );
-        break;
-      case 'pageNav':
-        this.navigationService.setPage(buttonEvent.param as number);
-        break;
-      case 'highlightText':
-        this.anchorService.toggleAnchor(buttonEvent.param as string);
-        break;
-      default:
-        this.applyTriggerAction(buttonEvent as TriggerActionEvent);
-    }
-  }
-
-  applyTriggerAction(triggerActionEvent: TriggerActionEvent): void {
-    switch (triggerActionEvent.action) {
-      case 'highlightText':
-        this.anchorService.showAnchor(triggerActionEvent.param as string);
-        break;
-      case 'removeHighlights':
-        this.anchorService.hideAllAnchors();
-        break;
-      case 'stateVariableChange':
-        this.stateVariableStateService.changeElementCodeValue(
-          triggerActionEvent.param as { id: string, value: string }
-        );
-        break;
-      default:
-    }
-  }
-
   changeElementCodeValue(value: ValueChangeElement): void {
     this.unitStateService.changeElementCodeValue({
       id: value.id,
@@ -191,13 +148,12 @@ export class InteractiveGroupElementComponent
     if (this.elementModel.showSoftwareKeyboard && !this.elementModel.readOnly) {
       promises.push(this.keyboardService
         .toggleAsync(focusedTextInput,
-          this.elementComponent as MathTableComponent,
-          this.deviceService.isMobileWithoutHardwareKeyboard));
+                     this.elementComponent as MathTableComponent,
+                     this.deviceService.isMobileWithoutHardwareKeyboard));
     }
     if (this.shallOpenKeypad(this.elementModel)) {
       promises.push(this.keypadService
-        .toggleAsync(focusedTextInput,
-          this.elementComponent as MathTableComponent));
+        .toggleAsync(focusedTextInput, this.elementComponent as MathTableComponent));
     }
     if (promises.length) {
       await Promise.all(promises).then(() => {

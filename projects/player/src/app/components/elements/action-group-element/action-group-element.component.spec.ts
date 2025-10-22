@@ -12,7 +12,6 @@ describe('ActionGroupElementComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         ActionGroupElementComponent,
-        ButtonStubComponent,
         CastPipe
       ]
     })

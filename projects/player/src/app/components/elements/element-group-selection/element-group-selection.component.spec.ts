@@ -25,64 +25,81 @@ describe('ElementGroupSelectionComponent', () => {
   let fixture: ComponentFixture<ElementGroupSelectionComponent>;
 
   @Component({
-    selector: 'aspect-text-group-element', template: '',
+    selector: 'aspect-text-group-element',
+    template: '',
     standalone: false
-})
+  })
   class ElementTextGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
   @Component({
-    selector: 'aspect-input-group-element', template: '',
+    selector: 'aspect-input-group-element',
+    template: '',
     standalone: false
-})
+  })
   class ElementInputGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
   @Component({
-    selector: 'aspect-text-input-group-element', template: '',
+    selector: 'aspect-text-input-group-element',
+    template: '',
     standalone: false
-})
+  })
   class ElementTextInputGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
   @Component({
-    selector: 'aspect-media-player-group-element', template: '',
+    selector: 'aspect-media-player-group-element',
+    template: '',
     standalone: false
-})
+  })
   class ElementMediaPlayerGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
   @Component({
-    selector: 'aspect-compound-group-element', template: '',
+    selector: 'aspect-compound-group-element',
+    template: '',
     standalone: false
-})
+  })
   class ElementCompoundGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
   @Component({
-    selector: 'aspect-base-group-element', template: '',
+    selector: 'aspect-base-group-element',
+    template: '',
     standalone: false
-})
+  })
   class ElementBaseGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
   @Component({
-    selector: 'aspect-interactive-group-element', template: '',
+    selector: 'aspect-interactive-group-element',
+    template: '',
     standalone: false
-})
+  })
   class ElementInteractiveGroupComponent {
+    @Input() elementModel!: UIElement;
+    @Input() pageIndex!: number;
+  }
+
+  @Component({
+    selector: 'aspect-action-group-element',
+    template: '',
+    standalone: false
+  })
+  class ElementActionGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
@@ -97,7 +114,8 @@ describe('ElementGroupSelectionComponent', () => {
         ElementMediaPlayerGroupStubComponent,
         ElementCompoundGroupComponent,
         ElementBaseGroupComponent,
-        ElementInteractiveGroupComponent
+        ElementInteractiveGroupComponent,
+        ElementActionGroupComponent
       ]
     })
       .compileComponents();
@@ -209,9 +227,9 @@ describe('ElementGroupSelectionComponent', () => {
     expect(component.selectedGroup).toEqual('interactiveGroup');
   });
 
-  it('should select interactiveGroup', () => {
+  it('should select actionGroup', () => {
     component.elementModel = new ButtonElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('interactiveGroup');
+    expect(component.selectedGroup).toEqual('actionGroup');
   });
 });

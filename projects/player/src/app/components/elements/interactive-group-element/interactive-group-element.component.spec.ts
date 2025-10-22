@@ -10,6 +10,15 @@ describe('InteractiveGroupElementComponent', () => {
   let fixture: ComponentFixture<InteractiveGroupElementComponent>;
 
   @Component({
+    selector: 'aspect-image',
+    template: '',
+    standalone: false
+  })
+  class ImageStubComponent {
+    @Input() elementModel!: ImageElement;
+  }
+
+  @Component({
     selector: 'aspect-floating-keypad',
     template: '',
     standalone: false
@@ -22,6 +31,7 @@ describe('InteractiveGroupElementComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         InteractiveGroupElementComponent,
+        ImageStubComponent,
         MockFloatingKeyPadComponent,
         CastPipe
       ]

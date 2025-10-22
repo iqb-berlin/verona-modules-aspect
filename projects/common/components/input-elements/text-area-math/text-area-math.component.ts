@@ -10,8 +10,8 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
-    selector: 'aspect-text-area-math',
-    template: `
+  selector: 'aspect-text-area-math',
+  template: `
     @if (elementModel.label) {
       <label class="label">{{elementModel.label}}</label>
     }
@@ -44,6 +44,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
           [type]="segment.type"
           [value]="segment.value"
           [selectedFocus]="selectedFocus"
+          [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
           [showSoftwareKeyboard]="elementModel.showSoftwareKeyboard"
           [hideNativeKeyboard]="elementModel.hideNativeKeyboard"
           (valueChanged)="onValueChanged($event)"
@@ -59,13 +60,13 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       {{ elementFormControl.errors | errorTransform: elementModel }}
     </mat-error>
   `,
-    styles: [
-        '.label {font-size: 20px; line-height: 135%; display: block; margin-bottom: 15px;}',
-        '.alignment-fix {padding: 14px 0; display: inline-block; width: 0;}',
-        '.text-area {border: 1px solid black; border-radius: 3px; padding: 10px 5px; }',
-        '.insert-formula-button {font-size: large; width: 160px; background-color: #ddd; padding: 15px 10px; height: 55px;}'
-    ],
-    standalone: false
+  styles: [
+    '.label {font-size: 20px; line-height: 135%; display: block; margin-bottom: 15px;}',
+    '.alignment-fix {padding: 14px 0; display: inline-block; width: 0;}',
+    '.text-area {border: 1px solid black; border-radius: 3px; padding: 10px 5px; }',
+    '.insert-formula-button {font-size: large; width: 160px; background-color: #ddd; padding: 15px 10px; height: 55px;}'
+  ],
+  standalone: false
 })
 export class TextAreaMathComponent extends TextInputComponent implements OnInit {
   @Input() elementModel!: TextAreaMathElement;

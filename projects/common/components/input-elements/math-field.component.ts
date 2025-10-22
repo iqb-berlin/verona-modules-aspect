@@ -7,8 +7,8 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
-    selector: 'aspect-math-field',
-    template: `
+  selector: 'aspect-math-field',
+  template: `
   <div [style.line-height.%]="elementModel.styling.lineHeight"
        [style.color]="elementModel.styling.fontColor"
        [style.font-size.px]="elementModel.styling.fontSize"
@@ -21,6 +21,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
        }
       <aspect-math-input [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
                          [readonly]="elementModel.readOnly"
+                         [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
                          [enableModeSwitch]="elementModel.enableModeSwitch"
                          (input)="elementFormControl.setValue($any($event.target).value)"
                          (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
@@ -33,19 +34,19 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       </mat-error>
   </div>
   `,
-    styles: [
-        '.error-message {font-size: 75%; margin-top: 15px; margin-left: 10px;}',
-        '.math-label {display: block; margin-bottom: 15px; }'
-    ],
-    standalone: false
+  styles: [
+    '.error-message {font-size: 75%; margin-top: 15px; margin-left: 10px;}',
+    '.math-label {display: block; margin-bottom: 15px; }'
+  ],
+  standalone: false
 })
 export class MathFieldComponent extends TextInputComponent {
   @Input() elementModel!: MathFieldElement;
 }
 
 @Pipe({
-    name: 'getValue',
-    standalone: false
+  name: 'getValue',
+  standalone: false
 })
 export class GetValuePipe implements PipeTransform {
   transform(elementModelValue: string, elementFormControlValue: string, parentForm: UntypedFormGroup): string {

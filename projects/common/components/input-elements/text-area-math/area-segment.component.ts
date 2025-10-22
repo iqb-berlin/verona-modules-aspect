@@ -5,14 +5,16 @@ import { MathEditorModule } from 'common/math-editor/math-editor.module';
 import { AreaTextInputComponent } from 'common/components/input-elements/text-area-math/area-text-input.component';
 import { BehaviorSubject } from 'rxjs';
 import { MathInputComponent } from 'common/math-editor/math-input.component';
+import { MathKeyboardPreset } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-text-area-math-segment',
-    template: `
+  selector: 'aspect-text-area-math-segment',
+  template: `
     @if (type === 'math') {
       <aspect-math-input #inputComponent
                          [fullWidth]="false"
                          [value]="value"
+                         [mathKeyboardPresets]="mathKeyboardPresets"
                          (focusIn)="onFocusIn($event)"
                          (focusOut)="focusOut.emit($event)"
                          (valueChange)="valueChanged.emit({ index: index, value: $event})">
@@ -30,15 +32,16 @@ import { MathInputComponent } from 'common/math-editor/math-input.component';
       </aspect-area-input>
     }
   `,
-    imports: [
-        AreaTextInputComponent,
-        MathEditorModule
-    ],
-    styles: []
+  imports: [
+    AreaTextInputComponent,
+    MathEditorModule
+  ],
+  styles: []
 })
 export class AreaSegmentComponent {
   @Input() showSoftwareKeyboard!: boolean;
   @Input() hideNativeKeyboard!: boolean;
+  @Input() mathKeyboardPresets!: MathKeyboardPreset[];
   @Input() type!: 'text' | 'math';
   @Input() value!: string;
   @Input() index!: number;

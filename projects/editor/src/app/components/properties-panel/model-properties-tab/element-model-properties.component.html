@@ -134,6 +134,19 @@
            (input)="updateModel.emit({ property: 'expectedCharactersCount', value: $any($event.target).value || 0 })">
   </mat-form-field>
 
+  @if (unitService.expertMode && combinedProperties.mathKeyboardPresets !== undefined) {
+    <mat-form-field>
+      <mat-label>{{'formulaPreset.title' | translate}}</mat-label>
+      <mat-select multiple
+                  [value]="combinedProperties.mathKeyboardPresets"
+                  (selectionChange)="updateModel.emit({ property: 'mathKeyboardPresets', value: $event.value })">
+        @for (preset of MATH_KEYBOARD_PRESETS; track preset) {
+          <mat-option [value]="preset">{{`formulaPreset.${preset}` | translate}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  }
+
   <aspect-action-properties *ngIf="unitService.expertMode && combinedProperties.action !== undefined"
     [actions]="combinedProperties.type === 'button' ? ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange'] :
                                                       ['highlightText', 'removeHighlights',  'stateVariableChange']"

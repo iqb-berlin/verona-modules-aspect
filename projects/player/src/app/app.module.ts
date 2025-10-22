@@ -28,6 +28,9 @@ import {
   MathKeyboardContainerComponent
 } from 'player/src/app/components/math-keyboard-container/math-keyboard-container.component';
 import { PrintModule } from 'player/modules/print/print.module';
+import {
+  ActionGroupElementComponent
+} from 'player/src/app/components/elements/action-group-element/action-group-element.component';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -92,6 +95,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     TextGroupElementComponent,
     BaseGroupElementComponent,
     InteractiveGroupElementComponent,
+    ActionGroupElementComponent,
     PlayerLayoutComponent,
     UnitStateDirective,
     AlwaysVisiblePagePipe,

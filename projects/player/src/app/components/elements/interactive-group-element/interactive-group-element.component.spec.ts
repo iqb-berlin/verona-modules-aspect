@@ -1,10 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  Component, Input, Pipe, PipeTransform
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { ButtonElement } from 'common/models/elements/button/button';
+import { ImageElement } from 'common/models/elements/media-elements/image';
 import { InteractiveGroupElementComponent } from './interactive-group-element.component';
 
 describe('InteractiveGroupElementComponent', () => {
@@ -12,38 +10,29 @@ describe('InteractiveGroupElementComponent', () => {
   let fixture: ComponentFixture<InteractiveGroupElementComponent>;
 
   @Component({
-    selector: 'aspect-button', template: '',
+    selector: 'aspect-image',
+    template: '',
     standalone: false
-})
-  class ButtonStubComponent {
-    @Input() elementModel!: ButtonElement;
+  })
+  class ImageStubComponent {
+    @Input() elementModel!: ImageElement;
   }
 
   @Component({
-    selector: 'aspect-floating-keypad', template: '',
+    selector: 'aspect-floating-keypad',
+    template: '',
     standalone: false
-})
+  })
   class MockFloatingKeyPadComponent {
     @Input() isKeypadOpen!: boolean;
-  }
-
-  @Pipe({
-    name: 'isEnabledNavigationTarget',
-    standalone: false
-})
-  class MockIsEnabledNavigationTarget implements PipeTransform {
-    transform(): boolean {
-      return true;
-    }
   }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         InteractiveGroupElementComponent,
+        ImageStubComponent,
         MockFloatingKeyPadComponent,
-        ButtonStubComponent,
-        MockIsEnabledNavigationTarget,
         CastPipe
       ]
     })
@@ -53,7 +42,7 @@ describe('InteractiveGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InteractiveGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new ButtonElement({ id: 'id', alias: 'alias' });
+    component.elementModel = new ImageElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
   });
 

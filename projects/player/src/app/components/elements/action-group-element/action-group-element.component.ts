@@ -69,7 +69,7 @@ export class ActionGroupElementComponent
   applyTriggerAction(triggerActionEvent: TriggerActionEvent): void {
     switch (triggerActionEvent.action) {
       case 'highlightText':
-        this.anchorService.showAnchor(triggerActionEvent.param as string);
+        setTimeout(() => this.anchorService.showAnchor(triggerActionEvent.param as string));
         break;
       case 'removeHighlights':
         this.anchorService.hideAllAnchors();

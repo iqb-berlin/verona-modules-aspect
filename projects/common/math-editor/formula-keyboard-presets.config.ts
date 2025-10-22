@@ -1,6 +1,154 @@
 import { VirtualKeyboardLayout } from '@iqb/mathlive';
 
-export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = {
+export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
+  iqbPhysics: {
+    label: '123',
+    labelClass: 'MLK__tex-math',
+    rows: [
+      [
+        {
+          latex: '<',
+          shift: '\\le'
+        },
+        {
+          latex: '>',
+          shift: '\\ge'
+        },
+        '[separator-5]',
+        {
+          latex: '7'
+        },
+        {
+          latex: '8'
+        },
+        {
+          latex: '9'
+        },
+        {
+          label: '÷',
+          latex: '\\colon'
+        },
+        '[separator-5]',
+        {
+          latex: '\\frac{#@}{#?}'
+        },
+        {
+          latex: '#@^2}'
+        },
+        {
+          latex: '#@^#?'
+        }
+      ],
+      [
+        {
+          latex: '=',
+          shift: '\\ne'
+        },
+        {
+          latex: '\\pm',
+          shift: '\\leftrightarrow'
+        },
+        '[separator-5]',
+        {
+          latex: '4'
+        },
+        {
+          latex: '5'
+        },
+        {
+          latex: '6'
+        },
+        {
+          label: '×',
+          latex: '\\cdot'
+        },
+        '[separator-5]',
+        {
+          latex: '\\sqrt{#0}'
+        },
+        {
+          latex: '\\overline{#@}',
+          shift: '\\left\\vert#0\\right\\vert'
+        },
+        {
+          latex: '\\overrightarrow{#@}',
+          shift: {
+            latex: '\\exp',
+            insert: '\\exp\\left(#0\\right)'
+          }
+        }
+      ],
+      [
+        {
+          latex: '(',
+          shift: '\\rightarrow'
+        },
+        {
+          latex: ')',
+          shift: '\\leftarrow'
+        },
+        '[separator-5]',
+        {
+          latex: '1'
+        },
+        {
+          latex: '2'
+        },
+        {
+          latex: '3'
+        },
+        {
+          latex: '-'
+        },
+        '[separator-5]',
+        {
+          latex: '\\exponentialE',
+          shift: '\\sin'
+        },
+        {
+          latex: '\\pi',
+          shift: '\\cos'
+        },
+        {
+          latex: '\\infty',
+          shift: '\\tan'
+        }
+      ],
+      [
+        { label: '[shift]', width: 2.0 },
+        '[separator-5]',
+        {
+          label: '‐',
+          latex: '-'
+        },
+        {
+          latex: '0'
+        },
+        {
+          latex: ','
+        },
+        {
+          latex: '+'
+        },
+        '[separator-5]',
+        {
+          class: 'action',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
+          command: 'performWithFeedback(moveToPreviousChar)'
+        },
+        {
+          class: 'action',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
+          command: 'performWithFeedback(moveToNextChar)'
+        },
+        {
+          label: '[backspace]',
+          width: 1.0,
+          class: 'action'
+        }
+      ]
+    ]
+  },
   iqbNumeric: {
     label: '123',
     labelClass: 'MLK__tex-math',
@@ -117,7 +265,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         {
           latex: ','
         },
-        '[+]',
+        { latex: '+' },
         '[separator-15]',
         {
           class: 'action',
@@ -128,6 +276,146 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
           command: 'performWithFeedback(moveToNextChar)'
+        }
+      ]
+    ]
+  },
+  iqbSymbols: {
+    label: '&infin;≠∈',
+    labelClass: 'MLK__tex',
+    rows: [
+      [
+        {
+          latex: '\\sin',
+          shift: '\\sin^{-1}'
+        },
+        '\\ln',
+        {
+          latex: '\\mathrm{abs}',
+          insert: '\\mathrm{abs}\\left(#0\\right)'
+        },
+        {
+          latex: '\\rightarrow',
+          shift: '\\Rightarrow'
+        },
+        {
+          latex: '\\exists',
+          shift: '\\nexists'
+        },
+        { latex: '\\in', shift: '\\notin' },
+        '\\cup',
+        {
+          latex: '\\overrightarrow{#@}',
+          shift: '\\overleftarrow{#@}'
+        },
+        {
+          class: 'small',
+          latex: '\\lim_{#?}',
+          shift: '\\lim_{x\\to\\infty}'
+        },
+        {
+          class: 'small',
+          latex: '\\sum',
+          insert: '\\sum'
+        }
+      ],
+      [
+        {
+          latex: '\\cos',
+          shift: '\\cos^{-1}'
+        },
+        {
+          latex: '\\log',
+          shift: '\\log_{10}'
+        },
+        '\\left\\vert#0\\right\\vert',
+        {
+          latex: '\\larr',
+          shift: '\\lArr'
+        },
+        {
+          latex: '\\forall',
+          shift: '\\lnot'
+        },
+        { latex: '\\ni', shift: '\\not\\owns' },
+        '\\cap',
+        {
+          latex: '\\overline{#@}',
+          shift: '\\underline{#@}'
+        },
+        {
+          class: 'small',
+          latex: '\\int',
+          shift: '\\iint'
+        },
+        {
+          latex: '\\int^{{#?}}_{#?}\\!#?\\,\\mathrm{d}x',
+          class: 'small'
+        }
+      ],
+      [
+        {
+          latex: '\\tan',
+          shift: '\\tan^{-1}'
+        },
+        {
+          latex: '\\exp',
+          insert: '\\exp\\left(#0\\right)'
+        },
+        '\\left\\Vert#0\\right\\Vert',
+        {
+          latex: '\\lrArr',
+          shift: '\\leftrightarrow'
+        },
+        { latex: '\\vert', shift: '!' },
+        {
+          latex: '#@^{\\complement}',
+          aside: 'complement'
+        },
+        {
+          latex: '\\subset',
+          shift: '\\subseteq'
+        },
+        {
+          latex: '#@^{\\prime}',
+          shift: '#@^{\\doubleprime}'
+        },
+        {
+          latex: '\\mathrm{d}',
+          shift: '\\partial'
+        },
+        {
+          latex: '\\pm',
+          class: 'big-op'
+        }
+      ],
+      [
+        { label: '[shift]', width: 2.0 },
+        '[separator-10]',
+        {
+          latex: '\\exponentialE',
+          shift: '\\imaginaryI'
+        },
+        { latex: '\\pi', shift: '\\tau' },
+        {
+          latex: '\\infty',
+          shift: '\\Colon'
+        },
+        '[separator-10]',
+        {
+          class: 'action',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
+          command: 'performWithFeedback(moveToPreviousChar)'
+        },
+        {
+          class: 'action',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
+          command: 'performWithFeedback(moveToNextChar)'
+        },
+        {
+          label: '[backspace]',
+          width: 1.0,
+          class: 'action'
         }
       ]
     ]
@@ -619,146 +907,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
           command: 'performWithFeedback(moveToNextChar)'
-        }
-      ]
-    ]
-  },
-  iqbSymbols: {
-    label: '&infin;≠∈',
-    labelClass: 'MLK__tex',
-    rows: [
-      [
-        {
-          latex: '\\sin',
-          shift: '\\sin^{-1}'
-        },
-        '\\ln',
-        {
-          latex: '\\mathrm{abs}',
-          insert: '\\mathrm{abs}\\left(#0\\right)'
-        },
-        {
-          latex: '\\rightarrow',
-          shift: '\\Rightarrow'
-        },
-        {
-          latex: '\\exists',
-          shift: '\\nexists'
-        },
-        { latex: '\\in', shift: '\\notin' },
-        '\\cup',
-        {
-          latex: '\\overrightarrow{#@}',
-          shift: '\\overleftarrow{#@}'
-        },
-        {
-          class: 'small',
-          latex: '\\lim_{#?}',
-          shift: '\\lim_{x\\to\\infty}'
-        },
-        {
-          class: 'small',
-          latex: '\\sum',
-          insert: '\\sum'
-        }
-      ],
-      [
-        {
-          latex: '\\cos',
-          shift: '\\cos^{-1}'
-        },
-        {
-          latex: '\\log',
-          shift: '\\log_{10}'
-        },
-        '\\left\\vert#0\\right\\vert',
-        {
-          latex: '\\larr',
-          shift: '\\lArr'
-        },
-        {
-          latex: '\\forall',
-          shift: '\\lnot'
-        },
-        { latex: '\\ni', shift: '\\not\\owns' },
-        '\\cap',
-        {
-          latex: '\\overline{#@}',
-          shift: '\\underline{#@}'
-        },
-        {
-          class: 'small',
-          latex: '\\int',
-          shift: '\\iint'
-        },
-        {
-          latex: '\\int^{{#?}}_{#?}\\!#?\\,\\mathrm{d}x',
-          class: 'small'
-        }
-      ],
-      [
-        {
-          latex: '\\tan',
-          shift: '\\tan^{-1}'
-        },
-        {
-          latex: '\\exp',
-          insert: '\\exp\\left(#0\\right)'
-        },
-        '\\left\\Vert#0\\right\\Vert',
-        {
-          latex: '\\lrArr',
-          shift: '\\leftrightarrow'
-        },
-        { latex: '\\vert', shift: '!' },
-        {
-          latex: '#@^{\\complement}',
-          aside: 'complement'
-        },
-        {
-          latex: '\\subset',
-          shift: '\\subseteq'
-        },
-        {
-          latex: '#@^{\\prime}',
-          shift: '#@^{\\doubleprime}'
-        },
-        {
-          latex: '\\mathrm{d}',
-          shift: '\\partial'
-        },
-        {
-          latex: '\\pm',
-          class: 'big-op'
-        }
-      ],
-      [
-        { label: '[shift]', width: 2.0 },
-        '[separator-10]',
-        {
-          latex: '\\exponentialE',
-          shift: '\\imaginaryI'
-        },
-        { latex: '\\pi', shift: '\\tau' },
-        {
-          latex: '\\infty',
-          shift: '\\Colon'
-        },
-        '[separator-10]',
-        {
-          class: 'action',
-          label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
-          command: 'performWithFeedback(moveToPreviousChar)'
-        },
-        {
-          class: 'action',
-          label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
-          command: 'performWithFeedback(moveToNextChar)'
-        },
-        {
-          label: '[backspace]',
-          width: 1.0,
-          class: 'action'
         }
       ]
     ]

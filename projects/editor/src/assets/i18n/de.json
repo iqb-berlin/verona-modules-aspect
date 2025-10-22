@@ -277,6 +277,14 @@
     "permanentPlaceholders": "Platzhalter anzeigen",
     "permanentPlaceholdersCC": "Platzhalter mit Durchschrift"
   },
+  "formulaPreset": {
+    "title": "Formeleingabelayouts auswählen",
+    "math": "Mathematik",
+    "symbols": "Mathematische Symbole",
+    "physics": "Physik",
+    "latin": "Lateinische Buchstaben",
+    "greek": "Griechische Buchstaben"
+  },
   "hotspot": {
     "top": "Abstand von oben",
     "left": "Abstand von links",

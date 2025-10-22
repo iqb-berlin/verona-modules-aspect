@@ -7,7 +7,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { InputElement, isInputElement, UIElement } from 'common/models/elements/element';
 import { FileService } from 'common/services/file.service';
-import { UIElementValue } from 'common/interfaces';
+import { UIElementValue, MATH_KEYBOARD_PRESETS } from 'common/interfaces';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { UnitService } from '../../../services/unit-services/unit.service';
@@ -15,10 +15,10 @@ import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
 
 @Component({
-    selector: 'aspect-element-model-properties-component',
-    templateUrl: './element-model-properties.component.html',
-    styleUrls: ['./element-model-properties.component.css'],
-    standalone: false
+  selector: 'aspect-element-model-properties-component',
+  templateUrl: './element-model-properties.component.html',
+  styleUrls: ['./element-model-properties.component.css'],
+  standalone: false
 })
 export class ElementModelPropertiesComponent implements OnDestroy {
   @Input() combinedProperties!: CombinedProperties;
@@ -29,6 +29,7 @@ export class ElementModelPropertiesComponent implements OnDestroy {
     isInputValid?: boolean | null
   }>();
 
+  MATH_KEYBOARD_PRESETS = MATH_KEYBOARD_PRESETS;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,

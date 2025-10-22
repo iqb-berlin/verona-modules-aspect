@@ -11,11 +11,12 @@ import {
 } from '@angular/core';
 import { MathfieldElement } from '@iqb/mathlive';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { IQB_MATH_KEYBOARD_LAYOUTS } from 'common/math-editor/keyboard-layout.config';
+import { FORMULA_KEYBOARD_PRESETS } from 'common/math-editor/formula-keyboard-presets.config';
+import { MathKeyboardPreset } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-math-input',
-    template: `
+  selector: 'aspect-math-input',
+  template: `
     <mat-button-toggle-group *ngIf="enableModeSwitch"
                              [value]="mathFieldElement.mode"
                              (change)="setParseMode($event)">
@@ -31,7 +32,7 @@ import { IQB_MATH_KEYBOARD_LAYOUTS } from 'common/math-editor/keyboard-layout.co
          (focusout)="onFocusOut()">
     </div>
   `,
-    styles: [`
+  styles: [`
     mat-button-toggle-group {
       height: auto;
     }
@@ -56,21 +57,21 @@ import { IQB_MATH_KEYBOARD_LAYOUTS } from 'common/math-editor/keyboard-layout.co
     :host ::ng-deep .mat-button-toggle-label-content {
       line-height: unset;
     }`
-    ],
-    standalone: false
+  ],
+  standalone: false
 })
 export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() value!: string;
   @Input() fullWidth: boolean = true;
   @Input() readonly: boolean = false;
   @Input() enableModeSwitch: boolean = false;
+  @Input() mathKeyboardPresets: MathKeyboardPreset[] = [];
   @Output() valueChange: EventEmitter<string> = new EventEmitter();
   @Output() focusIn: EventEmitter<MathfieldElement> = new EventEmitter();
   @Output() focusOut: EventEmitter<MathfieldElement> = new EventEmitter();
   @ViewChild('inputRef') inputRef!: ElementRef;
 
   protected readonly window = window;
-  private readonly mathKeyboardLayout = IQB_MATH_KEYBOARD_LAYOUTS;
 
   mathFieldElement: MathfieldElement = new MathfieldElement({
     mathVirtualKeyboardPolicy: 'manual'
@@ -80,7 +81,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngAfterViewInit(): void {
     this.setupMathField();
-    this.setKeyboardLayout();
     MathInputComponent.setupMathKeyboard();
   }
 
@@ -122,16 +122,18 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   onFocusIn() {
+    this.updateKeyboardLayout();
     this.focusIn.emit(this.mathFieldElement);
     window.mathVirtualKeyboard.show({ firstLayer: true, resetShift: true });
   }
 
-  private setKeyboardLayout(): void {
+  private updateKeyboardLayout(): void {
     window.mathVirtualKeyboard.layouts = [
-      this.mathKeyboardLayout.iqbNumeric,
-      this.mathKeyboardLayout.iqbSymbols,
-      this.mathKeyboardLayout.iqbText,
-      this.mathKeyboardLayout.iqbGreek
+      ...(this.mathKeyboardPresets.includes('physics') ? [FORMULA_KEYBOARD_PRESETS.iqbPhysics] : []),
+      ...(this.mathKeyboardPresets.includes('math') ? [FORMULA_KEYBOARD_PRESETS.iqbNumeric] : []),
+      ...(this.mathKeyboardPresets.includes('symbols') ? [FORMULA_KEYBOARD_PRESETS.iqbSymbols] : []),
+      ...(this.mathKeyboardPresets.includes('latin') ? [FORMULA_KEYBOARD_PRESETS.iqbText] : []),
+      ...(this.mathKeyboardPresets.includes('greek') ? [FORMULA_KEYBOARD_PRESETS.iqbGreek] : [])
     ];
   }
 

@@ -11,6 +11,7 @@ import { TextAreaMathComponent } from 'common/components/input-elements/text-are
 import { environment } from 'common/environment';
 import {
   AbstractIDService,
+  MathKeyboardPreset,
   TextInputElementProperties,
   UIElementType
 } from 'common/interfaces';
@@ -21,6 +22,7 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
   value: TextAreaMath[] = [];
   rowCount: number = 2;
   hasAutoHeight: boolean = false;
+  mathKeyboardPresets: MathKeyboardPreset[] = ['math', 'symbols', 'latin', 'greek'];
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -34,6 +36,7 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
     if (isTextAreaMathProperties(element)) {
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;
+      this.mathKeyboardPresets = element.mathKeyboardPresets;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
@@ -43,6 +46,9 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
       if (element?.value !== undefined) this.value = element?.value as TextAreaMath[] || [];
       if (element?.rowCount !== undefined) this.rowCount = element.rowCount;
       if (element?.hasAutoHeight !== undefined) this.hasAutoHeight = element.hasAutoHeight;
+      if (element?.mathKeyboardPresets !== undefined) {
+        this.mathKeyboardPresets = element.mathKeyboardPresets;
+      }
       this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = {
@@ -75,6 +81,7 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
 export interface TextAreaMathProperties extends TextInputElementProperties {
   rowCount: number;
   hasAutoHeight: boolean;
+  mathKeyboardPresets: MathKeyboardPreset[];
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -90,6 +97,7 @@ function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): 
   if (!blueprint) return false;
   return blueprint.rowCount !== undefined &&
     blueprint.hasAutoHeight !== undefined &&
+    blueprint.mathKeyboardPresets !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     PropertyGroupValidators.isValidKeyInputElementProperties(blueprint) &&

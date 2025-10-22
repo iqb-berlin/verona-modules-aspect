@@ -119,6 +119,9 @@ PositionProperties | PlayerProperties | Measurement | Measurement[] | Visibility
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'chemicalEquation' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';
 
+export const MATH_KEYBOARD_PRESETS = ['math', 'symbols', 'physics', 'latin', 'greek'] as const;
+export type MathKeyboardPreset = typeof MATH_KEYBOARD_PRESETS[number];
+
 export interface UIElementProperties {
   type: UIElementType;
   id: string;

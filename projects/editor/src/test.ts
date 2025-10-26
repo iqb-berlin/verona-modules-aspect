@@ -12,6 +12,8 @@ getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),
   {
+    errorOnUnknownElements: true,
+    errorOnUnknownProperties: true,
     teardown: { destroyAfterEach: false }
   }
 );

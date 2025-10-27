@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -20,6 +21,7 @@ describe('UnitMenuComponent', () => {
       ],
       imports: [
         MatFormFieldModule,
+        MatDividerModule,
         FormsModule,
         ReactiveFormsModule,
         MatInputModule,

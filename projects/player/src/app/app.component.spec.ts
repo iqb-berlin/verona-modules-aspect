@@ -1,7 +1,12 @@
+// eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService
+} from '@ngx-translate/core';
 import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
-import { Component } from '@angular/core';
+import { Input, Component } from '@angular/core';
 import { APIService } from 'common/shared.module';
 import { AppComponent } from './app.component';
 
@@ -10,11 +15,14 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
 
   @Component({
-    selector: 'aspect-unit', template: '',
+    selector: 'aspect-unit',
+    template: '',
     standalone: false
-})
-  class UnitStubComponent {
+  })
+  class UnitMenuStubComponent {
+    @Input() isStandalone!: boolean;
   }
+
   class ApiStubService {
     // eslint-disable-next-line class-methods-use-this
     getResourceURL(): string {
@@ -26,7 +34,8 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        UnitStubComponent],
+        UnitMenuStubComponent
+      ],
       imports: [
         TranslateModule.forRoot({
           loader: {

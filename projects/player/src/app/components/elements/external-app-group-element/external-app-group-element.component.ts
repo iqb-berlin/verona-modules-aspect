@@ -11,9 +11,9 @@ import { GeometryComponent } from 'common/components/geometry/geometry.component
 import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-external-app-group-element',
-    templateUrl: './external-app-group-element.component.html',
-    standalone: false
+  selector: 'aspect-external-app-group-element',
+  templateUrl: './external-app-group-element.component.html',
+  standalone: false
 })
 export class ExternalAppGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: GeometryComponent;
@@ -46,14 +46,14 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
 
   private registerGeometryVariables(): void {
     (this.elementModel as GeometryElement).trackedVariables
-      .forEach(variableName => this.registerGeometryVariable(variableName));
+      .forEach(variable => this.registerGeometryVariable(variable));
   }
 
-  private registerGeometryVariable(variableName: string): void {
+  private registerGeometryVariable(variable: GeometryVariable): void {
     this.unitStateService.registerElementCode(
-      (this.elementModel as GeometryElement).getGeometryVariableId(variableName),
-      (this.elementModel as GeometryElement).getGeometryVariableAlias(variableName),
-      null
+      (this.elementModel as GeometryElement).getGeometryVariableId(variable.id),
+      (this.elementModel as GeometryElement).getGeometryVariableAlias(variable.id),
+      variable.value
     );
   }
 

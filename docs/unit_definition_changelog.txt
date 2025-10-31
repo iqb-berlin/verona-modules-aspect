@@ -225,3 +225,5 @@ iqb-aspect-definition@1.0.0
   - new property: mathKeyboardPresets
 - TextAreaMathElement
   - new property: mathKeyboardPresets
+- GeometryElement
+  - trackedVariables: change type from string[] to GeometryVariable[]

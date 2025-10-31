@@ -9,13 +9,15 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
-import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import {
+  AbstractIDService, GeometryVariable, UIElementProperties, UIElementType
+} from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
 export class GeometryElement extends UIElement implements GeometryProperties {
   type: UIElementType = 'geometry';
   appDefinition: string = '';
-  trackedVariables: string[] = [];
+  trackedVariables: GeometryVariable[] = [];
   showResetIcon: boolean = true;
   enableUndoRedo: boolean = true;
   showToolbar: boolean = true;
@@ -37,7 +39,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     super({ type: 'geometry', ...element }, idService);
     if (isGeometryProperties(element)) {
       this.appDefinition = element.appDefinition;
-      this.trackedVariables = [...element.trackedVariables];
+      this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
       this.showResetIcon = element.showResetIcon;
       this.enableUndoRedo = element.enableUndoRedo;
       this.showToolbar = element.showToolbar;
@@ -53,7 +55,9 @@ export class GeometryElement extends UIElement implements GeometryProperties {
         throw new InstantiationEror('Error at Geometry instantiation', element);
       }
       if (element?.appDefinition !== undefined) this.appDefinition = element.appDefinition;
-      if (element?.trackedVariables !== undefined) this.trackedVariables = [...element.trackedVariables];
+      if (element?.trackedVariables !== undefined) {
+        this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
+      }
       if (element?.showResetIcon !== undefined) this.showResetIcon = element.showResetIcon;
       if (element?.enableUndoRedo !== undefined) this.enableUndoRedo = element.enableUndoRedo;
       if (element?.showToolbar !== undefined) this.showToolbar = element.showToolbar;
@@ -71,6 +75,14 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     }
   }
 
+  private static sanitizeGeometryVariables(variables: GeometryVariable[] | string[]): GeometryVariable[] {
+    const isStringArray = (arr: unknown[]): arr is string[] => Array
+      .isArray(arr) && arr.length > 0 && arr.every(item => typeof item === 'string');
+    if (!Array.isArray(variables) || variables.length === 0) return [];
+    if (isStringArray(variables)) return variables.map(variable => ({ id: variable, value: '' }));
+    return variables;
+  }
+
   getGeometryVariableId(variableName: string): string {
     return `${this.id}_${variableName}`;
   }
@@ -84,8 +96,8 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       { id: this.id, alias: this.alias },
       ...this.trackedVariables
         .map(variable => ({
-          id: this.getGeometryVariableId(variable),
-          alias: this.getGeometryVariableAlias(variable)
+          id: this.getGeometryVariableId(variable.id),
+          alias: this.getGeometryVariableAlias(variable.id)
         }))];
   }
 
@@ -106,7 +118,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
 
   getVariableInfos(): VariableInfo[] {
     const answerSchemes = this.trackedVariables.map(variable => this
-      .getVariableInfoOfGeometryVariable(variable));
+      .getVariableInfoOfGeometryVariable(variable.id));
     answerSchemes.push({
       id: this.id,
       alias: this.alias,
@@ -129,7 +141,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
 
 export interface GeometryProperties extends UIElementProperties {
   appDefinition: string;
-  trackedVariables: string[];
+  trackedVariables: GeometryVariable[];
   showResetIcon: boolean;
   enableUndoRedo: boolean;
   showToolbar: boolean;

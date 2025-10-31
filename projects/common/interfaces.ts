@@ -113,7 +113,7 @@ export interface ValueChangeElement {
 }
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
-TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | StateVariable |
+TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | StateVariable | GeometryVariable[] |
 PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[] | UIElement[];
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'

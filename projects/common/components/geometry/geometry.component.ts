@@ -9,13 +9,13 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { PageChangeService } from 'common/services/page-change.service';
-import { ValueChangeElement } from 'common/interfaces';
+import { GeometryVariable, ValueChangeElement } from 'common/interfaces';
 
 declare const GGBApplet: any;
 
 @Component({
-    selector: 'aspect-geometry',
-    template: `
+  selector: 'aspect-geometry',
+  template: `
     <button *ngIf="this.elementModel.showResetIcon"
             mat-stroked-button class="reset-button"
             (click)="reset()">
@@ -27,13 +27,13 @@ declare const GGBApplet: any;
                     (timeOut)="throwError('geometry-timeout', 'Failed to load geometry in time')">
     </aspect-spinner>
   `,
-    styles: [
-        ':host {display: block; width: 100%; height: 100%;}',
-        ':host {position: relative;}',
-        ':host .reset-icon {width: 1.5rem; height: 1.5rem; font-size: 1.5rem;}',
-        '.reset-button {margin-bottom: 3px;}'
-    ],
-    standalone: false
+  styles: [
+    ':host {display: block; width: 100%; height: 100%;}',
+    ':host {position: relative;}',
+    ':host .reset-icon {width: 1.5rem; height: 1.5rem; font-size: 1.5rem;}',
+    '.reset-button {margin-bottom: 3px;}'
+  ],
+  standalone: false
 })
 export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {
   @Input() elementModel!: GeometryElement;
@@ -66,12 +66,12 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         value: {
           appDefinition: this.geoGebraAPI.getBase64(),
           variables: this.elementModel.trackedVariables
-            .map(variable => ({ id: variable, value: this.getVariableValue(variable) }))
+            .map(variable => ({ id: variable.id, value: this.getVariableValue(variable.id) }))
         }
       }));
   }
 
-  private getVariableValue(name: string): string {
+  getVariableValue(name: string): string {
     return this.geoGebraAPI.getValueString(name);
   }
 
@@ -86,7 +86,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((isGeoGebraLoaded: boolean) => {
           this.isGeoGebraLoaded = isGeoGebraLoaded;
-          if (isGeoGebraLoaded) this.initApplet();
+          if (isGeoGebraLoaded) {
+            this.initApplet();
+          }
         });
     }
   }
@@ -107,7 +109,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private initApplet(): void {
     const params = {
       id: this.elementModel.id,
-      width: (this.elementModel.dimensions?.width || 180) - 4, // must be smaller than the container, otherwise scroll bars will be displayed
+      // must be smaller than the container, otherwise scroll bars will be displayed
+      width: (this.elementModel.dimensions?.width || 180) - 4,
       height: (this.elementModel.dimensions?.height || 60) - 4,
       scale: 1,
       showToolBar: this.elementModel.showToolbar,
@@ -154,8 +157,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     applet.inject(this.elementModel.id);
   }
 
-  getGeometryObjects(): string[] {
-    return this.geoGebraAPI.getAllObjectNames();
+  getGeometryObjects(): GeometryVariable[] {
+    return this.geoGebraAPI.getAllObjectNames()
+      .map((name: string) => ({ id: name, value: this.geoGebraAPI.getValueString(name) }));
   }
 
   ngOnDestroy(): void {

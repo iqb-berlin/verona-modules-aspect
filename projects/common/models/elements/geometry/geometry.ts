@@ -17,6 +17,7 @@ import { InstantiationEror } from 'common/errors';
 export class GeometryElement extends UIElement implements GeometryProperties {
   type: UIElementType = 'geometry';
   appDefinition: string = '';
+  trackAllVariables: boolean = false; // tracks all variables, even if they are not listed in trackedVariables
   trackedVariables: GeometryVariable[] = [];
   showResetIcon: boolean = true;
   enableUndoRedo: boolean = true;
@@ -39,6 +40,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     super({ type: 'geometry', ...element }, idService);
     if (isGeometryProperties(element)) {
       this.appDefinition = element.appDefinition;
+      this.trackAllVariables = element.trackAllVariables;
       this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
       this.showResetIcon = element.showResetIcon;
       this.enableUndoRedo = element.enableUndoRedo;
@@ -55,6 +57,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
         throw new InstantiationEror('Error at Geometry instantiation', element);
       }
       if (element?.appDefinition !== undefined) this.appDefinition = element.appDefinition;
+      if (element?.trackAllVariables !== undefined) this.trackAllVariables = element.trackAllVariables;
       if (element?.trackedVariables !== undefined) {
         this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
       }
@@ -91,14 +94,20 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     return `${this.alias}_${variableName}`;
   }
 
-  getIdentifiers(): { id: string, alias: string }[] {
-    return [
-      { id: this.id, alias: this.alias },
-      ...this.trackedVariables
-        .map(variable => ({
-          id: this.getGeometryVariableId(variable.id),
-          alias: this.getGeometryVariableAlias(variable.id)
-        }))];
+  getVariableIdentifiers(variableIds: string[]): { id: string, alias: string }[] {
+    const trackedVariableIds = this.trackedVariables.map(variable => variable.id);
+    return [...variableIds, ...trackedVariableIds]
+      .map(variableId => {
+        const variableName = this.getVariableNameFromAlias(variableId);
+        return {
+          id: this.getGeometryVariableId(variableName),
+          alias: this.getGeometryVariableAlias(variableName)
+        };
+      });
+  }
+
+  private getVariableNameFromAlias(variableId: string): string {
+    return variableId.replace(`${this.alias}_`, '');
   }
 
   getVariableInfoOfGeometryVariable(variableName: string): VariableInfo {
@@ -141,6 +150,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
 
 export interface GeometryProperties extends UIElementProperties {
   appDefinition: string;
+  trackAllVariables: boolean;
   trackedVariables: GeometryVariable[];
   showResetIcon: boolean;
   enableUndoRedo: boolean;
@@ -160,6 +170,7 @@ export interface GeometryProperties extends UIElementProperties {
 function isGeometryProperties(blueprint?: Partial<GeometryProperties>): blueprint is GeometryProperties {
   if (!blueprint) return false;
   return blueprint.appDefinition !== undefined &&
+    blueprint.trackAllVariables !== undefined &&
     blueprint.trackedVariables !== undefined &&
     blueprint.showResetIcon !== undefined &&
     blueprint.enableUndoRedo !== undefined &&

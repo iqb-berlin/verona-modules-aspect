@@ -29,12 +29,15 @@ import { NavigationService } from 'player/src/app/services/navigation.service';
 import { BehaviorSubject } from 'rxjs';
 import { DragNDropValueObject } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
+import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { Response } from '@iqb/responses';
 
 @Component({
-    selector: 'aspect-unit',
-    templateUrl: './unit.component.html',
-    styleUrls: ['./unit.component.scss'],
-    standalone: false
+  selector: 'aspect-unit',
+  templateUrl: './unit.component.html',
+  styleUrls: ['./unit.component.scss'],
+  standalone: false
 })
 export class UnitComponent implements OnInit {
   @Input() isStandalone!: boolean;
@@ -50,6 +53,7 @@ export class UnitComponent implements OnInit {
 
   constructor(public unitStateService: UnitStateService,
               public stateVariableStateService: StateVariableStateService,
+              public geometryVariableStateService: GeometryVariableStateService,
               private metaDataService: MetaDataService,
               private veronaPostService: VeronaPostService,
               private veronaSubscriptionService: VeronaSubscriptionService,
@@ -157,6 +161,15 @@ export class UnitComponent implements OnInit {
         JSON.parse(message.unitState.dataParts.elementCodes) : [],
                        unitDefinition.getAllElements()
                          .map(element => element.getIdentifiers()).flat());
+
+    const geometryVariableCodes: Response[] = message.unitState?.dataParts?.geometryVariableCodes ?
+      JSON.parse(message.unitState.dataParts.geometryVariableCodes) : [];
+
+    this.geometryVariableStateService
+      .setElementCodes(geometryVariableCodes,
+                       unitDefinition.getAllElements('geometry')
+                         .filter((el): el is GeometryElement => el.type === 'geometry')
+                         .flatMap(el => el.getVariableIdentifiers(geometryVariableCodes.map(code => code.id))));
 
     this.stateVariableStateService
       .setElementCodes(message.unitState?.dataParts?.stateVariableCodes ?

@@ -90,19 +90,6 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
         </mat-tab>
         <mat-tab label="{{ 'player.behaviour' | translate }}">
           <div class="fx-column-start-stretch">
-            <mat-checkbox [checked]="newPlayerConfig.autostart"
-                          (change)="newPlayerConfig.autostart = $event.checked">
-              {{ 'player.autoStart' | translate }}
-            </mat-checkbox>
-            <mat-form-field *ngIf="newPlayerConfig.autostart"
-                            appearance="fill">
-              <mat-label>{{ 'player.autoStartDelay' | translate }}</mat-label>
-              <input matInput type="number" step="1000"
-                     [ngModel]="newPlayerConfig.autostartDelay"
-                     (ngModelChange)="newPlayerConfig.autostartDelay = $event"
-                     (change)="newPlayerConfig.autostartDelay = newPlayerConfig.autostartDelay ?
-                                                                newPlayerConfig.autostartDelay : 0">
-            </mat-form-field>
             <mat-checkbox [checked]="newPlayerConfig.loop"
                           (change)="newPlayerConfig.loop = $event.checked">
               {{ 'player.loop' | translate }}

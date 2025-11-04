@@ -285,8 +285,9 @@ function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): b
     blueprint.player.minVolume !== undefined &&
     blueprint.player.muteControl !== undefined &&
     blueprint.player.interactiveMuteControl !== undefined &&
+    blueprint.player.showHint !== undefined &&
     blueprint.player.hintLabel !== undefined &&
-    blueprint.player.hintLabelDelay !== undefined &&
+    blueprint.player.hintDelay !== undefined &&
     blueprint.player.activeAfterID !== undefined &&
     blueprint.player.minRuns !== undefined &&
     blueprint.player.maxRuns !== undefined &&

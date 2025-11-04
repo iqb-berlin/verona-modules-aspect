@@ -77,7 +77,8 @@ export interface PlayerProperties {
   muteControl: boolean;
   interactiveMuteControl: boolean;
   hintLabel: string;
-  hintLabelDelay: number;
+  showHint: boolean;
+  hintDelay: number;
   activeAfterID: string;
   minRuns: number;
   maxRuns: number | null;
@@ -225,8 +226,11 @@ export abstract class PropertyGroupGenerators {
       interactiveMuteControl: properties.interactiveMuteControl !== undefined ?
         properties.interactiveMuteControl as boolean :
         false,
+      showHint: properties.showHint !== undefined ? properties.showHint as boolean : PropertyGroupGenerators
+        .sanitizeShowHint(properties),
       hintLabel: properties.hintLabel !== undefined ? properties.hintLabel as string : 'Bitte starten',
-      hintLabelDelay: properties.hintLabelDelay !== undefined ? properties.hintLabelDelay as number : 5000,
+      hintDelay: properties.hintDelay !== undefined ? properties.hintDelay as number : PropertyGroupGenerators
+        .sanitizeHintDelay(properties),
       activeAfterID: properties.activeAfterID !== undefined ? properties.activeAfterID as string : '',
       minRuns: properties.minRuns !== undefined ? properties.minRuns as number : 1,
       maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : 1,
@@ -235,6 +239,16 @@ export abstract class PropertyGroupGenerators {
       playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : 0,
       fileName: properties.fileName !== undefined ? properties.fileName as string : ''
     };
+  }
+
+  private static sanitizeShowHint(properties: Partial<PlayerProperties>): boolean {
+    if (properties.hintLabel === undefined) return true;
+    return properties.hintLabel !== '';
+  }
+
+  private static sanitizeHintDelay(properties: Partial<PlayerProperties>): number {
+    if (properties.hintLabelDelay === undefined) return 5000;
+    return properties.hintLabelDelay as number;
   }
 
   static generateKeyInputProps(properties: Partial<KeyInputElementProperties> = {}): KeyInputElementProperties {

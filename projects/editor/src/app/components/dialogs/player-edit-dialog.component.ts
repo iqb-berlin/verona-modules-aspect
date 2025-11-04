@@ -66,19 +66,25 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
                           (change)="newPlayerConfig.showRestTime = $event.checked">
               {{ 'player.showRestTime' | translate }}
             </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.showHint"
+                          (change)="newPlayerConfig.showHint = $event.checked">
+              {{ 'player.showHint' | translate }}
+            </mat-checkbox>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.hintLabel' | translate }}</mat-label>
-              <input matInput type="text" [value]="newPlayerConfig.hintLabel"
+              <input matInput type="text"
+                     [value]="newPlayerConfig.hintLabel"
+                     [disabled]="!newPlayerConfig.showHint"
                      (input)="newPlayerConfig.hintLabel = $any($event.target).value">
             </mat-form-field>
-            <mat-form-field *ngIf="newPlayerConfig.hintLabel"
-                            appearance="fill">
-              <mat-label>{{ 'player.hintLabelDelay' | translate }}</mat-label>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'player.hintDelay' | translate }}</mat-label>
               <input matInput type="number" step="1000" min="0"
-                     [ngModel]="newPlayerConfig.hintLabelDelay"
-                     (ngModelChange)="newPlayerConfig.hintLabelDelay = $event"
-                     (change)="newPlayerConfig.hintLabelDelay = newPlayerConfig.hintLabelDelay ?
-                                                                newPlayerConfig.hintLabelDelay : 0">
+                     [disabled]="!newPlayerConfig.showHint"
+                     [ngModel]="newPlayerConfig.hintDelay"
+                     (ngModelChange)="newPlayerConfig.hintDelay = $event"
+                     (change)="newPlayerConfig.hintDelay = newPlayerConfig.hintDelay ?
+                                                                newPlayerConfig.hintDelay : 0">
             </mat-form-field>
           </div>
         </mat-tab>

@@ -11,10 +11,10 @@ import { AspectError } from 'common/classes/aspect-error';
 import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-media-player-control-bar',
-    templateUrl: './media-player-control-bar.component.html',
-    styleUrls: ['./media-player-control-bar.component.scss'],
-    standalone: false
+  selector: 'aspect-media-player-control-bar',
+  templateUrl: './media-player-control-bar.component.html',
+  styleUrls: ['./media-player-control-bar.component.scss'],
+  standalone: false
 })
 export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
@@ -43,7 +43,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   lastVolume: number = 0;
   volume: number = 0;
   restTimeMode: boolean = true;
-  showHint: boolean = false;
+  displayHint: boolean = false;
   disabled: boolean = true;
   playbackTime: number = 0;
   valid: boolean = false;
@@ -87,7 +87,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       this.playing = true;
       this.pausing = false;
       this.started = true;
-      this.showHint = false;
+      this.displayHint = false;
       this.mediaPlayStatusChanged.emit(this.id);
     };
     this.player.onended = () => {
@@ -201,12 +201,12 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private initHint(): void {
-    if (this.playerProperties.hintLabel && !this.hintTimeOutId) {
+    if (this.playerProperties.showHint && !this.hintTimeOutId) {
       this.hintTimeOutId = setTimeout(() => {
         if (!this.started && this.dependencyDissolved) {
-          this.showHint = true;
+          this.displayHint = true;
         }
-      }, this.playerProperties.hintLabelDelay);
+      }, this.playerProperties.hintDelay);
     }
   }
 

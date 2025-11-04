@@ -66,15 +66,21 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
                           (change)="newPlayerConfig.showRestTime = $event.checked">
               {{ 'player.showRestTime' | translate }}
             </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.showHint"
+                          (change)="newPlayerConfig.showHint = $event.checked">
+              {{ 'player.showHint' | translate }}
+            </mat-checkbox>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.hintLabel' | translate }}</mat-label>
-              <input matInput type="text" [value]="newPlayerConfig.hintLabel"
+              <input matInput type="text"
+                     [value]="newPlayerConfig.hintLabel"
+                     [disabled]="!newPlayerConfig.showHint"
                      (input)="newPlayerConfig.hintLabel = $any($event.target).value">
             </mat-form-field>
-            <mat-form-field *ngIf="newPlayerConfig.hintLabel"
-                            appearance="fill">
+            <mat-form-field appearance="fill">
               <mat-label>{{ 'player.hintLabelDelay' | translate }}</mat-label>
               <input matInput type="number" step="1000" min="0"
+                     [disabled]="!newPlayerConfig.showHint"
                      [ngModel]="newPlayerConfig.hintLabelDelay"
                      (ngModelChange)="newPlayerConfig.hintLabelDelay = $event"
                      (change)="newPlayerConfig.hintLabelDelay = newPlayerConfig.hintLabelDelay ?

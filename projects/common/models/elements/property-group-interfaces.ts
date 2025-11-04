@@ -77,6 +77,7 @@ export interface PlayerProperties {
   muteControl: boolean;
   interactiveMuteControl: boolean;
   hintLabel: string;
+  showHint: boolean;
   hintLabelDelay: number;
   activeAfterID: string;
   minRuns: number;
@@ -225,6 +226,8 @@ export abstract class PropertyGroupGenerators {
       interactiveMuteControl: properties.interactiveMuteControl !== undefined ?
         properties.interactiveMuteControl as boolean :
         false,
+      showHint: properties.showHint !== undefined ? properties.showHint as boolean : PropertyGroupGenerators
+        .sanitizeShowHint(properties),
       hintLabel: properties.hintLabel !== undefined ? properties.hintLabel as string : 'Bitte starten',
       hintLabelDelay: properties.hintLabelDelay !== undefined ? properties.hintLabelDelay as number : 5000,
       activeAfterID: properties.activeAfterID !== undefined ? properties.activeAfterID as string : '',
@@ -235,6 +238,11 @@ export abstract class PropertyGroupGenerators {
       playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : 0,
       fileName: properties.fileName !== undefined ? properties.fileName as string : ''
     };
+  }
+
+  private static sanitizeShowHint(properties: Partial<PlayerProperties>): boolean {
+    if (properties.hintLabel === undefined) return true;
+    return properties.hintLabel !== '';
   }
 
   static generateKeyInputProps(properties: Partial<KeyInputElementProperties> = {}): KeyInputElementProperties {

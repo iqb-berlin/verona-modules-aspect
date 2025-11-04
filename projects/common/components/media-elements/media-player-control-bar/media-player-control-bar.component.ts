@@ -206,7 +206,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
         if (!this.started && this.dependencyDissolved) {
           this.displayHint = true;
         }
-      }, this.playerProperties.hintLabelDelay);
+      }, this.playerProperties.hintDelay);
     }
   }
 

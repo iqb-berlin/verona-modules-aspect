@@ -230,5 +230,7 @@ iqb-aspect-definition@1.0.0
   - new property: trackAllVariables
 - AudioElement
   - new property: showHint
+  - rename property: hintLabelDelay -> hintDelay
 - VideoElement
   - new property: showHint
+  - rename property: hintLabelDelay -> hintDelay

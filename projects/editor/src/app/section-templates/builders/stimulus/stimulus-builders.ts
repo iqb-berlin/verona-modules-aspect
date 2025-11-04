@@ -171,8 +171,9 @@ function getAudioSettings(): Record<string, boolean | string | number> {
   return {
     muteControl: false,
     interactiveMuteControl: false,
+    showHint: true,
     hintLabel: 'Bitte starten.',
-    hintLabelDelay: 5000,
+    hintDelay: 5000,
     minVolume: 0.2
   };
 }

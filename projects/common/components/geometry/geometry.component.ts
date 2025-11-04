@@ -65,14 +65,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         id: this.elementModel.id,
         value: {
           appDefinition: this.geoGebraAPI.getBase64(),
-          variables: this.elementModel.trackedVariables
-            .map(variable => ({ id: variable.id, value: this.getVariableValue(variable.id) }))
+          variables: this.getVariablesToEmit()
         }
       }));
-  }
-
-  getVariableValue(name: string): string {
-    return this.geoGebraAPI.getValueString(name);
   }
 
   ngAfterViewInit(): void {
@@ -160,6 +155,18 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   getGeometryObjects(): GeometryVariable[] {
     return this.geoGebraAPI.getAllObjectNames()
       .map((name: string) => ({ id: name, value: this.geoGebraAPI.getValueString(name) }));
+  }
+
+  private getVariablesToEmit(): GeometryVariable[] {
+    if (this.elementModel.trackAllVariables) {
+      return this.getGeometryObjects();
+    }
+    return this.elementModel.trackedVariables
+      .map(variable => ({ id: variable.id, value: this.getVariableValue(variable.id) }));
+  }
+
+  private getVariableValue(name: string): string {
+    return this.geoGebraAPI.getValueString(name);
   }
 
   ngOnDestroy(): void {

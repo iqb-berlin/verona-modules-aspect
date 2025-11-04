@@ -4,7 +4,7 @@ import {
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  AsyncPipe, JsonPipe, NgForOf, NgIf
+  AsyncPipe, NgForOf, NgIf
 } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,8 +36,7 @@ import { GeometryVariable } from 'common/interfaces';
     MatButtonModule,
     MatSelectModule,
     FormsModule,
-    AsyncPipe,
-    JsonPipe
+    AsyncPipe
   ],
   template: `
     <mat-form-field matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
@@ -85,6 +84,11 @@ import { GeometryVariable } from 'common/interfaces';
              (input)="updateModel.emit({ property: 'customToolbar', value: $any($event.target).value })">
     </mat-form-field>
 
+    <mat-checkbox [checked]="$any(combinedProperties.trackAllVariables)"
+                  (change)="updateModel.emit({ property: 'trackAllVariables', value: $event.checked })">
+      {{ 'propertiesPanel.trackAllVariables' | translate }}
+    </mat-checkbox>
+
     <mat-form-field class="wide-form-field" appearance="fill">
       <mat-label>{{ 'propertiesPanel.trackedVariables' | translate }}</mat-label>
       <mat-select multiple [ngModel]="combinedProperties.trackedVariables"
@@ -93,9 +97,7 @@ import { GeometryVariable } from 'common/interfaces';
         <mat-select-trigger>
           {{ 'propertiesPanel.trackedVariables' | translate }} ({{ $any(combinedProperties.trackedVariables).length }})
         </mat-select-trigger>
-        {{(geometryObjects | async) | json }}
         <mat-option *ngFor="let variable of geometryObjects | async" [value]="variable">
-
           {{ variable.id }}
         </mat-option>
       </mat-select>

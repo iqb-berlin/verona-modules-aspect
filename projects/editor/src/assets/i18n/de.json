@@ -272,7 +272,8 @@
     "showResultRowWithHelperRow": "Ergebniszeile mit Hilfszeile",
     "showTopHelperRows": "obere Helferzeilen",
     "allowFirstLineCrossOut": "Durchstreichen in erster Zeile",
-    "trackedVariables": "Ergebnisvariablen",
+    "trackedVariables": "Beobachtete Ergebnisvariablen",
+    "trackAllVariables": "Alle Ergebnisvariablen speichern",
     "isSortList": "Sortierliste",
     "permanentPlaceholders": "Platzhalter anzeigen",
     "permanentPlaceholdersCC": "Platzhalter mit Durchschrift"

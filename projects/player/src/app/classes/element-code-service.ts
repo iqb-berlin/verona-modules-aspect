@@ -26,6 +26,11 @@ export abstract class ElementCodeService {
       .find((elementCode: Response & { alias: string }): boolean => elementCode.id === id);
   }
 
+  isElementCodeRegistered(id: string): boolean {
+    return this.elementCodes
+      .some((elementCode: Response & { alias: string }): boolean => elementCode.id === id);
+  }
+
   get elementCodeChanged(): Observable<Response & { alias: string }> {
     return this._elementCodeChanged.asObservable();
   }

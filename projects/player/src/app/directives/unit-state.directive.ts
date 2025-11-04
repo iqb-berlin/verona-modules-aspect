@@ -10,13 +10,14 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
+import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 import { UnitStateService } from '../services/unit-state.service';
 import { MediaPlayerService } from '../services/media-player.service';
 import { ValidationService } from '../services/validation.service';
 
 @Directive({
-    selector: '[aspectUnitState]',
-    standalone: false
+  selector: '[aspectUnitState]',
+  standalone: false
 })
 export class UnitStateDirective implements OnInit, OnDestroy {
   @HostListener('window:unload')
@@ -30,6 +31,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   constructor(
     private unitStateService: UnitStateService,
     private stateVariableStateService: StateVariableStateService,
+    private geometryVariableStateService: GeometryVariableStateService,
     private mediaPlayerService: MediaPlayerService,
     private veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
@@ -41,7 +43,8 @@ export class UnitStateDirective implements OnInit, OnDestroy {
       this.mediaPlayerService.mediaStatusChanged,
       this.unitStateService.pagePresented,
       this.unitStateService.elementCodeChanged,
-      this.stateVariableStateService.elementCodeChanged
+      this.stateVariableStateService.elementCodeChanged,
+      this.geometryVariableStateService.elementCodeChanged
     )
       .pipe(
         debounceTime(100),
@@ -65,13 +68,16 @@ export class UnitStateDirective implements OnInit, OnDestroy {
 
   private sendVopStateChangedNotification(): void {
     LogService.debug('player: this.unitStateService.getResponses',
-      this.unitStateService.getResponses());
+                     this.unitStateService.getResponses());
     LogService.debug('player: this.stateVariableStateService.getResponses',
-      this.stateVariableStateService.getResponses());
+                     this.stateVariableStateService.getResponses());
+    LogService.debug('player: this.geometryVariableStateService.getResponses',
+                     this.geometryVariableStateService.getResponses());
     const unitState: UnitState = {
       dataParts: {
         stateVariableCodes: JSON.stringify(this.stateVariableStateService.getResponses()),
-        elementCodes: JSON.stringify(this.unitStateService.getResponses())
+        elementCodes: JSON.stringify(this.unitStateService.getResponses()),
+        geometryVariableCodes: JSON.stringify(this.geometryVariableStateService.getResponses())
       },
       presentationProgress: this.presentationProgress,
       responseProgress: this.validatorService.responseProgress,
@@ -85,6 +91,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
     this.sendVopStateChangedNotification();
     this.unitStateService.reset();
     this.stateVariableStateService.reset();
+    this.geometryVariableStateService.reset();
     this.mediaPlayerService.reset();
     this.validatorService.reset();
     this.ngUnsubscribe.next();

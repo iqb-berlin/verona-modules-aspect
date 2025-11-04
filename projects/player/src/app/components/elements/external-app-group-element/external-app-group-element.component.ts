@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, OnInit, ViewChild
+  AfterViewInit, Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { ElementGroupDirective } from 'player/src/app/directives/element-group.directive';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
@@ -9,18 +9,25 @@ import {
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/interfaces';
+import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
-    selector: 'aspect-external-app-group-element',
-    templateUrl: './external-app-group-element.component.html',
-    standalone: false
+  selector: 'aspect-external-app-group-element',
+  templateUrl: './external-app-group-element.component.html',
+  standalone: false
 })
-export class ExternalAppGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
+export class ExternalAppGroupElementComponent
+  extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: GeometryComponent;
   GeometryElement!: GeometryElement;
   appDefinition: string = '';
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(public unitStateService: UnitStateService,
+              private geometryVariableStateService: GeometryVariableStateService,
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService) {
     super();
   }
@@ -45,20 +52,34 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
   }
 
   private registerGeometryVariables(): void {
-    (this.elementModel as GeometryElement).trackedVariables
-      .forEach(variableName => this.registerGeometryVariable(variableName));
+    if ((this.elementModel as GeometryElement).trackAllVariables) {
+      this.elementComponent.isLoaded
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(loaded => {
+          if (loaded) {
+            this.elementComponent.getGeometryObjects()
+              .forEach(variable => this.registerGeometryVariable(variable));
+          }
+        });
+    } else {
+      (this.elementModel as GeometryElement).trackedVariables
+        .forEach(variable => this.registerGeometryVariable(variable));
+    }
   }
 
-  private registerGeometryVariable(variableName: string): void {
-    this.unitStateService.registerElementCode(
-      (this.elementModel as GeometryElement).getGeometryVariableId(variableName),
-      (this.elementModel as GeometryElement).getGeometryVariableAlias(variableName),
-      null
+  private registerGeometryVariable(variable: GeometryVariable): void {
+    this.geometryVariableStateService.registerElementCode(
+      (this.elementModel as GeometryElement).getGeometryVariableId(variable.id),
+      (this.elementModel as GeometryElement).getGeometryVariableAlias(variable.id),
+      variable.value
     );
   }
 
   private changeGeometryVariableValue(variable: GeometryVariable): void {
-    this.unitStateService.changeElementCodeValue({
+    if (!this.geometryVariableStateService.isElementCodeRegistered(variable.id)) {
+      this.registerGeometryVariable(variable);
+    }
+    this.geometryVariableStateService.changeElementCodeValue({
       id: (this.elementModel as GeometryElement).getGeometryVariableId(variable.id),
       value: ElementModelElementCodeMappingService
         .mapToElementCodeValue(variable.value, 'geometry-variable')
@@ -76,5 +97,10 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
         .mapToElementCodeValue((value.value as GeometryValue).appDefinition, this.elementModel.type)
     });
     this.changeGeometryVariableValues((value.value as GeometryValue).variables);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

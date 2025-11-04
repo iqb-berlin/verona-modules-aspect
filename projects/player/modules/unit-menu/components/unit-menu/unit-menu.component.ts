@@ -13,16 +13,17 @@ import { Response } from '@iqb/responses';
 import { FormControl } from '@angular/forms';
 
 @Component({
-    selector: 'aspect-unit-menu',
-    templateUrl: './unit-menu.component.html',
-    styleUrls: ['./unit-menu.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'aspect-unit-menu',
+  templateUrl: './unit-menu.component.html',
+  styleUrls: ['./unit-menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class UnitMenuComponent {
   @Input() scrollPages!: Page[];
   @Input() elementCodes!: (Response & { alias: string })[];
   @Input() stateVariableCodes!: (Response & { alias: string })[];
+  @Input() geometryVariableCodes!: (Response & { alias: string })[];
 
   private postTarget: Window = window;
   formControl = new FormControl('');
@@ -62,10 +63,13 @@ export class UnitMenuComponent {
       .map(ec => ({ id: ec.alias, status: ec.status, value: ec.value }));
     const stateVariableCodes: Response[] = this.stateVariableCodes
       .map(sv => ({ id: sv.alias, status: sv.status, value: sv.value }));
+    const geometryVariableCodes: Response[] = this.geometryVariableCodes
+      .map(sv => ({ id: sv.alias, status: sv.status, value: sv.value }));
     this.vopStartCommandMessage.unitState = {
       dataParts: {
         elementCodes: JSON.stringify(elementCodes),
-        stateVariableCodes: JSON.stringify(stateVariableCodes)
+        stateVariableCodes: JSON.stringify(stateVariableCodes),
+        geometryVariableCodes: JSON.stringify(geometryVariableCodes)
       }
     };
     this.setStartPage();
@@ -93,7 +97,9 @@ export class UnitMenuComponent {
     this.postMessage(this.vopPlayerConfigChangedNotificationMessage);
   }
 
-  private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState, printMode: PrintMode = 'off'): void {
+  private loadUnit(
+    unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState, printMode: PrintMode = 'off'
+  ): void {
     this.vopStartCommandMessage.unitDefinition = unitDefinition;
     this.vopStartCommandMessage.playerConfig = { ...this.vopStartCommandMessage.playerConfig, pagingMode, printMode };
     this.setStartPage();

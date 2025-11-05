@@ -2,22 +2,26 @@
     *ngIf="elementModel.type === 'audio'"
     #elementComponent
     [elementModel]="elementModel | cast: AudioElement"
+    [hintDelay]="this.timerStateVariable?.restTime || 0"
     [savedPlaybackTime]="initialValue"
     [actualPlayingId]="mediaPlayerService.actualPlayingId"
     [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
     (mediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
     (mediaPlayStatusChanged)="mediaPlayerService.setActualPlayingId($event)"
-    (elementValueChanged)="changeElementCodeValue($event)">
+    (elementValueChanged)="changeElementCodeValue($event)"
+    (hintDelayInitialized)="this.timerStateVariable?.run()">
 </aspect-audio>
 
 <aspect-video
     *ngIf="elementModel.type === 'video'"
     #elementComponent
     [elementModel]="elementModel | cast: VideoElement"
+    [hintDelay]="this.timerStateVariable?.restTime || 0"
     [actualPlayingId]="mediaPlayerService.actualPlayingId"
     [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
     [savedPlaybackTime]="initialValue"
     (mediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
     (mediaPlayStatusChanged)="mediaPlayerService.setActualPlayingId($event)"
-    (elementValueChanged)="changeElementCodeValue($event)">
+    (elementValueChanged)="changeElementCodeValue($event)"
+    (hintDelayInitialized)="this.timerStateVariable?.run()">
 </aspect-video>

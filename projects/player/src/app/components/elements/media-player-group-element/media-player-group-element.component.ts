@@ -6,10 +6,8 @@ import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
 import { UIElement } from 'common/models/elements/element';
 import { ValueChangeElement } from 'common/interfaces';
-import { StorableTimer } from 'player/src/app/classes/storable-timer';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
+import { TimerManager } from 'player/src/app/classes/timer.manager';
 import { MediaPlayerService } from '../../../services/media-player.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
@@ -27,9 +25,8 @@ export class MediaPlayerGroupElementComponent extends ElementGroupDirective
   @Input() elementModel!: UIElement;
   @Input() pageIndex!: number;
 
-  private ngUnsubscribe: Subject<void> = new Subject();
+  timerManager!: TimerManager;
   initialValue: number = 0;
-  timerStateVariable: StorableTimer | null = null;
 
   AudioElement!: AudioElement;
   VideoElement!: VideoElement;
@@ -76,39 +73,20 @@ export class MediaPlayerGroupElementComponent extends ElementGroupDirective
     return `${this.elementModel.id}-${this.elementModel.player?.hintDelay}-timer}`;
   }
 
-  private destroyTimerStateVariable(): void {
-    this.timerStateVariable?.stop();
-    this.timerStateVariable = null;
+  onHintDelayInitialized(): void {
+    this.timerManager?.runTimer();
   }
 
   private initHintDelay(): void {
-    this.timerStateVariable = new StorableTimer(
-      this.timerStateVariableId,
-      this.stateVariableStateService
-        .getElementCodeById(this.timerStateVariableId)?.value as number || 0,
-      this.elementModel.player?.hintDelay as number
-    );
-    this.timerStateVariable.timerStateValueChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value: ValueChangeElement) => {
-        this.stateVariableStateService.changeElementCodeValue({
-          id: value.id,
-          value: value.value as number
-        });
-      });
-    this.timerStateVariable.timerStateEnded
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.destroyTimerStateVariable();
-      });
-    this.stateVariableStateService.registerElementCode(
-      this.timerStateVariable.id,
-      this.timerStateVariable.id,
-      this.timerStateVariable.value);
+    this.timerManager = new TimerManager(this.stateVariableStateService);
+    this.timerManager
+      .initTimerState(
+        this.timerStateVariableId,
+        this.elementModel.player?.hintDelay as number
+      );
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.timerManager?.reset();
   }
 }

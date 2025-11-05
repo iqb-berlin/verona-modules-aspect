@@ -5,17 +5,16 @@ import { merge, Subject } from 'rxjs';
 import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
-import { StorableTimer } from 'player/src/app/classes/storable-timer';
 import { Storable } from 'player/src/app/classes/storable';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { Response } from '@iqb/responses';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
-import { ValueChangeElement } from 'common/interfaces';
+import { TimerManager } from 'player/src/app/classes/timer.manager';
 
 @Directive({
-    selector: '[aspectSectionVisibilityHandling]',
-    standalone: false
+  selector: '[aspectSectionVisibilityHandling]',
+  standalone: false
 })
 export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   @Input() section!: Section;
@@ -26,9 +25,9 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   @Output() isVisibleIndexChange = new EventEmitter<IsVisibleIndex>();
 
   private ngUnsubscribe = new Subject<void>();
-  private timerStateVariable: StorableTimer | null = null;
   private visibilityVariable: Storable | null = null;
   private isVisible: boolean = false;
+  private timerManager!: TimerManager;
 
   constructor(
     private elementRef: ElementRef,
@@ -60,6 +59,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private initStorableSection(): void {
+    this.timerManager = new TimerManager(this.stateVariableStateService);
     const isVisible = this.stateVariableStateService
       .getElementCodeById(this.visibilityVariableID)?.value as number || 0;
 
@@ -90,16 +90,10 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
           this.isVisible = this.checkVisibility(this.areVisibilityRulesFulfilled());
           this.handleVisibility();
           if (this.isVisible && !this.section.enableReHide) {
-            this.removeVisibilitySubscription();
+            this.timerManager.reset();
           }
         }
       });
-  }
-
-  private removeVisibilitySubscription(): void {
-    this.destroyTimerStateVariable();
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   private get isTimerStateFullFilled(): boolean {
@@ -123,41 +117,15 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     return `section-${this.pageIndex}-${this.sectionIndex}`;
   }
 
-  private initTimerStateVariable(initialValue: number): void {
-    this.timerStateVariable = new StorableTimer(
-      this.timerStateVariableId, initialValue, this.section.visibilityDelay
-    );
-    this.timerStateVariable.timerStateValueChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value: ValueChangeElement) => {
-        this.stateVariableStateService.changeElementCodeValue({
-          id: value.id,
-          value: value.value as number
-        });
-      });
-    this.timerStateVariable.timerStateEnded
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.destroyTimerStateVariable();
-      });
-    this.stateVariableStateService.registerElementCode(
-      this.timerStateVariable.id,
-      this.timerStateVariable.id,
-      this.timerStateVariable.value);
-    this.timerStateVariable.run();
-  }
-
-  private destroyTimerStateVariable(): void {
-    this.timerStateVariable?.stop();
-    this.timerStateVariable = null;
-  }
-
   private checkVisibility(condition: boolean): boolean {
     if (condition) {
       if (this.section.visibilityDelay && !this.section.enableReHide) {
-        if (!this.timerStateVariable) {
-          this.initTimerStateVariable(this.stateVariableStateService
-            .getElementCodeById(this.timerStateVariableId)?.value as number || 0);
+        if (!this.timerManager.timerStateVariable) {
+          this.timerManager.initTimerState(
+            this.timerStateVariableId,
+            this.section.visibilityDelay
+          );
+          this.timerManager.runTimer();
         }
         return this.isTimerStateFullFilled;
       }
@@ -249,6 +217,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.removeVisibilitySubscription();
+    this.timerManager?.reset();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

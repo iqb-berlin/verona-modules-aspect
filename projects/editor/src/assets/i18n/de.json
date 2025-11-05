@@ -303,8 +303,6 @@
     "readOnly": "Schreibgeschützt"
   },
   "player": {
-    "autoStart": "Autostart (nicht für Tablets und nur nachdem bereits ein anderes Audio/Video abgespielt wurde)",
-    "autoStartDelay": "Autostart Verzögerung (ms)",
     "loop": "Wiederholt abspielen",
     "startControl": "Wiedergabeknopf anzeigen",
     "pauseControl": "Pausieren erlauben",

@@ -64,8 +64,6 @@ export interface OtherStyles {
 
 export interface PlayerProperties {
   [index: string]: unknown;
-  autostart: boolean;
-  autostartDelay: number;
   loop: boolean;
   startControl: boolean;
   pauseControl: boolean;
@@ -210,8 +208,6 @@ export abstract class PropertyGroupGenerators {
 
   static generatePlayerProps(properties: Partial<PlayerProperties> = {}): PlayerProperties {
     return {
-      autostart: properties.autostart !== undefined ? properties.autostart as boolean : false,
-      autostartDelay: properties.autostartDelay !== undefined ? properties.autostartDelay as number : 0,
       loop: properties.loop !== undefined ? properties.loop as boolean : false,
       startControl: properties.startControl !== undefined ? properties.startControl as boolean : true,
       pauseControl: properties.pauseControl !== undefined ? properties.pauseControl as boolean : false,

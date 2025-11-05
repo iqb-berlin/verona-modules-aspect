@@ -50,7 +50,6 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   muted: boolean = false;
   durationErrorTimeoutId: number | null = null;
   hintTimeOutId: number | null = null;
-  autoPlayTimeOutId: number | null = null;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -184,19 +183,8 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private initDelays(): void {
-    this.initAutostart();
     if (!this.started) {
       this.initHint();
-    }
-  }
-
-  private initAutostart(): void {
-    if (this.playerProperties.autostart && !this.autoPlayTimeOutId) {
-      this.autoPlayTimeOutId = setTimeout(() => {
-        if (this.dependencyDissolved && !this.disabled) {
-          this._play();
-        }
-      }, this.playerProperties.autostartDelay);
     }
   }
 

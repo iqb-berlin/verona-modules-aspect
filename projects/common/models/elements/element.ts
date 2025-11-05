@@ -273,8 +273,6 @@ export abstract class CompoundElement extends UIElement {
 function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): blueprint is PlayerElementBlueprint {
   if (!blueprint) return false;
   return blueprint.player !== undefined &&
-    blueprint.player.autostart !== undefined &&
-    blueprint.player.autostartDelay !== undefined &&
     blueprint.player.loop !== undefined &&
     blueprint.player.startControl !== undefined &&
     blueprint.player.pauseControl !== undefined &&

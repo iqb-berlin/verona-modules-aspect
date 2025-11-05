@@ -21,7 +21,6 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   rowCount: number = 3;
   expectedCharactersCount: number = 135;
   hasReturnKey: boolean = false;
-  hasKeyboardIcon: boolean = false;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -40,7 +39,6 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       this.hasAutoHeight = element.hasAutoHeight;
       this.expectedCharactersCount = element.expectedCharactersCount;
       this.hasReturnKey = element.hasReturnKey;
-      this.hasKeyboardIcon = element.hasKeyboardIcon;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
@@ -53,7 +51,6 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       if (element?.hasDynamicRowCount) this.hasDynamicRowCount = element.hasDynamicRowCount;
       if (element?.expectedCharactersCount) this.expectedCharactersCount = element.expectedCharactersCount;
       if (element?.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
-      if (element?.hasKeyboardIcon) this.hasKeyboardIcon = element.hasKeyboardIcon;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         width: 230,
         height: 132,
@@ -95,7 +92,6 @@ export interface TextAreaProperties extends TextInputElementProperties {
   rowCount: number;
   expectedCharactersCount: number;
   hasReturnKey: boolean;
-  hasKeyboardIcon: boolean;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -111,7 +107,6 @@ function isTextAreaProperties(blueprint?: Partial<TextAreaProperties>): blueprin
   blueprint.rowCount !== undefined &&
   blueprint.expectedCharactersCount !== undefined &&
   blueprint.hasReturnKey !== undefined &&
-  blueprint.hasKeyboardIcon !== undefined &&
   PropertyGroupValidators.isValidPosition(blueprint.position) &&
   PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
   blueprint.styling?.lineHeight !== undefined;

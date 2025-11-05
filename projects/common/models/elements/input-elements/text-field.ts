@@ -22,7 +22,6 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   isLimitedToMaxLength: boolean = false;
   pattern: string | null = null;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
-  hasKeyboardIcon: boolean = false;
   clearable: boolean = false;
   position?: PositionProperties;
   styling: BasicStyles & {
@@ -44,7 +43,6 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       this.pattern = element.pattern;
       this.patternWarnMessage = element.patternWarnMessage;
       this.clearable = element.clearable;
-      this.hasKeyboardIcon = element.hasKeyboardIcon;
       if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
@@ -60,7 +58,6 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       if (element?.pattern) this.pattern = element.pattern;
       if (element?.patternWarnMessage) this.patternWarnMessage = element.patternWarnMessage;
       if (element?.clearable) this.clearable = element.clearable;
-      if (element?.hasKeyboardIcon) this.hasKeyboardIcon = element.hasKeyboardIcon;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         width: 180,
         height: 120,
@@ -103,7 +100,6 @@ export interface TextFieldProperties extends TextInputElementProperties {
   isLimitedToMaxLength: boolean;
   pattern: string | null;
   patternWarnMessage: string;
-  hasKeyboardIcon: boolean;
   clearable: boolean;
   position?: PositionProperties;
   styling: BasicStyles & {
@@ -120,7 +116,6 @@ function isTextFieldProperties(blueprint?: Partial<TextFieldProperties>): bluepr
     blueprint.isLimitedToMaxLength !== undefined &&
     blueprint.pattern !== undefined &&
     blueprint.patternWarnMessage !== undefined &&
-    blueprint.hasKeyboardIcon !== undefined &&
     blueprint.clearable !== undefined &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling?.lineHeight !== undefined;

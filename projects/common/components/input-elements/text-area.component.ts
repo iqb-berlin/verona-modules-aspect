@@ -7,8 +7,8 @@ import { TextAreaElement } from 'common/models/elements/input-elements/text-area
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
-    selector: 'aspect-text-area',
-    template: `
+  selector: 'aspect-text-area',
+  template: `
     <mat-form-field
       [ngClass]="{ 'no-label' : !elementModel.label}"
       [style.width.%]="100"
@@ -22,11 +22,6 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
       [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
-      <mat-icon *ngIf="!elementFormControl.touched && elementModel.hasKeyboardIcon"
-                class="keyboard-icon"
-                [style.top.px]="elementModel.styling.fontSize/2">
-        keyboard_outline
-      </mat-icon>
       <textarea matInput #input
                 autocomplete="off"
                 autocapitalize="none"
@@ -54,7 +49,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       </mat-error>
     </mat-form-field>
   `,
-    styles: [`
+  styles: [`
     :host ::ng-deep .no-label .mdc-notched-outline__notch {
       display: none;
     }
@@ -67,13 +62,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     :host ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--filled {
       background-color: var(--backgroundColor) !important;
     }
-    .keyboard-icon {
-      position: absolute;
-      right: 0;
-      font-size: 150%;
-    }
   `],
-    standalone: false
+  standalone: false
 })
 export class TextAreaComponent extends TextInputComponent {
   @Input() elementModel!: TextAreaElement;
@@ -81,8 +71,8 @@ export class TextAreaComponent extends TextInputComponent {
 }
 
 @Directive({
-    selector: '[autoHeight]',
-    standalone: false
+  selector: '[autoHeight]',
+  standalone: false
 })
 export class AutoHeightDirective implements AfterViewInit {
   @Input() autoHeight!: boolean;

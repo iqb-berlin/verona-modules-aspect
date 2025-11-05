@@ -1,6 +1,8 @@
 import { selectFromDropdown, setCheckbox } from '../util';
 
-export function addSettings({minLength, maxLength, defaultText, settings, appearance}: {
+export function addSettings({
+  minLength, maxLength, defaultText, settings, appearance
+}: {
   minLength?: number,
   maxLength?: number,
   defaultText?: string,
@@ -31,7 +33,6 @@ export function addSettings({minLength, maxLength, defaultText, settings, appear
   }
   if (settings?.isLimitedToMaxLength) setCheckbox('Eingabe auf Maximallänge begrenzen');
   if (settings?.clearable) setCheckbox('Knopf zum Leeren anzeigen');
-  if (settings?.hasKeyboardIcon) setCheckbox('Tastatursymbol anzeigen');
 }
 
 export function addRegexPattern(pattern:string, patternWarnMessage?: string) {
@@ -48,13 +49,13 @@ export function addRegexPattern(pattern:string, patternWarnMessage?: string) {
 }
 
 export function inputAssistance(keyboard:string = '', position: string = 'schwebend',
-                        ownCharacters?:string, options?: Record<string, boolean>):void {
+                                ownCharacters?:string, options?: Record<string, boolean>):void {
   selectFromDropdown('Eingabehilfe auswählen', keyboard);
   selectFromDropdown('Eingabehilfeposition', position);
   if (keyboard === 'Eigene Zeichen' && ownCharacters != null) {
-      cy.contains('mat-form-field', 'Zeichenkette')
-        .find('input')
-        .type(ownCharacters);
+    cy.contains('mat-form-field', 'Zeichenkette')
+      .find('input')
+      .type(ownCharacters);
   }
   if (options?.disableOtherCharacters) setCheckbox('Bearbeitung anderer Zeichen verhindern');
   if (options?.addArrowButtons) setCheckbox('Pfeitasten hinzufügen');
@@ -70,7 +71,7 @@ export function textFieldValidation(fieldName: string, input: string, error?: st
     cy.contains('mat-form-field', fieldName)
       .find('mat-error').should('exist')
       .contains(error);
-  }else{
+  } else {
     cy.contains('mat-form-field', fieldName)
       .find('mat-error').should('not.exist');
   }

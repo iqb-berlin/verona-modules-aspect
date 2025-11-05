@@ -1,33 +1,38 @@
 import {
-  AfterViewInit, Component, Input, OnInit, ViewChild
+  AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
 import { UIElement } from 'common/models/elements/element';
 import { ValueChangeElement } from 'common/interfaces';
+import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
+import { TimerManager } from 'player/src/app/classes/timer.manager';
 import { MediaPlayerService } from '../../../services/media-player.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 
 @Component({
-    selector: 'aspect-media-player-group-element',
-    templateUrl: './media-player-group-element.component.html',
-    styleUrls: ['./media-player-group-element.component.scss'],
-    standalone: false
+  selector: 'aspect-media-player-group-element',
+  templateUrl: './media-player-group-element.component.html',
+  styleUrls: ['./media-player-group-element.component.scss'],
+  standalone: false
 })
-export class MediaPlayerGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
+export class MediaPlayerGroupElementComponent extends ElementGroupDirective
+  implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: MediaPlayerElementComponent;
   @Input() elementModel!: UIElement;
   @Input() pageIndex!: number;
 
+  timerManager!: TimerManager;
   initialValue: number = 0;
 
   AudioElement!: AudioElement;
   VideoElement!: VideoElement;
 
   constructor(
+    private stateVariableStateService: StateVariableStateService,
     public mediaPlayerService: MediaPlayerService,
     public unitStateService: UnitStateService,
     private elementModelElementCodeMappingService: ElementModelElementCodeMappingService
@@ -42,6 +47,9 @@ export class MediaPlayerGroupElementComponent extends ElementGroupDirective impl
       this.elementModel.id,
       this.elementModel.player?.minRuns as number === 0
     );
+    if (this.elementModel.player?.showHint) {
+      this.initHintDelay();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -59,5 +67,26 @@ export class MediaPlayerGroupElementComponent extends ElementGroupDirective impl
       value: ElementModelElementCodeMappingService
         .mapToElementCodeValue(value.value, this.elementModel.type)
     });
+  }
+
+  private get timerStateVariableId(): string {
+    return `${this.elementModel.id}-${this.elementModel.player?.hintDelay}-timer}`;
+  }
+
+  onHintDelayInitialized(): void {
+    this.timerManager?.runTimer();
+  }
+
+  private initHintDelay(): void {
+    this.timerManager = new TimerManager(this.stateVariableStateService);
+    this.timerManager
+      .initTimer(
+        this.timerStateVariableId,
+        this.elementModel.player?.hintDelay as number
+      );
+  }
+
+  ngOnDestroy(): void {
+    this.timerManager?.reset();
   }
 }

@@ -4,6 +4,7 @@ import { ValueChangeElement } from 'common/interfaces';
 
 export class StorableTimer extends Storable {
   duration: number;
+  restTime: number;
   timerStateValueChanged = new EventEmitter<ValueChangeElement>();
   timerStateEnded = new EventEmitter();
 
@@ -12,12 +13,14 @@ export class StorableTimer extends Storable {
   constructor(id: string, value: number, duration: number) {
     super(id, value);
     this.duration = duration;
+    this.restTime = duration - value;
   }
 
   run(): void {
     if (!this.interval) {
       this.interval = window.setInterval(() => {
         this.value += 1000;
+        this.restTime = this.duration - this.value;
         this.timerStateValueChanged.emit({ id: this.id, value: this.value });
         if (this.value >= this.duration) {
           this.timerStateEnded.emit();

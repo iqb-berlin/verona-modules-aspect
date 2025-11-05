@@ -25,11 +25,13 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   @Input() project!: 'player' | 'editor';
   @Input() active!: boolean;
   @Input() dependencyDissolved!: boolean;
+  @Input() hintDelay!: number;
   @Input() backgroundColor: string = '#f1f1f1';
   @Input() isLoaded!: BehaviorSubject<boolean>;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() mediaValidStatusChanged = new EventEmitter<string>();
   @Output() mediaPlayStatusChanged = new EventEmitter<string | null>();
+  @Output() hintDelayInitialized = new EventEmitter<string>();
 
   duration: number = 0;
   playerDuration: number = 0;
@@ -49,6 +51,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   valid: boolean = false;
   muted: boolean = false;
   durationErrorTimeoutId: number | null = null;
+
   hintTimeOutId: number | null = null;
 
   private ngUnsubscribe = new Subject<void>();
@@ -116,7 +119,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
 
   ngOnChanges(): void {
     if (this.project !== 'editor' && this.dependencyDissolved) {
-      this.initDelays();
+      this.initHint();
     }
   }
 
@@ -182,19 +185,14 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       (this.playerDuration - this.player.currentTime) / 60 : 0;
   }
 
-  private initDelays(): void {
-    if (!this.started) {
-      this.initHint();
-    }
-  }
-
   private initHint(): void {
-    if (this.playerProperties.showHint && !this.hintTimeOutId) {
+    if (this.playerProperties.showHint && !this.hintTimeOutId && !this.started) {
+      this.hintDelayInitialized.emit(this.id);
       this.hintTimeOutId = setTimeout(() => {
         if (!this.started && this.dependencyDissolved) {
           this.displayHint = true;
         }
-      }, this.playerProperties.hintDelay);
+      }, this.hintDelay);
     }
   }
 

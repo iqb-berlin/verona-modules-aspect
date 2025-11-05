@@ -13,11 +13,13 @@ describe('MediaPlayerGroupElementComponent', () => {
   let fixture: ComponentFixture<MediaPlayerGroupElementComponent>;
 
   @Component({
-    selector: 'aspect-audio', template: '',
+    selector: 'aspect-audio',
+    template: '',
     standalone: false
-})
+  })
   class AudioStubComponent {
     @Input() elementModel!: AudioElement;
+    @Input() hintDelay!: number;
     @Input() savedPlaybackTime!: number;
     @Input() actualPlayingId!: Subject<string | null>;
     @Input() mediaStatusChanged!: Subject<string>;

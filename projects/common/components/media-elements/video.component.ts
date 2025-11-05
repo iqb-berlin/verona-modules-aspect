@@ -39,7 +39,8 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
     </div>
   `,
   styles: [
-    '.correct-position{ display: block; margin-top: -4px; }',
+    '.correct-position{ display: block; }',
+    '.correct-position ::ng-deep .control-bar{ margin-top: -6px }',
     '.max-size-video{ width: fit-content; max-height: fit-content }',
     '.fit-video{ width: 100%; height: 100%; object-fit: contain}'
   ],

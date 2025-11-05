@@ -121,7 +121,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     if (condition) {
       if (this.section.visibilityDelay && !this.section.enableReHide) {
         if (!this.timerManager.timerStateVariable) {
-          this.timerManager.initTimerState(
+          this.timerManager.initTimer(
             this.timerStateVariableId,
             this.section.visibilityDelay
           );

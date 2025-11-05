@@ -13,7 +13,7 @@ export class TimerManager {
     this.stateVariableStateService = stateVariableStateService;
   }
 
-  destroyTimerStateVariable(): void {
+  stopTimer(): void {
     this.timerStateVariable?.stop();
     this.timerStateVariable = null;
   }
@@ -22,7 +22,7 @@ export class TimerManager {
     this.timerStateVariable?.run();
   }
 
-  initTimerState(timerStateVariableId: string, duration: number): void {
+  initTimer(timerStateVariableId: string, duration: number): void {
     this.timerStateVariable = new StorableTimer(
       timerStateVariableId,
       this.stateVariableStateService
@@ -40,7 +40,7 @@ export class TimerManager {
     this.timerStateVariable.timerStateEnded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
-        this.destroyTimerStateVariable();
+        this.stopTimer();
       });
     this.stateVariableStateService.registerElementCode(
       this.timerStateVariable.id,
@@ -49,7 +49,7 @@ export class TimerManager {
   }
 
   reset(): void {
-    this.destroyTimerStateVariable();
+    this.stopTimer();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

@@ -80,7 +80,7 @@ export class MediaPlayerGroupElementComponent extends ElementGroupDirective
   private initHintDelay(): void {
     this.timerManager = new TimerManager(this.stateVariableStateService);
     this.timerManager
-      .initTimerState(
+      .initTimer(
         this.timerStateVariableId,
         this.elementModel.player?.hintDelay as number
       );

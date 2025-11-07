@@ -12,7 +12,7 @@ import { TableChildOverlay } from 'common/components/compound-elements/table/tab
 import { MatMenuModule } from '@angular/material/menu';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { Subject } from 'rxjs';
-import { PositionedUIElement, UIElementType } from 'common/interfaces';
+import { UIElementType } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-table',
@@ -54,6 +54,7 @@ import { PositionedUIElement, UIElementType } from 'common/interfaces';
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="addElement('text', i, j)">Text</button>
             <button mat-menu-item (click)="addElement('text-field', i, j)">Eingabefeld</button>
+            <button mat-menu-item (click)="addElement('text-area', i, j)">Eingabebereich</button>
             <button mat-menu-item (click)="addElement('checkbox', i, j)">Kontrollkästchen</button>
             <button mat-menu-item (click)="addElement('drop-list', i, j)">Ablegeliste</button>
             <button mat-menu-item (click)="addElement('image', i, j)">Bild</button>

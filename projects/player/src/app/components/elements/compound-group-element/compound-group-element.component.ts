@@ -40,6 +40,7 @@ import {
   TextGroupElementComponent
 } from 'player/src/app/components/elements/text-group-element/text-group-element.component';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
+import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -48,10 +49,10 @@ import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
 
 @Component({
-    selector: 'aspect-compound-group-element',
-    templateUrl: './compound-group-element.component.html',
-    styleUrls: ['./compound-group-element.component.scss'],
-    standalone: false
+  selector: 'aspect-compound-group-element',
+  templateUrl: './compound-group-element.component.html',
+  styleUrls: ['./compound-group-element.component.scss'],
+  standalone: false
 })
 export class CompoundGroupElementComponent extends TextInputGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
@@ -213,6 +214,10 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       this.manageKeyInputToggling(child as TextFieldComponent);
       this.manageOnKeyDown(child as TextFieldComponent, childModel as InputElement);
     }
+    if (childModel.type === 'text-area') {
+      this.manageKeyInputToggling(child as TextAreaComponent);
+      this.manageOnKeyDown(child as TextAreaComponent, childModel as InputElement);
+    }
     if (childModel.type === 'button') {
       this.addButtonActionEventListener(child as ButtonComponent);
       this.addEnabledNavigationListener(child as ButtonComponent);
@@ -319,7 +324,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   }
 
   private manageOnKeyDown(
-    textInputComponent: TextFieldSimpleComponent | TextFieldComponent,
+    textInputComponent: TextFieldSimpleComponent | TextFieldComponent | TextAreaComponent,
     elementModel: InputElement): void {
     textInputComponent
       .onKeyDown
@@ -329,7 +334,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       });
   }
 
-  private manageKeyInputToggling(textInputComponent: TextFieldSimpleComponent | TextFieldComponent): void {
+  private manageKeyInputToggling(textInputComponent: TextFieldSimpleComponent | TextFieldComponent | TextAreaComponent): void {
     textInputComponent
       .focusChanged
       .pipe(takeUntil(this.ngUnsubscribe))

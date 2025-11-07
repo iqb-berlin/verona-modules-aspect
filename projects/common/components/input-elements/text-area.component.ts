@@ -9,26 +9,67 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
 @Component({
   selector: 'aspect-text-area',
   template: `
-    <mat-form-field
-      [ngClass]="{ 'no-label' : !elementModel.label}"
-      [style.width.%]="100"
-      [style.height.%]="100"
-      [style.min-height.%]="100"
-      [style.--backgroundColor]="elementModel.styling.backgroundColor"
-      [style.color]="elementModel.styling.fontColor"
-      [style.font-size.px]="elementModel.styling.fontSize"
-      [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-      [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-      [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-      [appearance]="$any(elementModel.appearance)">
-      <mat-label>{{elementModel.label}}</mat-label>
+    @if (!tableMode) {
+      <mat-form-field
+        [ngClass]="{ 'no-label' : !elementModel.label}"
+        [style.width.%]="100"
+        [style.height.%]="100"
+        [style.min-height.%]="100"
+        [style.--backgroundColor]="elementModel.styling.backgroundColor"
+        [style.color]="elementModel.styling.fontColor"
+        [style.font-size.px]="elementModel.styling.fontSize"
+        [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+        [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+        [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+        [appearance]="$any(elementModel.appearance)">
+        <mat-label>{{elementModel.label}}</mat-label>
+        <textarea matInput #input
+                  autocomplete="off"
+                  autocapitalize="none"
+                  autocorrect="off"
+                  spellcheck="false"
+                  value="{{elementModel.value}}"
+                  dynamicRows
+                  [autoHeight]="elementModel.hasAutoHeight"
+                  [expectedCharactersCount]="elementModel.expectedCharactersCount"
+                  [fontSize]="elementModel.styling.fontSize"
+                  (dynamicRowsChange)="dynamicRows = $event"
+                  [rows]="elementModel.hasDynamicRowCount && dynamicRows ? dynamicRows : elementModel.rowCount"
+                  [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
+                  [formControl]="elementFormControl"
+                  [readonly]="elementModel.readOnly"
+                  [style.min-width.%]="100"
+                  [style.line-height.%]="elementModel.styling.lineHeight"
+                  [style.resize]="elementModel.resizeEnabled ? 'vertical' : 'none'"
+                  (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
+                  (focus)="focusChanged.emit({ inputElement: input, focused: true })"
+                  (blur)="focusChanged.emit({ inputElement: input, focused: false })">
+        </textarea>
+        <mat-error *ngIf="elementFormControl.errors">
+          {{elementFormControl.errors | errorTransform: elementModel}}
+        </mat-error>
+      </mat-form-field>
+    } @else {
+      <aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
+                                        [elementModel]="elementModel"
+                                        [elementFormControl]="elementFormControl">
+      </aspect-cloze-child-error-message>
       <textarea matInput #input
+                class="table-child"
                 autocomplete="off"
                 autocapitalize="none"
                 autocorrect="off"
                 spellcheck="false"
                 value="{{elementModel.value}}"
                 dynamicRows
+                [class.errors]="elementFormControl.errors && elementFormControl.touched"
+                [style.min-height.%]="100"
+                [style.--backgroundColor]="elementModel.styling.backgroundColor"
+                [style.color]="elementModel.styling.fontColor"
+                [style.font-size.px]="elementModel.styling.fontSize"
+                [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                 [autoHeight]="elementModel.hasAutoHeight"
                 [expectedCharactersCount]="elementModel.expectedCharactersCount"
                 [fontSize]="elementModel.styling.fontSize"
@@ -43,11 +84,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
                 (focus)="focusChanged.emit({ inputElement: input, focused: true })"
                 (blur)="focusChanged.emit({ inputElement: input, focused: false })">
-      </textarea>
-      <mat-error *ngIf="elementFormControl.errors">
-        {{elementFormControl.errors | errorTransform: elementModel}}
-      </mat-error>
-    </mat-form-field>
+        </textarea>
+    }
   `,
   styles: [`
     :host ::ng-deep .no-label .mdc-notched-outline__notch {
@@ -62,12 +100,21 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     :host ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--filled {
       background-color: var(--backgroundColor) !important;
     }
+    .table-child {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      border: none;
+      padding: 0 10px;
+      font-family: inherit;
+    }
   `],
   standalone: false
 })
 export class TextAreaComponent extends TextInputComponent {
   @Input() elementModel!: TextAreaElement;
   dynamicRows: number = 0;
+  tableMode: boolean = false;
 }
 
 @Directive({

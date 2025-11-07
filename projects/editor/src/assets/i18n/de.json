@@ -355,7 +355,8 @@
     "area": "Bereich",
     "text-area-math": "Formelbereich",
     "math-table": "Rechenkästchen",
-    "trigger": "Auslöser"
+    "trigger": "Auslöser",
+    "table": "Tabelle"
   },
   "section-menu": {
     "height": "Höhe",

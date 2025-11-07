@@ -10,6 +10,7 @@ import { DropListComponent } from 'common/components/input-elements/drop-list/dr
 import { AudioComponent } from 'common/components/media-elements/audio.component';
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
+import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 
 @Component({
   selector: 'aspect-table-child-overlay',
@@ -23,6 +24,7 @@ import { TextComponent } from 'common/components/text/text.component';
   styles: `
   .wrapper {width: 100%; height: 100%;}
   :host ::ng-deep aspect-text-field {width: 100%; height: 100%;}
+  :host ::ng-deep aspect-text-area {width: 100%; height: 100%;}
   :host ::ng-deep aspect-audio .control-bar {height: 100%; margin-top: 0; justify-content: center;}
   :host ::ng-deep aspect-audio .status-bar {display: none;}
   :host ::ng-deep aspect-audio .control-bar {background-color: unset;}
@@ -56,6 +58,7 @@ export class TableChildOverlay implements OnInit {
     // this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
 
     if (this.childComponent.instance instanceof TextFieldComponent ||
+        this.childComponent.instance instanceof TextAreaComponent ||
         this.childComponent.instance instanceof CheckboxComponent) {
       this.childComponent.instance.tableMode = true;
       this.childComponent.instance.parentForm = this.parentForm;

@@ -14,14 +14,14 @@ import { UIElementProperties, UIElementType } from 'common/interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
-    selector: 'aspect-editor-table-edit-dialog',
-    imports: [
-        MatDialogModule,
-        TranslateModule,
-        MatButtonModule,
-        TableComponent
-    ],
-    template: `
+  selector: 'aspect-editor-table-edit-dialog',
+  imports: [
+    MatDialogModule,
+    TranslateModule,
+    MatButtonModule,
+    TableComponent
+  ],
+  template: `
     <div mat-dialog-title>Tabellenelemente</div>
     <mat-dialog-content>
       <aspect-table [elementModel]="newTable" [editorMode]="true"
@@ -33,7 +33,7 @@ import { IDService } from 'editor/src/app/services/id.service';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-    styles: `
+  styles: `
     :host ::ng-deep aspect-table .grid-container {
       grid-template-columns: unset !important;
       grid-template-rows: unset !important;
@@ -85,7 +85,7 @@ export class TableEditDialogComponent {
     delete newEle.dimensions;
     newEle.gridRow = el.row + 1;
     newEle.gridColumn = el.col + 1;
-    if (newEle.type === 'text-field') {
+    if (newEle.type === 'text-field' || newEle.type === 'text-area') {
       delete newEle.appearance;
     }
     this.newTable.elements.push(newEle);

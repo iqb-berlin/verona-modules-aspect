@@ -21,7 +21,7 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   rowCount: number = 3;
   expectedCharactersCount: number = 135;
   hasReturnKey: boolean = false;
-  position: PositionProperties;
+  position?: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -32,14 +32,14 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   constructor(element?: Partial<TextAreaProperties>, idService?: AbstractIDService) {
     super({ type: 'text-area', ...element }, idService);
     if (isTextAreaProperties(element)) {
-      this.appearance = element.appearance;
+      if (element.appearance) this.appearance = element.appearance;
       this.resizeEnabled = element.resizeEnabled;
       this.rowCount = element.rowCount;
       this.hasDynamicRowCount = element.hasDynamicRowCount;
       this.hasAutoHeight = element.hasAutoHeight;
       this.expectedCharactersCount = element.expectedCharactersCount;
       this.hasReturnKey = element.hasReturnKey;
-      this.position = { ...element.position };
+      if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
@@ -85,14 +85,14 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
 }
 
 export interface TextAreaProperties extends TextInputElementProperties {
-  appearance: 'fill' | 'outline';
+  appearance?: 'fill' | 'outline';
   resizeEnabled: boolean;
   hasDynamicRowCount: boolean;
   hasAutoHeight: boolean;
   rowCount: number;
   expectedCharactersCount: number;
   hasReturnKey: boolean;
-  position: PositionProperties;
+  position?: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -100,14 +100,12 @@ export interface TextAreaProperties extends TextInputElementProperties {
 
 function isTextAreaProperties(blueprint?: Partial<TextAreaProperties>): blueprint is TextAreaProperties {
   if (!blueprint) return false;
-  return blueprint.appearance !== undefined &&
-  blueprint.resizeEnabled !== undefined &&
+  return blueprint.resizeEnabled !== undefined &&
   blueprint.hasDynamicRowCount !== undefined &&
   blueprint.hasAutoHeight !== undefined &&
   blueprint.rowCount !== undefined &&
   blueprint.expectedCharactersCount !== undefined &&
   blueprint.hasReturnKey !== undefined &&
-  PropertyGroupValidators.isValidPosition(blueprint.position) &&
   PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
   blueprint.styling?.lineHeight !== undefined;
 }

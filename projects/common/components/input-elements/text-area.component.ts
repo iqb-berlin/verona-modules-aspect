@@ -131,7 +131,7 @@ export class AutoHeightDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.autoHeight) {
-      this.renderer.listen(this.elementRef.nativeElement, 'input', () => this.resize());
+      this.renderer.listen(this.elementRef.nativeElement, 'selectionchange', () => this.resize());
       setTimeout(() => this.resize());
     }
   }

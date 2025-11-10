@@ -1,5 +1,14 @@
 Editor
 ======
+## next
+
+### Änderungen
+- Eingabefeld/Eingabereich
+  - Entfernt Option "Tastatursymbol anzeigen" 
+- Audio/Video
+  - Entfernt Option "Autostart" und "Autostart Verzögerung" 
+
+
 ## 2.10.1
 ### Fehlerbehebungen
 - Schriftgröße in Textelementen wird, wenn unverändert, als "Standard" angezeigt und kann auf Standard zurückgestellt werden.

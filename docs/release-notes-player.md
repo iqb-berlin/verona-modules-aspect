@@ -3,8 +3,14 @@ Player
 ## next
 ### Fehlerbehebungen
 - Eingabebereich
-  - Bei Verwendung der IQB-Tastatur und der Eingabehilfe scrollt ein Eingabereich den eingegebenen Text zur aktuellen Cursorposition 
-- Korrigiert ein Problem mit der automatischen Seitenummerierung, das beim Ändern der Seitendarstellung der Aufgabe zu einer fehlerhaften Zählweise führte.
+  - IQB-Tastatur/Eingabehilfe
+    - Text wird zur aktuellen Cursorposition gescrollt
+    - Behebt Fehler bei der automatischen Höhenanpassung 
+- Korrigiert die automatische Seitennummerierung beim Ändern der Seitendarstellung einer Aufgabe zur Laufzeit
+
+### Änderungen
+- Audio/Video
+  - Speichert die bereits verstrichene Zeit von Hinweisen
 
 ## 2.10.1
 ### Fehlerbehebungen

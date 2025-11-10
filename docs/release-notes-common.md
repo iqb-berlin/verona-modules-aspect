@@ -2,7 +2,22 @@ Allgemein
 =========
 ## next
 ### Neue Funktionen
-- Neue Eingabehilfe mit 24 Zeichen "Reaktionsgleichung Chemie"
+- Geometrie
+  - Macht optional alle Variablen eines Geogebra-Elements in den Antwortendaten verfügbar  
+- Formelfeld/Formelbereich
+  - Die Reiter der Tastatur sind als Formeleingabelayouts frei wählbar
+  - Neues Formeleingabelayout: "Physik"
+- Tabelle
+  - Neues Kindelement: "Eingabebereich"
+- Audio/Video
+  - Hinweise (Rahmen und Text) können auch ohne die Angabe von Text angezeigt werden
+- Eingabehilfe: "Reaktionsgleichung Chemie"
+- Neue Eingabehilfe: "Reaktionsgleichung Chemie"
+
+### Fehlerbehebungen
+- Audio/Video
+  - Korrektur der Position der Steuerungselemente
+
 
 ## editor/2.10.1+player/2.10.1
 ### Fehlerbehebungen

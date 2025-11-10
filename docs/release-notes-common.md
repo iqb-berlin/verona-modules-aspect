@@ -11,8 +11,11 @@ Allgemein
   - Neues Kindelement: "Eingabebereich"
 - Audio/Video
   - Hinweise (Rahmen und Text) können auch ohne die Angabe von Text angezeigt werden
-- Eingabehilfe: "Reaktionsgleichung Chemie"
 - Neue Eingabehilfe: "Reaktionsgleichung Chemie"
+
+### Änderungen
+- Auslöser
+  - "Textabschnitt hervorheben" wird bei als paralleler Anordnung immer nach "Hervorhebungen ausblenden" ausgelöst
 
 ### Fehlerbehebungen
 - Audio/Video

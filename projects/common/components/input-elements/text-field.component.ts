@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
@@ -28,13 +30,13 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                [formControl]="elementFormControl"
                [pattern]="$any(elementModel.pattern)"
                [readonly]="elementModel.readOnly"
-               (paste)="elementModel.isLimitedToMaxLength && elementModel.maxLength ? $event.preventDefault() : null"
+               (paste)="onPaste.emit($event)"
                (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
                (focus)="focusChanged.emit({ inputElement: input, focused: true })"
                (blur)="focusChanged.emit({ inputElement: input, focused: false })">
         <div matSuffix
              class="fx-row-center-baseline">
-  <!--        TODO nicht zu sehen-->
+          <!--        TODO nicht zu sehen-->
           <button *ngIf="elementModel.clearable"
                   type="button"
                   mat-icon-button aria-label="Clear"
@@ -68,7 +70,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
              [readonly]="elementModel.readOnly"
              [formControl]="elementFormControl"
              [value]="elementModel.value"
-             (paste)="elementModel.isLimitedToMaxLength && elementModel.maxLength ? $event.preventDefault() : null"
+             (paste)="onPaste.emit($event)"
              (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
              (focus)="focusChanged.emit({ inputElement: input, focused: true })"
              (blur)="focusChanged.emit({ inputElement: input, focused: false })">
@@ -111,6 +113,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
   standalone: false
 })
 export class TextFieldComponent extends TextInputComponent {
+  @Output() onPaste = new EventEmitter<ClipboardEvent>();
   @Input() elementModel!: TextFieldElement;
   tableMode: boolean = false;
 }

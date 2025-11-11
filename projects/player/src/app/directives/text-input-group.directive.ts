@@ -30,6 +30,25 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   abstract keyboardService: KeyboardService;
   abstract mathKeyboardService: MathKeyboardService;
 
+  // eslint-disable-next-line class-methods-use-this
+  onPaste(event: ClipboardEvent, elementModel: UIElement): void {
+    if (elementModel.isLimitedToMaxLength && elementModel.maxLength) {
+      const inputElement = event.target as HTMLInputElement;
+      const pastedText = event.clipboardData?.getData('text/plain') || '';
+      if (!pastedText || (TextInputGroupDirective
+        .calculateExpectedTextLength(inputElement, pastedText) > (elementModel.maxLength as number))) {
+        event.preventDefault();
+      }
+    }
+  }
+
+  private static calculateExpectedTextLength(inputElement: HTMLInputElement, newText: string): number {
+    const selectionStart = inputElement.selectionStart || 0;
+    const selectionEnd = inputElement.selectionEnd || 0;
+    const selectedText = inputElement.value.substring(selectionStart, selectionEnd);
+    return inputElement.value.length - selectedText.length + newText.length;
+  }
+
   private shallOpenKeypad(elementModel: InputElement): boolean {
     return !!elementModel.inputAssistancePreset &&
       !(elementModel.showSoftwareKeyboard &&
@@ -94,11 +113,14 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     keyboardEvent: KeyboardEvent;
     inputElement: HTMLInputElement | HTMLTextAreaElement | HTMLElement;
   }, elementModel: UIElement): void {
-    const inputValue = TextInputGroupDirective.getValueOfInput(event.inputElement);
-    if (elementModel.maxLength &&
+    if ((event.inputElement instanceof HTMLInputElement) &&
+      elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
-      inputValue.length === elementModel.maxLength &&
-      !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'].includes(event.keyboardEvent.key)) {
+      TextInputGroupDirective
+        .calculateExpectedTextLength(
+          event.inputElement as HTMLInputElement, event.keyboardEvent.key) > (elementModel.maxLength as number) &&
+      !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp']
+        .includes(event.keyboardEvent.key)) {
       event.keyboardEvent.preventDefault();
     }
   }
@@ -212,16 +234,20 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private enterKey(key: string, elementModel: UIElement, elementComponent: ElementComponent): void {
-    if (!(elementModel.maxLength &&
+    if (elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
-      this.getInputElementValue().length === elementModel.maxLength)) {
-      const selectionStart = this.getSelection().start;
-      const selectionEnd = this.getSelection().end;
-      const newSelection = selectionStart ? selectionStart + 1 : 1;
-      this.insert({
-        selectionStart, selectionEnd, newSelection, key
-      }, elementComponent);
+      (this.inputElement instanceof HTMLInputElement) &&
+      TextInputGroupDirective
+        .calculateExpectedTextLength(
+          this.inputElement, key) > (elementModel.maxLength as number)) {
+      return;
     }
+    const selectionStart = this.getSelection().start;
+    const selectionEnd = this.getSelection().end;
+    const newSelection = selectionStart ? selectionStart + 1 : 1;
+    this.insert({
+      selectionStart, selectionEnd, newSelection, key
+    }, elementComponent);
   }
 
   private deleteCharacters(backspace: boolean, elementComponent: ElementComponent): void {

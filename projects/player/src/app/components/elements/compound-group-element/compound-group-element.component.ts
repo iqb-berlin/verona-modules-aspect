@@ -209,10 +209,12 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     if (childModel.type === 'text-field-simple') {
       this.manageKeyInputToggling(child as TextFieldSimpleComponent);
       this.manageOnKeyDown(child as TextFieldSimpleComponent, childModel as InputElement);
+      this.manageOnPaste(child as TextFieldSimpleComponent, childModel as InputElement);
     }
     if (childModel.type === 'text-field') {
       this.manageKeyInputToggling(child as TextFieldComponent);
       this.manageOnKeyDown(child as TextFieldComponent, childModel as InputElement);
+      this.manageOnPaste(child as TextFieldSimpleComponent, childModel as InputElement);
     }
     if (childModel.type === 'text-area') {
       this.manageKeyInputToggling(child as TextAreaComponent);
@@ -334,7 +336,19 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       });
   }
 
-  private manageKeyInputToggling(textInputComponent: TextFieldSimpleComponent | TextFieldComponent | TextAreaComponent): void {
+  private manageOnPaste(
+    textInputComponent: TextFieldSimpleComponent,
+    elementModel: InputElement): void {
+    textInputComponent
+      .onPaste
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(event => {
+        this.onPaste(event, elementModel);
+      });
+  }
+
+  private manageKeyInputToggling(
+    textInputComponent: TextFieldSimpleComponent | TextFieldComponent | TextAreaComponent): void {
     textInputComponent
       .focusChanged
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -348,7 +362,9 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     inputElement: HTMLInputElement | HTMLTextAreaElement | HTMLElement
   }, elementModel: InputElement): void {
     this.detectHardwareKeyboard(elementModel);
-    this.checkInputLimitation(event, elementModel);
+    if (event.inputElement instanceof HTMLInputElement) {
+      this.checkInputLimitation(event, elementModel);
+    }
   }
 
   private addEnabledNavigationListener(button: ButtonComponent) {

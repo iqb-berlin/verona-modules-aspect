@@ -3,7 +3,7 @@ Allgemein
 ## next
 ### Neue Funktionen
 - Geometrie
-  - Macht optional alle Variablen eines Geogebra-Elements in den Antwortendaten verfügbar  
+  - Macht optional alle Variablen eines Geogebra-Elements in den Antwortendaten verfügbar
 - Formelfeld/Formelbereich
   - Die Reiter der Tastatur sind als Formeleingabelayouts frei wählbar
   - Neues Formeleingabelayout: "Physik"
@@ -12,14 +12,18 @@ Allgemein
 - Audio/Video
   - Hinweise (Rahmen und Text) können auch ohne die Angabe von Text angezeigt werden
 - Neue Eingabehilfe: "Reaktionsgleichung Chemie"
-
+- Ablegeliste
+  - Erlaubt jetzt formatierten Text für die Optionen
 ### Änderungen
 - Auslöser
   - "Textabschnitt hervorheben" wird bei als paralleler Anordnung immer nach "Hervorhebungen ausblenden" ausgelöst
-
+- Eingabefeld
+  - "Eingabe auf Maximallänge begrenzen" ist jetzt Standardeinstellung
 ### Fehlerbehebungen
 - Audio/Video
   - Korrektur der Position der Steuerungselemente
+- Optionsfelder und Kontrollkästchen
+  - Ausrichtung der Knöpfe korrigiert. Erscheinen jetzt wieder oben an der Beschriftung
 
 
 ## editor/2.10.1+player/2.10.1

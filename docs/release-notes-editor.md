@@ -1,13 +1,15 @@
 Editor
 ======
 ## next
-
+### Neue Funktionen
+- Neuer Dialog: Elementliste
+  - Hier werden alle Elemente der Unit tabellarisch aufgelistet. Es kann nach Abschnitten und Seiten gefiltert werden. IDs einzelner Elemente können geändert werden und es kann die Einstellung "Relevant für 'Presentation Complete'" für mehrere Elemente gemeinsam angepasst werden.
 ### Änderungen
 - Eingabefeld/Eingabereich
-  - Entfernt Option "Tastatursymbol anzeigen" 
+  - Entfernt Option "Tastatursymbol anzeigen"
 - Audio/Video
-  - Entfernt Option "Autostart" und "Autostart Verzögerung" 
-
+  - Entfernt Option "Autostart" und "Autostart Verzögerung"
+- Elementeliste von Abschnitten zeigt auch Verbundkinder an
 
 ## 2.10.1
 ### Fehlerbehebungen

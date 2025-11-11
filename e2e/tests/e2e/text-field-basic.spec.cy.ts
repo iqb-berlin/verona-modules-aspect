@@ -27,7 +27,7 @@ describe('Text field element', { testIsolation: false }, () => {
     it('creates a text field with a maximum length of 10 characters', () => {
       addElement('Eingabefeld');
       addProperties('Eingabefeld mit einer Maximallänge von 10 Zeichen');
-      addSettings({ maxLength: 10 });
+      addSettings({ maxLength: 10, settings: { isLimitedToMaxLength: true } });
     });
 
     it('creates a text field with clear option', () => {

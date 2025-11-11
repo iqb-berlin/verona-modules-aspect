@@ -108,6 +108,9 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       padding: 0 10px;
       font-family: inherit;
     }
+    .errors {
+      border: 2px solid #f44336 !important;
+    }
   `],
   standalone: false
 })

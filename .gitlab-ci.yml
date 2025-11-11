@@ -21,7 +21,13 @@ test-e2e:
   script:
     - nohup npm run start-editor-local &
     - nohup npm run start-player-local &
-    - sleep 30
+    - |
+      echo "Waiting for editor..."
+      until curl -sSf http://localhost:4201 >/dev/null; do sleep 5; done
+      echo "Editor ready!"
+      echo "Waiting for player..."
+      until curl -sSf http://localhost:4202 >/dev/null; do sleep 5; done
+      echo "Player ready!"
     - npm run e2e-headless
   artifacts:
     when: always

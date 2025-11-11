@@ -3,8 +3,8 @@ import { CheckboxElement } from 'common/models/elements/input-elements/checkbox'
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-    selector: 'aspect-checkbox',
-    template: `
+  selector: 'aspect-checkbox',
+  template: `
     <ng-container *ngIf="!tableMode">
       <div class="mat-form-field"
            [style.width.%]="100"
@@ -33,15 +33,22 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         </mat-error>
       </div>
     </ng-container>
-    <div *ngIf="tableMode" class="svg-checkbox"
-         (click)="this.elementFormControl.setValue(!this.elementFormControl.value)">
-      <svg class="svg-checkbox-cross" [style.opacity]="this.elementFormControl.value ? 1 : 0" viewBox='0 0 100 100'>
-        <path d='M1 0 L0 1 L99 100 L100 99' fill='black' stroke="black" stroke-width="2" />
-        <path d='M0 99 L99 0 L100 1 L1 100' fill='black' stroke="black" stroke-width="1" />
-      </svg>
-    </div>
+    <ng-container *ngIf="tableMode">
+      <div class="svg-checkbox"
+           [class.errors]="elementFormControl.errors && elementFormControl.touched"
+           (click)="elementFormControl.markAsTouched(); elementFormControl.setValue(!elementFormControl.value)">
+        <svg class="svg-checkbox-cross" [style.opacity]="elementFormControl.value ? 1 : 0" viewBox='0 0 100 100'>
+          <path d='M1 0 L0 1 L99 100 L100 99' fill='black' stroke="black" stroke-width="2" />
+          <path d='M0 99 L99 0 L100 1 L1 100' fill='black' stroke="black" stroke-width="1" />
+        </svg>
+      </div>
+      <aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
+                                        [elementModel]="elementModel"
+                                        [elementFormControl]="elementFormControl">
+      </aspect-cloze-child-error-message>
+    </ng-container>
   `,
-    styles: [`
+  styles: [`
     :host ::ng-deep mat-checkbox.image .mdc-form-field.mat-internal-form-field {
       flex-direction: column-reverse;
     }
@@ -71,8 +78,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     .svg-checkbox {width: 100%; height: 100%;}
     .svg-checkbox:hover {background-color: lightgrey;}
     .svg-checkbox-cross {width: 100%; height: 100%;}
+    .errors {
+      border: 2px solid #f44336 !important;
+    }
  `],
-    standalone: false
+  standalone: false
 })
 export class CheckboxComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: CheckboxElement;

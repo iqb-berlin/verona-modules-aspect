@@ -3,8 +3,8 @@ import { DropdownElement } from 'common/models/elements/input-elements/dropdown'
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-    selector: 'aspect-dropdown',
-    template: `
+  selector: 'aspect-dropdown',
+  template: `
     <mat-form-field appearance="fill"
                     [style.background-color]="elementModel.styling.backgroundColor">
       <mat-label [style.color]="elementModel.styling.fontColor"
@@ -33,13 +33,13 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
     </mat-form-field>
   `,
-    styles: [
-        'mat-form-field {width: 100%; height: 100%;}',
-        '.read-only {pointer-events: none;}',
-        ':host ::ng-deep mat-form-field .mat-mdc-text-field-wrapper.mdc-text-field {background-color: inherit !important;}',
-        ':host ::ng-deep mat-form-field .mat-mdc-form-field-subscript-wrapper {background-color: white;}'
-    ],
-    standalone: false
+  styles: [
+    'mat-form-field {width: 100%; height: 100%;}',
+    '.read-only {pointer-events: none;}',
+    ':host ::ng-deep mat-form-field .mat-mdc-text-field-wrapper.mdc-text-field {background-color: inherit !important;}',
+    ':host ::ng-deep mat-form-field .mat-mdc-form-field-subscript-wrapper {background-color: white;}'
+  ],
+  standalone: false
 })
 export class DropdownComponent extends FormElementComponent {
   @Input() elementModel!: DropdownElement;

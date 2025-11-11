@@ -1,16 +1,19 @@
-import { Component, Input } from '@angular/core';
+import {
+  AfterViewInit, Component, ElementRef, Input
+} from '@angular/core';
 import { InputElement } from 'common/models/elements/element';
 import { UntypedFormControl } from '@angular/forms';
 
 @Component({
-    selector: 'aspect-cloze-child-error-message',
-    template: `
+  selector: 'aspect-cloze-child-error-message',
+  template: `
     {{elementFormControl.errors ? (elementFormControl.errors | errorTransform: elementModel) : null}}
   `,
-    host: {
-        '[style.top.px]': 'elementModel.dimensions.height + 5'
-    },
-    styles: [`
+  host: {
+    '[style.top.px]': 'elementModel.dimensions ? elementModel.dimensions.height + 5 : undefined',
+    '[style.bottom.px]': 'elementModel.dimensions ? undefined : -20'
+  },
+  styles: [`
     :host {
       padding: 0 5px;
       position: absolute;
@@ -21,9 +24,18 @@ import { UntypedFormControl } from '@angular/forms';
       z-index: 1;
     }
   `],
-    standalone: false
+  standalone: false
 })
-export class ClozeChildErrorMessage {
+export class ClozeChildErrorMessage implements AfterViewInit {
   @Input() elementModel!: InputElement;
   @Input() elementFormControl!: UntypedFormControl;
+
+  elementHeight: number = 0;
+
+  constructor(public elementRef: ElementRef<HTMLElement>) {}
+
+  ngAfterViewInit() {
+    const rect = this.elementRef.nativeElement.getBoundingClientRect();
+    this.elementHeight = rect.height;
+  }
 }

@@ -20,7 +20,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   minLengthWarnMessage: string = 'Eingabe zu kurz';
   maxLength: number | null = null;
   maxLengthWarnMessage: string = 'Eingabe zu lang';
-  isLimitedToMaxLength: boolean = false;
+  isLimitedToMaxLength: boolean = true;
   pattern: string | null = null;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
   clearable: boolean = false;

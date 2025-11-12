@@ -3,8 +3,8 @@ import { RadioButtonGroupElement } from 'common/models/elements/input-elements/r
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-    selector: 'aspect-radio-button-group',
-    template: `
+  selector: 'aspect-radio-button-group',
+  template: `
     <div class="mat-form-field"
          [style.width.%]="100"
          [style.height.%]="100"
@@ -38,7 +38,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-radio-group>
     </div>
   `,
-    styles: [`
+  styles: [`
     mat-radio-group {
       display: flex;
     }
@@ -56,7 +56,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       align-items: flex-start;
     }
     :host ::ng-deep mat-radio-button .mdc-form-field .mdc-label {
-      padding-top: calc((var(--mdc-radio-state-layer-size) - 20px) / 2);
+      padding-top: calc((var(--mat-radio-state-layer-size) - 20px) / 2);
     }
     :host ::ng-deep .strike .mdc-form-field {
       text-decoration: line-through;
@@ -65,7 +65,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       font-size: 12px; line-height: 100%;
     }
   `],
-    standalone: false
+  standalone: false
 })
 export class RadioButtonGroupComponent extends FormElementComponent {
   @Input() elementModel!: RadioButtonGroupElement;

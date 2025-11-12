@@ -19,6 +19,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   appDefinition: string = '';
   trackAllVariables: boolean = false; // tracks all variables, even if they are not listed in trackedVariables
   trackedVariables: GeometryVariable[] = [];
+  trackedExpectedVariables: GeometryVariable[] = [];
   showResetIcon: boolean = true;
   enableUndoRedo: boolean = true;
   showToolbar: boolean = true;
@@ -42,6 +43,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       this.appDefinition = element.appDefinition;
       this.trackAllVariables = element.trackAllVariables;
       this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
+      this.trackedExpectedVariables = [...element.trackedExpectedVariables];
       this.showResetIcon = element.showResetIcon;
       this.enableUndoRedo = element.enableUndoRedo;
       this.showToolbar = element.showToolbar;
@@ -60,6 +62,9 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       if (element?.trackAllVariables !== undefined) this.trackAllVariables = element.trackAllVariables;
       if (element?.trackedVariables !== undefined) {
         this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
+      }
+      if (element?.trackedExpectedVariables !== undefined) {
+        this.trackedExpectedVariables = [...element.trackedExpectedVariables];
       }
       if (element?.showResetIcon !== undefined) this.showResetIcon = element.showResetIcon;
       if (element?.enableUndoRedo !== undefined) this.enableUndoRedo = element.enableUndoRedo;
@@ -95,7 +100,8 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   }
 
   getVariableIdentifiers(variableIds: string[]): { id: string, alias: string }[] {
-    const trackedVariableIds = this.trackedVariables.map(variable => variable.id);
+    const trackedVariableIds = this.getAllCleanedTrackedVariables()
+      .map(variable => variable.id);
     return [...variableIds, ...trackedVariableIds]
       .map(variableId => {
         const variableName = this.getVariableNameFromAlias(variableId);
@@ -104,6 +110,15 @@ export class GeometryElement extends UIElement implements GeometryProperties {
           alias: this.getGeometryVariableAlias(variableName)
         };
       });
+  }
+
+  getAllCleanedTrackedVariables(): GeometryVariable[] {
+    const variablesById = [...this.trackedExpectedVariables, ...this.trackedVariables]
+      .reduce<Map<string, GeometryVariable>>((acc, v) => {
+      acc.set(v.id, v);
+      return acc;
+    }, new Map());
+    return Array.from(variablesById.values());
   }
 
   private getVariableNameFromAlias(variableId: string): string {
@@ -126,7 +141,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   }
 
   getVariableInfos(): VariableInfo[] {
-    const answerSchemes = this.trackedVariables.map(variable => this
+    const answerSchemes = this.getAllCleanedTrackedVariables().map(variable => this
       .getVariableInfoOfGeometryVariable(variable.id));
     answerSchemes.push({
       id: this.id,
@@ -152,6 +167,7 @@ export interface GeometryProperties extends UIElementProperties {
   appDefinition: string;
   trackAllVariables: boolean;
   trackedVariables: GeometryVariable[];
+  trackedExpectedVariables: GeometryVariable[];
   showResetIcon: boolean;
   enableUndoRedo: boolean;
   showToolbar: boolean;
@@ -172,6 +188,7 @@ function isGeometryProperties(blueprint?: Partial<GeometryProperties>): blueprin
   return blueprint.appDefinition !== undefined &&
     blueprint.trackAllVariables !== undefined &&
     blueprint.trackedVariables !== undefined &&
+    blueprint.trackedExpectedVariables !== undefined &&
     blueprint.showResetIcon !== undefined &&
     blueprint.enableUndoRedo !== undefined &&
     blueprint.showToolbar !== undefined &&

@@ -271,11 +271,15 @@
     "showResultRowWithHelperRow": "Ergebniszeile mit Hilfszeile",
     "showTopHelperRows": "obere Helferzeilen",
     "allowFirstLineCrossOut": "Durchstreichen in erster Zeile",
-    "trackedVariables": "Beobachtete Ergebnisvariablen",
+    "trackedVariables": "Bekannte Variablen",
+    "trackedExpectedVariables": "Erwartete Variablen",
+    "addTrackedExpectedVariable": "Neue Variable...",
     "trackAllVariables": "Alle Ergebnisvariablen speichern",
     "isSortList": "Sortierliste",
     "permanentPlaceholders": "Platzhalter anzeigen",
-    "permanentPlaceholdersCC": "Platzhalter mit Durchschrift"
+    "permanentPlaceholdersCC": "Platzhalter mit Durchschrift",
+    "trackedGeogebraVariables": "Ergebnisvariablen",
+    "geogebraHeader": "Kopfzeile"
   },
   "formulaPreset": {
     "title": "Formeleingabelayouts auswählen",

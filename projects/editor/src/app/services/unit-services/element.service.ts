@@ -149,7 +149,7 @@ export class ElementService {
         this.handleClozeDocumentChange(element as ClozeElement, value as ClozeDocument);
       } else {
         element.setProperty(property, value);
-        if (element.type === 'geometry' && property !== 'trackedVariables') {
+        if (element.type === 'geometry' && property !== 'trackedVariables' && property !== 'trackedExpectedVariables') {
           this.unitService.geometryElementPropertyUpdated.next(element.id);
         }
         if (element.type === 'math-table') this.unitService.mathTableElementPropertyUpdated.next(element.id);

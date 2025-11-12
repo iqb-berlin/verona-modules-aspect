@@ -3,6 +3,7 @@ Allgemein
 ## next
 ### Neue Funktionen
 - Geometrie
+  - Ermöglicht die Angabe von erwarteten und durch Nutzer:innen erstellte Variablen. Diese sind dann in den Antwortdaten und zur Auswertung verfügbar.
   - Macht optional alle Variablen eines Geogebra-Elements in den Antwortendaten verfügbar
 - Formelfeld/Formelbereich
   - Die Reiter der Tastatur sind als Formeleingabelayouts frei wählbar

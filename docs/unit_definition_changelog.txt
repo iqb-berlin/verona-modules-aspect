@@ -226,6 +226,7 @@ iqb-aspect-definition@1.0.0
   - new property: mathKeyboardPresets
 - GeometryElement
   - trackedVariables: change type from string[] to GeometryVariable[]
+  - new Property: trackedExpectedVariables
   - new property: trackAllVariables
 - VideoElement, AudioElement
   - new property: showHint

@@ -14,6 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import {
+  MatChipsModule, MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow
+} from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
   BehaviorSubject, firstValueFrom, of, Subject, switchMap
 } from 'rxjs';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
@@ -31,15 +35,20 @@ import { GeometryVariable } from 'common/interfaces';
     MatInputModule,
     MatIconModule,
     MatCheckboxModule,
+    MatChipsModule,
     MatTooltipModule,
     TranslateModule,
     MatButtonModule,
     MatSelectModule,
     FormsModule,
-    AsyncPipe
+    AsyncPipe,
+    MatChipGrid,
+    MatChipRow,
+    MatChipInput
   ],
   template: `
-    <mat-form-field matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
+    <mat-form-field class="wide-form-field"
+                    matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
                     appearance="fill">
       <mat-label>{{ 'propertiesPanel.appDefinition' | translate }}</mat-label>
       <input matInput disabled
@@ -54,54 +63,81 @@ import { GeometryVariable } from 'common/interfaces';
                   (change)="updateModel.emit({ property: 'showResetIcon', value: $event.checked })">
       {{ 'propertiesPanel.showResetIcon' | translate }}
     </mat-checkbox>
-    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.enableUndoRedo)"
-                  (change)="updateModel.emit({ property: 'enableUndoRedo', value: $event.checked })">
-      {{ 'propertiesPanel.enableUndoRedo' | translate }}
-    </mat-checkbox>
-    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.enableShiftDragZoom)"
-                  (change)="updateModel.emit({ property: 'enableShiftDragZoom', value: $event.checked })">
-      {{ 'propertiesPanel.enableShiftDragZoom' | translate }}
-    </mat-checkbox>
-    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showZoomButtons)"
-                  (change)="updateModel.emit({ property: 'showZoomButtons', value: $event.checked })">
-      {{ 'propertiesPanel.showZoomButtons' | translate }}
-    </mat-checkbox>
-    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showFullscreenButton)"
-                  (change)="updateModel.emit({ property: 'showFullscreenButton', value: $event.checked })">
-      {{ 'propertiesPanel.showFullscreenButton' | translate }}
-    </mat-checkbox>
-    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showToolbar)"
-                  (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
-      {{ 'propertiesPanel.showToolbar' | translate }}
-    </mat-checkbox>
-    <mat-form-field *ngIf="unitService.expertMode"
-                    [style.width.px]="260"
-                    matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
-                    appearance="fill">
-      <mat-label>{{ 'propertiesPanel.customToolbar' | translate }}</mat-label>
-      <input matInput [disabled]="!combinedProperties.showToolbar"
-             [value]="$any(combinedProperties.customToolbar)"
-             (input)="updateModel.emit({ property: 'customToolbar', value: $any($event.target).value })">
-    </mat-form-field>
+    <fieldset>
+      <legend>{{ 'propertiesPanel.geogebraHeader' | translate }}</legend>
+      <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.enableUndoRedo)"
+                    (change)="updateModel.emit({ property: 'enableUndoRedo', value: $event.checked })">
+        {{ 'propertiesPanel.enableUndoRedo' | translate }}
+      </mat-checkbox>
+      <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.enableShiftDragZoom)"
+                    (change)="updateModel.emit({ property: 'enableShiftDragZoom', value: $event.checked })">
+        {{ 'propertiesPanel.enableShiftDragZoom' | translate }}
+      </mat-checkbox>
+      <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showZoomButtons)"
+                    (change)="updateModel.emit({ property: 'showZoomButtons', value: $event.checked })">
+        {{ 'propertiesPanel.showZoomButtons' | translate }}
+      </mat-checkbox>
+      <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showFullscreenButton)"
+                    (change)="updateModel.emit({ property: 'showFullscreenButton', value: $event.checked })">
+        {{ 'propertiesPanel.showFullscreenButton' | translate }}
+      </mat-checkbox>
+      <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showToolbar)"
+                    (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
+        {{ 'propertiesPanel.showToolbar' | translate }}
+      </mat-checkbox>
+      <mat-form-field *ngIf="unitService.expertMode"
+                      class="wide-form-field"
+                      matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
+                      appearance="fill">
+        <mat-label>{{ 'propertiesPanel.customToolbar' | translate }}</mat-label>
+        <input matInput [disabled]="!combinedProperties.showToolbar"
+               [value]="$any(combinedProperties.customToolbar)"
+               (input)="updateModel.emit({ property: 'customToolbar', value: $any($event.target).value })">
+      </mat-form-field>
+    </fieldset>
+    <fieldset>
+      <legend>{{ 'propertiesPanel.trackedGeogebraVariables' | translate }}</legend>
 
-    <mat-checkbox [checked]="$any(combinedProperties.trackAllVariables)"
-                  (change)="updateModel.emit({ property: 'trackAllVariables', value: $event.checked })">
-      {{ 'propertiesPanel.trackAllVariables' | translate }}
-    </mat-checkbox>
+      <mat-checkbox [checked]="$any(combinedProperties.trackAllVariables)"
+                    (change)="updateModel.emit({ property: 'trackAllVariables', value: $event.checked })">
+        {{ 'propertiesPanel.trackAllVariables' | translate }}
+      </mat-checkbox>
 
-    <mat-form-field class="wide-form-field" appearance="fill">
-      <mat-label>{{ 'propertiesPanel.trackedVariables' | translate }}</mat-label>
-      <mat-select multiple [ngModel]="combinedProperties.trackedVariables"
-                  (ngModelChange)="setGeometryVariables($event)"
-                  [compareWith]="compareGeometryVariables">
-        <mat-select-trigger>
-          {{ 'propertiesPanel.trackedVariables' | translate }} ({{ $any(combinedProperties.trackedVariables).length }})
-        </mat-select-trigger>
-        <mat-option *ngFor="let variable of geometryObjects | async" [value]="variable">
-          {{ variable.id }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field class="wide-form-field" appearance="fill">
+        <mat-label>{{ 'propertiesPanel.trackedVariables' | translate }}</mat-label>
+        <mat-select multiple [ngModel]="combinedProperties.trackedVariables"
+                    (ngModelChange)="setGeometryVariables($event)"
+                    [compareWith]="compareGeometryVariables">
+          <mat-select-trigger>
+            {{ 'propertiesPanel.trackedVariables' | translate }} ({{ $any(combinedProperties.trackedVariables).length }})
+          </mat-select-trigger>
+          <mat-option *ngFor="let variable of geometryObjects | async" [value]="variable">
+            {{ variable.id }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="wide-form-field" appearance="fill">
+        <mat-label>{{ 'propertiesPanel.trackedExpectedVariables' | translate }}</mat-label>
+        <mat-chip-grid #trackedExpectedVariables
+                       [ngModel]="combinedProperties.trackedExpectedVariables">
+          <mat-chip-row *ngFor="let variable of  $any(combinedProperties.trackedExpectedVariables)"
+                        (removed)="removeTrackedExpectedVariable(variable)">
+            {{ variable.id }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+
+        <input
+          [placeholder]="'propertiesPanel.addTrackedExpectedVariable' | translate"
+          [matChipInputSeparatorKeyCodes]="[ENTER, COMMA]"
+          [matChipInputFor]="trackedExpectedVariables"
+          (matChipInputTokenEnd)="addTrackedExpectedVariable($event)"
+        />
+      </mat-form-field>
+    </fieldset>
   `
 })
 export class GeometryPropsComponent implements OnInit, OnDestroy {
@@ -118,6 +154,28 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initGeometryListener();
+  }
+
+  addTrackedExpectedVariable(event: MatChipInputEvent): void {
+    const id = (event.value || '').trim();
+    if (!id) return;
+    const variables = [...(this.combinedProperties.trackedExpectedVariables as GeometryVariable[])];
+    if (variables.some(v => v.id === id)) return;
+
+    variables.push({ id: id, value: '' } as GeometryVariable);
+    this.updateModel.emit({
+      property: 'trackedExpectedVariables',
+      value: variables
+    });
+    event.chipInput?.clear();
+  }
+
+  removeTrackedExpectedVariable(variable: GeometryVariable): void {
+    this.updateModel.emit({
+      property: 'trackedExpectedVariables',
+      value: [...(this.combinedProperties.trackedExpectedVariables as GeometryVariable[])]
+        .filter(v => v.id !== variable.id)
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -163,4 +221,7 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
+
+  protected readonly ENTER = ENTER;
+  protected readonly COMMA = COMMA;
 }

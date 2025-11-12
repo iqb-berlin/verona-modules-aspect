@@ -62,7 +62,7 @@ export class ExternalAppGroupElementComponent
           }
         });
     } else {
-      (this.elementModel as GeometryElement).trackedVariables
+      (this.elementModel as GeometryElement).getAllCleanedTrackedVariables()
         .forEach(variable => this.registerGeometryVariable(variable));
     }
   }

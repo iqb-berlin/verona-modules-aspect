@@ -7,10 +7,15 @@ Player
     - Text wird zur aktuellen Cursorposition gescrollt
     - Behebt Fehler bei der automatischen Höhenanpassung 
 - Korrigiert die automatische Seitennummerierung beim Ändern der Seitendarstellung einer Aufgabe zur Laufzeit
+- Tabelle
+  - Implementiert die Darstellung von Validierungen für Kindelemente
 
 ### Änderungen
 - Audio/Video
   - Speichert die bereits verstrichene Zeit von Hinweisen
+- Eingabefeld
+  - Ermöglicht das Einfügen von Text aus der Zwischenablage, wenn die zulässige Maximallänge eingestellt ist    
+
 
 ## 2.10.1
 ### Fehlerbehebungen

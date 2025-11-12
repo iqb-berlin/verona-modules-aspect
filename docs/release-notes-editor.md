@@ -9,7 +9,7 @@ Editor
   - Entfernt Option "Tastatursymbol anzeigen"
 - Audio/Video
   - Entfernt Option "Autostart" und "Autostart Verzögerung"
-- Elementeliste von Abschnitten zeigt auch Verbundkinder an
+- Elementliste von Abschnitten zeigt auch Verbundkinder an
 
 ## 2.10.1
 ### Fehlerbehebungen

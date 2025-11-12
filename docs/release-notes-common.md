@@ -14,11 +14,14 @@ Allgemein
 - Neue Eingabehilfe: "Reaktionsgleichung Chemie"
 - Ablegeliste
   - Erlaubt jetzt formatierten Text für die Optionen
+  
+
 ### Änderungen
 - Auslöser
   - "Textabschnitt hervorheben" wird bei als paralleler Anordnung immer nach "Hervorhebungen ausblenden" ausgelöst
 - Eingabefeld
   - "Eingabe auf Maximallänge begrenzen" ist jetzt Standardeinstellung
+
 ### Fehlerbehebungen
 - Audio/Video
   - Korrektur der Position der Steuerungselemente

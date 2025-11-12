@@ -17,7 +17,6 @@ import { InstantiationEror } from 'common/errors';
 export class GeometryElement extends UIElement implements GeometryProperties {
   type: UIElementType = 'geometry';
   appDefinition: string = '';
-  trackAllVariables: boolean = false; // tracks all variables, even if they are not listed in trackedVariables
   trackedVariables: GeometryVariable[] = [];
   trackedExpectedVariables: GeometryVariable[] = [];
   showResetIcon: boolean = true;
@@ -41,7 +40,6 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     super({ type: 'geometry', ...element }, idService);
     if (isGeometryProperties(element)) {
       this.appDefinition = element.appDefinition;
-      this.trackAllVariables = element.trackAllVariables;
       this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
       this.trackedExpectedVariables = [...element.trackedExpectedVariables];
       this.showResetIcon = element.showResetIcon;
@@ -59,7 +57,6 @@ export class GeometryElement extends UIElement implements GeometryProperties {
         throw new InstantiationEror('Error at Geometry instantiation', element);
       }
       if (element?.appDefinition !== undefined) this.appDefinition = element.appDefinition;
-      if (element?.trackAllVariables !== undefined) this.trackAllVariables = element.trackAllVariables;
       if (element?.trackedVariables !== undefined) {
         this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
       }
@@ -165,7 +162,6 @@ export class GeometryElement extends UIElement implements GeometryProperties {
 
 export interface GeometryProperties extends UIElementProperties {
   appDefinition: string;
-  trackAllVariables: boolean;
   trackedVariables: GeometryVariable[];
   trackedExpectedVariables: GeometryVariable[];
   showResetIcon: boolean;
@@ -186,7 +182,6 @@ export interface GeometryProperties extends UIElementProperties {
 function isGeometryProperties(blueprint?: Partial<GeometryProperties>): blueprint is GeometryProperties {
   if (!blueprint) return false;
   return blueprint.appDefinition !== undefined &&
-    blueprint.trackAllVariables !== undefined &&
     blueprint.trackedVariables !== undefined &&
     blueprint.trackedExpectedVariables !== undefined &&
     blueprint.showResetIcon !== undefined &&

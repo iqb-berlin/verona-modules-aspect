@@ -158,9 +158,6 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   private getVariablesToEmit(): GeometryVariable[] {
-    if (this.elementModel.trackAllVariables) {
-      return this.getGeometryObjects();
-    }
     return this.elementModel.getAllCleanedTrackedVariables()
       .map(variable => ({ id: variable.id, value: this.getVariableValue(variable.id) }));
   }

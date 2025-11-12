@@ -52,19 +52,8 @@ export class ExternalAppGroupElementComponent
   }
 
   private registerGeometryVariables(): void {
-    if ((this.elementModel as GeometryElement).trackAllVariables) {
-      this.elementComponent.isLoaded
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(loaded => {
-          if (loaded) {
-            this.elementComponent.getGeometryObjects()
-              .forEach(variable => this.registerGeometryVariable(variable));
-          }
-        });
-    } else {
-      (this.elementModel as GeometryElement).getAllCleanedTrackedVariables()
-        .forEach(variable => this.registerGeometryVariable(variable));
-    }
+    (this.elementModel as GeometryElement).getAllCleanedTrackedVariables()
+      .forEach(variable => this.registerGeometryVariable(variable));
   }
 
   private registerGeometryVariable(variable: GeometryVariable): void {

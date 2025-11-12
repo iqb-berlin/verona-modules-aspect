@@ -227,7 +227,6 @@ iqb-aspect-definition@1.0.0
 - GeometryElement
   - trackedVariables: change type from string[] to GeometryVariable[]
   - new Property: trackedExpectedVariables
-  - new property: trackAllVariables
 - VideoElement, AudioElement
   - new property: showHint
   - rename property: hintLabelDelay -> hintDelay

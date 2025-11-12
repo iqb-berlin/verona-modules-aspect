@@ -98,11 +98,6 @@ import { GeometryVariable } from 'common/interfaces';
     <fieldset>
       <legend>{{ 'propertiesPanel.trackedGeogebraVariables' | translate }}</legend>
 
-      <mat-checkbox [checked]="$any(combinedProperties.trackAllVariables)"
-                    (change)="updateModel.emit({ property: 'trackAllVariables', value: $event.checked })">
-        {{ 'propertiesPanel.trackAllVariables' | translate }}
-      </mat-checkbox>
-
       <mat-form-field class="wide-form-field" appearance="fill">
         <mat-label>{{ 'propertiesPanel.trackedVariables' | translate }}</mat-label>
         <mat-select multiple [ngModel]="combinedProperties.trackedVariables"

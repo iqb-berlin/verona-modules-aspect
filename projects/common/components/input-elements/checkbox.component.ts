@@ -60,7 +60,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       align-items: flex-start;
     }
     :host ::ng-deep mat-checkbox .mdc-form-field .mdc-label {
-      padding-top: calc((var(--mdc-checkbox-state-layer-size) - 18px) / 2);
+      padding-top: calc((var(--mat-checkbox-state-layer-size) - 18px) / 2);
     }
     .error-message {
       position: absolute;

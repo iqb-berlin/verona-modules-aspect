@@ -3,9 +3,10 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-    selector: 'aspect-radio-group-images',
-    template: `
+  selector: 'aspect-radio-group-images',
+  template: `
       <label [id]="elementModel.id+'-radio-group-label'"
+             [style.font-size.px]="elementModel.styling.fontSize"
              [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
       <mat-radio-group [attr.aria-labelledby]="elementModel.id+'-radio-group-label'"
@@ -32,7 +33,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>
   `,
-    styles: [`
+  styles: [`
     .radio-button-label {
       cursor: pointer;
       justify-content: center;
@@ -57,7 +58,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       font-size: 75%;
     }
   `],
-    standalone: false
+  standalone: false
 })
 export class RadioGroupImagesComponent extends FormElementComponent {
   @Input() elementModel!: RadioButtonGroupComplexElement;

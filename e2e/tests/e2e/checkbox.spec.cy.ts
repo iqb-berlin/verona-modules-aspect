@@ -1,4 +1,4 @@
-import { addElement, addProperties, setCheckbox } from '../util';
+import { addElement, setPreferencesElement, setCheckbox } from '../util';
 
 describe('Checkbox element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -8,29 +8,29 @@ describe('Checkbox element', { testIsolation: false }, () => {
 
     it('creates a common checkbox', () => {
       addElement('Kontrollkästchen');
-      addProperties('Kontrollkästchen', {});
+      setPreferencesElement('Kontrollkästchen', {});
     });
 
     it('creates a readonly checkbox', () => {
       addElement('Kontrollkästchen');
-      addProperties('Kontrollkästchen mit Schreibschutz', { readOnly: true });
+      setPreferencesElement('Kontrollkästchen mit Schreibschutz', { readOnly: true });
     });
 
     it('creates a default value true checkbox', () => {
       addElement('Kontrollkästchen');
-      addProperties('vorbelegte Kontrollkästchen', {});
+      setPreferencesElement('vorbelegte Kontrollkästchen', {});
       cy.contains('mat-button-toggle', 'wahr').click();
     });
 
     it('creates a checkbox that is strikethrough if selected', () => {
       addElement('Kontrollkästchen');
-      addProperties('Kontrollkästchen mit Auswahl durchstreichen', {});
+      setPreferencesElement('Kontrollkästchen mit Auswahl durchstreichen', {});
       setCheckbox('Auswahl durchstreichen');
     });
 
     it('creates a required to check checkbox with a custom warning description', () => {
       addElement('Kontrollkästchen');
-      addProperties('Kontrollkästchen mit Pflichtfeld', { required: true });
+      setPreferencesElement('Kontrollkästchen mit Pflichtfeld', { required: true });
       cy.contains('mat-form-field', 'Warnmeldung')
         .find('input')
         .clear()

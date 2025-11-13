@@ -102,7 +102,7 @@ export function assertValueChanged(id: string, value: any): void {
   //       })
   //     }));
 
-export function addProperties(label: string, settings?: Record<string, boolean>): void {
+export function setPreferencesElement(label: string, settings?: Record<string, boolean>): void {
   cy.contains('mat-form-field', 'Beschriftung')
     .find('textarea')
     .clear()

@@ -1,6 +1,6 @@
 import { selectFromDropdown, setCheckbox } from '../util';
 
-export function addSettings({
+export function setPreferences({
   minLength, maxLength, defaultText, settings, appearance
 }: {
   minLength?: number,
@@ -35,7 +35,7 @@ export function addSettings({
   if (settings?.clearable) setCheckbox('Knopf zum Leeren anzeigen');
 }
 
-export function addRegexPattern(pattern:string, patternWarnMessage?: string) {
+export function setRegexPattern(pattern:string, patternWarnMessage?: string) {
   cy.get('mat-drawer')
     .contains('mat-form-field', 'Muster')
     .find('input')
@@ -48,8 +48,8 @@ export function addRegexPattern(pattern:string, patternWarnMessage?: string) {
   }
 }
 
-export function inputAssistance(keyboard:string = '', position: string = 'schwebend',
-                                ownCharacters?:string, options?: Record<string, boolean>):void {
+export function setInputAssistance(keyboard:string = '', position: string = 'schwebend',
+                                   ownCharacters?:string, options?: Record<string, boolean>):void {
   selectFromDropdown('Eingabehilfe auswählen', keyboard);
   selectFromDropdown('Eingabehilfeposition', position);
   if (keyboard === 'Eigene Zeichen' && ownCharacters != null) {
@@ -62,7 +62,7 @@ export function inputAssistance(keyboard:string = '', position: string = 'schweb
   if (options?.help) setCheckbox('Tastatur mit Eingabehilfe erweitern');
 }
 
-export function textFieldValidation(fieldName: string, input: string, error?: string) {
+export function validateTextField(fieldName: string, input: string, error?: string) {
   cy.contains('mat-form-field', fieldName)
     .find('input')
     .clear()

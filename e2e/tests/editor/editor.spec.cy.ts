@@ -10,7 +10,7 @@ describe('Basic Unit', () => {
   });
 
   /* Check for any false-positives */
-  it('pass some basic checks', () => {
+  it('passes some basic checks', () => {
     cy.contains('Knopf-not-existing').should('not.exist');
     cy.contains('Seite 1').should('exist');
   });

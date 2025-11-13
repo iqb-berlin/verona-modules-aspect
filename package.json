@@ -134,6 +134,7 @@
     "ngx-tiptap": "^11.1.0",
     "ngx-translate-testing": "^7.0.0",
     "prosemirror-state": "^1.4.3",
+    "prosemirror-view": "^1.41.3",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "~0.15.1"

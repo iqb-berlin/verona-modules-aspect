@@ -37,6 +37,8 @@ import { InlineImage } from 'editor/src/app/text-editor/extensions/inline-image'
 import { Tooltip } from 'editor/src/app/text-editor/extensions/tooltip';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ComboButtonComponent } from 'editor/src/app/components/util/combo-button.component';
+import { CharacterCount } from '@tiptap/extension-character-count';
+import { EditorView } from 'prosemirror-view';
 import { AnchorId } from './extensions/anchorId';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
@@ -50,25 +52,24 @@ import DropListComponentExtension from './angular-node-views/drop-list-component
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
 import CheckboxComponentExtension from './angular-node-views/checkbox-component-extension';
 import MathFormulaExtension from './angular-node-views/math-formula-extension';
-import { CharacterCount } from '@tiptap/extension-character-count';
 
 @Component({
-    selector: 'aspect-rich-text-editor',
-    imports: [
-        NgIf,
-        MatButtonModule,
-        MatTooltipModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        ComboButtonComponent,
-        FormsModule,
-        MatInputModule,
-        MatMenuModule,
-        NgxTiptapModule
-    ],
-    templateUrl: './rich-text-editor.component.html',
-    styleUrls: ['./rich-text-editor.component.scss']
+  selector: 'aspect-rich-text-editor',
+  imports: [
+    NgIf,
+    MatButtonModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ComboButtonComponent,
+    FormsModule,
+    MatInputModule,
+    MatMenuModule,
+    NgxTiptapModule
+  ],
+  templateUrl: './rich-text-editor.component.html',
+  styleUrls: ['./rich-text-editor.component.scss']
 })
 export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() content!: string | Record<string, any>;
@@ -126,7 +127,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   ];
 
   editor: Editor = new Editor({
-    extensions: this.defaultExtensions
+    extensions: this.defaultExtensions,
+    editorProps: {
+      handlePaste: RichTextEditorComponent.handlePastePlainText
+    }
   });
 
   constructor(private injector: Injector, private dialogService: DialogService) { }
@@ -146,8 +150,22 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
         ...activeExtensions,
         Placeholder.configure({
           placeholder: this.placeholder
-        })]
+        })],
+      editorProps: {
+        handlePaste: RichTextEditorComponent.handlePastePlainText
+      }
     });
+  }
+
+  private static handlePastePlainText(view: EditorView, event: ClipboardEvent): boolean {
+    const text = event.clipboardData?.getData('text/plain') ?? '';
+    if (!text) return false;
+    event.preventDefault();
+    // Insert sanitized plain text
+    const { state, dispatch } = view;
+    const { from, to } = state.selection;
+    dispatch(state.tr.insertText(text, from, to));
+    return true;
   }
 
   ngAfterViewInit(): void {

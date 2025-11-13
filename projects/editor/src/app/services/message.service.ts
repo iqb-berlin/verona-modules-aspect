@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import {
-  Component, Inject, Injectable, Input, Optional
+  Component, inject, Inject, Injectable, Input, Optional
 } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
 import { ReferenceList } from 'editor/src/app/services/reference-manager';
@@ -11,13 +11,17 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { MatSelectModule } from "@angular/material/select";
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+  MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef
+} from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
-  constructor(private _snackBar: MatSnackBar) {}
+  constructor(private _snackBar: MatSnackBar, private dialog: MatDialog) {}
 
   showMessage(text: string, duration: number = 3000): void {
     this._snackBar.open(text, undefined, { duration: duration });
@@ -36,7 +40,7 @@ export class MessageService {
   }
 
   showErrorPrompt(error: Error): void {
-    this._snackBar.openFromComponent(UnexpectedErrorSnackbarComponent, {
+    this.dialog.open(UnexpectedErrorComponent, {
       data: error
     });
   }
@@ -150,20 +154,21 @@ export class FixedReferencesSnackbarComponent {
 }
 
 @Component({
-  selector: 'aspect-unexpected-error-snackbar',
   imports: [
-    MatSnackBarModule,
     MatButtonModule,
     MatIconModule,
-    MatSelectModule
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDialogActions,
+    MatDialogContent
   ],
   template: `
-    <h2 [style.color]="'red'">Unerwarteter Fehler</h2>
-    <p><b>Es ist ein Fehler aufgetreten. Es kann zu schwerwiegenden Problemen kommen.</b></p>
-    <p>Das Problem kann halbautomatisiert gemeldet werden. Dazu bitte auch die Unit verlinken
-    oder exportieren und an den Bericht anhängen.
-    </p>
-    <div matSnackBarActions [style.flex-direction]="'column'">
+    <h2 mat-dialog-title [style.color]="'red'">Unerwarteter Fehler</h2>
+    <mat-dialog-content>
+      <p><b>Es ist ein Fehler aufgetreten. Es kann zu schwerwiegenden Problemen kommen.</b><br>
+      Das Problem kann halbautomatisiert gemeldet werden. Dazu bitte auch die Unit verlinken
+      oder exportieren und an den Bericht anhängen.
+      </p>
       <mat-form-field [style.width.px]="300">
         <mat-label>Fehler melden</mat-label>
         <mat-select>
@@ -181,36 +186,28 @@ export class FixedReferencesSnackbarComponent {
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-button (click)="snackBarRef.dismiss()">
-          Verwerfen
-      </button>
-    </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button matButton (click)="dialogRef.close()">Verwerfen</button>
+    </mat-dialog-actions>
   `,
   styles: [`
-    :host {
+    mat-dialog-content {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .mat-mdc-snack-bar-actions {
-      margin-top: 20px;
-    }
-    .mat-mdc-snack-bar-actions button {
-      color: var(--mat-snack-bar-button-color) !important;
-      /* --mat-mdc-button-persistent-ripple-color: currentColor !important; */
-      /* background-color: white; */
-      margin: 0 5px;
-    }
     `
   ]
 })
-export class UnexpectedErrorSnackbarComponent {
+export class UnexpectedErrorComponent {
+  readonly dialogRef = inject(MatDialogRef<UnexpectedErrorComponent>);
+  readonly data = inject<Error>(MAT_DIALOG_DATA);
+
   reportTitle: string;
   reportBody: string;
 
-  constructor(public snackBarRef: MatSnackBarRef<UnexpectedErrorSnackbarComponent>,
-              @Optional()@Inject(MAT_SNACK_BAR_DATA) public data: Error,
-              private clipboard: Clipboard) {
+  constructor(private clipboard: Clipboard) {
     this.reportTitle = `Generierte Fehlermeldung: ${this.data.message}`;
     this.reportBody = encodeURIComponent(`${this.reportTemplate}
       ${this.data.stack}`);

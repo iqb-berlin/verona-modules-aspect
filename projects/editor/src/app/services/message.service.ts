@@ -11,6 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { MatSelectModule } from "@angular/material/select";
 
 @Injectable({
   providedIn: 'root'
@@ -149,31 +150,43 @@ export class FixedReferencesSnackbarComponent {
 }
 
 @Component({
-    selector: 'aspect-unexpected-error-snackbar',
-    imports: [
-        NgIf,
-        MatSnackBarModule,
-        MatButtonModule
-    ],
-    template: `
-    <h2>Unerwarteter Fehler</h2>
-    <button *ngIf="!areDetailsShown" (click)="showDetails()">
-      Details ansehen
-    </button>
-    <ng-container *ngIf="areDetailsShown">
-      <button (click)="copyDetailsToClipboard()">
-        Details in die Zwischenablage kopieren
+  selector: 'aspect-unexpected-error-snackbar',
+  imports: [
+    MatSnackBarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSelectModule
+  ],
+  template: `
+    <h2 [style.color]="'red'">Unerwarteter Fehler</h2>
+    <p><b>Es ist ein Fehler aufgetreten. Es kann zu schwerwiegenden Problemen kommen.</b></p>
+    <p>Das Problem kann halbautomatisiert gemeldet werden. Dazu bitte auch die Unit verlinken
+    oder exportieren und an den Bericht anhängen.
+    </p>
+    <div matSnackBarActions [style.flex-direction]="'column'">
+      <mat-form-field [style.width.px]="300">
+        <mat-label>Fehler melden</mat-label>
+        <mat-select>
+          <mat-option (click)="reportErrorViaGitHub()">
+            <mat-icon>open_in_new</mat-icon>
+            Fehlerbericht auf GitHub erstellen
+          </mat-option>
+          <mat-option (click)="reportErrorViaEmail()">
+            <mat-icon>outgoing_mail</mat-icon>
+            Fehlerbericht als Email versenden
+          </mat-option>
+          <mat-option (click)="copyDetailsToClipboard()">
+            <mat-icon>content_copy</mat-icon>
+            Fehlerbericht in Zwischenablage kopieren
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button (click)="snackBarRef.dismiss()">
+          Verwerfen
       </button>
-      <h3>{{ data.message }}</h3>
-      <div [style]="'max-height: 300px; overflow: scroll'">{{ data.stack }}</div>
-    </ng-container>
-    <span matSnackBarActions>
-      <button mat-stroked-button matSnackBarAction (click)="snackBarRef.dismiss()">
-        Schließen
-      </button>
-    </span>
+    </div>
   `,
-    styles: [`
+  styles: [`
     :host {
       display: flex;
       flex-direction: column;
@@ -184,23 +197,51 @@ export class FixedReferencesSnackbarComponent {
     }
     .mat-mdc-snack-bar-actions button {
       color: var(--mat-snack-bar-button-color) !important;
-      --mat-mdc-button-persistent-ripple-color: currentColor !important;
-      background-color: white;
+      /* --mat-mdc-button-persistent-ripple-color: currentColor !important; */
+      /* background-color: white; */
+      margin: 0 5px;
     }
     `
-    ]
+  ]
 })
 export class UnexpectedErrorSnackbarComponent {
-  areDetailsShown = false;
+  reportTitle: string;
+  reportBody: string;
+
   constructor(public snackBarRef: MatSnackBarRef<UnexpectedErrorSnackbarComponent>,
               @Optional()@Inject(MAT_SNACK_BAR_DATA) public data: Error,
-              private clipboard: Clipboard) { }
+              private clipboard: Clipboard) {
+    this.reportTitle = `Generierte Fehlermeldung: ${this.data.message}`;
+    this.reportBody = encodeURIComponent(`${this.reportTemplate}
+      ${this.data.stack}`);
+  }
 
-  showDetails(): void {
-    this.areDetailsShown = true;
+  reportErrorViaGitHub(): void {
+    const baseURL = 'https://github.com/iqb-berlin/verona-modules-aspect/issues/new?template=fehlermeldung.md';
+    window.open(`${baseURL}&title=${this.reportTitle}&body=${this.reportBody}`, '_blank');
+  }
+
+  reportErrorViaEmail() {
+    window.location.href = `mailto:?subject=${this.reportTitle}&body=${this.reportBody}`;
   }
 
   copyDetailsToClipboard(): void {
     this.clipboard.copy(JSON.stringify(this.data.message + this.data.stack));
   }
+
+  reportTemplate = `**Fehlerbeschreibung**
+  Klare und kurze Beschreibung des Problems
+
+  **Nachstellen**
+  Schritte zum Nachstellen des Verhaltens:
+  1. Lege Element '...' an
+  2. Stelle Eigenschaft '....' auf Wert '...' ein
+  3. Öffne Vorschau
+  4. Fehlermeldung erscheint
+
+  **Screenshots, Links**
+  - Bei Links auf Aufgaben im Studio bitte darauf achten, dass diese für uns sichtbar sind.
+  - Außerdem wäre es gut, wenn die Aufgaben sich auf das Darstellen des Problems beschränken und nicht voll mit anderen Dingen sind und wir erst die Stelle suchen müssen, die Probleme macht.
+
+  Fehlermeldung:`;
 }

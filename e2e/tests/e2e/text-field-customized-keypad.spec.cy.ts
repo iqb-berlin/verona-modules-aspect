@@ -1,5 +1,5 @@
-import { addElement, addProperties } from '../util';
-import { inputAssistance } from './text-field-util';
+import { addElement, setPreferencesElement } from '../util';
+import { setInputAssistance } from './text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -9,14 +9,14 @@ describe('Text field element', { testIsolation: false }, () => {
 
     it('creates a text field with customized keypad', () => {
       addElement('Eingabefeld');
-      addProperties('Eingabefeld mit eigene Zeichen', { required: true });
-      inputAssistance('Eigene Zeichen', 'rechts','12345');
+      setPreferencesElement('Eingabefeld mit eigene Zeichen', { required: true });
+      setInputAssistance('Eigene Zeichen', 'rechts','12345');
     });
 
     it('creates a text field with the same customized keypad disabling other characters', () => {
       addElement('Eingabefeld');
-      addProperties('Eingabefeld mit Bearbeitung anderer Zeichen verhindern', { required: true });
-      inputAssistance('Eigene Zeichen', 'rechts', '12345', {disableOtherCharacters:true});
+      setPreferencesElement('Eingabefeld mit Bearbeitung anderer Zeichen verhindern', { required: true });
+      setInputAssistance('Eigene Zeichen', 'rechts', '12345', {disableOtherCharacters:true});
     });
 
     after('save an unit definition', () => {
@@ -37,7 +37,7 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.get('aspect-keypad').contains('7').should('not.exist');
     });
 
-    it('should allow non allowed characters in the firsttext field', () => {
+    it('should allow non allowed characters in the first text field', () => {
       cy.contains('mat-form-field', 'Eingabefeld mit eigene Zeichen')
         .find('input')
         .clear()

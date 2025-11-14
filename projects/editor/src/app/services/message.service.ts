@@ -192,6 +192,10 @@ export class FixedReferencesSnackbarComponent {
     </mat-dialog-actions>
   `,
   styles: [`
+    h2 {
+      margin-left: auto;
+      margin-right: auto;
+    }
     mat-dialog-content {
       display: flex;
       flex-direction: column;

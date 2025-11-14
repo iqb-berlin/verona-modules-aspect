@@ -47,7 +47,7 @@ describe('Droplist element', { testIsolation: false }, () => {
       cy.getByAlias('Zielliste').contains('BBB');
     });
 
-    it('put back an element', () => {
+    it('puts back an element', () => {
       dragTo('Zielliste', 'AAA', 'KopierenListe');
       cy.getByAlias('NichtKopierenListe').children().should('have.length', 0);
       cy.getByAlias('KopierenListe').children().should('have.length', 1);

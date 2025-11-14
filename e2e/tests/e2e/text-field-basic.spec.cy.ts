@@ -1,5 +1,5 @@
-import { addElement, addProperties } from '../util';
-import { addRegexPattern, addSettings, textFieldValidation } from './text-field-util';
+import { addElement, setPreferencesElement } from '../util';
+import { setRegexPattern, setPreferences, validateTextField } from './text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -10,36 +10,36 @@ describe('Text field element', { testIsolation: false }, () => {
 
     it('creates a readonly text field', () => {
       addElement('Eingabefeld');
-      addProperties('Eingabefeld mit Schreibschutz', { readOnly: true });
+      setPreferencesElement('Eingabefeld mit Schreibschutz', { readOnly: true });
     });
 
     it('creates a required text field', () => {
       addElement('Eingabefeld');
-      addProperties('Pflichtfeld Eingabefeld', { required: true });
+      setPreferencesElement('Pflichtfeld Eingabefeld', { required: true });
     });
 
     it('creates a text field with a minimum length of 3 characters', () => {
       addElement('Eingabefeld');
-      addProperties('Eingabefeld mit einer Minimallänge von 3 Zeichen');
-      addSettings({ minLength: 3 });
+      setPreferencesElement('Eingabefeld mit einer Minimallänge von 3 Zeichen');
+      setPreferences({ minLength: 3 });
     });
 
     it('creates a text field with a maximum length of 10 characters', () => {
       addElement('Eingabefeld');
-      addProperties('Eingabefeld mit einer Maximallänge von 10 Zeichen');
-      addSettings({ maxLength: 10, settings: { isLimitedToMaxLength: true } });
+      setPreferencesElement('Eingabefeld mit einer Maximallänge von 10 Zeichen');
+      setPreferences({ maxLength: 10, settings: { isLimitedToMaxLength: true } });
     });
 
     it('creates a text field with clear option', () => {
       addElement('Eingabefeld');
-      addProperties('Eingabefeld mit Löschtaste');
-      addSettings({ settings: { clearable: true } });
+      setPreferencesElement('Eingabefeld mit Löschtaste');
+      setPreferences({ settings: { clearable: true } });
     });
 
     it('creates a text field that accepts only the pattern 1[a-z]000', () => {
       addElement('Eingabefeld');
-      addProperties('Eingabefeld mit 1[a-z]000 Muster');
-      addRegexPattern('1[a-z]000');
+      setPreferencesElement('Eingabefeld mit 1[a-z]000 Muster');
+      setRegexPattern('1[a-z]000');
     });
 
     after('save an unit definition', () => {
@@ -70,7 +70,7 @@ describe('Text field element', { testIsolation: false }, () => {
     it('checks that the minimal length Warning is present', () => {
       cy.contains('mat-form-field', 'Eingabefeld mit einer Minimallänge von 3 Zeichen')
         .find('mat-error').should('not.exist');
-      textFieldValidation('Eingabefeld mit einer Minimallänge von 3 Zeichen',
+      validateTextField('Eingabefeld mit einer Minimallänge von 3 Zeichen',
                           '12',
                           'Eingabe zu kurz');
     });
@@ -78,7 +78,7 @@ describe('Text field element', { testIsolation: false }, () => {
     it('checks that the maximal length Warning ist present', () => {
       cy.contains('mat-form-field', 'Eingabefeld mit einer Maximallänge von 10 Zeichen')
         .find('mat-error').should('not.exist');
-      textFieldValidation('Eingabefeld mit einer Maximallänge von 10 Zeichen',
+      validateTextField('Eingabefeld mit einer Maximallänge von 10 Zeichen',
                           '12345678910',
                           'Eingabe zu lang');
     });
@@ -86,10 +86,10 @@ describe('Text field element', { testIsolation: false }, () => {
     it('checks the regex of the text field', () => {
       cy.contains('mat-form-field', 'Eingabefeld mit 1[a-z]000 Muster')
         .find('mat-error').should('not.exist');
-      textFieldValidation('Eingabefeld mit 1[a-z]000 Muster',
+      validateTextField('Eingabefeld mit 1[a-z]000 Muster',
                           '6000',
                           'Eingabe entspricht nicht der Vorgabe');
-      textFieldValidation('Eingabefeld mit 1[a-z]000 Muster',
+      validateTextField('Eingabefeld mit 1[a-z]000 Muster',
                           '1a000');
     });
 

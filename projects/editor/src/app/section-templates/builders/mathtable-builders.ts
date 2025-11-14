@@ -1,8 +1,9 @@
 import { PositionedUIElement } from 'common/interfaces';
-import { Section, SectionProperties } from 'common/models/section';
+import { SectionProperties } from 'common/models/section';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { CONSTANTS } from '../constants';
+import { EditorSection } from '../../models/editor-unit';
 
 export function createMathTableSection(operation: 'addition' | 'subtraction' | 'multiplication', terms: string[],
                                        idService: IDService) {
@@ -51,7 +52,7 @@ export function createMathTableSection(operation: 'addition' | 'subtraction' | '
         idService)
     );
   }
-  const section = new Section({
+  const section = new EditorSection({
     ...showTooltip && { autoColumnSize: false },
     ...showTooltip && { gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 45, unit: 'px' }] }
   } as SectionProperties, idService);

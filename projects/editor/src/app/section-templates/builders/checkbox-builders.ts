@@ -1,9 +1,9 @@
-import { Section } from 'common/models/section';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import { EditorSection } from '../../models/editor-unit';
 
 export function createCheckboxSection(text1: string, options: string[], useImages: boolean,
-                                      idService: IDService): Section {
+                                      idService: IDService): EditorSection {
   const sectionElements = [
     TemplateService.createElement('text',
                                   { gridRow: 1, gridColumn: 1, gridColumnRange: useImages ? options.length : 1 },
@@ -23,7 +23,7 @@ export function createCheckboxSection(text1: string, options: string[], useImage
     });
   }
 
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;
 }

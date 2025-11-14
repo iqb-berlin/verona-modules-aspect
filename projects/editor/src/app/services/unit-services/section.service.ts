@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { PositionedUIElement, UIElementValue } from 'common/interfaces';
-import { Section } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { ArrayUtils } from 'common/util/array';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
-import { EditorPage } from 'editor/src/app/models/editor-unit';
+import { EditorPage, EditorSection } from 'editor/src/app/models/editor-unit';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +15,14 @@ export class SectionService {
               private elementService: ElementService,
               private selectionService: SelectionService) { }
 
-  updateSectionProperty(section: Section, property: string, value: UIElementValue): void {
+  updateSectionProperty(section: EditorSection, property: string, value: UIElementValue): void {
     section.setProperty(property, value);
     if (property === 'ignoreNumbering') this.unitService.updateSectionCounter();
     this.unitService.elementPropertyUpdated.next();
     this.unitService.updateUnitDefinition();
   }
 
-  addSection(page: EditorPage, section?: Section, sectionIndex?: number): void {
+  addSection(page: EditorPage, section?: EditorSection, sectionIndex?: number): void {
     if (section) section.getAllElements().forEach(el => el.registerIDs());
     page.addSection(section, sectionIndex);
     this.selectionService.selectedSectionIndex =
@@ -52,7 +51,7 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
-  moveSection(section: Section, direction: 'up' | 'down'): void {
+  moveSection(section: EditorSection, direction: 'up' | 'down'): void {
     const page = this.unitService.getSelectedPage();
     ArrayUtils.moveArrayItem(section, page.sections, direction);
     direction === 'up' ? this.selectionService.selectedSectionIndex -= 1 :
@@ -79,7 +78,7 @@ export class SectionService {
     }
   }
 
-  replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
+  replaceSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): void {
     const page = this.unitService.unit.pages[pageIndex];
     page.deleteSection(sectionIndex);
     page.addSection(newSection, sectionIndex);
@@ -87,7 +86,7 @@ export class SectionService {
     this.unitService.updateSectionCounter();
   }
 
-  insertSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
+  insertSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): void {
     const page = this.unitService.unit.pages[pageIndex];
     page.addSection(newSection, sectionIndex);
     this.unitService.updateUnitDefinition();
@@ -95,7 +94,7 @@ export class SectionService {
   }
 
   /* Move element between sections */
-  transferElements(elements: UIElement[], previousSection: Section, newSection: Section): void {
+  transferElements(elements: UIElement[], previousSection: EditorSection, newSection: EditorSection): void {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
     elements.forEach(element => {
       newSection.elements.push(element as PositionedUIElement);

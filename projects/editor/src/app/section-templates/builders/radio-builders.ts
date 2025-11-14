@@ -1,10 +1,10 @@
 import { TextImageLabel } from 'common/interfaces';
-import { Section } from 'common/models/section';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
+import { EditorSection } from '../../models/editor-unit';
 
-export function createTextRadioSection(options: TextRadioOptions, idService: IDService): Section {
+export function createTextRadioSection(options: TextRadioOptions, idService: IDService): EditorSection {
   const sectionElements = [
     TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
                                   { text: options.label1 }, idService),
@@ -18,12 +18,12 @@ export function createTextRadioSection(options: TextRadioOptions, idService: IDS
         TemplateService.createElement(options.extraInputMathfield ? 'text-area-math' : 'text-area',
                                       { gridRow: 4, gridColumn: 1 }, {}, idService));
   }
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;
 }
 
-export function createImageRadioSection(options: ImageRadioOptions, idService: IDService): Section {
+export function createImageRadioSection(options: ImageRadioOptions, idService: IDService): EditorSection {
   const sectionElements = [
     TemplateService.createElement(
       'text',
@@ -43,13 +43,13 @@ export function createImageRadioSection(options: ImageRadioOptions, idService: I
       TemplateService.createElement(options.extraInputMathfield ? 'text-area-math' : 'text-area',
                                     { gridRow: 4, gridColumn: 1 }, {}, idService));
   }
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;
 }
 
 export function createLikertSection(text1: string, text2: string, options: TextImageLabel[], rows: TextImageLabel[],
-                                    idService: IDService): Section {
+                                    idService: IDService): EditorSection {
   const sectionElements = [
     TemplateService.createElement(
       'text',
@@ -74,7 +74,7 @@ export function createLikertSection(text1: string, text2: string, options: TextI
       },
       idService)
   ];
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;
 }

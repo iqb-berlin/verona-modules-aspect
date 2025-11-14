@@ -1,6 +1,6 @@
 import { PositionedUIElement } from 'common/interfaces';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
-import { Section, SectionProperties } from 'common/models/section';
+import { SectionProperties } from 'common/models/section';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
@@ -8,8 +8,9 @@ import {
   TwoPageTemplateOptions
 } from 'editor/src/app/section-templates/droplist-interfaces';
 import { TemplateService } from '../template.service';
+import { EditorSection } from '../../models/editor-unit';
 
-export function createDroplistSection(options: ClassicTemplateOptions, idService: IDService): Section {
+export function createDroplistSection(options: ClassicTemplateOptions, idService: IDService): EditorSection {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
       'text', { gridRow: 1, gridColumn: 1, gridColumnRange: 2, marginBottom: { value: 20, unit: 'px' } },
@@ -88,7 +89,7 @@ export function createDroplistSection(options: ClassicTemplateOptions, idService
     );
   });
 
-  const section = new Section({
+  const section = new EditorSection({
     autoColumnSize: false,
     gridColumnSizes: options.targetLabelAlignment === 'column' ?
       getDrolistColSizesVertical(options.optionWidth, options.targetWidth) :
@@ -189,7 +190,7 @@ function getDrolistColSizesHorizontal(optionLength: 'medium' | 'short' | 'very-s
   }
 }
 
-export function createSortlistSection(options: SortTemplateOptions, idService: IDService): Section {
+export function createSortlistSection(options: SortTemplateOptions, idService: IDService): EditorSection {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
       'text',
@@ -221,12 +222,12 @@ export function createSortlistSection(options: SortTemplateOptions, idService: I
       idService)
   ];
 
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;
 }
 
-export function createTwopageSection(options: TwoPageTemplateOptions, idService: IDService): [Section, Section] {
+export function createTwopageSection(options: TwoPageTemplateOptions, idService: IDService): [EditorSection, EditorSection] {
   const section1Elements: PositionedUIElement[] = [
     TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
                                   { text: options.text1 }, idService),
@@ -273,7 +274,7 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
     section2Elements.push(...createTextRowTargets(options, idService));
   }
 
-  const section2 = new Section({
+  const section2 = new EditorSection({
     autoColumnSize: options.srcUseImages && !options.targetUseImages && options.targetListAlignment === 'grid',
     // eslint-disable-next-line no-nested-ternary
     gridColumnSizes: options.targetUseImages ?
@@ -295,7 +296,7 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
   // connect startlist to all target lists
   startListEle.connectedTo = targetLists.map(list => list.id);
 
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   section1Elements.forEach(el => section.addElement(el));
   return [section, section2];
 }

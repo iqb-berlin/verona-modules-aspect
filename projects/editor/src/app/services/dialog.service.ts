@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { Section } from 'common/models/section';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog.component';
 import {
@@ -41,6 +40,7 @@ import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dia
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
+import { EditorSection } from '../models/editor-unit';
 
 @Injectable({
   providedIn: 'root'
@@ -155,7 +155,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showSectionInsertDialog(isSelectedSectionEmpty: boolean): Observable<{ newSection: Section, replaceSection: boolean }> {
+  showSectionInsertDialog(isSelectedSectionEmpty: boolean): Observable<{ newSection: EditorSection, replaceSection: boolean }> {
     const dialogRef = this.dialog.open(SectionInsertDialogComponent, {
       data: { isSelectedSectionEmpty }
     });

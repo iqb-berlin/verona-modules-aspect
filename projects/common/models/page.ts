@@ -60,26 +60,7 @@ export class Page {
     return this.sections.map(section => section.getVariableInfos(dropLists)).flat();
   }
 
-  addSection(section?: Section, sectionIndex?: number): void {
-    if (sectionIndex !== undefined) {
-      this.sections.splice(sectionIndex, 0, section || new Section(undefined, this.idService));
-    } else {
-      this.sections.push(section || new Section());
-    }
-  }
 
-  replaceSection(sectionIndex: number, section: Section): void {
-    this.sections.splice(sectionIndex, 1, section);
-  }
-
-  deleteSection(sectionIndex: number): Section {
-    return this.sections.splice(sectionIndex, 1)[0];
-  }
-
-  duplicateSection(sectionIndex: number): void {
-    const newSection = this.sections[sectionIndex].getDuplicate();
-    this.addSection(newSection, sectionIndex + 1);
-  }
 }
 
 export interface PageProperties {

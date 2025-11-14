@@ -6,7 +6,6 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
-import { Section } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import { StaticSectionComponent } from 'editor/src/app/components/unit-view/section/static-section.component';
@@ -15,6 +14,7 @@ import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgClass, NgIf } from '@angular/common';
 import { SectionCounter } from 'common/util/section-counter';
 import { PositionedUIElement } from 'common/interfaces';
+import { EditorSection } from 'editor/src/app/models/editor-unit';
 
 @Component({
     selector: 'aspect-editor-section-view',
@@ -80,7 +80,7 @@ import { PositionedUIElement } from 'common/interfaces';
   `
 })
 export class SectionComponent {
-  @Input() section!: Section;
+  @Input() section!: EditorSection;
   @Input() sectionIndex!: number;
   @Input() lastSectionIndex!: number;
   @Input() alwaysVisiblePage: boolean = false;
@@ -164,7 +164,7 @@ export class SectionComponent {
 
   getPageHeight(): number { // TODO weg
     const page = this.unitService.getSelectedPage();
-    const reduceFct = (accumulator: number, currentValue: Section) => accumulator + currentValue.height;
+    const reduceFct = (accumulator: number, currentValue: EditorSection) => accumulator + currentValue.height;
     return page.sections.reduce(reduceFct, 0);
   }
 

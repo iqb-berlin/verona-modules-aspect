@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { RadioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio/radio.dialog.component';
 import { ElementFactory } from 'common/util/element.factory';
 import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
-import { Section } from 'common/models/section';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { UIElement } from 'common/models/elements/element';
@@ -42,8 +41,8 @@ import {
 } from 'editor/src/app/section-templates/stimulus-interfaces';
 import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
 import { TextElement } from 'common/models/elements/text/text';
+import { EditorPage, EditorSection } from 'editor/src/app/models/editor-unit';
 import { CONSTANTS } from './constants';
-import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +57,7 @@ export class TemplateService {
   static helpTooltipImageSrc = CONSTANTS.lightbulb;
 
   async applyTemplate(templateName: string) {
-    const templateSections: Section | [Section, Section] = await this.createTemplateSections(templateName);
+    const templateSections: EditorSection | [EditorSection, EditorSection] = await this.createTemplateSections(templateName);
 
     const selectedPage = this.unitService.getSelectedPage();
     const selectedSectionIndex = this.selectionService.selectedSectionIndex;
@@ -82,7 +81,7 @@ export class TemplateService {
     this.unitService.pageOrderChanged.next();
   }
 
-  private static addSectionToPage(section: Section, page: EditorPage, selectedSectionIndex: number): void {
+  private static addSectionToPage(section: EditorSection, page: EditorPage, selectedSectionIndex: number): void {
     if (page.sections[selectedSectionIndex].isEmpty()) {
       page.replaceSection(selectedSectionIndex, section);
     } else {
@@ -90,7 +89,7 @@ export class TemplateService {
     }
   }
 
-  private createTemplateSections(templateName: string): Promise<Section | [Section, Section]> {
+  private createTemplateSections(templateName: string): Promise<EditorSection | [EditorSection, EditorSection]> {
     return new Promise(resolve => {
       switch (templateName) {
         case 'stimulus':

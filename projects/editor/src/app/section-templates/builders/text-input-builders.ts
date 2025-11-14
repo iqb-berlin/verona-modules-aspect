@@ -1,13 +1,14 @@
-import { Section, SectionProperties } from 'common/models/section';
+import { SectionProperties } from 'common/models/section';
 import { PositionedUIElement } from 'common/interfaces';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import { EditorSection } from '../../models/editor-unit';
 
 export function createInputSection(config: { text: string, answerCount: number, multilineInputs: boolean,
   numbering: 'latin' | 'decimal' | 'bullets' | 'none', fieldLength: 'very-small' | 'small' | 'medium' | 'large',
   expectedCharsCount: number, useMathFields: boolean, numberingWithText: boolean, subQuestions: string[] },
-                                   idService: IDService): Section {
+                                   idService: IDService): EditorSection {
   const useNumbering = config.answerCount > 1 && config.numbering !== 'none';
 
   const sectionElements: PositionedUIElement[] = [
@@ -77,7 +78,7 @@ export function createInputSection(config: { text: string, answerCount: number, 
     );
   }
 
-  const section = new Section({
+  const section = new EditorSection({
     ...(useNumbering && !config.numberingWithText) && { autoColumnSize: false },
     ...(useNumbering && !config.numberingWithText) && { gridColumnSizes: [{ value: 25, unit: 'px' }, { value: 1, unit: 'fr' }] }
   } as SectionProperties, idService);

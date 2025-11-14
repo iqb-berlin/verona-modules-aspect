@@ -1,4 +1,3 @@
-import { Section } from 'common/models/section';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
   TextStimulusOptions, EmailStimulusOptions,
@@ -8,9 +7,10 @@ import { getEmailTemplateString } from 'editor/src/app/section-templates/builder
 import { getMessageTemplateString } from 'editor/src/app/section-templates/builders/stimulus/message';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { DimensionProperties, PlayerProperties } from 'common/models/elements/property-group-interfaces';
+import { EditorSection } from 'editor/src/app/models/editor-unit';
 
 export function createTextSection(options: TextStimulusOptions, idService: IDService) {
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   section.addElement(TemplateService.createElement(
     'text',
     { gridRow: 1, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
@@ -27,7 +27,7 @@ export function createTextSection(options: TextStimulusOptions, idService: IDSer
   return section;
 }
 
-export function createEmailSection(options: EmailStimulusOptions, idService: IDService): Section {
+export function createEmailSection(options: EmailStimulusOptions, idService: IDService): EditorSection {
   let fromLabel = 'Von';
   let toLabel = 'An';
   let subjectLabel = 'Betreff';
@@ -43,18 +43,18 @@ export function createEmailSection(options: EmailStimulusOptions, idService: IDS
     subjectLabel = 'Objet';
     sendLabel = 'Envoyer';
   }
-  return new Section(JSON.parse(getEmailTemplateString({ ...options, fromLabel, toLabel, subjectLabel, sendLabel })),
+  return new EditorSection(JSON.parse(getEmailTemplateString({ ...options, fromLabel, toLabel, subjectLabel, sendLabel })),
                      idService);
 }
 
-export function createMessageSection(options: MessageStimulusOptions, idService: IDService): Section {
+export function createMessageSection(options: MessageStimulusOptions, idService: IDService): EditorSection {
   let sendLabel = 'Antworten';
   if (options.lang === 'en') {
     sendLabel = 'Reply';
   } else if (options.lang === 'fr') {
     sendLabel = 'Répondre';
   }
-  return new Section(JSON.parse(getMessageTemplateString({ ...options, sendLabel })),
+  return new EditorSection(JSON.parse(getMessageTemplateString({ ...options, sendLabel })),
                      idService);
 }
 
@@ -86,7 +86,7 @@ export function createAudio1Section(options: Audio1StimulusOptions, idService: I
       idService
     )
   ];
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;
 }
@@ -153,7 +153,7 @@ export function createAudio2Section(options: Audio2StimulusOptions, idService: I
     idService
   ));
 
-  const section = new Section(undefined, idService);
+  const section = new EditorSection(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;
 }

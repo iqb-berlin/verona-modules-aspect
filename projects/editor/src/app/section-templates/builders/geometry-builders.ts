@@ -1,7 +1,8 @@
 import { PositionedUIElement } from 'common/interfaces';
-import { Section, SectionProperties } from 'common/models/section';
+import { SectionProperties } from 'common/models/section';
 import { IDService } from 'editor/src/app/services/id.service';
 import { TemplateService } from '../template.service';
+import { EditorSection } from '../../models/editor-unit';
 
 export function createGeometrySection(text: string, geometryAppDefinition: string, geometryFileName: string,
                                       showHelper: boolean, idService: IDService) {
@@ -49,7 +50,7 @@ export function createGeometrySection(text: string, geometryAppDefinition: strin
     );
   }
 
-  const section = new Section({
+  const section = new EditorSection({
     ...showHelper && { autoColumnSize: false },
     ...showHelper && { gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 45, unit: 'px' }] }
   } as SectionProperties, idService);

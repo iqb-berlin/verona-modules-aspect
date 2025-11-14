@@ -15,7 +15,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgForOf, NgIf } from '@angular/common';
 import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
-import { Section } from 'common/models/section';
 import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
@@ -26,6 +25,7 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
 import { UnitService } from '../../../services/unit-services/unit.service';
 import { DialogService } from '../../../services/dialog.service';
 import { SelectionService } from '../../../services/selection.service';
+import { EditorSection } from 'editor/src/app/models/editor-unit';
 
 @Component({
   selector: 'aspect-section-menu',
@@ -53,7 +53,7 @@ import { SelectionService } from '../../../services/selection.service';
   ]
 })
 export class SectionMenuComponent implements OnDestroy {
-  @Input() section!: Section;
+  @Input() section!: EditorSection;
   @Input() sectionIndex!: number;
   @Input() lastSectionIndex!: number;
   @Input() pageIndex!: number;
@@ -154,7 +154,7 @@ export class SectionMenuComponent implements OnDestroy {
   showSectionInsertDialog(): void {
     this.dialogService.showSectionInsertDialog(this.section.elements.length === 0)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((data: { newSection: Section, replaceSection: boolean }) => {
+      .subscribe((data: { newSection: EditorSection, replaceSection: boolean }) => {
         if (data.newSection) {
           this.fixElementIDs(data.newSection.getAllElements());
           this.fixValueIDs(data.newSection.getAllElements()

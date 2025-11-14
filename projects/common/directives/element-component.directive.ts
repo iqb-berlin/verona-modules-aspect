@@ -3,7 +3,8 @@ import {
   Directive, ElementRef
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { AspectError } from 'common/classes/aspect-error';
+
+import { AspectError } from 'common/errors';
 
 @Directive()
 export abstract class ElementComponent implements AfterContentChecked {

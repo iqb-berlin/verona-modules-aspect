@@ -7,15 +7,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { ElementOverlay } from './element-overlay.directive';
 
 @Component({
-    selector: 'aspect-editor-static-overlay',
-    imports: [
-        NgIf,
-        CdkDrag,
-        CdkDropList,
-        CdkDragPlaceholder,
-        MatIconModule
-    ],
-    template: `
+  selector: 'aspect-editor-static-overlay',
+  imports: [
+    NgIf,
+    CdkDrag,
+    CdkDropList,
+    CdkDragPlaceholder,
+    MatIconModule
+  ],
+  template: `
     <!-- Is also a droplist to catch the resize drop and not let it bubble up to the canvas drop handler. -->
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <div class="draggable-element"
@@ -52,13 +52,13 @@ import { ElementOverlay } from './element-overlay.directive';
       </div>
     </div>
   `,
-    styles: [
-        '.draggable-element {position: absolute}',
-        '.draggable-element:active {cursor: grabbing}',
-        '.resizeHandle {position: absolute; cursor: nwse-resize}',
-        '.resize-droplist {position: absolute}',
-        '.temporaryHighlight {z-index: 100}'
-    ]
+  styles: [
+    '.draggable-element {position: absolute}',
+    '.draggable-element:active {cursor: grabbing}',
+    '.resizeHandle {position: absolute; cursor: nwse-resize}',
+    '.resize-droplist {position: absolute}',
+    '.temporaryHighlight {z-index: 100}'
+  ]
 })
 export class StaticOverlayComponent extends ElementOverlay {
   private oldX: number = 0;

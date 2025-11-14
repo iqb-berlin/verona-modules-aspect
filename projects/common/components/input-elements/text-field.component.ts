@@ -28,7 +28,6 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                value="{{elementModel.value}}"
                [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
                [formControl]="elementFormControl"
-               [pattern]="$any(elementModel.pattern)"
                [readonly]="elementModel.readOnly"
                (paste)="onPaste.emit($event)"
                (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"

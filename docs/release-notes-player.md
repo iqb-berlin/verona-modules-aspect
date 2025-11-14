@@ -1,11 +1,11 @@
 Player
 ======
-## next
+## 2.11.0
 ### Fehlerbehebungen
 - Eingabebereich
   - IQB-Tastatur/Eingabehilfe
     - Text wird zur aktuellen Cursorposition gescrollt
-    - Behebt Fehler bei der automatischen Höhenanpassung 
+    - Behebt Fehler bei der automatischen Höhenanpassung
 - Korrigiert die automatische Seitennummerierung beim Ändern der Seitendarstellung einer Aufgabe zur Laufzeit
 - Tabelle
   - Implementiert die Darstellung von Validierungen für Kindelemente
@@ -14,7 +14,7 @@ Player
 - Audio/Video
   - Speichert die bereits verstrichene Zeit von Hinweisen
 - Eingabefeld
-  - Ermöglicht das Einfügen von Text aus der Zwischenablage, wenn die zulässige Maximallänge eingestellt ist    
+  - Ermöglicht das Einfügen von Text aus der Zwischenablage, wenn die zulässige Maximallänge eingestellt ist
 
 
 ## 2.10.1
@@ -28,9 +28,9 @@ Player
 ## 2.10.0
 ### Neue Funktionen
 - Unterstützt den Print-Modus der Verona-Spezifikation 6.0
-  - Wird der Player im Studio in der Druckvorschau aufgerufen, werden alle Seiten einer Unit 
-    gestapelt dargestellt. Das Ausblenden von Seiten und Seiten wird in dieser Ansicht unterdrückt. 
-    Optional kann in der Druckansicht der Alias der Elemente eingeblendet werden.  
+  - Wird der Player im Studio in der Druckvorschau aufgerufen, werden alle Seiten einer Unit
+    gestapelt dargestellt. Das Ausblenden von Seiten und Seiten wird in dieser Ansicht unterdrückt.
+    Optional kann in der Druckansicht der Alias der Elemente eingeblendet werden.
 
 ## 2.9.4
 ### Neue Funktionen
@@ -55,7 +55,7 @@ Player
 - Reduziert die Verzögerung für das Senden von Änderungsmitteilungen
 
 ### Fehlerbehebungen
-- "neu anfangen" aktualisiert den Wert von Geogebra-Variablen 
+- "neu anfangen" aktualisiert den Wert von Geogebra-Variablen
 
 ## player/2.7.3
 ### Fehlerbehebungen
@@ -63,10 +63,10 @@ Player
 
 ## 2.6.4
 ### Neue Funktionen
-- Beim Seitenwechsel werden aktive Buttons zum Markieren von Texten zurückgesetzt 
+- Beim Seitenwechsel werden aktive Buttons zum Markieren von Texten zurückgesetzt
 
 ## Änderungen
-- Beim Hervorheben von Textabschnitten durch Buttons werden andere Hervorhebungen zurückgesetzt 
+- Beim Hervorheben von Textabschnitten durch Buttons werden andere Hervorhebungen zurückgesetzt
 
 ### Fehlerbehebungen
 - Fasst aufeinanderfolgende markierte Wörter in den Antwortdaten von Texten zu Bereichen zusammen
@@ -74,14 +74,14 @@ Player
 ## 2.6.0
 ### Neue Funktionen
 - Unterstützt Verona API 6.0
-  - Sendet Fehlermeldungen an den Host, 
+  - Sendet Fehlermeldungen an den Host,
     - wenn Mediaelemente nicht geladen werden können
     - wenn die Dauer von Audio- und Video-Elementen nicht ermittelt werden kann
     - wenn die Ladezeit 20 Sekunden überschreitet
-  - Ermöglicht dem Host das Ausblenden von Buttons zur Unitnavigation 
+  - Ermöglicht dem Host das Ausblenden von Buttons zur Unitnavigation
 
 ### Fehlerbehebungen
-- Korrigiert die Validierung von Eingabefeldern mit eingestellter maximaler Länge 
+- Korrigiert die Validierung von Eingabefeldern mit eingestellter maximaler Länge
 
 ### Änderungen
 -  Ändert die Dauer von Texthervorhebung auf 60 Sekunden
@@ -100,7 +100,7 @@ Player
 ## 2.4.5
 ### Änderungen
 - Markieren von Text
-  - Verhindert unter Windows Mobile das Öffnen des Kontextmenüs 
+  - Verhindert unter Windows Mobile das Öffnen des Kontextmenüs
 
 ## 2.4.4
 ### Änderungen
@@ -109,7 +109,7 @@ Player
 
 ## 2.4.2
 ### Fehlerbehebungen
-- Eingabefeld im Lückentest: Eingestellte Zeichenbegrenzung wird von IQB-Tastatur berücksichtigt  
+- Eingabefeld im Lückentest: Eingestellte Zeichenbegrenzung wird von IQB-Tastatur berücksichtigt
 
 ## 2.4.1
 ### Änderungen
@@ -117,7 +117,7 @@ Player
 
 ### Fehlerbehebungen
 - Behebt Darstellungsfehler aud dem iPad beim Fortschrittsbalken und der Zeitanzeige von Audios/Videos
-- Ermöglicht bei "Wort korrigieren" die Eingabe von Zeichen ohne zunächst das falsch geschriebene Wort durchstreichen zu müssen 
+- Ermöglicht bei "Wort korrigieren" die Eingabe von Zeichen ohne zunächst das falsch geschriebene Wort durchstreichen zu müssen
 
 
 ## 2.4.0
@@ -134,13 +134,13 @@ Player
 - Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation unterbunden
 - Zentriert den eingeblendeten Seiten-Scroll-Button in Bezug zur eingestellten Seitengröße
 - Audios/Videos informieren nun unmittelbar nach dem Starten über ihre Statusänderung
-- Überarbeitung der Postion und Dimension von Tooltips 
-- Überarbeitung der Positionierung von Eingabeelementen beim Öffnen der Tastatur  
+- Überarbeitung der Postion und Dimension von Tooltips
+- Überarbeitung der Positionierung von Eingabeelementen beim Öffnen der Tastatur
 
 ### Fehlerbehebungen
 - Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos
 - Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf einer Aufgabe wieder her
-- Rechenkästchen: Verhindert auf Tablets das Öffnen des nativen Kontextmenüs für ausgewählten Text 
+- Rechenkästchen: Verhindert auf Tablets das Öffnen des nativen Kontextmenüs für ausgewählten Text
 
 ## 2.3.0
 ### Neue Funktionen
@@ -166,7 +166,7 @@ Player
 - Verlängert bei "magnetischem Scroll-Verhalten" die einzelnen Seiten einer Unit,
   um Elemente an den Seitenenden besser erreichen zu können
 ### Fehlerbehebungen
-- Unterbindet bei "magnetischem Scroll-Verhalten" das "Zurückspringen" von Seiten 
+- Unterbindet bei "magnetischem Scroll-Verhalten" das "Zurückspringen" von Seiten
   bei Benutzung des Scroll-Knopfes unter Firefox
 
 ## 2.2.1
@@ -223,11 +223,11 @@ Unterstützt neue Elemente und Einstellungen von Editor 2.2.0
 - Unterstützt die Anzeige von Tooltips innerhalb von markierbaren Texten
 - Unterstützt die Anzeige von Tooltips bei Knopfelementen
 - Ablegeelemente verfügen über einen optionalen Abspielknopf für Audios
-- Beim Senden von "Presentation Complete" werden nur diejenigen Elemente berücksichtigt,  
+- Beim Senden von "Presentation Complete" werden nur diejenigen Elemente berücksichtigt,
   die als "Relevant für 'Presentation Complete'" gesetzt sind
 - Unterstützt die Regeln zur Sichtbarkeit von Abschnitten, indem die erreichten Werte
-  von Elementen und Zustandsvariablen berücksichtigt werden.  
-  Die Funktionalität kann zur Darstellung von Text, nach dem Hören eines Audios und  
+  von Elementen und Zustandsvariablen berücksichtigt werden.
+  Die Funktionalität kann zur Darstellung von Text, nach dem Hören eines Audios und
   in Verbindung mit Zustandsvariablen zur Darstellung von Hypertexten verwendet werden
 - Die virtuelle Tastatur des Players kann durch die ausgewählte Eingabehilfe erweitert werden
   Auf Tablets wird in diesem Fall lediglich die Tastatur nicht aber die Eingabehilfe eingeblendet
@@ -254,7 +254,7 @@ Unterstützt neue Elemente und Einstellungen von Editor 2.2.0
 
 ### Verbesserungen
 - Player stellt keine eigene Meldung mehr dar, wenn er vom Host die Meldung erhält,
-  dass die Navigation verweigert wird. Diese Meldung ist Aufgabe des Hosts.  
+  dass die Navigation verweigert wird. Diese Meldung ist Aufgabe des Hosts.
 
 ## 1.31.0
 ### Verbesserungen
@@ -294,7 +294,7 @@ Unterstützt neue Elemente und Einstellungen von Editor 2.2.0
 ### Fehlerbehebungen
 - Behebt Probleme bei Lückentexten mit Knopfelementen
   Bei Lückentexten mit mehreren Elementen und mindestens einem Knopfelement,
-  wurde den Elementen teilweise die Eigenschaften des Knopfelements zugeordnet     
+  wurde den Elementen teilweise die Eigenschaften des Knopfelements zugeordnet
 
 ## 1.29.3
 ### Fehlerbehebungen
@@ -367,7 +367,7 @@ Unterstützt neue Elemente und Einstellungen von Editor 2.2.0
 
 ### Fehlerbehebungen
 - Behebt das versehentliche Löschen von Text beim Entfernen von
-  Markierungen aus Textelementen (im Firefox-Browser)  
+  Markierungen aus Textelementen (im Firefox-Browser)
 
 
 ## 1.28.0

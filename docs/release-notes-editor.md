@@ -1,15 +1,27 @@
 Editor
 ======
-## next
+## 2.11.0
 ### Neue Funktionen
 - Neuer Dialog: Elementliste
   - Hier werden alle Elemente der Unit tabellarisch aufgelistet. Es kann nach Abschnitten und Seiten gefiltert werden. IDs einzelner Elemente können geändert werden und es kann die Einstellung "Relevant für 'Presentation Complete'" für mehrere Elemente gemeinsam angepasst werden.
+- Eingabefeld
+  - Muster wird validiert
 ### Änderungen
 - Eingabefeld/Eingabereich
   - Entfernt Option "Tastatursymbol anzeigen"
 - Audio/Video
   - Entfernt Option "Autostart" und "Autostart Verzögerung"
 - Elementliste von Abschnitten zeigt auch Verbundkinder an
+- TextEditor
+  - Beim Einfügen von Text aus der Zwischenablage wird die Formatrierung nicht übernommen.
+- Verbesserte Fehlerberichterstattung
+  - Fehler können per E-Mail oder via GitHub gemeldet werden.
+- Assistent "Rechenkästchen"
+  - Tooltiptext angepasst
+- Optionsfelder mit Bild
+  - Schriftgröße der Beschriftung kann eingestellt werden.
+### Fehlerbehebungen
+- Medienoptionen von duplizierten Medienelementen repariert
 
 ## 2.10.1
 ### Fehlerbehebungen

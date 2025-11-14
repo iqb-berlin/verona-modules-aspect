@@ -1,6 +1,6 @@
 Allgemein
 =========
-## next
+## editor/2.11.0+player/2.11.0
 ### Neue Funktionen
 - Geometrie
   - Ermöglicht die Angabe von erwarteten und durch Nutzer:innen erstellte Variablen. Diese sind dann in den Antwortdaten und zur Auswertung verfügbar.
@@ -15,20 +15,16 @@ Allgemein
 - Neue Eingabehilfe: "Reaktionsgleichung Chemie"
 - Ablegeliste
   - Erlaubt jetzt formatierten Text für die Optionen
-  
-
 ### Änderungen
 - Auslöser
   - "Textabschnitt hervorheben" wird bei als paralleler Anordnung immer nach "Hervorhebungen ausblenden" ausgelöst
 - Eingabefeld
   - "Eingabe auf Maximallänge begrenzen" ist jetzt Standardeinstellung
-
 ### Fehlerbehebungen
 - Audio/Video
   - Korrektur der Position der Steuerungselemente
 - Optionsfelder und Kontrollkästchen
   - Ausrichtung der Knöpfe korrigiert. Erscheinen jetzt wieder oben an der Beschriftung
-
 
 ## editor/2.10.1+player/2.10.1
 ### Fehlerbehebungen

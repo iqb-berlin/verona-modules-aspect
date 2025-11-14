@@ -45,7 +45,7 @@ export function createMathTableSection(operation: 'addition' | 'subtraction' | '
         {
           imageSrc: TemplateService.helpTooltipImageSrc,
           tooltipText: 'In den kleinen Feldern oberhalb der Rechnung kannst du mehrstellige Überträge eintragen. ' +
-            'Wenn du einen Übertrag durchstreichen möchtest, drücke zweimal hintereinander auf das jeweilige Feld.',
+            'Wenn du diese Überträge durchstreichen möchtest, drücke zweimal hintereinander auf das jeweilige Feld.',
           tooltipPosition: 'left'
         },
         idService)

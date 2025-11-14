@@ -300,7 +300,7 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
   protected constructor(element: { type: string } & Partial<PlayerElementBlueprint>, idService?: AbstractIDService) {
     super(element, idService);
     if (isPlayerElementBlueprint(element)) {
-      this.player = element.player;
+      this.player = { ...element.player };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at PlayerElement instantiation', element);

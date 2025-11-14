@@ -115,7 +115,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
   standalone: false
 })
 export class TextFieldComponent extends TextInputComponent {
-  @Output() onPaste = new EventEmitter<ClipboardEvent>();
   @Input() elementModel!: TextFieldElement;
+  @Output() onPaste = new EventEmitter<ClipboardEvent>();
   tableMode: boolean = false;
 }

@@ -7,7 +7,6 @@ import {
 } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { AspectError } from 'common/classes/aspect-error';
 import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
@@ -32,6 +31,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   @Output() mediaValidStatusChanged = new EventEmitter<string>();
   @Output() mediaPlayStatusChanged = new EventEmitter<string | null>();
   @Output() hintDelayInitialized = new EventEmitter<string>();
+  @Output() mediaDurationNotAvailable = new EventEmitter<void>();
 
   duration: number = 0;
   playerDuration: number = 0;
@@ -256,7 +256,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
         this.durationErrorTimeoutId = window.setTimeout(() => {
           if (this.duration === 0) {
             this.isLoaded.next(true);
-            throw new AspectError('media-duration-error', 'Media duration is not available');
+            this.mediaDurationNotAvailable.emit();
           }
         }, 3000);
       }

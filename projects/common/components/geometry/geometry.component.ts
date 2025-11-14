@@ -23,8 +23,9 @@ declare const GGBApplet: any;
       {{ 'geometry_reset' | translate }}
     </button>
     <div [id]="elementModel.id" class="geogebra-applet"></div>
-    <aspect-spinner *ngIf="isGeoGebraLoaded" [isLoaded]="isLoaded"
-                    (timeOut)="throwError('geometry-timeout', 'Failed to load geometry in time')">
+    <aspect-spinner *ngIf="isGeoGebraLoaded"
+                    [isLoaded]="isLoaded"
+                    (timeOut)="throwError('geometry-timeout', timeoutMsg)">
     </aspect-spinner>
   `,
   styles: [
@@ -47,6 +48,11 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private ngUnsubscribe = new Subject<void>();
   private geometryUpdated = new EventEmitter<void>(); // local subscription to be able to debounce
   private pageChangeSubscription: Subscription;
+
+  get timeoutMsg(): string {
+    // eslint-disable-next-line max-len
+    return `Failed to load geogebra element with alias "${this.elementModel.alias}" in time`;
+  }
 
   constructor(public elementRef: ElementRef,
               private renderer: Renderer2,

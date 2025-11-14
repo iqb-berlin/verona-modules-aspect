@@ -1,6 +1,7 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
@@ -67,8 +68,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       <mat-form-field class="wide-form-field" appearance="fill"
                       matTooltip="Angabe als regulärer Ausdruck.">
         <mat-label>{{'propertiesPanel.pattern' | translate }}</mat-label>
-        <input matInput [value]="$any(combinedProperties.pattern)"
-               (input)="updateModel.emit({ property: 'pattern', value: $any($event.target).value })">
+        <input matInput [formControl]="regexPatternFormControl" (blur)="validateRegex($event)">
+        <mat-error>Invalides Muster</mat-error>
       </mat-form-field>
       <mat-form-field class="wide-form-field" appearance="fill">
         <mat-label>{{'propertiesPanel.patternWarnMessage' | translate }}</mat-label>
@@ -88,7 +89,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
   standalone: false
 })
 
-export class TextFieldElementPropertiesComponent {
+export class TextFieldElementPropertiesComponent implements OnInit {
   @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel = new EventEmitter<{
     property: string;
@@ -96,5 +97,22 @@ export class TextFieldElementPropertiesComponent {
     isInputValid?: boolean | null;
   }>();
 
+  regexPatternFormControl!: FormControl;
+
   constructor(public unitService: UnitService) { }
+
+  ngOnInit(): void {
+    this.regexPatternFormControl = new FormControl(this.combinedProperties.pattern);
+  }
+
+  validateRegex(event: FocusEvent) {
+    const value = (event?.target as HTMLInputElement).value;
+    try {
+      // eslint-disable-next-line no-new
+      new RegExp(value);
+      this.updateModel.emit({ property: 'pattern', value: value });
+    } catch (e) {
+      this.regexPatternFormControl.setErrors({ invalidPattern: true });
+    }
+  }
 }

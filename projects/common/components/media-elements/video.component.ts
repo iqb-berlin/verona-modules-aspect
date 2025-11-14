@@ -25,7 +25,10 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                                        [backgroundColor]="elementModel.styling.backgroundColor"
                                        (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                        (elementValueChanged)="elementValueChanged.emit($event)"
-                                       (hintDelayInitialized)="hintDelayInitialized.emit($event)">
+                                       (hintDelayInitialized)="hintDelayInitialized.emit($event)"
+                                       (mediaDurationNotAvailable)="throwError(
+                                         'media-duration-error',
+                                         mediaDurationNotAvailableMsg)">
         <video #player
                [style.width.%]="100"
                [src]="elementModel.src"
@@ -33,8 +36,9 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                (contextmenu)="$event.preventDefault()">
         </video>
       </aspect-media-player-control-bar>
-      <aspect-spinner [isLoaded]="isLoaded"
-                      (timeOut)="throwError('video-timeout', 'Failed to load video in time')">
+      <aspect-spinner
+        [isLoaded]="isLoaded"
+        (timeOut)="throwError('audio-timeout', timeoutMsg)">
       </aspect-spinner>
     </div>
   `,

@@ -390,5 +390,8 @@
   "termRows": "Termzeilen",
   "addTermRow": "Termzeile hinzufügen",
   "resultRow": "Ergebniszeile",
-  "resultHelperRow": "Untere Hilfszeile"
+  "resultHelperRow": "Untere Hilfszeile",
+  "error": {
+    "corruptElement": "Element-Ressource ist vermutlich fehlerhaft und sollte ausgetauscht werden! \n\n Ursprüngliche Fehlermeldung: {{ errorMsg }}"
+  }
 }

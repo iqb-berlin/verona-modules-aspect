@@ -22,13 +22,16 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                                      (mediaPlayStatusChanged)="mediaPlayStatusChanged.emit($event)"
                                      (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                      (elementValueChanged)="elementValueChanged.emit($event)"
-                                     (hintDelayInitialized)="hintDelayInitialized.emit($event)">
+                                     (hintDelayInitialized)="hintDelayInitialized.emit($event)"
+                                     (mediaDurationNotAvailable)="throwError(
+                                       'media-duration-error',
+                                       mediaDurationNotAvailableMsg)">
       <audio #player
              [style.width.%]="100">
       </audio>
     </aspect-media-player-control-bar>
     <aspect-spinner [isLoaded]="isLoaded"
-                    (timeOut)="throwError('audio-timeout', 'Failed to load audio in time')">
+                    (timeOut)="throwError('audio-timeout', timeoutMsg)">
     </aspect-spinner>
   `,
   styles: `

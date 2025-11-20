@@ -10,9 +10,10 @@
       Keine Elemente im Abschnitt
     </ng-container>
     <mat-list-item *ngFor="let element of sectionElements"
-                   (mouseenter)="onUnitListElHover(element)"
-                   (mouseleave)="onUnitListElLeave()"
-                   (click)="onUnitListElClick(element)">
+                   [disabled]="!element.position"
+                   (mouseenter)="element.position && onUnitListElHover(element)"
+                   (mouseleave)="element.position && onUnitListElLeave()"
+                   (click)="element.position && onUnitListElClick(element)">
       @if (!element.position) { <!-- Extra icon for cloze children; they have no position -->
         <mat-icon matListItemIcon [style.margin-right.px]="0">subdirectory_arrow_right</mat-icon>
       }

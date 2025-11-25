@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef
 } from '@angular/material/dialog';
+import packageJSON from 'editor/../../package.json';
 
 @Injectable({
   providedIn: 'root'
@@ -212,8 +213,10 @@ export class UnexpectedErrorComponent {
   reportBody: string;
 
   constructor(private clipboard: Clipboard) {
+    const editorVersion = packageJSON.config.editor_version;
+    const userAgent = navigator.userAgent;
     this.reportTitle = `Generierte Fehlermeldung: ${this.data.message}`;
-    this.reportBody = encodeURIComponent(`${this.reportTemplate}
+    this.reportBody = encodeURIComponent(`${this.reportTemplate(editorVersion, userAgent)}
       ${this.data.stack}`);
   }
 
@@ -230,7 +233,8 @@ export class UnexpectedErrorComponent {
     this.clipboard.copy(JSON.stringify(this.data.message + this.data.stack));
   }
 
-  reportTemplate = `**Fehlerbeschreibung**
+  // eslint-disable-next-line class-methods-use-this
+  reportTemplate = (version: string, userAgent: string) => `**Fehlerbeschreibung**
   Klare und kurze Beschreibung des Problems
 
   **Nachstellen**
@@ -244,5 +248,9 @@ export class UnexpectedErrorComponent {
   - Bei Links auf Aufgaben im Studio bitte darauf achten, dass diese für uns sichtbar sind.
   - Außerdem wäre es gut, wenn die Aufgaben sich auf das Darstellen des Problems beschränken und nicht voll mit anderen Dingen sind und wir erst die Stelle suchen müssen, die Probleme macht.
 
-  Fehlermeldung:`;
+  **Versionen (automatisch generiert)**
+  - Editorversion: ${version}
+  - Browser- und Betriebssystem: ${userAgent}
+
+  **Fehlermeldung (automatisch generiert)**`;
 }

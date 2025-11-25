@@ -1,6 +1,6 @@
 Allgemein
 =========
-## editor/2.11.0+player/2.11.0
+## editor/2.11.1+player/2.11.1
 ### Fehlerbehebungen
 - Tabelle
   - Behebt die Überlappung von Tabellenlinien mit Rahmen von Eingabebereichen im Firefox-Browser

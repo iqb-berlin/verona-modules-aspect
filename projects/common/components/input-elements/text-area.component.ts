@@ -63,7 +63,6 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 value="{{elementModel.value}}"
                 dynamicRows
                 [class.errors]="elementFormControl.errors && elementFormControl.touched"
-                [style.min-height.%]="100"
                 [style.--backgroundColor]="elementModel.styling.backgroundColor"
                 [style.color]="elementModel.styling.fontColor"
                 [style.font-size.px]="elementModel.styling.fontSize"
@@ -78,7 +77,6 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
                 [formControl]="elementFormControl"
                 [readonly]="elementModel.readOnly"
-                [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'vertical' : 'none'"
                 (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
@@ -101,8 +99,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       background-color: var(--backgroundColor) !important;
     }
     .table-child {
+      min-height: calc(100% - 1px);
       width: 100%;
-      height: 100%;
       box-sizing: border-box;
       border: none;
       padding: 0 10px;

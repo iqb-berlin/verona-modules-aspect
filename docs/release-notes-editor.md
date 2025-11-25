@@ -1,5 +1,14 @@
 Editor
 ======
+## 2.11.1
+### Änderungen
+- Fehlerberichterstattung
+  - Die Versionsnummer des Editors wird in den Fehlerbericht übernommen 
+
+### Fehlerbehebungen
+- Elementliste
+  - Entfernt die Auswahlmöglichkeit der angezeigten Verbundkinder per Klick. Verbundkinder müssen über den Umweg der Auswahl ihrer Elternelemente ausgewählt werden.
+
 ## 2.11.0
 ### Neue Funktionen
 - Neuer Dialog: Elementliste

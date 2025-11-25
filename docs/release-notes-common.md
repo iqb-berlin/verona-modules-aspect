@@ -1,6 +1,11 @@
 Allgemein
 =========
 ## editor/2.11.0+player/2.11.0
+### Fehlerbehebungen
+- Tabelle
+  - Behebt die Überlappung von Tabellenlinien mit Rahmen von Eingabebereichen im Firefox-Browser
+
+## editor/2.11.0+player/2.11.0
 ### Neue Funktionen
 - Geometrie
   - Ermöglicht die Angabe von erwarteten und durch Nutzer:innen erstellte Variablen. Diese sind dann in den Antwortdaten und zur Auswertung verfügbar.

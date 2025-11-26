@@ -1,5 +1,11 @@
 Allgemein
 =========
+## editor/2.11.2+player/2.11.2
+### Änderungen
+- Formel
+  - Entfernt die Schaltflächen zum "Rückgängig machen", "Kopieren", "Ausschneiden" und "Einfügen" aus der Kopfleiste der Tastatur
+  - Die Tastatur verwendet auch im Umschaltmodus die übliche "Rückwärts-Löschen"-Taste statt der "Alles Löschen"-Taste
+
 ## editor/2.11.1+player/2.11.1
 ### Fehlerbehebungen
 - Tabelle

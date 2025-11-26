@@ -123,3 +123,7 @@ blockquote p {
 .image-fullscreen-dialog mat-dialog-content {
   max-height: 100%;
 }
+
+.ML__edit-toolbar.right {
+  display: none !important;
+}

@@ -142,9 +142,10 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           command: 'performWithFeedback(moveToNextChar)'
         },
         {
-          label: '[backspace]',
+          class: 'action bottom right',
           width: 1.0,
-          class: 'action'
+          command: 'performWithFeedback(deleteBackward)',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-delete-backward /></svg>'
         }
       ]
     ]
@@ -413,9 +414,10 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           command: 'performWithFeedback(moveToNextChar)'
         },
         {
-          label: '[backspace]',
+          class: 'action bottom right',
           width: 1.0,
-          class: 'action'
+          command: 'performWithFeedback(deleteBackward)',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-delete-backward /></svg>'
         }
       ]
     ]
@@ -627,15 +629,10 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
               }
             },
             {
-              class: 'action bottom right hide-shift',
+              class: 'action bottom right',
               width: 1.5,
               command: 'performWithFeedback(deleteBackward)',
-              label: '<svg class=svg-glyph><use xlink:href=#svg-delete-backward /></svg>',
-              shift: {
-                class: 'action warning',
-                label: '<svg class=svg-glyph><use xlink:href=#svg-trash /></svg>',
-                command: 'deleteAll'
-              }
+              label: '<svg class=svg-glyph><use xlink:href=#svg-delete-backward /></svg>'
             }
           ],
           [
@@ -863,7 +860,12 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           aside: 'mu',
           shift: '\\char"39C'
         },
-        '[backspace]'
+        {
+          class: 'action bottom right',
+          width: 1.0,
+          command: 'performWithFeedback(deleteBackward)',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-delete-backward /></svg>'
+        }
       ],
       [
         '[separator]',

@@ -104,7 +104,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
                   {{mediaElement.alias}}
                 </mat-option>
               </mat-select>
-            </mat-form-field>mediaElement
+            </mat-form-field>
 
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.minRuns' | translate }}</mat-label>

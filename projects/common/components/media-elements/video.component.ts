@@ -13,6 +13,7 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
       <aspect-media-player-control-bar *ngIf="elementModel.src"
                                        class="correct-position"
                                        [player]="player"
+                                       [videoClicked]="videoClicked"
                                        [isLoaded]="isLoaded"
                                        [project]="project"
                                        [active]="active"
@@ -33,6 +34,7 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                [style.width.%]="100"
                [src]="elementModel.src"
                disablepictureinpicture="true"
+               (click)="videoClicked.emit($event)"
                (contextmenu)="$event.preventDefault()">
         </video>
       </aspect-media-player-control-bar>
@@ -54,4 +56,5 @@ export class VideoComponent extends MediaPlayerElementComponent {
   @Input() elementModel!: VideoElement;
   @Input() hintDelay!: number;
   @Output() hintDelayInitialized = new EventEmitter<string>();
+  @Output() videoClicked = new EventEmitter<MouseEvent>();
 }

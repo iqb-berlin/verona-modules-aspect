@@ -123,7 +123,8 @@ export abstract class PropertyGroupValidators {
       blueprint.inputAssistanceFloatingStartPosition !== undefined &&
       blueprint.showSoftwareKeyboard !== undefined &&
       blueprint.hideNativeKeyboard !== undefined &&
-      blueprint.hasArrowKeys !== undefined;
+      blueprint.hasArrowKeys !== undefined &&
+      blueprint?.keyStyle !== undefined;
   }
 
   static isValidBasicStyles(blueprint?: BasicStyles): boolean {
@@ -266,7 +267,8 @@ export abstract class PropertyGroupGenerators {
       hideNativeKeyboard: properties.hideNativeKeyboard !== undefined ?
         properties.hideNativeKeyboard : false,
       hasArrowKeys: properties.hasArrowKeys !== undefined ?
-        properties.hasArrowKeys : false
+        properties.hasArrowKeys : false,
+      keyStyle: properties.keyStyle !== undefined ? properties.keyStyle : 'round'
     };
   }
 }

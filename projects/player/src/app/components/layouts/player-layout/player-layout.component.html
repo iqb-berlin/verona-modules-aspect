@@ -13,6 +13,7 @@
         [customKeys]="keypadService.elementComponent.elementModel.inputAssistanceCustomKeys | inputAssistanceCustomKeys"
         [restrictToAllowedKeys]="!!keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
         [hasArrowKeys]="!!keypadService.elementComponent.elementModel.hasArrowKeys"
+        [keyStyle]="keypadService.elementComponent.elementModel.keyStyle === 'round' ? 'round' : 'square'"
         [hasBackspaceKey]="!!keypadService.elementComponent.elementModel.hasBackspaceKey"
         [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"
         (backSpaceClicked)="keypadService.deleteCharacters.emit(true)"

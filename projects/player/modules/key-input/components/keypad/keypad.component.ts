@@ -5,10 +5,10 @@ import { KeyInputLayout, KeyLayout } from 'player/modules/key-input/configs/key-
 import { InputAssistancePreset } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-keypad',
-    templateUrl: './keypad.component.html',
-    styleUrls: ['./keypad.component.css'],
-    standalone: false
+  selector: 'aspect-keypad',
+  templateUrl: './keypad.component.html',
+  styleUrls: ['./keypad.component.scss'],
+  standalone: false
 })
 export class KeypadComponent implements OnInit {
   @Input() preset!: InputAssistancePreset;
@@ -19,6 +19,7 @@ export class KeypadComponent implements OnInit {
   @Input() hasArrowKeys!: boolean;
   @Input() hasReturnKey!: boolean;
   @Input() hasBackspaceKey!: boolean;
+  @Input() keyStyle!: 'round' | 'square';
 
   @Output() backSpaceClicked = new EventEmitter();
   @Output() keyClicked = new EventEmitter<string>();

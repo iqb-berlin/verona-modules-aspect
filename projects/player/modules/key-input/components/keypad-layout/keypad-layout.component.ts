@@ -15,6 +15,7 @@ export class KeypadLayoutComponent extends KeyInputRestrictionDirective implemen
   @Input() preset!: InputAssistancePreset;
   @Input() layout!: KeyInputLayout;
   @Input() position!: 'floating' | 'right';
+  @Input() keyStyle!: 'round' | 'square';
 
   @Output() keyClicked = new EventEmitter<string>();
 

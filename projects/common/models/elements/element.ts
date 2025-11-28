@@ -210,7 +210,8 @@ function isValidKeyInputProperties(blueprint: Partial<KeyInputElementProperties>
     blueprint.showSoftwareKeyboard !== undefined &&
     blueprint.addInputAssistanceToKeyboard !== undefined &&
     blueprint.hideNativeKeyboard !== undefined &&
-    blueprint.hasArrowKeys !== undefined;
+    blueprint.hasArrowKeys !== undefined &&
+    blueprint.keyStyle !== undefined;
 }
 
 function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>)
@@ -232,6 +233,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
   showSoftwareKeyboard: boolean = true;
   addInputAssistanceToKeyboard: boolean = true;
   hideNativeKeyboard: boolean = true;
+  keyStyle: 'round' | 'square' = 'round';
 
   protected constructor(element: { type: string } & Partial<TextInputElementProperties>, idService?: AbstractIDService) {
     super(element, idService);
@@ -246,6 +248,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
       this.showSoftwareKeyboard = element.showSoftwareKeyboard;
       this.hideNativeKeyboard = element.hideNativeKeyboard;
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
+      this.keyStyle = element.keyStyle;
     } else {
       if (environment.strictInstantiation) {
         throw Error('Error at TextInputElement instantiation');
@@ -260,6 +263,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
       if (element?.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
       if (element?.addInputAssistanceToKeyboard) this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
       if (element?.hideNativeKeyboard) this.hideNativeKeyboard = element.hideNativeKeyboard;
+      if (element?.keyStyle) this.keyStyle = element.keyStyle;
     }
   }
 }

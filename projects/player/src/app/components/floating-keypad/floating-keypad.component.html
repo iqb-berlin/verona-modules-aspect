@@ -17,6 +17,7 @@
       [hasArrowKeys]="!!keypadService.elementComponent.elementModel.hasArrowKeys"
       [hasBackspaceKey]="!!keypadService.elementComponent.elementModel.hasBackspaceKey"
       [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"
+      [keyStyle]="keypadService.elementComponent.elementModel.keyStyle === 'round' ? 'round' : 'square'"
       (backSpaceClicked)="keypadService.deleteCharacters.emit(true)"
       (keyClicked)="keypadService.enterKey.emit($event)"
       (select)="keypadService.select.emit($event)">

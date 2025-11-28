@@ -161,6 +161,7 @@ export interface KeyInputElementProperties {
   showSoftwareKeyboard: boolean;
   addInputAssistanceToKeyboard: boolean;
   hideNativeKeyboard: boolean;
+  keyStyle: 'round' | 'square'
   hasArrowKeys: boolean;
 }
 

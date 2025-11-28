@@ -8,9 +8,10 @@ describe('KeypadComponent', () => {
   let component: KeypadComponent;
   let fixture: ComponentFixture<KeypadComponent>;
   @Component({
-    selector: 'aspect-keypad-layout', template: '',
+    selector: 'aspect-keypad-layout',
+    template: '',
     standalone: false
-})
+  })
   class KeypadLayoutComponent {
     @Input() preset!: InputAssistancePreset;
     @Input() layout!: KeyInputLayout;
@@ -20,6 +21,7 @@ describe('KeypadComponent', () => {
     @Input() hasArrowKeys!: boolean;
     @Input() hasReturnKey!: boolean;
     @Input() arrows!: string[];
+    @Input() keyStyle!: 'round' | 'square';
   }
 
   beforeEach(async () => {

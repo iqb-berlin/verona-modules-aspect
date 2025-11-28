@@ -42,6 +42,7 @@
     "showRestRuns": false,
     "showRestTime": true,
     "playbackTime": 0,
-    "imgSrc": null
+    "imgSrc": null,
+    "imgFileName": ""
   }
 }

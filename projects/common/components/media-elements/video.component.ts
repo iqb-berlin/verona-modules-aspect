@@ -13,6 +13,7 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
       <aspect-media-player-control-bar *ngIf="elementModel.src"
                                        class="correct-position"
                                        [player]="player"
+                                       [type]="elementModel.type === 'video' ? 'video' : 'audio'"
                                        [videoClicked]="videoClicked"
                                        [isLoaded]="isLoaded"
                                        [project]="project"

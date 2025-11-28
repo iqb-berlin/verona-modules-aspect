@@ -1,5 +1,9 @@
 Editor
 ======
+## 2.12.0
+### Änderungen
+- Überarbeitung der Zuordnung und Sortierung der Eigenschaften im Medienoptionen-Dialog  
+
 ## 2.11.1
 ### Änderungen
 - Fehlerberichterstattung

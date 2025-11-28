@@ -18,6 +18,7 @@ import { ValueChangeElement } from 'common/interfaces';
 export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() mediaSrc!: string;
+  @Input() type!: 'video' | 'audio';
   @Input() id!: string;
   @Input() savedPlaybackTime!: number;
   @Input() playerProperties!: PlayerProperties;

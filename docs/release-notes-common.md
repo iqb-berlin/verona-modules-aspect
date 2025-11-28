@@ -1,5 +1,12 @@
 Allgemein
 =========
+## editor/2.12.0+player/2.12.0
+### Neue Funktionen
+- Audio:   
+  - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird über der Steuerungsleiste angezeigt.
+- Video:
+  - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird zentral auf dem Videodisplay angezeigt und ist nur sichtbar, wenn das Video gestoppt und abspielbar ist
+
 ## editor/2.11.2+player/2.11.2
 ### Änderungen
 - Formel

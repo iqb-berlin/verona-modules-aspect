@@ -291,7 +291,8 @@ function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): b
     blueprint.player.maxRuns !== undefined &&
     blueprint.player.showRestRuns !== undefined &&
     blueprint.player.showRestTime !== undefined &&
-    blueprint.player.playbackTime !== undefined;
+    blueprint.player.playbackTime !== undefined &&
+    blueprint.player.imgSrc !== undefined;
 }
 
 export abstract class PlayerElement extends UIElement implements PlayerElementBlueprint {

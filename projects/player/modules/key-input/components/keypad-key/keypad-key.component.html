@@ -1,27 +1,57 @@
-<button
+@if (keyStyle === 'square') {
+  <button
     type="button"
-    mat-mini-fab
-    class="key"
+    mat-raised-button
+    class="square-key"
     [class.fixed-keypad-key]="position === 'right'"
     [style.font-weight]="preset === 'squareDashDot' ? 400: null"
-    [class.vertical-oval-floating-keypad-key]="verticalKey && position === 'floating'"
-    [class.vertical-oval-fixed-keypad-key]="verticalKey && position !== 'floating'"
-    [class.big-horizontal-oval-floating-keypad-key]="bigHorizontalKey && position === 'floating'"
-    [class.big-horizontal-oval-fixed-keypad-key]="bigHorizontalKey && position !== 'floating'"
-    [class.horizontal-oval-floating-keypad-key]="horizontalKey && position === 'floating'"
-    [class.horizontal-oval-fixed-keypad-key]="horizontalKey && position !== 'floating'"
+    [class.vertical-square-floating-keypad-key]="verticalKey && position === 'floating'"
+    [class.vertical-square-fixed-keypad-key]="verticalKey && position !== 'floating'"
+    [class.big-horizontal-square-floating-keypad-key]="bigHorizontalKey && position === 'floating'"
+    [class.big-horizontal-square-fixed-keypad-key]="bigHorizontalKey && position !== 'floating'"
+    [class.horizontal-square-floating-keypad-key]="horizontalKey && position === 'floating'"
+    [class.horizontal-square-fixed-keypad-key]="horizontalKey && position !== 'floating'"
     [class.right-position-floating]="singleKey && position === 'floating' && key === 'Backspace'"
     [class.right-position-fixed]="singleKey && position !== 'floating' && key === 'Backspace'"
     [class.dark-mode]="darkMode"
     (click)="keyClicked.emit(key);">
-  <character-icon *ngIf="key !== ' ' && key.length === 1">{{key}}</character-icon>
-  <mat-icon *ngIf="key === ' '">space_bar</mat-icon>
-  <mat-icon *ngIf="key === 'Backspace'">keyboard_backspace</mat-icon>
-  <mat-icon *ngIf="key === 'Shift'">keyboard_arrow_up</mat-icon>
-  <mat-icon *ngIf="key === 'ShiftUp'">keyboard_capslock</mat-icon>
-  <mat-icon *ngIf="key === 'ArrowLeft'">arrow_back</mat-icon>
-  <mat-icon *ngIf="key === 'ArrowRight'">arrow_forward</mat-icon>
-  <mat-icon *ngIf="key === 'ArrowUp'">arrow_upward</mat-icon>
-  <mat-icon *ngIf="key === 'ArrowDown'">arrow_downward</mat-icon>
-  <mat-icon *ngIf="key === '\n'">keyboard_return</mat-icon>
-</button>
+    <character-icon *ngIf="key !== ' ' && key.length === 1">{{key}}</character-icon>
+    <mat-icon *ngIf="key === ' '">space_bar</mat-icon>
+    <mat-icon *ngIf="key === 'Backspace'">keyboard_backspace</mat-icon>
+    <mat-icon *ngIf="key === 'Shift'">keyboard_arrow_up</mat-icon>
+    <mat-icon *ngIf="key === 'ShiftUp'">keyboard_capslock</mat-icon>
+    <mat-icon *ngIf="key === 'ArrowLeft'">arrow_back</mat-icon>
+    <mat-icon *ngIf="key === 'ArrowRight'">arrow_forward</mat-icon>
+    <mat-icon *ngIf="key === 'ArrowUp'">arrow_upward</mat-icon>
+    <mat-icon *ngIf="key === 'ArrowDown'">arrow_downward</mat-icon>
+    <mat-icon *ngIf="key === '\n'">keyboard_return</mat-icon>
+  </button>
+} @else {
+  <button
+      type="button"
+      mat-mini-fab
+      class="round-key"
+      [class.fixed-keypad-key]="position === 'right'"
+      [style.font-weight]="preset === 'squareDashDot' ? 400: null"
+      [class.vertical-round-floating-keypad-key]="verticalKey && position === 'floating'"
+      [class.vertical-round-fixed-keypad-key]="verticalKey && position !== 'floating'"
+      [class.big-horizontal-round-floating-keypad-key]="bigHorizontalKey && position === 'floating'"
+      [class.big-horizontal-round-fixed-keypad-key]="bigHorizontalKey && position !== 'floating'"
+      [class.horizontal-round-floating-keypad-key]="horizontalKey && position === 'floating'"
+      [class.horizontal-round-fixed-keypad-key]="horizontalKey && position !== 'floating'"
+      [class.right-position-floating]="singleKey && position === 'floating' && key === 'Backspace'"
+      [class.right-position-fixed]="singleKey && position !== 'floating' && key === 'Backspace'"
+      [class.dark-mode]="darkMode"
+      (click)="keyClicked.emit(key);">
+    <character-icon *ngIf="key !== ' ' && key.length === 1">{{key}}</character-icon>
+    <mat-icon *ngIf="key === ' '">space_bar</mat-icon>
+    <mat-icon *ngIf="key === 'Backspace'">keyboard_backspace</mat-icon>
+    <mat-icon *ngIf="key === 'Shift'">keyboard_arrow_up</mat-icon>
+    <mat-icon *ngIf="key === 'ShiftUp'">keyboard_capslock</mat-icon>
+    <mat-icon *ngIf="key === 'ArrowLeft'">arrow_back</mat-icon>
+    <mat-icon *ngIf="key === 'ArrowRight'">arrow_forward</mat-icon>
+    <mat-icon *ngIf="key === 'ArrowUp'">arrow_upward</mat-icon>
+    <mat-icon *ngIf="key === 'ArrowDown'">arrow_downward</mat-icon>
+    <mat-icon *ngIf="key === '\n'">keyboard_return</mat-icon>
+  </button>
+}

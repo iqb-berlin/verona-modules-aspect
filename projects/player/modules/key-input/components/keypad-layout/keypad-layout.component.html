@@ -1,6 +1,7 @@
 <div [class.fixed-big-row-container]="position === 'right' && (preset === 'french' || preset === 'custom' || preset === 'chemicalEquation')"
      [class.fixed-small-row-container]="position === 'right' && (preset !== 'french' && preset !== 'custom' && preset !== 'chemicalEquation')"
-     [class.floating-row-container]="position === 'floating'">
+     [class.floating-round-keys-row-container]="position === 'floating' && keyStyle === 'round'"
+     [class.floating-square-keys-row-container]="position === 'floating' && keyStyle === 'square'">
   <div *ngFor="let row of rows; let last = last">
     <ng-container *ngFor="let key of row; let index = index; let lastRowKey = last">
       <aspect-keypad-key
@@ -83,7 +84,8 @@
 
   <div *ngIf="hasArrowKeys && !(preset === 'french' && position === 'floating')"
        class="grid-layout"
-       [class.floating-arrow-layout]="position === 'floating'"
+       [class.floating-round-keys-arrow-layout]="position === 'floating' && keyStyle === 'round'"
+       [class.floating-square-keys-arrow-layout]="position === 'floating' && keyStyle === 'square'"
        [class.fixed-arrow-layout]="position !== 'floating'">
     <aspect-keypad-key
       [style.grid-column-start]="2"

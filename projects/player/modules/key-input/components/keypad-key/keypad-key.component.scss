@@ -1,4 +1,4 @@
-.key{
+.key {
   background-color: white;
   font-size: x-large;
   margin-bottom: 5px;
@@ -8,50 +8,96 @@
   vertical-align: top;
 }
 
-.fixed-keypad-key{
+.round-key {
+  @extend .key;
+}
+
+.square-key {
+  @extend .key;
+  min-width: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  padding-left: 20px;
+  ::ng-deep .mat-icon {
+    margin-right: 0;
+  }
+}
+
+.fixed-keypad-key {
   width: 65px;
   height: 65px;
 }
 
-.vertical-oval-floating-keypad-key{
+.vertical-round-floating-keypad-key {
   height: 85px;
   border-radius: 20px !important;
 }
 
-.vertical-oval-fixed-keypad-key{
+.vertical-square-floating-keypad-key {
+  height: 104px;
+  border-radius: 5px !important;
+}
+
+.vertical-round-fixed-keypad-key {
   height: 135px;
   border-radius: 65px !important;
 }
 
-.big-horizontal-oval-floating-keypad-key{
+.vertical-square-fixed-keypad-key {
+  height: 135px;
+  border-radius: 5px !important;
+}
+
+.big-horizontal-round-floating-keypad-key {
   width: 130px;
   border-radius: 20px !important;
 }
 
-.big-horizontal-oval-fixed-keypad-key{
+.big-horizontal-square-floating-keypad-key {
+  width: 156px;
+  border-radius: 5px !important;
+}
+
+.big-horizontal-round-fixed-keypad-key {
   width: 205px;
   border-radius: 65px !important;
 }
 
-.horizontal-oval-floating-keypad-key{
+.big-horizontal-square-fixed-keypad-key {
+  width: 205px;
+  border-radius: 5px !important;
+}
+
+.horizontal-round-floating-keypad-key{
   width: 85px;
   border-radius: 20px !important;
 }
 
-.horizontal-oval-fixed-keypad-key{
+.horizontal-square-floating-keypad-key{
+  width: 104px;
+  border-radius: 5px !important;
+}
+
+.horizontal-round-fixed-keypad-key {
   width: 135px;
   border-radius: 65px !important;
 }
 
-.right-position-floating{
+.horizontal-square-fixed-keypad-key {
+  width: 135px;
+  border-radius: 5px !important;
+}
+
+.right-position-floating {
   margin-left: 42px;
 }
 
-.right-position-fixed{
+.right-position-fixed {
   margin-left: 67px;
 }
 
 .dark-mode {
-  background-color: dimgray;
-  color: #fff;
+  background-color: dimgray !important;
+  color: #fff !important;
 }

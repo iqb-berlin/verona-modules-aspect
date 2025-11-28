@@ -278,7 +278,10 @@
     "permanentPlaceholders": "Platzhalter anzeigen",
     "permanentPlaceholdersCC": "Platzhalter mit Durchschrift",
     "trackedGeogebraVariables": "Ergebnisvariablen",
-    "geogebraHeader": "Kopfzeile"
+    "geogebraHeader": "Kopfzeile",
+    "keyStyle": "Tastenform",
+    "round": "rund",
+    "square": "eckig"
   },
   "formulaPreset": {
     "title": "Formeleingabelayouts auswählen",

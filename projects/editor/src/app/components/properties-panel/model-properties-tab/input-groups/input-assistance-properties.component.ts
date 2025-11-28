@@ -4,8 +4,8 @@ import {
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 
 @Component({
-    selector: 'aspect-input-assistance-properties',
-    template: `
+  selector: 'aspect-input-assistance-properties',
+  template: `
     <fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
       <legend>Eingabehilfe</legend>
       <mat-checkbox [checked]="$any(combinedProperties.showSoftwareKeyboard)"
@@ -97,6 +97,18 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null && combinedProperties.keyStyle !== undefined"
+                      appearance="fill">
+        <mat-label>{{'propertiesPanel.keyStyle' | translate }}</mat-label>
+        <mat-select [value]="combinedProperties.keyStyle"
+                    (selectionChange)="updateModel.emit({ property: 'keyStyle', value: $event.value })">
+          <mat-option *ngFor="let option of ['round', 'square']"
+                      [value]="option">
+            {{'propertiesPanel.' + option | translate}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
                          combinedProperties.restrictedToInputAssistanceChars !== undefined"
                     [checked]="$any(combinedProperties.restrictedToInputAssistanceChars)"
@@ -129,7 +141,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       </mat-checkbox>
     </fieldset>
   `,
-    standalone: false
+  standalone: false
 })
 
 export class InputAssistancePropertiesComponent {

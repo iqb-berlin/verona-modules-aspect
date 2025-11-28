@@ -8,8 +8,12 @@
   margin: auto;
 }
 
-.floating-row-container {
+.floating-round-keys-row-container {
   max-width: 354px;
+}
+
+.floating-square-keys-row-container {
+  max-width: 454px;
 }
 
 .grid-layout {
@@ -35,9 +39,14 @@
   grid-template-columns: 70px 70px 65px;
 }
 
-.floating-arrow-layout {
+.floating-round-keys-arrow-layout {
   grid-template-columns: 35px 35px 40px;
   grid-template-rows: 35px 35px 40px;
+}
+
+.floating-square-keys-arrow-layout {
+  grid-template-columns: 55px 55px 55px;
+  grid-template-rows: 55px 55px 55px;
 }
 
 .fixed-arrow-layout {

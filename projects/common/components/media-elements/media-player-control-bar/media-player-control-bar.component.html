@@ -1,4 +1,16 @@
-<ng-content></ng-content>
+<div class="display-container">
+  <ng-content></ng-content>
+  @if (playerProperties.imgSrc) {
+    <img [src]="playerProperties.imgSrc"
+         class="image-control"
+         [class.center-image-control]="type === 'video'"
+         [class.hidden]="(type === 'video') && (playing || disabled || !active || !dependencyDissolved)"
+         [class.enabled-image-control]="!playing && !disabled && active && dependencyDissolved"
+         [class.active-image-control]="playing"
+         [class.disabled-image-control]="disabled || !active || !dependencyDissolved"
+         (click)="!disabled && active && dependencyDissolved ? play() : null">
+}
+</div>
 <div *ngIf="playerProperties.startControl ||
     playerProperties.pauseControl ||
     playerProperties.showRestRuns ||

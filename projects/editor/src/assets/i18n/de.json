@@ -305,12 +305,12 @@
     "readOnly": "Schreibgeschützt"
   },
   "player": {
-    "loop": "Wiederholt abspielen",
+    "loop": "Wiederholt abspielen (Loop)",
     "startControl": "Wiedergabeknopf anzeigen",
     "pauseControl": "Pausieren erlauben",
     "progressBar": "Fortschrittsbalken anzeigen",
     "interactiveProgressbar": "Fortschrittssteuerung erlauben",
-    "volumeControl": "Lautstärkeregelung anzeigen (nicht für iPad)",
+    "volumeControl": "Lautstärkeregelung anzeigen (ungeeignet für iPad)",
     "muteControl": "Stummschaltung anzeigen",
     "interactiveMuteControl": "Stummschaltung erlauben",
     "minVolume": "Minimale Lautstärke",
@@ -321,10 +321,14 @@
     "hintLabel": "Aufforderungstext",
     "hintDelay": "Verzögerung der Aufforderung (ms)",
     "activeAfterID": "Abspielbar nach Audio/Video-ID",
-    "minRuns": "Minimale Anzahl der Durchläufe",
+    "minRuns": "Minimale Anzahl der Durchläufe (verpflichtend)",
     "maxRuns": "Maximale Anzahl der Durchläufe",
     "appearance": "Erscheinungsbild",
-    "behaviour": "Verhalten"
+    "behaviour": "Verhalten",
+    "startImage": "Alternativer Startknopf",
+    "controlBar": "Steuerleiste",
+    "displayHint": "Aufforderungsanzeige",
+    "runs": "Wiederholungseinstellungen"
   },
   "toolbox": {
     "text": "Text",

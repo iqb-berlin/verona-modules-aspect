@@ -5,95 +5,157 @@ import {
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { FileService } from 'common/services/file.service';
 
 @Component({
-    selector: 'aspect-player-edit-dialog',
-    template: `
-    <mat-dialog-content [style.height.%]="90">
+  selector: 'aspect-player-edit-dialog',
+  template: `
+    <mat-dialog-content [style.min-height.%]="90">
       <mat-tab-group>
         <mat-tab label="{{ 'player.appearance' | translate }}">
-          <div class="fx-column-start-stretch">
-            <mat-checkbox #startControl
-                          [checked]="newPlayerConfig.startControl"
-                          (change)="newPlayerConfig.startControl = $event.checked">
-              {{ 'player.startControl' | translate }}
-            </mat-checkbox>
-            <mat-checkbox [disabled]="!startControl.checked"
-                          [checked]="newPlayerConfig.pauseControl"
-                          (change)="newPlayerConfig.pauseControl = $event.checked">
-              {{ 'player.pauseControl' | translate }}
-            </mat-checkbox>
-            <mat-checkbox #progressControl
-                          [checked]="newPlayerConfig.progressBar"
-                          (change)="newPlayerConfig.progressBar = $event.checked">
-              {{ 'player.progressBar' | translate }}
-            </mat-checkbox>
-            <mat-checkbox [disabled]="!progressControl.checked"
-                          [checked]="newPlayerConfig.interactiveProgressbar"
-                          (change)="newPlayerConfig.interactiveProgressbar = $event.checked">
-              {{ 'player.interactiveProgressbar' | translate }}
-            </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.volumeControl"
-                          (change)="newPlayerConfig.volumeControl = $event.checked">
-              {{ 'player.volumeControl' | translate }}
-            </mat-checkbox>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'player.defaultVolume' | translate }}</mat-label>
-              <input matInput type="number" min="0" max="1" step="0.1"
-                     [ngModel]="newPlayerConfig.defaultVolume"
-                     (ngModelChange)="newPlayerConfig.defaultVolume = $event"
-                     (change)="newPlayerConfig.defaultVolume = newPlayerConfig.defaultVolume ?
-                                                               newPlayerConfig.defaultVolume : 0">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'player.minVolume' | translate }}</mat-label>
-              <input matInput type="number" min="0" max="1" step="0.1"
-                     [ngModel]="newPlayerConfig.minVolume"
-                     (ngModelChange)="newPlayerConfig.minVolume = $event"
-                     (change)="newPlayerConfig.minVolume = newPlayerConfig.minVolume ? newPlayerConfig.minVolume : 0">
-            </mat-form-field>
-            <mat-checkbox #muteControl
-                          [checked]="newPlayerConfig.muteControl"
-                          (change)="newPlayerConfig.muteControl = $event.checked">
-              {{ 'player.muteControl' | translate }}
-            </mat-checkbox>
-            <mat-checkbox [disabled]="!muteControl.checked"
-                          [checked]="newPlayerConfig.interactiveMuteControl"
-                          (change)="newPlayerConfig.interactiveMuteControl = $event.checked">
-              {{ 'player.interactiveMuteControl' | translate }}
-            </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.showRestTime"
-                          (change)="newPlayerConfig.showRestTime = $event.checked">
-              {{ 'player.showRestTime' | translate }}
-            </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.showHint"
-                          (change)="newPlayerConfig.showHint = $event.checked">
-              {{ 'player.showHint' | translate }}
-            </mat-checkbox>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'player.hintLabel' | translate }}</mat-label>
-              <input matInput type="text"
-                     [value]="newPlayerConfig.hintLabel"
-                     [disabled]="!newPlayerConfig.showHint"
-                     (input)="newPlayerConfig.hintLabel = $any($event.target).value">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'player.hintDelay' | translate }}</mat-label>
-              <input matInput type="number" step="1000" min="0"
-                     [disabled]="!newPlayerConfig.showHint"
-                     [ngModel]="newPlayerConfig.hintDelay"
-                     (ngModelChange)="newPlayerConfig.hintDelay = $event"
-                     (change)="newPlayerConfig.hintDelay = newPlayerConfig.hintDelay ?
-                                                                newPlayerConfig.hintDelay : 0">
-            </mat-form-field>
+          <div class="fx-column-start-stretch fx-gap-10">
+            <fieldset>
+              <legend>{{ 'player.startImage' | translate }}</legend>
+              <div class="fx-row-start-start fx-gap-10">
+                <div class="fx-column-start-stretch fx-gap-10">
+                  <button mat-raised-button
+                          (click)="loadImage()">
+                    {{ 'loadImage' | translate }}
+                  </button>
+                  <button mat-raised-button
+                          [disabled]="!newPlayerConfig.imgSrc"
+                          (click)="removeImage()">
+                    {{ 'removeImage' | translate }}
+                  </button>
+                </div>
+                @if (newPlayerConfig.imgSrc){
+                  <img class="image-preview"
+                       [src]="$any(newPlayerConfig).imgSrc">
+              }
+              </div>
+              @if (newPlayerConfig.imgFileName) {
+                <div>{{newPlayerConfig.imgFileName}}</div>
+              }
+            </fieldset>
+
+            <fieldset>
+              <legend>{{ 'player.controlBar' | translate }}</legend>
+              <div class="fx-column-start-stretch">
+                <mat-checkbox #startControl
+                              [checked]="newPlayerConfig.startControl"
+                              (change)="newPlayerConfig.startControl = $event.checked">
+                  {{ 'player.startControl' | translate }}
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!startControl.checked"
+                              [checked]="newPlayerConfig.pauseControl"
+                              (change)="newPlayerConfig.pauseControl = $event.checked">
+                  {{ 'player.pauseControl' | translate }}
+                </mat-checkbox>
+                <mat-checkbox #progressControl
+                              [checked]="newPlayerConfig.progressBar"
+                              (change)="newPlayerConfig.progressBar = $event.checked">
+                  {{ 'player.progressBar' | translate }}
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!progressControl.checked"
+                              [checked]="newPlayerConfig.interactiveProgressbar"
+                              (change)="newPlayerConfig.interactiveProgressbar = $event.checked">
+                  {{ 'player.interactiveProgressbar' | translate }}
+                </mat-checkbox>
+                <mat-checkbox [checked]="newPlayerConfig.volumeControl"
+                              (change)="newPlayerConfig.volumeControl = $event.checked">
+                  {{ 'player.volumeControl' | translate }}
+                </mat-checkbox>
+                <mat-form-field appearance="fill">
+                  <mat-label>{{ 'player.defaultVolume' | translate }}</mat-label>
+                  <input matInput type="number" min="0" max="1" step="0.1"
+                         [ngModel]="newPlayerConfig.defaultVolume"
+                         (ngModelChange)="newPlayerConfig.defaultVolume = $event"
+                         (change)="newPlayerConfig.defaultVolume = newPlayerConfig.defaultVolume ?
+                                                                   newPlayerConfig.defaultVolume : 0">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                  <mat-label>{{ 'player.minVolume' | translate }}</mat-label>
+                  <input matInput type="number" min="0" max="1" step="0.1"
+                         [ngModel]="newPlayerConfig.minVolume"
+                         (ngModelChange)="newPlayerConfig.minVolume = $event"
+                         (change)="newPlayerConfig.minVolume = newPlayerConfig.minVolume ? newPlayerConfig.minVolume : 0">
+                </mat-form-field>
+                <mat-checkbox #muteControl
+                              [checked]="newPlayerConfig.muteControl"
+                              (change)="newPlayerConfig.muteControl = $event.checked">
+                  {{ 'player.muteControl' | translate }}
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!muteControl.checked"
+                              [checked]="newPlayerConfig.interactiveMuteControl"
+                              (change)="newPlayerConfig.interactiveMuteControl = $event.checked">
+                  {{ 'player.interactiveMuteControl' | translate }}
+                </mat-checkbox>
+                <mat-checkbox [checked]="newPlayerConfig.showRestTime"
+                              (change)="newPlayerConfig.showRestTime = $event.checked">
+                  {{ 'player.showRestTime' | translate }}
+                </mat-checkbox>
+              </div>
+            </fieldset>
           </div>
         </mat-tab>
+
+
+
         <mat-tab label="{{ 'player.behaviour' | translate }}">
-          <div class="fx-column-start-stretch">
-            <mat-checkbox [checked]="newPlayerConfig.loop"
-                          (change)="newPlayerConfig.loop = $event.checked">
-              {{ 'player.loop' | translate }}
-            </mat-checkbox>
+          <div class="fx-column-start-stretch fx-gap-10">
+            <fieldset>
+              <legend>{{ 'player.displayHint' | translate }}</legend>
+              <div class="fx-column-start-stretch">
+                <mat-checkbox [checked]="newPlayerConfig.showHint"
+                              (change)="newPlayerConfig.showHint = $event.checked">
+                  {{ 'player.showHint' | translate }}
+                </mat-checkbox>
+                <mat-form-field appearance="fill">
+                  <mat-label>{{ 'player.hintLabel' | translate }}</mat-label>
+                  <input matInput type="text"
+                         [value]="newPlayerConfig.hintLabel"
+                         [disabled]="!newPlayerConfig.showHint"
+                         (input)="newPlayerConfig.hintLabel = $any($event.target).value">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                  <mat-label>{{ 'player.hintDelay' | translate }}</mat-label>
+                  <input matInput type="number" step="1000" min="0"
+                         [disabled]="!newPlayerConfig.showHint"
+                         [ngModel]="newPlayerConfig.hintDelay"
+                         (ngModelChange)="newPlayerConfig.hintDelay = $event"
+                         (change)="newPlayerConfig.hintDelay = newPlayerConfig.hintDelay ?
+                                                                    newPlayerConfig.hintDelay : 0">
+                </mat-form-field>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>{{ 'player.runs' | translate }}</legend>
+              <div class="fx-column-start-stretch">
+                <mat-checkbox [checked]="newPlayerConfig.loop"
+                              (change)="newPlayerConfig.loop = $event.checked">
+                  {{ 'player.loop' | translate }}
+                </mat-checkbox>
+                <mat-form-field appearance="fill">
+                  <mat-label>{{ 'player.minRuns' | translate }}</mat-label>
+                  <input matInput type="number" min="0"
+                         [ngModel]="newPlayerConfig.minRuns"
+                         (ngModelChange)="newPlayerConfig.minRuns = $event"
+                         (change)="newPlayerConfig.minRuns = newPlayerConfig.minRuns ? newPlayerConfig.minRuns : 0">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                  <mat-label>{{ 'player.maxRuns' | translate }}</mat-label>
+                  <input matInput type="number" min="0"
+                         [ngModel]="newPlayerConfig.maxRuns"
+                         (ngModelChange)="newPlayerConfig.maxRuns = $event"
+                         (change)="newPlayerConfig.maxRuns = newPlayerConfig.maxRuns ? newPlayerConfig.maxRuns : 0">
+                </mat-form-field>
+                <mat-checkbox [checked]="newPlayerConfig.showRestRuns"
+                              (change)="newPlayerConfig.showRestRuns = $event.checked">
+                  {{ 'player.showRestRuns' | translate }}
+                </mat-checkbox>
+              </div>
+            </fieldset>
 
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.activeAfterID' | translate }}</mat-label>
@@ -104,26 +166,9 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
                   {{mediaElement.alias}}
                 </mat-option>
               </mat-select>
-            </mat-form-field>mediaElement
+            </mat-form-field>
 
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'player.minRuns' | translate }}</mat-label>
-              <input matInput type="number" min="0"
-                     [ngModel]="newPlayerConfig.minRuns"
-                     (ngModelChange)="newPlayerConfig.minRuns = $event"
-                     (change)="newPlayerConfig.minRuns = newPlayerConfig.minRuns ? newPlayerConfig.minRuns : 0">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'player.maxRuns' | translate }}</mat-label>
-              <input matInput type="number" min="0"
-                     [ngModel]="newPlayerConfig.maxRuns"
-                     (ngModelChange)="newPlayerConfig.maxRuns = $event"
-                     (change)="newPlayerConfig.maxRuns = newPlayerConfig.maxRuns ? newPlayerConfig.maxRuns : 0">
-            </mat-form-field>
-            <mat-checkbox [checked]="newPlayerConfig.showRestRuns"
-                          (change)="newPlayerConfig.showRestRuns = $event.checked">
-              {{ 'player.showRestRuns' | translate }}
-            </mat-checkbox>
+
           </div>
         </mat-tab>
       </mat-tab-group>
@@ -133,9 +178,13 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-    styles: [`
+  styles: [`
     mat-tab-group {
       height: 100%;
+    }
+
+    .image-preview {
+      max-width: 100px;
     }
 
     :host ::ng-deep .mat-mdc-tab-body-wrapper {
@@ -143,17 +192,29 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       height: 100%;
     }
   `],
-    standalone: false
+  standalone: false
 })
 export class PlayerEditDialogComponent {
   newPlayerConfig: PlayerProperties = { ...this.data.playerProps };
   constructor(@Inject(MAT_DIALOG_DATA)protected data: { elementID: string, playerProps: PlayerProperties }) {
   }
+
+  async loadImage(): Promise<void> {
+    await FileService.loadImage().then(image => {
+      this.newPlayerConfig.imgSrc = image.content;
+      this.newPlayerConfig.imgFileName = image.name;
+    });
+  }
+
+  removeImage(): void {
+    this.newPlayerConfig.imgSrc = null;
+    this.newPlayerConfig.imgFileName = '';
+  }
 }
 
 @Pipe({
-    name: 'getValidAudioVideoAliasAndIDs',
-    standalone: false
+  name: 'getValidAudioVideoAliasAndIDs',
+  standalone: false
 })
 export class GetValidAudioVideoAliasAndIDsPipe implements PipeTransform {
   constructor(private unitService: UnitService) {}

@@ -18,6 +18,7 @@ import { ValueChangeElement } from 'common/interfaces';
 export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() mediaSrc!: string;
+  @Input() type!: 'video' | 'audio';
   @Input() id!: string;
   @Input() savedPlaybackTime!: number;
   @Input() playerProperties!: PlayerProperties;
@@ -27,6 +28,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   @Input() hintDelay!: number;
   @Input() backgroundColor: string = '#f1f1f1';
   @Input() isLoaded!: BehaviorSubject<boolean>;
+  @Input() videoClicked!: EventEmitter<MouseEvent>;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() mediaValidStatusChanged = new EventEmitter<string>();
   @Output() mediaPlayStatusChanged = new EventEmitter<string | null>();
@@ -61,7 +63,18 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       setTimeout(() => this.init()); // audios are not loaded in time (ipad has problem with loading many audios)
     } else {
       this.init(); // videos
+      this.subscribeToVideoClick();
     }
+  }
+
+  private subscribeToVideoClick(): void {
+    this.videoClicked
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        if (!this.disabled && this.active && this.dependencyDissolved) {
+          this.play();
+        }
+      });
   }
 
   private init(): void {

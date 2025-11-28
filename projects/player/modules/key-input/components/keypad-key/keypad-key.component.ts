@@ -11,9 +11,9 @@ import { InputAssistancePreset } from 'common/interfaces';
 })
 export class KeypadKeyComponent {
   @Input() key!: string;
-  @Input() verticalOval!: boolean;
-  @Input() horizontalOval!: boolean;
-  @Input() bigHorizontalOval!: boolean;
+  @Input() verticalKey!: boolean;
+  @Input() horizontalKey!: boolean;
+  @Input() bigHorizontalKey!: boolean;
   @Input() darkMode!: boolean;
   @Input() position!: 'floating' | 'right';
   @Input() singleKey!: boolean;

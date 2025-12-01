@@ -7,7 +7,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
   selector: 'aspect-input-assistance-properties',
   template: `
     <fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
-      <legend>Eingabehilfe</legend>
+      <legend>Tastatur</legend>
       <mat-checkbox [checked]="$any(combinedProperties.showSoftwareKeyboard)"
                     (change)="updateShowSoftwareKeyboard($event.checked)">
         {{'propertiesPanel.showSoftwareKeyboard' | translate }}
@@ -23,7 +23,9 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                     (change)="updateModel.emit({ property: 'addInputAssistanceToKeyboard', value: $event.checked })">
         {{'propertiesPanel.addInputAssistanceToKeyboard' | translate }}
       </mat-checkbox>
-
+    </fieldset>
+    <fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
+      <legend>Eingabehilfe</legend>
       <mat-form-field appearance="fill"
                       class="wide-form-field">
         <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>

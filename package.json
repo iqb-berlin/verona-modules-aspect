@@ -9,7 +9,6 @@
     "ng": "ng",
     "start-editor-local": "ng serve editor --port 4201",
     "start-player-local": "ng serve player --port 4202",
-    "start-player-local-network": "ng serve player --port 4202 --host 0.0.0.0",
     "build-editor": "scripts/build.sh editor $npm_package_config_editor_version",
     "build-player": "scripts/build.sh player $npm_package_config_player_version",
     "test": "ng test",

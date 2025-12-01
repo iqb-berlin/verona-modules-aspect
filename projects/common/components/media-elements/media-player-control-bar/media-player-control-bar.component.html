@@ -1,4 +1,5 @@
-<div class="display-container">
+<div class="display-container"
+  [class.correct-position]="type === 'video' || playerProperties.imgSrc">
   <ng-content></ng-content>
   @if (playerProperties.imgSrc) {
     <img [src]="playerProperties.imgSrc"

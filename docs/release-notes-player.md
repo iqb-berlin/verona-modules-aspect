@@ -1,5 +1,12 @@
 Player
 ======
+## 2.12.0-beta
+### Änderungen
+- Audio/Video
+  - Bei nicht gewähltem Pause-Knopf wird der Abspielknopf während des Anspielens farblich hervorgehoben 
+- Video
+  - Videos können per Klick auf die Anzeigefläche abgespielt werden  
+
 ## 2.11.0
 ### Fehlerbehebungen
 - Eingabebereich

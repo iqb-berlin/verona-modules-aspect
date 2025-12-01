@@ -1,6 +1,6 @@
 Allgemein
 =========
-## editor/2.12.0+player/2.12.0
+## editor/2.12.0-beta+player/2.12.0-beta
 ### Neue Funktionen
 - Audio:   
   - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird über der Steuerungsleiste angezeigt.

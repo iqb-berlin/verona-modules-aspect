@@ -1,6 +1,6 @@
 Editor
 ======
-## 2.12.0
+## 2.12.0-beta
 ### Änderungen
 - Überarbeitung der Zuordnung und Sortierung der Eigenschaften im Medienoptionen-Dialog  
 

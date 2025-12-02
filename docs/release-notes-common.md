@@ -6,6 +6,9 @@ Allgemein
   - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird über der Steuerungsleiste angezeigt.
 - Video:
   - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird zentral auf dem Videodisplay angezeigt und ist nur sichtbar, wenn das Video gestoppt und abspielbar ist
+### Fehlerbehebungen
+- Tabelle
+  - Korrigiert Schreibschutz-Einstellung für Kontrollkästchen 
 
 ## editor/2.11.2+player/2.11.2
 ### Änderungen

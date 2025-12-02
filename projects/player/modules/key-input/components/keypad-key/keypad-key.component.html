@@ -17,7 +17,7 @@
     (click)="keyClicked.emit(key);">
     <character-icon *ngIf="key !== ' ' && key.length === 1">{{key}}</character-icon>
     <mat-icon *ngIf="key === ' '">space_bar</mat-icon>
-    <mat-icon *ngIf="key === 'Backspace'">keyboard_backspace</mat-icon>
+    <mat-icon *ngIf="key === 'Backspace'">backspace</mat-icon>
     <mat-icon *ngIf="key === 'Shift'">keyboard_arrow_up</mat-icon>
     <mat-icon *ngIf="key === 'ShiftUp'">keyboard_capslock</mat-icon>
     <mat-icon *ngIf="key === 'ArrowLeft'">arrow_back</mat-icon>

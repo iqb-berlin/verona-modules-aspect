@@ -239,3 +239,4 @@ iqb-aspect-definition@1.0.0
   - new property: imgFileName
 - TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement:
   - new property: keyStyle: 'round' | 'square'
+  - new property: inputAssistanceCustomStyle: 'small' | 'medium' | 'large'

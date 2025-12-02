@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { KeyInputLayout, KeyLayout } from 'player/modules/key-input/configs/key-layout';
-import { InputAssistancePreset } from 'common/interfaces';
+import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-keypad',
@@ -12,6 +12,7 @@ import { InputAssistancePreset } from 'common/interfaces';
 })
 export class KeypadComponent implements OnInit {
   @Input() preset!: InputAssistancePreset;
+  @Input() customStyle!: InputAssistanceCustomStyle;
   @Input() customKeys!: string;
   @Input() position!: 'floating' | 'right';
   @Input() inputElement!: HTMLElement;

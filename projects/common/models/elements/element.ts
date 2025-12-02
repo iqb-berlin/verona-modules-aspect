@@ -218,6 +218,7 @@ function isTextInputElementProperties(blueprint: Partial<TextInputElementPropert
   : blueprint is TextInputElementProperties {
   return blueprint.restrictedToInputAssistanceChars !== undefined &&
     blueprint.inputAssistanceCustomKeys !== undefined &&
+    blueprint.inputAssistanceCustomStyle !== undefined &&
     blueprint.hasBackspaceKey !== undefined &&
     isValidKeyInputProperties(blueprint);
 }
@@ -225,6 +226,7 @@ function isTextInputElementProperties(blueprint: Partial<TextInputElementPropert
 export abstract class TextInputElement extends InputElement implements TextInputElementProperties {
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistanceCustomKeys: string = '';
+  inputAssistanceCustomStyle: 'small' | 'medium' | 'large' = 'medium';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
   restrictedToInputAssistanceChars: boolean = false;
@@ -240,6 +242,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
     if (isTextInputElementProperties(element)) {
       this.inputAssistancePreset = element.inputAssistancePreset;
       this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+      this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
       this.inputAssistancePosition = element.inputAssistancePosition;
       this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
@@ -255,6 +258,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
       }
       if (element?.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
       if (element?.inputAssistanceCustomKeys) this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+      if (element?.inputAssistanceCustomStyle) this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
       if (element?.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
       if (element?.inputAssistanceFloatingStartPosition) this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
       if (element?.restrictedToInputAssistanceChars) this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;

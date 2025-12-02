@@ -1,10 +1,11 @@
-<div [class.fixed-big-row-container]="position === 'right' && (preset === 'french' || preset === 'custom' || preset === 'chemicalEquation')"
-     [class.fixed-small-row-container]="position === 'right' && (preset !== 'french' && preset !== 'custom' && preset !== 'chemicalEquation')"
-     [class.floating-round-keys-row-container]="position === 'floating' && keyStyle === 'round'"
-     [class.floating-square-keys-row-container]="position === 'floating' && keyStyle === 'square'">
+<div [className]="position | getLayoutClass : preset : keyStyle : customStyle">
   <div *ngFor="let row of rows; let last = last">
     <ng-container *ngFor="let key of row; let index = index; let lastRowKey = last">
       <aspect-keypad-key
+          [class.backspace-round-large-mode]="key === 'Backspace' && keyStyle === 'round' && preset === 'custom' &&
+                                              position === 'floating' && customStyle === 'large'"
+          [class.backspace-square-large-mode]="key === 'Backspace' && keyStyle === 'square' && preset === 'custom' &&
+                                               position === 'floating' && customStyle === 'large'"
           [singleKey]="lastRowKey && index === 0"
           [key]="key"
           [preset]="preset"
@@ -14,7 +15,7 @@
           [position]="position"
           (keyClicked)="canEdit(key === 'Backspace' ? 'Backspace' : null ) ? evaluateClickedKeyValue($event) : null">
       </aspect-keypad-key>
-      <ng-container *ngIf="last && lastRowKey && preset  === 'french'">
+      <ng-container *ngIf="last && lastRowKey && preset === 'french'">
         <aspect-keypad-key *ngIf="hasReturnKey"
                            [key]="'\n'"
                            [preset]="preset"

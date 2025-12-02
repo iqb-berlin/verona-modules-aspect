@@ -13,7 +13,41 @@
 }
 
 .floating-square-keys-row-container {
-  max-width: 454px;
+  max-width: 432px;
+}
+
+.floating-round-keys-small-row-container {
+  max-width: 177px;
+}
+
+.floating-square-keys-small-row-container {
+  max-width: 216px;
+}
+
+
+.floating-round-keys-medium-row-container {
+  max-width: 354px;
+}
+
+.floating-square-keys-medium-row-container {
+  max-width: 432px;
+}
+
+
+.floating-round-keys-large-row-container {
+  max-width: 100%;
+}
+
+.floating-square-keys-large-row-container {
+  max-width: 100%;
+}
+
+.backspace-round-large-mode {
+  margin-left: 20px;
+}
+
+.backspace-square-large-mode {
+  margin-left: 25px;
 }
 
 .grid-layout {

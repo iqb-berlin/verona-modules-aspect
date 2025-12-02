@@ -7,7 +7,11 @@ Allgemein
 - Video:
   - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird zentral auf dem Videodisplay angezeigt und ist nur sichtbar, wenn das Video gestoppt und abspielbar ist
 - Eingabehilfe:
-  - Die Tasten der Eingabehilfe können optional mit einem eckigen Design dargestellt werden   
+  - Die Tasten der Eingabehilfe können optional mit einem eckigen Design dargestellt werden
+  - Bei "Eigene Zeichen" kann die Breite der Tastatur angepasst werden: 
+    - Schmal: 4 Tasten  
+    - Mittel: 8 Tasten (wie bisher)
+    - Breit: Es werden wenn möglich alle Tasten in einer Zeile angezeigt (Ausnahme: Eingabetaste & Pfeiltasten). Die Löschtaste hat einen Abstand zu den übrigen Tasten. 
 
 ### Fehlerbehebungen
 - Tabelle

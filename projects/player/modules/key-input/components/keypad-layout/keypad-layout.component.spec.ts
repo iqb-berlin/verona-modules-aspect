@@ -3,20 +3,23 @@ import { Component, Input } from '@angular/core';
 import { InputAssistancePreset } from 'common/interfaces';
 import { GetAlternativeKeyPipe } from 'player/modules/key-input/pipes/get-alternative-key.pipe';
 import { KeypadLayoutComponent } from 'player/modules/key-input/components/keypad-layout/keypad-layout.component';
+import { GetLayoutClassPipe } from 'player/modules/key-input/pipes/get-layout-class.pipe';
 
 describe('KeypadLayoutComponent', () => {
   let component: KeypadLayoutComponent;
   let fixture: ComponentFixture<KeypadLayoutComponent>;
 
   @Component({
-    selector: 'aspect-keypad-key', template: '',
+    selector: 'aspect-keypad-key',
+    template: '',
     standalone: false
-})
+  })
   class KeypadKeyComponent {
     @Input() key!: string;
     @Input() verticalOval!: boolean;
     @Input() horizontalOval!: boolean;
     @Input() bigHorizontalOval!: boolean;
+    @Input() keyStyle!: 'round' | 'square';
     @Input() darkMode!: boolean;
     @Input() position!: 'floating' | 'right';
     @Input() singleKey!: boolean;
@@ -28,7 +31,8 @@ describe('KeypadLayoutComponent', () => {
       declarations: [
         KeypadLayoutComponent,
         KeypadKeyComponent,
-        GetAlternativeKeyPipe
+        GetAlternativeKeyPipe,
+        GetLayoutClassPipe
       ]
     }).compileComponents();
   });

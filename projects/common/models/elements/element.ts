@@ -210,13 +210,15 @@ function isValidKeyInputProperties(blueprint: Partial<KeyInputElementProperties>
     blueprint.showSoftwareKeyboard !== undefined &&
     blueprint.addInputAssistanceToKeyboard !== undefined &&
     blueprint.hideNativeKeyboard !== undefined &&
-    blueprint.hasArrowKeys !== undefined;
+    blueprint.hasArrowKeys !== undefined &&
+    blueprint.keyStyle !== undefined;
 }
 
 function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>)
   : blueprint is TextInputElementProperties {
   return blueprint.restrictedToInputAssistanceChars !== undefined &&
     blueprint.inputAssistanceCustomKeys !== undefined &&
+    blueprint.inputAssistanceCustomStyle !== undefined &&
     blueprint.hasBackspaceKey !== undefined &&
     isValidKeyInputProperties(blueprint);
 }
@@ -224,6 +226,7 @@ function isTextInputElementProperties(blueprint: Partial<TextInputElementPropert
 export abstract class TextInputElement extends InputElement implements TextInputElementProperties {
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistanceCustomKeys: string = '';
+  inputAssistanceCustomStyle: 'small' | 'medium' | 'large' = 'medium';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
   restrictedToInputAssistanceChars: boolean = false;
@@ -232,12 +235,14 @@ export abstract class TextInputElement extends InputElement implements TextInput
   showSoftwareKeyboard: boolean = true;
   addInputAssistanceToKeyboard: boolean = true;
   hideNativeKeyboard: boolean = true;
+  keyStyle: 'round' | 'square' = 'round';
 
   protected constructor(element: { type: string } & Partial<TextInputElementProperties>, idService?: AbstractIDService) {
     super(element, idService);
     if (isTextInputElementProperties(element)) {
       this.inputAssistancePreset = element.inputAssistancePreset;
       this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+      this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
       this.inputAssistancePosition = element.inputAssistancePosition;
       this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
@@ -246,12 +251,14 @@ export abstract class TextInputElement extends InputElement implements TextInput
       this.showSoftwareKeyboard = element.showSoftwareKeyboard;
       this.hideNativeKeyboard = element.hideNativeKeyboard;
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
+      this.keyStyle = element.keyStyle;
     } else {
       if (environment.strictInstantiation) {
         throw Error('Error at TextInputElement instantiation');
       }
       if (element?.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
       if (element?.inputAssistanceCustomKeys) this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+      if (element?.inputAssistanceCustomStyle) this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
       if (element?.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
       if (element?.inputAssistanceFloatingStartPosition) this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
       if (element?.restrictedToInputAssistanceChars) this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
@@ -260,6 +267,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
       if (element?.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
       if (element?.addInputAssistanceToKeyboard) this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
       if (element?.hideNativeKeyboard) this.hideNativeKeyboard = element.hideNativeKeyboard;
+      if (element?.keyStyle) this.keyStyle = element.keyStyle;
     }
   }
 }

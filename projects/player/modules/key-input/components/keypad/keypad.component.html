@@ -8,6 +8,7 @@
        (mousedown)="$event.preventDefault(); $event.stopPropagation()">
     <aspect-keypad-layout
         [inputElement]="inputElement"
+        [customStyle]="customStyle"
         [preset]="preset"
         [layout]="layout"
         [position]="position"
@@ -15,6 +16,7 @@
         [hasArrowKeys]="hasArrowKeys"
         [arrows]="arrows"
         [hasReturnKey]="hasReturnKey"
+        [keyStyle]="keyStyle"
         (keyClicked)="evaluateClickedKeyValue($event)">
     </aspect-keypad-layout>
   </div>

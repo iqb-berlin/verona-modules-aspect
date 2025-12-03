@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
-import { InputAssistancePreset } from 'common/interfaces';
+import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/interfaces';
 import { KeyInputRestrictionDirective } from '../../directives/key-input-restriction.directive';
 import { KeyInputLayout } from '../../configs/key-layout';
 
@@ -15,6 +15,8 @@ export class KeypadLayoutComponent extends KeyInputRestrictionDirective implemen
   @Input() preset!: InputAssistancePreset;
   @Input() layout!: KeyInputLayout;
   @Input() position!: 'floating' | 'right';
+  @Input() keyStyle!: 'round' | 'square';
+  @Input() customStyle!: InputAssistanceCustomStyle;
 
   @Output() keyClicked = new EventEmitter<string>();
 

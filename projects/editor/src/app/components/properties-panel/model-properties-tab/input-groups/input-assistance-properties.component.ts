@@ -2,12 +2,13 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { INPUT_ASSISTANCE_CUSTOM_STYLES } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-input-assistance-properties',
-    template: `
+  selector: 'aspect-input-assistance-properties',
+  template: `
     <fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
-      <legend>Eingabehilfe</legend>
+      <legend>Tastatur</legend>
       <mat-checkbox [checked]="$any(combinedProperties.showSoftwareKeyboard)"
                     (change)="updateShowSoftwareKeyboard($event.checked)">
         {{'propertiesPanel.showSoftwareKeyboard' | translate }}
@@ -23,7 +24,9 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                     (change)="updateModel.emit({ property: 'addInputAssistanceToKeyboard', value: $event.checked })">
         {{'propertiesPanel.addInputAssistanceToKeyboard' | translate }}
       </mat-checkbox>
-
+    </fieldset>
+    <fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
+      <legend>Eingabehilfe</legend>
       <mat-form-field appearance="fill"
                       class="wide-form-field">
         <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
@@ -69,6 +72,23 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                (input)="updateModel.emit({ property: 'inputAssistanceCustomKeys', value: $any($event.target).value })">
       </mat-form-field>
 
+
+      <mat-form-field *ngIf="combinedProperties.inputAssistancePreset === 'custom' &&
+                             combinedProperties.inputAssistancePosition === 'floating'"
+                      appearance="fill">
+        <mat-label>{{'propertiesPanel.inputAssistanceCustomStyle' | translate }}</mat-label>
+        <mat-select [value]="combinedProperties.inputAssistanceCustomStyle"
+                    (selectionChange)="updateModel.emit({
+                      property: 'inputAssistanceCustomStyle',
+                      value: $event.value
+                    })">
+          <mat-option *ngFor="let option of INPUT_ASSISTANCE_CUSTOM_STYLES"
+                      [value]="option">
+            {{ 'propertiesPanel.' + option | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
                              combinedProperties.inputAssistancePosition !== undefined"
                       appearance="fill">
@@ -97,22 +117,36 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                             combinedProperties.keyStyle !== undefined"
+                      appearance="fill">
+        <mat-label>{{'propertiesPanel.keyStyle' | translate }}</mat-label>
+        <mat-select [value]="combinedProperties.keyStyle"
+                    (selectionChange)="updateModel.emit({ property: 'keyStyle', value: $event.value })">
+          <mat-option *ngFor="let option of ['round', 'square']"
+                      [value]="option">
+            {{'propertiesPanel.' + option | translate}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
-                         combinedProperties.restrictedToInputAssistanceChars !== undefined"
+                           combinedProperties.restrictedToInputAssistanceChars !== undefined"
                     [checked]="$any(combinedProperties.restrictedToInputAssistanceChars)"
-                    (change)="updateModel.emit({ property: 'restrictedToInputAssistanceChars', value: $event.checked })">
+                    (change)="updateModel
+                                .emit({ property: 'restrictedToInputAssistanceChars', value: $event.checked })">
         {{'propertiesPanel.restrictedToInputAssistanceChars' | translate }}
       </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
-                         combinedProperties.hasArrowKeys !== undefined"
+                           combinedProperties.hasArrowKeys !== undefined"
                     [checked]="$any(combinedProperties.hasArrowKeys)"
                     (change)="updateModel.emit({ property: 'hasArrowKeys', value: $event.checked })">
         {{'propertiesPanel.hasArrowKeys' | translate }}
       </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
-                         combinedProperties.hasBackspaceKey !== undefined"
+                           combinedProperties.hasBackspaceKey !== undefined"
                     [disabled]="combinedProperties.inputAssistancePreset !== 'custom'"
                     [checked]="combinedProperties.inputAssistancePreset === 'custom' ?
                                 $any(combinedProperties.hasBackspaceKey) :
@@ -121,15 +155,16 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
         {{'propertiesPanel.hasBackspaceKey' | translate }}
       </mat-checkbox>
 
-      <mat-checkbox *ngIf="combinedProperties.type === 'text-area' && combinedProperties.inputAssistancePreset !== null &&
-                         combinedProperties.hasReturnKey !== undefined"
+      <mat-checkbox *ngIf="combinedProperties.type === 'text-area' &&
+                           combinedProperties.inputAssistancePreset !== null &&
+                           combinedProperties.hasReturnKey !== undefined"
                     [checked]="$any(combinedProperties.hasReturnKey)"
                     (change)="updateModel.emit({ property: 'hasReturnKey', value: $event.checked })">
         {{'propertiesPanel.hasReturnKey' | translate }}
       </mat-checkbox>
     </fieldset>
   `,
-    standalone: false
+  standalone: false
 })
 
 export class InputAssistancePropertiesComponent {
@@ -139,6 +174,8 @@ export class InputAssistancePropertiesComponent {
     value: string | number | boolean | string[] | null;
     isInputValid?: boolean | null;
   }>();
+
+  INPUT_ASSISTANCE_CUSTOM_STYLES = INPUT_ASSISTANCE_CUSTOM_STYLES;
 
   updateInputAssistancePreset(inputAssistancePreset: string | null): void {
     this.updateModel.emit({ property: 'inputAssistancePreset', value: inputAssistancePreset });

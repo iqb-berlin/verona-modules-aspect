@@ -31,6 +31,7 @@ import { PrintModule } from 'player/modules/print/print.module';
 import {
   ActionGroupElementComponent
 } from 'player/src/app/components/elements/action-group-element/action-group-element.component';
+import { InputAssistanceCustomStylePipe } from 'player/src/app/pipes/input-assistance-custom-style.pipe';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -106,6 +107,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     PageScrollButtonComponent,
     ExternalAppGroupElementComponent,
     InputAssistanceCustomKeysPipe,
+    InputAssistanceCustomStylePipe,
     PageNavButtonComponent,
     HasPreviousPagePipe,
     HasNextPagePipe,

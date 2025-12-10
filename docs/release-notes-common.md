@@ -1,19 +1,21 @@
 Allgemein
 =========
-## editor/2.12.0-beta.2+player/2.12.0-beta.2
+## editor/2.12.0+player/2.12.0
 ### Neue Funktionen
 - Audio:   
   - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird über der Steuerungsleiste angezeigt.
 - Video:
   - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird zentral auf dem Videodisplay angezeigt und ist nur sichtbar, wenn das Video gestoppt und abspielbar ist
 - Eingabehilfe:
-  - Die Tasten der Eingabehilfe können optional etwas größer in einem eckigen Design dargestellt werden.
-    - Im eckigen Design ändert sich das Symbol der Löschtaste
-    - Steuerungstasten nutzen im eckigen Design einen helleren Hintergrund als im runden Design 
-  - Bei "Eigene Zeichen" kann die Breite der Tastatur angepasst werden: 
+  - Die Tasten der Eingabehilfe können neben rund auch eckig dargestellt werden 
+      - Eckige Tasten sind größer als runde
+      - Im eckigen Design wird ein anderes Symbol für die Löschtaste verwendet
+      - Steuerungstasten nutzen im eckigen Design einen helleren Hintergrund als im runden Design 
+  - Bei "Eigene Zeichen" kann die maximale Breite der Tastatur angepasst werden: 
     - Schmal: 4 Tasten  
     - Mittel: 8 Tasten (wie bisher)
-    - Breit: Es werden wenn möglich alle Tasten in einer Zeile angezeigt (Ausnahme: Eingabetaste & Pfeiltasten). Die Löschtaste hat einen Abstand zu den übrigen Tasten. 
+    - Breit: Es werden wenn möglich alle Tasten in einer Zeile angezeigt (Ausnahme: Eingabetaste & Pfeiltasten).
+      - Die Löschtaste hat einen Abstand zu den übrigen Tasten 
 
 ### Fehlerbehebungen
 - Tabelle

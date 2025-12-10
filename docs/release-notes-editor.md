@@ -1,8 +1,11 @@
 Editor
 ======
-## 2.12.0-beta.2
+## 2.12.0
 ### Änderungen
-- Überarbeitung der Zuordnung und Sortierung der Eigenschaften im Medienoptionen-Dialog  
+- Medienoptionen
+  - Überarbeitet die Zuordnung und Sortierung der Einstellungsoptionen
+- Eingabehilfe & Tastatur
+  - Überarbeitet die Darstellung der Einstellungsoptionen
 
 ## 2.11.1
 ### Änderungen

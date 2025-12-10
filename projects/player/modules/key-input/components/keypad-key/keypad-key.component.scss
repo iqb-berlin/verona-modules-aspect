@@ -97,7 +97,12 @@
   margin-left: 67px;
 }
 
-.dark-mode {
+.round-dark-mode {
   background-color: dimgray !important;
   color: #fff !important;
+}
+
+.square-dark-mode {
+  background-color: #ddd !important;
+  color: #000 !important;
 }

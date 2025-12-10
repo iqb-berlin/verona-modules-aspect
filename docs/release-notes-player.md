@@ -1,6 +1,6 @@
 Player
 ======
-## 2.12.0-beta.2
+## 2.12.0
 ### Änderungen
 - Audio/Video
   - Bei nicht gewähltem Pause-Knopf wird der Abspielknopf während des Anspielens farblich hervorgehoben 

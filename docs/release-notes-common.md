@@ -7,7 +7,9 @@ Allgemein
 - Video:
   - Bild als alternativer oder zusätzlicher Startknopf: Das Bild wird zentral auf dem Videodisplay angezeigt und ist nur sichtbar, wenn das Video gestoppt und abspielbar ist
 - Eingabehilfe:
-  - Die Tasten der Eingabehilfe können optional etwas größer in einem eckigen Design dargestellt werden. Im eckigen Design ändert sich das Symbol der Löschtaste. 
+  - Die Tasten der Eingabehilfe können optional etwas größer in einem eckigen Design dargestellt werden.
+    - Im eckigen Design ändert sich das Symbol der Löschtaste
+    - Steuerungstasten nutzen im eckigen Design einen helleren Hintergrund als im runden Design 
   - Bei "Eigene Zeichen" kann die Breite der Tastatur angepasst werden: 
     - Schmal: 4 Tasten  
     - Mittel: 8 Tasten (wie bisher)

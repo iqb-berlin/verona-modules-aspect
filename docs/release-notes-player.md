@@ -1,5 +1,11 @@
 Player
 ======
+## 2.11.3
+### Fehlerbehebungen
+- Formelbereich bei Nutzung der IQB-Tastatur
+  - Falls notwendig wird zur aktuellen Cursorposition gescrollt
+
+
 ## 2.11.0
 ### Fehlerbehebungen
 - Eingabebereich

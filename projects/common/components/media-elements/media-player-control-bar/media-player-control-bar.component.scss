@@ -61,7 +61,7 @@
 }
 
 .active-control {
-  color: #006064;
+  color: #006064 !important;
 }
 
 .duration {
@@ -94,3 +94,47 @@
 :host ::ng-deep mat-slider input {
   pointer-events: inherit !important;
 }
+
+.display-container {
+  position: relative;
+}
+
+.correct-position {
+  margin-bottom: -6px;
+}
+
+.hidden {
+  display: none;
+}
+
+.image-control {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.center-image-control {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.enabled-image-control {
+  cursor: pointer;
+  &:hover {
+   filter: brightness(90%)
+  }
+}
+
+.active-image-control {
+  cursor: default;
+  filter: contrast(120%);
+}
+
+.disabled-image-control {
+  cursor: default;
+  filter: grayscale(100%);
+  opacity: 0.7;
+}
+
+

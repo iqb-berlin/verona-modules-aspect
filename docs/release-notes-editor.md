@@ -1,5 +1,12 @@
 Editor
 ======
+## 2.12.0
+### Änderungen
+- Medienoptionen
+  - Überarbeitet die Zuordnung und Sortierung der Einstellungsoptionen
+- Eingabehilfe & Tastatur
+  - Überarbeitet die Darstellung der Einstellungsoptionen
+
 ## 2.11.1
 ### Änderungen
 - Fehlerberichterstattung

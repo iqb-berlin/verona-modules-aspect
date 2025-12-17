@@ -2,16 +2,17 @@ import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { KeyInputLayout, KeyLayout } from 'player/modules/key-input/configs/key-layout';
-import { InputAssistancePreset } from 'common/interfaces';
+import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-keypad',
-    templateUrl: './keypad.component.html',
-    styleUrls: ['./keypad.component.css'],
-    standalone: false
+  selector: 'aspect-keypad',
+  templateUrl: './keypad.component.html',
+  styleUrls: ['./keypad.component.scss'],
+  standalone: false
 })
 export class KeypadComponent implements OnInit {
   @Input() preset!: InputAssistancePreset;
+  @Input() customStyle!: InputAssistanceCustomStyle;
   @Input() customKeys!: string;
   @Input() position!: 'floating' | 'right';
   @Input() inputElement!: HTMLElement;
@@ -19,6 +20,7 @@ export class KeypadComponent implements OnInit {
   @Input() hasArrowKeys!: boolean;
   @Input() hasReturnKey!: boolean;
   @Input() hasBackspaceKey!: boolean;
+  @Input() keyStyle!: 'round' | 'square';
 
   @Output() backSpaceClicked = new EventEmitter();
   @Output() keyClicked = new EventEmitter<string>();

@@ -119,6 +119,9 @@ PositionProperties | PlayerProperties | Measurement | Measurement[] | Visibility
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'chemicalEquation' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';
 
+export const INPUT_ASSISTANCE_CUSTOM_STYLES = ['small', 'medium', 'large'] as const;
+export type InputAssistanceCustomStyle = typeof INPUT_ASSISTANCE_CUSTOM_STYLES[number];
+
 export const MATH_KEYBOARD_PRESETS = ['math', 'symbols', 'physics', 'latin', 'greek'] as const;
 export type MathKeyboardPreset = typeof MATH_KEYBOARD_PRESETS[number];
 
@@ -161,11 +164,13 @@ export interface KeyInputElementProperties {
   showSoftwareKeyboard: boolean;
   addInputAssistanceToKeyboard: boolean;
   hideNativeKeyboard: boolean;
+  keyStyle: 'round' | 'square'
   hasArrowKeys: boolean;
 }
 
 export interface TextInputElementProperties extends KeyInputElementProperties, InputElementProperties {
   inputAssistanceCustomKeys: string;
+  inputAssistanceCustomStyle: 'small' | 'medium' | 'large'
   restrictedToInputAssistanceChars: boolean;
   hasBackspaceKey: boolean;
 }

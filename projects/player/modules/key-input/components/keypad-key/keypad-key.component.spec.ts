@@ -7,9 +7,10 @@ describe('KeypadKeyComponent', () => {
   let fixture: ComponentFixture<KeypadKeyComponent>;
 
   @Component({
-    selector: 'character-icon', template: '',
+    selector: 'character-icon',
+    template: '',
     standalone: false
-})
+  })
   class MockedCharacterIconComponent {
     @Input() size!: number;
   }

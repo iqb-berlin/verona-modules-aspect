@@ -221,7 +221,7 @@ iqb-aspect-definition@1.0.0
 
 4.10.0
 - InputAssistancePreset:
-  - new property: chemicalEquation
+  - new type: chemicalEquation
 - MathFieldElement, TextAreaMathElement
   - new property: mathKeyboardPresets
 - GeometryElement
@@ -232,3 +232,11 @@ iqb-aspect-definition@1.0.0
   - rename property: hintLabelDelay -> hintDelay
 - TextFieldElement, TextAreaElement
   - remove property: hasKeyboardIcon
+
+4.11.0
+- VideoElement, AudioElement
+  - new property: imgSrc
+  - new property: imgFileName
+- TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement:
+  - new property: keyStyle: 'round' | 'square'
+  - new property: inputAssistanceCustomStyle: 'small' | 'medium' | 'large'

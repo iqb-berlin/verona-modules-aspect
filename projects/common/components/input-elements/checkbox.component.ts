@@ -35,6 +35,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </ng-container>
     <ng-container *ngIf="tableMode">
       <div class="svg-checkbox"
+           [class.read-only] = "elementModel.readOnly"
            [class.errors]="elementFormControl.errors && elementFormControl.touched"
            (click)="elementFormControl.markAsTouched(); elementFormControl.setValue(!elementFormControl.value)">
         <svg class="svg-checkbox-cross" [style.opacity]="elementFormControl.value ? 1 : 0" viewBox='0 0 100 100'>
@@ -59,6 +60,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     :host ::ng-deep mat-checkbox .mdc-form-field {
       align-items: flex-start;
     }
+    :host ::ng-deep mat-checkbox.image .mdc-form-field {
+      align-items: center;
+    }
     :host ::ng-deep mat-checkbox .mdc-form-field .mdc-label {
       padding-top: calc((var(--mat-checkbox-state-layer-size) - 18px) / 2);
     }
@@ -67,6 +71,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       display: block;
       margin-top: 5px;
       font-size: 75%;
+    }
+    .read-only {
+      pointer-events: none;
+      cursor: default;
     }
     .strike {
       text-decoration: line-through;

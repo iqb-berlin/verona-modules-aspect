@@ -31,6 +31,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
   showSoftwareKeyboard: boolean = false;
   addInputAssistanceToKeyboard: boolean = false;
+  keyStyle: 'round' | 'square' = 'round';
   hideNativeKeyboard: boolean = false;
   hasArrowKeys: boolean = false;
   variableLayoutOptions: {
@@ -65,6 +66,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       this.inputAssistancePreset = element.inputAssistancePreset;
       this.inputAssistancePosition = element.inputAssistancePosition;
       this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+      this.keyStyle = element.keyStyle;
       this.showSoftwareKeyboard = element.showSoftwareKeyboard;
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
       this.hideNativeKeyboard = element.hideNativeKeyboard;

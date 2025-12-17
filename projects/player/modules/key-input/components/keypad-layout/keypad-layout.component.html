@@ -1,23 +1,27 @@
-<div [class.fixed-big-row-container]="position === 'right' && (preset === 'french' || preset === 'custom' || preset === 'chemicalEquation')"
-     [class.fixed-small-row-container]="position === 'right' && (preset !== 'french' && preset !== 'custom' && preset !== 'chemicalEquation')"
-     [class.floating-row-container]="position === 'floating'">
+<div [className]="position | getLayoutClass : preset : keyStyle : customStyle">
   <div *ngFor="let row of rows; let last = last">
     <ng-container *ngFor="let key of row; let index = index; let lastRowKey = last">
       <aspect-keypad-key
+          [class.backspace-round-large-mode]="key === 'Backspace' && keyStyle === 'round' && preset === 'custom' &&
+                                              position === 'floating' && customStyle === 'large'"
+          [class.backspace-square-large-mode]="key === 'Backspace' && keyStyle === 'square' && preset === 'custom' &&
+                                               position === 'floating' && customStyle === 'large'"
           [singleKey]="lastRowKey && index === 0"
           [key]="key"
           [preset]="preset"
           [darkMode]="key === 'Backspace' || key==='Shift' || key==='ShiftUp'"
-          [horizontalOval]="key === 'Backspace'"
+          [horizontalKey]="key === 'Backspace'"
+          [keyStyle]="keyStyle"
           [position]="position"
           (keyClicked)="canEdit(key === 'Backspace' ? 'Backspace' : null ) ? evaluateClickedKeyValue($event) : null">
       </aspect-keypad-key>
-      <ng-container *ngIf="last && lastRowKey && preset  === 'french'">
+      <ng-container *ngIf="last && lastRowKey && preset === 'french'">
         <aspect-keypad-key *ngIf="hasReturnKey"
                            [key]="'\n'"
                            [preset]="preset"
-                           [bigHorizontalOval]="true"
+                           [bigHorizontalKey]="true"
                            [darkMode]="false"
+                           [keyStyle]="keyStyle"
                            [position]="position"
                            (keyClicked)="evaluateClickedKeyValue($event)">
         </aspect-keypad-key>
@@ -26,6 +30,7 @@
                              [key]="arrow"
                              [preset]="preset"
                              [darkMode]="true"
+                             [keyStyle]="keyStyle"
                              [position]="position"
                              (keyClicked)="evaluateClickedKeyValue($event)">
           </aspect-keypad-key>
@@ -43,23 +48,24 @@
     <ng-container *ngFor="let row of additionalRows; let rowIndex = index ">
       <ng-container *ngFor="let key of row; let columnIndex = index">
         <aspect-keypad-key *ngIf="key !== '='"
-                    [key]="key"
-                    [position]="position"
-                    [style.grid-column-start]="columnIndex+1"
-                    [style.grid-column-end]="columnIndex+2"
-                    [style.grid-row-start]="rowIndex + 1"
-                    [style.grid-row-end]="rowIndex + 2"
-                    (keyClicked)="canEdit(null) ? evaluateClickedKeyValue($event) : null">
+                           [key]="key"
+                           [keyStyle]="keyStyle"
+                           [position]="position"
+                           [style.grid-column-start]="columnIndex+1"
+                           [style.grid-column-end]="columnIndex+2"
+                           [style.grid-row-start]="rowIndex + 1"
+                           [style.grid-row-end]="rowIndex + 2"
+                           (keyClicked)="canEdit(null) ? evaluateClickedKeyValue($event) : null">
         </aspect-keypad-key>
-        <aspect-keypad-key *ngIf="key === '='"
-                    [key]="key"
-                    [position]="position"
-                    [verticalOval]="true"
-                    [style.grid-column-start]="3"
-                    [style.grid-column-end]="3"
-                    [style.grid-row-start]="1"
-                    [style.grid-row-end]="3"
-                    (keyClicked)="canEdit(null) ? evaluateClickedKeyValue($event) : null">
+        <aspect-keypad-key *ngIf="key === '='" [key]="key"
+                           [keyStyle]="keyStyle"
+                           [position]="position"
+                           [verticalKey]="true"
+                           [style.grid-column-start]="3"
+                           [style.grid-column-end]="3"
+                           [style.grid-row-start]="1"
+                           [style.grid-row-end]="3"
+                           (keyClicked)="canEdit(null) ? evaluateClickedKeyValue($event) : null">
         </aspect-keypad-key>
       </ng-container>
     </ng-container>
@@ -69,8 +75,9 @@
     <aspect-keypad-key
       [key]="'\n'"
       [preset]="preset"
-      [bigHorizontalOval]="true"
+      [bigHorizontalKey]="true"
       [darkMode]="false"
+      [keyStyle]="keyStyle"
       [position]="position"
       (keyClicked)="evaluateClickedKeyValue($event)">
     </aspect-keypad-key>
@@ -78,7 +85,8 @@
 
   <div *ngIf="hasArrowKeys && !(preset === 'french' && position === 'floating')"
        class="grid-layout"
-       [class.floating-arrow-layout]="position === 'floating'"
+       [class.floating-round-keys-arrow-layout]="position === 'floating' && keyStyle === 'round'"
+       [class.floating-square-keys-arrow-layout]="position === 'floating' && keyStyle === 'square'"
        [class.fixed-arrow-layout]="position !== 'floating'">
     <aspect-keypad-key
       [style.grid-column-start]="2"
@@ -88,6 +96,7 @@
       [key]="'ArrowUp'"
       [preset]="preset"
       [darkMode]="true"
+      [keyStyle]="keyStyle"
       [position]="position"
       (keyClicked)="evaluateClickedKeyValue($event)">
     </aspect-keypad-key>
@@ -99,6 +108,7 @@
       [key]="'ArrowLeft'"
       [preset]="preset"
       [darkMode]="true"
+      [keyStyle]="keyStyle"
       [position]="position"
       (keyClicked)="evaluateClickedKeyValue($event)">
     </aspect-keypad-key>
@@ -108,6 +118,7 @@
       [style.grid-row-start]="2"
       [style.grid-row-end]="3"
       [key]="'ArrowRight'"
+      [keyStyle]="keyStyle"
       [preset]="preset"
       [darkMode]="true"
       [position]="position"
@@ -120,6 +131,7 @@
       [style.grid-row-end]="4"
       [key]="'ArrowDown'"
       [preset]="preset"
+      [keyStyle]="keyStyle"
       [darkMode]="true"
       [position]="position"
       (keyClicked)="evaluateClickedKeyValue($event)">

@@ -84,6 +84,8 @@ export interface PlayerProperties {
   showRestTime: boolean;
   playbackTime: number;
   fileName: string;
+  imgSrc: string | null;
+  imgFileName: string;
 }
 
 export abstract class PropertyGroupValidators {
@@ -121,7 +123,8 @@ export abstract class PropertyGroupValidators {
       blueprint.inputAssistanceFloatingStartPosition !== undefined &&
       blueprint.showSoftwareKeyboard !== undefined &&
       blueprint.hideNativeKeyboard !== undefined &&
-      blueprint.hasArrowKeys !== undefined;
+      blueprint.hasArrowKeys !== undefined &&
+      blueprint?.keyStyle !== undefined;
   }
 
   static isValidBasicStyles(blueprint?: BasicStyles): boolean {
@@ -233,7 +236,9 @@ export abstract class PropertyGroupGenerators {
       showRestRuns: properties.showRestRuns !== undefined ? properties.showRestRuns as boolean : false,
       showRestTime: properties.showRestTime !== undefined ? properties.showRestTime as boolean : true,
       playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : 0,
-      fileName: properties.fileName !== undefined ? properties.fileName as string : ''
+      fileName: properties.fileName !== undefined ? properties.fileName as string : '',
+      imgSrc: properties.imgSrc !== undefined ? properties.imgSrc as string | null : null,
+      imgFileName: properties.imgFileName !== undefined ? properties.imgFileName as string : ''
     };
   }
 
@@ -262,7 +267,8 @@ export abstract class PropertyGroupGenerators {
       hideNativeKeyboard: properties.hideNativeKeyboard !== undefined ?
         properties.hideNativeKeyboard : false,
       hasArrowKeys: properties.hasArrowKeys !== undefined ?
-        properties.hasArrowKeys : false
+        properties.hasArrowKeys : false,
+      keyStyle: properties.keyStyle !== undefined ? properties.keyStyle : 'round'
     };
   }
 }

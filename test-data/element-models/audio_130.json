@@ -41,6 +41,8 @@
     "maxRuns": null,
     "showRestRuns": false,
     "showRestTime": true,
-    "playbackTime": 0
+    "playbackTime": 0,
+    "imgSrc": null,
+    "imgFileName": ""
   }
 }

@@ -2,15 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeypadComponent } from 'player/modules/key-input/components/keypad/keypad.component';
 import { Component, Input } from '@angular/core';
 import { KeyInputLayout } from 'player/modules/key-input/configs/key-layout';
-import { InputAssistancePreset } from 'common/interfaces';
+import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/interfaces';
 
 describe('KeypadComponent', () => {
   let component: KeypadComponent;
   let fixture: ComponentFixture<KeypadComponent>;
   @Component({
-    selector: 'aspect-keypad-layout', template: '',
+    selector: 'aspect-keypad-layout',
+    template: '',
     standalone: false
-})
+  })
   class KeypadLayoutComponent {
     @Input() preset!: InputAssistancePreset;
     @Input() layout!: KeyInputLayout;
@@ -20,6 +21,8 @@ describe('KeypadComponent', () => {
     @Input() hasArrowKeys!: boolean;
     @Input() hasReturnKey!: boolean;
     @Input() arrows!: string[];
+    @Input() keyStyle!: 'round' | 'square';
+    @Input() customStyle!: InputAssistanceCustomStyle;
   }
 
   beforeEach(async () => {

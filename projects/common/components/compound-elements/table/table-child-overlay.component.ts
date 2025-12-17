@@ -16,13 +16,15 @@ import { TextAreaComponent } from 'common/components/input-elements/text-area.co
   selector: 'aspect-table-child-overlay',
   template: `
   <div class="wrapper"
+       [class.drop-list-padding]="element.type === 'drop-list'"
        [style.border]="isSelected ? 'purple solid 1px' : ''"
        (click)="elementSelected.emit(this); $event.stopPropagation();">
     <ng-template #elementContainer></ng-template>
   </div>
 `,
   styles: `
-  .wrapper {width: 100%; height: 100%;}
+  .wrapper {width: 100%; height: 100%; box-sizing: border-box;}
+  .drop-list-padding {padding: 2px;}
   :host ::ng-deep aspect-text-field {width: 100%; height: 100%;}
   :host ::ng-deep aspect-text-area {width: 100%; height: 100%;}
   :host ::ng-deep aspect-audio .control-bar {height: 100%; margin-top: 0; justify-content: center;}

@@ -54,7 +54,10 @@ export class RangeSelectionService {
   static setRange(element: HTMLElement) {
     const range = document.createRange();
     range.selectNode(element);
-    const selection = window.getSelection();
+    RangeSelectionService.addRange(range);
+  }
+
+  static addRange(range: Range, selection: Selection | null = window.getSelection()) {
     selection?.removeAllRanges();
     selection?.addRange(range);
   }
@@ -97,8 +100,6 @@ export class RangeSelectionService {
     };
 
     setRangeOffsets(inputElement);
-
-    selection.removeAllRanges();
-    selection.addRange(range);
+    RangeSelectionService.addRange(range, selection);
   }
 }

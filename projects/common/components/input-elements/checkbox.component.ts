@@ -59,6 +59,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     :host ::ng-deep mat-checkbox .mdc-form-field {
       align-items: flex-start;
     }
+    :host ::ng-deep mat-checkbox.image .mdc-form-field {
+      align-items: center;
+    }
     :host ::ng-deep mat-checkbox .mdc-form-field .mdc-label {
       padding-top: calc((var(--mat-checkbox-state-layer-size) - 18px) / 2);
     }

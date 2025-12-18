@@ -220,7 +220,7 @@ export class OverviewDialogComponent implements AfterViewInit {
     control: 'bool'
   }];
   selectedEditableProperty?: EditableProperty;
-  editablePropertyValue?: boolean;
+  editablePropertyValue?: boolean = false;
 
   elementFilters: { page: number[]; section: number[]; } = {
     page: [],
@@ -286,9 +286,9 @@ export class OverviewDialogComponent implements AfterViewInit {
   }
 
   applyValueToSelection() {
-    this.elementSelection.selected.forEach((element: GroupedUIElement) => {
-      element.setProperty(this.selectedEditableProperty!.fieldName, this.editablePropertyValue);
-    });
+    this.elementService.updateElementsProperty(
+      this.elementSelection.selected, this.selectedEditableProperty!.fieldName, this.editablePropertyValue
+    );
   }
 
   async deleteElement(el: UIElement) {

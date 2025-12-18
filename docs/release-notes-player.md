@@ -1,5 +1,17 @@
 Player
 ======
+## 2.11.3
+### Änderungen
+- Eingabehilfe
+  - Entfernt die Tasten 'Ò' und 'Ù' aus 'Französische Sonderzeichen' ([#933](https://github.com/orgs/iqb-berlin/projects/13/views/1?pane=issue&itemId=142815291&issue=iqb-berlin%7Cverona-modules-aspect%7C933))
+
+### Fehlerbehebungen
+- Tabelle
+  - Korrigiert fehlerhafte Schreibschutz-Einstellung für Kontrollkästchen ([#929](https://github.com/orgs/iqb-berlin/projects/13?pane=issue&itemId=142569164&issue=iqb-berlin%7Cverona-modules-aspect%7C929))
+- Formel-Bereich
+  - Korrigiert die Cursor- und Scrollposition bei der Eingabe von Text mit der IQB-Tastatur ([#936](https://github.com/orgs/iqb-berlin/projects/13/views/1?pane=issue&itemId=145272051&issue=iqb-berlin%7Cverona-modules-aspect%7C936)) 
+
+
 ## 2.11.0
 ### Fehlerbehebungen
 - Eingabebereich

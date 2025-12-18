@@ -1,5 +1,14 @@
 Editor
 ======
+## 2.11.3
+
+### Fehlerbehebungen
+- Dialog: Elementliste
+  - Korrigiert Fehler beim Speichern der Änderungen
+
+
+
+
 ## 2.11.1
 ### Änderungen
 - Fehlerberichterstattung

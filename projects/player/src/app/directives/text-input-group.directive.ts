@@ -321,10 +321,43 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
       this.inputElement.setSelectionRange(start, end);
       this.scrollToSelectedText(start);
     } else if (!backSpaceAtFirstPosition) {
-      setTimeout(() => {
+      this.inputElement.dispatchEvent(new Event('input'));
+      requestAnimationFrame(() => {
         RangeSelectionService.setSelectionRange(this.inputElement, start, end);
-        this.inputElement.dispatchEvent(new Event('input'));
+        const range = RangeSelectionService.getRange();
+        if (range) TextInputGroupDirective.scrollToSelectedRange(range);
       });
+    }
+  }
+
+  private static createSpanElement(): HTMLElement {
+    const spanElement = document.createElement('span');
+    spanElement.textContent = '\u200b'; // Zero-width space
+    spanElement.style.display = 'inline-block';
+    spanElement.style.width = '1px';
+    spanElement.style.height = '1em';
+    spanElement.style.verticalAlign = 'baseline';
+    spanElement.style.pointerEvents = 'none';
+    return spanElement;
+  }
+
+  private static scrollToSelectedRange(range: Range): void {
+    // Create a temporary marker at the caret position
+    const helperElement = TextInputGroupDirective.createSpanElement();
+
+    try {
+      const r = range.cloneRange();
+      r.collapse(true);
+      r.insertNode(helperElement);
+      helperElement.scrollIntoView(false);
+      helperElement.remove();
+      RangeSelectionService.addRange(range);
+    } catch {
+      try {
+        helperElement.remove();
+      } catch {
+        // Ignore cleanup errors
+      }
     }
   }
 

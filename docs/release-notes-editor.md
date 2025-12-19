@@ -1,11 +1,21 @@
 Editor
 ======
+## 2.12.1
+### Fehlerbehebungen
+- Dialog: Elementliste
+  - Korrigiert Fehler beim Speichern der Änderungen
+
 ## 2.12.0
 ### Änderungen
 - Medienoptionen
   - Überarbeitet die Zuordnung und Sortierung der Einstellungsoptionen
 - Eingabehilfe & Tastatur
   - Überarbeitet die Darstellung der Einstellungsoptionen
+
+## 2.11.3
+### Fehlerbehebungen
+- Dialog: Elementliste
+  - Korrigiert Fehler beim Speichern der Änderungen
 
 ## 2.11.1
 ### Änderungen

@@ -1,5 +1,16 @@
 Allgemein
 =========
+## editor/2.12.1+player/2.12.1
+### Änderungen
+- Tabelle
+  - Behebt Usability-Problem auf Tablets beim Ablegen von Elementen in Ablegelisten, indem Ablegelisten nun mit einem Abstand von 2px in einer Tabellenzelle positioniert werden ([#818](https://github.com/orgs/iqb-berlin/projects/13/views/1?pane=issue&itemId=131153323&issue=iqb-berlin%7Cverona-modules-aspect%7C818))
+- Audio/Video
+  - Passt die horizontale Position von Icons in Steuerungsschaltflächen an (Problem in 2.11.0 und 2.11.1). *Seit dem Update auf Angular 20 verhalten sich die Symbole in Schaltflächen etwas anders. In älteren Versionen wurde die Breite der Steuerungsschaltflächen automatisch angepasst, wenn die Steuerungsleiste auf die Wiedergabesteuerung reduziert war. Der neu hinzugefügte Abstand führt zu einem ähnlichen, akzeptablen Ergebnis.*
+### Fehlerbehebungen
+- Kontrollkästchen
+  - Zentriert das Kästchen unter dem optionalen Bild ([#930](https://github.com/orgs/iqb-berlin/projects/13/views/1?pane=issue&itemId=142570515&issue=iqb-berlin%7Cverona-modules-aspect%7C930))
+
+
 ## editor/2.12.0+player/2.12.0
 ### Neue Funktionen
 - Audio:   
@@ -22,6 +33,22 @@ Allgemein
   - Korrigiert Schreibschutz-Einstellung für Kontrollkästchen
 - Lückentext
   - Behebt Darstellungsfehler bei ausgewählten Optionsfeldern
+
+## editor/2.11.3+player/2.11.3
+### Änderungen
+- Tabelle
+  - Behebt Usability-Problem auf Tablets beim Ablegen von Elementen in Ablegelisten, indem Ablegelisten nun mit einem Abstand von 2px in einer Tabellenzelle positioniert werden ([#818](https://github.com/orgs/iqb-berlin/projects/13/views/1?pane=issue&itemId=131153323&issue=iqb-berlin%7Cverona-modules-aspect%7C818))
+- Audio/Video
+  - Passt die horizontale Position von Icons in Steuerungsschaltflächen an (Problem in 2.11.0 und 2.11.1). *Seit dem Update auf Angular 20 verhalten sich die Symbole in Schaltflächen etwas anders. In älteren Versionen wurde die Breite der Steuerungsschaltflächen automatisch angepasst, wenn die Steuerungsleiste auf die Wiedergabesteuerung reduziert war. Der neu hinzugefügte Abstand führt zu einem ähnlichen, akzeptablen Ergebnis.*
+- Audio
+  - Hebt vorläufig die in 2.11.0 gemachte Korrektur zur vertikalen Positionierung der Steuerungsleiste wieder auf. Sie wird in Version 2.12.x wirksam. *In vielen Aufgaben wurden Audio-Elemente redaktionell positioniert. Dies erfolgte auf Grundlage eines falschen Abstands der Audio-Elemente. Als dies in Version 2.11.0 korrigiert wurde, stellte sich heraus, dass die redaktionell festgelegten Positionen des Audios falsch waren. Um eine Überarbeitung aller Aufgaben zu vermeiden, wird der falsche Abstand des Audios wieder eingeführt.*
+
+### Fehlerbehebungen
+- Lückentext
+  - Korrigiert fehlerhafte Darstellung von Optionsfeldern ([#925](https://github.com/orgs/iqb-berlin/projects/13?pane=issue&itemId=141827225&issue=iqb-berlin%7Cverona-modules-aspect%7C925))
+- Kontrollkästchen
+  - Zentriert das Kästchen unter dem optionalen Bild ([#930](https://github.com/orgs/iqb-berlin/projects/13/views/1?pane=issue&itemId=142570515&issue=iqb-berlin%7Cverona-modules-aspect%7C930))
+
 
 ## editor/2.11.2+player/2.11.2
 ### Änderungen

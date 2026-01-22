@@ -1,5 +1,9 @@
 Player
 ======
+## 2.11.4
+### Änderungen
+- Ablegeliste: PLatzhalter werden in der Ausgangsliste bei Kopierlisten nicht mehr angezeigt. So soll verdeutlicht werden, dass Elemente trotz Ablage dort verbleiben.
+
 ## 2.11.3
 ### Änderungen
 - Eingabehilfe

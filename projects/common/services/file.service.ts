@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { IMAGE_COMPRESSION_QUALITY, IMAGE_MAX_WIDTH } from 'common/config';
+
 export interface FileInformation {
   name: string;
   content: string;
@@ -26,7 +28,7 @@ export class FileService {
       fileUploadElement.addEventListener('change', event => {
         const uploadedFile = (event.target as HTMLInputElement).files?.[0];
         const reader = new FileReader();
-        reader.onload = loadEvent => resolve({
+        reader.onload = async loadEvent => resolve({
           name: uploadedFile?.name as string,
           content: loadEvent.target?.result as string
         });
@@ -40,8 +42,42 @@ export class FileService {
   }
 
   /* DEPRECATED: Use static upload-inputs instead! */
-  static loadImage(): Promise<FileInformation> {
-    return FileService.loadFile(['image/*'], true);
+  static async loadImage(): Promise<FileInformation> {
+    const file = await FileService.loadFile(['image/*'], true);
+    return {
+      ...file,
+      content: await FileService.scaleImage(file.content)
+    };
+  }
+
+  static scaleImage(base64Image: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = base64Image;
+      img.onload = () => {
+        const width = img.width;
+        const height = img.height;
+
+        if (width <= IMAGE_MAX_WIDTH) {
+          resolve(base64Image);
+        } else {
+          const canvas = document.createElement('canvas');
+          const scaleFactor = IMAGE_MAX_WIDTH / width;
+          canvas.width = IMAGE_MAX_WIDTH;
+          canvas.height = height * scaleFactor;
+
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const mimeType = base64Image.match(/data:([^;]+);/)?.[1] || 'image/jpeg';
+            resolve(canvas.toDataURL(mimeType, IMAGE_COMPRESSION_QUALITY));
+          } else {
+            reject(new Error('Canvas context not available'));
+          }
+        }
+      };
+      img.onerror = error => reject(error);
+    });
   }
 
   /* DEPRECATED: Use static upload-inputs instead! */

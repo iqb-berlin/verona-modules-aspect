@@ -52,6 +52,14 @@ export class FileService {
 
   static scaleImage(base64Image: string): Promise<string> {
     return new Promise((resolve, reject) => {
+      const mimeType = base64Image.match(/data:([^;]+);/)?.[1] || '';
+
+      const resizableMimeTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      if (!resizableMimeTypes.includes(mimeType)) {
+        resolve(base64Image);
+        return;
+      }
+
       const img = new Image();
       img.src = base64Image;
       img.onload = () => {
@@ -69,8 +77,12 @@ export class FileService {
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const mimeType = base64Image.match(/data:([^;]+);/)?.[1] || 'image/jpeg';
-            resolve(canvas.toDataURL(mimeType, IMAGE_COMPRESSION_QUALITY));
+            // Use PNG for images with transparency, JPEG with compression for others
+            if (mimeType === 'image/png') {
+              resolve(canvas.toDataURL('image/png'));
+            } else {
+              resolve(canvas.toDataURL('image/jpeg', IMAGE_COMPRESSION_QUALITY));
+            }
           } else {
             reject(new Error('Canvas context not available'));
           }

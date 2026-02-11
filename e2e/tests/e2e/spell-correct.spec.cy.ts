@@ -1,4 +1,4 @@
-import {addElement, addProperties} from "../util";
+import {addElement, setPreferencesElement} from "../util";
 
 describe('Spell correct element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -8,17 +8,17 @@ describe('Spell correct element', { testIsolation: false }, () => {
 
     it('creates a common spell correct element', () => {
       addElement('Wort korrigieren');
-      addProperties('Normales Wort korrigieren')
+      setPreferencesElement('Normales Wort korrigieren')
     });
 
     it('creates a required spell correct element', () => {
       addElement('Wort korrigieren');
-      addProperties('Pflichtfeld Wort korrigieren',  { required: true });
+      setPreferencesElement('Pflichtfeld Wort korrigieren',  { required: true });
     });
 
     it('creates a readonly spell readonly correct element', () => {
       addElement('Wort korrigieren');
-      addProperties('Schreibschutz Wort korrigieren',  { readOnly: true });
+      setPreferencesElement('Schreibschutz Wort korrigieren',  { readOnly: true });
     });
 
     after('save an unit definition', () => {

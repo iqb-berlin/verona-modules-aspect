@@ -94,9 +94,9 @@ export class UnitStateService extends ElementCodeService {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       const actualStatus = unitStateElementCode.status;
-      unitStateElementCode.status = status;
-      this._elementCodeChanged.next(unitStateElementCode);
       if (ElementCodeStatusValue[status] > ElementCodeStatusValue[actualStatus]) {
+        unitStateElementCode.status = status;
+        this._elementCodeChanged.next(unitStateElementCode);
         if (this.elementIdPageIndexMap[id] !== undefined) {
           this.checkPresentedPageStatus(this.elementIdPageIndexMap[id]);
         }

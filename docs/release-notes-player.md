@@ -1,5 +1,12 @@
 Player
 ======
+## 2.12.2
+### Änderungen
+- Ablegeliste: PLatzhalter werden in der Ausgangsliste bei Kopierlisten nicht mehr angezeigt. So soll verdeutlicht werden, dass Elemente trotz Ablage dort verbleiben.
+
+### Fehlerbehebungen
+- Verhindert, dass der Status von Elementen durch einen niedrigeren Status überbeschrieben wird. (So kann ein einmal erreichtes VALUE_CHANGED nicht durch ein DISPLAYED verändert werden)
+
 ## 2.12.1
 ### Änderungen
 - Eingabehilfe

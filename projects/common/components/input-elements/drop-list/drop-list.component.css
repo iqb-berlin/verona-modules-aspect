@@ -86,6 +86,10 @@
   pointer-events: none;
 }
 
+:host ::ng-deep .drop-list-item.show-as-placeholder img {
+  visibility: hidden;
+}
+
 .cloze-context .error-message {
   white-space: nowrap;
   font-size: smaller;

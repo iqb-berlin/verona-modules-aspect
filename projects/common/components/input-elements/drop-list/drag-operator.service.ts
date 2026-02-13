@@ -27,7 +27,11 @@ export class DragOperatorService {
 
   initDrag(): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
-    this.dragOperation.sourceElement?.classList.add('show-as-placeholder');
+    // placeholder signals that item will be removed on drop. When item is copied it looks
+    // normal while dragging to signal that it will stay after drop.
+    if (!this.dragOperation.sourceComponent.elementModel.copyOnDrop) {
+      this.dragOperation.sourceElement?.classList.add('show-as-placeholder');
+    }
     this.dragOperation.sourceElement.style.pointerEvents = 'none';
 
     this.dragOperation.sourceComponent.isHovered = true;

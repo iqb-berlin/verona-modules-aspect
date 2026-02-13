@@ -1,5 +1,9 @@
 Player
 ======
+## 2.11.5
+### Fehlerbehebungen
+- Verhindert, dass der Status von Elementen durch einen niedrigeren Status überbeschrieben wird. (So kann ein einmal erreichtes VALUE_CHANGED nicht durch ein DISPLAYED verändert werden)
+
 ## 2.11.4
 ### Änderungen
 - Ablegeliste: PLatzhalter werden in der Ausgangsliste bei Kopierlisten nicht mehr angezeigt. So soll verdeutlicht werden, dass Elemente trotz Ablage dort verbleiben.

@@ -17,3 +17,13 @@ export function addRow(rowName: string): void {
     .clear()
     .type(`${rowName}{enter}`);
 }
+export function selectRadioButtonWithVerification(likertName: string, radioNumber: number): void {
+  cy.contains('aspect-likert', likertName)
+    .find('mat-radio-button').eq(radioNumber)
+    .should('not.have.class','mat-mdc-radio-checked');
+  cy.contains('aspect-likert', likertName)
+    .find('mat-radio-button').eq(radioNumber).click();
+  cy.contains('aspect-likert', likertName)
+    .find('mat-radio-button').eq(radioNumber)
+    .should('have.class','mat-mdc-radio-checked');
+}

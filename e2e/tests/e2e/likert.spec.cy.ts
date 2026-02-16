@@ -1,5 +1,5 @@
-import { addOptions } from './likert-util';
-import { addElement, addProperties } from '../util';
+import {addOptions, selectRadioButtonWithVerification} from './likert-util';
+import { addElement, setPreferencesElement } from '../util';
 
 describe('Likert element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -9,7 +9,7 @@ describe('Likert element', { testIsolation: false }, () => {
 
     it('creates likert with text', () => {
       addElement('Optionentabelle');
-      addProperties('Optionentabelle1', {});
+      setPreferencesElement('Optionentabelle1', {});
       addOptions(['option A', 'option B'], ['row 1', 'row 2', 'row 3']);
       cy.contains('mat-form-field', 'Beschriftung (sekundär)')
         .find('textarea')
@@ -29,17 +29,17 @@ describe('Likert element', { testIsolation: false }, () => {
     });
 
     it('selects option for each row', () => {
-      cy.contains('aspect-likert', 'Optionentabelle1')
-        .find('mat-radio-button').eq(0).click();
-      cy.contains('aspect-likert', 'Optionentabelle1')
-        .find('mat-radio-button').eq(3).click();
-      cy.contains('aspect-likert', 'Optionentabelle1')
-        .find('mat-radio-button').eq(5).click();
+      selectRadioButtonWithVerification('Optionentabelle1', 0);
+      selectRadioButtonWithVerification('Optionentabelle1', 3);
+      selectRadioButtonWithVerification('Optionentabelle1', 5);
     });
 
     it('changes the selection to option B for the first row', () => {
+      selectRadioButtonWithVerification('Optionentabelle1', 1);
+      // checks that radio button 0 is not checked
       cy.contains('aspect-likert', 'Optionentabelle1')
-        .find('mat-radio-button').eq(1).click();
+        .find('mat-radio-button').eq(0)
+        .should('not.have.class','mat-mdc-radio-checked');
     });
   });
 });

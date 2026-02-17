@@ -1,4 +1,4 @@
-import {addElementHover, addProperties} from '../util';
+import {addElementHover, setPreferencesElement} from '../util';
 
 describe('math-field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -7,17 +7,17 @@ describe('math-field element', { testIsolation: false }, () => {
     });
     it('creates a common math-field', () => {
       addElementHover('Formel', 'Feld');
-      addProperties('Standard Formel Feld', {});
+      setPreferencesElement('Standard Formel Feld', {});
     });
 
     it('creates a readonly math-field', () => {
       addElementHover('Formel', 'Feld');
-      addProperties('Formel Feld mit Schreibschutz', { readOnly: true });
+      setPreferencesElement('Formel Feld mit Schreibschutz', { readOnly: true });
     });
 
     it('creates a required math-field ', () => {
       addElementHover('Formel', 'Feld');
-      addProperties('Formel Feld mit Pflichtfeld', { required: true });
+      setPreferencesElement('Formel Feld mit Pflichtfeld', { required: true });
     });
 
     after('saves an unit definition', () => {
@@ -31,7 +31,7 @@ describe('math-field element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/math-field.json');
     });
 
-    it('checks the math-field is editable ', () => {
+    it('checks the common math-field is editable ', () => {
       cy.contains('aspect-element-group-selection', 'Standard Formel Feld').within(() => {
         cy.get('math-field').shadow().find('.ML__content').click().type('1+x=2');
         cy.get('math-field').shadow().find('.ML__base').should('contain', '1');
@@ -39,7 +39,6 @@ describe('math-field element', { testIsolation: false }, () => {
         cy.get('math-field').shadow().find('.ML__base').should('contain', '2');
         cy.get('math-field').shadow().find('.ML__base').should('not.contain', '7');
       });
-
     });
 
     it('checks that the readonly math-field can not be edited', () => {
@@ -51,9 +50,9 @@ describe('math-field element', { testIsolation: false }, () => {
       });
     });
 
-    it('checks that the math-field does not show the error message', () => {
+    it('checks that the required math-field shows the error message if it is not fill in', () => {
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Pflichtfeld').click();
-      cy.contains('aspect-element-group-selection', 'Formel Feld mit Schreibschutz').click();
+      cy.clickOutside();
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Pflichtfeld')
         .find('mat-error').should('exist');
     });

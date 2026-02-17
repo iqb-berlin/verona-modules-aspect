@@ -1,5 +1,9 @@
 Player
 ======
+## 2.12.3
+### Fehlerbehebungen
+- Behebt Fehler beim Aktualisieren gespeicherter Daten (Problem in Version 2.12.2) 
+
 ## 2.12.2
 ### Änderungen
 - Ablegeliste: PLatzhalter werden in der Ausgangsliste bei Kopierlisten nicht mehr angezeigt. So soll verdeutlicht werden, dass Elemente trotz Ablage dort verbleiben.

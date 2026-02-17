@@ -1,5 +1,9 @@
 Player
 ======
+## 2.11.6
+### Fehlerbehebungen
+- Behebt Fehler beim Aktualisieren gespeicherter Daten (Problem in Version 2.11.5)
+
 ## 2.11.5
 ### Fehlerbehebungen
 - Verhindert, dass der Status von Elementen durch einen niedrigeren Status überbeschrieben wird. (So kann ein einmal erreichtes VALUE_CHANGED nicht durch ein DISPLAYED verändert werden)

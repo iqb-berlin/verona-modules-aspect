@@ -94,10 +94,14 @@ export class UnitStateService extends ElementCodeService {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       const actualStatus = unitStateElementCode.status;
-      if (ElementCodeStatusValue[status] > ElementCodeStatusValue[actualStatus]) {
+      if (actualStatus !== 'VALUE_CHANGED') {
         unitStateElementCode.status = status;
-        this.intersectionDetector.unobserve(id); // if value changed is called before displayed
-        this._elementCodeChanged.next(unitStateElementCode);
+        if (status === 'VALUE_CHANGED') {
+          this.intersectionDetector.unobserve(id);
+        }
+      }
+      this._elementCodeChanged.next(unitStateElementCode);
+      if (ElementCodeStatusValue[status] > ElementCodeStatusValue[actualStatus]) {
         if (this.elementIdPageIndexMap[id] !== undefined) {
           this.checkPresentedPageStatus(this.elementIdPageIndexMap[id]);
         }

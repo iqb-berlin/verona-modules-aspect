@@ -1,23 +1,23 @@
-import {addElementHover, addProperties} from '../util';
+import {addElementHover, setPreferencesElement} from '../util';
 
-describe('text-area-math element', { testIsolation: false }, () => {
+describe('Text area math element', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
       cy.openEditor();
     });
     it('creates a common text-area-math', () => {
       addElementHover('Formel', 'Bereich');
-      addProperties('Standard Formel Bereich', {});
+      setPreferencesElement('Standard Formel Bereich', {});
     });
 
     it('creates a readonly text-area-math', () => {
       addElementHover('Formel', 'Bereich');
-      addProperties('Formel Bereich mit Schreibschutz', { readOnly: true });
+      setPreferencesElement('Formel Bereich mit Schreibschutz', { readOnly: true });
     });
 
     it('creates a required text-area-math ', () => {
       addElementHover('Formel', 'Bereich');
-      addProperties('Formel Bereich mit Pflichtfeld', { required: true });
+      setPreferencesElement('Formel Bereich mit Pflichtfeld', { required: true });
     });
 
     after('saves an unit definition', () => {
@@ -57,11 +57,10 @@ describe('text-area-math element', { testIsolation: false }, () => {
 
     it('checks that the text-area-math does not show the error message', () => {
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld').click();
-      cy.contains('aspect-element-group-selection', 'Formel Bereich mit Schreibschutz').click();
-      // It has no error message
+      cy.clickOutside();
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld')
         .find('mat-error').should('not.exist');
-      // cy.contains('aspect-element-group-selection', 'Formel Feld mit Reich').find('mat-error').should('exist');
+      // cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld').find('mat-error').should('exist');
     });
   });
 });

@@ -1,6 +1,6 @@
 import {addElementHover, setPreferencesElement} from '../util';
 
-describe('math-field element', { testIsolation: false }, () => {
+describe('Math-field element', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
       cy.openEditor();

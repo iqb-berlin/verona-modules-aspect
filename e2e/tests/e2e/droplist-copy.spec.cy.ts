@@ -25,7 +25,7 @@ describe('Droplist element', { testIsolation: false }, () => {
       connectLists('Zielliste', 'KopierenListe');
     });
 
-    after('save an unit definition', () => {
+    after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/droplist-copy.json');
     });
   });

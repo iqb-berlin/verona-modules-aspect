@@ -1,6 +1,6 @@
 import { addText, selectRange } from './text-util';
 
-describe('Text element', { testIsolation: false }, () => {
+describe('Text element range', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
       cy.openEditor();
@@ -14,7 +14,7 @@ describe('Text element', { testIsolation: false }, () => {
       });
     });
 
-    after('save an unit definition', () => {
+    after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/text-range.json');
     });
   });
@@ -25,11 +25,19 @@ describe('Text element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-range.json');
     });
 
-    it('highlights one section', () => {
+    it('highlights two sections', () => {
       cy.get('aspect-text-group-element')
         .find('button.marking-button').eq(0).click();
-      // TODO does not work
-      selectRange(50, 70, 70, 100);
+      selectRange(40, 70, 70, 100);
+      cy.get('aspect-text-group-element')
+        .find('button.marking-button').eq(1).click();
+      selectRange(600,100, 640,130);
+    });
+
+    it('removes the first marked section', () => {
+      cy.get('aspect-text-group-element')
+        .find('button.marking-button').eq(2).click();
+      selectRange(40, 70, 70, 100);
     });
   });
 });

@@ -1,6 +1,6 @@
 import { addText } from './text-util';
 
-describe('Text element', { testIsolation: false }, () => {
+describe('Text element selection', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
       cy.openEditor();
@@ -21,7 +21,7 @@ describe('Text element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-selection.json');
     });
 
-    it('highlights two section in different colors', () => {
+    it('highlights two selection in different colors', () => {
       // highlights in yellow
       cy.get('aspect-text-group-element')
         .find('button.marking-button').eq(0).click();

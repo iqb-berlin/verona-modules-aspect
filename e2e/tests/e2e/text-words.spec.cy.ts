@@ -1,6 +1,6 @@
 import { addText } from './text-util';
 
-describe('Text element', { testIsolation: false }, () => {
+describe('Text element words', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
       cy.openEditor();
@@ -25,12 +25,13 @@ describe('Text element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/text-words.json');
     });
 
-    it('highlights words ', () => {
+    it('highlights selected words ', () => {
+      // select color yellow and color words 10 and 17
       cy.get('aspect-text-group-element')
         .find('button.marking-button').eq(0).click();
       cy.get('aspect-markable-word').eq(10).click();
       cy.get('aspect-markable-word').eq(17).click();
-
+      // select color orange and color words 25,30,31
       cy.get('aspect-text-group-element')
         .find('button.marking-button').eq(2).click();
       cy.get('aspect-text-group-element')
@@ -46,7 +47,7 @@ describe('Text element', { testIsolation: false }, () => {
         .find('aspect-markable-word').eq(25).click();
     });
 
-    it('changes the color to the selected color', () => {
+    it('changes the of the second word to the selected color', () => {
       cy.get('aspect-markable-word').eq(10).click();
     });
   });

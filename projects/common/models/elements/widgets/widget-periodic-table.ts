@@ -19,6 +19,7 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   showInfoAMass: boolean = true;
   closeOnSelection: boolean = false;
   maxNumberOfSelections: number = 1;
+  state: string | null = null;
 
   static title: string = 'Periodensystem';
   static icon: string = 'smart_button';
@@ -32,6 +33,7 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
       this.showInfoAMass = element.showInfoAMass;
       this.closeOnSelection = element.closeOnSelection;
       this.maxNumberOfSelections = element.maxNumberOfSelections;
+      this.state = element.state;
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at WidgetPeriodicTable instantiation', element);
@@ -41,6 +43,7 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
       if (element?.showInfoAMass !== undefined) this.showInfoAMass = element.showInfoAMass;
       if (element?.closeOnSelection !== undefined) this.closeOnSelection = element.closeOnSelection;
       if (element?.maxNumberOfSelections !== undefined) this.maxNumberOfSelections = element.maxNumberOfSelections;
+      if (element?.state !== undefined) this.state = element.state;
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps({
           backgroundColor: 'lightgrey',
@@ -63,6 +66,7 @@ export interface WidgetPeriodicTableProperties extends UIElementProperties {
   showInfoAMass: boolean;
   closeOnSelection: boolean;
   maxNumberOfSelections: number;
+  state: string | null;
 }
 
 function isWidgetPeriodicTableProperties(
@@ -73,6 +77,7 @@ function isWidgetPeriodicTableProperties(
     blueprint.showInfoAMass !== undefined &&
     blueprint.closeOnSelection !== undefined &&
     blueprint.maxNumberOfSelections !== undefined &&
+    blueprint.state !== undefined &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
 }

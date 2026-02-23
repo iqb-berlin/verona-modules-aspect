@@ -4,7 +4,7 @@ import {
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
-import { WidgetType } from 'player/modules/verona/models/verona';
+import { VopWidgetReturn, WidgetType } from 'player/modules/verona/models/verona';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ValueChangeElement, WidgetPeriodicTableCall } from 'common/interfaces';
@@ -58,7 +58,9 @@ export class WidgetGroupElementComponent
       this.veronaPostService.sendVopWidgetCall({
         widgetType,
         parameters: Object.entries(event)
-          .map(([key, value]) => ({ key, value: String(value) }))
+          .map(([key, value]) => ({ key, value: String(value) })),
+        ...((this.elementModel as WidgetPeriodicTableElement).state ?
+          { state: (this.elementModel as WidgetPeriodicTableElement).state as string } : {})
       });
 
       if (this.widgetReturnSubscription) {
@@ -66,9 +68,12 @@ export class WidgetGroupElementComponent
       }
       this.widgetReturnSubscription = this.veronaSubscriptionService.vopWidgetReturn
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((message: unknown) => {
+        .subscribe((message: VopWidgetReturn) => {
           // eslint-disable-next-line no-console
           console.log('vopWidgetReturn event received:', message);
+          if (message.state) {
+            (this.elementModel as WidgetPeriodicTableElement).state = message.state;
+          }
           this.widgetReturnSubscription?.unsubscribe();
           this.widgetReturnSubscription = undefined;
         });

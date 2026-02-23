@@ -144,6 +144,35 @@ export interface VopWindowFocusChangedNotification {
   hasFocus: boolean;
 }
 
+export type WidgetType = 'calc' | 'periodic_table' | 'molecule_editor';
+
+export interface WidgetParameter {
+  key: string;
+  value?: string;
+}
+
+export interface SharedParameter {
+  key: string;
+  value?: string;
+}
+
+export interface VopWidgetCall {
+  type: 'vopWidgetCall';
+  sessionId: string;
+  callId?: string;
+  widgetType: WidgetType;
+  parameters?: WidgetParameter[];
+  sharedParameters?: SharedParameter[];
+  state?: string;
+}
+
+export interface VopWidgetReturn {
+  type: 'vopWidgetReturn';
+  sessionId: string;
+  callId?: string;
+  state?: string;
+}
+
 export type VopMessage =
   VopStartCommand |
   VopPlayerConfigChangedNotification |
@@ -153,4 +182,6 @@ export type VopMessage =
   VopReadyNotification |
   VopStateChangedNotification |
   VopWindowFocusChangedNotification |
-  VopUnitNavigationRequestedNotification;
+  VopUnitNavigationRequestedNotification |
+  VopWidgetCall |
+  VopWidgetReturn;

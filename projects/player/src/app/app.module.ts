@@ -32,6 +32,9 @@ import {
   ActionGroupElementComponent
 } from 'player/src/app/components/elements/action-group-element/action-group-element.component';
 import { InputAssistanceCustomStylePipe } from 'player/src/app/pipes/input-assistance-custom-style.pipe';
+import {
+  WidgetGroupElementComponent
+} from 'player/src/app/components/elements/widget-group-element/widget-group-element.component';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -97,6 +100,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     BaseGroupElementComponent,
     InteractiveGroupElementComponent,
     ActionGroupElementComponent,
+    WidgetGroupElementComponent,
     PlayerLayoutComponent,
     UnitStateDirective,
     AlwaysVisiblePagePipe,

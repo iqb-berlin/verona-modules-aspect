@@ -7,7 +7,10 @@ import {
   UnitState, VopError,
   VopMessage,
   VopMetaData,
-  VopStateChangedNotification
+  VopStateChangedNotification,
+  WidgetType,
+  WidgetParameter,
+  SharedParameter
 } from '../models/verona';
 
 @Injectable({
@@ -76,6 +79,20 @@ export class VeronaPostService {
       type: 'vopWindowFocusChangedNotification',
       timeStamp: Date.now(),
       hasFocus: focused
+    });
+  }
+
+  sendVopWidgetCall(values: {
+    callId?: string;
+    widgetType: WidgetType;
+    parameters?: WidgetParameter[];
+    sharedParameters?: SharedParameter[];
+    state?: string;
+  }): void {
+    this.sendMessage({
+      type: 'vopWidgetCall',
+      sessionId: this.sessionID as string,
+      ...(values)
     });
   }
 }

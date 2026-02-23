@@ -42,7 +42,8 @@ export type UIElementType =
   | 'text-area-math'
   | 'trigger'
   | 'table'
-  | 'marking-panel';
+  | 'marking-panel'
+  | 'widget-periodic-table';
 
 export interface TextLabel {
   text: string;

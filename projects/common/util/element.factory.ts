@@ -30,6 +30,7 @@ import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
@@ -59,7 +60,8 @@ export abstract class ElementFactory {
     'math-field': MathFieldElement,
     'math-table': MathTableElement,
     'text-area-math': TextAreaMathElement,
-    table: TableElement
+    table: TableElement,
+    'widget-periodic-table': WidgetPeriodicTableElement
   };
 
   static createElement(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService)

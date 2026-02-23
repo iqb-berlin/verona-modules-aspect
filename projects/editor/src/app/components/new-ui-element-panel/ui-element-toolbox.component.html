@@ -168,6 +168,25 @@
             {{TableElement.title}}
           </button>
         </mat-expansion-panel>
+
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Widgets
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <button mat-stroked-button (click)="addUIElement('widget-periodic-table')"
+                  draggable="true" (dragstart)="startDrag($event,'widget-periodic-table')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{WidgetPeriodicTableElement.icon}}</mat-icon>
+            {{WidgetPeriodicTableElement.title}}
+          </button>
+        </mat-expansion-panel>
+
+
+
+
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-description>

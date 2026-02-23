@@ -3,8 +3,10 @@ import {
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { WidgetType } from 'player/modules/verona/models/verona';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ValueChangeElement, WidgetPeriodicTableCall } from 'common/interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
 import { UnitStateService } from '../../../services/unit-state.service';
@@ -23,10 +25,12 @@ export class WidgetGroupElementComponent
   WidgetPeriodicTableElement!: WidgetPeriodicTableElement;
 
   private ngUnsubscribe: Subject<void> = new Subject();
+  private widgetReturnSubscription?: Subscription;
 
   constructor(
     public unitStateService: UnitStateService,
-    public veronaPostService: VeronaPostService
+    public veronaPostService: VeronaPostService,
+    private veronaSubscriptionService: VeronaSubscriptionService
   ) {
     super();
   }
@@ -56,6 +60,18 @@ export class WidgetGroupElementComponent
         parameters: Object.entries(event)
           .map(([key, value]) => ({ key, value: String(value) }))
       });
+
+      if (this.widgetReturnSubscription) {
+        this.widgetReturnSubscription.unsubscribe();
+      }
+      this.widgetReturnSubscription = this.veronaSubscriptionService.vopWidgetReturn
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((message: unknown) => {
+          // eslint-disable-next-line no-console
+          console.log('vopWidgetReturn event received:', message);
+          this.widgetReturnSubscription?.unsubscribe();
+          this.widgetReturnSubscription = undefined;
+        });
     }
   }
 
@@ -68,6 +84,9 @@ export class WidgetGroupElementComponent
   }
 
   ngOnDestroy(): void {
+    if (this.widgetReturnSubscription) {
+      this.widgetReturnSubscription.unsubscribe();
+    }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

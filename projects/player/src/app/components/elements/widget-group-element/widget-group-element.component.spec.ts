@@ -4,6 +4,8 @@ import { Component, Input } from '@angular/core';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
+import { Subject } from 'rxjs';
 import { WidgetGroupElementComponent } from './widget-group-element.component';
 
 describe('WidgetGroupElementComponent', () => {
@@ -19,12 +21,19 @@ describe('WidgetGroupElementComponent', () => {
     @Input() elementModel!: WidgetPeriodicTableElement;
   }
 
+  class MockVeronaSubscriptionService {
+    vopWidgetReturn = new Subject<unknown>();
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         WidgetPeriodicTableStubComponent,
         WidgetGroupElementComponent,
         CastPipe
+      ],
+      providers: [
+        { provide: VeronaSubscriptionService, useClass: MockVeronaSubscriptionService }
       ]
     })
       .compileComponents();

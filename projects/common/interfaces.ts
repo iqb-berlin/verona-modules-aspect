@@ -179,3 +179,11 @@ export interface TextInputElementProperties extends KeyInputElementProperties, I
 export interface PlayerElementBlueprint extends UIElementProperties {
   player: PlayerProperties;
 }
+
+export interface WidgetPeriodicTableCall {
+  showInfoOrder: boolean;
+  showInfoENeg: boolean;
+  showInfoAMass: boolean;
+  closeOnSelection: boolean;
+  maxNumberOfSelections: number;
+}

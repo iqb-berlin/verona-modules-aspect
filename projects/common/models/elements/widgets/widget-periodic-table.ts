@@ -14,6 +14,11 @@ import { WidgetPeriodicTableComponent } from 'common/components/widgets/widget-p
 export class WidgetPeriodicTableElement extends UIElement implements WidgetPeriodicTableProperties {
   type: UIElementType = 'widget-periodic-table';
   styling: BasicStyles & BorderStyles;
+  showInfoOrder: boolean = true;
+  showInfoENeg: boolean = false;
+  showInfoAMass: boolean = true;
+  closeOnSelection: boolean = false;
+  maxNumberOfSelections: number = 1;
 
   static title: string = 'Periodensystem';
   static icon: string = 'smart_button';
@@ -22,10 +27,20 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
     super({ type: 'widget-periodic-table', ...element }, idService);
     if (isWidgetPeriodicTableProperties(element)) {
       this.styling = { ...element.styling };
+      this.showInfoOrder = element.showInfoOrder;
+      this.showInfoENeg = element.showInfoENeg;
+      this.showInfoAMass = element.showInfoAMass;
+      this.closeOnSelection = element.closeOnSelection;
+      this.maxNumberOfSelections = element.maxNumberOfSelections;
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at WidgetPeriodicTable instantiation', element);
       }
+      if (element?.showInfoOrder !== undefined) this.showInfoOrder = element.showInfoOrder;
+      if (element?.showInfoENeg !== undefined) this.showInfoENeg = element.showInfoENeg;
+      if (element?.showInfoAMass !== undefined) this.showInfoAMass = element.showInfoAMass;
+      if (element?.closeOnSelection !== undefined) this.closeOnSelection = element.closeOnSelection;
+      if (element?.maxNumberOfSelections !== undefined) this.maxNumberOfSelections = element.maxNumberOfSelections;
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps({
           backgroundColor: 'lightgrey',
@@ -43,11 +58,21 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
 
 export interface WidgetPeriodicTableProperties extends UIElementProperties {
   styling: BasicStyles & BorderStyles;
+  showInfoOrder: boolean;
+  showInfoENeg: boolean;
+  showInfoAMass: boolean;
+  closeOnSelection: boolean;
+  maxNumberOfSelections: number;
 }
 
 function isWidgetPeriodicTableProperties(
   blueprint?: Partial<WidgetPeriodicTableProperties>): blueprint is WidgetPeriodicTableProperties {
   if (!blueprint) return false;
-  return PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-  PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
+  return blueprint.showInfoOrder !== undefined &&
+    blueprint.showInfoENeg !== undefined &&
+    blueprint.showInfoAMass !== undefined &&
+    blueprint.closeOnSelection !== undefined &&
+    blueprint.maxNumberOfSelections !== undefined &&
+    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
 }

@@ -39,6 +39,7 @@ import { AreaRowHeightPipe } from 'common/components/input-elements/text-area-ma
 import {
   TextMarkingButtonSvgComponent
 } from 'common/components/text/text-marking-bar/text-marking-button-svg.component';
+import { WidgetPeriodicTableComponent } from 'common/components/widgets/widget-periodic-table.component';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -151,7 +152,8 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     AutoHeightDirective,
     LikertRowBackgroundColorPipe,
     MathTableComponent,
-    DragImageComponent
+    DragImageComponent,
+    WidgetPeriodicTableComponent
   ],
   exports: [
     CommonModule,
@@ -194,8 +196,10 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     MathFieldComponent,
     TextImagePanelComponent,
     TextAreaMathComponent,
-    MathTableComponent
-  ], imports: [
+    MathTableComponent,
+    WidgetPeriodicTableComponent
+  ],
+  imports: [
     CommonModule,
     DragDropModule,
     MatSelectModule,

@@ -30,7 +30,6 @@ import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
-import { WidgetPeriodicTableComponent } from 'common/components/widgets/widget-periodic-table.component';
 import {
   StateVariablesDialogComponent
 } from './components/dialogs/state-variables-dialog/state-variables-dialog.component';
@@ -181,8 +180,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoAliasAndIDsPipe,
-    InputAssistancePropertiesComponent,
-    WidgetPeriodicTableComponent
+    InputAssistancePropertiesComponent
   ],
   imports: [
     BrowserModule,
@@ -226,9 +224,18 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     UnitNavNextComponent
   ],
   providers: [
-    { provide: APIService, useExisting: VeronaAPIService },
-    { provide: ErrorHandler, useClass: ErrorService },
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }
+    {
+      provide: APIService,
+      useExisting: VeronaAPIService
+    },
+    {
+      provide: ErrorHandler,
+      useClass: ErrorService
+    },
+    {
+      provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+      useValue: myCustomTooltipDefaults
+    }
   ]
 })
 

@@ -285,7 +285,12 @@
     "inputAssistanceCustomStyle": "Breite",
     "small": "schmal",
     "medium": "mittel",
-    "large": "breit"
+    "large": "breit",
+    "showInfoOrder": "Ordnungszahlen",
+    "showInfoENeg": "Elektronegativität",
+    "showInfoAMass": "mittlere relative Atommasse",
+    "closeOnSelection": "Schließen bei Auswahl",
+    "maxNumberOfSelections": "Max. Anzahl Auswahlen"
   },
   "formulaPreset": {
     "title": "Formeleingabelayouts auswählen",

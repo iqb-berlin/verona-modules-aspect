@@ -1,5 +1,8 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, Input, Output, EventEmitter
+} from '@angular/core';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
+import { WidgetPeriodicTableCall } from 'common/interfaces';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
@@ -15,10 +18,23 @@ import { ElementComponent } from '../../directives/element-component.directive';
          [style.border-bottom-style]="elementModel.hasBorderBottom ? elementModel.styling.borderStyle : 'none'"
          [style.border-left-style]="elementModel.hasBorderLeft ? elementModel.styling.borderStyle : 'none'"
          [style.border-right-style]="elementModel.hasBorderRight ? elementModel.styling.borderStyle : 'none'">
-    </div>
+         <button (click)="emitWidgetCall()">Widget Parameter senden</button>
+        </div>
   `,
   standalone: false
 })
 export class WidgetPeriodicTableComponent extends ElementComponent {
   @Input() elementModel!: WidgetPeriodicTableElement;
+  @Output() widgetCallEvent = new EventEmitter<WidgetPeriodicTableCall>();
+
+  emitWidgetCall(): void {
+    const parameters: WidgetPeriodicTableCall = {
+      showInfoOrder: this.elementModel.showInfoOrder,
+      showInfoENeg: this.elementModel.showInfoENeg,
+      showInfoAMass: this.elementModel.showInfoAMass,
+      closeOnSelection: this.elementModel.closeOnSelection,
+      maxNumberOfSelections: this.elementModel.maxNumberOfSelections
+    };
+    this.widgetCallEvent.emit(parameters);
+  }
 }

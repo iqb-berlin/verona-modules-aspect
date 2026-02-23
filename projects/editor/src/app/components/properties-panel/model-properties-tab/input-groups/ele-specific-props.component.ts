@@ -3,59 +3,63 @@ import {
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
-import {
-  MathFieldPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/math-field-props.component';
+import { UIElementValue } from 'common/interfaces';
 import {
   MathTablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/math-table-properties.component';
+} from './ele-specific/math-table-properties.component';
 import {
   ButtonPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/button-properties.component';
+} from './ele-specific/button-properties.component';
 import {
   DropListPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/drop-list-properties.component';
+} from './ele-specific/drop-list-properties.component';
 import {
   BorderPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/border-properties.component';
+} from './ele-specific/border-properties.component';
 import {
   GeometryPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/geometry-props.component';
+} from './ele-specific/geometry-props.component';
 import {
   HotspotPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/hotspot-props.component';
+} from './ele-specific/hotspot-props.component';
 import {
   SliderPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/slider-properties.component';
+} from './ele-specific/slider-properties.component';
 import {
   TextPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/text-properties-field-set.component';
+} from './ele-specific/text-properties-field-set.component';
 import {
   TablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/table-properties.component';
+} from './ele-specific/table-properties.component';
 import {
   MarkingPanelPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/marking-panel-properties.component';
-import { UIElementValue } from 'common/interfaces';
+} from './ele-specific/marking-panel-properties.component';
+import {
+  WidgetPeriodicTablePropertiesComponent
+} from './ele-specific/widget-periodic-table-properties.component';
+import {
+  MathFieldPropsComponent
+} from './ele-specific/math-field-props.component';
 
 @Component({
-    selector: 'aspect-ele-specific-props',
-    imports: [
-        NgIf,
-        MathFieldPropsComponent,
-        BorderPropertiesComponent,
-        MathTablePropertiesComponent,
-        ButtonPropertiesComponent,
-        DropListPropertiesComponent,
-        BorderPropertiesComponent,
-        GeometryPropsComponent,
-        HotspotPropsComponent,
-        SliderPropertiesComponent,
-        TextPropsComponent,
-        TablePropertiesComponent,
-        MarkingPanelPropertiesComponent
-    ],
-    template: `
+  selector: 'aspect-ele-specific-props',
+  imports: [
+    NgIf,
+    MathFieldPropsComponent,
+    BorderPropertiesComponent,
+    MathTablePropertiesComponent,
+    ButtonPropertiesComponent,
+    DropListPropertiesComponent,
+    BorderPropertiesComponent,
+    GeometryPropsComponent,
+    HotspotPropsComponent,
+    SliderPropertiesComponent,
+    TextPropsComponent,
+    TablePropertiesComponent,
+    MarkingPanelPropertiesComponent,
+    WidgetPeriodicTablePropertiesComponent
+  ],
+  template: `
     <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
                              [combinedProperties]="combinedProperties"
                              (updateModel)="updateModel.emit($event)">
@@ -106,6 +110,12 @@ import { UIElementValue } from 'common/interfaces';
     <aspect-table-properties *ngIf="combinedProperties.type === 'table'"
                              [combinedProperties]="combinedProperties"
                              (updateModel)="updateModel.emit($event)"></aspect-table-properties>
+
+    <aspect-widget-periodic-table-properties
+      *ngIf="combinedProperties.type === 'widget-periodic-table'"
+      [combinedProperties]="combinedProperties"
+      (updateModel)="updateModel.emit($event)">
+    </aspect-widget-periodic-table-properties>
   `
 })
 export class EleSpecificPropsComponent {

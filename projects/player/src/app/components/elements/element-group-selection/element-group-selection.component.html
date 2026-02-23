@@ -50,6 +50,11 @@
       [elementModel]="elementModel"
       [pageIndex]="pageIndex">
   </aspect-external-app-group-element>
+  <aspect-widget-group-element
+    *ngIf="'widgetGroup' === selectedGroup"
+    [elementModel]="elementModel"
+    [pageIndex]="pageIndex">
+  </aspect-widget-group-element>
   <aspect-base-group-element
       *ngIf="!selectedGroup"
       [elementModel]="elementModel"

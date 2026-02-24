@@ -22,7 +22,7 @@ describe('WidgetGroupElementComponent', () => {
   }
 
   class MockVeronaSubscriptionService {
-    vopWidgetReturn = new Subject<unknown>();
+    vopWidgetReturn = new Subject<{ state: string, sessionId: string, type: 'vopWidgetReturn' }>();
   }
 
   beforeEach(async () => {
@@ -50,11 +50,11 @@ describe('WidgetGroupElementComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call sendVopWidgetCall with mapped parameters when applyWidgetCallEvent is triggered', () => {
+  it('should call sendVopWidgetCall with mapped parameters when applyWidgetPeriodicTableCall is triggered', () => {
     const veronaPostService = TestBed.inject(VeronaPostService);
     spyOn(veronaPostService, 'sendVopWidgetCall');
 
-    component.applyWidgetCallEvent({
+    component.applyWidgetPeriodicTableCall({
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: true,
@@ -65,12 +65,31 @@ describe('WidgetGroupElementComponent', () => {
     expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith({
       widgetType: 'periodic_table',
       parameters: [
-        { key: 'showInfoOrder', value: 'true' },
-        { key: 'showInfoENeg', value: 'false' },
-        { key: 'showInfoAMass', value: 'true' },
-        { key: 'closeOnSelection', value: 'true' },
-        { key: 'maxNumberOfSelections', value: '3' }
+        { key: 'SHOW_INFO_ORDER', value: 'true' },
+        { key: 'SHOW_INFO_E_NEG', value: 'false' },
+        { key: 'SHOW_INFO_A_MASS', value: 'true' },
+        { key: 'CLOSE_ON_SELECTION', value: 'true' },
+        { key: 'MAX_NUMBER_OF_SELECTIONS', value: '3' }
       ]
     });
+  });
+
+  it('should update elementModel state and call changeElementCodeValue on vopWidgetReturn', () => {
+    const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
+    spyOn(component, 'changeElementCodeValue');
+
+    component.applyWidgetPeriodicTableCall({
+      showInfoOrder: true,
+      showInfoENeg: false,
+      showInfoAMass: true,
+      closeOnSelection: true,
+      maxNumberOfSelections: 3
+    });
+
+    const mockReturnEvent = { type: 'vopWidgetReturn' as const, sessionId: '1', state: 'newState' };
+    (veronaSubscriptionService as unknown as MockVeronaSubscriptionService).vopWidgetReturn.next(mockReturnEvent);
+
+    expect((component.elementModel as WidgetPeriodicTableElement).state).toEqual('newState');
+    expect(component.changeElementCodeValue).toHaveBeenCalledWith({ id: 'id', value: 'newState' });
   });
 });

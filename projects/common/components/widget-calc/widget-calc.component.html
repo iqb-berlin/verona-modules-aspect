@@ -4,8 +4,8 @@
   [style.background-color]="elementModel.styling.backgroundColor"
 >
   <button mat-button (click)="emitWidgetCall()">{{ 'calculator' }}</button>
-  
-  <div class="state-container">
+
+  <div>
     <div class="state-value" *ngIf="elementModel.state">{{ elementModel.state }}</div>
   </div>
 </div>

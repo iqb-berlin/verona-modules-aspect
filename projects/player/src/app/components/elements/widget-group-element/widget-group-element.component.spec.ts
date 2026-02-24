@@ -50,17 +50,17 @@ describe('WidgetGroupElementComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call sendVopWidgetCall with mapped parameters when applyWidgetPeriodicTableCall is triggered', () => {
+  it('should call sendVopWidgetCall with mapped parameters when applyWidgetCall is triggered', () => {
     const veronaPostService = TestBed.inject(VeronaPostService);
     spyOn(veronaPostService, 'sendVopWidgetCall');
 
-    component.applyWidgetPeriodicTableCall({
+    component.applyWidgetCall({
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: true,
       closeOnSelection: true,
       maxNumberOfSelections: 3
-    });
+    }, 'periodic_table');
 
     expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith({
       widgetType: 'periodic_table',
@@ -78,13 +78,13 @@ describe('WidgetGroupElementComponent', () => {
     const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
     spyOn(component, 'changeElementCodeValue');
 
-    component.applyWidgetPeriodicTableCall({
+    component.applyWidgetCall({
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: true,
       closeOnSelection: true,
       maxNumberOfSelections: 3
-    });
+    }, 'periodic_table');
 
     const mockReturnEvent = { type: 'vopWidgetReturn' as const, sessionId: '1', state: 'newState' };
     (veronaSubscriptionService as unknown as MockVeronaSubscriptionService).vopWidgetReturn.next(mockReturnEvent);

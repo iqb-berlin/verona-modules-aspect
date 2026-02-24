@@ -2,6 +2,6 @@
     *ngIf="elementModel.type === 'widget-periodic-table'"
     #elementComponent
     [elementModel]="elementModel | cast: WidgetPeriodicTableElement"
-    (widgetCallEvent)="applyWidgetCallEvent($event)">
+    (widgetCallEvent)="applyWidgetPeriodicTableCall($event)">
 </aspect-widget-periodic-table>
 

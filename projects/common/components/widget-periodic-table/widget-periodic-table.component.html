@@ -1,0 +1,10 @@
+<div
+  [style.width.%]="100"
+  [style.height.%]="100"
+  [style.background-color]="elementModel.styling.backgroundColor"
+>
+  <button (click)="emitWidgetCall()">Widget Parameter senden</button>
+  @if (elementModel.state) {
+    {{ elementModel.state }}
+  }
+</div>

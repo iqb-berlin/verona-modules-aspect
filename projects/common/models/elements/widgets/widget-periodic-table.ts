@@ -9,7 +9,7 @@ import {
   AbstractIDService, UIElementProperties, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
-import { WidgetPeriodicTableComponent } from 'common/components/widgets/widget-periodic-table.component';
+import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
 
 export class WidgetPeriodicTableElement extends UIElement implements WidgetPeriodicTableProperties {
   type: UIElementType = 'widget-periodic-table';

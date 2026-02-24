@@ -7,16 +7,8 @@ import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
   selector: 'aspect-widget-periodic-table',
-  template: `
-    <div [style.width.%]="100"
-         [style.height.%]="100"
-         [style.background-color]="elementModel.styling.backgroundColor">
-      <button (click)="emitWidgetCall()">Widget Parameter senden</button>
-      @if (elementModel.state) {
-        {{elementModel.state}}
-      }
-    </div>
-  `,
+  templateUrl: './widget-periodic-table.component.html',
+  styleUrls: ['./widget-periodic-table.component.scss'],
   standalone: false
 })
 export class WidgetPeriodicTableComponent extends ElementComponent {

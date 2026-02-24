@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'common/environment';
+import { SplitPipe } from 'common/pipes/split.pipe';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
 import { WidgetPeriodicTableComponent } from './widget-periodic-table.component';
 
@@ -10,7 +12,8 @@ describe('WidgetPeriodicTableComponent', () => {
   beforeEach(async () => {
     environment.strictInstantiation = false;
     await TestBed.configureTestingModule({
-      declarations: [WidgetPeriodicTableComponent]
+      declarations: [WidgetPeriodicTableComponent, SplitPipe],
+      imports: [TranslateModule.forRoot()]
     }).compileComponents();
   });
 

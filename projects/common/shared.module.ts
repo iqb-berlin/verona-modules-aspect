@@ -88,6 +88,7 @@ import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
+import { SplitPipe } from './pipes/split.pipe';
 import { TextImagePanelComponent } from './components/text-image-panel.component';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';
 import { MathTableComponent } from './components/input-elements/math-table.component';
@@ -141,6 +142,7 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     ArrayIncludesPipe,
     SpinnerComponent,
     GetValuePipe,
+    SplitPipe,
     MathFieldComponent,
     DynamicRowsDirective,
     TextImagePanelComponent,

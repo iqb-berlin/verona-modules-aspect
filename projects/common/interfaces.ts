@@ -43,7 +43,8 @@ export type UIElementType =
   | 'trigger'
   | 'table'
   | 'marking-panel'
-  | 'widget-periodic-table';
+  | 'widget-periodic-table'
+  | 'widget-calc';
 
 export interface TextLabel {
   text: string;
@@ -186,4 +187,9 @@ export interface WidgetPeriodicTableCall {
   showInfoAMass: boolean;
   closeOnSelection: boolean;
   maxNumberOfSelections: number;
+}
+
+export interface WidgetCalcCall {
+  mode: 'SIMPLE' | 'SCIENTIFIC';
+  journalLines: number;
 }

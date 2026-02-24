@@ -40,6 +40,7 @@ import {
   TextMarkingButtonSvgComponent
 } from 'common/components/text/text-marking-bar/text-marking-button-svg.component';
 import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
+import { WidgetCalcComponent } from 'common/components/widget-calc/widget-calc.component';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -155,7 +156,8 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     LikertRowBackgroundColorPipe,
     MathTableComponent,
     DragImageComponent,
-    WidgetPeriodicTableComponent
+    WidgetPeriodicTableComponent,
+    WidgetCalcComponent
   ],
   exports: [
     CommonModule,
@@ -199,7 +201,8 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     TextImagePanelComponent,
     TextAreaMathComponent,
     MathTableComponent,
-    WidgetPeriodicTableComponent
+    WidgetPeriodicTableComponent,
+    WidgetCalcComponent
   ],
   imports: [
     CommonModule,

@@ -38,6 +38,9 @@ import {
   WidgetPeriodicTablePropertiesComponent
 } from './ele-specific/widget-periodic-table-properties.component';
 import {
+  WidgetCalcPropertiesComponent
+} from './ele-specific/widget-calc-properties.component';
+import {
   MathFieldPropsComponent
 } from './ele-specific/math-field-props.component';
 
@@ -57,7 +60,8 @@ import {
     TextPropsComponent,
     TablePropertiesComponent,
     MarkingPanelPropertiesComponent,
-    WidgetPeriodicTablePropertiesComponent
+    WidgetPeriodicTablePropertiesComponent,
+    WidgetCalcPropertiesComponent
   ],
   template: `
     <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
@@ -116,6 +120,12 @@ import {
       [combinedProperties]="combinedProperties"
       (updateModel)="updateModel.emit($event)">
     </aspect-widget-periodic-table-properties>
+
+    <aspect-widget-calc-properties
+      *ngIf="combinedProperties.type === 'widget-calc'"
+      [combinedProperties]="combinedProperties"
+      (updateModel)="updateModel.emit($event)">
+    </aspect-widget-calc-properties>
   `
 })
 export class EleSpecificPropsComponent {

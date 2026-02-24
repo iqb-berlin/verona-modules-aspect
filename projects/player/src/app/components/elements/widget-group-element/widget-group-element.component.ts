@@ -7,8 +7,9 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
 import { VopWidgetReturn, WidgetType } from 'player/modules/verona/models/verona';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ValueChangeElement, WidgetPeriodicTableCall } from 'common/interfaces';
+import { ValueChangeElement, WidgetCalcCall, WidgetPeriodicTableCall } from 'common/interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
+import { WidgetCalcElement } from 'common/models/elements/widget-calc/widget-calc';
 import { StringUtils } from 'player/src/app/classes/string-utils';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
@@ -24,6 +25,7 @@ export class WidgetGroupElementComponent
   extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   WidgetPeriodicTableElement!: WidgetPeriodicTableElement;
+  WidgetCalcElement!: WidgetCalcElement;
 
   private ngUnsubscribe: Subject<void> = new Subject();
   private widgetReturnSubscription?: Subscription;
@@ -45,6 +47,13 @@ export class WidgetGroupElementComponent
         );
       (this.elementModel as WidgetPeriodicTableElement).state = mappedValue as string | null;
     }
+    if (this.elementModel.type === 'widget-calc') {
+      const mappedValue = this.elementModelElementCodeMappingService
+        .mapToElementModelValue(
+          this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
+        );
+      (this.elementModel as WidgetCalcElement).state = mappedValue as string | null;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -52,6 +61,10 @@ export class WidgetGroupElementComponent
     if (this.elementModel.type === 'widget-periodic-table') {
       initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
         (this.elementModel as WidgetPeriodicTableElement).state, this.elementModel.type);
+    }
+    if (this.elementModel.type === 'widget-calc') {
+      initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
+        (this.elementModel as WidgetCalcElement).state, this.elementModel.type);
     }
     this.registerAtUnitStateService(
       this.elementModel.id,
@@ -68,17 +81,28 @@ export class WidgetGroupElementComponent
     this.subscribeToWidgetReturn();
   }
 
+  applyWidgetCalcCall(event: WidgetCalcCall): void {
+    if (!this.isWidgetElement()) return;
+
+    this.sendWidgetCallEvent(event, 'calc');
+    this.subscribeToWidgetReturn();
+  }
+
   private isWidgetElement(): boolean {
     return this.elementModel.type.startsWith('widget');
   }
 
-  private sendWidgetCallEvent(event: WidgetPeriodicTableCall, widgetType: WidgetType): void {
+  private sendWidgetCallEvent(event: WidgetPeriodicTableCall | WidgetCalcCall, widgetType: WidgetType): void {
+    const currentState = this.elementModel.type === 'widget-periodic-table' ?
+      (this.elementModel as WidgetPeriodicTableElement).state :
+      (this.elementModel as WidgetCalcElement).state;
+
     this.veronaPostService.sendVopWidgetCall({
       widgetType,
       parameters: Object.entries(event)
         .map(([key, value]) => ({ key: StringUtils.camelCaseToUpperSnakeCase(key), value: String(value) })),
-      ...((this.elementModel as WidgetPeriodicTableElement).state ?
-        { state: (this.elementModel as WidgetPeriodicTableElement).state as string } : {})
+      ...(currentState ?
+        { state: currentState as string } : {})
     });
   }
 
@@ -95,7 +119,12 @@ export class WidgetGroupElementComponent
 
   private handleWidgetReturnMessage(message: VopWidgetReturn): void {
     if (message.state) {
-      (this.elementModel as WidgetPeriodicTableElement).state = message.state;
+      if (this.elementModel.type === 'widget-periodic-table') {
+        (this.elementModel as WidgetPeriodicTableElement).state = message.state;
+      } else if (this.elementModel.type === 'widget-calc') {
+        (this.elementModel as WidgetCalcElement).state = message.state;
+      }
+
       this.changeElementCodeValue({
         id: this.elementModel.id,
         value: message.state

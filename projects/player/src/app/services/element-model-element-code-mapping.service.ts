@@ -12,7 +12,7 @@ import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject, InputElementValue, UIElementType } from 'common/interfaces';
 import { Markable } from 'player/src/app/models/markable.interface';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';

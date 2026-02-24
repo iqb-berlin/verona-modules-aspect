@@ -64,7 +64,7 @@ export class WidgetGroupElementComponent
   applyWidgetPeriodicTableCall(event: WidgetPeriodicTableCall): void {
     if (!this.isWidgetElement()) return;
 
-    this.sendWidgetCallEvent(event);
+    this.sendWidgetCallEvent(event, 'periodic_table');
     this.subscribeToWidgetReturn();
   }
 
@@ -72,8 +72,7 @@ export class WidgetGroupElementComponent
     return this.elementModel.type.startsWith('widget');
   }
 
-  private sendWidgetCallEvent(event: WidgetPeriodicTableCall): void {
-    const widgetType: WidgetType = 'periodic_table';
+  private sendWidgetCallEvent(event: WidgetPeriodicTableCall, widgetType: WidgetType): void {
     this.veronaPostService.sendVopWidgetCall({
       widgetType,
       parameters: Object.entries(event)

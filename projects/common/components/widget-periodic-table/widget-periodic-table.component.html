@@ -3,8 +3,11 @@
   [style.height.%]="100"
   [style.background-color]="elementModel.styling.backgroundColor"
 >
-  <button (click)="emitWidgetCall()">Widget Parameter senden</button>
-  @if (elementModel.state) {
-    {{ elementModel.state }}
-  }
+  <button mat-button (click)="emitWidgetCall()">{{ 'periodicTable' | translate }}</button>
+  
+  <div class="elements-container">
+    @for (element of (elementModel.state | split); track element) {
+      <div class="element-square">{{ element }}</div>
+    }
+  </div>
 </div>

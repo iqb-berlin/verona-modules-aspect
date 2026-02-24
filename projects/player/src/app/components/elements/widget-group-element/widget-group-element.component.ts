@@ -8,7 +8,7 @@ import { VopWidgetReturn, WidgetType } from 'player/modules/verona/models/verona
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ValueChangeElement, WidgetPeriodicTableCall } from 'common/interfaces';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import { StringUtils } from 'player/src/app/classes/string-utils';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';

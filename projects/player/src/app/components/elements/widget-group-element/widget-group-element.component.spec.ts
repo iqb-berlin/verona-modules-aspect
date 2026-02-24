@@ -2,7 +2,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { Subject } from 'rxjs';

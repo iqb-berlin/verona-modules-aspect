@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, OnDestroy, ViewChild
+  AfterViewInit, Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
@@ -9,6 +9,7 @@ import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ValueChangeElement, WidgetPeriodicTableCall } from 'common/interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
+import { StringUtils } from 'player/src/app/classes/string-utils';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
@@ -20,7 +21,7 @@ import { ElementModelElementCodeMappingService } from '../../../services/element
   standalone: false
 })
 export class WidgetGroupElementComponent
-  extends ElementGroupDirective implements AfterViewInit, OnDestroy {
+  extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   WidgetPeriodicTableElement!: WidgetPeriodicTableElement;
 
@@ -30,54 +31,79 @@ export class WidgetGroupElementComponent
   constructor(
     public unitStateService: UnitStateService,
     public veronaPostService: VeronaPostService,
-    private veronaSubscriptionService: VeronaSubscriptionService
+    private veronaSubscriptionService: VeronaSubscriptionService,
+    private elementModelElementCodeMappingService: ElementModelElementCodeMappingService
   ) {
     super();
   }
 
+  ngOnInit(): void {
+    if (this.elementModel.type === 'widget-periodic-table') {
+      const mappedValue = this.elementModelElementCodeMappingService
+        .mapToElementModelValue(
+          this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
+        );
+      (this.elementModel as WidgetPeriodicTableElement).state = mappedValue as string | null;
+    }
+  }
+
   ngAfterViewInit(): void {
+    let initialValue = null;
+    if (this.elementModel.type === 'widget-periodic-table') {
+      initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
+        (this.elementModel as WidgetPeriodicTableElement).state, this.elementModel.type);
+    }
     this.registerAtUnitStateService(
       this.elementModel.id,
       this.elementModel.alias,
-      null,
+      initialValue,
       this.elementComponent,
       this.pageIndex);
   }
 
-  applyWidgetCallEvent(event: WidgetPeriodicTableCall): void {
-    const isWidget = this.elementModel.type.startsWith('widget');
-    if (isWidget) {
-      let widgetType: WidgetType;
-      switch (this.elementModel.type) {
-        case 'widget-periodic-table':
-          widgetType = 'periodic_table';
-          break;
-        default:
-          return;
-      }
-      this.veronaPostService.sendVopWidgetCall({
-        widgetType,
-        parameters: Object.entries(event)
-          .map(([key, value]) => ({ key, value: String(value) })),
-        ...((this.elementModel as WidgetPeriodicTableElement).state ?
-          { state: (this.elementModel as WidgetPeriodicTableElement).state as string } : {})
-      });
+  applyWidgetPeriodicTableCall(event: WidgetPeriodicTableCall): void {
+    if (!this.isWidgetElement()) return;
 
-      if (this.widgetReturnSubscription) {
-        this.widgetReturnSubscription.unsubscribe();
-      }
-      this.widgetReturnSubscription = this.veronaSubscriptionService.vopWidgetReturn
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((message: VopWidgetReturn) => {
-          // eslint-disable-next-line no-console
-          console.log('vopWidgetReturn event received:', message);
-          if (message.state) {
-            (this.elementModel as WidgetPeriodicTableElement).state = message.state;
-          }
-          this.widgetReturnSubscription?.unsubscribe();
-          this.widgetReturnSubscription = undefined;
-        });
+    this.sendWidgetCallEvent(event);
+    this.subscribeToWidgetReturn();
+  }
+
+  private isWidgetElement(): boolean {
+    return this.elementModel.type.startsWith('widget');
+  }
+
+  private sendWidgetCallEvent(event: WidgetPeriodicTableCall): void {
+    const widgetType: WidgetType = 'periodic_table';
+    this.veronaPostService.sendVopWidgetCall({
+      widgetType,
+      parameters: Object.entries(event)
+        .map(([key, value]) => ({ key: StringUtils.camelCaseToUpperSnakeCase(key), value: String(value) })),
+      ...((this.elementModel as WidgetPeriodicTableElement).state ?
+        { state: (this.elementModel as WidgetPeriodicTableElement).state as string } : {})
+    });
+  }
+
+  private subscribeToWidgetReturn(): void {
+    if (this.widgetReturnSubscription) {
+      this.widgetReturnSubscription.unsubscribe();
     }
+    this.widgetReturnSubscription = this.veronaSubscriptionService.vopWidgetReturn
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((message: VopWidgetReturn) => {
+        this.handleWidgetReturnMessage(message);
+      });
+  }
+
+  private handleWidgetReturnMessage(message: VopWidgetReturn): void {
+    if (message.state) {
+      (this.elementModel as WidgetPeriodicTableElement).state = message.state;
+      this.changeElementCodeValue({
+        id: this.elementModel.id,
+        value: message.state
+      });
+    }
+    this.widgetReturnSubscription?.unsubscribe();
+    this.widgetReturnSubscription = undefined;
   }
 
   changeElementCodeValue(value: ValueChangeElement): void {

@@ -30,6 +30,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/interfaces';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widgets/widget-periodic-table';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 
 describe('ElementModelElementCodeMappingService', () => {
@@ -229,6 +230,12 @@ describe('ElementModelElementCodeMappingService', () => {
     const textAreaValue = null;
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(textAreaValue, 'text-area'))
       .toEqual(null);
+  });
+
+  it('should map the value of a widget-periodic-table elementModel to its elementCode value', () => {
+    const widgetValue = 'stateString';
+    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(widgetValue, 'widget-periodic-table'))
+      .toEqual('stateString');
   });
 
   // mapToElementValue
@@ -590,5 +597,21 @@ describe('ElementModelElementCodeMappingService', () => {
           value: false
         }
       ]);
+  });
+
+  it('should map an elementCode value to widget-periodic-table elementModel value', () => {
+    const elementModel: WidgetPeriodicTableElement = new WidgetPeriodicTableElement({
+      id: 'id1', alias: 'alias1', type: 'widget-periodic-table', state: 'initial_state'
+    });
+    expect(service.mapToElementModelValue('new_state', elementModel))
+      .toEqual('new_state');
+  });
+
+  it('should not map but return the widget-periodic-table elementModel value', () => {
+    const elementModel: WidgetPeriodicTableElement = new WidgetPeriodicTableElement({
+      id: 'id1', alias: 'alias1', type: 'widget-periodic-table', state: 'initial_state'
+    });
+    expect(service.mapToElementModelValue(undefined, elementModel))
+      .toEqual('initial_state');
   });
 });

@@ -2,13 +2,13 @@
     *ngIf="elementModel.type === 'widget-periodic-table'"
     #elementComponent
     [elementModel]="elementModel | cast: WidgetPeriodicTableElement"
-    (widgetCallEvent)="applyWidgetPeriodicTableCall($event)">
+    (widgetCallEvent)="applyWidgetCall($event, 'periodic_table')">
 </aspect-widget-periodic-table>
 
 <aspect-widget-calc
     *ngIf="elementModel.type === 'widget-calc'"
     #elementComponent
     [elementModel]="elementModel | cast: WidgetCalcElement"
-    (widgetCallEvent)="applyWidgetCalcCall($event)">
+    (widgetCallEvent)="applyWidgetCall($event, 'calc')">
 </aspect-widget-calc>
 

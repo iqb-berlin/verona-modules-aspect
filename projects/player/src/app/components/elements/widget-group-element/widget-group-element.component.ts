@@ -63,17 +63,10 @@ export class WidgetGroupElementComponent
       this.pageIndex);
   }
 
-  applyWidgetPeriodicTableCall(event: WidgetPeriodicTableCall): void {
+  applyWidgetCall(event: WidgetPeriodicTableCall | WidgetCalcCall, widgetType: WidgetType): void {
     if (!this.isWidgetElement()) return;
 
-    this.sendWidgetCallEvent(event, 'periodic_table');
-    this.subscribeToWidgetReturn();
-  }
-
-  applyWidgetCalcCall(event: WidgetCalcCall): void {
-    if (!this.isWidgetElement()) return;
-
-    this.sendWidgetCallEvent(event, 'calc');
+    this.sendWidgetCallEvent(event, widgetType);
     this.subscribeToWidgetReturn();
   }
 

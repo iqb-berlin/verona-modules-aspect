@@ -26,6 +26,7 @@ import { TableElement } from 'common/models/elements/compound-elements/table/tab
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { UIElementType } from 'common/interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
+import { WidgetCalcElement } from 'common/models/elements/widget-calc/widget-calc';
 import { SelectionService } from '../../services/selection.service';
 import { UnitService } from '../../services/unit-services/unit.service';
 
@@ -88,4 +89,5 @@ export class UiElementToolboxComponent {
   protected readonly MarkingPanelElement = MarkingPanelElement;
   protected readonly TableElement = TableElement;
   protected readonly WidgetPeriodicTableElement = WidgetPeriodicTableElement;
+  protected readonly WidgetCalcElement = WidgetCalcElement;
 }

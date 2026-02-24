@@ -40,31 +40,20 @@ export class WidgetGroupElementComponent
   }
 
   ngOnInit(): void {
-    if (this.elementModel.type === 'widget-periodic-table') {
+    if (this.isWidgetElement()) {
       const mappedValue = this.elementModelElementCodeMappingService
         .mapToElementModelValue(
           this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
         );
-      (this.elementModel as WidgetPeriodicTableElement).state = mappedValue as string | null;
-    }
-    if (this.elementModel.type === 'widget-calc') {
-      const mappedValue = this.elementModelElementCodeMappingService
-        .mapToElementModelValue(
-          this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
-        );
-      (this.elementModel as WidgetCalcElement).state = mappedValue as string | null;
+      (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state = mappedValue as string | null;
     }
   }
 
   ngAfterViewInit(): void {
     let initialValue = null;
-    if (this.elementModel.type === 'widget-periodic-table') {
+    if (this.isWidgetElement()) {
       initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
-        (this.elementModel as WidgetPeriodicTableElement).state, this.elementModel.type);
-    }
-    if (this.elementModel.type === 'widget-calc') {
-      initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
-        (this.elementModel as WidgetCalcElement).state, this.elementModel.type);
+        (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state, this.elementModel.type);
     }
     this.registerAtUnitStateService(
       this.elementModel.id,
@@ -93,9 +82,7 @@ export class WidgetGroupElementComponent
   }
 
   private sendWidgetCallEvent(event: WidgetPeriodicTableCall | WidgetCalcCall, widgetType: WidgetType): void {
-    const currentState = this.elementModel.type === 'widget-periodic-table' ?
-      (this.elementModel as WidgetPeriodicTableElement).state :
-      (this.elementModel as WidgetCalcElement).state;
+    const currentState = (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state;
 
     this.veronaPostService.sendVopWidgetCall({
       widgetType,
@@ -119,10 +106,8 @@ export class WidgetGroupElementComponent
 
   private handleWidgetReturnMessage(message: VopWidgetReturn): void {
     if (message.state) {
-      if (this.elementModel.type === 'widget-periodic-table') {
-        (this.elementModel as WidgetPeriodicTableElement).state = message.state;
-      } else if (this.elementModel.type === 'widget-calc') {
-        (this.elementModel as WidgetCalcElement).state = message.state;
+      if (this.isWidgetElement()) {
+        (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state = message.state;
       }
 
       this.changeElementCodeValue({

@@ -18,7 +18,7 @@ export class WidgetCalcElement extends UIElement implements WidgetCalcProperties
   journalLines: number = 0;
   state: string | null = null;
 
-  static title: string = 'Taschenrechner';
+  static title: string = 'Rechner';
   static icon: string = 'calculate';
 
   constructor(element?: Partial<WidgetCalcProperties>, idService?: AbstractIDService) {

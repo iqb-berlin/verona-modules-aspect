@@ -18,16 +18,16 @@ import { MatSelectModule } from '@angular/material/select';
   template: `
     <div class="fx-column-start-stretch">
       <mat-form-field appearance="fill">
-        <mat-label>{{'propertiesPanel.widgetCalcMode' | translate }}</mat-label>
+        <mat-label>{{'propertiesPanel.calcMode' | translate }}</mat-label>
         <mat-select [value]="$any(combinedProperties).mode"
                     (selectionChange)="updateModel.emit({ property: 'mode', value: $event.value })">
-          <mat-option value="SIMPLE">{{ 'propertiesPanel.widgetCalcModeSimple' | translate }}</mat-option>
-          <mat-option value="SCIENTIFIC">{{ 'propertiesPanel.widgetCalcModeScientific' | translate }}</mat-option>
+          <mat-option value="SIMPLE">{{ 'propertiesPanel.calcModeSimple' | translate }}</mat-option>
+          <mat-option value="SCIENTIFIC">{{ 'propertiesPanel.calcModeScientific' | translate }}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>{{'propertiesPanel.widgetCalcJournalLines' | translate }}</mat-label>
+        <mat-label>{{'propertiesPanel.calcJournalLines' | translate }}</mat-label>
         <input matInput type="number" min="0"
                [value]="$any(combinedProperties).journalLines"
                (input)="updateModel.emit({ property: 'journalLines', value: $any($event.target).value || 0 })">

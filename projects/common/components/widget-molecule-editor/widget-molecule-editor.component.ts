@@ -15,22 +15,6 @@ export class WidgetMoleculeEditorComponent extends ElementComponent {
   @Input() elementModel!: WidgetMoleculeEditorElement;
   @Output() widgetCallEvent = new EventEmitter<WidgetMoleculeEditorCall>();
 
-  get imageSrc(): string | null {
-    if (this.elementModel.state) {
-      try {
-        const stateObj = JSON.parse(this.elementModel.state);
-        if (stateObj.asImage) {
-          return stateObj.asImage.startsWith('data:') ?
-            stateObj.asImage :
-            `data:image/png;base64,${stateObj.asImage}`;
-        }
-      } catch (e) {
-        // ignore invalid JSON
-      }
-    }
-    return null;
-  }
-
   emitWidgetCall(): void {
     const parameters: WidgetMoleculeEditorCall = {
       bondingType: this.elementModel.bondingType

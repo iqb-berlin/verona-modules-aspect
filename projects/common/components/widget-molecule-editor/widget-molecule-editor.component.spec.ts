@@ -36,15 +36,4 @@ describe('WidgetMoleculeEditorComponent', () => {
     component.emitWidgetCall();
     expect(component.widgetCallEvent.emit).toHaveBeenCalledWith({ bondingType: 'VALENCE' });
   });
-
-  it('should parse imageSrc from state correctly', () => {
-    component.elementModel.state = JSON.stringify({ asImage: 'some_base64_data' });
-    expect(component.imageSrc).toEqual('data:image/png;base64,some_base64_data');
-
-    component.elementModel.state = JSON.stringify({ asImage: 'data:image/jpeg;base64,other_base64_data' });
-    expect(component.imageSrc).toEqual('data:image/jpeg;base64,other_base64_data');
-
-    component.elementModel.state = '{}';
-    expect(component.imageSrc).toBeNull();
-  });
 });

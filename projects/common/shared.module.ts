@@ -100,6 +100,7 @@ import { MathTableComponent } from './components/input-elements/math-table.compo
 import { TextAreaMathComponent } from './components/input-elements/text-area-math/text-area-math.component';
 import { DragImageComponent } from './components/input-elements/drop-list/drag-image.component';
 import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
+import { ImageSrcPipe } from './pipes/image-src.pipe';
 
 @NgModule({
   declarations: [
@@ -161,7 +162,8 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     DragImageComponent,
     WidgetPeriodicTableComponent,
     WidgetCalcComponent,
-    WidgetMoleculeEditorComponent
+    WidgetMoleculeEditorComponent,
+    ImageSrcPipe
   ],
   exports: [
     CommonModule,
@@ -207,7 +209,8 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     MathTableComponent,
     WidgetPeriodicTableComponent,
     WidgetCalcComponent,
-    WidgetMoleculeEditorComponent
+    WidgetMoleculeEditorComponent,
+    ImageSrcPipe
   ],
   imports: [
     CommonModule,

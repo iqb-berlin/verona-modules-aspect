@@ -7,7 +7,7 @@
   </button>
 
   <div class="state-container" *ngIf="elementModel.state">
-    <img *ngIf="imageSrc" [src]="imageSrc" alt="Molekül" class="molecule-image"/>
-    <div class="state-value" *ngIf="!imageSrc">{{ elementModel.state }}</div>
+    <img *ngIf="(elementModel.state | imageSrc) as src" [src]="src" alt="Molekül" class="molecule-image"/>
+    <div class="state-value" *ngIf="!(elementModel.state | imageSrc)">{{ elementModel.state }}</div>
   </div>
 </div>

@@ -288,9 +288,13 @@
     "large": "breit",
     "showInfoOrder": "Ordnungszahlen",
     "showInfoENeg": "Elektronegativität",
-    "showInfoAMass": "mittlere relative Atommasse",
+    "showInfoAMass": "Mittlere relative Atommasse",
     "closeOnSelection": "Schließen bei Auswahl",
-    "maxNumberOfSelections": "Max. Anzahl Auswahlen"
+    "maxNumberOfSelections": "Max. Anzahl Auswahlen",
+    "widgetCalcMode": "Rechnermodus",
+    "widgetCalcModeSimple": "Einfach",
+    "widgetCalcModeScientific": "Wissenschaftlich",
+    "widgetCalcJournalLines": "Anzahl der Anzeige von Rechenoperationen/Eingaben"
   },
   "formulaPreset": {
     "title": "Formeleingabelayouts auswählen",

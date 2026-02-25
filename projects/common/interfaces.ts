@@ -44,7 +44,8 @@ export type UIElementType =
   | 'table'
   | 'marking-panel'
   | 'widget-periodic-table'
-  | 'widget-calc';
+  | 'widget-calc'
+  | 'widget-molecule-editor';
 
 export interface TextLabel {
   text: string;
@@ -192,4 +193,8 @@ export interface WidgetPeriodicTableCall {
 export interface WidgetCalcCall {
   mode: 'SIMPLE' | 'SCIENTIFIC';
   journalLines: number;
+}
+
+export interface WidgetMoleculeEditorCall {
+  bondingType: 'VALENCE' | 'ELECTRONS';
 }

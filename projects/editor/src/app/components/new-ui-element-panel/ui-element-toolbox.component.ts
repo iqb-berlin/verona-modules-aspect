@@ -27,6 +27,9 @@ import { TemplateService } from 'editor/src/app/section-templates/template.servi
 import { UIElementType } from 'common/interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import { WidgetCalcElement } from 'common/models/elements/widget-calc/widget-calc';
+import {
+  WidgetMoleculeEditorElement
+} from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
 import { SelectionService } from '../../services/selection.service';
 import { UnitService } from '../../services/unit-services/unit.service';
 
@@ -90,4 +93,5 @@ export class UiElementToolboxComponent {
   protected readonly TableElement = TableElement;
   protected readonly WidgetPeriodicTableElement = WidgetPeriodicTableElement;
   protected readonly WidgetCalcElement = WidgetCalcElement;
+  protected readonly WidgetMoleculeEditorElement = WidgetMoleculeEditorElement;
 }

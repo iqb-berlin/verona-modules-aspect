@@ -32,6 +32,7 @@ import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import { WidgetCalcElement } from 'common/models/elements/widget-calc/widget-calc';
+import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
@@ -63,7 +64,8 @@ export abstract class ElementFactory {
     'text-area-math': TextAreaMathElement,
     table: TableElement,
     'widget-periodic-table': WidgetPeriodicTableElement,
-    'widget-calc': WidgetCalcElement
+    'widget-calc': WidgetCalcElement,
+    'widget-molecule-editor': WidgetMoleculeEditorElement
   };
 
   static createElement(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService)

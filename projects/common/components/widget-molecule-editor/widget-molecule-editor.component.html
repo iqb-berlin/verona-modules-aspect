@@ -1,0 +1,12 @@
+<div
+  [style.width.%]="100"
+  [style.height.%]="100"
+  [style.background-color]="elementModel.styling.backgroundColor"
+>
+  <button mat-button (click)="emitWidgetCall()">{{ 'moleculeEditor' | translate }}</button>
+
+  <div class="state-container" *ngIf="elementModel.state">
+    <img *ngIf="imageSrc" [src]="imageSrc" alt="Molekül" class="molecule-image"/>
+    <div class="state-value" *ngIf="!imageSrc">{{ elementModel.state }}</div>
+  </div>
+</div>

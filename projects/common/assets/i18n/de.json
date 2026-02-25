@@ -7,5 +7,6 @@
   "geometry_reset": "neu anfangen",
   "markingHint": "Ende des Bereichs bestimmen",
   "periodicTable": "Periodensystem",
-  "calculator": "Taschenrechner"
+  "calculator": "Taschenrechner",
+  "moleculeEditor": "Molekül-Editor"
 }

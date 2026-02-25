@@ -84,6 +84,8 @@ Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json'
               cy.writeFile(filepath, reader.result as string);
             };
             reader.readAsText(blob);
+          } else {
+            reject('Failed to load blob');
           }
         };
         xhr.send();

@@ -12,3 +12,9 @@
     (widgetCallEvent)="applyWidgetCall($event, 'calc')">
 </aspect-widget-calc>
 
+<aspect-widget-molecule-editor
+    *ngIf="elementModel.type === 'widget-molecule-editor'"
+    #elementComponent
+    [elementModel]="elementModel | cast: WidgetMoleculeEditorElement"
+    (widgetCallEvent)="applyWidgetCall($event, 'molecule_editor')">
+</aspect-widget-molecule-editor>

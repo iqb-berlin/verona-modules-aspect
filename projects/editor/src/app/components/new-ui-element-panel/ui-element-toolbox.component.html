@@ -188,6 +188,12 @@
             <mat-icon>{{WidgetCalcElement.icon}}</mat-icon>
             {{WidgetCalcElement.title}}
           </button>
+          <button mat-stroked-button (click)="addUIElement('widget-molecule-editor')"
+                  draggable="true" (dragstart)="startDrag($event,'widget-molecule-editor')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{WidgetMoleculeEditorElement.icon}}</mat-icon>
+            {{WidgetMoleculeEditorElement.title}}
+          </button>
         </mat-expansion-panel>
 
 

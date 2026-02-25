@@ -43,6 +43,9 @@ import {
 import {
   MathFieldPropsComponent
 } from './ele-specific/math-field-props.component';
+import {
+  WidgetMoleculeEditorPropertiesComponent
+} from './ele-specific/widget-molecule-editor-properties.component';
 
 @Component({
   selector: 'aspect-ele-specific-props',
@@ -61,7 +64,8 @@ import {
     TablePropertiesComponent,
     MarkingPanelPropertiesComponent,
     WidgetPeriodicTablePropertiesComponent,
-    WidgetCalcPropertiesComponent
+    WidgetCalcPropertiesComponent,
+    WidgetMoleculeEditorPropertiesComponent
   ],
   template: `
     <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
@@ -126,6 +130,12 @@ import {
       [combinedProperties]="combinedProperties"
       (updateModel)="updateModel.emit($event)">
     </aspect-widget-calc-properties>
+
+    <aspect-widget-molecule-editor-properties
+      *ngIf="combinedProperties.type === 'widget-molecule-editor'"
+      [combinedProperties]="combinedProperties"
+      (updateModel)="updateModel.emit($event)">
+    </aspect-widget-molecule-editor-properties>
   `
 })
 export class EleSpecificPropsComponent {

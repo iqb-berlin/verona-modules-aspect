@@ -294,7 +294,10 @@
     "widgetCalcMode": "Rechnermodus",
     "widgetCalcModeSimple": "Einfach",
     "widgetCalcModeScientific": "Wissenschaftlich",
-    "widgetCalcJournalLines": "Anzahl der Anzeige von Rechenoperationen/Eingaben"
+    "widgetCalcJournalLines": "Anzahl der Anzeige von Rechenoperationen/Eingaben",
+    "bondingType": "Darstellungsart",
+    "moleculeBondingTypeValence": "Valenzstrichformel",
+    "moleculeBondingTypeElectrons": "Elektronenformel"
   },
   "formulaPreset": {
     "title": "Formeleingabelayouts auswählen",
@@ -379,7 +382,8 @@
     "text-area-math": "Formelbereich",
     "math-table": "Rechenkästchen",
     "trigger": "Auslöser",
-    "table": "Tabelle"
+    "table": "Tabelle",
+    "widget-molecule-editor": "Molekül-Editor"
   },
   "section-menu": {
     "height": "Höhe",

@@ -6,6 +6,10 @@ import {
 export function addList(title: string, options: string[] = [], settings?: Record<string, boolean>, id?: string): void {
   addTextElement(title);
   addElement('Ablegeliste', '(Zu)Ordnung', id);
+  setConfigDroplist(options, settings);
+}
+
+export function setConfigDroplist(options: string[] = [], settings?: Record<string, boolean>) {
   options.forEach(option => addOption(option));
   if (settings?.highlightReceivingDropList) setCheckbox('Potentielle Ablagen hervorheben');
   if (settings?.sortList) setCheckbox('Sortierliste');
@@ -17,7 +21,6 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.showNumbering) setCheckbox('Nummerierung anzeigen');
   if (settings?.startNumberingAtZero) setCheckbox('Nummerierung bei 0 beginnen');
 }
-
 export function addOption(optionName: string): void {
   cy.contains('fieldset', 'Vorbelegung')
     .contains('mat-form-field', 'Neue Option')

@@ -1,9 +1,10 @@
-<div
-  [style.width.%]="100"
-  [style.height.%]="100"
-  [style.background-color]="elementModel.styling.backgroundColor"
->
-  <button mat-button (click)="emitWidgetCall()">{{ 'calculator' | translate }}</button>
+<div [style.background-color]="elementModel.styling.backgroundColor">
+
+  <button class="widget-button"
+          mat-button
+          (click)="emitWidgetCall()">
+    {{ 'calculator' | translate }}
+  </button>
 
   <div>
     <div class="state-value" *ngIf="elementModel.state">{{ elementModel.state }}</div>

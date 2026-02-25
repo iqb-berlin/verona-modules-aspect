@@ -1,10 +1,11 @@
-<div
-  [style.width.%]="100"
-  [style.height.%]="100"
-  [style.background-color]="elementModel.styling.backgroundColor"
->
-  <button mat-button (click)="emitWidgetCall()">{{ 'periodicTable' | translate }}</button>
-  
+<div [style.background-color]="elementModel.styling.backgroundColor">
+
+  <button class="widget-button"
+          mat-button
+          (click)="emitWidgetCall()">
+    {{ 'periodicTable' | translate }}
+  </button>
+
   <div class="elements-container">
     @for (element of (elementModel.state | split); track element) {
       <div class="element-square">{{ element }}</div>

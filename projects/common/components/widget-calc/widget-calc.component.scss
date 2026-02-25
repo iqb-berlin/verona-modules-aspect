@@ -1,8 +1,10 @@
-:host {
-  display: block;
-}
-
 .state-value {
   font-size: 1.5rem;
   font-weight: 400;
+}
+
+.widget-button {
+  font-size: large;
+  background-color: #ddd;
+  padding: 15px 10px;
 }

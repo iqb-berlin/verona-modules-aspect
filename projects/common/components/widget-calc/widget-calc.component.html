@@ -3,7 +3,7 @@
   [style.height.%]="100"
   [style.background-color]="elementModel.styling.backgroundColor"
 >
-  <button mat-button (click)="emitWidgetCall()">{{ 'calculator' }}</button>
+  <button mat-button (click)="emitWidgetCall()">{{ 'calculator' | translate }}</button>
 
   <div>
     <div class="state-value" *ngIf="elementModel.state">{{ elementModel.state }}</div>

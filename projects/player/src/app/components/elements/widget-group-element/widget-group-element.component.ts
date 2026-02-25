@@ -40,21 +40,16 @@ export class WidgetGroupElementComponent
   }
 
   ngOnInit(): void {
-    if (this.isWidgetElement()) {
-      const mappedValue = this.elementModelElementCodeMappingService
-        .mapToElementModelValue(
-          this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
-        );
-      (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state = mappedValue as string | null;
-    }
+    const mappedValue = this.elementModelElementCodeMappingService
+      .mapToElementModelValue(
+        this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
+      );
+    (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state = mappedValue as string | null;
   }
 
   ngAfterViewInit(): void {
-    let initialValue = null;
-    if (this.isWidgetElement()) {
-      initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
-        (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state, this.elementModel.type);
-    }
+    const initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
+      (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state, this.elementModel.type);
     this.registerAtUnitStateService(
       this.elementModel.id,
       this.elementModel.alias,
@@ -64,14 +59,8 @@ export class WidgetGroupElementComponent
   }
 
   applyWidgetCall(event: WidgetPeriodicTableCall | WidgetCalcCall, widgetType: WidgetType): void {
-    if (!this.isWidgetElement()) return;
-
     this.sendWidgetCallEvent(event, widgetType);
     this.subscribeToWidgetReturn();
-  }
-
-  private isWidgetElement(): boolean {
-    return this.elementModel.type.startsWith('widget');
   }
 
   private sendWidgetCallEvent(event: WidgetPeriodicTableCall | WidgetCalcCall, widgetType: WidgetType): void {
@@ -99,9 +88,7 @@ export class WidgetGroupElementComponent
 
   private handleWidgetReturnMessage(message: VopWidgetReturn): void {
     if (message.state) {
-      if (this.isWidgetElement()) {
-        (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state = message.state;
-      }
+      (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement).state = message.state;
 
       this.changeElementCodeValue({
         id: this.elementModel.id,

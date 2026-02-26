@@ -36,6 +36,7 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
       if (element?.state !== undefined) this.state = element.state;
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps({
+          backgroundColor: 'lightgrey',
           ...element?.styling
         }),
         ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)

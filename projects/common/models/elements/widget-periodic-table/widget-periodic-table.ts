@@ -46,6 +46,7 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
       if (element?.state !== undefined) this.state = element.state;
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps({
+          backgroundColor: 'lightgrey',
           ...element?.styling
         }),
         ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)

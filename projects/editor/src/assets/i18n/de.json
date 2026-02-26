@@ -383,7 +383,9 @@
     "math-table": "Rechenkästchen",
     "trigger": "Auslöser",
     "table": "Tabelle",
-    "widget-molecule-editor": "Molekül-Editor"
+    "widget-molecule-editor": "Molekül-Editor",
+    "widget-calc": "Rechner",
+    "widget-periodic-table": "Periodensystem"
   },
   "section-menu": {
     "height": "Höhe",

@@ -32,7 +32,6 @@
 //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
 //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
 //       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
 //   }
 // }
 
@@ -99,4 +98,12 @@ Cypress.Commands.add('getByAlias', (alias: string) => {
 
 Cypress.Commands.add('clickOutside', ():void => {
   cy.get('body').click(0,0);
+});
+
+Cypress.Commands.add('getElement', (elementType: string, label?: string) => {
+  if (label) {
+    return cy.contains(elementType, label);
+  } else {
+    return cy.get(elementType);
+  }
 });

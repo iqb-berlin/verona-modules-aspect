@@ -1,7 +1,19 @@
-<div [style.background-color]="elementModel.styling.backgroundColor">
-
-  <button class="widget-button"
-          mat-button
+<div>
+  <button mat-button
+          type='button'
+          [style.background-color]="elementModel.styling.backgroundColor"
+          [style.color]="elementModel.styling.fontColor"
+          [style.font-size.px]="elementModel.styling.fontSize"
+          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+          [style.border-width.px]="elementModel.styling.borderWidth"
+          [style.border-style]="elementModel.styling.borderStyle"
+          [style.border-color]="elementModel.styling.borderColor"
+          [style.border-radius.px]="elementModel.styling.borderRadius"
+          [style.vertical-align]="elementModel.labelAlignment"
+          [style.font-weight]="elementModel.styling.bold ? 'bold' :
+                                  elementModel.labelAlignment !== 'baseline' ?
+                                    400 : ''"
           (click)="emitWidgetCall()">
     {{ 'calculator' | translate }}
   </button>

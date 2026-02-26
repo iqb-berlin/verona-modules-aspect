@@ -37,6 +37,7 @@ export class WidgetCalcElement extends UIElement implements WidgetCalcProperties
       if (element?.state !== undefined) this.state = element.state;
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps({
+          backgroundColor: 'lightgrey',
           ...element?.styling
         }),
         ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)

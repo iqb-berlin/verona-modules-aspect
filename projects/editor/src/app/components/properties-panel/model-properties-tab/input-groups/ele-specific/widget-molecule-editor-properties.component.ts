@@ -18,7 +18,7 @@ import { CombinedProperties } from '../../../element-properties-panel.component'
   ],
   template: `
     <fieldset>
-      <legend>{{'propertiesPanel.moleculeEditor' | translate}}</legend>
+      <legend>{{'toolbox.widget-molecule-editor' | translate}}</legend>
 
       <div class="fx-column-start-stretch">
         <mat-form-field appearance="fill">

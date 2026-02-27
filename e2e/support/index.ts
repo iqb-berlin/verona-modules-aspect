@@ -10,6 +10,7 @@ declare global {
       switchToTabbedViewMode(): Chainable<JQuery<HTMLElement>>;
       getByAlias(alias: string): Chainable<JQuery<HTMLElement>>;
       clickOutside(): Chainable<JQuery<HTMLElement>>;
+      getElement(elementType: string, label?: string): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

@@ -1,7 +1,7 @@
 import { addTextElement, selectFromDropdown, setCheckbox } from '../util';
 
 export function addText(numParagraphs: number, numSentences: number, numColumns: number,
-  modus: string, settings?: Record<string, boolean>) {
+                        modus: string, settings?: Record<string, boolean>) {
   addTextElement(generateRandomText(numParagraphs, numSentences));
   // Number of columns
   cy.contains('mat-form-field', 'Anzahl der Spalten')
@@ -88,4 +88,82 @@ export function generateRandomText(numParagraphs: number, numSentencesPerParagra
     paragraphs.push(sentences.join(' '));
   }
   return paragraphs.join('\n\n');
+}
+
+export interface TextModifySettings {
+  /** Make the paragraph text bold */
+  bold?: boolean;
+  /** Add a tooltip to the selected text — value is the tooltip content */
+  tooltip?: boolean;
+  /** Highlight the paragraph as a named section — value is the section/anchor name */
+  highlight?: boolean;
+}
+
+/**
+ * Modifies a specific paragraph of the last edited text element.
+ * Opens the element in edit mode, selects the paragraph at `paragraphIndex` (1-based),
+ * applies the requested formatting
+ */
+export function modifyText(
+  paragraphIndex: number,
+  settings: TextModifySettings
+){
+  // Double-click the text element to open the rich-text editor dialog
+  cy.get('aspect-text').last().dblclick({ force: true });
+  // Wait for the contenteditable to appear inside the dialog
+  cy.get('[contenteditable="true"]').should('exist');
+
+  // Select the paragraph by simulating a mouse drag across it.
+  // TipTap requires real pointer events to update its internal selection state;
+  // the Selection/Range API alone is not enough.
+  cy.get('tiptap-editor p').eq(paragraphIndex).then($p => {
+    const el = $p[0];
+    const doc = el.ownerDocument;
+    const win = doc.defaultView!;
+    const rect = el.getBoundingClientRect();
+
+    // We drag from the very start of the paragraph to its end.
+    const startX = rect.left + 1;
+    const startY = rect.top + rect.height / 2;
+    const endX = rect.right - 1;
+    const endY = rect.top + rect.height / 2;
+
+    const eventOpts = (x: number, y: number) => ({
+      bubbles: true, cancelable: true, view: win,
+      clientX: x, clientY: y, buttons: 1,
+    });
+
+    el.dispatchEvent(new PointerEvent('pointerdown', eventOpts(startX, startY)));
+    el.dispatchEvent(new MouseEvent('mousedown', eventOpts(startX, startY)));
+
+    // Set the Selection via the Range API while the mouse is "held down"
+    const range = doc.createRange();
+    range.selectNodeContents(el);
+    const sel = win.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+
+    el.dispatchEvent(new PointerEvent('pointermove', eventOpts(endX, endY)));
+    el.dispatchEvent(new MouseEvent('mousemove', eventOpts(endX, endY)));
+    el.dispatchEvent(new PointerEvent('pointerup', eventOpts(endX, endY)));
+    el.dispatchEvent(new MouseEvent('mouseup', eventOpts(endX, endY)));
+  });
+
+
+  // if (settings.bold) {
+  //   cy.contains('mat-icon', 'format_bold').click();
+  // }
+  //
+  // if (settings.tooltip) {
+  //   cy.contains('button', 'read_more').click();
+  //   cy.get('mat-dialog-container').find('textarea').clear().type(settings.tooltip);
+  //   cy.get('mat-dialog-container').contains('button', 'Speichern').click();
+  //   return settings.tooltip;
+  // }
+
+  if (settings.highlight) {
+    cy.wait(100);
+    cy.contains('button', 'read_more').click({ force: true });
+  }
+  cy.contains('Speichern').click();
 }

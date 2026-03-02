@@ -18,7 +18,7 @@
     {{ 'periodicTable' | translate }}
   </button>
 
-  <div class="elements-container">
+  <div class="elements-container" *ngIf="elementModel.state">
     @for (element of (elementModel.state | split); track element) {
       <div class="element-square">{{ element }}</div>
     }

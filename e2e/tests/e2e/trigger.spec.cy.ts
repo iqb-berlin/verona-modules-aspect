@@ -1,5 +1,12 @@
-import { selectFromDropdown, setLabelText } from '../util';
-import { addText, modifyText } from './text-util';
+import {
+    addNewPage,
+    addPostMessageStub,
+    addTextElement,
+    selectFromDropdown,
+    setPageConfig
+} from '../util';
+import { modifyText } from './text-util';
+import { addTextExample } from "./trigger-util";
 
 describe('Trigger element', { testIsolation: false }, () => {
     context('editor', () => {
@@ -8,31 +15,56 @@ describe('Trigger element', { testIsolation: false }, () => {
         });
 
         it('creates a text element with three paragraphs and marking mode enabled', () => {
-            addText(2, 1, 1, 'Bereich', { highlightableYellow: true });
+            addTextExample('Bereich', { highlightableYellow: true });
+            modifyText(0, { highlight: true });
+            modifyText(2, { highlight: true });
+            modifyText(4, { highlight: true });
+
+            addNewPage();
+
+            setPageConfig(1, { alwaysVisible: true });
+            cy.contains('span', '1 Seiten').click({ force: true });
         });
 
         it('creates a trigger with "highlight text" action', () => {
-            const sectionName = modifyText(2, { highlightSection: 'zweiter-abschnitt' });
-          cy.contains('Speichern').click();
+            cy.contains('span', '1 Seiten').click({ force: true });
+            addTextElement('Auslöser Markierung')
             cy.contains('Sonstige').click();
             cy.contains('button', 'Auslöser').click();
-            cy.pause();
-            selectFromDropdown('Aktion', 'Text markieren');
-            selectFromDropdown('Aktionsparameter', sectionName!);
-            setLabelText('Auslöser Markierung');
-            cy.pause();
+            selectFromDropdown('Aktion', 'Textabschnitt hervorheben');
+            cy.get('aspect-element-model-properties-component')
+                .contains('mat-form-field', 'Aktionsparameter').find('mat-select').click();
+            cy.get('.cdk-overlay-pane').find('mat-option').eq(0).click();
+
         });
 
-        it.skip('creates a trigger with "remove highlights" action', () => {
-            cy.contains('button', 'Auslöser').click();
-            selectFromDropdown('Aktion', 'Markierungen entfernen');
-            setLabelText('Auslöser Entfernen');
+        it('creates a trigger with "remove highlights" action', () => {
+            addNewPage();
+            addTextElement('Auslöser Entfernen')
+            cy.contains('Sonstige').click();
+            cy.contains('button', 'Auslöser').click({ force: true });
+            selectFromDropdown('Aktion', 'Hervorhebungen ausblenden');
+        });
+
+        it('creates an Zustandsvariable', () => {
+            cy.contains('Zustandsvariable').click();
+            cy.get('mat-dialog-container')
+                .contains('button', 'add').click();
+            cy.get('aspect-state-variable-editor').contains('div', 'Wert')
+                .find('input').type('1');
+            cy.contains('Speichern').click();
         });
 
         it('creates a trigger with "state variable change" action', () => {
+            addNewPage();
+            cy.contains('span', '3 Seiten').click({ force: true });
+            addTextElement('Auslöser Variable');
+            cy.contains('Sonstige').click();
             cy.contains('button', 'Auslöser').click();
-            selectFromDropdown('Aktion', 'Variable ändern');
-            setLabelText('Auslöser Variable');
+            selectFromDropdown('Aktion', 'Zustandsvariable ändern');
+            cy.contains('mat-form-field', 'Wert')
+                .find('input')
+                .type('2');
         });
 
         after('saves unit definition', () => {
@@ -46,25 +78,35 @@ describe('Trigger element', { testIsolation: false }, () => {
             cy.loadUnit('../downloads/trigger.json');
         });
 
-        it('renders exactly 3 trigger elements', () => {
-            cy.get('aspect-trigger').should('have.length', 3);
+        it('checks that we have 2 parts; left and right', () => {
+            // The always-visible page renders in a fixed left panel;
+            // the scrollable pages render in the right panel.
+            cy.get('aspect-page-scroll-button').should('have.length', 2);
         });
 
-        it('renders the "highlight text" trigger', () => {
-            cy.contains('aspect-trigger', 'Auslöser Markierung').should('exist');
+        it('selects page 1, and checks that the trigger highlights the first paragraph', () => {
+            // Page 1 is the default selected tab (index 0)
+            cy.get('aspect-anchor').eq(0).should('have.class', 'active-anchor');
         });
 
-        it('renders the "remove highlights" trigger', () => {
-            cy.contains('aspect-trigger', 'Auslöser Entfernen').should('exist');
+        it('selects page 2 (always-visible), and checks that the trigger removes the highlight', () => {
+            // Select the page 2
+            cy.get('aspect-unit-menu').find('button').click();
+            cy.contains('button', 'Seite 2').click();
+            cy.get('aspect-anchor').eq(0).should('not.have.class', 'active-anchor');
         });
 
-        it('renders the "state variable change" trigger', () => {
-            cy.contains('aspect-trigger', 'Auslöser Variable').should('exist');
+        it('selects page 3, and checks that state-variable_1 has value 2', () => {
+            addPostMessageStub();
+            cy.get('aspect-unit-menu').find('button').click();
+            cy.contains('button', 'Seite 3').click();
+            cy.get('@postMessage').should('be.calledWithMatch',
+                Cypress.sinon.match.has('unitState',
+                    Cypress.sinon.match.has('dataParts',
+                        Cypress.sinon.match.has('stateVariableCodes',
+                            Cypress.sinon.match("2")))));
         });
 
-        it('renders the text element with three markable paragraphs', () => {
-            cy.get('aspect-text-group-element').should('exist');
-            cy.get('aspect-markable-word').should('have.length.greaterThan', 0);
-        });
+
     });
 });

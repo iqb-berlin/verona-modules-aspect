@@ -60,10 +60,10 @@ describe('WidgetGroupElementComponent', () => {
       showInfoAMass: true,
       closeOnSelection: true,
       maxNumberOfSelections: 3
-    }, 'periodic_table');
+    }, 'PERIODIC_TABLE');
 
     expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith({
-      widgetType: 'periodic_table',
+      widgetType: 'PERIODIC_TABLE',
       parameters: [
         { key: 'SHOW_INFO_ORDER', value: 'true' },
         { key: 'SHOW_INFO_E_NEG', value: 'false' },
@@ -84,7 +84,7 @@ describe('WidgetGroupElementComponent', () => {
       showInfoAMass: true,
       closeOnSelection: true,
       maxNumberOfSelections: 3
-    }, 'periodic_table');
+    }, 'PERIODIC_TABLE');
 
     const mockReturnEvent = { type: 'vopWidgetReturn' as const, sessionId: '1', state: 'newState' };
     (veronaSubscriptionService as unknown as MockVeronaSubscriptionService).vopWidgetReturn.next(mockReturnEvent);

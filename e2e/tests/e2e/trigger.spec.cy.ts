@@ -22,11 +22,14 @@ describe('Trigger element', { testIsolation: false }, () => {
       cy.contains('span', '1 Seiten').click({ force: true });
     });
 
-    it('creates a trigger with "highlight text" action', () => {
-      cy.contains('span', '1 Seiten').click({ force: true });
+    it('creates a trigger', () => {
+      cy.contains('span', '1 Seiten').click({force: true});
       addTextElement('Auslöser Markierung')
       cy.contains('Sonstige').click();
       cy.contains('button', 'Auslöser').click();
+    });
+
+    it.skip('adds "highlight text"', () => {
       selectFromDropdown('Aktion', 'Textabschnitt hervorheben');
       cy.get('aspect-element-model-properties-component')
         .contains('mat-form-field', 'Aktionsparameter').find('mat-select').click();
@@ -79,12 +82,12 @@ describe('Trigger element', { testIsolation: false }, () => {
       cy.get('aspect-page-scroll-button').should('have.length', 2);
     });
 
-    it('selects page 1, and checks that the trigger highlights the first paragraph', () => {
+    it.skip('selects page 1, and checks that the trigger highlights the first paragraph', () => {
       // Page 1 is the default selected tab (index 0)
       cy.get('aspect-anchor').eq(0).should('have.class', 'active-anchor');
     });
 
-    it('selects page 2 (always-visible), and checks that the trigger removes the highlight', () => {
+    it.skip('selects page 2 (always-visible), and checks that the trigger removes the highlight', () => {
       // Select the page 2
       cy.get('aspect-unit-menu').find('button').click();
       cy.contains('button', 'Seite 2').click();

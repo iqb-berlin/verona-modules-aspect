@@ -2,6 +2,10 @@ export function addPage() {
   cy.contains('add').click();
 }
 
+export function addNewPage() {
+  cy.contains('button','Neue Seite').click();
+}
+
 export function navigateToPage(pageIndex: number) {
   cy.contains(`Seite ${pageIndex}`).click();
 }
@@ -114,4 +118,14 @@ export function setPreferencesElement(label: string, settings?: Record<string, b
 export function addElementHover(element: string, option: string) {
   cy.contains('button', element).trigger('mouseover');
   cy.contains('button', option).click();
+}
+
+export function setPageConfig(pageNumber: number, settings?: Record<string, boolean>){
+  cy.get('button:contains("more_vert")').eq(pageNumber-1).click();
+  if (settings?.alwaysVisible){
+    cy.contains('label','Seite dauerhaft sichtbar').click();
+  }
+
+  if (settings?.appareancePartial)
+    cy.contains('mat-checkbox', 'Seitenbreite begrenzen').click({ force: true });
 }

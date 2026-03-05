@@ -1,8 +1,16 @@
-import { addTextElement, selectFromDropdown, setCheckbox } from '../util';
+import { addTextElement, selectFromDropdown, setCheckbox, setID } from '../util';
 
 export function addText(numParagraphs: number, numSentences: number, numColumns: number,
-                        modus: string, settings?: Record<string, boolean>) {
+  modus: string, settings?: Record<string, boolean>, id?: string) {
   addTextElement(generateRandomText(numParagraphs, numSentences));
+
+  // Optional element ID
+  if (id !== undefined) {
+    setID(id);
+    cy.get('aspect-element-model-properties-component')
+      .contains('mat-form-field', 'ID').find('input').should('have.value', id);
+  }
+
   // Number of columns
   cy.contains('mat-form-field', 'Anzahl der Spalten')
     .find('input')
@@ -107,7 +115,7 @@ export interface TextModifySettings {
 export function modifyText(
   paragraphIndex: number,
   settings: TextModifySettings
-){
+) {
   // Double-click the text element to open the rich-text editor dialog
   cy.get('aspect-text').last().dblclick({ force: true });
   // Wait for the contenteditable to appear inside the dialog

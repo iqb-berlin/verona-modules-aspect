@@ -1,4 +1,4 @@
-import {addTextElement, selectFromDropdown, setCheckbox} from "../util";
+import {addTextElement, selectFromDropdown, setCheckbox} from "../../util";
 
 export function addTextExample(modus: string,
                                settings?: Record<string, boolean>){

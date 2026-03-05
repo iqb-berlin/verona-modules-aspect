@@ -1,4 +1,4 @@
-import { addList, connectLists, dragTo } from './droplist-util';
+import { addList, connectLists, dragTo } from './helpers/droplist-util';
 
 describe('Droplist element', { testIsolation: false }, () => {
   it('creates several droplists with only-one and replacement', () => {

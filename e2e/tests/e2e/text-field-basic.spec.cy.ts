@@ -1,5 +1,5 @@
 import { addElement, setPreferencesElement } from '../util';
-import { setRegexPattern, setPreferences, validateTextField } from './text-field-util';
+import { setRegexPattern, setPreferences, validateTextField } from './helpers/text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {

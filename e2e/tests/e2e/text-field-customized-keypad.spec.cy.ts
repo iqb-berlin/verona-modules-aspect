@@ -1,5 +1,5 @@
 import { addElement, setPreferencesElement } from '../util';
-import { setInputAssistance } from './text-field-util';
+import { setInputAssistance } from './helpers/text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
   context('editor', () => {

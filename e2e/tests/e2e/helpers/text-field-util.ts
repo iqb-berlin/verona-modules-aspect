@@ -1,4 +1,4 @@
-import { selectFromDropdown, setCheckbox } from '../util';
+import { selectFromDropdown, setCheckbox } from '../../util';
 
 export function setPreferences({
   minLength, maxLength, defaultText, settings, appearance

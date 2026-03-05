@@ -1,4 +1,4 @@
-import { addTextElement, selectFromDropdown, setCheckbox, setID } from '../util';
+import { addTextElement, selectFromDropdown, setCheckbox, setID } from '../../util';
 
 export function addText(numParagraphs: number, numSentences: number, numColumns: number,
   modus: string, settings?: Record<string, boolean>, id?: string) {

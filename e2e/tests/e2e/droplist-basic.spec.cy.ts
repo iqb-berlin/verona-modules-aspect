@@ -1,4 +1,4 @@
-import { addList, connectLists, dragTo, dragToByTouch } from './droplist-util';
+import { addList, connectLists, dragTo, dragToByTouch } from './helpers/droplist-util';
 
 describe('Droplist element', { testIsolation: false }, () => {
   context('editor', () => {

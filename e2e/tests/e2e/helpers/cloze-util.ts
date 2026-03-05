@@ -1,4 +1,4 @@
-import {addElement, setID} from '../util';
+import {addElement, setID} from '../../util';
 import {setConfigDroplist} from "./droplist-util";
 
 export function createCloze(id: string, text: string, contentType?: string, options?:string[],

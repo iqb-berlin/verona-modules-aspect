@@ -1,6 +1,6 @@
 import {
   addElement, addTextElement, selectFromDropdown, setCheckbox
-} from '../util';
+} from '../../util';
 
 /* Also adds text element as label before the droplist */
 export function addList(title: string, options: string[] = [], settings?: Record<string, boolean>, id?: string): void {

@@ -1,4 +1,4 @@
-import { addList} from './droplist-util';
+import { addList} from './helpers/droplist-util';
 import {selectFromDropdown} from "../util";
 
 describe('Droplist element', { testIsolation: false }, () => {

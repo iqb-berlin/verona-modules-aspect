@@ -1,5 +1,6 @@
 import { addNewPage } from '../util';
-import { addText, selectRange } from './text-util';
+import {addText, selectRange} from "./helpers/text-util";
+
 
 describe('Text element', { testIsolation: false }, () => {
     context('editor', () => {

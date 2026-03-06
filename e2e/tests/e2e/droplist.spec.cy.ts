@@ -151,8 +151,7 @@ describe('Droplist element', { testIsolation: false }, () => {
 
         // ── Page 2 tests ─────────────────────────────────────────────────────────
         it('copies one element to the empty droplist (Page 2)', () => {
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 2').click();
+            cy.goToPlayerPage(2);
 
             dragTo('NichtKopierenListe', 'AAA', 'Zielliste');
             cy.getByAlias('NichtKopierenListe').children().should('have.length', 0);
@@ -178,8 +177,7 @@ describe('Droplist element', { testIsolation: false }, () => {
 
         // ── Page 3 tests ─────────────────────────────────────────────────────────
         it('checks the non numerated list (Page 3)', () => {
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 3').click();
+            cy.goToPlayerPage(3);
             cy.getByAlias('Liste').contains('1.').should('not.exist');
         });
 
@@ -195,8 +193,7 @@ describe('Droplist element', { testIsolation: false }, () => {
 
         // ── Page 5 tests ─────────────────────────────────────────────────────────
         it('drags to read only list (Page 5)', () => {
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 5').click();
+            cy.goToPlayerPage(5);
 
             dragTo('Startliste_P5', 'AAA', 'ZiellisteSchutz');
             cy.getByAlias('ZiellisteSchutz').children().should('have.length', 0);
@@ -217,8 +214,7 @@ describe('Droplist element', { testIsolation: false }, () => {
 
         // ── Page 6 tests ─────────────────────────────────────────────────────────
         it('replaces items without backward connection, recursively (Page 6)', () => {
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 6').click();
+            cy.goToPlayerPage(6);
 
             dragTo('Startliste3', 'CCC', 'Zielliste_P6');
             dragTo('Startliste2', 'BBB', 'Startliste3');
@@ -238,8 +234,7 @@ describe('Droplist element', { testIsolation: false }, () => {
 
         // ── Page 7 tests ─────────────────────────────────────────────────────────
         it('clicks the non required list (Page 7)', () => {
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 7').click();
+            cy.goToPlayerPage(7);
             cy.getByAlias('Zielliste_P7').click();
             cy.getByAlias('Zielliste_P7').find('mat-error').should('not.exist');
         });
@@ -256,8 +251,7 @@ describe('Droplist element', { testIsolation: false }, () => {
 
         // ── Page 8 tests ─────────────────────────────────────────────────────────
         it('highlights list (Page 8)', () => {
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 8').click();
+            cy.goToPlayerPage(8);
 
             cy.getByAlias('normaleListe').find('.drop-list-item').first()
                 .trigger('mousedown', { button: 0 });

@@ -1,5 +1,5 @@
 import { addNewPage } from '../util';
-import {addText, selectRange} from "./helpers/text-util";
+import { addText, selectRange } from "./helpers/text-util";
 
 
 describe('Text element', { testIsolation: false }, () => {
@@ -75,15 +75,13 @@ describe('Text element', { testIsolation: false }, () => {
         });
 
         it('changes the color of the second word to the selected color on page 1', () => {
-            cy.get('[data-element-alias="text-words"]')
+            cy.getByElementAlias('text-words')
                 .find('aspect-markable-word').eq(10).click();
         });
 
         // ── Page 2 tests: range mode ─────────────────────────────────────────────
         it('highlights two sections on page 2', () => {
-            // Select the page 2
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 2').click();
+            cy.goToPlayerPage(2);
 
             cy.get('[data-element-alias="text-range"]')
                 .find('button.marking-button').eq(0).click();
@@ -102,33 +100,31 @@ describe('Text element', { testIsolation: false }, () => {
 
         // ── Page 3 tests: Bereich (selection) mode ───────────────────────────────
         it('highlights two selections in different colors on page 3', () => {
-            // Select the page 3
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 3').click();
+            cy.goToPlayerPage(3);
 
             // highlights in yellow
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('button.marking-button').eq(0).click();
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('aspect-markable-word').eq(10).click();
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('aspect-markable-word').eq(17).click();
 
             // highlights in turquoise
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('button.marking-button').eq(1).click();
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('aspect-markable-word').eq(30).click();
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('aspect-markable-word').eq(35).click();
         });
 
         it('removes the second highlighted selection on page 3', () => {
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('button.marking-button').eq(2).click();
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('aspect-markable-word').eq(30).click();
-            cy.get('[data-element-alias="text-selection"]')
+            cy.getByElementAlias('text-selection')
                 .find('aspect-markable-word').eq(35).click();
         });
     });

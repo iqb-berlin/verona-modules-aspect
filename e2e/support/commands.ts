@@ -96,7 +96,7 @@ Cypress.Commands.add('getByAlias', (alias: string) => {
   return cy.get(`[data-list-alias="${alias}"]`);
 });
 
-Cypress.Commands.add('getByElementAlias', (alias: string) => {
+Cypress.Commands.add('getElementByAlias', (alias: string) => {
   return cy.get(`[data-element-alias="${alias}"]`);
 });
 

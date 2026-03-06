@@ -25,6 +25,20 @@ export function addText(numParagraphs: number, numSentences: number, numColumns:
   selectFromDropdown('Markierungsmodus', modus);
 }
 
+/**
+ * Links the last selected text element to one or more marking panels.
+ * @param panelAliases List of marking panel aliases to connect
+ */
+export function connectToMarkingPanels(panelAliases: string[]): void {
+  cy.get('aspect-element-model-properties-component')
+    .contains('mat-form-field', 'Markierungselemente').find('mat-select').click();
+  panelAliases.forEach(alias => {
+    cy.get('.cdk-overlay-container').contains('mat-option', alias).click({ force: true });
+  });
+  // Close the select overlay
+  cy.get('body').click();
+}
+
 export function selectRange(startX: number, startY: number, endX: number, endY: number): void {
   cy.get('.text-container').eq(0).then($el => {
     const el = $el[0];

@@ -5,8 +5,8 @@ import {
   selectFromDropdown,
   setPageConfig
 } from '../util';
-import { modifyText } from './text-util';
-import { addTextExample } from "./trigger-util";
+import { modifyText } from './helpers/text-util';
+import { addTextExample } from "./helpers/trigger-util";
 
 describe('Trigger element', { testIsolation: false }, () => {
   context('editor', () => {

@@ -1,4 +1,4 @@
-import {addOptions, selectRadioButtonWithVerification} from './likert-util';
+import {addOptions, selectRadioButtonWithVerification} from './helpers/likert-util';
 import { addElement, setPreferencesElement } from '../util';
 
 describe('Likert element', { testIsolation: false }, () => {

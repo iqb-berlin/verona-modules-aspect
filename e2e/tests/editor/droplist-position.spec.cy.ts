@@ -1,4 +1,5 @@
-import {addList, connectLists, dragTo, moveToColumn} from '../e2e/droplist-util';
+import {addList, moveToColumn} from "../e2e/helpers/droplist-util";
+
 
 describe('Droplist element', { testIsolation: false }, () => {
     before('opens an editor', () => {

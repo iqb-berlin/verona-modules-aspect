@@ -1,5 +1,5 @@
-import { createCloze } from './cloze-util';
-import {connectLists, dragTo} from "./droplist-util";
+import { createCloze } from './helpers/cloze-util';
+import {connectLists, dragTo} from "./helpers/droplist-util";
 
 describe('Cloze element', { testIsolation: false }, () => {
   context('editor', () => {

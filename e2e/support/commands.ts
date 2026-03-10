@@ -96,8 +96,17 @@ Cypress.Commands.add('getByAlias', (alias: string) => {
   return cy.get(`[data-list-alias="${alias}"]`);
 });
 
-Cypress.Commands.add('clickOutside', ():void => {
-  cy.get('body').click(0,0);
+Cypress.Commands.add('getElementByAlias', (alias: string) => {
+  return cy.get(`[data-element-alias="${alias}"]`);
+});
+
+Cypress.Commands.add('goToPlayerPage', (pageIndex: number) => {
+  cy.get('aspect-unit-menu').find('button').click();
+  cy.contains('button', `Seite ${pageIndex}`).click();
+});
+
+Cypress.Commands.add('clickOutside', (): void => {
+  cy.get('body').click(0, 0);
 });
 
 Cypress.Commands.add('getElement', (elementType: string, label?: string) => {

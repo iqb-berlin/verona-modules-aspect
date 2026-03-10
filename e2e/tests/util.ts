@@ -3,7 +3,7 @@ export function addPage() {
 }
 
 export function addNewPage() {
-  cy.contains('button','Neue Seite').click();
+  cy.contains('button', 'Neue Seite').click();
 }
 
 export function navigateToPage(pageIndex: number) {
@@ -19,7 +19,7 @@ export function addElement(element: string, expansionPanel?: string, id?: string
       }
     });
   }
-  cy.contains(element).click();
+  cy.contains('button', element).click();
   if (id !== undefined) {
     setID(id);
   }
@@ -66,7 +66,7 @@ export function setCheckbox(labelText: string): void {
 export function selectFromDropdown(dropdownName: string, optionName: string, closeOverlay: boolean = false) {
   cy.get('aspect-element-model-properties-component')
     .contains('mat-form-field', dropdownName).find('mat-select').click();
-  cy.get('.cdk-overlay-container').contains('span', new RegExp(`^ ${optionName} $`)).click({ force: true });
+  cy.get('.cdk-overlay-container').contains('mat-option', new RegExp(`^ ${optionName} $`)).click({ force: true });
   if (closeOverlay) cy.get('body').click();
 }
 
@@ -93,26 +93,27 @@ export function assertValueChanged(id: string, value: any): void {
         )));
 
 }
-  // alternative without 'has'
-  // -------------------------
-  // cy.get('@postMessage')
-  //   .should('be.calledWithMatch',
-  //     Cypress.sinon.match({
-  //       type: 'vopStateChangedNotification',
-  //       unitState: Cypress.sinon.match({
-  //         dataParts: Cypress.sinon.match({
-  //           elementCodes: Cypress.sinon.match('{"id":"dropdown_2","value":2,"status":"VALUE_CHANGED"}')
-  //         })
-  //       })
-  //     }));
+// alternative without 'has'
+// -------------------------
+// cy.get('@postMessage')
+//   .should('be.calledWithMatch',
+//     Cypress.sinon.match({
+//       type: 'vopStateChangedNotification',
+//       unitState: Cypress.sinon.match({
+//         dataParts: Cypress.sinon.match({
+//           elementCodes: Cypress.sinon.match('{"id":"dropdown_2","value":2,"status":"VALUE_CHANGED"}')
+//         })
+//       })
+//     }));
 
-export function setPreferencesElement(label: string, settings?: Record<string, boolean>): void {
+export function setPreferencesElement(label: string, settings?: { readOnly?: boolean, required?: boolean, id?: string }): void {
   cy.contains('mat-form-field', 'Beschriftung')
     .find('textarea')
     .clear()
     .type(label);
   if (settings?.readOnly) setCheckbox('Schreibschutz');
   if (settings?.required) setCheckbox('Pflichtfeld');
+  if (settings?.id) setID(settings.id);
 }
 
 export function addElementHover(element: string, option: string) {
@@ -120,10 +121,10 @@ export function addElementHover(element: string, option: string) {
   cy.contains('button', option).click();
 }
 
-export function setPageConfig(pageNumber: number, settings?: Record<string, boolean>){
-  cy.get('button:contains("more_vert")').eq(pageNumber-1).click();
-  if (settings?.alwaysVisible){
-    cy.contains('label','Seite dauerhaft sichtbar').click();
+export function setPageConfig(pageNumber: number, settings?: Record<string, boolean>) {
+  cy.get('button:contains("more_vert")').eq(pageNumber - 1).click();
+  if (settings?.alwaysVisible) {
+    cy.contains('label', 'Seite dauerhaft sichtbar').click();
   }
 
   if (settings?.appareancePartial)

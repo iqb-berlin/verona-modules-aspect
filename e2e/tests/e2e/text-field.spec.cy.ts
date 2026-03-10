@@ -12,7 +12,6 @@ describe('Text field element', { testIsolation: false }, () => {
         it('creates a readonly text field (Page 1)', () => {
             addElement('Eingabefeld');
             setPreferencesElement('Eingabefeld mit Schreibschutz', { readOnly: true });
-            cy.get('aspect-element-model-properties-component').contains('mat-form-field', 'ID').find('input').clear().type('TF_Readonly');
         });
 
         it('creates a required text field (Page 1)', () => {
@@ -25,28 +24,24 @@ describe('Text field element', { testIsolation: false }, () => {
             addElement('Eingabefeld');
             setPreferencesElement('Minimallänge 3');
             setPreferences({ minLength: 3 });
-            cy.get('aspect-element-model-properties-component').contains('mat-form-field', 'ID').find('input').clear().type('TF_Min3');
         });
 
         it('creates a text field with a maximum length of 10 characters (Page 1)', () => {
             addElement('Eingabefeld');
             setPreferencesElement('Maximallänge 10');
             setPreferences({ maxLength: 10, settings: { isLimitedToMaxLength: true } });
-            cy.get('aspect-element-model-properties-component').contains('mat-form-field', 'ID').find('input').clear().type('TF_Max10');
         });
 
         it('creates a text field with clear option (Page 1)', () => {
             addElement('Eingabefeld');
             setPreferencesElement('Löschtaste');
             setPreferences({ settings: { clearable: true } });
-            cy.get('aspect-element-model-properties-component').contains('mat-form-field', 'ID').find('input').clear().type('TF_Clear');
         });
 
         it('creates a text field that accepts only the pattern 1[a-z]000 (Page 1)', () => {
             addElement('Eingabefeld');
             setPreferencesElement('1[a-z]000 Muster');
             setRegexPattern('1[a-z]000');
-            cy.get('aspect-element-model-properties-component').contains('mat-form-field', 'ID').find('input').clear().type('TF_Regex');
         });
 
         // ── Page 2: customized keypad ─────────────────────────────────────────────
@@ -55,14 +50,12 @@ describe('Text field element', { testIsolation: false }, () => {
             addElement('Eingabefeld');
             setPreferencesElement('Eigene Zeichen', { required: true });
             setInputAssistance('Eigene Zeichen', 'rechts', '12345');
-            cy.get('aspect-element-model-properties-component').contains('mat-form-field', 'ID').find('input').clear().type('TF_Keypad');
         });
 
         it('creates a text field with the same customized keypad disabling other characters (Page 2)', () => {
             addElement('Eingabefeld');
             setPreferencesElement('Eigene Zeichen (Restricted)', { required: true });
             setInputAssistance('Eigene Zeichen', 'rechts', '12345', { disableOtherCharacters: true });
-            cy.get('aspect-element-model-properties-component').contains('mat-form-field', 'ID').find('input').clear().type('TF_KeypadRest');
         });
 
         after('save an unit definition', () => {
@@ -118,8 +111,7 @@ describe('Text field element', { testIsolation: false }, () => {
 
         // ── Page 2 Player Tests ──────────────────────────────────────────────────
         it('checks customized keypad characters (Page 2)', () => {
-            cy.get('aspect-unit-menu').find('button').click();
-            cy.contains('button', 'Seite 2').click();
+            cy.goToPlayerPage(2);
 
             cy.get('aspect-keypad').should('not.exist');
             cy.contains('mat-form-field', 'Eigene Zeichen').click();
@@ -132,7 +124,7 @@ describe('Text field element', { testIsolation: false }, () => {
                 .find('input')
                 .clear()
                 .type('7777{enter}');
-            // Focus another field 
+            // Focus another field
             cy.contains('mat-form-field', 'Eigene Zeichen (Restricted)').click();
             cy.contains('mat-form-field', 'Eigene Zeichen')
                 .find('mat-error').should('not.exist');

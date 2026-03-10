@@ -1,4 +1,4 @@
-export {};
+export { };
 
 declare global {
   namespace Cypress {
@@ -9,8 +9,10 @@ declare global {
       openEditor(): Chainable<JQuery<HTMLElement>>;
       switchToTabbedViewMode(): Chainable<JQuery<HTMLElement>>;
       getByAlias(alias: string): Chainable<JQuery<HTMLElement>>;
+      getElementByAlias(alias: string): Chainable<JQuery<HTMLElement>>;
       clickOutside(): Chainable<JQuery<HTMLElement>>;
       getElement(elementType: string, label?: string): Chainable<JQuery<HTMLElement>>;
+      goToPlayerPage(pageIndex: number): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

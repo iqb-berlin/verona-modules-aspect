@@ -127,6 +127,52 @@
               }
             ]
           }
+        },
+        "build-coverage": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./webpack.coverage.config.js",
+              "mergeStrategies": {
+                "module.rules": "append"
+              }
+            },
+            "outputPath": "dist/editor",
+            "index": "projects/editor/src/index.html",
+            "main": "projects/editor/src/main.ts",
+            "polyfills": "projects/editor/src/polyfills.ts",
+            "tsConfig": "projects/editor/tsconfig.app.json",
+            "sourceMap": true,
+            "optimization": false,
+            "assets": [
+              "projects/editor/src/favicon.ico",
+              "projects/editor/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/common/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "projects/editor/src/styles.css",
+              "projects/common/assets/customTheme.scss"
+            ],
+            "scripts": [],
+            "fileReplacements": [
+              {
+                "replace": "projects/common/environment.ts",
+                "with": "projects/editor/src/environments/environment.ts"
+              }
+            ]
+          }
+        },
+        "serve-coverage": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "buildTarget": "editor:build-coverage",
+            "port": 4201
+          }
         }
       }
     },
@@ -242,6 +288,46 @@
                 "with": "projects/editor/src/environments/environment.ts"
               }
             ]
+          }
+        },
+        "build-coverage": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./webpack.coverage.config.js",
+              "mergeStrategies": {
+                "module.rules": "append"
+              }
+            },
+            "outputPath": "dist/player",
+            "index": "projects/player/src/index.html",
+            "main": "projects/player/src/main.ts",
+            "polyfills": "projects/player/src/polyfills.ts",
+            "tsConfig": "projects/player/tsconfig.app.json",
+            "sourceMap": true,
+            "optimization": false,
+            "assets": [
+              "projects/player/src/favicon.ico",
+              "projects/player/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/common/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "projects/player/src/styles.scss",
+              "projects/common/assets/customTheme.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "serve-coverage": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "buildTarget": "player:build-coverage",
+            "port": 4202
           }
         }
       }

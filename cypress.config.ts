@@ -1,9 +1,11 @@
 import { defineConfig } from 'cypress';
+import coverageTask from '@cypress/code-coverage/task';
 
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      coverageTask(on, config);
+      return config;
     },
     fixturesFolder: 'e2e/fixtures',
     supportFile: 'e2e/support/e2e.ts',

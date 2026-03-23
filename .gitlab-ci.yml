@@ -19,8 +19,8 @@ test-e2e:
   before_script:
     - npm ci --cache .npm --prefer-offline
   script:
-    - nohup npm run serve-editor-coverage &
-    - nohup npm run serve-player-coverage &
+    - nohup npm run serve-editor-local &
+    - nohup npm run serve-player-local &
     - |
       echo "Waiting for editor..."
       until curl -sSf http://localhost:4201 >/dev/null; do sleep 5; done
@@ -28,7 +28,7 @@ test-e2e:
       echo "Waiting for player..."
       until curl -sSf http://localhost:4202 >/dev/null; do sleep 5; done
       echo "Player ready!"
-    - npm run e2e-coverage
+    - npm run e2e-headless
   artifacts:
     when: always
     paths:

@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { VisibilityRule } from 'common/models/visibility-rule';
-import { ElementFactory } from 'common/util/element.factory';
+import { ElementFactory } from 'common/utils/element.factory';
 import { environment } from 'common/environment';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import {

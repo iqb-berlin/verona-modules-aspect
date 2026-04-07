@@ -1,21 +1,21 @@
-import { Type } from '@angular/core';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { VideoComponent } from 'common/components/media-elements/video.component';
 import {
-  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  PositionProperties, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, PlayerElementBlueprint, UIElementType } from 'common/interfaces';
 import { PlayerElement } from 'common/models/elements/element';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class VideoElement extends PlayerElement implements VideoProperties {
   type: UIElementType = 'video';
-  src: string | null = null;
-  fileName: string = '';
-  scale: boolean = false;
-  position: PositionProperties;
-  styling: { backgroundColor: string };
+  src: string | null = ELEMENT_DEFAULTS.video.src as string | null;
+  fileName: string = ELEMENT_DEFAULTS.video.fileName as string;
+  scale: boolean = ELEMENT_DEFAULTS.video.scale as boolean;
+  position!: PositionProperties;
+  styling: { backgroundColor: string } = {
+    backgroundColor: ELEMENT_DEFAULTS.video.backgroundColor as string
+  };
 
   static title: string = 'Video';
   static icon: string = 'ondemand_video';
@@ -28,31 +28,9 @@ export class VideoElement extends PlayerElement implements VideoProperties {
       this.scale = element.scale;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Video instantiation', element);
-      }
-      if (element?.src !== undefined) this.src = element.src;
-      if (element?.fileName !== undefined) this.fileName = element.fileName;
-      if (element?.scale !== undefined) this.scale = element.scale;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        width: 280,
-        height: 230,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps({
-        marginBottom: { value: 15, unit: 'px' },
-        ...element?.position
-      });
-      this.styling = {
-        backgroundColor: '#f1f1f1',
-        ...element?.styling
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Video instantiation', element);
     }
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return VideoComponent;
   }
 }
 

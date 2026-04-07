@@ -1,10 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
-import { Type } from '@angular/core';
 import { VariableInfo } from '@iqb/responses';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
+  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators,
+  PropertyGroupValidators, Stylings
 } from 'common/models/elements/property-group-interfaces';
+import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { environment } from 'common/environment';
 import {
   AbstractIDService,
@@ -13,10 +13,12 @@ import {
   UIElementProperties, UIElementType, UIElementValue
 } from 'common/interfaces';
 import { IDError, InstantiationEror } from 'common/errors';
+import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 
 function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
-  return blueprint.id !== undefined &&
-    blueprint.isRelevantForPresentationComplete !== undefined;
+  return blueprint.isRelevantForPresentationComplete !== undefined &&
+    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
+    PropertyGroupValidators.isValidPosition(blueprint.position);
 }
 
 export abstract class UIElement implements UIElementProperties {
@@ -33,32 +35,43 @@ export abstract class UIElement implements UIElementProperties {
 
   constructor(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService) {
     this.idService = idService;
+
     if (isUIElementProperties(element)) {
-      this.id = element.id;
-      this.alias = element.alias || element.id;
-      if (idService) {
-        // Only register after the child constructior has run. ID-registration needs the type and possibly values.
+      this.id = element.id ??
+        idService?.getAndRegisterNewID(element.type) ??
+        (() => { throw new Error(`No ID or IDService given: ${element.type}`); })();
+      this.alias = element.alias ??
+        (element.id ? element.id : idService?.getAndRegisterNewID(element.type, true)) ??
+        (() => { throw new Error(`No Alias or IDService given: ${element.type}`); })();
+
+      if (idService && !element.id) {
+        // Only register if we just generated it.
+        // If it was already present, it will be registered by the caller or later.
         setTimeout(() => this.registerIDs());
       }
       this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
       if (element.dimensions) this.dimensions = { ...element.dimensions };
       if (element.position) this.position = { ...element.position };
       if (element.styling) this.styling = { ...element.styling };
+      if (element.player) this.player = { ...element.player };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at UIElement instantiation', element);
       }
-      this.id = element.id ??
+      const normalized = ModelNormalizer.normalizeElement(element as Record<string, unknown>);
+
+      this.id = normalized.id as string ??
         idService?.getAndRegisterNewID(element.type) ??
         (() => { throw new Error(`No ID or IDService given: ${this.type}`); })();
-      this.alias = element.alias ??
+      this.alias = normalized.alias as string ??
         idService?.getAndRegisterNewID(element.type, true) ??
         (() => { throw new Error(`No Alias or IDService given: ${this.type}`); })();
-      if (element?.isRelevantForPresentationComplete !== undefined) {
-        this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      }
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
+
+      this.isRelevantForPresentationComplete = normalized.isRelevantForPresentationComplete as boolean;
+      this.dimensions = normalized.dimensions as DimensionProperties;
+      this.position = normalized.position as PositionProperties;
+      this.styling = normalized.styling as Stylings;
+      if (normalized.player) this.player = normalized.player as PlayerProperties;
     }
   }
 
@@ -126,8 +139,6 @@ export abstract class UIElement implements UIElementProperties {
     return [{ id: this.id, alias: this.alias }];
   }
 
-  abstract getElementComponent(): Type<ElementComponent>;
-
   static createOptionLabel(optionText: string, addImg: boolean = false) {
     return {
       text: optionText,
@@ -165,9 +176,9 @@ function isInputElementProperties(blueprint: Partial<InputElementProperties>): b
 export abstract class InputElement extends UIElement implements InputElementProperties {
   label?: string = '';
   value: InputElementValue = null;
-  required: boolean = false;
-  requiredWarnMessage: string = 'Eingabe erforderlich';
-  readOnly: boolean = false;
+  required: boolean = GLOBAL_DEFAULTS.required;
+  requiredWarnMessage: string = GLOBAL_DEFAULTS.requiredWarnMessage;
+  readOnly: boolean = GLOBAL_DEFAULTS.readOnly;
 
   protected constructor(element: { type: string } & Partial<InputElementProperties>, idService?: AbstractIDService) {
     super(element, idService);
@@ -232,9 +243,9 @@ export abstract class TextInputElement extends InputElement implements TextInput
   restrictedToInputAssistanceChars: boolean = false;
   hasArrowKeys: boolean = false;
   hasBackspaceKey: boolean = false;
-  showSoftwareKeyboard: boolean = true;
-  addInputAssistanceToKeyboard: boolean = true;
-  hideNativeKeyboard: boolean = true;
+  showSoftwareKeyboard: boolean = false;
+  addInputAssistanceToKeyboard: boolean = false;
+  hideNativeKeyboard: boolean = false;
   keyStyle: 'round' | 'square' = 'round';
 
   protected constructor(element: { type: string } & Partial<TextInputElementProperties>, idService?: AbstractIDService) {

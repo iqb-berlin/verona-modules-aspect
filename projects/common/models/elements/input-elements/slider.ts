@@ -1,9 +1,6 @@
-import { Type } from '@angular/core';
 import {
   InputElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { SliderComponent } from 'common/components/input-elements/slider.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
@@ -12,15 +9,17 @@ import { environment } from 'common/environment';
 import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class SliderElement extends InputElement implements SliderProperties {
   type: UIElementType = 'slider';
-  minValue: number = 0;
-  maxValue: number = 100;
-  showValues: boolean = true;
-  barStyle: boolean = false;
-  thumbLabel: boolean = false;
-  position: PositionProperties;
-  styling: BasicStyles & {
+  minValue: number = ELEMENT_DEFAULTS.slider.minValue as number;
+  maxValue: number = ELEMENT_DEFAULTS.slider.maxValue as number;
+  showValues: boolean = ELEMENT_DEFAULTS.slider.showValues as boolean;
+  barStyle: boolean = ELEMENT_DEFAULTS.slider.barStyle as boolean;
+  thumbLabel: boolean = ELEMENT_DEFAULTS.slider.thumbLabel as boolean;
+  position!: PositionProperties;
+  styling!: BasicStyles & {
     lineHeight: number;
   };
 
@@ -37,20 +36,8 @@ export class SliderElement extends InputElement implements SliderProperties {
       this.thumbLabel = element.thumbLabel;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Slider instantiation', element);
-      }
-      if (element?.minValue) this.minValue = element.minValue;
-      if (element?.maxValue) this.maxValue = element.maxValue;
-      if (element?.showValues) this.showValues = element.showValues;
-      if (element?.barStyle) this.barStyle = element.barStyle;
-      if (element?.thumbLabel) this.thumbLabel = element.thumbLabel;
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 135
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Slider instantiation', element);
     }
   }
 
@@ -73,10 +60,6 @@ export class SliderElement extends InputElement implements SliderProperties {
     return Array.from({ length: (this.maxValue + 1 - this.minValue) }, (_, index) => (
       { value: (index + this.minValue).toString(), label: (index + this.minValue).toString() }
     )) as VariableValue[];
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return SliderComponent;
   }
 }
 

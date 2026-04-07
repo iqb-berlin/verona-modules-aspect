@@ -1,12 +1,9 @@
-import { Type } from '@angular/core';
 import {
   InputElement, UIElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { RadioGroupImagesComponent } from 'common/components/input-elements/radio-group-images.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -18,14 +15,16 @@ import {
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class RadioButtonGroupComplexElement extends InputElement
   implements OptionElement, RadioButtonGroupComplexProperties {
   type: UIElementType = 'radio-group-images';
-  label: string = 'Beschriftung';
-  options: TextImageLabel[] = [];
-  itemsPerRow: number | null = null;
-  position: PositionProperties;
-  styling: BasicStyles;
+  label: string = ELEMENT_DEFAULTS['radio-group-images'].label as string;
+  options: TextImageLabel[] = [...ELEMENT_DEFAULTS['radio-group-images'].options as TextImageLabel[]];
+  itemsPerRow: number | null = ELEMENT_DEFAULTS['radio-group-images'].itemsPerRow as number | null;
+  position!: PositionProperties;
+  styling!: BasicStyles;
 
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';
@@ -38,21 +37,8 @@ export class RadioButtonGroupComplexElement extends InputElement
       this.itemsPerRow = element.itemsPerRow;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at RadioButtonGroupComplex instantiation', element);
-      }
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.options) this.options = [...element.options];
-      if (element?.itemsPerRow) this.itemsPerRow = element.itemsPerRow;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        height: 100,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps({
-        ...element?.position
-      });
-      this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at RadioButtonGroupComplex instantiation', element);
     }
   }
 
@@ -77,10 +63,6 @@ export class RadioButtonGroupComplexElement extends InputElement
         value: (index + 1).toString(),
         label: InputElement.stripHTML(option.text)
       }));
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return RadioGroupImagesComponent;
   }
 
   getNewOptionLabel(optionText: string): TextImageLabel {

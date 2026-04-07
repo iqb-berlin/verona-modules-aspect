@@ -1,12 +1,9 @@
-import { Type } from '@angular/core';
 import {
   CompoundElement, UIElement
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { LikertComponent } from 'common/components/compound-elements/likert/likert.component';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
@@ -19,17 +16,18 @@ import {
   UIElementValue
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class LikertElement extends CompoundElement implements OptionElement, LikertProperties {
   type: UIElementType = 'likert';
-  rows: LikertRowElement[] = [];
-  options: TextImageLabel[] = [];
-  firstColumnSizeRatio: number = 5;
-  label: string = 'Optionentabelle Beschriftung';
-  label2: string = 'Beschriftung Erste Spalte';
-  stickyHeader: boolean = false;
-  position: PositionProperties;
-  styling: BasicStyles & {
+  rows: LikertRowElement[] = [...ELEMENT_DEFAULTS.likert.rows as LikertRowElement[]];
+  options: TextImageLabel[] = [...ELEMENT_DEFAULTS.likert.options as TextImageLabel[]];
+  firstColumnSizeRatio: number = ELEMENT_DEFAULTS.likert.firstColumnSizeRatio as number;
+  label: string = ELEMENT_DEFAULTS.likert.label as string;
+  label2: string = ELEMENT_DEFAULTS.likert.label2 as string;
+  stickyHeader: boolean = ELEMENT_DEFAULTS.likert.stickyHeader as boolean;
+  position!: PositionProperties;
+  styling!: BasicStyles & {
     lineHeight: number;
     lineColoring: boolean;
     lineColoringColor: string;
@@ -51,36 +49,8 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
       this.stickyHeader = element.stickyHeader;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Likert instantiation', element);
-      }
-      if (element?.options !== undefined) this.options = element.options;
-      if (element?.firstColumnSizeRatio !== undefined) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-      if (element?.rows !== undefined) this.rows = element.rows.map(row => new LikertRowElement(row, idService));
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.label2 !== undefined) this.label2 = element.label2;
-      if (element?.stickyHeader !== undefined) this.stickyHeader = element.stickyHeader;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        width: 250,
-        height: 200,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps({
-        marginBottom: { value: 35, unit: 'px' },
-        ...element?.position
-      });
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps({
-          backgroundColor: 'white',
-          ...element?.styling
-        }),
-        lineHeight: element?.styling?.lineHeight || 135,
-        lineColoring: element?.styling?.lineColoring !== undefined ? element?.styling.lineColoring : true,
-        lineColoringColor: element?.styling?.lineColoringColor || '#c9e0e0',
-        firstLineColoring: element?.styling?.firstLineColoring || false,
-        firstLineColoringColor: element?.styling?.firstLineColoringColor || '#c7f3d0'
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Likert instantiation', element);
     }
   }
 
@@ -112,10 +82,6 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
         .forEach(childElement => childElement
           .setProperty('isRelevantForPresentationComplete', value));
     }
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return LikertComponent;
   }
 
   getChildElements(): UIElement[] {

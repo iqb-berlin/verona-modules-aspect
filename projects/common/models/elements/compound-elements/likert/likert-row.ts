@@ -1,11 +1,6 @@
-import { Type } from '@angular/core';
 import {
   InputElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import {
-  LikertRadioButtonGroupComponent
-} from 'common/components/compound-elements/likert/likert-radio-button-group.component';
 import { environment } from 'common/environment';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
@@ -14,16 +9,15 @@ import {
   TextImageLabel, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class LikertRowElement extends InputElement implements LikertRowProperties {
   type: UIElementType = 'likert-row';
-  rowLabel: TextImageLabel = {
-    text: '', imgSrc: null, imgFileName: '', imgPosition: 'above'
-  };
-
-  columnCount: number = 0;
-  firstColumnSizeRatio: number = 5;
-  verticalButtonAlignment: 'auto' | 'center' = 'center';
+  rowLabel: TextImageLabel = ELEMENT_DEFAULTS['likert-row'].rowLabel as TextImageLabel;
+  columnCount: number = ELEMENT_DEFAULTS['likert-row'].columnCount as number;
+  firstColumnSizeRatio: number = ELEMENT_DEFAULTS['likert-row'].firstColumnSizeRatio as number;
+  verticalButtonAlignment: 'auto' | 'center' =
+    ELEMENT_DEFAULTS['likert-row'].verticalButtonAlignment as 'auto' | 'center';
 
   constructor(element?: Partial<LikertRowProperties>, idService?: AbstractIDService) {
     super({ type: 'likert-row', ...element }, idService);
@@ -32,21 +26,13 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
       this.columnCount = element.columnCount;
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
       this.verticalButtonAlignment = element.verticalButtonAlignment;
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Likert-Row instantiation', element);
-      }
-      if (element?.rowLabel !== undefined) this.rowLabel = element.rowLabel;
-      if (element?.columnCount !== undefined) this.columnCount = element.columnCount;
-      if (element?.firstColumnSizeRatio !== undefined) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-      if (element?.verticalButtonAlignment !== undefined) {
-        this.verticalButtonAlignment = element.verticalButtonAlignment;
-      }
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Likert-Row instantiation', element);
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getVariableInfos(options?: unknown): VariableInfo[] {
+  getVariableInfos(): VariableInfo[] {
     return [];
   }
 
@@ -72,10 +58,6 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
         value: (index + 1).toString(),
         label: InputElement.stripHTML(option.text)
       }));
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return LikertRadioButtonGroupComponent;
   }
 }
 

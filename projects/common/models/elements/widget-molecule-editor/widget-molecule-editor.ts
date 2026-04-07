@@ -1,23 +1,21 @@
-import { Type } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
   AbstractIDService, UIElementProperties, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
-import {
-  WidgetMoleculeEditorComponent
-} from 'common/components/widget-molecule-editor/widget-molecule-editor.component';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class WidgetMoleculeEditorElement extends UIElement implements WidgetMoleculeEditorProperties {
   type: UIElementType = 'widget-molecule-editor';
-  bondingType: 'VALENCE' | 'ELECTRONS' = 'VALENCE';
-  styling: BasicStyles & BorderStyles;
-  state: string | null = null;
+  bondingType: 'VALENCE' | 'ELECTRONS' = ELEMENT_DEFAULTS['widget-molecule-editor']
+    .bondingType as 'VALENCE' | 'ELECTRONS';
+
+  styling!: BasicStyles & BorderStyles;
+  state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state as string | null;
 
   static title: string = 'Molekül-Editor';
   static icon: string = 'biotech';
@@ -28,24 +26,9 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
       this.bondingType = element.bondingType;
       this.styling = { ...element.styling };
       this.state = element.state;
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at WidgetMoleculeEditor instantiation', element);
-      }
-      if (element?.bondingType !== undefined) this.bondingType = element.bondingType;
-      if (element?.state !== undefined) this.state = element.state;
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps({
-          backgroundColor: 'lightgrey',
-          ...element?.styling
-        }),
-        ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at WidgetMoleculeEditor instantiation', element);
     }
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return WidgetMoleculeEditorComponent;
   }
 }
 

@@ -1,28 +1,27 @@
-import { Type } from '@angular/core';
 import {
   TextInputElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class TextAreaElement extends TextInputElement implements TextAreaProperties {
   type: UIElementType = 'text-area';
-  appearance: 'fill' | 'outline' = 'outline';
-  resizeEnabled: boolean = false;
-  hasDynamicRowCount: boolean = true;
-  hasAutoHeight: boolean = false;
-  rowCount: number = 3;
-  expectedCharactersCount: number = 135;
-  hasReturnKey: boolean = false;
+  appearance: 'fill' | 'outline' = ELEMENT_DEFAULTS['text-area'].appearance as 'fill' | 'outline';
+  resizeEnabled: boolean = ELEMENT_DEFAULTS['text-area'].resizeEnabled as boolean;
+  hasDynamicRowCount: boolean = ELEMENT_DEFAULTS['text-area'].hasDynamicRowCount as boolean;
+  hasAutoHeight: boolean = ELEMENT_DEFAULTS['text-area'].hasAutoHeight as boolean;
+  rowCount: number = ELEMENT_DEFAULTS['text-area'].rowCount as number;
+  expectedCharactersCount: number = ELEMENT_DEFAULTS['text-area'].expectedCharactersCount as number;
+  hasReturnKey: boolean = ELEMENT_DEFAULTS['text-area'].hasReturnKey as boolean;
   position?: PositionProperties;
-  styling: BasicStyles & {
+  styling!: BasicStyles & {
     lineHeight: number;
   };
 
@@ -41,26 +40,8 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       this.hasReturnKey = element.hasReturnKey;
       if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at TextArea instantiation', element);
-      }
-      if (element?.appearance) this.appearance = element.appearance;
-      if (element?.resizeEnabled) this.resizeEnabled = element.resizeEnabled;
-      if (element?.rowCount) this.rowCount = element.rowCount;
-      if (element?.hasDynamicRowCount) this.hasDynamicRowCount = element.hasDynamicRowCount;
-      if (element?.expectedCharactersCount) this.expectedCharactersCount = element.expectedCharactersCount;
-      if (element?.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        width: 230,
-        height: 132,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 135
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at TextArea instantiation', element);
     }
   }
 
@@ -77,10 +58,6 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       page: '',
       valuesComplete: false
     }];
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return TextAreaComponent;
   }
 }
 
@@ -106,6 +83,6 @@ function isTextAreaProperties(blueprint?: Partial<TextAreaProperties>): blueprin
   blueprint.rowCount !== undefined &&
   blueprint.expectedCharactersCount !== undefined &&
   blueprint.hasReturnKey !== undefined &&
-  PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+  PropertyGroupValidators.isValidBasicStyles(blueprint.styling as BasicStyles) &&
   blueprint.styling?.lineHeight !== undefined;
 }

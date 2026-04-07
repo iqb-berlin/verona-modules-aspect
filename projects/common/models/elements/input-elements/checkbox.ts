@@ -1,24 +1,22 @@
-import { Type } from '@angular/core';
 import {
   InputElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class CheckboxElement extends InputElement implements CheckboxProperties {
   type: UIElementType = 'checkbox';
-  label: string = 'Beschriftung';
-  imgSrc: string | null = null;
-  value: boolean = false;
-  crossOutChecked: boolean = false;
-  styling: BasicStyles;
+  label: string = ELEMENT_DEFAULTS.checkbox.label as string;
+  imgSrc: string | null = ELEMENT_DEFAULTS.checkbox.imgSrc as string | null;
+  value: boolean = ELEMENT_DEFAULTS.checkbox.value as boolean;
+  crossOutChecked: boolean = ELEMENT_DEFAULTS.checkbox.crossOutChecked as boolean;
+  declare styling: BasicStyles;
 
   static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';
@@ -31,19 +29,8 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
       this.value = element.value;
       this.crossOutChecked = element.crossOutChecked;
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Checkbox instantiation', element);
-      }
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.imgSrc !== undefined) this.imgSrc = element.imgSrc;
-      if (element?.value !== undefined) this.value = element.value;
-      if (element?.crossOutChecked !== undefined) this.crossOutChecked = element.crossOutChecked;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        width: 215,
-        ...element?.dimensions
-      });
-      this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Checkbox instantiation', element);
     }
   }
 
@@ -67,10 +54,6 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
       { value: 'true', label: `Angekreuzt: ${this.label}` },
       { value: 'false', label: `Nicht Angekreuzt: ${this.label}` }
     ];
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return CheckboxComponent;
   }
 }
 

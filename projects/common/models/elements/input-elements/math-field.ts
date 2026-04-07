@@ -1,12 +1,7 @@
-import {
-  InputElement
-} from 'common/models/elements/element';
-import { Type } from '@angular/core';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
+import { InputElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -14,12 +9,16 @@ import {
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class MathFieldElement extends InputElement implements MathFieldProperties {
   type: UIElementType = 'math-field';
-  enableModeSwitch: boolean = false;
-  mathKeyboardPresets: MathKeyboardPreset[] = ['math', 'symbols', 'latin', 'greek'];
-  position: PositionProperties;
-  styling: BasicStyles & {
+  enableModeSwitch: boolean = ELEMENT_DEFAULTS['math-field'].enableModeSwitch as boolean;
+  mathKeyboardPresets: MathKeyboardPreset[] =
+    ELEMENT_DEFAULTS['math-field'].mathKeyboardPresets as MathKeyboardPreset[];
+
+  position!: PositionProperties;
+  styling!: BasicStyles & {
     lineHeight: number;
   };
 
@@ -33,19 +32,8 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
       this.mathKeyboardPresets = element.mathKeyboardPresets;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Mathfield instantiation', element);
-      }
-      if (element?.enableModeSwitch !== undefined) this.enableModeSwitch = element.enableModeSwitch;
-      if (element?.mathKeyboardPresets !== undefined) {
-        this.mathKeyboardPresets = element.mathKeyboardPresets;
-      }
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 135
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Mathfield instantiation', element);
     }
   }
 
@@ -62,10 +50,6 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
       page: '',
       valuesComplete: false
     }];
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return MathFieldComponent;
   }
 }
 

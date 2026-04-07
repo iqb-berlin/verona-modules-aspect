@@ -13,7 +13,8 @@
     "build-player": "scripts/build.sh player $npm_package_config_player_version",
     "test": "ng test",
     "e2e": "npx cypress open",
-    "e2e-headless": "npx cypress run"
+    "e2e-headless": "npx cypress run",
+    "generate-migration": "node scripts/generate-migration.js"
   },
   "private": true,
   "eslintConfig": {

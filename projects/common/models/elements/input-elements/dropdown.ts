@@ -1,12 +1,9 @@
-import { Type } from '@angular/core';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
   InputElement, UIElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { DropdownComponent } from 'common/components/input-elements/dropdown.component';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -14,12 +11,14 @@ import {
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class DropdownElement extends InputElement implements OptionElement, DropdownProperties {
   type: UIElementType = 'dropdown';
-  options: TextLabel[] = [];
-  allowUnset: boolean = false;
-  position: PositionProperties;
-  styling: BasicStyles;
+  options: TextLabel[] = ELEMENT_DEFAULTS.dropdown.options as TextLabel[];
+  allowUnset: boolean = ELEMENT_DEFAULTS.dropdown.allowUnset as boolean;
+  position!: PositionProperties;
+  styling!: BasicStyles;
 
   static title: string = 'Klappliste';
   static icon: string = 'menu_open';
@@ -31,19 +30,8 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
       this.allowUnset = element.allowUnset;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Dropdown instantiation', element);
-      }
-      if (element?.options) this.options = element.options;
-      if (element?.allowUnset) this.allowUnset = element.allowUnset;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        width: 240,
-        height: 83,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Dropdown instantiation', element);
     }
   }
 
@@ -68,10 +56,6 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
         value: (index + 1).toString(),
         label: InputElement.stripHTML(option.text)
       }));
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return DropdownComponent;
   }
 
   getNewOptionLabel(optionText: string): TextLabel {

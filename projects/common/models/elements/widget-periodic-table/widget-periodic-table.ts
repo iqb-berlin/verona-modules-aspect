@@ -1,25 +1,23 @@
-import { Type } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
   AbstractIDService, UIElementProperties, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
-import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class WidgetPeriodicTableElement extends UIElement implements WidgetPeriodicTableProperties {
   type: UIElementType = 'widget-periodic-table';
-  styling: BasicStyles & BorderStyles;
-  showInfoOrder: boolean = true;
-  showInfoENeg: boolean = false;
-  showInfoAMass: boolean = true;
-  closeOnSelection: boolean = false;
-  maxNumberOfSelections: number = 1;
-  state: string | null = null;
+  styling!: BasicStyles & BorderStyles;
+  showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoOrder as boolean;
+  showInfoENeg: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoENeg as boolean;
+  showInfoAMass: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoAMass as boolean;
+  closeOnSelection: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].closeOnSelection as boolean;
+  maxNumberOfSelections: number = ELEMENT_DEFAULTS['widget-periodic-table'].maxNumberOfSelections as number;
+  state: string | null = ELEMENT_DEFAULTS['widget-periodic-table'].state as string | null;
 
   static title: string = 'Periodensystem';
   static icon: string = 'science';
@@ -34,28 +32,9 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
       this.closeOnSelection = element.closeOnSelection;
       this.maxNumberOfSelections = element.maxNumberOfSelections;
       this.state = element.state;
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at WidgetPeriodicTable instantiation', element);
-      }
-      if (element?.showInfoOrder !== undefined) this.showInfoOrder = element.showInfoOrder;
-      if (element?.showInfoENeg !== undefined) this.showInfoENeg = element.showInfoENeg;
-      if (element?.showInfoAMass !== undefined) this.showInfoAMass = element.showInfoAMass;
-      if (element?.closeOnSelection !== undefined) this.closeOnSelection = element.closeOnSelection;
-      if (element?.maxNumberOfSelections !== undefined) this.maxNumberOfSelections = element.maxNumberOfSelections;
-      if (element?.state !== undefined) this.state = element.state;
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps({
-          backgroundColor: 'lightgrey',
-          ...element?.styling
-        }),
-        ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at WidgetPeriodicTable instantiation', element);
     }
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return WidgetPeriodicTableComponent;
   }
 }
 

@@ -1,30 +1,28 @@
-import { Type } from '@angular/core';
 import {
   TextInputElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class TextFieldElement extends TextInputElement implements TextFieldProperties {
   type: UIElementType = 'text-field';
-  appearance?: 'fill' | 'outline' = 'outline';
-  minLength: number | null = null;
-  minLengthWarnMessage: string = 'Eingabe zu kurz';
-  maxLength: number | null = null;
-  maxLengthWarnMessage: string = 'Eingabe zu lang';
-  isLimitedToMaxLength: boolean = true;
-  pattern: string | null = null;
-  patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
-  clearable: boolean = false;
+  appearance?: 'fill' | 'outline' = ELEMENT_DEFAULTS['text-field'].appearance as 'fill' | 'outline';
+  minLength: number | null = ELEMENT_DEFAULTS['text-field'].minLength as number | null;
+  minLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field'].minLengthWarnMessage as string;
+  maxLength: number | null = ELEMENT_DEFAULTS['text-field'].maxLength as number | null;
+  maxLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field'].maxLengthWarnMessage as string;
+  isLimitedToMaxLength: boolean = ELEMENT_DEFAULTS['text-field'].isLimitedToMaxLength as boolean;
+  pattern: string | null = ELEMENT_DEFAULTS['text-field'].pattern as string | null;
+  patternWarnMessage: string = ELEMENT_DEFAULTS['text-field'].patternWarnMessage as string;
+  clearable: boolean = ELEMENT_DEFAULTS['text-field'].clearable as boolean;
   position?: PositionProperties;
-  styling: BasicStyles & {
+  styling!: BasicStyles & {
     lineHeight: number;
   };
 
@@ -45,29 +43,8 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       this.clearable = element.clearable;
       if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at TextField instantiation', element);
-      }
-      if (element?.appearance) this.appearance = element.appearance;
-      if (element?.minLength) this.minLength = element.minLength;
-      if (element?.minLengthWarnMessage) this.minLengthWarnMessage = element.minLengthWarnMessage;
-      if (element?.maxLength) this.maxLength = element.maxLength;
-      if (element?.maxLengthWarnMessage) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
-      if (element?.isLimitedToMaxLength) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
-      if (element?.pattern) this.pattern = element.pattern;
-      if (element?.patternWarnMessage) this.patternWarnMessage = element.patternWarnMessage;
-      if (element?.clearable) this.clearable = element.clearable;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        width: 180,
-        height: 120,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 135
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at TextField instantiation', element);
     }
   }
 
@@ -84,10 +61,6 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       page: '',
       valuesComplete: false
     }];
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return TextFieldComponent;
   }
 }
 
@@ -117,6 +90,6 @@ function isTextFieldProperties(blueprint?: Partial<TextFieldProperties>): bluepr
     blueprint.pattern !== undefined &&
     blueprint.patternWarnMessage !== undefined &&
     blueprint.clearable !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    PropertyGroupValidators.isValidBasicStyles(blueprint.styling as BasicStyles) &&
     blueprint.styling?.lineHeight !== undefined;
 }

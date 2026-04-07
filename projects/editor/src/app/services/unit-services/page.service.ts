@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { ArrayUtils } from 'common/util/array';
+import { ArrayUtils } from 'common/utils/array';
 import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Injectable({

@@ -1,11 +1,6 @@
-import { Type } from '@angular/core';
+import { UIElement } from 'common/models/elements/element';
 import {
-  UIElement
-} from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import {
-  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  PositionProperties, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
@@ -13,22 +8,25 @@ import {
   AbstractIDService, GeometryVariable, UIElementProperties, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class GeometryElement extends UIElement implements GeometryProperties {
   type: UIElementType = 'geometry';
-  appDefinition: string = '';
-  trackedVariables: GeometryVariable[] = [];
-  trackedExpectedVariables: GeometryVariable[] = [];
-  showResetIcon: boolean = true;
-  enableUndoRedo: boolean = true;
-  showToolbar: boolean = true;
-  enableShiftDragZoom: boolean = false;
-  showZoomButtons: boolean = false;
-  showFullscreenButton: boolean = false;
-  customToolbar: string = '';
-  fileName: string = '';
-  position: PositionProperties;
-  dimensions: {
+  appDefinition: string = ELEMENT_DEFAULTS.geometry.appDefinition as string;
+  trackedVariables: GeometryVariable[] = ELEMENT_DEFAULTS.geometry.trackedVariables as GeometryVariable[];
+  trackedExpectedVariables: GeometryVariable[] =
+    ELEMENT_DEFAULTS.geometry.trackedExpectedVariables as GeometryVariable[];
+
+  showResetIcon: boolean = ELEMENT_DEFAULTS.geometry.showResetIcon as boolean;
+  enableUndoRedo: boolean = ELEMENT_DEFAULTS.geometry.enableUndoRedo as boolean;
+  showToolbar: boolean = ELEMENT_DEFAULTS.geometry.showToolbar as boolean;
+  enableShiftDragZoom: boolean = ELEMENT_DEFAULTS.geometry.enableShiftDragZoom as boolean;
+  showZoomButtons: boolean = ELEMENT_DEFAULTS.geometry.showZoomButtons as boolean;
+  showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton as boolean;
+  customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar as string;
+  fileName: string = ELEMENT_DEFAULTS.geometry.fileName as string;
+  position!: PositionProperties;
+  dimensions!: {
     width: number;
     height: number;
   };
@@ -52,31 +50,15 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       this.fileName = element.fileName;
       this.position = { ...element.position };
       this.dimensions = { ...element.dimensions };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Geometry instantiation', element);
-      }
-      if (element?.appDefinition !== undefined) this.appDefinition = element.appDefinition;
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Geometry instantiation', element);
+    } else if (element?.trackedVariables !== undefined || element?.trackedExpectedVariables !== undefined) {
       if (element?.trackedVariables !== undefined) {
         this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
       }
       if (element?.trackedExpectedVariables !== undefined) {
         this.trackedExpectedVariables = [...element.trackedExpectedVariables];
       }
-      if (element?.showResetIcon !== undefined) this.showResetIcon = element.showResetIcon;
-      if (element?.enableUndoRedo !== undefined) this.enableUndoRedo = element.enableUndoRedo;
-      if (element?.showToolbar !== undefined) this.showToolbar = element.showToolbar;
-      if (element?.enableShiftDragZoom !== undefined) this.enableShiftDragZoom = element.enableShiftDragZoom;
-      if (element?.showZoomButtons !== undefined) this.showZoomButtons = element.showZoomButtons;
-      if (element?.showFullscreenButton !== undefined) this.showFullscreenButton = element.showFullscreenButton;
-      if (element?.customToolbar !== undefined) this.customToolbar = element.customToolbar;
-      if (element?.fileName !== undefined) this.fileName = element.fileName;
-      this.dimensions = {
-        width: 600,
-        height: 400,
-        ...element?.dimensions
-      };
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
     }
   }
 
@@ -153,10 +135,6 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       valuesComplete: false
     });
     return answerSchemes;
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return GeometryComponent;
   }
 }
 

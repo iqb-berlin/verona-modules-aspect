@@ -1,22 +1,20 @@
-import { Type } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
   AbstractIDService, UIElementProperties, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
-import { WidgetCalcComponent } from 'common/components/widget-calc/widget-calc.component';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class WidgetCalcElement extends UIElement implements WidgetCalcProperties {
   type: UIElementType = 'widget-calc';
-  styling: BasicStyles & BorderStyles;
-  mode: 'SIMPLE' | 'SCIENTIFIC' = 'SIMPLE';
-  journalLines: number = 0;
-  state: string | null = null;
+  styling!: BasicStyles & BorderStyles;
+  mode: 'SIMPLE' | 'SCIENTIFIC' = ELEMENT_DEFAULTS['widget-calc'].mode as 'SIMPLE' | 'SCIENTIFIC';
+  journalLines: number = ELEMENT_DEFAULTS['widget-calc'].journalLines as number;
+  state: string | null = ELEMENT_DEFAULTS['widget-calc'].state as string | null;
 
   static title: string = 'Rechner';
   static icon: string = 'calculate';
@@ -28,25 +26,9 @@ export class WidgetCalcElement extends UIElement implements WidgetCalcProperties
       this.mode = element.mode;
       this.journalLines = element.journalLines;
       this.state = element.state;
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at WidgetCalc instantiation', element);
-      }
-      if (element?.mode !== undefined) this.mode = element.mode;
-      if (element?.journalLines !== undefined) this.journalLines = element.journalLines;
-      if (element?.state !== undefined) this.state = element.state;
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps({
-          backgroundColor: 'lightgrey',
-          ...element?.styling
-        }),
-        ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at WidgetCalc instantiation', element);
     }
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return WidgetCalcComponent;
   }
 }
 

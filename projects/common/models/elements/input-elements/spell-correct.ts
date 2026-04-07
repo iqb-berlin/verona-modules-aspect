@@ -1,9 +1,6 @@
-import { Type } from '@angular/core';
 import {
   TextInputElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
 import { VariableInfo } from '@iqb/responses';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
@@ -12,10 +9,12 @@ import { environment } from 'common/environment';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class SpellCorrectElement extends TextInputElement implements SpellCorrectProperties {
   type: UIElementType = 'spell-correct';
-  position: PositionProperties;
-  styling: BasicStyles;
+  position!: PositionProperties;
+  styling!: BasicStyles;
 
   static title: string = 'Wort korrigieren';
   static icon: string = 'format_strikethrough';
@@ -25,17 +24,8 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
     if (isSpellCorrectProperties(element)) {
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at SpellCorrect instantiation', element);
-      }
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        width: 230,
-        height: 80,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at SpellCorrect instantiation', element);
     }
   }
 
@@ -52,10 +42,6 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
       page: '',
       valuesComplete: false
     }];
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return SpellCorrectComponent;
   }
 }
 

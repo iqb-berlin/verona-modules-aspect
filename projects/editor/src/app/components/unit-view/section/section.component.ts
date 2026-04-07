@@ -12,7 +12,7 @@ import { StaticSectionComponent } from 'editor/src/app/components/unit-view/sect
 import { DynamicSectionComponent } from 'editor/src/app/components/unit-view/section/dynamic-section.component';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgClass, NgIf } from '@angular/common';
-import { SectionCounter } from 'common/util/section-counter';
+import { SectionCounter } from 'common/utils/section-counter';
 import { PositionedUIElement } from 'common/interfaces';
 import { EditorSection } from 'editor/src/app/models/editor-unit';
 

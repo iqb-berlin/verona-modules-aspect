@@ -17,15 +17,13 @@ import { NgForOf, NgIf } from '@angular/common';
 import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
 import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { DragNDropValueObject } from 'common/interfaces';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
+import { EditorSection } from 'editor/src/app/models/editor-unit';
 import { UnitService } from '../../../services/unit-services/unit.service';
 import { DialogService } from '../../../services/dialog.service';
 import { SelectionService } from '../../../services/selection.service';
-import { EditorSection } from 'editor/src/app/models/editor-unit';
 
 @Component({
   selector: 'aspect-section-menu',
@@ -156,46 +154,18 @@ export class SectionMenuComponent implements OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: { newSection: EditorSection, replaceSection: boolean }) => {
         if (data.newSection) {
-          this.fixElementIDs(data.newSection.getAllElements());
-          this.fixValueIDs(data.newSection.getAllElements()
-            .filter(el => el.type === 'drop-list')
-            .map(el => (el as DropListElement).value)
-            .flat());
+          const finalizedSection = new EditorSection(
+            JSON.parse(JSON.stringify(data.newSection)),
+            this.idService
+          );
           if (data.replaceSection) {
             this.sectionService.replaceSection(
-              this.selectionService.selectedPageIndex, this.sectionIndex, data.newSection);
+              this.selectionService.selectedPageIndex, this.sectionIndex, finalizedSection);
           } else {
             this.sectionService.insertSection(
-              this.selectionService.selectedPageIndex, this.sectionIndex, data.newSection);
+              this.selectionService.selectedPageIndex, this.sectionIndex, finalizedSection);
           }
         }
-      });
-  }
-
-  private fixElementIDs(elements: UIElement[]): void {
-    elements
-      .filter(element => !this.idService.isIDAvailable(element.id))
-      .forEach(el => {
-        el.id = this.idService.getAndRegisterNewID(el.type);
-      });
-
-    elements
-      .filter(element => !this.idService.isAliasAvailable(element.alias))
-      .forEach(el => {
-        el.alias = this.idService.getAndRegisterNewID(el.type, true);
-      });
-  }
-
-  private fixValueIDs(values: DragNDropValueObject[]): void {
-    values
-      .filter(value => !this.idService.isIDAvailable(value.id))
-      .forEach(val => {
-        val.id = this.idService.getAndRegisterNewID('value');
-      });
-    values
-      .filter(value => !this.idService.isAliasAvailable(value.alias))
-      .forEach(val => {
-        val.alias = this.idService.getAndRegisterNewID('value', true);
       });
   }
 

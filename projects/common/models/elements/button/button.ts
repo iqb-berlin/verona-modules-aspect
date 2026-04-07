@@ -1,9 +1,6 @@
-import { Type } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { ButtonComponent } from 'common/components/button/button.component';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
@@ -11,20 +8,32 @@ import {
   AbstractIDService, TooltipPosition, UIElementProperties, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class ButtonElement extends UIElement implements ButtonProperties {
   type: UIElementType = 'button';
-  label: string = 'Knopf';
-  imageSrc: string | null = null;
-  asLink: boolean = false;
-  action: null | ButtonAction = null;
-  actionParam: null | UnitNavParam | number | string | StateVariable = null;
-  tooltipText: string = '';
-  tooltipPosition: TooltipPosition = 'below';
-  labelAlignment: 'super' | 'sub' | 'baseline' = 'baseline';
-  styling: BasicStyles & BorderStyles;
+
+  label: string = ELEMENT_DEFAULTS.button.label as string;
+
+  imageSrc: string | null = ELEMENT_DEFAULTS.button.imageSrc as string | null;
+
+  asLink: boolean = ELEMENT_DEFAULTS.button.asLink as boolean;
+
+  action: null | ButtonAction = ELEMENT_DEFAULTS.button.action as ButtonAction | null;
+
+  actionParam: null | UnitNavParam | number | string | StateVariable =
+    ELEMENT_DEFAULTS.button.actionParam as any;
+
+  tooltipText: string = ELEMENT_DEFAULTS.button.tooltipText as string;
+
+  tooltipPosition: TooltipPosition = ELEMENT_DEFAULTS.button.tooltipPosition as TooltipPosition;
+
+  labelAlignment: 'super' | 'sub' | 'baseline' = ELEMENT_DEFAULTS.button.labelAlignment as any;
+
+  styling!: BasicStyles & BorderStyles;
 
   static title: string = 'Knopf';
+
   static icon: string = 'smart_button';
 
   constructor(element?: Partial<ButtonProperties>, idService?: AbstractIDService) {
@@ -39,30 +48,9 @@ export class ButtonElement extends UIElement implements ButtonProperties {
       this.tooltipPosition = element.tooltipPosition;
       this.labelAlignment = element.labelAlignment;
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Button instantiation', element);
-      }
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.imageSrc !== undefined) this.imageSrc = element.imageSrc;
-      if (element?.asLink !== undefined) this.asLink = element.asLink;
-      if (element?.action !== undefined) this.action = element.action;
-      if (element?.actionParam !== undefined) this.actionParam = element.actionParam;
-      if (element?.tooltipText !== undefined) this.tooltipText = element.tooltipText;
-      if (element?.tooltipPosition !== undefined) this.tooltipPosition = element.tooltipPosition;
-      if (element?.labelAlignment !== undefined) this.labelAlignment = element.labelAlignment;
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps({
-          backgroundColor: 'lightgrey',
-          ...element?.styling
-        }),
-        ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Button instantiation', element);
     }
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return ButtonComponent;
   }
 }
 

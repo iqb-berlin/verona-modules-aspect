@@ -11,6 +11,7 @@ import { AudioComponent } from 'common/components/media-elements/audio.component
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
+import { ComponentRegistry } from 'common/utils/component-registry';
 
 @Component({
   selector: 'aspect-table-child-overlay',
@@ -54,7 +55,8 @@ export class TableChildOverlay implements OnInit {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
+    const componentType = ComponentRegistry.getComponent(this.element.type);
+    this.childComponent = this.elementContainer.createComponent(componentType);
     this.childComponent.instance.elementModel = this.element;
 
     // this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl

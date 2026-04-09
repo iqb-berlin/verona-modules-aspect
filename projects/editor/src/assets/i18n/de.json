@@ -285,7 +285,19 @@
     "inputAssistanceCustomStyle": "Breite",
     "small": "schmal",
     "medium": "mittel",
-    "large": "breit"
+    "large": "breit",
+    "showInfoOrder": "Ordnungszahlen",
+    "showInfoENeg": "Elektronegativität",
+    "showInfoAMass": "Mittlere relative Atommasse",
+    "closeOnSelection": "Schließen bei Auswahl",
+    "maxNumberOfSelections": "Max. Anzahl Auswahlen",
+    "calcMode": "Rechnermodus",
+    "calcModeSimple": "Einfach",
+    "calcModeScientific": "Wissenschaftlich",
+    "calcJournalLines": "Anzahl der Anzeige von Rechenoperationen/Eingaben",
+    "bondingType": "Darstellungsart",
+    "moleculeBondingTypeValence": "Valenzstrichformel",
+    "moleculeBondingTypeElectrons": "Elektronenformel"
   },
   "formulaPreset": {
     "title": "Formeleingabelayouts auswählen",
@@ -370,7 +382,10 @@
     "text-area-math": "Formelbereich",
     "math-table": "Rechenkästchen",
     "trigger": "Auslöser",
-    "table": "Tabelle"
+    "table": "Tabelle",
+    "widget-molecule-editor": "Molekül-Editor",
+    "widget-calc": "Rechner",
+    "widget-periodic-table": "Periodensystem"
   },
   "section-menu": {
     "height": "Höhe",

@@ -5,5 +5,8 @@
   "confirm": "Bestätigen",
   "cancel": "Abbrechen",
   "geometry_reset": "neu anfangen",
-  "markingHint": "Ende des Bereichs bestimmen"
+  "markingHint": "Ende des Bereichs bestimmen",
+  "periodicTable": "Periodensystem",
+  "calculator": "Rechner",
+  "moleculeEditor": "Molekül-Editor"
 }

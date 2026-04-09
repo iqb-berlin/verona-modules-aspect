@@ -224,9 +224,18 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     UnitNavNextComponent
   ],
   providers: [
-    { provide: APIService, useExisting: VeronaAPIService },
-    { provide: ErrorHandler, useClass: ErrorService },
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }
+    {
+      provide: APIService,
+      useExisting: VeronaAPIService
+    },
+    {
+      provide: ErrorHandler,
+      useClass: ErrorService
+    },
+    {
+      provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+      useValue: myCustomTooltipDefaults
+    }
   ]
 })
 

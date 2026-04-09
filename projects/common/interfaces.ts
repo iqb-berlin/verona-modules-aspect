@@ -42,7 +42,10 @@ export type UIElementType =
   | 'text-area-math'
   | 'trigger'
   | 'table'
-  | 'marking-panel';
+  | 'marking-panel'
+  | 'widget-periodic-table'
+  | 'widget-calc'
+  | 'widget-molecule-editor';
 
 export interface TextLabel {
   text: string;
@@ -177,4 +180,21 @@ export interface TextInputElementProperties extends KeyInputElementProperties, I
 
 export interface PlayerElementBlueprint extends UIElementProperties {
   player: PlayerProperties;
+}
+
+export interface WidgetPeriodicTableCall {
+  showInfoOrder: boolean;
+  showInfoENeg: boolean;
+  showInfoAMass: boolean;
+  closeOnSelection: boolean;
+  maxNumberOfSelections: number;
+}
+
+export interface WidgetCalcCall {
+  mode: 'SIMPLE' | 'SCIENTIFIC';
+  journalLines: number;
+}
+
+export interface WidgetMoleculeEditorCall {
+  bondingType: 'VALENCE' | 'ELECTRONS';
 }

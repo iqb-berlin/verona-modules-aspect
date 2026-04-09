@@ -30,6 +30,9 @@ import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
+import { WidgetCalcElement } from 'common/models/elements/widget-calc/widget-calc';
+import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
@@ -59,7 +62,10 @@ export abstract class ElementFactory {
     'math-field': MathFieldElement,
     'math-table': MathTableElement,
     'text-area-math': TextAreaMathElement,
-    table: TableElement
+    table: TableElement,
+    'widget-periodic-table': WidgetPeriodicTableElement,
+    'widget-calc': WidgetCalcElement,
+    'widget-molecule-editor': WidgetMoleculeEditorElement
   };
 
   static createElement(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService)

@@ -39,6 +39,11 @@ import { AreaRowHeightPipe } from 'common/components/input-elements/text-area-ma
 import {
   TextMarkingButtonSvgComponent
 } from 'common/components/text/text-marking-bar/text-marking-button-svg.component';
+import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
+import { WidgetCalcComponent } from 'common/components/widget-calc/widget-calc.component';
+import {
+  WidgetMoleculeEditorComponent
+} from 'common/components/widget-molecule-editor/widget-molecule-editor.component';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -87,6 +92,7 @@ import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
+import { SplitPipe } from './pipes/split.pipe';
 import { TextImagePanelComponent } from './components/text-image-panel.component';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';
 import { MathTableComponent } from './components/input-elements/math-table.component';
@@ -94,6 +100,7 @@ import { MathTableComponent } from './components/input-elements/math-table.compo
 import { TextAreaMathComponent } from './components/input-elements/text-area-math/text-area-math.component';
 import { DragImageComponent } from './components/input-elements/drop-list/drag-image.component';
 import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
+import { ImageSrcPipe } from './pipes/image-src.pipe';
 
 @NgModule({
   declarations: [
@@ -140,6 +147,7 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     ArrayIncludesPipe,
     SpinnerComponent,
     GetValuePipe,
+    SplitPipe,
     MathFieldComponent,
     DynamicRowsDirective,
     TextImagePanelComponent,
@@ -151,7 +159,11 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     AutoHeightDirective,
     LikertRowBackgroundColorPipe,
     MathTableComponent,
-    DragImageComponent
+    DragImageComponent,
+    WidgetPeriodicTableComponent,
+    WidgetCalcComponent,
+    WidgetMoleculeEditorComponent,
+    ImageSrcPipe
   ],
   exports: [
     CommonModule,
@@ -194,8 +206,13 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     MathFieldComponent,
     TextImagePanelComponent,
     TextAreaMathComponent,
-    MathTableComponent
-  ], imports: [
+    MathTableComponent,
+    WidgetPeriodicTableComponent,
+    WidgetCalcComponent,
+    WidgetMoleculeEditorComponent,
+    ImageSrcPipe
+  ],
+  imports: [
     CommonModule,
     DragDropModule,
     MatSelectModule,

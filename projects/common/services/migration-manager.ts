@@ -1,6 +1,6 @@
 import { MigrationLegacy } from '../migrations/legacy-migration';
 import { Migration4m10To4m11 } from '../migrations/v4.10-to-v4.11.migration';
-import { MigrationStep } from '../migrations/migration-step';
+import { MigrationStep } from '../migrations/migration-step.interface';
 import { NormalizationMigration } from '../migrations/normalization';
 
 export class MigrationManager {

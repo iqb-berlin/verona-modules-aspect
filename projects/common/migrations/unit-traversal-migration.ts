@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable class-methods-use-this */
-import { MigrationStep } from './migration-step';
+import { MigrationStep } from './migration-step.interface';
 
 export abstract class UnitTraversalMigration implements MigrationStep {
   abstract fromVersion: string;

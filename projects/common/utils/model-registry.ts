@@ -1,7 +1,7 @@
 import { UIElement } from 'common/models/elements/element';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
 
-export type ElementCreator = (
+type ElementCreator = (
   element: { type: UIElementType } & Partial<UIElementProperties>,
   idService?: AbstractIDService
 ) => UIElement;

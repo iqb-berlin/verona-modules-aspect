@@ -1,10 +1,9 @@
 // eslint-disable-next-line max-classes-per-file
 import { VariableInfo } from '@iqb/responses';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators,
+  DimensionProperties, PlayerProperties, PositionProperties,
   PropertyGroupValidators, Stylings
 } from 'common/models/elements/property-group-interfaces';
-import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { environment } from 'common/environment';
 import {
   AbstractIDService,
@@ -23,8 +22,8 @@ function isUIElementProperties(blueprint: Partial<UIElementProperties>): bluepri
 
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
-  id: string;
-  alias: string;
+  id!: string;
+  alias!: string;
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
   position?: PositionProperties;
@@ -54,24 +53,8 @@ export abstract class UIElement implements UIElementProperties {
       if (element.position) this.position = { ...element.position };
       if (element.styling) this.styling = { ...element.styling };
       if (element.player) this.player = { ...element.player };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at UIElement instantiation', element);
-      }
-      const normalized = ModelNormalizer.normalizeElement(element as Record<string, unknown>);
-
-      this.id = normalized.id as string ??
-        idService?.getAndRegisterNewID(element.type) ??
-        (() => { throw new Error(`No ID or IDService given: ${this.type}`); })();
-      this.alias = normalized.alias as string ??
-        idService?.getAndRegisterNewID(element.type, true) ??
-        (() => { throw new Error(`No Alias or IDService given: ${this.type}`); })();
-
-      this.isRelevantForPresentationComplete = normalized.isRelevantForPresentationComplete as boolean;
-      this.dimensions = normalized.dimensions as DimensionProperties;
-      this.position = normalized.position as PositionProperties;
-      this.styling = normalized.styling as Stylings;
-      if (normalized.player) this.player = normalized.player as PlayerProperties;
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at UIElement instantiation', element);
     }
   }
 
@@ -180,7 +163,10 @@ export abstract class InputElement extends UIElement implements InputElementProp
   requiredWarnMessage: string = GLOBAL_DEFAULTS.requiredWarnMessage;
   readOnly: boolean = GLOBAL_DEFAULTS.readOnly;
 
-  protected constructor(element: { type: string } & Partial<InputElementProperties>, idService?: AbstractIDService) {
+  protected constructor(
+    element: { type: string } & Partial<InputElementProperties>,
+    idService?: AbstractIDService
+  ) {
     super(element, idService);
     if (isInputElementProperties(element)) {
       if (element.label !== undefined) this.label = element.label;
@@ -188,15 +174,8 @@ export abstract class InputElement extends UIElement implements InputElementProp
       this.required = element.required;
       this.requiredWarnMessage = element.requiredWarnMessage;
       this.readOnly = element.readOnly;
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at InputElement instantiation', element);
-      }
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.value !== undefined) this.value = element.value;
-      if (element?.required !== undefined) this.required = element.required;
-      if (element?.requiredWarnMessage !== undefined) this.requiredWarnMessage = element.requiredWarnMessage;
-      if (element?.readOnly !== undefined) this.readOnly = element.readOnly;
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at InputElement instantiation', element);
     }
   }
 
@@ -225,8 +204,8 @@ function isValidKeyInputProperties(blueprint: Partial<KeyInputElementProperties>
     blueprint.keyStyle !== undefined;
 }
 
-function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>)
-  : blueprint is TextInputElementProperties {
+function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>):
+  blueprint is TextInputElementProperties {
   return blueprint.restrictedToInputAssistanceChars !== undefined &&
     blueprint.inputAssistanceCustomKeys !== undefined &&
     blueprint.inputAssistanceCustomStyle !== undefined &&
@@ -248,7 +227,10 @@ export abstract class TextInputElement extends InputElement implements TextInput
   hideNativeKeyboard: boolean = false;
   keyStyle: 'round' | 'square' = 'round';
 
-  protected constructor(element: { type: string } & Partial<TextInputElementProperties>, idService?: AbstractIDService) {
+  protected constructor(
+    element: { type: string } & Partial<TextInputElementProperties>,
+    idService?: AbstractIDService
+  ) {
     super(element, idService);
     if (isTextInputElementProperties(element)) {
       this.inputAssistancePreset = element.inputAssistancePreset;
@@ -263,22 +245,8 @@ export abstract class TextInputElement extends InputElement implements TextInput
       this.hideNativeKeyboard = element.hideNativeKeyboard;
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
       this.keyStyle = element.keyStyle;
-    } else {
-      if (environment.strictInstantiation) {
-        throw Error('Error at TextInputElement instantiation');
-      }
-      if (element?.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
-      if (element?.inputAssistanceCustomKeys) this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
-      if (element?.inputAssistanceCustomStyle) this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
-      if (element?.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
-      if (element?.inputAssistanceFloatingStartPosition) this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
-      if (element?.restrictedToInputAssistanceChars) this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
-      if (element?.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
-      if (element?.hasBackspaceKey) this.hasBackspaceKey = element.hasBackspaceKey;
-      if (element?.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      if (element?.addInputAssistanceToKeyboard) this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
-      if (element?.hideNativeKeyboard) this.hideNativeKeyboard = element.hideNativeKeyboard;
-      if (element?.keyStyle) this.keyStyle = element.keyStyle;
+    } else if (environment.strictInstantiation) {
+      throw Error('Error at TextInputElement instantiation');
     }
   }
 }
@@ -316,17 +284,14 @@ function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): b
 }
 
 export abstract class PlayerElement extends UIElement implements PlayerElementBlueprint {
-  player: PlayerProperties;
+  player!: PlayerProperties;
 
   protected constructor(element: { type: string } & Partial<PlayerElementBlueprint>, idService?: AbstractIDService) {
     super(element, idService);
     if (isPlayerElementBlueprint(element)) {
       this.player = { ...element.player };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at PlayerElement instantiation', element);
-      }
-      this.player = PropertyGroupGenerators.generatePlayerProps(element?.player);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at PlayerElement instantiation', element);
     }
   }
 

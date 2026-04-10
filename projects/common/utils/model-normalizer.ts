@@ -112,17 +112,30 @@ export class ModelNormalizer {
     const filteredStyling = Object.fromEntries(
       Object.entries(currentStyling).filter(([key, v]) => key && v !== undefined && v !== null)
     );
-    normalized.styling = PropertyGroupGenerators.generateBasicStyleProps({
-      ...defaults,
-      ...filteredStyling
-    } as Stylings);
+    const stylingProps = {
+      ...PropertyGroupGenerators.generateBasicStyleProps({
+        ...defaults,
+        ...filteredStyling
+      } as Stylings),
+      ...PropertyGroupGenerators.generateBorderStylingProps({
+        ...defaults,
+        ...filteredStyling
+      } as Stylings)
+    };
 
-    // Special handling for extra styling properties like lineHeight
-    if (defaults.lineHeight !== undefined) {
-      (normalized.styling as Record<string, unknown>).lineHeight =
-        (normalized.styling as Record<string, unknown>).lineHeight !== undefined ?
-          (normalized.styling as Record<string, unknown>).lineHeight : defaults.lineHeight;
-    }
+    // Special handling for extra styling properties like lineHeight and itemBackgroundColor
+    const otherStyleKeys = [
+      'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
+      'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
+    ];
+    otherStyleKeys.forEach(key => {
+      if (defaults[key] !== undefined) {
+        (stylingProps as Record<string, unknown>)[key] =
+          filteredStyling[key] !== undefined ? filteredStyling[key] : defaults[key];
+      }
+    });
+
+    normalized.styling = stylingProps;
 
     // Player properties
     // We only generate them if they are either already present or if the element
@@ -166,7 +179,9 @@ export class ModelNormalizer {
       if (groupProps.includes(key)) return;
 
       if (normalized[key] === undefined) {
-        normalized[key] = defaults[key];
+        normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ?
+          JSON.parse(JSON.stringify(defaults[key])) :
+          defaults[key];
       }
     });
 

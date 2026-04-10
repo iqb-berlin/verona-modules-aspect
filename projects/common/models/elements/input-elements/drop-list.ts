@@ -181,8 +181,6 @@ export interface DropListProperties extends InputElementProperties {
 
 function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprint is DropListProperties {
   if (!blueprint) return false;
-  if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].id === undefined) return false;
-  if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].alias === undefined) return false;
   return blueprint.value !== undefined &&
     blueprint.isSortList !== undefined &&
     blueprint.onlyOneItem !== undefined &&

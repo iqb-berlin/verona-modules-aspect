@@ -22,13 +22,15 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   action: null | ButtonAction = ELEMENT_DEFAULTS.button.action as ButtonAction | null;
 
   actionParam: null | UnitNavParam | number | string | StateVariable =
-    ELEMENT_DEFAULTS.button.actionParam as any;
+    ELEMENT_DEFAULTS.button.actionParam as
+    null | UnitNavParam | number | string | StateVariable;
 
   tooltipText: string = ELEMENT_DEFAULTS.button.tooltipText as string;
 
   tooltipPosition: TooltipPosition = ELEMENT_DEFAULTS.button.tooltipPosition as TooltipPosition;
 
-  labelAlignment: 'super' | 'sub' | 'baseline' = ELEMENT_DEFAULTS.button.labelAlignment as any;
+  labelAlignment: 'super' | 'sub' | 'baseline' =
+    ELEMENT_DEFAULTS.button.labelAlignment as 'super' | 'sub' | 'baseline';
 
   styling!: BasicStyles & BorderStyles;
 

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RadioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio/radio.dialog.component';
-import { ElementFactory } from 'common/utils/element.factory';
+import { ElementFactory } from 'common/utils/element-factory';
 import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -57,7 +57,8 @@ export class TemplateService {
   static helpTooltipImageSrc = CONSTANTS.lightbulb;
 
   async applyTemplate(templateName: string) {
-    const templateSections: EditorSection | [EditorSection, EditorSection] = await this.createTemplateSections(templateName);
+    const templateSections: EditorSection | [EditorSection, EditorSection] = await this
+      .createTemplateSections(templateName);
 
     const selectedPage = this.unitService.getSelectedPage();
     const selectedSectionIndex = this.selectionService.selectedSectionIndex;
@@ -206,7 +207,8 @@ export class TemplateService {
           this.dialog.open(CheckboxWizardDialogComponent, {})
             .afterClosed().subscribe((result: { text1: string, options: string[], useImages: boolean }) => {
               if (result) {
-                resolve(CheckboxBuilders.createCheckboxSection(result.text1, result.options, result.useImages, this.idService));
+                resolve(CheckboxBuilders
+                  .createCheckboxSection(result.text1, result.options, result.useImages, this.idService));
               }
             });
           break;
@@ -239,13 +241,16 @@ export class TemplateService {
               if (!result) return;
               switch (result.variant) {
                 case 'classic':
-                  resolve(DroplistBuilders.createDroplistSection(result.options as ClassicTemplateOptions, this.idService));
+                  resolve(DroplistBuilders
+                    .createDroplistSection(result.options as ClassicTemplateOptions, this.idService));
                   break;
                 case 'sort':
-                  resolve(DroplistBuilders.createSortlistSection(result.options as SortTemplateOptions, this.idService));
+                  resolve(DroplistBuilders
+                    .createSortlistSection(result.options as SortTemplateOptions, this.idService));
                   break;
                 case '2pages':
-                  resolve(DroplistBuilders.createTwopageSection(result.options as TwoPageTemplateOptions, this.idService));
+                  resolve(DroplistBuilders
+                    .createTwopageSection(result.options as TwoPageTemplateOptions, this.idService));
                 // no default
               }
             });

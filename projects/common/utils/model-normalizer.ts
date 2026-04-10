@@ -1,5 +1,10 @@
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
-import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
+import {
+  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
+} from 'common/models/elements/property-group-interfaces';
+import {
+  KeyInputElementProperties, TextInputElementProperties, UIElementType
+} from 'common/interfaces';
 
 export class ModelNormalizer {
   static normalizeUnit(unit: Record<string, unknown>): Record<string, unknown> {
@@ -85,7 +90,7 @@ export class ModelNormalizer {
     normalized.dimensions = PropertyGroupGenerators.generateDimensionProps({
       ...defaults,
       ...filteredDimensions
-    } as any);
+    } as DimensionProperties);
 
     const currentPosition = (normalized.position as Record<string, unknown>) || {};
     const filteredPosition = Object.fromEntries(
@@ -101,7 +106,7 @@ export class ModelNormalizer {
     normalized.position = PropertyGroupGenerators.generatePositionProps({
       ...defaults,
       ...filteredPosition
-    } as any);
+    } as PositionProperties);
 
     const currentStyling = (normalized.styling as Record<string, unknown>) || {};
     const filteredStyling = Object.fromEntries(
@@ -110,7 +115,7 @@ export class ModelNormalizer {
     normalized.styling = PropertyGroupGenerators.generateBasicStyleProps({
       ...defaults,
       ...filteredStyling
-    } as any);
+    } as Stylings);
 
     // Special handling for extra styling properties like lineHeight
     if (defaults.lineHeight !== undefined) {
@@ -126,20 +131,25 @@ export class ModelNormalizer {
       normalized.player = PropertyGroupGenerators.generatePlayerProps({
         ...defaults,
         ...(normalized.player as Record<string, unknown>)
-      } as any);
+      } as PlayerProperties);
     }
 
-    if (['text-field', 'text-area', 'spell-correct', 'text-field-simple', 'text-area-math', 'math-table'].includes(type)) {
+    const keyboardTypes: UIElementType[] = [
+      'text-field', 'text-area', 'spell-correct', 'text-field-simple', 'text-area-math', 'math-table'
+    ];
+    if (keyboardTypes.includes(type as UIElementType)) {
       const keyboardProps = (type === 'math-table') ?
-        PropertyGroupGenerators.generateKeyInputProps(normalized as any) :
-        PropertyGroupGenerators.generateTextInputProps(normalized as any);
+        PropertyGroupGenerators.generateKeyInputProps(normalized as unknown as Partial<KeyInputElementProperties>) :
+        PropertyGroupGenerators.generateTextInputProps(
+          normalized as unknown as Partial<TextInputElementProperties>
+        );
       Object.assign(normalized, keyboardProps);
     }
 
     // 4. MathTable specific (nested objects)
     if (type === 'math-table') {
       normalized.variableLayoutOptions = {
-        ...(defaults as any).variableLayoutOptions,
+        ...(defaults as Record<string, unknown>).variableLayoutOptions as Record<string, unknown>,
         ...(normalized.variableLayoutOptions as Record<string, unknown> || {})
       };
     }
@@ -176,9 +186,10 @@ export class ModelNormalizer {
 
   private static normalizeClozeDocument(document: Record<string, unknown>): void {
     if (!document || !Array.isArray(document.content)) return;
-    document.content.forEach((node: any) => {
-      if (node.attrs?.model) {
-        node.attrs.model = this.normalizeElement(node.attrs.model);
+    document.content.forEach((node: Record<string, unknown>) => {
+      const attrs = node.attrs as Record<string, unknown> | undefined;
+      if (attrs?.model) {
+        attrs.model = this.normalizeElement(attrs.model as Record<string, unknown>);
       }
       if (Array.isArray(node.content)) {
         this.normalizeClozeDocument(node);

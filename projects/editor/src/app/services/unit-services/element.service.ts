@@ -18,7 +18,7 @@ import {
   PositionProperties,
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { ElementFactory } from 'common/utils/element.factory';
+import { ElementFactory } from 'common/utils/element-factory';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';

@@ -1,10 +1,10 @@
 export abstract class Copy {
-  static getCopy(objectToCopy: any): any {
-    if (objectToCopy instanceof Array) {
-      return [...objectToCopy];
+  static getCopy<T>(objectToCopy: T): T {
+    if (Array.isArray(objectToCopy)) {
+      return [...objectToCopy] as unknown as T;
     }
     if (objectToCopy instanceof Object) {
-      return { ...objectToCopy };
+      return { ...objectToCopy } as T;
     }
     return objectToCopy;
   }

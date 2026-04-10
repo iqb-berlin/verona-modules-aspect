@@ -1,10 +1,11 @@
-import { ElementFactory } from 'common/utils/element.factory';
+import { ElementFactory } from 'common/utils/element-factory';
 import { TextElement } from 'common/models/elements/text/text';
 import { CheckboxElement } from 'common/models/elements/input-elements/checkbox';
+import { UIElementProperties } from 'common/interfaces';
 
 describe('ElementFactory', () => {
   it('should create a TextElement with normalized defaults', () => {
-    const element = ElementFactory.createElement({ type: 'text' } as any) as TextElement;
+    const element = ElementFactory.createElement({ type: 'text' } as UIElementProperties) as TextElement;
     expect(element.type).toBe('text');
     expect(element.text).toBe('Lorem ipsum dolor sit amet'); // from registry
     expect(element.highlightableOrange).toBe(false); // from registry
@@ -12,7 +13,7 @@ describe('ElementFactory', () => {
   });
 
   it('should create a CheckboxElement with normalized defaults', () => {
-    const element = ElementFactory.createElement({ type: 'checkbox' } as any) as CheckboxElement;
+    const element = ElementFactory.createElement({ type: 'checkbox' } as UIElementProperties) as CheckboxElement;
     expect(element.type).toBe('checkbox');
     expect(element.label).toBe('Beschriftung'); // from registry
     expect(element.dimensions?.width).toBe(215); // from registry
@@ -22,7 +23,7 @@ describe('ElementFactory', () => {
     const element = ElementFactory.createElement({
       type: 'text',
       text: 'Custom Text'
-    } as any) as TextElement;
+    } as UIElementProperties) as TextElement;
     expect(element.text).toBe('Custom Text');
     expect(element.highlightableOrange).toBe(false); // still normalized
   });

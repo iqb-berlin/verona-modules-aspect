@@ -93,7 +93,9 @@ export abstract class ElementFactory {
         normalizedElement.alias = `${normalizedElement.type}_alias_${randomId}`;
       }
     }
-    return new ElementFactory.ELEMENT_CLASSES[element.type](normalizedElement as any, idService);
+    return new ElementFactory.ELEMENT_CLASSES[element.type](
+      normalizedElement as unknown as UIElementProperties, idService
+    );
   }
 }
 

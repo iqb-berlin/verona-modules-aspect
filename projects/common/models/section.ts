@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { VisibilityRule } from 'common/models/visibility-rule';
-import { ElementFactory } from 'common/utils/element.factory';
+import { ElementFactory } from 'common/utils/element-factory';
 import { environment } from 'common/environment';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import {
@@ -65,9 +65,15 @@ export class Section {
       if (section?.visibilityDelay !== undefined) this.visibilityDelay = section.visibilityDelay;
       if (section?.animatedVisibility !== undefined) this.animatedVisibility = section.animatedVisibility;
       if (section?.enableReHide !== undefined) this.enableReHide = section.enableReHide;
-      if (section?.logicalConnectiveOfRules !== undefined) this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
-      if (section?.visibilityRules !== undefined) this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
-      if (section?.ignoreNumbering !== undefined) this.ignoreNumbering = section.ignoreNumbering;
+      if (section?.logicalConnectiveOfRules !== undefined) {
+        this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
+      }
+      if (section?.visibilityRules !== undefined) {
+        this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
+      }
+      if (section?.ignoreNumbering !== undefined) {
+        this.ignoreNumbering = section.ignoreNumbering;
+      }
     }
     this.elements = this.createElements(section, idService);
   }
@@ -116,8 +122,6 @@ export class Section {
   isEmpty(): boolean {
     return this.elements.length === 0;
   }
-
-
 }
 
 export interface SectionProperties {

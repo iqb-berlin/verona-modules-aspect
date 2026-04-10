@@ -20,6 +20,7 @@ export class ImportedModuleVersion {
     if (versionString.split('@').length !== 2 ||
         versionString.split('@')[0] !== 'iqb-aspect-definition' ||
         versionString.split('@')[1].split('.').length !== 3) {
+      // eslint-disable-next-line no-console
       console.error('Error reading the unit definition!');
       return false;
     }

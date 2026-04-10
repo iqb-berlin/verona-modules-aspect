@@ -22,10 +22,8 @@ export class MigrationLegacy extends UnitTraversalMigration {
 
   protected override migrateElement(element: Record<string, unknown>): Record<string, unknown> {
     const sanitizedElement = { ...element };
-    if (sanitizedElement['type'] === 'cloze') {
-      MigrationLegacy.sanitizeCloze(sanitizedElement);
-    }
-    if (['text-field', 'text-area', 'spell-correct', 'text-field-simple'].includes(sanitizedElement['type'] as string)) {
+    if (['text-field', 'text-area', 'spell-correct', 'text-field-simple']
+      .includes(sanitizedElement['type'] as string)) {
       MigrationLegacy.sanitizeTextInputElement(sanitizedElement);
     }
     return {
@@ -101,9 +99,5 @@ export class MigrationLegacy extends UnitTraversalMigration {
   private static sanitizeTextInputElement(textInput: Record<string, unknown>): void {
     textInput['addInputAssistanceToKeyboard'] = textInput['softwareKeyboardShowFrench'];
     delete textInput['softwareKeyboardShowFrench'];
-  }
-
-  private static sanitizeCloze(cloze: Record<string, unknown>): void {
-    // In original sanitizer this was handled by extra ClozeElement logic.
   }
 }

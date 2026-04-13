@@ -246,6 +246,4 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
 
 export class SharedModule {}
 
-export abstract class APIService {
-  abstract getResourceURL(): string;
-}
+export { APIService } from './services/api.service';

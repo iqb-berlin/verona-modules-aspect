@@ -12,7 +12,7 @@ describe('MigrationLegacy', () => {
     expect(migration.toVersion).toBe('4.10.0');
   });
 
-  it('should sanitize section visibility based on legacy properties', () => {
+  it('should migrate section visibility based on legacy properties', () => {
     const unit = {
       pages: [{
         sections: [{
@@ -60,7 +60,7 @@ describe('MigrationLegacy', () => {
     ]);
   });
 
-  it('should sanitize dimension properties from legacy position settings', () => {
+  it('should migrate dimension properties from legacy position settings', () => {
     const unit = {
       pages: [{
         sections: [{
@@ -89,7 +89,7 @@ describe('MigrationLegacy', () => {
     expect(dimensions.minWidth).toBe(null);
   });
 
-  it('should sanitize numeric margins to Measurement objects', () => {
+  it('should migrate numeric margins to Measurement objects', () => {
     const unit = {
       pages: [{
         sections: [{
@@ -116,7 +116,7 @@ describe('MigrationLegacy', () => {
     expect(position.marginRight).toEqual({ value: 0, unit: 'px' }); // Default fill
   });
 
-  it('should sanitize specific text input legacy properties', () => {
+  it('should migrate specific text input legacy properties', () => {
     const unit = {
       pages: [{
         sections: [{

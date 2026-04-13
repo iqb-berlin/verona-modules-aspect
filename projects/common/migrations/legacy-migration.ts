@@ -7,13 +7,13 @@ export class MigrationLegacy extends UnitTraversalMigration {
   fromVersion = '3.10.0';
   toVersion = '4.10.0';
 
-  // The original sanitizer did NOT touch page properties.
+  // The original migration did NOT touch page properties.
   // We remove the migratePage override as requested.
 
   protected override migrateSection(section: Record<string, unknown>): Record<string, unknown> {
     return {
-      ...MigrationLegacy.sanitizeSectionVisibility(
-        MigrationLegacy.sanitizeSectionGridSizes(section)
+      ...MigrationLegacy.migrateSectionVisibility(
+        MigrationLegacy.migrateSectionGridSizes(section)
       ),
       elements: (section['elements'] as Record<string, unknown>[] ?? [])
         .map((element: Record<string, unknown>) => this.migrateElement(element))
@@ -21,20 +21,20 @@ export class MigrationLegacy extends UnitTraversalMigration {
   }
 
   protected override migrateElement(element: Record<string, unknown>): Record<string, unknown> {
-    const sanitizedElement = { ...element };
+    let migratedElement = { ...element };
     if (['text-field', 'text-area', 'spell-correct', 'text-field-simple']
-      .includes(sanitizedElement['type'] as string)) {
-      MigrationLegacy.sanitizeTextInputElement(sanitizedElement);
+      .includes(migratedElement['type'] as string)) {
+      migratedElement = MigrationLegacy.migrateTextInputElement(migratedElement);
     }
     return {
-      ...sanitizedElement,
-      dimensions: MigrationLegacy.sanitizeDimensionProps(sanitizedElement),
-      position: sanitizedElement['position'] ?
-        MigrationLegacy.sanitizePositionProps(sanitizedElement['position'] as Record<string, unknown>) : undefined
+      ...migratedElement,
+      dimensions: MigrationLegacy.migrateDimensionProps(migratedElement),
+      position: migratedElement['position'] ?
+        MigrationLegacy.migratePositionProps(migratedElement['position'] as Record<string, unknown>) : undefined
     };
   }
 
-  private static sanitizeSectionVisibility(section: Record<string, unknown>): Record<string, unknown> {
+  private static migrateSectionVisibility(section: Record<string, unknown>): Record<string, unknown> {
     return {
       ...section,
       visibilityDelay: section['activeAfterIdDelay'],
@@ -44,7 +44,7 @@ export class MigrationLegacy extends UnitTraversalMigration {
     };
   }
 
-  private static sanitizeSectionGridSizes(section: Record<string, unknown>): Record<string, unknown> {
+  private static migrateSectionGridSizes(section: Record<string, unknown>): Record<string, unknown> {
     return {
       ...section,
       gridColumnSizes: typeof section['gridColumnSizes'] === 'string' ?
@@ -60,7 +60,7 @@ export class MigrationLegacy extends UnitTraversalMigration {
     };
   }
 
-  private static sanitizeDimensionProps(element: Record<string, unknown>): Record<string, unknown> {
+  private static migrateDimensionProps(element: Record<string, unknown>): Record<string, unknown> {
     const position = element['position'] as Record<string, unknown> | undefined;
     return {
       width: element['width'],
@@ -72,17 +72,17 @@ export class MigrationLegacy extends UnitTraversalMigration {
     };
   }
 
-  private static sanitizePositionProps(position: Record<string, unknown>): Record<string, unknown> {
-    const sanitizedPosition = { ...position };
-    delete sanitizedPosition['dynamicPositioning'];
-    delete sanitizedPosition['fixedSize'];
-    delete sanitizedPosition['useMinHeight'];
+  private static migratePositionProps(position: Record<string, unknown>): Record<string, unknown> {
+    const migratedPosition = { ...position };
+    delete migratedPosition['dynamicPositioning'];
+    delete migratedPosition['fixedSize'];
+    delete migratedPosition['useMinHeight'];
     return {
-      ...MigrationLegacy.sanitizePositionMargins(sanitizedPosition)
+      ...MigrationLegacy.migratePositionMargins(migratedPosition)
     };
   }
 
-  private static sanitizePositionMargins(position: Record<string, unknown>): Record<string, unknown> {
+  private static migratePositionMargins(position: Record<string, unknown>): Record<string, unknown> {
     return {
       ...position,
       marginLeft: !position['marginLeft'] || typeof position['marginLeft'] === 'number' ?
@@ -96,8 +96,11 @@ export class MigrationLegacy extends UnitTraversalMigration {
     };
   }
 
-  private static sanitizeTextInputElement(textInput: Record<string, unknown>): void {
-    textInput['addInputAssistanceToKeyboard'] = textInput['softwareKeyboardShowFrench'];
-    delete textInput['softwareKeyboardShowFrench'];
+  private static migrateTextInputElement(textInput: Record<string, unknown>): Record<string, unknown> {
+    const { softwareKeyboardShowFrench, ...rest } = textInput;
+    return {
+      ...rest,
+      addInputAssistanceToKeyboard: softwareKeyboardShowFrench
+    };
   }
 }

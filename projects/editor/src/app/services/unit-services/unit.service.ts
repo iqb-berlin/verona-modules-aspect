@@ -49,7 +49,7 @@ export class UnitService {
           if (VersionManager.isNewer(unitDef)) {
             throw Error('Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.');
           }
-          if (!VersionManager.needsSanitization(unitDef)) {
+          if (!VersionManager.needsMigration(unitDef)) {
             throw Error('Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden.');
           }
           this.dialogService.showSanitizationDialog().subscribe(() => {
@@ -58,7 +58,7 @@ export class UnitService {
             this.updateUnitDefinition();
           });
         } else {
-          if (VersionManager.needsSanitization(unitDef)) {
+          if (VersionManager.needsMigration(unitDef)) {
             unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
           }
           this.loadUnit(unitDef);

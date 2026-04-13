@@ -5,7 +5,7 @@ import packageJSON from '../../../package.json';
   - isNewer -> abgelehnt
   - isOlder -> wunderbar
 
-  - isLesserMajor is accepeted by Editor and sanitized
+  - isLesserMajor is accepted by Editor and migrated
  */
 export class VersionManager {
   private static acceptedLesserMajor = [3, 10, 0];
@@ -18,19 +18,19 @@ export class VersionManager {
 
   static hasCompatibleVersion(unitDefinition: Record<string, unknown>): boolean {
     const unitDefinitionVersion = VersionManager.getUnitDefinitionVersion(unitDefinition);
-    const result = !VersionManager.isNewer(unitDefinition) &&
+    return !VersionManager.isNewer(unitDefinition) &&
       VersionManager.isSameMajor(unitDefinitionVersion);
-    return result;
   }
 
   static isNewer(unitDefinition: Record<string, unknown>): boolean {
     return VersionManager.compare(VersionManager.getUnitDefinitionVersion(unitDefinition)) === 1;
   }
 
-  static needsSanitization(unitDefinition: Record<string, unknown>): boolean {
+  static needsMigration(unitDefinition: Record<string, unknown>): boolean {
     const unitDefinitionVersion = VersionManager.getUnitDefinitionVersion(unitDefinition);
     return VersionManager.compare(unitDefinitionVersion) === -1 &&
-      VersionManager.compareVersions(unitDefinitionVersion, VersionManager.acceptedLesserMajor as [number, number, number]) >= 0;
+      VersionManager
+        .compareVersions(unitDefinitionVersion, VersionManager.acceptedLesserMajor as [number, number, number]) >= 0;
   }
 
   private static compareVersions(v1: [number, number, number], v2: [number, number, number]): number {

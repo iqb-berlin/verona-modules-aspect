@@ -97,7 +97,7 @@ export class UnitComponent implements OnInit {
             if (VersionManager.isNewer(unitDefinition)) {
               throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
             }
-            if (VersionManager.needsSanitization(unitDefinition)) {
+            if (VersionManager.needsMigration(unitDefinition)) {
               throw Error(this.translateService.instant('errorMessage.unitDefinitionNeedsEditorUpgrade'));
             }
             throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
@@ -148,7 +148,6 @@ export class UnitComponent implements OnInit {
       setTimeout(() => this.navigationService.setPage(startPage), 10);
     }
   }
-
 
   private showErrorDialog(text: string): void {
     this.dialog.open(UnitDefErrorDialogComponent, {

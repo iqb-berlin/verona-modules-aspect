@@ -32,22 +32,14 @@ export class ImportedModuleVersion {
       return false;
     }
 
-    if (ImportedModuleVersion.version[0] < versionString[0]) {
-      return false;
-    }
-    if (ImportedModuleVersion.version[0] > versionString[0]) {
-      return true;
-    }
+    const v1 = ImportedModuleVersion.version.split('.').map(Number);
+    const v2 = versionString.split('.').map(Number);
 
-    if (ImportedModuleVersion.version[1] < versionString[1]) {
-      return false;
-    }
-    if (ImportedModuleVersion.version[1] > versionString[1]) {
-      return true;
-    }
-
-    if (ImportedModuleVersion.version[2] < versionString[2]) {
-      return false;
+    for (let i = 0; i < 3; i++) {
+      const p1 = v1[i] || 0;
+      const p2 = v2[i] || 0;
+      if (p1 > p2) return true;
+      if (p1 < p2) return false;
     }
 
     return true;

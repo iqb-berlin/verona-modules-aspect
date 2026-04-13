@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -11,7 +11,11 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class WidgetPeriodicTableElement extends UIElement implements WidgetPeriodicTableProperties {
   type: UIElementType = 'widget-periodic-table';
-  styling!: BasicStyles & BorderStyles;
+  styling: BasicStyles & BorderStyles = {
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['widget-periodic-table']),
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS['widget-periodic-table'])
+  };
+
   showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoOrder as boolean;
   showInfoENeg: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoENeg as boolean;
   showInfoAMass: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoAMass as boolean;

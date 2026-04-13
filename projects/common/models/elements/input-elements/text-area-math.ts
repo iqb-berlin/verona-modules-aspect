@@ -2,6 +2,7 @@ import { TextInputElement } from 'common/models/elements/element';
 import {
   BasicStyles,
   PositionProperties,
+  PropertyGroupGenerators,
   PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
@@ -25,10 +26,13 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
     ELEMENT_DEFAULTS['text-area-math'].mathKeyboardPresets as MathKeyboardPreset[] ||
     ['math', 'symbols', 'latin', 'greek'];
 
-  position!: PositionProperties;
-  styling!: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-area-math']);
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area-math']),
+      lineHeight: ELEMENT_DEFAULTS['text-area-math'].lineHeight as number
+    };
 
   static title: string = 'Formelbereich';
   static icon: string = 'calculate';

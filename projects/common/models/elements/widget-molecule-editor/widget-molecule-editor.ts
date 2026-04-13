@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -14,7 +14,11 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
   bondingType: 'VALENCE' | 'ELECTRONS' = ELEMENT_DEFAULTS['widget-molecule-editor']
     .bondingType as 'VALENCE' | 'ELECTRONS';
 
-  styling!: BasicStyles & BorderStyles;
+  styling: BasicStyles & BorderStyles = {
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['widget-molecule-editor']),
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS['widget-molecule-editor'])
+  };
+
   state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state as string | null;
 
   static title: string = 'Molekül-Editor';

@@ -81,12 +81,12 @@ export class TableEditDialogComponent {
       type: el.elementType,
       ...extraProps
     }, this.idService);
-    delete newEle.position;
-    delete newEle.dimensions;
+    delete (newEle as any).position;
+    delete (newEle as any).dimensions;
     newEle.gridRow = el.row + 1;
     newEle.gridColumn = el.col + 1;
     if (newEle.type === 'text-field' || newEle.type === 'text-area') {
-      delete newEle.appearance;
+      delete (newEle as any).appearance;
     }
     this.newTable.elements.push(newEle);
     this.tableComp.refresh();

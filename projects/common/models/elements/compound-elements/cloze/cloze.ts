@@ -4,7 +4,7 @@ import {
 import { ButtonElement } from 'common/models/elements/button/button';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { ModelRegistry } from 'common/utils/model-registry';
@@ -18,10 +18,13 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
   type: UIElementType = 'cloze';
   document: ClozeDocument = structuredClone(ELEMENT_DEFAULTS.cloze.document) as ClozeDocument;
   columnCount: number = ELEMENT_DEFAULTS.cloze.columnCount as number;
-  position!: PositionProperties;
-  styling!: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.cloze);
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.cloze),
+      lineHeight: ELEMENT_DEFAULTS.cloze.lineHeight as number
+    };
 
   static title: string = 'Lückentext';
   static icon: string = 'vertical_split';
@@ -38,10 +41,6 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Cloze instantiation', element);
-    } else {
-      this.document = structuredClone(element?.document) ||
-        structuredClone(ELEMENT_DEFAULTS.cloze.document) as ClozeDocument;
-      this.instantiateChildElements(idService);
     }
   }
 
@@ -142,7 +141,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       elementModel as { type: UIElementType } & Partial<UIElementProperties>, idService
     ) as InputElement | ButtonElement;
 
-    delete newElement.position; // Cloze children do not have a position, they are inline
+    delete (newElement as any).position; // Cloze children do not have a position, they are inline
     return newElement;
   }
 }

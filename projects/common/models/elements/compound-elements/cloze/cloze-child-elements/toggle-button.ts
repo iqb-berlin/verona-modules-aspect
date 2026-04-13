@@ -6,7 +6,9 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import { AbstractIDService, InputElementProperties, TextLabel, UIElementType } from 'common/interfaces';
+import {
+  AbstractIDService, InputElementProperties, TextLabel, UIElementType
+} from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
@@ -17,11 +19,17 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   strikeOtherOptions: boolean = ELEMENT_DEFAULTS['toggle-button'].strikeOtherOptions as boolean;
   strikeSelectedOption: boolean = ELEMENT_DEFAULTS['toggle-button'].strikeSelectedOption as boolean;
   verticalOrientation: boolean = ELEMENT_DEFAULTS['toggle-button'].verticalOrientation as boolean;
-  dimensions!: DimensionProperties;
-  styling!: BasicStyles & {
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['toggle-button'] as any);
+
+  styling: BasicStyles & {
     lineHeight: number;
     selectionColor: string;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['toggle-button']),
+      lineHeight: ELEMENT_DEFAULTS['toggle-button'].lineHeight as number,
+      selectionColor: ELEMENT_DEFAULTS['toggle-button'].selectionColor as string
+    };
 
   static icon: string = 'radio_button_checked';
 

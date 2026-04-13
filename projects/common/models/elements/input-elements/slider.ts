@@ -18,10 +18,13 @@ export class SliderElement extends InputElement implements SliderProperties {
   showValues: boolean = ELEMENT_DEFAULTS.slider.showValues as boolean;
   barStyle: boolean = ELEMENT_DEFAULTS.slider.barStyle as boolean;
   thumbLabel: boolean = ELEMENT_DEFAULTS.slider.thumbLabel as boolean;
-  position!: PositionProperties;
-  styling!: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.slider);
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.slider),
+      lineHeight: (ELEMENT_DEFAULTS.slider as any).lineHeight as number || 100
+    };
 
   static title: string = 'Schieberegler';
   static icon: string = 'linear_scale';

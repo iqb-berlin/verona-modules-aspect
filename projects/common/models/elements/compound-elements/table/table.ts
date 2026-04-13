@@ -4,6 +4,7 @@ import {
 } from 'common/models/elements/element';
 import {
   BorderStyles, PositionProperties,
+  PropertyGroupGenerators,
   PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
@@ -27,8 +28,11 @@ export class TableElement extends CompoundElement implements TableProperties {
 
   elements: UIElement[] = [];
   tableEdgesEnabled: boolean = ELEMENT_DEFAULTS.table.tableEdgesEnabled as boolean;
-  position!: PositionProperties;
-  styling!: { backgroundColor: string } & BorderStyles;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.table);
+  styling: { backgroundColor: string } & BorderStyles = {
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.table),
+    backgroundColor: ELEMENT_DEFAULTS.table.backgroundColor as string
+  };
 
   static title: string = 'Tabelle';
   static icon: string = 'table_view';
@@ -53,7 +57,7 @@ export class TableElement extends CompoundElement implements TableProperties {
       this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation) {
-      throw new InstantiationEror('Error at Cloze instantiation', element);
+      throw new InstantiationEror('Error at Table instantiation', element);
     }
   }
 

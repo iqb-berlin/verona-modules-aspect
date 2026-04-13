@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
@@ -20,10 +20,13 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   rowCount: number = ELEMENT_DEFAULTS['text-area'].rowCount as number;
   expectedCharactersCount: number = ELEMENT_DEFAULTS['text-area'].expectedCharactersCount as number;
   hasReturnKey: boolean = ELEMENT_DEFAULTS['text-area'].hasReturnKey as boolean;
-  position?: PositionProperties;
-  styling!: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-area']);
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area']),
+      lineHeight: ELEMENT_DEFAULTS['text-area'].lineHeight as number
+    };
 
   static title: string = 'Eingabebereich';
   static icon: string = 'edit_note';
@@ -69,7 +72,7 @@ export interface TextAreaProperties extends TextInputElementProperties {
   rowCount: number;
   expectedCharactersCount: number;
   hasReturnKey: boolean;
-  position?: PositionProperties;
+  position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };

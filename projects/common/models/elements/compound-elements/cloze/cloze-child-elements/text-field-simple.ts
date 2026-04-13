@@ -2,14 +2,15 @@ import {
   TextInputElement
 } from 'common/models/elements/element';
 import {
-  BasicStyles, PropertyGroupValidators
+  BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
-import { ELEMENT_DEFAULTS } from "common/models/elements/element-registry";
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class TextFieldSimpleElement extends TextInputElement implements TextFieldSimpleProperties {
   type: UIElementType = 'text-field-simple';
   minLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].minLength as number | null;
@@ -20,9 +21,12 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   pattern: string | null = ELEMENT_DEFAULTS['text-field-simple'].pattern as string | null;
   patternWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].patternWarnMessage as string;
   clearable: boolean = ELEMENT_DEFAULTS['text-field-simple'].clearable as boolean;
-  styling!: BasicStyles & {
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field-simple']),
+      lineHeight: ELEMENT_DEFAULTS['text-field-simple'].lineHeight as number
+    };
 
   static icon: string = 'edit';
 

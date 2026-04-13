@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PropertyGroupValidators
+  BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
@@ -16,7 +16,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   imgSrc: string | null = ELEMENT_DEFAULTS.checkbox.imgSrc as string | null;
   value: boolean = ELEMENT_DEFAULTS.checkbox.value as boolean;
   crossOutChecked: boolean = ELEMENT_DEFAULTS.checkbox.crossOutChecked as boolean;
-  declare styling: BasicStyles;
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.checkbox);
 
   static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';

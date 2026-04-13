@@ -1,7 +1,7 @@
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
@@ -18,10 +18,13 @@ export class TextElement extends UIElement implements TextProperties {
   highlightableYellow: boolean = ELEMENT_DEFAULTS.text.highlightableYellow as boolean;
   hasSelectionPopup: boolean = ELEMENT_DEFAULTS.text.hasSelectionPopup as boolean;
   columnCount: number = ELEMENT_DEFAULTS.text.columnCount as number;
-  position!: PositionProperties;
-  declare styling: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text);
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.text),
+      lineHeight: ELEMENT_DEFAULTS.text.lineHeight as number
+    };
 
   static title: string = 'Text';
   static icon: string = 'text_snippet';
@@ -92,7 +95,7 @@ export interface TextProperties extends UIElementProperties {
   highlightableYellow: boolean;
   hasSelectionPopup: boolean;
   columnCount: number;
-  position?: PositionProperties;
+  position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };

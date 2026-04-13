@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -11,7 +11,11 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class WidgetCalcElement extends UIElement implements WidgetCalcProperties {
   type: UIElementType = 'widget-calc';
-  styling!: BasicStyles & BorderStyles;
+  styling: BasicStyles & BorderStyles = {
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['widget-calc']),
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS['widget-calc'])
+  };
+
   mode: 'SIMPLE' | 'SCIENTIFIC' = ELEMENT_DEFAULTS['widget-calc'].mode as 'SIMPLE' | 'SCIENTIFIC';
   journalLines: number = ELEMENT_DEFAULTS['widget-calc'].journalLines as number;
   state: string | null = ELEMENT_DEFAULTS['widget-calc'].state as string | null;

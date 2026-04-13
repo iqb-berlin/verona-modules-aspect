@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  PositionProperties, PropertyGroupValidators
+  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
@@ -25,11 +25,12 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton as boolean;
   customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar as string;
   fileName: string = ELEMENT_DEFAULTS.geometry.fileName as string;
-  position!: PositionProperties;
-  dimensions!: {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.geometry);
+  dimensions: {
     width: number;
     height: number;
-  };
+  } = PropertyGroupGenerators
+      .generateDimensionProps(ELEMENT_DEFAULTS.geometry as any) as { width: number; height: number; };
 
   static title: string = 'Geometrie';
   static icon: string = 'architecture';
@@ -52,13 +53,6 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       this.dimensions = { ...element.dimensions };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Geometry instantiation', element);
-    } else if (element?.trackedVariables !== undefined || element?.trackedExpectedVariables !== undefined) {
-      if (element?.trackedVariables !== undefined) {
-        this.trackedVariables = [...GeometryElement.sanitizeGeometryVariables(element.trackedVariables)];
-      }
-      if (element?.trackedExpectedVariables !== undefined) {
-        this.trackedExpectedVariables = [...element.trackedExpectedVariables];
-      }
     }
   }
 

@@ -2,7 +2,7 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import { InputElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  PositionProperties, PropertyGroupValidators
+  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
@@ -22,14 +22,12 @@ export interface Hotspot {
   readOnly: boolean;
 }
 
-
-
 export class HotspotImageElement extends InputElement implements HotspotImageProperties {
   type: UIElementType = 'hotspot-image';
   value: Hotspot[] = ELEMENT_DEFAULTS['hotspot-image'].value as Hotspot[];
   src: string | null = ELEMENT_DEFAULTS['hotspot-image'].src as string | null;
   fileName: string = ELEMENT_DEFAULTS['hotspot-image'].fileName as string;
-  position!: PositionProperties;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['hotspot-image']);
 
   static title: string = 'Bildbereiche';
   static icon: string = 'ads_click';

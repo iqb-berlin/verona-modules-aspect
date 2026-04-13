@@ -1,7 +1,7 @@
 import { InputElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -17,10 +17,13 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
   mathKeyboardPresets: MathKeyboardPreset[] =
     ELEMENT_DEFAULTS['math-field'].mathKeyboardPresets as MathKeyboardPreset[];
 
-  position!: PositionProperties;
-  styling!: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['math-field']);
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-field']),
+      lineHeight: ELEMENT_DEFAULTS['math-field'].lineHeight as number
+    };
 
   static title: string = 'Formelfeld';
   static icon: string = 'calculate';

@@ -1,7 +1,9 @@
 import {
   UIElement
 } from 'common/models/elements/element';
-import { PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  PositionProperties, PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
@@ -19,7 +21,7 @@ export class ImageElement extends UIElement implements ImageProperties {
   magnifierZoom: number = ELEMENT_DEFAULTS.image.magnifierZoom as number;
   magnifierUsed: boolean = ELEMENT_DEFAULTS.image.magnifierUsed as boolean;
   fileName: string = ELEMENT_DEFAULTS.image.fileName as string;
-  position?: PositionProperties;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.image);
 
   static title: string = 'Bild';
   static icon: string = 'image';
@@ -77,7 +79,7 @@ export interface ImageProperties extends UIElementProperties {
   magnifierZoom: number;
   magnifierUsed: boolean;
   fileName: string;
-  position?: PositionProperties;
+  position: PositionProperties;
 }
 
 function isImageProperties(blueprint?: Partial<ImageProperties>): blueprint is ImageProperties {

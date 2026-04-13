@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -34,10 +34,13 @@ export class DropListElement extends InputElement implements DropListProperties 
   startNumberingAtZero: boolean = ELEMENT_DEFAULTS['drop-list'].startNumberingAtZero as boolean;
   highlightReceivingDropList: boolean = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropList as boolean;
   highlightReceivingDropListColor: string = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropListColor as string;
-  position!: PositionProperties;
-  styling!: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['drop-list']);
+  styling: BasicStyles & {
     itemBackgroundColor: string;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['drop-list']),
+      itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].itemBackgroundColor as string
+    };
 
   static title: string = 'Ablegeliste';
   static icon: string = 'drag_indicator';

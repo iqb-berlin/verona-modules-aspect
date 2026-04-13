@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
@@ -21,10 +21,13 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   pattern: string | null = ELEMENT_DEFAULTS['text-field'].pattern as string | null;
   patternWarnMessage: string = ELEMENT_DEFAULTS['text-field'].patternWarnMessage as string;
   clearable: boolean = ELEMENT_DEFAULTS['text-field'].clearable as boolean;
-  position?: PositionProperties;
-  styling!: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-field']);
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field']),
+      lineHeight: ELEMENT_DEFAULTS['text-field'].lineHeight as number
+    };
 
   static title: string = 'Eingabefeld';
   static icon: string = 'edit';
@@ -74,7 +77,7 @@ export interface TextFieldProperties extends TextInputElementProperties {
   pattern: string | null;
   patternWarnMessage: string;
   clearable: boolean;
-  position?: PositionProperties;
+  position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };

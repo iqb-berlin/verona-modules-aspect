@@ -1,7 +1,7 @@
 import { InputElement, UIElement } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -16,10 +16,13 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   options: TextLabel[] = ELEMENT_DEFAULTS.radio.options as TextLabel[];
   alignment: 'column' | 'row' = ELEMENT_DEFAULTS.radio.alignment as 'column' | 'row';
   strikeOtherOptions: boolean = ELEMENT_DEFAULTS.radio.strikeOtherOptions as boolean;
-  declare position: PositionProperties;
-  declare styling: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.radio);
+  styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.radio),
+      lineHeight: (ELEMENT_DEFAULTS.radio as any).lineHeight as number || 100
+    };
 
   static title: string = 'Optionsfelder';
   static icon: string = 'radio_button_checked';

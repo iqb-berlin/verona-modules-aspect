@@ -2,7 +2,7 @@
 import { VariableInfo } from '@iqb/responses';
 import {
   DimensionProperties, PlayerProperties, PositionProperties,
-  PropertyGroupValidators, Stylings
+  PropertyGroupGenerators, PropertyGroupValidators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -26,9 +26,9 @@ export abstract class UIElement implements UIElementProperties {
   alias!: string;
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
-  position?: PositionProperties;
-  dimensions?: DimensionProperties;
-  styling?: Stylings;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS as any);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS as any);
+  styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS as any);
   player?: PlayerProperties;
   idService?: AbstractIDService;
 
@@ -44,17 +44,19 @@ export abstract class UIElement implements UIElementProperties {
         (() => { throw new Error(`No Alias or IDService given: ${element.type}`); })();
 
       if (idService && !element.id) {
-        // Only register if we just generated it.
-        // If it was already present, it will be registered by the caller or later.
         setTimeout(() => this.registerIDs());
       }
       this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      if (element.dimensions) this.dimensions = { ...element.dimensions };
-      if (element.position) this.position = { ...element.position };
-      if (element.styling) this.styling = { ...element.styling };
+      this.dimensions = { ...element.dimensions } as DimensionProperties;
+      this.position = { ...element.position } as PositionProperties;
+      this.styling = { ...element.styling } as Stylings;
       if (element.player) this.player = { ...element.player };
-    } else if (environment.strictInstantiation) {
-      throw new InstantiationEror('Error at UIElement instantiation', element);
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at UIElement instantiation', element);
+      }
+      this.id = element.id ?? idService?.getAndRegisterNewID(element.type) ?? 'id_placeholder';
+      this.alias = element.alias ?? (element.id ? element.id : idService?.getAndRegisterNewID(element.type, true)) ?? 'alias_placeholder';
     }
   }
 
@@ -290,8 +292,11 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
     super(element, idService);
     if (isPlayerElementBlueprint(element)) {
       this.player = { ...element.player };
-    } else if (environment.strictInstantiation) {
-      throw new InstantiationEror('Error at PlayerElement instantiation', element);
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at PlayerElement instantiation', element);
+      }
+      this.player = PropertyGroupGenerators.generatePlayerProps(element.player);
     }
   }
 

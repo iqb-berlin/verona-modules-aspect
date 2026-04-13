@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, PropertyGroupValidators
+  BasicStyles, BorderStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
@@ -32,7 +32,12 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   labelAlignment: 'super' | 'sub' | 'baseline' =
     ELEMENT_DEFAULTS.button.labelAlignment as 'super' | 'sub' | 'baseline';
 
-  styling!: BasicStyles & BorderStyles;
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.button as any);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.button);
+  styling: BasicStyles & BorderStyles = {
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.button),
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.button)
+  };
 
   static title: string = 'Knopf';
 

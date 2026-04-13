@@ -12,16 +12,16 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-compound-child-overlay',
-    template: `
+  selector: 'aspect-compound-child-overlay',
+  template: `
     <div [style.border]="isSelected ? 'purple solid 1px' : ''"
          [style.display]="'flex'"
-         [style.width]="element.dimensions?.isWidthFixed ? element.dimensions?.width+'px' : null"
-         [style.height]="element.dimensions?.isHeightFixed ? element.dimensions?.height + 'px' : null"
-         [style.min-width]="element.dimensions?.minWidth ? element.dimensions?.minWidth + 'px' : null"
-         [style.max-width]="element.dimensions?.maxWidth ? element.dimensions?.maxWidth + 'px' : null"
-         [style.min-height]="element.dimensions?.minHeight ? element.dimensions?.minHeight + 'px' : null"
-         [style.max-height]="element.dimensions?.maxHeight ? element.dimensions?.maxHeight + 'px' : null"
+         [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width+'px' : null"
+         [style.height]="element.dimensions.isHeightFixed ? element.dimensions.height + 'px' : null"
+         [style.min-width]="element.dimensions.minWidth ? element.dimensions.minWidth + 'px' : null"
+         [style.max-width]="element.dimensions.maxWidth ? element.dimensions.maxWidth + 'px' : null"
+         [style.min-height]="element.dimensions.minHeight ? element.dimensions.minHeight + 'px' : null"
+         [style.max-height]="element.dimensions.maxHeight ? element.dimensions.maxHeight + 'px' : null"
          (click)="elementSelected.emit(this); $event.stopPropagation();">
       <aspect-text-field-simple *ngIf="element.type === 'text-field-simple'" #childComponent
                                 [style.pointer-events]="editorMode ? 'none' : 'auto'"
@@ -51,12 +51,12 @@ import { ValueChangeElement } from 'common/interfaces';
       </aspect-checkbox>
     </div>
   `,
-    styles: [
-        ':host div > * {display: block;}',
-        ':host ::ng-deep mat-checkbox .mdc-form-field {vertical-align: baseline;}',
-        ':host ::ng-deep mat-checkbox .mdc-checkbox {display: none;}'
-    ],
-    standalone: false
+  styles: [
+    ':host div > * {display: block;}',
+    ':host ::ng-deep mat-checkbox .mdc-form-field {vertical-align: baseline;}',
+    ':host ::ng-deep mat-checkbox .mdc-checkbox {display: none;}'
+  ],
+  standalone: false
 })
 export class ClozeChildOverlay {
   @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement;

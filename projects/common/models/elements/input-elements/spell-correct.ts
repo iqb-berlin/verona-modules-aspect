@@ -13,8 +13,8 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class SpellCorrectElement extends TextInputElement implements SpellCorrectProperties {
   type: UIElementType = 'spell-correct';
-  position!: PositionProperties;
-  styling!: BasicStyles;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['spell-correct']);
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['spell-correct']);
 
   static title: string = 'Wort korrigieren';
   static icon: string = 'format_strikethrough';

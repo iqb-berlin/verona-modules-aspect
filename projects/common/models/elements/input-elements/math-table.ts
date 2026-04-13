@@ -5,6 +5,7 @@ import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
 import {
   BasicStyles,
+  PropertyGroupGenerators,
   PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import {
@@ -48,9 +49,12 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
     allowFirstLineCrossOut: boolean;
   } = { ...ELEMENT_DEFAULTS['math-table'].variableLayoutOptions as MathTableProperties['variableLayoutOptions'] };
 
-  styling!: BasicStyles & {
+  styling: BasicStyles & {
     helperRowColor: string;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-table']),
+      helperRowColor: ELEMENT_DEFAULTS['math-table'].helperRowColor as string
+    };
 
   static title: string = 'Rechenkästchen';
   static icon: string = 'apps';

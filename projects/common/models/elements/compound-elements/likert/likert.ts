@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
@@ -17,6 +17,7 @@ import {
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+import { ModelNormalizer } from 'common/utils/model-normalizer';
 
 export class LikertElement extends CompoundElement implements OptionElement, LikertProperties {
   type: UIElementType = 'likert';
@@ -26,14 +27,21 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
   label: string = ELEMENT_DEFAULTS.likert.label as string;
   label2: string = ELEMENT_DEFAULTS.likert.label2 as string;
   stickyHeader: boolean = ELEMENT_DEFAULTS.likert.stickyHeader as boolean;
-  position!: PositionProperties;
-  styling!: BasicStyles & {
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.likert);
+  styling: BasicStyles & {
     lineHeight: number;
     lineColoring: boolean;
     lineColoringColor: string;
     firstLineColoring: boolean;
     firstLineColoringColor: string;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.likert),
+      lineHeight: ELEMENT_DEFAULTS.likert.lineHeight as number,
+      lineColoring: ELEMENT_DEFAULTS.likert.lineColoring as boolean,
+      lineColoringColor: ELEMENT_DEFAULTS.likert.lineColoringColor as string,
+      firstLineColoring: ELEMENT_DEFAULTS.likert.firstLineColoring as boolean,
+      firstLineColoringColor: ELEMENT_DEFAULTS.likert.firstLineColoringColor as string
+    };
 
   static title: string = 'Optionentabelle';
   static icon: string = 'margin';
@@ -43,7 +51,10 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     if (isLikertProperties(element)) {
       this.options = [...element.options];
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-      this.rows = element.rows.map(row => new LikertRowElement(row, idService));
+      this.rows = element.rows.map(row => new LikertRowElement(
+        ModelNormalizer.normalizeElement(row as Record<string, unknown>) as any,
+        idService
+      ));
       this.label = element.label;
       this.label2 = element.label2;
       this.stickyHeader = element.stickyHeader;

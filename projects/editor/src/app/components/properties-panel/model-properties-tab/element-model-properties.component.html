@@ -250,7 +250,7 @@
         </mat-form-field>
       </ng-container>
 
-      <ng-container *ngIf="combinedProperties.dimensions?.maxWidth !== undefined">
+      <ng-container *ngIf="combinedProperties.dimensions.maxWidth !== undefined">
         <mat-checkbox #maxWidthEnabled [checked]="$any(combinedProperties.dimensions).maxWidth !== null"
                       (change)="toggleProperty('maxWidth', $event.checked)">
           {{'propertiesPanel.maxWidthEnabled' | translate }}

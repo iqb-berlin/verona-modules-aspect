@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -23,8 +23,8 @@ export class RadioButtonGroupComplexElement extends InputElement
   label: string = ELEMENT_DEFAULTS['radio-group-images'].label as string;
   options: TextImageLabel[] = [...ELEMENT_DEFAULTS['radio-group-images'].options as TextImageLabel[]];
   itemsPerRow: number | null = ELEMENT_DEFAULTS['radio-group-images'].itemsPerRow as number | null;
-  position!: PositionProperties;
-  styling!: BasicStyles;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['radio-group-images']);
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['radio-group-images']);
 
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';

@@ -2,7 +2,7 @@ import {
   UIElement
 } from 'common/models/elements/element';
 import {
-  BorderStyles, PositionProperties, PropertyGroupValidators
+  BorderStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
@@ -15,8 +15,11 @@ export class FrameElement extends UIElement implements FrameProperties {
   hasBorderBottom: boolean = ELEMENT_DEFAULTS.frame.hasBorderBottom as boolean;
   hasBorderLeft: boolean = ELEMENT_DEFAULTS.frame.hasBorderLeft as boolean;
   hasBorderRight: boolean = ELEMENT_DEFAULTS.frame.hasBorderRight as boolean;
-  position!: PositionProperties;
-  styling!: BorderStyles & { backgroundColor: string; };
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.frame);
+  styling: BorderStyles & { backgroundColor: string; } = {
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.frame),
+    backgroundColor: ELEMENT_DEFAULTS.frame.backgroundColor as string
+  };
 
   static title: string = 'Rahmen';
   static icon: string = 'crop_square';

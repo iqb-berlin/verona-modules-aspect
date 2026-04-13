@@ -1,7 +1,7 @@
 import { UIElement } from 'common/models/elements/element';
 import { environment } from 'common/environment';
 import {
-  PositionProperties,
+  PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
@@ -13,7 +13,7 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   highlightableYellow: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableYellow as boolean;
   highlightableTurquoise: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableTurquoise as boolean;
   highlightableOrange: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableOrange as boolean;
-  position?: PositionProperties;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['marking-panel']);
 
   static title: string = 'Textmarkierung';
   static icon: string = 'border_color';
@@ -42,5 +42,5 @@ export interface MarkingPanelProperties extends UIElementProperties {
   highlightableYellow: boolean;
   highlightableTurquoise: boolean;
   highlightableOrange: boolean;
-  position?: PositionProperties;
+  position: PositionProperties;
 }

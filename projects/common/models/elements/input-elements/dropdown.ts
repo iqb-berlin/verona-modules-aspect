@@ -3,7 +3,7 @@ import {
   InputElement, UIElement
 } from 'common/models/elements/element';
 import {
-  BasicStyles, PositionProperties, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -17,8 +17,8 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
   type: UIElementType = 'dropdown';
   options: TextLabel[] = ELEMENT_DEFAULTS.dropdown.options as TextLabel[];
   allowUnset: boolean = ELEMENT_DEFAULTS.dropdown.allowUnset as boolean;
-  position!: PositionProperties;
-  styling!: BasicStyles;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.dropdown);
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.dropdown);
 
   static title: string = 'Klappliste';
   static icon: string = 'menu_open';

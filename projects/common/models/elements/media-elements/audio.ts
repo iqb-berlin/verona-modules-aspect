@@ -1,5 +1,5 @@
 import {
-  PositionProperties
+  PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -13,7 +13,7 @@ export class AudioElement extends PlayerElement implements AudioProperties {
   type: UIElementType = 'audio';
   src: string | null = ELEMENT_DEFAULTS.audio.src as string | null;
   fileName: string = ELEMENT_DEFAULTS.audio.fileName as string;
-  position?: PositionProperties;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.audio);
   styling: { backgroundColor: string } = {
     backgroundColor: ELEMENT_DEFAULTS.audio.backgroundColor as string
   };
@@ -37,7 +37,7 @@ export class AudioElement extends PlayerElement implements AudioProperties {
 export interface AudioProperties extends PlayerElementBlueprint {
   src: string | null;
   fileName: string;
-  position?: PositionProperties;
+  position: PositionProperties;
   styling: { backgroundColor: string };
 }
 

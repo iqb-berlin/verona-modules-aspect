@@ -1,5 +1,5 @@
 import {
-  PositionProperties, PropertyGroupValidators
+  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, PlayerElementBlueprint, UIElementType } from 'common/interfaces';
@@ -12,7 +12,7 @@ export class VideoElement extends PlayerElement implements VideoProperties {
   src: string | null = ELEMENT_DEFAULTS.video.src as string | null;
   fileName: string = ELEMENT_DEFAULTS.video.fileName as string;
   scale: boolean = ELEMENT_DEFAULTS.video.scale as boolean;
-  position!: PositionProperties;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.video);
   styling: { backgroundColor: string } = {
     backgroundColor: ELEMENT_DEFAULTS.video.backgroundColor as string
   };

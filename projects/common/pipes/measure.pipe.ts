@@ -3,7 +3,7 @@ import { Measurement } from 'common/interfaces';
 
 @Pipe({
   name: 'measure',
-  standalone: true
+  standalone: false
 })
 export class MeasurePipe implements PipeTransform {
   transform(gridSizes: Measurement[]): string {

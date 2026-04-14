@@ -74,7 +74,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.highlightReceivingDropList = element.highlightReceivingDropList;
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
       this.styling = { ...element.styling };
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at DropList instantiation', element);
     }
     delete (this as Partial<DropListElement>).label;
@@ -197,6 +197,9 @@ function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprin
     blueprint.startNumberingAtZero !== undefined &&
     blueprint.highlightReceivingDropList !== undefined &&
     blueprint.highlightReceivingDropListColor !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling as BasicStyles) &&
+    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    blueprint.readOnly !== undefined &&
+    blueprint.required !== undefined &&
+    blueprint.requiredWarnMessage !== undefined &&
     blueprint.styling?.itemBackgroundColor !== undefined;
 }

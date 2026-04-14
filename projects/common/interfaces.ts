@@ -105,9 +105,6 @@ export type InputElementValue =
 export interface InputElementProperties extends UIElementProperties {
   label?: string;
   value: InputElementValue;
-  required: boolean;
-  requiredWarnMessage: string;
-  readOnly: boolean;
 }
 
 export interface ValueChangeElement {
@@ -132,6 +129,9 @@ export interface UIElementProperties {
   type: UIElementType;
   id: string;
   alias?: string;
+  required: boolean;
+  requiredWarnMessage: string;
+  readOnly: boolean;
   isRelevantForPresentationComplete: boolean;
   dimensions?: DimensionProperties;
   position?: PositionProperties;

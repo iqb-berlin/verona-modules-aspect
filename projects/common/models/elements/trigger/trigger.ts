@@ -20,7 +20,7 @@ export class TriggerElement extends UIElement implements TriggerProperties {
     if (isTriggerProperties(element)) {
       this.action = element.action;
       this.actionParam = element.actionParam;
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Trigger instantiation', element);
     }
   }

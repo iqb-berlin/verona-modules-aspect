@@ -11,7 +11,11 @@ export const GLOBAL_DEFAULTS = {
   xPosition: 0,
   yPosition: 0,
   zIndex: 0,
+  isRelevantForPresentationComplete: undefined,
   loop: false,
+  readOnly: false,
+  required: false,
+  requiredWarnMessage: 'Eingabe erforderlich',
   startControl: true,
   pauseControl: false,
   progressBar: true,
@@ -26,10 +30,7 @@ export const GLOBAL_DEFAULTS = {
   maxRuns: 1,
   showRestRuns: false,
   showRestTime: true,
-  playbackTime: 0,
-  required: false,
-  requiredWarnMessage: 'Eingabe erforderlich',
-  readOnly: false
+  playbackTime: 0
 };
 
 export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
@@ -192,7 +193,25 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     backgroundColor: '#f1f1f1'
   },
   cloze: {
-    document: { type: 'doc', content: [] },
+    document: {
+      type: 'doc',
+      content: [{
+        type: 'paragraph',
+        attrs: {
+          textAlign: 'left',
+          indent: null,
+          indentSize: 20,
+          hangingIndent: false,
+          margin: 0
+        },
+        content: [
+          {
+            text: 'Lorem Ipsum',
+            type: 'text'
+          }
+        ]
+      }]
+    },
     columnCount: 1,
     width: 180,
     height: 200,
@@ -211,10 +230,11 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     minValue: 0,
     maxValue: 100,
     showValues: true,
-    barStyle: false,
-    thumbLabel: false,
+    barStyle: 'default',
+    thumbLabel: 'always',
     width: 240,
-    height: 80
+    height: 80,
+    lineHeight: 5
   },
   'spell-correct': {
     width: 230,
@@ -323,6 +343,7 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     height: 200,
     gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }],
     gridRowSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }],
+    elements: [],
     tableEdgesEnabled: false,
     marginBottom: 30,
     borderWidth: 1,
@@ -356,6 +377,8 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     itemBackgroundColor: '#c9e0e0'
   },
   'likert-row': {
+    label: '',
+    value: null,
     rowID: '',
     rowLabel: {
       text: '', imgSrc: null, imgFileName: '', imgPosition: 'above'
@@ -366,6 +389,7 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     height: 50
   },
   likert: {
+    value: null,
     rows: [],
     options: [],
     firstColumnSizeRatio: 5,

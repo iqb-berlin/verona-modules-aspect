@@ -24,7 +24,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TextElement } from 'common/models/elements/text/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import {
   DragNDropValueObject,
@@ -77,7 +77,7 @@ export class ElementService {
             (newElementProperties as GeometryProperties).fileName = geogebraInfo.name;
           });
         if (!(newElementProperties as GeometryProperties).appDefinition) {
-          return Promise.reject('dialogCanceled');
+          return Promise.reject(new Error('dialogCanceled'));
         }
         break;
       case 'audio':
@@ -128,7 +128,7 @@ export class ElementService {
   }
 
   createLikertRowElement(props: LikertRowProperties): LikertRowElement {
-    return ElementFactory.createElement(props, this.idService) as LikertRowElement;
+    return ElementFactory.createElement({ ...props, type: 'likert-row' }, this.idService) as LikertRowElement;
   }
 
   async deleteElements(elements: UIElement[]): Promise<void> {
@@ -263,7 +263,7 @@ export class ElementService {
             this.updateElementsProperty(
               [element],
               'text',
-              (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
+              this.unwrapTrustedHtml(result)
             );
           }
         });
@@ -278,7 +278,7 @@ export class ElementService {
             this.updateElementsProperty(
               [element],
               'document',
-              (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
+              this.unwrapTrustedHtml(result)
             );
           }
         });
@@ -402,14 +402,14 @@ export class ElementService {
         (a.position.gridRow !== null ? a.position.gridRow : Infinity) -
         (b.position.gridRow !== null ? b.position.gridRow : Infinity);
       if (rowSort === 0) {
-        return a.position.gridColumn! - b.position.gridColumn!;
+        return (a.position.gridColumn ?? 0) - (b.position.gridColumn ?? 0);
       }
       return rowSort;
     };
     const sortStaticPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
-      const ySort = a.position.yPosition! - b.position.yPosition!;
+      const ySort = a.position.yPosition - b.position.yPosition;
       if (ySort === 0) {
-        return a.position.xPosition! - b.position.xPosition!;
+        return a.position.xPosition - b.position.xPosition;
       }
       return ySort;
     };
@@ -418,5 +418,11 @@ export class ElementService {
     } else {
       sectionElementList.sort(sortStaticPositioning);
     }
+  }
+
+  private unwrapTrustedHtml(html: string): string {
+    return (this.sanitizer.bypassSecurityTrustHtml(html) as SafeHtml & {
+      changingThisBreaksApplicationSecurity: string;
+    }).changingThisBreaksApplicationSecurity;
   }
 }

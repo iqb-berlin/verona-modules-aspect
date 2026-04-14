@@ -1,9 +1,18 @@
 import { defineConfig } from 'cypress';
+import { mkdirSync, writeFileSync } from 'fs';
+import { dirname } from 'path';
 
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      on('task', {
+        writeTextFile({ filepath, content }: { filepath: string, content: string }) {
+          mkdirSync(dirname(filepath), { recursive: true });
+          writeFileSync(filepath, content, 'utf8');
+          return null;
+        }
+      });
+      return config;
     },
     fixturesFolder: 'e2e/fixtures',
     supportFile: 'e2e/support/e2e.ts',

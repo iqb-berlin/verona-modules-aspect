@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'common/shared.module';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
@@ -19,7 +20,7 @@ import { IDService } from 'editor/src/app/services/id.service';
     MatDialogModule,
     TranslateModule,
     MatButtonModule,
-    TableComponent
+    SharedModule
   ],
   template: `
     <div mat-dialog-title>Tabellenelemente</div>

@@ -29,7 +29,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
       this.value = element.value;
       this.crossOutChecked = element.crossOutChecked;
       this.styling = { ...element.styling };
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Checkbox instantiation', element);
     }
   }
@@ -70,5 +70,8 @@ function isCheckboxProperties(blueprint?: Partial<CheckboxProperties>): blueprin
   return blueprint.label !== undefined &&
     blueprint.imgSrc !== undefined &&
     blueprint.crossOutChecked !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
+    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    blueprint.readOnly !== undefined &&
+    blueprint.required !== undefined &&
+    blueprint.requiredWarnMessage !== undefined;
 }

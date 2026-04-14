@@ -1,5 +1,5 @@
 import {
-  CompoundElement, UIElement
+  CompoundElement, UIElement, isInputElementProperties
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import {
@@ -60,7 +60,7 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
       this.stickyHeader = element.stickyHeader;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Likert instantiation', element);
     }
   }
@@ -138,6 +138,7 @@ function isLikertProperties(blueprint?: Partial<LikertProperties>): blueprint is
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling?.lineHeight !== undefined &&
+    isInputElementProperties(blueprint) &&
     blueprint.styling?.lineColoring !== undefined &&
     blueprint.styling?.lineColoringColor !== undefined &&
     blueprint.styling?.firstLineColoring !== undefined &&

@@ -42,7 +42,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       this.patternWarnMessage = element.patternWarnMessage;
       this.clearable = element.clearable;
       this.styling = { ...element.styling };
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at TextFieldSimple instantiation', element);
     }
     delete (this as Partial<TextInputElement>).label;
@@ -90,5 +90,8 @@ function isTextFieldSimpleProperties(blueprint?: Partial<TextFieldSimpleProperti
     blueprint.patternWarnMessage !== undefined &&
     blueprint.clearable !== undefined &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined &&
+    blueprint.readOnly !== undefined &&
+    blueprint.required !== undefined &&
+    blueprint.requiredWarnMessage !== undefined;
 }

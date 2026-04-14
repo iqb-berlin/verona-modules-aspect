@@ -115,7 +115,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
 export class TextAreaComponent extends TextInputComponent {
   @Input() elementModel!: TextAreaElement;
   dynamicRows: number = 0;
-  tableMode: boolean = false;
+  @Input() tableMode: boolean = false;
 }
 
 @Directive({

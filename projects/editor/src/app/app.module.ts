@@ -26,10 +26,11 @@ import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/ho
 import { MathEditorModule } from 'common/math-editor/math-editor.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
+import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
+import { ComponentRegistry } from 'common/utils/component-registry';
 import {
   StateVariablesDialogComponent
 } from './components/dialogs/state-variables-dialog/state-variables-dialog.component';
@@ -218,7 +219,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ReferenceListComponent,
     ElementListComponent,
     SizeInputPanelComponent,
-    MeasurePipe,
     SectionComponent,
     RichTextEditorComponent,
     UnitNavNextComponent
@@ -240,7 +240,10 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
 })
 
 export class AppModule implements DoBootstrap {
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) {
+    ComponentRegistry.registerComponent('marking-panel', MarkingPanelComponent);
+  }
+
   ngDoBootstrap(): void {
     const editorElement = createCustomElement(AppComponent, { injector: this.injector });
     customElements.define('aspect-editor', editorElement);

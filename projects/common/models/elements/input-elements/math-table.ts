@@ -76,7 +76,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
       this.hideNativeKeyboard = element.hideNativeKeyboard;
       this.hasArrowKeys = element.hasArrowKeys;
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at MathTable instantiation', element);
     }
   }

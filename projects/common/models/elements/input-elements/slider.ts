@@ -1,5 +1,5 @@
 import {
-  InputElement
+  InputElement, isInputElementProperties
 } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
@@ -39,7 +39,7 @@ export class SliderElement extends InputElement implements SliderProperties {
       this.thumbLabel = element.thumbLabel;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Slider instantiation', element);
     }
   }
@@ -85,7 +85,6 @@ function isSliderProperties(blueprint?: Partial<SliderProperties>): blueprint is
     blueprint.showValues !== undefined &&
     blueprint.barStyle !== undefined &&
     blueprint.thumbLabel !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined &&
+    isInputElementProperties(blueprint);
 }

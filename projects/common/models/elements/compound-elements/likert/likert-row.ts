@@ -1,5 +1,6 @@
 import {
-  InputElement
+  InputElement,
+  isUIElementProperties
 } from 'common/models/elements/element';
 import { environment } from 'common/environment';
 import { VariableInfo, VariableValue } from '@iqb/responses';
@@ -26,7 +27,7 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
       this.columnCount = element.columnCount;
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
       this.verticalButtonAlignment = element.verticalButtonAlignment;
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Likert-Row instantiation', element);
     }
   }
@@ -73,5 +74,6 @@ function isLikertRowProperties(blueprint?: Partial<LikertRowProperties>): bluepr
   return blueprint.rowLabel !== undefined &&
     blueprint.columnCount !== undefined &&
     blueprint.firstColumnSizeRatio !== undefined &&
-    blueprint.verticalButtonAlignment !== undefined;
+    blueprint.verticalButtonAlignment !== undefined &&
+    isUIElementProperties(blueprint);
 }

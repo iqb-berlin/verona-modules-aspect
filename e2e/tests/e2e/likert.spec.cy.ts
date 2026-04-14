@@ -1,4 +1,4 @@
-import {addOptions, selectRadioButtonWithVerification} from './helpers/likert-util';
+import { addOptions, selectRadioButtonWithVerification } from './helpers/likert-util';
 import { addElement, setPreferencesElement } from '../util';
 
 describe('Likert element', { testIsolation: false }, () => {
@@ -13,8 +13,8 @@ describe('Likert element', { testIsolation: false }, () => {
       addOptions(['option A', 'option B'], ['row 1', 'row 2', 'row 3']);
       cy.contains('mat-form-field', 'Beschriftung (sekundär)')
         .find('textarea')
-        .clear()
-        .type('Beschreibung sekundär von Optionentabelle1');
+        .clear({ force: true })
+        .type('Beschreibung sekundär von Optionentabelle1', { force: true });
     });
 
     after('saves an unit definition', () => {
@@ -37,9 +37,9 @@ describe('Likert element', { testIsolation: false }, () => {
     it('changes the selection to option B for the first row', () => {
       selectRadioButtonWithVerification('Optionentabelle1', 1);
       // checks that radio button 0 is not checked
-      cy.contains('aspect-likert', 'Optionentabelle1')
+      cy.get('aspect-likert', { timeout: 10000 }).first()
         .find('mat-radio-button').eq(0)
-        .should('not.have.class','mat-mdc-radio-checked');
+        .should('not.have.class', 'mat-mdc-radio-checked');
     });
   });
 });

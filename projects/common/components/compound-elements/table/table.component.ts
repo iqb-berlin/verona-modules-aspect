@@ -6,22 +6,14 @@ import {
   QueryList, ViewChildren
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { SharedModule } from 'common/shared.module';
 import { UIElement } from 'common/models/elements/element';
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
-import { MatMenuModule } from '@angular/material/menu';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { Subject } from 'rxjs';
 import { UIElementType } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-table',
-  imports: [
-    SharedModule,
-    TableChildOverlay,
-    MatMenuModule,
-    MeasurePipe
-  ],
+  standalone: false,
   template: `
   <div class="grid-container" [style.display]="'grid'"
        [style.grid-template-columns]="elementModel.gridColumnSizes | measure"
@@ -98,7 +90,17 @@ import { UIElementType } from 'common/interfaces';
 `]
 })
 export class TableComponent extends CompoundElementComponent implements OnInit {
-  @Input() elementModel!: TableElement;
+  private _elementModel!: TableElement;
+  @Input()
+  set elementModel(value: TableElement) {
+    this._elementModel = value;
+    this.initElementGrid();
+  }
+
+  get elementModel(): TableElement {
+    return this._elementModel;
+  }
+
   @Input() savedPlaybackTimes!: { [key: string]: number };
   @Input() savedTexts!: { [key: string]: string };
   @Input() actualPlayingId!: Subject<string | null>;
@@ -128,7 +130,7 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
   }
 
   getFormElementChildrenComponents(): ElementComponent[] {
-    return this.compoundChildren.toArray().map((child: TableChildOverlay) => child.childComponent.instance);
+    return this.compoundChildren.toArray().map((child: TableChildOverlay) => child.childComponent);
   }
 
   refresh(): void {

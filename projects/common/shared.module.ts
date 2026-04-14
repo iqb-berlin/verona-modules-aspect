@@ -22,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { MathEditorModule } from 'common/math-editor/math-editor.module';
@@ -101,6 +102,11 @@ import { TextAreaMathComponent } from './components/input-elements/text-area-mat
 import { DragImageComponent } from './components/input-elements/drop-list/drag-image.component';
 import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
 import { ImageSrcPipe } from './pipes/image-src.pipe';
+import { TableComponent } from './components/compound-elements/table/table.component';
+import { TableChildOverlay } from './components/compound-elements/table/table-child-overlay.component';
+import { MeasurePipe } from './pipes/measure.pipe';
+
+import { ComponentRegistry } from './utils/component-registry';
 
 @NgModule({
   declarations: [
@@ -163,7 +169,10 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
     WidgetPeriodicTableComponent,
     WidgetCalcComponent,
     WidgetMoleculeEditorComponent,
-    ImageSrcPipe
+    ImageSrcPipe,
+    TableComponent,
+    TableChildOverlay,
+    MeasurePipe
   ],
   exports: [
     CommonModule,
@@ -210,7 +219,10 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
     WidgetPeriodicTableComponent,
     WidgetCalcComponent,
     WidgetMoleculeEditorComponent,
-    ImageSrcPipe
+    ImageSrcPipe,
+    TableComponent,
+    TableChildOverlay,
+    MeasurePipe
   ],
   imports: [
     CommonModule,
@@ -230,6 +242,7 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
     MatSliderModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
+    MatMenuModule,
     MathEditorModule,
     MatListModule,
     CdkConnectedOverlay,
@@ -244,6 +257,41 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
   ]
 })
 
-export class SharedModule {}
+export class SharedModule {
+  constructor() {
+    ComponentRegistry.registerComponents({
+      text: TextComponent,
+      button: ButtonComponent,
+      'text-field': TextFieldComponent,
+      'text-field-simple': TextFieldSimpleComponent,
+      'text-area': TextAreaComponent,
+      checkbox: CheckboxComponent,
+      dropdown: DropdownComponent,
+      radio: RadioButtonGroupComponent,
+      image: ImageComponent,
+      audio: AudioComponent,
+      video: VideoComponent,
+      likert: LikertComponent,
+      'likert-row': LikertRadioButtonGroupComponent,
+      'radio-group-images': RadioGroupImagesComponent,
+      'drop-list': DropListComponent,
+      cloze: ClozeComponent,
+      table: TableComponent,
+      'hotspot-image': HotspotImageComponent,
+      slider: SliderComponent,
+      'spell-correct': SpellCorrectComponent,
+      frame: FrameComponent,
+      'toggle-button': ToggleButtonComponent,
+      geometry: GeometryComponent,
+      'math-field': MathFieldComponent,
+      'math-table': MathTableComponent,
+      'text-area-math': TextAreaMathComponent,
+      trigger: TriggerComponent,
+      'widget-calc': WidgetCalcComponent,
+      'widget-molecule-editor': WidgetMoleculeEditorComponent,
+      'widget-periodic-table': WidgetPeriodicTableComponent
+    });
+  }
+}
 
 export { APIService } from './services/api.service';

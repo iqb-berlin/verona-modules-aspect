@@ -45,7 +45,7 @@ export class TextElement extends UIElement implements TextProperties {
       this.columnCount = element.columnCount;
       this.position = { ...element.position as PositionProperties };
       this.styling = { ...element.styling };
-    } else if (environment.strictInstantiation) {
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Text instantiation', element);
     }
   }

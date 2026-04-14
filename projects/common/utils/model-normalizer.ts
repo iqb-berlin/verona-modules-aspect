@@ -1,4 +1,4 @@
-import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 import {
   DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
 } from 'common/models/elements/property-group-interfaces';
@@ -70,10 +70,22 @@ export class ModelNormalizer {
   }
 
   static normalizeElement(element: Record<string, unknown>): Record<string, unknown> {
-    const type = element.type as string;
-    const defaults = ELEMENT_DEFAULTS[type] || {};
+    const type = element.type as UIElementType;
+    const defaults: Record<string, unknown> = { ...GLOBAL_DEFAULTS, ...(ELEMENT_DEFAULTS[type] || {}) };
+    const normalized: Record<string, unknown> = { ...element };
 
-    const normalized = { ...element };
+    Object.keys(defaults).forEach(key => {
+      if (normalized[key] === undefined) {
+        normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ? structuredClone(defaults[key]) : defaults[key];
+      }
+    });
+
+    if (type === 'likert') {
+      normalized.rows = (normalized.rows as Record<string, unknown>[]).map(row => {
+        row.type = 'likert-row';
+        return ModelNormalizer.normalizeElement(row);
+      });
+    }
 
     // 1. Base properties
     normalized.isRelevantForPresentationComplete =
@@ -85,7 +97,7 @@ export class ModelNormalizer {
     // (like height: 98 for text) are respected.
     const currentDimensions = (normalized.dimensions as Record<string, unknown>) || {};
     const filteredDimensions = Object.fromEntries(
-      Object.entries(currentDimensions).filter(([key, v]) => key && v !== undefined && v !== null)
+      Object.entries(currentDimensions).filter(([key, v]) => key && v !== undefined)
     );
     normalized.dimensions = PropertyGroupGenerators.generateDimensionProps({
       ...defaults,
@@ -94,7 +106,7 @@ export class ModelNormalizer {
 
     const currentPosition = (normalized.position as Record<string, unknown>) || {};
     const filteredPosition = Object.fromEntries(
-      Object.entries(currentPosition).filter(([key, v]) => key && v !== undefined && v !== null)
+      Object.entries(currentPosition).filter(([key, v]) => key && v !== undefined)
     );
     // Convert raw numbers to Measurement objects for margins
     ['marginLeft', 'marginRight', 'marginTop', 'marginBottom'].forEach(prop => {
@@ -110,7 +122,7 @@ export class ModelNormalizer {
 
     const currentStyling = (normalized.styling as Record<string, unknown>) || {};
     const filteredStyling = Object.fromEntries(
-      Object.entries(currentStyling).filter(([key, v]) => key && v !== undefined && v !== null)
+      Object.entries(currentStyling).filter(([key, v]) => key && v !== undefined)
     );
     const stylingProps = {
       ...PropertyGroupGenerators.generateBasicStyleProps({

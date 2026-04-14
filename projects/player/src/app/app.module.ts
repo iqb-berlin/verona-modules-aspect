@@ -15,8 +15,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { PageNavButtonComponent } from 'player/src/app/components/page-nav-button/page-nav-button.component';
 import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
-import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import {
   MarkablesContainerComponent
 } from 'player/src/app/components/markables-container/markables-container.component';
@@ -35,6 +33,7 @@ import { InputAssistanceCustomStylePipe } from 'player/src/app/pipes/input-assis
 import {
   WidgetGroupElementComponent
 } from 'player/src/app/components/elements/widget-group-element/widget-group-element.component';
+import { ComponentRegistry } from 'common/utils/component-registry';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -109,6 +108,8 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     SectionVisibilityHandlingDirective,
     UnitComponent,
     PageScrollButtonComponent,
+    InViewDetectionDirective,
+    PageScrollButtonComponent,
     ExternalAppGroupElementComponent,
     InputAssistanceCustomKeysPipe,
     InputAssistanceCustomStylePipe,
@@ -132,9 +133,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     OverlayModule,
     ScrollingModule,
     UnitMenuModule,
-    MeasurePipe,
     PrintModule,
-    TableComponent,
     MarkablesContainerComponent,
     IsEnabledNavigationTargetPipe,
     MarkingPanelComponent,
@@ -148,7 +147,10 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
 })
 
 export class AppModule implements DoBootstrap {
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) {
+    ComponentRegistry.registerComponent('marking-panel', MarkingPanelComponent);
+  }
+
   ngDoBootstrap(): void {
     const playerElement = createCustomElement(AppComponent, { injector: this.injector });
     customElements.define('aspect-player', playerElement);

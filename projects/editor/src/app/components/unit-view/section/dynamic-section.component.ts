@@ -3,7 +3,6 @@ import {
   ViewChildren, QueryList, ViewChild
 } from '@angular/core';
 import { NgForOf } from '@angular/common';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { Section } from 'common/models/section';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
@@ -14,12 +13,13 @@ import { CdkDropList } from '@angular/cdk/drag-drop';
 import {
   ElementGridChangeListenerDirective
 } from 'editor/src/app/components/unit-view/section/element-grid-change-listener.directive';
+import { SharedModule } from 'common/shared.module';
 import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
 
 @Component({
   selector: 'aspect-editor-dynamic-section',
   imports: [
-    MeasurePipe,
+    SharedModule,
     DynamicSectionHelperGridComponent,
     DynamicOverlayComponent,
     NgForOf,
@@ -83,7 +83,7 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
       </aspect-editor-dynamic-overlay>
     </div>
   `,
-  styles: ``
+  styles: ''
 })
 export class DynamicSectionComponent {
   @Input() section!: Section;

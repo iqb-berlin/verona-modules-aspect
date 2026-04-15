@@ -1,5 +1,5 @@
 import {
-  CompoundElement, UIElement, isInputElementProperties
+  CompoundElement, UIElement, isUIElementProperties
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import {
@@ -138,7 +138,7 @@ function isLikertProperties(blueprint?: Partial<LikertProperties>): blueprint is
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling?.lineHeight !== undefined &&
-    isInputElementProperties(blueprint) &&
+    isUIElementProperties(blueprint) &&
     blueprint.styling?.lineColoring !== undefined &&
     blueprint.styling?.lineColoringColor !== undefined &&
     blueprint.styling?.firstLineColoring !== undefined &&

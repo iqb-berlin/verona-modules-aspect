@@ -93,12 +93,7 @@ export abstract class ElementFactory {
         normalizedElement.alias = `${normalizedElement.type}_alias_${randomId}`;
       }
     }
-    const elementType = normalizedElement.type as UIElementType;
-    const ElementClass = ElementFactory.ELEMENT_CLASSES[elementType];
-    if (!ElementClass) {
-      throw new Error(`Unknown element type '${String(elementType)}' in ElementFactory.createElement`);
-    }
-    return new ElementClass(
+    return new ElementFactory.ELEMENT_CLASSES[element.type](
       normalizedElement as unknown as UIElementProperties, idService
     );
   }

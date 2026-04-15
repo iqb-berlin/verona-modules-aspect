@@ -17,19 +17,13 @@ import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 export function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
   return blueprint.isRelevantForPresentationComplete !== undefined &&
     PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    blueprint.required !== undefined &&
-    blueprint.readOnly !== undefined &&
-    blueprint.requiredWarnMessage !== undefined;
+    PropertyGroupValidators.isValidPosition(blueprint.position);
 }
 
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
   id!: string;
   alias!: string;
-  required: boolean = false;
-  requiredWarnMessage: string = 'Eingabe erforderlich';
-  readOnly: boolean = false;
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS as any);
@@ -53,9 +47,6 @@ export abstract class UIElement implements UIElementProperties {
         setTimeout(() => this.registerIDs());
       }
       this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      this.required = element.required;
-      this.readOnly = element.readOnly;
-      this.requiredWarnMessage = element.requiredWarnMessage;
       this.dimensions = { ...element.dimensions } as DimensionProperties;
       this.position = { ...element.position } as PositionProperties;
       this.styling = { ...element.styling } as Stylings;
@@ -161,12 +152,19 @@ export abstract class UIElement implements UIElementProperties {
 
 export function isInputElementProperties(blueprint: Partial<InputElementProperties>): blueprint is InputElementProperties {
   if (!blueprint) return false;
-  return blueprint?.value !== undefined && isUIElementProperties(blueprint);
+  return blueprint.value !== undefined &&
+    blueprint.required !== undefined &&
+    blueprint.requiredWarnMessage !== undefined &&
+    blueprint.readOnly !== undefined &&
+    isUIElementProperties(blueprint);
 }
 
 export abstract class InputElement extends UIElement implements InputElementProperties {
   label?: string = '';
   value: InputElementValue = null;
+  required: boolean = false;
+  requiredWarnMessage: string = 'Eingabe erforderlich';
+  readOnly: boolean = false;
 
   protected constructor(
     element: { type: string } & Partial<InputElementProperties>,
@@ -176,6 +174,9 @@ export abstract class InputElement extends UIElement implements InputElementProp
     if (isInputElementProperties(element)) {
       if (element.label !== undefined) this.label = element.label;
       this.value = element.value;
+      this.required = element.required;
+      this.requiredWarnMessage = element.requiredWarnMessage;
+      this.readOnly = element.readOnly;
     } else if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at InputElement instantiation', element);
     }

@@ -22,7 +22,7 @@ import { UIElementType } from 'common/interfaces';
        [style.grid-auto-rows]="'auto'"
        [style.background-color]="elementModel.styling.backgroundColor">
     <ng-container *ngFor="let row of elementGrid; let i = index;">
-      <div *ngFor="let column of row; let j = index;"
+      <div *ngFor="let _ of row; let j = index;"
            class="cell-container"
            [style.border-style]="elementModel.styling.borderStyle"
            [style.border-top-style]="(!elementModel.tableEdgesEnabled && i === 0) || (i > 0) ?
@@ -120,8 +120,21 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
   private initElementGrid(): void {
     this.elementGrid = new Array(this.elementModel.gridRowSizes.length).fill(undefined)
       .map(() => new Array(this.elementModel.gridColumnSizes.length).fill(undefined));
+    const rowCount = this.elementGrid.length;
+    const columnCount = rowCount ? this.elementGrid[0].length : 0;
     this.elementModel.elements.forEach(el => {
-      this.elementGrid[(el.gridRow as number) - 1][(el.gridColumn as number) - 1] = el;
+      const gridRow = (el.gridRow as number) ?? el.position?.gridRow ?? null;
+      const gridColumn = (el.gridColumn as number) ?? el.position?.gridColumn ?? null;
+      if (gridRow === null || gridColumn === null) return;
+      const rowIndex = gridRow - 1;
+      const columnIndex = gridColumn - 1;
+      if (
+        rowIndex < 0 ||
+        columnIndex < 0 ||
+        rowIndex >= rowCount ||
+        columnIndex >= columnCount
+      ) return;
+      if (this.elementGrid[rowIndex][columnIndex] === undefined) this.elementGrid[rowIndex][columnIndex] = el;
     });
   }
 

@@ -1,17 +1,16 @@
 import { defineConfig } from 'cypress';
-import { mkdirSync, writeFileSync } from 'fs';
-import { dirname } from 'path';
+import { writeFileSync } from 'fs';
 
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       on('task', {
-        writeTextFile({ filepath, content }: { filepath: string, content: string }) {
-          mkdirSync(dirname(filepath), { recursive: true });
+        writeTextFile({ filepath, content }: { filepath: string; content: string }) {
           writeFileSync(filepath, content, 'utf8');
           return null;
         }
       });
+
       return config;
     },
     fixturesFolder: 'e2e/fixtures',

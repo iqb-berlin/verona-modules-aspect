@@ -13,9 +13,6 @@ export const GLOBAL_DEFAULTS = {
   zIndex: 0,
   isRelevantForPresentationComplete: undefined,
   loop: false,
-  readOnly: false,
-  required: false,
-  requiredWarnMessage: 'Eingabe erforderlich',
   startControl: true,
   pauseControl: false,
   progressBar: true,
@@ -377,8 +374,6 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     itemBackgroundColor: '#c9e0e0'
   },
   'likert-row': {
-    label: '',
-    value: null,
     rowID: '',
     rowLabel: {
       text: '', imgSrc: null, imgFileName: '', imgPosition: 'above'
@@ -389,7 +384,6 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     height: 50
   },
   likert: {
-    value: null,
     rows: [],
     options: [],
     firstColumnSizeRatio: 5,

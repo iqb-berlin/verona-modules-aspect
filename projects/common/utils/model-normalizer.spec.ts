@@ -74,5 +74,23 @@ describe('ModelNormalizer', () => {
       const nestedElements = normalized.elements as Record<string, unknown>[];
       expect(nestedElements[0].isRelevantForPresentationComplete).toBe(true);
     });
+
+    it('should initialize required properties for input elements', () => {
+      const partialInputElement = { type: 'dropdown', id: 'dd1' };
+      const normalized = ModelNormalizer.normalizeElement(partialInputElement);
+
+      expect(normalized.required).toBe(false);
+      expect(normalized.requiredWarnMessage).toBe('Eingabe erforderlich');
+      expect(normalized.readOnly).toBe(false);
+    });
+
+    it('should not add required properties for non-input elements', () => {
+      const partialNonInputElement = { type: 'button', id: 'btn1' };
+      const normalized = ModelNormalizer.normalizeElement(partialNonInputElement);
+
+      expect(normalized.required).toBeUndefined();
+      expect(normalized.requiredWarnMessage).toBeUndefined();
+      expect(normalized.readOnly).toBeUndefined();
+    });
   });
 });

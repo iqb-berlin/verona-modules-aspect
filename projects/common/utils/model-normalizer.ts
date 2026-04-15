@@ -6,6 +6,24 @@ import {
   KeyInputElementProperties, TextInputElementProperties, UIElementType
 } from 'common/interfaces';
 
+const INPUT_ELEMENT_TYPES: UIElementType[] = [
+  'text-field',
+  'text-field-simple',
+  'text-area',
+  'checkbox',
+  'dropdown',
+  'radio',
+  'radio-group-images',
+  'hotspot-image',
+  'drop-list',
+  'slider',
+  'spell-correct',
+  'toggle-button',
+  'likert-row',
+  'math-field',
+  'text-area-math'
+];
+
 export class ModelNormalizer {
   static normalizeUnit(unit: Record<string, unknown>): Record<string, unknown> {
     const normalized = { ...unit };
@@ -91,6 +109,14 @@ export class ModelNormalizer {
     normalized.isRelevantForPresentationComplete =
       normalized.isRelevantForPresentationComplete !== undefined ?
         normalized.isRelevantForPresentationComplete : true;
+
+    if (INPUT_ELEMENT_TYPES.includes(type)) {
+      normalized.required = normalized.required !== undefined ? normalized.required : false;
+      normalized.requiredWarnMessage = normalized.requiredWarnMessage !== undefined ?
+        normalized.requiredWarnMessage :
+        'Eingabe erforderlich';
+      normalized.readOnly = normalized.readOnly !== undefined ? normalized.readOnly : false;
+    }
 
     // 2. Property Groups
     // We pass the defaults to the generators so that element-specific defaults

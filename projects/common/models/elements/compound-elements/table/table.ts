@@ -13,7 +13,6 @@ import { environment } from 'common/environment';
 import { ModelRegistry } from 'common/utils/model-registry';
 import {
   AbstractIDService,
-  PositionedUIElement,
   UIElementProperties,
   UIElementType,
   UIElementValue
@@ -47,9 +46,10 @@ export class TableElement extends CompoundElement implements TableProperties {
       this.gridRowSizes = element.gridRowSizes;
       this.elements = element.elements.map(el => {
         const childElement = ModelRegistry.createElement(el, idService);
-        // Keep cell coordinates after deserialization so table children can be placed in the grid.
-        childElement.gridRow = (el as unknown as Record<string, unknown>).gridRow;
-        childElement.gridColumn = (el as unknown as Record<string, unknown>).gridColumn;
+        const row = (el as unknown as { gridRow?: number }).gridRow;
+        const column = (el as unknown as { gridColumn?: number }).gridColumn;
+        if (row !== undefined) childElement.gridRow = row;
+        if (column !== undefined) childElement.gridColumn = column;
         return childElement;
       });
       this.tableEdgesEnabled = element.tableEdgesEnabled;

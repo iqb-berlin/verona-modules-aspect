@@ -105,6 +105,7 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
 import { TableComponent } from './components/compound-elements/table/table.component';
 import { TableChildOverlay } from './components/compound-elements/table/table-child-overlay.component';
 import { MeasurePipe } from './pipes/measure.pipe';
+import { MarkingPanelComponent } from './components/text/marking-panel.component';
 
 import { ComponentRegistry } from './utils/component-registry';
 
@@ -172,6 +173,7 @@ import { ComponentRegistry } from './utils/component-registry';
     ImageSrcPipe,
     TableComponent,
     TableChildOverlay,
+    MarkingPanelComponent,
     MeasurePipe
   ],
   exports: [
@@ -222,6 +224,7 @@ import { ComponentRegistry } from './utils/component-registry';
     ImageSrcPipe,
     TableComponent,
     TableChildOverlay,
+    MarkingPanelComponent,
     MeasurePipe
   ],
   imports: [

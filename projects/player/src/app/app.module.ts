@@ -108,8 +108,6 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     SectionVisibilityHandlingDirective,
     UnitComponent,
     PageScrollButtonComponent,
-    InViewDetectionDirective,
-    PageScrollButtonComponent,
     ExternalAppGroupElementComponent,
     InputAssistanceCustomKeysPipe,
     InputAssistanceCustomStylePipe,
@@ -136,7 +134,6 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     PrintModule,
     MarkablesContainerComponent,
     IsEnabledNavigationTargetPipe,
-    MarkingPanelComponent,
     UnitNavNextComponent,
     MathKeyboardContainerComponent
   ],

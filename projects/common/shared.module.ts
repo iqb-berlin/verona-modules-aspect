@@ -1,6 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { registerComponents } from 'common/utils/component-registration';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -106,8 +107,6 @@ import { TableComponent } from './components/compound-elements/table/table.compo
 import { TableChildOverlay } from './components/compound-elements/table/table-child-overlay.component';
 import { MeasurePipe } from './pipes/measure.pipe';
 import { MarkingPanelComponent } from './components/text/marking-panel.component';
-
-import { ComponentRegistry } from './utils/component-registry';
 
 @NgModule({
   declarations: [
@@ -254,7 +253,8 @@ import { ComponentRegistry } from './utils/component-registry';
     ImageFullscreenDirective,
     AreaSegmentComponent,
     AreaRowHeightPipe,
-    TextMarkingButtonSvgComponent],
+    TextMarkingButtonSvgComponent
+  ],
   providers: [
     provideHttpClient(withInterceptorsFromDi())
   ]
@@ -262,38 +262,7 @@ import { ComponentRegistry } from './utils/component-registry';
 
 export class SharedModule {
   constructor() {
-    ComponentRegistry.registerComponents({
-      text: TextComponent,
-      button: ButtonComponent,
-      'text-field': TextFieldComponent,
-      'text-field-simple': TextFieldSimpleComponent,
-      'text-area': TextAreaComponent,
-      checkbox: CheckboxComponent,
-      dropdown: DropdownComponent,
-      radio: RadioButtonGroupComponent,
-      image: ImageComponent,
-      audio: AudioComponent,
-      video: VideoComponent,
-      likert: LikertComponent,
-      'likert-row': LikertRadioButtonGroupComponent,
-      'radio-group-images': RadioGroupImagesComponent,
-      'drop-list': DropListComponent,
-      cloze: ClozeComponent,
-      table: TableComponent,
-      'hotspot-image': HotspotImageComponent,
-      slider: SliderComponent,
-      'spell-correct': SpellCorrectComponent,
-      frame: FrameComponent,
-      'toggle-button': ToggleButtonComponent,
-      geometry: GeometryComponent,
-      'math-field': MathFieldComponent,
-      'math-table': MathTableComponent,
-      'text-area-math': TextAreaMathComponent,
-      trigger: TriggerComponent,
-      'widget-calc': WidgetCalcComponent,
-      'widget-molecule-editor': WidgetMoleculeEditorComponent,
-      'widget-periodic-table': WidgetPeriodicTableComponent
-    });
+    registerComponents();
   }
 }
 

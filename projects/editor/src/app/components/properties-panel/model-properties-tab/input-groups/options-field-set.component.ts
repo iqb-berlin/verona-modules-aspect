@@ -24,7 +24,7 @@ import { LikertRowElement, LikertRowProperties } from 'common/models/elements/co
     <!--dropdown, radio-button-group-->
     <aspect-option-list-panel
       *ngIf="combinedProperties.options !== undefined"
-      [showImageButton]="combinedProperties?.type !== 'dropdown' && combinedProperties?.type !== 'radio'"
+      [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
       [title]="'propertiesPanel.options'"
       [textFieldLabel]="'Neue Option'"
       [itemList]="$any(combinedProperties.options)"
@@ -38,7 +38,7 @@ import { LikertRowElement, LikertRowProperties } from 'common/models/elements/co
     <!--likert-->
     <aspect-option-list-panel
       *ngIf="combinedProperties.rows !== undefined"
-      [showImageButton]="combinedProperties?.type !== 'dropdown' && combinedProperties?.type !== 'radio'"
+      [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
       [itemList]="$any(combinedProperties).rows | LikertRowLabel"
       [title]="'rows'"
       [textFieldLabel]="'Neue Zeile'"

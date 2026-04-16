@@ -2,7 +2,7 @@ import {
   InputElement, UIElement
 } from 'common/models/elements/element';
 import {
-  BasicStyles, DimensionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo, VariableValue } from '@iqb/responses';
@@ -21,6 +21,8 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   verticalOrientation: boolean = ELEMENT_DEFAULTS['toggle-button'].verticalOrientation as boolean;
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['toggle-button'] as any);
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['toggle-button'] as any);
 
   styling: BasicStyles & {
     lineHeight: number;
@@ -41,6 +43,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
       this.strikeSelectedOption = element.strikeSelectedOption;
       this.verticalOrientation = element.verticalOrientation;
       this.dimensions = { ...element.dimensions };
+      this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at ToggleButton instantiation', element);
@@ -86,6 +89,7 @@ export interface ToggleButtonProperties extends InputElementProperties {
   strikeSelectedOption: boolean;
   verticalOrientation: boolean;
   dimensions: DimensionProperties;
+  position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
     selectionColor: string;
@@ -99,6 +103,7 @@ function isToggleButtonProperties(blueprint?: Partial<ToggleButtonProperties>): 
     blueprint.strikeSelectedOption !== undefined &&
     blueprint.verticalOrientation !== undefined &&
     PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
+    PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.readOnly !== undefined &&
     blueprint.required !== undefined &&

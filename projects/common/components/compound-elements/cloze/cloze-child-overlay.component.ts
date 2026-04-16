@@ -15,6 +15,7 @@ import { ValueChangeElement } from 'common/interfaces';
   selector: 'aspect-compound-child-overlay',
   template: `
     <div [style.border]="isSelected ? 'purple solid 1px' : ''"
+         [style.box-sizing]="'border-box'"
          [style.display]="'flex'"
          [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width+'px' : null"
          [style.height]="element.dimensions.isHeightFixed ? element.dimensions.height + 'px' : null"

@@ -2,7 +2,7 @@ import {
   TextInputElement
 } from 'common/models/elements/element';
 import {
-  BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
@@ -28,6 +28,9 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       lineHeight: ELEMENT_DEFAULTS['text-field-simple'].lineHeight as number
     };
 
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-field-simple'] as any);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS['text-field-simple'] as any);
+
   static icon: string = 'edit';
 
   constructor(element?: Partial<TextFieldSimpleProperties>, idService?: AbstractIDService) {
@@ -41,6 +44,8 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       this.pattern = element.pattern;
       this.patternWarnMessage = element.patternWarnMessage;
       this.clearable = element.clearable;
+      if (element.dimensions) this.dimensions = { ...element.dimensions };
+      if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at TextFieldSimple instantiation', element);
@@ -73,6 +78,8 @@ export interface TextFieldSimpleProperties extends TextInputElementProperties {
   pattern: string | null;
   patternWarnMessage: string;
   clearable: boolean;
+  position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -89,6 +96,8 @@ function isTextFieldSimpleProperties(blueprint?: Partial<TextFieldSimpleProperti
     blueprint.pattern !== undefined &&
     blueprint.patternWarnMessage !== undefined &&
     blueprint.clearable !== undefined &&
+    PropertyGroupValidators.isValidPosition(blueprint.position) &&
+    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling?.lineHeight !== undefined &&
     blueprint.readOnly !== undefined &&

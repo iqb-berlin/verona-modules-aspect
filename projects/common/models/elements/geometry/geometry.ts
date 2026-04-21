@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
@@ -30,7 +30,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     width: number;
     height: number;
   } = PropertyGroupGenerators
-      .generateDimensionProps(ELEMENT_DEFAULTS.geometry as any) as { width: number; height: number; };
+      .generateDimensionProps(ELEMENT_DEFAULTS.geometry) as { width: number; height: number; };
 
   static title: string = 'Geometrie';
   static icon: string = 'architecture';
@@ -154,15 +154,5 @@ export interface GeometryProperties extends UIElementProperties {
 function isGeometryProperties(blueprint?: Partial<GeometryProperties>): blueprint is GeometryProperties {
   if (!blueprint) return false;
   return blueprint.appDefinition !== undefined &&
-    blueprint.trackedVariables !== undefined &&
-    blueprint.trackedExpectedVariables !== undefined &&
-    blueprint.showResetIcon !== undefined &&
-    blueprint.enableUndoRedo !== undefined &&
-    blueprint.showToolbar !== undefined &&
-    blueprint.enableShiftDragZoom !== undefined &&
-    blueprint.showZoomButtons !== undefined &&
-    blueprint.showFullscreenButton !== undefined &&
-    blueprint.customToolbar !== undefined &&
-    blueprint.dimensions !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position);
+    blueprint.type === 'geometry';
 }

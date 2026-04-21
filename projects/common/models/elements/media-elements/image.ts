@@ -2,7 +2,7 @@ import {
   UIElement
 } from 'common/models/elements/element';
 import {
-  PositionProperties, PropertyGroupGenerators
+  DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import { environment } from 'common/environment';
@@ -23,6 +23,8 @@ export class ImageElement extends UIElement implements ImageProperties {
   fileName: string = ELEMENT_DEFAULTS.image.fileName as string;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.image);
 
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.image);
+
   static title: string = 'Bild';
   static icon: string = 'image';
 
@@ -38,7 +40,8 @@ export class ImageElement extends UIElement implements ImageProperties {
       this.magnifierZoom = element.magnifierZoom;
       this.magnifierUsed = element.magnifierUsed;
       this.fileName = element.fileName;
-      if (element.position) this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Image instantiation', element);
     }
@@ -80,17 +83,11 @@ export interface ImageProperties extends UIElementProperties {
   magnifierUsed: boolean;
   fileName: string;
   position: PositionProperties;
+  dimensions: DimensionProperties;
 }
 
 function isImageProperties(blueprint?: Partial<ImageProperties>): blueprint is ImageProperties {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
-    blueprint.alt !== undefined &&
-    blueprint.scale !== undefined &&
-    blueprint.allowFullscreen !== undefined &&
-    blueprint.magnifier !== undefined &&
-    blueprint.magnifierSize !== undefined &&
-    blueprint.magnifierZoom !== undefined &&
-    blueprint.magnifierUsed !== undefined &&
-    blueprint.fileName !== undefined;
+    blueprint.type === 'image';
 }

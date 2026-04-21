@@ -1,9 +1,9 @@
 import {
-  InputElement, isInputElementProperties
+  InputElement
 } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
@@ -19,11 +19,14 @@ export class SliderElement extends InputElement implements SliderProperties {
   barStyle: boolean = ELEMENT_DEFAULTS.slider.barStyle as boolean;
   thumbLabel: boolean = ELEMENT_DEFAULTS.slider.thumbLabel as boolean;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.slider);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.slider);
+
   styling: BasicStyles & {
     lineHeight: number;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.slider),
-      lineHeight: (ELEMENT_DEFAULTS.slider as any).lineHeight as number || 100
+      lineHeight: ELEMENT_DEFAULTS.slider.lineHeight as number || 100
     };
 
   static title: string = 'Schieberegler';
@@ -37,7 +40,8 @@ export class SliderElement extends InputElement implements SliderProperties {
       this.showValues = element.showValues;
       this.barStyle = element.barStyle;
       this.thumbLabel = element.thumbLabel;
-      this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Slider instantiation', element);
@@ -73,6 +77,7 @@ export interface SliderProperties extends InputElementProperties {
   barStyle: boolean;
   thumbLabel: boolean;
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -82,9 +87,5 @@ function isSliderProperties(blueprint?: Partial<SliderProperties>): blueprint is
   if (!blueprint) return false;
   return blueprint.minValue !== undefined &&
     blueprint.maxValue !== undefined &&
-    blueprint.showValues !== undefined &&
-    blueprint.barStyle !== undefined &&
-    blueprint.thumbLabel !== undefined &&
-    blueprint.styling?.lineHeight !== undefined &&
-    isInputElementProperties(blueprint);
+    blueprint.type === 'slider';
 }

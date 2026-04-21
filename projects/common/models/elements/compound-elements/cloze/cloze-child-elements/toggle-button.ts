@@ -2,7 +2,7 @@ import {
   InputElement, UIElement
 } from 'common/models/elements/element';
 import {
-  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo, VariableValue } from '@iqb/responses';
@@ -20,9 +20,10 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   strikeSelectedOption: boolean = ELEMENT_DEFAULTS['toggle-button'].strikeSelectedOption as boolean;
   verticalOrientation: boolean = ELEMENT_DEFAULTS['toggle-button'].verticalOrientation as boolean;
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS['toggle-button'] as any);
+    .generateDimensionProps(ELEMENT_DEFAULTS['toggle-button']);
+
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['toggle-button'] as any);
+    .generatePositionProps(ELEMENT_DEFAULTS['toggle-button']);
 
   styling: BasicStyles & {
     lineHeight: number;
@@ -48,7 +49,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at ToggleButton instantiation', element);
     }
-    delete (this as any).label;
+    delete (this as Partial<ToggleButtonElement>).label;
   }
 
   setProperty(property: string, value: unknown): void {
@@ -99,15 +100,5 @@ export interface ToggleButtonProperties extends InputElementProperties {
 function isToggleButtonProperties(blueprint?: Partial<ToggleButtonProperties>): blueprint is ToggleButtonProperties {
   if (!blueprint) return false;
   return blueprint.options !== undefined &&
-    blueprint.strikeOtherOptions !== undefined &&
-    blueprint.strikeSelectedOption !== undefined &&
-    blueprint.verticalOrientation !== undefined &&
-    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.readOnly !== undefined &&
-    blueprint.required !== undefined &&
-    blueprint.requiredWarnMessage !== undefined &&
-    blueprint.styling?.lineHeight !== undefined &&
-    blueprint.styling?.selectionColor !== undefined;
+    blueprint.type === 'toggle-button';
 }

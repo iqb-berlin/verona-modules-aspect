@@ -26,9 +26,9 @@ export abstract class UIElement implements UIElementProperties {
   alias!: string;
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS as any);
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS as any);
-  styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS as any);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS);
+  styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS);
   player?: PlayerProperties;
   idService?: AbstractIDService;
 
@@ -55,8 +55,10 @@ export abstract class UIElement implements UIElementProperties {
       if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
         throw new InstantiationEror('Error at UIElement instantiation', element);
       }
-      this.id = element.id ?? idService?.getAndRegisterNewID(element.type) ?? 'id_placeholder';
-      this.alias = element.alias ?? (element.id ? element.id : idService?.getAndRegisterNewID(element.type, true)) ?? 'alias_placeholder';
+      this.id = element.id ??
+        idService?.getAndRegisterNewID(element.type) ?? 'id_placeholder';
+      this.alias = element.alias ??
+        (element.id ? element.id : idService?.getAndRegisterNewID(element.type, true)) ?? 'alias_placeholder';
     }
   }
 
@@ -150,7 +152,8 @@ export abstract class UIElement implements UIElementProperties {
   }
 }
 
-export function isInputElementProperties(blueprint: Partial<InputElementProperties>): blueprint is InputElementProperties {
+export function isInputElementProperties(blueprint: Partial<InputElementProperties>)
+  : blueprint is InputElementProperties {
   if (!blueprint) return false;
   return blueprint.value !== undefined &&
     blueprint.required !== undefined &&

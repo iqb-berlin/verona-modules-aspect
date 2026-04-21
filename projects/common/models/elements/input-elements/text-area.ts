@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
@@ -21,6 +21,9 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   expectedCharactersCount: number = ELEMENT_DEFAULTS['text-area'].expectedCharactersCount as number;
   hasReturnKey: boolean = ELEMENT_DEFAULTS['text-area'].hasReturnKey as boolean;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-area']);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS['text-area']);
+
   styling: BasicStyles & {
     lineHeight: number;
   } = {
@@ -41,7 +44,8 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       this.hasAutoHeight = element.hasAutoHeight;
       this.expectedCharactersCount = element.expectedCharactersCount;
       this.hasReturnKey = element.hasReturnKey;
-      if (element.position) this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at TextArea instantiation', element);
@@ -73,6 +77,7 @@ export interface TextAreaProperties extends TextInputElementProperties {
   expectedCharactersCount: number;
   hasReturnKey: boolean;
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -80,12 +85,6 @@ export interface TextAreaProperties extends TextInputElementProperties {
 
 function isTextAreaProperties(blueprint?: Partial<TextAreaProperties>): blueprint is TextAreaProperties {
   if (!blueprint) return false;
-  return blueprint.resizeEnabled !== undefined &&
-  blueprint.hasDynamicRowCount !== undefined &&
-  blueprint.hasAutoHeight !== undefined &&
-  blueprint.rowCount !== undefined &&
-  blueprint.expectedCharactersCount !== undefined &&
-  blueprint.hasReturnKey !== undefined &&
-  PropertyGroupValidators.isValidBasicStyles(blueprint.styling as BasicStyles) &&
-  blueprint.styling?.lineHeight !== undefined;
+  return blueprint.rowCount !== undefined &&
+    blueprint.type === 'text-area';
 }

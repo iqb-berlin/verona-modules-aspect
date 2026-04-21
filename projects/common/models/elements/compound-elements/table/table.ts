@@ -1,13 +1,14 @@
 import { VariableInfo } from '@iqb/responses';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import {
-  UIElement, CompoundElement, isUIElementProperties
+  UIElement, CompoundElement
 } from 'common/models/elements/element';
 import {
   BasicStyles,
-  BorderStyles, PositionProperties,
-  PropertyGroupGenerators,
-  PropertyGroupValidators
+  BorderStyles,
+  DimensionProperties,
+  PositionProperties,
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { ModelRegistry } from 'common/utils/model-registry';
@@ -30,9 +31,12 @@ export class TableElement extends CompoundElement implements TableProperties {
   elements: UIElement[] = [];
   tableEdgesEnabled: boolean = ELEMENT_DEFAULTS.table.tableEdgesEnabled as boolean;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.table);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.table);
+
   styling: BasicStyles & BorderStyles = {
     ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.table),
-    backgroundColor: (ELEMENT_DEFAULTS.table as any).backgroundColor as string || '#d3d3d3',
+    backgroundColor: (ELEMENT_DEFAULTS.table as Record<string, unknown>).backgroundColor as string || '#d3d3d3',
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.table)
   };
 
@@ -99,12 +103,6 @@ export interface TableProperties extends UIElementProperties {
 
 function isTableProperties(blueprint?: Partial<TableProperties>): blueprint is TableProperties {
   if (!blueprint) return false;
-  return blueprint.gridColumnSizes !== undefined &&
-    blueprint.gridRowSizes !== undefined &&
-    blueprint.elements !== undefined &&
-    blueprint.tableEdgesEnabled !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    blueprint.styling?.backgroundColor !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    isUIElementProperties(blueprint);
+  return blueprint.elements !== undefined &&
+    blueprint.type === 'table';
 }

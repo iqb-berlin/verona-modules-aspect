@@ -5,8 +5,9 @@ import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
 import {
   BasicStyles,
-  PropertyGroupGenerators,
-  PropertyGroupValidators
+  DimensionProperties,
+  PositionProperties,
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import {
   AbstractIDService,
@@ -20,6 +21,12 @@ import { InstantiationEror } from 'common/errors';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class MathTableElement extends UIElement implements MathTableProperties, KeyInputElementProperties {
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['math-table']);
+
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['math-table']);
+
   type: UIElementType = 'math-table';
   operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' =
     ELEMENT_DEFAULTS['math-table'].operation as 'variable' | 'addition' | 'subtraction' | 'multiplication';
@@ -67,6 +74,8 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       this.result = element.result;
       this.resultHelperRow = element.resultHelperRow;
       this.variableLayoutOptions = { ...element.variableLayoutOptions };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
       this.inputAssistancePreset = element.inputAssistancePreset;
       this.inputAssistancePosition = element.inputAssistancePosition;
@@ -117,6 +126,8 @@ export interface MathTableProperties extends UIElementProperties, KeyInputElemen
     showTopHelperRows: boolean;
     allowFirstLineCrossOut: boolean;
   }
+  position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     helperRowColor: string;
   };
@@ -125,17 +136,7 @@ export interface MathTableProperties extends UIElementProperties, KeyInputElemen
 function isMathTableProperties(blueprint?: Partial<MathTableProperties>): blueprint is MathTableProperties {
   if (!blueprint) return false;
   return blueprint.operation !== undefined &&
-         blueprint.terms !== undefined &&
-         blueprint.result !== undefined &&
-         blueprint.resultHelperRow !== undefined &&
-         blueprint.variableLayoutOptions !== undefined &&
-         blueprint.variableLayoutOptions.allowArithmeticChars !== undefined &&
-         blueprint.variableLayoutOptions.isFirstLineUnderlined !== undefined &&
-         blueprint.variableLayoutOptions.showResultRow !== undefined &&
-         blueprint.variableLayoutOptions.showTopHelperRows !== undefined &&
-         blueprint.variableLayoutOptions.allowFirstLineCrossOut !== undefined &&
-         PropertyGroupValidators.isValidKeyInputElementProperties(blueprint) &&
-         PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
+    blueprint.type === 'math-table';
 }
 
 export interface MathTableCell {

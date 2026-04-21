@@ -1,9 +1,12 @@
 import {
-  CompoundElement, UIElement, isUIElementProperties
+  CompoundElement, UIElement
 } from 'common/models/elements/element';
-import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles,
+  DimensionProperties,
+  PositionProperties,
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
@@ -27,7 +30,13 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
   label: string = ELEMENT_DEFAULTS.likert.label as string;
   label2: string = ELEMENT_DEFAULTS.likert.label2 as string;
   stickyHeader: boolean = ELEMENT_DEFAULTS.likert.stickyHeader as boolean;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.likert);
+
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS.likert);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS.likert);
+
   styling: BasicStyles & {
     lineHeight: number;
     lineColoring: boolean;
@@ -52,13 +61,14 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
       this.options = [...element.options];
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
       this.rows = element.rows.map(row => new LikertRowElement(
-        ModelNormalizer.normalizeElement(row as Record<string, unknown>) as any,
+        ModelNormalizer.normalizeElement(row as Record<string, unknown>) as Partial<LikertRowProperties>,
         idService
       ));
       this.label = element.label;
       this.label2 = element.label2;
       this.stickyHeader = element.stickyHeader;
-      this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Likert instantiation', element);
@@ -106,7 +116,7 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
   getBlueprint(): LikertElement {
     return {
       ...this, rows: this.rows.map(el => el.getBlueprint()), id: undefined, alias: undefined
-    };
+    } as LikertElement;
   }
 }
 
@@ -118,6 +128,7 @@ export interface LikertProperties extends UIElementProperties {
   label2: string;
   stickyHeader: boolean;
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
     lineColoring: boolean;
@@ -131,16 +142,5 @@ function isLikertProperties(blueprint?: Partial<LikertProperties>): blueprint is
   if (!blueprint) return false;
   return blueprint.rows !== undefined &&
     blueprint.options !== undefined &&
-    blueprint.firstColumnSizeRatio !== undefined &&
-    blueprint.label !== undefined &&
-    blueprint.label2 !== undefined &&
-    blueprint.stickyHeader !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined &&
-    isUIElementProperties(blueprint) &&
-    blueprint.styling?.lineColoring !== undefined &&
-    blueprint.styling?.lineColoringColor !== undefined &&
-    blueprint.styling?.firstLineColoring !== undefined &&
-    blueprint.styling?.firstLineColoringColor !== undefined;
+    blueprint.type === 'likert';
 }

@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
@@ -32,8 +32,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   labelAlignment: 'super' | 'sub' | 'baseline' =
     ELEMENT_DEFAULTS.button.labelAlignment as 'super' | 'sub' | 'baseline';
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.button as any);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.button);
+
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.button);
+
   styling: BasicStyles & BorderStyles = {
     ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.button),
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.button)
@@ -54,6 +56,8 @@ export class ButtonElement extends UIElement implements ButtonProperties {
       this.tooltipText = element.tooltipText;
       this.tooltipPosition = element.tooltipPosition;
       this.labelAlignment = element.labelAlignment;
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Button instantiation', element);
@@ -75,16 +79,8 @@ export interface ButtonProperties extends UIElementProperties {
 
 function isButtonProperties(blueprint?: Partial<ButtonProperties>): blueprint is ButtonProperties {
   if (!blueprint) return false;
-  return blueprint.label !== undefined &&
-  blueprint.imageSrc !== undefined &&
-  blueprint.asLink !== undefined &&
-  blueprint.action !== undefined &&
-  blueprint.actionParam !== undefined &&
-  blueprint.tooltipText !== undefined &&
-  blueprint.tooltipPosition !== undefined &&
-  blueprint.labelAlignment !== undefined &&
-  PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-  PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
+  return blueprint.action !== undefined &&
+    blueprint.type === 'button';
 }
 
 export interface ButtonEvent {

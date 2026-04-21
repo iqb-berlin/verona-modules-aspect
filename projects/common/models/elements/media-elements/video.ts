@@ -1,5 +1,5 @@
 import {
-  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, PlayerElementBlueprint, UIElementType } from 'common/interfaces';
@@ -13,6 +13,8 @@ export class VideoElement extends PlayerElement implements VideoProperties {
   fileName: string = ELEMENT_DEFAULTS.video.fileName as string;
   scale: boolean = ELEMENT_DEFAULTS.video.scale as boolean;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.video);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.video);
   styling: { backgroundColor: string } = {
     backgroundColor: ELEMENT_DEFAULTS.video.backgroundColor as string
   };
@@ -26,7 +28,8 @@ export class VideoElement extends PlayerElement implements VideoProperties {
       this.src = element.src;
       this.fileName = element.fileName;
       this.scale = element.scale;
-      this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Video instantiation', element);
@@ -39,14 +42,12 @@ export interface VideoProperties extends PlayerElementBlueprint {
   fileName: string;
   scale: boolean;
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: { backgroundColor: string };
 }
 
 function isVideoProperties(blueprint?: Partial<VideoProperties>): blueprint is VideoProperties {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
-    blueprint.fileName !== undefined &&
-    blueprint.scale !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    blueprint.styling?.backgroundColor !== undefined;
+    blueprint.type === 'video';
 }

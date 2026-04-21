@@ -20,7 +20,7 @@ export interface PositionProperties {
 }
 
 export interface DimensionProperties {
-  [index: string]: number | boolean | null | undefined;
+  [index: string]: unknown;
   width: number;
   height: number;
   isWidthFixed?: boolean;
@@ -187,7 +187,8 @@ export abstract class PropertyGroupGenerators {
 
   static generateBasicStyleProps(defaults: Partial<BasicStyles> = {}): BasicStyles {
     return {
-      backgroundColor: defaults.backgroundColor !== undefined ? defaults.backgroundColor : GLOBAL_DEFAULTS.backgroundColor,
+      backgroundColor: defaults.backgroundColor !== undefined ?
+        defaults.backgroundColor : GLOBAL_DEFAULTS.backgroundColor,
       ...PropertyGroupGenerators.generateFontStylingProps(defaults)
     };
   }
@@ -215,28 +216,39 @@ export abstract class PropertyGroupGenerators {
   static generatePlayerProps(properties: Partial<PlayerProperties> = {}): PlayerProperties {
     return {
       loop: properties.loop !== undefined ? properties.loop as boolean : GLOBAL_DEFAULTS.loop,
-      startControl: properties.startControl !== undefined ? properties.startControl as boolean : GLOBAL_DEFAULTS.startControl,
-      pauseControl: properties.pauseControl !== undefined ? properties.pauseControl as boolean : GLOBAL_DEFAULTS.pauseControl,
-      progressBar: properties.progressBar !== undefined ? properties.progressBar as boolean : GLOBAL_DEFAULTS.progressBar,
+      startControl: properties.startControl !== undefined ?
+        properties.startControl as boolean : GLOBAL_DEFAULTS.startControl,
+      pauseControl: properties.pauseControl !== undefined ?
+        properties.pauseControl as boolean : GLOBAL_DEFAULTS.pauseControl,
+      progressBar: properties.progressBar !== undefined ?
+        properties.progressBar as boolean : GLOBAL_DEFAULTS.progressBar,
       interactiveProgressbar: properties.interactiveProgressbar !== undefined ?
         properties.interactiveProgressbar as boolean : GLOBAL_DEFAULTS.interactiveProgressbar,
-      volumeControl: properties.volumeControl !== undefined ? properties.volumeControl as boolean : GLOBAL_DEFAULTS.volumeControl,
-      defaultVolume: properties.defaultVolume !== undefined ? properties.defaultVolume as number : GLOBAL_DEFAULTS.defaultVolume,
-      minVolume: properties.minVolume !== undefined ? properties.minVolume as number : GLOBAL_DEFAULTS.minVolume,
-      muteControl: properties.muteControl !== undefined ? properties.muteControl as boolean : GLOBAL_DEFAULTS.muteControl,
+      volumeControl: properties.volumeControl !== undefined ?
+        properties.volumeControl as boolean : GLOBAL_DEFAULTS.volumeControl,
+      defaultVolume: properties.defaultVolume !== undefined ?
+        properties.defaultVolume as number : GLOBAL_DEFAULTS.defaultVolume,
+      minVolume: properties.minVolume !== undefined ?
+        properties.minVolume as number : GLOBAL_DEFAULTS.minVolume,
+      muteControl: properties.muteControl !== undefined ?
+        properties.muteControl as boolean : GLOBAL_DEFAULTS.muteControl,
       interactiveMuteControl: properties.interactiveMuteControl !== undefined ?
         properties.interactiveMuteControl as boolean : GLOBAL_DEFAULTS.interactiveMuteControl,
       showHint: properties.showHint !== undefined ? properties.showHint as boolean : PropertyGroupGenerators
         .sanitizeShowHint(properties),
-      hintLabel: properties.hintLabel !== undefined ? properties.hintLabel as string : GLOBAL_DEFAULTS.hintLabel as string,
-      hintDelay: properties.hintDelay !== undefined ? properties.hintDelay as number : PropertyGroupGenerators
-        .sanitizeHintDelay(properties),
+      hintLabel: properties.hintLabel !== undefined ?
+        properties.hintLabel as string : GLOBAL_DEFAULTS.hintLabel as string,
+      hintDelay: properties.hintDelay !== undefined ?
+        properties.hintDelay as number : PropertyGroupGenerators.sanitizeHintDelay(properties),
       activeAfterID: properties.activeAfterID !== undefined ? properties.activeAfterID as string : '',
       minRuns: properties.minRuns !== undefined ? properties.minRuns as number : GLOBAL_DEFAULTS.minRuns,
       maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : GLOBAL_DEFAULTS.maxRuns,
-      showRestRuns: properties.showRestRuns !== undefined ? properties.showRestRuns as boolean : GLOBAL_DEFAULTS.showRestRuns,
-      showRestTime: properties.showRestTime !== undefined ? properties.showRestTime as boolean : GLOBAL_DEFAULTS.showRestTime,
-      playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : GLOBAL_DEFAULTS.playbackTime,
+      showRestRuns: properties.showRestRuns !== undefined ?
+        properties.showRestRuns as boolean : GLOBAL_DEFAULTS.showRestRuns,
+      showRestTime: properties.showRestTime !== undefined ?
+        properties.showRestTime as boolean : GLOBAL_DEFAULTS.showRestTime,
+      playbackTime: properties.playbackTime !== undefined ?
+        properties.playbackTime as number : GLOBAL_DEFAULTS.playbackTime,
       fileName: properties.fileName !== undefined ? properties.fileName as string : '',
       imgSrc: properties.imgSrc !== undefined ? properties.imgSrc as string | null : null,
       imgFileName: properties.imgFileName !== undefined ? properties.imgFileName as string : ''

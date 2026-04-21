@@ -4,7 +4,7 @@ import {
 import { ButtonElement } from 'common/models/elements/button/button';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { ModelRegistry } from 'common/utils/model-registry';
@@ -18,7 +18,9 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
   type: UIElementType = 'cloze';
   document: ClozeDocument = structuredClone(ELEMENT_DEFAULTS.cloze.document) as ClozeDocument;
   columnCount: number = ELEMENT_DEFAULTS.cloze.columnCount as number;
+
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.cloze);
+
   styling: BasicStyles & {
     lineHeight: number;
   } = {
@@ -141,7 +143,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       elementModel as { type: UIElementType } & Partial<UIElementProperties>, idService
     ) as InputElement | ButtonElement;
 
-    delete (newElement as any).position; // Cloze children do not have a position, they are inline
+    delete (newElement as Partial<UIElement>).position; // Cloze children do not have a position, they are inline
     return newElement;
   }
 }
@@ -158,10 +160,7 @@ export interface ClozeProperties extends UIElementProperties {
 function isClozeProperties(blueprint?: Partial<ClozeProperties>): blueprint is ClozeProperties {
   if (!blueprint) return false;
   return blueprint.document !== undefined &&
-    blueprint.columnCount !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.type === 'cloze';
 }
 
 export interface ClozeDocument {

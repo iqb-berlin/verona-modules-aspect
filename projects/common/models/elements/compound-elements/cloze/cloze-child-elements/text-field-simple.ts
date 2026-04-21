@@ -2,7 +2,7 @@ import {
   TextInputElement
 } from 'common/models/elements/element';
 import {
-  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
@@ -28,8 +28,11 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       lineHeight: ELEMENT_DEFAULTS['text-field-simple'].lineHeight as number
     };
 
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-field-simple'] as any);
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS['text-field-simple'] as any);
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['text-field-simple']);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['text-field-simple']);
 
   static icon: string = 'edit';
 
@@ -44,8 +47,8 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       this.pattern = element.pattern;
       this.patternWarnMessage = element.patternWarnMessage;
       this.clearable = element.clearable;
-      if (element.dimensions) this.dimensions = { ...element.dimensions };
-      if (element.position) this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at TextFieldSimple instantiation', element);
@@ -89,18 +92,5 @@ function isTextFieldSimpleProperties(blueprint?: Partial<TextFieldSimpleProperti
   : blueprint is TextFieldSimpleProperties {
   if (!blueprint) return false;
   return blueprint.minLength !== undefined &&
-    blueprint.minLengthWarnMessage !== undefined &&
-    blueprint.maxLength !== undefined &&
-    blueprint.maxLengthWarnMessage !== undefined &&
-    blueprint.isLimitedToMaxLength !== undefined &&
-    blueprint.pattern !== undefined &&
-    blueprint.patternWarnMessage !== undefined &&
-    blueprint.clearable !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined &&
-    blueprint.readOnly !== undefined &&
-    blueprint.required !== undefined &&
-    blueprint.requiredWarnMessage !== undefined;
+    blueprint.type === 'text-field-simple';
 }

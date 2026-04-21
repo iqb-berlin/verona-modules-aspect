@@ -3,7 +3,7 @@ import {
   InputElement, UIElement
 } from 'common/models/elements/element';
 import {
-  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -17,9 +17,11 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
   type: UIElementType = 'dropdown';
   options: TextLabel[] = ELEMENT_DEFAULTS.dropdown.options as TextLabel[];
   allowUnset: boolean = ELEMENT_DEFAULTS.dropdown.allowUnset as boolean;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.dropdown as any);
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.dropdown as any);
-  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.dropdown as any);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.dropdown);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.dropdown);
+
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.dropdown);
 
   static title: string = 'Klappliste';
   static icon: string = 'menu_open';
@@ -29,8 +31,8 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
     if (isDropdownProperties(element)) {
       this.options = element.options;
       this.allowUnset = element.allowUnset;
-      this.position = { ...element.position };
-      this.dimensions = { ...element.dimensions };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Dropdown instantiation', element);
@@ -76,8 +78,5 @@ export interface DropdownProperties extends InputElementProperties {
 function isDropdownProperties(blueprint?: Partial<DropdownProperties>): blueprint is DropdownProperties {
   if (!blueprint) return false;
   return blueprint.options !== undefined &&
-    blueprint.allowUnset !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
+    blueprint.type === 'dropdown';
 }

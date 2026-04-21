@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -23,8 +23,14 @@ export class RadioButtonGroupComplexElement extends InputElement
   label: string = ELEMENT_DEFAULTS['radio-group-images'].label as string;
   options: TextImageLabel[] = [...ELEMENT_DEFAULTS['radio-group-images'].options as TextImageLabel[]];
   itemsPerRow: number | null = ELEMENT_DEFAULTS['radio-group-images'].itemsPerRow as number | null;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['radio-group-images']);
-  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['radio-group-images']);
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['radio-group-images']);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['radio-group-images']);
+
+  styling: BasicStyles = PropertyGroupGenerators
+    .generateBasicStyleProps(ELEMENT_DEFAULTS['radio-group-images']);
 
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';
@@ -35,7 +41,8 @@ export class RadioButtonGroupComplexElement extends InputElement
       this.label = element.label;
       this.options = [...element.options];
       this.itemsPerRow = element.itemsPerRow;
-      this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at RadioButtonGroupComplex instantiation', element);
@@ -75,15 +82,13 @@ export interface RadioButtonGroupComplexProperties extends InputElementPropertie
   options: TextImageLabel[];
   itemsPerRow: number | null;
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles;
 }
 
 function isRadioButtonGroupComplexProperties(blueprint?: Partial<RadioButtonGroupComplexProperties>)
   : blueprint is RadioButtonGroupComplexProperties {
   if (!blueprint) return false;
-  return blueprint.label !== undefined &&
-    blueprint.options !== undefined &&
-    blueprint.itemsPerRow !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
+  return blueprint.options !== undefined &&
+    blueprint.type === 'radio-group-images';
 }

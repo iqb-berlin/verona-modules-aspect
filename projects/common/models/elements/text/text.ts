@@ -1,7 +1,7 @@
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
@@ -19,6 +19,9 @@ export class TextElement extends UIElement implements TextProperties {
   hasSelectionPopup: boolean = ELEMENT_DEFAULTS.text.hasSelectionPopup as boolean;
   columnCount: number = ELEMENT_DEFAULTS.text.columnCount as number;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.text);
+
   styling: BasicStyles & {
     lineHeight: number;
   } = {
@@ -43,7 +46,8 @@ export class TextElement extends UIElement implements TextProperties {
       this.highlightableYellow = element.highlightableYellow;
       this.hasSelectionPopup = element.hasSelectionPopup;
       this.columnCount = element.columnCount;
-      this.position = { ...element.position as PositionProperties };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Text instantiation', element);
@@ -96,6 +100,7 @@ export interface TextProperties extends UIElementProperties {
   hasSelectionPopup: boolean;
   columnCount: number;
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -104,13 +109,5 @@ export interface TextProperties extends UIElementProperties {
 function isTextProperties(blueprint?: Partial<TextProperties>): blueprint is TextProperties {
   if (!blueprint) return false;
   return blueprint.text !== undefined &&
-    blueprint.markingMode !== undefined &&
-    blueprint.markingPanels !== undefined &&
-    blueprint.highlightableOrange !== undefined &&
-    blueprint.highlightableTurquoise !== undefined &&
-    blueprint.highlightableYellow !== undefined &&
-    blueprint.hasSelectionPopup !== undefined &&
-    blueprint.columnCount !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.type === 'text';
 }

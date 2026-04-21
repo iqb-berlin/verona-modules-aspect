@@ -1,9 +1,9 @@
 import { TextInputElement } from 'common/models/elements/element';
 import {
   BasicStyles,
+  DimensionProperties,
   PositionProperties,
-  PropertyGroupGenerators,
-  PropertyGroupValidators
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
@@ -26,7 +26,12 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
     ELEMENT_DEFAULTS['text-area-math'].mathKeyboardPresets as MathKeyboardPreset[] ||
     ['math', 'symbols', 'latin', 'greek'];
 
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-area-math']);
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['text-area-math']);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['text-area-math']);
+
   styling: BasicStyles & {
     lineHeight: number;
   } = {
@@ -43,7 +48,8 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;
       this.mathKeyboardPresets = element.mathKeyboardPresets;
-      this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at TextAreaMath instantiation', element);
@@ -71,6 +77,7 @@ export interface TextAreaMathProperties extends TextInputElementProperties {
   hasAutoHeight: boolean;
   mathKeyboardPresets: MathKeyboardPreset[];
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -84,10 +91,5 @@ export interface TextAreaMath {
 function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): blueprint is TextAreaMathProperties {
   if (!blueprint) return false;
   return blueprint.rowCount !== undefined &&
-    blueprint.hasAutoHeight !== undefined &&
-    blueprint.mathKeyboardPresets !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    PropertyGroupValidators.isValidKeyInputElementProperties(blueprint) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.type === 'text-area-math';
 }

@@ -10,7 +10,8 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class TriggerElement extends UIElement implements TriggerProperties {
   type: UIElementType = 'trigger';
   action: null | TriggerAction = ELEMENT_DEFAULTS.trigger.action as TriggerAction | null;
-  actionParam: null | string | StateVariable = ELEMENT_DEFAULTS.trigger.actionParam as any;
+
+  actionParam: null | string | StateVariable = ELEMENT_DEFAULTS.trigger.actionParam as string | StateVariable | null;
 
   static title: string = 'Auslöser';
   static icon: string = 'bolt';
@@ -34,7 +35,7 @@ export interface TriggerProperties extends UIElementProperties {
 function isTriggerProperties(blueprint?: Partial<TriggerProperties>): blueprint is TriggerProperties {
   if (!blueprint) return false;
   return blueprint.action !== undefined &&
-    blueprint.actionParam !== undefined;
+    blueprint.type === 'trigger';
 }
 
 export interface TriggerActionEvent {

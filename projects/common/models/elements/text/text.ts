@@ -1,29 +1,33 @@
-import { Type } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextComponent } from 'common/components/text/text.component';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
-  text: string = 'Lorem ipsum dolor sit amet';
-  markingMode: 'selection' | 'word' | 'range' = 'selection';
-  markingPanels: string[] = [];
-  highlightableOrange: boolean = false;
-  highlightableTurquoise: boolean = false;
-  highlightableYellow: boolean = false;
-  hasSelectionPopup: boolean = false;
-  columnCount: number = 1;
-  position?: PositionProperties;
+  text: string = ELEMENT_DEFAULTS.text.text as string;
+  markingMode: 'selection' | 'word' | 'range' = ELEMENT_DEFAULTS.text.markingMode as 'selection' | 'word' | 'range';
+  markingPanels: string[] = ELEMENT_DEFAULTS.text.markingPanels as string[];
+  highlightableOrange: boolean = ELEMENT_DEFAULTS.text.highlightableOrange as boolean;
+  highlightableTurquoise: boolean = ELEMENT_DEFAULTS.text.highlightableTurquoise as boolean;
+  highlightableYellow: boolean = ELEMENT_DEFAULTS.text.highlightableYellow as boolean;
+  hasSelectionPopup: boolean = ELEMENT_DEFAULTS.text.hasSelectionPopup as boolean;
+  columnCount: number = ELEMENT_DEFAULTS.text.columnCount as number;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.text);
+
   styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.text),
+      lineHeight: ELEMENT_DEFAULTS.text.lineHeight as number
+    };
 
   static title: string = 'Text';
   static icon: string = 'text_snippet';
@@ -42,32 +46,11 @@ export class TextElement extends UIElement implements TextProperties {
       this.highlightableYellow = element.highlightableYellow;
       this.hasSelectionPopup = element.hasSelectionPopup;
       this.columnCount = element.columnCount;
-      if (element.position) this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Text instantiation', element);
-      }
-      if (element?.text !== undefined) this.text = element.text;
-      if (element?.markingMode !== undefined) this.markingMode = element.markingMode;
-      if (element?.markingPanels !== undefined) this.markingPanels = element.markingPanels;
-      if (element?.highlightableOrange !== undefined) this.highlightableOrange = element.highlightableOrange;
-      if (element?.highlightableTurquoise !== undefined) this.highlightableTurquoise = element.highlightableTurquoise;
-      if (element?.highlightableYellow !== undefined) this.highlightableYellow = element.highlightableYellow;
-      if (element?.hasSelectionPopup !== undefined) this.hasSelectionPopup = element.hasSelectionPopup;
-      if (element?.columnCount !== undefined) this.columnCount = element.columnCount;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        height: 98,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps({
-        marginBottom: { value: 10, unit: 'px' },
-        ...element?.position
-      });
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 135
-      };
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at Text instantiation', element);
     }
   }
 
@@ -95,10 +78,6 @@ export class TextElement extends UIElement implements TextProperties {
     }];
   }
 
-  getElementComponent(): Type<ElementComponent> {
-    return TextComponent;
-  }
-
   getAnchorIDs(): string[] {
     return TextElement.getAnchorIDs(this.text);
   }
@@ -120,7 +99,8 @@ export interface TextProperties extends UIElementProperties {
   highlightableYellow: boolean;
   hasSelectionPopup: boolean;
   columnCount: number;
-  position?: PositionProperties;
+  position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -129,13 +109,5 @@ export interface TextProperties extends UIElementProperties {
 function isTextProperties(blueprint?: Partial<TextProperties>): blueprint is TextProperties {
   if (!blueprint) return false;
   return blueprint.text !== undefined &&
-    blueprint.markingMode !== undefined &&
-    blueprint.markingPanels !== undefined &&
-    blueprint.highlightableOrange !== undefined &&
-    blueprint.highlightableTurquoise !== undefined &&
-    blueprint.highlightableYellow !== undefined &&
-    blueprint.hasSelectionPopup !== undefined &&
-    blueprint.columnCount !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.type === 'text';
 }

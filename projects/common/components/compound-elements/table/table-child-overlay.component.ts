@@ -11,15 +11,51 @@ import { AudioComponent } from 'common/components/media-elements/audio.component
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
+import { ImageComponent } from 'common/components/media-elements/image.component';
+import { UIElementType } from 'common/interfaces';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'aspect-table-child-overlay',
+  standalone: false,
   template: `
   <div class="wrapper"
        [class.drop-list-padding]="element.type === 'drop-list'"
        [style.border]="isSelected ? 'purple solid 1px' : ''"
        (click)="elementSelected.emit(this); $event.stopPropagation();">
-    <ng-template #elementContainer></ng-template>
+    <aspect-text *ngIf="element.type === 'text'" #childComponent
+                 [elementModel]="$any(element)"
+                 [savedText]="savedTexts ? savedTexts[element.id] : ''">
+    </aspect-text>
+    <aspect-text-field *ngIf="element.type === 'text-field'" #childComponent
+                       [elementModel]="$any(element)"
+                       [parentForm]="parentForm"
+                       [tableMode]="true">
+    </aspect-text-field>
+    <aspect-text-area *ngIf="element.type === 'text-area'" #childComponent
+                      [elementModel]="$any(element)"
+                      [parentForm]="parentForm"
+                      [tableMode]="true">
+    </aspect-text-area>
+    <aspect-checkbox *ngIf="element.type === 'checkbox'" #childComponent
+                     [elementModel]="$any(element)"
+                     [parentForm]="parentForm"
+                     [tableMode]="true">
+    </aspect-checkbox>
+    <aspect-drop-list *ngIf="element.type === 'drop-list'" #childComponent
+                      [elementModel]="$any(element)"
+                      [parentForm]="parentForm"
+                      [clozeContext]="true">
+    </aspect-drop-list>
+    <aspect-image *ngIf="element.type === 'image'" #childComponent
+                  [elementModel]="$any(element)">
+    </aspect-image>
+    <aspect-audio *ngIf="element.type === 'audio'" #childComponent
+                  [elementModel]="$any(element)"
+                  [savedPlaybackTime]="savedPlaybackTimes ? savedPlaybackTimes[element.id] : 0"
+                  [actualPlayingId]="actualPlayingId"
+                  [mediaStatusChanged]="mediaStatusChanged">
+    </aspect-audio>
   </div>
 `,
   styles: `
@@ -46,41 +82,15 @@ export class TableChildOverlay implements OnInit {
   @Input() mediaStatusChanged!: Subject<string>;
   @Input() editorMode: boolean = false;
   @Output() elementSelected = new EventEmitter<TableChildOverlay>();
-  @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
-  childComponent!: ComponentRef<ElementComponent>;
+  @ViewChild('childComponent') childComponent!: ElementComponent;
 
   isSelected: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
-    this.childComponent.instance.elementModel = this.element;
-
-    // this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
-
-    if (this.childComponent.instance instanceof TextFieldComponent ||
-        this.childComponent.instance instanceof TextAreaComponent ||
-        this.childComponent.instance instanceof CheckboxComponent) {
-      this.childComponent.instance.tableMode = true;
-      this.childComponent.instance.parentForm = this.parentForm;
-    }
-
-    if (!this.parentForm) this.childComponent.location.nativeElement.style.pointerEvents = 'none';
-
-    if (this.childComponent.instance instanceof TextComponent) {
-      this.childComponent.instance.savedText =
-        this.savedTexts ? this.savedTexts[this.element.id] : '';
-    }
-    if (this.childComponent.instance instanceof DropListComponent) {
-      this.childComponent.setInput('clozeContext', true);
-      this.childComponent.instance.parentForm = this.parentForm;
-    }
-    if (this.childComponent.instance instanceof AudioComponent) {
-      this.childComponent.instance.savedPlaybackTime =
-        this.savedPlaybackTimes ? this.savedPlaybackTimes[this.element.id] : 0;
-      this.childComponent.instance.actualPlayingId = this.actualPlayingId;
-      this.childComponent.instance.mediaStatusChanged = this.mediaStatusChanged;
+    if (!this.parentForm && this.childComponent) {
+      this.childComponent.elementRef.nativeElement.style.pointerEvents = 'none';
     }
   }
 

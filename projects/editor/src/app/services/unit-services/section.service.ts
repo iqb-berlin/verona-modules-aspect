@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PositionedUIElement, UIElementValue } from 'common/interfaces';
 import { UIElement } from 'common/models/elements/element';
-import { ArrayUtils } from 'common/util/array';
+import { ArrayUtils } from 'common/utils/array-utils';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';

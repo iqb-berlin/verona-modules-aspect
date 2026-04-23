@@ -2,14 +2,12 @@ import {
   UIElement
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
-import { Type } from '@angular/core';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { environment } from 'common/environment';
 import {
   BasicStyles,
-  PropertyGroupGenerators,
-  PropertyGroupValidators
+  DimensionProperties,
+  PositionProperties,
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import {
   AbstractIDService,
@@ -20,36 +18,50 @@ import {
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class MathTableElement extends UIElement implements MathTableProperties, KeyInputElementProperties {
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['math-table']);
+
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['math-table']);
+
   type: UIElementType = 'math-table';
-  operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' = 'addition';
-  terms: string[] = ['123', '456'];
-  result: string = '';
-  resultHelperRow: string = '';
-  inputAssistancePreset: InputAssistancePreset = null;
-  inputAssistancePosition: 'floating' | 'right' = 'floating';
-  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
-  showSoftwareKeyboard: boolean = false;
-  addInputAssistanceToKeyboard: boolean = false;
-  keyStyle: 'round' | 'square' = 'round';
-  hideNativeKeyboard: boolean = false;
-  hasArrowKeys: boolean = false;
+  operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' =
+    ELEMENT_DEFAULTS['math-table'].operation as 'variable' | 'addition' | 'subtraction' | 'multiplication';
+
+  terms: string[] = [...ELEMENT_DEFAULTS['math-table'].terms as string[]];
+  result: string = ELEMENT_DEFAULTS['math-table'].result as string;
+  resultHelperRow: string = ELEMENT_DEFAULTS['math-table'].resultHelperRow as string;
+  inputAssistancePreset: InputAssistancePreset =
+    ELEMENT_DEFAULTS['math-table'].inputAssistancePreset as InputAssistancePreset;
+
+  inputAssistancePosition: 'floating' | 'right' =
+    ELEMENT_DEFAULTS['math-table'].inputAssistancePosition as 'floating' | 'right';
+
+  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' =
+    ELEMENT_DEFAULTS['math-table'].inputAssistanceFloatingStartPosition as 'startBottom' | 'endCenter';
+
+  showSoftwareKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].showSoftwareKeyboard as boolean;
+  addInputAssistanceToKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].addInputAssistanceToKeyboard as boolean;
+  keyStyle: 'round' | 'square' = ELEMENT_DEFAULTS['math-table'].keyStyle as 'round' | 'square';
+  hideNativeKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].hideNativeKeyboard as boolean;
+  hasArrowKeys: boolean = ELEMENT_DEFAULTS['math-table'].hasArrowKeys as boolean;
   variableLayoutOptions: {
     allowArithmeticChars: boolean;
     isFirstLineUnderlined: boolean;
     showResultRow: boolean;
     showTopHelperRows: boolean;
-    allowFirstLineCrossOut: boolean; } = {
-      allowArithmeticChars: false,
-      isFirstLineUnderlined: true,
-      showResultRow: false,
-      showTopHelperRows: false,
-      allowFirstLineCrossOut: false
-    };
+    allowFirstLineCrossOut: boolean;
+  } = { ...ELEMENT_DEFAULTS['math-table'].variableLayoutOptions as MathTableProperties['variableLayoutOptions'] };
 
   styling: BasicStyles & {
     helperRowColor: string;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-table']),
+      helperRowColor: ELEMENT_DEFAULTS['math-table'].helperRowColor as string
+    };
 
   static title: string = 'Rechenkästchen';
   static icon: string = 'apps';
@@ -62,6 +74,8 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       this.result = element.result;
       this.resultHelperRow = element.resultHelperRow;
       this.variableLayoutOptions = { ...element.variableLayoutOptions };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
       this.inputAssistancePreset = element.inputAssistancePreset;
       this.inputAssistancePosition = element.inputAssistancePosition;
@@ -71,20 +85,8 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
       this.hideNativeKeyboard = element.hideNativeKeyboard;
       this.hasArrowKeys = element.hasArrowKeys;
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at MathTable instantiation', element);
-      }
-      if (element?.operation !== undefined) this.operation = element.operation;
-      if (element?.terms !== undefined) this.terms = [...element.terms];
-      if (element?.result !== undefined) this.result = element.result;
-      if (element?.resultHelperRow !== undefined) this.resultHelperRow = element.resultHelperRow;
-      if (element?.variableLayoutOptions !== undefined) this.variableLayoutOptions = { ...element.variableLayoutOptions };
-      Object.assign(this, PropertyGroupGenerators.generateKeyInputProps(element));
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        helperRowColor: 'transparent'
-      };
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at MathTable instantiation', element);
     }
   }
 
@@ -110,10 +112,6 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       valuesComplete: false
     }];
   }
-
-  getElementComponent(): Type<ElementComponent> {
-    return MathTableComponent;
-  }
 }
 
 export interface MathTableProperties extends UIElementProperties, KeyInputElementProperties {
@@ -128,6 +126,8 @@ export interface MathTableProperties extends UIElementProperties, KeyInputElemen
     showTopHelperRows: boolean;
     allowFirstLineCrossOut: boolean;
   }
+  position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     helperRowColor: string;
   };
@@ -136,17 +136,7 @@ export interface MathTableProperties extends UIElementProperties, KeyInputElemen
 function isMathTableProperties(blueprint?: Partial<MathTableProperties>): blueprint is MathTableProperties {
   if (!blueprint) return false;
   return blueprint.operation !== undefined &&
-         blueprint.terms !== undefined &&
-         blueprint.result !== undefined &&
-         blueprint.resultHelperRow !== undefined &&
-         blueprint.variableLayoutOptions !== undefined &&
-         blueprint.variableLayoutOptions.allowArithmeticChars !== undefined &&
-         blueprint.variableLayoutOptions.isFirstLineUnderlined !== undefined &&
-         blueprint.variableLayoutOptions.showResultRow !== undefined &&
-         blueprint.variableLayoutOptions.showTopHelperRows !== undefined &&
-         blueprint.variableLayoutOptions.allowFirstLineCrossOut !== undefined &&
-         PropertyGroupValidators.isValidKeyInputElementProperties(blueprint) &&
-         PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
+    blueprint.type === 'math-table';
 }
 
 export interface MathTableCell {

@@ -2,6 +2,7 @@ export abstract class ArrayUtils {
   /* Silently ignores nonsense reorders! */
   static moveArrayItem(item: unknown, array: unknown[], direction: 'up' | 'down'): void {
     const oldIndex = array.indexOf(item);
+    if (oldIndex === -1) return;
 
     if ((array.length > 1) &&
       !(direction === 'down' && oldIndex + 1 === array.length) && // dont allow last element down

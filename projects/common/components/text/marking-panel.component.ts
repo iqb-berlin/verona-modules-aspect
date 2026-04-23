@@ -3,15 +3,11 @@ import {
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
-import { SharedModule } from 'common/shared.module';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';
 
 @Component({
-    selector: 'aspect-marking-panel',
-    imports: [
-        SharedModule
-    ],
-    template: `
+  selector: 'aspect-marking-panel',
+  template: `
     <aspect-text-marking-bar [elementModel]="elementModel"
                              [selectedColor]="selectedColor || 'none'"
                              [markingMode]="markingMode"
@@ -20,7 +16,8 @@ import { MarkingPanelMarkingData } from 'common/models/marking-data';
                                                                                          markingData: $event })">
     </aspect-text-marking-bar>
   `,
-    styles: []
+  styles: [],
+  standalone: false
 })
 export class MarkingPanelComponent extends ElementComponent {
   @Input() elementModel!: MarkingPanelElement;

@@ -1,8 +1,18 @@
+import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Section } from 'common/models/section';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { SectionComponent } from './section.component';
+
+@Pipe({
+  name: 'measure',
+  standalone: false
+})
+class MockMeasurePipe implements PipeTransform {
+  transform(): string {
+    return '';
+  }
+}
 
 describe('SectionComponent', () => {
   let component: SectionComponent;
@@ -11,9 +21,10 @@ describe('SectionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        SectionComponent
+        SectionComponent,
+        MockMeasurePipe
       ],
-      imports: [MatDialogModule, MeasurePipe]
+      imports: [MatDialogModule]
     })
       .compileComponents();
   });

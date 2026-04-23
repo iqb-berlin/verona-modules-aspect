@@ -1,13 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
-import { UIElement } from 'common/models/elements/element';
+import { InputElement } from 'common/models/elements/element';
 
 @Pipe({
-    name: 'errorTransform',
-    standalone: false
+  name: 'errorTransform',
+  standalone: false
 })
 export class ErrorTransformPipe implements PipeTransform {
-  transform(validationErrors: ValidationErrors, elementModel: UIElement): string {
+  transform(validationErrors: ValidationErrors, elementModel: InputElement): string {
     const validationMessages = ErrorTransformPipe.getValidationMessages(elementModel);
     let returnMessage = '';
 
@@ -20,7 +20,7 @@ export class ErrorTransformPipe implements PipeTransform {
     return returnMessage;
   }
 
-  private static getValidationMessages = (elementModel: UIElement): Record<string, string> => ({
+  private static getValidationMessages = (elementModel: InputElement): Record<string, string> => ({
     required: elementModel.requiredWarnMessage as string,
     minlength: elementModel.minLengthWarnMessage as string,
     maxlength: elementModel.maxLengthWarnMessage as string,

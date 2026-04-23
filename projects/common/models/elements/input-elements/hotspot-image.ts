@@ -1,12 +1,8 @@
-import { Type } from '@angular/core';
-import {
-  InputElement
-} from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+import { InputElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
@@ -28,10 +24,14 @@ export interface Hotspot {
 
 export class HotspotImageElement extends InputElement implements HotspotImageProperties {
   type: UIElementType = 'hotspot-image';
-  value: Hotspot[] = [];
-  src: string | null = null;
-  fileName: string = '';
-  position: PositionProperties;
+  value: Hotspot[] = ELEMENT_DEFAULTS['hotspot-image'].value as Hotspot[];
+  src: string | null = ELEMENT_DEFAULTS['hotspot-image'].src as string | null;
+  fileName: string = ELEMENT_DEFAULTS['hotspot-image'].fileName as string;
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['hotspot-image']);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['hotspot-image']);
 
   static title: string = 'Bildbereiche';
   static icon: string = 'ads_click';
@@ -42,19 +42,10 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
       this.value = element.value;
       this.src = element.src;
       this.fileName = element.fileName;
-      this.position = { ...element.position };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at HotspotImage instantiation', element);
-      }
-      if (element?.value) this.value = element.value;
-      if (element?.src) this.src = element.src;
-      if (element?.fileName) this.fileName = element.fileName;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        height: 100,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at HotspotImage instantiation', element);
     }
   }
 
@@ -79,10 +70,6 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
       .map((hotspot, index) => `${hotspot.shape}(${index})`
         .charAt(0).toUpperCase() + `${hotspot.shape}(${index})`.slice(1));
   }
-
-  getElementComponent(): Type<ElementComponent> {
-    return HotspotImageComponent;
-  }
 }
 
 export interface HotspotImageProperties extends InputElementProperties {
@@ -90,12 +77,11 @@ export interface HotspotImageProperties extends InputElementProperties {
   src: string | null;
   fileName: string;
   position: PositionProperties;
+  dimensions: DimensionProperties;
 }
 
 function isHotspotImageProperties(blueprint?: Partial<HotspotImageProperties>): blueprint is HotspotImageProperties {
   if (!blueprint) return false;
   return blueprint.value !== undefined &&
-    blueprint.src !== undefined &&
-    blueprint.fileName !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position);
+    blueprint.type === 'hotspot-image';
 }

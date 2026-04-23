@@ -3,8 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'common/shared.module';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
-import { ElementFactory } from 'common/util/element.factory';
+import { ElementFactory } from 'common/utils/element-factory';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { FileService } from 'common/services/file.service';
 import { AudioProperties } from 'common/models/elements/media-elements/audio';
@@ -19,7 +20,7 @@ import { IDService } from 'editor/src/app/services/id.service';
     MatDialogModule,
     TranslateModule,
     MatButtonModule,
-    TableComponent
+    SharedModule
   ],
   template: `
     <div mat-dialog-title>Tabellenelemente</div>
@@ -81,12 +82,12 @@ export class TableEditDialogComponent {
       type: el.elementType,
       ...extraProps
     }, this.idService);
-    delete newEle.position;
-    delete newEle.dimensions;
+    delete (newEle as any).position;
+    delete (newEle as any).dimensions;
     newEle.gridRow = el.row + 1;
     newEle.gridColumn = el.col + 1;
     if (newEle.type === 'text-field' || newEle.type === 'text-area') {
-      delete newEle.appearance;
+      delete (newEle as any).appearance;
     }
     this.newTable.elements.push(newEle);
     this.tableComp.refresh();

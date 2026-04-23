@@ -1,6 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { registerComponents } from 'common/utils/component-registration';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -22,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { MathEditorModule } from 'common/math-editor/math-editor.module';
@@ -101,6 +103,10 @@ import { TextAreaMathComponent } from './components/input-elements/text-area-mat
 import { DragImageComponent } from './components/input-elements/drop-list/drag-image.component';
 import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
 import { ImageSrcPipe } from './pipes/image-src.pipe';
+import { TableComponent } from './components/compound-elements/table/table.component';
+import { TableChildOverlay } from './components/compound-elements/table/table-child-overlay.component';
+import { MeasurePipe } from './pipes/measure.pipe';
+import { MarkingPanelComponent } from './components/text/marking-panel.component';
 
 @NgModule({
   declarations: [
@@ -163,7 +169,11 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
     WidgetPeriodicTableComponent,
     WidgetCalcComponent,
     WidgetMoleculeEditorComponent,
-    ImageSrcPipe
+    ImageSrcPipe,
+    TableComponent,
+    TableChildOverlay,
+    MarkingPanelComponent,
+    MeasurePipe
   ],
   exports: [
     CommonModule,
@@ -210,7 +220,11 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
     WidgetPeriodicTableComponent,
     WidgetCalcComponent,
     WidgetMoleculeEditorComponent,
-    ImageSrcPipe
+    ImageSrcPipe,
+    TableComponent,
+    TableChildOverlay,
+    MarkingPanelComponent,
+    MeasurePipe
   ],
   imports: [
     CommonModule,
@@ -230,6 +244,7 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
     MatSliderModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
+    MatMenuModule,
     MathEditorModule,
     MatListModule,
     CdkConnectedOverlay,
@@ -238,14 +253,17 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
     ImageFullscreenDirective,
     AreaSegmentComponent,
     AreaRowHeightPipe,
-    TextMarkingButtonSvgComponent],
+    TextMarkingButtonSvgComponent
+  ],
   providers: [
     provideHttpClient(withInterceptorsFromDi())
   ]
 })
 
-export class SharedModule {}
-
-export abstract class APIService {
-  abstract getResourceURL(): string;
+export class SharedModule {
+  constructor() {
+    registerComponents();
+  }
 }
+
+export { APIService } from './services/api.service';

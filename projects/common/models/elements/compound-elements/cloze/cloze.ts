@@ -1,35 +1,32 @@
 import {
   CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
-import { Type } from '@angular/core';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
+import { ButtonElement } from 'common/models/elements/button/button';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import {
-  TextFieldSimpleElement, TextFieldSimpleProperties
-} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
-import {
-  ToggleButtonElement, ToggleButtonProperties
-} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
-import { ButtonElement, ButtonProperties } from 'common/models/elements/button/button';
-import { DropListElement, DropListProperties } from 'common/models/elements/input-elements/drop-list';
-import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { CheckboxElement, CheckboxProperties } from 'common/models/elements/input-elements/checkbox';
+import { ModelRegistry } from 'common/utils/model-registry';
 import {
   AbstractIDService, UIElementProperties, UIElementType, UIElementValue
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class ClozeElement extends CompoundElement implements ClozeProperties {
   type: UIElementType = 'cloze';
-  document: ClozeDocument = { type: 'doc', content: [] };
-  columnCount: number = 1;
-  position: PositionProperties;
+  document: ClozeDocument = structuredClone(ELEMENT_DEFAULTS.cloze.document) as ClozeDocument;
+  columnCount: number = ELEMENT_DEFAULTS.cloze.columnCount as number;
+
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.cloze);
+
   styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.cloze),
+      lineHeight: ELEMENT_DEFAULTS.cloze.lineHeight as number
+    };
 
   static title: string = 'Lückentext';
   static icon: string = 'vertical_split';
@@ -44,25 +41,8 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       this.instantiateChildElements(idService);
       this.position = { ...element.position };
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Cloze instantiation', element);
-      }
-      if (element?.columnCount !== undefined) this.columnCount = element.columnCount;
-      this.document = structuredClone(element?.document) || ClozeElement.getDefaultDocument();
-      this.instantiateChildElements(idService);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        height: 200,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps({
-        marginBottom: { value: 35, unit: 'px' },
-        ...element?.position
-      });
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 180
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Cloze instantiation', element);
     }
   }
 
@@ -149,10 +129,6 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
     };
   }
 
-  getElementComponent(): Type<ElementComponent> {
-    return ClozeComponent;
-  }
-
   getChildElements(): UIElement[] {
     return ClozeElement.getCustomNodes(this.document.content).map(el => el.attrs.model);
   }
@@ -163,27 +139,11 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
 
   private static createChildElement(elementModel: Partial<UIElement>, idService?: AbstractIDService)
     : InputElement | ButtonElement {
-    let newElement: InputElement | ButtonElement;
-    switch (elementModel.type) {
-      case 'text-field-simple':
-        newElement = new TextFieldSimpleElement(elementModel as unknown as TextFieldSimpleProperties, idService);
-        break;
-      case 'drop-list':
-        newElement = new DropListElement(elementModel as unknown as DropListProperties, idService);
-        break;
-      case 'toggle-button':
-        newElement = new ToggleButtonElement(elementModel as unknown as ToggleButtonProperties, idService);
-        break;
-      case 'button':
-        newElement = new ButtonElement(elementModel as unknown as ButtonProperties, idService);
-        break;
-      case 'checkbox':
-        newElement = new CheckboxElement(elementModel as unknown as CheckboxProperties, idService);
-        break;
-      default:
-        throw new Error(`ElementType ${elementModel.type} not found!`);
-    }
-    delete newElement.position; // Cloze children do not have a position, they are inline
+    const newElement = ModelRegistry.createElement(
+      elementModel as { type: UIElementType } & Partial<UIElementProperties>, idService
+    ) as InputElement | ButtonElement;
+
+    delete (newElement as Partial<UIElement>).position; // Cloze children do not have a position, they are inline
     return newElement;
   }
 }
@@ -200,10 +160,7 @@ export interface ClozeProperties extends UIElementProperties {
 function isClozeProperties(blueprint?: Partial<ClozeProperties>): blueprint is ClozeProperties {
   if (!blueprint) return false;
   return blueprint.document !== undefined &&
-    blueprint.columnCount !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.type === 'cloze';
 }
 
 export interface ClozeDocument {

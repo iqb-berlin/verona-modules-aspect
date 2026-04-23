@@ -1,27 +1,31 @@
-import { Type } from '@angular/core';
 import { InputElement, UIElement } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
   AbstractIDService, InputElementProperties, OptionElement, TextLabel, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class RadioButtonGroupElement extends InputElement implements OptionElement, RadioButtonGroupProperties {
   type: UIElementType = 'radio';
-  label: string = 'Beschriftung';
-  options: TextLabel[] = [];
-  alignment: 'column' | 'row' = 'column';
-  strikeOtherOptions: boolean = false;
-  position: PositionProperties;
+  label: string = ELEMENT_DEFAULTS.radio.label as string;
+  options: TextLabel[] = ELEMENT_DEFAULTS.radio.options as TextLabel[];
+  alignment: 'column' | 'row' = ELEMENT_DEFAULTS.radio.alignment as 'column' | 'row';
+  strikeOtherOptions: boolean = ELEMENT_DEFAULTS.radio.strikeOtherOptions as boolean;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.radio);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.radio);
+
   styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.radio),
+      lineHeight: ELEMENT_DEFAULTS.radio.lineHeight as number || 100
+    };
 
   static title: string = 'Optionsfelder';
   static icon: string = 'radio_button_checked';
@@ -33,25 +37,11 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
       this.options = [...element.options];
       this.alignment = element.alignment;
       this.strikeOtherOptions = element.strikeOtherOptions;
-      this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
-      }
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.options) this.options = [...element.options];
-      if (element?.alignment) this.alignment = element.alignment;
-      if (element?.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        height: 100,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 135
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
     }
   }
 
@@ -78,10 +68,6 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
       }));
   }
 
-  getElementComponent(): Type<ElementComponent> {
-    return RadioButtonGroupComponent;
-  }
-
   getNewOptionLabel(optionText: string): TextLabel {
     return UIElement.createOptionLabel(optionText) as TextLabel;
   }
@@ -93,6 +79,7 @@ export interface RadioButtonGroupProperties extends InputElementProperties {
   alignment: 'column' | 'row';
   strikeOtherOptions: boolean;
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -101,11 +88,6 @@ export interface RadioButtonGroupProperties extends InputElementProperties {
 function isRadioButtonGroupProperties(blueprint?: Partial<RadioButtonGroupProperties>)
   : blueprint is RadioButtonGroupProperties {
   if (!blueprint) return false;
-  return blueprint.label !== undefined &&
-    blueprint.options !== undefined &&
-    blueprint.alignment !== undefined &&
-    blueprint.strikeOtherOptions !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined;
+  return blueprint.options !== undefined &&
+    blueprint.type === 'radio';
 }

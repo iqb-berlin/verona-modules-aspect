@@ -1,9 +1,6 @@
-import { Type } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { ButtonComponent } from 'common/components/button/button.component';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
@@ -11,20 +8,41 @@ import {
   AbstractIDService, TooltipPosition, UIElementProperties, UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class ButtonElement extends UIElement implements ButtonProperties {
   type: UIElementType = 'button';
-  label: string = 'Knopf';
-  imageSrc: string | null = null;
-  asLink: boolean = false;
-  action: null | ButtonAction = null;
-  actionParam: null | UnitNavParam | number | string | StateVariable = null;
-  tooltipText: string = '';
-  tooltipPosition: TooltipPosition = 'below';
-  labelAlignment: 'super' | 'sub' | 'baseline' = 'baseline';
-  styling: BasicStyles & BorderStyles;
+
+  label: string = ELEMENT_DEFAULTS.button.label as string;
+
+  imageSrc: string | null = ELEMENT_DEFAULTS.button.imageSrc as string | null;
+
+  asLink: boolean = ELEMENT_DEFAULTS.button.asLink as boolean;
+
+  action: null | ButtonAction = ELEMENT_DEFAULTS.button.action as ButtonAction | null;
+
+  actionParam: null | UnitNavParam | number | string | StateVariable =
+    ELEMENT_DEFAULTS.button.actionParam as
+    null | UnitNavParam | number | string | StateVariable;
+
+  tooltipText: string = ELEMENT_DEFAULTS.button.tooltipText as string;
+
+  tooltipPosition: TooltipPosition = ELEMENT_DEFAULTS.button.tooltipPosition as TooltipPosition;
+
+  labelAlignment: 'super' | 'sub' | 'baseline' =
+    ELEMENT_DEFAULTS.button.labelAlignment as 'super' | 'sub' | 'baseline';
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.button);
+
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.button);
+
+  styling: BasicStyles & BorderStyles = {
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.button),
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.button)
+  };
 
   static title: string = 'Knopf';
+
   static icon: string = 'smart_button';
 
   constructor(element?: Partial<ButtonProperties>, idService?: AbstractIDService) {
@@ -38,31 +56,12 @@ export class ButtonElement extends UIElement implements ButtonProperties {
       this.tooltipText = element.tooltipText;
       this.tooltipPosition = element.tooltipPosition;
       this.labelAlignment = element.labelAlignment;
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Button instantiation', element);
-      }
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.imageSrc !== undefined) this.imageSrc = element.imageSrc;
-      if (element?.asLink !== undefined) this.asLink = element.asLink;
-      if (element?.action !== undefined) this.action = element.action;
-      if (element?.actionParam !== undefined) this.actionParam = element.actionParam;
-      if (element?.tooltipText !== undefined) this.tooltipText = element.tooltipText;
-      if (element?.tooltipPosition !== undefined) this.tooltipPosition = element.tooltipPosition;
-      if (element?.labelAlignment !== undefined) this.labelAlignment = element.labelAlignment;
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps({
-          backgroundColor: 'lightgrey',
-          ...element?.styling
-        }),
-        ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)
-      };
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at Button instantiation', element);
     }
-  }
-
-  getElementComponent(): Type<ElementComponent> {
-    return ButtonComponent;
   }
 }
 
@@ -80,16 +79,8 @@ export interface ButtonProperties extends UIElementProperties {
 
 function isButtonProperties(blueprint?: Partial<ButtonProperties>): blueprint is ButtonProperties {
   if (!blueprint) return false;
-  return blueprint.label !== undefined &&
-  blueprint.imageSrc !== undefined &&
-  blueprint.asLink !== undefined &&
-  blueprint.action !== undefined &&
-  blueprint.actionParam !== undefined &&
-  blueprint.tooltipText !== undefined &&
-  blueprint.tooltipPosition !== undefined &&
-  blueprint.labelAlignment !== undefined &&
-  PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-  PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
+  return blueprint.action !== undefined &&
+    blueprint.type === 'button';
 }
 
 export interface ButtonEvent {

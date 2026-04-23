@@ -1,35 +1,40 @@
 import {
   TextInputElement
 } from 'common/models/elements/element';
-import { Type } from '@angular/core';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  TextFieldSimpleComponent
-} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import {
-  BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class TextFieldSimpleElement extends TextInputElement implements TextFieldSimpleProperties {
   type: UIElementType = 'text-field-simple';
-  minLength: number | null = null;
-  minLengthWarnMessage: string = 'Eingabe zu kurz';
-  maxLength: number | null = null;
-  maxLengthWarnMessage: string = 'Eingabe zu lang';
-  isLimitedToMaxLength: boolean = true;
-  pattern: string | null = null;
-  patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
-  clearable: boolean = false;
+  minLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].minLength as number | null;
+  minLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].minLengthWarnMessage as string;
+  maxLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].maxLength as number | null;
+  maxLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].maxLengthWarnMessage as string;
+  isLimitedToMaxLength: boolean = ELEMENT_DEFAULTS['text-field-simple'].isLimitedToMaxLength as boolean;
+  pattern: string | null = ELEMENT_DEFAULTS['text-field-simple'].pattern as string | null;
+  patternWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].patternWarnMessage as string;
+  clearable: boolean = ELEMENT_DEFAULTS['text-field-simple'].clearable as boolean;
   styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field-simple']),
+      lineHeight: ELEMENT_DEFAULTS['text-field-simple'].lineHeight as number
+    };
+
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['text-field-simple']);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['text-field-simple']);
 
   static icon: string = 'edit';
-
 
   constructor(element?: Partial<TextFieldSimpleProperties>, idService?: AbstractIDService) {
     super({ type: 'text-field-simple', ...element }, idService);
@@ -42,31 +47,13 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       this.pattern = element.pattern;
       this.patternWarnMessage = element.patternWarnMessage;
       this.clearable = element.clearable;
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at TextFieldSimple instantiation', element);
-      }
-      if (element?.minLength !== undefined) this.minLength = element.minLength;
-      if (element?.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
-      if (element?.maxLength !== undefined) this.maxLength = element.maxLength;
-      if (element?.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
-      if (element?.isLimitedToMaxLength !== undefined) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
-      if (element?.pattern !== undefined) this.pattern = element.pattern;
-      if (element?.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
-      if (element?.clearable !== undefined) this.clearable = element.clearable;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        width: 150,
-        height: 30,
-        isWidthFixed: true,
-        ...element?.dimensions
-      });
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 100
-      };
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at TextFieldSimple instantiation', element);
     }
-    delete this.label;
+    delete (this as Partial<TextInputElement>).label;
   }
 
   getVariableInfos(): VariableInfo[] {
@@ -83,10 +70,6 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       valuesComplete: false
     }];
   }
-
-  getElementComponent(): Type<ElementComponent> {
-    return TextFieldSimpleComponent;
-  }
 }
 
 export interface TextFieldSimpleProperties extends TextInputElementProperties {
@@ -98,6 +81,8 @@ export interface TextFieldSimpleProperties extends TextInputElementProperties {
   pattern: string | null;
   patternWarnMessage: string;
   clearable: boolean;
+  position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -107,13 +92,5 @@ function isTextFieldSimpleProperties(blueprint?: Partial<TextFieldSimpleProperti
   : blueprint is TextFieldSimpleProperties {
   if (!blueprint) return false;
   return blueprint.minLength !== undefined &&
-    blueprint.minLengthWarnMessage !== undefined &&
-    blueprint.maxLength !== undefined &&
-    blueprint.maxLengthWarnMessage !== undefined &&
-    blueprint.isLimitedToMaxLength !== undefined &&
-    blueprint.pattern !== undefined &&
-    blueprint.patternWarnMessage !== undefined &&
-    blueprint.clearable !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.type === 'text-field-simple';
 }

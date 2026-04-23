@@ -1,5 +1,9 @@
 import {
-  addPage, addPostMessageStub, navigateToPage, selectFromDropdown
+  addElement,
+  addPage,
+  addPostMessageStub,
+  navigateToPage,
+  selectFromDropdown
 } from '../util';
 
 describe('Button element', { testIsolation: false }, () => {
@@ -7,41 +11,40 @@ describe('Button element', { testIsolation: false }, () => {
     cy.viewport(1280, 720); // if the screen is smaller the page tab won't be visible
     cy.openEditor();
     cy.switchToTabbedViewMode();
-    cy.wait(1000); // Wait for expansion panel to render. Otherwise the last panel is not there yet, sometimes.
-    cy.contains('Sonstige').click();
-    cy.contains('Knopf').click();
+    addElement('Knopf', 'Sonstige');
   });
 
   it('creates hyperlink button in editor', () => {
-    cy.contains('Knopf').click();
+    addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-Hyper');
     cy.contains('Hyperlink').click();
   });
 
   it('creates unit nav button in editor', () => {
-    cy.contains('Knopf').click();
+    addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-next-unit');
-    selectFromDropdown('Aktion', 'Unitnavigation');
-    selectFromDropdown('Aktionsparameter', 'Nächste Unit');
+    selectFromDropdown('Aktion', 'Unitnavigation', true);
+    selectFromDropdown('Aktionsparameter', 'Nächste Unit', true);
   });
 
   it('creates page nav button in editor', () => {
     addPage();
-    cy.contains('Knopf').click();
+    addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-seite-2');
     navigateToPage(1);
-    cy.contains('Knopf').click();
+    addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-page-2');
     selectFromDropdown('Aktion', 'Seitennavigation');
     selectFromDropdown('Aktionsparameter', 'Seite 2');
   });
 
   it('creates image button in editor', () => {
-    cy.contains('Knopf').click();
+    addElement('Knopf', 'Sonstige');
     cy.get('#button-image-upload').selectFile('example_data/media/446878.jpeg', { force: true });
   });
 
   it('saves unit definition', () => {
+    cy.clickOutside();
     cy.saveUnit('e2e/downloads/buttons.json');
   });
 
@@ -67,10 +70,10 @@ describe('Button element', { testIsolation: false }, () => {
     cy.contains('button', 'Knopf-next-unit').click();
     cy.get('@postMessage')
       .should('be.calledWithMatch',
-        Cypress.sinon.match({
-          type: 'vopUnitNavigationRequestedNotification',
-          target: 'next'
-        }));
+              Cypress.sinon.match({
+                type: 'vopUnitNavigationRequestedNotification',
+                target: 'next'
+              }));
   });
 
   it('finds and uses a button with page nav', () => {
@@ -79,7 +82,7 @@ describe('Button element', { testIsolation: false }, () => {
   });
 
   it('finds and uses a button with an image', () => {
-    cy.get('input[type="image"').should('have.attr', 'alt', 'Bild nicht gefunden');
+    cy.get('input[type="image"]').should('have.attr', 'alt', 'Bild nicht gefunden');
     cy.get('[src^="data:image"]');
   });
 });

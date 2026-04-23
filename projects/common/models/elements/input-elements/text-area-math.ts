@@ -1,13 +1,11 @@
 import { TextInputElement } from 'common/models/elements/element';
 import {
   BasicStyles,
+  DimensionProperties,
   PositionProperties,
-  PropertyGroupGenerators, PropertyGroupValidators
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { Type } from '@angular/core';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import { VariableInfo } from '@iqb/responses';
-import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
 import { environment } from 'common/environment';
 import {
   AbstractIDService,
@@ -17,16 +15,29 @@ import {
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class TextAreaMathElement extends TextInputElement implements TextAreaMathProperties {
   type: UIElementType = 'text-area-math';
   value: TextAreaMath[] = [];
-  rowCount: number = 2;
-  hasAutoHeight: boolean = false;
-  mathKeyboardPresets: MathKeyboardPreset[] = ['math', 'symbols', 'latin', 'greek'];
-  position: PositionProperties;
+  rowCount: number = ELEMENT_DEFAULTS['text-area-math'].rowCount as number || 2;
+  hasAutoHeight: boolean = ELEMENT_DEFAULTS['text-area-math'].hasAutoHeight as boolean || false;
+  mathKeyboardPresets: MathKeyboardPreset[] =
+    ELEMENT_DEFAULTS['text-area-math'].mathKeyboardPresets as MathKeyboardPreset[] ||
+    ['math', 'symbols', 'latin', 'greek'];
+
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['text-area-math']);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['text-area-math']);
+
   styling: BasicStyles & {
     lineHeight: number;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area-math']),
+      lineHeight: ELEMENT_DEFAULTS['text-area-math'].lineHeight as number
+    };
 
   static title: string = 'Formelbereich';
   static icon: string = 'calculate';
@@ -37,24 +48,11 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;
       this.mathKeyboardPresets = element.mathKeyboardPresets;
-      this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at TextAreaMath instantiation', element);
-      }
-      if (element?.value !== undefined) this.value = element?.value as TextAreaMath[] || [];
-      if (element?.rowCount !== undefined) this.rowCount = element.rowCount;
-      if (element?.hasAutoHeight !== undefined) this.hasAutoHeight = element.hasAutoHeight;
-      if (element?.mathKeyboardPresets !== undefined) {
-        this.mathKeyboardPresets = element.mathKeyboardPresets;
-      }
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 135
-      };
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at TextAreaMath instantiation', element);
     }
   }
 
@@ -72,10 +70,6 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
       valuesComplete: false
     }];
   }
-
-  getElementComponent(): Type<ElementComponent> {
-    return TextAreaMathComponent;
-  }
 }
 
 export interface TextAreaMathProperties extends TextInputElementProperties {
@@ -83,6 +77,7 @@ export interface TextAreaMathProperties extends TextInputElementProperties {
   hasAutoHeight: boolean;
   mathKeyboardPresets: MathKeyboardPreset[];
   position: PositionProperties;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -96,10 +91,5 @@ export interface TextAreaMath {
 function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): blueprint is TextAreaMathProperties {
   if (!blueprint) return false;
   return blueprint.rowCount !== undefined &&
-    blueprint.hasAutoHeight !== undefined &&
-    blueprint.mathKeyboardPresets !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    PropertyGroupValidators.isValidKeyInputElementProperties(blueprint) &&
-    blueprint.styling?.lineHeight !== undefined;
+    blueprint.type === 'text-area-math';
 }

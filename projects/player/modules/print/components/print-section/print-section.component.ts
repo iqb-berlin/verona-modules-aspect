@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Section } from 'common/models/section';
-import { SectionCounter } from 'common/util/section-counter';
+import { SectionCounter } from 'common/utils/section-counter';
 import { PrintMode } from 'player/modules/verona/models/verona';
 
 @Component({

@@ -3,7 +3,6 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
-  CompoundElement,
   InputElement, PlayerElement,
   UIElement
 } from 'common/models/elements/element';
@@ -19,7 +18,7 @@ import {
   PositionProperties,
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { ElementFactory } from 'common/util/element.factory';
+import { ElementFactory } from 'common/utils/element-factory';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -129,7 +128,7 @@ export class ElementService {
   }
 
   createLikertRowElement(props: LikertRowProperties): LikertRowElement {
-    return new LikertRowElement(props, this.idService);
+    return ElementFactory.createElement(props, this.idService) as LikertRowElement;
   }
 
   async deleteElements(elements: UIElement[]): Promise<void> {

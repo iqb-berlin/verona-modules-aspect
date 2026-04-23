@@ -1,12 +1,9 @@
-import { Type } from '@angular/core';
 import {
   InputElement
 } from 'common/models/elements/element';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PropertyGroupGenerators
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -18,24 +15,32 @@ import {
 } from 'common/interfaces';
 import { IDError, InstantiationEror } from 'common/errors';
 
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
 export class DropListElement extends InputElement implements DropListProperties {
   type: UIElementType = 'drop-list';
-  value: DragNDropValueObject[];
-  isSortList: boolean = false;
-  onlyOneItem: boolean = false;
-  connectedTo: string[] = [];
-  copyOnDrop: boolean = false;
-  allowReplacement: boolean = false;
-  permanentPlaceholders: boolean = false;
-  permanentPlaceholdersCC: boolean = true;
-  orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical'; // TODO besser floating
-  showNumbering: boolean = false;
-  startNumberingAtZero: boolean = false;
-  highlightReceivingDropList: boolean = false;
-  highlightReceivingDropListColor: string = '#006064';
+  value: DragNDropValueObject[] = ELEMENT_DEFAULTS['drop-list'].value as DragNDropValueObject[];
+  isSortList: boolean = ELEMENT_DEFAULTS['drop-list'].isSortList as boolean;
+  onlyOneItem: boolean = ELEMENT_DEFAULTS['drop-list'].onlyOneItem as boolean;
+  connectedTo: string[] = [...ELEMENT_DEFAULTS['drop-list'].connectedTo as string[]];
+  copyOnDrop: boolean = ELEMENT_DEFAULTS['drop-list'].copyOnDrop as boolean;
+  allowReplacement: boolean = ELEMENT_DEFAULTS['drop-list'].allowReplacement as boolean;
+  permanentPlaceholders: boolean = ELEMENT_DEFAULTS['drop-list'].permanentPlaceholders as boolean;
+  permanentPlaceholdersCC: boolean = ELEMENT_DEFAULTS['drop-list'].permanentPlaceholdersCC as boolean;
+  orientation: 'vertical' | 'horizontal' | 'flex' =
+    ELEMENT_DEFAULTS['drop-list'].orientation as 'vertical' | 'horizontal' | 'flex';
+
+  showNumbering: boolean = ELEMENT_DEFAULTS['drop-list'].showNumbering as boolean;
+  startNumberingAtZero: boolean = ELEMENT_DEFAULTS['drop-list'].startNumberingAtZero as boolean;
+  highlightReceivingDropList: boolean = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropList as boolean;
+  highlightReceivingDropListColor: string = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropListColor as string;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['drop-list']);
   styling: BasicStyles & {
     itemBackgroundColor: string;
-  };
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['drop-list']),
+      itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].itemBackgroundColor as string
+    };
 
   static title: string = 'Ablegeliste';
   static icon: string = 'drag_indicator';
@@ -54,8 +59,7 @@ export class DropListElement extends InputElement implements DropListProperties 
         originListIndex: index,
         audioSrc: value.audioSrc,
         audioFileName: value.audioFileName
-      }
-      ));
+      }));
       this.registerValueIDs();
       this.isSortList = element.isSortList;
       this.onlyOneItem = element.onlyOneItem;
@@ -70,55 +74,10 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.highlightReceivingDropList = element.highlightReceivingDropList;
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
       this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at DropList instantiation', element);
-      }
-      this.value = element?.value !== undefined ?
-        this.value = element.value.map((value, index) => ({
-          text: value.text,
-          imgSrc: value.imgSrc,
-          imgFileName: value.imgFileName,
-          imgPosition: value.imgPosition,
-          id: value.id ?? idService?.getAndRegisterNewID('value'),
-          alias: value.alias ?? (value.id || idService?.getAndRegisterNewID('value', true)),
-          originListID: this.id,
-          originListIndex: index,
-          audioSrc: value.audioSrc,
-          audioFileName: value.audioFileName
-        })) :
-        [];
-      if (element?.isSortList !== undefined) this.isSortList = element.isSortList;
-      if (element?.onlyOneItem !== undefined) this.onlyOneItem = element.onlyOneItem;
-      if (element?.connectedTo) this.connectedTo = [...element.connectedTo];
-      if (element?.copyOnDrop !== undefined) this.copyOnDrop = element.copyOnDrop;
-      if (element?.allowReplacement !== undefined) this.allowReplacement = element.allowReplacement;
-      if (element?.orientation) this.orientation = element.orientation;
-      if (element?.showNumbering !== undefined) this.showNumbering = element.showNumbering;
-      if (element?.startNumberingAtZero !== undefined) this.startNumberingAtZero = element.startNumberingAtZero;
-      if (element?.highlightReceivingDropList !== undefined) this.highlightReceivingDropList = element.highlightReceivingDropList;
-      if (element?.highlightReceivingDropListColor) {
-        this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
-      }
-      if (element?.permanentPlaceholders !== undefined) this.permanentPlaceholders = element.permanentPlaceholders;
-      if (element?.permanentPlaceholdersCC !== undefined) {
-        this.permanentPlaceholdersCC = element.permanentPlaceholdersCC;
-      }
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
-        height: 100,
-        minHeight: 57,
-        ...element?.dimensions
-      });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps({
-          backgroundColor: '#ededed',
-          ...element?.styling
-        }),
-        itemBackgroundColor: element?.styling?.itemBackgroundColor || '#c9e0e0'
-      };
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at DropList instantiation', element);
     }
-    delete this.label;
+    delete (this as Partial<DropListElement>).label;
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -179,10 +138,6 @@ export class DropListElement extends InputElement implements DropListProperties 
     return (!this.connectedTo.length && (this.value as DragNDropValueObject[]).length > 1);
   }
 
-  getElementComponent(): Type<ElementComponent> {
-    return DropListComponent;
-  }
-
   getBlueprint(): DropListProperties {
     return {
       ...this,
@@ -229,8 +184,6 @@ export interface DropListProperties extends InputElementProperties {
 
 function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprint is DropListProperties {
   if (!blueprint) return false;
-  if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].id === undefined) return false;
-  if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].alias === undefined) return false;
   return blueprint.value !== undefined &&
     blueprint.isSortList !== undefined &&
     blueprint.onlyOneItem !== undefined &&
@@ -244,6 +197,9 @@ function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprin
     blueprint.startNumberingAtZero !== undefined &&
     blueprint.highlightReceivingDropList !== undefined &&
     blueprint.highlightReceivingDropListColor !== undefined &&
-    blueprint.styling !== undefined &&
-    blueprint.styling.itemBackgroundColor !== undefined;
+    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    blueprint.readOnly !== undefined &&
+    blueprint.required !== undefined &&
+    blueprint.requiredWarnMessage !== undefined &&
+    blueprint.styling?.itemBackgroundColor !== undefined;
 }

@@ -1,9 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
-import { Type } from '@angular/core';
 import { VariableInfo } from '@iqb/responses';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
+  DimensionProperties, PlayerProperties, PositionProperties,
+  PropertyGroupGenerators, PropertyGroupValidators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -13,52 +12,53 @@ import {
   UIElementProperties, UIElementType, UIElementValue
 } from 'common/interfaces';
 import { IDError, InstantiationEror } from 'common/errors';
+import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 
-function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
-  return blueprint.id !== undefined &&
-    blueprint.isRelevantForPresentationComplete !== undefined;
+export function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
+  return blueprint.isRelevantForPresentationComplete !== undefined &&
+    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
+    PropertyGroupValidators.isValidPosition(blueprint.position);
 }
 
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
-  id: string;
-  alias: string;
+  id!: string;
+  alias!: string;
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
-  position?: PositionProperties;
-  dimensions?: DimensionProperties;
-  styling?: Stylings;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS);
+  styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS);
   player?: PlayerProperties;
   idService?: AbstractIDService;
 
   constructor(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService) {
     this.idService = idService;
+
     if (isUIElementProperties(element)) {
-      this.id = element.id;
-      this.alias = element.alias || element.id;
-      if (idService) {
-        // Only register after the child constructior has run. ID-registration needs the type and possibly values.
+      this.id = element.id ??
+        idService?.getAndRegisterNewID(element.type) ??
+        (() => { throw new Error(`No ID or IDService given: ${element.type}`); })();
+      this.alias = element.alias ??
+        (element.id ? element.id : idService?.getAndRegisterNewID(element.type, true)) ??
+        (() => { throw new Error(`No Alias or IDService given: ${element.type}`); })();
+
+      if (idService && !element.id) {
         setTimeout(() => this.registerIDs());
       }
       this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      if (element.dimensions) this.dimensions = { ...element.dimensions };
-      if (element.position) this.position = { ...element.position };
-      if (element.styling) this.styling = { ...element.styling };
+      this.dimensions = { ...element.dimensions } as DimensionProperties;
+      this.position = { ...element.position } as PositionProperties;
+      this.styling = { ...element.styling } as Stylings;
+      if (element.player) this.player = { ...element.player };
     } else {
-      if (environment.strictInstantiation) {
+      if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
         throw new InstantiationEror('Error at UIElement instantiation', element);
       }
       this.id = element.id ??
-        idService?.getAndRegisterNewID(element.type) ??
-        (() => { throw new Error(`No ID or IDService given: ${this.type}`); })();
+        idService?.getAndRegisterNewID(element.type) ?? 'id_placeholder';
       this.alias = element.alias ??
-        idService?.getAndRegisterNewID(element.type, true) ??
-        (() => { throw new Error(`No Alias or IDService given: ${this.type}`); })();
-      if (element?.isRelevantForPresentationComplete !== undefined) {
-        this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      }
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
+        (element.id ? element.id : idService?.getAndRegisterNewID(element.type, true)) ?? 'alias_placeholder';
     }
   }
 
@@ -126,8 +126,6 @@ export abstract class UIElement implements UIElementProperties {
     return [{ id: this.id, alias: this.alias }];
   }
 
-  abstract getElementComponent(): Type<ElementComponent>;
-
   static createOptionLabel(optionText: string, addImg: boolean = false) {
     return {
       text: optionText,
@@ -154,12 +152,14 @@ export abstract class UIElement implements UIElementProperties {
   }
 }
 
-function isInputElementProperties(blueprint: Partial<InputElementProperties>): blueprint is InputElementProperties {
+export function isInputElementProperties(blueprint: Partial<InputElementProperties>)
+  : blueprint is InputElementProperties {
   if (!blueprint) return false;
-  return blueprint?.value !== undefined &&
-    blueprint?.required !== undefined &&
-    blueprint?.requiredWarnMessage !== undefined &&
-    blueprint?.readOnly !== undefined;
+  return blueprint.value !== undefined &&
+    blueprint.required !== undefined &&
+    blueprint.requiredWarnMessage !== undefined &&
+    blueprint.readOnly !== undefined &&
+    isUIElementProperties(blueprint);
 }
 
 export abstract class InputElement extends UIElement implements InputElementProperties {
@@ -169,7 +169,10 @@ export abstract class InputElement extends UIElement implements InputElementProp
   requiredWarnMessage: string = 'Eingabe erforderlich';
   readOnly: boolean = false;
 
-  protected constructor(element: { type: string } & Partial<InputElementProperties>, idService?: AbstractIDService) {
+  protected constructor(
+    element: { type: string } & Partial<InputElementProperties>,
+    idService?: AbstractIDService
+  ) {
     super(element, idService);
     if (isInputElementProperties(element)) {
       if (element.label !== undefined) this.label = element.label;
@@ -177,15 +180,8 @@ export abstract class InputElement extends UIElement implements InputElementProp
       this.required = element.required;
       this.requiredWarnMessage = element.requiredWarnMessage;
       this.readOnly = element.readOnly;
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at InputElement instantiation', element);
-      }
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.value !== undefined) this.value = element.value;
-      if (element?.required !== undefined) this.required = element.required;
-      if (element?.requiredWarnMessage !== undefined) this.requiredWarnMessage = element.requiredWarnMessage;
-      if (element?.readOnly !== undefined) this.readOnly = element.readOnly;
+    } else if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at InputElement instantiation', element);
     }
   }
 
@@ -214,8 +210,8 @@ function isValidKeyInputProperties(blueprint: Partial<KeyInputElementProperties>
     blueprint.keyStyle !== undefined;
 }
 
-function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>)
-  : blueprint is TextInputElementProperties {
+function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>):
+  blueprint is TextInputElementProperties {
   return blueprint.restrictedToInputAssistanceChars !== undefined &&
     blueprint.inputAssistanceCustomKeys !== undefined &&
     blueprint.inputAssistanceCustomStyle !== undefined &&
@@ -232,12 +228,15 @@ export abstract class TextInputElement extends InputElement implements TextInput
   restrictedToInputAssistanceChars: boolean = false;
   hasArrowKeys: boolean = false;
   hasBackspaceKey: boolean = false;
-  showSoftwareKeyboard: boolean = true;
-  addInputAssistanceToKeyboard: boolean = true;
-  hideNativeKeyboard: boolean = true;
+  showSoftwareKeyboard: boolean = false;
+  addInputAssistanceToKeyboard: boolean = false;
+  hideNativeKeyboard: boolean = false;
   keyStyle: 'round' | 'square' = 'round';
 
-  protected constructor(element: { type: string } & Partial<TextInputElementProperties>, idService?: AbstractIDService) {
+  protected constructor(
+    element: { type: string } & Partial<TextInputElementProperties>,
+    idService?: AbstractIDService
+  ) {
     super(element, idService);
     if (isTextInputElementProperties(element)) {
       this.inputAssistancePreset = element.inputAssistancePreset;
@@ -252,22 +251,8 @@ export abstract class TextInputElement extends InputElement implements TextInput
       this.hideNativeKeyboard = element.hideNativeKeyboard;
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
       this.keyStyle = element.keyStyle;
-    } else {
-      if (environment.strictInstantiation) {
-        throw Error('Error at TextInputElement instantiation');
-      }
-      if (element?.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
-      if (element?.inputAssistanceCustomKeys) this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
-      if (element?.inputAssistanceCustomStyle) this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
-      if (element?.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
-      if (element?.inputAssistanceFloatingStartPosition) this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
-      if (element?.restrictedToInputAssistanceChars) this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
-      if (element?.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
-      if (element?.hasBackspaceKey) this.hasBackspaceKey = element.hasBackspaceKey;
-      if (element?.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      if (element?.addInputAssistanceToKeyboard) this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
-      if (element?.hideNativeKeyboard) this.hideNativeKeyboard = element.hideNativeKeyboard;
-      if (element?.keyStyle) this.keyStyle = element.keyStyle;
+    } else if (environment.strictInstantiation) {
+      throw Error('Error at TextInputElement instantiation');
     }
   }
 }
@@ -305,7 +290,7 @@ function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): b
 }
 
 export abstract class PlayerElement extends UIElement implements PlayerElementBlueprint {
-  player: PlayerProperties;
+  player!: PlayerProperties;
 
   protected constructor(element: { type: string } & Partial<PlayerElementBlueprint>, idService?: AbstractIDService) {
     super(element, idService);
@@ -315,7 +300,7 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at PlayerElement instantiation', element);
       }
-      this.player = PropertyGroupGenerators.generatePlayerProps(element?.player);
+      this.player = PropertyGroupGenerators.generatePlayerProps(element.player);
     }
   }
 

@@ -4,18 +4,17 @@ import { FileService } from 'common/services/file.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
 import { UIElement } from 'common/models/elements/element';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
-import { SectionCounter } from 'common/util/section-counter';
+import { SectionCounter } from 'common/utils/section-counter';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { MigrationManager } from 'common/services/migration-manager';
+import { EditorPage, EditorUnit } from 'editor/src/app/models/editor-unit';
 import { DialogService } from '../dialog.service';
 import { VeronaAPIService } from '../verona-api.service';
 import { SelectionService } from '../selection.service';
 import { IDService } from '../id.service';
-import { UnitDefinitionSanitizer } from '../sanitizer';
-import { EditorPage, EditorUnit } from 'editor/src/app/models/editor-unit';
 
 @Injectable({
   providedIn: 'root'
@@ -50,15 +49,18 @@ export class UnitService {
           if (VersionManager.isNewer(unitDef)) {
             throw Error('Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.');
           }
-          if (!VersionManager.needsSanitization(unitDef)) {
+          if (!VersionManager.needsMigration(unitDef)) {
             throw Error('Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden.');
           }
           this.dialogService.showSanitizationDialog().subscribe(() => {
-            unitDef = UnitDefinitionSanitizer.sanitizeUnit(unitDef);
+            unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
             this.loadUnit(unitDef);
             this.updateUnitDefinition();
           });
         } else {
+          if (VersionManager.needsMigration(unitDef)) {
+            unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
+          }
           this.loadUnit(unitDef);
         }
       } catch (e) {
@@ -131,11 +133,11 @@ export class UnitService {
   prepareDelete(deletedObjectType: 'page' | 'section' | 'elements',
                 object: EditorPage | Section | UIElement[],
                 pageIndex?: number): Promise<boolean> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       let refs: ReferenceList[] = [];
       let dialogText: string = '';
       switch (deletedObjectType) {
-        case 'page':
+        case 'page': {
           refs = this.referenceManager.getPageElementsReferences(
             this.unit.pages[this.selectionService.selectedPageIndex]
           );
@@ -146,6 +148,7 @@ export class UnitService {
           if (pageIndex === undefined) throw Error();
           dialogText = `Seite ${pageIndex + 1} löschen?`;
           break;
+        }
         case 'section':
           refs = this.referenceManager.getSectionElementsReferences([object as Section]);
           dialogText = `Abschnitt ${this.selectionService.selectedSectionIndex + 1} löschen?`;
@@ -153,13 +156,16 @@ export class UnitService {
         case 'elements':
           refs = this.referenceManager.getElementsReferences(object as UIElement[]);
           dialogText = 'Folgende Elemente werden gelöscht:';
+          break;
+        default:
+          throw Error('Unknown object type');
       }
 
       this.dialogService.showDeleteConfirmDialog(
         dialogText,
         deletedObjectType === 'elements' ? object as UIElement[] : undefined,
         refs)
-        .subscribe((result: boolean) => {
+        .subscribe(result => {
           if (result) {
             if (refs.length > 0) ReferenceManager.deleteReferences(refs); // TODO rollback?
             resolve(true);

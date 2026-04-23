@@ -1,18 +1,19 @@
+import { VariableInfo } from '@iqb/responses';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import {
   UIElement, CompoundElement
 } from 'common/models/elements/element';
 import {
-  BorderStyles, PositionProperties,
-  PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles,
+  BorderStyles,
+  DimensionProperties,
+  PositionProperties,
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { Type } from '@angular/core';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import { environment } from 'common/environment';
-import { TableComponent } from 'common/components/compound-elements/table/table.component';
-import { ElementFactory } from 'common/util/element.factory';
+import { ModelRegistry } from 'common/utils/model-registry';
 import {
   AbstractIDService,
-  PositionedUIElement,
   UIElementProperties,
   UIElementType,
   UIElementValue
@@ -21,57 +22,45 @@ import { InstantiationEror } from 'common/errors';
 
 export class TableElement extends CompoundElement implements TableProperties {
   type: UIElementType = 'table';
-  gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
-  gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
+  gridColumnSizes: { value: number; unit: string }[] =
+    [...ELEMENT_DEFAULTS.table.gridColumnSizes as { value: number; unit: string }[]];
+
+  gridRowSizes: { value: number; unit: string }[] =
+    [...ELEMENT_DEFAULTS.table.gridRowSizes as { value: number; unit: string }[]];
+
   elements: UIElement[] = [];
-  tableEdgesEnabled: boolean = false;
-  position: PositionProperties;
-  styling: { backgroundColor: string } & BorderStyles;
+  tableEdgesEnabled: boolean = ELEMENT_DEFAULTS.table.tableEdgesEnabled as boolean;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.table);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.table);
+
+  styling: BasicStyles & BorderStyles = {
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.table),
+    backgroundColor: (ELEMENT_DEFAULTS.table as Record<string, unknown>).backgroundColor as string || '#d3d3d3',
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.table)
+  };
 
   static title: string = 'Tabelle';
-  static icon: string = 'table_view';
+  static icon: string = 'grid_on';
 
   constructor(element?: Partial<TableProperties>, idService?: AbstractIDService) {
     super({ type: 'table', ...element }, idService);
     if (isTableProperties(element)) {
       this.gridColumnSizes = element.gridColumnSizes;
       this.gridRowSizes = element.gridRowSizes;
-      this.elements = element.elements
-        .map(el => {
-          const newElement = ElementFactory.createElement(el, idService);
-          newElement.gridRow = el.gridRow; // add custom table element params
-          newElement.gridColumn = el.gridColumn;
-          if (el.type === 'text-field') {
-            delete newElement.appearance;
-          }
-          return newElement;
-        }) as PositionedUIElement[];
-
+      this.elements = element.elements.map(el => {
+        const childElement = ModelRegistry.createElement(el, idService);
+        const row = (el as unknown as { gridRow?: number }).gridRow;
+        const column = (el as unknown as { gridColumn?: number }).gridColumn;
+        if (row !== undefined) childElement.gridRow = row;
+        if (column !== undefined) childElement.gridColumn = column;
+        return childElement;
+      });
       this.tableEdgesEnabled = element.tableEdgesEnabled;
       this.position = { ...element.position };
-      this.styling = { ...element.styling };
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at Cloze instantiation', element);
-      }
-      if (element?.gridColumnSizes !== undefined) this.gridColumnSizes = element.gridColumnSizes;
-      if (element?.gridRowSizes !== undefined) this.gridRowSizes = element.gridRowSizes;
-      this.elements = element?.elements !== undefined ?
-        element.elements.map(el => ElementFactory.createElement(el, idService)) as PositionedUIElement[] :
-        [];
-      if (element?.tableEdgesEnabled !== undefined) this.tableEdgesEnabled = element.tableEdgesEnabled;
-      this.position = PropertyGroupGenerators.generatePositionProps({
-        marginBottom: { value: 30, unit: 'px' },
-        ...element?.position
-      });
-      this.styling = {
-        backgroundColor: 'transparent',
-        ...PropertyGroupGenerators.generateBorderStylingProps({
-          borderWidth: 1,
-          ...element?.styling
-        }),
-        ...element?.styling
-      };
+      this.styling = { ...element.styling } as BasicStyles & BorderStyles;
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at Table instantiation', element);
     }
   }
 
@@ -84,35 +73,36 @@ export class TableElement extends CompoundElement implements TableProperties {
     }
   }
 
-  getElementComponent(): Type<ElementComponent> {
-    return TableComponent;
-  }
-
   getChildElements(): UIElement[] {
     return this.elements;
   }
 
   getBlueprint(): TableElement {
-    return { ...this, elements: this.elements.map(el => el.getBlueprint()), id: undefined, alias: undefined };
+    return {
+      ...this,
+      elements: this.elements.map(el => el.getBlueprint()),
+      id: undefined,
+      alias: undefined
+    } as unknown as TableElement;
+  }
+
+  getVariableInfos(): VariableInfo[] {
+    return this.elements.map(element => element.getVariableInfos())
+      .reduce((accumulator, value) => accumulator.concat(value), []);
   }
 }
 
-interface TableProperties extends UIElementProperties {
+export interface TableProperties extends UIElementProperties {
   gridColumnSizes: { value: number; unit: string }[];
   gridRowSizes: { value: number; unit: string }[];
-  elements: UIElement[];
+  elements: UIElementProperties[];
   tableEdgesEnabled: boolean;
   position: PositionProperties;
-  styling: { backgroundColor: string } & BorderStyles;
+  styling: BasicStyles & BorderStyles;
 }
 
 function isTableProperties(blueprint?: Partial<TableProperties>): blueprint is TableProperties {
   if (!blueprint) return false;
-  return blueprint.gridColumnSizes !== undefined &&
-    blueprint.gridRowSizes !== undefined &&
-    blueprint.elements !== undefined &&
-    blueprint.tableEdgesEnabled !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    blueprint.styling?.backgroundColor !== undefined &&
-    PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
+  return blueprint.elements !== undefined &&
+    blueprint.type === 'table';
 }

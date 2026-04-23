@@ -50,55 +50,47 @@ Cypress.Commands.add('switchToTabbedViewMode', () => {
 });
 
 Cypress.Commands.add('loadUnit', (filename: string) => {
-  cy.fixture(filename).as('unit').then(unit => {
+  cy.fixture(filename).then(unit => {
+    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
     cy.window().then(window => {
       const postMessage = {
         type: 'vopStartCommand',
         unitDefinition: JSON.stringify(unit)
       };
       window.postMessage(postMessage, '*');
+      // Retry once to avoid race conditions while the player message subscription initializes.
+      return Cypress.Promise.delay(150).then(() => {
+        window.postMessage(postMessage, '*');
+      });
+    });
+    cy.get('body', { timeout: 10000 }).then($body => {
+      const errorDialog = $body.find('mat-dialog-container');
+      if (errorDialog.length > 0) {
+        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
+      }
     });
   });
 });
 
 Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json') => {
-  cy.contains('Unit speichern').click();
+  cy.get('body').type('{esc}', { force: true });
+  cy.get('body').then($body => {
+    if ($body.find('.cdk-overlay-backdrop').length > 0) {
+      cy.get('body').click(0, 0, { force: true });
+    }
+  });
+  cy.contains('Unit speichern').click({ force: true });
   cy.get('a[download]')
-    .then(anchor => (
-      new Cypress.Promise((resolve, reject) => {
-        // Use XHR to get the blob that corresponds to the object URL.
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', anchor.prop('href'), true);
-        xhr.responseType = 'blob';
-
-        // Once loaded, use FileReader to get the string back from the blob.
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            const blob = xhr.response;
-            const reader = new FileReader();
-            reader.onload = () => {
-              // Once we have a string, resolve the promise to let
-              // the Cypress chain continue, e.g. to assert on the result.
-              resolve(reader.result);
-              cy.writeFile(filepath, reader.result as string);
-            };
-            reader.readAsText(blob);
-          } else {
-            reject('Failed to load blob');
-          }
-        };
-        xhr.send();
-      })
-    ));
+    .should('have.length.at.least', 1)
+    .first()
+    .invoke('prop', 'href')
+    .then((url: string) => cy.window().then(win => win.fetch(url).then(response => response.text())))
+    .then(content => cy.task('writeTextFile', { filepath, content }, { log: false }));
 });
 
-Cypress.Commands.add('getByAlias', (alias: string) => {
-  return cy.get(`[data-list-alias="${alias}"]`);
-});
+Cypress.Commands.add('getByAlias', (alias: string) => cy.get(`[data-list-alias="${alias}"]`));
 
-Cypress.Commands.add('getElementByAlias', (alias: string) => {
-  return cy.get(`[data-element-alias="${alias}"]`);
-});
+Cypress.Commands.add('getElementByAlias', (alias: string) => cy.get(`[data-element-alias="${alias}"]`));
 
 Cypress.Commands.add('goToPlayerPage', (pageIndex: number) => {
   cy.get('aspect-unit-menu').find('button').click();
@@ -112,7 +104,7 @@ Cypress.Commands.add('clickOutside', (): void => {
 Cypress.Commands.add('getElement', (elementType: string, label?: string) => {
   if (label) {
     return cy.contains(elementType, label);
-  } else {
-    return cy.get(elementType);
   }
+
+  return cy.get(elementType);
 });

@@ -6,22 +6,14 @@ import {
   QueryList, ViewChildren
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { SharedModule } from 'common/shared.module';
 import { UIElement } from 'common/models/elements/element';
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
-import { MatMenuModule } from '@angular/material/menu';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { Subject } from 'rxjs';
 import { UIElementType } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-table',
-  imports: [
-    SharedModule,
-    TableChildOverlay,
-    MatMenuModule,
-    MeasurePipe
-  ],
+  standalone: false,
   template: `
   <div class="grid-container" [style.display]="'grid'"
        [style.grid-template-columns]="elementModel.gridColumnSizes | measure"
@@ -30,7 +22,7 @@ import { UIElementType } from 'common/interfaces';
        [style.grid-auto-rows]="'auto'"
        [style.background-color]="elementModel.styling.backgroundColor">
     <ng-container *ngFor="let row of elementGrid; let i = index;">
-      <div *ngFor="let column of row; let j = index;"
+      <div *ngFor="let _ of row; let j = index;"
            class="cell-container"
            [style.border-style]="elementModel.styling.borderStyle"
            [style.border-top-style]="(!elementModel.tableEdgesEnabled && i === 0) || (i > 0) ?
@@ -98,7 +90,17 @@ import { UIElementType } from 'common/interfaces';
 `]
 })
 export class TableComponent extends CompoundElementComponent implements OnInit {
-  @Input() elementModel!: TableElement;
+  private _elementModel!: TableElement;
+  @Input()
+  set elementModel(value: TableElement) {
+    this._elementModel = value;
+    this.initElementGrid();
+  }
+
+  get elementModel(): TableElement {
+    return this._elementModel;
+  }
+
   @Input() savedPlaybackTimes!: { [key: string]: number };
   @Input() savedTexts!: { [key: string]: string };
   @Input() actualPlayingId!: Subject<string | null>;
@@ -118,8 +120,21 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
   private initElementGrid(): void {
     this.elementGrid = new Array(this.elementModel.gridRowSizes.length).fill(undefined)
       .map(() => new Array(this.elementModel.gridColumnSizes.length).fill(undefined));
+    const rowCount = this.elementGrid.length;
+    const columnCount = rowCount ? this.elementGrid[0].length : 0;
     this.elementModel.elements.forEach(el => {
-      this.elementGrid[(el.gridRow as number) - 1][(el.gridColumn as number) - 1] = el;
+      const gridRow = (el.gridRow as number) ?? el.position?.gridRow ?? null;
+      const gridColumn = (el.gridColumn as number) ?? el.position?.gridColumn ?? null;
+      if (gridRow === null || gridColumn === null) return;
+      const rowIndex = gridRow - 1;
+      const columnIndex = gridColumn - 1;
+      if (
+        rowIndex < 0 ||
+        columnIndex < 0 ||
+        rowIndex >= rowCount ||
+        columnIndex >= columnCount
+      ) return;
+      if (this.elementGrid[rowIndex][columnIndex] === undefined) this.elementGrid[rowIndex][columnIndex] = el;
     });
   }
 
@@ -128,7 +143,7 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
   }
 
   getFormElementChildrenComponents(): ElementComponent[] {
-    return this.compoundChildren.toArray().map((child: TableChildOverlay) => child.childComponent.instance);
+    return this.compoundChildren.toArray().map((child: TableChildOverlay) => child.childComponent);
   }
 
   refresh(): void {

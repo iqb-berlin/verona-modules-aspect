@@ -1,15 +1,16 @@
 import {
   AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
+import { ComponentRegistry } from 'common/utils/component-registry';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 
 @Component({
-    selector: 'aspect-base-group-element',
-    templateUrl: './base-group-element.component.html',
-    styleUrls: ['./base-group-element.component.scss'],
-    standalone: false
+  selector: 'aspect-base-group-element',
+  templateUrl: './base-group-element.component.html',
+  styleUrls: ['./base-group-element.component.scss'],
+  standalone: false
 })
 export class BaseGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponentContainer',
@@ -22,8 +23,9 @@ export class BaseGroupElementComponent extends ElementGroupDirective implements 
   }
 
   ngOnInit(): void {
+    const componentType = ComponentRegistry.getComponent(this.elementModel.type);
     this.baseElementComponent =
-      this.elementComponentContainer.createComponent(this.elementModel.getElementComponent()).instance;
+      this.elementComponentContainer.createComponent(componentType).instance;
     this.baseElementComponent.elementModel = this.elementModel;
   }
 

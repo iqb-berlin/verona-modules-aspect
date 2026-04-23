@@ -1,6 +1,6 @@
 import { Injectable, Renderer2 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { APIService } from 'common/shared.module';
+import { APIService } from 'common/services/api.service';
 
 import { AspectError } from 'common/errors';
 

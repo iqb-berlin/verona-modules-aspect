@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ComponentRegistry } from 'common/utils/component-registry';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
@@ -39,7 +40,8 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
+    const componentType = ComponentRegistry.getComponent(this.element.type);
+    this.childComponent = this.elementContainer.createComponent(componentType);
     this.childComponent.instance.elementModel = this.element;
 
     this.preventInteraction = this.element.type !== 'cloze' && this.element.type !== 'table';

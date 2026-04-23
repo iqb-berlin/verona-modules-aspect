@@ -22,9 +22,10 @@ import { AnchorService } from 'player/src/app/services/anchor.service';
 import { VersionManager } from 'common/services/version-manager';
 import { MatDialog } from '@angular/material/dialog';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
+import { MigrationManager } from 'common/services/migration-manager';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { TranslateService } from '@ngx-translate/core';
-import { SectionCounter } from 'common/util/section-counter';
+import { SectionCounter } from 'common/utils/section-counter';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { BehaviorSubject } from 'rxjs';
 import { DragNDropValueObject } from 'common/interfaces';
@@ -92,8 +93,17 @@ export class UnitComponent implements OnInit {
         try {
           LogService.debug('player: unitDefinition', message.unitDefinition);
           const unitDefinition = JSON.parse(message.unitDefinition as string);
-          this.checkUnitDefinitionVersion(unitDefinition);
-          const unit: Unit = new Unit(unitDefinition);
+          if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
+            if (VersionManager.isNewer(unitDefinition)) {
+              throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
+            }
+            if (VersionManager.needsMigration(unitDefinition)) {
+              throw Error(this.translateService.instant('errorMessage.unitDefinitionNeedsEditorUpgrade'));
+            }
+            throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
+          }
+          const migratedDefinition = MigrationManager.migrate(unitDefinition, VersionManager.getCurrentVersion());
+          const unit: Unit = new Unit(migratedDefinition as any);
           this.pages = unit.pages;
           this.showUnitNavNext = unit.showUnitNavNext;
           this.updateSectionNumbering(unit);
@@ -136,15 +146,6 @@ export class UnitComponent implements OnInit {
       const startPage = +this.playerConfig.startPage || 0;
       // delay is needed for scroll and snap scroll pages to work
       setTimeout(() => this.navigationService.setPage(startPage), 10);
-    }
-  }
-
-  private checkUnitDefinitionVersion(unitDefinition: Record<string, unknown>): void {
-    if (unitDefinition.version !== VersionManager.getCurrentVersion()) {
-      if (!VersionManager.hasCompatibleVersion(unitDefinition) && VersionManager.isNewer(unitDefinition)) {
-        throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
-      }
-      throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
     }
   }
 

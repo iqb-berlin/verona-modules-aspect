@@ -1,5 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
-import { InputAssistancePreset, KeyInputElementProperties, Measurement } from 'common/interfaces';
+import {
+  InputAssistancePreset, KeyInputElementProperties, Measurement, TextInputElementProperties
+} from 'common/interfaces';
+import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 
 export interface PositionProperties {
   [index: string]: unknown;
@@ -17,7 +20,7 @@ export interface PositionProperties {
 }
 
 export interface DimensionProperties {
-  [index: string]: number | boolean | null | undefined;
+  [index: string]: unknown;
   width: number;
   height: number;
   isWidthFixed?: boolean;
@@ -155,8 +158,8 @@ export abstract class PropertyGroupValidators {
 export abstract class PropertyGroupGenerators {
   static generatePositionProps(defaults: Partial<PositionProperties> = {}): PositionProperties {
     return {
-      xPosition: defaults.xPosition !== undefined ? defaults.xPosition : 0,
-      yPosition: defaults.yPosition !== undefined ? defaults.yPosition : 0,
+      xPosition: defaults.xPosition !== undefined ? defaults.xPosition : GLOBAL_DEFAULTS.xPosition,
+      yPosition: defaults.yPosition !== undefined ? defaults.yPosition : GLOBAL_DEFAULTS.yPosition,
       gridColumn: defaults.gridColumn !== undefined ? defaults.gridColumn : null,
       gridColumnRange: defaults.gridColumnRange !== undefined ? defaults.gridColumnRange : 1,
       gridRow: defaults.gridRow !== undefined ? defaults.gridRow : null,
@@ -165,14 +168,14 @@ export abstract class PropertyGroupGenerators {
       marginRight: defaults.marginRight !== undefined ? defaults.marginRight : { value: 0, unit: 'px' },
       marginTop: defaults.marginTop !== undefined ? defaults.marginTop : { value: 0, unit: 'px' },
       marginBottom: defaults.marginBottom !== undefined ? defaults.marginBottom : { value: 0, unit: 'px' },
-      zIndex: defaults.zIndex !== undefined ? defaults.zIndex : 0
+      zIndex: defaults.zIndex !== undefined ? defaults.zIndex : GLOBAL_DEFAULTS.zIndex
     };
   }
 
   static generateDimensionProps(defaults: Partial<DimensionProperties> = {}): DimensionProperties {
     return {
-      width: defaults.width !== undefined ? defaults.width : 180,
-      height: defaults.height !== undefined ? defaults.height : 60,
+      width: defaults.width !== undefined ? defaults.width : GLOBAL_DEFAULTS.width,
+      height: defaults.height !== undefined ? defaults.height : GLOBAL_DEFAULTS.height,
       isWidthFixed: defaults.isWidthFixed !== undefined ? defaults.isWidthFixed : false,
       isHeightFixed: defaults.isHeightFixed !== undefined ? defaults.isHeightFixed : false,
       minWidth: defaults.minWidth !== undefined ? defaults.minWidth : null,
@@ -184,19 +187,20 @@ export abstract class PropertyGroupGenerators {
 
   static generateBasicStyleProps(defaults: Partial<BasicStyles> = {}): BasicStyles {
     return {
-      backgroundColor: defaults.backgroundColor !== undefined ? defaults.backgroundColor : 'transparent',
+      backgroundColor: defaults.backgroundColor !== undefined ?
+        defaults.backgroundColor : GLOBAL_DEFAULTS.backgroundColor,
       ...PropertyGroupGenerators.generateFontStylingProps(defaults)
     };
   }
 
   static generateFontStylingProps(defaults: Partial<FontStyles> = {}): FontStyles {
     return {
-      fontColor: defaults.fontColor !== undefined ? defaults.fontColor as string : '#000000',
-      font: defaults?.font !== undefined ? defaults.font as string : 'NunitoSans',
-      fontSize: defaults?.fontSize !== undefined ? defaults.fontSize as number : 20,
-      bold: defaults?.bold !== undefined ? defaults.bold as boolean : false,
-      italic: defaults?.italic !== undefined ? defaults.italic as boolean : false,
-      underline: defaults?.underline !== undefined ? defaults.underline as boolean : false
+      fontColor: defaults.fontColor !== undefined ? defaults.fontColor as string : GLOBAL_DEFAULTS.fontColor,
+      font: defaults?.font !== undefined ? defaults.font as string : GLOBAL_DEFAULTS.font,
+      fontSize: defaults?.fontSize !== undefined ? defaults.fontSize as number : GLOBAL_DEFAULTS.fontSize,
+      bold: defaults?.bold !== undefined ? defaults.bold as boolean : GLOBAL_DEFAULTS.bold,
+      italic: defaults?.italic !== undefined ? defaults.italic as boolean : GLOBAL_DEFAULTS.italic,
+      underline: defaults?.underline !== undefined ? defaults.underline as boolean : GLOBAL_DEFAULTS.underline
     };
   }
 
@@ -211,31 +215,40 @@ export abstract class PropertyGroupGenerators {
 
   static generatePlayerProps(properties: Partial<PlayerProperties> = {}): PlayerProperties {
     return {
-      loop: properties.loop !== undefined ? properties.loop as boolean : false,
-      startControl: properties.startControl !== undefined ? properties.startControl as boolean : true,
-      pauseControl: properties.pauseControl !== undefined ? properties.pauseControl as boolean : false,
-      progressBar: properties.progressBar !== undefined ? properties.progressBar as boolean : true,
+      loop: properties.loop !== undefined ? properties.loop as boolean : GLOBAL_DEFAULTS.loop,
+      startControl: properties.startControl !== undefined ?
+        properties.startControl as boolean : GLOBAL_DEFAULTS.startControl,
+      pauseControl: properties.pauseControl !== undefined ?
+        properties.pauseControl as boolean : GLOBAL_DEFAULTS.pauseControl,
+      progressBar: properties.progressBar !== undefined ?
+        properties.progressBar as boolean : GLOBAL_DEFAULTS.progressBar,
       interactiveProgressbar: properties.interactiveProgressbar !== undefined ?
-        properties.interactiveProgressbar as boolean :
-        false,
-      volumeControl: properties.volumeControl !== undefined ? properties.volumeControl as boolean : true,
-      defaultVolume: properties.defaultVolume !== undefined ? properties.defaultVolume as number : 0.8,
-      minVolume: properties.minVolume !== undefined ? properties.minVolume as number : 0.2,
-      muteControl: properties.muteControl !== undefined ? properties.muteControl as boolean : true,
+        properties.interactiveProgressbar as boolean : GLOBAL_DEFAULTS.interactiveProgressbar,
+      volumeControl: properties.volumeControl !== undefined ?
+        properties.volumeControl as boolean : GLOBAL_DEFAULTS.volumeControl,
+      defaultVolume: properties.defaultVolume !== undefined ?
+        properties.defaultVolume as number : GLOBAL_DEFAULTS.defaultVolume,
+      minVolume: properties.minVolume !== undefined ?
+        properties.minVolume as number : GLOBAL_DEFAULTS.minVolume,
+      muteControl: properties.muteControl !== undefined ?
+        properties.muteControl as boolean : GLOBAL_DEFAULTS.muteControl,
       interactiveMuteControl: properties.interactiveMuteControl !== undefined ?
-        properties.interactiveMuteControl as boolean :
-        false,
+        properties.interactiveMuteControl as boolean : GLOBAL_DEFAULTS.interactiveMuteControl,
       showHint: properties.showHint !== undefined ? properties.showHint as boolean : PropertyGroupGenerators
         .sanitizeShowHint(properties),
-      hintLabel: properties.hintLabel !== undefined ? properties.hintLabel as string : 'Bitte starten',
-      hintDelay: properties.hintDelay !== undefined ? properties.hintDelay as number : PropertyGroupGenerators
-        .sanitizeHintDelay(properties),
+      hintLabel: properties.hintLabel !== undefined ?
+        properties.hintLabel as string : GLOBAL_DEFAULTS.hintLabel as string,
+      hintDelay: properties.hintDelay !== undefined ?
+        properties.hintDelay as number : PropertyGroupGenerators.sanitizeHintDelay(properties),
       activeAfterID: properties.activeAfterID !== undefined ? properties.activeAfterID as string : '',
-      minRuns: properties.minRuns !== undefined ? properties.minRuns as number : 1,
-      maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : 1,
-      showRestRuns: properties.showRestRuns !== undefined ? properties.showRestRuns as boolean : false,
-      showRestTime: properties.showRestTime !== undefined ? properties.showRestTime as boolean : true,
-      playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : 0,
+      minRuns: properties.minRuns !== undefined ? properties.minRuns as number : GLOBAL_DEFAULTS.minRuns,
+      maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : GLOBAL_DEFAULTS.maxRuns,
+      showRestRuns: properties.showRestRuns !== undefined ?
+        properties.showRestRuns as boolean : GLOBAL_DEFAULTS.showRestRuns,
+      showRestTime: properties.showRestTime !== undefined ?
+        properties.showRestTime as boolean : GLOBAL_DEFAULTS.showRestTime,
+      playbackTime: properties.playbackTime !== undefined ?
+        properties.playbackTime as number : GLOBAL_DEFAULTS.playbackTime,
       fileName: properties.fileName !== undefined ? properties.fileName as string : '',
       imgSrc: properties.imgSrc !== undefined ? properties.imgSrc as string | null : null,
       imgFileName: properties.imgFileName !== undefined ? properties.imgFileName as string : ''
@@ -269,6 +282,25 @@ export abstract class PropertyGroupGenerators {
       hasArrowKeys: properties.hasArrowKeys !== undefined ?
         properties.hasArrowKeys : false,
       keyStyle: properties.keyStyle !== undefined ? properties.keyStyle : 'round'
+    };
+  }
+
+  static generateTextInputProps(properties: Partial<TextInputElementProperties> = {}): KeyInputElementProperties & {
+    inputAssistanceCustomKeys: string;
+    inputAssistanceCustomStyle: 'small' | 'medium' | 'large';
+    restrictedToInputAssistanceChars: boolean;
+    hasBackspaceKey: boolean;
+  } {
+    return {
+      ...PropertyGroupGenerators.generateKeyInputProps(properties),
+      inputAssistanceCustomKeys: properties.inputAssistanceCustomKeys !== undefined ?
+        properties.inputAssistanceCustomKeys : '',
+      inputAssistanceCustomStyle: properties.inputAssistanceCustomStyle !== undefined ?
+        properties.inputAssistanceCustomStyle : 'medium',
+      restrictedToInputAssistanceChars: properties.restrictedToInputAssistanceChars !== undefined ?
+        properties.restrictedToInputAssistanceChars : false,
+      hasBackspaceKey: properties.hasBackspaceKey !== undefined ?
+        properties.hasBackspaceKey : false
     };
   }
 }

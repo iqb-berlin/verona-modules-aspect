@@ -113,11 +113,6 @@ export class UnitService {
     FileService.saveUnitToFile(UnitService.createUnitDefinition(this.unit));
   }
 
-  async loadUnitFromFile(): Promise<void> {
-    const unitFile = await FileService.loadFile(['.json']);
-    this.loadUnitDefinition(unitFile.content);
-  }
-
   /* Used by props panel to show available dropLists to connect */
   getAllDropListElementIDs(): { id: string, alias: string }[] {
     const allDropLists = this.unit.getAllElements('drop-list');

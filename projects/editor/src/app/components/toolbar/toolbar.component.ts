@@ -6,10 +6,7 @@ import { VeronaAPIService } from '../../services/verona-api.service';
 @Component({
   selector: 'aspect-toolbar',
   templateUrl: './toolbar.component.html',
-  styles: [
-    'mat-toolbar {background-color: #696969}',
-    'mat-toolbar button {margin: 15px}'
-  ],
+  styleUrls: ['./toolbar.component.scss'],
   standalone: false
 })
 export class ToolbarComponent {

@@ -171,7 +171,7 @@
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "buildTarget": "editor:build-coverage",
-            "port": 4203
+            "port": 4201
           }
         }
       }
@@ -327,7 +327,7 @@
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "buildTarget": "player:build-coverage",
-            "port": 4204
+            "port": 4202
           }
         }
       }

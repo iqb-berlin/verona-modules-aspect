@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FileService } from 'common/services/file.service';
-import { UnitService } from '../../services/unit-services/unit.service';
+import { UnitService } from '../../services/unit.service';
 import { VeronaAPIService } from '../../services/verona-api.service';
 
 @Component({

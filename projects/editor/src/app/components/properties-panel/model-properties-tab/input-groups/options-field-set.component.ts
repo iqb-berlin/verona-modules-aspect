@@ -7,10 +7,10 @@ import {
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   Label,
   OptionElement,

@@ -9,8 +9,8 @@ import { InputElement, isInputElement, UIElement } from 'common/models/elements/
 import { FileService } from 'common/services/file.service';
 import { UIElementValue, MATH_KEYBOARD_PRESETS } from 'common/interfaces';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
-import { UnitService } from '../../../services/unit-services/unit.service';
+import { ElementService } from 'editor/src/app/services/element.service';
+import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
 

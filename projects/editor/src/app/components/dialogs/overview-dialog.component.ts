@@ -23,8 +23,8 @@ import { MatSelect } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { Section } from 'common/models/section';
 import { EditorPage } from 'editor/src/app/models/editor-unit';
-import { UnitService } from '../../services/unit-services/unit.service';
-import { ElementService } from '../../services/unit-services/element.service';
+import { UnitService } from '../../services/unit.service';
+import { ElementService } from '../../services/element.service';
 import { IDEditDialogComponent } from './id-edit-dialog.component';
 
 @Component({

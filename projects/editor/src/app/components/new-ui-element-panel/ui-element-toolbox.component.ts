@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { ElementService } from 'editor/src/app/services/element.service';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
@@ -31,7 +31,7 @@ import {
   WidgetMoleculeEditorElement
 } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
 import { SelectionService } from '../../services/selection.service';
-import { UnitService } from '../../services/unit-services/unit.service';
+import { UnitService } from '../../services/unit.service';
 
 @Component({
   selector: 'aspect-ui-element-toolbox',

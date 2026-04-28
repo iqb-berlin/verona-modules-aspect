@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
   selector: 'aspect-text-field-element-properties',

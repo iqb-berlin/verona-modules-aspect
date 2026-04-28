@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { UIElementValue } from 'common/interfaces';
 
 @Component({

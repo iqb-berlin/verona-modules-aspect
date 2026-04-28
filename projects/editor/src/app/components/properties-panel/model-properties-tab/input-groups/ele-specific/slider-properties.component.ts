@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
     selector: 'aspect-slider-properties',

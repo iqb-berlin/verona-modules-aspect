@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { TextElement } from 'common/models/elements/text/text';
 import { EditorPage } from 'editor/src/app/models/editor-unit';

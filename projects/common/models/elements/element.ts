@@ -14,6 +14,13 @@ import {
 import { IDError, InstantiationEror } from 'common/errors';
 import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 
+type RevisionAwareIDService = AbstractIDService & { getResetRevision?: () => number };
+
+function getResetRevision(idService?: AbstractIDService): number | null {
+  const revisionReader = (idService as RevisionAwareIDService | undefined)?.getResetRevision;
+  return typeof revisionReader === 'function' ? revisionReader.call(idService) : null;
+}
+
 export function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
   return blueprint.isRelevantForPresentationComplete !== undefined &&
     PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
@@ -44,7 +51,14 @@ export abstract class UIElement implements UIElementProperties {
         (() => { throw new Error(`No Alias or IDService given: ${element.type}`); })();
 
       if (idService && !element.id) {
-        setTimeout(() => this.registerIDs());
+        const loadRevision = getResetRevision(idService);
+        setTimeout(() => {
+          const currentRevision = getResetRevision(this.idService);
+          if (loadRevision !== null && currentRevision !== loadRevision) {
+            return;
+          }
+          this.registerIDs();
+        });
       }
       this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
       this.dimensions = { ...element.dimensions } as DimensionProperties;

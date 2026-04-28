@@ -19,9 +19,9 @@ import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import { SectionService } from 'editor/src/app/services/unit-services/section.service';
+import { SectionService } from 'editor/src/app/services/section.service';
 import { EditorSection } from 'editor/src/app/models/editor-unit';
-import { UnitService } from '../../../services/unit-services/unit.service';
+import { UnitService } from '../../../services/unit.service';
 import { DialogService } from '../../../services/dialog.service';
 import { SelectionService } from '../../../services/selection.service';
 

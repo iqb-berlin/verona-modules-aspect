@@ -24,7 +24,7 @@ import { GeometryComponent } from 'common/components/geometry/geometry.component
 import { takeUntil } from 'rxjs/operators';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { GeometryVariable } from 'common/interfaces';
 
 @Component({

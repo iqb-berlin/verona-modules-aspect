@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RadioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio/radio.dialog.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/likert.dialog.component';

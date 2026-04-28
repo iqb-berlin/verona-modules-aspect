@@ -13,11 +13,11 @@ import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { Subject } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PageService } from 'editor/src/app/services/unit-services/page.service';
+import { PageService } from 'editor/src/app/services/page.service';
 import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Component({

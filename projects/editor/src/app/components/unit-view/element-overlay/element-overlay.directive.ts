@@ -14,10 +14,10 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { ElementService } from 'editor/src/app/services/element.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { PositionedUIElement } from 'common/interfaces';
-import { UnitService } from '../../../services/unit-services/unit.service';
+import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 
 @Directive()

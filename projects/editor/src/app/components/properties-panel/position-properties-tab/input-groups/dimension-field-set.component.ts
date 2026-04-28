@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { ElementService } from 'editor/src/app/services/element.service';
 
 @Component({
     selector: 'aspect-dimension-field-set',

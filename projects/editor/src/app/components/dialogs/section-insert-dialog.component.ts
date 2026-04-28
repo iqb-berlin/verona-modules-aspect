@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { TranslateService } from '@ngx-translate/core';
 import { IDService } from 'editor/src/app/services/id.service';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
     template: `

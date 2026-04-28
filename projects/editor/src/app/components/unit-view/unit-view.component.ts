@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { PageChangeService } from 'common/services/page-change.service';
-import { PageService } from 'editor/src/app/services/unit-services/page.service';
-import { UnitService } from '../../services/unit-services/unit.service';
+import { PageService } from 'editor/src/app/services/page.service';
+import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';

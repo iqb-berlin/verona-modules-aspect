@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
     selector: 'aspect-input-element-properties',

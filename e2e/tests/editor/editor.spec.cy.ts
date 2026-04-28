@@ -48,14 +48,14 @@ describe('Basic Unit', () => {
 
     // Crosscheck: Delete not referenced page
     navigateToPage(3);
-    cy.contains('div', 'Seite 3').find('button').click();
+    cy.contains('[role="tab"]', 'Seite 3').find('button').click();
     cy.contains('delete').click();
     cy.get('.cdk-overlay-container').contains('Referenzen festgestellt').should('not.exist');
     cy.get('.cdk-overlay-container').contains('Seite 3 löschen?');
     cy.contains('button', 'Bestätigen').click();
 
     navigateToPage(2);
-    cy.contains('div', 'Seite 2').find('button').click();
+    cy.contains('[role="tab"]', 'Seite 2').find('button').click();
     cy.contains('delete').click();
 
     cy.get('.cdk-overlay-container').contains('Referenzen festgestellt');

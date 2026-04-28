@@ -8,6 +8,7 @@ import { IdRegistry } from 'editor/src/app/services/id-registry';
 export class IDService {
   idRegistry = new IdRegistry();
   aliasRegistry = new IdRegistry();
+  private resetRevision = 0;
 
   getAndRegisterNewIDs(idType: IDTypes): { id: string, alias: string } {
     return {
@@ -46,5 +47,10 @@ export class IDService {
   reset(): void {
     this.idRegistry.reset();
     this.aliasRegistry.reset();
+    this.resetRevision += 1;
+  }
+
+  getResetRevision(): number {
+    return this.resetRevision;
   }
 }

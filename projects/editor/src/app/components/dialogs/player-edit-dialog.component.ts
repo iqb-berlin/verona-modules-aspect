@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { FileService } from 'common/services/file.service';
 
 @Component({

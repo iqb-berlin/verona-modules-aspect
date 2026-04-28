@@ -8,7 +8,7 @@ import { IDService } from './services/id.service';
 import { DialogService } from './services/dialog.service';
 import { MessageService } from './services/message.service';
 import { SelectionService } from './services/selection.service';
-import { UnitService } from './services/unit-services/unit.service';
+import { UnitService } from './services/unit.service';
 import { StartCommand, VeronaAPIService } from './services/verona-api.service';
 
 describe('AppComponent startCommand loading', () => {

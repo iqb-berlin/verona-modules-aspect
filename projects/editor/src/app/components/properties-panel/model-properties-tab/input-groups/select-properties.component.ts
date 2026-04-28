@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
     selector: 'aspect-select-properties',

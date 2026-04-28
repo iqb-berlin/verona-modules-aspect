@@ -7,11 +7,11 @@ import { NgForOf } from '@angular/common';
 import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { takeUntil } from 'rxjs/operators';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { Subject } from 'rxjs';
 
 @Component({

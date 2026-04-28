@@ -11,10 +11,10 @@ import { SectionCounter } from 'common/utils/section-counter';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { MigrationManager } from 'common/services/migration-manager';
 import { EditorPage, EditorUnit } from 'editor/src/app/models/editor-unit';
-import { DialogService } from '../dialog.service';
-import { VeronaAPIService } from '../verona-api.service';
-import { SelectionService } from '../selection.service';
-import { IDService } from '../id.service';
+import { DialogService } from './dialog.service';
+import { VeronaAPIService } from './verona-api.service';
+import { SelectionService } from './selection.service';
+import { IDService } from './id.service';
 
 @Injectable({
   providedIn: 'root'

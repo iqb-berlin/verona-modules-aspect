@@ -5,8 +5,8 @@ import {
 import { NgForOf } from '@angular/common';
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { ElementService } from 'editor/src/app/services/element.service';
 import { UIElementType } from 'common/interfaces';
 
 @Component({

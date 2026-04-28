@@ -9,11 +9,11 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
-import { SectionService } from 'editor/src/app/services/unit-services/section.service';
+import { ElementService } from 'editor/src/app/services/element.service';
+import { SectionService } from 'editor/src/app/services/section.service';
 import { UIElementValue } from 'common/interfaces';
 import { SelectionService } from '../../services/selection.service';
-import { UnitService } from '../../services/unit-services/unit.service';
+import { UnitService } from '../../services/unit.service';
 
 export type CombinedProperties = UIElement & { idList?: string[] };
 

@@ -3,10 +3,10 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { SectionService } from 'editor/src/app/services/unit-services/section.service';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { SectionService } from 'editor/src/app/services/section.service';
+import { ElementService } from 'editor/src/app/services/element.service';
 import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
 import { EditorPage } from 'editor/src/app/models/editor-unit';
 

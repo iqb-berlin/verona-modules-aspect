@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 import { Stylings } from 'common/models/elements/property-group-interfaces';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { ElementService } from 'editor/src/app/services/element.service';
 
 @Component({
     selector: 'aspect-element-style-properties',

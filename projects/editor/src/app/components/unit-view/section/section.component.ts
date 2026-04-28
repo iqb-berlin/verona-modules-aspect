@@ -3,9 +3,9 @@ import {
 } from '@angular/core';
 import { SectionMenuComponent } from 'editor/src/app/components/unit-view/section/section-menu.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
-import { SectionService } from 'editor/src/app/services/unit-services/section.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { ElementService } from 'editor/src/app/services/element.service';
+import { SectionService } from 'editor/src/app/services/section.service';
 import { UIElement } from 'common/models/elements/element';
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import { StaticSectionComponent } from 'editor/src/app/components/unit-view/section/static-section.component';

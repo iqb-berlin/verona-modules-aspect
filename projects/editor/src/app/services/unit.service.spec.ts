@@ -2,10 +2,10 @@ import { VersionManager } from 'common/services/version-manager';
 import { UnitProperties } from 'common/models/unit';
 import { StateVariable } from 'common/models/state-variable';
 import { MessageService } from 'editor/src/app/services/message.service';
-import { DialogService } from '../dialog.service';
-import { SelectionService } from '../selection.service';
-import { IDService } from '../id.service';
-import { VeronaAPIService } from '../verona-api.service';
+import { DialogService } from './dialog.service';
+import { SelectionService } from './selection.service';
+import { IDService } from './id.service';
+import { VeronaAPIService } from './verona-api.service';
 import { UnitService } from './unit.service';
 
 describe('UnitService - rapid load handling', () => {

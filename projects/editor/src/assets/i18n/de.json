@@ -182,6 +182,7 @@
     "space": "Leerzeichen (Wörter trennen)",
     "comma": "Komma",
     "numbers": "Ziffern",
+    "decimals": "Ziffern & Komma",
     "numbersAndOperators": "Ziffern & Operatoren & '='",
     "numbersAndBasicOperators": "Ziffern & Basis-Operatoren",
     "chemicalEquation": "Reaktionsgleichung Chemie",

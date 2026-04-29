@@ -10,7 +10,7 @@
           [key]="key"
           [preset]="preset"
           [darkMode]="key === 'Backspace' || key==='Shift' || key==='ShiftUp'"
-          [horizontalKey]="key === 'Backspace'"
+          [horizontalKey]="key === 'Backspace' && preset !== 'decimals'"
           [keyStyle]="keyStyle"
           [position]="position"
           (keyClicked)="canEdit(key === 'Backspace' ? 'Backspace' : null ) ? evaluateClickedKeyValue($event) : null">

@@ -33,7 +33,7 @@ import { INPUT_ASSISTANCE_CUSTOM_STYLES } from 'common/interfaces';
         <mat-select [value]="combinedProperties.inputAssistancePreset"
                     (selectionChange)="updateInputAssistancePreset($event.value)">
           <ng-container *ngIf="combinedProperties.type !== 'math-table'">
-            <mat-option *ngFor="let option of [null, 'french', 'numbers', 'numbersAndOperators',
+            <mat-option *ngFor="let option of [null, 'french', 'numbers', 'decimals', 'numbersAndOperators',
                                               'numbersAndBasicOperators', 'comparisonOperators', 'chemicalEquation',
                                               'squareDashDot', 'placeValue', 'space', 'comma', 'custom']"
                         [value]="option">

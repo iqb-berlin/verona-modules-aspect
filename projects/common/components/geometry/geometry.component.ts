@@ -2,7 +2,7 @@ import {
   AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, Renderer2
 } from '@angular/core';
 import {
-  BehaviorSubject, debounceTime, Subject, Subscription
+  BehaviorSubject, debounceTime, fromEvent, Subject, Subscription
 } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -48,6 +48,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private ngUnsubscribe = new Subject<void>();
   private geometryUpdated = new EventEmitter<void>(); // local subscription to be able to debounce
   private pageChangeSubscription: Subscription;
+  private hasUserInteracted = false;
 
   get timeoutMsg(): string {
     // eslint-disable-next-line max-len
@@ -65,15 +66,29 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => this.loadApplet());
 
+    fromEvent(this.elementRef.nativeElement, 'pointerdown', { capture: true })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => { this.hasUserInteracted = true; });
+    fromEvent(this.elementRef.nativeElement, 'keydown', { capture: true })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => { this.hasUserInteracted = true; });
+    fromEvent(this.elementRef.nativeElement, 'wheel', { capture: true })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => { this.hasUserInteracted = true; });
+
     this.geometryUpdated
       .pipe(debounceTime(100), takeUntil(this.ngUnsubscribe))
-      .subscribe(() => this.elementValueChanged.emit({
-        id: this.elementModel.id,
-        value: {
-          appDefinition: this.geoGebraAPI.getBase64(),
-          variables: this.getVariablesToEmit()
+      .subscribe(() => {
+        if (this.hasUserInteracted) {
+          this.elementValueChanged.emit({
+            id: this.elementModel.id,
+            value: {
+              appDefinition: this.geoGebraAPI.getBase64(),
+              variables: this.getVariablesToEmit()
+            }
+          });
         }
-      }));
+      });
   }
 
   ngAfterViewInit(): void {
@@ -100,10 +115,11 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
 
   reset(): void {
     this.appDefinition = this.elementModel.appDefinition;
+    this.hasUserInteracted = true;
     this.initApplet();
     // needs time to reload
     setTimeout(() => {
-      this.geometryUpdated.next();
+      this.geometryUpdated.emit();
     });
   }
 

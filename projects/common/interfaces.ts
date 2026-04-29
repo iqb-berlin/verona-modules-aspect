@@ -119,8 +119,9 @@ export type UIElementValue = string | number | boolean | undefined | UIElementTy
 TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | StateVariable | GeometryVariable[] |
 PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[] | UIElement[];
 
-export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
-| 'comparisonOperators' | 'chemicalEquation' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';
+export type InputAssistancePreset = null | 'french' | 'numbers' | 'decimals' | 'numbersAndOperators' |
+'numbersAndBasicOperators' | 'comparisonOperators' | 'chemicalEquation' | 'squareDashDot' | 'placeValue' |
+'space' | 'comma' | 'custom';
 
 export const INPUT_ASSISTANCE_CUSTOM_STYLES = ['small', 'medium', 'large'] as const;
 export type InputAssistanceCustomStyle = typeof INPUT_ASSISTANCE_CUSTOM_STYLES[number];

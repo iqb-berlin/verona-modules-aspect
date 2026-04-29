@@ -2,7 +2,7 @@ import {
   AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, Renderer2
 } from '@angular/core';
 import {
-  BehaviorSubject, debounceTime, Subject, Subscription
+  BehaviorSubject, debounceTime, fromEvent, Subject, Subscription
 } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -15,25 +15,8 @@ declare const GGBApplet: any;
 
 @Component({
   selector: 'aspect-geometry',
-  template: `
-    <button *ngIf="this.elementModel.showResetIcon"
-            mat-stroked-button class="reset-button"
-            (click)="reset()">
-      <mat-icon class="reset-icon">autorenew</mat-icon>
-      {{ 'geometry_reset' | translate }}
-    </button>
-    <div [id]="elementModel.id" class="geogebra-applet"></div>
-    <aspect-spinner *ngIf="isGeoGebraLoaded"
-                    [isLoaded]="isLoaded"
-                    (timeOut)="throwError('geometry-timeout', timeoutMsg)">
-    </aspect-spinner>
-  `,
-  styles: [
-    ':host {display: block; width: 100%; height: 100%;}',
-    ':host {position: relative;}',
-    ':host .reset-icon {width: 1.5rem; height: 1.5rem; font-size: 1.5rem;}',
-    '.reset-button {margin-bottom: 3px;}'
-  ],
+  templateUrl: './geometry.component.html',
+  styleUrls: ['./geometry.component.scss'],
   standalone: false
 })
 export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {
@@ -46,8 +29,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   geoGebraAPI!: any;
 
   private ngUnsubscribe = new Subject<void>();
-  private geometryUpdated = new EventEmitter<void>(); // local subscription to be able to debounce
+  private geometryUpdated = new Subject<void>(); // local subscription to be able to debounce
   private pageChangeSubscription: Subscription;
+  private hasUserInteracted = false;
 
   get timeoutMsg(): string {
     // eslint-disable-next-line max-len
@@ -65,15 +49,29 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => this.loadApplet());
 
+    fromEvent(this.elementRef.nativeElement, 'pointerdown', { capture: true })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => { this.hasUserInteracted = true; });
+    fromEvent(this.elementRef.nativeElement, 'keydown', { capture: true })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => { this.hasUserInteracted = true; });
+    fromEvent(this.elementRef.nativeElement, 'wheel', { capture: true })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => { this.hasUserInteracted = true; });
+
     this.geometryUpdated
       .pipe(debounceTime(100), takeUntil(this.ngUnsubscribe))
-      .subscribe(() => this.elementValueChanged.emit({
-        id: this.elementModel.id,
-        value: {
-          appDefinition: this.geoGebraAPI.getBase64(),
-          variables: this.getVariablesToEmit()
+      .subscribe(() => {
+        if (this.hasUserInteracted) {
+          this.elementValueChanged.emit({
+            id: this.elementModel.id,
+            value: {
+              appDefinition: this.geoGebraAPI.getBase64(),
+              variables: this.getVariablesToEmit()
+            }
+          });
         }
-      }));
+      });
   }
 
   ngAfterViewInit(): void {
@@ -100,6 +98,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
 
   reset(): void {
     this.appDefinition = this.elementModel.appDefinition;
+    this.hasUserInteracted = true;
     this.initApplet();
     // needs time to reload
     setTimeout(() => {
@@ -134,22 +133,22 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         this.geoGebraAPI = geoGebraApi;
         this.isLoaded.next(true);
         this.geoGebraAPI.registerAddListener(() => {
-          this.geometryUpdated.emit();
+          this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerRemoveListener(() => {
-          this.geometryUpdated.emit();
+          this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerUpdateListener(() => {
-          this.geometryUpdated.emit();
+          this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerRenameListener(() => {
-          this.geometryUpdated.emit();
+          this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerClearListener(() => {
-          this.geometryUpdated.emit();
+          this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerClientListener(() => {
-          this.geometryUpdated.emit();
+          this.geometryUpdated.next();
         });
       }
     };

@@ -9,29 +9,12 @@ import { convertLatexToMarkup } from '@iqb/mathlive';
 
 @Component({
   selector: 'aspect-nodeview-math-formula',
+  standalone: true,
   imports: [
     FormsModule
   ],
-  template: `
-    @if (!editMode) {
-      <span class="formula-field" [innerHTML]="sanitizedFormula" (click)="toggleEditMode()"></span>
-    } @else {
-      <span #editField class="formula-field" contenteditable="true"
-            (keydown.enter)="updateFormula($any($event.target).innerText);"
-            (blur)="updateFormula($any($event.target).innerText);">{{formula}}</span>
-    }`,
-  styles: [`
-    .formula-field {
-      background-color: lightblue;
-      display: inline-block;
-      min-width: 40px;
-    }
-
-    /* Add invisible character to prevent collapse when empty */
-    .formula-field:empty:before {
-      content: "\\200b";
-    }
-  `]
+  templateUrl: './math-formula.component.html',
+  styleUrl: './math-formula.component.scss'
 })
 export class MathFormulaNodeviewComponent extends AngularNodeViewComponent implements OnInit {
   @ViewChild('editField') editField!: ElementRef<HTMLSpanElement>;

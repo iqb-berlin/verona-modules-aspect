@@ -1,0 +1,7 @@
+@if (!editMode) {
+  <span class="formula-field" [innerHTML]="sanitizedFormula" (click)="toggleEditMode()"></span>
+} @else {
+  <span #editField class="formula-field" contenteditable="true"
+        (keydown.enter)="updateFormula($any($event.target).innerText);"
+        (blur)="updateFormula($any($event.target).innerText);">{{formula}}</span>
+}

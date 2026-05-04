@@ -1,11 +1,11 @@
 import {
   Component, OnInit, ViewChild,
-  ElementRef, SecurityContext
+  ElementRef
 } from '@angular/core';
 import { AngularNodeViewComponent } from 'ngx-tiptap';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import katex from 'katex';
+import { convertLatexToMarkup } from '@iqb/mathlive';
 
 @Component({
   selector: 'aspect-nodeview-math-formula',
@@ -54,14 +54,14 @@ export class MathFormulaNodeviewComponent extends AngularNodeViewComponent imple
 
   updateFormula(formula: string) {
     this.formula = formula;
-    this.sanitizedFormula = this.domSanitizer.bypassSecurityTrustHtml(
-      katex.renderToString(formula, { output: 'mathml' }));
+    const markup = formula ? convertLatexToMarkup(formula) : '';
+    this.sanitizedFormula = this.domSanitizer.bypassSecurityTrustHtml(markup);
     this.editMode = false;
 
     // Fix Angular change detection, when TipTap re-renders the something(?)
     setTimeout(() => this.updateAttributes({
       formula: formula,
-      formulaHTML: this.domSanitizer.sanitize(SecurityContext.HTML, this.sanitizedFormula || '')
+      formulaHTML: markup
     }), 0);
   }
 }

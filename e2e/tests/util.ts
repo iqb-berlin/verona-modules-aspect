@@ -151,3 +151,7 @@ export function editText(newText: string) {
 export function selectRadioOption(option: string) {
   cy.contains('mat-radio-button', option).find('input').click();
 }
+
+export function addNewSection() {
+  cy.contains('button', 'Neuer Abschnitt').click();
+}

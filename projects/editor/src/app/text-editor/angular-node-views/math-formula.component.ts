@@ -28,7 +28,7 @@ import { convertLatexToMarkup } from '@iqb/mathlive';
     }
 
     /* Add invisible character to prevent collapse when empty */
-    span:empty:before {
+    .formula-field:empty:before {
       content: "\\200b";
     }
   `]

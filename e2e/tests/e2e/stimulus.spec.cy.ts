@@ -5,7 +5,6 @@ import {
   editText, selectRadioOption,
   submitDialog
 } from '../util';
-import {personaliseText} from "./helpers/stimulus-util";
 
 describe('Stimulus assistant', { testIsolation: false }, () => {
   context('editor', () => {

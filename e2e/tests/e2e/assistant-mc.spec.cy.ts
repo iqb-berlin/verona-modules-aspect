@@ -2,23 +2,7 @@ import {
   addNewPage, clickButtonDialog, clickTabAssistant,
   submitDialog
 } from '../util';
-
-function addMCOption(optionName: string): void {
-  cy.get('mat-dialog-container')
-    .get('aspect-option-list-panel')
-    .eq(-1)
-    .contains('mat-form-field', 'Neue Option')
-    .scrollIntoView()
-    .find('textarea')
-    .click({force: true})
-    .type(optionName);
-  cy.get('mat-dialog-container')
-    .get('aspect-option-list-panel')
-    .eq(-1)
-    .contains('mat-icon', 'add')
-    .click()
-
-}
+import {addMCOption} from "./helpers/assistant-util";
 
 describe('MC assistant', { testIsolation: false }, () => {
   context('editor', () => {

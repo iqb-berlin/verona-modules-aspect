@@ -1,4 +1,4 @@
-import {addElementHover, setPreferencesElement} from '../util';
+import {addElementHover, addNewPage, addNewSection, setPreferencesElement} from '../util';
 
 describe('Math-field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -19,6 +19,29 @@ describe('Math-field element', { testIsolation: false }, () => {
       addElementHover('Formel', 'Feld');
       setPreferencesElement('Formel Feld mit Pflichtfeld', { required: true });
     });
+
+    it('creates a math-field with a preset', () => {
+      addElementHover('Formel', 'Feld');
+      cy.get('aspect-element-properties').contains('mat-label', 'Vorbelegung')
+        .parent().find('math-field').shadow().find('.ML__content')
+        .click()
+        .type('abc');
+      setPreferencesElement('Formel Feld mit Vorbelegung', { id: 'math-field-preset' });
+    });
+
+    it('creates a math-field with an union and overline formel preset', () => {
+      const formula ="\\overline{S \\cup M}";
+      addNewSection();
+      addElementHover('Formel', 'Feld');
+      cy.get('aspect-element-properties').contains('mat-button-toggle', 'Formel')
+        .click();
+      cy.get('aspect-element-properties').contains('mat-label', 'Vorbelegung')
+        .parent().find('math-field').shadow().find('.ML__content')
+        .click()
+        .type('\\overline{{}S\\cup M{}}{enter}');
+      setPreferencesElement('Formel Feld mit Union Vorbelegung', { id: 'field-preset-union' });
+    });
+
 
     after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/math-field.json');
@@ -55,6 +78,21 @@ describe('Math-field element', { testIsolation: false }, () => {
       cy.clickOutside();
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Pflichtfeld')
         .find('mat-error').should('exist');
+    });
+
+    it('checks that the math-field has a preset value', () => {
+      cy.contains('aspect-element-group-selection', 'Formel Feld mit Vorbelegung').within(() => {
+        cy.get('math-field').shadow().find('.ML__base').should('contain', 'a');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', 'b');
+        cy.get('math-field').shadow().find('.ML__base').should('contain', 'c');
+      });
+    });
+
+    it('checks that the math-field has an union and overline formel value', () => {
+      cy.contains('aspect-element-group-selection', 'Formel Feld mit Union Vorbelegung').within(() => {
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'o');
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'v');
+      });
     });
   });
 });

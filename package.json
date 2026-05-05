@@ -16,7 +16,6 @@
     "e2e": "npx cypress open",
     "e2e-headless": "npx cypress run",
     "generate-migration": "node scripts/generate-migration.js",
-    "e2e-coverage": "npx cypress run",
     "serve-editor-coverage": "ng run editor:serve-coverage",
     "serve-player-coverage": "ng run player:serve-coverage"
   },

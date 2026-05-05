@@ -130,3 +130,28 @@ export function setPageConfig(pageNumber: number, settings?: Record<string, bool
   if (settings?.appareancePartial)
     cy.contains('mat-checkbox', 'Seitenbreite begrenzen').click({ force: true });
 }
+
+export function clickTabAssistant(){
+  cy.contains('mat-icon', 'bookmarks').click();
+}
+
+export function submitDialog(){
+  cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
+}
+
+export function clickButtonDialog(buttonName: string){
+  cy.get('mat-dialog-container').contains('button', buttonName).click();
+}
+
+export function editText(newText: string) {
+  cy.get('mat-dialog-container').find('.input1 .ProseMirror p').first().type(`{selectall}{backspace}${newText}`);
+  clickButtonDialog('Bestätigen');
+}
+
+export function selectRadioOption(option: string) {
+  cy.contains('mat-radio-button', option).find('input').click();
+}
+
+export function addNewSection() {
+  cy.contains('button', 'Neuer Abschnitt').click();
+}

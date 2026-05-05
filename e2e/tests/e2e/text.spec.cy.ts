@@ -1,4 +1,4 @@
-import { addNewPage } from '../util';
+import {addNewPage, setID, addTextElement} from '../util';
 import { addText, selectRange } from "./helpers/text-util";
 
 
@@ -34,6 +34,22 @@ describe('Text element', { testIsolation: false }, () => {
                 highlightableYellow: true,
                 highlightableTurquoise: true
             }, 'text-selection');
+        });
+
+        // ── Page 4: math formula ────────────────────────────────────────────────
+        it('creates a text element with a math formula (page 4)', () => {
+            addNewPage();
+            addTextElement('Benutzerdefinierter Text mit Formel\n  ');
+            setID('text-math');
+            cy.get('aspect-element-model-properties-component')
+                .contains('edit').click();
+
+            cy.get('mat-icon:contains("functions")').click();
+            cy.get('aspect-nodeview-math-formula').click();
+            cy.get('aspect-nodeview-math-formula [contenteditable="true"]')
+                .type(' \\overline{{}S\\cap M{}}{enter}');
+            cy.contains('Speichern').click();
+            cy.wait(1000);
         });
 
         after('saves the unit definition', () => {
@@ -126,6 +142,15 @@ describe('Text element', { testIsolation: false }, () => {
                 .find('aspect-markable-word').eq(30).click();
             cy.getElementByAlias('text-selection')
                 .find('aspect-markable-word').eq(35).click();
+        });
+
+        // ── Page 4 tests: math formula ──────────────────────────────────────────
+        it('checks the math formula on page 4', () => {
+            cy.goToPlayerPage(4);
+            cy.getElementByAlias('text-math').within(() => {
+                cy.contains('Benutzerdefinierter Text mit Formel').should('exist');
+                cy.get('math').should('exist');
+            });
         });
     });
 });

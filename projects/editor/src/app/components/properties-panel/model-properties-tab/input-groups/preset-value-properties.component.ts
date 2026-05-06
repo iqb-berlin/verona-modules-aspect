@@ -4,8 +4,8 @@ import {
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 
 @Component({
-    selector: 'aspect-preset-value-properties',
-    template: `
+  selector: 'aspect-preset-value-properties',
+  template: `
     <mat-form-field *ngIf="combinedProperties.type === 'text-area'"
                     class="wide-form-field" appearance="fill">
       <mat-label>{{'preset' | translate }}</mat-label>
@@ -39,17 +39,35 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
     </mat-form-field>
 
     <ng-container *ngIf="combinedProperties.type === 'math-field'">
-      <mat-label>{{'preset' | translate }}</mat-label><br>
-      <aspect-math-input [value]="$any(combinedProperties).value"
-                                  [enableModeSwitch]="true"
-                                  (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <mat-label>{{'preset' | translate }}</mat-label>
+        <button mat-icon-button (click)="showLatexEditor = !showLatexEditor"
+                [matTooltip]="(showLatexEditor ? 'propertiesPanel.showFormula' : 'propertiesPanel.showLatex') | translate">
+          <mat-icon>{{ showLatexEditor ? 'functions' : 'code' }}</mat-icon>
+        </button>
+      </div>
+
+      <aspect-math-input *ngIf="!showLatexEditor"
+                         [value]="$any(combinedProperties).value"
+                         [enableModeSwitch]="$any(combinedProperties).enableModeSwitch"
+                         [mathKeyboardPresets]="$any(combinedProperties).mathKeyboardPresets"
+                         [placeholder]="'propertiesPanel.formulaPlaceholder' | translate"
+                         (valueChange)="updateModel.emit({property: 'value', value: $event })">
       </aspect-math-input>
+
+      <mat-form-field *ngIf="showLatexEditor" class="wide-form-field" appearance="fill">
+        <input matInput [value]="$any(combinedProperties).value"
+               [placeholder]="'propertiesPanel.latexPlaceholder' | translate"
+               (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
+      </mat-form-field>
     </ng-container>
   `,
-    standalone: false
+  standalone: false
 })
 export class PresetValuePropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+
+  showLatexEditor = false;
 }

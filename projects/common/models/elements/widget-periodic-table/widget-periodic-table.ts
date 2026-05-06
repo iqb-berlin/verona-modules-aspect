@@ -24,7 +24,7 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   state: string | null = ELEMENT_DEFAULTS['widget-periodic-table'].state as string | null;
 
   static title: string = 'Periodensystem';
-  static icon: string = 'science';
+  static icon: string = 'grid_on';
 
   constructor(element?: Partial<WidgetPeriodicTableProperties>, idService?: AbstractIDService) {
     super({ type: 'widget-periodic-table', ...element }, idService);

@@ -22,7 +22,7 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
   state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state as string | null;
 
   static title: string = 'Molekül-Editor';
-  static icon: string = 'biotech';
+  static icon: string = 'hub';
 
   constructor(element?: Partial<WidgetMoleculeEditorProperties>, idService?: AbstractIDService) {
     super({ type: 'widget-molecule-editor', ...element }, idService);

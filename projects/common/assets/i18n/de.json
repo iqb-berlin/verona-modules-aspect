@@ -8,5 +8,6 @@
   "markingHint": "Ende des Bereichs bestimmen",
   "periodicTable": "Periodensystem",
   "calculator": "Rechner",
-  "moleculeEditor": "Molekül-Editor"
+  "moleculeEditor": "Molekül-Editor",
+  "openWidget": "{{widget}} öffnen"
 }

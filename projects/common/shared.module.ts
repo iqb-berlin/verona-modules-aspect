@@ -37,7 +37,6 @@ import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.dir
 import {
   AreaSegmentComponent
 } from 'common/components/input-elements/text-area-math/area-segment.component';
-import { AreaRowHeightPipe } from 'common/components/input-elements/text-area-math/area-row-height.pipe';
 import {
   TextMarkingButtonSvgComponent
 } from 'common/components/text/text-marking-bar/text-marking-button-svg.component';
@@ -93,7 +92,8 @@ import { MathAtanPipe } from './pipes/math-atan.pipe';
 import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { GetValuePipe } from './components/input-elements/math-field/get-value.pipe';
+import { GetValuePipe } from './pipes/get-value.pipe';
+import { AreaRowHeightPipe } from './pipes/area-row-height.pipe';
 import { MathFieldComponent } from './components/input-elements/math-field/math-field.component';
 import { SplitPipe } from './pipes/split.pipe';
 import { TextImagePanelComponent } from './components/text-image-panel.component';

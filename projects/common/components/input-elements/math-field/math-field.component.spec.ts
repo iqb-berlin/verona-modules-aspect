@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { MathfieldElement } from '@iqb/mathlive';
-import { GetValuePipe } from './get-value.pipe';
+import { GetValuePipe } from 'common/pipes/get-value.pipe';
 import { MathFieldComponent } from './math-field.component';
 
 @Component({

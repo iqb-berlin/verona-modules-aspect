@@ -11,7 +11,7 @@ import { TextInputComponentType } from 'player/src/app/models/text-input-compone
 import { RangeSelectionService } from 'common/services/range-selection-service';
 import { MathfieldElement } from '@iqb/mathlive';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
-import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
+import { MathFieldComponent } from 'common/components/input-elements/math-field/math-field.component';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive()

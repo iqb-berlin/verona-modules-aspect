@@ -1,5 +1,10 @@
 Editor
 ======
+## 2.12.4
+### Fehlerbehebungen 
+- Verhindert die Übernahme von eingestellten Mustern zum Validieren von weiteren Eingabefeldern
+- Behebt Fehler bei der Darstellung von Formeln innerhalb von Textelementen in Chromium basierten Browsern
+
 ## 2.12.1
 ### Fehlerbehebungen
 - Dialog: Elementliste

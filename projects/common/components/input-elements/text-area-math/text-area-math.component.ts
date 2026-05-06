@@ -18,6 +18,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     <button class="insert-formula-button"
             mat-button
             cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+            [disabled]="elementModel.readOnly"
             (click)="addFormula()">
       Formel einfügen
     </button>
@@ -47,10 +48,12 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
           [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
           [showSoftwareKeyboard]="elementModel.showSoftwareKeyboard"
           [hideNativeKeyboard]="elementModel.hideNativeKeyboard"
+          [readonly]="elementModel.readOnly"
           (valueChanged)="onValueChanged($event)"
           (onKeyDown)="onKeyDown.emit($event)"
           (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
-          (focusOut)="focusChanged.emit({ inputElement: $event, focused: false })"
+          (focusOut)="elementFormControl.markAsTouched();
+                      focusChanged.emit({ inputElement: $event, focused: false })"
           (remove)="removeSegment($event)"
           (pointerdown)="$event.stopPropagation();">
         </aspect-text-area-math-segment>

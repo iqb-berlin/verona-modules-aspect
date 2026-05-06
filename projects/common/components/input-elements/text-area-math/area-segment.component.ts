@@ -14,6 +14,7 @@ import { MathKeyboardPreset } from 'common/interfaces';
       <aspect-math-input #inputComponent
                          [fullWidth]="false"
                          [value]="value"
+                         [readonly]="readonly"
                          [mathKeyboardPresets]="mathKeyboardPresets"
                          (focusIn)="onFocusIn($event)"
                          (focusOut)="focusOut.emit($event)"
@@ -24,6 +25,7 @@ import { MathKeyboardPreset } from 'common/interfaces';
                          [showSoftwareKeyboard]="showSoftwareKeyboard"
                          [hideNativeKeyboard]="hideNativeKeyboard"
                          [value]="value"
+                         [readonly]="readonly"
                          (focusIn)="onFocusIn($event)"
                          (focusOut)="onFocusOut($event)"
                          (onKeyDown)="onKeyDown.emit($event)"
@@ -44,6 +46,7 @@ export class AreaSegmentComponent {
   @Input() mathKeyboardPresets!: MathKeyboardPreset[];
   @Input() type!: 'text' | 'math';
   @Input() value!: string;
+  @Input() readonly: boolean = false;
   @Input() index!: number;
   @Input() selectedFocus!: BehaviorSubject<number>;
   @Output() valueChanged: EventEmitter<{ index: number; value: string }> = new EventEmitter();

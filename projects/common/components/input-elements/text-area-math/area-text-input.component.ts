@@ -13,7 +13,7 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
           spellcheck="false"
           [style.display]="displayType"
           [attr.inputmode]="showSoftwareKeyboard || hideNativeKeyboard ? 'none' : 'text'"
-          [contentEditable]="true"
+          [contentEditable]="!readonly"
           [textContent]="value"
           (focusin)="onFocusIn(inputRef)"
           (focusout)="onFocusOut(inputRef)"
@@ -38,6 +38,7 @@ export class AreaTextInputComponent implements OnInit {
   @Input() showSoftwareKeyboard!: boolean;
   @Input() hideNativeKeyboard!: boolean;
   @Input() value!: string;
+  @Input() readonly: boolean = false;
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
   @Output() focusIn: EventEmitter<HTMLElement> = new EventEmitter();
   @Output() focusOut: EventEmitter<HTMLElement> = new EventEmitter();

@@ -11,6 +11,7 @@ import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
 import { SliderElement } from 'common/models/elements/input-elements/slider';
 import { hotspotImageRequiredValidator } from 'player/src/app/validators/hotspot-image-required.validator';
+import { textAreaMathRequiredValidator } from 'player/src/app/validators/text-area-math-required.validator';
 import { ValidationService } from '../services/validation.service';
 import { ElementGroupDirective } from './element-group.directive';
 import { ElementModelElementCodeMappingService } from '../services/element-model-element-code-mapping.service';
@@ -70,6 +71,10 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
           break;
         case 'checkbox':
           validators.push(Validators.requiredTrue);
+          break;
+        case 'text-area-math':
+          requiredAdded = true;
+          validators.push(textAreaMathRequiredValidator());
           break;
         case 'slider':
           requiredAdded = true;

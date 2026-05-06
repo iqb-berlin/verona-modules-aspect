@@ -23,10 +23,10 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                          [readonly]="elementModel.readOnly"
                          [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
                          [enableModeSwitch]="elementModel.enableModeSwitch"
-                         (input)="elementFormControl.setValue($any($event.target).value)"
+                         (valueChange)="elementFormControl.setValue($event)"
                          (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
                          (focusOut)="elementFormControl.markAsTouched();
-                                     focusChanged.emit({ inputElement: $event, focused: true })">
+                                     focusChanged.emit({ inputElement: $event, focused: false })">
       </aspect-math-input>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">

@@ -1,0 +1,16 @@
+.formula-field {
+  display: inline-block;
+  min-width: 40px;
+  background-color: #e3f2fd; // A softer, more premium light blue (Material Blue 50)
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #bbdefb; // Material Blue 100 on hover
+  }
+
+  /* Add invisible character to prevent collapse when empty */
+  &:empty::before {
+    content: "\200b";
+  }
+}

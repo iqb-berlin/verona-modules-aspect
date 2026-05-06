@@ -1,4 +1,6 @@
 @use '../../../node_modules/@angular/material/index' as mat;
+@import '@iqb/mathlive/fonts.css';
+@import '@iqb/mathlive/static.css';
 
 // Apply font style to all Material components
 @include mat.all-component-typographies(mat.m2-define-typography-config(

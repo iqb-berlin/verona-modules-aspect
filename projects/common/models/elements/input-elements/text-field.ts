@@ -49,15 +49,15 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at TextField instantiation', element);
       }
-      if (element?.appearance) this.appearance = element.appearance;
-      if (element?.minLength) this.minLength = element.minLength;
-      if (element?.minLengthWarnMessage) this.minLengthWarnMessage = element.minLengthWarnMessage;
-      if (element?.maxLength) this.maxLength = element.maxLength;
-      if (element?.maxLengthWarnMessage) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
-      if (element?.isLimitedToMaxLength) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
-      if (element?.pattern) this.pattern = element.pattern;
-      if (element?.patternWarnMessage) this.patternWarnMessage = element.patternWarnMessage;
-      if (element?.clearable) this.clearable = element.clearable;
+      if (element?.appearance !== undefined) this.appearance = element.appearance;
+      if (element?.minLength !== undefined) this.minLength = element.minLength;
+      if (element?.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
+      if (element?.maxLength !== undefined) this.maxLength = element.maxLength;
+      if (element?.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
+      if (element?.isLimitedToMaxLength !== undefined) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
+      if (element?.pattern !== undefined) this.pattern = element.pattern;
+      if (element?.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
+      if (element?.clearable !== undefined) this.clearable = element.clearable;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         width: 180,
         height: 120,

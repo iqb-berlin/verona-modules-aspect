@@ -45,12 +45,14 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at TextArea instantiation', element);
       }
-      if (element?.appearance) this.appearance = element.appearance;
-      if (element?.resizeEnabled) this.resizeEnabled = element.resizeEnabled;
-      if (element?.rowCount) this.rowCount = element.rowCount;
-      if (element?.hasDynamicRowCount) this.hasDynamicRowCount = element.hasDynamicRowCount;
-      if (element?.expectedCharactersCount) this.expectedCharactersCount = element.expectedCharactersCount;
-      if (element?.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
+      if (element?.appearance !== undefined) this.appearance = element.appearance;
+      if (element?.resizeEnabled !== undefined) this.resizeEnabled = element.resizeEnabled;
+      if (element?.rowCount !== undefined) this.rowCount = element.rowCount;
+      if (element?.hasDynamicRowCount !== undefined) this.hasDynamicRowCount = element.hasDynamicRowCount;
+      if (element?.expectedCharactersCount !== undefined) {
+        this.expectedCharactersCount = element.expectedCharactersCount;
+      }
+      if (element?.hasReturnKey !== undefined) this.hasReturnKey = element.hasReturnKey;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         width: 230,
         height: 132,

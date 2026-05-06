@@ -15,7 +15,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { RangeSelectionService } from 'common/services/range-selection-service';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
-import { AreaSegmentComponent } from './area-segment.component';
+import { AreaSegmentComponent } from 'common/components/input-elements/area-segment/area-segment.component';
 import { TextAreaMathComponent } from './text-area-math.component';
 
 @Component({

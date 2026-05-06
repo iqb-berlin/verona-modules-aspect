@@ -5,31 +5,8 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
 
 @Component({
   selector: 'aspect-area-input',
-  template: `
-    <span #inputRef class="input"
-          autocomplete="off"
-          autocapitalize="none"
-          autocorrect="off"
-          spellcheck="false"
-          [style.display]="displayType"
-          [attr.inputmode]="showSoftwareKeyboard || hideNativeKeyboard ? 'none' : 'text'"
-          [contentEditable]="!readonly"
-          [textContent]="value"
-          (focusin)="onFocusIn(inputRef)"
-          (focusout)="onFocusOut(inputRef)"
-          (blur)="onFocusOut(inputRef)"
-          (keydown)="keyDown($event)"
-          (keyup)="keyUp($event)"
-          (input)="onInput()"></span>
-  `,
-  styles: [`
-    .input {
-      padding: 0 14px;
-      outline: none;
-      white-space: pre;
-      vertical-align: text-bottom;
-    }
-  `],
+  templateUrl: './area-text-input.component.html',
+  styleUrls: ['./area-text-input.component.scss'],
   standalone: true
 })
 export class AreaTextInputComponent implements OnInit {
@@ -73,7 +50,7 @@ export class AreaTextInputComponent implements OnInit {
     this.setDisplayType(this.inputRef.nativeElement.textContent);
   }
 
-  private setDisplayType(value: string) {
+  private setDisplayType(value: string | null) {
     // Fix cursor in empty input in chromium
     this.displayType = value ? 'inline' : 'inline-block';
   }

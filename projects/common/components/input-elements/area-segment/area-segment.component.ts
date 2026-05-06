@@ -2,43 +2,20 @@ import {
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { MathEditorModule } from 'common/math-editor/math-editor.module';
-import { AreaTextInputComponent } from 'common/components/input-elements/text-area-math/area-text-input.component';
+import { AreaTextInputComponent } from 'common/components/input-elements/area-text-input/area-text-input.component';
 import { BehaviorSubject } from 'rxjs';
 import { MathInputComponent } from 'common/math-editor/math-input.component';
 import { MathKeyboardPreset } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-text-area-math-segment',
-  template: `
-    @if (type === 'math') {
-      <aspect-math-input #inputComponent
-                         [fullWidth]="false"
-                         [value]="value"
-                         [readonly]="readonly"
-                         [mathKeyboardPresets]="mathKeyboardPresets"
-                         (focusIn)="onFocusIn($event)"
-                         (focusOut)="focusOut.emit($event)"
-                         (valueChange)="valueChanged.emit({ index: index, value: $event})">
-      </aspect-math-input>
-    } @else {
-      <aspect-area-input #inputComponent
-                         [showSoftwareKeyboard]="showSoftwareKeyboard"
-                         [hideNativeKeyboard]="hideNativeKeyboard"
-                         [value]="value"
-                         [readonly]="readonly"
-                         (focusIn)="onFocusIn($event)"
-                         (focusOut)="onFocusOut($event)"
-                         (onKeyDown)="onKeyDown.emit($event)"
-                         (valueChanged)="valueChanged.emit({ index: index, value: $event})"
-                         (remove)="onRemove($event)">
-      </aspect-area-input>
-    }
-  `,
+  templateUrl: './area-segment.component.html',
+  styleUrls: ['./area-segment.component.scss'],
+  standalone: true,
   imports: [
     AreaTextInputComponent,
     MathEditorModule
-  ],
-  styles: []
+  ]
 })
 export class AreaSegmentComponent {
   @Input() showSoftwareKeyboard!: boolean;

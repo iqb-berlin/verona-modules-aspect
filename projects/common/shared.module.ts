@@ -35,9 +35,6 @@ import { ClozeChildErrorMessage } from 'common/components/compound-elements/cloz
 import { TriggerComponent } from 'common/components/trigger/trigger.component';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import {
-  AreaSegmentComponent
-} from 'common/components/input-elements/text-area-math/area-segment.component';
-import {
   TextMarkingButtonSvgComponent
 } from 'common/components/text/text-marking-bar/text-marking-button-svg.component';
 import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
@@ -45,6 +42,7 @@ import { WidgetCalcComponent } from 'common/components/widget-calc/widget-calc.c
 import {
   WidgetMoleculeEditorComponent
 } from 'common/components/widget-molecule-editor/widget-molecule-editor.component';
+import { AreaSegmentComponent } from './components/input-elements/area-segment/area-segment.component';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';

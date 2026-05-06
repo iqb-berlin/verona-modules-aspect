@@ -111,6 +111,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (changes.placeholder && this.mathFieldElement) {
       this.mathFieldElement.placeholder = changes.placeholder.currentValue;
     }
+    if (changes.readonly && this.mathFieldElement) {
+      this.mathFieldElement.readOnly = changes.readonly.currentValue;
+    }
   }
 
   // eslint-disable-next-line

@@ -299,7 +299,10 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     height: 80,
     lineHeight: 135,
     enableModeSwitch: false,
-    mathKeyboardPresets: ['math', 'symbols', 'latin', 'greek']
+    mathKeyboardPresets: ['math', 'symbols', 'latin', 'greek'],
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false
   },
   'math-table': {
     width: 230,

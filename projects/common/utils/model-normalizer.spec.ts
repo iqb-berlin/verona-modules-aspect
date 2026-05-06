@@ -92,5 +92,13 @@ describe('ModelNormalizer', () => {
       expect(normalized.requiredWarnMessage).toBeUndefined();
       expect(normalized.readOnly).toBeUndefined();
     });
+
+    it('should add border properties only to specific element types', () => {
+      const button = ModelNormalizer.normalizeElement({ type: 'button', id: 'b1' });
+      const text = ModelNormalizer.normalizeElement({ type: 'text', id: 't1' });
+
+      expect((button.styling as Record<string, unknown>).borderWidth).toBeDefined();
+      expect((text.styling as Record<string, unknown>).borderWidth).toBeUndefined();
+    });
   });
 });

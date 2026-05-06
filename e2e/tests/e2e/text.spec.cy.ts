@@ -149,7 +149,9 @@ describe('Text element', { testIsolation: false }, () => {
             cy.goToPlayerPage(4);
             cy.getElementByAlias('text-math').within(() => {
                 cy.contains('Benutzerdefinierter Text mit Formel').should('exist');
-                cy.get('math').should('exist');
+                cy.get('aspect-nodeview-math-formula').get('.overline').should('exist');
+                cy.get('aspect-nodeview-math-formula').get('.ML__cmr').should('exist');
+                cy.get('aspect-nodeview-math-formula').get('cap').should('not.exist');
             });
         });
     });

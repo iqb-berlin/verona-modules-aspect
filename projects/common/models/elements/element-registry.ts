@@ -405,12 +405,14 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     mode: 'SIMPLE',
     journalLines: 0,
     state: null,
-    backgroundColor: 'lightgrey'
+    backgroundColor: '#f1f1f1',
+    fontColor: '#006064'
   },
   'widget-molecule-editor': {
     bondingType: 'VALENCE',
     state: null,
-    backgroundColor: 'lightgrey'
+    backgroundColor: '#f1f1f1',
+    fontColor: '#006064'
   },
   'widget-periodic-table': {
     showInfoOrder: true,
@@ -419,6 +421,7 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     closeOnSelection: false,
     maxNumberOfSelections: 1,
     state: null,
-    backgroundColor: 'lightgrey'
+    backgroundColor: '#f1f1f1',
+    fontColor: '#006064'
   }
 };

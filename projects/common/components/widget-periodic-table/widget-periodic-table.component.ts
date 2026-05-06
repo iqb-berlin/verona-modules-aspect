@@ -14,6 +14,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
 export class WidgetPeriodicTableComponent extends ElementComponent {
   @Input() elementModel!: WidgetPeriodicTableElement;
   @Output() widgetCallEvent = new EventEmitter<WidgetPeriodicTableCall>();
+  WidgetPeriodicTableElement = WidgetPeriodicTableElement;
 
   emitWidgetCall(): void {
     const parameters: WidgetPeriodicTableCall = {

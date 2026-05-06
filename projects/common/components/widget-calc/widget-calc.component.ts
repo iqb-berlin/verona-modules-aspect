@@ -14,6 +14,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
 export class WidgetCalcComponent extends ElementComponent {
   @Input() elementModel!: WidgetCalcElement;
   @Output() widgetCallEvent = new EventEmitter<WidgetCalcCall>();
+  WidgetCalcElement = WidgetCalcElement;
 
   emitWidgetCall(): void {
     const parameters: WidgetCalcCall = {

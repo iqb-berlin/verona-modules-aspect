@@ -14,6 +14,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
 export class WidgetMoleculeEditorComponent extends ElementComponent {
   @Input() elementModel!: WidgetMoleculeEditorElement;
   @Output() widgetCallEvent = new EventEmitter<WidgetMoleculeEditorCall>();
+  WidgetMoleculeEditorElement = WidgetMoleculeEditorElement;
 
   emitWidgetCall(): void {
     const parameters: WidgetMoleculeEditorCall = {

@@ -24,6 +24,10 @@ const INPUT_ELEMENT_TYPES: UIElementType[] = [
   'text-area-math'
 ];
 
+const BORDER_ELEMENT_TYPES: UIElementType[] = [
+  'button', 'frame', 'table', 'widget-molecule-editor', 'widget-calc', 'widget-periodic-table'
+];
+
 export class ModelNormalizer {
   static normalizeUnit(unit: Record<string, unknown>): Record<string, unknown> {
     const normalized = { ...unit };
@@ -94,7 +98,8 @@ export class ModelNormalizer {
 
     Object.keys(defaults).forEach(key => {
       if (normalized[key] === undefined) {
-        normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ? structuredClone(defaults[key]) : defaults[key];
+        normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ?
+          structuredClone(defaults[key]) : defaults[key];
       }
     });
 
@@ -155,10 +160,11 @@ export class ModelNormalizer {
         ...defaults,
         ...filteredStyling
       } as Stylings),
-      ...PropertyGroupGenerators.generateBorderStylingProps({
-        ...defaults,
-        ...filteredStyling
-      } as Stylings)
+      ...(BORDER_ELEMENT_TYPES.includes(type) &&
+        PropertyGroupGenerators.generateBorderStylingProps({
+          ...defaults,
+          ...filteredStyling
+        } as Stylings))
     };
 
     // Special handling for extra styling properties like lineHeight and itemBackgroundColor

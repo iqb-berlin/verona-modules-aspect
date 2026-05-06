@@ -46,8 +46,10 @@ import { ElementOverlay } from './element-overlay.directive';
     '.centered-horizontal {display: flex; justify-content: center;}',
     '.centered-vertical {display: flex; align-items: center;}',
     ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}',
+    ':host ::ng-deep .prevent-interaction math-field {pointer-events: none !important;}',
     // special fix for custom element in shadow dom
-    ':host ::ng-deep .prevent-interaction math-field::part(container) {pointer-events: none !important;}'
+    ':host ::ng-deep .prevent-interaction math-field::part(container) {pointer-events: none !important;}',
+    ':host ::ng-deep .prevent-interaction math-field::part(mathfield) {pointer-events: none !important;}'
   ]
 })
 export class DynamicOverlayComponent extends ElementOverlay {

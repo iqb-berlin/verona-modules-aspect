@@ -18,7 +18,6 @@ export function addMCOption(optionName: string): void {
 export function addGenericOption(optionName: string, type: string) {
   cy.get('mat-dialog-container')
     .get('aspect-option-list-panel')
-    .eq(-1)
     .contains('mat-form-field', type)
     .scrollIntoView()
     .find('textarea')
@@ -26,7 +25,7 @@ export function addGenericOption(optionName: string, type: string) {
     .type(optionName);
   cy.get('mat-dialog-container')
     .get('aspect-option-list-panel')
-    .eq(-1)
+    .contains('mat-form-field', type)
     .contains('mat-icon', 'add')
     .click()
 }

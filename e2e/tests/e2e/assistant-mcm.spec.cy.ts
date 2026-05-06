@@ -2,7 +2,7 @@ import {
   clickButtonDialog, clickTabAssistant
 } from '../util';
 import { selectRadioButtonWithVerification } from './helpers/likert-util';
-import {addGenericOption, addMCMOption, addMCMRow} from "./helpers/assistant-util";
+import {addGenericOption} from "./helpers/assistant-util";
 
 describe('MCM assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -20,18 +20,14 @@ describe('MCM assistant', { testIsolation: false }, () => {
         .click().type(`{selectall}{backspace}MCM Question Content`);
 
       // Set Sentence Beginning
-      cy.contains('h3', 'Satzanfang').next('mat-form-field').find('textarea').type('Start of sentence');
+      cy.contains('h3', 'Satzanfang').next('mat-form-field').find('textarea').type('Start of sentence{enter}');
 
       // Add Options (Columns)
-      // addMCMOption('Col A');
-      // addMCMOption('Col B');
-      addGenericOption('Col A','Optionen');
-      addGenericOption('Col B','Optionen');
+      addGenericOption('Col A','Neue Option');
+      addGenericOption('Col B','Neue Option');
       // Add Rows
-      // addMCMRow('Row 1');
-      // addMCMRow('Row 2');
-      addGenericOption('Row A','Zeilen');
-      addGenericOption('Row B','Zeilen');
+      addGenericOption('Row 1','Neue Zeile');
+      addGenericOption('Row 2','Neue Zeile');
 
       clickButtonDialog('Bestätigen');
       cy.wait(100);
@@ -62,7 +58,6 @@ describe('MCM assistant', { testIsolation: false }, () => {
       selectRadioButtonWithVerification('Row 1', 0);
       // Row 1, Col B (index 1)
       selectRadioButtonWithVerification('Row 1', 1);
-
       // Row 2, Col B (index 3 because it's the 4th radio button: Row1-A, Row1-B, Row2-A, Row2-B)
       selectRadioButtonWithVerification('Row 2', 3);
     });

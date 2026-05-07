@@ -321,6 +321,11 @@
       <mat-icon>check_box</mat-icon>
       Kontrollkästchen
     </button>
+    <button mat-button matTooltip="Klappliste" [matTooltipShowDelay]="300"
+            (click)="insertDropdown()">
+      <mat-icon>menu_open</mat-icon>
+      Klappliste
+    </button>
 </div>
 
 <tiptap-editor [editor]="editor" [ngModel]="content" [disabled]="disabled"

@@ -7,7 +7,7 @@ import {
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
-import { DropdownComponent } from 'common/components/input-elements/dropdown.component';
+import { DropdownComponent } from 'common/components/input-elements/dropdown/dropdown.component';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
 import { ImageComponent } from 'common/components/media-elements/image.component';
 import { AudioComponent } from 'common/components/media-elements/audio.component';

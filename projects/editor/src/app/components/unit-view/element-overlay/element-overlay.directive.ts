@@ -8,7 +8,9 @@ import { ComponentRegistry } from 'common/utils/component-registry';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
-import { ClozeChildOverlay } from 'common/components/compound-elements/cloze/cloze-child-overlay.component';
+import {
+  ClozeChildOverlayComponent
+} from 'common/components/compound-elements/cloze-child-overlay/cloze-child-overlay.component';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
@@ -58,7 +60,7 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
       this.childComponent.instance.childElementSelected
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((elementSelectionEvent: ClozeChildOverlay) => {
+        .subscribe((elementSelectionEvent: ClozeChildOverlayComponent) => {
           this.selectionService.selectElement({ elementComponent: elementSelectionEvent, multiSelect: false });
           this.selectionService.isCompoundChildSelected = true;
         });

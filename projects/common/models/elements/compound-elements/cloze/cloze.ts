@@ -31,7 +31,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
   static title: string = 'Lückentext';
   static icon: string = 'vertical_split';
 
-  static validChildElements = ['TextField', 'DropList', 'ToggleButton', 'Button', 'Checkbox'];
+  static validChildElements = ['TextField', 'DropList', 'ToggleButton', 'Button', 'Checkbox', 'Dropdown'];
 
   constructor(element?: Partial<ClozeProperties>, idService?: AbstractIDService) {
     super({ type: 'cloze', ...element }, idService);
@@ -190,8 +190,8 @@ export interface ClozeMarks {
   'background-color'?: string;
 }
 
-interface CustomDocumentNode extends ClozeDocumentContentNode {
-  type: 'TextField' | 'DropList' | 'ToggleButton' | 'Button';
+export interface CustomDocumentNode extends ClozeDocumentContentNode {
+  type: 'TextField' | 'DropList' | 'ToggleButton' | 'Button' | 'Dropdown';
   attrs: {
     model: UIElement
   }

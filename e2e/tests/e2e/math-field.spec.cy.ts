@@ -1,4 +1,6 @@
-import {addElementHover, addNewPage, addNewSection, setPreferencesElement} from '../util';
+import {
+  addElementHover, addNewPage, addNewSection, setPreferencesElement, setCheckbox
+} from '../util';
 
 describe('Math-field element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -22,8 +24,8 @@ describe('Math-field element', { testIsolation: false }, () => {
 
     it('creates a math-field with a preset', () => {
       addElementHover('Formel', 'Feld');
-      cy.get('aspect-element-properties').contains('mat-label', 'Vorbelegung')
-        .parent().find('math-field').shadow().find('.ML__content')
+      cy.get('aspect-preset-value-properties').contains('mat-label', 'Vorbelegung')
+        .closest('aspect-preset-value-properties').find('math-field').shadow().find('.ML__content')
         .click()
         .type('abc');
       setPreferencesElement('Formel Feld mit Vorbelegung', { id: 'math-field-preset' });
@@ -33,10 +35,11 @@ describe('Math-field element', { testIsolation: false }, () => {
       const formula ="\\overline{S \\cup M}";
       addNewSection();
       addElementHover('Formel', 'Feld');
+      setCheckbox('Eingabemodus änderbar');
       cy.get('aspect-element-properties').contains('mat-button-toggle', 'Formel')
         .click();
       cy.get('aspect-element-properties').contains('mat-label', 'Vorbelegung')
-        .parent().find('math-field').shadow().find('.ML__content')
+        .closest('aspect-preset-value-properties').find('math-field').shadow().find('.ML__content')
         .click()
         .type('\\overline{{}S\\cup M{}}{enter}');
       setPreferencesElement('Formel Feld mit Union Vorbelegung', { id: 'field-preset-union' });

@@ -17,5 +17,11 @@
 import './commands'
 import '@cypress/code-coverage/support';
 
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('ResizeObserver loop')) {
+    return false;
+  }
+});
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

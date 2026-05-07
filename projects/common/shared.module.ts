@@ -35,10 +35,6 @@ import { ClozeChildErrorMessage } from 'common/components/compound-elements/cloz
 import { TriggerComponent } from 'common/components/trigger/trigger.component';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import {
-  AreaSegmentComponent
-} from 'common/components/input-elements/text-area-math/area-segment.component';
-import { AreaRowHeightPipe } from 'common/components/input-elements/text-area-math/area-row-height.pipe';
-import {
   TextMarkingButtonSvgComponent
 } from 'common/components/text/text-marking-bar/text-marking-button-svg.component';
 import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
@@ -46,6 +42,7 @@ import { WidgetCalcComponent } from 'common/components/widget-calc/widget-calc.c
 import {
   WidgetMoleculeEditorComponent
 } from 'common/components/widget-molecule-editor/widget-molecule-editor.component';
+import { AreaSegmentComponent } from './components/input-elements/area-segment/area-segment.component';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -93,7 +90,9 @@ import { MathAtanPipe } from './pipes/math-atan.pipe';
 import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
+import { GetValuePipe } from './pipes/get-value.pipe';
+import { AreaRowHeightPipe } from './pipes/area-row-height.pipe';
+import { MathFieldComponent } from './components/input-elements/math-field/math-field.component';
 import { SplitPipe } from './pipes/split.pipe';
 import { TextImagePanelComponent } from './components/text-image-panel.component';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';

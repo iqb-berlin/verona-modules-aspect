@@ -3,7 +3,7 @@ import { TextInputComponentType } from 'player/src/app/models/text-input-compone
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { InputAssistancePreset } from 'common/interfaces';
 import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
-import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
+import { MathFieldComponent } from 'common/components/input-elements/math-field/math-field.component';
 
 @Injectable({
   providedIn: 'root'

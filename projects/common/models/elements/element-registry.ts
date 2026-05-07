@@ -299,7 +299,10 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     height: 80,
     lineHeight: 135,
     enableModeSwitch: false,
-    mathKeyboardPresets: ['math', 'symbols', 'latin', 'greek']
+    mathKeyboardPresets: ['math', 'symbols', 'latin', 'greek'],
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false
   },
   'math-table': {
     width: 230,
@@ -328,7 +331,10 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
   'text-area-math': {
     width: 230,
     height: 132,
-    lineHeight: 135
+    lineHeight: 135,
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false
   },
   trigger: {
     action: null,

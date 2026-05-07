@@ -2,77 +2,22 @@ import {
   Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
 import { TextAreaMathElement, TextAreaMath } from 'common/models/elements/input-elements/text-area-math';
-import {
-  AreaSegmentComponent
-} from 'common/components/input-elements/text-area-math/area-segment.component';
+import { AreaSegmentComponent } from 'common/components/input-elements/area-segment/area-segment.component';
 import { BehaviorSubject } from 'rxjs';
 import { RangeSelectionService } from 'common/services/range-selection-service';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
   selector: 'aspect-text-area-math',
-  template: `
-    @if (elementModel.label) {
-      <label class="label">{{elementModel.label}}</label>
-    }
-    <button class="insert-formula-button"
-            mat-button
-            cdkOverlayOrigin #trigger="cdkOverlayOrigin"
-            (click)="addFormula()">
-      Formel einfügen
-    </button>
-    <div #textArea class="text-area"
-         [style.min-height.px]="elementModel.rowCount | areaRowHeight :
-                                elementModel.styling.fontSize : elementModel.styling.lineHeight"
-         [style.height.px]="!elementModel.hasAutoHeight && (elementModel.rowCount | areaRowHeight :
-                            elementModel.styling.fontSize : elementModel.styling.lineHeight)"
-         [style.overflow-y]="!elementModel.hasAutoHeight && 'auto'"
-         [style.background-color]="elementModel.styling.backgroundColor"
-         [style.line-height.%]="elementModel.styling.lineHeight"
-         [style.color]="elementModel.styling.fontColor"
-         [style.font-family]="elementModel.styling.font"
-         [style.font-size.px]="elementModel.styling.fontSize"
-         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-         (pointerdown)="selectLastSegment()">
-      <span class="alignment-fix">&nbsp;</span>
-      @for (segment of segments; track segment; let i = $index) {
-        <aspect-text-area-math-segment
-          [style.display]="'inline'"
-          [index]="i"
-          [type]="segment.type"
-          [value]="segment.value"
-          [selectedFocus]="selectedFocus"
-          [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
-          [showSoftwareKeyboard]="elementModel.showSoftwareKeyboard"
-          [hideNativeKeyboard]="elementModel.hideNativeKeyboard"
-          (valueChanged)="onValueChanged($event)"
-          (onKeyDown)="onKeyDown.emit($event)"
-          (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
-          (focusOut)="focusChanged.emit({ inputElement: $event, focused: false })"
-          (remove)="removeSegment($event)"
-          (pointerdown)="$event.stopPropagation();">
-        </aspect-text-area-math-segment>
-      }
-    </div>
-    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched">
-      {{ elementFormControl.errors | errorTransform: elementModel }}
-    </mat-error>
-  `,
-  styles: [
-    '.label {font-size: 20px; line-height: 135%; display: block; margin-bottom: 15px;}',
-    '.alignment-fix {padding: 14px 0; display: inline-block; width: 0;}',
-    '.text-area {border: 1px solid black; border-radius: 3px; padding: 10px 5px; }',
-    '.insert-formula-button {font-size: large; width: 160px; background-color: #ddd; padding: 15px 10px; height: 55px;}'
-  ],
+  templateUrl: './text-area-math.component.html',
+  styleUrls: ['./text-area-math.component.scss'],
   standalone: false
 })
 export class TextAreaMathComponent extends TextInputComponent implements OnInit {
   @Input() elementModel!: TextAreaMathElement;
-  @Output() mathInputFocusIn: EventEmitter<FocusEvent> = new EventEmitter();
+  @Input() mathInputFocusIn: EventEmitter<FocusEvent> = new EventEmitter();
   @Output() mathInputFocusOut: EventEmitter<FocusEvent> = new EventEmitter();
-  @ViewChildren(AreaSegmentComponent) segmentComponents!: QueryList<AreaSegmentComponent>;
+  @ViewChildren('segment') segmentComponents!: QueryList<AreaSegmentComponent>;
   @ViewChild('textArea') textArea!: ElementRef;
 
   segments: TextAreaMath[] = [];
@@ -103,7 +48,8 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
 
   private getSelectedInputRange(): Range {
     const range = RangeSelectionService.getRange();
-    if (!range || !RangeSelectionService.isRangeInside(range, this.textArea.nativeElement)) {
+    if (this.segmentComponents.length > 0 &&
+      (!range || !RangeSelectionService.isRangeInside(range, this.textArea.nativeElement))) {
       RangeSelectionService
         .setRange(this.segmentComponents.toArray()[this.selectedFocus.value].inputComponent.inputRef.nativeElement);
     }
@@ -116,10 +62,11 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
     const segmentIndex = this.selectedFocus.value;
     let newSegmentIndex = segmentIndex + 1;
     const selectedType = this.segments[this.selectedFocus.value].type;
-    if (selectedType === 'text') {
+    const currentSegment = this.segmentComponents.toArray()[segmentIndex];
+    if (selectedType === 'text' && currentSegment) {
       const content = range.endContainer.parentElement?.textContent || '';
       const { start, end } = RangeSelectionService
-        .getSelectionRange(range, this.segmentComponents.toArray()[segmentIndex].inputComponent.inputRef.nativeElement);
+        .getSelectionRange(range, currentSegment.inputComponent.inputRef.nativeElement);
       if (content.length === start) {
         this.addSegments(false, true, segmentIndex, '', '');
       } else {

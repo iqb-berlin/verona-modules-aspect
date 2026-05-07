@@ -1,0 +1,50 @@
+@if (elementModel.label) {
+  <label class="label">{{elementModel.label}}</label>
+}
+<button class="insert-formula-button"
+        mat-button
+        cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+        [disabled]="elementModel.readOnly"
+        (click)="addFormula()">
+  Formel einfügen
+</button>
+<div #textArea class="text-area"
+     [style.min-height.px]="elementModel.rowCount | areaRowHeight :
+                            elementModel.styling.fontSize : elementModel.styling.lineHeight"
+     [style.height.px]="!elementModel.hasAutoHeight && (elementModel.rowCount | areaRowHeight :
+                        elementModel.styling.fontSize : elementModel.styling.lineHeight)"
+     [style.overflow-y]="!elementModel.hasAutoHeight && 'auto'"
+     [style.background-color]="elementModel.styling.backgroundColor"
+     [style.line-height.%]="elementModel.styling.lineHeight"
+     [style.color]="elementModel.styling.fontColor"
+     [style.font-family]="elementModel.styling.font"
+     [style.font-size.px]="elementModel.styling.fontSize"
+     [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+     (pointerdown)="selectLastSegment()">
+  <span class="alignment-fix">&nbsp;</span>
+  @for (segment of segments; track segment; let i = $index) {
+    <aspect-text-area-math-segment #segment
+      [style.display]="'inline'"
+      [index]="i"
+      [type]="segment.type"
+      [value]="segment.value"
+      [selectedFocus]="selectedFocus"
+      [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
+      [showSoftwareKeyboard]="elementModel.showSoftwareKeyboard"
+      [hideNativeKeyboard]="elementModel.hideNativeKeyboard"
+      [readonly]="elementModel.readOnly"
+      (valueChanged)="onValueChanged($event)"
+      (onKeyDown)="onKeyDown.emit($event)"
+      (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
+      (focusOut)="elementFormControl.markAsTouched();
+                  focusChanged.emit({ inputElement: $event, focused: false })"
+      (remove)="removeSegment($event)"
+      (pointerdown)="$event.stopPropagation();">
+    </aspect-text-area-math-segment>
+  }
+</div>
+<mat-error *ngIf="elementFormControl.errors && elementFormControl.touched">
+  {{ elementFormControl.errors | errorTransform: elementModel }}
+</mat-error>

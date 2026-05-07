@@ -66,6 +66,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() readonly: boolean = false;
   @Input() enableModeSwitch: boolean = false;
   @Input() mathKeyboardPresets: MathKeyboardPreset[] = [];
+  @Input() placeholder: string = '';
   @Output() valueChange: EventEmitter<string> = new EventEmitter();
   @Output() focusIn: EventEmitter<MathfieldElement> = new EventEmitter();
   @Output() focusOut: EventEmitter<MathfieldElement> = new EventEmitter();
@@ -86,8 +87,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private setupMathField(): void {
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
-    this.mathFieldElement.value = this.value;
     this.mathFieldElement.readOnly = this.readonly;
+    this.mathFieldElement.placeholder = this.placeholder;
+    this.mathFieldElement.setValue(this.value || '', { format: 'latex' });
     setTimeout(() => {
       this.mathFieldElement.menuItems = [];
     }); // Disable context menu
@@ -102,8 +104,15 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
-      this.mathFieldElement.setValue(changes.value.currentValue, { mode: 'text' });
+    if (changes.value && !changes.value.firstChange &&
+      changes.value.currentValue !== this.mathFieldElement.getValue()) {
+      this.mathFieldElement.setValue(changes.value.currentValue, { format: 'latex' });
+    }
+    if (changes.placeholder && this.mathFieldElement) {
+      this.mathFieldElement.placeholder = changes.placeholder.currentValue;
+    }
+    if (changes.readonly && this.mathFieldElement) {
+      this.mathFieldElement.readOnly = changes.readonly.currentValue;
     }
   }
 
@@ -114,7 +123,11 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   setParseMode(event: MatButtonToggleChange) {
     this.mathFieldElement.mode = event.value;
-    (this.inputRef.nativeElement.childNodes[0] as HTMLElement).focus();
+    this.mathFieldElement.focus();
+    if (event.value === 'math') {
+      // Exit any current group (like \text{}) to allow formula entry
+      this.mathFieldElement.executeCommand('moveAfterParent');
+    }
   }
 
   onInput() {

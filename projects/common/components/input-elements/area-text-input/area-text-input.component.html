@@ -1,0 +1,16 @@
+<span #inputRef class="input"
+      autocomplete="off"
+      autocapitalize="none"
+      autocorrect="off"
+      spellcheck="false"
+      [style.display]="displayType"
+      [attr.inputmode]="showSoftwareKeyboard || hideNativeKeyboard ? 'none' : 'text'"
+      [contentEditable]="!readonly"
+      [textContent]="value"
+      (focusin)="onFocusIn(inputRef)"
+      (focusout)="onFocusOut(inputRef)"
+      (blur)="onFocusOut(inputRef)"
+      (keydown)="keyDown($event)"
+      (keyup)="keyUp($event)"
+      (input)="onInput()">
+</span>

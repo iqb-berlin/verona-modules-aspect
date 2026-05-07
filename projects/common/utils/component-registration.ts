@@ -28,7 +28,7 @@ import {
   ToggleButtonComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/toggle-button.component';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
+import { MathFieldComponent } from 'common/components/input-elements/math-field/math-field.component';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
 import { TriggerComponent } from 'common/components/trigger/trigger.component';

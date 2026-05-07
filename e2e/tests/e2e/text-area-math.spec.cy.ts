@@ -45,22 +45,17 @@ describe('Text area math element', { testIsolation: false }, () => {
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Schreibschutz').within(() => {
         cy.get('button:contains("Formel einfügen")').click({force: true});
         cy.get('math-field').shadow().find('.ML__content').click().type('x+y=4');
-        // But we could type
-        // cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'x');
-        // cy.get('math-field').shadow().find('.ML__base').should('not.contain', '+');
-        // cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'y');
-        cy.get('math-field').shadow().find('.ML__base').should('contain', 'x');
-        cy.get('math-field').shadow().find('.ML__base').should('contain', '+');
-        cy.get('math-field').shadow().find('.ML__base').should('contain', 'y');
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'x');
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', '+');
+        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'y');
       });
     });
 
     it('checks that the text-area-math does not show the error message', () => {
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld').click();
       cy.clickOutside();
-      cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld')
-        .find('mat-error').should('not.exist');
-      // cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld').find('mat-error').should('exist');
+      cy.contains('aspect-element-group-selection',
+        'Formel Bereich mit Pflichtfeld').find('mat-error').should('exist');
     });
   });
 });

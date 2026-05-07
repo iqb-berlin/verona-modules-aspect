@@ -117,8 +117,18 @@ export function setPreferencesElement(label: string, settings?: { readOnly?: boo
 }
 
 export function addElementHover(element: string, option: string) {
-  cy.contains('button', element).trigger('mouseover');
-  cy.contains('button', option).click();
+  cy.get('aspect-ui-element-toolbox').within(() => {
+    cy.get('button').then($buttons => {
+      const optionButton = $buttons.filter((i, btn) => btn.innerText.trim() === option && (btn as HTMLElement).offsetParent !== null);
+      if (optionButton.length > 0) {
+        cy.wrap(optionButton).click();
+      } else {
+        cy.contains('button', element).trigger('mouseover');
+        cy.contains('button', option).click();
+      }
+    });
+  });
+  cy.get('aspect-ui-element-toolbox').trigger('mouseleave');
 }
 
 export function setPageConfig(pageNumber: number, settings?: Record<string, boolean>) {

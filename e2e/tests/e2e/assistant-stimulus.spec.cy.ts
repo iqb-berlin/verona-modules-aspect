@@ -18,7 +18,7 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
       addElement('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'Text').click();
       cy.contains('mat-checkbox','Markieren zur Texterschließung erlauben').click();
-      submitDialog();
+      clickButtonDialog('Bestätigen');
     });
 
     it('creates a personalized text stimulus within two columns (Page 1)', () => {

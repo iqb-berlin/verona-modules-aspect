@@ -151,6 +151,7 @@ export function submitDialog(){
 
 export function clickButtonDialog(buttonName: string){
   cy.get('mat-dialog-container').contains('button', buttonName).click();
+  cy.get('mat-dialog-container').should('not.exist');
 }
 
 export function editText(newText: string) {

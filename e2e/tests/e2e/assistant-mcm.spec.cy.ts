@@ -30,7 +30,6 @@ describe('MCM assistant', { testIsolation: false }, () => {
       addGenericOption('Row 2','Neue Zeile');
 
       clickButtonDialog('Bestätigen');
-      cy.wait(100);
     });
 
     after('saves an unit definition', () => {

@@ -18,30 +18,22 @@ export function addMCOption(optionName: string): void {
 export function addGenericOption(optionName: string, type: string) {
   cy.get('mat-dialog-container')
     .get('aspect-option-list-panel')
-    .contains('mat-form-field', type)
+    .get(`mat-form-field:contains(${type})`)
+    .last()
     .scrollIntoView()
     .find('textarea')
     .click({force: true})
     .type(optionName);
   cy.get('mat-dialog-container')
     .get('aspect-option-list-panel')
-    .contains('mat-form-field', type)
+    .get(`mat-form-field:contains(${type})`)
+    .last()
     .contains('mat-icon', 'add')
     .click()
 }
 
-export function addMCMOption(optionName: string): void {
-  cy.contains('h3', 'Optionen')
-    .next('aspect-option-list-panel')
-    .find('textarea')
-    .click({ force: true })
-    .type(`${optionName}{enter}`);
-}
 
-export function addMCMRow(rowName: string): void {
-  cy.contains('h3', 'Zeilen')
-    .next('aspect-option-list-panel')
-    .find('textarea')
-    .click({ force: true })
-    .type(`${rowName}{enter}`);
+export function setCheckboxInDialog(labelText: string) {
+  cy.get('mat-dialog-container').contains('mat-checkbox', labelText)
+    .find('[type="checkbox"]').click({ force: true });
 }

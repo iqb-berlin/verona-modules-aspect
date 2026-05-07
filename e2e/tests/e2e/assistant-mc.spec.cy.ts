@@ -44,7 +44,6 @@ describe('MC assistant', { testIsolation: false }, () => {
       cy.get('aspect-rich-text-editor').eq(1).click().type('{selectall}{backspace}MEINE BEGRUENDUNG');
 
       clickButtonDialog('Bestätigen');
-      cy.wait(100);
     });
 
 

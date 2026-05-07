@@ -31,7 +31,9 @@ import { DynamicRowsDirective } from 'common/directives/dynamic-rows.directive';
 import { TooltipEventTooltipDirective } from 'common/components/tooltip/tooltip-event-tooltip.directive';
 import { TooltipComponent } from 'common/components/tooltip/tooltip.component';
 import { PointerEventTooltipDirective } from 'common/components/tooltip/pointer-event-tooltip.directive';
-import { ClozeChildErrorMessage } from 'common/components/compound-elements/cloze/cloze-child-error-message';
+import {
+  ClozeChildErrorMessageComponent
+} from 'common/components/compound-elements/cloze-child-error-message/cloze-child-error-message.component';
 import { TriggerComponent } from 'common/components/trigger/trigger.component';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import {
@@ -51,7 +53,7 @@ import {
 } from './components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { AutoHeightDirective, TextAreaComponent } from './components/input-elements/text-area.component';
 import { CheckboxComponent } from './components/input-elements/checkbox.component';
-import { DropdownComponent } from './components/input-elements/dropdown.component';
+import { DropdownComponent } from './components/input-elements/dropdown/dropdown.component';
 import { RadioButtonGroupComponent } from './components/input-elements/radio-button-group.component';
 import { ImageComponent } from './components/media-elements/image.component';
 import { VideoComponent } from './components/media-elements/video.component';
@@ -82,7 +84,9 @@ import {
 import { TextMarkingBarComponent } from './components/text/text-marking-bar/text-marking-bar.component';
 import { StyleMarksPipe } from './pipes/styleMarks.pipe';
 import { TextMarkingButtonComponent } from './components/text/text-marking-bar/text-marking-button.component';
-import { ClozeChildOverlay } from './components/compound-elements/cloze/cloze-child-overlay.component';
+import {
+  ClozeChildOverlayComponent
+} from './components/compound-elements/cloze-child-overlay/cloze-child-overlay.component';
 import { MarkListPipe } from './pipes/mark-list.pipe';
 import { IsDisabledDirective } from './directives/is-disabled.directive';
 import { GeometryComponent } from './components/geometry/geometry.component';
@@ -143,7 +147,7 @@ import { MarkingPanelComponent } from './components/text/marking-panel.component
     TextMarkingBarComponent,
     StyleMarksPipe,
     TextMarkingButtonComponent,
-    ClozeChildOverlay,
+    ClozeChildOverlayComponent,
     MarkListPipe,
     IsDisabledDirective,
     GeometryComponent,
@@ -160,7 +164,7 @@ import { MarkingPanelComponent } from './components/text/marking-panel.component
     TooltipComponent,
     TooltipEventTooltipDirective,
     PointerEventTooltipDirective,
-    ClozeChildErrorMessage,
+    ClozeChildErrorMessageComponent,
     AutoHeightDirective,
     LikertRowBackgroundColorPipe,
     MathTableComponent,

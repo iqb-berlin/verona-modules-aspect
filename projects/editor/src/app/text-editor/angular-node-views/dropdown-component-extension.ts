@@ -1,62 +1,62 @@
 import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
-import {
-  TextFieldSimpleProperties
-} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 import { ModelRegistry } from 'common/utils/model-registry';
+import { DropdownProperties } from 'common/models/elements/input-elements/dropdown';
 import { UIElementProperties } from 'common/interfaces';
-import { TextFieldNodeviewComponent } from './text-field-nodeview.component';
+import { DropdownNodeviewComponent } from './dropdown-nodeview.component';
 
-const TextFieldComponentExtension = (injector: Injector): Node => Node.create({
+const DropdownComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',
   inline: true,
-  name: 'TextField',
+  name: 'Dropdown',
 
   addAttributes() {
     return {
       model: {
         default: ModelRegistry.createElement({
-          type: 'text-field-simple',
+          type: 'dropdown',
           id: 'cloze-child-id-placeholder',
           alias: 'cloze-child-alias-placeholder',
           dimensions: {
             width: 150,
             height: 30,
-            isWidthFixed: true,
+            isWidthFixed: false,
             isHeightFixed: true,
-            minHeight: null
+            minHeight: null,
+            minWidth: 40
           }
-        } as Partial<TextFieldSimpleProperties> as UIElementProperties)
+        } as Partial<DropdownProperties> as UIElementProperties)
       }
     };
   },
 
   parseHTML() {
     return [{
-      tag: 'aspect-nodeview-text-field',
+      tag: 'aspect-nodeview-dropdown',
       getAttrs: () => ({
         model: ModelRegistry.createElement({
-          type: 'text-field-simple',
+          type: 'dropdown',
           id: 'cloze-child-id-placeholder',
           alias: 'cloze-child-alias-placeholder',
           dimensions: {
             width: 150,
             height: 30,
-            isWidthFixed: true,
+            isWidthFixed: false,
             isHeightFixed: true,
-            minHeight: null
+            minHeight: null,
+            minWidth: 40
           }
-        } as Partial<TextFieldSimpleProperties> as UIElementProperties)
+        } as Partial<DropdownProperties> as UIElementProperties)
       })
     }];
   },
   renderHTML({ HTMLAttributes }) {
-    return ['aspect-nodeview-text-field', mergeAttributes(HTMLAttributes)];
+    return ['aspect-nodeview-dropdown', mergeAttributes(HTMLAttributes)];
   },
   addNodeView() {
-    return AngularNodeViewRenderer(TextFieldNodeviewComponent, { injector });
+    return AngularNodeViewRenderer(DropdownNodeviewComponent, { injector });
   }
 });
 
-export default TextFieldComponentExtension;
+export default DropdownComponentExtension;

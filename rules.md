@@ -24,3 +24,15 @@ Rationale:
 - enforces a clean separation between presentation and transformation logic
 - makes transformation behavior easier to test
 
+
+## 3) Omit NoopAnimationsModule in Unit Tests
+
+The `NoopAnimationsModule` is considered deprecated for testing purposes in this project and should be omitted from `TestBed` configurations.
+
+- Avoid: `imports: [NoopAnimationsModule]`
+- Prefer: Simply omitting the module (Angular handles this automatically or via global configuration).
+
+Rationale:
+- reduces boilerplate in test files
+- avoids dependency on deprecated animation modules
+- simplifies test setup

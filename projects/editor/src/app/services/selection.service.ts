@@ -3,8 +3,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import {
-  ClozeChildOverlay
-} from 'common/components/compound-elements/cloze/cloze-child-overlay.component';
+  ClozeChildOverlayComponent
+} from 'common/components/compound-elements/cloze-child-overlay/cloze-child-overlay.component';
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class SelectionService {
   selectedPageIndex: number = 0;
   selectedSectionIndex: number = 0;
   private _selectedElements!: BehaviorSubject<UIElement[]>;
-  selectedElementComponents: (ElementOverlay | ClozeChildOverlay | TableChildOverlay)[] = [];
+  selectedElementComponents: (ElementOverlay | ClozeChildOverlayComponent | TableChildOverlay)[] = [];
   isCompoundChildSelected: boolean = false;
 
   constructor() {
@@ -40,7 +40,10 @@ export class SelectionService {
     return this._selectedElements.value;
   }
 
-  selectElement(event: { elementComponent: ElementOverlay | ClozeChildOverlay | TableChildOverlay; multiSelect: boolean }): void {
+  selectElement(event: {
+    elementComponent: ElementOverlay | ClozeChildOverlayComponent | TableChildOverlay;
+    multiSelect: boolean
+  }): void {
     if (!event.multiSelect) {
       this.clearElementSelection();
     }
@@ -52,7 +55,7 @@ export class SelectionService {
 
   clearElementSelection(): void {
     this.selectedElementComponents
-      .forEach((overlayComponent: ElementOverlay | ClozeChildOverlay | TableChildOverlay) => {
+      .forEach((overlayComponent: ElementOverlay | ClozeChildOverlayComponent | TableChildOverlay) => {
         overlayComponent.setSelected(false);
       });
     this.selectedElementComponents = [];

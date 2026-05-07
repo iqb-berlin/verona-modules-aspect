@@ -51,6 +51,7 @@ import ToggleButtonComponentExtension from './angular-node-views/toggle-button-c
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
 import CheckboxComponentExtension from './angular-node-views/checkbox-component-extension';
+import DropdownComponentExtension from './angular-node-views/dropdown-component-extension';
 import MathFormulaExtension from './angular-node-views/math-formula-extension';
 
 @Component({
@@ -143,6 +144,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       activeExtensions.push(TextFieldComponentExtension(this.injector));
       activeExtensions.push(ButtonComponentExtension(this.injector));
       activeExtensions.push(CheckboxComponentExtension(this.injector));
+      activeExtensions.push(DropdownComponentExtension(this.injector));
       activeExtensions.push(MathFormulaExtension(this.injector));
     }
     this.editor = new Editor({
@@ -376,6 +378,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   insertDropList(): void {
     this.editor.commands.insertContent('<aspect-nodeview-drop-list></aspect-nodeview-drop-list>');
+    this.editor.commands.focus();
+  }
+
+  insertDropdown(): void {
+    this.editor.commands.insertContent('<aspect-nodeview-dropdown></aspect-nodeview-dropdown>');
     this.editor.commands.focus();
   }
 

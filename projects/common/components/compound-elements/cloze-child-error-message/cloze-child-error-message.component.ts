@@ -6,27 +6,15 @@ import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'aspect-cloze-child-error-message',
-  template: `
-    {{elementFormControl.errors ? (elementFormControl.errors | errorTransform: elementModel) : null}}
-  `,
+  templateUrl: './cloze-child-error-message.component.html',
+  styleUrls: ['./cloze-child-error-message.component.scss'],
   host: {
     '[style.top.px]': 'elementModel.dimensions ? elementModel.dimensions.height + 5 : undefined',
     '[style.bottom.px]': 'elementModel.dimensions ? undefined : -20'
   },
-  styles: [`
-    :host {
-      padding: 0 5px;
-      position: absolute;
-      border: 1px solid #f44336;
-      font-size: 12px;
-      background-color: rgb(255, 255, 255, 0.9);
-      color: #f44336;
-      z-index: 1;
-    }
-  `],
   standalone: false
 })
-export class ClozeChildErrorMessage implements AfterViewInit {
+export class ClozeChildErrorMessageComponent implements AfterViewInit {
   @Input() elementModel!: InputElement;
   @Input() elementFormControl!: UntypedFormControl;
 

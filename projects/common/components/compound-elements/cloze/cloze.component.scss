@@ -1,0 +1,27 @@
+p {
+  margin: 0;
+}
+
+:host ::ng-deep {
+  p strong {
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+
+  p:empty::after {
+    content: '';
+    display: inline-block;
+  }
+
+  p span {
+    font-size: inherit;
+  }
+
+  sup, sub {
+    line-height: 0;
+  }
+
+  .droplist-child {
+    vertical-align: middle;
+  }
+}

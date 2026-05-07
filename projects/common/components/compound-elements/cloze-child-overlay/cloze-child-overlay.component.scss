@@ -1,0 +1,11 @@
+:host div > * {
+  display: block;
+}
+
+:host ::ng-deep mat-checkbox .mdc-form-field {
+  vertical-align: baseline;
+}
+
+:host ::ng-deep mat-checkbox .mdc-checkbox {
+  display: none;
+}

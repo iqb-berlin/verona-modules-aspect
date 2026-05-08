@@ -41,7 +41,7 @@ import {
 } from './components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
 import {
   ShowStateVariablesButtonComponent
-} from './components/new-ui-element-panel/show-state-variables-button.component';
+} from './components/show-state-variables-button/show-state-variables-button.component';
 import {
   TextFieldElementPropertiesComponent
 } from './components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';

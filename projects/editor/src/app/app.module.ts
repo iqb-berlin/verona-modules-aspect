@@ -35,7 +35,7 @@ import { MarkingPanelComponent } from 'common/components/text/marking-panel.comp
 import { ComponentRegistry } from 'common/utils/component-registry';
 import {
   StateVariablesDialogComponent
-} from './components/dialogs/state-variables-dialog/state-variables-dialog.component';
+} from './components/state-variables-dialog/state-variables-dialog.component';
 import {
   VisibilityRuleEditorComponent
 } from './components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
@@ -50,7 +50,7 @@ import {
 } from './components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
 import {
   StateVariableEditorComponent
-} from './components/dialogs/state-variables-dialog/state-variable-editor.component';
+} from './components/state-variable-editor/state-variable-editor.component';
 import { ActionParamStateVariableComponent } from
   './components/properties-panel/model-properties-tab/input-groups/action-param-state-variable.component';
 import {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
@@ -15,7 +15,7 @@ import { PlayerProperties } from 'common/models/elements/property-group-interfac
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import {
   StateVariablesDialogComponent
-} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
+} from 'editor/src/app/components/state-variables-dialog/state-variables-dialog.component';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import {
   VisibilityRulesDialogComponent
@@ -34,7 +34,10 @@ import { FileService, FileInformation } from 'common/services/file.service';
 import {
   DragNDropValueObject, Label, TextImageLabel, TooltipPosition, ImageOptions
 } from 'common/interfaces';
-import { firstValueFrom } from 'rxjs';
+
+import {
+  ImageResizeDialogComponent
+} from 'editor/src/app/components/image-resize-dialog/image-resize-dialog.component';
 import { DeleteConfirmationDialogComponent } from '../components/dialogs/delete-confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -44,7 +47,6 @@ import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-e
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
 import { EditorSection } from '../models/editor-unit';
-import { ImageResizeDialogComponent } from 'editor/src/app/components/image-resize-dialog/image-resize-dialog.component';
 
 @Injectable({
   providedIn: 'root'

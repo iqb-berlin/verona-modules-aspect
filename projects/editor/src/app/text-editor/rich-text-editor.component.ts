@@ -1,6 +1,6 @@
 import {
   Component, EventEmitter, Input, Output,
-  AfterViewInit, Injector, OnInit
+  AfterViewInit, Injector, OnInit, ViewChild, ElementRef
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -83,6 +83,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() controlPanelFolded: boolean = true;
   @Input() showWordCounter: boolean = false;
   @Output() contentChange = new EventEmitter<string | Record<string, any>>();
+  @ViewChild('imageUpload') imageUpload!: ElementRef;
 
   selectedFontColor = 'black';
   selectedHighlightColor = 'lightgrey';
@@ -92,6 +93,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   selectedIndentSize = 20;
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
+  lastImageAlignment: 'inline' | 'none' | 'right' | 'left' = 'inline';
 
   defaultExtensions = [
     Document, Text, ListItem,
@@ -342,24 +344,40 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   }
 
   async insertImage(): Promise<void> {
-    const media = await FileService.loadImage();
-    this.editor.commands.insertInlineImage({ src: media.content });
+    this.lastImageAlignment = 'inline';
+    this.imageUpload.nativeElement.click();
   }
 
   async insertBlockImage(alignment: 'none' | 'right' | 'left'): Promise<void> {
-    const media = await FileService.loadImage();
-    switch (alignment) {
-      case 'left': {
-        this.editor.commands.insertBlockImage({ src: media.content, style: 'float: left; margin-right: 10px;' });
-        break;
-      }
-      case 'right': {
-        this.editor.commands.insertBlockImage({ src: media.content, style: 'float: right; margin-left: 10px' });
-        break;
-      }
-      default: {
-        this.editor.commands.insertBlockImage({ src: media.content });
-      }
+    this.lastImageAlignment = alignment;
+    this.imageUpload.nativeElement.click();
+  }
+
+  onImageUpload(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      FileService.readFileAsText(file, true).then(base64 => {
+        if (FileService.isResizable(file.type)) {
+          this.dialogService.showImageResizeDialog(base64, {}).subscribe(async options => {
+            if (options) {
+              const imgSrc = await FileService.scaleImage(base64, options);
+              this.insertResizedImage(imgSrc);
+            }
+          });
+        } else {
+          this.insertResizedImage(base64);
+        }
+      });
+    }
+  }
+
+  private insertResizedImage(imgSrc: string): void {
+    if (this.lastImageAlignment === 'inline') {
+      this.editor.commands.insertInlineImage({ src: imgSrc });
+    } else {
+      const style = this.lastImageAlignment === 'none' ? '' :
+        `float: ${this.lastImageAlignment}; margin-${this.lastImageAlignment === 'left' ? 'right' : 'left'}: 10px;`;
+      this.editor.commands.insertBlockImage({ src: imgSrc, style });
     }
   }
 

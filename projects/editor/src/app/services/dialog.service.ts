@@ -28,10 +28,11 @@ import {
 import { UIElement } from 'common/models/elements/element';
 import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog.component';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
-import { FileInformation } from 'common/services/file.service';
+import { FileService, FileInformation } from 'common/services/file.service';
 import {
-  DragNDropValueObject, Label, TextImageLabel, TooltipPosition
+  DragNDropValueObject, Label, TextImageLabel, TooltipPosition, ImageOptions
 } from 'common/interfaces';
+import { firstValueFrom } from 'rxjs';
 import { DeleteConfirmationDialogComponent } from '../components/dialogs/delete-confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -41,6 +42,7 @@ import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-e
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
 import { EditorSection } from '../models/editor-unit';
+import { ImageResizeDialogComponent } from 'editor/src/app/components/image-resize-dialog/image-resize-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -224,5 +226,29 @@ export class DialogService {
       autoFocus: false
     });
     return dialogRef.afterClosed();
+  }
+
+  showImageResizeDialog(base64: string, options: ImageOptions): Observable<ImageOptions> {
+    const dialogRef = this.dialog.open(ImageResizeDialogComponent, {
+      data: { base64, options: { ...options } },
+      width: '500px',
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  async importImage(): Promise<FileInformation | null> {
+    const file = await FileService.getRawFile('image/*');
+    const base64 = await FileService.readFileAsText(file, true);
+    let content = base64;
+    if (FileService.isResizable(file.type)) {
+      const options = await firstValueFrom(this.showImageResizeDialog(base64, {}));
+      if (options) {
+        content = await FileService.scaleImage(base64, options);
+      } else {
+        return null;
+      }
+    }
+    return { name: file.name, content };
   }
 }

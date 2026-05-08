@@ -13,6 +13,8 @@ import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { DropListProperties } from 'common/models/elements/input-elements/drop-list';
 import { UIElementProperties, UIElementType } from 'common/interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'aspect-editor-table-edit-dialog',
@@ -47,17 +49,26 @@ export class TableEditDialogComponent {
   @ViewChild(TableComponent) tableComp!: TableComponent;
   newTable: TableElement;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { table: TableElement }, private idService: IDService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { table: TableElement },
+              private idService: IDService,
+              private dialogService: DialogService) {
     this.newTable = data.table;
   }
 
   async addElement(el: { elementType: UIElementType, row: number, col: number }): Promise<void> {
     const extraProps: Partial<UIElementProperties> = {};
     if (el.elementType === 'image') {
-      await FileService.loadImage().then(image => {
-        (extraProps as ImageProperties).src = image.content;
-        (extraProps as ImageProperties).fileName = image.name;
-      });
+      const file = await FileService.getRawFile('image/*');
+      const base64 = await FileService.readFileAsText(file, true);
+      if (FileService.isResizable(file.type)) {
+        const options = await firstValueFrom(this.dialogService.showImageResizeDialog(base64, {}));
+        if (options) {
+          (extraProps as ImageProperties).src = await FileService.scaleImage(base64, options);
+        }
+      } else {
+        (extraProps as ImageProperties).src = base64;
+      }
+      (extraProps as ImageProperties).fileName = file.name;
     }
     if (el.elementType === 'audio') {
       await FileService.loadAudio().then(audio => {

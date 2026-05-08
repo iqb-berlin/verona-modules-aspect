@@ -93,12 +93,19 @@ export class ElementService {
         });
         break;
       case 'image':
-      case 'hotspot-image':
-        await FileService.loadImage().then(image => {
-          (newElementProperties as ImageProperties).src = image.content;
-          (newElementProperties as ImageProperties).fileName = image.name;
-        });
+      case 'hotspot-image': {
+        const file = await FileService.getRawFile('image/*');
+        const base64 = await FileService.readFileAsText(file, true);
+        if (FileService.isResizable(file.type)) {
+          const options = await firstValueFrom(this.dialogService.showImageResizeDialog(base64, {}));
+          if (!options) return Promise.reject('dialogCanceled');
+          (newElementProperties as ImageProperties).src = await FileService.scaleImage(base64, options);
+        } else {
+          (newElementProperties as ImageProperties).src = base64;
+        }
+        (newElementProperties as ImageProperties).fileName = file.name;
         break;
+      }
       case 'frame':
         newElementProperties.position = {
           zIndex: -1,

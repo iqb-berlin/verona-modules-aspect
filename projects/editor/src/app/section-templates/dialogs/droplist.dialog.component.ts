@@ -263,8 +263,20 @@ export class DroplistWizardDialogComponent {
 
   // eslint-disable-next-line class-methods-use-this
   async loadImage(list: string[], eventTarget: HTMLInputElement): Promise<void> {
-    const imgSrc = await FileService.readFileAsText(eventTarget.files?.[0] as File, true);
-    list.push(imgSrc);
+    const file = eventTarget.files?.[0];
+    if (file) {
+      const base64 = await FileService.readFileAsText(file, true);
+      if (FileService.isResizable(file.type)) {
+        this.dialogService.showImageResizeDialog(base64, {}).subscribe(async options => {
+          if (options) {
+            const imgSrc = await FileService.scaleImage(base64, options);
+            list.push(imgSrc);
+          }
+        });
+      } else {
+        list.push(base64);
+      }
+    }
   }
 
   drop(event: CdkDragDrop<string[]>) {

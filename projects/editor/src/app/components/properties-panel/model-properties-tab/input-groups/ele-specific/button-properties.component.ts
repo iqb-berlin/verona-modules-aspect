@@ -1,7 +1,6 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { FileService } from 'common/services/file.service';
 import { UIElement } from 'common/models/elements/element';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgForOf, NgIf } from '@angular/common';
@@ -11,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
     selector: 'aspect-button-properties',
@@ -40,12 +40,9 @@ import { FormsModule } from '@angular/forms';
             </button>
             <button mat-button class="fx-fill"
                     [class.checked]="!!combinedProperties.imageSrc && !combinedProperties.asLink"
-                    (click)="imageUpload.click(); updateModel.emit({ property: 'asLink', value: false });">
+                    (click)="importImage(); updateModel.emit({ property: 'asLink', value: false });">
               {{ 'propertiesPanel.image' | translate }}
             </button>
-            <input type="file" hidden accept="image/*"
-                   #imageUpload id="button-image-upload"
-                   (change)="loadImage($event)">
             <button mat-button
                     class="fx-fill"
                     [class.checked]="!combinedProperties.imageSrc && !!combinedProperties.asLink"
@@ -58,7 +55,7 @@ import { FormsModule } from '@angular/forms';
             <div>
               <button mat-raised-button
                       [disabled]="combinedProperties.asLink"
-                      (click)="imageUpload.click();">
+                      (click)="importImage();">
                 {{ 'updateImage' | translate }}
               </button>
               <button mat-raised-button
@@ -134,9 +131,13 @@ export class ButtonPropertiesComponent {
 
   checked = false;
 
-  async loadImage(event: any): Promise<void> {
-    const imgSrc = await FileService.readFileAsText((event.target as HTMLInputElement).files?.[0] as File, true);
-    this.updateModel.emit({ property: 'imageSrc', value: imgSrc });
+  constructor(private dialogService: DialogService) { }
+
+  async importImage(): Promise<void> {
+    const file = await this.dialogService.importImage();
+    if (file) {
+      this.updateModel.emit({ property: 'imageSrc', value: file.content });
+    }
   }
 
   removeImage(): void {

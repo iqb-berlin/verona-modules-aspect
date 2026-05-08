@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { IMAGE_COMPRESSION_QUALITY, IMAGE_MAX_WIDTH } from 'common/config';
+import { ImageOptions } from 'common/interfaces';
 
 export interface FileInformation {
   name: string;
@@ -41,21 +42,34 @@ export class FileService {
     });
   }
 
-  /* DEPRECATED: Use static upload-inputs instead! */
-  static async loadImage(): Promise<FileInformation> {
-    const file = await FileService.loadFile(['image/*'], true);
-    return {
-      ...file,
-      content: await FileService.scaleImage(file.content)
-    };
+  static async getRawFile(accept: string): Promise<File> {
+    return new Promise<File>((resolve, reject) => {
+      const fileUploadElement = document.createElement('input');
+      fileUploadElement.type = 'file';
+      fileUploadElement.accept = accept;
+      fileUploadElement.addEventListener('change', event => {
+        const file = (event.target as HTMLInputElement).files?.[0];
+        if (file) {
+          resolve(file);
+        } else {
+          reject(new Error('No file selected'));
+        }
+      });
+      fileUploadElement.click();
+    });
   }
 
-  static scaleImage(base64Image: string): Promise<string> {
+  static isResizable(mimeType: string): boolean {
+    const resizableMimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/bmp', 'image/gif'];
+    return resizableMimeTypes.includes(mimeType);
+  }
+
+  static scaleImage(base64Image: string, options: ImageOptions = {}): Promise<string> {
     return new Promise((resolve, reject) => {
       const mimeType = base64Image.match(/data:([^;]+);/)?.[1] || '';
 
-      const resizableMimeTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-      if (!resizableMimeTypes.includes(mimeType)) {
+      const resizableMimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/bmp', 'image/gif'];
+      if (!resizableMimeTypes.includes(mimeType) || options.uncompressed) {
         resolve(base64Image);
         return;
       }
@@ -63,25 +77,33 @@ export class FileService {
       const img = new Image();
       img.src = base64Image;
       img.onload = () => {
-        const width = img.width;
-        const height = img.height;
+        const maxWidth = options.maxWidth || IMAGE_MAX_WIDTH;
+        const maxHeight = options.maxHeight || Number.MAX_SAFE_INTEGER;
+        const quality = options.quality !== undefined ? options.quality : IMAGE_COMPRESSION_QUALITY;
 
-        if (width <= IMAGE_MAX_WIDTH) {
+        let { width, height } = img;
+
+        if (width <= maxWidth && height <= maxHeight) {
           resolve(base64Image);
         } else {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width *= ratio;
+          height *= ratio;
+
           const canvas = document.createElement('canvas');
-          const scaleFactor = IMAGE_MAX_WIDTH / width;
-          canvas.width = IMAGE_MAX_WIDTH;
-          canvas.height = height * scaleFactor;
+          canvas.width = width;
+          canvas.height = height;
 
           const ctx = canvas.getContext('2d');
           if (ctx) {
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            // Use PNG for images with transparency, JPEG with compression for others
-            if (mimeType === 'image/png') {
+            ctx.drawImage(img, 0, 0, width, height);
+            const outputMimeType = options.targetMimeType || mimeType;
+            if (outputMimeType === 'image/png' || outputMimeType === 'image/gif') {
               resolve(canvas.toDataURL('image/png'));
+            } else if (outputMimeType === 'image/webp') {
+              resolve(canvas.toDataURL('image/webp', quality));
             } else {
-              resolve(canvas.toDataURL('image/jpeg', IMAGE_COMPRESSION_QUALITY));
+              resolve(canvas.toDataURL('image/jpeg', quality));
             }
           } else {
             reject(new Error('Canvas context not available'));

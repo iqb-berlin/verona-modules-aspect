@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>{{ 'imageResizeDialog.title' | translate }}</h2>
+<mat-dialog-content>
+  <div class="fx-column-start-stretch main-container">
+    <div class="preview-container">
+      <img [src]="data.base64" class="preview-image">
+      <div class="image-info">
+        <div>{{ 'imageResizeDialog.originalSize' | translate }}: {{ originalWidth }} x {{ originalHeight }} px ({{ originalSize | bytes }})</div>
+        <div *ngIf="estimatedSize !== originalSize" class="estimated-size">
+          {{ 'imageResizeDialog.newSize' | translate }}: <strong>{{ estimatedSize | bytes }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <mat-checkbox [(ngModel)]="data.options.uncompressed" (ngModelChange)="onUncompressedChange()">
+      {{ 'imageResizeDialog.useOriginalFile' | translate }}
+    </mat-checkbox>
+
+    <mat-checkbox *ngIf="!data.base64.includes('image/webp')"
+                  [ngModel]="data.options.targetMimeType === 'image/webp'"
+                  (ngModelChange)="onFormatChange($event)">
+      {{ 'imageResizeDialog.convertToWebP' | translate }}
+    </mat-checkbox>
+
+    <ng-container *ngIf="!data.options.uncompressed">
+      <div class="fx-row-start-center dimensions-row">
+        <mat-form-field appearance="fill" style="flex: 1;">
+          <mat-label>{{ 'imageResizeDialog.maxWidth' | translate }}</mat-label>
+          <input matInput type="number" min="1" [(ngModel)]="data.options.maxWidth" (ngModelChange)="onWidthChange($event)">
+        </mat-form-field>
+
+        <button mat-icon-button (click)="keepAspectRatio = !keepAspectRatio" [color]="keepAspectRatio ? 'primary' : ''"
+                [matTooltip]="'imageResizeDialog.keepAspectRatio' | translate">
+          <mat-icon>{{ keepAspectRatio ? 'link' : 'link_off' }}</mat-icon>
+        </button>
+
+        <mat-form-field appearance="fill" style="flex: 1;">
+          <mat-label>{{ 'imageResizeDialog.maxHeight' | translate }}</mat-label>
+          <input matInput type="number" min="1" [(ngModel)]="data.options.maxHeight" (ngModelChange)="onHeightChange($event)"
+                 [placeholder]="'imageResizeDialog.unlimited' | translate">
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="data.base64 | supportsQuality:data.options.targetMimeType" class="fx-column-start-stretch">
+        <label>{{ 'imageResizeDialog.quality' | translate }} ({{ ((data.options.quality || 0) * 100).toFixed(0) }}%)</label>
+        <mat-slider min="0.1" max="1" step="0.05">
+          <input matSliderThumb [(ngModel)]="data.options.quality" (ngModelChange)="onQualityChange()">
+        </mat-slider>
+      </div>
+    </ng-container>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data.options">{{ 'save' | translate }}</button>
+  <button mat-button [mat-dialog-close]="null">{{ 'cancel' | translate }}</button>
+</mat-dialog-actions>

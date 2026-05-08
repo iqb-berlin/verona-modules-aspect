@@ -5,14 +5,10 @@ import { StateVariable } from 'common/models/state-variable';
 import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
-    selector: 'aspect-state-variable-editor',
-    templateUrl: './state-variable-editor.component.html',
-    styles: [`
-    .error {
-      color: #f44336 !important;
-    }
-  `],
-    standalone: false
+  selector: 'aspect-state-variable-editor',
+  templateUrl: './state-variable-editor.component.html',
+  styleUrls: ['./state-variable-editor.component.scss'],
+  standalone: false
 })
 export class StateVariableEditorComponent {
   error: boolean = false;

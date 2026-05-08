@@ -20,7 +20,10 @@ export class IdRegistry {
   }
 
   unregisterID(id: string): void {
-    this.registeredIDs.splice(this.registeredIDs.indexOf(id), 1);
+    const index = this.registeredIDs.indexOf(id);
+    if (index !== -1) {
+      this.registeredIDs.splice(index, 1);
+    }
   }
 
   reset(): void {

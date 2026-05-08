@@ -4,20 +4,9 @@ import { StateVariable } from 'common/models/state-variable';
 import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
-    templateUrl: './state-variables-dialog.component.html',
-    styles: [`
-    .add-button {
-      width: 100%;
-      height: 25px;
-      background-color: #BABABA;
-    }
-    .add-icon {
-      font-size: 24px;
-      color: white;
-      margin-top: -5px;
-    }
-  `],
-    standalone: false
+  templateUrl: './state-variables-dialog.component.html',
+  styleUrls: ['./state-variables-dialog.component.scss'],
+  standalone: false
 })
 export class StateVariablesDialogComponent {
   stateVariables: StateVariable[];
@@ -34,6 +23,8 @@ export class StateVariablesDialogComponent {
   }
 
   deleteStateVariable(index: number) {
+    this.idService.unregister(this.stateVariables[index].id, true, false);
+    this.idService.unregister(this.stateVariables[index].alias, false, true);
     this.stateVariables.splice(index, 1);
   }
 }

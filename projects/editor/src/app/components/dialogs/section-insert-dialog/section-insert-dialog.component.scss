@@ -1,0 +1,15 @@
+.paste-area {
+  width: 250px;
+  height: 60px;
+  border: 1px solid;
+  overflow: hidden;
+}
+
+.radio-child-item {
+  margin-left: 35px;
+  font-size: smaller;
+}
+
+:host ::ng-deep mat-radio-button .mdc-label {
+  font-size: larger;
+}

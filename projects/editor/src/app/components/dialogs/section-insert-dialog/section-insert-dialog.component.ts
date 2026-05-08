@@ -1,4 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component, Inject, OnInit, OnDestroy
+} from '@angular/core';
 import { Section } from 'common/models/section';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -8,55 +10,11 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
-  template: `
-    <h2 mat-dialog-title>Seitenabschnitt einfügen</h2>
-    <mat-dialog-content>
-      <mat-radio-group [style]="'display: flex; flex-direction: column'"
-                       [(ngModel)]="selectedMethod">
-        <mat-radio-button value="savedCode" [disabled]="!savedSectionCode">
-          Gespeicherten Abschnitt einfügen
-        </mat-radio-button>
-          <p *ngIf="savedSectionCode" class="radio-child-item" [style.color]="'green'">
-            Gespeicherter Abschnitt gefunden.
-          </p>
-          <p *ngIf="!savedSectionCode" class="radio-child-item" [style.color]="'var(--warn)'">
-            Kein gespeicherter Abschnitt gefunden.
-          </p>
-        <mat-radio-button value="pastedCode">
-          Abschnitt über Zwischenablage einfügen
-        </mat-radio-button>
-        <div class="radio-child-item message-area" [style.color]="operationStatus">
-          {{operationStatusText}}
-        </div>
-        <div class="radio-child-item paste-area" contenteditable="true"
-             (click)="selectedMethod = 'pastedCode'"
-             (paste)="pasteSectionFromClipboard($event)">
-        </div>
-      </mat-radio-group>
-
-      <mat-divider [style.margin-top.px]="20" [style.margin-bottom.px]="10"></mat-divider>
-
-      <mat-checkbox [(ngModel)]="replaceSection">
-        Bestehenden Abschnitt ersetzen
-      </mat-checkbox>
-
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button *ngIf="selectedMethod == 'savedCode' || operationStatus === 'green' || operationStatus === 'orange'"
-              (click)="confirm()">
-        {{'confirm' | translate }}
-      </button>
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </mat-dialog-actions>
-  `,
-  styles: [
-    '.paste-area {width: 250px; height: 60px; border: 1px solid; overflow: hidden}',
-    '.radio-child-item {margin-left: 35px; font-size: smaller;}',
-    ':host ::ng-deep mat-radio-button .mdc-label {font-size: larger;}'
-  ],
+  templateUrl: './section-insert-dialog.component.html',
+  styleUrls: ['./section-insert-dialog.component.scss'],
   standalone: false
 })
-export class SectionInsertDialogComponent implements OnInit {
+export class SectionInsertDialogComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   operationStatus: 'red' | 'orange' | 'green' | 'none' = 'none';
@@ -113,10 +71,10 @@ export class SectionInsertDialogComponent implements OnInit {
   }
 
   confirm(): void {
-    if (this.newSection && this.operationStatus === 'orange') {
-      this.newSection.elements = this.newSection.elements.map(el => el.getBlueprint()) as any;
-    }
-    this.dialogRef.close({ newSection: this.newSection, replaceSection: this.replaceSection });
+    const sectionToReturn = (this.newSection && this.operationStatus === 'orange') ?
+      { ...this.newSection, elements: this.newSection.elements.map(el => el.getBlueprint()) } :
+      this.newSection;
+    this.dialogRef.close({ newSection: sectionToReturn, replaceSection: this.replaceSection });
   }
 
   private findElementsWithDuplicateID(elements: UIElement[]): UIElement[] {

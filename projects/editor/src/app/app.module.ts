@@ -19,7 +19,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { APIService, SharedModule } from 'common/shared.module';
-import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
+import {
+  SectionInsertDialogComponent
+} from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { MatRadioModule } from '@angular/material/radio';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';

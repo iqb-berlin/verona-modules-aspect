@@ -108,3 +108,22 @@ Cypress.Commands.add('getElement', (elementType: string, label?: string) => {
 
   return cy.get(elementType);
 });
+
+Cypress.Commands.add('stubFileInput', () => {
+  // The app creates a hidden <input type=file> via document.createElement that is never
+  // appended to the DOM. Intercept createElement to attach it to <body> so Cypress can find it.
+  cy.window().then(win => {
+    const originalCreateElement = win.document.createElement.bind(win.document);
+    cy.stub(win.document, 'createElement').callsFake((tagName: string, ...args: any[]) => {
+      const el = originalCreateElement(tagName, ...args);
+      if (tagName.toLowerCase() === 'input') {
+        const originalClick = el.click.bind(el);
+        el.click = () => {
+          win.document.body.appendChild(el);
+          originalClick();
+        };
+      }
+      return el;
+    });
+  });
+});

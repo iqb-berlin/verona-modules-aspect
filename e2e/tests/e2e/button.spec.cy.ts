@@ -1,9 +1,9 @@
 import {
   addElement,
   addPage,
-  addPostMessageStub,
+  addPostMessageStub, clickButtonDialog,
   navigateToPage,
-  selectFromDropdown
+  selectFromDropdown, uploadFile
 } from '../util';
 
 describe('Button element', { testIsolation: false }, () => {
@@ -40,7 +40,12 @@ describe('Button element', { testIsolation: false }, () => {
 
   it('creates image button in editor', () => {
     addElement('Knopf', 'Sonstige');
-    cy.get('#button-image-upload').selectFile('example_data/media/446878.jpeg', { force: true });
+    cy.stubFileInput();
+    cy.get('aspect-element-properties')
+      .contains('button', 'Bild')
+      .click();
+    uploadFile('446878.jpeg');
+    clickButtonDialog('Speichern');
   });
 
   it('saves unit definition', () => {

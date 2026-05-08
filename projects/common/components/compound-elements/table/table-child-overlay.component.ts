@@ -25,33 +25,40 @@ import { CommonModule } from '@angular/common';
        (click)="elementSelected.emit(this); $event.stopPropagation();">
     <aspect-text *ngIf="element.type === 'text'" #childComponent
                  [elementModel]="$any(element)"
+                 [style.pointer-events]="editorMode ? 'none' : 'auto'"
                  [savedText]="savedTexts ? savedTexts[element.id] : ''">
     </aspect-text>
     <aspect-text-field *ngIf="element.type === 'text-field'" #childComponent
                        [elementModel]="$any(element)"
+                       [style.pointer-events]="editorMode ? 'none' : 'auto'"
                        [parentForm]="parentForm"
                        [tableMode]="true">
     </aspect-text-field>
     <aspect-text-area *ngIf="element.type === 'text-area'" #childComponent
                       [elementModel]="$any(element)"
+                      [style.pointer-events]="editorMode ? 'none' : 'auto'"
                       [parentForm]="parentForm"
                       [tableMode]="true">
     </aspect-text-area>
     <aspect-checkbox *ngIf="element.type === 'checkbox'" #childComponent
                      [elementModel]="$any(element)"
+                     [style.pointer-events]="editorMode ? 'none' : 'auto'"
                      [parentForm]="parentForm"
                      [tableMode]="true">
     </aspect-checkbox>
     <aspect-drop-list *ngIf="element.type === 'drop-list'" #childComponent
                       [elementModel]="$any(element)"
+                      [style.pointer-events]="editorMode ? 'none' : 'auto'"
                       [parentForm]="parentForm"
                       [clozeContext]="true">
     </aspect-drop-list>
     <aspect-image *ngIf="element.type === 'image'" #childComponent
+                  [style.pointer-events]="editorMode ? 'none' : 'auto'"
                   [elementModel]="$any(element)">
     </aspect-image>
     <aspect-audio *ngIf="element.type === 'audio'" #childComponent
                   [elementModel]="$any(element)"
+                  [style.pointer-events]="editorMode ? 'none' : 'auto'"
                   [savedPlaybackTime]="savedPlaybackTimes ? savedPlaybackTimes[element.id] : 0"
                   [actualPlayingId]="actualPlayingId"
                   [mediaStatusChanged]="mediaStatusChanged">
@@ -88,11 +95,7 @@ export class TableChildOverlay implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef) { }
 
-  ngOnInit(): void {
-    if (!this.parentForm && this.childComponent) {
-      this.childComponent.elementRef.nativeElement.style.pointerEvents = 'none';
-    }
-  }
+  ngOnInit(): void { }
 
   setSelected(newValue: boolean): void {
     this.isSelected = newValue;

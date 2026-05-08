@@ -27,7 +27,7 @@ import { ElementOverlay } from './element-overlay.directive';
          [style.outline]="isSelected ? 'purple solid 1px' : ''"
          [style.z-index]="isSelected ? 2 : 1">
       <div *cdkDragPlaceholder></div>
-      <div [class.prevent-interaction]="preventInteraction"
+      <div [class.prevent-interaction]="preventInteraction && element.type !== 'cloze' && element.type !== 'table'"
            [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width + 'px' : '100%'"
            [style.height]="element.dimensions.isHeightFixed ? element.dimensions.height + 'px' : '100%'"
            [style.min-width]="element.dimensions.minWidth ? element.dimensions.minWidth + 'px' : null"

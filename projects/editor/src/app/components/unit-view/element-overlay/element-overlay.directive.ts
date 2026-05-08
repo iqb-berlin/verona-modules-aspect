@@ -46,8 +46,6 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
     this.childComponent = this.elementContainer.createComponent(componentType);
     this.childComponent.instance.elementModel = this.element;
 
-    this.preventInteraction = this.element.type !== 'cloze' && this.element.type !== 'table';
-
     this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
 
     if (this.childComponent.instance instanceof FormElementComponent) {
@@ -55,7 +53,7 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
     }
 
     if (this.childComponent.instance instanceof ClozeComponent) {
-      this.childComponent.instance.editorMode = true;
+      this.childComponent.instance.editorMode = this.preventInteraction;
       // make cloze element children clickable to access child elements
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
       this.childComponent.instance.childElementSelected
@@ -67,6 +65,7 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
     }
 
     if (this.childComponent.instance instanceof TableComponent) {
+      this.childComponent.instance.editorMode = this.preventInteraction;
       // make element children clickable to access child elements
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
       this.childComponent.instance.childElementSelected
@@ -151,6 +150,10 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
 
   setInteractionEnabled(isEnabled: boolean): void {
     this.preventInteraction = !isEnabled;
+    if (this.childComponent.instance instanceof ClozeComponent ||
+      this.childComponent.instance instanceof TableComponent) {
+      this.childComponent.instance.editorMode = !isEnabled;
+    }
   }
 
   isInteractionEnabled(): boolean {

@@ -3,7 +3,9 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
+import {
+  SectionInsertDialogComponent
+} from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
 import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog.component';
 import {
   GeogebraAppDefinitionDialogComponent
@@ -82,7 +84,7 @@ export class DialogService {
 
   showSanitizationDialog(): Observable<boolean> {
     const dialogRef = this.dialog.open(SanitizationDialogComponent,
-      { disableClose: true });
+                                       { disableClose: true });
     return dialogRef.afterClosed();
   }
 
@@ -158,7 +160,8 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showSectionInsertDialog(isSelectedSectionEmpty: boolean): Observable<{ newSection: EditorSection, replaceSection: boolean }> {
+  showSectionInsertDialog(isSelectedSectionEmpty: boolean):
+  Observable<{ newSection: EditorSection, replaceSection: boolean }> {
     const dialogRef = this.dialog.open(SectionInsertDialogComponent, {
       data: { isSelectedSectionEmpty }
     });

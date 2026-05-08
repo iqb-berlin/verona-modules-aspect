@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Seitenabschnitt einfügen</h2>
+<mat-dialog-content>
+  <mat-radio-group [style]="'display: flex; flex-direction: column'"
+                   [(ngModel)]="selectedMethod">
+    <mat-radio-button value="savedCode" [disabled]="!savedSectionCode">
+      Gespeicherten Abschnitt einfügen
+    </mat-radio-button>
+    <p *ngIf="savedSectionCode" class="radio-child-item" [style.color]="'green'">
+      Gespeicherter Abschnitt gefunden.
+    </p>
+    <p *ngIf="!savedSectionCode" class="radio-child-item" [style.color]="'var(--warn)'">
+      Kein gespeicherter Abschnitt gefunden.
+    </p>
+    <mat-radio-button value="pastedCode">
+      Abschnitt über Zwischenablage einfügen
+    </mat-radio-button>
+    <div class="radio-child-item message-area" [style.color]="operationStatus">
+      {{operationStatusText}}
+    </div>
+    <div class="radio-child-item paste-area" contenteditable="true"
+         (click)="selectedMethod = 'pastedCode'"
+         (paste)="pasteSectionFromClipboard($event)">
+    </div>
+  </mat-radio-group>
+
+  <mat-divider [style.margin-top.px]="20" [style.margin-bottom.px]="10"></mat-divider>
+
+  <mat-checkbox [(ngModel)]="replaceSection">
+    Bestehenden Abschnitt ersetzen
+  </mat-checkbox>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button *ngIf="selectedMethod == 'savedCode' || operationStatus === 'green' || operationStatus === 'orange'"
+          (click)="confirm()">
+    {{'confirm' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</mat-dialog-actions>

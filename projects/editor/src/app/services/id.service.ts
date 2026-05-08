@@ -34,8 +34,8 @@ export class IDService {
   }
 
   register(id: string, useIDRegistry: boolean, useAliasRegistry: boolean) {
-    if (useIDRegistry) this.idRegistry.registerID(id);
-    if (useAliasRegistry) this.aliasRegistry.registerID(id);
+    if (useIDRegistry && this.isIDAvailable(id)) this.idRegistry.registerID(id);
+    if (useAliasRegistry && this.isAliasAvailable(id)) this.aliasRegistry.registerID(id);
   }
 
   unregister(id: string, useIDRegistry: boolean, useAliasRegistry: boolean): void {

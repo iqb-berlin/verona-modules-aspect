@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Section } from 'common/models/section';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,7 +8,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
-    template: `
+  template: `
     <h2 mat-dialog-title>Seitenabschnitt einfügen</h2>
     <mat-dialog-content>
       <mat-radio-group [style]="'display: flex; flex-direction: column'"
@@ -43,18 +43,18 @@ import { UnitService } from 'editor/src/app/services/unit.service';
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button *ngIf="selectedMethod == 'savedCode' || operationStatus === 'green' || operationStatus === 'orange'"
-              [mat-dialog-close]="{ newSection, replaceSection }">
+              (click)="confirm()">
         {{'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-    styles: [
-        '.paste-area {width: 250px; height: 60px; border: 1px solid; overflow: hidden}',
-        '.radio-child-item {margin-left: 35px; font-size: smaller;}',
-        ':host ::ng-deep mat-radio-button .mdc-label {font-size: larger;}'
-    ],
-    standalone: false
+  styles: [
+    '.paste-area {width: 250px; height: 60px; border: 1px solid; overflow: hidden}',
+    '.radio-child-item {margin-left: 35px; font-size: smaller;}',
+    ':host ::ng-deep mat-radio-button .mdc-label {font-size: larger;}'
+  ],
+  standalone: false
 })
 export class SectionInsertDialogComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();
@@ -71,6 +71,7 @@ export class SectionInsertDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { isSelectedSectionEmpty: boolean },
               private unitService: UnitService,
               private idService: IDService,
+              private dialogRef: MatDialogRef<SectionInsertDialogComponent>,
               private translateService: TranslateService) { }
 
   ngOnInit(): void {
@@ -78,6 +79,7 @@ export class SectionInsertDialogComponent implements OnInit {
       this.savedSectionCode = this.unitService.savedSectionCode;
       this.selectedMethod = 'savedCode';
       this.newSection = new Section(JSON.parse(this.unitService.savedSectionCode));
+      this.checkDuplicates();
     }
     this.replaceSection = this.data.isSelectedSectionEmpty;
   }
@@ -92,23 +94,35 @@ export class SectionInsertDialogComponent implements OnInit {
     }
     try {
       this.newSection = new Section(JSON.parse(pastedText));
-
-      if (this.findElementsWithDuplicateID(this.newSection.getAllElements()).length > 0) {
-        this.operationStatusText =
-          this.translateService.instant('Doppelte IDs festgestellt. Weiter mit neu generierten IDs?');
-        this.operationStatus = 'orange';
-      } else {
-        this.operationStatusText = this.translateService.instant('Abschnitt wurde erfolgreich gelesen.');
-        this.operationStatus = 'green';
-      }
+      this.checkDuplicates();
     } catch (e) {
       this.operationStatusText = this.translateService.instant('Fehler beim Lesen des Abschnitts!');
       this.operationStatus = 'red';
     }
   }
 
+  private checkDuplicates(): void {
+    if (this.newSection && this.findElementsWithDuplicateID(this.newSection.getAllElements()).length > 0) {
+      this.operationStatusText =
+        this.translateService.instant('Doppelte IDs festgestellt. Weiter mit neu generierten IDs?');
+      this.operationStatus = 'orange';
+    } else {
+      this.operationStatusText = this.translateService.instant('Abschnitt wurde erfolgreich gelesen.');
+      this.operationStatus = 'green';
+    }
+  }
+
+  confirm(): void {
+    if (this.newSection && this.operationStatus === 'orange') {
+      this.newSection.elements = this.newSection.elements.map(el => el.getBlueprint()) as any;
+    }
+    this.dialogRef.close({ newSection: this.newSection, replaceSection: this.replaceSection });
+  }
+
   private findElementsWithDuplicateID(elements: UIElement[]): UIElement[] {
-    return elements.filter(element => !this.idService.isAliasAvailable(element.id));
+    return elements.filter(element => !this.idService.isIDAvailable(element.id) ||
+      (element.alias && !this.idService.isAliasAvailable(element.alias))
+    );
   }
 
   ngOnDestroy(): void {

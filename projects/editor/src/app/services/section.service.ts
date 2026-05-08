@@ -78,19 +78,15 @@ export class SectionService {
     }
   }
 
-  replaceSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): void {
+  async replaceSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): Promise<void> {
     const page = this.unitService.unit.pages[pageIndex];
-    page.deleteSection(sectionIndex);
-    page.addSection(newSection, sectionIndex);
-    this.unitService.updateUnitDefinition();
-    this.unitService.updateSectionCounter();
+    await this.deleteSection(pageIndex, sectionIndex);
+    this.addSection(page, newSection, sectionIndex);
   }
 
   insertSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): void {
     const page = this.unitService.unit.pages[pageIndex];
-    page.addSection(newSection, sectionIndex);
-    this.unitService.updateUnitDefinition();
-    this.unitService.updateSectionCounter();
+    this.addSection(page, newSection, sectionIndex);
   }
 
   /* Move element between sections */

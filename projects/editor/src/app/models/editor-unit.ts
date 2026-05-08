@@ -35,7 +35,7 @@ export class EditorPage extends Page {
     if (sectionIndex !== undefined) {
       this.sections.splice(sectionIndex, 0, section || new EditorSection(undefined, this.idService));
     } else {
-      this.sections.push(section || new EditorSection());
+      this.sections.push(section || new EditorSection(undefined, this.idService));
     }
   }
 

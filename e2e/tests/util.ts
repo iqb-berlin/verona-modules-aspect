@@ -167,6 +167,59 @@ export function addNewSection() {
   cy.contains('button', 'Neuer Abschnitt').click();
 }
 
+export function setExpertMode(enable: boolean) {
+  cy.get('[data-cy="extras-menu"]').click();
+  cy.get('.cdk-overlay-container').should('be.visible');
+  cy.contains('mat-checkbox', 'Erweiterter Modus').then($checkbox => {
+    const isChecked = $checkbox.hasClass('mat-mdc-checkbox-checked') ||
+                      $checkbox.hasClass('mat-checkbox-checked') ||
+                      $checkbox.find('input').is(':checked');
+    if (isChecked !== enable) {
+      cy.wrap($checkbox).click();
+    }
+  });
+  cy.get('body').type('{esc}');
+  cy.get('.cdk-overlay-backdrop').should('not.exist');
+}
+
+export function setSectionDynamicLayout(enable: boolean) {
+  cy.get('aspect-editor-section-view').first().scrollIntoView().click({ force: true });
+  cy.get('aspect-editor-section-view').first()
+    .find('mat-icon').contains('space_dashboard')
+    .click({ force: true });
+
+  cy.get('.cdk-overlay-container').should('be.visible');
+  cy.wait(500);
+  cy.contains('mat-checkbox', 'dynamisches Layout').then($checkbox => {
+    const isChecked = $checkbox.hasClass('mat-mdc-checkbox-checked') ||
+                      $checkbox.hasClass('mat-checkbox-checked') ||
+                      $checkbox.find('input').is(':checked');
+    if (isChecked !== enable) {
+      cy.log(`Toggling dynamic layout to ${enable}`);
+      cy.wrap($checkbox).find('input').click({ force: true });
+    }
+  });
+  cy.get('body').type('{esc}');
+  cy.wait(500);
+  cy.get('.cdk-overlay-backdrop').should('not.exist');
+}
+
+export function switchToElementTab() {
+  cy.get('.mat-mdc-tab').contains('mat-icon', 'bookmark').click({ force: true });
+}
+
+export function switchToPositionTab() {
+  cy.get('.mat-mdc-tab').contains('mat-icon', 'format_shapes').click({ force: true });
+}
+
+export function setDimensionValue(label: string, value: number | string) {
+  cy.contains('mat-form-field', label).find('input').clear().type(`${value}{enter}`);
+}
+
+export function selectElement(text: string) {
+  cy.get('aspect-editor-page-view').contains(text).click({ force: true });
+}
+
 export function uploadFile(fileName: string){
   cy.get('input[type=file]', { timeout: 5000 })
     .selectFile(`example_data/media/${fileName}`, {

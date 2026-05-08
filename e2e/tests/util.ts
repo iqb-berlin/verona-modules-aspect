@@ -168,7 +168,7 @@ export function addNewSection() {
 
 export function uploadFile(fileName: string){
   cy.get('input[type=file]', { timeout: 5000 })
-    .selectFile(`e2e/fixtures/${fileName}`, {
+    .selectFile(`example_data/media/${fileName}`, {
       action: 'select',
       force: true
     });

@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxTiptapModule } from 'ngx-tiptap';
-import { Editor } from '@tiptap/core';
+import { AnyExtension, Editor } from '@tiptap/core';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Subscript } from '@tiptap/extension-subscript';
@@ -95,59 +95,56 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   orderedListStyle: string = 'decimal';
   lastImageAlignment: 'inline' | 'none' | 'right' | 'left' = 'inline';
 
-  defaultExtensions = [
-    Document, Text, ListItem,
-    Underline, Superscript, Subscript,
-    TextStyle, Color,
-    Bold, Italic, Strike, History,
-    Highlight.configure({
-      multicolor: true
-    }),
-    AnchorId,
-    TextAlign.configure({
-      types: ['paragraph', 'heading']
-    }),
-    Indent.configure({
-      types: ['listItem', 'paragraph'],
-      minLevel: 0,
-      maxLevel: 4
-    }),
-    Heading.configure({
-      levels: [1, 2, 3, 4]
-    }),
-    ParagraphExtension,
-    FontSize,
-    BulletListExtension,
-    OrderedListExtension,
-    HangingIndent,
-    InlineImage,
-    BlockImage,
-    Blockquote,
-    HorizontalRuleExtension,
-    CharacterCount.configure(),
-    Tooltip,
-    MathFormulaExtension(this.injector)
-  ];
-
-  editor: Editor = new Editor({
-    extensions: this.defaultExtensions,
-    editorProps: {
-      handlePaste: RichTextEditorComponent.handlePastePlainText
-    }
-  });
+  defaultExtensions: AnyExtension[] = [];
+  editor!: Editor;
 
   constructor(private injector: Injector, private dialogService: DialogService) { }
 
   ngOnInit(): void {
-    const activeExtensions = this.defaultExtensions;
+    this.defaultExtensions = [
+      Document, Text, ListItem,
+      Underline, Superscript, Subscript,
+      TextStyle, Color,
+      Bold, Italic, Strike, History,
+      Highlight.configure({
+        multicolor: true
+      }),
+      AnchorId,
+      TextAlign.configure({
+        types: ['paragraph', 'heading']
+      }),
+      Indent.configure({
+        types: ['listItem', 'paragraph'],
+        minLevel: 0,
+        maxLevel: 4
+      }),
+      Heading.configure({
+        levels: [1, 2, 3, 4]
+      }),
+      ParagraphExtension,
+      FontSize,
+      BulletListExtension,
+      OrderedListExtension,
+      HangingIndent,
+      InlineImage,
+      BlockImage,
+      Blockquote,
+      HorizontalRuleExtension,
+      CharacterCount.configure(),
+      Tooltip,
+      MathFormulaExtension(this.injector)
+    ];
+
+    const activeExtensions = [...this.defaultExtensions];
     if (this.clozeMode) {
-      activeExtensions.push(ToggleButtonComponentExtension(this.injector));
-      activeExtensions.push(DropListComponentExtension(this.injector));
-      activeExtensions.push(TextFieldComponentExtension(this.injector));
-      activeExtensions.push(ButtonComponentExtension(this.injector));
-      activeExtensions.push(CheckboxComponentExtension(this.injector));
-      activeExtensions.push(DropdownComponentExtension(this.injector));
-      activeExtensions.push(MathFormulaExtension(this.injector));
+      activeExtensions.push(
+        ToggleButtonComponentExtension(this.injector),
+        DropListComponentExtension(this.injector),
+        TextFieldComponentExtension(this.injector),
+        ButtonComponentExtension(this.injector),
+        CheckboxComponentExtension(this.injector),
+        DropdownComponentExtension(this.injector)
+      );
     }
     this.editor = new Editor({
       extensions: [

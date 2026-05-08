@@ -44,6 +44,8 @@ import { ElementOverlay } from './element-overlay.directive';
           <mat-icon>aspect_ratio</mat-icon>
         </div>
         <div class="aspect-inserted-element"
+             [class.prevent-interaction]="preventInteraction && element.type !== 'cloze' && element.type !== 'table'"
+             [style.outline]="isSelected ? '1px dashed purple' : ''"
              [style.width.px]="element.dimensions.width"
              [style.height.px]="element.dimensions.height"
              [style.overflow]="'auto'">
@@ -57,7 +59,11 @@ import { ElementOverlay } from './element-overlay.directive';
     '.draggable-element:active {cursor: grabbing}',
     '.resizeHandle {position: absolute; cursor: nwse-resize}',
     '.resize-droplist {position: absolute}',
-    '.temporaryHighlight {z-index: 100}'
+    '.temporaryHighlight {z-index: 100}',
+    ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}',
+    ':host ::ng-deep .prevent-interaction math-field {pointer-events: none !important;}',
+    ':host ::ng-deep .prevent-interaction math-field::part(container) {pointer-events: none !important;}',
+    ':host ::ng-deep .prevent-interaction math-field::part(mathfield) {pointer-events: none !important;}'
   ]
 })
 export class StaticOverlayComponent extends ElementOverlay {

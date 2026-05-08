@@ -10,16 +10,14 @@ import { StateVariableEditorComponent } from './state-variable-editor.component'
 describe('StateVariableEditorComponent', () => {
   let component: StateVariableEditorComponent;
   let fixture: ComponentFixture<StateVariableEditorComponent>;
-
-  const mockIDService = {
-    isAliasAvailable: jasmine.createSpy('isAliasAvailable').and.returnValue(true),
-    unregister: jasmine.createSpy('unregister'),
-    register: jasmine.createSpy('register')
-  };
+  let mockIDService: jasmine.SpyObj<IDService>;
 
   const mockStateVariable = new StateVariable('v1', 'v1', 'val1');
 
   beforeEach(async () => {
+    mockIDService = jasmine.createSpyObj('IDService', ['isAliasAvailable', 'unregister', 'register']);
+    mockIDService.isAliasAvailable.and.returnValue(true);
+
     await TestBed.configureTestingModule({
       declarations: [StateVariableEditorComponent],
       imports: [

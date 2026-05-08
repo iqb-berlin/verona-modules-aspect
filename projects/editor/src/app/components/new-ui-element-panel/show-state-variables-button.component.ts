@@ -41,6 +41,8 @@ export class ShowStateVariablesButtonComponent {
       .subscribe(stateVariables => {
         if (stateVariables) {
           this.unitService.updateStateVariables(stateVariables);
+        } else {
+          this.unitService.reRegisterAll();
         }
       });
   }

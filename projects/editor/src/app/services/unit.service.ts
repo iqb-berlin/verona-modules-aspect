@@ -78,6 +78,7 @@ export class UnitService {
     this.idService.reset();
     this.selectionService.reset();
     this.unit = new EditorUnit(parsedUnitDefinition as unknown as UnitProperties, this.idService);
+    this.reRegisterAll();
     this.referenceManager = new ReferenceManager(this.unit);
 
     const invalidRefs = this.referenceManager.getAllInvalidRefs();
@@ -121,7 +122,17 @@ export class UnitService {
 
   updateStateVariables(stateVariables: StateVariable[]): void {
     this.unit.stateVariables = stateVariables;
+    this.reRegisterAll();
     this.updateUnitDefinition();
+  }
+
+  reRegisterAll(): void {
+    this.idService.reset();
+    this.unit.stateVariables.forEach(v => {
+      this.idService.register(v.id, true, false);
+      this.idService.register(v.alias, false, true);
+    });
+    this.unit.getAllElements().forEach(el => el.registerIDs());
   }
 
   /* Check references and confirm */

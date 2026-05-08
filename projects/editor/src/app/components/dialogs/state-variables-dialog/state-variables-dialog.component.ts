@@ -34,6 +34,8 @@ export class StateVariablesDialogComponent {
   }
 
   deleteStateVariable(index: number) {
+    this.idService.unregister(this.stateVariables[index].id, true, false);
+    this.idService.unregister(this.stateVariables[index].alias, false, true);
     this.stateVariables.splice(index, 1);
   }
 }

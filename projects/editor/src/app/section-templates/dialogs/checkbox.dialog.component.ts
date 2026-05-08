@@ -12,6 +12,7 @@ import { MatInput } from '@angular/material/input';
 import { NgForOf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FileService } from 'common/services/file.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
     selector: 'aspect-editor-checkbox-wizard-dialog',
@@ -102,10 +103,23 @@ export class CheckboxWizardDialogComponent {
   options: string[] = [];
   useImages: boolean = false;
 
-  // eslint-disable-next-line class-methods-use-this
+  constructor(private dialogService: DialogService) {}
+
   async loadImage(list: string[], eventTarget: HTMLInputElement): Promise<void> {
-    const imgSrc = await FileService.readFileAsText(eventTarget.files?.[0] as File, true);
-    list.push(imgSrc);
+    const file = eventTarget.files?.[0];
+    if (file) {
+      const base64 = await FileService.readFileAsText(file, true);
+      if (FileService.isResizable(file.type)) {
+        this.dialogService.showImageResizeDialog(base64, {}).subscribe(async options => {
+          if (options) {
+            const imgSrc = await FileService.scaleImage(base64, options);
+            list.push(imgSrc);
+          }
+        });
+      } else {
+        list.push(base64);
+      }
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this

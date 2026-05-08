@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
 import { DragNDropValueObject } from 'common/interfaces';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
   selector: 'aspect-drop-list-option-edit-dialog',
@@ -94,12 +95,15 @@ import { DragNDropValueObject } from 'common/interfaces';
 export class DropListOptionEditDialogComponent {
   newLabel = { ...this.data.value };
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { value: DragNDropValueObject }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { value: DragNDropValueObject },
+              private dialogService: DialogService) { }
 
   async loadImage(): Promise<void> {
-    const image = await FileService.loadImage();
-    this.newLabel.imgSrc = image.content;
-    this.newLabel.imgFileName = image.name;
+    const file = await this.dialogService.importImage();
+    if (file) {
+      this.newLabel.imgSrc = file.content;
+      this.newLabel.imgFileName = file.name;
+    }
   }
 
   async loadAudio() {

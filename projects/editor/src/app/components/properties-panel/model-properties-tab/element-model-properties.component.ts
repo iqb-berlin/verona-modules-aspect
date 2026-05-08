@@ -4,7 +4,7 @@ import {
   Input, OnDestroy, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { InputElement, isInputElement, UIElement } from 'common/models/elements/element';
 import { FileService } from 'common/services/file.service';
 import { UIElementValue, MATH_KEYBOARD_PRESETS } from 'common/interfaces';
@@ -61,17 +61,37 @@ export class ElementModelPropertiesComponent implements OnDestroy {
   }
 
   async changeImgSrc(): Promise<void> {
-    const image = await FileService.loadImage();
-    this.updateModel.emit({ property: 'imgSrc', value: image.content });
+    const file = await FileService.getRawFile('image/*');
+    const base64 = await FileService.readFileAsText(file, true);
+    if (FileService.isResizable(file.type)) {
+      this.dialogService.showImageResizeDialog(base64, {}).subscribe(async options => {
+        if (options) {
+          const imgSrc = await FileService.scaleImage(base64, options);
+          this.updateModel.emit({ property: 'imgSrc', value: imgSrc });
+        }
+      });
+    } else {
+      this.updateModel.emit({ property: 'imgSrc', value: base64 });
+    }
   }
 
   async changeMediaSrc(elementType: string) {
     let media = { name: '', content: '' };
     switch (elementType) {
       case 'hotspot-image':
-      case 'image':
-        media = await FileService.loadImage();
+      case 'image': {
+        const file = await FileService.getRawFile('image/*');
+        const base64 = await FileService.readFileAsText(file, true);
+        if (FileService.isResizable(file.type)) {
+          const options = await firstValueFrom(this.dialogService.showImageResizeDialog(base64, {}));
+          if (!options) return;
+          media.content = await FileService.scaleImage(base64, options);
+        } else {
+          media.content = base64;
+        }
+        media.name = file.name;
         break;
+      }
       case 'audio':
         media = await FileService.loadAudio();
         break;

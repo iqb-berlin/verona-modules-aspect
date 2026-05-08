@@ -424,5 +424,17 @@
   "resultHelperRow": "Untere Hilfszeile",
   "error": {
     "corruptElement": "Element-Ressource ist vermutlich fehlerhaft und sollte ausgetauscht werden! \n\n Ursprüngliche Fehlermeldung: {{ errorMsg }}"
+  },
+  "imageResizeDialog": {
+    "title": "Bildeinstellungen",
+    "originalSize": "Originalgröße",
+    "useOriginalFile": "Originaldatei verwenden (keine Komprimierung)",
+    "maxWidth": "Maximale Breite (px)",
+    "maxHeight": "Maximale Höhe (px)",
+    "keepAspectRatio": "Seitenverhältnis beibehalten",
+    "unlimited": "Unbegrenzt",
+    "quality": "Qualität",
+    "convertToWebP": "In WebP konvertieren (spart Speicherplatz)",
+    "newSize": "Voraussichtliche neue Größe"
   }
 }

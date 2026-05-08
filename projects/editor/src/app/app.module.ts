@@ -118,6 +118,9 @@ import {
   EleSpecificPropsComponent
 } from './components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
 import { PageMenu } from './components/unit-view/page/page-menu.component';
+import { ImageResizeDialogComponent } from './components/image-resize-dialog/image-resize-dialog.component';
+import { BytesPipe } from './pipes/bytes.pipe';
+import { SupportsQualityPipe } from './pipes/supports-quality.pipe';
 
 import { ReferenceListComponent } from './components/reference-list.component';
 import { ElementListComponent } from './components/element-list.component';
@@ -183,7 +186,10 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoAliasAndIDsPipe,
-    InputAssistancePropertiesComponent
+    InputAssistancePropertiesComponent,
+    ImageResizeDialogComponent,
+    BytesPipe,
+    SupportsQualityPipe
   ],
   imports: [
     BrowserModule,

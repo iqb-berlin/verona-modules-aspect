@@ -5,7 +5,8 @@ import {
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { FileService } from 'common/services/file.service';
+
+import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
   selector: 'aspect-player-edit-dialog',
@@ -196,14 +197,16 @@ import { FileService } from 'common/services/file.service';
 })
 export class PlayerEditDialogComponent {
   newPlayerConfig: PlayerProperties = { ...this.data.playerProps };
-  constructor(@Inject(MAT_DIALOG_DATA)protected data: { elementID: string, playerProps: PlayerProperties }) {
+  constructor(@Inject(MAT_DIALOG_DATA)protected data: { elementID: string, playerProps: PlayerProperties },
+              private dialogService: DialogService) {
   }
 
   async loadImage(): Promise<void> {
-    await FileService.loadImage().then(image => {
-      this.newPlayerConfig.imgSrc = image.content;
-      this.newPlayerConfig.imgFileName = image.name;
-    });
+    const file = await this.dialogService.importImage();
+    if (file) {
+      this.newPlayerConfig.imgSrc = file.content;
+      this.newPlayerConfig.imgFileName = file.name;
+    }
   }
 
   removeImage(): void {

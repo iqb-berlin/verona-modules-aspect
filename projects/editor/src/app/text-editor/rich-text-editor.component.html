@@ -334,6 +334,7 @@
                [style.font-size.px]="defaultFontSize"
                (ngModelChange)="contentChange.emit($event)">
 </tiptap-editor>
+<input type="file" hidden accept="image/*" #imageUpload (change)="onImageUpload($event)">
 <ng-container *ngIf="showWordCounter">
   {{ editor.storage.characterCount.characters() }} Zeichen /
   {{ editor.storage.characterCount.words() }} {{ editor.storage.characterCount.words() == 1 ? 'Wort' : 'Wörter' }}

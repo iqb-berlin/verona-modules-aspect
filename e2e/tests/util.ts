@@ -165,3 +165,11 @@ export function selectRadioOption(option: string) {
 export function addNewSection() {
   cy.contains('button', 'Neuer Abschnitt').click();
 }
+
+export function uploadFile(fileName: string){
+  cy.get('input[type=file]', { timeout: 5000 })
+    .selectFile(`e2e/fixtures/${fileName}`, {
+      action: 'select',
+      force: true
+    });
+}

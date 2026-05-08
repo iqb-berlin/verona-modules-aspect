@@ -13,6 +13,7 @@ declare global {
       clickOutside(): Chainable<JQuery<HTMLElement>>;
       getElement(elementType: string, label?: string): Chainable<JQuery<HTMLElement>>;
       goToPlayerPage(pageIndex: number): Chainable<JQuery<HTMLElement>>;
+      stubFileInput(): Chainable<void>;
     }
   }
 }

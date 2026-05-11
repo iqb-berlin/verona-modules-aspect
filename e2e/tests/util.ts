@@ -221,7 +221,8 @@ export function selectElement(text: string) {
 }
 
 export function uploadFile(fileName: string){
-  cy.get('input[type=file]', { timeout: 5000 })
+  // Use .last() because each stubFileInput call and click might append a new input to the body
+  cy.get('input[type=file]', { timeout: 5000 }).last()
     .selectFile(`example_data/media/${fileName}`, {
       action: 'select',
       force: true

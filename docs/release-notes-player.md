@@ -1,5 +1,15 @@
 Player
 ======
+## 3.0.0
+### Neue Funktionen
+- Abwärtskompatibilität
+  - Es können nun auch Aufgaben, die mit deutlich älteren Editor-Versionen erstellt wurden, im aktuellen Layout geladen und dargestellt werden
+
+### Fehlerbehebungen
+- Formelfeld, Formelbereich
+  - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
+
+
 ## 2.12.3
 ### Fehlerbehebungen
 - Behebt Fehler beim Aktualisieren gespeicherter Daten (Problem in Version 2.12.2) 

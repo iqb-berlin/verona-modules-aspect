@@ -1,5 +1,23 @@
 Allgemein
 =========
+## editor/3.0.0+player/3.0.0
+### Neue Funktionen
+- Eingabehilfe
+  - Neue Voreinstellung "Ziffern und Komma"
+- Lückentext
+  - Unterstützung für Dropdown-Elemente als Kind-Elemente.
+- Neue Elementgruppe "Widgets" 
+  - Moleküleditor und Periodensystem
+
+### Änderungen
+- Update auf Angular 20.3.x und zugehörige Systemabhängigkeiten
+- Vereinheitlichung der internen Dateistruktur zur Verbesserung der Wartbarkeit
+
+## editor/2.12.4+player/2.12.4
+### Fehlerbehebungen
+- Text
+  - Behebt Fehler bei der Darstellung von Formeln innerhalb von Textelementen in Chromium-basierten Browsern
+
 ## editor/2.12.1+player/2.12.1
 ### Änderungen
 - Tabelle

@@ -1,10 +1,24 @@
 Editor
 ======
+## 3.0.0
+### Neue Funktionen
+- Neuer Dialog zum Upload von Bildern
+  - Option zur automatischen Größenanpassung beim Hochladen von Bildern zur Optimierung der Dateigröße.
+
+### Änderungen
+- Formelfeld
+  - UI-Verbesserung der Eingabemöglichkeit zur Vorbelegung  
+
+### Fehlerbehebungen
+- Behebung von Fehlern bei der Vergabe von IDs und Aliasen (insbesondere beim Duplizieren und Einfügen von Abschnitten)
+- Verbesserung der Stabilität beim Laden von Aufgaben, um beim schnellen Wechsel von Aufgaben im Studio den Initialisierungsfehler (z. B. doppelte IDs) zu verhindern
+- Verbesserung des Ladeverhaltens der Erweiterungen für den Texteditor
+- Verhindert, dass Zustandsvariablen die gleiche ID oder den gleichen Alias haben können, wie Elemente 
+
 ## 2.12.4
 ### Fehlerbehebungen 
-- Verhindert die Übernahme von eingestellten Mustern zum Validieren von weiteren Eingabefeldern
-- Behebt Fehler bei der Darstellung von Formeln innerhalb von Textelementen in Chromium basierten Browsern
-
+- Eingabefeld
+  - Unterbindet, dass konfigurierte Muster zur Validierung anderer Eingabefelder übernommen werden
 ## 2.12.1
 ### Fehlerbehebungen
 - Dialog: Elementliste

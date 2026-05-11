@@ -25,7 +25,9 @@ export class MigrationManager {
       }
     });
 
-    return new NormalizationMigration().execute(currentResult);
+    const migratedUnit = new NormalizationMigration().execute(currentResult);
+    migratedUnit.version = targetVersion;
+    return migratedUnit;
   }
 
   private static compareVersions(v1: string, v2: string): number {

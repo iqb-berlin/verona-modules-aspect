@@ -7,7 +7,7 @@ import {
   VopPlayerConfigChangedNotification,
   VopStartCommand
 } from 'player/modules/verona/models/verona';
-import { Unit } from 'common/models/unit';
+import { Unit, UnitProperties } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
 import { Page } from 'common/models/page';
@@ -97,13 +97,12 @@ export class UnitComponent implements OnInit {
             if (VersionManager.isNewer(unitDefinition)) {
               throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
             }
-            if (VersionManager.needsMigration(unitDefinition)) {
-              throw Error(this.translateService.instant('errorMessage.unitDefinitionNeedsEditorUpgrade'));
+            if (!VersionManager.needsMigration(unitDefinition)) {
+              throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
             }
-            throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
           }
           const migratedDefinition = MigrationManager.migrate(unitDefinition, VersionManager.getCurrentVersion());
-          const unit: Unit = new Unit(migratedDefinition as any);
+          const unit: Unit = new Unit(migratedDefinition as unknown as UnitProperties);
           this.pages = unit.pages;
           this.showUnitNavNext = unit.showUnitNavNext;
           this.updateSectionNumbering(unit);

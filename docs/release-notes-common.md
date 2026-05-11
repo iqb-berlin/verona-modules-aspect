@@ -1,5 +1,11 @@
 Allgemein
 =========
+
+## editor/2.12.5+player/2.12.5
+### Fehlerbehebungen
+- Behebt Fehler beim Einbetten der Math-Live fonts im produktiven Modus
+
+
 ## editor/2.12.1+player/2.12.1
 ### Änderungen
 - Tabelle

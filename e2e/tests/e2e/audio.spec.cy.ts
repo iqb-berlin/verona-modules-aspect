@@ -16,7 +16,7 @@ describe('Audio element', { testIsolation: false }, () => {
 
     // ── Page 1: audio with default player options ─────────────────────────
     it('creates an audio element with default player options (Page 1)', () => {
-      addAudioElement('Normale Audio','bird-sound.mp3','audio_default');
+      addAudioElement('Normales Audio','bird-sound.mp3','audio_default');
     });
 
     it('shows the uploaded filename in the properties panel (Page 1)', () => {
@@ -93,7 +93,8 @@ describe('Audio element', { testIsolation: false }, () => {
         .first()
         .click({ force: true });
 
-      // Pause button check omitted due to headless playback limitations
+
+
     });
 
     it('plays the audio until it finishes (Page 2)', () => {

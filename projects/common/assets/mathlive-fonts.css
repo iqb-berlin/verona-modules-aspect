@@ -160,5 +160,6 @@
 }
 
 :root {
-  --ML__static-fonts: true
+  --ML__static-fonts: true;
+  --mathlive-fonts-directory: "assets/fonts/mathlive";
 }

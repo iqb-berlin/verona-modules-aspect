@@ -58,8 +58,7 @@ function getFolderPath(filePath) {
 function replaceUrlInCss(jsString, cssPath) {
   const regexUrl = /\burl\([^)]+\)/gi; // rebuild regex
   return jsString.replace(regexUrl, a => {
-    console.log('Replacing URL: ', a);
-    if (!a.includes('/')) return a;
+    logDebug(`Replacing URL: ${a}`);
     // List of illegal file chars: ~ “ # % & * : < > ? / \ { | }
     // : / \ are path delimiters
     // If one of the other characters is found, a must be a variable and must not be replaced.
@@ -69,10 +68,14 @@ function replaceUrlInCss(jsString, cssPath) {
     const regexFile = /\((.*?)\)/ig;
     const src = regexFile.exec(a)[1].replace(/\'/gi, '').replace(/\"/gi, '').replace('./', '');
     const ext = getExtension(src);
-    const file = `${folder}${getFolderPath(cssPath)}/${src}`;
+    const file = (cssPath && !src.startsWith('/')) ? `${folder}${getFolderPath(cssPath)}/${src}` : `${folder}${src}`;
     if (existsSync(file)) {
       const base64Str = base64Encode(file);
-      return `url(data:image/${ext};base64,${base64Str})`; // ATTENTION with " & '
+      let mimeType = `image/${ext}`;
+      if (ext === 'woff2' || ext === 'woff' || ext === 'ttf' || ext === 'otf') {
+        mimeType = `font/${ext}`;
+      }
+      return `url(data:${mimeType};base64,${base64Str})`; // ATTENTION with " & '
     }
     logDebug(`file ${file} not found. Skipping replacement.`);
     return a;
@@ -95,10 +98,14 @@ function replaceLinkedAssetsInJS(jsString) {
       const file = folder + subfolder + src;
       if (existsSync(file)) {
         const base64Str = base64Encode(file);
-        if (firstSign === '"') {
-          return '"data:image/' + ext + ';base64,' + base64Str + '"'; // ATTENTION with " & '
+        let mimeType = `image/${ext}`;
+        if (ext === 'woff2' || ext === 'woff' || ext === 'ttf' || ext === 'otf') {
+          mimeType = `font/${ext}`;
         }
-        return "'data:image/" + ext + ";base64," + base64Str + "'"; // ATTENTION with " & '
+        if (firstSign === '"') {
+          return '"data:' + mimeType + ';base64,' + base64Str + '"'; // ATTENTION with " & '
+        }
+        return "'data:" + mimeType + ";base64," + base64Str + "'"; // ATTENTION with " & '
       }
       return a;
     } catch (e) {

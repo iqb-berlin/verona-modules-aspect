@@ -13,6 +13,10 @@ Allgemein
 - Update auf Angular 20.3.x und zugehörige Systemabhängigkeiten
 - Vereinheitlichung der internen Dateistruktur zur Verbesserung der Wartbarkeit
 
+## editor/2.12.5+player/2.12.5
+### Fehlerbehebungen
+- Behebt Fehler beim Einbetten der Math-Live fonts im produktiven Modus
+
 ## editor/2.12.4+player/2.12.4
 ### Fehlerbehebungen
 - Text

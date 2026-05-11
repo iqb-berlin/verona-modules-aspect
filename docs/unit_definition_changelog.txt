@@ -240,3 +240,7 @@ iqb-aspect-definition@1.0.0
 - TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement:
   - new property: keyStyle: 'round' | 'square'
   - new property: inputAssistanceCustomStyle: 'small' | 'medium' | 'large'
+
+4.12.0
+- InputAssistancePreset:
+  - new type: decimals

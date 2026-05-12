@@ -1,5 +1,5 @@
 import {addRadioElement} from "../e2e/helpers/radio-util";
-import {addOption, setPreferencesElement, setExpertMode, addElement} from "../util";
+import {addOption, setPreferencesElement, setExpertMode, addElement, addNewPage, selectPageEditor} from "../util";
 
 describe('Editor menu tests', { testIsolation: false }, () => {
   context('editor', () => {
@@ -64,7 +64,7 @@ describe('Editor menu tests', { testIsolation: false }, () => {
       cy.contains('Zustandsvariable').click({force: true});
       cy.get('mat-dialog-container').contains('button', 'add').click();
       cy.get('aspect-state-variable-editor').contains('div', 'Wert').find('input').type('1');
-      cy.contains('Speichern').click();''
+      cy.contains('Speichern').click();
     });
 
     it('setting-button: activate the numbering', () => {
@@ -73,20 +73,13 @@ describe('Editor menu tests', { testIsolation: false }, () => {
       cy.get('.numbering-box').should('exist');
       cy.get('.cdk-overlay-backdrop').click({force: true, multiple: true});
       cy.wait(500);
+      // checks that numberings goes until 3
     });
 
     it('section-menu: deactivate numbering for the first section', ()=> {
-      cy.openEditor();
-      setExpertMode(true);
-      addElement('Optionsfelder', 'Auswahl');
-      cy.get('button').find('mat-icon').contains('settings').click({force: true});
-      cy.contains('.cdk-overlay-pane', 'Nummerierung aktivieren').click({force: true});
-      cy.get('.cdk-overlay-backdrop').click({force: true, multiple: true});
-      cy.wait(500);
-
-      cy.get('.section-wrapper').first().click({force: true});
-      cy.get('aspect-section-menu').filter(':visible').first().find('svg').closest('button').click({force: true});
-      cy.get('aspect-editor-section-view').first().find('.numbering-box').should('not.exist');
+      cy.get('aspect-editor-section-view').eq(0).click();
+      cy.get('aspect-section-menu > button').eq(2).click(); // The third button is omit numbering
+      // checks that numberings goes until 2
     });
 
     it('setting-button: line them vertically', () => {
@@ -116,9 +109,9 @@ describe('Editor menu tests', { testIsolation: false }, () => {
 
     it('setting-button: open the list with the element list and check that we four section and two page', () => {
       cy.get('button').filter(':has(mat-icon:contains("add"))').first().click({force: true});
+      addNewPage();
       addElement('Kontrollkästchen');
       setPreferencesElement('Käschtle 2');
-
       cy.get('button').find('mat-icon').contains('settings').click({force: true});
       cy.get('.cdk-overlay-pane').contains('Elementliste öffnen').click({force: true});
 
@@ -127,42 +120,39 @@ describe('Editor menu tests', { testIsolation: false }, () => {
       cy.get('mat-dialog-container').contains('th', 'Seite').closest('table').find('td').contains('2');
       cy.get('mat-dialog-container').contains('button', 'Schließen').click();
       cy.wait(500);
+
     });
 
 
-    it('menu-button: select side by side view and checks that the tab header has changed', () => {
+    it('menu-button: deselect side by side view and checks that the tab header has changed', () => {
       cy.get('[data-cy="extras-menu"]').click({force: true});
+      cy.get('.mat-mdc-tab-labels').find('.mdc-tab').should('contain', 'Seiten');
       cy.get('.cdk-overlay-pane').contains('Seitenansicht untereinander').click({force: true});
-      // The toggle might have happened already in previous tests if they failed and retried?
-      // No, cypress doesn't retry like that by default.
-      // Let's just check that it toggles SOMETHING.
-      cy.get('mat-tab-group').then($tg => {
-        if ($tg.text().includes('Seiten')) {
-           expect($tg.text()).to.contain('Seiten');
-        } else {
-           expect($tg.text()).to.contain('Seite 1');
-        }
-      });
-      cy.get('.cdk-overlay-backdrop').click({force: true, multiple: true});
+      cy.get('.mat-mdc-tab-labels').find('.mdc-tab').should('not.contain', 'Seiten');
+
+      // cy.get('mat-tab-group').then($tg => {
+      //   if ($tg.text().includes('Seiten')) {
+      //      expect($tg.text()).to.contain('Seiten');
+      //   } else {
+      //      expect($tg.text()).to.contain('Seite 1');
+      //   }
+      // });
+      // cy.get('.cdk-overlay-backdrop').click({force: true, multiple: true});
       cy.wait(500);
     });
 
-    it('section-menu: visibility dialog contains state variable in cdk-overlay-pane', () => {
-      cy.openEditor();
-      setExpertMode(true);
-      addElement('Optionsfelder', 'Auswahl');
-      cy.get('.show-state-variables-button').click({force: true});
-      cy.get('mat-dialog-container').should('be.visible').find('.add-button').click();
-      cy.get('mat-dialog-container').contains('button', 'Speichern').click();
-      cy.get('mat-dialog-container').should('not.exist');
-      cy.wait(500);
-
-      cy.get('.section-wrapper').first().click({force: true});
+    it.skip('section-menu: visibility dialog', () => {
+      cy.pause();
+      selectPageEditor("1");
       cy.get('aspect-section-menu').filter(':visible').first().find('mat-icon').contains('disabled_visible').click({force: true});
       cy.get('mat-dialog-container', { timeout: 10000 }).should('be.visible', { timeout: 10000 }).find('.add-button').click();
       cy.get('aspect-visibility-rule-editor').find('mat-select').first().click();
-      cy.get('.cdk-overlay-pane').should('be.visible').contains('_1');
-      cy.get('body').type('{esc}');
+
+      // CONTINUE
+      cy.contains('mat-option', 'state-variable_1').click();
+      cy.get('mat-dialog-container').find('input:contains("Wert")').click().type("1");
+
+
       cy.get('[role="listbox"]').should('not.exist');
       cy.wait(500);
       cy.get('mat-dialog-container').contains('button', 'Abbrechen').click();

@@ -1,24 +1,7 @@
 import {
-  addNewPage, clickButtonDialog, clickTabAssistant,
-  submitDialog
+  clickButtonDialog, clickTabAssistant
 } from '../util';
-
-function addMCOption(optionName: string): void {
-  cy.get('mat-dialog-container')
-    .get('aspect-option-list-panel')
-    .eq(-1)
-    .contains('mat-form-field', 'Neue Option')
-    .scrollIntoView()
-    .find('textarea')
-    .click({force: true})
-    .type(optionName);
-  cy.get('mat-dialog-container')
-    .get('aspect-option-list-panel')
-    .eq(-1)
-    .contains('mat-icon', 'add')
-    .click()
-
-}
+import {addGenericOption} from "./helpers/assistant-util";
 
 describe('MC assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -35,9 +18,9 @@ describe('MC assistant', { testIsolation: false }, () => {
       cy.get('mat-dialog-container').find('.input1 .ProseMirror').first()
         .click().type(`{selectall}{backspace}Was ist die Antwort?`);
 
-      addMCOption('Option A');
-      addMCOption('Option B');
-      addMCOption('Option C');
+      addGenericOption('Option A','Neue Option');
+      addGenericOption('Option B','Neue Option');
+      addGenericOption('Option C','Neue Option');
 
       clickButtonDialog('Bestätigen');
     });
@@ -50,9 +33,9 @@ describe('MC assistant', { testIsolation: false }, () => {
       cy.get('mat-dialog-container').find('.input1 .ProseMirror').first()
         .click().type(`{selectall}{backspace}Warum ist das so?`);
 
-      addMCOption('Darum');
-      addMCOption('Deswegen');
-      addMCOption('Weil halt');
+      addGenericOption('Darum', 'Neue Option');
+      addGenericOption('Deswegen', 'Neue Option');
+      addGenericOption('Weil halt', 'Neue Option');
 
       cy.get('[mat-dialog-content]').scrollTo('bottom');
       cy.contains('mat-checkbox', 'Begründungsfeld anfügen').find('input').check({ force: true });
@@ -61,7 +44,6 @@ describe('MC assistant', { testIsolation: false }, () => {
       cy.get('aspect-rich-text-editor').eq(1).click().type('{selectall}{backspace}MEINE BEGRUENDUNG');
 
       clickButtonDialog('Bestätigen');
-      cy.wait(100);
     });
 
 

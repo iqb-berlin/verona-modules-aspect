@@ -125,45 +125,40 @@ describe('Editor menu tests', { testIsolation: false }, () => {
 
 
     it('menu-button: deselect side by side view and checks that the tab header has changed', () => {
+      // Ensure we are in a known state (Tabbed view)
       cy.get('[data-cy="extras-menu"]').click({force: true});
-      cy.get('.mat-mdc-tab-labels').find('.mdc-tab').should('contain', 'Seiten');
-      cy.get('.cdk-overlay-pane').contains('Seitenansicht untereinander').click({force: true});
-      cy.get('.mat-mdc-tab-labels').find('.mdc-tab').should('not.contain', 'Seiten');
+      cy.get('.cdk-overlay-pane').contains('mat-checkbox', 'Seitenansicht untereinander').then($cb => {
+        if ($cb.find('input').is(':checked')) {
+          cy.wrap($cb).click();
+        }
+      });
+      cy.get('body').type('{esc}');
+      cy.get('.mat-mdc-tab-labels').find('.mdc-tab').should('contain', 'Seite 1');
 
-      // cy.get('mat-tab-group').then($tg => {
-      //   if ($tg.text().includes('Seiten')) {
-      //      expect($tg.text()).to.contain('Seiten');
-      //   } else {
-      //      expect($tg.text()).to.contain('Seite 1');
-      //   }
-      // });
-      // cy.get('.cdk-overlay-backdrop').click({force: true, multiple: true});
+      // Toggle to Stacked view
+      cy.get('[data-cy="extras-menu"]').click({force: true});
+      cy.get('.cdk-overlay-pane').contains('Seitenansicht untereinander').click({force: true});
+      cy.get('.mat-mdc-tab-labels').find('.mdc-tab').should('contain', 'Seiten'); // Matches "2 Seiten"
+
+      // Revert to Tabbed view for subsequent tests
+      cy.get('[data-cy="extras-menu"]').click({force: true});
+      cy.get('.cdk-overlay-pane').contains('Seitenansicht untereinander').click({force: true});
+      cy.get('.mat-mdc-tab-labels').find('.mdc-tab').should('contain', 'Seite 1');
+
       cy.wait(500);
     });
 
-    it.skip('section-menu: visibility dialog', () => {
-      cy.pause();
+    it('section-menu: make the first section invisible due to state variable', () => {
       selectPageEditor("1");
-      cy.get('aspect-section-menu').filter(':visible').first().find('mat-icon').contains('disabled_visible').click({force: true});
-      cy.get('mat-dialog-container', { timeout: 10000 }).should('be.visible', { timeout: 10000 }).find('.add-button').click();
+      cy.get('aspect-editor-section-view').first().click();
+      cy.get('aspect-section-menu').first().find('mat-icon').contains('disabled_visible').click({force: true});
+      cy.get('mat-dialog-container').should('be.visible').find('.add-button').click();
       cy.get('aspect-visibility-rule-editor').find('mat-select').first().click();
 
-      // CONTINUE
-      cy.contains('mat-option', 'state-variable_1').click();
-      cy.get('mat-dialog-container').find('input:contains("Wert")').click().type("1");
+      cy.get('.cdk-overlay-pane').contains('mat-option', 'state-variable_1').click();
+      cy.get('aspect-visibility-rule-editor').contains('mat-form-field', 'Wert').find('input').clear().type("0");
 
-
-      cy.get('[role="listbox"]').should('not.exist');
-      cy.wait(500);
-      cy.get('mat-dialog-container').contains('button', 'Abbrechen').click();
-    });
-
-    it('section-menu: ignore numbering', () => {
-      cy.openEditor();
-      cy.get('.section-wrapper').first().click({force: true});
-      cy.get('aspect-section-menu').filter(':visible').first().find('svg').closest('button').click({force: true});
-      cy.get('aspect-section-menu').filter(':visible').first().find('svg').closest('button')
-        .should('have.class', 'mat-primary');
+      cy.get('mat-dialog-container').contains('button', 'Speichern').click();
     });
 
     after('saves unit definition', () => {

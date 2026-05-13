@@ -230,5 +230,5 @@ export function uploadFile(fileName: string){
 }
 
 export function selectPageEditor(page: string){
-  cy.get('mat-tab-group').find(`span:contains("Seite +${page}")`).click();
+  cy.get('mat-tab-group').contains("Seite " + page).click({ force: true });
 }

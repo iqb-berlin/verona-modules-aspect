@@ -35,6 +35,10 @@ describe('Cloze element', { testIsolation: false }, () => {
       createCloze('Lückentext7', 'Lückentext mit Ablegeliste 2', 'Ablegeliste', [], {}, 'droplist2');
     });
 
+    it('creates a cloze and inserts a dropdown inside it', () => {
+      createCloze('Lückentext8', 'Lückentext mit Klappliste', 'Klappliste');
+    });
+
     it('connects the droplists, and add two options for the first droplist inside cloze', () => {
       connectLists('droplist1', 'droplist2');
       connectLists('droplist2', 'droplist1');
@@ -52,7 +56,7 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('renders all cloze elements', () => {
-      cy.get('aspect-cloze').should('have.length', 7);
+      cy.get('aspect-cloze').should('have.length', 8);
     });
 
     it('first cloze renders the default Lorem Ipsum text', () => {
@@ -106,6 +110,12 @@ describe('Cloze element', { testIsolation: false }, () => {
 
     it( 'drags AAA from droplist1 to droplist2', () => {
       dragTo('droplist1', 'AAA', 'droplist2');
+    });
+
+    it('seventh cloze contains a dropdown', () => {
+      cy.get('aspect-cloze').eq(7)
+        .should('contain.text', 'Klappliste')
+        .find('aspect-dropdown').should('have.length', 1);
     });
   });
 });

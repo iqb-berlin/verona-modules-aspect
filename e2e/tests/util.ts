@@ -25,6 +25,11 @@ export function addElement(element: string, expansionPanel?: string, id?: string
   }
 }
 
+export function addTextField(label: string): void {
+  addElement('Eingabefeld');
+  setPreferencesElement(label);
+}
+
 export function addTextElement(text: string): void {
   addElement('Text');
   cy.get('aspect-element-model-properties-component')

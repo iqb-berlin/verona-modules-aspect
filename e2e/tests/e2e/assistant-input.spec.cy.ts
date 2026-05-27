@@ -16,11 +16,11 @@ describe('Input assistant', { testIsolation: false }, () => {
       clickTabAssistant();
       cy.contains('button', 'Antwortfeld(er)').click();
 
-      cy.wait(500);
+      // cy.wait(500);
       cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
         .find('.ProseMirror')
         .click().type(`{selectall}{backspace}Was ist 1 + 1?`);
-      cy.wait(200);
+      // cy.wait(200);
 
       clickButtonDialog('Bestätigen');
     });
@@ -30,11 +30,11 @@ describe('Input assistant', { testIsolation: false }, () => {
       clickTabAssistant();
       cy.contains('button', 'Antwortfeld(er)').click();
 
-      cy.wait(500);
+      // cy.wait(500);
       cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
         .find('.ProseMirror')
         .click().type('{selectall}{backspace}Nenne drei Primzahlen.');
-      cy.wait(200);
+      // cy.wait(200);
 
       cy.get('mat-dialog-container').contains('h3', 'Anzahl Antwortfelder')
         .next('mat-form-field').find('input').clear().type('3');
@@ -53,11 +53,11 @@ describe('Input assistant', { testIsolation: false }, () => {
       clickTabAssistant();
       cy.contains('button', 'Antwortfeld(er)').click();
 
-      cy.wait(500);
+      // cy.wait(500);
       cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
         .find('.ProseMirror')
         .click().type('{selectall}{backspace}Beschreibe den Wasserkreislauf.');
-      cy.wait(200);
+      // cy.wait(200);
 
       cy.contains('mat-radio-button', 'Mehrzeilig').click();
 
@@ -72,11 +72,11 @@ describe('Input assistant', { testIsolation: false }, () => {
       clickTabAssistant();
       cy.contains('button', 'Antwortfeld(er)').click();
 
-      cy.wait(500);
+      // cy.wait(500);
       cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
         .find('.ProseMirror')
         .click().type('{selectall}{backspace}Löse die Gleichung.');
-      cy.wait(200);
+      // cy.wait(200);
 
       setCheckboxInDialog('Formeleingabefelder verwenden');
 

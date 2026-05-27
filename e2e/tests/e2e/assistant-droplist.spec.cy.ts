@@ -1,6 +1,11 @@
 import {
-  clickButtonDialog, clickTabAssistant, addNewPage
+  clickButtonDialog, addNewPage
 } from '../util';
+import {
+  openAssistant,
+  typeInRichTextEditor,
+  addOptionViaFormField
+} from './helpers/assistant-util';
 
 describe('Droplist assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -9,39 +14,25 @@ describe('Droplist assistant', { testIsolation: false }, () => {
     });
 
     it('creates a classic droplist (Zuordnung)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'Drag & Drop').click();
+      openAssistant('Drag & Drop');
       cy.get('mat-dialog-container').contains('button', 'Zuordnung').click();
 
       // Frage/Instruktion
-      cy.get('mat-dialog-container')
-        .find('aspect-rich-text-editor').eq(0)
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Ordnen Sie die Elemente zu!');
+      typeInRichTextEditor('Ordnen Sie die Elemente zu!', 0);
 
       // Elementliste Überschrift
-      cy.get('mat-dialog-container')
-        .find('aspect-rich-text-editor').eq(1)
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Startliste');
+      typeInRichTextEditor('Startliste', 1);
 
       // Add Elementliste options
-      cy.get('mat-dialog-container').find('mat-form-field').eq(0).find('textarea')
-        .click({force: true}).type('Item A{enter}');
-      cy.get('mat-dialog-container').find('mat-form-field').eq(0).find('textarea')
-        .click({force: true}).type('Item B{enter}');
+      addOptionViaFormField('Item A', 0);
+      addOptionViaFormField('Item B', 0);
 
       // Ziel-Ablagen Überschrift
-      cy.get('mat-dialog-container')
-        .find('aspect-rich-text-editor').eq(2)
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Zielliste');
+      typeInRichTextEditor('Zielliste', 2);
 
       // Add Ziel-Ablagen options
-      cy.get('mat-dialog-container').find('mat-form-field').eq(2).find('textarea')
-        .click({force: true}).type('Target X{enter}');
-      cy.get('mat-dialog-container').find('mat-form-field').eq(2).find('textarea')
-        .click({force: true}).type('Target Y{enter}');
+      addOptionViaFormField('Target X', 2);
+      addOptionViaFormField('Target Y', 2);
 
       // Click Confirm
       clickButtonDialog('Bestätigen');
@@ -52,27 +43,18 @@ describe('Droplist assistant', { testIsolation: false }, () => {
       addNewPage();
       cy.contains('Seite 2').should('exist');
 
-      clickTabAssistant();
-      cy.contains('button', 'Drag & Drop').click();
+      openAssistant('Drag & Drop');
       cy.get('mat-dialog-container').contains('button', 'Sortieren').click();
 
       // Frage/Instruktion
-      cy.get('mat-dialog-container')
-        .find('aspect-rich-text-editor').eq(0)
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Sortieren Sie die Elemente!');
+      typeInRichTextEditor('Sortieren Sie die Elemente!', 0);
 
       // Elementliste Überschrift
-      cy.get('mat-dialog-container')
-        .find('aspect-rich-text-editor').eq(1)
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Unsortiert');
+      typeInRichTextEditor('Unsortiert', 1);
 
       // Add Elementliste options
-      cy.get('mat-dialog-container').find('mat-form-field').eq(0).find('textarea')
-        .click({force: true}).type('First{enter}');
-      cy.get('mat-dialog-container').find('mat-form-field').eq(0).find('textarea')
-        .click({force: true}).type('Second{enter}');
+      addOptionViaFormField('First', 0);
+      addOptionViaFormField('Second', 0);
 
       // Click Confirm
       clickButtonDialog('Bestätigen');

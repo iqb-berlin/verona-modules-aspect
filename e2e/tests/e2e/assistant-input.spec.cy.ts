@@ -1,9 +1,11 @@
 import {
-  addNewPage, clickButtonDialog,
-  clickTabAssistant
+  addNewPage, clickButtonDialog
 } from '../util';
-import {setCheckboxInDialog} from "./helpers/assistant-util";
-
+import {
+  openAssistant,
+  typeInRichTextEditor,
+  setCheckboxInDialog
+} from "./helpers/assistant-util";
 
 describe('Input assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -13,28 +15,20 @@ describe('Input assistant', { testIsolation: false }, () => {
 
     // ── Page 1: Basic Input ──────────────────────────────────────────────────────
     it('creates a basic input section (Page 1)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'Antwortfeld(er)').click();
+      openAssistant('Antwortfeld(er)');
 
-      // cy.wait(500);
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type(`{selectall}{backspace}Was ist 1 + 1?`);
-      // cy.wait(200);
+      // Set Question
+      typeInRichTextEditor('Was ist 1 + 1?');
 
       clickButtonDialog('Bestätigen');
     });
 
     // ── Page 1: Multiple Inputs with numbering ───────────────────────────────────
     it('creates a section with multiple input fields and numbering (Page 1)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'Antwortfeld(er)').click();
+      openAssistant('Antwortfeld(er)');
 
-      // cy.wait(500);
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Nenne drei Primzahlen.');
-      // cy.wait(200);
+      // Set Question
+      typeInRichTextEditor('Nenne drei Primzahlen.');
 
       cy.get('mat-dialog-container').contains('h3', 'Anzahl Antwortfelder')
         .next('mat-form-field').find('input').clear().type('3');
@@ -50,14 +44,10 @@ describe('Input assistant', { testIsolation: false }, () => {
     // ── Page 2: Multiline Input ──────────────────────────────────────────────────
     it('creates a section with a multiline input (Page 2)', () => {
       addNewPage();
-      clickTabAssistant();
-      cy.contains('button', 'Antwortfeld(er)').click();
+      openAssistant('Antwortfeld(er)');
 
-      // cy.wait(500);
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Beschreibe den Wasserkreislauf.');
-      // cy.wait(200);
+      // Set Question
+      typeInRichTextEditor('Beschreibe den Wasserkreislauf.');
 
       cy.contains('mat-radio-button', 'Mehrzeilig').click();
 
@@ -69,14 +59,10 @@ describe('Input assistant', { testIsolation: false }, () => {
 
     // ── Page 2: Math Input ───────────────────────────────────────────────────────
     it('creates a section with math input fields (Page 2)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'Antwortfeld(er)').click();
+      openAssistant('Antwortfeld(er)');
 
-      // cy.wait(500);
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Löse die Gleichung.');
-      // cy.wait(200);
+      // Set Question
+      typeInRichTextEditor('Löse die Gleichung.');
 
       setCheckboxInDialog('Formeleingabefelder verwenden');
 

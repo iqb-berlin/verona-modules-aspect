@@ -37,3 +37,35 @@ export function setCheckboxInDialog(labelText: string) {
   cy.get('mat-dialog-container').contains('mat-checkbox', labelText)
     .find('[type="checkbox"]').click({ force: true });
 }
+
+export function openAssistant(name: string) {
+  cy.contains('mat-icon', 'bookmarks').click();
+  cy.contains('button', name).click();
+  cy.get('mat-dialog-container').should('be.visible');
+  cy.wait(500);
+}
+
+export function typeInRichTextEditor(text: string, index: number = 0) {
+  cy.get('mat-dialog-container')
+    .find('aspect-rich-text-editor')
+    .eq(index)
+    .find('.ProseMirror')
+    .click()
+    .type(`{selectall}{backspace}${text}`);
+  cy.wait(200);
+}
+
+export function addOptionViaFormField(optionName: string, index: number = 0) {
+  cy.get('mat-dialog-container')
+    .find('mat-form-field')
+    .eq(index)
+    .find('textarea')
+    .click({ force: true })
+    .type(optionName);
+  cy.get('mat-dialog-container')
+    .find('mat-form-field')
+    .eq(index)
+    .find('button')
+    .click();
+}
+

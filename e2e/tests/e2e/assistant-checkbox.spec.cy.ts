@@ -1,8 +1,12 @@
 import {
-  addNewPage, clickButtonDialog,
-  clickTabAssistant, uploadFile
+  addNewPage, clickButtonDialog, uploadFile
 } from '../util';
-import { setCheckboxInDialog } from './helpers/assistant-util';
+import {
+  openAssistant,
+  typeInRichTextEditor,
+  addOptionViaFormField,
+  setCheckboxInDialog
+} from './helpers/assistant-util';
 
 describe('Checkbox assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -12,32 +16,15 @@ describe('Checkbox assistant', { testIsolation: false }, () => {
 
     // ── Page 1: Text Checkbox Group ──────────────────────────────────────────────
     it('creates a text checkbox group (Page 1)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'Kontrollkästchen').click();
-      cy.get('mat-dialog-container').should('be.visible');
-      cy.wait(500);
+      openAssistant('Kontrollkästchen');
 
       // Set Question
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Was isst du gerne?');
-      cy.wait(200);
+      typeInRichTextEditor('Was isst du gerne?');
 
       // Add options
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Neue Option')
-        .find('textarea').type('Apfel');
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Neue Option')
-        .find('button').click();
-
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Neue Option')
-        .find('textarea').type('Banane');
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Neue Option')
-        .find('button').click();
-
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Neue Option')
-        .find('textarea').type('Orange');
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Neue Option')
-        .find('button').click();
+      addOptionViaFormField('Apfel');
+      addOptionViaFormField('Banane');
+      addOptionViaFormField('Orange');
 
       clickButtonDialog('Bestätigen');
     });
@@ -45,16 +32,10 @@ describe('Checkbox assistant', { testIsolation: false }, () => {
     // ── Page 2: Image Checkbox Group ─────────────────────────────────────────────
     it('creates an image checkbox group (Page 2)', () => {
       addNewPage();
-      clickTabAssistant();
-      cy.contains('button', 'Kontrollkästchen').click();
-      cy.get('mat-dialog-container').should('be.visible');
-      cy.wait(500);
+      openAssistant('Kontrollkästchen');
 
       // Set Question
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Welche dieser Früchte magst du?');
-      cy.wait(200);
+      typeInRichTextEditor('Welche dieser Früchte magst du?');
 
       // Enable Image Options
       setCheckboxInDialog('Bildoptionen verwenden');

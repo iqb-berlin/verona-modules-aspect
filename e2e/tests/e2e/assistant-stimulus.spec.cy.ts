@@ -1,10 +1,8 @@
 import {
-  addElement,
   addNewPage, clickButtonDialog,
-  clickTabAssistant,
-  editText, selectRadioOption,
-  submitDialog
+  editText, selectRadioOption
 } from '../util';
+import { openAssistant } from './helpers/assistant-util';
 
 describe('Stimulus assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -14,16 +12,14 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
 
     // ── Page 1: Text stimulus ─────────────────────────────────────────────────────
     it('creates a text stimulus with marking panel (Page 1)', () => {
-      clickTabAssistant();
-      addElement('Stimulus');
+      openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'Text').click();
       cy.contains('mat-checkbox','Markieren zur Texterschließung erlauben').click();
       clickButtonDialog('Bestätigen');
     });
 
     it('creates a personalized text stimulus within two columns (Page 1)', () => {
-      clickTabAssistant();
-      addElement('Stimulus');
+      openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'Text').click();
 
       editText("Meine Überschrift{enter}Mein Autor{enter}Mein Text{enter}Meine Fußnote");
@@ -39,15 +35,13 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
     // ── Page 2: Email stimulus ─────────────────────────────────────────────────────
     it('creates an email stimulus (Page 2)', () => {
       addNewPage();
-      clickTabAssistant();
-      addElement('Stimulus');
+      openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'E-Mail').click();
       cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
     });
 
     it('creates an english email stimulus (Page 2)', () => {
-      clickTabAssistant();
-      addElement('Stimulus');
+      openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'E-Mail').click();
       selectRadioOption('Englisch');
       cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
@@ -66,15 +60,13 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
     // ── Page 3: Message stimulus ─────────────────────────────────────────────────────
     it('creates a message stimulus (Page 3)', () => {
       addNewPage();
-      clickTabAssistant();
-      addElement('Stimulus');
+      openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'Mobiltelefon').click();
       cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
     });
 
     it('creates a french message stimulus(Page 3)', () => {
-      clickTabAssistant();
-      addElement('Stimulus');
+      openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'Mobiltelefon').click();
       selectRadioOption('Französisch');
       cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();

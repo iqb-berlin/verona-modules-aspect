@@ -1,6 +1,6 @@
 import {
   addNewPage, clickButtonDialog,
-  editText, selectRadioOption
+  editText, selectRadioOption, uploadFile
 } from '../util';
 import { openAssistant } from './helpers/assistant-util';
 
@@ -82,6 +82,59 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
       cy.get('aspect-editor-page-view:contains("Neue 3 Quelle")').should('exist');
     });
 
+    // ── Page 4: Audio stimulus ───────────────────────────────────────────────────────
+    it('creates an audio1 stimulus (Page 4)', () => {
+      addNewPage();
+      openAssistant('Stimulus');
+      cy.get('mat-dialog-container').contains('button', 'Instruktion und Hörtext in einem Audio').click();
+
+      // Upload Instruktion und Hörtext Audio
+      cy.stubFileInput();
+      cy.get('mat-dialog-container').find('aspect-editor-wizard-audio button').click();
+      uploadFile('bird-sound.mp3');
+
+      // Assert audio src is loaded
+      cy.get('mat-dialog-container aspect-editor-wizard-audio audio')
+        .should('have.attr', 'src')
+        .and('not.be.empty');
+
+      cy.get('mat-dialog-container').contains('button', 'Bestätigen').should('not.be.disabled').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('creates an audio2 stimulus (Page 4)', () => {
+      openAssistant('Stimulus');
+      cy.get('mat-dialog-container').contains('button', 'Instruktion und Hörtext getrennt').click();
+
+      // Setup file input stubbing once
+      cy.stubFileInput();
+
+      // Upload Instruktionsaudio
+      cy.get('mat-dialog-container').find('aspect-editor-wizard-audio button').eq(0).click();
+      uploadFile('bird-sound.mp3');
+
+      // Assert first audio src is loaded
+      cy.get('mat-dialog-container aspect-editor-wizard-audio audio').eq(0)
+        .should('have.attr', 'src')
+        .and('not.be.empty');
+
+      // Upload Stimulusaudio
+      cy.get('mat-dialog-container').find('aspect-editor-wizard-audio button').eq(1).click();
+      uploadFile('bird-sound.mp3');
+
+      // Assert second audio src is loaded
+      cy.get('mat-dialog-container aspect-editor-wizard-audio audio').eq(1)
+        .should('have.attr', 'src')
+        .and('not.be.empty');
+
+      // Scroll to bottom of dialog content and select radio option
+      cy.get('[mat-dialog-content]').scrollTo('bottom');
+      selectRadioOption('Englisch');
+
+      cy.get('mat-dialog-container').contains('button', 'Bestätigen').should('not.be.disabled').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
     after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/stimulus.json');
     });
@@ -132,6 +185,21 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
       cy.goToPlayerPage(3);
       cy.contains('Antworten').should('exist');
       cy.contains('Répondre').should('exist');
+    });
+
+    // ── Page 4: Audio stimulus ───────────────────────────────────────────────────────
+    it('verifies the audio1 and audio2 stimulus (Page 4)', () => {
+      cy.goToPlayerPage(4);
+      // Audio 1 checks
+      cy.contains('Drücke zuerst auf das Dreieck, dann startet der Hörtext.').should('exist');
+      
+      // Audio 2 checks
+      cy.contains('instruction:').should('exist');
+      cy.contains('audio recording:').should('exist');
+      cy.contains('Hier steht die Situierung.').should('exist');
+
+      // Both audios check
+      cy.get('aspect-audio:visible').should('have.length', 3);
     });
   });
 });

@@ -3,7 +3,10 @@ import {
 } from '../util';
 import {
   openAssistant,
-  typeInRichTextEditor
+  typeInRichTextEditor,
+  selectOptionInDialog,
+  selectRadioButtonInDialog
+
 } from './helpers/assistant-util';
 import {generateRandomText} from "./helpers/text-util";
 
@@ -27,11 +30,10 @@ describe('Marking panel assistant', { testIsolation: false }, () => {
       typeInRichTextEditor('Fragestellung Wortweise', 0);
 
       // Connected text selection
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Verfügbare Textelemente').click();
-      cy.get('.cdk-overlay-container').contains('mat-option', 'text_word').click();
+      selectOptionInDialog('Verfügbare Textelemente', 'text_word');
 
       // Word-wise mode
-      cy.get('mat-dialog-container').contains('mat-radio-button', 'wortweise').click();
+      selectRadioButtonInDialog('wortweise');
 
       // Click Confirm
       clickButtonDialog('Bestätigen');
@@ -53,11 +55,10 @@ describe('Marking panel assistant', { testIsolation: false }, () => {
       typeInRichTextEditor('Fragestellung Bereichsweise', 0);
 
       // Connected text selection
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Verfügbare Textelemente').click();
-      cy.get('.cdk-overlay-container').contains('mat-option', 'text_range').click();
+      selectOptionInDialog('Verfügbare Textelemente', 'text_range');
 
       // Range-wise mode
-      cy.get('mat-dialog-container').contains('mat-radio-button', 'bereichsweise').click();
+      selectRadioButtonInDialog('bereichsweise');
 
       // Click Confirm
       clickButtonDialog('Bestätigen');

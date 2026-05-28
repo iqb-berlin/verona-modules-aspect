@@ -2,7 +2,10 @@ import {
   clickButtonDialog, addNewPage
 } from '../util';
 import {
-  openAssistant
+  openAssistant,
+  selectOptionInDialog,
+  typeInDialogInput
+
 } from './helpers/assistant-util';
 
 describe('Math table assistant', { testIsolation: false }, () => {
@@ -17,12 +20,11 @@ describe('Math table assistant', { testIsolation: false }, () => {
       openAssistant('Rechenkästchen');
 
       // 2. Select Addition
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Operation auswählen').click();
-      cy.get('.cdk-overlay-container').contains('mat-option', 'Addition').click();
+      selectOptionInDialog('Operation auswählen', 'Addition');
 
       // 3. Set terms
-      cy.get('mat-dialog-container').find('input').eq(0).clear().type('345');
-      cy.get('mat-dialog-container').find('input').eq(1).clear().type('123');
+      typeInDialogInput('345', 0);
+      typeInDialogInput('123', 1);
 
       // Click Confirm
       clickButtonDialog('Bestätigen');
@@ -37,12 +39,11 @@ describe('Math table assistant', { testIsolation: false }, () => {
       openAssistant('Rechenkästchen');
 
       // 2. Select Subtraction
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Operation auswählen').click();
-      cy.get('.cdk-overlay-container').contains('mat-option', 'Subtraktion').click();
+      selectOptionInDialog('Operation auswählen', 'Subtraktion');
 
       // 3. Set terms
-      cy.get('mat-dialog-container').find('input').eq(0).clear().type('876');
-      cy.get('mat-dialog-container').find('input').eq(1).clear().type('543');
+      typeInDialogInput('876', 0);
+      typeInDialogInput('543', 1);
 
       // Click Confirm
       clickButtonDialog('Bestätigen');
@@ -57,12 +58,11 @@ describe('Math table assistant', { testIsolation: false }, () => {
       openAssistant('Rechenkästchen');
 
       // 2. Select Multiplication
-      cy.get('mat-dialog-container').contains('mat-form-field', 'Operation auswählen').click();
-      cy.get('.cdk-overlay-container').contains('mat-option', 'Multiplikation mit mehrstelligen Zahlen').click();
+      selectOptionInDialog('Operation auswählen', 'Multiplikation mit mehrstelligen Zahlen');
 
       // 3. Set terms
-      cy.get('mat-dialog-container').find('input').eq(0).clear().type('45');
-      cy.get('mat-dialog-container').find('input').eq(1).clear().type('23');
+      typeInDialogInput('45', 0);
+      typeInDialogInput('23', 1);
 
       // Click Confirm
       clickButtonDialog('Bestätigen');

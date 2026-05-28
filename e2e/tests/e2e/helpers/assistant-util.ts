@@ -68,4 +68,15 @@ export function addOptionViaFormField(optionName: string, index: number = 0) {
     .find('button')
     .click();
 }
+export function selectOptionInDialog(fieldLabel: string, optionLabel: string) {
+  cy.get('mat-dialog-container').contains('mat-form-field', fieldLabel).click();
+  cy.get('.cdk-overlay-container').contains('mat-option', optionLabel).click();
+}
 
+export function selectRadioButtonInDialog(radioLabel: string) {
+  cy.get('mat-dialog-container').contains('mat-radio-button', radioLabel).click();
+}
+
+export function typeInDialogInput(value: string, index: number = 0) {
+  cy.get('mat-dialog-container').find('input').eq(index).clear().type(value);
+}

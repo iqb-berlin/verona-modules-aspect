@@ -117,8 +117,7 @@ describe('Tooltip component and directives', { testIsolation: false }, () => {
   context('player', () => {
     before('opens a player and loads the predefined tooltips unit definition', () => {
       cy.openPlayer();
-      // Load the pre-configured tooltips fixture to bypass headless focus/selection flakiness in the editor saving phase
-      cy.loadUnit('tooltips.json');
+      cy.loadUnit('../downloads/tooltips.json');
     });
 
     it('verifies button tooltip trigger and position', () => {

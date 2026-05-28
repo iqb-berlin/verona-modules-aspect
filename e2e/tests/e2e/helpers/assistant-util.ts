@@ -1,3 +1,5 @@
+import { setDialogCheckbox } from '../../util';
+
 export function addMCOption(optionName: string): void {
   cy.get('mat-dialog-container')
     .get('aspect-option-list-panel')
@@ -30,12 +32,6 @@ export function addGenericOption(optionName: string, type: string) {
     .last()
     .contains('mat-icon', 'add')
     .click()
-}
-
-
-export function setCheckboxInDialog(labelText: string) {
-  cy.get('mat-dialog-container').contains('mat-checkbox', labelText)
-    .find('[type="checkbox"]').click({ force: true });
 }
 
 export function openAssistant(name: string) {

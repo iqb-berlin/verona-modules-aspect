@@ -237,3 +237,64 @@ export function uploadFile(fileName: string){
 export function selectPageEditor(page: string){
   cy.get('mat-tab-group').contains("Seite " + page).click({ force: true });
 }
+
+export function selectParagraphElement($p: JQuery<HTMLElement>): void {
+  const el = $p[0];
+  const doc = el.ownerDocument;
+  const win = doc.defaultView!;
+  const rect = el.getBoundingClientRect();
+
+  const startX = rect.left + 1;
+  const startY = rect.top + rect.height / 2;
+  const endX = rect.right - 1;
+  const endY = rect.top + rect.height / 2;
+
+  const eventOpts = (x: number, y: number) => ({
+    bubbles: true, cancelable: true, view: win,
+    clientX: x, clientY: y, buttons: 1,
+  });
+
+  el.dispatchEvent(new PointerEvent('pointerdown', eventOpts(startX, startY)));
+  el.dispatchEvent(new MouseEvent('mousedown', eventOpts(startX, startY)));
+
+  const range = doc.createRange();
+  range.selectNodeContents(el);
+  const sel = win.getSelection();
+  sel?.removeAllRanges();
+  sel?.addRange(range);
+
+  el.dispatchEvent(new PointerEvent('pointermove', eventOpts(endX, endY)));
+  el.dispatchEvent(new MouseEvent('mousemove', eventOpts(endX, endY)));
+  el.dispatchEvent(new PointerEvent('pointerup', eventOpts(endX, endY)));
+  el.dispatchEvent(new MouseEvent('mouseup', eventOpts(endX, endY)));
+}
+
+export function editElementConfigDialog(): void {
+  cy.get('aspect-element-model-properties-component')
+    .contains('button', 'Medienoptionen anpassen')
+    .click();
+  cy.get('mat-dialog-container').should('be.visible');
+}
+
+export function setDialogField(label: string, value: number): void {
+  cy.get('mat-dialog-container')
+    .contains('mat-form-field', label)
+    .find('input')
+    .clear()
+    .type(`${value}{enter}`)
+    .blur();
+}
+
+export function setDialogCheckbox(label: string, checked?: boolean): void {
+  cy.get('mat-dialog-container')
+    .contains('mat-checkbox', label)
+    .then(($matCheckbox) => {
+      const isChecked = $matCheckbox.hasClass('mat-mdc-checkbox-checked') || 
+                        $matCheckbox.hasClass('mat-checkbox-checked') || 
+                        $matCheckbox.find('input').is(':checked');
+      if (checked === undefined || isChecked !== checked) {
+        cy.wrap($matCheckbox).find('input').click({ force: true });
+      }
+    });
+}
+

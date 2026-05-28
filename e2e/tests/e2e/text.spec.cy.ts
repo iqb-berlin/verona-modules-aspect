@@ -1,4 +1,4 @@
-import {addNewPage, setID, addTextElement} from '../util';
+import {addNewPage, setID, addTextElement, selectParagraphElement} from '../util';
 import { addText, selectRange } from "./helpers/text-util";
 
 
@@ -62,37 +62,7 @@ describe('Text element', { testIsolation: false }, () => {
 
             cy.get('.ProseMirror').click().type('{selectall}{backspace}Rich Text Extensions');
 
-            // Select all text using mouse/pointer events so Tiptap captures selection state
-            cy.get('.ProseMirror p').then($p => {
-                const el = $p[0];
-                const doc = el.ownerDocument;
-                const win = doc.defaultView!;
-                const rect = el.getBoundingClientRect();
-
-                const startX = rect.left + 1;
-                const startY = rect.top + rect.height / 2;
-                const endX = rect.right - 1;
-                const endY = rect.top + rect.height / 2;
-
-                const eventOpts = (x: number, y: number) => ({
-                    bubbles: true, cancelable: true, view: win,
-                    clientX: x, clientY: y, buttons: 1,
-                });
-
-                el.dispatchEvent(new PointerEvent('pointerdown', eventOpts(startX, startY)));
-                el.dispatchEvent(new MouseEvent('mousedown', eventOpts(startX, startY)));
-
-                const range = doc.createRange();
-                range.selectNodeContents(el);
-                const sel = win.getSelection();
-                sel?.removeAllRanges();
-                sel?.addRange(range);
-
-                el.dispatchEvent(new PointerEvent('pointermove', eventOpts(endX, endY)));
-                el.dispatchEvent(new MouseEvent('mousemove', eventOpts(endX, endY)));
-                el.dispatchEvent(new PointerEvent('pointerup', eventOpts(endX, endY)));
-                el.dispatchEvent(new MouseEvent('mouseup', eventOpts(endX, endY)));
-            });
+            cy.get('.ProseMirror p').then(selectParagraphElement);
             cy.wait(200);
 
             // 1. Set font-size to 24px

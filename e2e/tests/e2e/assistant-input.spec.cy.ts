@@ -1,10 +1,9 @@
 import {
-  addNewPage, clickButtonDialog
+  addNewPage, clickButtonDialog, setDialogCheckbox
 } from '../util';
 import {
   openAssistant,
-  typeInRichTextEditor,
-  setCheckboxInDialog
+  typeInRichTextEditor
 } from "./helpers/assistant-util";
 
 describe('Input assistant', { testIsolation: false }, () => {
@@ -64,7 +63,7 @@ describe('Input assistant', { testIsolation: false }, () => {
       // Set Question
       typeInRichTextEditor('Löse die Gleichung.');
 
-      setCheckboxInDialog('Formeleingabefelder verwenden');
+      setDialogCheckbox('Formeleingabefelder verwenden');
 
       clickButtonDialog('Bestätigen');
       cy.get('aspect-element-properties').contains('mat-label', 'Vorbelegung')

@@ -1,7 +1,7 @@
 import {
-  addNewPage, clickButtonDialog,
+  addNewPage, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField,
 } from '../util';
-import {addAudioElement, editElementConfigDialog, setDialogCheckbox, setDialogField} from "./helpers/audio-util";
+import {addAudioElement} from "./helpers/audio-util";
 
 
 // ─────────────────────────────────────────────────────────────────────────────

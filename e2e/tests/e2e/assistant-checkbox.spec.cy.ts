@@ -1,11 +1,10 @@
 import {
-  addNewPage, clickButtonDialog, uploadFile
+  addNewPage, clickButtonDialog, uploadFile, setDialogCheckbox
 } from '../util';
 import {
   openAssistant,
   typeInRichTextEditor,
-  addOptionViaFormField,
-  setCheckboxInDialog
+  addOptionViaFormField
 } from './helpers/assistant-util';
 
 describe('Checkbox assistant', { testIsolation: false }, () => {
@@ -38,7 +37,7 @@ describe('Checkbox assistant', { testIsolation: false }, () => {
       typeInRichTextEditor('Welche dieser Früchte magst du?');
 
       // Enable Image Options
-      setCheckboxInDialog('Bildoptionen verwenden');
+      setDialogCheckbox('Bildoptionen verwenden');
       cy.wait(200);
 
       // Upload option image

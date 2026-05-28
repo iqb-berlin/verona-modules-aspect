@@ -1,7 +1,7 @@
 import {
-  addNewPage, clickButtonDialog,
+  addNewPage, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField,
 } from '../util';
-import {addVideoElement, editElementConfigDialog, setDialogCheckbox, setDialogField} from "./helpers/video-util";
+import {addVideoElement} from "./helpers/video-util";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Test suite

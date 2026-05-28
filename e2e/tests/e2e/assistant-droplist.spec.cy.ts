@@ -1,11 +1,10 @@
 import {
-  clickButtonDialog, addNewPage
+  clickButtonDialog, addNewPage, setDialogCheckbox
 } from '../util';
 import {
   openAssistant,
   typeInRichTextEditor,
-  addOptionViaFormField,
-  setCheckboxInDialog
+  addOptionViaFormField
 } from './helpers/assistant-util';
 import { dragTo } from './helpers/droplist-util';
 
@@ -65,7 +64,7 @@ describe('Droplist assistant', { testIsolation: false }, () => {
       addOptionViaFormField('Second', 0);
 
       // Enable numbering
-      setCheckboxInDialog('Nummerierung aktivieren');
+      setDialogCheckbox('Nummerierung aktivieren');
 
       // Click Confirm
       clickButtonDialog('Bestätigen');

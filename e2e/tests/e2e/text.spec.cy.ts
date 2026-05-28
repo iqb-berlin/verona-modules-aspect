@@ -52,6 +52,78 @@ describe('Text element', { testIsolation: false }, () => {
             cy.wait(1000);
         });
 
+        // ── Page 5: rich text extensions ──────────────────────────────────────────
+        it('creates a text element with rich text extensions (page 5)', () => {
+            addNewPage();
+            addTextElement('Originaltext ');
+            setID('text-extensions');
+            cy.get('aspect-element-model-properties-component')
+                .contains('edit').click();
+
+            cy.get('.ProseMirror').click().type('{selectall}{backspace}Rich Text Extensions');
+
+            // Select all text using mouse/pointer events so Tiptap captures selection state
+            cy.get('.ProseMirror p').then($p => {
+                const el = $p[0];
+                const doc = el.ownerDocument;
+                const win = doc.defaultView!;
+                const rect = el.getBoundingClientRect();
+
+                const startX = rect.left + 1;
+                const startY = rect.top + rect.height / 2;
+                const endX = rect.right - 1;
+                const endY = rect.top + rect.height / 2;
+
+                const eventOpts = (x: number, y: number) => ({
+                    bubbles: true, cancelable: true, view: win,
+                    clientX: x, clientY: y, buttons: 1,
+                });
+
+                el.dispatchEvent(new PointerEvent('pointerdown', eventOpts(startX, startY)));
+                el.dispatchEvent(new MouseEvent('mousedown', eventOpts(startX, startY)));
+
+                const range = doc.createRange();
+                range.selectNodeContents(el);
+                const sel = win.getSelection();
+                sel?.removeAllRanges();
+                sel?.addRange(range);
+
+                el.dispatchEvent(new PointerEvent('pointermove', eventOpts(endX, endY)));
+                el.dispatchEvent(new MouseEvent('mousemove', eventOpts(endX, endY)));
+                el.dispatchEvent(new PointerEvent('pointerup', eventOpts(endX, endY)));
+                el.dispatchEvent(new MouseEvent('mouseup', eventOpts(endX, endY)));
+            });
+            cy.wait(200);
+
+            // 1. Set font-size to 24px
+            cy.contains('mat-form-field', 'Größe').click();
+            cy.get('.cdk-overlay-container').contains('mat-option', '24px').click({ force: true });
+            cy.wait(200);
+
+            // 2. Select bullet list
+            cy.get('aspect-combo-button').contains('format_list_bulleted').click();
+            cy.wait(200);
+
+            // 3. Indent list item
+            cy.get('button').contains('format_indent_increase').click();
+            cy.wait(200);
+
+            // 4. Hang indent
+            cy.get('button').contains('segment').click();
+            cy.wait(200);
+
+            // Move cursor to the end and press enter to clear selection before inserting HR
+            cy.get('.ProseMirror').type('{end}{enter}');
+            cy.wait(200);
+
+            // 5. Insert horizontal rule
+            cy.get('aspect-combo-button').contains('horizontal_rule').click();
+            cy.wait(200);
+
+            cy.contains('Speichern').click();
+            cy.wait(1000);
+        });
+
         after('saves the unit definition', () => {
             cy.saveUnit('e2e/downloads/text.json');
         });
@@ -152,6 +224,25 @@ describe('Text element', { testIsolation: false }, () => {
                 cy.get('aspect-nodeview-math-formula').get('.overline').should('exist');
                 cy.get('aspect-nodeview-math-formula').get('.ML__cmr').should('exist');
                 cy.get('aspect-nodeview-math-formula').get('cap').should('not.exist');
+            });
+        });
+
+        it('checks the rich text extensions on page 5', () => {
+            cy.goToPlayerPage(5);
+            cy.getElementByAlias('text-extensions').within(() => {
+                // Verify font size style is 24px
+                cy.get('span[style*="font-size: 24px"]').should('exist')
+                    .and('contain.text', 'Rich Text Extensions');
+
+                // Verify bullet list (ul / li) is rendered
+                cy.get('ul').should('exist');
+                cy.get('li').should('exist');
+
+                // Verify indentation style is present
+                cy.get('ul').should('have.css', 'margin-left');
+
+                // Verify horizontal rule exists
+                cy.get('hr').should('exist');
             });
         });
     });

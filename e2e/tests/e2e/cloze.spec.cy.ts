@@ -1,5 +1,6 @@
 import { createCloze } from './helpers/cloze-util';
-import {connectLists, dragTo} from "./helpers/droplist-util";
+import { connectLists, dragTo } from "./helpers/droplist-util";
+import { setID, setCheckbox, addOption } from '../util';
 
 describe('Cloze element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -37,6 +38,26 @@ describe('Cloze element', { testIsolation: false }, () => {
 
     it('creates a cloze and inserts a dropdown inside it', () => {
       createCloze('Lückentext8', 'Lückentext mit Klappliste', 'Klappliste');
+
+      // Select the child dropdown overlay in the 8th Cloze in editor canvas
+      cy.get('aspect-cloze').eq(7).find('aspect-compound-child-overlay').first().click();
+
+      // Add options to it
+      addOption('AAA');
+      addOption('BBB');
+    });
+
+    it('creates a cloze with a required text-field child', () => {
+      createCloze('Lückentext9', 'Lückentext für Validierung', 'Eingabefeld');
+
+      // Select the child simple text-field overlay in editor canvas
+      cy.get('aspect-cloze').last().find('aspect-compound-child-overlay').first().click();
+
+      // Set its ID to cloze-child-text-field
+      setID('cloze-child-text-field');
+
+      // Mark the child text-field as required (Pflichtfeld)
+      setCheckbox('Pflichtfeld');
     });
 
     it('connects the droplists, and add two options for the first droplist inside cloze', () => {
@@ -44,7 +65,7 @@ describe('Cloze element', { testIsolation: false }, () => {
       connectLists('droplist2', 'droplist1');
     });
 
-    after('saves unit definition', () => {
+    after('saves unit definition and modifies columnCount', () => {
       cy.saveUnit('e2e/downloads/cloze.json');
     });
   });
@@ -56,7 +77,7 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('renders all cloze elements', () => {
-      cy.get('aspect-cloze').should('have.length', 8);
+      cy.get('aspect-cloze').should('have.length', 9);
     });
 
     it('first cloze renders the default Lorem Ipsum text', () => {
@@ -116,6 +137,40 @@ describe('Cloze element', { testIsolation: false }, () => {
       cy.get('aspect-cloze').eq(7)
         .should('contain.text', 'Klappliste')
         .find('aspect-dropdown').should('have.length', 1);
+    });
+
+    it('selects an option from dropdown inside cloze', () => {
+      cy.get('aspect-cloze').eq(7)
+        .find('aspect-dropdown mat-select')
+        .click();
+      cy.get('.cdk-overlay-container').contains('BBB').click();
+
+      cy.get('aspect-cloze').eq(7)
+        .find('aspect-dropdown mat-select-trigger')
+        .contains('BBB');
+    });
+
+    it('9th cloze displays error message for required text-field inside cloze when touched', () => {
+      // Initially, error should not exist
+      cy.get('aspect-cloze-child-error-message').should('not.exist');
+
+      // Click / Focus simple text field input inside 9th cloze
+      cy.get('aspect-cloze').eq(8)
+        .find('aspect-text-field-simple input')
+        .click();
+
+      // Blur the input by clicking elsewhere (e.g. another cloze element)
+      cy.get('aspect-cloze').eq(0).click();
+
+      // Check that requiredField warning class and message are rendered
+      cy.get('aspect-cloze').eq(8)
+        .find('aspect-text-field-simple input')
+        .should('have.class', 'errors');
+
+      cy.get('aspect-cloze-child-error-message')
+        .should('be.visible')
+        .and('contain.text', 'Eingabe erforderlich')
+        .and('have.css', 'top', '35px');
     });
   });
 });

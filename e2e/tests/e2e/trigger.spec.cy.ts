@@ -5,8 +5,7 @@ import {
   selectFromDropdown,
   setPageConfig
 } from '../util';
-import { modifyText } from './helpers/text-util';
-import { addTextExample } from "./helpers/trigger-util";
+import { addText, modifyText } from './helpers/text-util';
 
 describe('Trigger element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -15,7 +14,7 @@ describe('Trigger element', { testIsolation: false }, () => {
     });
 
     it('creates a text element with three paragraphs and marking mode enabled', () => {
-      addTextExample('Bereich', { highlightableYellow: true });
+      addText(3, 4, 1, 'Bereich', { highlightableYellow: true });
       modifyText(0, { highlight: true });
       addNewPage();
       setPageConfig(1, { alwaysVisible: true });

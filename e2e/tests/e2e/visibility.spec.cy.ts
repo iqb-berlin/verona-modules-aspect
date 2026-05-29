@@ -1,4 +1,5 @@
-import {addTriggerElement, configureSectionVisibilityRule, createSectionWithText, setExpertMode} from '../util';
+import {  setExpertMode } from '../util';
+import { addTriggerElement, configureSectionVisibilityRule, createSectionWithText} from "./helpers/visibility-util";
 
 
 describe('Section Visibility Handling', { testIsolation: false }, () => {
@@ -84,7 +85,7 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
       cy.get('aspect-section').eq(2).should('be.visible');
       cy.get('aspect-section').eq(2).contains('Hello Section 3').should('exist');
 
-      // Monkeypatch the directive to prevent the player bug from hiding the section
+      // Patch the directive to prevent the player bug from hiding the section
       cy.window().then((win: any) => {
         cy.get('aspect-section').eq(2).then(($el) => {
           if (win.ng && win.ng.getDirectives) {

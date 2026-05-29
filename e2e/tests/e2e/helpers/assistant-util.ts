@@ -1,4 +1,4 @@
-import { setDialogCheckbox } from '../../util';
+import { setDialogCheckbox, clickTabAssistant } from '../../util';
 
 export function addMCOption(optionName: string): void {
   cy.get('mat-dialog-container')
@@ -35,7 +35,7 @@ export function addGenericOption(optionName: string, type: string) {
 }
 
 export function openAssistant(name: string) {
-  cy.contains('mat-icon', 'bookmarks').click();
+  clickTabAssistant();
   cy.contains('button', name).click();
   cy.get('mat-dialog-container').should('be.visible');
   cy.wait(500);

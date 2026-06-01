@@ -1,0 +1,236 @@
+{
+  "type": "aspect-unit-definition",
+  "stateVariables": [],
+  "enableSectionNumbering": false,
+  "sectionNumberingPosition": "left",
+  "showUnitNavNext": false,
+  "version": "4.12.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "isRelevantForPresentationComplete": true,
+              "position": {
+                "xPosition": 0,
+                "yPosition": 0,
+                "gridColumn": 1,
+                "gridColumnRange": 1,
+                "gridRow": 1,
+                "gridRowRange": 1,
+                "marginLeft": { "value": 0, "unit": "px" },
+                "marginRight": { "value": 0, "unit": "px" },
+                "marginTop": { "value": 0, "unit": "px" },
+                "marginBottom": { "value": 35, "unit": "px" },
+                "zIndex": 0
+              },
+              "dimensions": {
+                "width": 180,
+                "height": 200,
+                "isWidthFixed": false,
+                "isHeightFixed": false,
+                "minWidth": null,
+                "maxWidth": null,
+                "minHeight": null,
+                "maxHeight": null
+              },
+              "styling": {
+                "backgroundColor": "transparent",
+                "fontColor": "#000000",
+                "font": "NunitoSans",
+                "fontSize": 20,
+                "bold": false,
+                "italic": false,
+                "underline": false,
+                "lineHeight": 180
+              },
+              "id": "cloze_coverage",
+              "alias": "Lückentext_Coverage",
+              "type": "cloze",
+              "document": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "bulletList",
+                    "attrs": { "fontSize": "20px", "listStyle": "disc" },
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "attrs": { "textAlign": "left", "indent": null, "indentSize": 20, "hangingIndent": false, "margin": 0 },
+                            "content": [{ "type": "text", "text": "Bullet list item" }]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "orderedList",
+                    "attrs": { "fontSize": "20px", "listStyle": "decimal" },
+                    "content": [
+                      {
+                        "type": "listItem",
+                        "content": [
+                          {
+                            "type": "paragraph",
+                            "attrs": { "textAlign": "left", "indent": null, "indentSize": 20, "hangingIndent": false, "margin": 0 },
+                            "content": [{ "type": "text", "text": "Ordered list item" }]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockquote",
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "attrs": { "textAlign": "left", "indent": null, "indentSize": 20, "hangingIndent": false, "margin": 0 },
+                        "content": [{ "type": "text", "text": "Blockquote text" }]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 1 },
+                    "content": [{ "type": "text", "text": "Heading 1" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 2 },
+                    "content": [{ "type": "text", "text": "Heading 2" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 3 },
+                    "content": [{ "type": "text", "text": "Heading 3" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 4 },
+                    "content": [{ "type": "text", "text": "Heading 4" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 5 },
+                    "content": [{ "type": "text", "text": "Heading 5" }]
+                  },
+                  {
+                    "type": "heading",
+                    "attrs": { "level": 6 },
+                    "content": [{ "type": "text", "text": "Heading 6" }]
+                  },
+                  {
+                    "type": "paragraph",
+                    "attrs": { "textAlign": "center", "indent": 1, "indentSize": 20, "hangingIndent": false, "margin": 10 },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Normal text"
+                      },
+                      {
+                        "type": "text",
+                        "text": "Bold text",
+                        "marks": [{ "type": "bold" }]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Italic text",
+                        "marks": [{ "type": "italic" }]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Underline text",
+                        "marks": [{ "type": "underline" }]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Strike text",
+                        "marks": [{ "type": "strike" }]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Superscript text",
+                        "marks": [{ "type": "superscript" }]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Subscript text",
+                        "marks": [{ "type": "subscript" }]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Colored and sized text",
+                        "marks": [
+                          {
+                            "type": "textStyle",
+                            "attrs": {
+                              "color": "#ff0000",
+                              "fontSize": "30px"
+                            }
+                          },
+                          {
+                            "type": "highlight",
+                            "attrs": {
+                              "color": "#00ff00"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "inlineImage",
+                        "attrs": { "src": "assets/test.png", "alt": "inline alt text" }
+                      },
+                      {
+                        "type": "math-formula",
+                        "attrs": { "formulaHTML": "<span class='formula'>E = mc^2</span>" }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "paragraph",
+                    "attrs": { "textAlign": "left", "indent": 1, "indentSize": 20, "hangingIndent": true, "margin": 10 },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Hanging indent text"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "blockImage",
+                    "attrs": { "src": "assets/test.png", "alt": "block alt text" }
+                  }
+                ]
+              },
+              "columnCount": 2
+            }
+          ],
+          "height": 400,
+          "backgroundColor": "#ffffff",
+          "dynamicPositioning": true,
+          "autoColumnSize": true,
+          "autoRowSize": true,
+          "gridColumnSizes": [{ "value": 1, "unit": "fr" }],
+          "gridRowSizes": [{ "value": 1, "unit": "fr" }],
+          "visibilityDelay": 0,
+          "animatedVisibility": false,
+          "enableReHide": false,
+          "logicalConnectiveOfRules": "disjunction",
+          "visibilityRules": [],
+          "ignoreNumbering": false
+        }
+      ],
+      "hasMaxWidth": true,
+      "maxWidth": 750,
+      "margin": 30,
+      "backgroundColor": "#ffffff",
+      "alwaysVisible": false,
+      "alwaysVisiblePagePosition": "left",
+      "alwaysVisibleAspectRatio": 50
+    }
+  ]
+}

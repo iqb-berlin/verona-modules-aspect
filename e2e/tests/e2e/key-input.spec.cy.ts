@@ -111,7 +111,17 @@ describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: fa
   // ══════════════════════════════════════════════════════════════════════════
   context('player', () => {
     before('opens a player and loads the saved json file', () => {
-      cy.openPlayer();
+      // What it does: It defines a dummy ontouchstart property/event handler on the global window object.
+      /* Why it's needed: A very common legacy and modern way to detect touch capability in JavaScript is checking
+      if the 'ontouchstart' in window condition is true. By assigning an empty function to win.ontouchstart,
+       the application's touch-detection logic will successfully evaluate this check as true.
+       */
+      cy.visit('http://localhost:4202/', {
+        onBeforeLoad: (win) => {
+          Object.defineProperty(win.navigator, 'maxTouchPoints', { value: 2 });
+          (win as any).ontouchstart = () => {};
+        }
+      });
       cy.loadUnit('../downloads/key-input.json');
     });
 
@@ -279,15 +289,15 @@ describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: fa
     });
 
     // ── Page 6: software keyboard ─────────────────────────────────────────
-    it.skip('software keyboard appears when field is focused (Page 6)', () => {
+    it('software keyboard appears when field is focused (Page 6)', () => {
       cy.goToPlayerPage(6);
       cy.get('aspect-keyboard').should('not.exist');
-      cy.contains('mat-form-field', 'Tastatur einblenden').click();
+      cy.contains('mat-form-field', 'Tastatur einblenden').find('input').click();
       cy.get('aspect-keyboard').should('be.visible');
     });
 
-    it.skip('software keyboard contains letters, digits and special keys (Page 6)', () => {
-      cy.contains('mat-form-field', 'Tastatur einblenden').click();
+    it('software keyboard contains letters, digits and special keys (Page 6)', () => {
+      cy.contains('mat-form-field', 'Tastatur einblenden').find('input').click();
       cy.get('aspect-keyboard').should('be.visible');
       // default row characters
       ['q', 'w', 'e', 'r', 'a', 's', '1', '2', 'ü', 'ö', 'ä'].forEach(key => {
@@ -295,18 +305,18 @@ describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: fa
       });
     });
 
-    it.skip('software keyboard shift layer shows uppercase and special chars (Page 6)', () => {
-      cy.contains('mat-form-field', 'Tastatur einblenden').click();
+    it('software keyboard shift layer shows uppercase and special chars (Page 6)', () => {
+      cy.contains('mat-form-field', 'Tastatur einblenden').find('input').click();
       cy.get('aspect-keyboard').should('be.visible');
       // Click Shift
-      cy.get('aspect-keyboard').find('button').contains('arrow_upward').first().click();
+      cy.get('aspect-keyboard').find('button').contains('keyboard_arrow_up').first().click();
       ['Q', 'W', 'E', 'R', 'A', 'S', 'Ü', 'Ö', 'Ä'].forEach(key => {
         cy.get('aspect-keyboard').contains('button', key).should('exist');
       });
     });
 
-    it.skip('software keyboard with input assistance shows extra keypad row (Page 6)', () => {
-      cy.contains('mat-form-field', 'Tastatur & Eingabehilfe').click();
+    it('software keyboard with input assistance shows extra keypad row (Page 6)', () => {
+      cy.contains('mat-form-field', 'Tastatur & Eingabehilfe').find('input').click();
       cy.get('aspect-keyboard').should('be.visible');
       // The input assistance (numbers) should appear as an additional row in the keyboard
       ['0', '1', '7'].forEach(key => {
@@ -314,8 +324,9 @@ describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: fa
       });
     });
 
-    it.skip('typing via software keyboard populates the field (Page 6)', () => {
-      cy.contains('mat-form-field', 'Tastatur einblenden').click();
+    it('typing via software keyboard populates the field (Page 6)', () => {
+      cy.contains('mat-form-field', 'Tastatur einblenden').find('input').click();
+      cy.wait(150);
       cy.get('aspect-keyboard').should('be.visible');
       // Type 'hi' via keyboard keys
       cy.get('aspect-keyboard').contains('button', 'h').click();

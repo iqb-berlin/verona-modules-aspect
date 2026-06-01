@@ -1,9 +1,10 @@
 import {
-  addNewPage, clickButtonDialog,
-  clickTabAssistant
+  addNewPage, clickButtonDialog, setDialogCheckbox
 } from '../util';
-import {setCheckboxInDialog} from "./helpers/assistant-util";
-
+import {
+  openAssistant,
+  typeInRichTextEditor
+} from "./helpers/assistant-util";
 
 describe('Input assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -13,24 +14,20 @@ describe('Input assistant', { testIsolation: false }, () => {
 
     // ── Page 1: Basic Input ──────────────────────────────────────────────────────
     it('creates a basic input section (Page 1)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'Antwortfeld(er)').click();
+      openAssistant('Antwortfeld(er)');
 
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type(`{selectall}{backspace}Was ist 1 + 1?`);
+      // Set Question
+      typeInRichTextEditor('Was ist 1 + 1?');
 
       clickButtonDialog('Bestätigen');
     });
 
     // ── Page 1: Multiple Inputs with numbering ───────────────────────────────────
     it('creates a section with multiple input fields and numbering (Page 1)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'Antwortfeld(er)').click();
+      openAssistant('Antwortfeld(er)');
 
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Nenne drei Primzahlen.');
+      // Set Question
+      typeInRichTextEditor('Nenne drei Primzahlen.');
 
       cy.get('mat-dialog-container').contains('h3', 'Anzahl Antwortfelder')
         .next('mat-form-field').find('input').clear().type('3');
@@ -46,12 +43,10 @@ describe('Input assistant', { testIsolation: false }, () => {
     // ── Page 2: Multiline Input ──────────────────────────────────────────────────
     it('creates a section with a multiline input (Page 2)', () => {
       addNewPage();
-      clickTabAssistant();
-      cy.contains('button', 'Antwortfeld(er)').click();
+      openAssistant('Antwortfeld(er)');
 
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Beschreibe den Wasserkreislauf.');
+      // Set Question
+      typeInRichTextEditor('Beschreibe den Wasserkreislauf.');
 
       cy.contains('mat-radio-button', 'Mehrzeilig').click();
 
@@ -63,14 +58,12 @@ describe('Input assistant', { testIsolation: false }, () => {
 
     // ── Page 2: Math Input ───────────────────────────────────────────────────────
     it('creates a section with math input fields (Page 2)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'Antwortfeld(er)').click();
+      openAssistant('Antwortfeld(er)');
 
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type('{selectall}{backspace}Löse die Gleichung.');
+      // Set Question
+      typeInRichTextEditor('Löse die Gleichung.');
 
-      setCheckboxInDialog('Formeleingabefelder verwenden');
+      setDialogCheckbox('Formeleingabefelder verwenden');
 
       clickButtonDialog('Bestätigen');
       cy.get('aspect-element-properties').contains('mat-label', 'Vorbelegung')
@@ -93,7 +86,7 @@ describe('Input assistant', { testIsolation: false }, () => {
     // ── Page 1: Basic Input ──────────────────────────────────────────────────────
     it('verifies the basic input section (Page 1)', () => {
       cy.goToPlayerPage(1);
-      cy.get('aspect-text:visible').should('contain', 'Was ist 1 + 1?');
+      cy.contains('aspect-text', 'Was ist 1 + 1?').should('be.visible');
       cy.get('aspect-text-field:visible').should('exist');
     });
 
@@ -103,16 +96,16 @@ describe('Input assistant', { testIsolation: false }, () => {
 
     // ── Page 1: Multiple Inputs ──────────────────────────────────────────────────
     it('verifies the multiple input fields (Page 1)', () => {
-      cy.get('aspect-text:visible').should('contain', 'Nenne drei Primzahlen.');
-      cy.get('aspect-text:visible').contains('1)').should('exist');
-      cy.get('aspect-text:visible').contains('2)').should('exist');
-      cy.get('aspect-text:visible').contains('3)').should('exist');
+      cy.contains('aspect-text', 'Nenne drei Primzahlen.').should('be.visible');
+      cy.contains('aspect-text', '1)').should('be.visible');
+      cy.contains('aspect-text', '2)').should('be.visible');
+      cy.contains('aspect-text', '3)').should('be.visible');
     });
 
     // ── Page 2: Multiline Input ──────────────────────────────────────────────────
     it('verifies the multiline input field (Page 3)', () => {
       cy.goToPlayerPage(2);
-      cy.get('aspect-text:visible').should('contain', 'Beschreibe den Wasserkreislauf.');
+      cy.contains('aspect-text', 'Beschreibe den Wasserkreislauf.').should('be.visible');
       cy.get('aspect-text-area:visible').should('exist');
     });
 
@@ -122,7 +115,7 @@ describe('Input assistant', { testIsolation: false }, () => {
 
     // ── Page 4: Math Input ───────────────────────────────────────────────────────
     it('verifies the math input field (Page 4)', () => {
-      cy.get('aspect-text:visible').should('contain', 'Löse die Gleichung.');
+      cy.contains('aspect-text', 'Löse die Gleichung.').should('be.visible');
       cy.get('aspect-math-field:visible').should('exist');
     });
   });

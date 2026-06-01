@@ -1,7 +1,7 @@
 import {
-  addNewPage, clickButtonDialog,
+  addMediaElement,
+  addNewPage, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField,
 } from '../util';
-import {addVideoElement, editElementConfigDialog, setDialogCheckbox, setDialogField} from "./helpers/video-util";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Test suite
@@ -15,7 +15,7 @@ describe('Video element', { testIsolation: false }, () => {
 
     // ── Page 1: video with default player options ─────────────────────────
     it('creates a video element with default player options (Page 1)', () => {
-      addVideoElement('Normales Video','mov_bbb.mp4','video_default');
+      addMediaElement('Video','Normales Video','mov_bbb.mp4','video_default');
     });
 
     it('shows the uploaded filename in the properties panel (Page 1)', () => {
@@ -27,7 +27,7 @@ describe('Video element', { testIsolation: false }, () => {
     // ── Page 2: video with pause control enabled ──────────────────────────
     it('creates a video element with pause control enabled (Page 2)', () => {
       addNewPage();
-      addVideoElement('Video mit Pause','mov_bbb.mp4','video_pause');
+      addMediaElement('Video','Video mit Pause','mov_bbb.mp4','video_pause');
       editElementConfigDialog();
       setDialogCheckbox('Pausieren erlauben');
       clickButtonDialog('Speichern');
@@ -36,7 +36,7 @@ describe('Video element', { testIsolation: false }, () => {
     // ── Page 3: video with maxRuns = 2 and remaining-runs counter ─────────
     it('creates a video element with maxRuns = 2 and visible run counter (Page 3)', () => {
       addNewPage();
-      addVideoElement('Video mit 2 Mal Durchläufe', 'mov_bbb.mp4','video_runs');
+      addMediaElement('Video','Video mit 2 Mal Durchläufe', 'mov_bbb.mp4','video_runs');
       editElementConfigDialog();
       cy.get('mat-dialog-container').contains('.mat-mdc-tab', 'Verhalten').click();
       cy.wait(500); // Wait for tab animation to finish

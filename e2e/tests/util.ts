@@ -25,6 +25,11 @@ export function addElement(element: string, expansionPanel?: string, id?: string
   }
 }
 
+export function addTextField(label: string): void {
+  addElement('Eingabefeld');
+  setPreferencesElement(label);
+}
+
 export function addTextElement(text: string): void {
   addElement('Text');
   cy.get('aspect-element-model-properties-component')
@@ -41,8 +46,8 @@ export function setID(id: string): void {
     .type(id);
 }
 
-export function addOption(optionName: string): void {
-  cy.contains('fieldset', 'Optionen')
+export function addOption(optionName: string, fieldsetLabel: string = 'Optionen'): void {
+  cy.contains('fieldset', fieldsetLabel)
     .contains('mat-form-field', 'Neue Option')
     .find('textarea')
     .clear()
@@ -116,7 +121,14 @@ export function setPreferencesElement(label: string, settings?: { readOnly?: boo
   if (settings?.id) setID(settings.id);
 }
 
-export function addElementHover(element: string, option: string) {
+export function addElementHover(element: string, option: string, expansionPanel?: string) {
+  if (expansionPanel) {
+    cy.contains('mat-expansion-panel', expansionPanel).then(expansionPanelElement => {
+      if (!expansionPanelElement.hasClass('mat-expanded')) {
+        cy.contains(expansionPanel).click();
+      }
+    });
+  }
   cy.get('aspect-ui-element-toolbox').within(() => {
     cy.get('button').then($buttons => {
       const optionButton = $buttons.filter((i, btn) => btn.innerText.trim() === option && (btn as HTMLElement).offsetParent !== null);
@@ -229,6 +241,76 @@ export function uploadFile(fileName: string){
     });
 }
 
+export function addMediaElement(type: 'Audio' | 'Video', title: string, filename: string, id: string): void {
+  addTextElement(title);
+  cy.stubFileInput();
+  addElement(type, 'Medium');
+  uploadFile(filename);
+  // Wait for the element to be added to the canvas
+  cy.get('aspect-element-model-properties-component').should('be.visible');
+  setID(id);
+}
+
 export function selectPageEditor(page: string){
   cy.get('mat-tab-group').contains("Seite " + page).click({ force: true });
+}
+
+export function selectParagraphElement($p: JQuery<HTMLElement>): void {
+  const el = $p[0];
+  const doc = el.ownerDocument;
+  const win = doc.defaultView!;
+  const rect = el.getBoundingClientRect();
+
+  const startX = rect.left + 1;
+  const startY = rect.top + rect.height / 2;
+  const endX = rect.right - 1;
+  const endY = rect.top + rect.height / 2;
+
+  const eventOpts = (x: number, y: number) => ({
+    bubbles: true, cancelable: true, view: win,
+    clientX: x, clientY: y, buttons: 1,
+  });
+
+  el.dispatchEvent(new PointerEvent('pointerdown', eventOpts(startX, startY)));
+  el.dispatchEvent(new MouseEvent('mousedown', eventOpts(startX, startY)));
+
+  const range = doc.createRange();
+  range.selectNodeContents(el);
+  const sel = win.getSelection();
+  sel?.removeAllRanges();
+  sel?.addRange(range);
+
+  el.dispatchEvent(new PointerEvent('pointermove', eventOpts(endX, endY)));
+  el.dispatchEvent(new MouseEvent('mousemove', eventOpts(endX, endY)));
+  el.dispatchEvent(new PointerEvent('pointerup', eventOpts(endX, endY)));
+  el.dispatchEvent(new MouseEvent('mouseup', eventOpts(endX, endY)));
+}
+
+export function editElementConfigDialog(): void {
+  cy.get('aspect-element-model-properties-component')
+    .contains('button', 'Medienoptionen anpassen')
+    .click();
+  cy.get('mat-dialog-container').should('be.visible');
+}
+
+export function setDialogField(label: string, value: number): void {
+  cy.get('mat-dialog-container')
+    .contains('mat-form-field', label)
+    .find('input')
+    .clear()
+    .type(`${value}{enter}`)
+    .blur();
+}
+
+export function setDialogCheckbox(label: string, checked?: boolean): void {
+  cy.get('mat-dialog-container')
+    .contains('mat-checkbox', label)
+    .then(($matCheckbox) => {
+      const isChecked = $matCheckbox.hasClass('mat-mdc-checkbox-checked') ||
+                        $matCheckbox.hasClass('mat-checkbox-checked') ||
+                        $matCheckbox.find('input').is(':checked');
+      if (checked === undefined || isChecked !== checked) {
+        cy.wrap($matCheckbox).find('input').click({ force: true });
+      }
+    });
 }

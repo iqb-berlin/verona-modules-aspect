@@ -14,6 +14,7 @@ declare global {
       getElement(elementType: string, label?: string): Chainable<JQuery<HTMLElement>>;
       goToPlayerPage(pageIndex: number): Chainable<JQuery<HTMLElement>>;
       stubFileInput(): Chainable<void>;
+      loadUnitWithPrintMode(filename: string, printMode: 'off' | 'on' | 'on-with-ids'): Chainable<void>;
     }
   }
 }

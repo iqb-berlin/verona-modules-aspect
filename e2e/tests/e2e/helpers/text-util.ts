@@ -1,4 +1,4 @@
-import { addTextElement, selectFromDropdown, setCheckbox, setID } from '../../util';
+import { addTextElement, selectFromDropdown, setCheckbox, setID, selectParagraphElement } from '../../util';
 
 export function addText(numParagraphs: number, numSentences: number, numColumns: number,
   modus: string, settings?: Record<string, boolean>, id?: string) {
@@ -138,38 +138,7 @@ export function modifyText(
   // Select the paragraph by simulating a mouse drag across it.
   // TipTap requires real pointer events to update its internal selection state;
   // the Selection/Range API alone is not enough.
-  cy.get('tiptap-editor p').eq(paragraphIndex).then($p => {
-    const el = $p[0];
-    const doc = el.ownerDocument;
-    const win = doc.defaultView!;
-    const rect = el.getBoundingClientRect();
-
-    // We drag from the very start of the paragraph to its end.
-    const startX = rect.left + 1;
-    const startY = rect.top + rect.height / 2;
-    const endX = rect.right - 1;
-    const endY = rect.top + rect.height / 2;
-
-    const eventOpts = (x: number, y: number) => ({
-      bubbles: true, cancelable: true, view: win,
-      clientX: x, clientY: y, buttons: 1,
-    });
-
-    el.dispatchEvent(new PointerEvent('pointerdown', eventOpts(startX, startY)));
-    el.dispatchEvent(new MouseEvent('mousedown', eventOpts(startX, startY)));
-
-    // Set the Selection via the Range API while the mouse is "held down"
-    const range = doc.createRange();
-    range.selectNodeContents(el);
-    const sel = win.getSelection();
-    sel?.removeAllRanges();
-    sel?.addRange(range);
-
-    el.dispatchEvent(new PointerEvent('pointermove', eventOpts(endX, endY)));
-    el.dispatchEvent(new MouseEvent('mousemove', eventOpts(endX, endY)));
-    el.dispatchEvent(new PointerEvent('pointerup', eventOpts(endX, endY)));
-    el.dispatchEvent(new MouseEvent('mouseup', eventOpts(endX, endY)));
-  });
+  cy.get('tiptap-editor p').eq(paragraphIndex).then(selectParagraphElement);
 
 
   // if (settings.bold) {

@@ -28,11 +28,11 @@ describe('Trigger element', { testIsolation: false }, () => {
       cy.contains('button', 'Auslöser').click();
     });
 
-    it.skip('adds "highlight text"', () => {
+    it('adds "highlight text"', () => {
       selectFromDropdown('Aktion', 'Textabschnitt hervorheben');
       cy.get('aspect-element-model-properties-component')
         .contains('mat-form-field', 'Aktionsparameter').find('mat-select').click();
-      cy.get('.mat-mdc-option').eq(0).click();
+      cy.get('.cdk-overlay-container').find('mat-option').eq(0).click({ force: true });
     });
 
     it('creates a trigger with "remove highlights" action', () => {
@@ -81,15 +81,17 @@ describe('Trigger element', { testIsolation: false }, () => {
       cy.get('aspect-page-scroll-button').should('have.length', 2);
     });
 
-    it.skip('selects page 1, and checks that the trigger highlights the first paragraph', () => {
+    it('selects page 1, and checks that the trigger highlights the first paragraph', () => {
       // Page 1 is the default selected tab (index 0)
+      cy.getElementByAlias('trigger_1').scrollIntoView();
       cy.get('aspect-anchor').eq(0).should('have.class', 'active-anchor');
     });
 
-    it.skip('selects page 2 (always-visible), and checks that the trigger removes the highlight', () => {
+    it('selects page 2 (always-visible), and checks that the trigger removes the highlight', () => {
       // Select the page 2
       cy.get('aspect-unit-menu').find('button').click();
       cy.contains('button', 'Seite 2').click();
+      cy.getElementByAlias('trigger_2').scrollIntoView();
       cy.get('aspect-anchor').eq(0).should('not.have.class', 'active-anchor');
     });
 

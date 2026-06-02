@@ -1,4 +1,4 @@
-import { addElement, setPreferencesElement, addNewPage } from '../util';
+import { addElement, setPreferencesElement, addNewPage, setCheckbox } from '../util';
 import { setRegexPattern, setPreferences, validateTextField, setInputAssistance } from './helpers/text-field-util';
 
 describe('Text field element', { testIsolation: false }, () => {
@@ -58,6 +58,12 @@ describe('Text field element', { testIsolation: false }, () => {
             setInputAssistance('Eigene Zeichen', 'rechts', '12345', { disableOtherCharacters: true });
         });
 
+        it('creates a text field with software keyboard enabled (Page 2)', () => {
+            addElement('Eingabefeld');
+            setPreferencesElement('Tastatur Eingabefeld');
+            setCheckbox('Tastatur einblenden');
+        });
+
         after('save an unit definition', () => {
             cy.saveUnit('e2e/downloads/text-field.json');
         });
@@ -65,7 +71,12 @@ describe('Text field element', { testIsolation: false }, () => {
 
     context('player', () => {
         before('opens a player, and loads the previously saved json file', () => {
-            cy.openPlayer();
+            cy.visit('http://localhost:4202/', {
+                onBeforeLoad: (win) => {
+                    Object.defineProperty(win.navigator, 'maxTouchPoints', { value: 2 });
+                    (win as any).ontouchstart = () => {};
+                }
+            });
             cy.loadUnit('../downloads/text-field.json');
         });
 
@@ -140,5 +151,44 @@ describe('Text field element', { testIsolation: false }, () => {
             cy.contains('mat-form-field', 'Eigene Zeichen (Restricted)')
                 .find('mat-error').should('contain.text', 'Eingabe erforderlich');
         });
+
+        it('checks software keyboard interaction (Page 2)', () => {
+            cy.goToPlayerPage(2);
+            cy.get('aspect-keyboard').should('not.exist');
+            cy.contains('mat-form-field', 'Tastatur Eingabefeld').click();
+            cy.get('aspect-keyboard').should('exist');
+            cy.get('body').type('{esc}');
+        });
+    });
+
+    context('player with buttons paging mode', () => {
+        before(() => {
+            cy.viewport(1600, 900);
+            cy.openPlayer();
+            cy.loadUnitWithOptions('../downloads/text-field.json', { pagingMode: 'buttons' });
+        });
+
+        it('checks previous/next page navigation buttons', () => {
+            cy.get('aspect-page-nav-button[direction="next"]').should('exist').click();
+            cy.get('aspect-page-nav-button[direction="previous"]').should('exist');
+        });
+    });
+
+    context('player with snapping scroll paging mode', () => {
+        before(() => {
+            cy.viewport(600, 300); // force container overflow!
+            cy.openPlayer();
+            cy.loadUnitWithOptions('../downloads/text-field.json', { pagingMode: 'concat-scroll-snap' });
+        });
+
+        it('checks scroll button functions', () => {
+            cy.get('.scroll-button').should('exist').trigger('pointerdown');
+            cy.get('.scroll-button').trigger('pointerup');
+        });
+
+        after(() => {
+            cy.viewport(1600, 900); // reset viewport
+        });
     });
 });
+

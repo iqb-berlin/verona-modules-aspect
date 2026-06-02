@@ -150,3 +150,27 @@ Cypress.Commands.add('stubFileInput', () => {
     });
   });
 });
+
+Cypress.Commands.add('loadUnitWithOptions', (filename: string, playerConfig: any) => {
+  cy.fixture(filename).then(unit => {
+    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
+    cy.window().then(window => {
+      const postMessage = {
+        type: 'vopStartCommand',
+        unitDefinition: JSON.stringify(unit),
+        playerConfig
+      };
+      window.postMessage(postMessage, '*');
+      return Cypress.Promise.delay(150).then(() => {
+        window.postMessage(postMessage, '*');
+      });
+    });
+    cy.get('body', { timeout: 10000 }).then($body => {
+      const errorDialog = $body.find('mat-dialog-container');
+      if (errorDialog.length > 0) {
+        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
+      }
+    });
+  });
+});
+

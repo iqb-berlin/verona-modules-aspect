@@ -118,6 +118,29 @@ describe('Editor menu tests', { testIsolation: false }, () => {
       cy.get('mat-dialog-container').should('be.visible').contains('Übersicht Elemente');
       cy.get('mat-dialog-container').contains('th', 'Seite').closest('table').find('td').contains('1');
       cy.get('mat-dialog-container').contains('th', 'Seite').closest('table').find('td').contains('2');
+
+      // Click "ID ändern" button on the row containing "checkbox_2"
+      cy.get('mat-dialog-container').contains('checkbox_2')
+        .closest('tr')
+        .contains('button', 'ID ändern')
+        .click();
+
+      cy.get('aspect-id-edit-dialog').should('exist');
+
+      // Type duplicate ID to test validation
+      cy.get('aspect-id-edit-dialog').find('input').clear().type('radio_2').blur();
+      cy.get('aspect-id-edit-dialog').contains('ID bereits vergeben').should('be.visible');
+      cy.get('aspect-id-edit-dialog').contains('button', 'Speichern').should('be.disabled');
+
+      // Type valid unique ID and save
+      cy.get('aspect-id-edit-dialog').find('input').clear().type('Kaeschtle_unique');
+      cy.get('aspect-id-edit-dialog').contains('ID bereits vergeben').should('not.exist');
+      cy.get('aspect-id-edit-dialog').contains('button', 'Speichern').click();
+
+      // Dialog should be closed and table updated
+      cy.get('aspect-id-edit-dialog').should('not.exist');
+      cy.get('mat-dialog-container').contains('Kaeschtle_unique').should('exist');
+
       cy.get('mat-dialog-container').contains('button', 'Schließen').click();
       cy.wait(500);
 

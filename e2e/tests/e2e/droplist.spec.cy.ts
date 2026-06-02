@@ -15,6 +15,21 @@ describe('Droplist element', { testIsolation: false }, () => {
             connectLists('Startliste', 'Verbunden');
         });
 
+        it('edits a droplist option via dialog (Page 1)', () => {
+            cy.get('aspect-editor-dynamic-overlay:has([data-list-alias="Startliste"])').click();
+            cy.get('.option-draggable').contains('AAA')
+                .closest('.option-draggable')
+                .find('mat-icon').contains('build')
+                .click();
+            cy.get('aspect-drop-list-option-edit-dialog').should('exist');
+            cy.get('aspect-drop-list-option-edit-dialog .ProseMirror').first()
+                .clear()
+                .type('Modified AAA');
+            cy.get('aspect-drop-list-option-edit-dialog').contains('mat-form-field', 'ID').find('input').clear().type('modified_aaa');
+            cy.get('aspect-drop-list-option-edit-dialog').contains('button', 'Speichern').click();
+            cy.get('aspect-drop-list-option-edit-dialog').should('not.exist');
+        });
+
         // ── Page 2: copy ─────────────────────────────────────────────────────────
         it('creates several droplists with copy capability (Page 2)', () => {
             addNewPage();
@@ -119,12 +134,12 @@ describe('Droplist element', { testIsolation: false }, () => {
         // ── Page 1 tests ─────────────────────────────────────────────────────────
         it('drags to a not connected list (Page 1)', () => {
             cy.get('aspect-page-scroll-button').eq(0).click();
-            dragTo('Startliste', 'AAA', 'Nichtverbunden');
+            dragTo('Startliste', 'Modified AAA', 'Nichtverbunden');
             cy.getByAlias('Nichtverbunden').children().should('have.length', 0);
         });
 
         it('drags to connected list (Page 1)', () => {
-            dragTo('Startliste', 'AAA', 'Verbunden');
+            dragTo('Startliste', 'Modified AAA', 'Verbunden');
             cy.getByAlias('Startliste').children().should('have.length', 2);
             cy.getByAlias('Verbunden').children().should('have.length', 1);
         });

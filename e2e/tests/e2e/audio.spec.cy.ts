@@ -47,6 +47,18 @@ describe('Audio element', { testIsolation: false }, () => {
       cy.clickOutside();
     });
 
+    // ── Page 4: audio with progress bar, volume control, and mute control disabled ──
+    it('creates an audio element with disabled controls (Page 4)', () => {
+      addNewPage();
+      addMediaElement('Audio', 'Audio ohne Kontrollen', 'bird-sound.mp3','audio_no_controls');
+      editElementConfigDialog();
+      setDialogCheckbox('Fortschrittsbalken anzeigen', false);
+      setDialogCheckbox('Lautstärkeregelung anzeigen', false);
+      setDialogCheckbox('Stummschaltung anzeigen', false);
+      clickButtonDialog('Speichern');
+      cy.clickOutside();
+    });
+
     after('saves unit definition', () => {
       cy.saveUnit('e2e/downloads/audio.json');
     });
@@ -157,6 +169,29 @@ describe('Audio element', { testIsolation: false }, () => {
         .find('aspect-media-player-control-bar button.control-button')
         .first()
         .should('be.disabled');
+    });
+
+    // ── Page 4 tests ──────────────────────────────────────────────────────
+    it('verifies disabled control elements (Page 4)', () => {
+      cy.goToPlayerPage(4);
+      // Wait for page animation/switching
+      cy.wait(500);
+      cy.get('aspect-audio:visible').should('exist');
+      
+      // Progress bar should not exist
+      cy.get('aspect-audio:visible')
+        .find('mat-slider')
+        .should('not.exist');
+      
+      // Volume/mute icons/buttons should not exist
+      cy.get('aspect-audio:visible')
+        .find('mat-icon')
+        .contains('volume_up')
+        .should('not.exist');
+      cy.get('aspect-audio:visible')
+        .find('mat-icon')
+        .contains('volume_off')
+        .should('not.exist');
     });
   });
 });

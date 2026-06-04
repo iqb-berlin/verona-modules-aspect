@@ -40,7 +40,7 @@ export function connectToMarkingPanels(panelAliases: string[]): void {
 }
 
 export function selectRange(startX: number, startY: number, endX: number, endY: number): void {
-  cy.get('.text-container').eq(0).then($el => {
+  cy.get('.text-container:visible').then($el => {
     const el = $el[0];
     const win = el.ownerDocument.defaultView;
     const doc = el.ownerDocument;

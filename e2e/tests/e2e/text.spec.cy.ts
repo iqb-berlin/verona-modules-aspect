@@ -2,6 +2,7 @@ import {addNewPage, setID, addTextElement, selectParagraphElement} from '../util
 import { addText, selectRange } from "./helpers/text-util";
 
 
+
 describe('Text element', { testIsolation: false }, () => {
     context('editor', () => {
         before('opens an editor', () => {
@@ -49,7 +50,6 @@ describe('Text element', { testIsolation: false }, () => {
             cy.get('aspect-nodeview-math-formula [contenteditable="true"]')
                 .type(' \\overline{{}S\\cap M{}}{enter}');
             cy.contains('Speichern').click();
-            cy.wait(1000);
         });
 
         // ── Page 5: rich text extensions ──────────────────────────────────────────
@@ -60,38 +60,40 @@ describe('Text element', { testIsolation: false }, () => {
             cy.get('aspect-element-model-properties-component')
                 .contains('edit').click();
 
-            cy.get('.ProseMirror').click().type('{selectall}{backspace}Rich Text Extensions');
+            cy.get('.ProseMirror').click().type('{selectall}{backspace}');
+            cy.get('.ProseMirror').type('Einruecken{enter}Haengende Einrueckung{enter}Text 18px{enter}Text 24px{enter}Aufzaehlung disc{enter}Aufzaehlung decimal{enter}Trennlinie');
 
-            cy.get('.ProseMirror p').then(selectParagraphElement);
-            cy.wait(200);
+            // 1. Indent paragraph 0
+            cy.get('.ProseMirror p').eq(0).then(selectParagraphElement);
+            cy.get('button[matTooltip="Einrücken"]').click();
 
-            // 1. Set font-size to 24px
+            // 2. Hang indent paragraph 1
+            cy.get('.ProseMirror p').eq(1).then(selectParagraphElement);
+            cy.get('button[matTooltip="Hängende Einrückung"]').click();
+
+            // 3. Set font-size to 18px on paragraph 2
+            cy.get('.ProseMirror p').eq(2).then(selectParagraphElement);
+            cy.contains('mat-form-field', 'Größe').click();
+            cy.get('.cdk-overlay-container').contains('mat-option', '18px').click({ force: true });
+
+            // 4. Set font-size to 24px on paragraph 3
+            cy.get('.ProseMirror p').eq(3).then(selectParagraphElement);
             cy.contains('mat-form-field', 'Größe').click();
             cy.get('.cdk-overlay-container').contains('mat-option', '24px').click({ force: true });
-            cy.wait(200);
 
-            // 2. Select bullet list
-            cy.get('aspect-combo-button').contains('format_list_bulleted').click();
-            cy.wait(200);
+            // 5. Select bullet list on paragraph 4
+            cy.get('.ProseMirror p').eq(4).then(selectParagraphElement);
+            cy.contains('aspect-combo-button', 'format_list_bulleted').find('button.apply-button').click();
 
-            // 3. Indent list item
-            cy.get('button').contains('format_indent_increase').click();
-            cy.wait(200);
+            // 6. Select numbered list on paragraph 5
+            cy.get('.ProseMirror p').eq(5).then(selectParagraphElement);
+            cy.contains('aspect-combo-button', 'format_list_numbered').find('button.apply-button').click();
 
-            // 4. Hang indent
-            cy.get('button').contains('segment').click();
-            cy.wait(200);
-
-            // Move cursor to the end and press enter to clear selection before inserting HR
-            cy.get('.ProseMirror').type('{end}{enter}');
-            cy.wait(200);
-
-            // 5. Insert horizontal rule
-            cy.get('aspect-combo-button').contains('horizontal_rule').click();
-            cy.wait(200);
+            // 7. Insert horizontal rule on paragraph 6
+            cy.get('.ProseMirror p').eq(6).then(selectParagraphElement);
+            cy.contains('aspect-combo-button', 'horizontal_rule').find('button.apply-button').click();
 
             cy.contains('Speichern').click();
-            cy.wait(1000);
         });
 
         after('saves the unit definition', () => {
@@ -200,20 +202,189 @@ describe('Text element', { testIsolation: false }, () => {
         it('checks the rich text extensions on page 5', () => {
             cy.goToPlayerPage(5);
             cy.getElementByAlias('text-extensions').within(() => {
-                // Verify font size style is 24px
-                cy.get('span[style*="font-size: 24px"]').should('exist')
-                    .and('contain.text', 'Rich Text Extensions');
+                // 1. Verify standard indent (padding-left: 20px)
+                cy.contains('p', 'Einruecken')
+                    .should('have.attr', 'style')
+                    .and('contain', 'padding-left: 20px');
 
-                // Verify bullet list (ul / li) is rendered
+                // 2. Verify hanging indent (text-indent: -20px)
+                cy.contains('p', 'Haengende Einrueckung')
+                    .should('have.attr', 'style')
+                    .and('contain', 'text-indent: -20px');
+
+                // 3. Verify font size style 18px
+                cy.contains('span', 'Text 18px')
+                    .should('have.attr', 'style')
+                    .and('contain', 'font-size: 18px');
+
+                // 4. Verify font size style 24px
+                cy.contains('span', 'Text 24px')
+                    .should('have.attr', 'style')
+                    .and('contain', 'font-size: 24px');
+
+                // 5. Verify bullet list (ul / li) is rendered
                 cy.get('ul').should('exist');
-                cy.get('li').should('exist');
+                cy.contains('ul li p', 'Aufzaehlung disc').should('exist');
 
-                // Verify indentation style is present
-                cy.get('ul').should('have.css', 'margin-left');
+                // 6. Verify ordered list (ol / li) is rendered
+                cy.get('ol').should('exist');
+                cy.contains('ol li p', 'Aufzaehlung decimal').should('exist');
 
-                // Verify horizontal rule exists
+                // 7. Verify horizontal rule exists
                 cy.get('hr').should('exist');
             });
         });
+        it('opens the floating marking bar, applies color, and dismisses it on page 2', () => {
+            cy.goToPlayerPage(2);
+
+            // Deselect the delete button (which was active from the previous test)
+            cy.getElementByAlias('text-range')
+                .find('button.marking-button').eq(2).click();
+
+            // Select text range to trigger the floating marking bar
+            selectRange(40, 130, 100, 160);
+
+            // Verify floating marking bar is visible
+            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('exist');
+
+            // Click the turquoise marking button on the floating marking bar
+            cy.get('.cdk-overlay-container')
+                .find('button.marking-button').eq(1).trigger('pointerdown', { force: true });
+
+            // Verify the marking bar is closed
+            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+
+            // Verify text is highlighted (contains aspect-marked with turquoise color)
+            cy.getElementByAlias('text-range')
+                .find('aspect-marked[style*="background-color: rgb(157, 232, 235)"]')
+                .should('exist');
+
+            // Dismiss the marking bar by clicking outside
+            selectRange(100, 130, 150, 160);
+            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('exist');
+            cy.get('body').click(10, 10);
+            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+        });
+
+        it('does not open floating marking bar with Ctrl key selection or outside selections', () => {
+            cy.goToPlayerPage(2);
+
+            // 1. Selection with Ctrl key
+            cy.get('.text-container:visible').then($el => {
+                const el = $el[0];
+                const win = el.ownerDocument.defaultView;
+                const doc = el.ownerDocument;
+                const rect = el.getBoundingClientRect();
+
+                const startAbsX = rect.left + 40;
+                const startAbsY = rect.top + 130;
+                const endAbsX = rect.left + 100;
+                const endAbsY = rect.top + 160;
+
+                cy.wrap($el).trigger('pointerdown', 40, 130, { button: 0, force: true });
+
+                const legacyRange = (doc as any).caretRangeFromPoint?.(startAbsX, startAbsY);
+                const endRange = (doc as any).caretRangeFromPoint?.(endAbsX, endAbsY);
+
+                if (legacyRange && endRange) {
+                    const range = doc.createRange();
+                    range.setStart(legacyRange.startContainer, legacyRange.startOffset);
+                    range.setEnd(endRange.startContainer, endRange.startOffset);
+                    win?.getSelection()?.removeAllRanges();
+                    win?.getSelection()?.addRange(range);
+                }
+
+                cy.wait(50);
+
+                cy.window().trigger('pointerup', {
+                    button: 0,
+                    force: true,
+                    clientX: endAbsX,
+                    clientY: endAbsY,
+                    ctrlKey: true
+                });
+            });
+            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+
+            // 2. Selection extending outside the container
+            cy.get('.text-container:visible').then($el => {
+                const el = $el[0];
+                const win = el.ownerDocument.defaultView;
+                const doc = el.ownerDocument;
+                const rect = el.getBoundingClientRect();
+
+                const startAbsX = rect.left + 40;
+                const startAbsY = rect.top + 130;
+
+                cy.wrap($el).trigger('pointerdown', 40, 130, { button: 0, force: true });
+
+                const startCaret = (doc as any).caretRangeFromPoint?.(startAbsX, startAbsY);
+                const outsideElement = doc.querySelector('aspect-player');
+
+                if (startCaret && outsideElement) {
+                    const range = doc.createRange();
+                    range.setStart(startCaret.startContainer, startCaret.startOffset);
+                    range.setEnd(outsideElement, 0);
+                    win?.getSelection()?.removeAllRanges();
+                    win?.getSelection()?.addRange(range);
+                }
+
+                cy.wait(50);
+
+                cy.window().trigger('pointerup', {
+                    button: 0,
+                    force: true,
+                    clientX: 0,
+                    clientY: 0
+                });
+            });
+            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+        });
+
+        it('splits marked range on sub-range deletion, and handles multi-node marking/clearing', () => {
+            cy.goToPlayerPage(2);
+
+            // 1. Highlight range in yellow in paragraph 1
+            cy.getElementByAlias('text-range')
+                .find('button.marking-button').eq(0).click();
+            selectRange(40, 40, 180, 40);
+
+            cy.getElementByAlias('text-range')
+                .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
+                .should('have.length', 1);
+
+            // 2. Select delete button and clear a sub-range (middle portion)
+            cy.getElementByAlias('text-range')
+                .find('button.marking-button').eq(2).click();
+            selectRange(90, 40, 130, 40);
+
+            // Verify it is split into two highlighted segments
+            cy.getElementByAlias('text-range')
+                .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
+                .should('have.length.at.least', 2);
+
+            // 3. Select yellow marking button and mark across paragraphs (multi-node)
+            cy.getElementByAlias('text-range')
+                .find('button.marking-button').eq(0).click();
+            selectRange(40, 40, 640, 40);
+
+            // Verify that multiple aspect-marked elements are created
+            cy.getElementByAlias('text-range')
+                .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
+                .should('have.length.at.least', 2);
+
+            // 4. Select delete button and clear multi-node selection
+            cy.getElementByAlias('text-range')
+                .find('button.marking-button').eq(2).click();
+            selectRange(30, 30, 650, 50);
+
+            // Verify they are cleared
+            cy.getElementByAlias('text-range')
+                .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
+                .should('have.length', 0);
+        });
     });
 });
+
+
+

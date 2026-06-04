@@ -47,7 +47,6 @@ describe('Checkbox assistant', { testIsolation: false }, () => {
 
       // image resize dialog pops up, click Speichern
       cy.get('mat-dialog-container').contains('button', 'Speichern').click();
-      cy.wait(200);
 
       clickButtonDialog('Bestätigen');
     });

@@ -146,6 +146,88 @@ describe('Editor menu tests', { testIsolation: false }, () => {
 
     });
 
+    it('setting-button: bulk edit, filtering and deleting in OverviewDialogComponent', () => {
+      cy.get('button').find('mat-icon').contains('settings').click({force: true});
+      cy.get('.cdk-overlay-pane').contains('Elementliste öffnen').click({force: true});
+      cy.get('mat-dialog-container').should('be.visible').contains('Übersicht Elemente');
+
+      cy.get('mat-dialog-container').contains('mat-form-field', 'Seiten').find('mat-select').click();
+      cy.get('.cdk-overlay-container').contains('mat-option', '1').click({ force: true });
+      cy.get('body').type('{esc}');
+
+      cy.get('mat-dialog-container').contains('mat-form-field', 'Seiten').find('mat-select').click();
+      cy.get('.cdk-overlay-container').contains('button', 'Filter zurücksetzen').click({ force: true });
+      cy.get('body').type('{esc}');
+
+      cy.get('mat-dialog-container').contains('mat-form-field', 'Eigenschaft').find('mat-select').click();
+      cy.get('.cdk-overlay-container').contains('mat-option', 'Presentation Complete').click({ force: true });
+
+      cy.get('mat-dialog-container').find('.property-edit-control-area mat-checkbox').click();
+      cy.get('mat-dialog-container').find('table th mat-checkbox').first().click();
+      cy.get('mat-dialog-container').find('fieldset.editable-property-panel button').click();
+
+      cy.get('mat-dialog-container').find('td.mat-column-isRelevantForPresentationComplete mat-icon').first()
+        .should('contain.text', 'check');
+
+      cy.get('mat-dialog-container').find('td.mat-column-actions button').contains('Löschen').first().click();
+      cy.get('aspect-confirmation-dialog').contains('button', 'Bestätigen').click();
+
+      cy.get('mat-dialog-container').contains('button', 'Schließen').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('section-menu: section insert dialog paste verification', () => {
+      cy.get('aspect-section-menu').first().find('mat-icon').contains('content_paste').click({force: true});
+      cy.get('mat-dialog-container').should('be.visible').contains('Seitenabschnitt einfügen');
+
+      cy.contains('mat-radio-button', 'Abschnitt über Zwischenablage einfügen').click({ force: true });
+
+      cy.get('.paste-area').trigger('paste', {
+        clipboardData: {
+          getData: (type) => type === 'Text' ? 'invalid-json' : ''
+        }
+      });
+      cy.get('.message-area').should('have.css', 'color', 'rgb(255, 0, 0)')
+        .and('contain.text', 'Fehler beim Lesen des Abschnitts');
+
+      const validSectionWithDuplicates = {
+        gridColumnSizes: [{ value: 1, unit: 'fr' }],
+        gridRowSizes: [{ value: 1, unit: 'fr' }],
+        height: 400,
+        backgroundColor: '#ffffff',
+        dynamicPositioning: true,
+        autoColumnSize: true,
+        autoRowSize: true,
+        ignoreNumbering: false,
+        visibilityRules: [],
+        logicalConnectiveOfRules: 'disjunction',
+        visibilityDelay: 0,
+        animatedVisibility: false,
+        enableReHide: false,
+        elements: [
+          {
+            type: 'radio',
+            id: 'radio_1',
+            alias: 'radio_1',
+            options: []
+          }
+        ]
+      };
+
+      cy.get('.paste-area').trigger('paste', {
+        clipboardData: {
+          getData: (type) => type === 'Text' ? JSON.stringify(validSectionWithDuplicates) : ''
+        }
+      });
+
+      cy.get('.message-area').should('have.css', 'color', 'rgb(255, 165, 0)')
+        .and('contain.text', 'Doppelte IDs festgestellt');
+
+      cy.get('mat-dialog-container').contains('mat-checkbox', 'Bestehenden Abschnitt ersetzen').find('input').uncheck({ force: true });
+      cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
 
     it('menu-button: deselect side by side view and checks that the tab header has changed', () => {
       // Ensure we are in a known state (Tabbed view)

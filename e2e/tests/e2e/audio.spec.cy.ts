@@ -104,9 +104,6 @@ describe('Audio element', { testIsolation: false }, () => {
         .find('aspect-media-player-control-bar button.control-button')
         .first()
         .click({ force: true });
-
-
-
     });
 
     it('plays the audio until it finishes (Page 2)', () => {
@@ -177,12 +174,12 @@ describe('Audio element', { testIsolation: false }, () => {
       // Wait for page animation/switching
       cy.wait(500);
       cy.get('aspect-audio:visible').should('exist');
-      
+
       // Progress bar should not exist
       cy.get('aspect-audio:visible')
         .find('mat-slider')
         .should('not.exist');
-      
+
       // Volume/mute icons/buttons should not exist
       cy.get('aspect-audio:visible')
         .find('mat-icon')

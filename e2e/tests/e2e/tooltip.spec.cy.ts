@@ -53,26 +53,12 @@ describe('Tooltip component and directives', { testIsolation: false }, () => {
       cy.get('.ProseMirror p').type('Text mit Tooltip');
       cy.wait(500);
 
-      // Select the entire text node character contents to trigger an active selection
-      cy.get('tiptap-editor p')
-        .then($p => {
-          const el = $p[0];
-          const doc = el.ownerDocument;
-          const win = doc.defaultView!;
-
-          const textNode = el.firstChild || el;
-          const textLength = textNode.textContent ? textNode.textContent.length : 0;
-
-          const range = doc.createRange();
-          range.setStart(textNode, 0);
-          range.setEnd(textNode, textLength);
-
-          const sel = win.getSelection();
-          sel?.removeAllRanges();
-          sel?.addRange(range);
-
-          doc.dispatchEvent(new Event('selectionchange', { bubbles: true }));
-        });
+      // Select the entire text programmatically using TipTap API
+      cy.get('aspect-rich-text-editor').then($el => {
+        const win = $el[0].ownerDocument.defaultView as any;
+        const component = win.ng.getComponent($el[0]);
+        component.editor.commands.selectAll();
+      });
       cy.wait(200);
 
       // Click on the tooltip (announcement) format icon button
@@ -106,11 +92,64 @@ describe('Tooltip component and directives', { testIsolation: false }, () => {
       // Save the main Rich Text Editor dialog
       cy.contains('button', 'Speichern')
         .click();
-    });
 
-    after('saves the unit definition', () => {
+      // Save the initial unit definition containing the tooltips
       cy.clickOutside();
       cy.saveUnit('e2e/downloads/tooltips.json');
+    });
+
+    it('deletes the tooltip from text element', () => {
+      // Focus text element again
+      cy.get('aspect-text').first().click({ force: true });
+
+      // Open Rich Text Editor Dialog
+      cy.get('aspect-element-model-properties-component')
+        .contains('edit')
+        .click();
+
+      cy.get('.ProseMirror').should('be.visible').focus();
+      cy.get('.ProseMirror p').should('contain.text', 'Text mit Tooltip');
+      cy.wait(500);
+
+      // Select the text programmatically using TipTap API
+      cy.get('aspect-rich-text-editor').then($el => {
+        const win = $el[0].ownerDocument.defaultView as any;
+        const component = win.ng.getComponent($el[0]);
+        component.editor.commands.selectAll();
+      });
+      cy.wait(200);
+
+      // Click on the tooltip format icon button
+      cy.get('mat-dialog-container')
+        .find('mat-icon:contains("announcement")')
+        .parent()
+        .click();
+
+      // Click "Löschen" in the tooltip properties dialog
+      cy.get('aspect-tooltip-properties-dialog')
+        .contains('button', 'Löschen')
+        .click();
+
+      // Wait for the tooltip properties dialog to close completely
+      cy.get('aspect-tooltip-properties-dialog').should('not.exist');
+
+      // Verify that tooltip mark has been removed from the editor DOM
+      cy.get('.ProseMirror tooltip').should('not.exist');
+      cy.wait(500);
+
+      // Save the main Rich Text Editor dialog
+      cy.contains('button', 'Speichern')
+        .click();
+
+      // Wait for the main edit dialog to close completely
+      cy.get('aspect-rich-text-edit-dialog').should('not.exist');
+
+      // Assert that the text element on the canvas no longer contains the tooltip element
+      cy.get('aspect-text tooltip').should('not.exist');
+
+      // Save the second unit definition containing the deleted tooltip
+      cy.clickOutside();
+      cy.saveUnit('e2e/downloads/tooltips_deleted.json');
     });
   });
 
@@ -171,6 +210,12 @@ describe('Tooltip component and directives', { testIsolation: false }, () => {
 
       // Assert tooltip is removed from the DOM
       cy.get('aspect-tooltip').should('not.exist');
+    });
+
+    it('verifies deleted text tooltip does not exist in player', () => {
+      cy.loadUnit('../downloads/tooltips_deleted.json');
+      cy.get('aspect-text').should('exist');
+      cy.get('aspect-text tooltip').should('not.exist');
     });
   });
 });

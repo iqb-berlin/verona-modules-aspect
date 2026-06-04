@@ -105,7 +105,7 @@ Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json'
   cy.contains('Unit speichern').click({ force: true });
   cy.get('a[download]')
     .should('have.length.at.least', 1)
-    .first()
+    .last()
     .invoke('prop', 'href')
     .then((url: string) => cy.window().then(win => win.fetch(url).then(response => response.text())))
     .then(content => cy.task('writeTextFile', { filepath, content }, { log: false }));

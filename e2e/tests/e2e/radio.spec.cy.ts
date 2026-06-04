@@ -3,9 +3,10 @@ import {
   addOption,
   selectFromDropdown,
   setCheckbox,
-  setPreferencesElement
+  setPreferencesElement,
+  uploadFile
 } from '../util';
-import {addRadioElement} from "./helpers/radio-util";
+import {addRadioElement, addRadioComplexElement} from "./helpers/radio-util";
 
 describe('Radio element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -55,6 +56,44 @@ describe('Radio element', { testIsolation: false }, () => {
       selectFromDropdown('Ausrichtung', 'horizontal');
     });
 
+    it('exercises the label edit dialog by modifying options and loading/removing images', () => {
+      addRadioComplexElement();
+      setPreferencesElement('Optionsfeld fuer Label-Dialog-Test');
+      addOption('Auswahl 1');
+
+      cy.get('aspect-option-list-panel').contains('.option-draggable', 'Auswahl 1')
+        .find('button').first().click();
+
+      cy.get('aspect-label-edit-dialog').should('exist');
+
+      cy.get('aspect-label-edit-dialog').find('aspect-rich-text-editor .ProseMirror')
+        .clear()
+        .type('Auswahl 1 modifiziert');
+
+      cy.stubFileInput();
+      cy.get('aspect-label-edit-dialog').contains('button', 'Bild laden').click();
+      uploadFile('test2.jpg');
+
+      cy.get('aspect-image-resize-dialog').should('exist');
+      cy.get('aspect-image-resize-dialog').contains('mat-checkbox', 'In WebP konvertieren').click({ force: true });
+      cy.get('aspect-image-resize-dialog').contains('button', 'Speichern').click();
+      cy.get('aspect-image-resize-dialog').should('not.exist');
+
+      cy.get('aspect-label-edit-dialog').contains('mat-form-field', 'Bildposition').find('mat-select').click();
+      cy.get('.cdk-overlay-container').contains('mat-option', 'unterhalb').click({ force: true });
+
+      cy.get('aspect-label-edit-dialog').contains('button', 'Speichern').click();
+      cy.get('aspect-label-edit-dialog').should('not.exist');
+
+      cy.get('aspect-option-list-panel').contains('.option-draggable', 'Auswahl 1 modifiziert')
+        .find('button').first().click();
+
+      cy.get('aspect-label-edit-dialog').should('exist');
+      cy.get('aspect-label-edit-dialog').contains('button', 'Bild entfernen').click();
+      cy.get('aspect-label-edit-dialog').contains('button', 'Speichern').click();
+      cy.get('aspect-label-edit-dialog').should('not.exist');
+    });
+
     after('saves unit definition', () => {
       cy.saveUnit('e2e/downloads/radio.json');
     });
@@ -69,6 +108,11 @@ describe('Radio element', { testIsolation: false }, () => {
     it('renders all five radio groups', () => {
       cy.get('aspect-radio-button-group').should('have.length', 5);
     });
+
+    it('renders the image radio group', () => {
+      cy.get('aspect-radio-group-images').should('have.length', 1);
+    });
+
 
     it('selects an option in the common radio group', () => {
       cy.contains('aspect-radio-button-group', 'Optionsfelder')

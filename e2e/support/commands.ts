@@ -142,7 +142,9 @@ Cypress.Commands.add('stubFileInput', () => {
       if (tagName.toLowerCase() === 'input') {
         const originalClick = el.click.bind(el);
         el.click = () => {
-          win.document.body.appendChild(el);
+          if (el.type === 'file') {
+            win.document.body.appendChild(el);
+          }
           originalClick();
         };
       }

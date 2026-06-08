@@ -3,11 +3,6 @@ import {
   addNewPage, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField,
 } from '../util';
 
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Test suite
-// ─────────────────────────────────────────────────────────────────────────────
-
 describe('Audio element', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens editor', () => {

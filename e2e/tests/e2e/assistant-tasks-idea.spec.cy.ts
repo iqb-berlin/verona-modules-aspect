@@ -27,14 +27,14 @@ describe('Aufgabenidee assistant', { testIsolation: false }, () => {
     });
 
     after('saves the unit definition', () => {
-      cy.saveUnit('e2e/downloads/assistant_tasks_idea.json');
+      cy.saveUnit('e2e/downloads/assistant-tasks-idea.json');
     });
   });
 
   context('player', () => {
     before('opens a player and loads the saved unit definition', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/assistant_tasks_idea.json');
+      cy.loadUnit('../downloads/assistant-tasks-idea.json');
     });
 
     it('verifies the tasks idea elements are rendered correctly', () => {

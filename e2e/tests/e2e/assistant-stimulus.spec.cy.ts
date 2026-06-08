@@ -40,7 +40,7 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
       cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
     });
 
-    it('creates an english email stimulus (Page 2)', () => {
+    it('creates an English email stimulus (Page 2)', () => {
       openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'E-Mail').click();
       selectRadioOption('Englisch');
@@ -136,14 +136,14 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
     });
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/stimulus.json');
+      cy.saveUnit('e2e/downloads/assistant-stimulus.json');
     });
   });
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/stimulus.json');
+      cy.loadUnit('../downloads/assistant-stimulus.json');
     });
 
     // ── Page 1: Text stimulus ─────────────────────────────────────────────────────
@@ -192,7 +192,7 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
       cy.goToPlayerPage(4);
       // Audio 1 checks
       cy.contains('Drücke zuerst auf das Dreieck, dann startet der Hörtext.').should('exist');
-      
+
       // Audio 2 checks
       cy.contains('instruction:').should('exist');
       cy.contains('audio recording:').should('exist');

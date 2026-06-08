@@ -48,14 +48,14 @@ describe('MC assistant', { testIsolation: false }, () => {
 
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/mc.json');
+      cy.saveUnit('e2e/downloads/assistant-mc.json');
     });
   });
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/mc.json');
+      cy.loadUnit('../downloads/assistant-mc.json');
     });
 
     // ── Page 1: Text MC and Text MC with Begründung ───────────────────────────────────

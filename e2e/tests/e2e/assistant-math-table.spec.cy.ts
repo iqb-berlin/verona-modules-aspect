@@ -69,14 +69,14 @@ describe('Math table assistant', { testIsolation: false }, () => {
     });
 
     after('saves the unit definition', () => {
-      cy.saveUnit('e2e/downloads/assistant_math_table.json');
+      cy.saveUnit('e2e/downloads/assistant-math-table.json');
     });
   });
 
   context('player', () => {
     before('opens a player and loads the saved unit definition', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/assistant_math_table.json');
+      cy.loadUnit('../downloads/assistant-math-table.json');
     });
 
     // ── Page 1: Addition (Addition) ──────────────────────────────────────────────

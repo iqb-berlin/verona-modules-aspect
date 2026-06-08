@@ -34,14 +34,14 @@ describe('MCM assistant', { testIsolation: false }, () => {
     });
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/mcm.json');
+      cy.saveUnit('e2e/downloads/assistant-mcm.json');
     });
   });
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/mcm.json');
+      cy.loadUnit('../downloads/assistant-mcm.json');
     });
 
     it('verifies the MCM rendering (Page 1)', () => {

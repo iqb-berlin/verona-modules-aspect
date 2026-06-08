@@ -65,14 +65,14 @@ describe('Marking panel assistant', { testIsolation: false }, () => {
     });
 
     after('saves the unit definition', () => {
-      cy.saveUnit('e2e/downloads/assistant_marking_panel.json');
+      cy.saveUnit('e2e/downloads/assistant-marking-panel.json');
     });
   });
 
   context('player', () => {
     before('opens a player and loads the saved unit definition', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/assistant_marking_panel.json');
+      cy.loadUnit('../downloads/assistant-marking-panel.json');
     });
 
     // ── Page 1: Word-wise Marking (wortweise) ────────────────────────────────────

@@ -73,14 +73,14 @@ describe('Input assistant', { testIsolation: false }, () => {
     });
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/input.json');
+      cy.saveUnit('e2e/downloads/assistant-input.json');
     });
   });
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/input.json');
+      cy.loadUnit('../downloads/assistant-input.json');
     });
 
     // ── Page 1: Basic Input ──────────────────────────────────────────────────────

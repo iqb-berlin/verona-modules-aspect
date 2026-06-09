@@ -1,4 +1,4 @@
-import {addNewPage, setID, addTextElement, selectParagraphElement} from '../util';
+import {addNewPage, setID, addTextElement, selectParagraphElement, addElement} from '../util';
 import { addText, selectRange } from "./helpers/text-util";
 
 
@@ -96,6 +96,127 @@ describe('Text element', { testIsolation: false }, () => {
             cy.contains('Speichern').click();
         });
 
+        it('creates text element and exercises tooltip properties dialog (page 6)', () => {
+            addNewPage();
+            // Add text element (visible by default)
+            addElement('Text');
+
+            // Explicitly select the newly added text element to focus the properties panel
+            cy.get('aspect-text').last().click({ force: true });
+
+            // Open Rich Text Editor Dialog
+            cy.get('aspect-element-model-properties-component')
+                .contains('edit')
+                .click();
+
+            // Wait for layout to settle completely inside the dialog
+            cy.get('.ProseMirror').should('be.visible');
+            cy.wait(500);
+
+            // Clear editor and type text
+            cy.get('.ProseMirror p').clear();
+            cy.get('.ProseMirror p').type('Text mit Tooltip');
+            cy.wait(500);
+
+            // Select the entire text programmatically using TipTap API
+            cy.get('aspect-rich-text-editor').then($el => {
+                const win = $el[0].ownerDocument.defaultView as any;
+                const component = win.ng.getComponent($el[0]);
+                component.editor.commands.selectAll();
+            });
+            cy.wait(200);
+
+            // Click on the tooltip (announcement) format icon button
+            cy.get('mat-dialog-container')
+                .find('mat-icon:contains("announcement")')
+                .parent()
+                .click();
+
+            // Within the tooltip properties dialog, configure text and position
+            cy.get('aspect-tooltip-properties-dialog')
+                .contains('mat-form-field', 'Tooltip-Text')
+                .find('input')
+                .type('Das ist ein Text-Tooltip');
+
+            cy.get('aspect-tooltip-properties-dialog')
+                .contains('mat-form-field', 'Tooltip-Position')
+                .find('mat-select')
+                .click();
+            cy.get('.cdk-overlay-container')
+                .contains('mat-option', 'oberhalb')
+                .click({ force: true });
+
+            // Save the tooltip properties dialog
+            cy.get('aspect-tooltip-properties-dialog')
+                .contains('button', 'Speichern')
+                .click();
+
+            // Wait for the tooltip properties dialog to close completely
+            cy.get('aspect-tooltip-properties-dialog').should('not.exist');
+
+            // Save the main Rich Text Editor dialog
+            cy.contains('button', 'Speichern')
+                .click();
+
+            // Save the initial unit definition containing the tooltips
+            cy.clickOutside();
+            cy.saveUnit('e2e/downloads/tooltips.json');
+        });
+
+        it('deletes the tooltip from text element (page 6)', () => {
+            // Focus text element again
+            cy.get('aspect-text').last().click({ force: true });
+
+            // Open Rich Text Editor Dialog
+            cy.get('aspect-element-model-properties-component')
+                .contains('edit')
+                .click();
+
+            cy.get('.ProseMirror').should('be.visible').focus();
+            cy.get('.ProseMirror p').should('contain.text', 'Text mit Tooltip');
+            cy.wait(500);
+
+            // Select the text programmatically using TipTap API
+            cy.get('aspect-rich-text-editor').then($el => {
+                const win = $el[0].ownerDocument.defaultView as any;
+                const component = win.ng.getComponent($el[0]);
+                component.editor.commands.selectAll();
+            });
+            cy.wait(200);
+
+            // Click on the tooltip format icon button
+            cy.get('mat-dialog-container')
+                .find('mat-icon:contains("announcement")')
+                .parent()
+                .click();
+
+            // Click "Löschen" in the tooltip properties dialog
+            cy.get('aspect-tooltip-properties-dialog')
+                .contains('button', 'Löschen')
+                .click();
+
+            // Wait for the tooltip properties dialog to close completely
+            cy.get('aspect-tooltip-properties-dialog').should('not.exist');
+
+            // Verify that tooltip mark has been removed from the editor DOM
+            cy.get('.ProseMirror tooltip').should('not.exist');
+            cy.wait(500);
+
+            // Save the main Rich Text Editor dialog
+            cy.contains('button', 'Speichern')
+                .click();
+
+            // Wait for the main edit dialog to close completely
+            cy.get('aspect-rich-text-edit-dialog').should('not.exist');
+
+            // Assert that the text element on the canvas no longer contains the tooltip element
+            cy.get('aspect-text tooltip').should('not.exist');
+
+            // Save the second unit definition containing the deleted tooltip
+            cy.clickOutside();
+            cy.saveUnit('e2e/downloads/tooltips-deleted.json');
+        });
+
         after('saves the unit definition', () => {
             cy.saveUnit('e2e/downloads/text.json');
         });
@@ -158,8 +279,158 @@ describe('Text element', { testIsolation: false }, () => {
             selectRange(40, 70, 70, 100);
         });
 
+      it('opens the floating marking bar, applies color, and dismisses it on page 2', () => {
+        cy.goToPlayerPage(2);
+
+        // Deselect the delete button (which was active from the previous test)
+        cy.getElementByAlias('text-range')
+          .find('button.marking-button').eq(2).click();
+
+        // Select text range to trigger the floating marking bar
+        selectRange(40, 130, 100, 160);
+
+        // Verify floating marking bar is visible
+        cy.get('.cdk-overlay-container').find('.marking-bar-container').should('exist');
+
+        // Click the turquoise marking button on the floating marking bar
+        cy.get('.cdk-overlay-container')
+          .find('button.marking-button').eq(1).trigger('pointerdown', { force: true });
+
+        // Verify the marking bar is closed
+        cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+
+        // Verify text is highlighted (contains aspect-marked with turquoise color)
+        cy.getElementByAlias('text-range')
+          .find('aspect-marked[style*="background-color: rgb(157, 232, 235)"]')
+          .should('exist');
+
+        // Dismiss the marking bar by clicking outside
+        selectRange(100, 130, 150, 160);
+        cy.get('.cdk-overlay-container').find('.marking-bar-container').should('exist');
+        cy.get('body').click(10, 10);
+        cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+      });
+
+      it('does not open floating marking bar with Ctrl key selection or outside selections (page 2)', () => {
+        cy.goToPlayerPage(2);
+
+        // 1. Selection with Ctrl key
+        cy.get('.text-container:visible').then($el => {
+          const el = $el[0];
+          const win = el.ownerDocument.defaultView;
+          const doc = el.ownerDocument;
+          const rect = el.getBoundingClientRect();
+
+          const startAbsX = rect.left + 40;
+          const startAbsY = rect.top + 130;
+          const endAbsX = rect.left + 100;
+          const endAbsY = rect.top + 160;
+
+          cy.wrap($el).trigger('pointerdown', 40, 130, { button: 0, force: true });
+
+          const legacyRange = (doc as any).caretRangeFromPoint?.(startAbsX, startAbsY);
+          const endRange = (doc as any).caretRangeFromPoint?.(endAbsX, endAbsY);
+
+          if (legacyRange && endRange) {
+            const range = doc.createRange();
+            range.setStart(legacyRange.startContainer, legacyRange.startOffset);
+            range.setEnd(endRange.startContainer, endRange.startOffset);
+            win?.getSelection()?.removeAllRanges();
+            win?.getSelection()?.addRange(range);
+          }
+
+          cy.wait(50);
+
+          cy.window().trigger('pointerup', {
+            button: 0,
+            force: true,
+            clientX: endAbsX,
+            clientY: endAbsY,
+            ctrlKey: true
+          });
+        });
+        cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+
+        // 2. Selection extending outside the container
+        cy.get('.text-container:visible').then($el => {
+          const el = $el[0];
+          const win = el.ownerDocument.defaultView;
+          const doc = el.ownerDocument;
+          const rect = el.getBoundingClientRect();
+
+          const startAbsX = rect.left + 40;
+          const startAbsY = rect.top + 130;
+
+          cy.wrap($el).trigger('pointerdown', 40, 130, { button: 0, force: true });
+
+          const startCaret = (doc as any).caretRangeFromPoint?.(startAbsX, startAbsY);
+          const outsideElement = doc.querySelector('aspect-player');
+
+          if (startCaret && outsideElement) {
+            const range = doc.createRange();
+            range.setStart(startCaret.startContainer, startCaret.startOffset);
+            range.setEnd(outsideElement, 0);
+            win?.getSelection()?.removeAllRanges();
+            win?.getSelection()?.addRange(range);
+          }
+
+          cy.wait(50);
+
+          cy.window().trigger('pointerup', {
+            button: 0,
+            force: true,
+            clientX: 0,
+            clientY: 0
+          });
+        });
+        cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+      });
+
+      it('splits marked range on sub-range deletion, and handles multi-node marking/clearing (page 2)', () => {
+        cy.goToPlayerPage(2);
+
+        // 1. Highlight range in yellow in paragraph 1
+        cy.getElementByAlias('text-range')
+          .find('button.marking-button').eq(0).click();
+        selectRange(40, 40, 180, 40);
+
+        cy.getElementByAlias('text-range')
+          .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
+          .should('have.length', 1);
+
+        // 2. Select delete button and clear a sub-range (middle portion)
+        cy.getElementByAlias('text-range')
+          .find('button.marking-button').eq(2).click();
+        selectRange(90, 40, 130, 40);
+
+        // Verify it is split into two highlighted segments
+        cy.getElementByAlias('text-range')
+          .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
+          .should('have.length.at.least', 2);
+
+        // 3. Select yellow marking button and mark across paragraphs (multi-node)
+        cy.getElementByAlias('text-range')
+          .find('button.marking-button').eq(0).click();
+        selectRange(40, 40, 640, 40);
+
+        // Verify that multiple aspect-marked elements are created
+        cy.getElementByAlias('text-range')
+          .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
+          .should('have.length.at.least', 2);
+
+        // 4. Select delete button and clear multi-node selection
+        cy.getElementByAlias('text-range')
+          .find('button.marking-button').eq(2).click();
+        selectRange(30, 30, 650, 50);
+
+        // Verify they are cleared
+        cy.getElementByAlias('text-range')
+          .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
+          .should('have.length', 0);
+      });
+
         // ── Page 3 tests: Bereich (selection) mode ───────────────────────────────
-        it('highlights two selections in different colors on page 3', () => {
+        it('highlights two selections in different colors (page 3)', () => {
             cy.goToPlayerPage(3);
 
             // highlights in yellow
@@ -179,7 +450,7 @@ describe('Text element', { testIsolation: false }, () => {
                 .find('aspect-markable-word').eq(35).click();
         });
 
-        it('removes the second highlighted selection on page 3', () => {
+        it('removes the second highlighted selection (page 3)', () => {
             cy.getElementByAlias('text-selection')
                 .find('button.marking-button').eq(2).click();
             cy.getElementByAlias('text-selection')
@@ -189,7 +460,7 @@ describe('Text element', { testIsolation: false }, () => {
         });
 
         // ── Page 4 tests: math formula ──────────────────────────────────────────
-        it('checks the math formula on page 4', () => {
+        it('checks the math formula (page 4)', () => {
             cy.goToPlayerPage(4);
             cy.getElementByAlias('text-math').within(() => {
                 cy.contains('Benutzerdefinierter Text mit Formel').should('exist');
@@ -199,7 +470,7 @@ describe('Text element', { testIsolation: false }, () => {
             });
         });
 
-        it('checks the rich text extensions on page 5', () => {
+        it('checks the rich text extensions (page 5)', () => {
             cy.goToPlayerPage(5);
             cy.getElementByAlias('text-extensions').within(() => {
                 // 1. Verify standard indent (padding-left: 20px)
@@ -234,157 +505,43 @@ describe('Text element', { testIsolation: false }, () => {
                 cy.get('hr').should('exist');
             });
         });
-        it('opens the floating marking bar, applies color, and dismisses it on page 2', () => {
-            cy.goToPlayerPage(2);
 
-            // Deselect the delete button (which was active from the previous test)
-            cy.getElementByAlias('text-range')
-                .find('button.marking-button').eq(2).click();
+        it('verifies text tooltip trigger and position (page 6)', () => {
+            cy.loadUnit('../downloads/tooltips.json');
+            cy.goToPlayerPage(6);
 
-            // Select text range to trigger the floating marking bar
-            selectRange(40, 130, 100, 160);
+            // Assert text container exists
+            cy.get('aspect-text').should('exist');
 
-            // Verify floating marking bar is visible
-            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('exist');
+            // Assert custom <tooltip> element was rendered inside the text
+            cy.get('aspect-text tooltip').should('exist');
 
-            // Click the turquoise marking button on the floating marking bar
-            cy.get('.cdk-overlay-container')
-                .find('button.marking-button').eq(1).trigger('pointerdown', { force: true });
+            // Tooltip should not be in DOM initially
+            cy.get('aspect-tooltip').should('not.exist');
 
-            // Verify the marking bar is closed
-            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+            // Trigger pointerenter event on the tooltip element
+            cy.get('aspect-text tooltip')
+                .trigger('pointerenter');
 
-            // Verify text is highlighted (contains aspect-marked with turquoise color)
-            cy.getElementByAlias('text-range')
-                .find('aspect-marked[style*="background-color: rgb(157, 232, 235)"]')
-                .should('exist');
+            // Assert tooltip is displayed with correct content
+            cy.get('aspect-tooltip')
+                .should('exist')
+                .and('contain.text', 'Das ist ein Text-Tooltip');
 
-            // Dismiss the marking bar by clicking outside
-            selectRange(100, 130, 150, 160);
-            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('exist');
-            cy.get('body').click(10, 10);
-            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
+            // Trigger mouseleave event on the tooltip element to hide immediately
+            cy.get('aspect-text tooltip')
+                .trigger('mouseleave');
+
+            // Assert tooltip is removed from the DOM
+            cy.get('aspect-tooltip').should('not.exist');
         });
 
-        it('does not open floating marking bar with Ctrl key selection or outside selections', () => {
-            cy.goToPlayerPage(2);
-
-            // 1. Selection with Ctrl key
-            cy.get('.text-container:visible').then($el => {
-                const el = $el[0];
-                const win = el.ownerDocument.defaultView;
-                const doc = el.ownerDocument;
-                const rect = el.getBoundingClientRect();
-
-                const startAbsX = rect.left + 40;
-                const startAbsY = rect.top + 130;
-                const endAbsX = rect.left + 100;
-                const endAbsY = rect.top + 160;
-
-                cy.wrap($el).trigger('pointerdown', 40, 130, { button: 0, force: true });
-
-                const legacyRange = (doc as any).caretRangeFromPoint?.(startAbsX, startAbsY);
-                const endRange = (doc as any).caretRangeFromPoint?.(endAbsX, endAbsY);
-
-                if (legacyRange && endRange) {
-                    const range = doc.createRange();
-                    range.setStart(legacyRange.startContainer, legacyRange.startOffset);
-                    range.setEnd(endRange.startContainer, endRange.startOffset);
-                    win?.getSelection()?.removeAllRanges();
-                    win?.getSelection()?.addRange(range);
-                }
-
-                cy.wait(50);
-
-                cy.window().trigger('pointerup', {
-                    button: 0,
-                    force: true,
-                    clientX: endAbsX,
-                    clientY: endAbsY,
-                    ctrlKey: true
-                });
-            });
-            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
-
-            // 2. Selection extending outside the container
-            cy.get('.text-container:visible').then($el => {
-                const el = $el[0];
-                const win = el.ownerDocument.defaultView;
-                const doc = el.ownerDocument;
-                const rect = el.getBoundingClientRect();
-
-                const startAbsX = rect.left + 40;
-                const startAbsY = rect.top + 130;
-
-                cy.wrap($el).trigger('pointerdown', 40, 130, { button: 0, force: true });
-
-                const startCaret = (doc as any).caretRangeFromPoint?.(startAbsX, startAbsY);
-                const outsideElement = doc.querySelector('aspect-player');
-
-                if (startCaret && outsideElement) {
-                    const range = doc.createRange();
-                    range.setStart(startCaret.startContainer, startCaret.startOffset);
-                    range.setEnd(outsideElement, 0);
-                    win?.getSelection()?.removeAllRanges();
-                    win?.getSelection()?.addRange(range);
-                }
-
-                cy.wait(50);
-
-                cy.window().trigger('pointerup', {
-                    button: 0,
-                    force: true,
-                    clientX: 0,
-                    clientY: 0
-                });
-            });
-            cy.get('.cdk-overlay-container').find('.marking-bar-container').should('not.exist');
-        });
-
-        it('splits marked range on sub-range deletion, and handles multi-node marking/clearing', () => {
-            cy.goToPlayerPage(2);
-
-            // 1. Highlight range in yellow in paragraph 1
-            cy.getElementByAlias('text-range')
-                .find('button.marking-button').eq(0).click();
-            selectRange(40, 40, 180, 40);
-
-            cy.getElementByAlias('text-range')
-                .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
-                .should('have.length', 1);
-
-            // 2. Select delete button and clear a sub-range (middle portion)
-            cy.getElementByAlias('text-range')
-                .find('button.marking-button').eq(2).click();
-            selectRange(90, 40, 130, 40);
-
-            // Verify it is split into two highlighted segments
-            cy.getElementByAlias('text-range')
-                .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
-                .should('have.length.at.least', 2);
-
-            // 3. Select yellow marking button and mark across paragraphs (multi-node)
-            cy.getElementByAlias('text-range')
-                .find('button.marking-button').eq(0).click();
-            selectRange(40, 40, 640, 40);
-
-            // Verify that multiple aspect-marked elements are created
-            cy.getElementByAlias('text-range')
-                .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
-                .should('have.length.at.least', 2);
-
-            // 4. Select delete button and clear multi-node selection
-            cy.getElementByAlias('text-range')
-                .find('button.marking-button').eq(2).click();
-            selectRange(30, 30, 650, 50);
-
-            // Verify they are cleared
-            cy.getElementByAlias('text-range')
-                .find('aspect-marked[style*="background-color: rgb(249, 248, 113)"]')
-                .should('have.length', 0);
+        it('verifies deleted text tooltip does not exist in player (page 6)', () => {
+            cy.loadUnit('../downloads/tooltips-deleted.json');
+            cy.goToPlayerPage(6);
+            cy.get('aspect-text').should('exist');
+            cy.get('aspect-text tooltip').should('not.exist');
         });
     });
 });
-
-
 

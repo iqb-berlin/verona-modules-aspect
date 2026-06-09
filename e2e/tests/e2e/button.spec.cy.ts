@@ -10,7 +10,9 @@ describe('Button element', { testIsolation: false }, () => {
   it('creates basic buttons in editor', () => {
     cy.viewport(1280, 720); // if the screen is smaller the page tab won't be visible
     cy.openEditor();
+    cy.contains('Text').should('be.visible');
     cy.switchToTabbedViewMode();
+    cy.wait(1000);
     addElement('Knopf', 'Sonstige');
   });
 
@@ -48,6 +50,30 @@ describe('Button element', { testIsolation: false }, () => {
     clickButtonDialog('Speichern');
   });
 
+  it('creates button with tooltip', () => {
+    addElement('Knopf', 'Sonstige');
+
+    // Change label/Beschriftung
+    cy.contains('div', 'Beschriftung')
+      .find('textarea')
+      .clear()
+      .type('Knopf mit Tooltip');
+
+    // Set tooltip text in properties panel
+    cy.contains('mat-form-field', 'Tooltip-Text')
+      .find('input')
+      .clear()
+      .type('Das ist ein Button-Tooltip');
+
+    // Set tooltip position to "above" (oberhalb)
+    cy.contains('mat-form-field', 'Tooltip-Position')
+      .find('mat-select')
+      .click();
+    cy.get('.cdk-overlay-container')
+      .contains('mat-option', 'oberhalb')
+      .click({ force: true });
+  });
+
   it('saves unit definition', () => {
     cy.clickOutside();
     cy.saveUnit('e2e/downloads/buttons.json');
@@ -59,7 +85,7 @@ describe('Button element', { testIsolation: false }, () => {
     cy.openPlayer();
     cy.loadUnit('../downloads/buttons.json');
     cy.contains('Knopf-not-existing').should('not.exist');
-    cy.get('aspect-button').should('have.length', 5);
+    cy.get('aspect-button').should('have.length', 6);
   });
 
   it('finds and uses a button without an action', () => {
@@ -89,5 +115,33 @@ describe('Button element', { testIsolation: false }, () => {
   it('finds and uses a button with an image', () => {
     cy.get('input[type="image"]').should('have.attr', 'alt', 'Bild nicht gefunden');
     cy.get('[src^="data:image"]');
+  });
+
+  it('verifies button tooltip trigger and position', () => {
+    cy.loadUnit('../downloads/buttons.json');
+
+    // Assert button exists
+    cy.contains('aspect-button', 'Knopf mit Tooltip').should('exist');
+
+    // Tooltip should not be in DOM initially
+    cy.get('aspect-tooltip').should('not.exist');
+
+    // Trigger pointerenter on button to show tooltip
+    cy.contains('aspect-button', 'Knopf mit Tooltip')
+      .find('button')
+      .trigger('pointerenter');
+
+    // Assert tooltip is displayed with correct content
+    cy.get('aspect-tooltip')
+      .should('exist')
+      .and('contain.text', 'Das ist ein Button-Tooltip');
+
+    // Trigger mouseleave on button to hide tooltip immediately
+    cy.contains('aspect-button', 'Knopf mit Tooltip')
+      .find('button')
+      .trigger('mouseleave');
+
+    // Assert tooltip is removed from the DOM immediately
+    cy.get('aspect-tooltip').should('not.exist');
   });
 });

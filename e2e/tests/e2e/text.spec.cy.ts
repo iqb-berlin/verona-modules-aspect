@@ -1,8 +1,6 @@
 import {addNewPage, setID, addTextElement, selectParagraphElement, addElement} from '../util';
 import { addText, selectRange } from "./helpers/text-util";
 
-
-
 describe('Text element', { testIsolation: false }, () => {
     context('editor', () => {
         before('opens an editor', () => {
@@ -313,7 +311,6 @@ describe('Text element', { testIsolation: false }, () => {
 
       it('does not open floating marking bar with Ctrl key selection or outside selections (page 2)', () => {
         cy.goToPlayerPage(2);
-
         // 1. Selection with Ctrl key
         cy.get('.text-container:visible').then($el => {
           const el = $el[0];

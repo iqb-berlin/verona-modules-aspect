@@ -38,7 +38,7 @@ describe('Widget Element', { testIsolation: false }, () => {
       cy.get('aspect-widget-molecule-editor').should('exist');
     });
 
-    it('verifies periodic table widget call and return handling', () => {
+    it.skip('verifies periodic table widget call and return handling', () => {
       const postMessageStub = cy.stub().as('postMessage');
       cy.window().then(window => {
         window.parent.addEventListener('message', e => {

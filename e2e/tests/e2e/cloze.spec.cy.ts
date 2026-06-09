@@ -151,6 +151,7 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('9th cloze displays error message for required text-field inside cloze when touched', () => {
+      // THE ERROR MESSAGE REQUIRED IS ALWAYS PLACED IN A SECOND LINE OF THE SECTION PLACE: SEE THIS EXAMPLE
       // Initially, error should not exist
       cy.get('aspect-cloze-child-error-message').should('not.exist');
 

@@ -149,7 +149,7 @@ describe('Tooltip component and directives', { testIsolation: false }, () => {
 
       // Save the second unit definition containing the deleted tooltip
       cy.clickOutside();
-      cy.saveUnit('e2e/downloads/tooltips_deleted.json');
+      cy.saveUnit('e2e/downloads/tooltips-deleted.json');
     });
   });
 

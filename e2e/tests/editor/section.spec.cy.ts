@@ -1,5 +1,4 @@
 import {
-  addElement,
   addNewSection,
   setExpertMode
 } from '../util';
@@ -171,14 +170,14 @@ describe('Section and Layout Handling', { testIsolation: false }, () => {
     });
 
     after('saves unit definition', () => {
-      cy.saveUnit('e2e/downloads/section_layout.json');
+      cy.saveUnit('e2e/downloads/section-layout.json');
     });
   });
 
   context('player', () => {
     before('opens player and loads test unit', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/section_layout.json');
+      cy.loadUnit('../downloads/section-layout.json');
     });
 
     it('verifies that Section 1 height, numbering, and background color are rendered correctly', () => {

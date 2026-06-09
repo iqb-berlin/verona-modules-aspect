@@ -109,14 +109,14 @@ describe('Droplist assistant', { testIsolation: false }, () => {
     });
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/droplist_assistant.json');
+      cy.saveUnit('e2e/downloads/assistant-droplist.json');
     });
   });
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/droplist_assistant.json');
+      cy.loadUnit('../downloads/assistant-droplist.json');
     });
 
     // ── Page 1: Classic Droplist (Zuordnung) ─────────────────────────────────────

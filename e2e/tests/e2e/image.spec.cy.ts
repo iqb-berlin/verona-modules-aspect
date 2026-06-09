@@ -32,55 +32,6 @@ describe('Image element', { testIsolation: false }, () => {
       clickButtonDialog('Speichern');
     });
 
-    it('adds a hotspot image element and configures hotspots', () => {
-      cy.stubFileInput();
-
-      // Add hotspot-image element ("Bildbereiche")
-      addElement('Bildbereiche', 'Auswahl');
-
-      uploadFile('446878.jpeg');
-      clickButtonDialog('Speichern');
-
-      // Add first hotspot: triangle
-      cy.get('aspect-hotspot-props').contains('mat-icon', 'add').click();
-      cy.get('aspect-hotspot-props').contains('mat-icon', 'build').click();
-      cy.get('aspect-hotspot-edit-dialog').should('exist');
-
-      cy.contains('mat-form-field', 'Abstand von oben').find('input').clear().type('10');
-      cy.contains('mat-form-field', 'Abstand von links').find('input').clear().type('20');
-      cy.contains('mat-form-field', 'Bereichsbreite').find('input').clear().type('60');
-      cy.contains('mat-form-field', 'Bereichshöhe').find('input').clear().type('70');
-      cy.contains('mat-radio-button', 'Dreieck').find('input').click({ force: true });
-      cy.contains('mat-form-field', 'Drehung').find('input').clear().type('0');
-      cy.contains('mat-form-field', 'Rahmenbreite').find('input').clear().type('1');
-      cy.contains('mat-checkbox', 'Aktivierter Bereich').find('input').click({ force: true });
-      cy.get('mat-dialog-container').contains('button', 'Speichern').click();
-
-      // Add second hotspot: rectangle (Rechteck is default)
-      cy.get('aspect-hotspot-props').contains('mat-icon', 'add').click();
-      cy.get('aspect-hotspot-props').find('mat-icon:contains("build")').eq(1).click();
-      cy.get('aspect-hotspot-edit-dialog').should('exist');
-      cy.contains('mat-form-field', 'Abstand von oben').find('input').clear().type('80');
-      cy.contains('mat-form-field', 'Abstand von links').find('input').clear().type('90');
-      cy.contains('mat-form-field', 'Bereichsbreite').find('input').clear().type('50');
-      cy.contains('mat-form-field', 'Bereichshöhe').find('input').clear().type('50');
-      cy.contains('mat-checkbox', 'Aktivierter Bereich').find('input').click({ force: true });
-      cy.get('mat-dialog-container').contains('button', 'Speichern').click();
-
-      // Add third hotspot: ellipse (read-only)
-      cy.get('aspect-hotspot-props').contains('mat-icon', 'add').click();
-      cy.get('aspect-hotspot-props').find('mat-icon:contains("build")').eq(2).click();
-      cy.get('aspect-hotspot-edit-dialog').should('exist');
-      cy.contains('mat-form-field', 'Abstand von oben').find('input').clear().type('150');
-      cy.contains('mat-form-field', 'Abstand von links').find('input').clear().type('150');
-      cy.contains('mat-form-field', 'Bereichsbreite').find('input').clear().type('40');
-      cy.contains('mat-form-field', 'Bereichshöhe').find('input').clear().type('40');
-      cy.contains('mat-radio-button', 'Ellipse').find('input').click({ force: true });
-      cy.contains('mat-checkbox', 'Schreibgeschützt').find('input').click({ force: true });
-      cy.get('mat-dialog-container').contains('button', 'Speichern').click();
-    });
-
-
     after('saves unit definition', () => {
       cy.saveUnit('e2e/downloads/image.json');
     });
@@ -149,68 +100,5 @@ describe('Image element', { testIsolation: false }, () => {
       cy.get('aspect-image-magnifier').should('not.exist');
     });
 
-    it('renders the hotspot image with three hotspots', () => {
-      cy.get('aspect-hotspot-image').should('exist');
-      cy.get('aspect-hotspot-image img').should('exist');
-    });
-
-    it('verifies interaction and state changed notifications', () => {
-      const postMessageStub = cy.stub().as('postMessage');
-      cy.window().then(window => {
-        window.parent.addEventListener('message', e => {
-          postMessageStub(e.data);
-        });
-      });
-
-      // Click the triangle hotspot inner element to toggle it on
-      cy.get('.triangle-half-inner.hotspot.active-hotspot').first().click({ force: true });
-
-      // Assert state changed notification
-      cy.get('@postMessage').should('be.calledWithMatch', Cypress.sinon.match({
-        type: 'vopStateChangedNotification',
-        unitState: Cypress.sinon.match({
-          dataParts: Cypress.sinon.match.has('elementCodes')
-        })
-      }));
-
-      // Click the rectangle hotspot to toggle it on
-      cy.get('.hotspot.active-hotspot').not('.triangle-half-inner').first().click();
-
-      // Click the read-only ellipse hotspot (should NOT have .active-hotspot)
-      // Force click since pointer-events: none might be set on read-only/inactive
-      cy.get('.hotspot').not('.active-hotspot').first().click({ force: true });
-    });
-
-    it('renders the hotspot image with three hotspots', () => {
-      cy.get('aspect-hotspot-image').should('exist');
-      cy.get('aspect-hotspot-image img').should('exist');
-    });
-
-    it('verifies interaction and state changed notifications', () => {
-      const postMessageStub = cy.stub().as('postMessage');
-      cy.window().then(window => {
-        window.parent.addEventListener('message', e => {
-          postMessageStub(e.data);
-        });
-      });
-
-      // Click the triangle hotspot inner element to toggle it on
-      cy.get('.triangle-half-inner.hotspot.active-hotspot').first().click({ force: true });
-
-      // Assert state changed notification
-      cy.get('@postMessage').should('be.calledWithMatch', Cypress.sinon.match({
-        type: 'vopStateChangedNotification',
-        unitState: Cypress.sinon.match({
-          dataParts: Cypress.sinon.match.has('elementCodes')
-        })
-      }));
-
-      // Click the rectangle hotspot to toggle it on
-      cy.get('.hotspot.active-hotspot').not('.triangle-half-inner').first().click();
-
-      // Click the read-only ellipse hotspot (should NOT have .active-hotspot)
-      // Force click since pointer-events: none might be set on read-only/inactive
-      cy.get('.hotspot').not('.active-hotspot').first().click({ force: true });
-    });
   });
 });

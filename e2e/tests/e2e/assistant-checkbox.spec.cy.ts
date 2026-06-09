@@ -52,14 +52,14 @@ describe('Checkbox assistant', { testIsolation: false }, () => {
     });
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/checkbox_assistant.json');
+      cy.saveUnit('e2e/downloads/assistant-checkbox.json');
     });
   });
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/checkbox_assistant.json');
+      cy.loadUnit('../downloads/assistant-checkbox.json');
     });
 
     // ── Page 1: Text Checkbox Group ──────────────────────────────────────────────

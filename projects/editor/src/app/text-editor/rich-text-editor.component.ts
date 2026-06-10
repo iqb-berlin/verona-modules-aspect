@@ -200,7 +200,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     ).subscribe(result => {
       if (result) {
         if (result.action === 'delete') {
-          this.editor.chain().unsetTooltip().focus().run();
+          this.editor.chain().focus().unsetTooltip().run();
         } else {
           this.editor.chain().focus().setTooltip({
             tooltipText: result.tooltipText,

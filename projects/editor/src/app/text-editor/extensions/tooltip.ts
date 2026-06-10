@@ -87,7 +87,7 @@ export const Tooltip = Mark.create<TooltipExtensionOptions>({
     return {
       setTooltip: attributes => ({ commands }) => commands
         .setMark(this.name, attributes),
-      unsetTooltip: () => ({ commands }) => commands.unsetMark(this.name, { extendEmptyMarkRange: true })
+      unsetTooltip: () => ({ commands }) => commands.unsetMark(this.name)
     };
   }
 });

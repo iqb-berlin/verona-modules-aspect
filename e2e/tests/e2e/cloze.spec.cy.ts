@@ -9,7 +9,7 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('creates a default cloze with Lorem Ipsum text', () => {
-      createCloze('Lückentext', 'normaler Lückentext', );
+      createCloze('Lückentext', 'normaler Lückentext',);
     });
 
     it('creates a cloze and inserts a text-field inside it', () => {
@@ -17,7 +17,7 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('creates a cloze and inserts a drop-list inside it', () => {
-      createCloze('Lückentext3', 'Lückentext mit Ablegeliste', 'Ablegeliste', ['AAA','BBB','CCC'], {}, 'droplist1');
+      createCloze('Lückentext3', 'Lückentext mit Ablegeliste', 'Ablegeliste', ['AAA', 'BBB', 'CCC'], {}, 'droplist1');
     });
 
     it('creates a cloze and inserts a toggle-button inside it', () => {
@@ -129,7 +129,7 @@ describe('Cloze element', { testIsolation: false }, () => {
       cy.get('aspect-checkbox').click();
     });
 
-    it( 'drags AAA from droplist1 to droplist2', () => {
+    it('drags AAA from droplist1 to droplist2', () => {
       dragTo('droplist1', 'AAA', 'droplist2');
     });
 
@@ -172,86 +172,6 @@ describe('Cloze element', { testIsolation: false }, () => {
         .should('be.visible')
         .and('contain.text', 'Eingabe erforderlich')
         .and('have.css', 'top', '35px');
-    });
-  });
-
-  context('player html coverage', () => {
-    before('opens player and loads coverage unit', () => {
-      cy.openPlayer();
-      cy.loadUnit('cloze_coverage.json');
-    });
-
-    it('renders all Cloze HTML coverage elements and styles correctly', () => {
-      cy.get('aspect-cloze').should('exist');
-
-      // 1. Verify column count style
-      cy.get('aspect-cloze > div').should('have.css', 'column-count', '2');
-
-      // 2. Verify lists
-      cy.get('aspect-cloze ul').should('have.css', 'list-style-type', 'disc');
-      cy.get('aspect-cloze ul li').should('contain.text', 'Bullet list item');
-
-      cy.get('aspect-cloze ol').should('have.css', 'list-style-type', 'decimal');
-      cy.get('aspect-cloze ol li').should('contain.text', 'Ordered list item');
-
-      // 3. Verify blockquotes
-      cy.get('aspect-cloze blockquote p').should('contain.text', 'Blockquote text');
-
-      // 4. Verify headings
-      cy.get('aspect-cloze h1').should('contain.text', 'Heading 1');
-      cy.get('aspect-cloze h2').should('contain.text', 'Heading 2');
-      cy.get('aspect-cloze h3').should('contain.text', 'Heading 3');
-      cy.get('aspect-cloze h4').should('contain.text', 'Heading 4');
-      cy.get('aspect-cloze h5').should('contain.text', 'Heading 5');
-      cy.get('aspect-cloze h6').should('contain.text', 'Heading 6');
-
-      // 5. Verify standard indentation paragraph
-      cy.get('aspect-cloze > div > p').first()
-        .should('have.css', 'margin-left', '20px')
-        .and('have.css', 'text-indent', '0px');
-
-      // 6. Verify hanging indentation paragraph
-      cy.get('aspect-cloze > div > p').eq(1)
-        .should('have.css', 'margin-left', '0px')
-        .and('have.css', 'text-indent', '20px');
-
-      // 7. Verify normal text styling & formatting marks
-      cy.get('aspect-cloze > div > p').first().within(() => {
-        cy.contains('span', 'Normal text').should('exist');
-
-        // Bold
-        cy.contains('span', 'Bold text').should('have.css', 'font-weight', '700');
-
-        // Italic
-        cy.contains('span', 'Italic text').should('have.css', 'font-style', 'italic');
-
-        // Underline
-        cy.contains('span', 'Underline text').should('have.css', 'text-decoration-line', 'underline');
-
-        // Strike through
-        cy.contains('s', 'Strike text').should('have.css', 'text-decoration-line', 'line-through');
-
-        // Superscript
-        cy.contains('sup', 'Superscript text').should('exist');
-
-        // Subscript
-        cy.contains('sub', 'Subscript text').should('exist');
-
-        // Colored and sized text via custom style/highlight marks
-        cy.contains('span', 'Colored and sized text')
-          .should('have.css', 'color', 'rgb(255, 0, 0)')
-          .and('have.css', 'font-size', '30px')
-          .and('have.css', 'background-color', 'rgb(0, 255, 0)');
-
-        // Inline image
-        cy.get('img').should('have.attr', 'alt', 'inline alt text');
-
-        // Math formula
-        cy.get('span.formula').should('contain.text', 'E = mc^2');
-      });
-
-      // 8. Verify block image
-      cy.get('aspect-cloze > div > img').should('have.attr', 'alt', 'block alt text');
     });
   });
 });

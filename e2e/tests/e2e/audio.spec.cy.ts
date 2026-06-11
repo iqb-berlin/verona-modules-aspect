@@ -1,12 +1,7 @@
 import {
-  addNewPage, clickButtonDialog,
+  addMediaElement,
+  addNewPage, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField,
 } from '../util';
-import {addAudioElement, editElementConfigDialog, setDialogCheckbox, setDialogField} from "./helpers/audio-util";
-
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Test suite
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe('Audio element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -16,7 +11,7 @@ describe('Audio element', { testIsolation: false }, () => {
 
     // ── Page 1: audio with default player options ─────────────────────────
     it('creates an audio element with default player options (Page 1)', () => {
-      addAudioElement('Normales Audio','bird-sound.mp3','audio_default');
+      addMediaElement('Audio', 'Normales Audio','bird-sound.mp3','audio_default');
     });
 
     it('shows the uploaded filename in the properties panel (Page 1)', () => {
@@ -28,7 +23,7 @@ describe('Audio element', { testIsolation: false }, () => {
     // ── Page 2: audio with pause control enabled ──────────────────────────
     it('creates an audio element with pause control enabled (Page 2)', () => {
       addNewPage();
-      addAudioElement('Audio mit Pause','bird-sound.mp3','audio_pause');
+      addMediaElement('Audio', 'Audio mit Pause','bird-sound.mp3','audio_pause');
       editElementConfigDialog();
       setDialogCheckbox('Pausieren erlauben', true);
       clickButtonDialog('Speichern');
@@ -37,12 +32,24 @@ describe('Audio element', { testIsolation: false }, () => {
     // ── Page 3: audio with maxRuns = 2 and remaining-runs counter ─────────
     it('creates an audio element with maxRuns = 2 and visible run counter (Page 3)', () => {
       addNewPage();
-      addAudioElement('Audio mit 2 Mal Durchläufe', 'bird-sound.mp3','audio_runs');
+      addMediaElement('Audio', 'Audio mit 2 Mal Durchläufe', 'bird-sound.mp3','audio_runs');
       editElementConfigDialog();
       cy.get('mat-dialog-container').contains('.mat-mdc-tab', 'Verhalten').click();
       cy.wait(500); // Wait for tab animation to finish
       setDialogField('Maximale Anzahl der Durchläufe', 2);
       setDialogCheckbox('Verbleibende Durchläufe anzeigen', true);
+      clickButtonDialog('Speichern');
+      cy.clickOutside();
+    });
+
+    // ── Page 4: audio with progress bar, volume control, and mute control disabled ──
+    it('creates an audio element with disabled controls (Page 4)', () => {
+      addNewPage();
+      addMediaElement('Audio', 'Audio ohne Kontrollen', 'bird-sound.mp3','audio_no_controls');
+      editElementConfigDialog();
+      setDialogCheckbox('Fortschrittsbalken anzeigen', false);
+      setDialogCheckbox('Lautstärkeregelung anzeigen', false);
+      setDialogCheckbox('Stummschaltung anzeigen', false);
       clickButtonDialog('Speichern');
       cy.clickOutside();
     });
@@ -92,9 +99,6 @@ describe('Audio element', { testIsolation: false }, () => {
         .find('aspect-media-player-control-bar button.control-button')
         .first()
         .click({ force: true });
-
-
-
     });
 
     it('plays the audio until it finishes (Page 2)', () => {
@@ -157,6 +161,29 @@ describe('Audio element', { testIsolation: false }, () => {
         .find('aspect-media-player-control-bar button.control-button')
         .first()
         .should('be.disabled');
+    });
+
+    // ── Page 4 tests ──────────────────────────────────────────────────────
+    it('verifies disabled control elements (Page 4)', () => {
+      cy.goToPlayerPage(4);
+      // Wait for page animation/switching
+      cy.wait(500);
+      cy.get('aspect-audio:visible').should('exist');
+
+      // Progress bar should not exist
+      cy.get('aspect-audio:visible')
+        .find('mat-slider')
+        .should('not.exist');
+
+      // Volume/mute icons/buttons should not exist
+      cy.get('aspect-audio:visible')
+        .find('mat-icon')
+        .contains('volume_up')
+        .should('not.exist');
+      cy.get('aspect-audio:visible')
+        .find('mat-icon')
+        .contains('volume_off')
+        .should('not.exist');
     });
   });
 });

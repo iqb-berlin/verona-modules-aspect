@@ -72,6 +72,29 @@ Cypress.Commands.add('loadUnit', (filename: string) => {
   });
 });
 
+Cypress.Commands.add('loadUnitWithPrintMode', (filename: string, printMode: 'off' | 'on' | 'on-with-ids') => {
+  cy.fixture(filename).then(unit => {
+    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
+    cy.window().then(window => {
+      const postMessage = {
+        type: 'vopStartCommand',
+        unitDefinition: JSON.stringify(unit),
+        playerConfig: { printMode }
+      };
+      window.postMessage(postMessage, '*');
+      return Cypress.Promise.delay(150).then(() => {
+        window.postMessage(postMessage, '*');
+      });
+    });
+    cy.get('body', { timeout: 10000 }).then($body => {
+      const errorDialog = $body.find('mat-dialog-container');
+      if (errorDialog.length > 0) {
+        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
+      }
+    });
+  });
+});
+
 Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json') => {
   cy.get('body').type('{esc}', { force: true });
   cy.get('body').then($body => {
@@ -82,7 +105,7 @@ Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json'
   cy.contains('Unit speichern').click({ force: true });
   cy.get('a[download]')
     .should('have.length.at.least', 1)
-    .first()
+    .last()
     .invoke('prop', 'href')
     .then((url: string) => cy.window().then(win => win.fetch(url).then(response => response.text())))
     .then(content => cy.task('writeTextFile', { filepath, content }, { log: false }));
@@ -119,7 +142,9 @@ Cypress.Commands.add('stubFileInput', () => {
       if (tagName.toLowerCase() === 'input') {
         const originalClick = el.click.bind(el);
         el.click = () => {
-          win.document.body.appendChild(el);
+          if (el.type === 'file') {
+            win.document.body.appendChild(el);
+          }
           originalClick();
         };
       }
@@ -127,3 +152,27 @@ Cypress.Commands.add('stubFileInput', () => {
     });
   });
 });
+
+Cypress.Commands.add('loadUnitWithOptions', (filename: string, playerConfig: any) => {
+  cy.fixture(filename).then(unit => {
+    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
+    cy.window().then(window => {
+      const postMessage = {
+        type: 'vopStartCommand',
+        unitDefinition: JSON.stringify(unit),
+        playerConfig
+      };
+      window.postMessage(postMessage, '*');
+      return Cypress.Promise.delay(150).then(() => {
+        window.postMessage(postMessage, '*');
+      });
+    });
+    cy.get('body', { timeout: 10000 }).then($body => {
+      const errorDialog = $body.find('mat-dialog-container');
+      if (errorDialog.length > 0) {
+        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
+      }
+    });
+  });
+});
+

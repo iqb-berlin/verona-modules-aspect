@@ -1,5 +1,5 @@
 import {
-  addElement, addTextElement, selectFromDropdown, setCheckbox
+  addElement, addTextElement, selectFromDropdown, setCheckbox, addOption
 } from '../../util';
 
 /* Also adds text element as label before the droplist */
@@ -10,7 +10,7 @@ export function addList(title: string, options: string[] = [], settings?: Record
 }
 
 export function setConfigDroplist(options: string[] = [], settings?: Record<string, boolean>) {
-  options.forEach(option => addOption(option));
+  options.forEach(option => addOption(option, 'Vorbelegung'));
   if (settings?.highlightReceivingDropList) setCheckbox('Potentielle Ablagen hervorheben');
   if (settings?.sortList) setCheckbox('Sortierliste');
   if (settings?.onlyOneItem) setCheckbox('Nur ein Element');
@@ -21,13 +21,7 @@ export function setConfigDroplist(options: string[] = [], settings?: Record<stri
   if (settings?.showNumbering) setCheckbox('Nummerierung anzeigen');
   if (settings?.startNumberingAtZero) setCheckbox('Nummerierung bei 0 beginnen');
 }
-export function addOption(optionName: string): void {
-  cy.contains('fieldset', 'Vorbelegung')
-    .contains('mat-form-field', 'Neue Option')
-    .find('textarea')
-    .clear()
-    .type(`${optionName}{enter}`);
-}
+
 
 export function moveToColumn(column: string): void {
   cy.contains('mat-icon', 'format_shapes').click();

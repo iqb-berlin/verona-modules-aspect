@@ -17,6 +17,31 @@ describe('Likert element', { testIsolation: false }, () => {
         .type('Beschreibung sekundär von Optionentabelle1', { force: true });
     });
 
+    it('edits a likert row via dialog', () => {
+      cy.get('aspect-editor-dynamic-overlay').contains('Optionentabelle1').click({ force: true });
+      cy.get('.option-draggable').contains('row 1')
+        .closest('.option-draggable')
+        .find('mat-icon').contains('build')
+        .click();
+      cy.get('aspect-likert-row-edit-dialog').should('exist');
+      
+      // Clear editor and type row label
+      cy.get('aspect-likert-row-edit-dialog .ProseMirror').first()
+        .clear()
+        .type('Modified row 1');
+      
+      // Change ID/alias
+      cy.get('aspect-likert-row-edit-dialog').contains('mat-form-field', 'ID').find('input').clear().type('modified_row_1');
+      
+      // Change Vorbelegung (preset) to option B (index 1)
+      cy.get('aspect-likert-row-edit-dialog').contains('mat-form-field', 'Vorbelegung').click();
+      cy.get('.cdk-overlay-container').contains('mat-option', 'option B').click();
+      
+      // Save changes
+      cy.get('aspect-likert-row-edit-dialog').contains('button', 'Speichern').click();
+      cy.get('aspect-likert-row-edit-dialog').should('not.exist');
+    });
+
     after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/likert.json');
     });
@@ -26,6 +51,13 @@ describe('Likert element', { testIsolation: false }, () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
       cy.loadUnit('../downloads/likert.json');
+    });
+
+    it('verifies modified row label and preset', () => {
+      // Row 1 text should be Modified row 1
+      cy.get('aspect-likert').first().should('contain', 'Modified row 1');
+      // Second option (index 1) should be checked by default
+      cy.get('aspect-likert').first().find('mat-radio-button').eq(1).should('have.class', 'mat-mdc-radio-checked');
     });
 
     it('selects option for each row', () => {

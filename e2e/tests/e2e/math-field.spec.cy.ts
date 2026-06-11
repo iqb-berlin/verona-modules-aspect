@@ -97,5 +97,13 @@ describe('Math-field element', { testIsolation: false }, () => {
         cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'v');
       });
     });
+
+    it('checks that focusing and blurring the math field toggles the virtual math keyboard service', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').within(() => {
+        cy.get('math-field').shadow().find('.ML__content').click();
+      });
+      cy.get('.math-keyboard-container').should('exist');
+      cy.clickOutside();
+    });
   });
 });

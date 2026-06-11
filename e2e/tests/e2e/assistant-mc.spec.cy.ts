@@ -1,7 +1,11 @@
 import {
-  clickButtonDialog, clickTabAssistant
+  clickButtonDialog
 } from '../util';
-import {addGenericOption} from "./helpers/assistant-util";
+import {
+  openAssistant,
+  typeInRichTextEditor,
+  addGenericOption
+} from "./helpers/assistant-util";
 
 describe('MC assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -11,12 +15,10 @@ describe('MC assistant', { testIsolation: false }, () => {
 
     // ── Page 1: Text MC and Text MC with Begründung ───────────────────────────────────
     it('creates a text MC (Page 1)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'MC').click();
+      openAssistant('MC');
       cy.get('mat-dialog-container').contains('button', 'Text').click();
 
-      cy.get('mat-dialog-container').find('.input1 .ProseMirror').first()
-        .click().type(`{selectall}{backspace}Was ist die Antwort?`);
+      typeInRichTextEditor('Was ist die Antwort?');
 
       addGenericOption('Option A','Neue Option');
       addGenericOption('Option B','Neue Option');
@@ -26,12 +28,10 @@ describe('MC assistant', { testIsolation: false }, () => {
     });
 
     it('creates a text MC with reasoning (Page 1)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'MC').click();
+      openAssistant('MC');
       cy.get('mat-dialog-container').contains('button', 'Text').click();
 
-      cy.get('mat-dialog-container').find('.input1 .ProseMirror').first()
-        .click().type(`{selectall}{backspace}Warum ist das so?`);
+      typeInRichTextEditor('Warum ist das so?');
 
       addGenericOption('Darum', 'Neue Option');
       addGenericOption('Deswegen', 'Neue Option');
@@ -41,21 +41,21 @@ describe('MC assistant', { testIsolation: false }, () => {
       cy.contains('mat-checkbox', 'Begründungsfeld anfügen').find('input').check({ force: true });
       cy.contains('mat-checkbox', 'Begründungsfeld anfügen').find('input').should('be.checked');
 
-      cy.get('aspect-rich-text-editor').eq(1).click().type('{selectall}{backspace}MEINE BEGRUENDUNG');
+      typeInRichTextEditor('MEINE BEGRUENDUNG', 1);
 
       clickButtonDialog('Bestätigen');
     });
 
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/mc.json');
+      cy.saveUnit('e2e/downloads/assistant-mc.json');
     });
   });
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/mc.json');
+      cy.loadUnit('../downloads/assistant-mc.json');
     });
 
     // ── Page 1: Text MC and Text MC with Begründung ───────────────────────────────────

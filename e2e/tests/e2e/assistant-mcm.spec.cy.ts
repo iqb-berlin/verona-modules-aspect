@@ -1,8 +1,12 @@
 import {
-  clickButtonDialog, clickTabAssistant
+  clickButtonDialog
 } from '../util';
 import { selectRadioButtonWithVerification } from './helpers/likert-util';
-import {addGenericOption} from "./helpers/assistant-util";
+import {
+  openAssistant,
+  typeInRichTextEditor,
+  addGenericOption
+} from "./helpers/assistant-util";
 
 describe('MCM assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -11,13 +15,10 @@ describe('MCM assistant', { testIsolation: false }, () => {
     });
 
     it('creates a Multiple Choice Matrix (Page 1)', () => {
-      clickTabAssistant();
-      cy.contains('button', 'CMC').click();
+      openAssistant('CMC');
 
       // Set Question
-      cy.get('mat-dialog-container').find('aspect-rich-text-editor').first()
-        .find('.ProseMirror')
-        .click().type(`{selectall}{backspace}MCM Question Content`);
+      typeInRichTextEditor('MCM Question Content');
 
       // Set Sentence Beginning
       cy.contains('h3', 'Satzanfang').next('mat-form-field').find('textarea').type('Start of sentence{enter}');
@@ -33,14 +34,14 @@ describe('MCM assistant', { testIsolation: false }, () => {
     });
 
     after('saves an unit definition', () => {
-      cy.saveUnit('e2e/downloads/mcm.json');
+      cy.saveUnit('e2e/downloads/assistant-mcm.json');
     });
   });
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
       cy.openPlayer();
-      cy.loadUnit('../downloads/mcm.json');
+      cy.loadUnit('../downloads/assistant-mcm.json');
     });
 
     it('verifies the MCM rendering (Page 1)', () => {

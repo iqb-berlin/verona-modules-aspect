@@ -1,4 +1,4 @@
-import { selectFromDropdown, setCheckbox } from '../../util';
+import {addElement, selectFromDropdown, setCheckbox, setPreferencesElement} from '../../util';
 
 export function setPreferences({
   minLength, maxLength, defaultText, settings, appearance
@@ -57,8 +57,9 @@ export function setInputAssistance(keyboard:string = '', position: string = 'sch
       .find('input')
       .type(ownCharacters);
   }
+
   if (options?.disableOtherCharacters) setCheckbox('Bearbeitung anderer Zeichen verhindern');
-  if (options?.addArrowButtons) setCheckbox('Pfeitasten hinzufügen');
+  if (options?.addArrowButtons) setCheckbox('Pfeiltasten hinzufügen');
   if (options?.help) setCheckbox('Tastatur mit Eingabehilfe erweitern');
 }
 
@@ -76,3 +77,9 @@ export function validateTextField(fieldName: string, input: string, error?: stri
       .find('mat-error').should('not.exist');
   }
 }
+
+export function setKeyStyle(style: 'rund' | 'eckig'): void {
+  selectFromDropdown('Tastaturstil', style);
+}
+
+

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
-import { ResponseValueType } from '@iqb/responses';
+import { ResponseStatusType, ResponseValueType } from '@iqb/responses';
 import { LogService } from 'player/modules/logging/services/log.service';
 
 @Injectable({
@@ -9,15 +9,16 @@ import { LogService } from 'player/modules/logging/services/log.service';
 export class GeometryVariableStateService extends ElementCodeService {
   registerElementCode(elementId: string,
                       elementAlias: string,
-                      elementValue: ResponseValueType): void {
-    this.addElementCode(elementId, elementAlias, elementValue);
+                      elementValue: ResponseValueType,
+                      status: ResponseStatusType = 'NOT_REACHED'): void {
+    this.addElementCode(elementId, elementAlias, elementValue, status);
   }
 
-  private addElementCode(id: string, alias: string, value: ResponseValueType): void {
+  private addElementCode(id: string, alias: string, value: ResponseValueType, status: ResponseStatusType): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
       this.addInitialElementCode({
-        id, alias, value, status: 'UNSET'
+        id, alias, value, status
       });
     }
   }

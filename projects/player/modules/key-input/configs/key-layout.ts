@@ -105,7 +105,8 @@ export class KeyLayout {
             ['7', '8', '9'],
             ['4', '5', '6'],
             ['1', '2', '3'],
-            [',', '0', 'Backspace']
+            ['-', '0', ','],
+            ['Backspace']
           ],
           shift: [[]],
           additional: [[]]

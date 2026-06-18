@@ -36,3 +36,15 @@ Rationale:
 - reduces boilerplate in test files
 - avoids dependency on deprecated animation modules
 - simplifies test setup
+
+## 4) Avoid parentheses around single arguments in arrow functions
+
+When writing an arrow function with exactly one argument, omit the parentheses around the argument name to comply with ESLint's `arrow-parens` rule.
+
+- Avoid: `(elementCode) => { ... }`
+- Prefer: `elementCode => { ... }`
+
+Rationale:
+- Enforces consistency in arrow function style across all projects.
+- Prevents build/linter failures due to styling rule violations.
+

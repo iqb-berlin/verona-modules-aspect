@@ -133,7 +133,8 @@ export function modifyText(
   // Double-click the text element to open the rich-text editor dialog
   cy.get('aspect-text').last().dblclick({ force: true });
   // Wait for the contenteditable to appear inside the dialog
-  cy.get('[contenteditable="true"]').should('exist');
+  cy.get('[contenteditable="true"]').should('be.visible');
+  cy.wait(500);
 
   // Select the paragraph by simulating a mouse drag across it.
   // TipTap requires real pointer events to update its internal selection state;

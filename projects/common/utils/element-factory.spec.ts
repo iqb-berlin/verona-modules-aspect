@@ -28,4 +28,31 @@ describe('ElementFactory', () => {
     expect(element.text).toBe('Custom Text');
     expect(element.highlightableOrange).toBe(false); // still normalized
   });
+
+  it('should restore and not overwrite position/dimensions on DropList, ' +
+    'Frame and TextField elements even with partial blueprints', () => {
+    const dropList = ElementFactory.createElement({
+      type: 'drop-list',
+      position: { gridRow: 4 },
+      dimensions: { width: 450 }
+    } as unknown as UIElementProperties);
+    expect(dropList.position?.gridRow).toBe(4);
+    expect(dropList.dimensions?.width).toBe(450);
+
+    const frame = ElementFactory.createElement({
+      type: 'frame',
+      position: { gridRow: 5 },
+      dimensions: { width: 350 }
+    } as unknown as UIElementProperties);
+    expect(frame.position?.gridRow).toBe(5);
+    expect(frame.dimensions?.width).toBe(350);
+
+    const textField = ElementFactory.createElement({
+      type: 'text-field',
+      position: { gridRow: 6 },
+      dimensions: { width: 250 }
+    } as unknown as UIElementProperties);
+    expect(textField.position?.gridRow).toBe(6);
+    expect(textField.dimensions?.width).toBe(250);
+  });
 });

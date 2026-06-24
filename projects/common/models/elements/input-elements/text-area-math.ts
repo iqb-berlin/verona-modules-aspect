@@ -90,6 +90,5 @@ export interface TextAreaMath {
 
 function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): blueprint is TextAreaMathProperties {
   if (!blueprint) return false;
-  return blueprint.rowCount !== undefined &&
-    blueprint.type === 'text-area-math';
+  return blueprint.type === 'text-area-math';
 }

@@ -2,13 +2,13 @@
 import { VariableInfo } from '@iqb/responses';
 import {
   DimensionProperties, PlayerProperties, PositionProperties,
-  PropertyGroupGenerators, PropertyGroupValidators, Stylings
+  PropertyGroupGenerators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
   AbstractIDService,
   InputAssistancePreset, InputElementProperties, InputElementValue,
-  KeyInputElementProperties, PlayerElementBlueprint, TextInputElementProperties,
+  PlayerElementBlueprint, TextInputElementProperties,
   UIElementProperties, UIElementType, UIElementValue
 } from 'common/interfaces';
 import { IDError, InstantiationEror } from 'common/errors';
@@ -22,9 +22,7 @@ function getResetRevision(idService?: AbstractIDService): number | null {
 }
 
 export function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
-  return blueprint.isRelevantForPresentationComplete !== undefined &&
-    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
-    PropertyGroupValidators.isValidPosition(blueprint.position);
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class UIElement implements UIElementProperties {
@@ -168,12 +166,7 @@ export abstract class UIElement implements UIElementProperties {
 
 export function isInputElementProperties(blueprint: Partial<InputElementProperties>)
   : blueprint is InputElementProperties {
-  if (!blueprint) return false;
-  return blueprint.value !== undefined &&
-    blueprint.required !== undefined &&
-    blueprint.requiredWarnMessage !== undefined &&
-    blueprint.readOnly !== undefined &&
-    isUIElementProperties(blueprint);
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class InputElement extends UIElement implements InputElementProperties {
@@ -213,24 +206,9 @@ export function isInputElement(el: UIElement): el is InputElement {
     el.readOnly !== undefined;
 }
 
-function isValidKeyInputProperties(blueprint: Partial<KeyInputElementProperties>): boolean {
-  return blueprint.inputAssistancePreset !== undefined &&
-    blueprint.inputAssistancePosition !== undefined &&
-    blueprint.inputAssistanceFloatingStartPosition !== undefined &&
-    blueprint.showSoftwareKeyboard !== undefined &&
-    blueprint.addInputAssistanceToKeyboard !== undefined &&
-    blueprint.hideNativeKeyboard !== undefined &&
-    blueprint.hasArrowKeys !== undefined &&
-    blueprint.keyStyle !== undefined;
-}
-
 function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>):
   blueprint is TextInputElementProperties {
-  return blueprint.restrictedToInputAssistanceChars !== undefined &&
-    blueprint.inputAssistanceCustomKeys !== undefined &&
-    blueprint.inputAssistanceCustomStyle !== undefined &&
-    blueprint.hasBackspaceKey !== undefined &&
-    isValidKeyInputProperties(blueprint);
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class TextInputElement extends InputElement implements TextInputElementProperties {

@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -29,13 +29,13 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   constructor(element?: Partial<WidgetPeriodicTableProperties>, idService?: AbstractIDService) {
     super({ type: 'widget-periodic-table', ...element }, idService);
     if (isWidgetPeriodicTableProperties(element)) {
-      this.styling = { ...element.styling };
-      this.showInfoOrder = element.showInfoOrder;
-      this.showInfoENeg = element.showInfoENeg;
-      this.showInfoAMass = element.showInfoAMass;
-      this.closeOnSelection = element.closeOnSelection;
-      this.maxNumberOfSelections = element.maxNumberOfSelections;
-      this.state = element.state;
+      if (element.styling !== undefined) this.styling = { ...element.styling };
+      if (element.showInfoOrder !== undefined) this.showInfoOrder = element.showInfoOrder;
+      if (element.showInfoENeg !== undefined) this.showInfoENeg = element.showInfoENeg;
+      if (element.showInfoAMass !== undefined) this.showInfoAMass = element.showInfoAMass;
+      if (element.closeOnSelection !== undefined) this.closeOnSelection = element.closeOnSelection;
+      if (element.maxNumberOfSelections !== undefined) this.maxNumberOfSelections = element.maxNumberOfSelections;
+      if (element.state !== undefined) this.state = element.state;
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at WidgetPeriodicTable instantiation', element);
     }
@@ -55,12 +55,5 @@ export interface WidgetPeriodicTableProperties extends UIElementProperties {
 function isWidgetPeriodicTableProperties(
   blueprint?: Partial<WidgetPeriodicTableProperties>): blueprint is WidgetPeriodicTableProperties {
   if (!blueprint) return false;
-  return blueprint.showInfoOrder !== undefined &&
-    blueprint.showInfoENeg !== undefined &&
-    blueprint.showInfoAMass !== undefined &&
-    blueprint.closeOnSelection !== undefined &&
-    blueprint.maxNumberOfSelections !== undefined &&
-    blueprint.state !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
+  return blueprint.type === 'widget-periodic-table';
 }

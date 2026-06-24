@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -27,9 +27,9 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
   constructor(element?: Partial<WidgetMoleculeEditorProperties>, idService?: AbstractIDService) {
     super({ type: 'widget-molecule-editor', ...element }, idService);
     if (isWidgetMoleculeEditorProperties(element)) {
-      this.bondingType = element.bondingType;
-      this.styling = { ...element.styling };
-      this.state = element.state;
+      if (element.bondingType !== undefined) this.bondingType = element.bondingType;
+      if (element.styling !== undefined) this.styling = { ...element.styling };
+      if (element.state !== undefined) this.state = element.state;
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at WidgetMoleculeEditor instantiation', element);
     }
@@ -45,8 +45,5 @@ export interface WidgetMoleculeEditorProperties extends UIElementProperties {
 export function isWidgetMoleculeEditorProperties(
   blueprint?: Partial<WidgetMoleculeEditorProperties>): blueprint is WidgetMoleculeEditorProperties {
   if (!blueprint) return false;
-  return blueprint.bondingType !== undefined &&
-    blueprint.state !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
+  return blueprint.type === 'widget-molecule-editor';
 }

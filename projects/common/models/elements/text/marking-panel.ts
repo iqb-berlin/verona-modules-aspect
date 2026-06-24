@@ -24,7 +24,7 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
       this.highlightableOrange = element.highlightableOrange;
       this.highlightableTurquoise = element.highlightableTurquoise;
       this.highlightableYellow = element.highlightableYellow;
-      if (element.position) this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at MarkingPanel instantiation', element);
     }
@@ -33,9 +33,7 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
 
 function isMarkingPanelProperties(blueprint?: Partial<MarkingPanelProperties>): blueprint is MarkingPanelProperties {
   if (!blueprint) return false;
-  return blueprint.highlightableOrange !== undefined &&
-    blueprint.highlightableTurquoise !== undefined &&
-    blueprint.highlightableYellow !== undefined;
+  return blueprint.type === 'marking-panel';
 }
 
 export interface MarkingPanelProperties extends UIElementProperties {

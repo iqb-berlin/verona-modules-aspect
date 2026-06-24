@@ -2,7 +2,7 @@ import {
   UIElement
 } from 'common/models/elements/element';
 import {
-  BorderStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BorderStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
@@ -31,7 +31,8 @@ export class FrameElement extends UIElement implements FrameProperties {
       this.hasBorderBottom = element.hasBorderBottom;
       this.hasBorderLeft = element.hasBorderLeft;
       this.hasBorderRight = element.hasBorderRight;
-      this.position = { ...element.position };
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Frame instantiation', element);
@@ -50,11 +51,5 @@ export interface FrameProperties extends UIElementProperties {
 
 function isFrameProperties(blueprint?: Partial<FrameProperties>): blueprint is FrameProperties {
   if (!blueprint) return false;
-  return blueprint.hasBorderTop !== undefined &&
-    blueprint.hasBorderBottom !== undefined &&
-    blueprint.hasBorderLeft !== undefined &&
-    blueprint.hasBorderRight !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBorderStyles(blueprint.styling) &&
-    blueprint.styling?.backgroundColor !== undefined;
+  return blueprint.type === 'frame';
 }

@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -73,6 +73,8 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.startNumberingAtZero = element.startNumberingAtZero;
       this.highlightReceivingDropList = element.highlightReceivingDropList;
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
       this.styling = { ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at DropList instantiation', element);
@@ -184,22 +186,5 @@ export interface DropListProperties extends InputElementProperties {
 
 function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprint is DropListProperties {
   if (!blueprint) return false;
-  return blueprint.value !== undefined &&
-    blueprint.isSortList !== undefined &&
-    blueprint.onlyOneItem !== undefined &&
-    blueprint.connectedTo !== undefined &&
-    blueprint.copyOnDrop !== undefined &&
-    blueprint.allowReplacement !== undefined &&
-    blueprint.permanentPlaceholders !== undefined &&
-    blueprint.permanentPlaceholdersCC !== undefined &&
-    blueprint.orientation !== undefined &&
-    blueprint.showNumbering !== undefined &&
-    blueprint.startNumberingAtZero !== undefined &&
-    blueprint.highlightReceivingDropList !== undefined &&
-    blueprint.highlightReceivingDropListColor !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.readOnly !== undefined &&
-    blueprint.required !== undefined &&
-    blueprint.requiredWarnMessage !== undefined &&
-    blueprint.styling?.itemBackgroundColor !== undefined;
+  return blueprint.type === 'drop-list';
 }

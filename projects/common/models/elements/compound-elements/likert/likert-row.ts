@@ -1,6 +1,5 @@
 import {
-  InputElement,
-  isUIElementProperties
+  InputElement
 } from 'common/models/elements/element';
 import { environment } from 'common/environment';
 import { VariableInfo, VariableValue } from '@iqb/responses';
@@ -71,9 +70,5 @@ export interface LikertRowProperties extends InputElementProperties {
 
 function isLikertRowProperties(blueprint?: Partial<LikertRowProperties>): blueprint is LikertRowProperties {
   if (!blueprint) return false;
-  return blueprint.rowLabel !== undefined &&
-    blueprint.columnCount !== undefined &&
-    blueprint.firstColumnSizeRatio !== undefined &&
-    blueprint.verticalButtonAlignment !== undefined &&
-    isUIElementProperties(blueprint);
+  return blueprint.type === 'likert-row';
 }

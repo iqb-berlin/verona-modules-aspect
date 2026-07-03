@@ -22,7 +22,7 @@ describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: fa
 
     it('creates a text field with "decimals" keypad (Page 1)', () => {
       addTextField('Ziffern & Komma');
-      setInputAssistance('Ziffern & Komma', 'schwebend');
+      setInputAssistance('Ziffern mit Komma & Minus', 'schwebend');
       setKeyStyle('eckig');
     });
 

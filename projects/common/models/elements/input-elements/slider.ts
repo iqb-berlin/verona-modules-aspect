@@ -35,14 +35,14 @@ export class SliderElement extends InputElement implements SliderProperties {
   constructor(element?: Partial<SliderProperties>, idService?: AbstractIDService) {
     super({ type: 'slider', ...element }, idService);
     if (isSliderProperties(element)) {
-      this.minValue = element.minValue;
-      this.maxValue = element.maxValue;
-      this.showValues = element.showValues;
-      this.barStyle = element.barStyle;
-      this.thumbLabel = element.thumbLabel;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.minValue !== undefined) this.minValue = element.minValue;
+      if (element.maxValue !== undefined) this.maxValue = element.maxValue;
+      if (element.showValues !== undefined) this.showValues = element.showValues;
+      if (element.barStyle !== undefined) this.barStyle = element.barStyle;
+      if (element.thumbLabel !== undefined) this.thumbLabel = element.thumbLabel;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Slider instantiation', element);
     }

@@ -48,34 +48,39 @@ export class DropListElement extends InputElement implements DropListProperties 
   constructor(element?: Partial<DropListProperties>, idService?: AbstractIDService) {
     super({ type: 'drop-list', ...element }, idService);
     if (isDropListProperties(element)) {
-      this.value = element.value.map((value, index) => ({
-        text: value.text,
-        imgSrc: value.imgSrc,
-        imgFileName: value.imgFileName,
-        imgPosition: value.imgPosition,
-        id: value.id,
-        alias: value.alias,
-        originListID: this.id,
-        originListIndex: index,
-        audioSrc: value.audioSrc,
-        audioFileName: value.audioFileName
-      }));
-      this.registerValueIDs();
-      this.isSortList = element.isSortList;
-      this.onlyOneItem = element.onlyOneItem;
-      this.connectedTo = [...element.connectedTo];
-      this.copyOnDrop = element.copyOnDrop;
-      this.allowReplacement = element.allowReplacement;
-      this.permanentPlaceholders = element.permanentPlaceholders;
-      this.permanentPlaceholdersCC = element.permanentPlaceholdersCC;
-      this.orientation = element.orientation;
-      this.showNumbering = element.showNumbering;
-      this.startNumberingAtZero = element.startNumberingAtZero;
-      this.highlightReceivingDropList = element.highlightReceivingDropList;
-      this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.value !== undefined) {
+        this.value = element.value.map((value, index) => ({
+          text: value.text,
+          imgSrc: value.imgSrc,
+          imgFileName: value.imgFileName,
+          imgPosition: value.imgPosition,
+          id: value.id,
+          alias: value.alias,
+          originListID: this.id,
+          originListIndex: index,
+          audioSrc: value.audioSrc,
+          audioFileName: value.audioFileName
+        }));
+        this.registerValueIDs();
+      }
+      if (element.isSortList !== undefined) this.isSortList = element.isSortList;
+      if (element.onlyOneItem !== undefined) this.onlyOneItem = element.onlyOneItem;
+      if (element.connectedTo !== undefined) this.connectedTo = [...element.connectedTo];
+      if (element.copyOnDrop !== undefined) this.copyOnDrop = element.copyOnDrop;
+      if (element.allowReplacement !== undefined) this.allowReplacement = element.allowReplacement;
+      if (element.permanentPlaceholders !== undefined) this.permanentPlaceholders = element.permanentPlaceholders;
+      if (element.permanentPlaceholdersCC !== undefined) this.permanentPlaceholdersCC = element.permanentPlaceholdersCC;
+      if (element.orientation !== undefined) this.orientation = element.orientation;
+      if (element.showNumbering !== undefined) this.showNumbering = element.showNumbering;
+      if (element.startNumberingAtZero !== undefined) this.startNumberingAtZero = element.startNumberingAtZero;
+      if (element.highlightReceivingDropList !== undefined) {
+        this.highlightReceivingDropList = element.highlightReceivingDropList;
+      }
+      if (element.highlightReceivingDropListColor !== undefined) {
+        this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
+      }
+      this.position = { ...this.position, ...element.position };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at DropList instantiation', element);
     }

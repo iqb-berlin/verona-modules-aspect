@@ -38,12 +38,12 @@ export class RadioButtonGroupComplexElement extends InputElement
   constructor(element?: Partial<RadioButtonGroupComplexProperties>, idService?: AbstractIDService) {
     super({ type: 'radio-group-images', ...element }, idService);
     if (isRadioButtonGroupComplexProperties(element)) {
-      this.label = element.label;
-      this.options = [...element.options];
-      this.itemsPerRow = element.itemsPerRow;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.label !== undefined) this.label = element.label;
+      if (element.options !== undefined) this.options = [...element.options];
+      if (element.itemsPerRow !== undefined) this.itemsPerRow = element.itemsPerRow;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at RadioButtonGroupComplex instantiation', element);
     }

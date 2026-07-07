@@ -33,13 +33,13 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   constructor(element?: Partial<RadioButtonGroupProperties>, idService?: AbstractIDService) {
     super({ type: 'radio', ...element }, idService);
     if (isRadioButtonGroupProperties(element)) {
-      this.label = element.label;
-      this.options = [...element.options];
-      this.alignment = element.alignment;
-      this.strikeOtherOptions = element.strikeOtherOptions;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.label !== undefined) this.label = element.label;
+      if (element.options !== undefined) this.options = [...element.options];
+      if (element.alignment !== undefined) this.alignment = element.alignment;
+      if (element.strikeOtherOptions !== undefined) this.strikeOtherOptions = element.strikeOtherOptions;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
     }

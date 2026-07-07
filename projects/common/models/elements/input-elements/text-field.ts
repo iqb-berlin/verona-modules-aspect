@@ -36,17 +36,16 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
     super({ type: 'text-field', ...element }, idService);
     if (isTextFieldProperties(element)) {
       if (element.appearance) this.appearance = element.appearance;
-      this.minLength = element.minLength;
-      this.minLengthWarnMessage = element.minLengthWarnMessage;
-      this.maxLength = element.maxLength;
-      this.maxLengthWarnMessage = element.maxLengthWarnMessage;
-      this.isLimitedToMaxLength = element.isLimitedToMaxLength;
-      this.pattern = element.pattern;
-      this.patternWarnMessage = element.patternWarnMessage;
-      this.clearable = element.clearable;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.minLength !== undefined) this.minLength = element.minLength;
+      if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
+      if (element.maxLength !== undefined) this.maxLength = element.maxLength;
+      if (element.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
+      if (element.isLimitedToMaxLength !== undefined) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
+      if (element.pattern !== undefined) this.pattern = element.pattern;
+      if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
+      if (element.clearable !== undefined) this.clearable = element.clearable;
+      this.position = { ...this.position, ...element.position };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at TextField instantiation', element);
     }

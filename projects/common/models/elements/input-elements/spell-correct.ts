@@ -28,9 +28,9 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   constructor(element?: Partial<SpellCorrectProperties>, idService?: AbstractIDService) {
     super({ type: 'spell-correct', ...element }, idService);
     if (isSpellCorrectProperties(element)) {
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at SpellCorrect instantiation', element);
     }

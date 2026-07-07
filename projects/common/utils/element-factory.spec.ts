@@ -1,6 +1,11 @@
 import { ElementFactory } from 'common/utils/element-factory';
 import { TextElement } from 'common/models/elements/text/text';
 import { CheckboxElement } from 'common/models/elements/input-elements/checkbox';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import { isInputElement } from 'common/models/elements/element';
 import { UIElementProperties } from 'common/interfaces';
 
 describe('ElementFactory', () => {
@@ -54,5 +59,55 @@ describe('ElementFactory', () => {
     } as unknown as UIElementProperties);
     expect(textField.position?.gridRow).toBe(6);
     expect(textField.dimensions?.width).toBe(250);
+  });
+
+  it('should keep element-specific dimension defaults when instantiating from a partial blueprint', () => {
+    const dropList = ElementFactory.createElement({
+      type: 'drop-list',
+      position: { gridRow: 4 }
+    } as unknown as UIElementProperties);
+    // minHeight 57 is a drop-list-specific registry default, not a global one
+    expect(dropList.dimensions?.minHeight).toBe(57);
+    expect(dropList.dimensions?.width).toBe(240);
+  });
+
+  it('should preserve blueprint dimensions on TableElement', () => {
+    const table = ElementFactory.createElement({
+      type: 'table',
+      elements: [],
+      dimensions: { width: 777, height: 333 }
+    } as unknown as UIElementProperties);
+    expect(table.dimensions?.width).toBe(777);
+    expect(table.dimensions?.height).toBe(333);
+  });
+
+  it('should keep common input properties when instantiating from a non-empty partial blueprint', () => {
+    // A non-null partial blueprint passes the simplified type guards, so the constructor body runs
+    // and must not overwrite the base-class defaults (readOnly, required, ...) with undefined.
+    const dropList = new DropListElement({ id: 'dl', alias: 'dl' });
+    expect(dropList.readOnly).toBe(false);
+    expect(dropList.required).toBe(false);
+    expect(isInputElement(dropList)).toBe(true);
+
+    const textFieldSimple = new TextFieldSimpleElement({ id: 'tfs', alias: 'tfs' });
+    expect(textFieldSimple.readOnly).toBe(false);
+    expect(textFieldSimple.keyStyle).toBe('round');
+    expect(isInputElement(textFieldSimple)).toBe(true);
+  });
+
+  it('should keep common input properties on elements whose guard only checks the type', () => {
+    // checkbox has a pure `type === 'checkbox'` guard, so a partial blueprint carrying the type
+    // runs the constructor body; it must not overwrite the base-class defaults with undefined.
+    const checkbox = new CheckboxElement({ type: 'checkbox', id: 'cb', alias: 'cb' });
+    expect(checkbox.readOnly).toBe(false);
+    expect(checkbox.required).toBe(false);
+    expect(typeof checkbox.value).toBe('boolean');
+    expect(checkbox.dimensions?.width).toBeDefined();
+    expect(isInputElement(checkbox)).toBe(true);
+  });
+
+  it('should not throw when instantiating a drop-list from a blueprint that only carries its type', () => {
+    expect(() => ElementFactory.createElement({ type: 'drop-list' } as unknown as UIElementProperties))
+      .not.toThrow();
   });
 });

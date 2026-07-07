@@ -27,13 +27,13 @@ export class FrameElement extends UIElement implements FrameProperties {
   constructor(element?: Partial<FrameProperties>, idService?: AbstractIDService) {
     super({ type: 'frame', ...element }, idService);
     if (isFrameProperties(element)) {
-      this.hasBorderTop = element.hasBorderTop;
-      this.hasBorderBottom = element.hasBorderBottom;
-      this.hasBorderLeft = element.hasBorderLeft;
-      this.hasBorderRight = element.hasBorderRight;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.hasBorderTop !== undefined) this.hasBorderTop = element.hasBorderTop;
+      if (element.hasBorderBottom !== undefined) this.hasBorderBottom = element.hasBorderBottom;
+      if (element.hasBorderLeft !== undefined) this.hasBorderLeft = element.hasBorderLeft;
+      if (element.hasBorderRight !== undefined) this.hasBorderRight = element.hasBorderRight;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Frame instantiation', element);
     }

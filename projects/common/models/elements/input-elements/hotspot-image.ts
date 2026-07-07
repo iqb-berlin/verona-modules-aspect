@@ -39,11 +39,11 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
   constructor(element?: Partial<HotspotImageProperties>, idService?: AbstractIDService) {
     super({ type: 'hotspot-image', ...element }, idService);
     if (isHotspotImageProperties(element)) {
-      this.value = element.value;
-      this.src = element.src;
-      this.fileName = element.fileName;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
+      if (element.value !== undefined) this.value = element.value;
+      if (element.src !== undefined) this.src = element.src;
+      if (element.fileName !== undefined) this.fileName = element.fileName;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at HotspotImage instantiation', element);
     }

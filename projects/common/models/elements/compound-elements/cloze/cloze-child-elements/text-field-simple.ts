@@ -39,17 +39,17 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   constructor(element?: Partial<TextFieldSimpleProperties>, idService?: AbstractIDService) {
     super({ type: 'text-field-simple', ...element }, idService);
     if (isTextFieldSimpleProperties(element)) {
-      this.minLength = element.minLength;
-      this.minLengthWarnMessage = element.minLengthWarnMessage;
-      this.maxLength = element.maxLength;
-      this.maxLengthWarnMessage = element.maxLengthWarnMessage;
-      this.isLimitedToMaxLength = element.isLimitedToMaxLength;
-      this.pattern = element.pattern;
-      this.patternWarnMessage = element.patternWarnMessage;
-      this.clearable = element.clearable;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.minLength !== undefined) this.minLength = element.minLength;
+      if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
+      if (element.maxLength !== undefined) this.maxLength = element.maxLength;
+      if (element.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
+      if (element.isLimitedToMaxLength !== undefined) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
+      if (element.pattern !== undefined) this.pattern = element.pattern;
+      if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
+      if (element.clearable !== undefined) this.clearable = element.clearable;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at TextFieldSimple instantiation', element);
     }

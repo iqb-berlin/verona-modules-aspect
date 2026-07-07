@@ -22,10 +22,10 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
   constructor(element?: Partial<LikertRowProperties>, idService?: AbstractIDService) {
     super({ type: 'likert-row', ...element }, idService);
     if (isLikertRowProperties(element)) {
-      this.rowLabel = element.rowLabel;
-      this.columnCount = element.columnCount;
-      this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-      this.verticalButtonAlignment = element.verticalButtonAlignment;
+      if (element.rowLabel !== undefined) this.rowLabel = element.rowLabel;
+      if (element.columnCount !== undefined) this.columnCount = element.columnCount;
+      if (element.firstColumnSizeRatio !== undefined) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+      if (element.verticalButtonAlignment !== undefined) this.verticalButtonAlignment = element.verticalButtonAlignment;
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Likert-Row instantiation', element);
     }

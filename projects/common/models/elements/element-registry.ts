@@ -352,7 +352,7 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     gridRowSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }],
     elements: [],
     tableEdgesEnabled: false,
-    marginBottom: 30,
+    marginBottom: { value: 30, unit: 'px' },
     borderWidth: 1,
     backgroundColor: 'transparent'
   },

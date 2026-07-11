@@ -1,4 +1,4 @@
-import { addElement, setCheckbox } from '../util';
+import { addElement, setCheckbox, switchToPositionTab } from '../util';
 import {
     createTable,
     openTableEditDialog,
@@ -14,6 +14,16 @@ describe('Table element', { testIsolation: false }, () => {
 
         it('creates a default 2x2 table without borders', () => {
             createTable('table-default', 2, 2, false);
+        });
+
+        it('presets the bottom margin of a new table with 30px', () => {
+            // The raw-number registry default used to reach the position group unconverted,
+            // leaving new tables without their bottom margin until the next reload (#1061)
+            switchToPositionTab();
+            cy.contains('aspect-size-input-panel', 'unten').find('input[type="number"]')
+                .should('have.value', '30');
+            // Switch the properties panel back to the model tab for the following tests
+            cy.get('.mat-mdc-tab').contains('mat-icon', 'build').click({ force: true });
         });
 
         it('does not show add/remove buttons on the canvas', () => {

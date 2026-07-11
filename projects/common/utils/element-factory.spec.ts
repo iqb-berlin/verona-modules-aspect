@@ -81,6 +81,16 @@ describe('ElementFactory', () => {
     expect(table.dimensions?.height).toBe(333);
   });
 
+  it('should preset the table bottom margin as a measurement object', () => {
+    // The registry default was a raw number, which the position generator passed through,
+    // so new tables came without the intended 30px bottom margin until the next reload (#1061)
+    const table = ElementFactory.createElement({
+      type: 'table',
+      elements: []
+    } as unknown as UIElementProperties);
+    expect(table.position?.marginBottom).toEqual({ value: 30, unit: 'px' });
+  });
+
   it('should keep common input properties when instantiating from a non-empty partial blueprint', () => {
     // A non-null partial blueprint passes the simplified type guards, so the constructor body runs
     // and must not overwrite the base-class defaults (readOnly, required, ...) with undefined.

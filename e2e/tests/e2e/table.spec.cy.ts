@@ -55,6 +55,22 @@ describe('Table element', { testIsolation: false }, () => {
             saveTableEditDialog();
         });
 
+        it('updates the canvas checkbox display when toggling its preset value', () => {
+            // Select the checkbox child element on the canvas
+            cy.get('aspect-table aspect-checkbox').closest('.wrapper').click();
+
+            cy.get('aspect-element-model-properties-component mat-button-toggle-group')
+                .contains('mat-button-toggle', 'wahr').click();
+            cy.get('aspect-table aspect-checkbox .svg-checkbox-cross')
+                .should('have.attr', 'style').and('match', /opacity: 1/);
+
+            // Reset, so the player tests below start with an unchecked checkbox
+            cy.get('aspect-element-model-properties-component mat-button-toggle-group')
+                .contains('mat-button-toggle', 'falsch').click();
+            cy.get('aspect-table aspect-checkbox .svg-checkbox-cross')
+                .should('have.attr', 'style').and('match', /opacity: 0/);
+        });
+
         after('saves unit definition', () => {
             cy.saveUnit('e2e/downloads/table.json');
         });

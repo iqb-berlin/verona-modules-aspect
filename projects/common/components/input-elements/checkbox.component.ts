@@ -38,7 +38,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            [class.read-only] = "elementModel.readOnly"
            [class.errors]="elementFormControl.errors && elementFormControl.touched"
            (click)="elementFormControl.markAsTouched(); elementFormControl.setValue(!elementFormControl.value)">
-        <svg class="svg-checkbox-cross" [style.opacity]="elementFormControl.value ? 1 : 0" viewBox='0 0 100 100'>
+        <!-- Without parentForm (editor mode) the control is never updated, so mirror the model value -->
+        <svg class="svg-checkbox-cross"
+             [style.opacity]="(parentForm ? elementFormControl.value : elementModel.value) ? 1 : 0"
+             viewBox='0 0 100 100'>
           <path d='M1 0 L0 1 L99 100 L100 99' fill='black' stroke="black" stroke-width="2" />
           <path d='M0 99 L99 0 L100 1 L1 100' fill='black' stroke="black" stroke-width="1" />
         </svg>

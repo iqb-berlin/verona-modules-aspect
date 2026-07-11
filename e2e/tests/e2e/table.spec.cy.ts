@@ -129,6 +129,17 @@ describe('Table element', { testIsolation: false }, () => {
                 .should('have.value', 'Tabelleneintrag');
         });
 
+        it('shows an inset focus ring on the focused table text-field', () => {
+            // The ring must lie inside the cell, otherwise neighboring cells cover it (#1069)
+            cy.get('aspect-table').eq(1)
+                .find('aspect-text-field input')
+                .focus()
+                .should('have.css', 'outline-style', 'solid')
+                .and('have.css', 'outline-offset', '-2px')
+                // indigo-pink theme primary, like the focused mat-form-field
+                .and('have.css', 'outline-color', 'rgb(63, 81, 181)');
+        });
+
         it('second table contains a checkbox and allows checking', () => {
             cy.get('aspect-table').eq(1)
                 .find('aspect-checkbox')

@@ -1,4 +1,4 @@
-import { addElement, setCheckbox } from '../util';
+import { addElement, setCheckbox, switchToPositionTab } from '../util';
 import {
     createTable,
     openTableEditDialog,
@@ -14,6 +14,23 @@ describe('Table element', { testIsolation: false }, () => {
 
         it('creates a default 2x2 table without borders', () => {
             createTable('table-default', 2, 2, false);
+        });
+
+        it('presets the bottom margin of a new table with 30px', () => {
+            // The raw-number registry default used to reach the position group unconverted,
+            // leaving new tables without their bottom margin until the next reload (#1061)
+            switchToPositionTab();
+            cy.contains('aspect-size-input-panel', 'unten').find('input[type="number"]')
+                .should('have.value', '30');
+            // Switch the properties panel back to the model tab for the following tests
+            cy.get('.mat-mdc-tab').contains('mat-icon', 'build').click({ force: true });
+        });
+
+        it('does not show add/remove buttons on the canvas', () => {
+            // Add/remove buttons must only appear in the "Elemente anpassen" dialog,
+            // where their events are handled (#1053, #1060)
+            cy.get('aspect-table').should('exist');
+            cy.get('aspect-table button').should('not.exist');
         });
 
         it('creates a 2x3 table with borders and adds child elements', () => {
@@ -46,6 +63,22 @@ describe('Table element', { testIsolation: false }, () => {
             addTableCellElement('Kontrollkästchen', 2, 1);
 
             saveTableEditDialog();
+        });
+
+        it('updates the canvas checkbox display when toggling its preset value', () => {
+            // Select the checkbox child element on the canvas
+            cy.get('aspect-table aspect-checkbox').closest('.wrapper').click();
+
+            cy.get('aspect-element-model-properties-component mat-button-toggle-group')
+                .contains('mat-button-toggle', 'wahr').click();
+            cy.get('aspect-table aspect-checkbox .svg-checkbox-cross')
+                .should('have.attr', 'style').and('match', /opacity: 1/);
+
+            // Reset, so the player tests below start with an unchecked checkbox
+            cy.get('aspect-element-model-properties-component mat-button-toggle-group')
+                .contains('mat-button-toggle', 'falsch').click();
+            cy.get('aspect-table aspect-checkbox .svg-checkbox-cross')
+                .should('have.attr', 'style').and('match', /opacity: 0/);
         });
 
         after('saves unit definition', () => {
@@ -104,6 +137,17 @@ describe('Table element', { testIsolation: false }, () => {
                 .find('aspect-text-field')
                 .find('input')
                 .should('have.value', 'Tabelleneintrag');
+        });
+
+        it('shows an inset focus ring on the focused table text-field', () => {
+            // The ring must lie inside the cell, otherwise neighboring cells cover it (#1069)
+            cy.get('aspect-table').eq(1)
+                .find('aspect-text-field input')
+                .focus()
+                .should('have.css', 'outline-style', 'solid')
+                .and('have.css', 'outline-offset', '-2px')
+                // indigo-pink theme primary, like the focused mat-form-field
+                .and('have.css', 'outline-color', 'rgb(63, 81, 181)');
         });
 
         it('second table contains a checkbox and allows checking', () => {

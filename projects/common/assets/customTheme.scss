@@ -27,6 +27,12 @@ aspect-editor-dynamic-overlay, aspect-player {
 $aspect-element-border-color: #ccc;
 $aspect-element-border-hover-color: #333;
 
+:root {
+  // Focus indicator color of custom inputs, matching the focused
+  // mat-form-field of the loaded prebuilt theme (indigo-pink primary)
+  --outline-color-primary: #3f51b5;
+}
+
 .mat-button-toggle-group-appearance-standard {
   border-color: $aspect-element-border-color;
   .mat-button-toggle+.mat-button-toggle {
@@ -42,6 +48,6 @@ math-field {
     border-color: $aspect-element-border-hover-color
   };
   &:focus {
-    outline-color: #3f51b5; //TODO $outline-color-primary
+    outline-color: var(--outline-color-primary);
   }
 }

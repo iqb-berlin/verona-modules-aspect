@@ -108,6 +108,12 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       padding: 0 10px;
       font-family: inherit;
     }
+    /* The input fills the whole table cell, so the native focus ring would be
+       painted into the neighboring cells and get covered by them. Draw it inset instead. */
+    .table-child:focus-visible {
+      outline: 2px solid var(--outline-color-primary);
+      outline-offset: -2px;
+    }
     .errors {
       border: 2px solid #f44336 !important;
     }

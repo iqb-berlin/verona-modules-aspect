@@ -62,16 +62,22 @@ export class TemplateService {
 
     const selectedPage = this.unitService.getSelectedPage();
     const selectedSectionIndex = this.selectionService.selectedSectionIndex;
+    let targetPage: EditorPage;
+    let targetSectionIndex: number;
     if (!Array.isArray(templateSections)) {
-      TemplateService.addSectionToPage(templateSections, selectedPage, selectedSectionIndex);
+      targetPage = selectedPage;
+      targetSectionIndex = TemplateService.addSectionToPage(templateSections, targetPage, selectedSectionIndex);
     } else {
-      const targetPage = selectedPage.alwaysVisible ? this.unitService.unit.pages[1] : selectedPage;
+      targetPage = selectedPage.alwaysVisible ? this.unitService.unit.pages[1] : selectedPage;
       if (!this.unitService.unit.pages[0].alwaysVisible) {
         this.createAlwaysVisiblePage();
       }
       TemplateService.addSectionToPage(templateSections[1], this.unitService.unit.pages[0], 0);
-      TemplateService.addSectionToPage(templateSections[0], targetPage, selectedSectionIndex);
+      targetSectionIndex = TemplateService.addSectionToPage(templateSections[0], targetPage, selectedSectionIndex);
     }
+    /* Adding the always visible page shifts all page indices, so the selection has to be updated.
+       Otherwise it can point at a section which does not exist on the newly selected page. */
+    this.selectionService.updateSelection(this.unitService.unit.pages.indexOf(targetPage), targetSectionIndex);
     this.unitService.updateSectionCounter();
     this.unitService.updateUnitDefinition();
   }
@@ -82,12 +88,14 @@ export class TemplateService {
     this.unitService.pageOrderChanged.next();
   }
 
-  private static addSectionToPage(section: EditorSection, page: EditorPage, selectedSectionIndex: number): void {
-    if (page.sections[selectedSectionIndex].isEmpty()) {
+  /* Returns the index the section was put at. */
+  private static addSectionToPage(section: EditorSection, page: EditorPage, selectedSectionIndex: number): number {
+    if (page.sections[selectedSectionIndex]?.isEmpty()) {
       page.replaceSection(selectedSectionIndex, section);
-    } else {
-      page.addSection(section);
+      return selectedSectionIndex;
     }
+    page.addSection(section);
+    return page.sections.length - 1;
   }
 
   private createTemplateSections(templateName: string): Promise<EditorSection | [EditorSection, EditorSection]> {

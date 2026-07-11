@@ -38,7 +38,7 @@ import { UIElementType } from 'common/interfaces';
            [style.border-radius.px]="elementModel.styling.borderRadius"
            [style.grid-row-start]="i + 1"
            [style.grid-column-start]="j + 1">
-        <ng-container *ngIf="elementGrid[i][j] === undefined && editorMode">
+        <ng-container *ngIf="elementGrid[i][j] === undefined && allowElementEditing">
           <button mat-mini-fab color="primary" class="button"
                   [matMenuTriggerFor]="menu">
             <mat-icon>add</mat-icon>
@@ -54,11 +54,9 @@ import { UIElementType } from 'common/interfaces';
           </mat-menu>
         </ng-container>
         <div *ngIf="elementGrid[i][j] !== undefined" class="element-container">
-          <div class="element-title">
-            <ng-container *ngIf="editorMode">
-              {{$any($any(elementGrid[i][j]).constructor).title}}
-            </ng-container>
-            <ng-container *ngIf="editorMode && $any(elementGrid[i][j]).alias !== 'alias-placeholder'">
+          <div *ngIf="allowElementEditing" class="element-title">
+            {{$any($any(elementGrid[i][j]).constructor).title}}
+            <ng-container *ngIf="$any(elementGrid[i][j]).alias !== 'alias-placeholder'">
               - {{$any(elementGrid[i][j]).alias}}
             </ng-container>
           </div>
@@ -71,7 +69,7 @@ import { UIElementType } from 'common/interfaces';
                                       [editorMode]="editorMode"
                                       (elementSelected)="childElementSelected.emit($event)">
           </aspect-table-child-overlay>
-          <button *ngIf="editorMode" class="remove-button" mat-mini-fab color="primary"
+          <button *ngIf="allowElementEditing" class="remove-button" mat-mini-fab color="primary"
                   (click)="removeElement(i, j)">
             <mat-icon>remove</mat-icon>
           </button>
@@ -106,6 +104,9 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
   @Input() actualPlayingId!: Subject<string | null>;
   @Input() mediaStatusChanged!: Subject<string>;
   @Input() editorMode: boolean = false;
+  /* Show add/remove buttons and element titles for managing cell elements.
+     Only enabled in the table edit dialog, where the corresponding events are handled. */
+  @Input() allowElementEditing: boolean = false;
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
   @Output() elementRemoved = new EventEmitter<{ row: number, col: number }>();
   @Output() childElementSelected = new EventEmitter<TableChildOverlay>();

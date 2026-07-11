@@ -27,7 +27,7 @@ import { firstValueFrom } from 'rxjs';
   template: `
     <div mat-dialog-title>Tabellenelemente</div>
     <mat-dialog-content>
-      <aspect-table [elementModel]="newTable" [editorMode]="true"
+      <aspect-table [elementModel]="newTable" [editorMode]="true" [allowElementEditing]="true"
                     (elementAdded)="addElement($event)"
                     (elementRemoved)="removeElement($event)"></aspect-table>
     </mat-dialog-content>

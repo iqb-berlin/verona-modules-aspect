@@ -16,6 +16,13 @@ describe('Table element', { testIsolation: false }, () => {
             createTable('table-default', 2, 2, false);
         });
 
+        it('does not show add/remove buttons on the canvas', () => {
+            // Add/remove buttons must only appear in the "Elemente anpassen" dialog,
+            // where their events are handled (#1053, #1060)
+            cy.get('aspect-table').should('exist');
+            cy.get('aspect-table button').should('not.exist');
+        });
+
         it('creates a 2x3 table with borders and adds child elements', () => {
             addElement('Tabelle', 'Verbund', 'table-with-content');
 

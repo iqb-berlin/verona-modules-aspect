@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, BorderStyles, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
@@ -26,10 +26,10 @@ export class WidgetCalcElement extends UIElement implements WidgetCalcProperties
   constructor(element?: Partial<WidgetCalcProperties>, idService?: AbstractIDService) {
     super({ type: 'widget-calc', ...element }, idService);
     if (isWidgetCalcProperties(element)) {
-      this.styling = { ...element.styling };
-      this.mode = element.mode;
-      this.journalLines = element.journalLines;
-      this.state = element.state;
+      if (element.styling !== undefined) this.styling = { ...element.styling };
+      if (element.mode !== undefined) this.mode = element.mode;
+      if (element.journalLines !== undefined) this.journalLines = element.journalLines;
+      if (element.state !== undefined) this.state = element.state;
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at WidgetCalc instantiation', element);
     }
@@ -46,9 +46,5 @@ export interface WidgetCalcProperties extends UIElementProperties {
 function isWidgetCalcProperties(
   blueprint?: Partial<WidgetCalcProperties>): blueprint is WidgetCalcProperties {
   if (!blueprint) return false;
-  return blueprint.mode !== undefined &&
-    blueprint.journalLines !== undefined &&
-    blueprint.state !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
+  return blueprint.type === 'widget-calc';
 }

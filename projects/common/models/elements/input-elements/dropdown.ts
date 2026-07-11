@@ -29,11 +29,11 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
   constructor(element?: Partial<DropdownProperties>, idService?: AbstractIDService) {
     super({ type: 'dropdown', ...element }, idService);
     if (isDropdownProperties(element)) {
-      this.options = element.options;
-      this.allowUnset = element.allowUnset;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.options !== undefined) this.options = element.options;
+      if (element.allowUnset !== undefined) this.allowUnset = element.allowUnset;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Dropdown instantiation', element);
     }

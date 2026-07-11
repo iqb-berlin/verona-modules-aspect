@@ -334,7 +334,10 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     lineHeight: 135,
     required: false,
     requiredWarnMessage: 'Eingabe erforderlich',
-    readOnly: false
+    readOnly: false,
+    rowCount: 2,
+    hasAutoHeight: false,
+    mathKeyboardPresets: ['math', 'symbols', 'latin', 'greek']
   },
   trigger: {
     action: null,

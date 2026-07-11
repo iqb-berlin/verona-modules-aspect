@@ -34,11 +34,11 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
   constructor(element?: Partial<MathFieldProperties>, idService?: AbstractIDService) {
     super({ type: 'math-field', ...element }, idService);
     if (isMathFieldProperties(element)) {
-      this.enableModeSwitch = element.enableModeSwitch;
-      this.mathKeyboardPresets = element.mathKeyboardPresets;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.enableModeSwitch !== undefined) this.enableModeSwitch = element.enableModeSwitch;
+      if (element.mathKeyboardPresets !== undefined) this.mathKeyboardPresets = element.mathKeyboardPresets;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Mathfield instantiation', element);
     }

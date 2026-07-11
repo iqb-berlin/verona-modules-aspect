@@ -39,13 +39,13 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   constructor(element?: Partial<ToggleButtonProperties>, idService?: AbstractIDService) {
     super({ type: 'toggle-button', ...element }, idService);
     if (isToggleButtonProperties(element)) {
-      this.options = [...element.options];
-      this.strikeOtherOptions = element.strikeOtherOptions;
-      this.strikeSelectedOption = element.strikeSelectedOption;
-      this.verticalOrientation = element.verticalOrientation;
-      this.dimensions = { ...element.dimensions };
-      this.position = { ...element.position };
-      this.styling = { ...element.styling };
+      if (element.options !== undefined) this.options = [...element.options];
+      if (element.strikeOtherOptions !== undefined) this.strikeOtherOptions = element.strikeOtherOptions;
+      if (element.strikeSelectedOption !== undefined) this.strikeSelectedOption = element.strikeSelectedOption;
+      if (element.verticalOrientation !== undefined) this.verticalOrientation = element.verticalOrientation;
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.position = { ...this.position, ...element.position };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at ToggleButton instantiation', element);
     }

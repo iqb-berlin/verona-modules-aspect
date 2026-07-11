@@ -21,10 +21,10 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   constructor(element?: Partial<MarkingPanelProperties>, idService?: AbstractIDService) {
     super({ type: 'marking-panel', ...element }, idService);
     if (isMarkingPanelProperties(element)) {
-      this.highlightableOrange = element.highlightableOrange;
-      this.highlightableTurquoise = element.highlightableTurquoise;
-      this.highlightableYellow = element.highlightableYellow;
-      if (element.position) this.position = { ...element.position };
+      if (element.highlightableOrange !== undefined) this.highlightableOrange = element.highlightableOrange;
+      if (element.highlightableTurquoise !== undefined) this.highlightableTurquoise = element.highlightableTurquoise;
+      if (element.highlightableYellow !== undefined) this.highlightableYellow = element.highlightableYellow;
+      this.position = { ...this.position, ...element.position };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at MarkingPanel instantiation', element);
     }
@@ -33,9 +33,7 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
 
 function isMarkingPanelProperties(blueprint?: Partial<MarkingPanelProperties>): blueprint is MarkingPanelProperties {
   if (!blueprint) return false;
-  return blueprint.highlightableOrange !== undefined &&
-    blueprint.highlightableTurquoise !== undefined &&
-    blueprint.highlightableYellow !== undefined;
+  return blueprint.type === 'marking-panel';
 }
 
 export interface MarkingPanelProperties extends UIElementProperties {

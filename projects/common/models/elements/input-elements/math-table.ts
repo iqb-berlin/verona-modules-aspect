@@ -69,22 +69,28 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   constructor(element?: Partial<MathTableProperties>, idService?: AbstractIDService) {
     super({ type: 'math-table', ...element }, idService);
     if (isMathTableProperties(element)) {
-      this.operation = element.operation;
-      this.terms = [...element.terms];
-      this.result = element.result;
-      this.resultHelperRow = element.resultHelperRow;
-      this.variableLayoutOptions = { ...element.variableLayoutOptions };
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
-      this.inputAssistancePreset = element.inputAssistancePreset;
-      this.inputAssistancePosition = element.inputAssistancePosition;
-      this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
-      this.keyStyle = element.keyStyle;
-      this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
-      this.hideNativeKeyboard = element.hideNativeKeyboard;
-      this.hasArrowKeys = element.hasArrowKeys;
+      if (element.operation !== undefined) this.operation = element.operation;
+      if (element.terms !== undefined) this.terms = [...element.terms];
+      if (element.result !== undefined) this.result = element.result;
+      if (element.resultHelperRow !== undefined) this.resultHelperRow = element.resultHelperRow;
+      if (element.variableLayoutOptions !== undefined) {
+        this.variableLayoutOptions = { ...element.variableLayoutOptions };
+      }
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
+      if (element.inputAssistancePreset !== undefined) this.inputAssistancePreset = element.inputAssistancePreset;
+      if (element.inputAssistancePosition !== undefined) this.inputAssistancePosition = element.inputAssistancePosition;
+      if (element.inputAssistanceFloatingStartPosition !== undefined) {
+        this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+      }
+      if (element.keyStyle !== undefined) this.keyStyle = element.keyStyle;
+      if (element.showSoftwareKeyboard !== undefined) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+      if (element.addInputAssistanceToKeyboard !== undefined) {
+        this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
+      }
+      if (element.hideNativeKeyboard !== undefined) this.hideNativeKeyboard = element.hideNativeKeyboard;
+      if (element.hasArrowKeys !== undefined) this.hasArrowKeys = element.hasArrowKeys;
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at MathTable instantiation', element);
     }

@@ -28,13 +28,13 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   constructor(element?: Partial<CheckboxProperties>, idService?: AbstractIDService) {
     super({ type: 'checkbox', ...element }, idService);
     if (isCheckboxProperties(element)) {
-      this.label = element.label;
-      this.imgSrc = element.imgSrc;
-      this.value = element.value;
-      this.crossOutChecked = element.crossOutChecked;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.label !== undefined) this.label = element.label;
+      if (element.imgSrc !== undefined) this.imgSrc = element.imgSrc;
+      if (element.value !== undefined) this.value = element.value;
+      if (element.crossOutChecked !== undefined) this.crossOutChecked = element.crossOutChecked;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Checkbox instantiation', element);
     }

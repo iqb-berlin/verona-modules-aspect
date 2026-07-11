@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
@@ -36,16 +36,16 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
     super({ type: 'text-field', ...element }, idService);
     if (isTextFieldProperties(element)) {
       if (element.appearance) this.appearance = element.appearance;
-      this.minLength = element.minLength;
-      this.minLengthWarnMessage = element.minLengthWarnMessage;
-      this.maxLength = element.maxLength;
-      this.maxLengthWarnMessage = element.maxLengthWarnMessage;
-      this.isLimitedToMaxLength = element.isLimitedToMaxLength;
-      this.pattern = element.pattern;
-      this.patternWarnMessage = element.patternWarnMessage;
-      this.clearable = element.clearable;
-      if (element.position) this.position = { ...element.position };
-      this.styling = { ...element.styling };
+      if (element.minLength !== undefined) this.minLength = element.minLength;
+      if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
+      if (element.maxLength !== undefined) this.maxLength = element.maxLength;
+      if (element.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
+      if (element.isLimitedToMaxLength !== undefined) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
+      if (element.pattern !== undefined) this.pattern = element.pattern;
+      if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
+      if (element.clearable !== undefined) this.clearable = element.clearable;
+      this.position = { ...this.position, ...element.position };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at TextField instantiation', element);
     }
@@ -85,14 +85,5 @@ export interface TextFieldProperties extends TextInputElementProperties {
 
 function isTextFieldProperties(blueprint?: Partial<TextFieldProperties>): blueprint is TextFieldProperties {
   if (!blueprint) return false;
-  return blueprint.minLength !== undefined &&
-    blueprint.minLengthWarnMessage !== undefined &&
-    blueprint.maxLength !== undefined &&
-    blueprint.maxLengthWarnMessage !== undefined &&
-    blueprint.isLimitedToMaxLength !== undefined &&
-    blueprint.pattern !== undefined &&
-    blueprint.patternWarnMessage !== undefined &&
-    blueprint.clearable !== undefined &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling as BasicStyles) &&
-    blueprint.styling?.lineHeight !== undefined;
+  return blueprint.type === 'text-field';
 }

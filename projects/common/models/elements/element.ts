@@ -2,13 +2,13 @@
 import { VariableInfo } from '@iqb/responses';
 import {
   DimensionProperties, PlayerProperties, PositionProperties,
-  PropertyGroupGenerators, PropertyGroupValidators, Stylings
+  PropertyGroupGenerators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import {
   AbstractIDService,
   InputAssistancePreset, InputElementProperties, InputElementValue,
-  KeyInputElementProperties, PlayerElementBlueprint, TextInputElementProperties,
+  PlayerElementBlueprint, TextInputElementProperties,
   UIElementProperties, UIElementType, UIElementValue
 } from 'common/interfaces';
 import { IDError, InstantiationEror } from 'common/errors';
@@ -22,9 +22,7 @@ function getResetRevision(idService?: AbstractIDService): number | null {
 }
 
 export function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
-  return blueprint.isRelevantForPresentationComplete !== undefined &&
-    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
-    PropertyGroupValidators.isValidPosition(blueprint.position);
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class UIElement implements UIElementProperties {
@@ -60,10 +58,12 @@ export abstract class UIElement implements UIElementProperties {
           this.registerIDs();
         });
       }
-      this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      this.dimensions = { ...element.dimensions } as DimensionProperties;
-      this.position = { ...element.position } as PositionProperties;
-      this.styling = { ...element.styling } as Stylings;
+      if (element.isRelevantForPresentationComplete !== undefined) {
+        this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
+      }
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.position = { ...this.position, ...element.position };
+      this.styling = { ...this.styling, ...element.styling };
       if (element.player) this.player = { ...element.player };
     } else {
       if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
@@ -168,12 +168,7 @@ export abstract class UIElement implements UIElementProperties {
 
 export function isInputElementProperties(blueprint: Partial<InputElementProperties>)
   : blueprint is InputElementProperties {
-  if (!blueprint) return false;
-  return blueprint.value !== undefined &&
-    blueprint.required !== undefined &&
-    blueprint.requiredWarnMessage !== undefined &&
-    blueprint.readOnly !== undefined &&
-    isUIElementProperties(blueprint);
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class InputElement extends UIElement implements InputElementProperties {
@@ -190,10 +185,10 @@ export abstract class InputElement extends UIElement implements InputElementProp
     super(element, idService);
     if (isInputElementProperties(element)) {
       if (element.label !== undefined) this.label = element.label;
-      this.value = element.value;
-      this.required = element.required;
-      this.requiredWarnMessage = element.requiredWarnMessage;
-      this.readOnly = element.readOnly;
+      if (element.value !== undefined) this.value = element.value;
+      if (element.required !== undefined) this.required = element.required;
+      if (element.requiredWarnMessage !== undefined) this.requiredWarnMessage = element.requiredWarnMessage;
+      if (element.readOnly !== undefined) this.readOnly = element.readOnly;
     } else if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at InputElement instantiation', element);
     }
@@ -213,24 +208,9 @@ export function isInputElement(el: UIElement): el is InputElement {
     el.readOnly !== undefined;
 }
 
-function isValidKeyInputProperties(blueprint: Partial<KeyInputElementProperties>): boolean {
-  return blueprint.inputAssistancePreset !== undefined &&
-    blueprint.inputAssistancePosition !== undefined &&
-    blueprint.inputAssistanceFloatingStartPosition !== undefined &&
-    blueprint.showSoftwareKeyboard !== undefined &&
-    blueprint.addInputAssistanceToKeyboard !== undefined &&
-    blueprint.hideNativeKeyboard !== undefined &&
-    blueprint.hasArrowKeys !== undefined &&
-    blueprint.keyStyle !== undefined;
-}
-
 function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>):
   blueprint is TextInputElementProperties {
-  return blueprint.restrictedToInputAssistanceChars !== undefined &&
-    blueprint.inputAssistanceCustomKeys !== undefined &&
-    blueprint.inputAssistanceCustomStyle !== undefined &&
-    blueprint.hasBackspaceKey !== undefined &&
-    isValidKeyInputProperties(blueprint);
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class TextInputElement extends InputElement implements TextInputElementProperties {
@@ -253,18 +233,28 @@ export abstract class TextInputElement extends InputElement implements TextInput
   ) {
     super(element, idService);
     if (isTextInputElementProperties(element)) {
-      this.inputAssistancePreset = element.inputAssistancePreset;
-      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
-      this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
-      this.inputAssistancePosition = element.inputAssistancePosition;
-      this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
-      this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
-      this.hasArrowKeys = element.hasArrowKeys;
-      this.hasBackspaceKey = element.hasBackspaceKey;
-      this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      this.hideNativeKeyboard = element.hideNativeKeyboard;
-      this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
-      this.keyStyle = element.keyStyle;
+      if (element.inputAssistancePreset !== undefined) this.inputAssistancePreset = element.inputAssistancePreset;
+      if (element.inputAssistanceCustomKeys !== undefined) {
+        this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+      }
+      if (element.inputAssistanceCustomStyle !== undefined) {
+        this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
+      }
+      if (element.inputAssistancePosition !== undefined) this.inputAssistancePosition = element.inputAssistancePosition;
+      if (element.inputAssistanceFloatingStartPosition !== undefined) {
+        this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+      }
+      if (element.restrictedToInputAssistanceChars !== undefined) {
+        this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+      }
+      if (element.hasArrowKeys !== undefined) this.hasArrowKeys = element.hasArrowKeys;
+      if (element.hasBackspaceKey !== undefined) this.hasBackspaceKey = element.hasBackspaceKey;
+      if (element.showSoftwareKeyboard !== undefined) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+      if (element.hideNativeKeyboard !== undefined) this.hideNativeKeyboard = element.hideNativeKeyboard;
+      if (element.addInputAssistanceToKeyboard !== undefined) {
+        this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
+      }
+      if (element.keyStyle !== undefined) this.keyStyle = element.keyStyle;
     } else if (environment.strictInstantiation) {
       throw Error('Error at TextInputElement instantiation');
     }

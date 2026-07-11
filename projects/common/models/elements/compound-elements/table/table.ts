@@ -57,8 +57,9 @@ export class TableElement extends CompoundElement implements TableProperties {
         return childElement;
       });
       this.tableEdgesEnabled = element.tableEdgesEnabled;
-      this.position = { ...element.position };
-      this.styling = { ...element.styling } as BasicStyles & BorderStyles;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling } as BasicStyles & BorderStyles;
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Table instantiation', element);
     }

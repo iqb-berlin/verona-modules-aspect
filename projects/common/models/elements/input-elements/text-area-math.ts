@@ -45,12 +45,12 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
   constructor(element?: Partial<TextAreaMathProperties>, idService?: AbstractIDService) {
     super({ type: 'text-area-math', ...element }, idService);
     if (isTextAreaMathProperties(element)) {
-      this.rowCount = element.rowCount;
-      this.hasAutoHeight = element.hasAutoHeight;
-      this.mathKeyboardPresets = element.mathKeyboardPresets;
-      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      if (element.rowCount !== undefined) this.rowCount = element.rowCount;
+      if (element.hasAutoHeight !== undefined) this.hasAutoHeight = element.hasAutoHeight;
+      if (element.mathKeyboardPresets !== undefined) this.mathKeyboardPresets = element.mathKeyboardPresets;
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = { ...this.styling, ...element.styling };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at TextAreaMath instantiation', element);
     }
@@ -90,6 +90,5 @@ export interface TextAreaMath {
 
 function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): blueprint is TextAreaMathProperties {
   if (!blueprint) return false;
-  return blueprint.rowCount !== undefined &&
-    blueprint.type === 'text-area-math';
+  return blueprint.type === 'text-area-math';
 }

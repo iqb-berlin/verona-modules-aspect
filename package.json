@@ -133,6 +133,7 @@
     "katex": "^0.16.11",
     "ngx-tiptap": "^11.1.0",
     "ngx-translate-testing": "^7.0.0",
+    "prosemirror-model": "^1.25.4",
     "prosemirror-state": "^1.4.3",
     "prosemirror-view": "^1.41.3",
     "rxjs": "^7.8.1",

@@ -3,7 +3,7 @@ Allgemein
 ## editor/3.0.0+player/3.0.0
 ### Neue Funktionen
 - Eingabehilfe
-  - Neue Voreinstellung "Ziffern und Komma"
+  - Neue Voreinstellung "Ziffern mit Komma & Minus" (inkl. Minustaste für negative Dezimalzahlen)
 - Lückentext
   - Unterstützung für Dropdown-Elemente als Kind-Elemente.
 - Neue Elementgruppe "Widgets" 

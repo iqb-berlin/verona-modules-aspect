@@ -5,6 +5,12 @@ Player
 - Abwärtskompatibilität
   - Es können nun auch Aufgaben, die mit deutlich älteren Editor-Versionen erstellt wurden, im aktuellen Layout geladen und dargestellt werden
 
+### Änderungen
+- Eingabehilfe/Tastatur
+  - Ergänzt die Voreinstellung "Ziffern mit Komma & Minus" um eine Minustaste (für negative Dezimalzahlen)
+- GeoGebra
+  - Bindet den Status von GeoGebra-Variablen an das übergeordnete Element: Variablen werden mit dem Status des GeoGebra-Elements initialisiert und die Statusänderung "DISPLAYED" wird an sie weitergegeben
+
 ### Fehlerbehebungen
 - Formelfeld, Formelbereich
   - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen

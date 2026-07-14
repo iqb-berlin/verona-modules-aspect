@@ -8,12 +8,22 @@ Editor
 ### Änderungen
 - Formelfeld
   - UI-Verbesserung der Eingabemöglichkeit zur Vorbelegung  
+- Texteditor
+  - Beim Einfügen und Ablegen (Drag & Drop) von Text wird keine Formatierung mehr übernommen; mehrzeilige Inhalte werden in einzelne Absätze aufgeteilt
 
 ### Fehlerbehebungen
 - Behebung von Fehlern bei der Vergabe von IDs und Aliasen (insbesondere beim Duplizieren und Einfügen von Abschnitten)
 - Verbesserung der Stabilität beim Laden von Aufgaben, um beim schnellen Wechsel von Aufgaben im Studio den Initialisierungsfehler (z. B. doppelte IDs) zu verhindern
 - Verbesserung des Ladeverhaltens der Erweiterungen für den Texteditor
 - Verhindert, dass Zustandsvariablen die gleiche ID oder den gleichen Alias haben können, wie Elemente 
+- Verbessert die Stabilität beim Erzeugen von Elementen aus unvollständigen Vorlagen (Standardwerte, Position und Dimensionen bleiben erhalten)
+- Tabelle
+  - Neu angelegte Tabellen erhalten korrekt ihren voreingestellten unteren Abstand (30px)
+  - Der Fokusrahmen von Texteingaben in Tabellenzellen wird innerhalb der Zelle dargestellt und überlagert keine benachbarten Zellen mehr
+  - Kontrollkästchen in Tabellen zeigen die im Eigenschaftenbereich eingestellte Vorbelegung korrekt an
+  - Schaltflächen zum Hinzufügen/Entfernen von Zeilen und Spalten werden nur noch im Dialog "Elemente anpassen" angezeigt (nicht mehr auf der Arbeitsfläche)
+- Assistenten
+  - Korrigiert die Element-Auswahl nach dem Einfügen zweiseitiger Abschnittsvorlagen aus einem nachfolgenden Abschnitt
 
 ## 2.12.4
 ### Fehlerbehebungen 

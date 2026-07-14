@@ -39,6 +39,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ComboButtonComponent } from 'editor/src/app/components/util/combo-button.component';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { EditorView } from 'prosemirror-view';
+import { Fragment, Slice } from 'prosemirror-model';
 import { AnchorId } from './extensions/anchorId';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
@@ -153,20 +154,56 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
           placeholder: this.placeholder
         })],
       editorProps: {
-        handlePaste: RichTextEditorComponent.handlePastePlainText
+        handlePaste: RichTextEditorComponent.handlePastePlainText,
+        handleDrop: RichTextEditorComponent.handleDropPlainText
       }
     });
   }
 
   private static handlePastePlainText(view: EditorView, event: ClipboardEvent): boolean {
-    const text = event.clipboardData?.getData('text/plain') ?? '';
+    const text = RichTextEditorComponent.getPlainText(event.clipboardData);
     if (!text) return false;
     event.preventDefault();
-    // Insert sanitized plain text
-    const { state, dispatch } = view;
-    const { from, to } = state.selection;
-    dispatch(state.tr.insertText(text, from, to));
+    const { from, to } = view.state.selection;
+    RichTextEditorComponent.insertPlainText(view, text, from, to);
     return true;
+  }
+
+  private static handleDropPlainText(view: EditorView, event: DragEvent, slice: Slice, moved: boolean): boolean {
+    if (moved) return false; // keep default behavior when dragging content within the editor
+    const text = RichTextEditorComponent.getPlainText(event.dataTransfer);
+    if (!text) return false;
+    const dropPos = view.posAtCoords({ left: event.clientX, top: event.clientY })?.pos;
+    if (dropPos === undefined) return false;
+    event.preventDefault();
+    RichTextEditorComponent.insertPlainText(view, text, dropPos, dropPos);
+    return true;
+  }
+
+  private static getPlainText(data: DataTransfer | null): string {
+    const text = data?.getData('text/plain');
+    if (text) return text;
+    // Some sources only provide HTML; strip all markup and keep line breaks
+    const html = data?.getData('text/html');
+    if (!html) return '';
+    const htmlWithLineBreaks = html
+      .replace(/<br[^>]*>/gi, '\n')
+      .replace(/<\/(p|div|li|tr|h[1-6]|blockquote)>/gi, '\n');
+    return new DOMParser().parseFromString(htmlWithLineBreaks, 'text/html').body.textContent?.trim() ?? '';
+  }
+
+  private static insertPlainText(view: EditorView, text: string, from: number, to: number): void {
+    const { state, dispatch } = view;
+    const lines = text.split(/\r\n?|\n/);
+    if (lines.length === 1) {
+      dispatch(state.tr.insertText(text, from, to));
+      return;
+    }
+    const paragraphs = lines.map(line => state.schema.nodes.paragraph.create(
+      null, line ? state.schema.text(line) : undefined
+    ));
+    const slice = new Slice(Fragment.fromArray(paragraphs), 1, 1);
+    dispatch(state.tr.replaceRange(from, to, slice).scrollIntoView());
   }
 
   ngAfterViewInit(): void {

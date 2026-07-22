@@ -38,13 +38,16 @@ export function createEmailSection(options: EmailStimulusOptions, idService: IDS
     subjectLabel = 'Subject';
     sendLabel = 'Send';
   } else if (options.lang === 'fr') {
-    fromLabel = 'De';
-    toLabel = 'À';
-    subjectLabel = 'Objet';
+    // U+202F: narrow no-break space required in French typography before colons
+    fromLabel = 'De\u202F';
+    toLabel = 'À\u202F';
+    subjectLabel = 'Objet\u202F';
     sendLabel = 'Envoyer';
   }
-  return new EditorSection(JSON.parse(getEmailTemplateString({ ...options, fromLabel, toLabel, subjectLabel, sendLabel })),
-                     idService);
+  return new EditorSection(JSON.parse(getEmailTemplateString({
+    ...options, fromLabel, toLabel, subjectLabel, sendLabel
+  })),
+                           idService);
 }
 
 export function createMessageSection(options: MessageStimulusOptions, idService: IDService): EditorSection {
@@ -55,7 +58,7 @@ export function createMessageSection(options: MessageStimulusOptions, idService:
     sendLabel = 'Répondre';
   }
   return new EditorSection(JSON.parse(getMessageTemplateString({ ...options, sendLabel })),
-                     idService);
+                           idService);
 }
 
 export function createAudio1Section(options: Audio1StimulusOptions, idService: IDService) {

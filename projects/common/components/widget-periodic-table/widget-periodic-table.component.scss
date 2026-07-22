@@ -1,8 +1,14 @@
+// The padding keeps the button's shadow within the element bounds,
+// so neighboring elements cannot cover it.
+.widget-container {
+  padding: 10px;
+}
+
 .elements-container {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 10px;
+  padding: 10px 0 0;
 }
 
 .element-square {

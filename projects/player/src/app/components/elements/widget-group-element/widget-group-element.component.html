@@ -5,13 +5,6 @@
     (widgetCallEvent)="applyWidgetCall($event, 'PERIODIC_TABLE')">
 </aspect-widget-periodic-table>
 
-<aspect-widget-calc
-    *ngIf="elementModel.type === 'widget-calc'"
-    #elementComponent
-    [elementModel]="elementModel | cast: WidgetCalcElement"
-    (widgetCallEvent)="applyWidgetCall($event, 'CALC')">
-</aspect-widget-calc>
-
 <aspect-widget-molecule-editor
     *ngIf="elementModel.type === 'widget-molecule-editor'"
     #elementComponent

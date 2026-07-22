@@ -11,11 +11,6 @@ describe('Widget Element', { testIsolation: false }, () => {
       cy.get('aspect-widget-periodic-table').should('exist');
     });
 
-    it('adds a calculator widget', () => {
-      addElement('Rechner', 'Widgets');
-      cy.get('aspect-widget-calc').should('exist');
-    });
-
     it('adds a molecule editor widget', () => {
       addElement('Molekül-Editor', 'Widgets');
       cy.get('aspect-widget-molecule-editor').should('exist');
@@ -34,7 +29,6 @@ describe('Widget Element', { testIsolation: false }, () => {
 
     it('checks that all widgets are rendered', () => {
       cy.get('aspect-widget-periodic-table').should('exist');
-      cy.get('aspect-widget-calc').should('exist');
       cy.get('aspect-widget-molecule-editor').should('exist');
     });
 
@@ -76,35 +70,6 @@ describe('Widget Element', { testIsolation: false }, () => {
       cy.get('aspect-widget-periodic-table .element-square').eq(0).should('have.text', 'H');
       cy.get('aspect-widget-periodic-table .element-square').eq(1).should('have.text', 'He');
       cy.get('aspect-widget-periodic-table .element-square').eq(2).should('have.text', 'Li');
-    });
-
-    it('verifies calculator widget call and return handling', () => {
-      const postMessageStub = cy.stub().as('postMessage');
-      cy.window().then(window => {
-        window.parent.addEventListener('message', e => {
-          postMessageStub(e.data);
-        });
-      });
-
-      // Click calculator fab button
-      cy.get('aspect-widget-calc button').click({ force: true });
-
-      // Assert vopWidgetCall was sent
-      cy.get('@postMessage').should('be.calledWithMatch', Cypress.sinon.match({
-        type: 'vopWidgetCall',
-        widgetType: 'CALC'
-      }));
-
-      // Post back a vopWidgetReturn message
-      cy.window().then(window => {
-        window.postMessage({
-          type: 'vopWidgetReturn',
-          state: '42'
-        }, '*');
-      });
-
-      // Assert that the calculator displays the state value
-      cy.get('aspect-widget-calc .state-value').should('have.text', '42');
     });
 
     it('verifies molecule editor widget call and return handling', () => {

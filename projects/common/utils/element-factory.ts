@@ -34,7 +34,6 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
-import { WidgetCalcElement } from 'common/models/elements/widget-calc/widget-calc';
 import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
 
 export abstract class ElementFactory {
@@ -72,7 +71,6 @@ export abstract class ElementFactory {
         'text-area-math': TextAreaMathElement,
         table: TableElement,
         'widget-periodic-table': WidgetPeriodicTableElement,
-        'widget-calc': WidgetCalcElement,
         'widget-molecule-editor': WidgetMoleculeEditorElement
       };
     }

@@ -296,10 +296,6 @@
     "showInfoAMass": "Mittlere relative Atommasse",
     "closeOnSelection": "Schließen bei Auswahl",
     "maxNumberOfSelections": "Max. Anzahl Auswahlen",
-    "calcMode": "Rechnermodus",
-    "calcModeSimple": "Einfach",
-    "calcModeScientific": "Wissenschaftlich",
-    "calcJournalLines": "Anzahl der Anzeige von Rechenoperationen/Eingaben",
     "bondingType": "Darstellungsart",
     "moleculeBondingTypeValence": "Valenzstrichformel",
     "moleculeBondingTypeElectrons": "Elektronenformel"
@@ -389,7 +385,6 @@
     "trigger": "Auslöser",
     "table": "Tabelle",
     "widget-molecule-editor": "Molekül-Editor",
-    "widget-calc": "Rechner",
     "widget-periodic-table": "Periodensystem"
   },
   "section-menu": {

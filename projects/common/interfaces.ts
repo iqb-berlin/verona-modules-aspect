@@ -44,7 +44,6 @@ export type UIElementType =
   | 'table'
   | 'marking-panel'
   | 'widget-periodic-table'
-  | 'widget-calc'
   | 'widget-molecule-editor';
 
 export interface TextLabel {
@@ -189,11 +188,6 @@ export interface WidgetPeriodicTableCall {
   showInfoAMass: boolean;
   closeOnSelection: boolean;
   maxNumberOfSelections: number;
-}
-
-export interface WidgetCalcCall {
-  mode: 'SIMPLE' | 'SCIENTIFIC';
-  journalLines: number;
 }
 
 export interface WidgetMoleculeEditorCall {

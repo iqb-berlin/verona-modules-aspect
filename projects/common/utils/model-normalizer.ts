@@ -25,7 +25,7 @@ const INPUT_ELEMENT_TYPES: UIElementType[] = [
 ];
 
 const BORDER_ELEMENT_TYPES: UIElementType[] = [
-  'button', 'frame', 'table', 'widget-molecule-editor', 'widget-calc', 'widget-periodic-table'
+  'button', 'frame', 'table', 'widget-molecule-editor', 'widget-periodic-table'
 ];
 
 export class ModelNormalizer {

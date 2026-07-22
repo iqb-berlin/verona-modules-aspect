@@ -140,14 +140,22 @@ describe('Table element', { testIsolation: false }, () => {
         });
 
         it('shows an inset focus ring on the focused table text-field', () => {
-            // The ring must lie inside the cell, otherwise neighboring cells cover it (#1069)
+            // The ring must lie inside the cell, otherwise neighboring cells cover it (#1069).
+            // It is drawn by coloring the always-present transparent border, because an
+            // inset outline leaves 1px gaps to the table lines in Firefox (#1091).
+            cy.get('aspect-table').eq(1)
+                .find('aspect-text-field input')
+                .blur({ force: true })
+                .should('have.css', 'border-style', 'solid')
+                .and('have.css', 'border-width', '2px')
+                .and('have.css', 'border-color', 'rgba(0, 0, 0, 0)');
+
             cy.get('aspect-table').eq(1)
                 .find('aspect-text-field input')
                 .focus()
-                .should('have.css', 'outline-style', 'solid')
-                .and('have.css', 'outline-offset', '-2px')
+                .should('have.css', 'outline-style', 'none')
                 // indigo-pink theme primary, like the focused mat-form-field
-                .and('have.css', 'outline-color', 'rgb(63, 81, 181)');
+                .and('have.css', 'border-color', 'rgb(63, 81, 181)');
         });
 
         it('second table contains a checkbox and allows checking', () => {

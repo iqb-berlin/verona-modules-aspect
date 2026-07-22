@@ -15,7 +15,7 @@ describe('AppComponent startCommand loading', () => {
   let startCommand$: Subject<StartCommand>;
   let unitService: UnitService;
   let veronaApiServiceMock: Pick<VeronaAPIService, 'startCommand' | 'sendReady' | 'sendChanged'>;
-  let translateServiceMock: Pick<TranslateService, 'addLangs' | 'setDefaultLang'>;
+  let translateServiceMock: Pick<TranslateService, 'addLangs' | 'setDefaultLang' | 'instant'>;
   const expectJasmine = globalThis.expect as unknown as {
     (actual: unknown): jasmine.Matchers<unknown>;
     (actual: () => unknown): jasmine.FunctionMatchers<() => unknown>;
@@ -28,7 +28,8 @@ describe('AppComponent startCommand loading', () => {
     const idService = new IDService();
     const messageServiceSpy = jasmine.createSpyObj<MessageService>('MessageService', [
       'showFixedReferencePanel',
-      'showReferencePanel'
+      'showReferencePanel',
+      'showPrompt'
     ]);
     const dialogServiceSpy = jasmine.createSpyObj<DialogService>('DialogService', [
       'showUnitDefErrorDialog',
@@ -41,18 +42,20 @@ describe('AppComponent startCommand loading', () => {
       sendChanged: jasmine.createSpy('sendChanged')
     };
 
+    translateServiceMock = {
+      addLangs: jasmine.createSpy('addLangs'),
+      setDefaultLang: jasmine.createSpy('setDefaultLang'),
+      instant: jasmine.createSpy('instant').and.callFake(key => key)
+    };
+
     unitService = new UnitService(
       selectionService,
       veronaApiServiceMock as VeronaAPIService,
       messageServiceSpy,
       dialogServiceSpy,
-      idService
+      idService,
+      translateServiceMock as TranslateService
     );
-
-    translateServiceMock = {
-      addLangs: jasmine.createSpy('addLangs'),
-      setDefaultLang: jasmine.createSpy('setDefaultLang')
-    };
   });
 
   it('loads a single non-likert startCommand', fakeAsync(() => {

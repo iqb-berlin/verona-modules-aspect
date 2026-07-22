@@ -2,7 +2,7 @@ import {
   Component, ComponentRef, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AsyncPipe, NgForOf, NgIf
 } from '@angular/common';
@@ -25,7 +25,9 @@ import { takeUntil } from 'rxjs/operators';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { GeometryVariable } from 'common/interfaces';
+import { VariableAlias } from 'common/utils/variable-alias';
 
 @Component({
   selector: 'aspect-geometry-props',
@@ -145,7 +147,9 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
 
   constructor(public unitService: UnitService,
               public selectionService: SelectionService,
-              public dialogService: DialogService) { }
+              public dialogService: DialogService,
+              private messageService: MessageService,
+              private translateService: TranslateService) { }
 
   ngOnInit(): void {
     this.initGeometryListener();
@@ -154,6 +158,10 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
   addTrackedExpectedVariable(event: MatChipInputEvent): void {
     const id = (event.value || '').trim();
     if (!id) return;
+    if (!VariableAlias.isValid(id)) {
+      this.messageService.showError(this.translateService.instant('idContainsInvalidCharacters'));
+      return;
+    }
     const variables = [...(this.combinedProperties.trackedExpectedVariables as GeometryVariable[])];
     if (variables.some(v => v.id === id)) return;
 

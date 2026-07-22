@@ -16,6 +16,7 @@ import {
 import { IDError, InstantiationEror } from 'common/errors';
 
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+import { VariableAlias } from 'common/utils/variable-alias';
 
 export class DropListElement extends InputElement implements DropListProperties {
   type: UIElementType = 'drop-list';
@@ -98,6 +99,9 @@ export class DropListElement extends InputElement implements DropListProperties 
     if (value.alias !== this.value[valueIndex].alias) {
       if (!this.idService?.isAliasAvailable(value.alias)) {
         throw new IDError('ID ist bereits vergeben');
+      }
+      if (!VariableAlias.isValid(value.alias)) {
+        throw new IDError('ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)');
       }
       this.idService?.changeAlias(this.value[valueIndex].alias, value.alias);
     }

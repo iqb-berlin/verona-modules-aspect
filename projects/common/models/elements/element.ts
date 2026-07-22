@@ -13,6 +13,7 @@ import {
 } from 'common/interfaces';
 import { IDError, InstantiationEror } from 'common/errors';
 import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
+import { VariableAlias } from 'common/utils/variable-alias';
 
 type RevisionAwareIDService = AbstractIDService & { getResetRevision?: () => number };
 
@@ -92,6 +93,9 @@ export abstract class UIElement implements UIElementProperties {
       }
       if ((value as string).includes(' ')) {
         throw new IDError('ID enthält unerlaubtes Leerzeichen');
+      }
+      if (!VariableAlias.isValid(value as string)) {
+        throw new IDError('ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)');
       }
       this.idService.unregister(this.alias, false, true);
       this.idService.register(value as string, false, true);

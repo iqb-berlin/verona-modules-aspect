@@ -1,4 +1,4 @@
-# Frontend Template Rules
+# Frontend Rules
 
 ## 1) Do not move simple data bindings into component methods/getters
 
@@ -47,4 +47,140 @@ When writing an arrow function with exactly one argument, omit the parentheses a
 Rationale:
 - Enforces consistency in arrow function style across all projects.
 - Prevents build/linter failures due to styling rule violations.
+
+## 5) Internationalization (i18n)
+
+Every user-facing text MUST be managed through translation keys in the relevant
+`assets/i18n/de.json` (and `en.json` where available), e.g. under
+`projects/{common,editor,player}/…/assets/i18n/`. Hardcoded strings are not allowed.
+
+- Prefer: the `translate` pipe in templates or `TranslateService` in components
+- Avoid: literal display strings in templates/components
+
+Rationale:
+- keeps the app localizable
+- avoids scattered, untranslatable strings that are hard to maintain
+
+## 6) Subscription management
+
+Use the `ngUnsubscribe` + `takeUntil` pattern for subscriptions in components.
+
+- Define `private ngUnsubscribe = new Subject<void>();` as a class property
+- Add `.pipe(takeUntil(this.ngUnsubscribe))` before `.subscribe()`
+- Implement `OnDestroy` and tear down in `ngOnDestroy()`:
+  ```typescript
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+  ```
+
+Rationale:
+- prevents memory leaks and callbacks firing after destruction
+- matches the pattern already used across the codebase
+
+## 7) Prefer `fakeAsync`/`tick()` for asynchronous tests
+
+Use `fakeAsync` and `tick()` instead of `async/await` with `setTimeout` or manual
+`wait()` helpers when testing asynchronous logic.
+
+```typescript
+it('should handle async logic', fakeAsync(() => {
+  component.doSomethingAsync();
+  tick(200); // advance virtual time by 200ms
+  fixture.detectChanges();
+  expect(component.result).toBe(true);
+}));
+```
+
+Rationale:
+- gives synchronous-like control over virtual time; tests run faster
+- avoids intermittent "Exceeded timeout" failures in CI
+- removes non-deterministic `setTimeout`-based waiting
+
+## 8) Use modern Angular control flow
+
+Use the built-in control flow syntax (`@if`, `@for`, `@switch`) instead of the
+structural directives `*ngIf`, `*ngFor`, `*ngSwitch`.
+
+- Prefer: `@if (cond) { … }`
+- Avoid: `*ngIf="cond"`
+
+Rationale:
+- more efficient and type-safe
+- reduces reliance on `CommonModule`
+
+Note: existing `*ngIf`/`*ngFor` usage may remain until touched; apply this to new
+and modified templates.
+
+## 9) CSS: target elements with explicit classes
+
+Avoid element or attribute selectors (e.g. `button[mat-stroked-button]`, `mat-icon`)
+in SCSS. Use descriptive classes instead (e.g. `.add-url-button`, `.button-icon`).
+
+Rationale:
+- explicit classes are resilient when Angular Material changes its internal tag or
+  attribute structure
+
+## 10) Type safety: avoid `any` in new code
+
+For new and modified code, do NOT introduce the `any` type.
+
+- Prefer: specific interfaces/DTOs, or structural typing (e.g. `{ id: number; name: string }`)
+- Use `unknown` with type guards when the type is genuinely dynamic
+- Never add `// @ts-ignore` or `// @ts-nocheck` — fix the types instead
+
+Rationale:
+- `any` disables type checking and hides bugs
+- applies to new code; pre-existing `any`/`$any()` usage is out of scope here but
+  should be reduced opportunistically when touched
+
+## 11) Unit tests for new code
+
+- New Angular classes (Components, Pipes, Services, Guards, Directives) MUST ship with
+  a corresponding `.spec.ts` and meaningful unit tests.
+- Changes to existing business logic MUST update the corresponding tests to cover the
+  new behavior and guard against regressions.
+- Adding or changing a public method/property MUST be covered by tests.
+
+Rationale:
+- protects behavior as the codebase evolves
+- applies to new/changed code, not as a retroactive requirement for untested files
+
+## 12) Component, pipe and directive file structure
+
+This is not consistently implemented across the codebase yet, but all **new** building
+blocks MUST follow this layout (the `player` project is the reference).
+
+New components MUST be split into four files in their own directory:
+
+- `[name].component.ts` (logic/class)
+- `[name].component.html` (template)
+- `[name].component.scss` (styles — SCSS is preferred over CSS)
+- `[name].component.spec.ts` (unit tests)
+
+Place building blocks in the conventional folder of the respective project/module:
+
+- components → a `components/[name]/` directory
+- pipes → a `pipes/` directory
+- directives → a `directives/` directory
+- and likewise for other kinds (services, guards, …)
+
+Rationale:
+- clean separation of concerns and a predictable, consistent project structure
+- keeps templates, styles, logic and tests easy to locate and maintain
+
+## 13) Use `standalone: false`
+
+This project is NgModule-based. Components, pipes and directives MUST be declared with
+`standalone: false` and registered in the `declarations` of their `NgModule` — do NOT
+create standalone building blocks (even though `standalone: true` is the Angular
+default).
+
+- Prefer: `@Component({ standalone: false, … })` + declaration in the owning module
+- Avoid: standalone components/pipes/directives with their own `imports`
+
+Rationale:
+- keeps the whole codebase on one consistent module architecture
+- matches the existing convention across the project
 

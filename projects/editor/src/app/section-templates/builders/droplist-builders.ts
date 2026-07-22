@@ -203,8 +203,13 @@ export function createSortlistSection(options: SortTemplateOptions, idService: I
       { text: options.text1 },
       idService),
     TemplateService.createElement(
+      'text',
+      { gridRow: 2, gridColumn: 1, marginBottom: { value: 20, unit: 'px' } },
+      { text: options.headingSourceList, styling: { bold: true } },
+      idService),
+    TemplateService.createElement(
       'drop-list',
-      { gridRow: 2, gridColumn: 1, marginBottom: { value: 40, unit: 'px' } },
+      { gridRow: 3, gridColumn: 1, marginBottom: { value: 40, unit: 'px' } },
       {
         dimensions: {
           // eslint-disable-next-line no-nested-ternary

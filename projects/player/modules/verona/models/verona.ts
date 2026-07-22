@@ -144,7 +144,7 @@ export interface VopWindowFocusChangedNotification {
   hasFocus: boolean;
 }
 
-export type WidgetType = 'CALC' | 'PERIODIC_TABLE' | 'MOLECULE_EDITOR';
+export type WidgetType = 'PERIODIC_TABLE' | 'MOLECULE_EDITOR';
 
 export interface WidgetParameter {
   key: string;

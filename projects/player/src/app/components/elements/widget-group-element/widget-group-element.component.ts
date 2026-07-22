@@ -8,10 +8,9 @@ import { VopWidgetReturn, WidgetType } from 'player/modules/verona/models/verona
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
-  ValueChangeElement, WidgetCalcCall, WidgetPeriodicTableCall, WidgetMoleculeEditorCall
+  ValueChangeElement, WidgetPeriodicTableCall, WidgetMoleculeEditorCall
 } from 'common/interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
-import { WidgetCalcElement } from 'common/models/elements/widget-calc/widget-calc';
 import {
   WidgetMoleculeEditorElement
 } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
@@ -30,7 +29,6 @@ export class WidgetGroupElementComponent
   extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   WidgetPeriodicTableElement!: WidgetPeriodicTableElement;
-  WidgetCalcElement!: WidgetCalcElement;
   WidgetMoleculeEditorElement!: WidgetMoleculeEditorElement;
 
   private ngUnsubscribe: Subject<void> = new Subject();
@@ -50,13 +48,13 @@ export class WidgetGroupElementComponent
       .mapToElementModelValue(
         this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
       );
-    (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement | WidgetMoleculeEditorElement).state =
+    (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state =
       mappedValue as string | null;
   }
 
   ngAfterViewInit(): void {
     const initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
-      (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement | WidgetMoleculeEditorElement).state,
+      (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state,
       this.elementModel.type);
     this.registerAtUnitStateService(
       this.elementModel.id,
@@ -67,17 +65,17 @@ export class WidgetGroupElementComponent
   }
 
   applyWidgetCall(
-    event: WidgetPeriodicTableCall | WidgetCalcCall | WidgetMoleculeEditorCall, widgetType: WidgetType
+    event: WidgetPeriodicTableCall | WidgetMoleculeEditorCall, widgetType: WidgetType
   ): void {
     this.sendWidgetCallEvent(event, widgetType);
     this.subscribeToWidgetReturn();
   }
 
   private sendWidgetCallEvent(
-    event: WidgetPeriodicTableCall | WidgetCalcCall | WidgetMoleculeEditorCall, widgetType: WidgetType
+    event: WidgetPeriodicTableCall | WidgetMoleculeEditorCall, widgetType: WidgetType
   ): void {
     const currentState =
-      (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement | WidgetMoleculeEditorElement).state;
+      (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state;
 
     this.veronaPostService.sendVopWidgetCall({
       widgetType,
@@ -101,7 +99,7 @@ export class WidgetGroupElementComponent
 
   private handleWidgetReturnMessage(message: VopWidgetReturn): void {
     if (message.state) {
-      (this.elementModel as WidgetPeriodicTableElement | WidgetCalcElement | WidgetMoleculeEditorElement).state =
+      (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state =
         message.state;
 
       this.changeElementCodeValue({

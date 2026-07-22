@@ -410,13 +410,6 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     firstLineColoring: false,
     firstLineColoringColor: '#c7f3d0'
   },
-  'widget-calc': {
-    mode: 'SIMPLE',
-    journalLines: 0,
-    state: null,
-    backgroundColor: '#f1f1f1',
-    fontColor: '#006064'
-  },
   'widget-molecule-editor': {
     bondingType: 'VALENCE',
     state: null,

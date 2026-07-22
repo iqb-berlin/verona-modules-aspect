@@ -13,7 +13,6 @@ import { Hotspot, HotspotImageElement } from 'common/models/elements/input-eleme
 import { DragNDropValueObject, InputElementValue, UIElementType } from 'common/interfaces';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
-import { WidgetCalcElement } from 'common/models/elements/widget-calc/widget-calc';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';
@@ -40,10 +39,6 @@ export class ElementModelElementCodeMappingService {
         return (elementCodeValue !== undefined) ?
           elementCodeValue as string :
           (elementModel as WidgetPeriodicTableElement).state;
-      case 'widget-calc':
-        return (elementCodeValue !== undefined) ?
-          elementCodeValue as string :
-          (elementModel as WidgetCalcElement).state;
       case 'drop-list':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectByAlias(id)) as DragNDropValueObject[] :
@@ -98,7 +93,6 @@ export class ElementModelElementCodeMappingService {
       case 'geometry':
       case 'geometry-variable':
       case 'widget-periodic-table':
-      case 'widget-calc':
         return elementModelValue as string;
       case 'image':
         return elementModelValue as boolean;

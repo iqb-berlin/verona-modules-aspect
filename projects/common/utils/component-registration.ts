@@ -32,7 +32,6 @@ import { MathFieldComponent } from 'common/components/input-elements/math-field/
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
 import { TriggerComponent } from 'common/components/trigger/trigger.component';
-import { WidgetCalcComponent } from 'common/components/widget-calc/widget-calc.component';
 import {
   WidgetMoleculeEditorComponent
 } from 'common/components/widget-molecule-editor/widget-molecule-editor.component';
@@ -67,7 +66,6 @@ export function registerComponents(): void {
     'math-table': MathTableComponent,
     'text-area-math': TextAreaMathComponent,
     trigger: TriggerComponent,
-    'widget-calc': WidgetCalcComponent,
     'widget-molecule-editor': WidgetMoleculeEditorComponent,
     'widget-periodic-table': WidgetPeriodicTableComponent
   });

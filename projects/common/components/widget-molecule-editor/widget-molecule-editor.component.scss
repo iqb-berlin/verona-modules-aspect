@@ -1,0 +1,5 @@
+// The padding keeps the button's shadow within the element bounds,
+// so neighboring elements cannot cover it.
+.widget-container {
+  padding: 10px;
+}

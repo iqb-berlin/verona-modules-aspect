@@ -2,6 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { StateVariable } from 'common/models/state-variable';
+import { VariableAlias } from 'common/utils/variable-alias';
 import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
@@ -12,6 +13,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 })
 export class StateVariableEditorComponent {
   error: boolean = false;
+  errorMessage: string = '';
   @Input() stateVariable!: StateVariable;
   @Output() stateVariableChange = new EventEmitter<StateVariable>();
 
@@ -19,8 +21,15 @@ export class StateVariableEditorComponent {
 
   checkId(alias: string): void {
     if (alias !== this.stateVariable.alias) {
-      this.error = !this.idService.isAliasAvailable(alias);
-      if (!this.error) {
+      if (!VariableAlias.isValid(alias)) {
+        this.error = true;
+        this.errorMessage = 'idContainsInvalidCharacters';
+      } else if (!this.idService.isAliasAvailable(alias)) {
+        this.error = true;
+        this.errorMessage = 'idTaken';
+      } else {
+        this.error = false;
+        this.errorMessage = '';
         this.idService.unregister(this.stateVariable.alias, false, true);
         this.idService.register(alias, false, true);
         this.stateVariable.alias = alias;
@@ -28,6 +37,7 @@ export class StateVariableEditorComponent {
       }
     } else {
       this.error = false;
+      this.errorMessage = '';
     }
   }
 }

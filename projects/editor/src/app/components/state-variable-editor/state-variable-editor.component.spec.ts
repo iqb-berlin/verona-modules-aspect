@@ -57,6 +57,26 @@ describe('StateVariableEditorComponent', () => {
     mockIDService.isAliasAvailable.and.returnValue(false);
     component.checkId('taken_v1');
     expect(component.error).toBeTrue();
+    expect(component.errorMessage).toBe('idTaken');
     expect(mockIDService.register).not.toHaveBeenCalled();
+  });
+
+  it('should set error if alias contains invalid characters', () => {
+    ['März', 'Lösung1', 'weiter ', ' weiter', 'a.b'].forEach(alias => {
+      component.checkId(alias);
+      expect(component.error).withContext(alias).toBeTrue();
+      expect(component.errorMessage).withContext(alias).toBe('idContainsInvalidCharacters');
+    });
+    expect(mockIDService.register).not.toHaveBeenCalled();
+    expect(component.stateVariable.alias).toBe('v1');
+  });
+
+  it('should clear error when alias becomes valid again', () => {
+    component.checkId('März');
+    expect(component.error).toBeTrue();
+    component.checkId('Maerz');
+    expect(component.error).toBeFalse();
+    expect(component.errorMessage).toBe('');
+    expect(component.stateVariable.alias).toBe('Maerz');
   });
 });

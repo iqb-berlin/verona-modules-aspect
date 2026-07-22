@@ -14,7 +14,9 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 
         <mat-form-field [style.margin-top.px]="15">
           <mat-label>{{'id' | translate }}</mat-label>
-          <input matInput type="text" [(ngModel)]="newLikertRow.alias">
+          <input matInput type="text" [(ngModel)]="newLikertRow.alias" #aliasModel="ngModel"
+                 required pattern="[0-9a-zA-Z_-]+">
+          <mat-error>{{'idContainsInvalidCharacters' | translate }}</mat-error>
         </mat-form-field>
 
         <mat-checkbox [(ngModel)]="newLikertRow.readOnly">
@@ -68,7 +70,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
     </mat-dialog-content>
 
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="newLikertRow">
+      <button mat-button [mat-dialog-close]="newLikertRow" [disabled]="aliasModel.invalid">
         {{'save' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>

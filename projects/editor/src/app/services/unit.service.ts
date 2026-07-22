@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { VariableInfo } from '@iqb/responses';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
@@ -8,6 +10,7 @@ import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/utils/section-counter';
+import { VariableAlias } from 'common/utils/variable-alias';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { MigrationManager } from 'common/services/migration-manager';
 import { EditorPage, EditorUnit } from 'editor/src/app/models/editor-unit';
@@ -36,7 +39,8 @@ export class UnitService {
               private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,
-              private idService: IDService) {
+              private idService: IDService,
+              private translateService: TranslateService) {
     this.unit = new EditorUnit(undefined, this.idService);
     this.referenceManager = new ReferenceManager(this.unit);
   }
@@ -92,13 +96,37 @@ export class UnitService {
       this.updateUnitDefinition();
     }
     this.updateSectionCounter();
+    this.checkForInvalidVariableInfos();
+  }
+
+  /* Invalid ids/aliases can come in via imported unit definitions. They are not reported
+     to the host (see getValidVariableInfos), therefore the user gets notified. (#1043) */
+  private checkForInvalidVariableInfos(): void {
+    const invalidVariableInfos = this.unit.getVariableInfos()
+      .filter(variableInfo => !UnitService.isReportableVariableInfo(variableInfo));
+    if (invalidVariableInfos.length > 0) {
+      this.messageService.showPrompt(
+        this.translateService.instant(
+          'invalidVariableAliases',
+          { aliases: invalidVariableInfos.map(v => v.alias ?? v.id).join(', ') }));
+    }
   }
 
   updateUnitDefinition(): void {
     this.veronaApiService.sendChanged(
       UnitService.createUnitDefinition(this.unit),
       `${this.unit.type}@${this.unit.version}`,
-      this.unit.getVariableInfos());
+      this.getValidVariableInfos());
+  }
+
+  private getValidVariableInfos(): VariableInfo[] {
+    return this.unit.getVariableInfos()
+      .filter(variableInfo => UnitService.isReportableVariableInfo(variableInfo));
+  }
+
+  private static isReportableVariableInfo(variableInfo: VariableInfo): boolean {
+    return VariableAlias.isValid(variableInfo.id) &&
+      (variableInfo.alias === undefined || VariableAlias.isValid(variableInfo.alias));
   }
 
   private static createUnitDefinition(unit: Unit): string {

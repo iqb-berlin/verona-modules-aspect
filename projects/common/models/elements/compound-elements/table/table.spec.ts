@@ -4,15 +4,15 @@ import { DragNDropValueObject, UIElementProperties, UIElementType } from 'common
 import { TableElement } from './table';
 
 describe('TableElement', () => {
-  const dropListValues: DragNDropValueObject[] = [
+  const createDropListValues = (listID: string, valuePrefix: string): DragNDropValueObject[] => [
     {
       text: 'Option A',
       imgSrc: null,
       imgFileName: '',
       imgPosition: 'above',
-      id: 'value_1',
-      alias: 'value_1',
-      originListID: 'drop-list_1',
+      id: `${valuePrefix}_1`,
+      alias: `${valuePrefix}_1`,
+      originListID: listID,
       originListIndex: 0,
       audioSrc: null,
       audioFileName: ''
@@ -22,9 +22,9 @@ describe('TableElement', () => {
       imgSrc: null,
       imgFileName: '',
       imgPosition: 'above',
-      id: 'value_2',
-      alias: 'value_2',
-      originListID: 'drop-list_1',
+      id: `${valuePrefix}_2`,
+      alias: `${valuePrefix}_2`,
+      originListID: listID,
       originListIndex: 1,
       audioSrc: null,
       audioFileName: ''
@@ -36,7 +36,7 @@ describe('TableElement', () => {
     id: 'drop-list_1',
     alias: 'drop-list_1',
     isRelevantForPresentationComplete: true,
-    value: dropListValues
+    value: createDropListValues('drop-list_1', 'value')
   };
 
   const tableProperties = {
@@ -50,8 +50,8 @@ describe('TableElement', () => {
     tableEdgesEnabled: false
   };
 
-  const sectionProperties: SectionProperties = {
-    elements: [tableProperties as UIElementProperties],
+  const createSectionProperties = (elements: UIElementProperties[]): SectionProperties => ({
+    elements,
     height: 400,
     backgroundColor: '#ffffff',
     dynamicPositioning: true,
@@ -65,6 +65,11 @@ describe('TableElement', () => {
     logicalConnectiveOfRules: 'disjunction',
     visibilityRules: [],
     ignoreNumbering: false
+  });
+
+  const getSectionVariableInfos = (section: Section) => {
+    const dropLists = section.getAllElements('drop-list') as DropListElement[];
+    return section.getVariableInfos(dropLists);
   };
 
   it('should instantiate its child elements', () => {
@@ -75,16 +80,14 @@ describe('TableElement', () => {
 
   describe('getVariableInfos of a section with a drop list inside a table (#1087)', () => {
     it('should not throw', () => {
-      const section = new Section(sectionProperties);
+      const section = new Section(createSectionProperties([tableProperties as UIElementProperties]));
       const dropLists = section.getAllElements('drop-list') as DropListElement[];
       expect(() => section.getVariableInfos(dropLists)).not.toThrow();
     });
 
     it('should return the variable info of the drop list with its values', () => {
-      const section = new Section(sectionProperties);
-      const dropLists = section.getAllElements('drop-list') as DropListElement[];
-      const variableInfos = section.getVariableInfos(dropLists);
-      const dropListInfos = variableInfos.filter(info => info.id === 'drop-list_1');
+      const section = new Section(createSectionProperties([tableProperties as UIElementProperties]));
+      const dropListInfos = getSectionVariableInfos(section).filter(info => info.id === 'drop-list_1');
       expect(dropListInfos.length).toBe(1);
       expect(dropListInfos[0].values).toEqual([
         { value: 'value_1', label: 'Option A' },
@@ -93,11 +96,94 @@ describe('TableElement', () => {
     });
 
     it('should not return duplicate variable infos for table child elements', () => {
-      const section = new Section(sectionProperties);
-      const dropLists = section.getAllElements('drop-list') as DropListElement[];
-      const variableInfos = section.getVariableInfos(dropLists);
-      const ids = variableInfos.map(info => info.id);
+      const section = new Section(createSectionProperties([tableProperties as UIElementProperties]));
+      const ids = getSectionVariableInfos(section).map(info => info.id);
       expect(new Set(ids).size).toBe(ids.length);
+    });
+  });
+
+  describe('getVariableInfos of surrounding elements (regression)', () => {
+    it('should keep reporting standalone and connected drop lists outside of tables', () => {
+      const sourceListProperties = {
+        type: 'drop-list' as UIElementType,
+        id: 'drop-list_source',
+        alias: 'drop-list_source',
+        isRelevantForPresentationComplete: true,
+        value: createDropListValues('drop-list_source', 'source-value'),
+        connectedTo: ['drop-list_target']
+      };
+      const targetListProperties = {
+        type: 'drop-list' as UIElementType,
+        id: 'drop-list_target',
+        alias: 'drop-list_target',
+        isRelevantForPresentationComplete: true,
+        value: []
+      };
+      const section = new Section(createSectionProperties([
+        sourceListProperties as UIElementProperties,
+        targetListProperties as UIElementProperties
+      ]));
+      const variableInfos = getSectionVariableInfos(section);
+      const targetInfos = variableInfos.filter(info => info.id === 'drop-list_target');
+      expect(targetInfos.length).toBe(1);
+      expect(targetInfos[0].values).toEqual([
+        { value: 'source-value_1', label: 'Option A' },
+        { value: 'source-value_2', label: 'Option B' }
+      ]);
+      expect(variableInfos.filter(info => info.id === 'drop-list_source').length).toBe(1);
+    });
+
+    it('should keep reporting other input elements inside a table exactly once', () => {
+      const checkboxProperties = {
+        type: 'checkbox' as UIElementType,
+        id: 'checkbox_1',
+        alias: 'checkbox_1',
+        isRelevantForPresentationComplete: true,
+        label: 'Check mich'
+      };
+      const tableWithCheckbox = {
+        ...tableProperties,
+        elements: [checkboxProperties as UIElementProperties]
+      };
+      const section = new Section(createSectionProperties([tableWithCheckbox as UIElementProperties]));
+      const checkboxInfos = getSectionVariableInfos(section).filter(info => info.id === 'checkbox_1');
+      expect(checkboxInfos.length).toBe(1);
+      expect(checkboxInfos[0].type).toBe('boolean');
+    });
+
+    it('should keep reporting drop lists inside a cloze element', () => {
+      const clozeDropListProperties = {
+        type: 'drop-list' as UIElementType,
+        id: 'drop-list_cloze',
+        alias: 'drop-list_cloze',
+        isRelevantForPresentationComplete: true,
+        value: createDropListValues('drop-list_cloze', 'cloze-value')
+      };
+      const clozeProperties = {
+        type: 'cloze' as UIElementType,
+        id: 'cloze_1',
+        alias: 'cloze_1',
+        isRelevantForPresentationComplete: true,
+        columnCount: 1,
+        document: {
+          type: 'doc',
+          content: [{
+            type: 'paragraph',
+            attrs: {},
+            content: [{
+              type: 'DropList',
+              attrs: { model: clozeDropListProperties }
+            }]
+          }]
+        }
+      };
+      const section = new Section(createSectionProperties([clozeProperties as UIElementProperties]));
+      const dropListInfos = getSectionVariableInfos(section).filter(info => info.id === 'drop-list_cloze');
+      expect(dropListInfos.length).toBe(1);
+      expect(dropListInfos[0].values).toEqual([
+        { value: 'cloze-value_1', label: 'Option A' },
+        { value: 'cloze-value_2', label: 'Option B' }
+      ]);
     });
   });
 });

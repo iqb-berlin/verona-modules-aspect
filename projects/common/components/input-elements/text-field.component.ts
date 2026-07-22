@@ -104,15 +104,18 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-      border: none;
-      padding: 0 10px;
+      border: 2px solid transparent;
+      padding: 0 8px;
       font-family: inherit;
     }
     /* The input fills the whole table cell, so the native focus ring would be
-       painted into the neighboring cells and get covered by them. Draw it inset instead. */
+       painted into the neighboring cells and get covered by them (#1069). An inset
+       outline is rounded away from fractional cell edges by Firefox, leaving a 1px
+       gap to the table lines (#1091). The border shares the geometry of the input's
+       background, so coloring the always-present transparent border cannot leave gaps. */
     .table-child:focus-visible {
-      outline: 2px solid var(--outline-color-primary);
-      outline-offset: -2px;
+      border-color: var(--outline-color-primary);
+      outline: none;
     }
     .errors {
       border: 2px solid #f44336 !important;

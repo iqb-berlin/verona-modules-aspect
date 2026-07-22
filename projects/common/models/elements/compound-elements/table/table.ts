@@ -1,4 +1,3 @@
-import { VariableInfo } from '@iqb/responses';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import {
   UIElement, CompoundElement
@@ -85,11 +84,6 @@ export class TableElement extends CompoundElement implements TableProperties {
       id: undefined,
       alias: undefined
     } as unknown as TableElement;
-  }
-
-  getVariableInfos(): VariableInfo[] {
-    return this.elements.map(element => element.getVariableInfos())
-      .reduce((accumulator, value) => accumulator.concat(value), []);
   }
 }
 

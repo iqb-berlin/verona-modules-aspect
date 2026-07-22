@@ -5,7 +5,7 @@ import { TemplateService } from '../template.service';
 import { EditorSection } from '../../models/editor-unit';
 
 export function createGeometrySection(text: string, geometryAppDefinition: string, geometryFileName: string,
-                                      showHelper: boolean, idService: IDService) {
+                                      showHelper: boolean, sourceText: string, idService: IDService) {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
       'text',
@@ -27,9 +27,7 @@ export function createGeometrySection(text: string, geometryAppDefinition: strin
       'text',
       { gridRow: 3, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
       {
-        text: 'Erstellt mit GeoGebra, https://www.geogebra.org (es gelten die GeoGebra-Lizenzbedingungen), ' +
-          'Copyright Text, Grafik und Teilaufgaben: IQB e. V., Lizenz: Creative Commons (CC BY). Volltext ' +
-          'unter: https://creativecommons.org/licenses/by/4.0/de/legalcode',
+        text: sourceText,
         styling: { fontSize: 14, lineHeight: 100 }
       },
       idService)

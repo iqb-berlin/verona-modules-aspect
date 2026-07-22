@@ -421,13 +421,12 @@
     "corruptElement": "Element-Ressource ist vermutlich fehlerhaft und sollte ausgetauscht werden! \n\n Ursprüngliche Fehlermeldung: {{ errorMsg }}"
   },
   "imageResizeDialog": {
-    "title": "Bildeinstellungen",
+    "title": "Bild komprimieren",
     "originalSize": "Originalgröße",
     "useOriginalFile": "Originaldatei verwenden (keine Komprimierung)",
     "maxWidth": "Maximale Breite (px)",
     "maxHeight": "Maximale Höhe (px)",
-    "keepAspectRatio": "Seitenverhältnis beibehalten",
-    "unlimited": "Unbegrenzt",
+    "aspectRatioLocked": "Das Seitenverhältnis bleibt immer erhalten",
     "quality": "Qualität",
     "convertToWebP": "In WebP konvertieren (spart Speicherplatz)",
     "newSize": "Voraussichtliche neue Größe"

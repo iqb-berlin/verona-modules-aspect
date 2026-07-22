@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { ImageResizeDialogData } from 'common/interfaces';
 import { BytesPipe } from '../../pipes/bytes.pipe';
 import { SupportsQualityPipe } from '../../pipes/supports-quality.pipe';
 import { ImageResizeDialogComponent } from './image-resize-dialog.component';
@@ -17,17 +18,18 @@ import { ImageResizeDialogComponent } from './image-resize-dialog.component';
 describe('ImageResizeDialogComponent', () => {
   let component: ImageResizeDialogComponent;
   let fixture: ComponentFixture<ImageResizeDialogComponent>;
-
-  const mockDialogData = {
-    // eslint-disable-next-line max-len
-    base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
-    options: {
-      maxWidth: 500,
-      quality: 0.8
-    }
-  };
+  let mockDialogData: ImageResizeDialogData;
 
   beforeEach(async () => {
+    mockDialogData = {
+      // eslint-disable-next-line max-len
+      base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+      options: {
+        maxWidth: 500,
+        quality: 0.8
+      }
+    };
+
     await TestBed.configureTestingModule({
       declarations: [
         ImageResizeDialogComponent,
@@ -95,5 +97,35 @@ describe('ImageResizeDialogComponent', () => {
       expect(component.originalSize).toBeGreaterThan(0);
       done();
     }, 200);
+  });
+
+  it('should clamp maxWidth to the original width and sync maxHeight on init', done => {
+    setTimeout(() => {
+      expect(component.data.options.maxWidth).toBe(1);
+      expect(component.data.options.maxHeight).toBe(1);
+      done();
+    }, 200);
+  });
+
+  it('should always sync maxHeight to the aspect ratio when the width changes', () => {
+    component.originalWidth = 200;
+    component.originalHeight = 100;
+    component.onWidthChange(100);
+    expect(component.data.options.maxHeight).toBe(50);
+  });
+
+  it('should always sync maxWidth to the aspect ratio when the height changes', () => {
+    component.originalWidth = 200;
+    component.originalHeight = 100;
+    component.onHeightChange(30);
+    expect(component.data.options.maxWidth).toBe(60);
+  });
+
+  it('should not sync dimensions while the input is empty', () => {
+    component.originalWidth = 200;
+    component.originalHeight = 100;
+    component.data.options.maxHeight = 75;
+    component.onWidthChange(null as unknown as number);
+    expect(component.data.options.maxHeight).toBe(75);
   });
 });

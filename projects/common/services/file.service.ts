@@ -83,10 +83,13 @@ export class FileService {
 
         let { width, height } = img;
 
-        if (width <= maxWidth && height <= maxHeight) {
+        const needsResize = width > maxWidth || height > maxHeight;
+        const needsConversion = options.targetMimeType !== undefined && options.targetMimeType !== mimeType;
+
+        if (!needsResize && !needsConversion) {
           resolve(base64Image);
         } else {
-          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          const ratio = needsResize ? Math.min(maxWidth / width, maxHeight / height) : 1;
           width *= ratio;
           height *= ratio;
 

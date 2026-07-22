@@ -13,7 +13,6 @@ import { IMAGE_COMPRESSION_QUALITY, IMAGE_MAX_WIDTH } from 'common/config';
 export class ImageResizeDialogComponent implements OnInit {
   originalWidth: number = 0;
   originalHeight: number = 0;
-  keepAspectRatio: boolean = true;
   originalSize: number = 0;
   estimatedSize: number = 0;
 
@@ -34,6 +33,8 @@ export class ImageResizeDialogComponent implements OnInit {
     img.onload = () => {
       this.originalWidth = img.width;
       this.originalHeight = img.height;
+      this.data.options.maxWidth = Math.min(this.data.options.maxWidth || IMAGE_MAX_WIDTH, img.width);
+      this.data.options.maxHeight = Math.round(this.data.options.maxWidth * (img.height / img.width));
       this.updateEstimatedSize();
     };
   }
@@ -44,14 +45,14 @@ export class ImageResizeDialogComponent implements OnInit {
   }
 
   onWidthChange(value: number): void {
-    if (this.keepAspectRatio && this.originalWidth && this.originalHeight) {
+    if (value && this.originalWidth && this.originalHeight) {
       this.data.options.maxHeight = Math.round(value * (this.originalHeight / this.originalWidth));
     }
     this.updateEstimatedSize();
   }
 
   onHeightChange(value: number): void {
-    if (this.keepAspectRatio && this.originalWidth && this.originalHeight) {
+    if (value && this.originalWidth && this.originalHeight) {
       this.data.options.maxWidth = Math.round(value * (this.originalWidth / this.originalHeight));
     }
     this.updateEstimatedSize();

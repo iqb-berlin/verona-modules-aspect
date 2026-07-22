@@ -421,7 +421,7 @@
     "corruptElement": "Element-Ressource ist vermutlich fehlerhaft und sollte ausgetauscht werden! \n\n Ursprüngliche Fehlermeldung: {{ errorMsg }}"
   },
   "imageResizeDialog": {
-    "title": "Bildeinstellungen",
+    "title": "Bild komprimieren",
     "originalSize": "Originalgröße",
     "useOriginalFile": "Originaldatei verwenden (keine Komprimierung)",
     "maxWidth": "Maximale Breite (px)",

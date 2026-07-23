@@ -12,15 +12,15 @@ describe('ShowStateVariablesButtonComponent', () => {
   let fixture: ComponentFixture<ShowStateVariablesButtonComponent>;
 
   const mockDialogService = {
-    showStateVariablesDialog: jasmine.createSpy('showStateVariablesDialog').and.returnValue(of([]))
+    showStateVariablesDialog: vi.fn().mockReturnValue(of([]))
   };
 
   const mockUnitService = {
     unit: {
       stateVariables: []
     },
-    updateStateVariables: jasmine.createSpy('updateStateVariables'),
-    reRegisterAll: jasmine.createSpy('reRegisterAll')
+    updateStateVariables: vi.fn(),
+    reRegisterAll: vi.fn()
   };
 
   beforeEach(async () => {
@@ -48,14 +48,14 @@ describe('ShowStateVariablesButtonComponent', () => {
 
   it('should open dialog and update state variables on success', () => {
     const newStateVars = [{ id: 'v1', alias: 'v1', value: '' }];
-    mockDialogService.showStateVariablesDialog.and.returnValue(of(newStateVars));
+    mockDialogService.showStateVariablesDialog.mockReturnValue(of(newStateVars));
     component.showStateVariablesDialog();
     expect(mockDialogService.showStateVariablesDialog).toHaveBeenCalled();
     expect(mockUnitService.updateStateVariables).toHaveBeenCalledWith(newStateVars);
   });
 
   it('should open dialog and re-register all on cancel', () => {
-    mockDialogService.showStateVariablesDialog.and.returnValue(of(null));
+    mockDialogService.showStateVariablesDialog.mockReturnValue(of(null));
     component.showStateVariablesDialog();
     expect(mockDialogService.showStateVariablesDialog).toHaveBeenCalled();
     expect(mockUnitService.reRegisterAll).toHaveBeenCalled();

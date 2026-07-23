@@ -121,9 +121,9 @@ describe('TextAreaMathComponent', () => {
     const div = document.createElement('div');
     div.textContent = 'test';
     dummyRange.selectNodeContents(div);
-    spyOn(RangeSelectionService, 'getRange').and.returnValue(dummyRange);
-    spyOn(RangeSelectionService, 'isRangeInside').and.returnValue(true);
-    spyOn(RangeSelectionService, 'getSelectionRange').and.returnValue({ start: 4, end: 4 });
+    vi.spyOn(RangeSelectionService, 'getRange').mockReturnValue(dummyRange);
+    vi.spyOn(RangeSelectionService, 'isRangeInside').mockReturnValue(true);
+    vi.spyOn(RangeSelectionService, 'getSelectionRange').mockReturnValue({ start: 4, end: 4 });
 
     component.segments = [];
     component.addFormula();
@@ -140,6 +140,6 @@ describe('TextAreaMathComponent', () => {
     component.elementModel.readOnly = true;
     fixture.detectChanges();
     const button = fixture.nativeElement.querySelector('.insert-formula-button') as HTMLButtonElement;
-    expect(button.disabled).toBeTrue();
+    expect(button.disabled).toBe(true);
   });
 });

@@ -38,14 +38,14 @@ describe('AppComponent startCommand loading', () => {
 
     veronaApiServiceMock = {
       startCommand: startCommand$,
-      sendReady: jasmine.createSpy('sendReady'),
-      sendChanged: jasmine.createSpy('sendChanged')
+      sendReady: vi.fn(),
+      sendChanged: vi.fn()
     };
 
     translateServiceMock = {
-      addLangs: jasmine.createSpy('addLangs'),
-      setDefaultLang: jasmine.createSpy('setDefaultLang'),
-      instant: jasmine.createSpy('instant').and.callFake(key => key)
+      addLangs: vi.fn(),
+      setDefaultLang: vi.fn(),
+      instant: vi.fn().mockImplementation(key => key)
     };
 
     unitService = new UnitService(
@@ -70,7 +70,7 @@ describe('AppComponent startCommand loading', () => {
     startCommand$.next(createStartCommand('first', 'Checkbox A'));
     tick();
 
-    if ((veronaApiServiceMock.sendReady as jasmine.Spy).calls.count() !== 1) {
+    if ((veronaApiServiceMock.sendReady as jasmine.Spy).mock.calls.length !== 1) {
       throw new Error('Expected sendReady to be called once');
     }
     if (unitService.unit.getAllElements('checkbox').length !== 1) {
@@ -83,7 +83,7 @@ describe('AppComponent startCommand loading', () => {
   }));
 
   it('loads only the latest unit when two different startCommands arrive back-to-back', fakeAsync(() => {
-    spyOn(Date, 'now').and.returnValue(1710000000000);
+    vi.spyOn(Date, 'now').mockReturnValue(1710000000000);
 
     const appComponent = new AppComponent(
       unitService,
@@ -99,11 +99,11 @@ describe('AppComponent startCommand loading', () => {
     expectJasmine(() => tick()).not.toThrow();
     expectJasmine(unitService.unit.stateVariables[0].id).toBe('second');
     expectJasmine(unitService.unit.getAllElements('checkbox').length).toBe(1);
-    expectJasmine((veronaApiServiceMock.sendReady as jasmine.Spy).calls.count()).toBe(1);
+    expectJasmine((veronaApiServiceMock.sendReady as jasmine.Spy).mock.calls.length).toBe(1);
   }));
 
   it('loads only the latest unit when two checkbox startCommands arrive back-to-back', fakeAsync(() => {
-    spyOn(Date, 'now').and.returnValue(1710000000001);
+    vi.spyOn(Date, 'now').mockReturnValue(1710000000001);
 
     const appComponent = new AppComponent(
       unitService,
@@ -119,7 +119,7 @@ describe('AppComponent startCommand loading', () => {
     expectJasmine(() => tick()).not.toThrow();
     expectJasmine(unitService.unit.stateVariables[0].id).toBe('second-checkbox');
     expectJasmine(unitService.unit.getAllElements('checkbox').length).toBe(1);
-    expectJasmine((veronaApiServiceMock.sendReady as jasmine.Spy).calls.count()).toBe(1);
+    expectJasmine((veronaApiServiceMock.sendReady as jasmine.Spy).mock.calls.length).toBe(1);
   }));
 });
 

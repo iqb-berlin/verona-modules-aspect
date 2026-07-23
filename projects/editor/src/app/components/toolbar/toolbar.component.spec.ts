@@ -49,20 +49,20 @@ describe('ToolbarComponent', () => {
   it('should delegate save to UnitService', () => {
     component.save();
 
-    expect(unitServiceSpy.saveUnit.calls.count()).toBe(1);
+    expect(unitServiceSpy.saveUnit.mock.calls.length).toBe(1);
   });
 
   it('should load a unit file and post a voeStartCommand message', async () => {
-    const postMessageSpy = spyOn(window, 'postMessage');
-    const loadFileSpy = spyOn(FileService, 'loadFile').and.returnValue(
+    const postMessageSpy = vi.spyOn(window, 'postMessage');
+    const loadFileSpy = vi.spyOn(FileService, 'loadFile').mockReturnValue(
       Promise.resolve({ name: 'unit.json', content: '{"type":"unit"}' })
     );
 
     await component.load();
 
-    expect(loadFileSpy.calls.count()).toBe(1);
+    expect(loadFileSpy.mock.calls.length).toBe(1);
     expect(loadFileSpy.calls.mostRecent().args).toEqual([['.json', '.voud']]);
-    expect(postMessageSpy.calls.count()).toBe(1);
+    expect(postMessageSpy.mock.calls.length).toBe(1);
     expect(postMessageSpy.calls.mostRecent().args).toEqual([
       {
         type: 'voeStartCommand',
@@ -81,14 +81,14 @@ describe('ToolbarComponent', () => {
     mockVeronaApiService.sessionID = undefined;
     mockVeronaApiService.resourceURL = undefined;
 
-    const postMessageSpy = spyOn(window, 'postMessage');
-    spyOn(FileService, 'loadFile').and.returnValue(
+    const postMessageSpy = vi.spyOn(window, 'postMessage');
+    vi.spyOn(FileService, 'loadFile').mockReturnValue(
       Promise.resolve({ name: 'unit.json', content: '{"type":"unit"}' })
     );
 
     await component.load();
 
-    expect(postMessageSpy.calls.count()).toBe(1);
+    expect(postMessageSpy.mock.calls.length).toBe(1);
     expect(postMessageSpy.calls.mostRecent().args).toEqual([
       {
         type: 'voeStartCommand',

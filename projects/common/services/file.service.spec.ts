@@ -28,14 +28,14 @@ describe('FileService', () => {
       const source = createImage(10, 10);
       const result = await FileService
         .scaleImage(source, { maxWidth: 10, maxHeight: 10, targetMimeType: 'image/webp' });
-      expect(result.startsWith('data:image/webp')).toBeTrue();
+      expect(result.startsWith('data:image/webp')).toBe(true);
     });
 
     it('should convert to WebP without upscaling when the max dimensions are larger', async () => {
       const source = createImage(10, 10);
       const result = await FileService
         .scaleImage(source, { maxWidth: 100, maxHeight: 100, targetMimeType: 'image/webp' });
-      expect(result.startsWith('data:image/webp')).toBeTrue();
+      expect(result.startsWith('data:image/webp')).toBe(true);
       const dimensions = await getImageDimensions(result);
       expect(dimensions.width).toBe(10);
       expect(dimensions.height).toBe(10);

@@ -21,7 +21,7 @@ describe('AreaTextInputComponent', () => {
   });
 
   it('should emit valueChanged on input', () => {
-    spyOn(component.valueChanged, 'emit');
+    vi.spyOn(component.valueChanged, 'emit');
     const span = fixture.nativeElement.querySelector('span');
     span.textContent = 'new value';
     component.onInput();
@@ -40,11 +40,11 @@ describe('AreaTextInputComponent', () => {
   });
 
   it('should emit remove event on keyup if removePressed was set', () => {
-    spyOn(component.remove, 'emit');
+    vi.spyOn(component.remove, 'emit');
     component.removePressed = true;
     const event = new KeyboardEvent('keyup', { key: 'Backspace' });
     component.keyUp(event);
     expect(component.remove.emit).toHaveBeenCalledWith('Backspace');
-    expect(component.removePressed).toBeFalse();
+    expect(component.removePressed).toBe(false);
   });
 });

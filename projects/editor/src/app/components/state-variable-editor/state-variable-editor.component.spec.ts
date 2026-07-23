@@ -16,7 +16,7 @@ describe('StateVariableEditorComponent', () => {
 
   beforeEach(async () => {
     mockIDService = jasmine.createSpyObj('IDService', ['isAliasAvailable', 'unregister', 'register']);
-    mockIDService.isAliasAvailable.and.returnValue(true);
+    mockIDService.isAliasAvailable.mockReturnValue(true);
 
     await TestBed.configureTestingModule({
       declarations: [StateVariableEditorComponent],
@@ -44,7 +44,7 @@ describe('StateVariableEditorComponent', () => {
   });
 
   it('should update alias if available', () => {
-    const spy = spyOn(component.stateVariableChange, 'emit');
+    const spy = vi.spyOn(component.stateVariableChange, 'emit');
     component.checkId('new_v1');
     expect(mockIDService.isAliasAvailable).toHaveBeenCalledWith('new_v1');
     expect(mockIDService.unregister).toHaveBeenCalledWith('v1', false, true);
@@ -54,9 +54,9 @@ describe('StateVariableEditorComponent', () => {
   });
 
   it('should set error if alias not available', () => {
-    mockIDService.isAliasAvailable.and.returnValue(false);
+    mockIDService.isAliasAvailable.mockReturnValue(false);
     component.checkId('taken_v1');
-    expect(component.error).toBeTrue();
+    expect(component.error).toBe(true);
     expect(component.errorMessage).toBe('idTaken');
     expect(mockIDService.register).not.toHaveBeenCalled();
   });
@@ -64,7 +64,7 @@ describe('StateVariableEditorComponent', () => {
   it('should set error if alias contains invalid characters', () => {
     ['März', 'Lösung1', 'weiter ', ' weiter', 'a.b'].forEach(alias => {
       component.checkId(alias);
-      expect(component.error).withContext(alias).toBeTrue();
+      expect(component.error).withContext(alias).toBe(true);
       expect(component.errorMessage).withContext(alias).toBe('idContainsInvalidCharacters');
     });
     expect(mockIDService.register).not.toHaveBeenCalled();
@@ -73,9 +73,9 @@ describe('StateVariableEditorComponent', () => {
 
   it('should clear error when alias becomes valid again', () => {
     component.checkId('März');
-    expect(component.error).toBeTrue();
+    expect(component.error).toBe(true);
     component.checkId('Maerz');
-    expect(component.error).toBeFalse();
+    expect(component.error).toBe(false);
     expect(component.errorMessage).toBe('');
     expect(component.stateVariable.alias).toBe('Maerz');
   });

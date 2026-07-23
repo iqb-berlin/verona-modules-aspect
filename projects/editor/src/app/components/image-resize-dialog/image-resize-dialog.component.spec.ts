@@ -77,15 +77,15 @@ describe('ImageResizeDialogComponent', () => {
     });
 
     it('should return true if targetMimeType is webp', () => {
-      expect(pipe.transform('data:image/png;base64,...', 'image/webp')).toBeTrue();
+      expect(pipe.transform('data:image/png;base64,...', 'image/webp')).toBe(true);
     });
 
     it('should return true for jpeg', () => {
-      expect(pipe.transform('data:image/jpeg;base64,...')).toBeTrue();
+      expect(pipe.transform('data:image/jpeg;base64,...')).toBe(true);
     });
 
     it('should return false for png', () => {
-      expect(pipe.transform('data:image/png;base64,...')).toBeFalse();
+      expect(pipe.transform('data:image/png;base64,...')).toBe(false);
     });
   });
 

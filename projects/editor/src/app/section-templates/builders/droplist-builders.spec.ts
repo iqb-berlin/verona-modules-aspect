@@ -25,7 +25,7 @@ describe('droplist-builders', () => {
       const textElements = section.getAllElements('text') as TextElement[];
       const headingElement = textElements.find(el => el.text === sortOptions.headingSourceList);
       expect(headingElement).toBeDefined();
-      expect(headingElement?.styling.bold).toBeTrue();
+      expect(headingElement?.styling.bold).toBe(true);
     });
 
     it('should place the heading between the intro text and the sort list', () => {
@@ -42,8 +42,8 @@ describe('droplist-builders', () => {
     it('should create the sort list with the given options', () => {
       const section = createSortlistSection(sortOptions, idService);
       const dropList = section.getAllElements('drop-list')[0] as DropListElement;
-      expect(dropList.isSortList).toBeTrue();
-      expect(dropList.showNumbering).toBeTrue();
+      expect(dropList.isSortList).toBe(true);
+      expect(dropList.showNumbering).toBe(true);
       expect(dropList.value.length).toBe(2);
     });
   });

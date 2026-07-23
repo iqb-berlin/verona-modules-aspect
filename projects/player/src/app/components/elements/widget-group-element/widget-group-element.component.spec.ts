@@ -52,7 +52,7 @@ describe('WidgetGroupElementComponent', () => {
 
   it('should call sendVopWidgetCall with mapped parameters when applyWidgetCall is triggered', () => {
     const veronaPostService = TestBed.inject(VeronaPostService);
-    spyOn(veronaPostService, 'sendVopWidgetCall');
+    vi.spyOn(veronaPostService, 'sendVopWidgetCall');
 
     component.applyWidgetCall({
       showInfoOrder: true,
@@ -76,7 +76,7 @@ describe('WidgetGroupElementComponent', () => {
 
   it('should update elementModel state and call changeElementCodeValue on vopWidgetReturn', () => {
     const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
-    spyOn(component, 'changeElementCodeValue');
+    vi.spyOn(component, 'changeElementCodeValue');
 
     component.applyWidgetCall({
       showInfoOrder: true,

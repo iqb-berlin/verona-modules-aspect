@@ -69,9 +69,9 @@ describe('ReferenceManager', () => {
     expect(refMan.getElementsReferences([element])
       .length).toEqual(1);
     expect(refMan.getElementsReferences([element])[0].element)
-      .toEqual(jasmine.objectContaining({ ...element }));
+      .toEqual(expect.objectContaining({ ...element }));
     expect(refMan.getElementsReferences([element])[0].refs[0])
-      .toEqual(jasmine.objectContaining({
+      .toEqual(expect.objectContaining({
         type: 'drop-list',
         alias: 'drop-list_2'
       }));
@@ -97,14 +97,14 @@ describe('ReferenceManager', () => {
     expect(refs.length)
       .toEqual(2);
     expect(refs[0].element)
-      .toEqual(jasmine.objectContaining({ ...element1 }));
+      .toEqual(expect.objectContaining({ ...element1 }));
     expect(refs[1].element)
-      .toEqual(jasmine.objectContaining({
+      .toEqual(expect.objectContaining({
         type: 'audio',
         alias: 'audio_1'
       }));
     expect(refs[1].refs[0])
-      .toEqual(jasmine.objectContaining({
+      .toEqual(expect.objectContaining({
         type: 'audio',
         alias: 'audio_2'
       }));
@@ -118,7 +118,7 @@ describe('ReferenceManager', () => {
     expect(refs.length)
       .toEqual(1);
     expect(refs[0].refs[0])
-      .toEqual(jasmine.objectContaining({
+      .toEqual(expect.objectContaining({
         type: 'drop-list',
         id: 'drop-list_1731318755523_1',
         alias: 'drop-list_2'
@@ -133,7 +133,7 @@ describe('ReferenceManager', () => {
     expect(refs.length)
       .toEqual(1);
     expect(refs[0].refs[0])
-      .toEqual(jasmine.objectContaining({
+      .toEqual(expect.objectContaining({
         type: 'drop-list',
         alias: 'drop-list_3'
       }));
@@ -147,7 +147,7 @@ describe('ReferenceManager', () => {
     expect(refs.length)
       .toEqual(1);
     expect(refs[0].refs[0])
-      .toEqual(jasmine.objectContaining({
+      .toEqual(expect.objectContaining({
         type: 'drop-list',
         alias: 'drop-list_3'
       }));
@@ -162,7 +162,7 @@ describe('ReferenceManager', () => {
     expect(refs.length)
       .toEqual(1);
     expect(refs[0].refs[0])
-      .toEqual(jasmine.objectContaining({
+      .toEqual(expect.objectContaining({
         type: 'drop-list',
         alias: 'drop-list_3'
       }));
@@ -177,7 +177,7 @@ describe('ReferenceManager', () => {
     expect(refs[0].refs.length)
       .toEqual(1);
     expect(refs[0].refs[0])
-      .toEqual(jasmine.objectContaining({
+      .toEqual(expect.objectContaining({
         type: 'button',
         alias: 'button_1'
       }));

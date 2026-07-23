@@ -85,7 +85,7 @@ describe('KeypadService', () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
     await service.toggleAsync(input, textFieldComponent);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('preset should be set to "french"', async () => {
@@ -118,7 +118,7 @@ describe('KeypadService', () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
     await service.toggleAsync(input, textFieldSimpleComponent);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('preset should be set to "french"', async () => {
@@ -151,7 +151,7 @@ describe('KeypadService', () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: false };
     await service.toggleAsync(input, textAreaComponent);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('preset should be set to "french"', async () => {
@@ -184,7 +184,7 @@ describe('KeypadService', () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
     await service.toggleAsync(input, spellCorrectComponent);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('preset should be set to "french"', async () => {

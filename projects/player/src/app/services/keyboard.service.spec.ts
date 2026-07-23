@@ -83,21 +83,21 @@ describe('KeyboardService', () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
     await service.toggleAsync(input, textFieldComponent, true);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('should not toggle keyboard to open', async () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     await service.toggleAsync(input, textFieldComponent, false);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('addInputAssistanceToKeyboard should be set to "false"', async () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     await service.toggleAsync(input, textFieldComponent, true);
-    expect(service.addInputAssistanceToKeyboard).toBeFalse();
+    expect(service.addInputAssistanceToKeyboard).toBe(false);
   });
 
   // textFieldSimple
@@ -114,21 +114,21 @@ describe('KeyboardService', () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
     await service.toggleAsync(input, textFieldSimpleComponent, true);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('should not toggle keyboard to open', async () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     await service.toggleAsync(input, textFieldSimpleComponent, false);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('addInputAssistanceToKeyboard should be set to "false"', async () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     await service.toggleAsync(input, textFieldSimpleComponent, true);
-    expect(service.addInputAssistanceToKeyboard).toBeFalse();
+    expect(service.addInputAssistanceToKeyboard).toBe(false);
   });
 
   // textArea
@@ -145,21 +145,21 @@ describe('KeyboardService', () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: false };
     await service.toggleAsync(input, textAreaComponent, true);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('should not toggle keyboard to open', async () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: true };
     await service.toggleAsync(input, textAreaComponent, false);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('addInputAssistanceToKeyboard should be set to "false"', async () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: true };
     await service.toggleAsync(input, textAreaComponent, true);
-    expect(service.addInputAssistanceToKeyboard).toBeFalse();
+    expect(service.addInputAssistanceToKeyboard).toBe(false);
   });
 
   it('should toggle keyboard to open', async () => {
@@ -174,20 +174,20 @@ describe('KeyboardService', () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
     await service.toggleAsync(input, spellCorrectComponent, true);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('should not toggle keyboard to open', async () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     await service.toggleAsync(input, spellCorrectComponent, false);
-    expect(service.isOpen).toBeFalse();
+    expect(service.isOpen).toBe(false);
   });
 
   it('addInputAssistanceToKeyboard should be set to "false"', async () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     await service.toggleAsync(input, spellCorrectComponent, true);
-    expect(service.addInputAssistanceToKeyboard).toBeFalse();
+    expect(service.addInputAssistanceToKeyboard).toBe(false);
   });
 });

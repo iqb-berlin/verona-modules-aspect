@@ -26,7 +26,7 @@ describe('UnitService - rapid load handling', () => {
       'showPrompt'
     ]);
     const translateServiceSpy = jasmine.createSpyObj<TranslateService>('TranslateService', ['instant']);
-    translateServiceSpy.instant.and.callFake((key: string | string[]) => key as string);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
 
     dialogServiceSpy = jasmine.createSpyObj<DialogService>('DialogService', [
       'showUnitDefErrorDialog',
@@ -77,7 +77,7 @@ describe('UnitService - variable info validation (#1043)', () => {
       'showPrompt'
     ]);
     const translateServiceSpy = jasmine.createSpyObj<TranslateService>('TranslateService', ['instant']);
-    translateServiceSpy.instant.and.callFake((key: string | string[]) => key as string);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
 
     service = new UnitService(
       new SelectionService(),

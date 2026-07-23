@@ -14,7 +14,7 @@ describe('LoggerService', () => {
   });
 
   it('should call LogService.debug', () => {
-    spyOn(LogService, 'debug')
+    vi.spyOn(LogService, 'debug')
       .withArgs('test', 'test2');
     LogService.debug('test', 'test2');
     expect(LogService.debug).toHaveBeenCalled();
@@ -22,7 +22,7 @@ describe('LoggerService', () => {
   });
 
   it('should call LogService.info', () => {
-    spyOn(LogService, 'info')
+    vi.spyOn(LogService, 'info')
       .withArgs('test', 'test2');
     LogService.info('test', 'test2');
     expect(LogService.info).toHaveBeenCalled();
@@ -30,7 +30,7 @@ describe('LoggerService', () => {
   });
 
   it('should call LogService.warn', () => {
-    spyOn(LogService, 'warn')
+    vi.spyOn(LogService, 'warn')
       .withArgs('test', 'test2');
     LogService.warn('test', 'test2');
     expect(LogService.warn).toHaveBeenCalled();
@@ -38,7 +38,7 @@ describe('LoggerService', () => {
   });
 
   it('should call LogService.error', () => {
-    spyOn(LogService, 'error')
+    vi.spyOn(LogService, 'error')
       .withArgs('test', 'test2');
     LogService.error('test', 'test2');
     expect(LogService.error).toHaveBeenCalled();

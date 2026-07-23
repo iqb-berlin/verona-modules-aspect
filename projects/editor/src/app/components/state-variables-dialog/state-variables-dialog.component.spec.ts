@@ -17,8 +17,8 @@ describe('StateVariablesDialogComponent', () => {
   let fixture: ComponentFixture<StateVariablesDialogComponent>;
 
   const mockIDService = {
-    getAndRegisterNewIDs: jasmine.createSpy('getAndRegisterNewIDs').and.returnValue({ id: 'v2', alias: 'v2' }),
-    unregister: jasmine.createSpy('unregister')
+    getAndRegisterNewIDs: vi.fn().mockReturnValue({ id: 'v2', alias: 'v2' }),
+    unregister: vi.fn()
   };
 
   const mockData = {

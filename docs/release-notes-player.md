@@ -6,6 +6,8 @@ Player
   - Es können nun auch Aufgaben, die mit deutlich älteren Editor-Versionen erstellt wurden, im aktuellen Layout geladen und dargestellt werden
 - Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
   - Die im Editor eingestellte Textausrichtung (linksbündig, zentriert, rechtsbündig) wird bei der Eingabe dargestellt
+- Tabelle
+  - Stellt die im Editor konfigurierte Kopfzeile (auch mehrzeilig) dar; optional bleibt sie beim Scrollen am oberen Rand des sichtbaren Bereichs fixiert
 
 ### Änderungen
 - Eingabehilfe/Tastatur

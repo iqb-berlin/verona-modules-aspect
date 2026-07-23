@@ -108,6 +108,7 @@ import { ImageSrcPipe } from './pipes/image-src.pipe';
 import { TableComponent } from './components/compound-elements/table/table.component';
 import { TableChildOverlay } from './components/compound-elements/table/table-child-overlay.component';
 import { MeasurePipe } from './pipes/measure.pipe';
+import { TableGridRowsPipe } from './pipes/table-grid-rows.pipe';
 import { MarkingPanelComponent } from './components/text/marking-panel.component';
 
 @NgModule({
@@ -174,7 +175,8 @@ import { MarkingPanelComponent } from './components/text/marking-panel.component
     TableComponent,
     TableChildOverlay,
     MarkingPanelComponent,
-    MeasurePipe
+    MeasurePipe,
+    TableGridRowsPipe
   ],
   exports: [
     CommonModule,
@@ -224,7 +226,8 @@ import { MarkingPanelComponent } from './components/text/marking-panel.component
     TableComponent,
     TableChildOverlay,
     MarkingPanelComponent,
-    MeasurePipe
+    MeasurePipe,
+    TableGridRowsPipe
   ],
   imports: [
     CommonModule,

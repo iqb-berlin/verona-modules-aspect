@@ -79,6 +79,7 @@
   },
   "propertiesPanel": {
     "asLink": "als Hyperlink-Text darstellen",
+    "tableHeaderEnabled": "Kopfzeile anzeigen",
     "textAlign": "Textausrichtung",
     "textAlignLeft": "linksbündig",
     "textAlignCenter": "zentriert",

@@ -11,6 +11,7 @@ import {
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { UIElement } from 'common/models/elements/element';
 import { MathTableRow } from 'common/models/elements/input-elements/math-table';
+import { TableHeaderCell } from 'common/models/elements/compound-elements/table/table';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { TextAreaMath } from 'common/models/elements/input-elements/text-area-math';
 
@@ -116,7 +117,8 @@ export interface ValueChangeElement {
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
 TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | StateVariable | GeometryVariable[] |
-PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[] | UIElement[];
+PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[] | UIElement[] |
+TableHeaderCell[][];
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'decimals' | 'numbersAndOperators' |
 'numbersAndBasicOperators' | 'comparisonOperators' | 'chemicalEquation' | 'squareDashDot' | 'placeValue' |

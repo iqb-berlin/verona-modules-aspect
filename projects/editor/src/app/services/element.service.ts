@@ -25,7 +25,7 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { TextElement } from 'common/models/elements/text/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { DomSanitizer } from '@angular/platform-browser';
-import { TableElement } from 'common/models/elements/compound-elements/table/table';
+import { TableElement, TableHeaderCell } from 'common/models/elements/compound-elements/table/table';
 import {
   DragNDropValueObject,
   PositionedUIElement,
@@ -320,9 +320,10 @@ export class ElementService {
         break;
       case 'table':
         this.dialogService.showTableEditDialog(element as TableElement)
-          .subscribe((result: UIElement[]) => {
+          .subscribe((result: { elements: UIElement[], headerRows: TableHeaderCell[][] }) => {
             if (result) {
-              this.updateElementsProperty([element], 'elements', result);
+              this.updateElementsProperty([element], 'elements', result.elements);
+              this.updateElementsProperty([element], 'headerRows', result.headerRows);
             }
           });
         break;

@@ -9,5 +9,11 @@
   "periodicTable": "Periodensystem",
   "calculator": "Rechner",
   "moleculeEditor": "Molekül-Editor",
-  "openWidget": "{{widget}} öffnen"
+  "openWidget": "{{widget}} öffnen",
+  "tableHeaderText": "Kopfzeilentext",
+  "tableHeaderAlignLeft": "Linksbündig",
+  "tableHeaderAlignCenter": "Zentriert",
+  "tableHeaderAlignRight": "Rechtsbündig",
+  "tableHeaderAddRow": "Weitere Kopfzeile hinzufügen",
+  "tableHeaderRemoveRow": "Kopfzeile entfernen"
 }

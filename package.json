@@ -153,15 +153,21 @@
     "@types/jasmine": "~5.1.4",
     "@types/katex": "^0.16.7",
     "@types/node": "^20.12.12",
+    "@vitest/browser": "^3.2.7",
+    "@vitest/coverage-v8": "^3.2.7",
     "cypress": "^15.10.0",
     "iqb-dev-components": "^1.4.1",
     "jasmine-core": "^5.1.2",
+    "jsdom": "^29.1.1",
     "karma": "~6.4.3",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-spec-reporter": "^0.0.36",
-    "typescript": "~5.8.3"
+    "playwright": "^1.61.1",
+    "typescript": "~5.8.3",
+    "vite": "^6.4.3",
+    "vitest": "^3.2.7"
   }
 }

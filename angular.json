@@ -337,13 +337,22 @@
       "root": "projects/common",
       "sourceRoot": "projects/common",
       "architect": {
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+        "build": {
+          "builder": "@angular/build:application",
           "options": {
-            "main": "projects/common/test.ts",
             "tsConfig": "projects/common/tsconfig.spec.json",
-            "karmaConfig": "projects/common/karma.conf.js",
-            "polyfills": "projects/common/polyfills.ts"
+            "polyfills": ["zone.js"]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "common:build",
+            "tsConfig": "projects/common/tsconfig.spec.json",
+            "runner": "vitest",
+            "browsers": ["ChromiumHeadless"],
+            "setupFiles": ["projects/vitest-proxy-zone.setup.ts"],
+            "codeCoverage": false
           }
         }
       }

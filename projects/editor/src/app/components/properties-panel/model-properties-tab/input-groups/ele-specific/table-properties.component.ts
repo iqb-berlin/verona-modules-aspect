@@ -74,12 +74,6 @@ import { Subject } from 'rxjs';
                   (change)="updateModel.emit({ property: 'headerEnabled', value: $event.checked })">
       {{'propertiesPanel.tableHeaderEnabled' | translate }}
     </mat-checkbox>
-    @if ($any(combinedProperties).headerEnabled) {
-      <mat-checkbox [checked]="$any(combinedProperties).stickyHeader"
-                    (change)="updateModel.emit({ property: 'stickyHeader', value: $event.checked })">
-        {{'propertiesPanel.tableStickyHeader' | translate }}
-      </mat-checkbox>
-    }
   `,
   styles: ':host {display: flex; flex-direction: column;}'
 })

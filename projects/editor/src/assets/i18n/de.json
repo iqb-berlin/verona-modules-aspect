@@ -80,7 +80,6 @@
   "propertiesPanel": {
     "asLink": "als Hyperlink-Text darstellen",
     "tableHeaderEnabled": "Kopfzeile anzeigen",
-    "tableStickyHeader": "Kopfzeile beim Scrollen fixieren",
     "textAlign": "Textausrichtung",
     "textAlignLeft": "linksbündig",
     "textAlignCenter": "zentriert",

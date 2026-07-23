@@ -99,13 +99,13 @@
             "buildTarget": "editor:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+        "build-test": {
+          "builder": "@angular/build:application",
           "options": {
-            "main": "projects/editor/src/test.ts",
-            "polyfills": "projects/editor/src/polyfills.ts",
             "tsConfig": "projects/editor/tsconfig.spec.json",
-            "karmaConfig": "projects/editor/karma.conf.js",
+            "polyfills": [
+              "zone.js"
+            ],
             "assets": [
               "projects/editor/src/favicon.ico",
               "projects/editor/src/assets",
@@ -119,12 +119,36 @@
               "projects/editor/src/styles.css",
               "projects/common/assets/customTheme.scss"
             ],
-            "scripts": [],
             "fileReplacements": [
               {
                 "replace": "projects/common/environment.ts",
                 "with": "projects/editor/src/environments/environment.ts"
               }
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "editor:build-test",
+            "tsConfig": "projects/editor/tsconfig.spec.json",
+            "runner": "vitest",
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
+            "providersFile": "projects/editor/src/vitest-providers.ts",
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "editor"
+                }
+              ],
+              "text-summary"
             ]
           }
         },
@@ -262,13 +286,13 @@
             "buildTarget": "player:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+        "build-test": {
+          "builder": "@angular/build:application",
           "options": {
-            "main": "projects/player/src/test.ts",
-            "polyfills": "projects/player/src/polyfills.ts",
             "tsConfig": "projects/player/tsconfig.spec.json",
-            "karmaConfig": "projects/player/karma.conf.js",
+            "polyfills": [
+              "zone.js"
+            ],
             "assets": [
               "projects/player/src/favicon.ico",
               "projects/player/src/assets",
@@ -281,12 +305,36 @@
             "styles": [
               "projects/player/src/styles.scss"
             ],
-            "scripts": [],
             "fileReplacements": [
               {
                 "replace": "projects/common/environment.ts",
                 "with": "projects/editor/src/environments/environment.ts"
               }
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "player:build-test",
+            "tsConfig": "projects/player/tsconfig.spec.json",
+            "runner": "vitest",
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
+            "providersFile": "projects/player/src/vitest-providers.ts",
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "player"
+                }
+              ],
+              "text-summary"
             ]
           }
         },
@@ -337,13 +385,37 @@
       "root": "projects/common",
       "sourceRoot": "projects/common",
       "architect": {
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+        "build": {
+          "builder": "@angular/build:application",
           "options": {
-            "main": "projects/common/test.ts",
             "tsConfig": "projects/common/tsconfig.spec.json",
-            "karmaConfig": "projects/common/karma.conf.js",
-            "polyfills": "projects/common/polyfills.ts"
+            "polyfills": [
+              "zone.js"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "common:build",
+            "tsConfig": "projects/common/tsconfig.spec.json",
+            "runner": "vitest",
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "common"
+                }
+              ],
+              "text-summary"
+            ]
           }
         }
       }
@@ -353,13 +425,37 @@
       "root": "projects/player/modules",
       "sourceRoot": "projects/player/modules",
       "architect": {
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+        "build": {
+          "builder": "@angular/build:application",
           "options": {
-            "main": "projects/player/modules/test.ts",
             "tsConfig": "projects/player/modules/tsconfig.spec.json",
-            "karmaConfig": "projects/player/modules/karma.conf.js",
-            "polyfills": "projects/player/modules/polyfills.ts"
+            "polyfills": [
+              "zone.js"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "playerModules:build",
+            "tsConfig": "projects/player/modules/tsconfig.spec.json",
+            "runner": "vitest",
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "playerModules"
+                }
+              ],
+              "text-summary"
+            ]
           }
         }
       }

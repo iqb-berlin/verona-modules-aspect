@@ -52,7 +52,7 @@ describe('WidgetGroupElementComponent', () => {
 
   it('should call sendVopWidgetCall with mapped parameters when applyWidgetCall is triggered', () => {
     const veronaPostService = TestBed.inject(VeronaPostService);
-    spyOn(veronaPostService, 'sendVopWidgetCall');
+    vi.spyOn(veronaPostService, 'sendVopWidgetCall');
 
     component.applyWidgetCall({
       showInfoOrder: true,
@@ -62,8 +62,8 @@ describe('WidgetGroupElementComponent', () => {
       maxNumberOfSelections: 3
     }, 'PERIODIC_TABLE');
 
-    expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith(jasmine.objectContaining({
-      callId: jasmine.any(String),
+    expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith(expect.objectContaining({
+      callId: expect.any(String),
       widgetType: 'PERIODIC_TABLE',
       parameters: [
         { key: 'SHOW_INFO_ORDER', value: 'true' },
@@ -78,8 +78,8 @@ describe('WidgetGroupElementComponent', () => {
   it('should update elementModel state and call changeElementCodeValue on vopWidgetReturn', () => {
     const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
     const veronaPostService = TestBed.inject(VeronaPostService);
-    const sendVopWidgetCallSpy = spyOn(veronaPostService, 'sendVopWidgetCall');
-    spyOn(component, 'changeElementCodeValue');
+    const sendVopWidgetCallSpy = vi.spyOn(veronaPostService, 'sendVopWidgetCall');
+    vi.spyOn(component, 'changeElementCodeValue');
 
     component.applyWidgetCall({
       showInfoOrder: true,
@@ -89,7 +89,9 @@ describe('WidgetGroupElementComponent', () => {
       maxNumberOfSelections: 3
     }, 'PERIODIC_TABLE');
 
-    const sentCallId = sendVopWidgetCallSpy.calls.mostRecent().args[0].callId;
+    const lastWidgetCall = sendVopWidgetCallSpy.mock.lastCall;
+    if (!lastWidgetCall) throw new Error('sendVopWidgetCall was not called');
+    const sentCallId = lastWidgetCall[0].callId;
     const mockReturnEvent = {
       type: 'vopWidgetReturn' as const, sessionId: '1', callId: sentCallId, state: 'newState'
     };
@@ -101,7 +103,7 @@ describe('WidgetGroupElementComponent', () => {
 
   it('should ignore vopWidgetReturn messages with a non-matching callId', () => {
     const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
-    spyOn(component, 'changeElementCodeValue');
+    vi.spyOn(component, 'changeElementCodeValue');
 
     component.applyWidgetCall({
       showInfoOrder: true,

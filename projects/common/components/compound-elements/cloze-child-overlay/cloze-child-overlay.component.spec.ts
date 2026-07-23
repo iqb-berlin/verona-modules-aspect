@@ -32,8 +32,8 @@ describe('ClozeChildOverlayComponent', () => {
 
   it('should set selected state', () => {
     component.setSelected(true);
-    expect(component.isSelected).toBeTrue();
+    expect(component.isSelected).toBe(true);
     component.setSelected(false);
-    expect(component.isSelected).toBeFalse();
+    expect(component.isSelected).toBe(false);
   });
 });

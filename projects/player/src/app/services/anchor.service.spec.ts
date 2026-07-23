@@ -26,7 +26,7 @@ describe('AnchorService', () => {
       anchor.setAttribute('data-anchor-id', 'test-anchor');
       anchor.dataset.anchorColor = 'red';
       anchor.dataset.parentAnchorColor = 'blue';
-      anchor.scrollIntoView = jasmine.createSpy('scrollIntoView');
+      anchor.scrollIntoView = vi.fn();
       document.body.appendChild(anchor);
 
       nestedAnchor = document.createElement('aspect-anchor');
@@ -44,10 +44,10 @@ describe('AnchorService', () => {
     it('should show anchor and set correct colors', () => {
       service.showAnchor('test-anchor');
 
-      expect(anchor.classList.contains('active-anchor')).toBeTrue();
+      expect(anchor.classList.contains('active-anchor')).toBe(true);
       expect(anchor.style.backgroundColor).toEqual('red');
 
-      expect(nestedAnchor.classList.contains('active-nested-anchor')).toBeTrue();
+      expect(nestedAnchor.classList.contains('active-nested-anchor')).toBe(true);
       expect(nestedAnchor.style.backgroundColor).toEqual('yellow');
 
       expect(anchor.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
@@ -55,33 +55,33 @@ describe('AnchorService', () => {
 
     it('should hide anchor and set correct colors after duration', fakeAsync(() => {
       service.showAnchor('test-anchor');
-      expect(anchor.classList.contains('active-anchor')).toBeTrue();
+      expect(anchor.classList.contains('active-anchor')).toBe(true);
 
       tick(60000); // Wait for the duration of the timeout
 
-      expect(anchor.classList.contains('active-anchor')).toBeFalse();
+      expect(anchor.classList.contains('active-anchor')).toBe(false);
       expect(anchor.style.backgroundColor).toEqual('blue');
 
-      expect(nestedAnchor.classList.contains('active-nested-anchor')).toBeFalse();
+      expect(nestedAnchor.classList.contains('active-nested-anchor')).toBe(false);
       expect(nestedAnchor.style.backgroundColor).toEqual('green');
     }));
 
     it('should remove anchors from active anchors queue upon reset', () => {
       service.showAnchor('test-anchor');
-      expect(anchor.classList.contains('active-anchor')).toBeTrue();
+      expect(anchor.classList.contains('active-anchor')).toBe(true);
 
       service.reset();
 
-      expect(anchor.classList.contains('active-anchor')).toBeFalse();
+      expect(anchor.classList.contains('active-anchor')).toBe(false);
       expect(anchor.style.backgroundColor).toEqual('blue');
     });
 
     it('should toggle anchor visibility', () => {
       service.toggleAnchor('test-anchor');
-      expect(anchor.classList.contains('active-anchor')).toBeTrue();
+      expect(anchor.classList.contains('active-anchor')).toBe(true);
 
       service.toggleAnchor('test-anchor');
-      expect(anchor.classList.contains('active-anchor')).toBeFalse();
+      expect(anchor.classList.contains('active-anchor')).toBe(false);
     });
 
     it('should fall back to anchorColor if parentAnchorColor is missing when hiding', () => {

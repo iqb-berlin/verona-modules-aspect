@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
+import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
 import { ToolbarComponent } from './toolbar.component';
 import { UnitService } from '../../services/unit.service';
 import { VeronaAPIService } from '../../services/verona-api.service';
@@ -11,11 +12,11 @@ import { VeronaAPIService } from '../../services/verona-api.service';
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
-  let unitServiceSpy: jasmine.SpyObj<UnitService>;
+  let unitServiceSpy: SpyObj<UnitService>;
   let mockVeronaApiService: Pick<VeronaAPIService, 'sessionID' | 'resourceURL'>;
 
   beforeEach(async () => {
-    unitServiceSpy = jasmine.createSpyObj<UnitService>('UnitService', ['saveUnit']);
+    unitServiceSpy = createSpyObj<UnitService>(['saveUnit']);
     mockVeronaApiService = {
       sessionID: 'session-1',
       resourceURL: 'https://example.test/assets'
@@ -49,21 +50,21 @@ describe('ToolbarComponent', () => {
   it('should delegate save to UnitService', () => {
     component.save();
 
-    expect(unitServiceSpy.saveUnit.calls.count()).toBe(1);
+    expect(unitServiceSpy.saveUnit.mock.calls.length).toBe(1);
   });
 
   it('should load a unit file and post a voeStartCommand message', async () => {
-    const postMessageSpy = spyOn(window, 'postMessage');
-    const loadFileSpy = spyOn(FileService, 'loadFile').and.returnValue(
+    const postMessageSpy = vi.spyOn(window, 'postMessage');
+    const loadFileSpy = vi.spyOn(FileService, 'loadFile').mockReturnValue(
       Promise.resolve({ name: 'unit.json', content: '{"type":"unit"}' })
     );
 
     await component.load();
 
-    expect(loadFileSpy.calls.count()).toBe(1);
-    expect(loadFileSpy.calls.mostRecent().args).toEqual([['.json', '.voud']]);
-    expect(postMessageSpy.calls.count()).toBe(1);
-    expect(postMessageSpy.calls.mostRecent().args).toEqual([
+    expect(loadFileSpy.mock.calls.length).toBe(1);
+    expect(loadFileSpy.mock.lastCall).toEqual([['.json', '.voud']]);
+    expect(postMessageSpy.mock.calls.length).toBe(1);
+    expect(postMessageSpy.mock.lastCall).toEqual([
       {
         type: 'voeStartCommand',
         sessionId: 'session-1',
@@ -81,15 +82,15 @@ describe('ToolbarComponent', () => {
     mockVeronaApiService.sessionID = undefined;
     mockVeronaApiService.resourceURL = undefined;
 
-    const postMessageSpy = spyOn(window, 'postMessage');
-    spyOn(FileService, 'loadFile').and.returnValue(
+    const postMessageSpy = vi.spyOn(window, 'postMessage');
+    vi.spyOn(FileService, 'loadFile').mockReturnValue(
       Promise.resolve({ name: 'unit.json', content: '{"type":"unit"}' })
     );
 
     await component.load();
 
-    expect(postMessageSpy.calls.count()).toBe(1);
-    expect(postMessageSpy.calls.mostRecent().args).toEqual([
+    expect(postMessageSpy.mock.calls.length).toBe(1);
+    expect(postMessageSpy.mock.lastCall).toEqual([
       {
         type: 'voeStartCommand',
         sessionId: 'dev',

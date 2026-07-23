@@ -18,7 +18,7 @@ describe('VeronaPostService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should post a VopStateChangedNotification', done => {
+  it('should post a VopStateChangedNotification', () => new Promise<void>(done => {
     const expectedStateChangedNotification: VopStateChangedNotification = {
       type: 'vopStateChangedNotification',
       sessionId: 'test',
@@ -34,9 +34,9 @@ describe('VeronaPostService', () => {
         done();
       });
     service.sendVopStateChangedNotification({});
-  });
+  }));
 
-  it('should post a VopReadyNotification', done => {
+  it('should post a VopReadyNotification', () => new Promise<void>(done => {
     const metadata = {
       $schema: 'https://raw.githubusercontent.com/verona-interfaces/metadata/master/verona-module-metadata.json',
       name: [
@@ -86,9 +86,9 @@ describe('VeronaPostService', () => {
         done();
       });
     service.sendReadyNotification(metadata);
-  });
+  }));
 
-  it('should post a VopUnitNavigationRequestedNotification', done => {
+  it('should post a VopUnitNavigationRequestedNotification', () => new Promise<void>(done => {
     const expectedUnitNavigationRequestedNotification: VopUnitNavigationRequestedNotification = {
       type: 'vopUnitNavigationRequestedNotification',
       sessionId: 'test',
@@ -102,9 +102,9 @@ describe('VeronaPostService', () => {
         done();
       });
     service.sendVopUnitNavigationRequestedNotification('next');
-  });
+  }));
 
-  it('should post a VopUnitNavigationRequestedNotification', done => {
+  it('should post a VopUnitNavigationRequestedNotification', () => new Promise<void>(done => {
     const expectedWindowFocusChangedNotification: VopWindowFocusChangedNotification = {
       type: 'vopWindowFocusChangedNotification',
       timeStamp: Date.now(),
@@ -120,5 +120,5 @@ describe('VeronaPostService', () => {
         done();
       });
     service.sendVopWindowFocusChangedNotification(true);
-  });
+  }));
 });

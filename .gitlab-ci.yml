@@ -11,6 +11,15 @@ test-unit:
   stage: test
   before_script:
     - npm ci --cache .npm --prefer-offline
+    # Vitest browser mode needs the Playwright Chromium binary; the image only
+    # ships the system Chromium that Karma used. Cached via PLAYWRIGHT_BROWSERS_PATH.
+    - npx playwright install chromium
+  variables:
+    PLAYWRIGHT_BROWSERS_PATH: .playwright
+  cache:
+    key: playwright-browsers
+    paths:
+      - .playwright
   script:
     - npm run test
 

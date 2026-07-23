@@ -201,7 +201,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private initHint(): void {
     if (this.playerProperties.showHint && !this.hintTimeOutId && !this.started) {
       this.hintDelayInitialized.emit(this.id);
-      this.hintTimeOutId = setTimeout(() => {
+      this.hintTimeOutId = window.setTimeout(() => {
         if (!this.started && this.dependencyDissolved) {
           this.displayHint = true;
         }

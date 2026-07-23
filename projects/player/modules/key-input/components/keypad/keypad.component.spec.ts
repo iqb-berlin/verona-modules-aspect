@@ -53,19 +53,19 @@ describe('KeypadComponent', () => {
   });
 
   it('should emit select event for arrow keys', () => {
-    spyOn(component.select, 'emit');
+    vi.spyOn(component.select, 'emit');
     component.evaluateClickedKeyValue('ArrowLeft');
     expect(component.select.emit).toHaveBeenCalledWith('ArrowLeft');
   });
 
   it('should emit backSpaceClicked event for Backspace key', () => {
-    spyOn(component.backSpaceClicked, 'emit');
+    vi.spyOn(component.backSpaceClicked, 'emit');
     component.evaluateClickedKeyValue('Backspace');
     expect(component.backSpaceClicked.emit).toHaveBeenCalled();
   });
 
   it('should emit keyClicked event for normal keys', () => {
-    spyOn(component.keyClicked, 'emit');
+    vi.spyOn(component.keyClicked, 'emit');
     component.evaluateClickedKeyValue('a');
     expect(component.keyClicked.emit).toHaveBeenCalledWith('a');
   });

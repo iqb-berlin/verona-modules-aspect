@@ -4,6 +4,7 @@ import { StateVariable } from 'common/models/state-variable';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { VariableInfo } from '@iqb/responses';
+import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
 import { DialogService } from './dialog.service';
 import { SelectionService } from './selection.service';
 import { IDService } from './id.service';
@@ -12,23 +13,23 @@ import { UnitService } from './unit.service';
 
 describe('UnitService - rapid load handling', () => {
   let service: UnitService;
-  let dialogServiceSpy: jasmine.SpyObj<DialogService>;
-  let veronaApiServiceSpy: jasmine.SpyObj<VeronaAPIService>;
-  let messageServiceSpy: jasmine.SpyObj<MessageService>;
+  let dialogServiceSpy: SpyObj<DialogService>;
+  let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
+  let messageServiceSpy: SpyObj<MessageService>;
 
   beforeEach(() => {
     const selectionService = new SelectionService();
     const idService = new IDService();
-    veronaApiServiceSpy = jasmine.createSpyObj<VeronaAPIService>('VeronaAPIService', ['sendChanged']);
-    messageServiceSpy = jasmine.createSpyObj<MessageService>('MessageService', [
+    veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
+    messageServiceSpy = createSpyObj<MessageService>([
       'showFixedReferencePanel',
       'showReferencePanel',
       'showPrompt'
     ]);
-    const translateServiceSpy = jasmine.createSpyObj<TranslateService>('TranslateService', ['instant']);
-    translateServiceSpy.instant.and.callFake((key: string | string[]) => key as string);
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
 
-    dialogServiceSpy = jasmine.createSpyObj<DialogService>('DialogService', [
+    dialogServiceSpy = createSpyObj<DialogService>([
       'showUnitDefErrorDialog',
       'showDeleteConfirmDialog'
     ]);
@@ -66,24 +67,24 @@ describe('UnitService - rapid load handling', () => {
 
 describe('UnitService - variable info validation (#1043)', () => {
   let service: UnitService;
-  let veronaApiServiceSpy: jasmine.SpyObj<VeronaAPIService>;
-  let messageServiceSpy: jasmine.SpyObj<MessageService>;
+  let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
+  let messageServiceSpy: SpyObj<MessageService>;
 
   beforeEach(() => {
-    veronaApiServiceSpy = jasmine.createSpyObj<VeronaAPIService>('VeronaAPIService', ['sendChanged']);
-    messageServiceSpy = jasmine.createSpyObj<MessageService>('MessageService', [
+    veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
+    messageServiceSpy = createSpyObj<MessageService>([
       'showFixedReferencePanel',
       'showReferencePanel',
       'showPrompt'
     ]);
-    const translateServiceSpy = jasmine.createSpyObj<TranslateService>('TranslateService', ['instant']);
-    translateServiceSpy.instant.and.callFake((key: string | string[]) => key as string);
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
 
     service = new UnitService(
       new SelectionService(),
       veronaApiServiceSpy,
       messageServiceSpy,
-      jasmine.createSpyObj<DialogService>('DialogService', ['showUnitDefErrorDialog', 'showDeleteConfirmDialog']),
+      createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']),
       new IDService(),
       translateServiceSpy
     );
@@ -93,7 +94,7 @@ describe('UnitService - variable info validation (#1043)', () => {
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('März')));
     service.updateUnitDefinition();
 
-    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.calls.mostRecent().args[2] as VariableInfo[];
+    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
     expect(reportedVariableInfos.length).toBe(0);
   });
 
@@ -106,7 +107,7 @@ describe('UnitService - variable info validation (#1043)', () => {
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('valid_var-1')));
     service.updateUnitDefinition();
 
-    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.calls.mostRecent().args[2] as VariableInfo[];
+    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
     expect(reportedVariableInfos.length).toBe(1);
     expect(reportedVariableInfos[0].alias).toBe('valid_var-1');
     expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();

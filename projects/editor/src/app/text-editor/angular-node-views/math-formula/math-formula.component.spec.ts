@@ -22,7 +22,7 @@ describe('MathFormulaNodeviewComponent', () => {
         formula: '\\frac{1}{2}'
       }
     } as any;
-    component.updateAttributes = jasmine.createSpy('updateAttributes');
+    component.updateAttributes = vi.fn();
 
     fixture.detectChanges();
   });
@@ -37,15 +37,15 @@ describe('MathFormulaNodeviewComponent', () => {
   });
 
   it('should toggle edit mode', fakeAsync(() => {
-    expect(component.editMode).toBeFalse();
+    expect(component.editMode).toBe(false);
 
     // Mock the ViewChild because detectChanges() won't update it immediately in this test setup
     component.editField = {
-      nativeElement: jasmine.createSpyObj('nativeElement', ['focus'])
+      nativeElement: { focus: vi.fn() }
     } as any;
 
     component.toggleEditMode();
-    expect(component.editMode).toBeTrue();
+    expect(component.editMode).toBe(true);
 
     tick(); // for setTimeout
     expect(component.editField.nativeElement.focus).toHaveBeenCalled();
@@ -55,10 +55,10 @@ describe('MathFormulaNodeviewComponent', () => {
     component.updateFormula('\\sqrt{x}');
 
     expect(component.formula).toBe('\\sqrt{x}');
-    expect(component.editMode).toBeFalse();
+    expect(component.editMode).toBe(false);
 
     tick(); // for setTimeout in updateFormula
-    expect(component.updateAttributes).toHaveBeenCalledWith(jasmine.objectContaining({
+    expect(component.updateAttributes).toHaveBeenCalledWith(expect.objectContaining({
       formula: '\\sqrt{x}'
     }));
   }));

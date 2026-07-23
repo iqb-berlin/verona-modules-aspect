@@ -39,7 +39,7 @@ import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { PagesLayoutComponent } from './components/layouts/pages-layout/pages-layout.component';
-import { PageLabelDirective } from './directives/page-label.directive';
+import { PageLabelModule } from './directives/page-label.module';
 import { ScrollToIndexDirective } from './directives/scroll-to-index.directive';
 import { InViewDetectionDirective } from './directives/in-view-detection.directive';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
@@ -83,7 +83,6 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     PageComponent,
     SectionComponent,
     PagesLayoutComponent,
-    PageLabelDirective,
     ScrollToIndexDirective,
     InViewDetectionDirective,
     FloatingMarkingBarComponent,
@@ -118,6 +117,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
   ],
   imports: [
     BrowserModule,
+    PageLabelModule,
     BrowserAnimationsModule,
     CommonModule,
     SharedModule,

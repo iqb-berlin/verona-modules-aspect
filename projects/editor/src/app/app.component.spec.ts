@@ -1,4 +1,6 @@
 import { fakeAsync, tick } from '@angular/core/testing';
+import { Mock } from 'vitest';
+import { createSpyObj } from 'common/util/vitest-spy-object';
 import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { StateVariable } from 'common/models/state-variable';
@@ -16,36 +18,32 @@ describe('AppComponent startCommand loading', () => {
   let unitService: UnitService;
   let veronaApiServiceMock: Pick<VeronaAPIService, 'startCommand' | 'sendReady' | 'sendChanged'>;
   let translateServiceMock: Pick<TranslateService, 'addLangs' | 'setDefaultLang' | 'instant'>;
-  const expectJasmine = globalThis.expect as unknown as {
-    (actual: unknown): jasmine.Matchers<unknown>;
-    (actual: () => unknown): jasmine.FunctionMatchers<() => unknown>;
-  };
 
   beforeEach(() => {
     startCommand$ = new Subject<StartCommand>();
 
     const selectionService = new SelectionService();
     const idService = new IDService();
-    const messageServiceSpy = jasmine.createSpyObj<MessageService>('MessageService', [
+    const messageServiceSpy = createSpyObj<MessageService>([
       'showFixedReferencePanel',
       'showReferencePanel',
       'showPrompt'
     ]);
-    const dialogServiceSpy = jasmine.createSpyObj<DialogService>('DialogService', [
+    const dialogServiceSpy = createSpyObj<DialogService>([
       'showUnitDefErrorDialog',
       'showDeleteConfirmDialog'
     ]);
 
     veronaApiServiceMock = {
       startCommand: startCommand$,
-      sendReady: jasmine.createSpy('sendReady'),
-      sendChanged: jasmine.createSpy('sendChanged')
+      sendReady: vi.fn(),
+      sendChanged: vi.fn()
     };
 
     translateServiceMock = {
-      addLangs: jasmine.createSpy('addLangs'),
-      setDefaultLang: jasmine.createSpy('setDefaultLang'),
-      instant: jasmine.createSpy('instant').and.callFake(key => key)
+      addLangs: vi.fn(),
+      setDefaultLang: vi.fn(),
+      instant: vi.fn().mockImplementation(key => key)
     };
 
     unitService = new UnitService(
@@ -70,7 +68,7 @@ describe('AppComponent startCommand loading', () => {
     startCommand$.next(createStartCommand('first', 'Checkbox A'));
     tick();
 
-    if ((veronaApiServiceMock.sendReady as jasmine.Spy).calls.count() !== 1) {
+    if ((veronaApiServiceMock.sendReady as Mock).mock.calls.length !== 1) {
       throw new Error('Expected sendReady to be called once');
     }
     if (unitService.unit.getAllElements('checkbox').length !== 1) {
@@ -79,11 +77,11 @@ describe('AppComponent startCommand loading', () => {
     if (unitService.unit.stateVariables[0].id !== 'first') {
       throw new Error('Expected the first StartCommand unit to stay loaded');
     }
-    expectJasmine(1).toBe(1);
+    expect(1).toBe(1);
   }));
 
   it('loads only the latest unit when two different startCommands arrive back-to-back', fakeAsync(() => {
-    spyOn(Date, 'now').and.returnValue(1710000000000);
+    vi.spyOn(Date, 'now').mockReturnValue(1710000000000);
 
     const appComponent = new AppComponent(
       unitService,
@@ -96,14 +94,14 @@ describe('AppComponent startCommand loading', () => {
     startCommand$.next(createLikertStartCommand('first', 'Likert A'));
     startCommand$.next(createStartCommand('second', 'Checkbox B'));
 
-    expectJasmine(() => tick()).not.toThrow();
-    expectJasmine(unitService.unit.stateVariables[0].id).toBe('second');
-    expectJasmine(unitService.unit.getAllElements('checkbox').length).toBe(1);
-    expectJasmine((veronaApiServiceMock.sendReady as jasmine.Spy).calls.count()).toBe(1);
+    expect(() => tick()).not.toThrow();
+    expect(unitService.unit.stateVariables[0].id).toBe('second');
+    expect(unitService.unit.getAllElements('checkbox').length).toBe(1);
+    expect((veronaApiServiceMock.sendReady as Mock).mock.calls.length).toBe(1);
   }));
 
   it('loads only the latest unit when two checkbox startCommands arrive back-to-back', fakeAsync(() => {
-    spyOn(Date, 'now').and.returnValue(1710000000001);
+    vi.spyOn(Date, 'now').mockReturnValue(1710000000001);
 
     const appComponent = new AppComponent(
       unitService,
@@ -116,10 +114,10 @@ describe('AppComponent startCommand loading', () => {
     startCommand$.next(createStartCommand('first-checkbox', 'Checkbox First'));
     startCommand$.next(createStartCommand('second-checkbox', 'Checkbox Second'));
 
-    expectJasmine(() => tick()).not.toThrow();
-    expectJasmine(unitService.unit.stateVariables[0].id).toBe('second-checkbox');
-    expectJasmine(unitService.unit.getAllElements('checkbox').length).toBe(1);
-    expectJasmine((veronaApiServiceMock.sendReady as jasmine.Spy).calls.count()).toBe(1);
+    expect(() => tick()).not.toThrow();
+    expect(unitService.unit.stateVariables[0].id).toBe('second-checkbox');
+    expect(unitService.unit.getAllElements('checkbox').length).toBe(1);
+    expect((veronaApiServiceMock.sendReady as Mock).mock.calls.length).toBe(1);
   }));
 });
 

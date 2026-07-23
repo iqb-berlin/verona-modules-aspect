@@ -23,7 +23,7 @@ export abstract class BaseTooltipDirective implements OnDestroy {
   }
 
   hideTooltipWithDelay(): void {
-    this.timeoutId = setTimeout(() => this.hideTooltip(), this.hideDelay);
+    this.timeoutId = window.setTimeout(() => this.hideTooltip(), this.hideDelay);
   }
 
   hideTooltip(): void {

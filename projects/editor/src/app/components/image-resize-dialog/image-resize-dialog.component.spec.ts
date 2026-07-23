@@ -77,19 +77,19 @@ describe('ImageResizeDialogComponent', () => {
     });
 
     it('should return true if targetMimeType is webp', () => {
-      expect(pipe.transform('data:image/png;base64,...', 'image/webp')).toBeTrue();
+      expect(pipe.transform('data:image/png;base64,...', 'image/webp')).toBe(true);
     });
 
     it('should return true for jpeg', () => {
-      expect(pipe.transform('data:image/jpeg;base64,...')).toBeTrue();
+      expect(pipe.transform('data:image/jpeg;base64,...')).toBe(true);
     });
 
     it('should return false for png', () => {
-      expect(pipe.transform('data:image/png;base64,...')).toBeFalse();
+      expect(pipe.transform('data:image/png;base64,...')).toBe(false);
     });
   });
 
-  it('should set original dimensions on init', done => {
+  it('should set original dimensions on init', () => new Promise<void>(done => {
     // The onload is async, so we wait for the image to be loaded
     setTimeout(() => {
       expect(component.originalWidth).toBe(1);
@@ -97,15 +97,15 @@ describe('ImageResizeDialogComponent', () => {
       expect(component.originalSize).toBeGreaterThan(0);
       done();
     }, 200);
-  });
+  }));
 
-  it('should clamp maxWidth to the original width and sync maxHeight on init', done => {
+  it('should clamp maxWidth to the original width and sync maxHeight on init', () => new Promise<void>(done => {
     setTimeout(() => {
       expect(component.data.options.maxWidth).toBe(1);
       expect(component.data.options.maxHeight).toBe(1);
       done();
     }, 200);
-  });
+  }));
 
   it('should always sync maxHeight to the aspect ratio when the width changes', () => {
     component.originalWidth = 200;

@@ -84,7 +84,7 @@ describe('MathFieldComponent', () => {
 
   it('should mark control as touched on focusOut', () => {
     const control = component.elementFormControl;
-    expect(control.touched).toBeFalse();
+    expect(control.touched).toBe(false);
 
     // Simulate focusOut from math-input
     component.focusChanged.subscribe(() => {}); // trigger emission
@@ -96,6 +96,6 @@ describe('MathFieldComponent', () => {
       .query(p => p.componentInstance instanceof MockMathInputComponent).componentInstance;
     mockMathInput.focusOut.emit(document.createElement('div'));
 
-    expect(control.touched).toBeTrue();
+    expect(control.touched).toBe(true);
   });
 });

@@ -63,7 +63,7 @@ describe('AreaSegmentComponent', () => {
   });
 
   it('should emit remove event with correct index', () => {
-    spyOn(component.remove, 'emit');
+    vi.spyOn(component.remove, 'emit');
     component.onRemove('Backspace');
     expect(component.remove.emit).toHaveBeenCalledWith(-1);
     component.onRemove('Delete');

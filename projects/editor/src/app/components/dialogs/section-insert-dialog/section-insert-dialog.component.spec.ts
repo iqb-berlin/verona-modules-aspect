@@ -14,7 +14,7 @@ describe('SectionInsertDialogComponent', () => {
   let fixture: ComponentFixture<SectionInsertDialogComponent>;
 
   const mockDialogRef = {
-    close: jasmine.createSpy('close')
+    close: vi.fn()
   };
 
   const mockUnitService = {
@@ -22,8 +22,8 @@ describe('SectionInsertDialogComponent', () => {
   };
 
   const mockIDService = {
-    isIDAvailable: jasmine.createSpy('isIDAvailable').and.returnValue(true),
-    isAliasAvailable: jasmine.createSpy('isAliasAvailable').and.returnValue(true)
+    isIDAvailable: vi.fn().mockReturnValue(true),
+    isAliasAvailable: vi.fn().mockReturnValue(true)
   };
 
   beforeEach(async () => {
@@ -55,7 +55,7 @@ describe('SectionInsertDialogComponent', () => {
   });
 
   it('should detect duplicate IDs correctly', () => {
-    mockIDService.isIDAvailable.and.returnValue(false);
+    mockIDService.isIDAvailable.mockReturnValue(false);
     const mockElements = [{ id: 'text_1', alias: 'text_1' }];
     // eslint-disable-next-line @typescript-eslint/dot-notation
     const duplicates = component['findElementsWithDuplicateID'](mockElements as any);
@@ -64,8 +64,8 @@ describe('SectionInsertDialogComponent', () => {
   });
 
   it('should detect duplicate Aliases correctly', () => {
-    mockIDService.isIDAvailable.and.returnValue(true);
-    mockIDService.isAliasAvailable.and.returnValue(false);
+    mockIDService.isIDAvailable.mockReturnValue(true);
+    mockIDService.isAliasAvailable.mockReturnValue(false);
     const mockElements = [{ id: 'text_1', alias: 'text_alias_1' }];
     // eslint-disable-next-line @typescript-eslint/dot-notation
     const duplicates = component['findElementsWithDuplicateID'](mockElements as any);

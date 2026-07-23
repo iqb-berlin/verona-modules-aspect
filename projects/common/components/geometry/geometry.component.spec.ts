@@ -22,28 +22,28 @@ describe('GeometryComponent', () => {
     };
 
     mockExternalResourceService = {
-      initializeGeoGebra: jasmine.createSpy('initializeGeoGebra'),
-      isGeoGebraLoaded: jasmine.createSpy('isGeoGebraLoaded').and.returnValue(of(true)),
-      getGeoGebraHTML5URL: jasmine.createSpy('getGeoGebraHTML5URL').and.returnValue('http://geogebra.url')
+      initializeGeoGebra: vi.fn(),
+      isGeoGebraLoaded: vi.fn().mockReturnValue(of(true)),
+      getGeoGebraHTML5URL: vi.fn().mockReturnValue('http://geogebra.url')
     };
 
     mockGeoGebraAPI = {
-      getBase64: jasmine.createSpy('getBase64').and.returnValue('mockBase64'),
-      getAllObjectNames: jasmine.createSpy('getAllObjectNames').and.returnValue([]),
-      getValueString: jasmine.createSpy('getValueString'),
-      registerAddListener: jasmine.createSpy('registerAddListener'),
-      registerRemoveListener: jasmine.createSpy('registerRemoveListener'),
-      registerUpdateListener: jasmine.createSpy('registerUpdateListener'),
-      registerRenameListener: jasmine.createSpy('registerRenameListener'),
-      registerClearListener: jasmine.createSpy('registerClearListener'),
-      registerClientListener: jasmine.createSpy('registerClientListener')
+      getBase64: vi.fn().mockReturnValue('mockBase64'),
+      getAllObjectNames: vi.fn().mockReturnValue([]),
+      getValueString: vi.fn(),
+      registerAddListener: vi.fn(),
+      registerRemoveListener: vi.fn(),
+      registerUpdateListener: vi.fn(),
+      registerRenameListener: vi.fn(),
+      registerClearListener: vi.fn(),
+      registerClientListener: vi.fn()
     };
 
     // Global Mock for GGBApplet with named function to satisfy ESLint and constructor requirements
-    (window as any).GGBApplet = jasmine
-      .createSpy('GGBApplet').and.callFake(function GGBAppletMock(this: any, params: any) {
-        this.setHTML5Codebase = jasmine.createSpy('setHTML5Codebase');
-        this.inject = jasmine.createSpy('inject').and.callFake(() => {
+    (window as any).GGBApplet = vi.fn()
+      .mockImplementation(function GGBAppletMock(this: any, params: any) {
+        this.setHTML5Codebase = vi.fn();
+        this.inject = vi.fn().mockImplementation(() => {
           if (params.appletOnLoad) {
             params.appletOnLoad(mockGeoGebraAPI);
           }
@@ -79,7 +79,7 @@ describe('GeometryComponent', () => {
   });
 
   it('should not emit valuechanged on initial load (no user interaction)', fakeAsync(() => {
-    spyOn(component.elementValueChanged, 'emit');
+    vi.spyOn(component.elementValueChanged, 'emit');
 
     // Simulate GeoGebra update without user interaction
     (component as any).geometryUpdated.next();
@@ -89,7 +89,7 @@ describe('GeometryComponent', () => {
   }));
 
   it('should emit valuechanged after pointerdown interaction', fakeAsync(() => {
-    spyOn(component.elementValueChanged, 'emit');
+    vi.spyOn(component.elementValueChanged, 'emit');
 
     // Simulate user interaction
     const event = new PointerEvent('pointerdown');
@@ -101,16 +101,16 @@ describe('GeometryComponent', () => {
     (component as any).geometryUpdated.next();
     tick(200);
 
-    expect(component.elementValueChanged.emit).toHaveBeenCalledWith(jasmine.objectContaining({
+    expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({
       id: 'test-id',
-      value: jasmine.objectContaining({
+      value: expect.objectContaining({
         appDefinition: 'mockBase64'
       })
     }));
   }));
 
   it('should emit valuechanged after reset() is called', fakeAsync(() => {
-    spyOn(component.elementValueChanged, 'emit');
+    vi.spyOn(component.elementValueChanged, 'emit');
 
     component.reset();
     tick(200);

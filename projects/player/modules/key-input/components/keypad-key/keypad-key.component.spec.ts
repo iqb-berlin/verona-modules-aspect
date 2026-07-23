@@ -44,7 +44,7 @@ describe('KeypadKeyComponent', () => {
   });
 
   it('should emit keyClicked event when button is clicked', () => {
-    spyOn(component.keyClicked, 'emit');
+    vi.spyOn(component.keyClicked, 'emit');
     const button = fixture.debugElement.query(By.css('button'));
     button.nativeElement.click();
     expect(component.keyClicked.emit).toHaveBeenCalledWith('a');

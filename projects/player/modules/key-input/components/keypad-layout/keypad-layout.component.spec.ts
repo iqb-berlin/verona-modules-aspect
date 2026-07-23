@@ -74,29 +74,29 @@ describe('KeypadLayoutComponent', () => {
   });
 
   it('should emit keyClicked event when a normal key is clicked', () => {
-    spyOn(component.keyClicked, 'emit');
+    vi.spyOn(component.keyClicked, 'emit');
     component.evaluateClickedKeyValue('a');
     expect(component.keyClicked.emit).toHaveBeenCalledWith('a');
   });
 
   it('should toggle shift when "Shift" key is clicked', () => {
-    expect(component.shift).toBeFalse();
+    expect(component.shift).toBe(false);
     component.evaluateClickedKeyValue('Shift');
-    expect(component.shift).toBeTrue();
+    expect(component.shift).toBe(true);
     expect(component.rows).toEqual(mockLayout.shift);
 
     component.evaluateClickedKeyValue('ShiftUp');
-    expect(component.shift).toBeFalse();
+    expect(component.shift).toBe(false);
     expect(component.rows).toEqual(mockLayout.default);
   });
 
   it('should toggle shift correctly using toggleShift method', () => {
     component.toggleShift();
-    expect(component.shift).toBeTrue();
+    expect(component.shift).toBe(true);
     expect(component.rows).toEqual(mockLayout.shift);
 
     component.toggleShift();
-    expect(component.shift).toBeFalse();
+    expect(component.shift).toBe(false);
     expect(component.rows).toEqual(mockLayout.default);
   });
 });

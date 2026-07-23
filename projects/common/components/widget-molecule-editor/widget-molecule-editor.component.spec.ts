@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'common/environment';
 import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
@@ -12,7 +14,7 @@ describe('WidgetMoleculeEditorComponent', () => {
     environment.strictInstantiation = false;
     await TestBed.configureTestingModule({
       declarations: [WidgetMoleculeEditorComponent],
-      imports: [TranslateModule.forRoot()]
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule]
     }).compileComponents();
   });
 
@@ -32,7 +34,7 @@ describe('WidgetMoleculeEditorComponent', () => {
   });
 
   it('should emit widget call event', () => {
-    spyOn(component.widgetCallEvent, 'emit');
+    vi.spyOn(component.widgetCallEvent, 'emit');
     component.emitWidgetCall();
     expect(component.widgetCallEvent.emit).toHaveBeenCalledWith({ bondingType: 'VALENCE' });
   });

@@ -12,7 +12,7 @@ describe('MediaPlayerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('mediaStatus of audio_1 should be changed', done => {
+  it('mediaStatus of audio_1 should be changed', () => new Promise<void>(done => {
     const mediaId = 'audio_1';
     service.registerMediaElement(mediaId, false);
     service.mediaStatusChanged
@@ -21,9 +21,9 @@ describe('MediaPlayerService', () => {
         done();
       });
     service.setValidStatusChanged(mediaId);
-  });
+  }));
 
-  it('mediaStatus of audio_1 should be changed', done => {
+  it('mediaStatus of audio_1 should be changed', () => new Promise<void>(done => {
     const mediaId = 'audio_1';
     service.registerMediaElement(mediaId, false);
     service.registerMediaElement('audio_2', false);
@@ -33,9 +33,9 @@ describe('MediaPlayerService', () => {
         done();
       });
     service.setValidStatusChanged(mediaId);
-  });
+  }));
 
-  it('mediaStatus of audio_2 should not be changed', done => {
+  it('mediaStatus of audio_2 should not be changed', () => new Promise<void>(done => {
     const mediaId = 'audio_1';
     service.registerMediaElement(mediaId, false);
     service.registerMediaElement('audio_2', false);
@@ -45,7 +45,7 @@ describe('MediaPlayerService', () => {
         done();
       });
     service.setValidStatusChanged('audio_2');
-  });
+  }));
 
   it('mediaStatus should be complete', () => {
     expect(service.mediaStatus).toEqual('complete');
@@ -73,7 +73,7 @@ describe('MediaPlayerService', () => {
     expect(service.mediaStatus).toEqual('complete');
   });
 
-  it('actualPlayingMediaId should be audio_1', done => {
+  it('actualPlayingMediaId should be audio_1', () => new Promise<void>(done => {
     const mediaId = 'audio_1';
     service.actualPlayingId
       .subscribe(id => {
@@ -81,9 +81,9 @@ describe('MediaPlayerService', () => {
         done();
       });
     service.setActualPlayingId(mediaId);
-  });
+  }));
 
-  it('pageIndex should not be audio_1', done => {
+  it('pageIndex should not be audio_1', () => new Promise<void>(done => {
     const mediaId = 'audio_1';
     service.actualPlayingId
       .subscribe(id => {
@@ -91,5 +91,5 @@ describe('MediaPlayerService', () => {
         done();
       });
     service.setActualPlayingId('audio_2');
-  });
+  }));
 });

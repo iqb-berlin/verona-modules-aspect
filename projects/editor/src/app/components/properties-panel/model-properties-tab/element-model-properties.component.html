@@ -182,7 +182,9 @@
                                       (updateModel)="updateModel.emit($event)">
   </aspect-input-assistance-properties>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.stickyHeader !== undefined"
+  <!-- Tables get their own conditional stickyHeader checkbox in aspect-table-properties. -->
+  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.stickyHeader !== undefined &&
+                       combinedProperties.type !== 'table'"
                 [checked]="$any(combinedProperties.stickyHeader)"
                 (change)="updateModel.emit({ property: 'stickyHeader', value: $event.checked })">
     {{'propertiesPanel.stickyHeader' | translate }}

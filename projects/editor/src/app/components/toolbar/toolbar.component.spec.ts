@@ -4,10 +4,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
+import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
 import { ToolbarComponent } from './toolbar.component';
 import { UnitService } from '../../services/unit.service';
 import { VeronaAPIService } from '../../services/verona-api.service';
-import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;

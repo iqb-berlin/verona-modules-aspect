@@ -103,7 +103,9 @@
           "builder": "@angular/build:application",
           "options": {
             "tsConfig": "projects/editor/tsconfig.spec.json",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "assets": [
               "projects/editor/src/favicon.ico",
               "projects/editor/src/assets",
@@ -131,10 +133,23 @@
             "buildTarget": "editor:build-test",
             "tsConfig": "projects/editor/tsconfig.spec.json",
             "runner": "vitest",
-            "browsers": ["ChromiumHeadless"],
-            "setupFiles": ["projects/vitest-proxy-zone.setup.ts"],
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
             "providersFile": "projects/editor/src/vitest-providers.ts",
-            "codeCoverage": false
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "editor"
+                }
+              ],
+              "text-summary"
+            ]
           }
         },
         "build-coverage": {
@@ -275,7 +290,9 @@
           "builder": "@angular/build:application",
           "options": {
             "tsConfig": "projects/player/tsconfig.spec.json",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "assets": [
               "projects/player/src/favicon.ico",
               "projects/player/src/assets",
@@ -302,10 +319,23 @@
             "buildTarget": "player:build-test",
             "tsConfig": "projects/player/tsconfig.spec.json",
             "runner": "vitest",
-            "browsers": ["ChromiumHeadless"],
-            "setupFiles": ["projects/vitest-proxy-zone.setup.ts"],
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
             "providersFile": "projects/player/src/vitest-providers.ts",
-            "codeCoverage": false
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "player"
+                }
+              ],
+              "text-summary"
+            ]
           }
         },
         "build-coverage": {
@@ -359,7 +389,9 @@
           "builder": "@angular/build:application",
           "options": {
             "tsConfig": "projects/common/tsconfig.spec.json",
-            "polyfills": ["zone.js"]
+            "polyfills": [
+              "zone.js"
+            ]
           }
         },
         "test": {
@@ -368,9 +400,22 @@
             "buildTarget": "common:build",
             "tsConfig": "projects/common/tsconfig.spec.json",
             "runner": "vitest",
-            "browsers": ["ChromiumHeadless"],
-            "setupFiles": ["projects/vitest-proxy-zone.setup.ts"],
-            "codeCoverage": false
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "common"
+                }
+              ],
+              "text-summary"
+            ]
           }
         }
       }
@@ -384,7 +429,9 @@
           "builder": "@angular/build:application",
           "options": {
             "tsConfig": "projects/player/modules/tsconfig.spec.json",
-            "polyfills": ["zone.js"]
+            "polyfills": [
+              "zone.js"
+            ]
           }
         },
         "test": {
@@ -393,9 +440,22 @@
             "buildTarget": "playerModules:build",
             "tsConfig": "projects/player/modules/tsconfig.spec.json",
             "runner": "vitest",
-            "browsers": ["ChromiumHeadless"],
-            "setupFiles": ["projects/vitest-proxy-zone.setup.ts"],
-            "codeCoverage": false
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "playerModules"
+                }
+              ],
+              "text-summary"
+            ]
           }
         }
       }

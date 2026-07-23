@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageLabelModule } from 'player/src/app/directives/page-label.module';
 import { Component, Input, NgModule } from '@angular/core';
@@ -15,7 +16,7 @@ describe('PageLabelDirective', () => {
       <div>Content</div>
     </div>`,
     standalone: false
-})
+  })
   class TestComponent {
     @Input()headerIsHidden = true;
     headerHeight = 0;
@@ -42,7 +43,6 @@ describe('PageLabelDirective', () => {
     component = fixture.componentInstance;
   });
 
-
   it('should not display page label', () => {
     component.headerIsHidden = true;
     fixture.detectChanges();
@@ -58,5 +58,4 @@ describe('PageLabelDirective', () => {
     expect(header.nativeElement.style.display).not.toBe('none');
     expect(component.headerHeight).toBe(100);
   });
-
 });

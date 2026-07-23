@@ -4,6 +4,8 @@ Player
 ### Neue Funktionen
 - Abwärtskompatibilität
   - Es können nun auch Aufgaben, die mit deutlich älteren Editor-Versionen erstellt wurden, im aktuellen Layout geladen und dargestellt werden
+- Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
+  - Die im Editor eingestellte Textausrichtung (linksbündig, zentriert, rechtsbündig) wird bei der Eingabe dargestellt
 
 ### Änderungen
 - Eingabehilfe/Tastatur

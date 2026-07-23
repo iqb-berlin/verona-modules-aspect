@@ -57,6 +57,7 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
   },
   'text-field': {
     appearance: 'outline',
+    textAlign: 'left',
     minLength: null,
     minLengthWarnMessage: 'Eingabe zu kurz',
     maxLength: null,
@@ -85,6 +86,7 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     hasBackspaceKey: false
   },
   'text-field-simple': {
+    textAlign: 'left',
     minLength: null,
     minLengthWarnMessage: 'Eingabe zu kurz',
     maxLength: null,
@@ -112,6 +114,7 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
   },
   'text-area': {
     appearance: 'outline',
+    textAlign: 'left',
     resizeEnabled: false,
     hasDynamicRowCount: true,
     hasAutoHeight: false,

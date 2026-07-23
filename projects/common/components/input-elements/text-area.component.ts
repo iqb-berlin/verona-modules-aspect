@@ -29,6 +29,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                   autocorrect="off"
                   spellcheck="false"
                   value="{{elementModel.value}}"
+                  [style.text-align]="elementModel.textAlign"
                   dynamicRows
                   [autoHeight]="elementModel.hasAutoHeight"
                   [expectedCharactersCount]="elementModel.expectedCharactersCount"
@@ -63,6 +64,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 value="{{elementModel.value}}"
                 dynamicRows
                 [class.errors]="elementFormControl.errors && elementFormControl.touched"
+                [style.text-align]="elementModel.textAlign"
                 [style.--backgroundColor]="elementModel.styling.backgroundColor"
                 [style.color]="elementModel.styling.fontColor"
                 [style.font-size.px]="elementModel.styling.fontSize"

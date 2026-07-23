@@ -14,6 +14,7 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class TextAreaElement extends TextInputElement implements TextAreaProperties {
   type: UIElementType = 'text-area';
   appearance: 'fill' | 'outline' = ELEMENT_DEFAULTS['text-area'].appearance as 'fill' | 'outline';
+  textAlign: 'left' | 'center' | 'right' = ELEMENT_DEFAULTS['text-area'].textAlign as 'left' | 'center' | 'right';
   resizeEnabled: boolean = ELEMENT_DEFAULTS['text-area'].resizeEnabled as boolean;
   hasDynamicRowCount: boolean = ELEMENT_DEFAULTS['text-area'].hasDynamicRowCount as boolean;
   hasAutoHeight: boolean = ELEMENT_DEFAULTS['text-area'].hasAutoHeight as boolean;
@@ -38,6 +39,7 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
     super({ type: 'text-area', ...element }, idService);
     if (isTextAreaProperties(element)) {
       if (element.appearance) this.appearance = element.appearance;
+      if (element.textAlign !== undefined) this.textAlign = element.textAlign;
       if (element.resizeEnabled !== undefined) this.resizeEnabled = element.resizeEnabled;
       if (element.rowCount !== undefined) this.rowCount = element.rowCount;
       if (element.hasDynamicRowCount !== undefined) this.hasDynamicRowCount = element.hasDynamicRowCount;
@@ -70,6 +72,7 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
 
 export interface TextAreaProperties extends TextInputElementProperties {
   appearance?: 'fill' | 'outline';
+  textAlign: 'left' | 'center' | 'right';
   resizeEnabled: boolean;
   hasDynamicRowCount: boolean;
   hasAutoHeight: boolean;

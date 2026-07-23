@@ -244,3 +244,5 @@ iqb-aspect-definition@1.0.0
 4.12.0
 - InputAssistancePreset:
   - new type: decimals
+- TextFieldElement, TextFieldSimpleElement, TextAreaElement:
+  - new property: textAlign: 'left' | 'center' | 'right'

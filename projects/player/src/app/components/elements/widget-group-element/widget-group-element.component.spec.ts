@@ -22,7 +22,7 @@ describe('WidgetGroupElementComponent', () => {
   }
 
   class MockVeronaSubscriptionService {
-    vopWidgetReturn = new Subject<{ state: string, sessionId: string, type: 'vopWidgetReturn' }>();
+    vopWidgetReturn = new Subject<{ state: string, sessionId: string, callId?: string, type: 'vopWidgetReturn' }>();
   }
 
   beforeEach(async () => {
@@ -62,7 +62,8 @@ describe('WidgetGroupElementComponent', () => {
       maxNumberOfSelections: 3
     }, 'PERIODIC_TABLE');
 
-    expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith({
+    expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith(expect.objectContaining({
+      callId: expect.any(String),
       widgetType: 'PERIODIC_TABLE',
       parameters: [
         { key: 'SHOW_INFO_ORDER', value: 'true' },
@@ -71,10 +72,36 @@ describe('WidgetGroupElementComponent', () => {
         { key: 'CLOSE_ON_SELECTION', value: 'true' },
         { key: 'MAX_NUMBER_OF_SELECTIONS', value: '3' }
       ]
-    });
+    }));
   });
 
   it('should update elementModel state and call changeElementCodeValue on vopWidgetReturn', () => {
+    const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
+    const veronaPostService = TestBed.inject(VeronaPostService);
+    const sendVopWidgetCallSpy = vi.spyOn(veronaPostService, 'sendVopWidgetCall');
+    vi.spyOn(component, 'changeElementCodeValue');
+
+    component.applyWidgetCall({
+      showInfoOrder: true,
+      showInfoENeg: false,
+      showInfoAMass: true,
+      closeOnSelection: true,
+      maxNumberOfSelections: 3
+    }, 'PERIODIC_TABLE');
+
+    const lastWidgetCall = sendVopWidgetCallSpy.mock.lastCall;
+    if (!lastWidgetCall) throw new Error('sendVopWidgetCall was not called');
+    const sentCallId = lastWidgetCall[0].callId;
+    const mockReturnEvent = {
+      type: 'vopWidgetReturn' as const, sessionId: '1', callId: sentCallId, state: 'newState'
+    };
+    (veronaSubscriptionService as unknown as MockVeronaSubscriptionService).vopWidgetReturn.next(mockReturnEvent);
+
+    expect((component.elementModel as WidgetPeriodicTableElement).state).toEqual('newState');
+    expect(component.changeElementCodeValue).toHaveBeenCalledWith({ id: 'id', value: 'newState' });
+  });
+
+  it('should ignore vopWidgetReturn messages with a non-matching callId', () => {
     const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
     vi.spyOn(component, 'changeElementCodeValue');
 
@@ -86,10 +113,12 @@ describe('WidgetGroupElementComponent', () => {
       maxNumberOfSelections: 3
     }, 'PERIODIC_TABLE');
 
-    const mockReturnEvent = { type: 'vopWidgetReturn' as const, sessionId: '1', state: 'newState' };
+    const mockReturnEvent = {
+      type: 'vopWidgetReturn' as const, sessionId: '1', callId: 'other-widget-call', state: 'base64FromOtherWidget'
+    };
     (veronaSubscriptionService as unknown as MockVeronaSubscriptionService).vopWidgetReturn.next(mockReturnEvent);
 
-    expect((component.elementModel as WidgetPeriodicTableElement).state).toEqual('newState');
-    expect(component.changeElementCodeValue).toHaveBeenCalledWith({ id: 'id', value: 'newState' });
+    expect((component.elementModel as WidgetPeriodicTableElement).state).toBeNull();
+    expect(component.changeElementCodeValue).not.toHaveBeenCalled();
   });
 });

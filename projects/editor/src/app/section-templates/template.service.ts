@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { RadioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio/radio.dialog.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
@@ -52,7 +53,8 @@ export class TemplateService {
 
   constructor(private unitService: UnitService,
               private selectionService: SelectionService,
-              private idService: IDService) { }
+              private idService: IDService,
+              private translateService: TranslateService) { }
 
   static helpTooltipImageSrc = CONSTANTS.lightbulb;
 
@@ -227,6 +229,8 @@ export class TemplateService {
               if (result) {
                 resolve(GeometryBuilders.createGeometrySection(result.text, result.geometryAppDefinition,
                                                                result.geometryFileName, result.showHelper,
+                                                               this.translateService
+                                                                 .instant('sectionTemplates.geometrySource'),
                                                                this.idService));
               }
             });

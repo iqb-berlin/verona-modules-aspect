@@ -32,7 +32,9 @@ import { firstValueFrom } from 'rxjs';
                     (elementRemoved)="removeElement($event)"></aspect-table>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="newTable.elements">{{'save' | translate }}</button>
+      <button mat-button [mat-dialog-close]="{ elements: newTable.elements, headerRows: newTable.headerRows }">
+        {{'save' | translate }}
+      </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
@@ -42,6 +44,10 @@ import { firstValueFrom } from 'rxjs';
       grid-template-rows: unset !important;
       grid-auto-columns: 300px !important;
       grid-auto-rows: 250px !important;
+    }
+    :host ::ng-deep aspect-table .header-cell {
+      display: flex;
+      align-items: center;
     }
   `
 })

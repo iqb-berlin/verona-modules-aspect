@@ -246,3 +246,7 @@ iqb-aspect-definition@1.0.0
   - new type: decimals
 - TextFieldElement, TextFieldSimpleElement, TextAreaElement:
   - new property: textAlign: 'left' | 'center' | 'right'
+- TableElement:
+  - new property: headerEnabled: boolean
+  - new property: headerRows: { text: string; alignment: 'left' | 'center' | 'right' }[][]
+  - new property: stickyHeader: boolean

@@ -78,6 +78,101 @@ describe('TableElement', () => {
     expect(table.getChildElements()[0]).toBeInstanceOf(DropListElement);
   });
 
+  describe('header row (#864)', () => {
+    const twoColumnTableProperties = {
+      ...tableProperties,
+      elements: [],
+      gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }]
+    };
+
+    it('should fall back to disabled header for definitions without header properties', () => {
+      const table = new TableElement(tableProperties);
+      expect(table.headerEnabled).toBe(false);
+      expect(table.headerRows).toEqual([]);
+      expect(table.stickyHeader).toBe(false);
+    });
+
+    it('should apply given header properties', () => {
+      const table = new TableElement({
+        ...twoColumnTableProperties,
+        headerEnabled: true,
+        headerRows: [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]],
+        stickyHeader: true
+      });
+      expect(table.headerEnabled).toBe(true);
+      expect(table.headerRows).toEqual([[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]]);
+      expect(table.stickyHeader).toBe(true);
+    });
+
+    it('should copy header cells instead of keeping blueprint references', () => {
+      const headerRows: { text: string; alignment: 'left' | 'center' | 'right' }[][] =
+        [[{ text: 'A', alignment: 'left' }]];
+      const table = new TableElement({ ...tableProperties, headerEnabled: true, headerRows });
+      headerRows[0][0].text = 'changed';
+      expect(table.headerRows[0][0].text).toBe('A');
+    });
+
+    it('should create a header row matching the column count when the header gets enabled', () => {
+      const table = new TableElement(twoColumnTableProperties);
+      table.setProperty('headerEnabled', true);
+      expect(table.headerRows).toEqual([
+        [{ text: '', alignment: 'left' }, { text: '', alignment: 'left' }]
+      ]);
+    });
+
+    it('should keep existing header rows when the header gets re-enabled', () => {
+      const table = new TableElement({
+        ...tableProperties,
+        headerRows: [[{ text: 'A', alignment: 'center' }]]
+      });
+      table.setProperty('headerEnabled', true);
+      expect(table.headerRows).toEqual([[{ text: 'A', alignment: 'center' }]]);
+    });
+
+    it('should extend header rows when columns are added', () => {
+      const table = new TableElement({
+        ...tableProperties,
+        headerEnabled: true,
+        headerRows: [[{ text: 'A', alignment: 'center' }]]
+      });
+      table.setProperty('gridColumnSizes', [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }]);
+      expect(table.headerRows).toEqual([
+        [{ text: 'A', alignment: 'center' }, { text: '', alignment: 'left' }]
+      ]);
+    });
+
+    it('should shrink header rows when columns are removed', () => {
+      const table = new TableElement({
+        ...twoColumnTableProperties,
+        headerEnabled: true,
+        headerRows: [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]]
+      });
+      table.setProperty('gridColumnSizes', [{ value: 1, unit: 'fr' }]);
+      expect(table.headerRows).toEqual([[{ text: 'A', alignment: 'left' }]]);
+    });
+
+    it('should replace header row arrays on setProperty, so components get updated', () => {
+      const table = new TableElement(twoColumnTableProperties);
+      const originalHeaderRows = table.headerRows;
+      table.setProperty('headerRows', [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'left' }]]);
+      expect(table.headerRows).not.toBe(originalHeaderRows);
+      expect(table.headerRows[0][0]).toEqual({ text: 'A', alignment: 'left' });
+    });
+
+    it('should keep header properties in the blueprint', () => {
+      const table = new TableElement({
+        ...twoColumnTableProperties,
+        headerEnabled: true,
+        headerRows: [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]],
+        stickyHeader: true
+      });
+      const blueprint = table.getBlueprint();
+      expect(blueprint.headerEnabled).toBe(true);
+      expect(blueprint.headerRows).toEqual([[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]]);
+      expect(blueprint.stickyHeader).toBe(true);
+    });
+  });
+
   describe('getVariableInfos of a section with a drop list inside a table (#1087)', () => {
     it('should not throw', () => {
       const section = new Section(createSectionProperties([tableProperties as UIElementProperties]));

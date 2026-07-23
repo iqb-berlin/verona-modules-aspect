@@ -6,6 +6,9 @@ Editor
   - Option zur automatischen Größenanpassung beim Hochladen von Bildern zur Optimierung der Dateigröße.
 - Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
   - Neue Eigenschaft "Textausrichtung" (linksbündig, zentriert, rechtsbündig) für den eingegebenen Text
+- Tabelle
+  - Neue optionale Kopfzeile: je Spalte ein Text mit einstellbarer Ausrichtung (linksbündig, zentriert, rechtsbündig); Bearbeitung im Dialog "Elemente anpassen"
+  - Neue Eigenschaft "Kopfzeile beim Scrollen fixieren"
 
 ### Änderungen
 - Formelfeld

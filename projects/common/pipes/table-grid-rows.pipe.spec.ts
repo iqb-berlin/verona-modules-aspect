@@ -16,4 +16,9 @@ describe('TableGridRowsPipe', () => {
   it('should handle empty row sizes', () => {
     expect(pipe.transform([], 1)).toBe('auto');
   });
+
+  it('should override content row sizes while keeping header tracks at auto', () => {
+    expect(pipe.transform(gridRowSizes, 1, '250px')).toBe('auto 250px 250px');
+    expect(pipe.transform(gridRowSizes, 0, '250px')).toBe('250px 250px');
+  });
 });

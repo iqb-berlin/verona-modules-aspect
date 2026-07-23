@@ -28,6 +28,7 @@ import { firstValueFrom } from 'rxjs';
     <div mat-dialog-title>Tabellenelemente</div>
     <mat-dialog-content>
       <aspect-table [elementModel]="newTable" [editorMode]="true" [allowElementEditing]="true"
+                    [contentRowHeight]="'250px'"
                     (elementAdded)="addElement($event)"
                     (elementRemoved)="removeElement($event)"></aspect-table>
     </mat-dialog-content>
@@ -41,9 +42,7 @@ import { firstValueFrom } from 'rxjs';
   styles: `
     :host ::ng-deep aspect-table .grid-container {
       grid-template-columns: unset !important;
-      grid-template-rows: unset !important;
       grid-auto-columns: 300px !important;
-      grid-auto-rows: 250px !important;
     }
     :host ::ng-deep aspect-table .header-cell {
       display: flex;

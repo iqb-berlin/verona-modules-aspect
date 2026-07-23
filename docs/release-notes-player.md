@@ -7,7 +7,7 @@ Player
 - Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
   - Die im Editor eingestellte Textausrichtung (linksbündig, zentriert, rechtsbündig) wird bei der Eingabe dargestellt
 - Tabelle
-  - Stellt die im Editor konfigurierte Kopfzeile dar; optional bleibt sie beim Scrollen am oberen Rand des sichtbaren Bereichs fixiert
+  - Stellt die im Editor konfigurierte Kopfzeile (auch mehrzeilig) dar; optional bleibt sie beim Scrollen am oberen Rand des sichtbaren Bereichs fixiert
 
 ### Änderungen
 - Eingabehilfe/Tastatur

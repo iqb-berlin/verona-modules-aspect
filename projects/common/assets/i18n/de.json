@@ -13,5 +13,7 @@
   "tableHeaderText": "Kopfzeilentext",
   "tableHeaderAlignLeft": "Linksbündig",
   "tableHeaderAlignCenter": "Zentriert",
-  "tableHeaderAlignRight": "Rechtsbündig"
+  "tableHeaderAlignRight": "Rechtsbündig",
+  "tableHeaderAddRow": "Weitere Kopfzeile hinzufügen",
+  "tableHeaderRemoveRow": "Kopfzeile entfernen"
 }

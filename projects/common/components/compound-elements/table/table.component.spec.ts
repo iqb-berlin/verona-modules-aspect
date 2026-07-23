@@ -130,5 +130,78 @@ describe('TableComponent', () => {
       expect(component.elementModel.headerRows[0][0].text).toBe('changed');
       expect(component.elementModel.headerRows[0][1].alignment).toBe('center');
     });
+
+    it('should use the given content row height while keeping header rows compact', () => {
+      component.elementModel = createTableElement(headerProperties);
+      component.contentRowHeight = '250px';
+      fixture.detectChanges();
+      const gridContainer: HTMLElement = fixture.nativeElement.querySelector('.grid-container');
+      expect(gridContainer.style.gridTemplateRows).toBe('auto 250px 250px');
+    });
+  });
+
+  describe('multiple header rows (#864)', () => {
+    const headerProperties: Partial<TableProperties> = {
+      headerEnabled: true,
+      headerRows: [[{ text: 'Column A', alignment: 'left' }, { text: 'Column B', alignment: 'right' }]]
+    };
+
+    const twoHeaderRows: Partial<TableProperties> = {
+      headerEnabled: true,
+      headerRows: [
+        [{ text: 'Group', alignment: 'center' }, { text: '', alignment: 'left' }],
+        [{ text: 'Value', alignment: 'left' }, { text: 'Unit', alignment: 'left' }]
+      ]
+    };
+
+    it('should render all header rows and move content cells below them', () => {
+      component.elementModel = createTableElement(twoHeaderRows);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelectorAll('.header-cell').length).toBe(4);
+      const firstContentCell: HTMLElement = fixture.nativeElement.querySelector('.cell-container');
+      expect(firstContentCell.style.gridRowStart).toBe('3');
+      const gridContainer: HTMLElement = fixture.nativeElement.querySelector('.grid-container');
+      expect(gridContainer.style.gridTemplateRows).toBe('auto auto 1fr 1fr');
+    });
+
+    it('should stack sticky header rows by setting measured top offsets', () => {
+      component.elementModel = createTableElement({ ...twoHeaderRows, stickyHeader: true });
+      fixture.detectChanges();
+      const headerCells: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('.header-cell');
+      expect(headerCells[0].style.top).toBe('0px');
+      expect(parseFloat(headerCells[2].style.top)).toBe(headerCells[0].offsetHeight);
+    });
+
+    it('should not apply sticky positioning in the edit dialog', () => {
+      component.elementModel = createTableElement({ ...twoHeaderRows, stickyHeader: true });
+      component.allowElementEditing = true;
+      fixture.detectChanges();
+      const headerCell: HTMLElement = fixture.nativeElement.querySelector('.header-cell');
+      expect(headerCell.classList).not.toContain('sticky-header');
+      expect(headerCell.style.top).toBe('');
+    });
+
+    it('should offer adding a header row only in the last row and removing only with multiple rows', () => {
+      component.elementModel = createTableElement(headerProperties);
+      component.allowElementEditing = true;
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelectorAll('.header-row-controls button').length).toBe(1);
+
+      component.addHeaderRow();
+      fixture.detectChanges();
+      // second row: one add (last row) + two remove buttons (one per row)
+      expect(fixture.nativeElement.querySelectorAll('.header-row-controls button').length).toBe(3);
+
+      component.removeHeaderRow(1);
+      fixture.detectChanges();
+      expect(component.elementModel.headerRows.length).toBe(1);
+      expect(fixture.nativeElement.querySelectorAll('.header-row-controls button').length).toBe(1);
+    });
+
+    it('should size added header rows to the column count', () => {
+      component.elementModel = createTableElement(headerProperties);
+      component.addHeaderRow();
+      expect(component.elementModel.headerRows[1].length).toBe(2);
+    });
   });
 });

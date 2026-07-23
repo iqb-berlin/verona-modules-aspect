@@ -7,7 +7,7 @@ Editor
 - Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
   - Neue Eigenschaft "Textausrichtung" (linksbündig, zentriert, rechtsbündig) für den eingegebenen Text
 - Tabelle
-  - Neue optionale Kopfzeile: je Spalte ein Text mit einstellbarer Ausrichtung (linksbündig, zentriert, rechtsbündig); Bearbeitung im Dialog "Elemente anpassen"
+  - Neue optionale Kopfzeile: je Spalte ein Text mit einstellbarer Ausrichtung (linksbündig, zentriert, rechtsbündig); Bearbeitung im Dialog "Elemente anpassen", dort können auch weitere Kopfzeilen hinzugefügt und entfernt werden
   - Neue Eigenschaft "Haftende Kopfzeile" (fixiert die Kopfzeile beim Scrollen)
 
 ### Änderungen

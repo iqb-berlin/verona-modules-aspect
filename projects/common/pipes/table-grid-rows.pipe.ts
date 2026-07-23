@@ -6,10 +6,10 @@ import { Measurement } from 'common/interfaces';
   standalone: false
 })
 export class TableGridRowsPipe implements PipeTransform {
-  transform(gridRowSizes: Measurement[], headerRowCount: number): string {
+  transform(gridRowSizes: Measurement[], headerRowCount: number, contentRowHeight: string | null = null): string {
     return [
       ...Array(headerRowCount).fill('auto'),
-      ...gridRowSizes.map(size => String(size.value) + size.unit)
+      ...gridRowSizes.map(size => contentRowHeight ?? String(size.value) + size.unit)
     ].join(' ');
   }
 }

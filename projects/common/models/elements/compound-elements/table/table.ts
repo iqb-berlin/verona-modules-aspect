@@ -90,6 +90,14 @@ export class TableElement extends CompoundElement implements TableProperties {
     }
   }
 
+  addHeaderRow(): void {
+    this.headerRows = [...this.headerRows, TableElement.createHeaderRow(this.gridColumnSizes.length)];
+  }
+
+  removeHeaderRow(rowIndex: number): void {
+    this.headerRows = this.headerRows.filter((_, index) => index !== rowIndex);
+  }
+
   private adjustHeaderRowsToColumnCount(): void {
     const columnCount = this.gridColumnSizes.length;
     this.headerRows = this.headerRows.map(row => [

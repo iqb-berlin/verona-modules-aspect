@@ -159,6 +159,34 @@ describe('TableElement', () => {
       expect(table.headerRows[0][0]).toEqual({ text: 'A', alignment: 'left' });
     });
 
+    it('should append an empty header row matching the column count on addHeaderRow', () => {
+      const table = new TableElement({
+        ...twoColumnTableProperties,
+        headerEnabled: true,
+        headerRows: [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]]
+      });
+      const originalHeaderRows = table.headerRows;
+      table.addHeaderRow();
+      expect(table.headerRows).toEqual([
+        [{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }],
+        [{ text: '', alignment: 'left' }, { text: '', alignment: 'left' }]
+      ]);
+      expect(table.headerRows).not.toBe(originalHeaderRows);
+    });
+
+    it('should remove the header row at the given index on removeHeaderRow', () => {
+      const table = new TableElement({
+        ...tableProperties,
+        headerEnabled: true,
+        headerRows: [
+          [{ text: 'A', alignment: 'left' }],
+          [{ text: 'B', alignment: 'center' }]
+        ]
+      });
+      table.removeHeaderRow(0);
+      expect(table.headerRows).toEqual([[{ text: 'B', alignment: 'center' }]]);
+    });
+
     it('should keep header properties in the blueprint', () => {
       const table = new TableElement({
         ...twoColumnTableProperties,

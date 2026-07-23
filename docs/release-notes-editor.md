@@ -8,7 +8,7 @@ Editor
   - Neue Eigenschaft "Textausrichtung" (linksbündig, zentriert, rechtsbündig) für den eingegebenen Text
 - Tabelle
   - Neue optionale Kopfzeile: je Spalte ein Text mit einstellbarer Ausrichtung (linksbündig, zentriert, rechtsbündig); Bearbeitung im Dialog "Elemente anpassen"
-  - Neue Eigenschaft "Kopfzeile beim Scrollen fixieren"
+  - Neue Eigenschaft "Haftende Kopfzeile" (fixiert die Kopfzeile beim Scrollen)
 
 ### Änderungen
 - Formelfeld

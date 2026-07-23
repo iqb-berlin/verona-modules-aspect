@@ -120,4 +120,20 @@ describe('ElementFactory', () => {
     expect(() => ElementFactory.createElement({ type: 'drop-list' } as unknown as UIElementProperties))
       .not.toThrow();
   });
+
+  it('should default textAlign to left on text input elements', () => {
+    ['text-field', 'text-field-simple', 'text-area'].forEach(type => {
+      const element = ElementFactory.createElement({ type } as unknown as UIElementProperties);
+      expect(element.textAlign).toBe('left');
+    });
+  });
+
+  it('should preserve a provided textAlign through normalization and instantiation', () => {
+    ['text-field', 'text-field-simple', 'text-area'].forEach(type => {
+      const element = ElementFactory.createElement(
+        { type, textAlign: 'center' } as unknown as UIElementProperties
+      );
+      expect(element.textAlign).toBe('center');
+    });
+  });
 });

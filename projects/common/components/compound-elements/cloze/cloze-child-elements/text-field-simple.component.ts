@@ -21,6 +21,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
            spellcheck="false"
            [class.errors]="elementFormControl.errors && elementFormControl.touched"
            [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
+           [style.text-align]="elementModel.textAlign"
            [style.line-height.%]="elementModel.styling.lineHeight"
            [style.color]="elementModel.styling.fontColor"
            [style.font-size.px]="elementModel.styling.fontSize"

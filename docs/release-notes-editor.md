@@ -4,6 +4,8 @@ Editor
 ### Neue Funktionen
 - Neuer Dialog zum Upload von Bildern
   - Option zur automatischen Größenanpassung beim Hochladen von Bildern zur Optimierung der Dateigröße.
+- Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
+  - Neue Eigenschaft "Textausrichtung" (linksbündig, zentriert, rechtsbündig) für den eingegebenen Text
 
 ### Änderungen
 - Formelfeld

@@ -13,6 +13,10 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class TextFieldSimpleElement extends TextInputElement implements TextFieldSimpleProperties {
   type: UIElementType = 'text-field-simple';
+
+  textAlign: 'left' | 'center' | 'right' =
+    ELEMENT_DEFAULTS['text-field-simple'].textAlign as 'left' | 'center' | 'right';
+
   minLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].minLength as number | null;
   minLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].minLengthWarnMessage as string;
   maxLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].maxLength as number | null;
@@ -39,6 +43,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   constructor(element?: Partial<TextFieldSimpleProperties>, idService?: AbstractIDService) {
     super({ type: 'text-field-simple', ...element }, idService);
     if (isTextFieldSimpleProperties(element)) {
+      if (element.textAlign !== undefined) this.textAlign = element.textAlign;
       if (element.minLength !== undefined) this.minLength = element.minLength;
       if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
       if (element.maxLength !== undefined) this.maxLength = element.maxLength;
@@ -73,6 +78,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
 }
 
 export interface TextFieldSimpleProperties extends TextInputElementProperties {
+  textAlign: 'left' | 'center' | 'right';
   minLength: number | null;
   minLengthWarnMessage: string;
   maxLength: number | null;

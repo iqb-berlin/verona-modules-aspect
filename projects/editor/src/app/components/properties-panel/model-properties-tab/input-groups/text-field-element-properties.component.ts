@@ -8,6 +8,28 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 @Component({
   selector: 'aspect-text-field-element-properties',
   template: `
+    @if (combinedProperties.textAlign !== undefined) {
+      <fieldset class="fx-column-start-stretch">
+        <legend>{{'propertiesPanel.textAlign' | translate }}</legend>
+        <mat-button-toggle-group class="text-align-toggle-group"
+                                 [value]="combinedProperties.textAlign"
+                                 (change)="updateModel.emit({ property: 'textAlign', value: $event.value })">
+          <mat-button-toggle value="left"
+                             [matTooltip]="'propertiesPanel.textAlignLeft' | translate">
+            <mat-icon>format_align_left</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="center"
+                             [matTooltip]="'propertiesPanel.textAlignCenter' | translate">
+            <mat-icon>format_align_center</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="right"
+                             [matTooltip]="'propertiesPanel.textAlignRight' | translate">
+            <mat-icon>format_align_right</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </fieldset>
+    }
+
     <mat-form-field *ngIf="unitService.expertMode && combinedProperties.appearance !== undefined" appearance="fill">
       <mat-label>{{'propertiesPanel.appearance' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.appearance"

@@ -13,6 +13,7 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class TextFieldElement extends TextInputElement implements TextFieldProperties {
   type: UIElementType = 'text-field';
   appearance?: 'fill' | 'outline' = ELEMENT_DEFAULTS['text-field'].appearance as 'fill' | 'outline';
+  textAlign: 'left' | 'center' | 'right' = ELEMENT_DEFAULTS['text-field'].textAlign as 'left' | 'center' | 'right';
   minLength: number | null = ELEMENT_DEFAULTS['text-field'].minLength as number | null;
   minLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field'].minLengthWarnMessage as string;
   maxLength: number | null = ELEMENT_DEFAULTS['text-field'].maxLength as number | null;
@@ -36,6 +37,7 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
     super({ type: 'text-field', ...element }, idService);
     if (isTextFieldProperties(element)) {
       if (element.appearance) this.appearance = element.appearance;
+      if (element.textAlign !== undefined) this.textAlign = element.textAlign;
       if (element.minLength !== undefined) this.minLength = element.minLength;
       if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
       if (element.maxLength !== undefined) this.maxLength = element.maxLength;
@@ -69,6 +71,7 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
 
 export interface TextFieldProperties extends TextInputElementProperties {
   appearance?: 'fill' | 'outline';
+  textAlign: 'left' | 'center' | 'right';
   minLength: number | null;
   minLengthWarnMessage: string;
   maxLength: number | null;

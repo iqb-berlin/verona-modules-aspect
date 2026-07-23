@@ -79,6 +79,10 @@
   },
   "propertiesPanel": {
     "asLink": "als Hyperlink-Text darstellen",
+    "textAlign": "Textausrichtung",
+    "textAlignLeft": "linksbündig",
+    "textAlignCenter": "zentriert",
+    "textAlignRight": "rechtsbündig",
     "backgroundColor": "Hintergrundfarbe",
     "fontColor": "Schriftfarbe",
     "font": "Schriftart",

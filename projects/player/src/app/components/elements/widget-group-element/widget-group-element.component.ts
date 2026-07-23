@@ -33,6 +33,7 @@ export class WidgetGroupElementComponent
 
   private ngUnsubscribe: Subject<void> = new Subject();
   private widgetReturnSubscription?: Subscription;
+  private currentCallId?: string;
 
   constructor(
     public unitStateService: UnitStateService,
@@ -67,6 +68,7 @@ export class WidgetGroupElementComponent
   applyWidgetCall(
     event: WidgetPeriodicTableCall | WidgetMoleculeEditorCall, widgetType: WidgetType
   ): void {
+    this.currentCallId = `${this.elementModel.alias}-${crypto.randomUUID()}`;
     this.sendWidgetCallEvent(event, widgetType);
     this.subscribeToWidgetReturn();
   }
@@ -78,6 +80,7 @@ export class WidgetGroupElementComponent
       (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state;
 
     this.veronaPostService.sendVopWidgetCall({
+      callId: this.currentCallId,
       widgetType,
       parameters: Object.entries(event)
         .map(([key, value]) => ({ key: StringUtils.camelCaseToUpperSnakeCase(key), value: String(value) })),
@@ -98,6 +101,8 @@ export class WidgetGroupElementComponent
   }
 
   private handleWidgetReturnMessage(message: VopWidgetReturn): void {
+    if (message.callId !== this.currentCallId) return;
+    this.currentCallId = undefined;
     if (message.state) {
       (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state =
         message.state;

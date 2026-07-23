@@ -44,7 +44,7 @@ describe('UnitStateService', () => {
     }]);
   });
 
-  it('elementCode of an element should change', done => {
+  it('elementCode of an element should change', () => new Promise<void>(done => {
     service.elementCodes = [{
       id: 'element_1', alias: 'elementAlias', status: 'NOT_REACHED', value: 'TEST1'
     }];
@@ -54,9 +54,9 @@ describe('UnitStateService', () => {
         done();
       });
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
-  });
+  }));
 
-  it('elementCode of an element should change', done => {
+  it('elementCode of an element should change', () => new Promise<void>(done => {
     service.elementCodes = [{
       id: 'element_1', alias: 'elementAlias', status: 'NOT_REACHED', value: 'TEST1'
     }];
@@ -67,7 +67,7 @@ describe('UnitStateService', () => {
         done();
       });
     service.changeElementCodeValue({ id: 'element_1', value: 'NEU' });
-  });
+  }));
 
   it('presentedPagesProgress should be complete', () => {
     service.elementCodes = [];
@@ -117,7 +117,7 @@ describe('UnitStateService', () => {
     expect(service.presentedPagesProgress).toEqual('complete');
   });
 
-  it('presented page with index 1 should be added', done => {
+  it('presented page with index 1 should be added', () => new Promise<void>(done => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElementCode('element_1', 'alias', 'TEST1', element, 1);
@@ -127,9 +127,9 @@ describe('UnitStateService', () => {
         done();
       });
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
-  });
+  }));
 
-  it('presented page with index 1 should be added', done => {
+  it('presented page with index 1 should be added', () => new Promise<void>(done => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElementCode('element_1', 'alias', 'TEST1', element, 1);
@@ -139,5 +139,5 @@ describe('UnitStateService', () => {
         done();
       });
     service.changeElementCodeValue({ id: 'element_1', value: 'NEU' });
-  });
+  }));
 });

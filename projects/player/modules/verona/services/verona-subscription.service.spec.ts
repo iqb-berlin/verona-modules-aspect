@@ -15,7 +15,7 @@ describe('VeronaSubscriptionService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get a vopStartCommand', done => {
+  it('should get a vopStartCommand', () => new Promise<void>(done => {
     const startMessage: VopStartCommand = {
       type: 'vopStartCommand',
       sessionId: 'test',
@@ -31,9 +31,9 @@ describe('VeronaSubscriptionService', () => {
           done();
         });
     window.postMessage(startMessage, '*');
-  });
+  }));
 
-  it('should get a VopNavigationDeniedNotification', done => {
+  it('should get a VopNavigationDeniedNotification', () => new Promise<void>(done => {
     const navigationDeniedNotificationMessage: VopNavigationDeniedNotification = {
       type: 'vopNavigationDeniedNotification',
       sessionId: 'test',
@@ -46,9 +46,9 @@ describe('VeronaSubscriptionService', () => {
           done();
         });
     window.postMessage(navigationDeniedNotificationMessage, '*');
-  });
+  }));
 
-  it('should get a VopPageNavigationCommand', done => {
+  it('should get a VopPageNavigationCommand', () => new Promise<void>(done => {
     const pageNavigationCommandMessage: VopPageNavigationCommand = {
       type: 'vopPageNavigationCommand',
       sessionId: 'test',
@@ -61,5 +61,5 @@ describe('VeronaSubscriptionService', () => {
           done();
         });
     window.postMessage(pageNavigationCommandMessage, '*');
-  });
+  }));
 });

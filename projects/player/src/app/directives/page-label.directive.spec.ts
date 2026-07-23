@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PageLabelDirective } from 'player/src/app/directives/page-label.directive';
-import { Component, Input } from '@angular/core';
+import { PageLabelModule } from 'player/src/app/directives/page-label.module';
+import { Component, Input, NgModule } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 describe('PageLabelDirective', () => {
@@ -21,12 +21,22 @@ describe('PageLabelDirective', () => {
     headerHeight = 0;
   }
 
+  // The directive must be in the component's compile-time scope: with the AOT
+  // compilation of the unit-test builder, TestBed declarations alone are not
+  // enough to resolve directive bindings on known HTML elements.
+  @NgModule({
+    declarations: [TestComponent],
+    imports: [PageLabelModule],
+    exports: [TestComponent]
+  })
+  class TestModule {}
+
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [TestComponent, PageLabelDirective]
+      imports: [TestModule]
     })
       .createComponent(TestComponent);
     component = fixture.componentInstance;

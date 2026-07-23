@@ -69,7 +69,7 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
 
   toggleScrolling(scrolling: boolean): void {
     if (scrolling && !this.isBlocked) {
-      this.scrollIntervalId = setInterval(() => {
+      this.scrollIntervalId = window.setInterval(() => {
         this.scrollDown();
       });
     } else {

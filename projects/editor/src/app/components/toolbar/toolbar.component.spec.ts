@@ -7,15 +7,16 @@ import { FileService } from 'common/services/file.service';
 import { ToolbarComponent } from './toolbar.component';
 import { UnitService } from '../../services/unit.service';
 import { VeronaAPIService } from '../../services/verona-api.service';
+import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
-  let unitServiceSpy: jasmine.SpyObj<UnitService>;
+  let unitServiceSpy: SpyObj<UnitService>;
   let mockVeronaApiService: Pick<VeronaAPIService, 'sessionID' | 'resourceURL'>;
 
   beforeEach(async () => {
-    unitServiceSpy = jasmine.createSpyObj<UnitService>('UnitService', ['saveUnit']);
+    unitServiceSpy = createSpyObj<UnitService>(['saveUnit']);
     mockVeronaApiService = {
       sessionID: 'session-1',
       resourceURL: 'https://example.test/assets'
@@ -61,9 +62,9 @@ describe('ToolbarComponent', () => {
     await component.load();
 
     expect(loadFileSpy.mock.calls.length).toBe(1);
-    expect(loadFileSpy.calls.mostRecent().args).toEqual([['.json', '.voud']]);
+    expect(loadFileSpy.mock.lastCall).toEqual([['.json', '.voud']]);
     expect(postMessageSpy.mock.calls.length).toBe(1);
-    expect(postMessageSpy.calls.mostRecent().args).toEqual([
+    expect(postMessageSpy.mock.lastCall).toEqual([
       {
         type: 'voeStartCommand',
         sessionId: 'session-1',
@@ -89,7 +90,7 @@ describe('ToolbarComponent', () => {
     await component.load();
 
     expect(postMessageSpy.mock.calls.length).toBe(1);
-    expect(postMessageSpy.calls.mostRecent().args).toEqual([
+    expect(postMessageSpy.mock.lastCall).toEqual([
       {
         type: 'voeStartCommand',
         sessionId: 'dev',

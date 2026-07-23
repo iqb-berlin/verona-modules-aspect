@@ -41,7 +41,7 @@ describe('MathFormulaNodeviewComponent', () => {
 
     // Mock the ViewChild because detectChanges() won't update it immediately in this test setup
     component.editField = {
-      nativeElement: jasmine.createSpyObj('nativeElement', ['focus'])
+      nativeElement: { focus: vi.fn() }
     } as any;
 
     component.toggleEditMode();

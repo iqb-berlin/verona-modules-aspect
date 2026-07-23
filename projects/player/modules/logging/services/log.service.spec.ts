@@ -14,32 +14,28 @@ describe('LoggerService', () => {
   });
 
   it('should call LogService.debug', () => {
-    vi.spyOn(LogService, 'debug')
-      .withArgs('test', 'test2');
+    vi.spyOn(LogService, 'debug');
     LogService.debug('test', 'test2');
     expect(LogService.debug).toHaveBeenCalled();
     expect(LogService.debug).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should call LogService.info', () => {
-    vi.spyOn(LogService, 'info')
-      .withArgs('test', 'test2');
+    vi.spyOn(LogService, 'info');
     LogService.info('test', 'test2');
     expect(LogService.info).toHaveBeenCalled();
     expect(LogService.info).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should call LogService.warn', () => {
-    vi.spyOn(LogService, 'warn')
-      .withArgs('test', 'test2');
+    vi.spyOn(LogService, 'warn');
     LogService.warn('test', 'test2');
     expect(LogService.warn).toHaveBeenCalled();
     expect(LogService.warn).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should call LogService.error', () => {
-    vi.spyOn(LogService, 'error')
-      .withArgs('test', 'test2');
+    vi.spyOn(LogService, 'error');
     LogService.error('test', 'test2');
     expect(LogService.error).toHaveBeenCalled();
     expect(LogService.error).toHaveBeenCalledWith('test', 'test2');

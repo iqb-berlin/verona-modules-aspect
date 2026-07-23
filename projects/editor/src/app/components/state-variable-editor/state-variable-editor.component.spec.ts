@@ -6,16 +6,17 @@ import { MatInputModule } from '@angular/material/input';
 import { StateVariable } from 'common/models/state-variable';
 import { IDService } from 'editor/src/app/services/id.service';
 import { StateVariableEditorComponent } from './state-variable-editor.component';
+import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
 
 describe('StateVariableEditorComponent', () => {
   let component: StateVariableEditorComponent;
   let fixture: ComponentFixture<StateVariableEditorComponent>;
-  let mockIDService: jasmine.SpyObj<IDService>;
+  let mockIDService: SpyObj<IDService>;
 
   const mockStateVariable = new StateVariable('v1', 'v1', 'val1');
 
   beforeEach(async () => {
-    mockIDService = jasmine.createSpyObj('IDService', ['isAliasAvailable', 'unregister', 'register']);
+    mockIDService = createSpyObj<IDService>(['isAliasAvailable', 'unregister', 'register']);
     mockIDService.isAliasAvailable.mockReturnValue(true);
 
     await TestBed.configureTestingModule({
@@ -64,8 +65,8 @@ describe('StateVariableEditorComponent', () => {
   it('should set error if alias contains invalid characters', () => {
     ['März', 'Lösung1', 'weiter ', ' weiter', 'a.b'].forEach(alias => {
       component.checkId(alias);
-      expect(component.error).withContext(alias).toBe(true);
-      expect(component.errorMessage).withContext(alias).toBe('idContainsInvalidCharacters');
+      expect(component.error, alias).toBe(true);
+      expect(component.errorMessage, alias).toBe('idContainsInvalidCharacters');
     });
     expect(mockIDService.register).not.toHaveBeenCalled();
     expect(component.stateVariable.alias).toBe('v1');

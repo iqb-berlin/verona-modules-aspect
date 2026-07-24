@@ -8,7 +8,7 @@ import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {
   ToggleButtonNodeviewComponent
-} from 'editor/modules/text-editor/components/toggle-button-nodeview/toggle-button-nodeview.component';
+} from 'editor/modules/rich-text-editor/components/toggle-button-nodeview/toggle-button-nodeview.component';
 
 const ToggleButtonComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

@@ -6,7 +6,7 @@ import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {
   CheckboxNodeviewComponent
-} from 'editor/modules/text-editor/components/checkbox-nodeview/checkbox-nodeview.component';
+} from 'editor/modules/rich-text-editor/components/checkbox-nodeview/checkbox-nodeview.component';
 
 const CheckboxComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

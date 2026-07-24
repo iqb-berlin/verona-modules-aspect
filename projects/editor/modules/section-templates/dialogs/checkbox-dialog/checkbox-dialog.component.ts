@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
-import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import {

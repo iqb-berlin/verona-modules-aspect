@@ -28,7 +28,7 @@ import {
   HotspotEditDialogComponent
 } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
 import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
-import { TextEditorModule } from 'editor/modules/text-editor/text-editor.module';
+import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -236,7 +236,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     MatListModule,
     MatRadioModule,
     MathEditorModule,
-    TextEditorModule,
+    RichTextEditorModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     MatBadgeModule,

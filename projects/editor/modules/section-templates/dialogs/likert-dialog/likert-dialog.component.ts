@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
-import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';

@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { HasTextContentPipe } from 'common/pipes/has-text-content.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
 import { TooltipPropertiesDialogComponent } from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
 
 describe('TooltipPropertiesDialogComponent', () => {

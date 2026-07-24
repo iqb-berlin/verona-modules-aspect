@@ -31,4 +31,4 @@ import {
     RichTextEditorComponent
   ]
 })
-export class TextEditorModule { }
+export class RichTextEditorModule { }

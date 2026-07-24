@@ -6,7 +6,7 @@ import { ButtonProperties } from 'common/models/elements/action-group-elements/b
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {
   ButtonNodeviewComponent
-} from 'editor/modules/text-editor/components/button-nodeview/button-nodeview.component';
+} from 'editor/modules/rich-text-editor/components/button-nodeview/button-nodeview.component';
 
 const ButtonComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

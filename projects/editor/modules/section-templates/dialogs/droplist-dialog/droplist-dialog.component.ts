@@ -10,7 +10,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {
   CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray

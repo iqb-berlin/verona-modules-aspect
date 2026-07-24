@@ -1,7 +1,7 @@
 import { TextStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
 import { Component } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
 import { CONSTANTS } from 'editor/modules/section-templates/constants';
 

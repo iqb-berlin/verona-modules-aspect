@@ -2,7 +2,7 @@ import {
   ComponentFixture, TestBed, fakeAsync, tick
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MathFormulaNodeviewComponent } from 'editor/modules/text-editor/components/math-formula/math-formula.component';
+import { MathFormulaNodeviewComponent } from 'editor/modules/rich-text-editor/components/math-formula/math-formula.component';
 
 describe('MathFormulaNodeviewComponent', () => {
   let component: MathFormulaNodeviewComponent;

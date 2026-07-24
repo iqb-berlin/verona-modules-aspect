@@ -6,7 +6,7 @@ import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {
   DropListNodeviewComponent
-} from 'editor/modules/text-editor/components/drop-list-nodeview/drop-list-nodeview.component';
+} from 'editor/modules/rich-text-editor/components/drop-list-nodeview/drop-list-nodeview.component';
 
 const DropListComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

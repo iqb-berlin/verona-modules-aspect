@@ -6,7 +6,7 @@ import { DropdownProperties } from 'common/models/elements/input-group-elements/
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {
   DropdownNodeviewComponent
-} from 'editor/modules/text-editor/components/dropdown-nodeview/dropdown-nodeview.component';
+} from 'editor/modules/rich-text-editor/components/dropdown-nodeview/dropdown-nodeview.component';
 
 const DropdownComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

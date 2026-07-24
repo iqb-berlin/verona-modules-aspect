@@ -8,7 +8,7 @@ import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {
   TextFieldNodeviewComponent
-} from 'editor/modules/text-editor/components/text-field-nodeview/text-field-nodeview.component';
+} from 'editor/modules/rich-text-editor/components/text-field-nodeview/text-field-nodeview.component';
 
 const TextFieldComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

@@ -1,5 +1,5 @@
 import {
-  addElementHover, addNewPage, addNewSection, setPreferencesElement, setCheckbox
+  addElementHover, addNewSection, setPreferencesElement, setCheckbox
 } from '../util';
 
 describe('Math-field element', { testIsolation: false }, () => {
@@ -25,26 +25,28 @@ describe('Math-field element', { testIsolation: false }, () => {
     it('creates a math-field with a preset', () => {
       addElementHover('Formel', 'Feld');
       cy.get('aspect-preset-value-properties').contains('mat-label', 'Vorbelegung')
-        .closest('aspect-preset-value-properties').find('math-field').shadow().find('.ML__content')
+        .closest('aspect-preset-value-properties').find('math-field')
+        .shadow()
+        .find('.ML__content')
         .click()
         .type('abc');
       setPreferencesElement('Formel Feld mit Vorbelegung', { id: 'math-field-preset' });
     });
 
     it('creates a math-field with an union and overline formel preset', () => {
-      const formula ="\\overline{S \\cup M}";
       addNewSection();
       addElementHover('Formel', 'Feld');
       setCheckbox('Eingabemodus änderbar');
       cy.get('aspect-element-properties').contains('mat-button-toggle', 'Formel')
         .click();
       cy.get('aspect-element-properties').contains('mat-label', 'Vorbelegung')
-        .closest('aspect-preset-value-properties').find('math-field').shadow().find('.ML__content')
+        .closest('aspect-preset-value-properties').find('math-field')
+        .shadow()
+        .find('.ML__content')
         .click()
         .type('\\overline{{}S\\cup M{}}{enter}');
       setPreferencesElement('Formel Feld mit Union Vorbelegung', { id: 'field-preset-union' });
     });
-
 
     after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/math-field.json');
@@ -59,7 +61,8 @@ describe('Math-field element', { testIsolation: false }, () => {
 
     it('checks the common math-field is editable ', () => {
       cy.contains('aspect-element-group-selection', 'Standard Formel Feld').within(() => {
-        cy.get('math-field').shadow().find('.ML__content').click().type('1+x=2');
+        cy.get('math-field').shadow().find('.ML__content').click()
+          .type('1+x=2');
         cy.get('math-field').shadow().find('.ML__base').should('contain', '1');
         cy.get('math-field').shadow().find('.ML__base').should('contain', '+');
         cy.get('math-field').shadow().find('.ML__base').should('contain', '2');
@@ -69,7 +72,8 @@ describe('Math-field element', { testIsolation: false }, () => {
 
     it('checks that the readonly math-field can not be edited', () => {
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Schreibschutz').within(() => {
-        cy.get('math-field').shadow().find('.ML__content').click().type('x+y=4');
+        cy.get('math-field').shadow().find('.ML__content').click()
+          .type('x+y=4');
         cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'x');
         cy.get('math-field').shadow().find('.ML__base').should('not.contain', '+');
         cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'y');
@@ -103,6 +107,24 @@ describe('Math-field element', { testIsolation: false }, () => {
         cy.get('math-field').shadow().find('.ML__content').click();
       });
       cy.get('.math-keyboard-container').should('exist');
+      cy.clickOutside();
+    });
+
+    it('checks that the math-field keeps its width and scrolls internally on long unbroken input (#1076)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field').then($mathField => {
+        const initialWidth = $mathField[0].getBoundingClientRect().width;
+        cy.wrap($mathField).shadow().find('.ML__content').click()
+          .type('abcdefghijklmnopqrstuvwxyz'.repeat(3));
+        cy.wrap($mathField).should($el => {
+          const rect = $el[0].getBoundingClientRect();
+          const viewportWidth = $el[0].ownerDocument.documentElement.clientWidth;
+          expect(rect.width).to.be.at.most(initialWidth + 1);
+          expect(rect.right).to.be.at.most(viewportWidth);
+        });
+        cy.wrap($mathField).shadow().find('.ML__content').should($content => {
+          expect($content[0].scrollWidth).to.be.greaterThan($content[0].clientWidth);
+        });
+      });
       cy.clickOutside();
     });
   });

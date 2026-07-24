@@ -18,6 +18,7 @@ Player
 ### Fehlerbehebungen
 - Formelfeld, Formelbereich
   - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
+  - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen innerhalb des Feldes, im Formelbereich brechen Text und Formel-Segmente in die nächste Zeile um
 
 
 ## 2.12.3

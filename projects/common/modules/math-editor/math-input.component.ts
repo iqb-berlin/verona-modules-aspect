@@ -16,56 +16,8 @@ import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 
 @Component({
   selector: 'aspect-math-input',
-  template: `
-    <mat-button-toggle-group *ngIf="enableModeSwitch"
-                             [value]="mathFieldElement.mode"
-                             (change)="setParseMode($event)">
-      <mat-button-toggle value="math">Formel</mat-button-toggle>
-      <mat-button-toggle value="text">Text</mat-button-toggle>
-    </mat-button-toggle-group>
-    <div #inputRef
-         (input)="onInput()"
-         [class.full-width]="fullWidth"
-         [class.inline-block]="!fullWidth"
-         [class.read-only]="readonly"
-         (focusin)="onFocusIn()"
-         (focusout)="onFocusOut()">
-    </div>
-  `,
-  styles: [`
-    mat-button-toggle-group {
-      height: auto;
-    }
-    :host ::ng-deep .full-width math-field {
-      display: block;
-    }
-
-    .inline-block{
-      display: inline-block;
-      /* Formel-Segmente nie breiter als der umgebende Bereich werden lassen;
-         überlange Formeln scrollen dann intern (#1076) */
-      max-width: 100%;
-    }
-
-    :host ::ng-deep math-field {
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-
-    :host ::ng-deep  math-field::part(virtual-keyboard-toggle) {
-      display: none;
-    }
-    :host ::ng-deep math-field::part(menu-toggle) {
-      display: none;
-    }
-    :host ::ng-deep .read-only math-field {
-      outline: unset;
-      border: unset;
-    }
-    :host ::ng-deep .mat-button-toggle-label-content {
-      line-height: unset;
-    }`
-  ],
+  templateUrl: './math-input.component.html',
+  styleUrls: ['./math-input.component.scss'],
   standalone: false
 })
 export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {

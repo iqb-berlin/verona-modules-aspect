@@ -1,0 +1,32 @@
+mat-button-toggle-group {
+  height: auto;
+}
+:host ::ng-deep .full-width math-field {
+  display: block;
+}
+
+.inline-block{
+  display: inline-block;
+  /* Formel-Segmente nie breiter als der umgebende Bereich werden lassen;
+     überlange Formeln scrollen dann intern (#1076) */
+  max-width: 100%;
+}
+
+:host ::ng-deep math-field {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep  math-field::part(virtual-keyboard-toggle) {
+  display: none;
+}
+:host ::ng-deep math-field::part(menu-toggle) {
+  display: none;
+}
+:host ::ng-deep .read-only math-field {
+  outline: unset;
+  border: unset;
+}
+:host ::ng-deep .mat-button-toggle-label-content {
+  line-height: unset;
+}

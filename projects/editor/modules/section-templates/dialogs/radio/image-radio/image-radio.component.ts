@@ -4,7 +4,7 @@ import { MatInput } from '@angular/material/input';
 import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
 import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
-import { ImageRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
+import { ImageRadioOptions } from 'editor/modules/section-templates/radio-interfaces';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({

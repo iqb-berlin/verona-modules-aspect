@@ -1,4 +1,4 @@
-import { EmailStimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
+import { EmailStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
 import { Component } from '@angular/core';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';

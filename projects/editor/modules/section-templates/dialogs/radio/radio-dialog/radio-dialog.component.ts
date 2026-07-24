@@ -8,8 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatActionList, MatListItem } from '@angular/material/list';
-import { TextRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/text-radio/text-radio.component';
-import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/image-radio/image-radio.component';
+import { TextRadioComponent } from 'editor/modules/section-templates/dialogs/radio/text-radio/text-radio.component';
+import { ImageRadioComponent } from 'editor/modules/section-templates/dialogs/radio/image-radio/image-radio.component';
 
 @Component({
   selector: 'aspect-editor-radio-wizard-dialog',

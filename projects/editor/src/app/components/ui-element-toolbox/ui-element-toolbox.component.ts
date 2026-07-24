@@ -23,7 +23,7 @@ import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { MarkingPanelElement } from 'common/models/elements/interactive-group-elements/marking-panel';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
-import { TemplateService } from 'editor/src/app/section-templates/template.service';
+import { TemplateService } from 'editor/modules/section-templates/template.service';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import {

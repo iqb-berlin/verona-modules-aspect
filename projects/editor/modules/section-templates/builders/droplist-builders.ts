@@ -6,8 +6,8 @@ import { IDService } from 'editor/src/app/services/id.service';
 import {
   ClassicTemplateOptions, SortTemplateOptions,
   TwoPageTemplateOptions
-} from 'editor/src/app/section-templates/droplist-interfaces';
-import { TemplateService } from 'editor/src/app/section-templates/template.service';
+} from 'editor/modules/section-templates/droplist-interfaces';
+import { TemplateService } from 'editor/modules/section-templates/template.service';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 
 export function createDroplistSection(options: ClassicTemplateOptions, idService: IDService): EditorSection {

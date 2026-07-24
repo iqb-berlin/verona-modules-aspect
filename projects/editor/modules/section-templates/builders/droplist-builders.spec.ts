@@ -1,8 +1,8 @@
 import { IDService } from 'editor/src/app/services/id.service';
-import { SortTemplateOptions } from 'editor/src/app/section-templates/droplist-interfaces';
+import { SortTemplateOptions } from 'editor/modules/section-templates/droplist-interfaces';
 import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
-import { createSortlistSection } from 'editor/src/app/section-templates/builders/droplist-builders';
+import { createSortlistSection } from 'editor/modules/section-templates/builders/droplist-builders';
 
 describe('droplist-builders', () => {
   describe('createSortlistSection', () => {

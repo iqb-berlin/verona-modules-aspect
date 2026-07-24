@@ -1,6 +1,6 @@
 import { IDService } from 'editor/src/app/services/id.service';
-import { EmailStimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
-import { createEmailSection } from 'editor/src/app/section-templates/builders/stimulus/stimulus-builders';
+import { EmailStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
+import { createEmailSection } from 'editor/modules/section-templates/builders/stimulus/stimulus-builders';
 
 describe('createEmailSection', () => {
   let idService: IDService;

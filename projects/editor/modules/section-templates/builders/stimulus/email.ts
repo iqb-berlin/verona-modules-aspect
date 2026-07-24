@@ -1,4 +1,4 @@
-import { EmailStimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
+import { EmailStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
 
 export function getEmailTemplateString(
   options: EmailStimulusOptions & { fromLabel: string, toLabel: string, subjectLabel: string, sendLabel: string }) {

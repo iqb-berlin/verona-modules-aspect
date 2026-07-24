@@ -17,7 +17,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import {
   ClassicTemplateOptions, SortTemplateOptions, TwoPageTemplateOptions
-} from 'editor/src/app/section-templates/droplist-interfaces';
+} from 'editor/modules/section-templates/droplist-interfaces';
 import { Label } from 'common/models/label-interfaces';
 import { FileService } from 'common/services/file.service';
 import { MatInputModule } from '@angular/material/input';

@@ -1,8 +1,8 @@
-import { Audio1StimulusOptions } from 'editor/src/app/section-templates/stimulus-interfaces';
+import { Audio1StimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
-import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio-row/audio-row.component';
+import { AudioRowComponent } from 'editor/modules/section-templates/dialogs/stimulus/audio-row/audio-row.component';
 import { FileService } from 'common/services/file.service';
 
 @Component({

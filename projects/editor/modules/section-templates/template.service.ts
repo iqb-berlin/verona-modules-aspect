@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import {
   RadioWizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/radio/radio-dialog/radio-dialog.component';
+} from 'editor/modules/section-templates/dialogs/radio/radio-dialog/radio-dialog.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -11,57 +11,57 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { UIElement } from 'common/models/elements/element';
 import {
   LikertWizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/likert-dialog/likert-dialog.component';
+} from 'editor/modules/section-templates/dialogs/likert-dialog/likert-dialog.component';
 import {
   InputWizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/text-input-dialog/text-input-dialog.component';
+} from 'editor/modules/section-templates/dialogs/text-input-dialog/text-input-dialog.component';
 import {
   MarkingPanelDialogComponent
-} from 'editor/src/app/section-templates/dialogs/marking-panel-dialog/marking-panel-dialog.component';
+} from 'editor/modules/section-templates/dialogs/marking-panel-dialog/marking-panel-dialog.component';
 import {
   GeometryWizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/geometry-dialog/geometry-dialog.component';
+} from 'editor/modules/section-templates/dialogs/geometry-dialog/geometry-dialog.component';
 import {
   DroplistWizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/droplist-dialog/droplist-dialog.component';
+} from 'editor/modules/section-templates/dialogs/droplist-dialog/droplist-dialog.component';
 import {
   MathTableWizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/mathtable-dialog/mathtable-dialog.component';
+} from 'editor/modules/section-templates/dialogs/mathtable-dialog/mathtable-dialog.component';
 import {
   Text3WizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/text3-dialog/text3-dialog.component';
+} from 'editor/modules/section-templates/dialogs/text3-dialog/text3-dialog.component';
 import {
   CheckboxWizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/checkbox-dialog/checkbox-dialog.component';
+} from 'editor/modules/section-templates/dialogs/checkbox-dialog/checkbox-dialog.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { PositionedUIElement, UIElementType } from 'common/models/ui-element-interfaces';
 import { TextImageLabel } from 'common/models/label-interfaces';
 import { PageProperties } from 'common/models/page';
-import * as TextBuilders from 'editor/src/app/section-templates/builders/text-builders';
-import * as TextInputBuilders from 'editor/src/app/section-templates/builders/text-input-builders';
-import * as RadioBuilders from 'editor/src/app/section-templates/builders/radio-builders';
-import * as CheckboxBuilders from 'editor/src/app/section-templates/builders/checkbox-builders';
-import * as DroplistBuilders from 'editor/src/app/section-templates/builders/droplist-builders';
-import * as GeometryBuilders from 'editor/src/app/section-templates/builders/geometry-builders';
-import * as MathtableBuilders from 'editor/src/app/section-templates/builders/mathtable-builders';
-import * as StimulusBuilders from 'editor/src/app/section-templates/builders/stimulus/stimulus-builders';
+import * as TextBuilders from 'editor/modules/section-templates/builders/text-builders';
+import * as TextInputBuilders from 'editor/modules/section-templates/builders/text-input-builders';
+import * as RadioBuilders from 'editor/modules/section-templates/builders/radio-builders';
+import * as CheckboxBuilders from 'editor/modules/section-templates/builders/checkbox-builders';
+import * as DroplistBuilders from 'editor/modules/section-templates/builders/droplist-builders';
+import * as GeometryBuilders from 'editor/modules/section-templates/builders/geometry-builders';
+import * as MathtableBuilders from 'editor/modules/section-templates/builders/mathtable-builders';
+import * as StimulusBuilders from 'editor/modules/section-templates/builders/stimulus/stimulus-builders';
 import {
   ClassicTemplateOptions, SortTemplateOptions, TwoPageTemplateOptions
-} from 'editor/src/app/section-templates/droplist-interfaces';
+} from 'editor/modules/section-templates/droplist-interfaces';
 import {
   StimulusWizardDialogComponent
-} from 'editor/src/app/section-templates/dialogs/stimulus/stimulus-dialog/stimulus-dialog.component';
+} from 'editor/modules/section-templates/dialogs/stimulus/stimulus-dialog/stimulus-dialog.component';
 import {
   Audio1StimulusOptions, Audio2StimulusOptions,
   EmailStimulusOptions,
   MessageStimulusOptions,
   TextStimulusOptions
-} from 'editor/src/app/section-templates/stimulus-interfaces';
-import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
+} from 'editor/modules/section-templates/stimulus-interfaces';
+import { ImageRadioOptions, TextRadioOptions } from 'editor/modules/section-templates/radio-interfaces';
 import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorSection } from 'editor/src/app/models/editor-section';
-import { CONSTANTS } from 'editor/src/app/section-templates/constants';
+import { CONSTANTS } from 'editor/modules/section-templates/constants';
 
 @Injectable({
   providedIn: 'root'

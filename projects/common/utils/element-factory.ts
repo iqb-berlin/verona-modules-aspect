@@ -35,6 +35,7 @@ import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
+import { TetfolioElement } from 'common/models/elements/tetfolio/tetfolio';
 
 export abstract class ElementFactory {
   private static elementClasses: Record<string, Type<UIElement>>;
@@ -71,7 +72,8 @@ export abstract class ElementFactory {
         'text-area-math': TextAreaMathElement,
         table: TableElement,
         'widget-periodic-table': WidgetPeriodicTableElement,
-        'widget-molecule-editor': WidgetMoleculeEditorElement
+        'widget-molecule-editor': WidgetMoleculeEditorElement,
+        tetfolio: TetfolioElement
       };
     }
     return this.elementClasses;

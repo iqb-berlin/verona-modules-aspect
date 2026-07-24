@@ -36,6 +36,7 @@ import {
   WidgetMoleculeEditorComponent
 } from 'common/components/widget-molecule-editor/widget-molecule-editor.component';
 import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
+import { TetfolioComponent } from 'common/components/tetfolio/tetfolio.component';
 
 export function registerComponents(): void {
   ComponentRegistry.registerComponents({
@@ -67,6 +68,7 @@ export function registerComponents(): void {
     'text-area-math': TextAreaMathComponent,
     trigger: TriggerComponent,
     'widget-molecule-editor': WidgetMoleculeEditorComponent,
-    'widget-periodic-table': WidgetPeriodicTableComponent
+    'widget-periodic-table': WidgetPeriodicTableComponent,
+    tetfolio: TetfolioComponent
   });
 }

@@ -425,5 +425,11 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     state: null,
     backgroundColor: '#f1f1f1',
     fontColor: '#006064'
+  },
+  tetfolio: {
+    htmlContent: '',
+    state: null,
+    width: 900,
+    height: 400
   }
 };

@@ -1,0 +1,13 @@
+<div class="tetfolio-container">
+  @if (iframeSrc) {
+    <iframe #tetfolioIframe
+            [src]="iframeSrc"
+            [style.height.px]="iframeHeight"
+            [title]="'tetfolioIframeTitle' | translate">
+    </iframe>
+  } @else {
+    <div class="tetfolio-placeholder">
+      {{ 'tetfolioNoContent' | translate }}
+    </div>
+  }
+</div>

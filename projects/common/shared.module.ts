@@ -40,6 +40,7 @@ import {
   TextMarkingButtonSvgComponent
 } from 'common/components/text/text-marking-bar/text-marking-button-svg.component';
 import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
+import { TetfolioComponent } from 'common/components/tetfolio/tetfolio.component';
 import {
   WidgetMoleculeEditorComponent
 } from 'common/components/widget-molecule-editor/widget-molecule-editor.component';
@@ -170,6 +171,7 @@ import { MarkingPanelComponent } from './components/text/marking-panel.component
     DragImageComponent,
     WidgetPeriodicTableComponent,
     WidgetMoleculeEditorComponent,
+    TetfolioComponent,
     ImageSrcPipe,
     TableComponent,
     TableChildOverlay,
@@ -220,6 +222,7 @@ import { MarkingPanelComponent } from './components/text/marking-panel.component
     MathTableComponent,
     WidgetPeriodicTableComponent,
     WidgetMoleculeEditorComponent,
+    TetfolioComponent,
     ImageSrcPipe,
     TableComponent,
     TableChildOverlay,

@@ -9,5 +9,7 @@
   "periodicTable": "Periodensystem",
   "calculator": "Rechner",
   "moleculeEditor": "Molekül-Editor",
-  "openWidget": "{{widget}} öffnen"
+  "openWidget": "{{widget}} öffnen",
+  "tetfolioNoContent": "Kein Tetfolio-Inhalt vorhanden",
+  "tetfolioIframeTitle": "Tetfolio-Experiment"
 }

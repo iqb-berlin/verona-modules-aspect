@@ -110,6 +110,7 @@ import { TableChildOverlay } from './components/compound-elements/table/table-ch
 import { MeasurePipe } from './pipes/measure.pipe';
 import { TableGridRowsPipe } from './pipes/table-grid-rows.pipe';
 import { MarkingPanelComponent } from './components/text/marking-panel.component';
+import { HasTextContentPipe } from './pipes/has-text-content.pipe';
 
 @NgModule({
   declarations: [
@@ -176,7 +177,8 @@ import { MarkingPanelComponent } from './components/text/marking-panel.component
     TableChildOverlay,
     MarkingPanelComponent,
     MeasurePipe,
-    TableGridRowsPipe
+    TableGridRowsPipe,
+    HasTextContentPipe
   ],
   exports: [
     CommonModule,
@@ -192,6 +194,7 @@ import { MarkingPanelComponent } from './components/text/marking-panel.component
     MatDialogModule,
     TranslateModule,
     SafeResourceHTMLPipe,
+    HasTextContentPipe,
     ScrollPagesPipe,
     TextMarkingBarComponent,
     ToggleButtonComponent,

@@ -26,5 +26,8 @@
     color: #fff;
     font-size: 18px;
     width: fit-content;
+    ::ng-deep p {
+      margin: 0;
+    }
   }
 }

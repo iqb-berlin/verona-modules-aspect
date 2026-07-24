@@ -59,19 +59,40 @@ describe('Button element', { testIsolation: false }, () => {
       .clear()
       .type('Knopf mit Tooltip');
 
-    // Set tooltip text in properties panel
-    cy.contains('mat-form-field', 'Tooltip-Text')
-      .find('input')
-      .clear()
+    // Open the tooltip dialog from the properties panel
+    cy.contains('button', 'Tooltip bearbeiten')
+      .click();
+
+    // Set tooltip text in the rich text editor of the dialog
+    cy.get('aspect-tooltip-properties-dialog .ProseMirror')
+      .should('be.visible')
       .type('Das ist ein Button-Tooltip');
 
+    // Select the entire text programmatically using TipTap API and format it bold
+    cy.get('aspect-tooltip-properties-dialog aspect-rich-text-editor').then($el => {
+      const win = $el[0].ownerDocument.defaultView as any;
+      const component = win.ng.getComponent($el[0]);
+      component.editor.commands.selectAll();
+    });
+    cy.get('aspect-tooltip-properties-dialog')
+      .find('mat-icon:contains("format_bold")')
+      .parent()
+      .click();
+
     // Set tooltip position to "above" (oberhalb)
-    cy.contains('mat-form-field', 'Tooltip-Position')
+    cy.get('aspect-tooltip-properties-dialog')
+      .contains('mat-form-field', 'Tooltip-Position')
       .find('mat-select')
       .click();
     cy.get('.cdk-overlay-container')
       .contains('mat-option', 'oberhalb')
       .click({ force: true });
+
+    // Save the tooltip dialog
+    cy.get('aspect-tooltip-properties-dialog')
+      .contains('button', 'Speichern')
+      .click();
+    cy.get('aspect-tooltip-properties-dialog').should('not.exist');
   });
 
   it('saves unit definition', () => {
@@ -131,10 +152,12 @@ describe('Button element', { testIsolation: false }, () => {
       .find('button')
       .trigger('pointerenter');
 
-    // Assert tooltip is displayed with correct content
+    // Assert tooltip is displayed with correct content and formatting
     cy.get('aspect-tooltip')
       .should('exist')
       .and('contain.text', 'Das ist ein Button-Tooltip');
+    cy.get('aspect-tooltip strong')
+      .should('contain.text', 'Das ist ein Button-Tooltip');
 
     // Trigger mouseleave on button to hide tooltip immediately
     cy.contains('aspect-button', 'Knopf mit Tooltip')

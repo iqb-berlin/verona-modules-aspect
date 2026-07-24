@@ -131,9 +131,8 @@ describe('Text element', { testIsolation: false }, () => {
                 .click();
 
             // Within the tooltip properties dialog, configure text and position
-            cy.get('aspect-tooltip-properties-dialog')
-                .contains('mat-form-field', 'Tooltip-Text')
-                .find('input')
+            cy.get('aspect-tooltip-properties-dialog .ProseMirror')
+                .should('be.visible')
                 .type('Das ist ein Text-Tooltip');
 
             cy.get('aspect-tooltip-properties-dialog')

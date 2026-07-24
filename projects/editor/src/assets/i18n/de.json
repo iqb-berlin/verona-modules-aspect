@@ -114,6 +114,7 @@
     "margin": "Abstand",
     "tooltipText": "Tooltip-Text",
     "tooltipPosition": "Tooltip-Position",
+    "editTooltip": "Tooltip bearbeiten",
     "top": "oben",
     "left": "links",
     "above": "oberhalb",

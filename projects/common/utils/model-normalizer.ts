@@ -2,9 +2,8 @@ import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/elemen
 import {
   DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
 } from 'common/models/elements/property-group-interfaces';
-import {
-  KeyInputElementProperties, TextInputElementProperties, UIElementType
-} from 'common/interfaces';
+import { KeyInputElementProperties, TextInputElementProperties } from 'common/models/input-element-interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 
 const INPUT_ELEMENT_TYPES: UIElementType[] = [
   'text-field',

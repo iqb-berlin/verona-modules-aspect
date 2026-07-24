@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
-import { MathKeyboardPreset } from 'common/interfaces';
+import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 import { AreaSegmentComponent } from './area-segment.component';
 
 @Component({

@@ -29,7 +29,8 @@ import { TextAreaMathElement } from 'common/models/elements/input-elements/text-
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
-import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { ModelRegistry } from 'common/utils/model-registry';

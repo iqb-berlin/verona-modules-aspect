@@ -3,8 +3,9 @@ import {
 } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
-import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class TriggerElement extends UIElement implements TriggerProperties {

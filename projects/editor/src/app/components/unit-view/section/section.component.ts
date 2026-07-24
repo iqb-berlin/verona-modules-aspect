@@ -13,17 +13,17 @@ import { DynamicSectionComponent } from 'editor/src/app/components/unit-view/sec
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgClass, NgIf } from '@angular/common';
 import { SectionCounter } from 'common/utils/section-counter';
-import { PositionedUIElement } from 'common/interfaces';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { EditorSection } from 'editor/src/app/models/editor-unit';
 
 @Component({
-    selector: 'aspect-editor-section-view',
-    imports: [
-        NgIf, NgClass,
-        CdkDropList,
-        SectionMenuComponent, StaticSectionComponent, DynamicSectionComponent
-    ],
-    template: `
+  selector: 'aspect-editor-section-view',
+  imports: [
+    NgIf, NgClass,
+    CdkDropList,
+    SectionMenuComponent, StaticSectionComponent, DynamicSectionComponent
+  ],
+  template: `
     <aspect-section-menu [class.hidden]="!isOnSelectedPage || selectionService.selectedSectionIndex !== sectionIndex"
                          class="section-menu fx-column-start-stretch"
                          [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
@@ -68,7 +68,7 @@ import { EditorSection } from 'editor/src/app/models/editor-unit';
       </aspect-editor-dynamic-section>
     </div>
   `,
-    styles: `
+  styles: `
     .hidden {
       display: none !important;
     }
@@ -134,10 +134,10 @@ export class SectionComponent {
 
     if (event.previousContainer !== event.container) {
       this.moveElementsBetweenSections(selectedElements,
-        event.previousContainer.data.pageIndex,
-        event.previousContainer.data.sectionIndex,
-        event.container.data.pageIndex,
-        event.container.data.sectionIndex);
+                                       event.previousContainer.data.pageIndex,
+                                       event.previousContainer.data.sectionIndex,
+                                       event.container.data.pageIndex,
+                                       event.container.data.sectionIndex);
     } else {
       const page = this.unitService.getSelectedPage();
       selectedElements.forEach((element: PositionedUIElement) => {

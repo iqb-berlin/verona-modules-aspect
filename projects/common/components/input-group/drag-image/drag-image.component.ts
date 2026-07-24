@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { BasicStyles } from 'common/models/elements/property-group-interfaces';
-import { DragNDropValueObject } from 'common/interfaces';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 
 @Component({
   selector: 'aspect-drag-image',

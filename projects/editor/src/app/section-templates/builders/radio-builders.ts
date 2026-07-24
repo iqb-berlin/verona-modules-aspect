@@ -1,4 +1,4 @@
-import { TextImageLabel } from 'common/interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
@@ -14,9 +14,9 @@ export function createTextRadioSection(options: TextRadioOptions, idService: IDS
   if (options.addExtraInput) {
     sectionElements.push(
       TemplateService.createElement('text', { gridRow: 3, gridColumn: 1 }, { text: options.text1 }, idService));
-      sectionElements.push(
-        TemplateService.createElement(options.extraInputMathfield ? 'text-area-math' : 'text-area',
-                                      { gridRow: 4, gridColumn: 1 }, {}, idService));
+    sectionElements.push(
+      TemplateService.createElement(options.extraInputMathfield ? 'text-area-math' : 'text-area',
+                                    { gridRow: 4, gridColumn: 1 }, {}, idService));
   }
   const section = new EditorSection(undefined, idService);
   sectionElements.forEach(el => section.addElement(el));

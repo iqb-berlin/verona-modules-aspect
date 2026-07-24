@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { ImageResizeDialogData } from 'common/interfaces';
+import { ImageResizeDialogData } from 'common/models/image-interfaces';
 import { BytesPipe } from '../../pipes/bytes.pipe';
 import { SupportsQualityPipe } from '../../pipes/supports-quality.pipe';
 import { ImageResizeDialogComponent } from './image-resize-dialog.component';

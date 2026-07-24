@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text-group/text/text.component';
 import { TextAreaComponent } from 'common/components/text-input-group/text-area/text-area.component';
 import { ImageComponent } from 'common/components/interactive-group/image/image.component';
-import { UIElementType } from 'common/interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 import { CommonModule } from '@angular/common';
 
 @Component({

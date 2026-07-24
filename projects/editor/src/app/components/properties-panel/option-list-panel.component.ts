@@ -9,21 +9,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { Label } from 'common/interfaces';
+import { Label } from 'common/models/label-interfaces';
 
 @Component({
-    selector: 'aspect-option-list-panel',
-    imports: [
-        NgIf,
-        NgForOf,
-        TranslateModule,
-        MatInputModule,
-        MatIconModule,
-        CdkDropList,
-        MatButtonModule,
-        SharedModule // TODO make pipe standalone and remove
-    ],
-    template: `
+  selector: 'aspect-option-list-panel',
+  imports: [
+    NgIf,
+    NgForOf,
+    TranslateModule,
+    MatInputModule,
+    MatIconModule,
+    CdkDropList,
+    MatButtonModule,
+    SharedModule // TODO make pipe standalone and remove
+  ],
+  template: `
     <fieldset *ngIf="title" class="fx-column-start-stretch">
       <legend>{{ title | translate }}</legend>
       <ng-container *ngTemplateOutlet="optionList"></ng-container>
@@ -74,7 +74,7 @@ import { Label } from 'common/interfaces';
       </div>
     </ng-template>
   `,
-    styles: [`
+  styles: [`
     .item-box {
       align-self: center;
       display: flex;

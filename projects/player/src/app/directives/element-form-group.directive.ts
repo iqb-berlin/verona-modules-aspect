@@ -4,7 +4,7 @@ import {
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { InputElementValue } from 'common/interfaces';
+import { InputElementValue } from 'common/models/input-element-interfaces';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { LogService } from 'player/modules/logging/services/log.service';

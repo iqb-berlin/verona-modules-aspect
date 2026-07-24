@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { InputElementValue } from 'common/interfaces';
+import { InputElementValue } from 'common/models/input-element-interfaces';
 
 @Pipe({
   name: 'getValue',

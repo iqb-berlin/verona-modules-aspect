@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
-import { UIElementValue } from 'common/interfaces';
+import { UIElementValue } from 'common/models/ui-element-interfaces';
 import {
   MathTablePropertiesComponent
 } from './ele-specific/math-table-properties.component';

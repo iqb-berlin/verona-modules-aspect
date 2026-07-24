@@ -5,8 +5,10 @@ import {
   DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { InputElementProperties } from 'common/models/input-element-interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 
 export interface Hotspot {
   top: number;

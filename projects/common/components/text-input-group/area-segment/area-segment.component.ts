@@ -5,7 +5,7 @@ import { MathEditorModule } from 'common/math-editor/math-editor.module';
 import { AreaTextInputComponent } from 'common/components/text-input-group/area-text-input/area-text-input.component';
 import { BehaviorSubject } from 'rxjs';
 import { MathInputComponent } from 'common/math-editor/math-input.component';
-import { MathKeyboardPreset } from 'common/interfaces';
+import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 
 @Component({
   selector: 'aspect-text-area-math-segment',

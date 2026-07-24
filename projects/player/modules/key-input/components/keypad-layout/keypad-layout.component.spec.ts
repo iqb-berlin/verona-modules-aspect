@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { InputAssistancePreset } from 'common/interfaces';
+import { InputAssistancePreset } from 'common/models/input-element-interfaces';
 import { GetAlternativeKeyPipe } from 'player/modules/key-input/pipes/get-alternative-key.pipe';
 import { KeypadLayoutComponent } from 'player/modules/key-input/components/keypad-layout/keypad-layout.component';
 import { GetLayoutClassPipe } from 'player/modules/key-input/pipes/get-layout-class.pipe';

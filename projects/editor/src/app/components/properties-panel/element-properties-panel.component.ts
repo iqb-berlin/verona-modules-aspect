@@ -11,17 +11,17 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SectionService } from 'editor/src/app/services/section.service';
-import { UIElementValue } from 'common/interfaces';
+import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { SelectionService } from '../../services/selection.service';
 import { UnitService } from '../../services/unit.service';
 
 export type CombinedProperties = UIElement & { idList?: string[] };
 
 @Component({
-    selector: 'aspect-element-properties',
-    templateUrl: './element-properties-panel.component.html',
-    styleUrls: ['./element-properties-panel.component.css'],
-    standalone: false
+  selector: 'aspect-element-properties',
+  templateUrl: './element-properties-panel.component.html',
+  styleUrls: ['./element-properties-panel.component.css'],
+  standalone: false
 })
 export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   selectedElements: UIElement[] = [];

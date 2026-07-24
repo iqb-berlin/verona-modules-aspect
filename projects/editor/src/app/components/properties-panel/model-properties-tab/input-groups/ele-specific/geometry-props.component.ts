@@ -26,7 +26,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { MessageService } from 'editor/src/app/services/message.service';
-import { GeometryVariable } from 'common/interfaces';
+import { GeometryVariable } from 'common/models/geometry-interfaces';
 import { VariableAlias } from 'common/utils/variable-alias';
 
 @Component({

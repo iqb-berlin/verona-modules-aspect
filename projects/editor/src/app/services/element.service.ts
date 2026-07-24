@@ -26,13 +26,13 @@ import { TextElement } from 'common/models/elements/text/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TableElement, TableHeaderCell } from 'common/models/elements/compound-elements/table/table';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
-  DragNDropValueObject,
   PositionedUIElement,
   UIElementProperties,
   UIElementType,
   UIElementValue
-} from 'common/interfaces';
+} from 'common/models/ui-element-interfaces';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
 

@@ -5,7 +5,7 @@ import { AnchorService } from 'player/src/app/services/anchor.service';
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text-group/text/text.component';
 import { MarkingData } from 'common/models/marking-data';
-import { RangeSelectionService } from 'common/services/range-selection-service';
+import { RangeSelectionService } from 'common/services/range-selection.service';
 
 export class TextMarkingSupport {
   isMarkingBarOpen: boolean = false;

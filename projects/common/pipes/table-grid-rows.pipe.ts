@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Measurement } from 'common/interfaces';
+import { Measurement } from 'common/models/ui-element-interfaces';
 
 @Pipe({
   name: 'tableGridRows',

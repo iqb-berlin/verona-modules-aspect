@@ -3,12 +3,11 @@ import {
 } from 'common/models/elements/element';
 import { environment } from 'common/environment';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import {
-  AbstractIDService,
-  InputElementProperties,
-  TextImageLabel, UIElementType
-} from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { InputElementProperties } from 'common/models/input-element-interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class LikertRowElement extends InputElement implements LikertRowProperties {

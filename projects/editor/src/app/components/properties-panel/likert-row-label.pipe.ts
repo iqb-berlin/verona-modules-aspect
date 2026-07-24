@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 
-import { TextImageLabel } from 'common/interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
 
 @Pipe({
-    name: 'LikertRowLabel',
-    standalone: false
+  name: 'LikertRowLabel',
+  standalone: false
 })
 export class LikertRowLabelPipe implements PipeTransform {
   // eslint-disable-next-line class-methods-use-this

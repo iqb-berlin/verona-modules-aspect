@@ -18,7 +18,7 @@ import { TableComponent } from 'common/components/compound-group/table/table.com
 import { TableChildOverlay } from 'common/components/compound-group/table-child-overlay/table-child-overlay.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
-import { PositionedUIElement } from 'common/interfaces';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 

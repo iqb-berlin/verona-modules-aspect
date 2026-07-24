@@ -5,7 +5,7 @@ import {
   TextFieldSimpleProperties
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 import { ModelRegistry } from 'common/utils/model-registry';
-import { UIElementProperties } from 'common/interfaces';
+import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import { TextFieldNodeviewComponent } from './text-field-nodeview.component';
 
 const TextFieldComponentExtension = (injector: Injector): Node => Node.create({

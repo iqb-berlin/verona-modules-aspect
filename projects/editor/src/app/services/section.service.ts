@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PositionedUIElement, UIElementValue } from 'common/interfaces';
+import { PositionedUIElement, UIElementValue } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
 import { ArrayUtils } from 'common/utils/array-utils';
 import { UnitService } from 'editor/src/app/services/unit.service';

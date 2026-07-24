@@ -3,13 +3,13 @@ import {
 } from '@angular/core';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { ElementService } from 'editor/src/app/services/element.service';
-import { PositionedUIElement } from 'common/interfaces';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 
 @Component({
-    selector: 'aspect-position-and-dimension-properties',
-    template: `
+  selector: 'aspect-position-and-dimension-properties',
+  template: `
     <div class="fx-column-start-stretch">
       <aspect-position-field-set
         *ngIf="positionProperties"
@@ -43,7 +43,7 @@ import { SelectionService } from '../../../services/selection.service';
       </ng-container>
     </div>
   `,
-    standalone: false
+  standalone: false
 })
 export class ElementPositionPropertiesComponent {
   @Input() dimensions!: DimensionProperties | null | undefined;

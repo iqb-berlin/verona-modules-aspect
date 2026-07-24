@@ -2,7 +2,7 @@ import { Injectable, Renderer2 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { APIService } from 'common/services/api.service';
 
-import { AspectError } from 'common/errors';
+import { AspectError } from 'common/classes/aspect-error';
 
 @Injectable({
   providedIn: 'root'

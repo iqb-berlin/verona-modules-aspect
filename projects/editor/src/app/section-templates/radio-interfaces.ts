@@ -1,4 +1,4 @@
-import { Label, TextImageLabel } from 'common/interfaces';
+import { Label, TextImageLabel } from 'common/models/label-interfaces';
 
 export interface TextRadioOptions {
   label1: string;

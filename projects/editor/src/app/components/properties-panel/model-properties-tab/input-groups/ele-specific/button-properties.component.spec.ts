@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
-import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ButtonPropertiesComponent } from './button-properties.component';
 

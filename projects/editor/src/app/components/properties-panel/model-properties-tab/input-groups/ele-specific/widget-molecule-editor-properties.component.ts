@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { UIElementValue } from 'common/interfaces';
+import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { CombinedProperties } from '../../../element-properties-panel.component';
 
 @Component({

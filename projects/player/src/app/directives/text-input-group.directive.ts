@@ -8,7 +8,7 @@ import { DeviceService } from 'player/src/app/services/device.service';
 import { KeypadService } from 'player/src/app/services/keypad.service';
 import { KeyboardService } from 'player/src/app/services/keyboard.service';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
-import { RangeSelectionService } from 'common/services/range-selection-service';
+import { RangeSelectionService } from 'common/services/range-selection.service';
 import { MathfieldElement } from '@iqb/mathlive';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 import { MathFieldComponent } from 'common/components/text-input-group/math-field/math-field.component';

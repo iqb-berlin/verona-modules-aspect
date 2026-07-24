@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { UIElementType } from 'common/interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementGroupInterface, ElementGroupName } from '../../../models/element-group.interface';
 
 @Component({

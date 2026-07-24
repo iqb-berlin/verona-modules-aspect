@@ -1,7 +1,7 @@
 import { TextComponent } from 'common/components/text-group/text/text.component';
 import { Injectable } from '@angular/core';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { RangeSelectionService } from 'common/services/range-selection-service';
+import { RangeSelectionService } from 'common/services/range-selection.service';
 
 @Injectable({
   providedIn: 'root'

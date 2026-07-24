@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IDTypes } from 'common/interfaces';
+import { IDTypes } from 'common/models/id-interfaces';
 import { IdRegistry } from 'editor/src/app/services/id-registry';
 
 @Injectable({

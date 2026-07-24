@@ -3,7 +3,7 @@ import { Unit, UnitProperties } from 'common/models/unit';
 import { UIElement } from 'common/models/elements/element';
 import { Page, PageProperties } from 'common/models/page';
 import { Section } from 'common/models/section';
-import { AbstractIDService } from 'common/interfaces';
+import { AbstractIDService } from 'common/models/id-interfaces';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 
 export class EditorUnit extends Unit {

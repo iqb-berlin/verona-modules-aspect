@@ -1,5 +1,5 @@
 import { EventEmitter } from '@angular/core';
-import { ValueChangeElement } from 'common/interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 
 export class Storable {
   id: string;

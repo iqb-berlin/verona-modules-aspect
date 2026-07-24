@@ -10,7 +10,7 @@ import {
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DropdownElement } from 'common/models/elements/input-elements/dropdown';
-import { ValueChangeElement } from 'common/interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 
 @Component({
   selector: 'aspect-compound-child-overlay',

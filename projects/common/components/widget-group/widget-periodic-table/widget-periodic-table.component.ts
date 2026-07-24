@@ -2,7 +2,7 @@ import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
-import { WidgetPeriodicTableCall } from 'common/interfaces';
+import { WidgetPeriodicTableCall } from 'common/models/widget-interfaces';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({

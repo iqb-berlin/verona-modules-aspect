@@ -5,7 +5,7 @@ import {
   ToggleButtonProperties
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { ModelRegistry } from 'common/utils/model-registry';
-import { UIElementProperties } from 'common/interfaces';
+import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import { ToggleButtonNodeviewComponent } from './toggle-button-nodeview.component';
 
 const ToggleButtonComponentExtension = (injector: Injector): Node => Node.create({

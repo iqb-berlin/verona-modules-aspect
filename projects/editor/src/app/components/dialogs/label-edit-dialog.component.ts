@@ -1,11 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TextImageLabel } from 'common/interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
-    selector: 'aspect-label-edit-dialog',
-    template: `
+  selector: 'aspect-label-edit-dialog',
+  template: `
     <mat-dialog-content class="fx-column-start-stretch" >
       <aspect-rich-text-editor [(content)]="newLabel.text" [showReducedControls]="true">
       </aspect-rich-text-editor>
@@ -34,7 +34,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-    styles: [`
+  styles: [`
     aspect-rich-text-editor {min-height: 200px;}
     .image-panel {
       display: flex;
@@ -46,7 +46,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
       margin-right: auto;
     }
   `],
-    standalone: false
+  standalone: false
 })
 export class LabelEditDialogComponent {
   newLabel = { ...this.data.label };

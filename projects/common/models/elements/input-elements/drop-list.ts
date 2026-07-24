@@ -6,14 +6,12 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import {
-  AbstractIDService,
-  DragNDropValueObject,
-  InputElementProperties,
-  UIElementType,
-  UIElementValue
-} from 'common/interfaces';
-import { IDError, InstantiationEror } from 'common/errors';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
+import { InputElementProperties } from 'common/models/input-element-interfaces';
+import { UIElementType, UIElementValue } from 'common/models/ui-element-interfaces';
+import { IDError } from 'common/classes/id-error';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import { VariableAlias } from 'common/utils/variable-alias';

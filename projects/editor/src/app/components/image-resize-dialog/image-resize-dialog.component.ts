@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
-import { ImageResizeDialogData } from 'common/interfaces';
+import { ImageResizeDialogData } from 'common/models/image-interfaces';
 import { IMAGE_COMPRESSION_QUALITY, IMAGE_MAX_WIDTH } from 'common/config';
 
 @Component({

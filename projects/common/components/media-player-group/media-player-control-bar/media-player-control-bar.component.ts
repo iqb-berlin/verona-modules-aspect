@@ -7,7 +7,7 @@ import {
 } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { ValueChangeElement } from 'common/interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 
 @Component({
   selector: 'aspect-media-player-control-bar',

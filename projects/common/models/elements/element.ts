@@ -5,13 +5,21 @@ import {
   PropertyGroupGenerators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
+import { AbstractIDService } from 'common/models/id-interfaces';
 import {
-  AbstractIDService,
-  InputAssistancePreset, InputElementProperties, InputElementValue,
-  PlayerElementBlueprint, TextInputElementProperties,
-  UIElementProperties, UIElementType, UIElementValue
-} from 'common/interfaces';
-import { IDError, InstantiationEror } from 'common/errors';
+  InputAssistancePreset,
+  InputElementProperties,
+  InputElementValue,
+  TextInputElementProperties
+} from 'common/models/input-element-interfaces';
+import {
+  PlayerElementBlueprint,
+  UIElementProperties,
+  UIElementType,
+  UIElementValue
+} from 'common/models/ui-element-interfaces';
+import { IDError } from 'common/classes/id-error';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 import { VariableAlias } from 'common/utils/variable-alias';
 

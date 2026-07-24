@@ -83,7 +83,7 @@ import {
   ToggleButtonComponent
 } from './components/compound-group/toggle-button/toggle-button.component';
 import { TextMarkingBarComponent } from './components/text-group/text-marking-bar/text-marking-bar.component';
-import { StyleMarksPipe } from './pipes/styleMarks.pipe';
+import { StyleMarksPipe } from './pipes/style-marks.pipe';
 import { TextMarkingButtonComponent } from './components/text-group/text-marking-button/text-marking-button.component';
 import {
   ClozeChildOverlayComponent

@@ -7,21 +7,21 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
-import { TextImageLabel } from 'common/interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
 
 @Component({
-    selector: 'aspect-editor-likert-wizard-dialog',
-    imports: [
-        MatDialogModule,
-        OptionListPanelComponent,
-        RichTextEditorComponent,
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        TranslateModule,
-        MatButtonModule
-    ],
-    template: `
+  selector: 'aspect-editor-likert-wizard-dialog',
+  imports: [
+    MatDialogModule,
+    OptionListPanelComponent,
+    RichTextEditorComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    TranslateModule,
+    MatButtonModule
+  ],
+  template: `
     <h2 mat-dialog-title>Assistent: CMC</h2>
     <div mat-dialog-content>
       <h3>Text</h3>
@@ -54,7 +54,7 @@ import { TextImageLabel } from 'common/interfaces';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,
-    styles: `
+  styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3:not(:first-child) {margin-top: 40px;}

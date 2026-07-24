@@ -7,15 +7,15 @@ import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementService } from 'editor/src/app/services/element.service';
-import { UIElementType } from 'common/interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 
 @Component({
-    selector: '[app-dynamic-section-helper-grid]',
-    imports: [
-        NgForOf,
-        CdkDropList
-    ],
-    template: `
+  selector: '[app-dynamic-section-helper-grid]',
+  imports: [
+    NgForOf,
+    CdkDropList
+  ],
+  template: `
     <ng-container *ngFor="let row of rowCountArray; let x = index;">
       <ng-container *ngFor="let column of columnCountArray; let y = index;">
         <div class="grid-placeholder"
@@ -36,9 +36,9 @@ import { UIElementType } from 'common/interfaces';
 
     <ng-content></ng-content>
   `,
-    styles: [
-        '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center; z-index: -100;}'
-    ]
+  styles: [
+    '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center; z-index: -100;}'
+  ]
 })
 export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   @Input() autoColumnSize!: boolean;
@@ -85,7 +85,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
             Math.max(accumulator, currentValue.position.gridColumn + currentValue.position.gridColumnRange) :
             accumulator
         ),
-        0) - 1;
+                0) - 1;
     } else {
       numberOfColumns = this.gridColumnSizes.length;
     }
@@ -101,7 +101,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
             Math.max(accumulator, currentValue.position.gridRow + currentValue.position.gridRowRange) :
             accumulator
         ),
-        0) - 1;
+                0) - 1;
     } else {
       numberOfRows = this.gridRowSizes.length;
     }

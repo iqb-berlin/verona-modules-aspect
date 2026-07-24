@@ -1,5 +1,5 @@
-import { IDTypes } from 'common/interfaces';
-import { IDError } from 'common/errors';
+import { IDTypes } from 'common/models/id-interfaces';
+import { IDError } from 'common/classes/id-error';
 
 export class IdRegistry {
   registeredIDs: string[] = [];

@@ -16,17 +16,17 @@ import { MarkingPanelService } from 'player/src/app/services/marking-panel.servi
 import { MarkingData, MarkingPanelMarkingData } from 'common/models/marking-data';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
-import { ValueChangeElement } from 'common/interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 
 @Component({
-    selector: 'aspect-text-group-element',
-    templateUrl: './text-group-element.component.html',
-    styleUrls: ['./text-group-element.component.scss'],
-    standalone: false
+  selector: 'aspect-text-group-element',
+  templateUrl: './text-group-element.component.html',
+  styleUrls: ['./text-group-element.component.scss'],
+  standalone: false
 })
 export class TextGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: TextComponent;

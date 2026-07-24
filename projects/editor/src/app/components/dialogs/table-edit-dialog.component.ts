@@ -11,7 +11,7 @@ import { FileService } from 'common/services/file.service';
 import { AudioProperties } from 'common/models/elements/media-elements/audio';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { DropListProperties } from 'common/models/elements/input-elements/drop-list';
-import { UIElementProperties, UIElementType } from 'common/interfaces';
+import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { firstValueFrom } from 'rxjs';

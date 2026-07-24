@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { InputAssistancePreset } from 'common/interfaces';
+import { InputAssistancePreset } from 'common/models/input-element-interfaces';
 
 @Pipe({
   name: 'getLayoutClass',

@@ -1,7 +1,7 @@
 import {
   Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild
 } from '@angular/core';
-import { RangeSelectionService } from 'common/services/range-selection-service';
+import { RangeSelectionService } from 'common/services/range-selection.service';
 
 @Component({
   selector: 'aspect-area-input',

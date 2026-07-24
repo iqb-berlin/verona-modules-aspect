@@ -4,10 +4,9 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
-import {
-  AbstractIDService, TooltipPosition, UIElementProperties, UIElementType
-} from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { TooltipPosition, UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class ButtonElement extends UIElement implements ButtonProperties {

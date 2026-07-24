@@ -1,4 +1,4 @@
-import { PositionedUIElement } from 'common/interfaces';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { SectionProperties } from 'common/models/section';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';

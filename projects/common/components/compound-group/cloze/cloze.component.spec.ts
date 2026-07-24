@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClozeElement, ClozeProperties } from 'common/models/elements/compound-elements/cloze/cloze';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
-import { StyleMarksPipe } from 'common/pipes/styleMarks.pipe';
+import { StyleMarksPipe } from 'common/pipes/style-marks.pipe';
 import { MarkListPipe } from 'common/pipes/mark-list.pipe';
 import { ArrayIncludesPipe } from 'common/pipes/array-includes.pipe';
 import {

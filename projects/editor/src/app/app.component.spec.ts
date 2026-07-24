@@ -1,6 +1,6 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { Mock } from 'vitest';
-import { createSpyObj } from 'common/util/vitest-spy-object';
+import { createSpyObj } from 'common/utils/vitest-spy-object';
 import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { StateVariable } from 'common/models/state-variable';

@@ -24,7 +24,7 @@ import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
-import { UIElementType } from 'common/interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import {
   WidgetMoleculeEditorElement

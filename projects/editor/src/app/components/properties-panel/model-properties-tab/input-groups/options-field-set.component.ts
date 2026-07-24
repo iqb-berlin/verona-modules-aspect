@@ -11,11 +11,8 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import {
-  Label,
-  OptionElement,
-  TextImageLabel
-} from 'common/interfaces';
+import { Label, TextImageLabel } from 'common/models/label-interfaces';
+import { OptionElement } from 'common/models/ui-element-interfaces';
 import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
 
 @Component({

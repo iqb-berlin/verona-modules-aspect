@@ -4,7 +4,7 @@ import {
 import { TextAreaMathElement, TextAreaMath } from 'common/models/elements/input-elements/text-area-math';
 import { AreaSegmentComponent } from 'common/components/text-input-group/area-segment/area-segment.component';
 import { BehaviorSubject } from 'rxjs';
-import { RangeSelectionService } from 'common/services/range-selection-service';
+import { RangeSelectionService } from 'common/services/range-selection.service';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({

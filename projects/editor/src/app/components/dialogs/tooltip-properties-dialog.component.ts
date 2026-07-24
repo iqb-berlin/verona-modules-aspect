@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TooltipPosition } from 'common/interfaces';
+import { TooltipPosition } from 'common/models/ui-element-interfaces';
 
 @Component({
   selector: 'aspect-tooltip-properties-dialog',

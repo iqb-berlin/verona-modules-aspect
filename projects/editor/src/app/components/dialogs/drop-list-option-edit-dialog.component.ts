@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
-import { DragNDropValueObject } from 'common/interfaces';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({

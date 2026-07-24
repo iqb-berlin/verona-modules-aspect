@@ -1,5 +1,5 @@
 import { SectionProperties } from 'common/models/section';
-import { PositionedUIElement } from 'common/interfaces';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { EditorSection } from '../../models/editor-unit';
@@ -11,8 +11,10 @@ import { EditorSection } from '../../models/editor-unit';
 export function createText2Section(text1: string, showHelper: boolean, markingMode: 'word' | 'range',
                                    idService: IDService): EditorSection {
   const sectionElements: PositionedUIElement[] = [
-    TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, gridRowRange: showHelper ? 2 : 1,
-                                            marginBottom: { value: 40, unit: 'px' } },
+    TemplateService.createElement('text', {
+ gridRow: 1, gridColumn: 1, gridRowRange: showHelper ? 2 : 1,
+                                            marginBottom: { value: 40, unit: 'px' }
+},
                                   { text: text1 }, idService)
   ];
   if (showHelper) {

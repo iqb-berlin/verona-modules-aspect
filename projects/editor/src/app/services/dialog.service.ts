@@ -31,9 +31,9 @@ import { UIElement } from 'common/models/elements/element';
 import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog.component';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { FileService, FileInformation } from 'common/services/file.service';
-import {
-  DragNDropValueObject, Label, TextImageLabel, TooltipPosition, ImageOptions
-} from 'common/interfaces';
+import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/label-interfaces';
+import { TooltipPosition } from 'common/models/ui-element-interfaces';
+import { ImageOptions } from 'common/models/image-interfaces';
 
 import {
   ImageResizeDialogComponent

@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
-import { INPUT_ASSISTANCE_CUSTOM_STYLES } from 'common/interfaces';
+import { INPUT_ASSISTANCE_CUSTOM_STYLES } from 'common/models/input-element-interfaces';
 
 @Component({
   selector: 'aspect-input-assistance-properties',

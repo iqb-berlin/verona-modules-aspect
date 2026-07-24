@@ -10,10 +10,10 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { UIElement } from 'common/models/elements/element';
-import { MathTableRow } from 'common/models/elements/input-elements/math-table';
 import { TableHeaderCell } from 'common/models/elements/compound-elements/table/table';
-import { Markable } from 'player/src/app/models/markable.interface';
-import { TextAreaMath } from 'common/models/elements/input-elements/text-area-math';
+import { TextLabel, Label } from 'common/models/label-interfaces';
+import { GeometryVariable } from 'common/models/geometry-interfaces';
+import { InputElementValue } from 'common/models/input-element-interfaces';
 
 export type UIElementType =
   'text'
@@ -47,27 +47,6 @@ export type UIElementType =
   | 'widget-periodic-table'
   | 'widget-molecule-editor';
 
-export interface TextLabel {
-  text: string;
-}
-
-export interface TextImageLabel extends TextLabel {
-  imgSrc: string | null;
-  imgFileName: string;
-  imgPosition: 'above' | 'below' | 'left' | 'right';
-}
-
-export interface DragNDropValueObject extends TextImageLabel {
-  id: string;
-  alias: string;
-  originListID: string;
-  originListIndex: number;
-  audioSrc: string | null;
-  audioFileName: string;
-}
-
-export type Label = TextLabel | TextImageLabel | DragNDropValueObject;
-
 export interface OptionElement extends UIElement {
   getNewOptionLabel(optionText: string): Label;
 }
@@ -77,58 +56,10 @@ export interface Measurement {
   unit: string
 }
 
-export type IDTypes = UIElementType | 'value' | 'state-variable';
-
-export interface AbstractIDService {
-  getAndRegisterNewID: (idType: IDTypes, alias?: boolean) => string;
-  register: (id: string, useIDRegistry: boolean, useAliasRegistry: boolean) => void;
-  unregister: (id: string, useIDRegistry: boolean, useAliasRegistry: boolean) => void;
-  isAliasAvailable: (id: string) => boolean;
-  changeAlias: (oldID: string, newID: string) => void
-}
-
-export type InputElementValue =
-  Markable[]
-  | TextLabel[]
-  | Hotspot[]
-  | MathTableRow[]
-  | TextAreaMath[]
-  | GeometryValue
-  | string[]
-  | string
-  | number[]
-  | number
-  | boolean[]
-  | boolean
-  | null;
-
-export interface InputElementProperties extends UIElementProperties {
-  label?: string;
-  value: InputElementValue;
-  required: boolean;
-  requiredWarnMessage: string;
-  readOnly: boolean;
-}
-
-export interface ValueChangeElement {
-  id: string;
-  value: InputElementValue;
-}
-
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
 TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | StateVariable | GeometryVariable[] |
 PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[] | UIElement[] |
 TableHeaderCell[][];
-
-export type InputAssistancePreset = null | 'french' | 'numbers' | 'decimals' | 'numbersAndOperators' |
-'numbersAndBasicOperators' | 'comparisonOperators' | 'chemicalEquation' | 'squareDashDot' | 'placeValue' |
-'space' | 'comma' | 'custom';
-
-export const INPUT_ASSISTANCE_CUSTOM_STYLES = ['small', 'medium', 'large'] as const;
-export type InputAssistanceCustomStyle = typeof INPUT_ASSISTANCE_CUSTOM_STYLES[number];
-
-export const MATH_KEYBOARD_PRESETS = ['math', 'symbols', 'physics', 'latin', 'greek'] as const;
-export type MathKeyboardPreset = typeof MATH_KEYBOARD_PRESETS[number];
 
 export interface UIElementProperties {
   type: UIElementType;
@@ -146,65 +77,8 @@ export interface PositionedUIElement extends UIElement {
   dimensions: DimensionProperties;
 }
 
-// export interface PlayerElement extends UIElement {
-//   player: PlayerProperties;
-// }
-
 export type TooltipPosition = 'left' | 'right' | 'above' | 'below';
-
-export interface GeometryValue {
-  appDefinition: string;
-  variables: GeometryVariable[];
-}
-
-export interface GeometryVariable {
-  id: string;
-  value: string;
-}
-
-export interface KeyInputElementProperties {
-  inputAssistancePreset: InputAssistancePreset;
-  inputAssistancePosition: 'floating' | 'right';
-  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter';
-  showSoftwareKeyboard: boolean;
-  addInputAssistanceToKeyboard: boolean;
-  hideNativeKeyboard: boolean;
-  keyStyle: 'round' | 'square'
-  hasArrowKeys: boolean;
-}
-
-export interface TextInputElementProperties extends KeyInputElementProperties, InputElementProperties {
-  inputAssistanceCustomKeys: string;
-  inputAssistanceCustomStyle: 'small' | 'medium' | 'large'
-  restrictedToInputAssistanceChars: boolean;
-  hasBackspaceKey: boolean;
-}
 
 export interface PlayerElementBlueprint extends UIElementProperties {
   player: PlayerProperties;
-}
-
-export interface WidgetPeriodicTableCall {
-  showInfoOrder: boolean;
-  showInfoENeg: boolean;
-  showInfoAMass: boolean;
-  closeOnSelection: boolean;
-  maxNumberOfSelections: number;
-}
-
-export interface WidgetMoleculeEditorCall {
-  bondingType: 'VALENCE' | 'ELECTRONS';
-}
-
-export interface ImageOptions {
-  maxWidth?: number;
-  maxHeight?: number;
-  quality?: number;
-  uncompressed?: boolean;
-  targetMimeType?: string;
-}
-
-export interface ImageResizeDialogData {
-  base64: string;
-  options: ImageOptions;
 }

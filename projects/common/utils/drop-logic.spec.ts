@@ -1,5 +1,5 @@
-import { DropListMock, DropLogic } from 'common/components/input-group/drop-list/drop-logic';
-import { DragNDropValueObject } from 'common/interfaces';
+import { DropListMock, DropLogic } from 'common/utils/drop-logic';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 
 describe('DropLogic', () => {
   const dragItemPreset: DragNDropValueObject = {

@@ -14,7 +14,7 @@ import { Subject, Subscription } from 'rxjs';
 import { MathTableComponent } from 'common/components/interactive-group/math-table/math-table.component';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { takeUntil } from 'rxjs/operators';
-import { ValueChangeElement } from 'common/interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';

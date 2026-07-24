@@ -1,5 +1,6 @@
 import { ElementFactory } from 'common/utils/element-factory';
-import { AbstractIDService, UIElementProperties } from 'common/interfaces';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
 
 describe('UIElement setProperty alias validation', () => {

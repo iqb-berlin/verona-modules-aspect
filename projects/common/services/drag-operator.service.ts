@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DropListComponent } from 'common/components/input-group/drop-list/drop-list.component';
-import { DragOperation } from 'common/components/input-group/drop-list/drag-operation';
-import { DropLogic } from 'common/components/input-group/drop-list/drop-logic';
-import { DragNDropValueObject } from 'common/interfaces';
+import { DragOperation } from 'common/classes/drag-operation';
+import { DropLogic } from 'common/utils/drop-logic';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 
 @Injectable({
   providedIn: 'root'

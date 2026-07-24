@@ -5,8 +5,8 @@ import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { AbstractIDService } from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { IDService } from 'editor/src/app/services/id.service';
 
 export class Unit implements UnitProperties {

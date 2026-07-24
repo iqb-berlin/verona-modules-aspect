@@ -12,7 +12,7 @@ import {
 import { MathfieldElement } from '@iqb/mathlive';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { FORMULA_KEYBOARD_PRESETS } from 'common/math-editor/formula-keyboard-presets.config';
-import { MathKeyboardPreset } from 'common/interfaces';
+import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 
 @Component({
   selector: 'aspect-math-input',

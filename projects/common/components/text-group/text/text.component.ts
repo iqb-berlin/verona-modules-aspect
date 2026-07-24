@@ -4,7 +4,7 @@ import {
 import { TextElement } from 'common/models/elements/text/text';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MarkingRange, MarkingData } from 'common/models/marking-data';
-import { ValueChangeElement } from 'common/interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
 

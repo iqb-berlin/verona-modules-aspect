@@ -4,7 +4,7 @@ import { StateVariable } from 'common/models/state-variable';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { VariableInfo } from '@iqb/responses';
-import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from './dialog.service';
 import { SelectionService } from './selection.service';
 import { IDService } from './id.service';

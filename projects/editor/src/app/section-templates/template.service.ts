@@ -16,9 +16,8 @@ import { MathTableWizardDialogComponent } from 'editor/src/app/section-templates
 import { Text3WizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text3.dialog.component';
 import { CheckboxWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/checkbox.dialog.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import {
-  PositionedUIElement, TextImageLabel, UIElementType
-} from 'common/interfaces';
+import { PositionedUIElement, UIElementType } from 'common/models/ui-element-interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
 import { PageProperties } from 'common/models/page';
 import * as TextBuilders from 'editor/src/app/section-templates/builders/text-builders';
 import * as TextInputBuilders from 'editor/src/app/section-templates/builders/text-input-builders';

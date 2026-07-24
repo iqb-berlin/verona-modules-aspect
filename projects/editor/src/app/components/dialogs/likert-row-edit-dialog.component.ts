@@ -1,12 +1,12 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { TextLabel } from 'common/interfaces';
+import { TextLabel } from 'common/models/label-interfaces';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
-    selector: 'aspect-likert-row-edit-dialog',
-    template: `
+  selector: 'aspect-likert-row-edit-dialog',
+  template: `
     <mat-dialog-content>
       <div class="fx-column-start-stretch">
         <aspect-rich-text-editor [(content)]="newLikertRow.rowLabel.text" [showReducedControls]="true">
@@ -76,7 +76,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-    styles: [`
+  styles: [`
     aspect-rich-text-editor {min-height: 200px;}
     mat-checkbox {
       margin-bottom: 15px;
@@ -87,7 +87,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
       margin-right: auto;
     }
   `],
-    standalone: false
+  standalone: false
 })
 export class LikertRowEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, options: TextLabel[] },

@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { TooltipPosition } from 'common/interfaces';
+import { TooltipPosition } from 'common/models/ui-element-interfaces';
 
 @Component({
   selector: 'aspect-tooltip',

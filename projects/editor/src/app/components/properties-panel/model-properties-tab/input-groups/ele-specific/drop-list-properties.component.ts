@@ -18,7 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
-import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
+import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 
 @Pipe({
   name: 'getValidDropLists',
@@ -210,8 +210,8 @@ export class DropListPropertiesComponent {
 
   moveOption(property: string, indices: { previousIndex: number, currentIndex: number }): void {
     moveItemInArray(this.combinedProperties[property] as TextImageLabel[],
-      indices.previousIndex,
-      indices.currentIndex);
+                    indices.previousIndex,
+                    indices.currentIndex);
     this.updateModel.emit({ property: property, value: this.combinedProperties[property] as DragNDropValueObject[] });
   }
 

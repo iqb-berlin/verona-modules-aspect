@@ -10,15 +10,12 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
+import { AbstractIDService } from 'common/models/id-interfaces';
 import {
-  AbstractIDService,
-  OptionElement,
-  TextImageLabel,
-  UIElementProperties,
-  UIElementType,
-  UIElementValue
-} from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+  OptionElement, UIElementProperties, UIElementType, UIElementValue
+} from 'common/models/ui-element-interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import { ModelNormalizer } from 'common/utils/model-normalizer';
 

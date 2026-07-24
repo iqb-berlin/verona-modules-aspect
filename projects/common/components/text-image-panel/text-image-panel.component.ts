@@ -1,7 +1,7 @@
 import {
   Component, Input
 } from '@angular/core';
-import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
+import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 import { AudioPlayerService } from 'common/services/audio-player.service';
 
 @Component({

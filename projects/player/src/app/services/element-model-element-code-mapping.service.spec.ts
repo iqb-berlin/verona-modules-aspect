@@ -29,7 +29,7 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
-import { DragNDropValueObject } from 'common/interfaces';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import { ElementFactory } from 'common/utils/element-factory';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';

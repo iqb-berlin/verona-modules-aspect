@@ -2,11 +2,10 @@ import {
   DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import {
-  AbstractIDService, PlayerElementBlueprint, UIElementType
-} from 'common/interfaces';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { PlayerElementBlueprint, UIElementType } from 'common/models/ui-element-interfaces';
 import { PlayerElement } from 'common/models/elements/element';
-import { InstantiationEror } from 'common/errors';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class AudioElement extends PlayerElement implements AudioProperties {

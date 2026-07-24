@@ -2,7 +2,7 @@ import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
 import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
-import { WidgetMoleculeEditorCall } from 'common/interfaces';
+import { WidgetMoleculeEditorCall } from 'common/models/widget-interfaces';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({

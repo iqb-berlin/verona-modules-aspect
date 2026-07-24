@@ -1,5 +1,5 @@
 import { Mark, mergeAttributes } from '@tiptap/core';
-import { TooltipPosition } from 'common/interfaces';
+import { TooltipPosition } from 'common/models/ui-element-interfaces';
 
 export interface TooltipExtensionOptions {
   HTMLAttributes: {

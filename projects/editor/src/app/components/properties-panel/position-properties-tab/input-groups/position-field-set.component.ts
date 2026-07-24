@@ -4,11 +4,11 @@ import {
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { UIElementValue } from 'common/interfaces';
+import { UIElementValue } from 'common/models/ui-element-interfaces';
 
 @Component({
-    selector: 'aspect-position-field-set',
-    template: `
+  selector: 'aspect-position-field-set',
+  template: `
     <fieldset>
       <legend>Position</legend>
       <div *ngIf="!unitService.unit
@@ -132,11 +132,11 @@ import { UIElementValue } from 'common/interfaces';
       </ng-container>
     </fieldset>
   `,
-    styles: [
-        'mat-form-field {width: 140px;}',
-        '.flex-row {display: flex; flex-direction: row; gap: 10px;}'
-    ],
-    standalone: false
+  styles: [
+    'mat-form-field {width: 140px;}',
+    '.flex-row {display: flex; flex-direction: row; gap: 10px;}'
+  ],
+  standalone: false
 })
 export class PositionFieldSetComponent {
   @Input() positionProperties!: PositionProperties;

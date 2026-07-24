@@ -7,19 +7,19 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
-import { Measurement } from 'common/interfaces';
+import { Measurement } from 'common/models/ui-element-interfaces';
 
 @Component({
-    selector: 'aspect-size-input-panel',
-    imports: [
-        NgIf,
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        MatSelectModule,
-        TranslateModule
-    ],
-    template: `
+  selector: 'aspect-size-input-panel',
+  imports: [
+    NgIf,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatSelectModule,
+    TranslateModule
+  ],
+  template: `
     <mat-form-field [style.width.%]="40">
       <mat-label>{{label}}</mat-label>
       <input matInput type="number" [disabled]="disabled"
@@ -40,9 +40,9 @@ import { Measurement } from 'common/interfaces';
       </mat-select>
     </mat-form-field>
   `,
-    styles: [
-        ':host {display: flex; flex-direction: row;}'
-    ]
+  styles: [
+    ':host {display: flex; flex-direction: row;}'
+  ]
 })
 export class SizeInputPanelComponent {
   @Input() label!: string;

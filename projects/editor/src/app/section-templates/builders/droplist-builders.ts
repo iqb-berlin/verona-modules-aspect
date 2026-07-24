@@ -1,4 +1,4 @@
-import { PositionedUIElement } from 'common/interfaces';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { SectionProperties } from 'common/models/section';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
@@ -13,10 +13,14 @@ import { EditorSection } from '../../models/editor-unit';
 export function createDroplistSection(options: ClassicTemplateOptions, idService: IDService): EditorSection {
   const sectionElements: PositionedUIElement[] = [
     TemplateService.createElement(
-      'text', { gridRow: 1, gridColumn: 1, gridColumnRange: 2, marginBottom: { value: 20, unit: 'px' } },
+      'text', {
+        gridRow: 1, gridColumn: 1, gridColumnRange: 2, marginBottom: { value: 20, unit: 'px' }
+      },
       { text: options.text1 }, idService),
     TemplateService.createElement(
-      'text', { gridRow: 2, gridColumn: 1, gridColumnRange: 2, marginBottom: { value: 20, unit: 'px' } },
+      'text', {
+        gridRow: 2, gridColumn: 1, gridColumnRange: 2, marginBottom: { value: 20, unit: 'px' }
+      },
       {
         text: options.targetLabelAlignment === 'column' ? options.headingSourceList : options.headingTargetLists,
         styling: { bold: true }
@@ -258,22 +262,24 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
 
   const section2Elements: PositionedUIElement[] = [
     TemplateService.createElement('text',
-                                  { gridRow: 1, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 30, unit: 'px' } },
+                                  {
+                                    gridRow: 1, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 30, unit: 'px' }
+                                  },
                                   { text: options.text2 }, idService),
     TemplateService.createElement('text',
-                                  { gridRow: 2, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 20, unit: 'px' } },
+                                  {
+                                    gridRow: 2, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 20, unit: 'px' }
+                                  },
                                   { text: options.headingTargetLists, styling: { bold: true } }, idService)
   ];
 
   if (options.srcUseImages) {
     if (options.targetUseImages) {
       section2Elements.push(...createImageTargets(options, idService));
+    } else if (options.targetListAlignment === 'row') {
+      section2Elements.push(...createImageTargets(options, idService));
     } else {
-      if (options.targetListAlignment === 'row') {
-        section2Elements.push(...createImageTargets(options, idService));
-      } else {
-        section2Elements.push(...createTargetGrid(options, idService));
-      }
+      section2Elements.push(...createTargetGrid(options, idService));
     }
   } else {
     section2Elements.push(...createTextRowTargets(options, idService));
@@ -310,8 +316,11 @@ function createTextRowTargets(options: TwoPageTemplateOptions, idService: IDServ
   const elements: PositionedUIElement[] = [];
   options.targetLabels.forEach((label: string, i: number) => {
     const droplistEl = TemplateService.createElement(
-      'drop-list', { gridRow: 4 + i * 2 - (options.labelsBelow ? 1 : 0), gridColumn: 1,
-        marginBottom: { value: options.labelsBelow ? 5 : 20, unit: 'px' } },
+      'drop-list', {
+        gridRow: 4 + i * 2 - (options.labelsBelow ? 1 : 0),
+        gridColumn: 1,
+        marginBottom: { value: options.labelsBelow ? 5 : 20, unit: 'px' }
+      },
       {
         dimensions: { minHeight: 58 } as DimensionProperties,
         orientation: 'vertical',

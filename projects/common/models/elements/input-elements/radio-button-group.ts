@@ -4,10 +4,11 @@ import {
   BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import {
-  AbstractIDService, InputElementProperties, OptionElement, TextLabel, UIElementType
-} from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { InputElementProperties } from 'common/models/input-element-interfaces';
+import { OptionElement, UIElementType } from 'common/models/ui-element-interfaces';
+import { TextLabel } from 'common/models/label-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class RadioButtonGroupElement extends InputElement implements OptionElement, RadioButtonGroupProperties {

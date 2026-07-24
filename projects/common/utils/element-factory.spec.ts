@@ -6,7 +6,7 @@ import {
   TextFieldSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 import { isInputElement } from 'common/models/elements/element';
-import { UIElementProperties } from 'common/interfaces';
+import { UIElementProperties } from 'common/models/ui-element-interfaces';
 
 describe('ElementFactory', () => {
   it('should create a TextElement with normalized defaults', () => {

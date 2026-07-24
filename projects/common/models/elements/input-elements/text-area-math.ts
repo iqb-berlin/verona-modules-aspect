@@ -7,13 +7,10 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
-import {
-  AbstractIDService,
-  MathKeyboardPreset,
-  TextInputElementProperties,
-  UIElementType
-} from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { MathKeyboardPreset, TextInputElementProperties } from 'common/models/input-element-interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 

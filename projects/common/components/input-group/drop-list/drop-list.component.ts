@@ -9,7 +9,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DragEvent, DragStartEvent } from 'common/directives/draggable.directive';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
-import { DragNDropValueObject } from 'common/interfaces';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { DragImageComponent } from 'common/components/input-group/drag-image/drag-image.component';
 import { DragOperatorService } from 'common/services/drag-operator.service';
 

@@ -1,7 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
 import {
-  InputAssistancePreset, KeyInputElementProperties, Measurement, TextInputElementProperties
-} from 'common/interfaces';
+  InputAssistancePreset,
+  KeyInputElementProperties,
+  TextInputElementProperties
+} from 'common/models/input-element-interfaces';
+import { Measurement } from 'common/models/ui-element-interfaces';
 import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 
 export interface PositionProperties {

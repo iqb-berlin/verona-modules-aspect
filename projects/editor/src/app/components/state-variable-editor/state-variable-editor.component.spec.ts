@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { StateVariable } from 'common/models/state-variable';
 import { IDService } from 'editor/src/app/services/id.service';
-import { createSpyObj, SpyObj } from 'common/util/vitest-spy-object';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { StateVariableEditorComponent } from './state-variable-editor.component';
 
 describe('StateVariableEditorComponent', () => {

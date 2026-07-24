@@ -1,3 +1,10 @@
+:host {
+  // Blockifizieren + Containment: Die intrinsische Breite des einzeiligen
+  // MathLive-Inhalts darf die Grid-Spalten der Section nicht aufweiten (#1076).
+  display: block;
+  contain: inline-size;
+}
+
 .error-message {
   font-size: 75%;
   margin-top: 15px;

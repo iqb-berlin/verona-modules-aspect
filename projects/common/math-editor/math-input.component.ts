@@ -42,6 +42,14 @@ import { MathKeyboardPreset } from 'common/interfaces';
 
     .inline-block{
       display: inline-block;
+      /* Formel-Segmente nie breiter als der umgebende Bereich werden lassen;
+         überlange Formeln scrollen dann intern (#1076) */
+      max-width: 100%;
+    }
+
+    :host ::ng-deep math-field {
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     :host ::ng-deep  math-field::part(virtual-keyboard-toggle) {

@@ -1,4 +1,4 @@
-import {addElementHover, setPreferencesElement} from '../util';
+import { addElementHover, setPreferencesElement } from '../util';
 
 describe('Text area math element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -33,8 +33,9 @@ describe('Text area math element', { testIsolation: false }, () => {
 
     it('checks the text-area-math is editable', () => {
       cy.contains('aspect-element-group-selection', 'Standard Formel Bereich').within(() => {
-        cy.get('button:contains("Formel einfügen")').click({force: true});
-        cy.get('math-field').shadow().find('.ML__content').click().type('1+x=2');
+        cy.get('button:contains("Formel einfügen")').click({ force: true });
+        cy.get('math-field').shadow().find('.ML__content').click()
+          .type('1+x=2');
         cy.get('math-field').shadow().find('.ML__base').should('contain', '1');
         cy.get('math-field').shadow().find('.ML__base').should('contain', '+');
         cy.get('math-field').shadow().find('.ML__base').should('contain', '2');
@@ -43,8 +44,9 @@ describe('Text area math element', { testIsolation: false }, () => {
 
     it('checks that the readonly text-area-math can not be edited', () => {
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Schreibschutz').within(() => {
-        cy.get('button:contains("Formel einfügen")').click({force: true});
-        cy.get('math-field').shadow().find('.ML__content').click().type('x+y=4');
+        cy.get('button:contains("Formel einfügen")').click({ force: true });
+        cy.get('math-field').shadow().find('.ML__content').click()
+          .type('x+y=4');
         cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'x');
         cy.get('math-field').shadow().find('.ML__base').should('not.contain', '+');
         cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'y');
@@ -55,7 +57,36 @@ describe('Text area math element', { testIsolation: false }, () => {
       cy.contains('aspect-element-group-selection', 'Formel Bereich mit Pflichtfeld').click();
       cy.clickOutside();
       cy.contains('aspect-element-group-selection',
-        'Formel Bereich mit Pflichtfeld').find('mat-error').should('exist');
+                  'Formel Bereich mit Pflichtfeld').find('mat-error').should('exist');
+    });
+
+    it('checks that long unbroken text wraps inside the text area without horizontal overflow (#1076)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Bereich').within(() => {
+        cy.get('.text-area').click();
+        cy.focused().type('buchstabenketteohneleerzeichen'.repeat(4));
+        cy.get('.text-area').should($area => {
+          const viewportWidth = $area[0].ownerDocument.documentElement.clientWidth;
+          expect($area[0].scrollWidth).to.be.at.most($area[0].clientWidth);
+          expect($area[0].getBoundingClientRect().right).to.be.at.most(viewportWidth);
+        });
+      });
+      cy.clickOutside();
+    });
+
+    it('checks that formula segments are capped at the area width and scroll internally (#1076)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Bereich').within(() => {
+        cy.get('math-field').shadow().find('.ML__content').click()
+          .type('abcdefghijklmnopqrstuvwxyz'.repeat(3));
+        cy.get('.text-area').then($area => {
+          cy.get('math-field').should($mathField => {
+            expect($mathField[0].getBoundingClientRect().width).to.be.at.most($area[0].clientWidth);
+          });
+        });
+        cy.get('math-field').shadow().find('.ML__content').should($content => {
+          expect($content[0].scrollWidth).to.be.greaterThan($content[0].clientWidth);
+        });
+      });
+      cy.clickOutside();
     });
   });
 });

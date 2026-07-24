@@ -1,15 +1,15 @@
 import {
   Component, EventEmitter, Input, Output, QueryList, ViewChildren
 } from '@angular/core';
-import { SectionMenuComponent } from 'editor/src/app/components/unit-view/section/section-menu/section-menu.component';
+import { SectionMenuComponent } from 'editor/src/app/components/section-menu/section-menu.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SectionService } from 'editor/src/app/services/section.service';
 import { UIElement } from 'common/models/elements/element';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
-import { StaticSectionComponent } from 'editor/src/app/components/unit-view/section/static-section/static-section.component';
-import { DynamicSectionComponent } from 'editor/src/app/components/unit-view/section/dynamic-section/dynamic-section.component';
+import { StaticSectionComponent } from 'editor/src/app/components/static-section/static-section.component';
+import { DynamicSectionComponent } from 'editor/src/app/components/dynamic-section/dynamic-section.component';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgClass, NgIf } from '@angular/common';
 import { SectionCounter } from 'common/utils/section-counter';

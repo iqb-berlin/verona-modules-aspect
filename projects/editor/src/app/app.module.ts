@@ -76,8 +76,8 @@ import { AppComponent } from 'editor/src/app/app.component';
 import { ToolbarComponent } from 'editor/src/app/components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
   'editor/src/app/components/ui-element-toolbox/ui-element-toolbox.component';
-import { UnitViewComponent } from 'editor/src/app/components/unit-view/unit-view/unit-view.component';
-import { PageViewComponent } from 'editor/src/app/components/unit-view/page/page-view/page-view.component';
+import { UnitViewComponent } from 'editor/src/app/components/unit-view/unit-view.component';
+import { PageViewComponent } from 'editor/src/app/components/page-view/page-view.component';
 import { EditorTranslateLoader } from 'editor/src/app/classes/editor-translate-loader';
 import {
   DeleteConfirmationDialogComponent
@@ -100,15 +100,15 @@ import {
   DropListOptionEditDialogComponent
 } from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
 import { PositionFieldSetComponent } from
-  'editor/src/app/components/properties-panel/position-properties-tab/position-field-set/position-field-set.component';
+  'editor/src/app/components/properties-panel/position-field-set/position-field-set.component';
 import { DimensionFieldSetComponent } from
-  'editor/src/app/components/properties-panel/position-properties-tab/dimension-field-set/dimension-field-set.component';
+  'editor/src/app/components/properties-panel/dimension-field-set/dimension-field-set.component';
 import { ElementPropertiesPanelComponent }
   from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { ElementPositionPropertiesComponent } from
-  'editor/src/app/components/properties-panel/position-properties-tab/element-position-properties/element-position-properties.component';
+  'editor/src/app/components/properties-panel/element-position-properties/element-position-properties.component';
 import { ElementStylePropertiesComponent } from
-  'editor/src/app/components/properties-panel/style-properties-tab/element-style-properties/element-style-properties.component';
+  'editor/src/app/components/properties-panel/element-style-properties/element-style-properties.component';
 import { ElementModelPropertiesComponent } from
   'editor/src/app/components/properties-panel/model-properties-tab/element-model-properties/element-model-properties.component';
 import { IsInputElementPipe } from 'editor/src/app/pipes/is-input-element.pipe';
@@ -140,7 +140,7 @@ import {
 import {
   EleSpecificPropsComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/ele-specific-props/ele-specific-props.component';
-import { PageMenu } from 'editor/src/app/components/unit-view/page/page-menu/page-menu.component';
+import { PageMenu } from 'editor/src/app/components/page-menu/page-menu.component';
 import {
   ImageResizeDialogComponent
 } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
@@ -150,7 +150,7 @@ import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe'
 import { ReferenceListComponent } from 'editor/src/app/components/reference-list/reference-list.component';
 import { ElementListComponent } from 'editor/src/app/components/element-list/element-list.component';
 
-import { SectionComponent } from 'editor/src/app/components/unit-view/section/section/section.component';
+import { SectionComponent } from 'editor/src/app/components/section/section.component';
 import { ErrorService } from 'editor/src/app/services/error.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */

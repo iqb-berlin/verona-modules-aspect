@@ -459,6 +459,53 @@
           }
         }
       }
+    },
+    "editorModules": {
+      "projectType": "application",
+      "root": "projects/editor/modules",
+      "sourceRoot": "projects/editor/modules",
+      "prefix": "aspect",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "tsConfig": "projects/editor/modules/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js"
+            ],
+            "fileReplacements": [
+              {
+                "replace": "projects/common/environment.ts",
+                "with": "projects/editor/src/environments/environment.ts"
+              }
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "editorModules:build",
+            "tsConfig": "projects/editor/modules/tsconfig.spec.json",
+            "runner": "vitest",
+            "browsers": [
+              "ChromiumHeadless"
+            ],
+            "setupFiles": [
+              "projects/vitest-proxy-zone.setup.ts"
+            ],
+            "codeCoverage": false,
+            "codeCoverageReporters": [
+              [
+                "html",
+                {
+                  "subdir": "editorModules"
+                }
+              ],
+              "text-summary"
+            ]
+          }
+        }
+      }
     }
   },
   "schematics": {

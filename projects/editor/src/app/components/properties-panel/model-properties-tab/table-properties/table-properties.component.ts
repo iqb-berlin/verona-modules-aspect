@@ -2,31 +2,15 @@ import {
   Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { NgForOf } from '@angular/common';
-import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { takeUntil } from 'rxjs/operators';
-import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { Subject } from 'rxjs';
 
 @Component({
   selector: 'aspect-table-properties',
-  imports: [
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatInputModule,
-    NgForOf,
-    SizeInputPanelComponent,
-    TranslateModule,
-    MatButtonModule
-  ],
+  standalone: false,
   templateUrl: './table-properties.component.html',
   styleUrls: ['./table-properties.component.scss']
 })

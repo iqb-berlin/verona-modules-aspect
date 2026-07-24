@@ -7,7 +7,7 @@ import { RangeSelectionService } from 'common/services/range-selection.service';
   selector: 'aspect-area-input',
   templateUrl: './area-text-input.component.html',
   styleUrls: ['./area-text-input.component.scss'],
-  standalone: true
+  standalone: false
 })
 export class AreaTextInputComponent implements OnInit {
   removePressed: boolean = false;

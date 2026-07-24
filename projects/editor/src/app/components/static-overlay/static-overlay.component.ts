@@ -1,22 +1,12 @@
 import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
-import {
-  CdkDrag, CdkDragEnd, CdkDragMove, CdkDragPlaceholder, CdkDropList
-} from '@angular/cdk/drag-drop';
+import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { UIElement } from 'common/models/elements/element';
-import { NgIf } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 
 @Component({
   selector: 'aspect-editor-static-overlay',
-  imports: [
-    NgIf,
-    CdkDrag,
-    CdkDropList,
-    CdkDragPlaceholder,
-    MatIconModule
-  ],
+  standalone: false,
   templateUrl: './static-overlay.component.html',
   styleUrls: ['./static-overlay.component.scss']
 })

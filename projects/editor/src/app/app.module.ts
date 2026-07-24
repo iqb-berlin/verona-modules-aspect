@@ -29,11 +29,15 @@ import {
 } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
 import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
 import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
+import { SectionTemplatesModule } from 'editor/modules/section-templates/section-templates.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
-import { UnitNavNextComponent } from 'common/components/unit-nav-next/unit-nav-next.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatChipsModule } from '@angular/material/chips';
 import {
   MarkingPanelComponent
 } from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
@@ -135,9 +139,6 @@ import {
   SanitizationDialogComponent
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
 import {
-  OptionListPanelComponent
-} from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
-import {
   EleSpecificPropsComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/ele-specific-props/ele-specific-props.component';
 import { PageMenu } from 'editor/src/app/components/page-menu/page-menu.component';
@@ -152,6 +153,86 @@ import { ElementListComponent } from 'editor/src/app/components/element-list/ele
 
 import { SectionComponent } from 'editor/src/app/components/section/section.component';
 import { ErrorService } from 'editor/src/app/services/error.service';
+import {
+  IDEditDialogComponent
+} from 'editor/src/app/components/dialogs/id-edit-dialog/id-edit-dialog.component';
+import {
+  OverviewDialogComponent
+} from 'editor/src/app/components/dialogs/overview-dialog/overview-dialog.component';
+import {
+  TableEditDialogComponent
+} from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
+import {
+  DynamicOverlayComponent
+} from 'editor/src/app/components/dynamic-overlay/dynamic-overlay.component';
+import {
+  DynamicSectionComponent
+} from 'editor/src/app/components/dynamic-section/dynamic-section.component';
+import {
+  DynamicSectionHelperGridComponent
+} from 'editor/src/app/components/dynamic-section-helper-grid/dynamic-section-helper-grid.component';
+import {
+  FixedReferencesSnackbarComponent
+} from 'editor/src/app/components/fixed-references-snackbar/fixed-references-snackbar.component';
+import {
+  ReferenceListSnackbarComponent
+} from 'editor/src/app/components/reference-list-snackbar/reference-list-snackbar.component';
+import { SectionMenuComponent } from 'editor/src/app/components/section-menu/section-menu.component';
+import {
+  StaticOverlayComponent
+} from 'editor/src/app/components/static-overlay/static-overlay.component';
+import {
+  StaticSectionComponent
+} from 'editor/src/app/components/static-section/static-section.component';
+import {
+  UnexpectedErrorComponent
+} from 'editor/src/app/components/unexpected-error/unexpected-error.component';
+import {
+  BorderPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/border-properties/border-properties.component';
+import {
+  ButtonPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/button-properties/button-properties.component';
+import {
+  DropListPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/drop-list-properties/drop-list-properties.component';
+import {
+  GeometryPropsComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/geometry-props/geometry-props.component';
+import {
+  HighlightPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/highlight-properties/highlight-properties.component';
+import {
+  HotspotPropsComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/hotspot-props/hotspot-props.component';
+import {
+  MarkingPanelPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/marking-panel-properties/marking-panel-properties.component';
+import {
+  MathFieldPropsComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/math-field-props/math-field-props.component';
+import {
+  MathTablePropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/math-table-properties/math-table-properties.component';
+import {
+  SliderPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/slider-properties/slider-properties.component';
+import {
+  TablePropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/table-properties/table-properties.component';
+import {
+  TextPropsComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/text-properties-field-set/text-properties-field-set.component';
+import {
+  WidgetMoleculeEditorPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
+import {
+  WidgetPeriodicTablePropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-periodic-table-properties/widget-periodic-table-properties.component';
+import {
+  ElementGridChangeListenerDirective
+} from 'editor/src/app/directives/element-grid-change-listener.directive';
+import { GetValidDropListsPipe } from 'editor/src/app/pipes/get-valid-drop-lists.pipe';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -208,7 +289,42 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     InputAssistancePropertiesComponent,
     ImageResizeDialogComponent,
     BytesPipe,
-    SupportsQualityPipe
+    SupportsQualityPipe,
+    IDEditDialogComponent,
+    OverviewDialogComponent,
+    TableEditDialogComponent,
+    DynamicOverlayComponent,
+    DynamicSectionComponent,
+    DynamicSectionHelperGridComponent,
+    ElementListComponent,
+    FixedReferencesSnackbarComponent,
+    PageMenu,
+    ReferenceListComponent,
+    ReferenceListSnackbarComponent,
+    SectionComponent,
+    SectionMenuComponent,
+    SizeInputPanelComponent,
+    StaticOverlayComponent,
+    StaticSectionComponent,
+    UnexpectedErrorComponent,
+    BorderPropertiesComponent,
+    ButtonPropertiesComponent,
+    DropListPropertiesComponent,
+    EleSpecificPropsComponent,
+    GeometryPropsComponent,
+    HighlightPropertiesComponent,
+    HotspotPropsComponent,
+    MarkingPanelPropertiesComponent,
+    MathFieldPropsComponent,
+    MathTablePropertiesComponent,
+    SliderPropertiesComponent,
+    TablePropertiesComponent,
+    TextPropsComponent,
+    WidgetMoleculeEditorPropertiesComponent,
+    WidgetPeriodicTablePropertiesComponent,
+    ElementGridChangeListenerDirective,
+    GetValidDropListsPipe,
+    IsInputElementPipe
   ],
   imports: [
     BrowserModule,
@@ -237,18 +353,14 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     MatRadioModule,
     MathEditorModule,
     RichTextEditorModule,
+    SectionTemplatesModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     MatBadgeModule,
-    IsInputElementPipe,
-    OptionListPanelComponent,
-    EleSpecificPropsComponent,
-    PageMenu,
-    ReferenceListComponent,
-    ElementListComponent,
-    SizeInputPanelComponent,
-    SectionComponent,
-    UnitNavNextComponent
+    MatTableModule,
+    MatSortModule,
+    MatSlideToggleModule,
+    MatChipsModule
   ],
   providers: [
     {

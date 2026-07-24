@@ -1,8 +1,7 @@
-import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
-import { NgForOf } from '@angular/common';
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -11,10 +10,7 @@ import { UIElementType } from 'common/models/ui-element-interfaces';
 
 @Component({
   selector: '[app-dynamic-section-helper-grid]',
-  imports: [
-    NgForOf,
-    CdkDropList
-  ],
+  standalone: false,
   templateUrl: './dynamic-section-helper-grid.component.html',
   styleUrls: ['./dynamic-section-helper-grid.component.scss']
 })

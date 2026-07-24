@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
 import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
 
 describe('RichTextEditorComponent', () => {
@@ -14,7 +15,7 @@ describe('RichTextEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RichTextEditorComponent],
+      imports: [RichTextEditorModule],
       providers: [{ provide: DialogService, useValue: {} }]
     }).compileComponents();
 

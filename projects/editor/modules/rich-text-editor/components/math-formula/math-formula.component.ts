@@ -3,16 +3,12 @@ import {
   ElementRef
 } from '@angular/core';
 import { AngularNodeViewComponent } from 'ngx-tiptap';
-import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { convertLatexToMarkup } from '@iqb/mathlive';
 
 @Component({
   selector: 'aspect-nodeview-math-formula',
-  standalone: true,
-  imports: [
-    FormsModule
-  ],
+  standalone: false,
   templateUrl: './math-formula.component.html',
   styleUrl: './math-formula.component.scss'
 })

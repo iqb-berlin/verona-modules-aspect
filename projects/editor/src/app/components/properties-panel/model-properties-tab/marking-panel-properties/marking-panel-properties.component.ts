@@ -1,19 +1,10 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { SharedModule } from 'common/shared.module';
-import {
-  HighlightPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/highlight-properties/highlight-properties.component';
 
 @Component({
   selector: 'aspect-marking-panel-properties',
-  imports: [
-    NgIf,
-    SharedModule,
-    HighlightPropertiesComponent
-  ],
+  standalone: false,
   templateUrl: './marking-panel-properties.component.html'
 })
 export class MarkingPanelPropertiesComponent {

@@ -5,20 +5,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UIElement } from 'common/models/elements/element';
 import { TooltipPosition } from 'common/models/ui-element-interfaces';
-import { TranslateModule } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
   selector: 'aspect-button-properties',
-  imports: [
-    NgIf,
-    TranslateModule,
-    MatButtonModule,
-    MatCheckboxModule
-  ],
+  standalone: false,
   templateUrl: './button-properties.component.html',
   styleUrls: ['./button-properties.component.scss']
 })

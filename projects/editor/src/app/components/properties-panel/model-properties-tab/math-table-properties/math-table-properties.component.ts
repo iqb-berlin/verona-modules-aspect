@@ -8,29 +8,11 @@ import {
   ViewChildren
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { NgForOf, NgIf } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
   selector: 'aspect-math-table-properties',
-  imports: [
-    NgIf,
-    NgForOf,
-    MatInputModule,
-    MatSelectModule,
-    TranslateModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatCheckboxModule
-  ],
+  standalone: false,
   templateUrl: './math-table-properties.component.html',
   styleUrls: ['./math-table-properties.component.scss']
 })

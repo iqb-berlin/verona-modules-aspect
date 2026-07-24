@@ -1,26 +1,11 @@
 import {
   AfterViewInit, Component, ViewChild
 } from '@angular/core';
-import { NgClass } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import {
-  MatCell, MatCellDef, MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRow, MatRowDef,
-  MatTable, MatTableDataSource
-} from '@angular/material/table';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { UIElement } from 'common/models/elements/element';
-import { MatButton } from '@angular/material/button';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelect } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { MatSort } from '@angular/material/sort';
 import { Section } from 'common/models/section';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -29,34 +14,7 @@ import { IDEditDialogComponent } from 'editor/src/app/components/dialogs/id-edit
 
 @Component({
   selector: 'aspect-overview-dialog',
-  standalone: true,
-  imports: [
-    MatDialogModule,
-    FormsModule,
-    TranslateModule,
-    MatTable,
-    MatButton,
-    MatColumnDef,
-    MatHeaderCell,
-    MatCell,
-    MatHeaderCellDef,
-    MatCellDef,
-    MatHeaderRow,
-    MatHeaderRowDef,
-    MatRow,
-    MatRowDef,
-    MatCheckbox,
-    MatSortModule,
-    MatFormField,
-    MatLabel,
-    MatSelect,
-    MatOptionModule,
-    ReactiveFormsModule,
-    MatNoDataRow,
-    NgClass,
-    MatIcon,
-    MatSlideToggleModule
-  ],
+  standalone: false,
   templateUrl: './overview-dialog.component.html',
   styleUrl: './overview-dialog.component.scss'
 })

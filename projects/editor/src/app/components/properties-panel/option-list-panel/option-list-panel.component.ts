@@ -1,28 +1,13 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatInputModule } from '@angular/material/input';
-import { SharedModule } from 'common/shared.module';
-import { MatIconModule } from '@angular/material/icon';
-import { NgForOf, NgIf } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { Label } from 'common/models/label-interfaces';
 
 @Component({
   selector: 'aspect-option-list-panel',
-  imports: [
-    NgIf,
-    NgForOf,
-    TranslateModule,
-    MatInputModule,
-    MatIconModule,
-    CdkDropList,
-    MatButtonModule,
-    SharedModule // TODO make pipe standalone and remove
-  ],
+  standalone: false,
   templateUrl: './option-list-panel.component.html',
   styleUrls: ['./option-list-panel.component.scss']
 })

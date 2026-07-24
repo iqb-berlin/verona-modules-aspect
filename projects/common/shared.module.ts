@@ -37,6 +37,13 @@ import {
 import { TriggerComponent } from 'common/components/action-group-elements/trigger/trigger.component';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import {
+  ImageFullscreenDialog
+} from 'common/components/image-fullscreen-dialog/image-fullscreen-dialog.component';
+import {
+  AreaTextInputComponent
+} from 'common/components/text-input-group-elements/area-text-input/area-text-input.component';
+import { UnitNavNextComponent } from 'common/components/unit-nav-next/unit-nav-next.component';
+import {
   TextMarkingButtonSvgComponent
 } from 'common/components/text-group-elements/text-marking-button-svg/text-marking-button-svg.component';
 import {
@@ -192,7 +199,15 @@ import { HasTextContentPipe } from './pipes/has-text-content.pipe';
     MarkingPanelComponent,
     MeasurePipe,
     TableGridRowsPipe,
-    HasTextContentPipe
+    HasTextContentPipe,
+    DraggableDirective,
+    ImageFullscreenDirective,
+    ImageFullscreenDialog,
+    AreaSegmentComponent,
+    AreaTextInputComponent,
+    AreaRowHeightPipe,
+    TextMarkingButtonSvgComponent,
+    UnitNavNextComponent
   ],
   exports: [
     CommonModule,
@@ -244,7 +259,8 @@ import { HasTextContentPipe } from './pipes/has-text-content.pipe';
     TableChildOverlay,
     MarkingPanelComponent,
     MeasurePipe,
-    TableGridRowsPipe
+    TableGridRowsPipe,
+    UnitNavNextComponent
   ],
   imports: [
     CommonModule,
@@ -268,12 +284,7 @@ import { HasTextContentPipe } from './pipes/has-text-content.pipe';
     MathEditorModule,
     MatListModule,
     CdkConnectedOverlay,
-    CdkOverlayOrigin,
-    DraggableDirective,
-    ImageFullscreenDirective,
-    AreaSegmentComponent,
-    AreaRowHeightPipe,
-    TextMarkingButtonSvgComponent
+    CdkOverlayOrigin
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi())

@@ -10,7 +10,8 @@ describe('MathFormulaNodeviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MathFormulaNodeviewComponent, FormsModule]
+      declarations: [MathFormulaNodeviewComponent],
+      imports: [FormsModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(MathFormulaNodeviewComponent);

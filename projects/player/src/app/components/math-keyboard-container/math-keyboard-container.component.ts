@@ -4,10 +4,10 @@ import {
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 
 @Component({
-    selector: 'aspect-math-keyboard-container',
-    imports: [],
-    templateUrl: './math-keyboard-container.component.html',
-    styleUrl: './math-keyboard-container.component.scss'
+  selector: 'aspect-math-keyboard-container',
+  standalone: false,
+  templateUrl: './math-keyboard-container.component.html',
+  styleUrl: './math-keyboard-container.component.scss'
 })
 export class MathKeyboardContainerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mathKeyboard') mathKeyboard!: ElementRef;

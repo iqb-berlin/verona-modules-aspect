@@ -3,7 +3,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Pipe({
   name: 'getValidDropLists',
-  standalone: true
+  standalone: false
 })
 export class GetValidDropListsPipe implements PipeTransform {
   constructor(private unitService: UnitService) {}

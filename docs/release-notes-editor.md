@@ -9,6 +9,9 @@ Editor
 - Tabelle
   - Neue optionale Kopfzeile: je Spalte ein Text mit einstellbarer Ausrichtung (linksbündig, zentriert, rechtsbündig); Bearbeitung im Dialog "Elemente anpassen", dort können auch weitere Kopfzeilen hinzugefügt und entfernt werden
   - Neue Eigenschaft "Haftende Kopfzeile" (fixiert die Kopfzeile beim Scrollen)
+- Tooltip (Text und Knopf)
+  - Der Tooltip-Text kann jetzt formatiert werden (Fett, Kursiv, Unterstrichen, Hoch-/Tiefstellung, Schrift- und Hintergrundfarbe, Sonderzeichen); der Dialog enthält dafür den reduzierten Texteditor
+  - Der Tooltip eines Knopfes wird über die neue Schaltfläche "Tooltip bearbeiten" im Eigenschaftenbereich im selben Dialog bearbeitet (Text, Position und Löschen)
 
 ### Änderungen
 - Formelfeld

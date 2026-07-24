@@ -250,3 +250,5 @@ iqb-aspect-definition@1.0.0
   - new property: headerEnabled: boolean
   - new property: headerRows: { text: string; alignment: 'left' | 'center' | 'right' }[][]
   - new property: stickyHeader: boolean
+- ButtonElement and tooltip mark in text elements:
+  - tooltipText (data-tooltip-text) may now contain HTML markup (formatted tooltip text)

@@ -3,41 +3,47 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TooltipPosition } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-tooltip-properties-dialog',
-    template: `
+  selector: 'aspect-tooltip-properties-dialog',
+  template: `
+    <h2 mat-dialog-title>{{'propertiesPanel.tooltipText' | translate}}</h2>
     <mat-dialog-content>
       <div class="fx-column-start-stretch">
-        <mat-form-field>
-          <mat-label>{{'propertiesPanel.tooltipText' | translate}}</mat-label>
-          <input matInput
-                 [(ngModel)]="tooltipText">
-        </mat-form-field>
+        <aspect-rich-text-editor [(content)]="tooltipText"
+                                 [showReducedControls]="true"
+                                 [controlPanelFolded]="false"
+                                 [autoFocus]="true">
+        </aspect-rich-text-editor>
         <mat-form-field appearance="fill">
           <mat-label>{{'propertiesPanel.tooltipPosition' | translate }}</mat-label>
           <mat-select [(ngModel)]="tooltipPosition">
-            <mat-option *ngFor="let option of ['left', 'right', 'above', 'below']"
-                        [value]="option">
-              {{ 'propertiesPanel.' + option | translate }}
-            </mat-option>
+            @for (option of ['left', 'right', 'above', 'below']; track option) {
+              <mat-option [value]="option">
+                {{ 'propertiesPanel.' + option | translate }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button
-              [disabled]="!tooltipText"
+              [disabled]="!(tooltipText | hasTextContent)"
               [mat-dialog-close]="{ tooltipText, tooltipPosition, action: 'save' }">
         {{'save' | translate }}
       </button>
-      <button *ngIf="!newTooltip"
-              mat-button
-              [mat-dialog-close]="{ tooltipText, tooltipPosition, action: 'delete' }">
-        {{'delete' | translate }}
-      </button>
+      @if (!newTooltip) {
+        <button mat-button
+                [mat-dialog-close]="{ tooltipText, tooltipPosition, action: 'delete' }">
+          {{'delete' | translate }}
+        </button>
+      }
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-    standalone: false
+  styles: `
+    aspect-rich-text-editor {min-height: 200px; margin-bottom: 15px;}
+  `,
+  standalone: false
 })
 export class TooltipPropertiesDialogComponent {
   tooltipText: string;

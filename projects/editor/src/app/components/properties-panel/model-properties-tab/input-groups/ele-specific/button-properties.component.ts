@@ -1,31 +1,25 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, OnDestroy, Output
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UIElement } from 'common/models/elements/element';
+import { TooltipPosition } from 'common/interfaces';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
-    selector: 'aspect-button-properties',
-    imports: [
-        NgIf,
-        NgForOf,
-        TranslateModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        FormsModule
-    ],
-    template: `
+  selector: 'aspect-button-properties',
+  imports: [
+    NgIf,
+    TranslateModule,
+    MatButtonModule,
+    MatCheckboxModule
+  ],
+  template: `
     <ng-container *ngIf="combinedProperties.asLink !== undefined">
       <fieldset>
         <legend>{{ 'propertiesPanel.presentation' | translate }}</legend>
@@ -87,27 +81,17 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
       <fieldset>
         <legend>{{ 'propertiesPanel.tooltip' | translate }}</legend>
         <div class="fx-column-start-stretch">
-          <mat-form-field *ngIf="combinedProperties.tooltipText !== undefined">
-            <mat-label>{{ 'propertiesPanel.tooltipText' | translate }}</mat-label>
-            <input matInput
-                   [ngModel]="combinedProperties.tooltipText"
-                   (ngModelChange)="updateModel.emit({ property: 'tooltipText', value: $event })">
-          </mat-form-field>
-          <mat-form-field *ngIf="combinedProperties.tooltipPosition !== undefined" appearance="fill">
-            <mat-label>{{ 'propertiesPanel.tooltipPosition' | translate }}</mat-label>
-            <mat-select [value]="combinedProperties.tooltipPosition"
-                        (selectionChange)="updateModel.emit({ property: 'tooltipPosition', value: $event.value })">
-              <mat-option *ngFor="let option of ['left', 'right', 'above', 'below']"
-                          [value]="option">
-                {{ 'propertiesPanel.' + option | translate }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          @if (combinedProperties.tooltipText !== undefined) {
+            <button mat-raised-button
+                    (click)="editTooltip()">
+              {{ 'propertiesPanel.editTooltip' | translate }}
+            </button>
+          }
         </div>
       </fieldset>
     </ng-container>
   `,
-    styles: [`
+  styles: [`
     .checked {
       background-color: #ccc;
     }
@@ -122,7 +106,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
     }
   `]
 })
-export class ButtonPropertiesComponent {
+export class ButtonPropertiesComponent implements OnDestroy {
   @Input() combinedProperties!: UIElement;
   @Output() updateModel =
     new EventEmitter<{
@@ -130,6 +114,8 @@ export class ButtonPropertiesComponent {
     }>();
 
   checked = false;
+
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(private dialogService: DialogService) { }
 
@@ -142,5 +128,28 @@ export class ButtonPropertiesComponent {
 
   removeImage(): void {
     this.updateModel.emit({ property: 'imageSrc', value: null });
+  }
+
+  editTooltip(): void {
+    this.dialogService.showTooltipDialog(
+      (this.combinedProperties.tooltipText as string) || undefined,
+      this.combinedProperties.tooltipPosition as TooltipPosition
+    )
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        if (result) {
+          if (result.action === 'delete') {
+            this.updateModel.emit({ property: 'tooltipText', value: '' });
+          } else {
+            this.updateModel.emit({ property: 'tooltipText', value: result.tooltipText });
+            this.updateModel.emit({ property: 'tooltipPosition', value: result.tooltipPosition });
+          }
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

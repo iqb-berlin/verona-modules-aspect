@@ -227,7 +227,7 @@ export class DialogService {
   ): Observable<{ tooltipText: string, tooltipPosition: TooltipPosition, action: 'save' | 'delete' }> {
     const dialogRef = this.dialog.open(TooltipPropertiesDialogComponent, {
       data: { tooltipText, tooltipPosition },
-      width: '500px',
+      width: '750px',
       autoFocus: false
     });
     return dialogRef.afterClosed();

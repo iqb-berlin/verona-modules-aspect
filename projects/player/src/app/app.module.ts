@@ -73,6 +73,8 @@ import { UnitComponent } from './components/unit/unit.component';
 import { PageScrollButtonComponent } from './components/page-scroll-button/page-scroll-button.component';
 import { ExternalAppGroupElementComponent } from
   './components/elements/external-app-group-element/external-app-group-element.component';
+import { TetfolioGroupElementComponent } from
+  './components/elements/tetfolio-group-element/tetfolio-group-element.component';
 import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-keys.pipe';
 import { HasNextPagePipe } from './pipes/has-next-page.pipe';
 import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
@@ -100,6 +102,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     InteractiveGroupElementComponent,
     ActionGroupElementComponent,
     WidgetGroupElementComponent,
+    TetfolioGroupElementComponent,
     PlayerLayoutComponent,
     UnitStateDirective,
     AlwaysVisiblePagePipe,

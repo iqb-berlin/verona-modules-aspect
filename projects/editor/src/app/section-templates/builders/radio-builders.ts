@@ -2,7 +2,7 @@ import { TextImageLabel } from 'common/models/label-interfaces';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
-import { EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 export function createTextRadioSection(options: TextRadioOptions, idService: IDService): EditorSection {
   const sectionElements = [

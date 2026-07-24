@@ -41,7 +41,8 @@ import {
 } from 'editor/src/app/section-templates/stimulus-interfaces';
 import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
 import { TextElement } from 'common/models/elements/text/text';
-import { EditorPage, EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 import { CONSTANTS } from 'editor/src/app/section-templates/constants';
 
 @Injectable({

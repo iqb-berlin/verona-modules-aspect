@@ -17,9 +17,10 @@ import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { Section } from 'common/models/section';
 import { PageProperties } from 'common/models/page';
 import { ClozeElement, ClozeProperties } from 'common/models/elements/compound-elements/cloze/cloze';
-import { ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import { UnitProperties } from 'common/models/unit';
-import { EditorPage, EditorUnit } from '../models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
+import { EditorUnit } from 'editor/src/app/models/editor-unit';
 
 describe('ReferenceManager', () => {
   class ApiStubService {

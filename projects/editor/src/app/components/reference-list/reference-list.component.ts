@@ -2,7 +2,7 @@ import {
   Component, Inject, Input, Optional
 } from '@angular/core';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-import { ReferenceList } from 'editor/src/app/services/reference-manager';
+import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import { NgForOf } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';

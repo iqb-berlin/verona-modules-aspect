@@ -2,7 +2,7 @@ import { SectionProperties } from 'common/models/section';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
-import { EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 // Disable linting rules to have smaller code
 /* eslint-disable object-property-newline */

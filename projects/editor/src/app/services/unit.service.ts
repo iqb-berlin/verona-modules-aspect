@@ -11,13 +11,14 @@ import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/utils/section-counter';
 import { VariableAlias } from 'common/utils/variable-alias';
-import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import { MigrationManager } from 'common/services/migration-manager';
-import { EditorPage, EditorUnit } from 'editor/src/app/models/editor-unit';
-import { DialogService } from './dialog.service';
-import { VeronaAPIService } from './verona-api.service';
-import { SelectionService } from './selection.service';
-import { IDService } from './id.service';
+import { EditorPage } from 'editor/src/app/models/editor-page';
+import { EditorUnit } from 'editor/src/app/models/editor-unit';
+import { DialogService } from 'editor/src/app/services/dialog.service';
+import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
+import { IDService } from 'editor/src/app/services/id.service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IDTypes } from 'common/models/id-interfaces';
-import { IdRegistry } from 'editor/src/app/services/id-registry';
+import { IdRegistry } from 'editor/src/app/classes/id-registry';
 
 @Injectable({
   providedIn: 'root'

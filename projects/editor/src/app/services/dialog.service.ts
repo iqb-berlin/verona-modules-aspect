@@ -22,7 +22,7 @@ import {
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { StateVariable } from 'common/models/state-variable';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
-import { ReferenceList } from 'editor/src/app/services/reference-manager';
+import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
 import {
   TooltipPropertiesDialogComponent
@@ -38,15 +38,15 @@ import { ImageOptions } from 'common/models/image-interfaces';
 import {
   ImageResizeDialogComponent
 } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
-import { DeleteConfirmationDialogComponent } from '../components/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog/text-edit-dialog.component';
-import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog/text-edit-multiline-dialog.component';
-import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
-import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog/player-edit-dialog.component';
-import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
-import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
-import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
-import { EditorSection } from '../models/editor-unit';
+import { DeleteConfirmationDialogComponent } from 'editor/src/app/components/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { TextEditDialogComponent } from 'editor/src/app/components/dialogs/text-edit-dialog/text-edit-dialog.component';
+import { TextEditMultilineDialogComponent } from 'editor/src/app/components/dialogs/text-edit-multiline-dialog/text-edit-multiline-dialog.component';
+import { RichTextEditDialogComponent } from 'editor/src/app/components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
+import { PlayerEditDialogComponent } from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
+import { LikertRowEditDialogComponent } from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
+import { DropListOptionEditDialogComponent } from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
+import { DeleteReferenceDialogComponent } from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 @Injectable({
   providedIn: 'root'

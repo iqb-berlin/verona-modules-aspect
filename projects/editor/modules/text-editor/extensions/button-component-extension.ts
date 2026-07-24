@@ -4,7 +4,7 @@ import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { ButtonProperties } from 'common/models/elements/button/button';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { ButtonNodeviewComponent } from 'editor/src/app/text-editor/angular-node-views/button-nodeview.component';
+import { ButtonNodeviewComponent } from 'editor/modules/text-editor/components/button-nodeview/button-nodeview.component';
 
 const ButtonComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

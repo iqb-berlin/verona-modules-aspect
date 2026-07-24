@@ -2,7 +2,7 @@ import { mergeAttributes, Node } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import {
   MathFormulaNodeviewComponent
-} from 'editor/src/app/text-editor/angular-node-views/math-formula/math-formula.component';
+} from 'editor/modules/text-editor/components/math-formula/math-formula.component';
 import { Injector } from '@angular/core';
 
 const MathFormulaExtension = (injector: Injector): Node => Node.create({

@@ -18,49 +18,28 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { Subject } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageService } from 'editor/src/app/services/page.service';
-import { EditorPage } from 'editor/src/app/models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
 
 @Component({
-    selector: 'aspect-unit-view-page-menu',
-    imports: [
-        MatCheckboxModule,
-        MatDividerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatOptionModule,
-        MatSelectModule,
-        NgForOf,
-        NgIf,
-        ReactiveFormsModule,
-        TranslateModule,
-        FormsModule,
-        MatTooltipModule
-    ],
-    templateUrl: 'page-menu.component.html',
-    styles: `
-    :host {
-      display: flex;
-      flex-direction: column;
-    }
-    mat-divider {
-      margin-bottom: 10px;
-    }
-    .menuItem {
-      padding: 0 16px;
-    }
-    mat-checkbox.menuItem {
-      padding: 0 16px 10px 16px;
-    }
-    :host ::ng-deep .mat-mdc-menu-item .mat-icon {
-      margin-right: 0;
-    }
-    .delete-button {
-      justify-content: center;
-    }
-    .delete-button:hover {background-color: var(--warn)}
-  `
+  selector: 'aspect-unit-view-page-menu',
+  imports: [
+    MatCheckboxModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatOptionModule,
+    MatSelectModule,
+    NgForOf,
+    NgIf,
+    ReactiveFormsModule,
+    TranslateModule,
+    FormsModule,
+    MatTooltipModule
+  ],
+  templateUrl: 'page-menu.component.html',
+  styleUrls: ['./page-menu.component.scss']
 })
 export class PageMenu implements OnDestroy {
   @Input() page!: EditorPage;

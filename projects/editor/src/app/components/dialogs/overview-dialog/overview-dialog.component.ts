@@ -22,7 +22,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { Section } from 'common/models/section';
-import { EditorPage } from 'editor/src/app/models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDEditDialogComponent } from 'editor/src/app/components/dialogs/id-edit-dialog/id-edit-dialog.component';

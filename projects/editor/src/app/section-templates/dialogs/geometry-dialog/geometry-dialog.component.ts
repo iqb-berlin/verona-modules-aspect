@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';

@@ -1,6 +1,6 @@
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import { EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 export function createCheckboxSection(text1: string, options: string[], useImages: boolean,
                                       idService: IDService): EditorSection {

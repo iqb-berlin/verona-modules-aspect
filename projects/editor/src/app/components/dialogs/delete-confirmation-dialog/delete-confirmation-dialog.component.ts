@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ReferenceList } from 'editor/src/app/services/reference-manager';
+import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import { UIElement } from 'common/models/elements/element';
 
 @Component({

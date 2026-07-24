@@ -3,7 +3,7 @@ import { SectionProperties } from 'common/models/section';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { CONSTANTS } from 'editor/src/app/section-templates/constants';
-import { EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 export function createMathTableSection(operation: 'addition' | 'subtraction' | 'multiplication', terms: string[],
                                        idService: IDService) {

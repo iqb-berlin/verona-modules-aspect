@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { RichTextEditorComponent } from './rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
 
 describe('RichTextEditorComponent', () => {
   let component: RichTextEditorComponent;

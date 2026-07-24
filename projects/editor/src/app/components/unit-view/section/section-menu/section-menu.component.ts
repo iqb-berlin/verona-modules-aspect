@@ -20,7 +20,7 @@ import { VisibilityRule } from 'common/models/visibility-rule';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { SectionService } from 'editor/src/app/services/section.service';
-import { EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -42,13 +42,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
     SizeInputPanelComponent
   ],
   templateUrl: './section-menu.component.html',
-  styles: [
-    '.layoutMenu {padding: 5px; width: 250px;}',
-    'aspect-size-input-panel {max-width: 100%;}',
-    '.layoutMenu fieldset {display: flex; flex-direction: column; align-items: flex-start;}',
-    '.menuItem {margin-bottom: 5px;}',
-    '::ng-deep .activeAfterID-menu .mat-mdc-form-field {width:90%; margin-left: 10px;}'
-  ]
+  styleUrls: ['./section-menu.component.scss']
 })
 export class SectionMenuComponent implements OnDestroy {
   @Input() section!: EditorSection;

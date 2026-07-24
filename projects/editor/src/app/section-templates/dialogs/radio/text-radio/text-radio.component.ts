@@ -3,7 +3,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
-import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
 import { TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
 

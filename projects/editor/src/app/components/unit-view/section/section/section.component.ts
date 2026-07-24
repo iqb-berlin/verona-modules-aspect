@@ -14,7 +14,7 @@ import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgClass, NgIf } from '@angular/common';
 import { SectionCounter } from 'common/utils/section-counter';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
-import { EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 @Component({
   selector: 'aspect-editor-section-view',

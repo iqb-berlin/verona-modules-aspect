@@ -4,7 +4,7 @@ import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { CheckboxProperties } from 'common/models/elements/input-elements/checkbox';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { CheckboxNodeviewComponent } from 'editor/src/app/text-editor/angular-node-views/checkbox-nodeview.component';
+import { CheckboxNodeviewComponent } from 'editor/modules/text-editor/components/checkbox-nodeview/checkbox-nodeview.component';
 
 const CheckboxComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

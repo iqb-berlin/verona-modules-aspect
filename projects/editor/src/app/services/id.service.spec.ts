@@ -1,4 +1,4 @@
-import { IdRegistry } from 'editor/src/app/services/id-registry';
+import { IdRegistry } from 'editor/src/app/classes/id-registry';
 
 describe('IDService', () => {
   const idRegistry: IdRegistry = new IdRegistry();

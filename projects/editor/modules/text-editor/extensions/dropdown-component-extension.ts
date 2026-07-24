@@ -4,7 +4,7 @@ import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { DropdownProperties } from 'common/models/elements/input-elements/dropdown';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { DropdownNodeviewComponent } from './dropdown-nodeview.component';
+import { DropdownNodeviewComponent } from 'editor/modules/text-editor/components/dropdown-nodeview/dropdown-nodeview.component';
 
 const DropdownComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

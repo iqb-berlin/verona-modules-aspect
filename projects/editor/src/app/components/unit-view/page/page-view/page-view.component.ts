@@ -8,31 +8,12 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { SectionService } from 'editor/src/app/services/section.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SectionComponent } from 'editor/src/app/components/unit-view/section/section/section.component';
-import { EditorPage } from 'editor/src/app/models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
 
 @Component({
   selector: 'aspect-editor-page-view',
   templateUrl: './page-view.component.html',
-  styles: `
-    :host {
-      display: flex;
-    }
-    .canvasBackground {
-      background-color: lightgrey;
-    }
-    .page-wrapper {
-      margin-bottom: 10px; display: flex; flex-direction: column; align-items: center;
-    }
-    .add-section-button {
-      height: 25px;
-      width: 30%;
-      background-color: var(--button-darker-grey);
-      margin-top: 10px;
-    }
-    .page-label {
-      display: inline; vertical-align: super; font-size: large;
-    }
-  `,
+  styleUrls: ['./page-view.component.scss'],
   standalone: false
 })
 export class PageViewComponent implements OnInit, OnDestroy {

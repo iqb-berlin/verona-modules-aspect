@@ -7,7 +7,7 @@ import { getEmailTemplateString } from 'editor/src/app/section-templates/builder
 import { getMessageTemplateString } from 'editor/src/app/section-templates/builders/stimulus/message';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { DimensionProperties, PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 export function createTextSection(options: TextStimulusOptions, idService: IDService) {
   const section = new EditorSection(undefined, idService);

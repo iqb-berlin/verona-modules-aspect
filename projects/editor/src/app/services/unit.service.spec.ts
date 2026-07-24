@@ -5,11 +5,11 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { VariableInfo } from '@iqb/responses';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
-import { DialogService } from './dialog.service';
-import { SelectionService } from './selection.service';
-import { IDService } from './id.service';
-import { VeronaAPIService } from './verona-api.service';
-import { UnitService } from './unit.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
+import { IDService } from 'editor/src/app/services/id.service';
+import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 describe('UnitService - rapid load handling', () => {
   let service: UnitService;

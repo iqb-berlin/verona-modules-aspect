@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { EditorPage } from 'editor/src/app/models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
 
 @Pipe({
   name: 'scrollPageIndex',

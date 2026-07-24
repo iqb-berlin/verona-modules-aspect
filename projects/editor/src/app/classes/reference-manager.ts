@@ -7,7 +7,7 @@ import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { TextElement } from 'common/models/elements/text/text';
 import { VideoElement } from 'common/models/elements/media-elements/video';
-import { EditorPage } from 'editor/src/app/models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
 
 export class ReferenceManager {
   /* Element types that may have references */

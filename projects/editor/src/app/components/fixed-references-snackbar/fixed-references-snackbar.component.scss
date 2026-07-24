@@ -1,0 +1,10 @@
+:host {font-size: large;}
+
+button {
+  color: var(--mat-snack-bar-button-color) !important;
+  --mat-mdc-button-persistent-ripple-color: currentColor !important;
+}
+
+mat-icon {color: inherit !important;}
+
+.mat-mdc-list-item-title {color: inherit !important;}

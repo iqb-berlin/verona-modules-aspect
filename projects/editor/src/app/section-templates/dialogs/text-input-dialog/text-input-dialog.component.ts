@@ -8,7 +8,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { RichTextEditorComponent } from 'editor/modules/text-editor/components/rich-text-editor/rich-text-editor.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({

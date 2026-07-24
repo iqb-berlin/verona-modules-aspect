@@ -20,7 +20,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
   BehaviorSubject, firstValueFrom, of, Subject, switchMap
 } from 'rxjs';
-import { GeometryComponent } from 'common/components/geometry/geometry.component';
+import { GeometryComponent } from 'common/components/external-app-group/geometry/geometry.component';
 import { takeUntil } from 'rxjs/operators';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';

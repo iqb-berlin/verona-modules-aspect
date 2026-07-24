@@ -3,23 +3,10 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'aspect-text-marking-button',
-    template: `
-    <button type="button"
-            class="marking-button"
-            [style.border-color]="isMarkingSelected ? 'black' : color"
-            mat-mini-fab
-            [style.background-color]="color"
-            (pointerdown)="selectMarking()">
-      <aspect-text-marking-button-svg [buttonType]="mode === 'delete' ? 'delete' : markingMode"
-                class="marking-icon">
-      </aspect-text-marking-button-svg>
-    </button>`,
-    styles: [
-        '.marking-button {color: #333; margin-left: 5px; margin-top: 2px; border: 2px solid;}',
-        '.marking-icon {margin-top: -4px}'
-    ],
-    standalone: false
+  selector: 'aspect-text-marking-button',
+  templateUrl: './text-marking-button.component.html',
+  styleUrls: ['./text-marking-button.component.scss'],
+  standalone: false
 })
 export class TextMarkingButtonComponent {
   @Input() isMarkingSelected!: boolean;

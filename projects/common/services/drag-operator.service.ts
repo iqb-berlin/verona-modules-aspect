@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
-import { DragOperation } from 'common/components/input-elements/drop-list/drag-operation';
-import { DropLogic } from 'common/components/input-elements/drop-list/drop-logic';
+import { DropListComponent } from 'common/components/input-group/drop-list/drop-list.component';
+import { DragOperation } from 'common/components/input-group/drop-list/drag-operation';
+import { DropLogic } from 'common/components/input-group/drop-list/drop-logic';
 import { DragNDropValueObject } from 'common/interfaces';
 
 @Injectable({
@@ -114,9 +114,9 @@ export class DragOperatorService {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     if (this.dragOperation.sourceComponent && this.dragOperation.targetComponent &&
       DropLogic.isDropAllowed(this.dragOperation.draggedItem,
-        this.dragOperation.sourceComponent.elementModel.id,
-        this.dragOperation.targetComponent.elementModel.id,
-        DropLogic.createDropListMocks(this.dropLists))) {
+                              this.dragOperation.sourceComponent.elementModel.id,
+                              this.dragOperation.targetComponent.elementModel.id,
+                              DropLogic.createDropListMocks(this.dropLists))) {
       if (this.dragOperation.sourceComponent === this.dragOperation.targetComponent) {
         if (!this.dragOperation.targetComponent.elementModel.isSortList) return;
         const item =
@@ -125,9 +125,9 @@ export class DragOperatorService {
           .splice(this.dragOperation.sortingPlaceholderIndex, 0, item);
       } else {
         this.moveItem(this.dragOperation.draggedItem,
-          this.dragOperation.sourceComponent,
-          this.dragOperation.sourceIndex,
-          this.dragOperation.targetComponent);
+                      this.dragOperation.sourceComponent,
+                      this.dragOperation.sourceIndex,
+                      this.dragOperation.targetComponent);
       }
       this.dragOperation.sourceComponent?.updateFormvalue();
       this.dragOperation.targetComponent?.updateFormvalue();

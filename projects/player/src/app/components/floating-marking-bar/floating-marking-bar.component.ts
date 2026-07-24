@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, OnChanges, Output, SimpleChanges
 } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { TextComponent } from 'common/components/text/text.component';
+import { TextComponent } from 'common/components/text-group/text/text.component';
 
 @Component({
     selector: 'aspect-floating-marking-bar',

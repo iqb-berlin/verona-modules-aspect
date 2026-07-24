@@ -7,15 +7,15 @@ import { takeUntil } from 'rxjs/operators';
 import { ComponentRegistry } from 'common/utils/component-registry';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
-import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
+import { ClozeComponent } from 'common/components/compound-group/cloze/cloze.component';
 import {
   ClozeChildOverlayComponent
-} from 'common/components/compound-elements/cloze-child-overlay/cloze-child-overlay.component';
-import { GeometryComponent } from 'common/components/geometry/geometry.component';
+} from 'common/components/compound-group/cloze-child-overlay/cloze-child-overlay.component';
+import { GeometryComponent } from 'common/components/external-app-group/geometry/geometry.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
-import { MathTableComponent } from 'common/components/input-elements/math-table.component';
-import { TableComponent } from 'common/components/compound-elements/table/table.component';
-import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
+import { MathTableComponent } from 'common/components/interactive-group/math-table/math-table.component';
+import { TableComponent } from 'common/components/compound-group/table/table.component';
+import { TableChildOverlay } from 'common/components/compound-group/table-child-overlay/table-child-overlay.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { PositionedUIElement } from 'common/interfaces';

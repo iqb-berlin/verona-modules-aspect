@@ -30,8 +30,8 @@ import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
-import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
-import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
+import { UnitNavNextComponent } from 'common/components/unit-nav-next/unit-nav-next.component';
+import { MarkingPanelComponent } from 'common/components/interactive-group/marking-panel/marking-panel.component';
 import { ComponentRegistry } from 'common/utils/component-registry';
 import {
   StateVariablesDialogComponent

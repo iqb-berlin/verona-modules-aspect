@@ -21,7 +21,7 @@ import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { StateVariable } from 'common/models/state-variable';
-import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
+import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { ReferenceList } from 'editor/src/app/services/reference-manager';
 import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/sanitization-dialog.component';
 import {

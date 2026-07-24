@@ -11,7 +11,7 @@ import { KeypadService } from 'player/src/app/services/keypad.service';
 import { KeyboardService } from 'player/src/app/services/keyboard.service';
 import { DeviceService } from 'player/src/app/services/device.service';
 import { Subject, Subscription } from 'rxjs';
-import { MathTableComponent } from 'common/components/input-elements/math-table.component';
+import { MathTableComponent } from 'common/components/interactive-group/math-table/math-table.component';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { takeUntil } from 'rxjs/operators';
 import { ValueChangeElement } from 'common/interfaces';

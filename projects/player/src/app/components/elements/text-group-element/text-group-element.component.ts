@@ -7,7 +7,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { TextComponent } from 'common/components/text/text.component';
+import { TextComponent } from 'common/components/text-group/text/text.component';
 import { TextElement } from 'common/models/elements/text/text';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';

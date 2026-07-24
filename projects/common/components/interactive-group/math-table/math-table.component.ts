@@ -6,91 +6,10 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-math-table',
-    template: `
-    <div *ngIf="elementModel.terms.length == 0 ||
-                elementModel.operation === 'multiplication' && elementModel.terms.length < 2; else elseBlock"
-         class="terms-missing-warning">
-      Weitere Termzeilen benötigt
-    </div>
-    <ng-template #elseBlock>
-      <div class="wrapper">
-        <table [class.underline-first-row]="elementModel.operation === 'multiplication' ||
-                                            (elementModel.operation === 'variable' &&
-                                              elementModel.variableLayoutOptions.isFirstLineUnderlined &&
-                                              !elementModel.variableLayoutOptions.showTopHelperRows)"
-               [class.underline-third-row]="elementModel.operation === 'variable' &&
-                                            elementModel.variableLayoutOptions.isFirstLineUnderlined &&
-                                            elementModel.variableLayoutOptions.showTopHelperRows"
-               [class.has-result-row]="elementModel.operation !== 'variable' ||
-                                       elementModel.variableLayoutOptions.showResultRow"
-               [style.color]="elementModel.styling.fontColor"
-               [style.background-color]="elementModel.styling.backgroundColor"
-               [style.font-size.px]="elementModel.styling.fontSize"
-               [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-               [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-               [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
-          <tr *ngFor="let row of tableModel; let index = index"
-              [style.height.px]="row.cells.length && row.isHelperRow ? elementModel.styling.fontSize * 1.5 :
-                                                                              elementModel.styling.fontSize * 2"
-              [style.font-size]="row.cells.length && row.isHelperRow && '70%'"
-              [style.background-color]="row.isHelperRow ?
-                                        elementModel.styling.helperRowColor : 'transparent'">
-            <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
-                #input
-                [style.width.px]="elementModel.styling.fontSize * 2"
-                [class.strike-through]="cell.isCrossedOut"
-                [textContent]="cell.value"
-                [attr.inputmode]="elementModel.showSoftwareKeyboard ||
-                                    elementModel.hideNativeKeyboard ? 'none' : 'text'"
-                (focus)="focusChanged.emit({ inputElement: input, row, cell, focused: true })"
-                (selectstart)="preventSelection($event)"
-                (pointerup)="preventSelection($event)"
-                (blur)="focusChanged.emit({ inputElement: input, row, cell, focused: false })"
-                (paste)="$event.preventDefault()"
-                (keydown)="onKeyDown.emit(); onCharEnter($event, row, cell); "
-                (dblclick)="toggleStrikeThrough(row, cell); preventSelection($event)">
-            </td>
-          </tr>
-        </table>
-        <button *ngIf="elementModel.operation === 'multiplication'"
-                class="row-button"
-                [matTooltip]="'weitere Zeile einfügen'"
-                [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
-                [style.width.px]="elementModel.styling.fontSize * 2.5"
-                [style.height.px]="elementModel.styling.fontSize * 2.5"
-                (click)="addRow()">
-          <mat-icon>add</mat-icon>
-        </button>
-        <button *ngIf="elementModel.operation === 'multiplication'"
-                class="row-button"
-                [matTooltip]="'letzte Zeile entfernen'"
-                [disabled]="tableModel.length == 4"
-                [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
-                [style.width.px]="elementModel.styling.fontSize * 2.5"
-                [style.height.px]="elementModel.styling.fontSize * 2.5"
-                (click)="removeRow()">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
-    </ng-template>
-  `,
-    styles: [
-        ':host {display: inline-block;}',
-        '.wrapper {display: flex; flex-direction: row;}',
-        '.wrapper button {align-self: end; border-radius: 50%; margin-left: 10px;}',
-        'table {border-spacing: 0; border-collapse: collapse;}',
-        'td {border: 1px solid grey; text-align: center; caret-color: transparent;}',
-        'td.strike-through {text-decoration: line-through; text-decoration-thickness: 3px;}',
-        'td:focus {background-color: #00606425; outline: unset;}',
-        'table.underline-first-row tr:first-child {border-bottom: 3px solid black;}',
-        'table.underline-third-row tr:nth-child(3) {border-bottom: 3px solid black;}',
-        'table.has-result-row tr:last-child {border-top: 3px solid black;}',
-        '.terms-missing-warning {font-size: larger; color: red;}',
-        '.row-button:not(:disabled) {color: black; border: 2px solid black}',
-        '.row-button:disabled {border: 2px solid #bbb}'
-    ],
-    standalone: false
+  selector: 'aspect-math-table',
+  templateUrl: './math-table.component.html',
+  styleUrls: ['./math-table.component.scss'],
+  standalone: false
 })
 export class MathTableComponent extends ElementComponent implements OnInit {
   @ViewChildren('input') cells!: QueryList<ElementRef>;

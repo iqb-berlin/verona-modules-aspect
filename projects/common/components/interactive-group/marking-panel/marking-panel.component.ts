@@ -7,16 +7,7 @@ import { MarkingPanelMarkingData } from 'common/models/marking-data';
 
 @Component({
   selector: 'aspect-marking-panel',
-  template: `
-    <aspect-text-marking-bar [elementModel]="elementModel"
-                             [selectedColor]="selectedColor || 'none'"
-                             [markingMode]="markingMode"
-                             [showHint]="showHint"
-                             (markingDataChanged)="markingPanelMarkingDataChanged.emit({ id: elementModel.id,
-                                                                                         markingData: $event })">
-    </aspect-text-marking-bar>
-  `,
-  styles: [],
+  templateUrl: './marking-panel.component.html',
   standalone: false
 })
 export class MarkingPanelComponent extends ElementComponent {

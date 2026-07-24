@@ -6,13 +6,13 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import {
   TextFieldSimpleComponent
-} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
+} from 'common/components/compound-group/text-field-simple/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import {
   CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
-import { ButtonComponent } from 'common/components/button/button.component';
+import { ButtonComponent } from 'common/components/action-group/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
@@ -23,13 +23,13 @@ import { TextInputGroupDirective } from 'player/src/app/directives/text-input-gr
 import { ResponseValueType } from '@iqb/responses';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { ImageElement } from 'common/models/elements/media-elements/image';
-import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
-import { ImageComponent } from 'common/components/media-elements/image.component';
-import { AudioComponent } from 'common/components/media-elements/audio.component';
+import { TextFieldComponent } from 'common/components/text-input-group/text-field/text-field.component';
+import { ImageComponent } from 'common/components/interactive-group/image/image.component';
+import { AudioComponent } from 'common/components/media-player-group/audio/audio.component';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { MediaPlayerService } from 'player/src/app/services/media-player.service';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
-import { TextComponent } from 'common/components/text/text.component';
+import { TextComponent } from 'common/components/text-group/text/text.component';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { TextElement } from 'common/models/elements/text/text';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
@@ -40,7 +40,7 @@ import {
   TextGroupElementComponent
 } from 'player/src/app/components/elements/text-group-element/text-group-element.component';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
-import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
+import { TextAreaComponent } from 'common/components/text-input-group/text-area/text-area.component';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';

@@ -1,0 +1,32 @@
+<div [style.width.%]="100"
+     [style.height.%]="100">
+  <aspect-text-marking-bar
+    *ngIf="elementModel.highlightableYellow ||
+           elementModel.highlightableTurquoise ||
+           elementModel.highlightableOrange"
+    [sticky]="true"
+    [selectedColor]="selectedColor.value || 'none'"
+    [markingMode]="elementModel.markingMode"
+    [showHint]="showHint"
+    [elementModel]="elementModel"
+    (markingDataChanged)="selectedColor.next($event.colorName); markingDataChanged.emit($event)">
+  </aspect-text-marking-bar>
+  <div #textContainerRef class="text-container"
+       [class.orange-selection]="selectedColor.value === 'orange'"
+       [class.yellow-selection]="selectedColor.value === 'yellow'"
+       [class.turquoise-selection]="selectedColor.value === 'turquoise'"
+       [class.delete-selection]="selectedColor.value === 'delete'"
+       [style.background-color]="elementModel.styling.backgroundColor"
+       [style.color]="elementModel.styling.fontColor"
+       [style.font-size.px]="elementModel.styling.fontSize"
+       [style.line-height.%]="elementModel.styling.lineHeight"
+       [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+       [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+       [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+       [style.column-count]="elementModel.columnCount"
+       tooltipEventTooltip
+       [innerHTML]="savedText || elementModel.text | safeResourceHTML"
+       (contextmenu)="$event.preventDefault()"
+       (pointerdown)="startTextSelection($event)">
+  </div>
+</div>

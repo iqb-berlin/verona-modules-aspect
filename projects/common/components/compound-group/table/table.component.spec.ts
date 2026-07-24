@@ -9,7 +9,7 @@ import { environment } from 'common/environment';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { TableGridRowsPipe } from 'common/pipes/table-grid-rows.pipe';
 import { TableElement, TableProperties } from 'common/models/elements/compound-elements/table/table';
-import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
+import { TableChildOverlay } from 'common/components/compound-group/table-child-overlay/table-child-overlay.component';
 import { TableComponent } from './table.component';
 
 describe('TableComponent', () => {

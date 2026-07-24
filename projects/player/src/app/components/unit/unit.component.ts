@@ -21,7 +21,7 @@ import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { VersionManager } from 'common/services/version-manager';
 import { MatDialog } from '@angular/material/dialog';
-import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
+import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { MigrationManager } from 'common/services/migration-manager';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { TranslateService } from '@ngx-translate/core';

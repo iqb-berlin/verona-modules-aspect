@@ -4,7 +4,7 @@ import { TableElement } from 'common/models/elements/compound-elements/table/tab
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'common/shared.module';
-import { TableComponent } from 'common/components/compound-elements/table/table.component';
+import { TableComponent } from 'common/components/compound-group/table/table.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { FileService } from 'common/services/file.service';

@@ -1,0 +1,26 @@
+.likert-column-label {
+  text-align: center;
+  justify-content: center;
+}
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+.sticky-header {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+}
+.inherit-styling {
+  background-color: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  text-decoration: inherit;
+}
+.label {
+  margin-bottom: 10px;
+}

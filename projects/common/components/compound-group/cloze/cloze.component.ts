@@ -7,7 +7,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import {
   ClozeChildOverlayComponent
-} from '../cloze-child-overlay/cloze-child-overlay.component';
+} from 'common/components/compound-group/cloze-child-overlay/cloze-child-overlay.component';
 
 // TODO background color implementieren
 @Component({

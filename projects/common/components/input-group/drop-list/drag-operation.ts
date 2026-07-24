@@ -1,5 +1,5 @@
-import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
-import { DropLogic } from 'common/components/input-elements/drop-list/drop-logic';
+import { DropListComponent } from 'common/components/input-group/drop-list/drop-list.component';
+import { DropLogic } from 'common/components/input-group/drop-list/drop-logic';
 import { DragNDropValueObject } from 'common/interfaces';
 
 export class DragOperation {

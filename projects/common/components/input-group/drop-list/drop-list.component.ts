@@ -7,17 +7,17 @@ import {
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { DragEvent, DragStartEvent } from 'common/components/input-elements/drop-list/draggable.directive';
+import { DragEvent, DragStartEvent } from 'common/directives/draggable.directive';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { DragNDropValueObject } from 'common/interfaces';
-import { DragImageComponent } from './drag-image.component';
-import { DragOperatorService } from './drag-operator.service';
+import { DragImageComponent } from 'common/components/input-group/drag-image/drag-image.component';
+import { DragOperatorService } from 'common/services/drag-operator.service';
 
 @Component({
-    selector: 'aspect-drop-list',
-    templateUrl: './drop-list.component.html',
-    styleUrls: ['./drop-list.component.css'],
-    standalone: false
+  selector: 'aspect-drop-list',
+  templateUrl: './drop-list.component.html',
+  styleUrls: ['./drop-list.component.scss'],
+  standalone: false
 })
 export class DropListComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: DropListElement;

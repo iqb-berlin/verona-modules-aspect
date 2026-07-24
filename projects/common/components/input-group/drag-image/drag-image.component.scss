@@ -1,0 +1,15 @@
+.drag-preview {
+  position: fixed;
+  display: block;
+  box-sizing: border-box;
+  border-radius: 5px;
+  pointer-events: none;
+  box-shadow: 2px 2px 5px black;
+}
+.drag-preview.cloze-context {
+  padding: 0 5px;
+  justify-content: center;
+}
+.image-item {
+  padding: 0;
+}

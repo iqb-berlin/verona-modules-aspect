@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
 import { WidgetPeriodicTableCall } from 'common/interfaces';
-import { ElementComponent } from '../../directives/element-component.directive';
+import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({
   selector: 'aspect-widget-periodic-table',

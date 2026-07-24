@@ -1,0 +1,10 @@
+<button type="button"
+        class="marking-button"
+        [style.border-color]="isMarkingSelected ? 'black' : color"
+        mat-mini-fab
+        [style.background-color]="color"
+        (pointerdown)="selectMarking()">
+  <aspect-text-marking-button-svg [buttonType]="mode === 'delete' ? 'delete' : markingMode"
+            class="marking-icon">
+  </aspect-text-marking-button-svg>
+</button>

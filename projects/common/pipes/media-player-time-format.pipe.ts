@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'mediaPlayerTimeFormat',
-    standalone: false
+  name: 'mediaPlayerTimeFormat',
+  standalone: false
 })
 export class MediaPlayerTimeFormatPipe implements PipeTransform {
   // eslint-disable-next-line class-methods-use-this

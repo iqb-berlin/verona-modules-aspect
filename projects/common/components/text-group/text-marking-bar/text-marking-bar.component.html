@@ -1,0 +1,32 @@
+<div class="marking-bar"
+     [class.sticky]="sticky">
+  <aspect-text-marking-button *ngIf="elementModel.highlightableYellow"
+                              [color]="selectionColors.yellow"
+                              [markingMode]="markingMode"
+                              [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.yellow"
+                              mode="mark"
+                              (selectedMarkingChanged)="changeMarkingData($event)">
+  </aspect-text-marking-button>
+  <aspect-text-marking-button *ngIf="elementModel.highlightableTurquoise"
+                              [color]="selectionColors.turquoise"
+                              [markingMode]="markingMode"
+                              [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.turquoise"
+                              mode="mark"
+                              (selectedMarkingChanged)="changeMarkingData($event)">
+  </aspect-text-marking-button>
+  <aspect-text-marking-button *ngIf="elementModel.highlightableOrange"
+                              [color]="selectionColors.orange"
+                              [markingMode]="markingMode"
+                              [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.orange"
+                              mode="mark"
+                              (selectedMarkingChanged)="changeMarkingData($event)">
+  </aspect-text-marking-button>
+  <aspect-text-marking-button *ngIf="markingMode !== 'word'"
+                              [color]="selectionColors.delete"
+                              [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.delete"
+                              mode="delete"
+                              (selectedMarkingChanged)="changeMarkingData($event)">
+  </aspect-text-marking-button>
+  <span *ngIf="showHint"
+        class="hint">{{'markingHint' | translate}}</span>
+</div>

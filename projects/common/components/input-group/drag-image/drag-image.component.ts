@@ -3,40 +3,10 @@ import { BasicStyles } from 'common/models/elements/property-group-interfaces';
 import { DragNDropValueObject } from 'common/interfaces';
 
 @Component({
-    selector: 'aspect-drag-image',
-    template: `
-      <div *ngIf="draggedItem"
-           class="drag-preview list-item" [class.image-item]="draggedItem.imgSrc" [class.cloze-context]="clozeContext"
-           [style.left.px]="dragImageX" [style.top.px]="dragImageY"
-           [style.width.px]="dragImageWidth" [style.height.px]="dragImageHeight"
-           [style.color]="styling.fontColor"
-           [style.font-size.px]="styling.fontSize"
-           [style.font-weight]="styling.bold ? 'bold' : ''"
-           [style.font-style]="styling.italic ? 'italic' : ''"
-           [style.text-decoration]="styling.underline ? 'underline' : ''"
-           [style.background-color]="styling.itemBackgroundColor">
-        <aspect-text-image-panel [label]="draggedItem"></aspect-text-image-panel>
-      </div>
-  `,
-    styles: [`
-    .drag-preview {
-      position: fixed;
-      display: block;
-      box-sizing: border-box;
-      border-radius: 5px;
-      pointer-events: none;
-      box-shadow: 2px 2px 5px black;
-    }
-    .drag-preview.cloze-context {
-      padding: 0 5px;
-      justify-content: center;
-    }
-    .image-item {
-      padding: 0;
-    }
-  `
-    ],
-    standalone: false
+  selector: 'aspect-drag-image',
+  templateUrl: './drag-image.component.html',
+  styleUrls: ['./drag-image.component.scss'],
+  standalone: false
 })
 export class DragImageComponent {
   @Input() clozeContext: boolean = false;

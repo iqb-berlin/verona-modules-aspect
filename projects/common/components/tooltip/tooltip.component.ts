@@ -3,18 +3,7 @@ import { TooltipPosition } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-tooltip',
-  template: `
-    <div #tooltip
-         class="tooltip"
-         [style.left.px]="left"
-         [style.top.px]="top"
-         [style.max-width]="maxWidth">
-      <div #tooltipInner
-           class="tooltip-text"
-           [innerHTML]="tooltipText | safeResourceHTML">
-      </div>
-    </div>
-  `,
+  templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
   standalone: false
 })

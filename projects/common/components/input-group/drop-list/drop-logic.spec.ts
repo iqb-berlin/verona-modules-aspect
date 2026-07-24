@@ -1,4 +1,4 @@
-import { DropListMock, DropLogic } from 'common/components/input-elements/drop-list/drop-logic';
+import { DropListMock, DropLogic } from 'common/components/input-group/drop-list/drop-logic';
 import { DragNDropValueObject } from 'common/interfaces';
 
 describe('DropLogic', () => {

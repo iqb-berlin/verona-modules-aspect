@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { MathEditorModule } from 'common/math-editor/math-editor.module';
-import { AreaTextInputComponent } from 'common/components/input-elements/area-text-input/area-text-input.component';
+import { AreaTextInputComponent } from 'common/components/text-input-group/area-text-input/area-text-input.component';
 import { BehaviorSubject } from 'rxjs';
 import { MathInputComponent } from 'common/math-editor/math-input.component';
 import { MathKeyboardPreset } from 'common/interfaces';

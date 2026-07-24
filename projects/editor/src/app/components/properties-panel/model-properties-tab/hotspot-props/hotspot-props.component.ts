@@ -5,25 +5,12 @@ import {
   CombinedProperties
 } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
-import { TranslateModule } from '@ngx-translate/core';
-import { NgForOf } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'aspect-hotspot-props',
-  imports: [
-    TranslateModule,
-    CdkDrag,
-    CdkDropList,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatIconModule,
-    NgForOf
-  ],
+  standalone: false,
   templateUrl: './hotspot-props.component.html'
 })
 export class HotspotPropsComponent {

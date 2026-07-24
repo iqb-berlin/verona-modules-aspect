@@ -4,7 +4,7 @@ import {
 
 @Directive({
   selector: '[appElementGridChangeListener]',
-  standalone: true
+  standalone: false
 })
 export class ElementGridChangeListenerDirective implements OnChanges {
   @Input() autoColumnSize!: boolean;

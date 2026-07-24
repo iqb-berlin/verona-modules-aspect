@@ -1,44 +1,21 @@
 import {
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import {
   CombinedProperties
 } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { IDService } from 'editor/src/app/services/id.service';
-import { NgForOf, NgIf } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import {
-  OptionListPanelComponent
-} from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
-import { GetValidDropListsPipe } from 'editor/src/app/pipes/get-valid-drop-lists.pipe';
 
 @Component({
   selector: 'aspect-drop-list-properties',
-  imports: [
-    NgIf,
-    TranslateModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    OptionListPanelComponent,
-    FormsModule,
-    MatButtonModule,
-    NgForOf,
-    MatTooltipModule,
-    GetValidDropListsPipe
-  ],
+  standalone: false,
   templateUrl: './drop-list-properties.component.html'
 })
 export class DropListPropertiesComponent {

@@ -1,22 +1,10 @@
 import { Audio2StimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
-import { FormsModule } from '@angular/forms';
-import { AudioRowComponent } from 'editor/modules/section-templates/dialogs/stimulus/audio-row/audio-row.component';
 import { FileService } from 'common/services/file.service';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-audio2-stimulus',
-  imports: [
-    FormsModule,
-    RichTextEditorComponent,
-    AudioRowComponent,
-    MatTooltip,
-    MatRadioButton,
-    MatRadioGroup
-  ],
   templateUrl: './audio2-stimulus.component.html',
   styleUrls: ['./audio2-stimulus.component.scss']
 })

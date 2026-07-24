@@ -1,30 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatDialogRef } from '@angular/material/dialog';
 import { EmailStimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/email-stimulus/email-stimulus.component';
-import { FormsModule } from '@angular/forms';
 import { MessageStimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/message-stimulus/message-stimulus.component';
-import { MatActionList, MatListItem } from '@angular/material/list';
 import { TextStimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/text-stimulus/text-stimulus.component';
 import { Audio1StimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/audio1-stimulus/audio1-stimulus.component';
 import { Audio2StimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/audio2-stimulus/audio2-stimulus.component';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-stimulus-wizard-dialog',
-  imports: [
-    TranslateModule,
-    MatDialogModule,
-    FormsModule,
-    MatButtonModule,
-    EmailStimulusComponent,
-    MessageStimulusComponent,
-    MatActionList,
-    MatListItem,
-    TextStimulusComponent,
-    Audio1StimulusComponent,
-    Audio2StimulusComponent
-  ],
   templateUrl: './stimulus-dialog.component.html'
 })
 export class StimulusWizardDialogComponent {

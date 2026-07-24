@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'areaRowHeight',
-  standalone: true
+  standalone: false
 })
 export class AreaRowHeightPipe implements PipeTransform {
   transform(rows: number, fontSize: number, lineHeight: number): number {

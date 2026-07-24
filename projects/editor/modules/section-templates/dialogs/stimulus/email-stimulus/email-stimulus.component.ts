@@ -1,15 +1,9 @@
 import { EmailStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
 import { Component } from '@angular/core';
-import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { FormsModule } from '@angular/forms';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-email-stimulus',
-  imports: [
-    FormsModule,
-    MatRadioButton,
-    MatRadioGroup
-  ],
   templateUrl: './email-stimulus.component.html',
   styleUrls: ['./email-stimulus.component.scss']
 })

@@ -8,7 +8,7 @@ describe('MarkableDelimiterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MarkableDelimiterComponent]
+      declarations: [MarkableDelimiterComponent]
     }).compileComponents();
     fixture = TestBed.createComponent(MarkableDelimiterComponent);
     component = fixture.componentInstance;

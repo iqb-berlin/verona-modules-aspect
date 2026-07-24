@@ -1,7 +1,6 @@
 import {
   Component, EventEmitter, Input, Output, QueryList, ViewChildren
 } from '@angular/core';
-import { SectionMenuComponent } from 'editor/src/app/components/section-menu/section-menu.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -10,19 +9,14 @@ import { UIElement } from 'common/models/elements/element';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { StaticSectionComponent } from 'editor/src/app/components/static-section/static-section.component';
 import { DynamicSectionComponent } from 'editor/src/app/components/dynamic-section/dynamic-section.component';
-import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
-import { NgClass, NgIf } from '@angular/common';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { SectionCounter } from 'common/utils/section-counter';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 
 @Component({
   selector: 'aspect-editor-section-view',
-  imports: [
-    NgIf, NgClass,
-    CdkDropList,
-    SectionMenuComponent, StaticSectionComponent, DynamicSectionComponent
-  ],
+  standalone: false,
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss']
 })

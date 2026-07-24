@@ -2,16 +2,6 @@ import {
   Component, EventEmitter, Input, Output,
   AfterViewInit, Injector, OnInit, ViewChild, ElementRef
 } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { NgxTiptapModule } from 'ngx-tiptap';
 import { AnyExtension, Editor } from '@tiptap/core';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
@@ -36,7 +26,6 @@ import { BlockImage } from 'editor/modules/rich-text-editor/extensions/block-ima
 import { InlineImage } from 'editor/modules/rich-text-editor/extensions/inline-image';
 import { Tooltip } from 'editor/modules/rich-text-editor/extensions/tooltip';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { ComboButtonComponent } from 'editor/src/app/components/combo-button/combo-button.component';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { EditorView } from 'prosemirror-view';
 import { Fragment, Slice } from 'prosemirror-model';
@@ -57,19 +46,7 @@ import MathFormulaExtension from 'editor/modules/rich-text-editor/extensions/mat
 
 @Component({
   selector: 'aspect-rich-text-editor',
-  imports: [
-    NgIf,
-    MatButtonModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ComboButtonComponent,
-    FormsModule,
-    MatInputModule,
-    MatMenuModule,
-    NgxTiptapModule
-  ],
+  standalone: false,
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.scss']
 })

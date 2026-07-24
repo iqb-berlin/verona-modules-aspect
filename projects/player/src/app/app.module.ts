@@ -18,12 +18,17 @@ import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe
 import {
   MarkablesContainerComponent
 } from 'player/src/app/components/markables-container/markables-container.component';
+import {
+  MarkableWordComponent
+} from 'player/src/app/components/markable-word/markable-word.component';
+import {
+  MarkableDelimiterComponent
+} from 'player/src/app/components/markable-delimiter/markable-delimiter.component';
 import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
 import {
   MarkingPanelComponent
 } from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
 import { ErrorService } from 'player/src/app/services/error.service';
-import { UnitNavNextComponent } from 'common/components/unit-nav-next/unit-nav-next.component';
 import {
   MathKeyboardContainerComponent
 } from 'player/src/app/components/math-keyboard-container/math-keyboard-container.component';
@@ -115,7 +120,12 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     PageNavButtonComponent,
     HasPreviousPagePipe,
     HasNextPagePipe,
-    IsValidPagePipe
+    IsValidPagePipe,
+    MarkablesContainerComponent,
+    MarkableWordComponent,
+    MarkableDelimiterComponent,
+    MathKeyboardContainerComponent,
+    IsEnabledNavigationTargetPipe
   ],
   imports: [
     BrowserModule,
@@ -133,11 +143,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     OverlayModule,
     ScrollingModule,
     UnitMenuModule,
-    PrintModule,
-    MarkablesContainerComponent,
-    IsEnabledNavigationTargetPipe,
-    UnitNavNextComponent,
-    MathKeyboardContainerComponent
+    PrintModule
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService },

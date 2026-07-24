@@ -1,20 +1,11 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { UIElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-widget-periodic-table-properties',
-  imports: [
-    MatCheckboxModule,
-    TranslateModule,
-    MatFormFieldModule,
-    MatInputModule
-  ],
+  standalone: false,
   templateUrl: './widget-periodic-table-properties.component.html'
 })
 export class WidgetPeriodicTablePropertiesComponent {

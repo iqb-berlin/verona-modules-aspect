@@ -9,7 +9,7 @@ import {
 
 @Directive({
   selector: '[imageFullscreen]',
-  standalone: true
+  standalone: false
 })
 export class ImageFullscreenDirective {
   @Input() imgSrc!: SafeResourceUrl;

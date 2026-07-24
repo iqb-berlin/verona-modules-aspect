@@ -1,15 +1,9 @@
 import { MessageStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
 import { Component } from '@angular/core';
-import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { FormsModule } from '@angular/forms';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-message-stimulus',
-  imports: [
-    FormsModule,
-    MatRadioButton,
-    MatRadioGroup
-  ],
   templateUrl: './message-stimulus.component.html',
   styleUrls: ['./message-stimulus.component.scss']
 })

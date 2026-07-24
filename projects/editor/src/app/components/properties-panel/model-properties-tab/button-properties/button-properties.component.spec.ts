@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UIElement } from 'common/models/elements/element';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -15,8 +18,11 @@ describe('ButtonPropertiesComponent', () => {
     dialogService = createSpyObj<DialogService>(['showTooltipDialog']);
 
     await TestBed.configureTestingModule({
+      declarations: [ButtonPropertiesComponent],
       imports: [
-        ButtonPropertiesComponent,
+        CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
         TranslateModule.forRoot()
       ],
       providers: [

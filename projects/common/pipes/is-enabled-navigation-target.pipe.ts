@@ -4,7 +4,7 @@ import { NavigationTarget } from 'player/modules/verona/models/verona';
 import { StateVariable } from 'common/models/state-variable';
 
 @Pipe({
-  standalone: true,
+  standalone: false,
   name: 'isEnabledNavigationTarget'
 })
 export class IsEnabledNavigationTargetPipe implements PipeTransform {

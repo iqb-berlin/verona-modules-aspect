@@ -7,7 +7,7 @@ describe('AreaTextInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AreaTextInputComponent]
+      declarations: [AreaTextInputComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AreaTextInputComponent);

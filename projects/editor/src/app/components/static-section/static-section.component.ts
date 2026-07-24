@@ -5,18 +5,11 @@ import { Section } from 'common/models/section';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/element.service';
-import {
-  StaticOverlayComponent
-} from 'editor/src/app/components/static-overlay/static-overlay.component';
-import { NgForOf } from '@angular/common';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 
 @Component({
   selector: 'aspect-editor-static-section',
-  imports: [
-    NgForOf,
-    StaticOverlayComponent
-  ],
+  standalone: false,
   templateUrl: './static-section.component.html',
   styleUrls: ['./static-section.component.scss']
 })

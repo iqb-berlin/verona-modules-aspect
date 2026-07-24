@@ -1,30 +1,9 @@
 import { Component } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatButtonModule } from '@angular/material/button';
-import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { FileInformation, FileService } from 'common/services/file.service';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-geometry-wizard-dialog',
-  imports: [
-    MatDialogModule,
-    TranslateModule,
-    MatButtonModule,
-    RichTextEditorComponent,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatCheckboxModule,
-    FormsModule
-  ],
   templateUrl: './geometry-dialog.component.html',
   styleUrls: ['./geometry-dialog.component.scss']
 })

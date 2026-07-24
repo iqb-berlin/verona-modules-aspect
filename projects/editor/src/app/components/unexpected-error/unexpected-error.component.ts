@@ -1,23 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import {
-  MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
 import packageJSON from 'editor/../../package.json';
 
 @Component({
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatDialogActions,
-    MatDialogContent
-  ],
+  standalone: false,
   templateUrl: './unexpected-error.component.html',
   styleUrls: ['./unexpected-error.component.scss']
 })

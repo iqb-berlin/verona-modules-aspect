@@ -1,32 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatActionList, MatListItem } from '@angular/material/list';
+import { MatDialogRef } from '@angular/material/dialog';
 import { TextRadioComponent } from 'editor/modules/section-templates/dialogs/radio/text-radio/text-radio.component';
 import { ImageRadioComponent } from 'editor/modules/section-templates/dialogs/radio/image-radio/image-radio.component';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-radio-wizard-dialog',
-  imports: [
-    MatDialogModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    TranslateModule,
-    MatCheckboxModule,
-    MatActionList,
-    MatListItem,
-    TextRadioComponent,
-    ImageRadioComponent
-  ],
   templateUrl: './radio-dialog.component.html'
 })
 export class RadioWizardDialogComponent {

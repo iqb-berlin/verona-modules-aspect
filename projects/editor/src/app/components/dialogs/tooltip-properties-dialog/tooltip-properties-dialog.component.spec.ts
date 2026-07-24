@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
@@ -8,8 +11,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { HasTextContentPipe } from 'common/pipes/has-text-content.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
 import { TooltipPropertiesDialogComponent } from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
+
+@Component({
+  selector: 'aspect-rich-text-editor',
+  template: '',
+  standalone: false
+})
+class MockRichTextEditorComponent {
+  @Input() content!: string | Record<string, unknown>;
+  @Input() showReducedControls: boolean = false;
+  @Input() controlPanelFolded: boolean = false;
+  @Input() autoFocus: boolean = false;
+  @Output() contentChange = new EventEmitter<string>();
+}
 
 describe('TooltipPropertiesDialogComponent', () => {
   let component: TooltipPropertiesDialogComponent;
@@ -21,6 +36,7 @@ describe('TooltipPropertiesDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         TooltipPropertiesDialogComponent,
+        MockRichTextEditorComponent,
         HasTextContentPipe
       ],
       imports: [
@@ -30,7 +46,6 @@ describe('TooltipPropertiesDialogComponent', () => {
         MatFormFieldModule,
         MatSelectModule,
         MatButtonModule,
-        RichTextEditorComponent,
         TranslateModule.forRoot()
       ],
       providers: [

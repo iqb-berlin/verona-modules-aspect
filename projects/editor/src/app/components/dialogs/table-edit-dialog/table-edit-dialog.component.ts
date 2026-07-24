@@ -1,9 +1,6 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatButtonModule } from '@angular/material/button';
-import { SharedModule } from 'common/shared.module';
 import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
@@ -18,12 +15,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'aspect-editor-table-edit-dialog',
-  imports: [
-    MatDialogModule,
-    TranslateModule,
-    MatButtonModule,
-    SharedModule
-  ],
+  standalone: false,
   templateUrl: './table-edit-dialog.component.html',
   styleUrls: ['./table-edit-dialog.component.scss']
 })

@@ -1,7 +1,6 @@
 import {
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
-import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
 import {
   AreaTextInputComponent
 } from 'common/components/text-input-group-elements/area-text-input/area-text-input.component';
@@ -13,11 +12,7 @@ import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
   selector: 'aspect-text-area-math-segment',
   templateUrl: './area-segment.component.html',
   styleUrls: ['./area-segment.component.scss'],
-  standalone: true,
-  imports: [
-    AreaTextInputComponent,
-    MathEditorModule
-  ]
+  standalone: false
 })
 export class AreaSegmentComponent {
   @Input() showSoftwareKeyboard!: boolean;

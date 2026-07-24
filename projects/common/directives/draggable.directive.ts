@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 
 @Directive({
-  standalone: true,
+  standalone: false,
   selector: '[aspect-draggable]'
 })
 /*

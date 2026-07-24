@@ -8,7 +8,7 @@ describe('MarkableWordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MarkableWordComponent]
+      declarations: [MarkableWordComponent]
     })
       .compileComponents();
 

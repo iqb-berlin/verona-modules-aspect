@@ -4,17 +4,6 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatListModule } from '@angular/material/list';
-import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { NgForOf, NgIf } from '@angular/common';
-import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
 import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -27,20 +16,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 
 @Component({
   selector: 'aspect-section-menu',
-  imports: [
-    MatMenuModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatListModule,
-    MatButtonModule,
-    TranslateModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatInputModule,
-    NgForOf,
-    NgIf,
-    SizeInputPanelComponent
-  ],
+  standalone: false,
   templateUrl: './section-menu.component.html',
   styleUrls: ['./section-menu.component.scss']
 })

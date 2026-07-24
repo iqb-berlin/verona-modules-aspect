@@ -1,32 +1,10 @@
 import {
   Component, ElementRef, QueryList, ViewChildren
 } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-mathtable-wizard-dialog',
-  imports: [
-    NgIf,
-    NgForOf,
-    MatDialogModule,
-    TranslateModule,
-    MatFormFieldModule,
-    MatOptionModule,
-    MatSelectModule,
-    FormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule
-  ],
   templateUrl: './mathtable-dialog.component.html',
   styleUrls: ['./mathtable-dialog.component.scss']
 })

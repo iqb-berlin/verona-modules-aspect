@@ -1,43 +1,16 @@
 import {
   Component, EventEmitter, Input, OnDestroy, Output
 } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { NgForOf, NgIf } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { Subject } from 'rxjs';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageService } from 'editor/src/app/services/page.service';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 
 @Component({
   selector: 'aspect-unit-view-page-menu',
-  imports: [
-    MatCheckboxModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatOptionModule,
-    MatSelectModule,
-    NgForOf,
-    NgIf,
-    ReactiveFormsModule,
-    TranslateModule,
-    FormsModule,
-    MatTooltipModule
-  ],
+  standalone: false,
   templateUrl: 'page-menu.component.html',
   styleUrls: ['./page-menu.component.scss']
 })

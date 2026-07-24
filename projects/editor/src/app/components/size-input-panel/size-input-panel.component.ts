@@ -1,24 +1,11 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
 import { Measurement } from 'common/models/ui-element-interfaces';
 
 @Component({
   selector: 'aspect-size-input-panel',
-  imports: [
-    NgIf,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatSelectModule,
-    TranslateModule
-  ],
+  standalone: false,
   templateUrl: './size-input-panel.component.html',
   styleUrls: ['./size-input-panel.component.scss']
 })

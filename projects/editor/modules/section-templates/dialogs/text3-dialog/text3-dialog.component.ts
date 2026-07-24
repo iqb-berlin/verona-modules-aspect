@@ -1,21 +1,8 @@
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-text2-wizard-dialog',
-  imports: [
-    TranslateModule,
-    MatDialogModule,
-    RichTextEditorComponent,
-    MatCheckboxModule,
-    FormsModule,
-    MatButtonModule
-  ],
   templateUrl: './text3-dialog.component.html',
   styleUrls: ['./text3-dialog.component.scss']
 })

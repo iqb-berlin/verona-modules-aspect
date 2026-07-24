@@ -1,21 +1,9 @@
 import {
   Component, ComponentRef, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AsyncPipe, NgForOf, NgIf
-} from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateService } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
-import {
-  MatChipsModule, MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow
-} from '@angular/material/chips';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
   BehaviorSubject, firstValueFrom, of, Subject, switchMap
@@ -31,23 +19,7 @@ import { VariableAlias } from 'common/utils/variable-alias';
 
 @Component({
   selector: 'aspect-geometry-props',
-  imports: [
-    NgIf,
-    NgForOf,
-    MatInputModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatTooltipModule,
-    TranslateModule,
-    MatButtonModule,
-    MatSelectModule,
-    FormsModule,
-    AsyncPipe,
-    MatChipGrid,
-    MatChipRow,
-    MatChipInput
-  ],
+  standalone: false,
   templateUrl: './geometry-props.component.html'
 })
 export class GeometryPropsComponent implements OnInit, OnDestroy {

@@ -1,41 +1,11 @@
 import { Component } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
-import { RichTextEditorComponent } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatCheckbox } from '@angular/material/checkbox';
-import {
-  CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray
-} from '@angular/cdk/drag-drop';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
-import { MatInput } from '@angular/material/input';
-import { NgForOf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FileService } from 'common/services/file.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
+  standalone: false,
   selector: 'aspect-editor-checkbox-wizard-dialog',
-  imports: [
-    TranslateModule,
-    MatDialogModule,
-    MatButton,
-    RichTextEditorComponent,
-    MatCheckbox,
-    CdkDrag,
-    CdkDropList,
-    CdkTextareaAutosize,
-    MatFormField,
-    MatIcon,
-    MatIconButton,
-    MatInput,
-    MatSuffix,
-    NgForOf,
-    FormsModule,
-    MatLabel
-  ],
   templateUrl: './checkbox-dialog.component.html',
   styleUrls: ['./checkbox-dialog.component.scss']
 })

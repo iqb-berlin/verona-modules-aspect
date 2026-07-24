@@ -3,7 +3,7 @@ import { InputElement, isInputElement, UIElement } from 'common/models/elements/
 
 @Pipe({
   name: 'isInputElement',
-  standalone: true
+  standalone: false
 })
 export class IsInputElementPipe implements PipeTransform {
   transform(el: UIElement): el is InputElement {

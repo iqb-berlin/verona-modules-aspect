@@ -5,7 +5,7 @@ import {
   AreaTextInputComponent
 } from 'common/components/text-input-group-elements/area-text-input/area-text-input.component';
 import { BehaviorSubject } from 'rxjs';
-import { MathInputComponent } from 'common/modules/math-editor/math-input.component';
+import { MathInputComponent } from 'common/modules/math-editor/components/math-input/math-input.component';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 
 @Component({

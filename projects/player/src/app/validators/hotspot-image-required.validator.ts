@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
 
 export function hotspotImageRequiredValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => (

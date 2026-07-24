@@ -8,17 +8,8 @@ import { UnitService } from './services/unit.service';
 
 @Component({
   selector: 'aspect-editor',
-  template: `
-    <div class="mainView fx-column-start-stretch">
-      <aspect-toolbar *ngIf="isStandalone"></aspect-toolbar>
-      <aspect-editor-unit-view class="fx-flex"></aspect-editor-unit-view>
-    </div>
-  `,
-  styles: [`
-    .mainView {
-      height: 100%;
-    }
-  `],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
   standalone: false
 })
 

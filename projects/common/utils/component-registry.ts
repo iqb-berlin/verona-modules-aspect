@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { UIElementType } from 'common/interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 export abstract class ComponentRegistry {

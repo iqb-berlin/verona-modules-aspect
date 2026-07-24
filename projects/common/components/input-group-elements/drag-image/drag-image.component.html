@@ -1,0 +1,12 @@
+<div *ngIf="draggedItem"
+     class="drag-preview list-item" [class.image-item]="draggedItem.imgSrc" [class.cloze-context]="clozeContext"
+     [style.left.px]="dragImageX" [style.top.px]="dragImageY"
+     [style.width.px]="dragImageWidth" [style.height.px]="dragImageHeight"
+     [style.color]="styling.fontColor"
+     [style.font-size.px]="styling.fontSize"
+     [style.font-weight]="styling.bold ? 'bold' : ''"
+     [style.font-style]="styling.italic ? 'italic' : ''"
+     [style.text-decoration]="styling.underline ? 'underline' : ''"
+     [style.background-color]="styling.itemBackgroundColor">
+  <aspect-text-image-panel [label]="draggedItem"></aspect-text-image-panel>
+</div>

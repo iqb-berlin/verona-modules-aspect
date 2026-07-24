@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { IMAGE_COMPRESSION_QUALITY, IMAGE_MAX_WIDTH } from 'common/config';
-import { ImageOptions } from 'common/interfaces';
+import { ImageOptions } from 'common/models/image-interfaces';
 
 export interface FileInformation {
   name: string;

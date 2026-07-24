@@ -2,13 +2,13 @@ import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { KeyLayout } from 'player/modules/key-input/configs/key-layout';
-import { InputAssistancePreset } from 'common/interfaces';
+import { InputAssistancePreset } from 'common/models/input-element-interfaces';
 
 @Component({
-    selector: 'aspect-keyboard',
-    templateUrl: './keyboard.component.html',
-    styleUrls: ['./keyboard.component.scss'],
-    standalone: false
+  selector: 'aspect-keyboard',
+  templateUrl: './keyboard.component.html',
+  styleUrls: ['./keyboard.component.scss'],
+  standalone: false
 })
 export class KeyboardComponent implements OnInit {
   @Input() preset!: InputAssistancePreset;

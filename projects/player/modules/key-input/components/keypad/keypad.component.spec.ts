@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeypadComponent } from 'player/modules/key-input/components/keypad/keypad.component';
 import { Component, Input } from '@angular/core';
 import { KeyInputLayout, KeyLayout } from 'player/modules/key-input/configs/key-layout';
-import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/interfaces';
+import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/models/input-element-interfaces';
 
 describe('KeypadComponent', () => {
   let component: KeypadComponent;

@@ -1,0 +1,95 @@
+import { Component, Inject, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'common/shared.module';
+import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
+import { ElementFactory } from 'common/utils/element-factory';
+import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
+import { FileService } from 'common/services/file.service';
+import { AudioProperties } from 'common/models/elements/media-player-group-elements/audio';
+import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
+import { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
+import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import { IDService } from 'editor/src/app/services/id.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
+import { firstValueFrom } from 'rxjs';
+
+@Component({
+  selector: 'aspect-editor-table-edit-dialog',
+  imports: [
+    MatDialogModule,
+    TranslateModule,
+    MatButtonModule,
+    SharedModule
+  ],
+  templateUrl: './table-edit-dialog.component.html',
+  styleUrls: ['./table-edit-dialog.component.scss']
+})
+export class TableEditDialogComponent {
+  @ViewChild(TableComponent) tableComp!: TableComponent;
+  newTable: TableElement;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { table: TableElement },
+              private idService: IDService,
+              private dialogService: DialogService) {
+    this.newTable = data.table;
+  }
+
+  async addElement(el: { elementType: UIElementType, row: number, col: number }): Promise<void> {
+    const extraProps: Partial<UIElementProperties> = {};
+    if (el.elementType === 'image') {
+      const file = await FileService.getRawFile('image/*');
+      const base64 = await FileService.readFileAsText(file, true);
+      if (FileService.isResizable(file.type)) {
+        const options = await firstValueFrom(this.dialogService.showImageResizeDialog(base64, {}));
+        if (options) {
+          (extraProps as ImageProperties).src = await FileService.scaleImage(base64, options);
+        }
+      } else {
+        (extraProps as ImageProperties).src = base64;
+      }
+      (extraProps as ImageProperties).fileName = file.name;
+    }
+    if (el.elementType === 'audio') {
+      await FileService.loadAudio().then(audio => {
+        (extraProps as AudioProperties).src = audio.content;
+        (extraProps as AudioProperties).fileName = audio.name;
+      });
+      (extraProps as AudioProperties).player =
+        PropertyGroupGenerators.generatePlayerProps({
+          progressBar: false,
+          interactiveProgressbar: false,
+          volumeControl: false,
+          muteControl: false,
+          showRestTime: false
+        });
+    }
+    if (el.elementType === 'drop-list') {
+      (extraProps as DropListProperties).onlyOneItem = true;
+      (extraProps as DropListProperties).allowReplacement = true;
+      (extraProps as DropListProperties).highlightReceivingDropList = true;
+    }
+    const newEle = ElementFactory.createElement({
+      type: el.elementType,
+      ...extraProps
+    }, this.idService);
+    delete (newEle as any).position;
+    delete (newEle as any).dimensions;
+    newEle.gridRow = el.row + 1;
+    newEle.gridColumn = el.col + 1;
+    if (newEle.type === 'text-field' || newEle.type === 'text-area') {
+      delete (newEle as any).appearance;
+    }
+    this.newTable.elements.push(newEle);
+    this.tableComp.refresh();
+  }
+
+  removeElement(coords: { row: number, col: number }): void {
+    const index = this.newTable.elements
+      .findIndex(el => el.gridRow === (coords.row + 1) && el.gridColumn === (coords.col + 1));
+    this.newTable.elements[index].unregisterIDs();
+    this.newTable.elements.splice(index, 1);
+  }
+}

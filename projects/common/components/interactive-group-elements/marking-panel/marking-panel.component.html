@@ -1,0 +1,7 @@
+<aspect-text-marking-bar [elementModel]="elementModel"
+                         [selectedColor]="selectedColor || 'none'"
+                         [markingMode]="markingMode"
+                         [showHint]="showHint"
+                         (markingDataChanged)="markingPanelMarkingDataChanged.emit({ id: elementModel.id,
+                                                                                     markingData: $event })">
+</aspect-text-marking-bar>

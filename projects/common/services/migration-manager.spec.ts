@@ -1,9 +1,9 @@
 import { MigrationManager } from 'common/services/migration-manager';
 import { UnitProperties } from 'common/models/unit';
-import { TextProperties } from 'common/models/elements/text/text';
-import { ClozeProperties, CustomDocumentNode } from 'common/models/elements/compound-elements/cloze/cloze';
-import { TableProperties } from 'common/models/elements/compound-elements/table/table';
-import { TextFieldProperties } from 'common/models/elements/input-elements/text-field';
+import { TextProperties } from 'common/models/elements/text-group-elements/text';
+import { ClozeProperties, CustomDocumentNode } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
 
 describe('MigrationManager', () => {
   it('should normalize legacy elements during migration', () => {

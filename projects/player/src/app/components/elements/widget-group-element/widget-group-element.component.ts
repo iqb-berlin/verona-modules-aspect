@@ -7,13 +7,12 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
 import { VopWidgetReturn, WidgetType } from 'player/modules/verona/models/verona';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {
-  ValueChangeElement, WidgetPeriodicTableCall, WidgetMoleculeEditorCall
-} from 'common/interfaces';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table/widget-periodic-table';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
+import { WidgetPeriodicTableCall, WidgetMoleculeEditorCall } from 'common/models/widget-interfaces';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import {
   WidgetMoleculeEditorElement
-} from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
+} from 'common/models/elements/widget-group-elements/widget-molecule-editor';
 import { StringUtils } from 'player/src/app/classes/string-utils';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';

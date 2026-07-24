@@ -6,15 +6,15 @@ import { VariableInfo } from '@iqb/responses';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/utils/element-factory';
 import { environment } from 'common/environment';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { AbstractIDService } from 'common/models/id-interfaces';
 import {
-  AbstractIDService,
   Measurement,
   PositionedUIElement,
   UIElementProperties,
   UIElementValue
-} from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+} from 'common/models/ui-element-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 
 export class Section {
   [index: string]: unknown;

@@ -2,18 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { PageChangeService } from 'common/services/page-change.service';
 import { PageService } from 'editor/src/app/services/page.service';
-import { UnitService } from '../../services/unit.service';
-import { SelectionService } from '../../services/selection.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { OverviewDialogComponent } from 'editor/src/app/components/dialogs/overview-dialog.component';
+import { OverviewDialogComponent } from 'editor/src/app/components/dialogs/overview-dialog/overview-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-    selector: 'aspect-editor-unit-view',
-    templateUrl: './unit-view.component.html',
-    styleUrls: ['./unit-view.component.css'],
-    standalone: false
+  selector: 'aspect-editor-unit-view',
+  templateUrl: './unit-view.component.html',
+  styleUrls: ['./unit-view.component.scss'],
+  standalone: false
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
   pagesLoaded = true;

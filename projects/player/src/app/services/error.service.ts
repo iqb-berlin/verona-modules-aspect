@@ -1,7 +1,7 @@
 import { ErrorHandler, Injectable } from '@angular/core';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 
-import { AspectError } from 'common/errors';
+import { AspectError } from 'common/classes/aspect-error';
 
 @Injectable({
   providedIn: 'root'

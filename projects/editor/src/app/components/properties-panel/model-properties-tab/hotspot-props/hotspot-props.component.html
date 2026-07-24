@@ -1,0 +1,23 @@
+<fieldset class="fx-column-start-stretch">
+  <legend>{{'propertiesPanel.hotspots' | translate }}</legend>
+  <button [style.align-self]="'center'" mat-mini-fab matSuffix color="primary" [style.bottom.px]="3"
+          (click)="addHotspot()">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
+       (cdkDropListDropped)="moveHotspot($event)">
+    <div *ngFor="let item of $any(combinedProperties.value); let i = index" cdkDrag
+         class="option-draggable fx-row-start-stretch">
+      <div class="fx-flex" [style.align-self]="'center'">{{'hotspot.'+item.shape | translate}}</div>
+      <button mat-icon-button color="primary"
+              (click)="editHotspot(i)">
+        <mat-icon>build</mat-icon>
+      </button>
+      <button mat-icon-button color="primary"
+              (click)="removeHotspot(i)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+  </div>
+</fieldset>

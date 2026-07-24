@@ -1,0 +1,70 @@
+<ng-container *ngIf="combinedProperties.asLink !== undefined">
+  <fieldset>
+    <legend>{{ 'propertiesPanel.presentation' | translate }}</legend>
+    <div class="fx-column-start-stretch" [style.gap.px]="20">
+
+      <div class="fx-row-space-between-stretch">
+        <button mat-button
+                class="fx-fill"
+                [class.checked]="!combinedProperties.imageSrc && !combinedProperties.asLink"
+                (click)="removeImage(); updateModel.emit({ property: 'asLink', value: false });">
+          {{ 'propertiesPanel.button' | translate }}
+        </button>
+        <button mat-button class="fx-fill"
+                [class.checked]="!!combinedProperties.imageSrc && !combinedProperties.asLink"
+                (click)="importImage(); updateModel.emit({ property: 'asLink', value: false });">
+          {{ 'propertiesPanel.image' | translate }}
+        </button>
+        <button mat-button
+                class="fx-fill"
+                [class.checked]="!combinedProperties.imageSrc && !!combinedProperties.asLink"
+                (click)="removeImage(); updateModel.emit({ property: 'asLink', value: true });">
+          {{ 'propertiesPanel.link' | translate }}
+        </button>
+      </div>
+
+      <div *ngIf="!!combinedProperties.imageSrc">
+        <div>
+          <button mat-raised-button
+                  [disabled]="combinedProperties.asLink"
+                  (click)="importImage();">
+            {{ 'updateImage' | translate }}
+          </button>
+          <button mat-raised-button
+                  class="fx-fill"
+                  (click)="removeImage()">
+            {{ 'removeImage' | translate }}
+          </button>
+        </div>
+        <img class="image-preview"
+             [src]="combinedProperties.imageSrc">
+      </div>
+
+      <div *ngIf="!combinedProperties.asLink && !combinedProperties.imageSrc">
+        <mat-checkbox [checked]="combinedProperties.labelAlignment === 'super'"
+                      [disabled]="combinedProperties.labelAlignment === 'sub'"
+                      (change)="updateModel.emit({ property: 'labelAlignment',
+                                                   value: $event.checked ? 'super' : 'baseline' })">
+          {{ 'propertiesPanel.super' | translate }}
+        </mat-checkbox>
+        <mat-checkbox [checked]="combinedProperties.labelAlignment === 'sub'"
+                      [disabled]="combinedProperties.labelAlignment === 'super'"
+                      (change)="updateModel.emit({ property: 'labelAlignment',
+                                                   value: $event.checked ? 'sub' : 'baseline' })">
+          {{ 'propertiesPanel.sub' | translate }}
+        </mat-checkbox>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>{{ 'propertiesPanel.tooltip' | translate }}</legend>
+    <div class="fx-column-start-stretch">
+      @if (combinedProperties.tooltipText !== undefined) {
+        <button mat-raised-button
+                (click)="editTooltip()">
+          {{ 'propertiesPanel.editTooltip' | translate }}
+        </button>
+      }
+    </div>
+  </fieldset>
+</ng-container>

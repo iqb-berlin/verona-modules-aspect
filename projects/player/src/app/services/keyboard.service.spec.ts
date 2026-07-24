@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
-import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
+import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
 import {
   TextFieldSimpleComponent
-} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
-import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
+} from 'common/components/compound-group-elements/text-field-simple/text-field-simple.component';
+import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
+import {
+  SpellCorrectComponent
+} from 'common/components/text-input-group-elements/spell-correct/spell-correct.component';
 
 import * as textField_130 from 'test-data/element-models/text-field_130.json';
 import * as textFieldSimple_131 from 'test-data/element-models/text-field-simple_131.json';

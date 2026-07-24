@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { PositionedUIElement, UIElementValue } from 'common/interfaces';
+import { PositionedUIElement, UIElementValue } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
 import { ArrayUtils } from 'common/utils/array-utils';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ElementService } from 'editor/src/app/services/element.service';
-import { EditorPage, EditorSection } from 'editor/src/app/models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 @Injectable({
   providedIn: 'root'

@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { ButtonElement } from 'common/models/elements/button/button';
+import { ButtonElement } from 'common/models/elements/action-group-elements/button';
 import { ActionGroupElementComponent } from './action-group-element.component';
 
 describe('ActionGroupElementComponent', () => {

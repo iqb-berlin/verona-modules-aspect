@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   BaseGroupElementComponent
 } from 'player/src/app/components/elements/base-group-element/base-group-element.component';
-import { FrameElement } from 'common/models/elements/frame/frame';
+import { FrameElement } from 'common/models/elements/base-group-elements/frame';
 import { APIService } from 'common/shared.module';
 
 describe('BaseGroupElementComponent', () => {

@@ -1,0 +1,12 @@
+<div #sectionElement class="section-wrapper"
+     [style.outline]="isSelected ? '2px solid #ff4081': '1px dotted'"
+     [style.z-index]="isSelected ? 1 : 0"
+     [style.height.px]="section.height"
+     [style.background-color]="section.backgroundColor"
+     (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">
+  <aspect-editor-static-overlay #elementComponent
+                                *ngFor="let element of section.elements"
+                                [element]="$any(element)"
+                                (elementSelected)="elementSelected.emit($event)">
+  </aspect-editor-static-overlay>
+</div>

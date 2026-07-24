@@ -4,7 +4,7 @@ import { FloatingKeypadComponent } from 'player/src/app/components/floating-keyp
 import { Component, Input } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
 import {
   CompoundGroupElementComponent
 } from './compound-group-element.component';

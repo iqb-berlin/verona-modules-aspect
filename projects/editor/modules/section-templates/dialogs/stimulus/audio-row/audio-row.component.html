@@ -1,0 +1,10 @@
+<audio controls [src]=src [style.opacity]="src ? 1 : 0.5"></audio>
+<button mat-fab color="primary"
+        [matTooltip]="'Medienquelle ändern'" [matTooltipPosition]="'right'"
+        (click)="changeMediaSrc.emit()">
+  <mat-icon>upload_file</mat-icon>
+</button>
+<mat-form-field appearance="outline">
+  <mat-label>Maximale Abspielhäufigkeit</mat-label>
+  <input matInput type="number" min="1" [(ngModel)]="maxRuns" (ngModelChange)="maxRunsChange.emit($event)">
+</mat-form-field>

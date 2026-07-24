@@ -1,0 +1,9 @@
+.layoutMenu {padding: 5px; width: 250px;}
+
+aspect-size-input-panel {max-width: 100%;}
+
+.layoutMenu fieldset {display: flex; flex-direction: column; align-items: flex-start;}
+
+.menuItem {margin-bottom: 5px;}
+
+::ng-deep .activeAfterID-menu .mat-mdc-form-field {width:90%; margin-left: 10px;}

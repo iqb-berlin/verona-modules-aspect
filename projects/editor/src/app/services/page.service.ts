@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ArrayUtils } from 'common/utils/array-utils';
-import { EditorPage } from 'editor/src/app/models/editor-unit';
+import { EditorPage } from 'editor/src/app/models/editor-page';
 
 @Injectable({
   providedIn: 'root'

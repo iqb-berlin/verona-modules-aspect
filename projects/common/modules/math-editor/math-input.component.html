@@ -1,0 +1,14 @@
+<mat-button-toggle-group *ngIf="enableModeSwitch"
+                         [value]="mathFieldElement.mode"
+                         (change)="setParseMode($event)">
+  <mat-button-toggle value="math">Formel</mat-button-toggle>
+  <mat-button-toggle value="text">Text</mat-button-toggle>
+</mat-button-toggle-group>
+<div #inputRef
+     (input)="onInput()"
+     [class.full-width]="fullWidth"
+     [class.inline-block]="!fullWidth"
+     [class.read-only]="readonly"
+     (focusin)="onFocusIn()"
+     (focusout)="onFocusOut()">
+</div>

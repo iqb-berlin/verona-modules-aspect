@@ -7,34 +7,36 @@ import {
   UIElement
 } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { GeometryProperties } from 'common/models/elements/geometry/geometry';
+import { GeometryProperties } from 'common/models/elements/external-app-group-elements/geometry';
 import { firstValueFrom } from 'rxjs';
 import { FileService } from 'common/services/file.service';
-import { AudioProperties } from 'common/models/elements/media-elements/audio';
-import { VideoProperties } from 'common/models/elements/media-elements/video';
-import { ImageProperties } from 'common/models/elements/media-elements/image';
+import { AudioProperties } from 'common/models/elements/media-player-group-elements/audio';
+import { VideoProperties } from 'common/models/elements/media-player-group-elements/video';
+import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
 import {
   PlayerProperties,
   PositionProperties,
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
-import { ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
-import { TextElement } from 'common/models/elements/text/text';
-import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { DomSanitizer } from '@angular/platform-browser';
-import { TableElement, TableHeaderCell } from 'common/models/elements/compound-elements/table/table';
+import { TableElement, TableHeaderCell } from 'common/models/elements/compound-group-elements/table/table';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
-  DragNDropValueObject,
   PositionedUIElement,
   UIElementProperties,
   UIElementType,
   UIElementValue
-} from 'common/interfaces';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
+} from 'common/models/ui-element-interfaces';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import {
+  LikertRowElement, LikertRowProperties
+} from 'common/models/elements/compound-group-elements/likert/likert-row';
 
 @Injectable({
   providedIn: 'root'

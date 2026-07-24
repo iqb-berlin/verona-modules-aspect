@@ -1,0 +1,27 @@
+.wrapper {
+  display:flex;
+  flex-direction: column;
+  height: 100%;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.image-panel-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+aspect-text-image-panel {
+  margin-left: auto;
+  margin-right: auto;
+}
+.media-panels {
+  display: flex;
+  flex-direction: row;
+}
+.media-panels fieldset {
+  width: 50%;
+}

@@ -1,0 +1,45 @@
+<aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
+                                  [elementModel]="elementModel"
+                                  [elementFormControl]="elementFormControl">
+</aspect-cloze-child-error-message>
+<mat-button-toggle-group [class.errors]="elementFormControl.errors && elementFormControl.touched"
+                         [hideMultipleSelectionIndicator]="true"
+                         [hideSingleSelectionIndicator]="true"
+                         [formControl]="elementFormControl"
+                         [isDisabled]="elementModel.readOnly"
+                         [value]="elementModel.value"
+                         [vertical]="elementModel.verticalOrientation"
+                         [style.height.px]="elementModel.dimensions.isHeightFixed ? elementModel.dimensions.height : null"
+                         [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
+                                       (elementFormControl.errors | errorTransform: elementModel) : ''"
+                         [matTooltipClass]="'error-tooltip'"
+                         (focusout)="elementFormControl.markAsTouched()">
+  <!--Add dummy div - otherwise toggle button with empty options will not be in one line-->
+  <div *ngIf="elementModel.options.length === 0"
+       class="fx-row-center-center"
+       [style.min-height.px]="elementModel.dimensions.height - 2"
+       [style.width.%]="100">
+    <span>&nbsp;</span>
+  </div>
+  <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
+                     [value]="i"
+                     [ngClass]="{ 'strike-other-options' : (this.elementFormControl.value !== null ||
+                                                              elementModel.value !== null) &&
+                                                           elementModel.strikeOtherOptions,
+                                  'strike-selected-option' : (this.elementFormControl.value !== null ||
+                                                                elementModel.value !== null) &&
+                                                             elementModel.strikeSelectedOption }"
+                     [style.color]="elementModel.styling.fontColor"
+                     [style.font-size.px]="elementModel.styling.fontSize"
+                     [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+                     [style.background-color]="elementFormControl.value !== null &&
+                                               elementFormControl.value === i &&
+                                               !elementModel.strikeSelectedOption ?
+                                                 elementModel.styling.selectionColor :
+                                                 elementModel.styling.backgroundColor"
+                     [style.line-height.%]="elementModel.styling.lineHeight">
+    <div [innerHTML]="option.text | safeResourceHTML"></div>
+  </mat-button-toggle>
+</mat-button-toggle-group>

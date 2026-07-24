@@ -1,0 +1,25 @@
+mat-radio-group {
+  display: flex;
+}
+.radio-button-label {
+    cursor: pointer;
+}
+mat-radio-button {
+  margin-bottom: 8px;
+}
+:host ::ng-deep .mdc-form-field.mat-internal-form-field{
+  font-size: inherit;
+  font-weight: inherit;
+}
+:host ::ng-deep mat-radio-button .mdc-form-field {
+  align-items: flex-start;
+}
+:host ::ng-deep mat-radio-button .mdc-form-field .mdc-label {
+  padding-top: calc((var(--mat-radio-state-layer-size) - 20px) / 2);
+}
+:host ::ng-deep .strike .mdc-form-field {
+  text-decoration: line-through;
+}
+.error-message {
+  font-size: 12px; line-height: 100%;
+}

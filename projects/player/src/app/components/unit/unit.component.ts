@@ -21,17 +21,17 @@ import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { VersionManager } from 'common/services/version-manager';
 import { MatDialog } from '@angular/material/dialog';
-import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
+import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { MigrationManager } from 'common/services/migration-manager';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SectionCounter } from 'common/utils/section-counter';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { BehaviorSubject } from 'rxjs';
-import { DragNDropValueObject } from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
 import { Response } from '@iqb/responses';
 
 @Component({

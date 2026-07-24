@@ -4,7 +4,7 @@ import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
-import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
+import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
 import { TextInputGroupElementComponent } from './text-input-group-element.component';
 
 describe('TextInputGroupElementComponent', () => {

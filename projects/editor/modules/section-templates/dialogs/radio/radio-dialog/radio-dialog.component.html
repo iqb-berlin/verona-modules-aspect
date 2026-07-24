@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Assistent: MC</h2>
+<div mat-dialog-content>
+  @if (templateVariant == undefined) {
+    <mat-action-list>
+      <button mat-list-item (click)="templateVariant = 'text'">Text</button>
+      <button mat-list-item (click)="templateVariant = 'image'">Bilder</button>
+    </mat-action-list>
+  }
+  @if (templateVariant == 'text') {
+    <aspect-editor-textradio-stimulus (validityChange)="onValidityChange($event)">
+    </aspect-editor-textradio-stimulus>
+  } @else if (templateVariant == 'image') {
+    <aspect-editor-imageradio-stimulus (validityChange)="onValidityChange($event)">
+    </aspect-editor-imageradio-stimulus>
+  }
+</div>
+<div mat-dialog-actions>
+  <button mat-button [disabled]="!templateVariant || !isValid" (click)="confirmAndClose()">{{'confirm' | translate }}</button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</div>

@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
-import { TextElement } from 'common/models/elements/text/text';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MarkingRange } from 'common/models/marking-data';
 import { NativeEventService } from 'player/src/app/services/native-event.service';

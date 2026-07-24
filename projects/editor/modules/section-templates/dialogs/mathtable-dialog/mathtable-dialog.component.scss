@@ -1,0 +1,4 @@
+.mat-mdc-dialog-content {display: flex; flex-direction: column;}
+.mat-mdc-dialog-content > *:not(h3, .add-button) {margin-left: 30px;}
+h3:not(:first-child) {margin-top: 40px;}
+.terms {display: flex; flex-direction: row;}

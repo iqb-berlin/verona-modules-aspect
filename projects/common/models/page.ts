@@ -2,9 +2,9 @@ import { Section, SectionProperties } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { AbstractIDService } from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 
 export class Page {
   [index: string]: unknown;
@@ -59,8 +59,6 @@ export class Page {
   getVariableInfos(dropLists: DropListElement[]): VariableInfo[] {
     return this.sections.map(section => section.getVariableInfos(dropLists)).flat();
   }
-
-
 }
 
 export interface PageProperties {

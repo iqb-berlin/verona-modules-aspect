@@ -1,0 +1,8 @@
+.hidden {
+  display: none !important;
+}
+.section-wrapper {display: flex;}
+.section-wrapper.row-align {flex-direction: row;}
+.section-wrapper.column-align {flex-direction: column;}
+.section-wrapper .numbering-box {min-width: 35px; font-size: 20px; padding-top: 1px;}
+.section-wrapper .section {flex-grow: 1;}

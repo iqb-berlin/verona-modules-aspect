@@ -1,5 +1,6 @@
 import { ErrorHandler, Injectable } from '@angular/core';
-import { AspectError, IDError } from 'common/errors';
+import { AspectError } from 'common/classes/aspect-error';
+import { IDError } from 'common/classes/id-error';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 

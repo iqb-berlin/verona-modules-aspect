@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { InputAssistanceCustomStyle } from 'common/interfaces';
+import { InputAssistanceCustomStyle } from 'common/models/input-element-interfaces';
 
 @Pipe({
   name: 'inputAssistanceCustomStyle',

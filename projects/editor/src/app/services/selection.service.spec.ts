@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SelectionService } from './selection.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
 
 describe('SelectionService', () => {
   let service: SelectionService;

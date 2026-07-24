@@ -5,7 +5,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { of } from 'rxjs';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { ShowStateVariablesButtonComponent } from './show-state-variables-button.component';
+import { ShowStateVariablesButtonComponent } from 'editor/src/app/components/show-state-variables-button/show-state-variables-button.component';
 
 describe('ShowStateVariablesButtonComponent', () => {
   let component: ShowStateVariablesButtonComponent;

@@ -1,6 +1,6 @@
 import { StorableTimer } from 'player/src/app/classes/storable-timer';
 import { takeUntil } from 'rxjs/operators';
-import { ValueChangeElement } from 'common/interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { Subject } from 'rxjs';
 

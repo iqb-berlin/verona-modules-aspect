@@ -2,22 +2,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { CheckboxElement } from 'common/models/elements/input-elements/checkbox';
-import { TextElement } from 'common/models/elements/text/text';
-import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
-import { DropdownElement } from 'common/models/elements/input-elements/dropdown';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { SliderElement } from 'common/models/elements/input-elements/slider';
-import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
-import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
-import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
-import { AudioElement } from 'common/models/elements/media-elements/audio';
-import { VideoElement } from 'common/models/elements/media-elements/video';
-import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
-import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
-import { FrameElement } from 'common/models/elements/frame/frame';
-import { ImageElement } from 'common/models/elements/media-elements/image';
-import { ButtonElement } from 'common/models/elements/button/button';
+import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { RadioButtonGroupElement } from 'common/models/elements/input-group-elements/radio-button-group';
+import { DropdownElement } from 'common/models/elements/input-group-elements/dropdown';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { SliderElement } from 'common/models/elements/input-group-elements/slider';
+import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
+import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
+import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
+import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
+import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
+import { ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { FrameElement } from 'common/models/elements/base-group-elements/frame';
+import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
+import { ButtonElement } from 'common/models/elements/action-group-elements/button';
 import { ElementGroupSelectionComponent } from './element-group-selection.component';
 
 describe('ElementGroupSelectionComponent', () => {

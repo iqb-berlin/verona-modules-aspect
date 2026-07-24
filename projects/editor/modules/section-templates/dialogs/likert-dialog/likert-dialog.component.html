@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Assistent: CMC</h2>
+<div mat-dialog-content>
+  <h3>Text</h3>
+  <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
+                           [placeholder]="'Hier steht die Fragestellung.'">
+  </aspect-rich-text-editor>
+
+  <h3>Satzanfang (optional)</h3>
+  <mat-form-field appearance="fill" [style.width.px]="400">
+    <textarea matInput type="text" [(ngModel)]="text2" placeholder="Hier kann ein Satzanfang stehen."></textarea>
+  </mat-form-field>
+
+  <h3>Optionen</h3>
+  <aspect-option-list-panel class="options" [textFieldLabel]="'Neue Option'"
+                            [itemList]="options"
+                            [showImageButton]="true"
+                            [localMode]="true">
+  </aspect-option-list-panel>
+
+  <h3>Zeilen</h3>
+  <aspect-option-list-panel class="options" [textFieldLabel]="'Neue Zeile'"
+                            [itemList]="rows"
+                            [showImageButton]="true"
+                            [localMode]="true">
+  </aspect-option-list-panel>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [disabled]="options.length < 1 || rows.length < 1"
+          [mat-dialog-close]="{ text1, text2, options, rows }">{{'confirm' | translate }}</button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</div>

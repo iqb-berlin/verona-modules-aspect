@@ -1,41 +1,51 @@
 import { ComponentRegistry } from 'common/utils/component-registry';
-import { TextComponent } from 'common/components/text/text.component';
-import { ButtonComponent } from 'common/components/button/button.component';
-import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
+import { TextComponent } from 'common/components/text-group-elements/text/text.component';
+import { ButtonComponent } from 'common/components/action-group-elements/button/button.component';
+import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
 import {
   TextFieldSimpleComponent
-} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
-import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
-import { DropdownComponent } from 'common/components/input-elements/dropdown/dropdown.component';
-import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
-import { ImageComponent } from 'common/components/media-elements/image.component';
-import { AudioComponent } from 'common/components/media-elements/audio.component';
-import { VideoComponent } from 'common/components/media-elements/video.component';
-import { LikertComponent } from 'common/components/compound-elements/likert/likert.component';
+} from 'common/components/compound-group-elements/text-field-simple/text-field-simple.component';
+import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
+import { CheckboxComponent } from 'common/components/input-group-elements/checkbox/checkbox.component';
+import { DropdownComponent } from 'common/components/input-group-elements/dropdown/dropdown.component';
+import {
+  RadioButtonGroupComponent
+} from 'common/components/input-group-elements/radio-button-group/radio-button-group.component';
+import { ImageComponent } from 'common/components/interactive-group-elements/image/image.component';
+import { AudioComponent } from 'common/components/media-player-group-elements/audio/audio.component';
+import { VideoComponent } from 'common/components/media-player-group-elements/video/video.component';
+import { LikertComponent } from 'common/components/compound-group-elements/likert/likert.component';
 import {
   LikertRadioButtonGroupComponent
-} from 'common/components/compound-elements/likert/likert-radio-button-group.component';
-import { RadioGroupImagesComponent } from 'common/components/input-elements/radio-group-images.component';
-import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
-import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
-import { TableComponent } from 'common/components/compound-elements/table/table.component';
-import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
-import { SliderComponent } from 'common/components/input-elements/slider.component';
-import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
-import { FrameComponent } from 'common/components/frame/frame.component';
+} from 'common/components/compound-group-elements/likert-radio-button-group/likert-radio-button-group.component';
+import {
+  RadioGroupImagesComponent
+} from 'common/components/input-group-elements/radio-group-images/radio-group-images.component';
+import { DropListComponent } from 'common/components/input-group-elements/drop-list/drop-list.component';
+import { ClozeComponent } from 'common/components/compound-group-elements/cloze/cloze.component';
+import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
+import { HotspotImageComponent } from 'common/components/input-group-elements/hotspot-image/hotspot-image.component';
+import { SliderComponent } from 'common/components/input-group-elements/slider/slider.component';
+import {
+  SpellCorrectComponent
+} from 'common/components/text-input-group-elements/spell-correct/spell-correct.component';
+import { FrameComponent } from 'common/components/base-group-elements/frame/frame.component';
 import {
   ToggleButtonComponent
-} from 'common/components/compound-elements/cloze/cloze-child-elements/toggle-button.component';
-import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { MathFieldComponent } from 'common/components/input-elements/math-field/math-field.component';
-import { MathTableComponent } from 'common/components/input-elements/math-table.component';
-import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
-import { TriggerComponent } from 'common/components/trigger/trigger.component';
+} from 'common/components/compound-group-elements/toggle-button/toggle-button.component';
+import { GeometryComponent } from 'common/components/external-app-group-elements/geometry/geometry.component';
+import { MathFieldComponent } from 'common/components/text-input-group-elements/math-field/math-field.component';
+import { MathTableComponent } from 'common/components/interactive-group-elements/math-table/math-table.component';
+import {
+  TextAreaMathComponent
+} from 'common/components/text-input-group-elements/text-area-math/text-area-math.component';
+import { TriggerComponent } from 'common/components/action-group-elements/trigger/trigger.component';
 import {
   WidgetMoleculeEditorComponent
-} from 'common/components/widget-molecule-editor/widget-molecule-editor.component';
-import { WidgetPeriodicTableComponent } from 'common/components/widget-periodic-table/widget-periodic-table.component';
+} from 'common/components/widget-group-elements/widget-molecule-editor/widget-molecule-editor.component';
+import {
+  WidgetPeriodicTableComponent
+} from 'common/components/widget-group-elements/widget-periodic-table/widget-periodic-table.component';
 
 export function registerComponents(): void {
   ComponentRegistry.registerComponents({

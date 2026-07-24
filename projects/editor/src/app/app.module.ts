@@ -24,111 +24,134 @@ import {
 } from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { MatRadioModule } from '@angular/material/radio';
-import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
-import { MathEditorModule } from 'common/math-editor/math-editor.module';
+import {
+  HotspotEditDialogComponent
+} from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
+import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
+import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
-import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
-import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
+import { UnitNavNextComponent } from 'common/components/unit-nav-next/unit-nav-next.component';
+import {
+  MarkingPanelComponent
+} from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
 import { ComponentRegistry } from 'common/utils/component-registry';
 import {
   StateVariablesDialogComponent
-} from './components/state-variables-dialog/state-variables-dialog.component';
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
 import {
   VisibilityRuleEditorComponent
-} from './components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
+} from 'editor/src/app/components/dialogs/visibility-rule-editor/visibility-rule-editor.component';
 import {
   ShowStateVariablesButtonComponent
-} from './components/show-state-variables-button/show-state-variables-button.component';
+} from 'editor/src/app/components/show-state-variables-button/show-state-variables-button.component';
 import {
   TextFieldElementPropertiesComponent
-} from './components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/text-field-element-properties/text-field-element-properties.component';
 import {
   ScaleAndZoomPropertiesComponent
-} from './components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/scale-and-zoom-properties/scale-and-zoom-properties.component';
 import {
   StateVariableEditorComponent
-} from './components/state-variable-editor/state-variable-editor.component';
+} from 'editor/src/app/components/state-variable-editor/state-variable-editor.component';
 import { ActionParamStateVariableComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/action-param-state-variable.component';
+  'editor/src/app/components/properties-panel/model-properties-tab/action-param-state-variable/action-param-state-variable.component';
 import {
   VisibilityRulesDialogComponent
-} from './components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 
 import { InputAssistancePropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/input-assistance-properties.component';
+  'editor/src/app/components/properties-panel/model-properties-tab/input-assistance-properties/input-assistance-properties.component';
 import {
   TooltipPropertiesDialogComponent
-} from './components/dialogs/tooltip-properties-dialog.component';
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
 import {
-  ActionPropertiesComponent, GetStateVariablePipe, ScrollPageIndexPipe
-} from './components/properties-panel/model-properties-tab/input-groups/action-properties.component';
-import { AppComponent } from './app.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
+  ActionPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/action-properties/action-properties.component';
+import { GetStateVariablePipe } from 'editor/src/app/pipes/get-state-variable.pipe';
+import { ScrollPageIndexPipe } from 'editor/src/app/pipes/scroll-page-index.pipe';
+import { AppComponent } from 'editor/src/app/app.component';
+import { ToolbarComponent } from 'editor/src/app/components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
-  './components/new-ui-element-panel/ui-element-toolbox.component';
-import { UnitViewComponent } from './components/unit-view/unit-view.component';
-import { PageViewComponent } from './components/unit-view/page/page-view.component';
-import { EditorTranslateLoader } from './editor-translate-loader';
-import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
-import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-confirmation-dialog.component';
-import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
-import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
+  'editor/src/app/components/ui-element-toolbox/ui-element-toolbox.component';
+import { UnitViewComponent } from 'editor/src/app/components/unit-view/unit-view.component';
+import { PageViewComponent } from 'editor/src/app/components/page-view/page-view.component';
+import { EditorTranslateLoader } from 'editor/src/app/classes/editor-translate-loader';
 import {
-  GetValidAudioVideoAliasAndIDsPipe,
+  DeleteConfirmationDialogComponent
+} from 'editor/src/app/components/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { TextEditDialogComponent } from 'editor/src/app/components/dialogs/text-edit-dialog/text-edit-dialog.component';
+import {
+  TextEditMultilineDialogComponent
+} from 'editor/src/app/components/dialogs/text-edit-multiline-dialog/text-edit-multiline-dialog.component';
+import {
   PlayerEditDialogComponent
-} from './components/dialogs/player-edit-dialog.component';
-import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
-import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
-import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
-import { ToggleButtonNodeviewComponent } from './text-editor/angular-node-views/toggle-button-nodeview.component';
-import { TextFieldNodeviewComponent } from './text-editor/angular-node-views/text-field-nodeview.component';
-import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop-list-nodeview.component';
-import { DropdownNodeviewComponent } from './text-editor/angular-node-views/dropdown-nodeview.component';
-import { ButtonNodeviewComponent } from './text-editor/angular-node-views/button-nodeview.component';
+} from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
+import { GetValidAudioVideoAliasAndIDsPipe } from 'editor/src/app/pipes/get-valid-audio-video-alias-and-ids.pipe';
+import {
+  LikertRowEditDialogComponent
+} from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
+import {
+  RichTextEditDialogComponent
+} from 'editor/src/app/components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
+import {
+  DropListOptionEditDialogComponent
+} from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
 import { PositionFieldSetComponent } from
-  './components/properties-panel/position-properties-tab/input-groups/position-field-set.component';
+  'editor/src/app/components/properties-panel/position-field-set/position-field-set.component';
 import { DimensionFieldSetComponent } from
-  './components/properties-panel/position-properties-tab/input-groups/dimension-field-set.component';
+  'editor/src/app/components/properties-panel/dimension-field-set/dimension-field-set.component';
 import { ElementPropertiesPanelComponent }
-  from './components/properties-panel/element-properties-panel.component';
+  from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { ElementPositionPropertiesComponent } from
-  './components/properties-panel/position-properties-tab/element-position-properties.component';
+  'editor/src/app/components/properties-panel/element-position-properties/element-position-properties.component';
 import { ElementStylePropertiesComponent } from
-  './components/properties-panel/style-properties-tab/element-style-properties.component';
-import { ElementModelPropertiesComponent, IsInputElementPipe } from
-  './components/properties-panel/model-properties-tab/element-model-properties.component';
+  'editor/src/app/components/properties-panel/element-style-properties/element-style-properties.component';
+import { ElementModelPropertiesComponent } from
+  'editor/src/app/components/properties-panel/model-properties-tab/element-model-properties/element-model-properties.component';
+import { IsInputElementPipe } from 'editor/src/app/pipes/is-input-element.pipe';
 import { OptionsFieldSetComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
+  'editor/src/app/components/properties-panel/model-properties-tab/options-field-set/options-field-set.component';
 import { SelectPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/select-properties.component';
+  'editor/src/app/components/properties-panel/model-properties-tab/select-properties/select-properties.component';
 import { InputElementPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
+  'editor/src/app/components/properties-panel/model-properties-tab/input-element-properties/input-element-properties.component';
 import { PresetValuePropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/preset-value-properties.component';
-import { LikertRowLabelPipe } from './components/properties-panel/likert-row-label.pipe';
-import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
-import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
-import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
-import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
-import { SanitizationDialogComponent } from './components/dialogs/sanitization-dialog.component';
-import { CheckboxNodeviewComponent } from './text-editor/angular-node-views/checkbox-nodeview.component';
-import { OptionListPanelComponent } from './components/properties-panel/option-list-panel.component';
+  'editor/src/app/components/properties-panel/model-properties-tab/preset-value-properties/preset-value-properties.component';
+import { LikertRowLabelPipe } from 'editor/src/app/pipes/likert-row-label.pipe';
+import {
+  LabelEditDialogComponent
+} from 'editor/src/app/components/dialogs/label-edit-dialog/label-edit-dialog.component';
+import {
+  GeogebraAppDefinitionDialogComponent
+} from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog/geogebra-app-definition-dialog.component';
+import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
+import {
+  DeleteReferenceDialogComponent
+} from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
+import {
+  SanitizationDialogComponent
+} from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
+import {
+  OptionListPanelComponent
+} from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
 import {
   EleSpecificPropsComponent
-} from './components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
-import { PageMenu } from './components/unit-view/page/page-menu.component';
-import { ImageResizeDialogComponent } from './components/image-resize-dialog/image-resize-dialog.component';
-import { BytesPipe } from './pipes/bytes.pipe';
-import { SupportsQualityPipe } from './pipes/supports-quality.pipe';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/ele-specific-props/ele-specific-props.component';
+import { PageMenu } from 'editor/src/app/components/page-menu/page-menu.component';
+import {
+  ImageResizeDialogComponent
+} from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
+import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
 
-import { ReferenceListComponent } from './components/reference-list.component';
-import { ElementListComponent } from './components/element-list.component';
+import { ReferenceListComponent } from 'editor/src/app/components/reference-list/reference-list.component';
+import { ElementListComponent } from 'editor/src/app/components/element-list/element-list.component';
 
-import { SectionComponent } from './components/unit-view/section/section.component';
-import { ErrorService } from './services/error.service';
+import { SectionComponent } from 'editor/src/app/components/section/section.component';
+import { ErrorService } from 'editor/src/app/services/error.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -146,12 +169,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     UnitViewComponent,
     PageViewComponent,
     ElementPropertiesPanelComponent,
-    ToggleButtonNodeviewComponent,
-    TextFieldNodeviewComponent,
-    CheckboxNodeviewComponent,
-    DropListNodeviewComponent,
-    DropdownNodeviewComponent,
-    ButtonNodeviewComponent,
     ElementStylePropertiesComponent,
     ElementPositionPropertiesComponent,
     DeleteConfirmationDialogComponent,
@@ -219,6 +236,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     MatListModule,
     MatRadioModule,
     MathEditorModule,
+    RichTextEditorModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     MatBadgeModule,
@@ -230,7 +248,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ElementListComponent,
     SizeInputPanelComponent,
     SectionComponent,
-    RichTextEditorComponent,
     UnitNavNextComponent
   ],
   providers: [

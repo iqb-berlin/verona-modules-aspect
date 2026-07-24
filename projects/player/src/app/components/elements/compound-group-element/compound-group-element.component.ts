@@ -6,32 +6,32 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import {
   TextFieldSimpleComponent
-} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
-import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+} from 'common/components/compound-group-elements/text-field-simple/text-field-simple.component';
+import { ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
 import {
   CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
-import { ButtonComponent } from 'common/components/button/button.component';
+import { ButtonComponent } from 'common/components/action-group-elements/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
-import { UnitNavParam } from 'common/models/elements/button/button';
+import { UnitNavParam } from 'common/models/elements/action-group-elements/button';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { Subscription, take } from 'rxjs';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { ResponseValueType } from '@iqb/responses';
-import { TableElement } from 'common/models/elements/compound-elements/table/table';
-import { ImageElement } from 'common/models/elements/media-elements/image';
-import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
-import { ImageComponent } from 'common/components/media-elements/image.component';
-import { AudioComponent } from 'common/components/media-elements/audio.component';
-import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
+import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
+import { ImageComponent } from 'common/components/interactive-group-elements/image/image.component';
+import { AudioComponent } from 'common/components/media-player-group-elements/audio/audio.component';
+import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
 import { MediaPlayerService } from 'player/src/app/services/media-player.service';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
-import { TextComponent } from 'common/components/text/text.component';
+import { TextComponent } from 'common/components/text-group-elements/text/text.component';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
-import { TextElement } from 'common/models/elements/text/text';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
 import { NavigationTarget } from 'player/modules/verona/models/verona';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';
@@ -40,7 +40,7 @@ import {
   TextGroupElementComponent
 } from 'player/src/app/components/elements/text-group-element/text-group-element.component';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
-import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
+import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';

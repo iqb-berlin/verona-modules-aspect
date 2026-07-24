@@ -1,5 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
-import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 
 type ElementCreator = (
   element: { type: UIElementType } & Partial<UIElementProperties>,

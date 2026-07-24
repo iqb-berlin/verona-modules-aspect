@@ -19,9 +19,11 @@ import {
   MarkablesContainerComponent
 } from 'player/src/app/components/markables-container/markables-container.component';
 import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
-import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
+import {
+  MarkingPanelComponent
+} from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
 import { ErrorService } from 'player/src/app/services/error.service';
-import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
+import { UnitNavNextComponent } from 'common/components/unit-nav-next/unit-nav-next.component';
 import {
   MathKeyboardContainerComponent
 } from 'player/src/app/components/math-keyboard-container/math-keyboard-container.component';

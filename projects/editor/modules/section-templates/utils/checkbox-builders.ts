@@ -1,4 +1,4 @@
-import { TemplateService } from 'editor/modules/section-templates/template.service';
+import { TemplateService } from 'editor/modules/section-templates/services/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 

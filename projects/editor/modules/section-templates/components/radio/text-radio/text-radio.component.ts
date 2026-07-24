@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { TextRadioOptions } from 'editor/modules/section-templates/radio-interfaces';
+import { TextRadioOptions } from 'editor/modules/section-templates/models/radio-interfaces';
 
 @Component({
   standalone: false,

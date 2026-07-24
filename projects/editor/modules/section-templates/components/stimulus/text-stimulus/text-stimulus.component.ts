@@ -1,4 +1,4 @@
-import { TextStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
+import { TextStimulusOptions } from 'editor/modules/section-templates/models/stimulus-interfaces';
 import { Component } from '@angular/core';
 import { CONSTANTS } from 'editor/modules/section-templates/constants';
 

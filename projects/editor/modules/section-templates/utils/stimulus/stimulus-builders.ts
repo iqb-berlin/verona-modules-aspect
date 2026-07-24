@@ -2,10 +2,10 @@ import { IDService } from 'editor/src/app/services/id.service';
 import {
   TextStimulusOptions, EmailStimulusOptions,
   MessageStimulusOptions, Audio1StimulusOptions, Audio2StimulusOptions
-} from 'editor/modules/section-templates/stimulus-interfaces';
-import { getEmailTemplateString } from 'editor/modules/section-templates/builders/stimulus/email';
-import { getMessageTemplateString } from 'editor/modules/section-templates/builders/stimulus/message';
-import { TemplateService } from 'editor/modules/section-templates/template.service';
+} from 'editor/modules/section-templates/models/stimulus-interfaces';
+import { getEmailTemplateString } from 'editor/modules/section-templates/utils/stimulus/email';
+import { getMessageTemplateString } from 'editor/modules/section-templates/utils/stimulus/message';
+import { TemplateService } from 'editor/modules/section-templates/services/template.service';
 import { DimensionProperties, PlayerProperties } from 'common/models/elements/property-group-interfaces';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 

@@ -23,25 +23,25 @@ import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-
 import {
   OptionListPanelComponent
 } from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
-import { CheckboxWizardDialogComponent } from './dialogs/checkbox-dialog/checkbox-dialog.component';
-import { DroplistWizardDialogComponent } from './dialogs/droplist-dialog/droplist-dialog.component';
-import { GeometryWizardDialogComponent } from './dialogs/geometry-dialog/geometry-dialog.component';
-import { LikertWizardDialogComponent } from './dialogs/likert-dialog/likert-dialog.component';
-import { MarkingPanelDialogComponent } from './dialogs/marking-panel-dialog/marking-panel-dialog.component';
-import { MathTableWizardDialogComponent } from './dialogs/mathtable-dialog/mathtable-dialog.component';
-import { ImageRadioComponent } from './dialogs/radio/image-radio/image-radio.component';
-import { RadioWizardDialogComponent } from './dialogs/radio/radio-dialog/radio-dialog.component';
-import { TextRadioComponent } from './dialogs/radio/text-radio/text-radio.component';
-import { Audio1StimulusComponent } from './dialogs/stimulus/audio1-stimulus/audio1-stimulus.component';
-import { Audio2StimulusComponent } from './dialogs/stimulus/audio2-stimulus/audio2-stimulus.component';
-import { AudioRowComponent } from './dialogs/stimulus/audio-row/audio-row.component';
-import { ChatStimulusComponent } from './dialogs/stimulus/chat-stimulus/chat-stimulus.component';
-import { EmailStimulusComponent } from './dialogs/stimulus/email-stimulus/email-stimulus.component';
-import { MessageStimulusComponent } from './dialogs/stimulus/message-stimulus/message-stimulus.component';
-import { StimulusWizardDialogComponent } from './dialogs/stimulus/stimulus-dialog/stimulus-dialog.component';
-import { TextStimulusComponent } from './dialogs/stimulus/text-stimulus/text-stimulus.component';
-import { Text3WizardDialogComponent } from './dialogs/text3-dialog/text3-dialog.component';
-import { InputWizardDialogComponent } from './dialogs/text-input-dialog/text-input-dialog.component';
+import { CheckboxWizardDialogComponent } from './components/checkbox-dialog/checkbox-dialog.component';
+import { DroplistWizardDialogComponent } from './components/droplist-dialog/droplist-dialog.component';
+import { GeometryWizardDialogComponent } from './components/geometry-dialog/geometry-dialog.component';
+import { LikertWizardDialogComponent } from './components/likert-dialog/likert-dialog.component';
+import { MarkingPanelDialogComponent } from './components/marking-panel-dialog/marking-panel-dialog.component';
+import { MathTableWizardDialogComponent } from './components/mathtable-dialog/mathtable-dialog.component';
+import { ImageRadioComponent } from './components/radio/image-radio/image-radio.component';
+import { RadioWizardDialogComponent } from './components/radio/radio-dialog/radio-dialog.component';
+import { TextRadioComponent } from './components/radio/text-radio/text-radio.component';
+import { Audio1StimulusComponent } from './components/stimulus/audio1-stimulus/audio1-stimulus.component';
+import { Audio2StimulusComponent } from './components/stimulus/audio2-stimulus/audio2-stimulus.component';
+import { AudioRowComponent } from './components/stimulus/audio-row/audio-row.component';
+import { ChatStimulusComponent } from './components/stimulus/chat-stimulus/chat-stimulus.component';
+import { EmailStimulusComponent } from './components/stimulus/email-stimulus/email-stimulus.component';
+import { MessageStimulusComponent } from './components/stimulus/message-stimulus/message-stimulus.component';
+import { StimulusWizardDialogComponent } from './components/stimulus/stimulus-dialog/stimulus-dialog.component';
+import { TextStimulusComponent } from './components/stimulus/text-stimulus/text-stimulus.component';
+import { Text3WizardDialogComponent } from './components/text3-dialog/text3-dialog.component';
+import { InputWizardDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
 
 @NgModule({
   declarations: [

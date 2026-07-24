@@ -1,7 +1,7 @@
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { SectionProperties } from 'common/models/section';
 import { IDService } from 'editor/src/app/services/id.service';
-import { TemplateService } from 'editor/modules/section-templates/template.service';
+import { TemplateService } from 'editor/modules/section-templates/services/template.service';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 
 export function createGeometrySection(text: string, geometryAppDefinition: string, geometryFileName: string,

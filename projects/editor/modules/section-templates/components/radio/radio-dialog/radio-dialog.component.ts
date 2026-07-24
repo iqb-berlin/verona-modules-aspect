@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TextRadioComponent } from 'editor/modules/section-templates/dialogs/radio/text-radio/text-radio.component';
-import { ImageRadioComponent } from 'editor/modules/section-templates/dialogs/radio/image-radio/image-radio.component';
+import { TextRadioComponent } from 'editor/modules/section-templates/components/radio/text-radio/text-radio.component';
+import { ImageRadioComponent } from 'editor/modules/section-templates/components/radio/image-radio/image-radio.component';
 
 @Component({
   standalone: false,

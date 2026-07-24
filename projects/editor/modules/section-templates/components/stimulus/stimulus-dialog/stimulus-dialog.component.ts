@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { EmailStimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/email-stimulus/email-stimulus.component';
-import { MessageStimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/message-stimulus/message-stimulus.component';
-import { TextStimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/text-stimulus/text-stimulus.component';
-import { Audio1StimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/audio1-stimulus/audio1-stimulus.component';
-import { Audio2StimulusComponent } from 'editor/modules/section-templates/dialogs/stimulus/audio2-stimulus/audio2-stimulus.component';
+import { EmailStimulusComponent } from 'editor/modules/section-templates/components/stimulus/email-stimulus/email-stimulus.component';
+import { MessageStimulusComponent } from 'editor/modules/section-templates/components/stimulus/message-stimulus/message-stimulus.component';
+import { TextStimulusComponent } from 'editor/modules/section-templates/components/stimulus/text-stimulus/text-stimulus.component';
+import { Audio1StimulusComponent } from 'editor/modules/section-templates/components/stimulus/audio1-stimulus/audio1-stimulus.component';
+import { Audio2StimulusComponent } from 'editor/modules/section-templates/components/stimulus/audio2-stimulus/audio2-stimulus.component';
 
 @Component({
   standalone: false,

@@ -1,7 +1,7 @@
 import { SectionProperties } from 'common/models/section';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
-import { TemplateService } from 'editor/modules/section-templates/template.service';
+import { TemplateService } from 'editor/modules/section-templates/services/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 

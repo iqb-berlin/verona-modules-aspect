@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   ClassicTemplateOptions, SortTemplateOptions, TwoPageTemplateOptions
-} from 'editor/modules/section-templates/droplist-interfaces';
+} from 'editor/modules/section-templates/models/droplist-interfaces';
 import { Label } from 'common/models/label-interfaces';
 import { FileService } from 'common/services/file.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';

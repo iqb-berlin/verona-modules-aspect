@@ -1,4 +1,4 @@
-import { MessageStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
+import { MessageStimulusOptions } from 'editor/modules/section-templates/models/stimulus-interfaces';
 
 export function getMessageTemplateString(
   options: MessageStimulusOptions & { sendLabel: string }) {

@@ -1,4 +1,4 @@
-import { Audio2StimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
+import { Audio2StimulusOptions } from 'editor/modules/section-templates/models/stimulus-interfaces';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 

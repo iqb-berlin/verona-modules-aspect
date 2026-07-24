@@ -1,4 +1,4 @@
-import { EmailStimulusOptions } from 'editor/modules/section-templates/stimulus-interfaces';
+import { EmailStimulusOptions } from 'editor/modules/section-templates/models/stimulus-interfaces';
 import { Component } from '@angular/core';
 
 @Component({

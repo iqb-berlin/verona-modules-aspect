@@ -4,23 +4,14 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'aspect-editor-message-stimulus',
-    imports: [
-        FormsModule,
-        MatRadioButton,
-        MatRadioGroup
-    ],
-    template: `
-    <p>Diese Vorlage wird vollständig mit Platzhaltertexten generiert.</p>
-    <mat-radio-group [(ngModel)]="options.lang">
-      <mat-radio-button [value]="'de'">Deutsch</mat-radio-button>
-      <mat-radio-button [value]="'en'">Englisch</mat-radio-button>
-      <mat-radio-button [value]="'fr'">Französisch</mat-radio-button>
-    </mat-radio-group>
-  `,
-    styles: `
-    *:not(h3, mat-divider) {margin-left: 30px;}
-  `
+  selector: 'aspect-editor-message-stimulus',
+  imports: [
+    FormsModule,
+    MatRadioButton,
+    MatRadioGroup
+  ],
+  templateUrl: './message-stimulus.component.html',
+  styleUrls: ['./message-stimulus.component.scss']
 })
 export class MessageStimulusComponent {
   options: MessageStimulusOptions = {

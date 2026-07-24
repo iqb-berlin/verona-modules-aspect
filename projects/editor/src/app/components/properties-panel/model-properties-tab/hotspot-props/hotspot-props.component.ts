@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
@@ -22,31 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     NgForOf
   ],
-  template: `
-    <fieldset class="fx-column-start-stretch">
-      <legend>{{'propertiesPanel.hotspots' | translate }}</legend>
-      <button [style.align-self]="'center'" mat-mini-fab matSuffix color="primary" [style.bottom.px]="3"
-              (click)="addHotspot()">
-        <mat-icon>add</mat-icon>
-      </button>
-
-      <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
-           (cdkDropListDropped)="moveHotspot($event)">
-        <div *ngFor="let item of $any(combinedProperties.value); let i = index" cdkDrag
-             class="option-draggable fx-row-start-stretch">
-          <div class="fx-flex" [style.align-self]="'center'">{{'hotspot.'+item.shape | translate}}</div>
-          <button mat-icon-button color="primary"
-                  (click)="editHotspot(i)">
-            <mat-icon>build</mat-icon>
-          </button>
-          <button mat-icon-button color="primary"
-                  (click)="removeHotspot(i)">
-            <mat-icon>clear</mat-icon>
-          </button>
-        </div>
-      </div>
-    </fieldset>
-  `
+  templateUrl: './hotspot-props.component.html'
 })
 export class HotspotPropsComponent {
   @Input() combinedProperties!: CombinedProperties;
@@ -80,8 +56,8 @@ export class HotspotPropsComponent {
 
   moveHotspot(indices: { previousIndex: number, currentIndex: number }): void {
     moveItemInArray(this.combinedProperties.value as Hotspot[],
-      indices.previousIndex,
-      indices.currentIndex);
+                    indices.previousIndex,
+                    indices.currentIndex);
     this.updateModel.emit({ property: 'value', value: this.combinedProperties.value as Hotspot[] });
   }
 

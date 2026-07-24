@@ -24,31 +24,8 @@ import { firstValueFrom } from 'rxjs';
     MatButtonModule,
     SharedModule
   ],
-  template: `
-    <div mat-dialog-title>Tabellenelemente</div>
-    <mat-dialog-content>
-      <aspect-table [elementModel]="newTable" [editorMode]="true" [allowElementEditing]="true"
-                    [contentRowHeight]="'250px'"
-                    (elementAdded)="addElement($event)"
-                    (elementRemoved)="removeElement($event)"></aspect-table>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ elements: newTable.elements, headerRows: newTable.headerRows }">
-        {{'save' | translate }}
-      </button>
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </mat-dialog-actions>
-  `,
-  styles: `
-    :host ::ng-deep aspect-table .grid-container {
-      grid-template-columns: unset !important;
-      grid-auto-columns: 300px !important;
-    }
-    :host ::ng-deep aspect-table .header-cell {
-      display: flex;
-      align-items: center;
-    }
-  `
+  templateUrl: './table-edit-dialog.component.html',
+  styleUrls: ['./table-edit-dialog.component.scss']
 })
 export class TableEditDialogComponent {
   @ViewChild(TableComponent) tableComp!: TableComponent;

@@ -9,52 +9,17 @@ import { NgForOf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-    selector: 'aspect-combo-button',
-    imports: [
-        NgForOf,
-        MatButtonModule,
-        MatTooltipModule,
-        MatInputModule,
-        MatSelectModule,
-        MatIconModule
-    ],
-    template: `
-    <div class="wrapper">
-      <button class="apply-button" mat-button [matTooltip]="tooltip"
-              [style.background-color]="inputType === 'list' && isActive ? 'lightgrey' : 'unset'"
-              (click)="applySelection.emit()">
-        <mat-icon>{{icon}}</mat-icon>
-      </button>
-
-      <input matInput type="color" #colorInput hidden
-             (input)="selectionChanged.emit($any($event.target).value); applySelection.emit()">
-
-      <mat-select panelClass="select-overlay"
-                  (click)="onClickSelect($event)">
-        <mat-option *ngFor="let value of availableValues"
-                    (click)="selectValue(value)">{{value}}</mat-option>
-      </mat-select>
-    </div>
-  `,
-    styles: [`
-    .wrapper {
-      display: flex;
-      flex-direction: row;
-    }
-    .apply-button {
-      min-width: unset;
-    }
-    .apply-button .mat-icon {
-      margin-right: 0;
-    }
-    mat-select {
-      display: flex;
-    }
-    mat-select:hover {
-      background-color: WhiteSmoke;
-    }
-  `
-    ]
+  selector: 'aspect-combo-button',
+  imports: [
+    NgForOf,
+    MatButtonModule,
+    MatTooltipModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule
+  ],
+  templateUrl: './combo-button.component.html',
+  styleUrls: ['./combo-button.component.scss']
 })
 export class ComboButtonComponent {
   @Input() inputType!: 'color' | 'list';

@@ -1,0 +1,16 @@
+<mat-dialog-content class="fx-column-start-stretch">
+  <div class="paste-area" contenteditable="true"
+       (paste)="validateBase64($event.clipboardData?.getData('Text'))">
+    <span>Base64 Repräsentation einfügen</span>
+  </div>
+  <div class="status-area" [style.color]="statusMessage?.color" [hidden]="!statusMessage">
+    {{ statusMessage?.text }}
+  </div>
+  <button mat-raised-button (click)="loadGeogebraFile()">
+    {{'loadGeogebraFile' | translate}}
+    <mat-icon>file_upload</mat-icon>
+  </button>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</mat-dialog-actions>

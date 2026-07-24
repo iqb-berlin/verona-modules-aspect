@@ -5,29 +5,16 @@ import { NgIf } from '@angular/common';
 import { SharedModule } from 'common/shared.module';
 import {
   HighlightPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/highlight-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/highlight-properties/highlight-properties.component';
 
 @Component({
-    selector: 'aspect-marking-panel-properties',
-    imports: [
-        NgIf,
-        SharedModule,
-        HighlightPropertiesComponent
-    ],
-    template: `
-    <div *ngIf="combinedProperties.type === 'marking-panel'" class="fx-column-start-stretch">
-      Fernsteuerung
-      <fieldset class="fx-column-start-stretch">
-        <legend>{{'propertiesPanel.marking' | translate }}</legend>
-        <aspect-highlight-properties [combinedProperties]="combinedProperties"
-                                     [disabled]="false"
-                                     (updateModel)="updateModel.emit($event)">
-        </aspect-highlight-properties>
-      </fieldset>
-    </div>
-  `,
-    styles: [`
-  `]
+  selector: 'aspect-marking-panel-properties',
+  imports: [
+    NgIf,
+    SharedModule,
+    HighlightPropertiesComponent
+  ],
+  templateUrl: './marking-panel-properties.component.html'
 })
 export class MarkingPanelPropertiesComponent {
   @Input() combinedProperties!: any;

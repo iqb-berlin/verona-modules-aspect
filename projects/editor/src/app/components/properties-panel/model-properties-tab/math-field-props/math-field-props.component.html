@@ -1,0 +1,4 @@
+<mat-checkbox [checked]="$any(combinedProperties.enableModeSwitch)"
+              (change)="updateModel.emit({ property: 'enableModeSwitch', value: $event.checked })">
+  {{'propertiesPanel.enableModeSwitch' | translate }}
+</mat-checkbox>

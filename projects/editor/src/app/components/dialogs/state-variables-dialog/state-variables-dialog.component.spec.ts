@@ -9,8 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
   StateVariableEditorComponent
-} from '../state-variable-editor/state-variable-editor.component';
-import { StateVariablesDialogComponent } from './state-variables-dialog.component';
+} from 'editor/src/app/components/state-variable-editor/state-variable-editor.component';
+import { StateVariablesDialogComponent } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
 
 describe('StateVariablesDialogComponent', () => {
   let component: StateVariablesDialogComponent;

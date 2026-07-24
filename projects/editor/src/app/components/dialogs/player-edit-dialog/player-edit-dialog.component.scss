@@ -1,0 +1,12 @@
+mat-tab-group {
+  height: 100%;
+}
+
+.image-preview {
+  max-width: 100px;
+}
+
+:host ::ng-deep .mat-mdc-tab-body-wrapper {
+  margin-top: 10px;
+  height: 100%;
+}

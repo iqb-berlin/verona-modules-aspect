@@ -11,9 +11,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { ImageResizeDialogData } from 'common/models/image-interfaces';
-import { BytesPipe } from '../../pipes/bytes.pipe';
-import { SupportsQualityPipe } from '../../pipes/supports-quality.pipe';
-import { ImageResizeDialogComponent } from './image-resize-dialog.component';
+import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
+import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
+import { ImageResizeDialogComponent } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
 
 describe('ImageResizeDialogComponent', () => {
   let component: ImageResizeDialogComponent;

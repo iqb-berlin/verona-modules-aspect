@@ -19,30 +19,8 @@ import { Measurement } from 'common/models/ui-element-interfaces';
     MatSelectModule,
     TranslateModule
   ],
-  template: `
-    <mat-form-field [style.width.%]="40">
-      <mat-label>{{label}}</mat-label>
-      <input matInput type="number" [disabled]="disabled"
-             [(ngModel)]="value"
-             (change)="valueUpdated.emit(getCombinedString())">
-    </mat-form-field>
-    <mat-form-field [style.width.%]="60">
-      <mat-label>Einheit</mat-label>
-      <mat-select [disabled]="disabled"
-                  [(ngModel)]="unit"
-                  (selectionChange)="valueUpdated.emit(getCombinedString())">
-        <mat-option *ngIf="allowedUnits.includes('fr')"
-                    value="fr">{{'section-menu.fraction' | translate }}</mat-option>
-        <mat-option *ngIf="allowedUnits.includes('px')"
-                    value="px">{{'section-menu.pixel' | translate }}</mat-option>
-        <mat-option *ngIf="allowedUnits.includes('%')"
-                    value="%">{{'section-menu.percent' | translate }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  `,
-  styles: [
-    ':host {display: flex; flex-direction: row;}'
-  ]
+  templateUrl: './size-input-panel.component.html',
+  styleUrls: ['./size-input-panel.component.scss']
 })
 export class SizeInputPanelComponent {
   @Input() label!: string;

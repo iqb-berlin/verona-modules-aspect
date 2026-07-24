@@ -1,15 +1,15 @@
 import {
   Component, EventEmitter, Input, Output, QueryList, ViewChildren
 } from '@angular/core';
-import { SectionMenuComponent } from 'editor/src/app/components/unit-view/section/section-menu.component';
+import { SectionMenuComponent } from 'editor/src/app/components/unit-view/section/section-menu/section-menu.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SectionService } from 'editor/src/app/services/section.service';
 import { UIElement } from 'common/models/elements/element';
-import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
-import { StaticSectionComponent } from 'editor/src/app/components/unit-view/section/static-section.component';
-import { DynamicSectionComponent } from 'editor/src/app/components/unit-view/section/dynamic-section.component';
+import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
+import { StaticSectionComponent } from 'editor/src/app/components/unit-view/section/static-section/static-section.component';
+import { DynamicSectionComponent } from 'editor/src/app/components/unit-view/section/dynamic-section/dynamic-section.component';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgClass, NgIf } from '@angular/common';
 import { SectionCounter } from 'common/utils/section-counter';
@@ -23,61 +23,8 @@ import { EditorSection } from 'editor/src/app/models/editor-unit';
     CdkDropList,
     SectionMenuComponent, StaticSectionComponent, DynamicSectionComponent
   ],
-  template: `
-    <aspect-section-menu [class.hidden]="!isOnSelectedPage || selectionService.selectedSectionIndex !== sectionIndex"
-                         class="section-menu fx-column-start-stretch"
-                         [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
-                         [section]="section" [sectionIndex]="sectionIndex" [pageIndex]="pageIndex"
-                         [lastSectionIndex]="lastSectionIndex"
-                         (elementSelected)="selectElement($event)"
-                         (elementHovered)="highlightElement($event)"
-                         (elementHoverEnd)="removeHighlight()">
-    </aspect-section-menu>
-
-    <div class="section-wrapper"
-         [ngClass]="unitService.unit.sectionNumberingPosition === 'left' ? 'row-align' : 'column-align'">
-      <div *ngIf="unitService.unit.enableSectionNumbering" class="numbering-box">
-        <b *ngIf="sectionCounter">{{sectionCounter}}.</b>
-      </div>
-      <aspect-editor-static-section *ngIf="!section.dynamicPositioning"
-                             #sectionComponent
-                             class="section" id="section-{{sectionIndex}}"
-                             [section]="section"
-                             [isSelected]="isOnSelectedPage && selectionService.selectedSectionIndex === sectionIndex"
-                             (elementSelected)="selectionService.selectedSectionIndex = sectionIndex"
-                             cdkDropList cdkDropListSortingDisabled
-                             [cdkDropListData]="{ pageIndex: pageIndex, sectionIndex: sectionIndex }"
-                             (cdkDropListDropped)="elementDropped($event)"
-                             (click)="selectionService.selectedSectionIndex = sectionIndex">
-      </aspect-editor-static-section>
-      <aspect-editor-dynamic-section *ngIf="section.dynamicPositioning"
-                              #sectionComponent
-                              class="section"
-                              [section]="section" [sectionIndex]="sectionIndex" [pageIndex]="pageIndex"
-                              [isSelected]="isOnSelectedPage &&
-                                            selectionService.selectedSectionIndex === sectionIndex"
-                              (elementSelected)="selectionService.selectedPageIndex = pageIndex;
-                                                 selectionService.selectedSectionIndex = sectionIndex"
-                              (transferElement)="moveElementsBetweenSections(selectionService.getSelectedElements(),
-                                                                 $event.sourcePageIndex,
-                                                                 $event.sourceSectionIndex,
-                                                                 $event.targetPageIndex,
-                                                                 $event.targetSectionIndex)"
-                              (click)="selectionService.selectedSectionIndex = sectionIndex;
-                                       sectionSelected.emit(sectionIndex)">
-      </aspect-editor-dynamic-section>
-    </div>
-  `,
-  styles: `
-    .hidden {
-      display: none !important;
-    }
-    .section-wrapper {display: flex;}
-    .section-wrapper.row-align {flex-direction: row;}
-    .section-wrapper.column-align {flex-direction: column;}
-    .section-wrapper .numbering-box {min-width: 35px; font-size: 20px; padding-top: 1px;}
-    .section-wrapper .section {flex-grow: 1;}
-  `
+  templateUrl: './section.component.html',
+  styleUrls: ['./section.component.scss']
 })
 export class SectionComponent {
   @Input() section!: EditorSection;

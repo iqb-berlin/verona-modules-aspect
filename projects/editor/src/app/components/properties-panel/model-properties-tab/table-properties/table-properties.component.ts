@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnDestroy, OnInit, Output
+} from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgForOf } from '@angular/common';
-import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
+import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -25,57 +27,8 @@ import { Subject } from 'rxjs';
     TranslateModule,
     MatButtonModule
   ],
-  template: `
-    <button mat-raised-button [style.align-self]="'center'" [style.margin-top.px]="5" [style.margin-bottom.px]="15"
-            (click)="elementService.showDefaultEditDialog()">
-      Elemente anpassen
-    </button>
-    <fieldset>
-      <legend>{{'section-menu.rows' | translate }}</legend>
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'section-menu.rowCount' | translate }}</mat-label>
-        <input matInput type="number" [min]="maxRowIndex"
-               [value]="$any(combinedProperties.gridRowSizes).length"
-               (click)="$any($event).stopPropagation()"
-               (change)="modifySizeArray('gridRowSizes', $any($event).target.value || 0, $event)">
-      </mat-form-field>
-      <ng-container *ngFor="let size of $any(combinedProperties.gridRowSizes); let i = index">
-        <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
-                                 [value]="size.value"
-                                 [unit]="size.unit"
-                                 [allowedUnits]="['px', 'fr']"
-                                 (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
-        </aspect-size-input-panel>
-      </ng-container>
-    </fieldset>
-    <fieldset>
-      <legend>{{'section-menu.columns' | translate }}</legend>
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'section-menu.columnCount' | translate }}</mat-label>
-        <input matInput type="number" [min]="maxColIndex"
-               [value]="$any(combinedProperties.gridColumnSizes).length"
-               (click)="$any($event).stopPropagation()"
-               (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0, $event)">
-      </mat-form-field>
-      <ng-container *ngFor="let size of $any(combinedProperties.gridColumnSizes); let i = index">
-        <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
-                                 [value]="size.value"
-                                 [unit]="size.unit"
-                                 [allowedUnits]="['px', 'fr']"
-                                 (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
-        </aspect-size-input-panel>
-      </ng-container>
-    </fieldset>
-    <mat-checkbox [checked]="$any(combinedProperties).tableEdgesEnabled"
-                  (change)="updateModel.emit({ property: 'tableEdgesEnabled', value: $event.checked })">
-      Tabellenränder zeichnen
-    </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties).headerEnabled"
-                  (change)="updateModel.emit({ property: 'headerEnabled', value: $event.checked })">
-      {{'propertiesPanel.tableHeaderEnabled' | translate }}
-    </mat-checkbox>
-  `,
-  styles: ':host {display: flex; flex-direction: column;}'
+  templateUrl: './table-properties.component.html',
+  styleUrls: ['./table-properties.component.scss']
 })
 export class TablePropertiesComponent implements OnInit, OnDestroy {
   @Input() combinedProperties!: UIElement;

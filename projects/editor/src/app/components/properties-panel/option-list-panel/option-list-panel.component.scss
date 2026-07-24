@@ -1,0 +1,14 @@
+.item-box {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+}
+.item-id {
+  align-self: start;
+  font-size: smaller;
+  margin-bottom: 4px;
+  background-color: lightgray;
+  padding: 0 5px;
+  border-radius: 5px;
+}

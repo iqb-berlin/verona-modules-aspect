@@ -12,56 +12,21 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'aspect-editor-geometry-wizard-dialog',
-    imports: [
-        MatDialogModule,
-        TranslateModule,
-        MatButtonModule,
-        RichTextEditorComponent,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatTooltipModule,
-        MatCheckboxModule,
-        FormsModule
-    ],
-    template: `
-    <h2 mat-dialog-title>Assistent: GeoGebra</h2>
-    <div mat-dialog-content>
-      <h3>Text</h3>
-      <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'">
-      </aspect-rich-text-editor>
-
-      <h3>GeoGebra-Datei</h3>
-      <mat-form-field matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
-                      appearance="fill" [style.align-self]="'flex-start'" [style.width.%]="40">
-        <mat-label>{{ 'propertiesPanel.appDefinition' | translate }}</mat-label>
-        <input matInput disabled
-               [value]="geometryAppDefinition ? 'Definition vorhanden' : 'keine Definition vorhanden'">
-        <button mat-icon-button matSuffix (click)="changeSrc()">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <h3>Hilfe</h3>
-      <mat-checkbox [(ngModel)]="showHelper">
-        Bild mit Hilfstext für Zeichenaufgaben anfügen
-      </mat-checkbox>
-
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button [disabled]="geometryAppDefinition == undefined"
-              [mat-dialog-close]="{ text, geometryAppDefinition, geometryFileName, showHelper }">
-        {{'confirm' | translate }}
-      </button>
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </div>
-  `,
-    styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3) {margin-left: 30px;}
-    h3:not(:first-child) {margin-top: 40px;}
-  `
+  selector: 'aspect-editor-geometry-wizard-dialog',
+  imports: [
+    MatDialogModule,
+    TranslateModule,
+    MatButtonModule,
+    RichTextEditorComponent,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatCheckboxModule,
+    FormsModule
+  ],
+  templateUrl: './geometry-dialog.component.html',
+  styleUrls: ['./geometry-dialog.component.scss']
 })
 export class GeometryWizardDialogComponent {
   text: string = '';

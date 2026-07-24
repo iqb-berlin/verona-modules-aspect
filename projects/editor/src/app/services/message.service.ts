@@ -2,10 +2,12 @@
 import {
   Component, inject, Inject, Injectable, Input, Optional
 } from '@angular/core';
-import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
+import {
+  MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule, MatSnackBarRef
+} from '@angular/material/snack-bar';
 import { ReferenceList } from 'editor/src/app/services/reference-manager';
 import { UIElement } from 'common/models/elements/element';
-import { ReferenceListComponent } from 'editor/src/app/components/reference-list.component';
+import { ReferenceListComponent } from 'editor/src/app/components/reference-list/reference-list.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -66,13 +68,13 @@ export class MessageService {
 }
 
 @Component({
-    selector: 'aspect-reference-list-snackbar',
-    imports: [
-        ReferenceListComponent,
-        MatSnackBarModule,
-        MatButtonModule
-    ],
-    template: `
+  selector: 'aspect-reference-list-snackbar',
+  imports: [
+    ReferenceListComponent,
+    MatSnackBarModule,
+    MatButtonModule
+  ],
+  template: `
     <div [style.padding.px]="16">
       <aspect-reference-list matSnackBarLabel [refs]="refs || data"></aspect-reference-list>
       <span matSnackBarActions>
@@ -82,14 +84,14 @@ export class MessageService {
       </span>
     </div>
   `,
-    styles: [`
+  styles: [`
     button {
       color: var(--mat-snack-bar-button-color) !important;
       --mat-mdc-button-persistent-ripple-color: currentColor !important;
     }
     aspect-reference-list {color: var(--mat-snackbar-supporting-text-color);}
     `
-    ]
+  ]
 })
 export class ReferenceListSnackbarComponent {
   @Input() refs: ReferenceList[] | undefined;
@@ -99,16 +101,16 @@ export class ReferenceListSnackbarComponent {
 }
 
 @Component({
-    selector: 'aspect-invalid-reference-elements-list-snackbar',
-    imports: [
-        NgIf,
-        NgForOf,
-        MatListModule,
-        MatIconModule,
-        MatSnackBarModule,
-        MatButtonModule
-    ],
-    template: `
+  selector: 'aspect-invalid-reference-elements-list-snackbar',
+  imports: [
+    NgIf,
+    NgForOf,
+    MatListModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatButtonModule
+  ],
+  template: `
     Invalide Referenzen bei folgenden <br> Elementen wurden entfernt:
     <mat-list>
       <mat-list-item *ngFor="let element of data">
@@ -138,7 +140,7 @@ export class ReferenceListSnackbarComponent {
       </button>
     </span>
   `,
-    styles: [`
+  styles: [`
     :host {font-size: large;}
     button {
       color: var(--mat-snack-bar-button-color) !important;
@@ -147,7 +149,7 @@ export class ReferenceListSnackbarComponent {
     mat-icon {color: inherit !important;}
     .mat-mdc-list-item-title {color: inherit !important;}
     `
-    ]
+  ]
 })
 export class FixedReferencesSnackbarComponent {
   constructor(public snackBarRef: MatSnackBarRef<FixedReferencesSnackbarComponent>,

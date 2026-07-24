@@ -1,24 +1,23 @@
-// eslint-disable-next-line max-classes-per-file
 import {
   Component, EventEmitter,
-  Input, OnDestroy, Output, Pipe, PipeTransform
+  Input, OnDestroy, Output
 } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Subject, firstValueFrom } from 'rxjs';
-import { InputElement, isInputElement, UIElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { FileService } from 'common/services/file.service';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { MATH_KEYBOARD_PRESETS } from 'common/models/input-element-interfaces';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { ElementService } from 'editor/src/app/services/element.service';
-import { UnitService } from '../../../services/unit.service';
-import { SelectionService } from '../../../services/selection.service';
-import { DialogService } from '../../../services/dialog.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
   templateUrl: './element-model-properties.component.html',
-  styleUrls: ['./element-model-properties.component.css'],
+  styleUrls: ['./element-model-properties.component.scss'],
   standalone: false
 })
 export class ElementModelPropertiesComponent implements OnDestroy {
@@ -118,15 +117,5 @@ export class ElementModelPropertiesComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-}
-
-@Pipe({
-  name: 'isInputElement',
-  standalone: true
-})
-export class IsInputElementPipe implements PipeTransform {
-  transform(el: UIElement): el is InputElement {
-    return isInputElement(el);
   }
 }

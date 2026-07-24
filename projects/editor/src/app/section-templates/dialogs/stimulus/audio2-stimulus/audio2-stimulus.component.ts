@@ -2,53 +2,23 @@ import { Audio2StimulusOptions } from 'editor/src/app/section-templates/stimulus
 import { Component, EventEmitter, Output } from '@angular/core';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
-import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio-row.component';
+import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio-row/audio-row.component';
 import { FileService } from 'common/services/file.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
-    selector: 'aspect-editor-audio2-stimulus',
-    imports: [
-        FormsModule,
-        RichTextEditorComponent,
-        AudioRowComponent,
-        MatTooltip,
-        MatRadioButton,
-        MatRadioGroup
-    ],
-    template: `
-    <h3>Instruktionsaudio</h3>
-    <aspect-editor-wizard-audio [src]="options.src1" [(maxRuns)]="options.maxRuns1"
-                                (changeMediaSrc)="changeMediaSrc('src1')">
-    </aspect-editor-wizard-audio>
-
-    <h3>Stimulusaudio</h3>
-    <aspect-editor-wizard-audio [src]="options.src2" [(maxRuns)]="options.maxRuns2"
-                                (changeMediaSrc)="changeMediaSrc('src2')">
-    </aspect-editor-wizard-audio>
-
-    <h3>Quelle</h3>
-    <aspect-rich-text-editor class="text2" [(content)]="options.text" [showReducedControls]="true"
-                             [placeholder]="'Hier steht die Quelle.'">
-    </aspect-rich-text-editor>
-
-    <h3>Sprache</h3>
-    <mat-radio-group [(ngModel)]="options.lang"
-                     [matTooltip]="'Mit dieser Einstellung werden kurze Texte oberhalb des Audios generiert.'">
-      <mat-radio-button [value]="'german'">Deutsch</mat-radio-button>
-      <mat-radio-button [value]="'english'">Englisch</mat-radio-button>
-      <mat-radio-button [value]="'french'">Französisch</mat-radio-button>
-    </mat-radio-group>
-
-    <h3>Situierung, Frage, Operator, Hinweise, o.Ä.</h3>
-    <aspect-rich-text-editor [(content)]="options.text2" [showReducedControls]="true">
-    </aspect-rich-text-editor>
-  `,
-    styles: `
-    *:not(h3, mat-divider) {margin-left: 30px;}
-    h3:not(:first-child) {margin-top: 40px;}
-  `
+  selector: 'aspect-editor-audio2-stimulus',
+  imports: [
+    FormsModule,
+    RichTextEditorComponent,
+    AudioRowComponent,
+    MatTooltip,
+    MatRadioButton,
+    MatRadioGroup
+  ],
+  templateUrl: './audio2-stimulus.component.html',
+  styleUrls: ['./audio2-stimulus.component.scss']
 })
 export class Audio2StimulusComponent {
   @Output() validityChange = new EventEmitter<boolean>();

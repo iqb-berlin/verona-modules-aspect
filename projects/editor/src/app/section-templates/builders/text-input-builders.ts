@@ -3,7 +3,7 @@ import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import { EditorSection } from '../../models/editor-unit';
+import { EditorSection } from 'editor/src/app/models/editor-unit';
 
 export function createInputSection(config: { text: string, answerCount: number, multilineInputs: boolean,
   numbering: 'latin' | 'decimal' | 'bullets' | 'none', fieldLength: 'very-small' | 'small' | 'medium' | 'large',

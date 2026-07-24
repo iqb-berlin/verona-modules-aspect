@@ -2,17 +2,9 @@ import { Component } from '@angular/core';
 import { AngularNodeViewComponent } from 'ngx-tiptap';
 
 @Component({
-    selector: 'aspect-nodeview-toggle-button',
-    template: `
-    <aspect-toggle-button [style.display]="'inline-block'"
-                          [style.vertical-align]="'middle'"
-                          [elementModel]="node.attrs.model"
-                          [matTooltip]="'ID: ' + node.attrs.model.id">
-    </aspect-toggle-button>
-  `,
-    styles: [
-        ':host {display: inline-block;}'
-    ],
-    standalone: false
+  selector: 'aspect-nodeview-toggle-button',
+  templateUrl: './toggle-button-nodeview.component.html',
+  styleUrls: ['./toggle-button-nodeview.component.scss'],
+  standalone: false
 })
 export class ToggleButtonNodeviewComponent extends AngularNodeViewComponent { }

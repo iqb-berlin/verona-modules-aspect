@@ -9,31 +9,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'aspect-editor-wizard-audio',
-    imports: [
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTooltipModule,
-        MatIconModule,
-        FormsModule
-    ],
-    template: `
-    <audio controls [src]=src [style.opacity]="src ? 1 : 0.5"></audio>
-    <button mat-fab color="primary"
-            [matTooltip]="'Medienquelle ändern'" [matTooltipPosition]="'right'"
-            (click)="changeMediaSrc.emit()">
-      <mat-icon>upload_file</mat-icon>
-    </button>
-    <mat-form-field appearance="outline">
-      <mat-label>Maximale Abspielhäufigkeit</mat-label>
-      <input matInput type="number" min="1" [(ngModel)]="maxRuns" (ngModelChange)="maxRunsChange.emit($event)">
-    </mat-form-field>
-  `,
-    styles: `
-    :host {display: flex; flex-direction: row; justify-content: space-around;}
-    audio {align-self: center; margin-bottom: 20px;}
-  `
+  selector: 'aspect-editor-wizard-audio',
+  imports: [
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatIconModule,
+    FormsModule
+  ],
+  templateUrl: './audio-row.component.html',
+  styleUrls: ['./audio-row.component.scss']
 })
 export class AudioRowComponent {
   @Input() src: string | undefined;

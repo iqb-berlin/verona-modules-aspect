@@ -23,9 +23,9 @@ import { MatSelect } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { Section } from 'common/models/section';
 import { EditorPage } from 'editor/src/app/models/editor-unit';
-import { UnitService } from '../../services/unit.service';
-import { ElementService } from '../../services/element.service';
-import { IDEditDialogComponent } from './id-edit-dialog.component';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { ElementService } from 'editor/src/app/services/element.service';
+import { IDEditDialogComponent } from 'editor/src/app/components/dialogs/id-edit-dialog/id-edit-dialog.component';
 
 @Component({
   selector: 'aspect-overview-dialog',
@@ -57,150 +57,8 @@ import { IDEditDialogComponent } from './id-edit-dialog.component';
     MatIcon,
     MatSlideToggleModule
   ],
-  template: `
-    <mat-dialog-content>
-        <h2 mat-dialog-title>Übersicht Elemente</h2>
-        <div class="controls-area">
-          <fieldset>
-            <legend>Filter</legend>
-            <mat-form-field [ngClass]="{'selected': pageFilter.length > 0}">
-              <mat-label>Seiten</mat-label>
-              <mat-select [(ngModel)]="pageFilter" [multiple]="true" (ngModelChange)="updatePageFilter()">
-              <button mat-stroked-button [style.margin-bottom.px]="5" (click)="pageFilter = []; updatePageFilter();">
-                  Filter zurücksetzen
-                </button>
-                @for (option of unitService.unit.pages; track option; let i = $index) {
-                  <mat-option [value]="i">
-                    {{ i + 1 }}
-                  </mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field [ngClass]="{'selected': sectionFilter.length > 0}">
-              <mat-label>Abschnitte</mat-label>
-              <mat-select [(ngModel)]="sectionFilter" [multiple]="true" (ngModelChange)="updateSectionFilter()">
-              <button mat-stroked-button [style.margin-bottom.px]="5"
-                      (click)="sectionFilter = []; updateSectionFilter();">
-                Filter zurücksetzen
-              </button>
-              @for (option of availableSections; track i; let i = $index) {
-                <mat-option [value]="i">
-                  {{ i + 1 }}
-                </mat-option>
-              }
-              </mat-select>
-            </mat-form-field>
-          </fieldset>
-
-          <fieldset class="editable-property-panel align-right">
-            <legend>Mehrfachänderung</legend>
-            <mat-form-field>
-              <mat-label>Eigenschaft</mat-label>
-              <mat-select>
-                @for (option of elementOptions; track option) {
-                  <mat-option [value]="option" (click)="selectedEditableProperty = option">
-                    {{ option.displayName }}
-                  </mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-
-            <div class="property-edit-control-area">
-              @if (selectedEditableProperty?.control === 'bool') {
-                <mat-checkbox (change)="editablePropertyValue = $event.checked" >
-                </mat-checkbox>
-              }
-            </div>
-            <button mat-icon-button [disabled]="!selectedEditableProperty"
-                    (click)="applyValueToSelection()">
-              <mat-icon>check</mat-icon>
-            </button>
-          </fieldset>
-        </div>
-
-        Ausgewählte Elemente: {{ elementSelection.selected.length }}
-
-        <table mat-table [dataSource]="tableData" matSort>
-          <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="toggleAllRows()"
-                            [checked]="tableSelection == 'all'"
-                            [indeterminate]="tableSelection == 'some'">
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-              <mat-checkbox (click)="$event.stopPropagation()"
-                            (change)="selectRow(row)"
-                            [checked]="elementSelection.isSelected(row)">
-              </mat-checkbox>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="pageIndex">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Seite</th>
-            <td mat-cell *matCellDef="let element">{{element.pageIndex + 1}}</td>
-          </ng-container>
-          <ng-container matColumnDef="sectionIndex">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Abschnitt</th>
-            <td mat-cell *matCellDef="let element">{{element.sectionIndex + 1}}</td>
-          </ng-container>
-          <ng-container matColumnDef="alias">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-            <td mat-cell *matCellDef="let element">{{element.alias}}</td>
-          </ng-container>
-          <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Elementtyp</th>
-            <td mat-cell *matCellDef="let element">{{'toolbox.' + element.type | translate }}</td>
-          </ng-container>
-          <ng-container matColumnDef="isRelevantForPresentationComplete">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Relevant für <br/> "Presentation Complete"</th>
-            <td mat-cell *matCellDef="let element">
-              @if (element.isRelevantForPresentationComplete) {
-                <mat-icon>check</mat-icon>
-              } @else {
-                <mat-icon>close</mat-icon>
-              }
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Aktionen</th>
-            <td mat-cell *matCellDef="let element" >
-              <div class="action-button-cell">
-                <button (click)="$event.stopPropagation(); editAlias(element)">
-                  <mat-icon>edit</mat-icon>
-                  <span>
-                  ID ändern
-                  </span>
-                </button>
-                <button mat-icon-button [style.color]="'red'" (click)="$event.stopPropagation(); deleteElement(element)">
-                  <mat-icon>delete</mat-icon>
-                  Löschen
-                </button>
-              </div>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-          <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"
-              (click)="elementSelection.toggle(row)">
-          </tr>
-
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [attr.colspan]="columnsToDisplay.length">
-              Keine Daten vorhanden
-            </td>
-          </tr>
-        </table>
-
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="">
-        {{'close' | translate }}
-      </button>
-    </mat-dialog-actions>
-  `,
-  styleUrl: './overview-dialog.component.css'
+  templateUrl: './overview-dialog.component.html',
+  styleUrl: './overview-dialog.component.scss'
 })
 export class OverviewDialogComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
@@ -219,6 +77,7 @@ export class OverviewDialogComponent implements AfterViewInit {
     displayName: 'Presentation Complete',
     control: 'bool'
   }];
+
   selectedEditableProperty?: EditableProperty;
   editablePropertyValue?: boolean = false;
 

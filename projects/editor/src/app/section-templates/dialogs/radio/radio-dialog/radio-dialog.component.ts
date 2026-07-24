@@ -8,8 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatActionList, MatListItem } from '@angular/material/list';
-import { TextRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/text-radio.component';
-import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/image-radio.component';
+import { TextRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/text-radio/text-radio.component';
+import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/radio/image-radio/image-radio.component';
 
 @Component({
   selector: 'aspect-editor-radio-wizard-dialog',
@@ -27,29 +27,7 @@ import { ImageRadioComponent } from 'editor/src/app/section-templates/dialogs/ra
     TextRadioComponent,
     ImageRadioComponent
   ],
-  template: `
-    <h2 mat-dialog-title>Assistent: MC</h2>
-    <div mat-dialog-content>
-      @if (templateVariant == undefined) {
-        <mat-action-list>
-          <button mat-list-item (click)="templateVariant = 'text'">Text</button>
-          <button mat-list-item (click)="templateVariant = 'image'">Bilder</button>
-        </mat-action-list>
-      }
-      @if (templateVariant == 'text') {
-        <aspect-editor-textradio-stimulus (validityChange)="onValidityChange($event)">
-        </aspect-editor-textradio-stimulus>
-      } @else if (templateVariant == 'image') {
-        <aspect-editor-imageradio-stimulus (validityChange)="onValidityChange($event)">
-        </aspect-editor-imageradio-stimulus>
-      }
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button [disabled]="!templateVariant || !isValid" (click)="confirmAndClose()">{{'confirm' | translate }}</button>
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </div>
-  `,
-  styles: ``
+  templateUrl: './radio-dialog.component.html'
 })
 export class RadioWizardDialogComponent {
   @ViewChild(TextRadioComponent) textComp!: TextRadioComponent;

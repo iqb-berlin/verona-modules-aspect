@@ -6,87 +6,8 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
   selector: 'aspect-likert-row-edit-dialog',
-  template: `
-    <mat-dialog-content>
-      <div class="fx-column-start-stretch">
-        <aspect-rich-text-editor [(content)]="newLikertRow.rowLabel.text" [showReducedControls]="true">
-        </aspect-rich-text-editor>
-
-        <mat-form-field [style.margin-top.px]="15">
-          <mat-label>{{'id' | translate }}</mat-label>
-          <input matInput type="text" [(ngModel)]="newLikertRow.alias" #aliasModel="ngModel"
-                 required pattern="[0-9a-zA-Z_-]+">
-          <mat-error>{{'idContainsInvalidCharacters' | translate }}</mat-error>
-        </mat-form-field>
-
-        <mat-checkbox [(ngModel)]="newLikertRow.readOnly">
-          {{'propertiesPanel.readOnly' | translate }}
-        </mat-checkbox>
-
-        <mat-form-field appearance="fill">
-          <mat-label>{{'preset' | translate }}</mat-label>
-          <mat-select [(ngModel)]="newLikertRow.value">
-            <mat-select-trigger
-              [innerHTML]="newLikertRow.value !== null ?
-                '<span>' + data.options[$any(newLikertRow.value)].text + '</span>' : 'undefiniert' | safeResourceHTML">
-            </mat-select-trigger>
-            <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-            <mat-option *ngFor="let column of data.options; let i = index" [value]="i"
-                        [innerHTML]="'<span>' + column.text + ' (Index: ' + i + ')</span>' | safeResourceHTML">
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>{{'verticalButtonAlignment' | translate }}</mat-label>
-          <mat-select [(ngModel)]="newLikertRow.verticalButtonAlignment">
-            <mat-option *ngFor="let option of ['auto', 'center']"
-                        [value]="option">
-              {{ option | translate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <div class="fx-row-space-between-center">
-          <div class="fx-column-start-stretch" [style.gap.px]="10">
-            <button mat-raised-button (click)="loadImage()">
-              {{ 'loadImage' | translate }}</button>
-            <button mat-raised-button (click)="newLikertRow.rowLabel.imgSrc = null">
-              {{ 'removeImage' | translate }}</button>
-            <mat-form-field>
-              <mat-label>{{'imagePosition' | translate }}</mat-label>
-              <mat-select [(ngModel)]="newLikertRow.rowLabel.imgPosition">
-                <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
-                            [value]="option">
-                  {{ option | translate }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <aspect-text-image-panel [label]="newLikertRow.rowLabel"
-                                   [style.justify-content]="'center'"></aspect-text-image-panel>
-        </div>
-      </div>
-    </mat-dialog-content>
-
-    <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="newLikertRow" [disabled]="aliasModel.invalid">
-        {{'save' | translate }}
-      </button>
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </mat-dialog-actions>
-  `,
-  styles: [`
-    aspect-rich-text-editor {min-height: 200px;}
-    mat-checkbox {
-      margin-bottom: 15px;
-    }
-
-    aspect-text-image-panel {
-      margin-left: auto;
-      margin-right: auto;
-    }
-  `],
+  templateUrl: './likert-row-edit-dialog.component.html',
+  styleUrls: ['./likert-row-edit-dialog.component.scss'],
   standalone: false
 })
 export class LikertRowEditDialogComponent {

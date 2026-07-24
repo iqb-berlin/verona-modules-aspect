@@ -7,8 +7,8 @@ import {
   ClassicTemplateOptions, SortTemplateOptions,
   TwoPageTemplateOptions
 } from 'editor/src/app/section-templates/droplist-interfaces';
-import { TemplateService } from '../template.service';
-import { EditorSection } from '../../models/editor-unit';
+import { TemplateService } from 'editor/src/app/section-templates/template.service';
+import { EditorSection } from 'editor/src/app/models/editor-unit';
 
 export function createDroplistSection(options: ClassicTemplateOptions, idService: IDService): EditorSection {
   const sectionElements: PositionedUIElement[] = [

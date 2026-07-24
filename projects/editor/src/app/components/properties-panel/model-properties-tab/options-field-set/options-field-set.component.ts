@@ -5,7 +5,7 @@ import {
   Output
 } from '@angular/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -17,35 +17,7 @@ import { LikertRowElement, LikertRowProperties } from 'common/models/elements/co
 
 @Component({
   selector: 'aspect-options-field-set',
-  template: `
-    <!--dropdown, radio-button-group-->
-    <aspect-option-list-panel
-      *ngIf="combinedProperties.options !== undefined"
-      [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
-      [title]="'propertiesPanel.options'"
-      [textFieldLabel]="'Neue Option'"
-      [itemList]="$any(combinedProperties.options)"
-      (textItemAdded)="addOption('options', $event)"
-      (imageItemAdded)="addImageOption()"
-      (itemRemoved)="removeOption('options', $event)"
-      (itemReordered)="moveOption('options', $event)"
-      (itemEdited)="editOption('options', $event)">
-    </aspect-option-list-panel>
-
-    <!--likert-->
-    <aspect-option-list-panel
-      *ngIf="combinedProperties.rows !== undefined"
-      [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
-      [itemList]="$any(combinedProperties).rows | LikertRowLabel"
-      [title]="'rows'"
-      [textFieldLabel]="'Neue Zeile'"
-      (itemReordered)="moveLikertRow($event)"
-      (textItemAdded)="addLikertRow($event)"
-      (imageItemAdded)="addLikertRowImage()"
-      (itemRemoved)="removeLikertRow($event)"
-      (itemEdited)="editLikertRow($event)">
-    </aspect-option-list-panel>
-  `,
+  templateUrl: './options-field-set.component.html',
   standalone: false
 })
 export class OptionsFieldSetComponent {

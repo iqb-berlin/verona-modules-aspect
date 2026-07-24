@@ -2,8 +2,8 @@ import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { SectionProperties } from 'common/models/section';
 import { TemplateService } from 'editor/src/app/section-templates/template.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import { CONSTANTS } from '../constants';
-import { EditorSection } from '../../models/editor-unit';
+import { CONSTANTS } from 'editor/src/app/section-templates/constants';
+import { EditorSection } from 'editor/src/app/models/editor-unit';
 
 export function createMathTableSection(operation: 'addition' | 'subtraction' | 'multiplication', terms: string[],
                                        idService: IDService) {

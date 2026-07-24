@@ -11,60 +11,24 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 
 @Component({
-    selector: 'aspect-editor-text2-wizard-dialog',
-    imports: [
-        TranslateModule,
-        MatDialogModule,
-        RichTextEditorComponent,
-        MatDividerModule,
-        MatCheckboxModule,
-        FormsModule,
-        MatButtonModule,
-        MatRadioButton,
-        MatRadioGroup,
-        MatFormField,
-        MatSelect,
-        MatLabel,
-        MatOption
-    ],
-    template: `
-    <h2 mat-dialog-title>Assistent: Markieren</h2>
-    <div mat-dialog-content>
-      <h3>Text</h3>
-      <aspect-rich-text-editor [(content)]="text1" [placeholder]="'Hier steht die Fragestellung.'">
-      </aspect-rich-text-editor>
-
-      <h3>Verbundener Stimulustext</h3>
-      <mat-form-field>
-        <mat-label>Verfügbare Textelemente</mat-label>
-        <mat-select [(ngModel)]="connectedText">
-          @for (textID of data.availableTextIDs; track textID) {
-            <mat-option [value]="textID">{{textID}}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <h3>Markiermodus</h3>
-      <mat-radio-group [(ngModel)]="markingMode">
-        <mat-radio-button [value]="'word'">wortweise</mat-radio-button>
-        <mat-radio-button [value]="'range'">bereichsweise</mat-radio-button>
-      </mat-radio-group>
-
-      <h3>Hilfe</h3>
-      <mat-checkbox [(ngModel)]="showHelper">Bild mit Hilfstext anfügen</mat-checkbox>
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ text1, showHelper, markingMode, connectedText }">
-        {{'confirm' | translate }}
-      </button>
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </div>
-  `,
-    styles: `
-    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
-    h3:not(:first-child) {margin-top: 40px;}
-  `
+  selector: 'aspect-editor-text2-wizard-dialog',
+  imports: [
+    TranslateModule,
+    MatDialogModule,
+    RichTextEditorComponent,
+    MatDividerModule,
+    MatCheckboxModule,
+    FormsModule,
+    MatButtonModule,
+    MatRadioButton,
+    MatRadioGroup,
+    MatFormField,
+    MatSelect,
+    MatLabel,
+    MatOption
+  ],
+  templateUrl: './marking-panel-dialog.component.html',
+  styleUrls: ['./marking-panel-dialog.component.scss']
 })
 export class MarkingPanelDialogComponent {
   text1: string = '';

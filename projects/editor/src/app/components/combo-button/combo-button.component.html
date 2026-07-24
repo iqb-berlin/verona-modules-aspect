@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <button class="apply-button" mat-button [matTooltip]="tooltip"
+          [style.background-color]="inputType === 'list' && isActive ? 'lightgrey' : 'unset'"
+          (click)="applySelection.emit()">
+    <mat-icon>{{icon}}</mat-icon>
+  </button>
+
+  <input matInput type="color" #colorInput hidden
+         (input)="selectionChanged.emit($any($event.target).value); applySelection.emit()">
+
+  <mat-select panelClass="select-overlay"
+              (click)="onClickSelect($event)">
+    <mat-option *ngFor="let value of availableValues"
+                (click)="selectValue(value)">{{value}}</mat-option>
+  </mat-select>
+</div>

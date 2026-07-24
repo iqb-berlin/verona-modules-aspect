@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragPlaceholder, CdkDropList } from '@angular/cdk/drag-drop';
+import {
+  CdkDrag, CdkDragEnd, CdkDragMove, CdkDragPlaceholder, CdkDropList
+} from '@angular/cdk/drag-drop';
 import { UIElement } from 'common/models/elements/element';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { ElementOverlay } from './element-overlay.directive';
+import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 
 @Component({
   selector: 'aspect-editor-static-overlay',
@@ -15,56 +17,8 @@ import { ElementOverlay } from './element-overlay.directive';
     CdkDragPlaceholder,
     MatIconModule
   ],
-  template: `
-    <!-- Is also a droplist to catch the resize drop and not let it bubble up to the canvas drop handler. -->
-    <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
-    <div class="draggable-element"
-         [class.temporaryHighlight]="temporaryHighlight"
-         (click)="selectElement($event)"
-         (dblclick)="openEditDialog()"
-         (keyup.delete)="deleteSelectedElements()" tabindex="-1"
-         cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
-         (cdkDragStarted)="selectElement()"
-         cdkDropList>
-      <div *cdkDragPlaceholder></div>
-      <!-- Needs extra div because styling can interfere with drag and drop-->
-      <div [style.position]="'absolute'"
-           [style.outline]="isSelected ? '1px dashed purple' : ''"
-           [style.left.px]="element.position.xPosition"
-           [style.top.px]="element.position.yPosition"
-           [style.z-index]="element.position.zIndex">
-        <div *ngIf="isSelected" class="resizeHandle"
-             cdkDrag (cdkDragStarted)="resizeDragStart()"
-             (cdkDragMoved)="resizeElement($event)"
-             (cdkDragEnded)="updateModel($event)"
-             cdkDragBoundary=".section-wrapper"
-             [style.right.px]="-1"
-             [style.bottom.px]="-7"
-             [style.z-index]="5">
-          <mat-icon>aspect_ratio</mat-icon>
-        </div>
-        <div class="aspect-inserted-element"
-             [class.prevent-interaction]="preventInteraction && element.type !== 'cloze' && element.type !== 'table'"
-             [style.outline]="isSelected ? '1px dashed purple' : ''"
-             [style.width.px]="element.dimensions.width"
-             [style.height.px]="element.dimensions.height"
-             [style.overflow]="'auto'">
-          <ng-template #elementContainer></ng-template>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [
-    '.draggable-element {position: absolute}',
-    '.draggable-element:active {cursor: grabbing}',
-    '.resizeHandle {position: absolute; cursor: nwse-resize}',
-    '.resize-droplist {position: absolute}',
-    '.temporaryHighlight {z-index: 100}',
-    ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}',
-    ':host ::ng-deep .prevent-interaction math-field {pointer-events: none !important;}',
-    ':host ::ng-deep .prevent-interaction math-field::part(container) {pointer-events: none !important;}',
-    ':host ::ng-deep .prevent-interaction math-field::part(mathfield) {pointer-events: none !important;}'
-  ]
+  templateUrl: './static-overlay.component.html',
+  styleUrls: ['./static-overlay.component.scss']
 })
 export class StaticOverlayComponent extends ElementOverlay {
   private oldX: number = 0;

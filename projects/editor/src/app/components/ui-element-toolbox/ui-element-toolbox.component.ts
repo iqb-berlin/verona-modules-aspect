@@ -29,13 +29,13 @@ import { WidgetPeriodicTableElement } from 'common/models/elements/widget-period
 import {
   WidgetMoleculeEditorElement
 } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
-import { SelectionService } from '../../services/selection.service';
-import { UnitService } from '../../services/unit.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
   selector: 'aspect-ui-element-toolbox',
   templateUrl: './ui-element-toolbox.component.html',
-  styleUrls: ['./ui-element-toolbox.component.css'],
+  styleUrls: ['./ui-element-toolbox.component.scss'],
   standalone: false
 })
 export class UiElementToolboxComponent {

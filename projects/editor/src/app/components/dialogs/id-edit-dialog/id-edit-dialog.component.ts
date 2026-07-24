@@ -8,7 +8,7 @@ import {
   AbstractControl, FormControl, FormsModule,
   ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators
 } from '@angular/forms';
-import { IDService } from '../../services/id.service';
+import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
   selector: 'aspect-id-edit-dialog',
@@ -24,33 +24,7 @@ import { IDService } from '../../services/id.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  template: `
-    <mat-dialog-content>
-        <h2 mat-dialog-title>ID ändern</h2>
-        <mat-form-field class="example-full-width">
-          <mat-label>{{'propertiesPanel.id' | translate }}</mat-label>
-          <input matInput required [formControl]="aliasControl"
-                 (keyup)="checkAvailability()">
-          @if (aliasControl.invalid) {
-            <mat-error>
-              @if (aliasControl.hasError('idTaken')) {
-                <span>ID bereits vergeben</span>
-              } @else {
-                <span>Eingabe ungültig</span>
-              }
-            </mat-error>
-          }
-        </mat-form-field>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button [disabled]="aliasControl.invalid" [mat-dialog-close]="aliasControl.value">
-        {{'save' | translate }}
-      </button>
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </mat-dialog-actions>
-  `,
-  styles: `
-    `
+  templateUrl: './id-edit-dialog.component.html'
 })
 export class IDEditDialogComponent {
   readonly aliasControl = new FormControl(this.data.alias, [Validators.required, this.checkAvailability()]);

@@ -2,7 +2,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { TextElement } from 'common/models/elements/text/text';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { ButtonElement } from 'common/models/elements/button/button';
-import { createGeometrySection } from './geometry-builders';
+import { createGeometrySection } from 'editor/src/app/section-templates/builders/geometry-builders';
 
 describe('createGeometrySection', () => {
   const sourceText = 'Erstellt mit GeoGebra, https://www.geogebra.org (es gelten die GeoGebra-Lizenzbedingungen)';

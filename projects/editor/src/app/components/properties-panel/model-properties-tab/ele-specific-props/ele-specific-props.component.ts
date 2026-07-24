@@ -2,47 +2,47 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import {
   MathTablePropertiesComponent
-} from './ele-specific/math-table-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/math-table-properties/math-table-properties.component';
 import {
   ButtonPropertiesComponent
-} from './ele-specific/button-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/button-properties/button-properties.component';
 import {
   DropListPropertiesComponent
-} from './ele-specific/drop-list-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/drop-list-properties/drop-list-properties.component';
 import {
   BorderPropertiesComponent
-} from './ele-specific/border-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/border-properties/border-properties.component';
 import {
   GeometryPropsComponent
-} from './ele-specific/geometry-props.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/geometry-props/geometry-props.component';
 import {
   HotspotPropsComponent
-} from './ele-specific/hotspot-props.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/hotspot-props/hotspot-props.component';
 import {
   SliderPropertiesComponent
-} from './ele-specific/slider-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/slider-properties/slider-properties.component';
 import {
   TextPropsComponent
-} from './ele-specific/text-properties-field-set.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/text-properties-field-set/text-properties-field-set.component';
 import {
   TablePropertiesComponent
-} from './ele-specific/table-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/table-properties/table-properties.component';
 import {
   MarkingPanelPropertiesComponent
-} from './ele-specific/marking-panel-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/marking-panel-properties/marking-panel-properties.component';
 import {
   WidgetPeriodicTablePropertiesComponent
-} from './ele-specific/widget-periodic-table-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-periodic-table-properties/widget-periodic-table-properties.component';
 import {
   MathFieldPropsComponent
-} from './ele-specific/math-field-props.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/math-field-props/math-field-props.component';
 import {
   WidgetMoleculeEditorPropertiesComponent
-} from './ele-specific/widget-molecule-editor-properties.component';
+} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
 
 @Component({
   selector: 'aspect-ele-specific-props',
@@ -63,70 +63,7 @@ import {
     WidgetPeriodicTablePropertiesComponent,
     WidgetMoleculeEditorPropertiesComponent
   ],
-  template: `
-    <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
-                             [combinedProperties]="combinedProperties"
-                             (updateModel)="updateModel.emit($event)">
-    </aspect-math-field-props>
-
-    <aspect-border-properties *ngIf="combinedProperties.type === 'frame'"
-                              [combinedProperties]="combinedProperties"
-                              (updateModel)="updateModel.emit($event)">
-    </aspect-border-properties>
-
-    <aspect-math-table-properties *ngIf="combinedProperties.type === 'math-table'"
-                                  [combinedProperties]="combinedProperties"
-                                  (updateModel)="updateModel.emit($event)">
-    </aspect-math-table-properties>
-
-    <aspect-button-properties *ngIf="combinedProperties.type === 'button'"
-                              [combinedProperties]="combinedProperties"
-                              (updateModel)="updateModel.emit($event)">
-    </aspect-button-properties>
-
-    <aspect-drop-list-properties [combinedProperties]="combinedProperties"
-                                 (updateModel)="updateModel.emit($event)">
-    </aspect-drop-list-properties>
-
-    <aspect-geometry-props *ngIf="combinedProperties.type === 'geometry'"
-                           [combinedProperties]="combinedProperties"
-                           (updateModel)="updateModel.emit($event)">
-    </aspect-geometry-props>
-
-    <aspect-hotspot-props *ngIf="combinedProperties.type === 'hotspot-image'"
-                              [combinedProperties]="combinedProperties"
-                              (updateModel)="updateModel.emit($event)">
-    </aspect-hotspot-props>
-
-    <aspect-slider-properties [combinedProperties]="combinedProperties"
-                              (updateModel)="updateModel.emit($event)">
-    </aspect-slider-properties>
-
-    <aspect-text-props *ngIf="combinedProperties.text !== undefined"
-                       [combinedProperties]="combinedProperties"
-                       (updateModel)="updateModel.emit($event)">
-    </aspect-text-props>
-
-    <aspect-marking-panel-properties [combinedProperties]="combinedProperties"
-                                      (updateModel)="updateModel.emit($event)">
-    </aspect-marking-panel-properties>
-
-    <aspect-table-properties *ngIf="combinedProperties.type === 'table'"
-                             [combinedProperties]="combinedProperties"
-                             (updateModel)="updateModel.emit($event)"></aspect-table-properties>
-
-    <aspect-widget-periodic-table-properties
-      *ngIf="combinedProperties.type === 'widget-periodic-table'"
-      [combinedProperties]="combinedProperties"
-      (updateModel)="updateModel.emit($event)">
-    </aspect-widget-periodic-table-properties>
-
-    <aspect-widget-molecule-editor-properties
-      *ngIf="combinedProperties.type === 'widget-molecule-editor'"
-      [combinedProperties]="combinedProperties"
-      (updateModel)="updateModel.emit($event)">
-    </aspect-widget-molecule-editor-properties>
-  `
+  templateUrl: './ele-specific-props.component.html'
 })
 export class EleSpecificPropsComponent {
   @Input() combinedProperties!: CombinedProperties;

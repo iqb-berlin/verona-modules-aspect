@@ -6,16 +6,16 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import {
   SectionInsertDialogComponent
 } from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
-import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog.component';
+import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog/label-edit-dialog.component';
 import {
   GeogebraAppDefinitionDialogComponent
-} from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog.component';
-import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
+} from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog/geogebra-app-definition-dialog.component';
+import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import {
   StateVariablesDialogComponent
-} from 'editor/src/app/components/state-variables-dialog/state-variables-dialog.component';
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import {
   VisibilityRulesDialogComponent
@@ -23,12 +23,12 @@ import {
 import { StateVariable } from 'common/models/state-variable';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { ReferenceList } from 'editor/src/app/services/reference-manager';
-import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/sanitization-dialog.component';
+import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
 import {
   TooltipPropertiesDialogComponent
-} from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
 import { UIElement } from 'common/models/elements/element';
-import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog.component';
+import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { FileService, FileInformation } from 'common/services/file.service';
 import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/label-interfaces';
@@ -37,15 +37,15 @@ import { ImageOptions } from 'common/models/image-interfaces';
 
 import {
   ImageResizeDialogComponent
-} from 'editor/src/app/components/image-resize-dialog/image-resize-dialog.component';
-import { DeleteConfirmationDialogComponent } from '../components/dialogs/delete-confirmation-dialog.component';
-import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
-import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
-import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edit-dialog.component';
-import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
-import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
-import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
-import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
+} from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import { DeleteConfirmationDialogComponent } from '../components/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog/text-edit-dialog.component';
+import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog/text-edit-multiline-dialog.component';
+import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
+import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog/player-edit-dialog.component';
+import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
+import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
+import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
 import { EditorSection } from '../models/editor-unit';
 
 @Injectable({

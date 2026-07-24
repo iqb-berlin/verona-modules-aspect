@@ -8,19 +8,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
+import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SectionService } from 'editor/src/app/services/section.service';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
-import { SelectionService } from '../../services/selection.service';
-import { UnitService } from '../../services/unit.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 export type CombinedProperties = UIElement & { idList?: string[] };
 
 @Component({
   selector: 'aspect-element-properties',
   templateUrl: './element-properties-panel.component.html',
-  styleUrls: ['./element-properties-panel.component.css'],
+  styleUrls: ['./element-properties-panel.component.scss'],
   standalone: false
 })
 export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {

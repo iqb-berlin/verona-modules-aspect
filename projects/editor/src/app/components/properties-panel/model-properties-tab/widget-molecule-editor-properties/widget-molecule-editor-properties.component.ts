@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
-import { CombinedProperties } from '../../../element-properties-panel.component';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 
 @Component({
   selector: 'aspect-widget-molecule-editor-properties',
@@ -16,22 +16,7 @@ import { CombinedProperties } from '../../../element-properties-panel.component'
     MatInputModule,
     MatSelectModule
   ],
-  template: `
-    <fieldset>
-      <legend>{{'toolbox.widget-molecule-editor' | translate}}</legend>
-
-      <div class="fx-column-start-stretch">
-        <mat-form-field appearance="fill">
-          <mat-label>{{'propertiesPanel.bondingType' | translate }}</mat-label>
-          <mat-select [value]="$any(combinedProperties).bondingType"
-                      (selectionChange)="updateModel.emit({ property: 'bondingType', value: $event.value })">
-            <mat-option value="VALENCE">{{ 'propertiesPanel.moleculeBondingTypeValence' | translate }}</mat-option>
-            <mat-option value="ELECTRONS">{{ 'propertiesPanel.moleculeBondingTypeElectrons' | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </fieldset>
-  `
+  templateUrl: './widget-molecule-editor-properties.component.html'
 })
 export class WidgetMoleculeEditorPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;

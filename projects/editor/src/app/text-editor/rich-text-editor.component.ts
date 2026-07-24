@@ -36,7 +36,7 @@ import { BlockImage } from 'editor/src/app/text-editor/extensions/block-image';
 import { InlineImage } from 'editor/src/app/text-editor/extensions/inline-image';
 import { Tooltip } from 'editor/src/app/text-editor/extensions/tooltip';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { ComboButtonComponent } from 'editor/src/app/components/util/combo-button.component';
+import { ComboButtonComponent } from 'editor/src/app/components/combo-button/combo-button.component';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { EditorView } from 'prosemirror-view';
 import { Fragment, Slice } from 'prosemirror-model';

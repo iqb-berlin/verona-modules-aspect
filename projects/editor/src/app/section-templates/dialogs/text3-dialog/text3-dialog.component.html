@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Aufgabenidee</h2>
+<div mat-dialog-content>
+  <h3>Beschreibung der Aufgabenidee:</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text1"
+                           [placeholder]="'Beschreibung der Aufgabenidee (möglichst detailliert, falls' +
+                            ' keine Skizze oder Vorlage dazu vorhanden)'">
+  </aspect-rich-text-editor>
+  <h3>Skizze der Aufgabe</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text2"
+                           [placeholder]="'Skizze der Aufgabe'">
+  </aspect-rich-text-editor>
+  <h3>Lösung der Aufgabe</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text3"
+                           [placeholder]="'Lösung der Aufgabe'">
+  </aspect-rich-text-editor>
+  <h3>Aufgabenvorlage</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text4"
+                           [placeholder]="'Verlinkungen'">
+  </aspect-rich-text-editor>
+  <h3>Benötigte Ressourcen</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text5"
+                           [placeholder]="'Links zu benötigten Ressourcen (zum Beispiel Textauszüge, Audios,' +
+                            ' Videos, Homepages, ...)'">
+  </aspect-rich-text-editor>
+</div>
+<div mat-dialog-actions>
+  <button mat-button
+          [mat-dialog-close]="{ text1, text2, text3, text4, text5 }">
+    {{'confirm' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</div>

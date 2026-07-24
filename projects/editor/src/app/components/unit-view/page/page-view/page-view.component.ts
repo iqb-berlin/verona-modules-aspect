@@ -7,13 +7,13 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { SectionService } from 'editor/src/app/services/section.service';
 import { ElementService } from 'editor/src/app/services/element.service';
-import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
+import { SectionComponent } from 'editor/src/app/components/unit-view/section/section/section.component';
 import { EditorPage } from 'editor/src/app/models/editor-unit';
 
 @Component({
-    selector: 'aspect-editor-page-view',
-    templateUrl: './page-view.component.html',
-    styles: `
+  selector: 'aspect-editor-page-view',
+  templateUrl: './page-view.component.html',
+  styles: `
     :host {
       display: flex;
     }
@@ -33,7 +33,7 @@ import { EditorPage } from 'editor/src/app/models/editor-unit';
       display: inline; vertical-align: super; font-size: large;
     }
   `,
-    standalone: false
+  standalone: false
 })
 export class PageViewComponent implements OnInit, OnDestroy {
   @Input() page!: EditorPage;

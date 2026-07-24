@@ -5,9 +5,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
-import { ToolbarComponent } from './toolbar.component';
-import { UnitService } from '../../services/unit.service';
-import { VeronaAPIService } from '../../services/verona-api.service';
+import { ToolbarComponent } from 'editor/src/app/components/toolbar/toolbar.component';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;

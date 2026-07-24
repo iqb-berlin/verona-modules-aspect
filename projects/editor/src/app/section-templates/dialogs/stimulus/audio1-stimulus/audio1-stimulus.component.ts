@@ -2,29 +2,18 @@ import { Audio1StimulusOptions } from 'editor/src/app/section-templates/stimulus
 import { Component, EventEmitter, Output } from '@angular/core';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { FormsModule } from '@angular/forms';
-import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio-row.component';
+import { AudioRowComponent } from 'editor/src/app/section-templates/dialogs/stimulus/audio-row/audio-row.component';
 import { FileService } from 'common/services/file.service';
 
 @Component({
-    selector: 'aspect-editor-audio1-stimulus',
-    imports: [
-        FormsModule,
-        RichTextEditorComponent,
-        AudioRowComponent
-    ],
-    template: `
-    <h3>Audio</h3>
-    <aspect-editor-wizard-audio [src]="options.src1" [(maxRuns)]="options.maxRuns1" (changeMediaSrc)="changeMediaSrc()">
-    </aspect-editor-wizard-audio>
-    <h3>Quelle</h3>
-    <aspect-rich-text-editor class="text2" [(content)]="options.text" [showReducedControls]="true"
-                             [placeholder]="'Hier steht die Quelle.'">
-    </aspect-rich-text-editor>
-  `,
-    styles: `
-    *:not(h3, mat-divider) {margin-left: 30px;}
-    h3:not(:first-child) {margin-top: 40px;}
-  `
+  selector: 'aspect-editor-audio1-stimulus',
+  imports: [
+    FormsModule,
+    RichTextEditorComponent,
+    AudioRowComponent
+  ],
+  templateUrl: './audio1-stimulus.component.html',
+  styleUrls: ['./audio1-stimulus.component.scss']
 })
 export class Audio1StimulusComponent {
   @Output() validityChange = new EventEmitter<boolean>();

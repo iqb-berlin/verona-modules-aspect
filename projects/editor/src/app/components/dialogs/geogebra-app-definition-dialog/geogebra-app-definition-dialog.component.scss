@@ -1,0 +1,16 @@
+.paste-area {
+  width: 400px;
+  height: 100px;
+  border: 1px solid;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+.paste-area:focus span {
+  display: none;
+}
+button {
+  margin-top: 10px;
+}
+.status-area {
+  margin-top: 10px;
+}

@@ -4,45 +4,8 @@ import { TooltipPosition } from 'common/models/ui-element-interfaces';
 
 @Component({
   selector: 'aspect-tooltip-properties-dialog',
-  template: `
-    <h2 mat-dialog-title>{{'propertiesPanel.tooltipText' | translate}}</h2>
-    <mat-dialog-content>
-      <div class="fx-column-start-stretch">
-        <aspect-rich-text-editor [(content)]="tooltipText"
-                                 [showReducedControls]="true"
-                                 [controlPanelFolded]="false"
-                                 [autoFocus]="true">
-        </aspect-rich-text-editor>
-        <mat-form-field appearance="fill">
-          <mat-label>{{'propertiesPanel.tooltipPosition' | translate }}</mat-label>
-          <mat-select [(ngModel)]="tooltipPosition">
-            @for (option of ['left', 'right', 'above', 'below']; track option) {
-              <mat-option [value]="option">
-                {{ 'propertiesPanel.' + option | translate }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button
-              [disabled]="!(tooltipText | hasTextContent)"
-              [mat-dialog-close]="{ tooltipText, tooltipPosition, action: 'save' }">
-        {{'save' | translate }}
-      </button>
-      @if (!newTooltip) {
-        <button mat-button
-                [mat-dialog-close]="{ tooltipText, tooltipPosition, action: 'delete' }">
-          {{'delete' | translate }}
-        </button>
-      }
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </mat-dialog-actions>
-  `,
-  styles: `
-    aspect-rich-text-editor {min-height: 200px; margin-bottom: 15px;}
-  `,
+  templateUrl: './tooltip-properties-dialog.component.html',
+  styleUrls: ['./tooltip-properties-dialog.component.scss'],
   standalone: false
 })
 export class TooltipPropertiesDialogComponent {

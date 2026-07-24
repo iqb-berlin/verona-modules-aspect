@@ -14,16 +14,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgForOf, NgIf } from '@angular/common';
-import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
+import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
 import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { SectionService } from 'editor/src/app/services/section.service';
 import { EditorSection } from 'editor/src/app/models/editor-unit';
-import { UnitService } from '../../../services/unit.service';
-import { DialogService } from '../../../services/dialog.service';
-import { SelectionService } from '../../../services/selection.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
 
 @Component({
   selector: 'aspect-section-menu',

@@ -1,0 +1,29 @@
+<h3>Frage</h3>
+<aspect-rich-text-editor class="input1" [(content)]="options.label1"
+                         [placeholder]="'Hier steht die Fragestellung.'">
+</aspect-rich-text-editor>
+
+<h3>Satzanfang (optional)</h3>
+<mat-form-field appearance="fill" [style.width.%]="60">
+  <textarea matInput type="text" [style.margin-left]="'unset'"
+            [(ngModel)]="options.label2" placeholder="Hier kann ein Satzanfang stehen.">
+  </textarea>
+</mat-form-field>
+
+<h3>Optionen</h3>
+<aspect-option-list-panel class="options" [textFieldLabel]="'Neue Option'"
+                          [itemList]="options.options"
+                          [localMode]="true"
+                          (itemListUpdated)="checkValidity()">
+</aspect-option-list-panel>
+
+<h3>Begründung</h3>
+<mat-checkbox [(ngModel)]="options.addExtraInput">
+  Begründungsfeld anfügen
+</mat-checkbox>
+<aspect-rich-text-editor class="input1" [disabled]="!options.addExtraInput"
+                         [(content)]="options.text1" [controlPanelFolded]="true">
+</aspect-rich-text-editor>
+<mat-checkbox [(ngModel)]="options.extraInputMathfield" [disabled]="!options.addExtraInput">
+  Formeleingabefeld verwenden
+</mat-checkbox>

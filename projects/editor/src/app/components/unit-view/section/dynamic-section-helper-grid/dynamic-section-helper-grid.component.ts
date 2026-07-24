@@ -15,30 +15,8 @@ import { UIElementType } from 'common/models/ui-element-interfaces';
     NgForOf,
     CdkDropList
   ],
-  template: `
-    <ng-container *ngFor="let row of rowCountArray; let x = index;">
-      <ng-container *ngFor="let column of columnCountArray; let y = index;">
-        <div class="grid-placeholder"
-             [style.grid-row-start]="x + 1"
-             [style.grid-row-end]="x + 1"
-             [style.grid-column-start]="y + 1"
-             [style.grid-column-end]="y + 1"
-             cdkDropList [cdkDropListData]="{ pageIndex: pageIndex, sectionIndex: sectionIndex,
-                                              gridCoordinates: [x + 1, y + 1] }"
-             (cdkDropListDropped)="drop($event)"
-             id="list-{{sectionIndex}}-{{x+1}}-{{y+1}}"
-             (dragover)="$event.preventDefault()"
-             (drop)="newElementDropped( $event, x + 1, y + 1)">
-          {{x + 1}} / {{y + 1}}
-        </div>
-      </ng-container>
-    </ng-container>
-
-    <ng-content></ng-content>
-  `,
-  styles: [
-    '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center; z-index: -100;}'
-  ]
+  templateUrl: './dynamic-section-helper-grid.component.html',
+  styleUrls: ['./dynamic-section-helper-grid.component.scss']
 })
 export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   @Input() autoColumnSize!: boolean;

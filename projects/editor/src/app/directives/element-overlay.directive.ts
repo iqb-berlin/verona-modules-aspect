@@ -19,8 +19,8 @@ import { TableChildOverlay } from 'common/components/compound-group/table-child-
 import { ElementService } from 'editor/src/app/services/element.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
-import { UnitService } from '../../../services/unit.service';
-import { SelectionService } from '../../../services/selection.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
 
 @Directive()
 export abstract class ElementOverlay implements OnInit, OnDestroy {

@@ -11,26 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatCheckboxModule,
     TranslateModule
   ],
-  template: `
-    <div class="fx-column-start-stretch">
-      <mat-checkbox [checked]="$any(combinedProperties).hasBorderTop"
-                    (change)="updateModel.emit({ property: 'hasBorderTop', value: $event.checked })">
-        {{ 'propertiesPanel.hasBorderTop' | translate }}
-      </mat-checkbox>
-      <mat-checkbox [checked]="$any(combinedProperties).hasBorderBottom"
-                    (change)="updateModel.emit({ property: 'hasBorderBottom', value: $event.checked })">
-        {{ 'propertiesPanel.hasBorderBottom' | translate }}
-      </mat-checkbox>
-      <mat-checkbox [checked]="$any(combinedProperties).hasBorderLeft"
-                    (change)="updateModel.emit({ property: 'hasBorderLeft', value: $event.checked })">
-        {{ 'propertiesPanel.hasBorderLeft' | translate }}
-      </mat-checkbox>
-      <mat-checkbox [checked]="$any(combinedProperties).hasBorderRight"
-                    (change)="updateModel.emit({ property: 'hasBorderRight', value: $event.checked })">
-        {{ 'propertiesPanel.hasBorderRight' | translate }}
-      </mat-checkbox>
-    </div>
-  `
+  templateUrl: './border-properties.component.html'
 })
 export class BorderPropertiesComponent {
   @Input() combinedProperties!: UIElement;

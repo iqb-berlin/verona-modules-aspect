@@ -131,6 +131,7 @@
     "@tiptap/extension-text-align": "^2.11.5",
     "@tiptap/extension-text-style": "^2.11.5",
     "@tiptap/extension-underline": "^2.11.5",
+    "fflate": "^0.8.3",
     "katex": "^0.16.11",
     "ngx-tiptap": "^11.1.0",
     "ngx-translate-testing": "^7.0.0",

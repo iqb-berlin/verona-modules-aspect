@@ -43,6 +43,9 @@ import {
 import {
   WidgetMoleculeEditorPropertiesComponent
 } from './ele-specific/widget-molecule-editor-properties.component';
+import {
+  TetfolioPropertiesComponent
+} from './ele-specific/tetfolio-properties.component';
 
 @Component({
   selector: 'aspect-ele-specific-props',
@@ -61,7 +64,8 @@ import {
     TablePropertiesComponent,
     MarkingPanelPropertiesComponent,
     WidgetPeriodicTablePropertiesComponent,
-    WidgetMoleculeEditorPropertiesComponent
+    WidgetMoleculeEditorPropertiesComponent,
+    TetfolioPropertiesComponent
   ],
   template: `
     <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
@@ -126,6 +130,12 @@ import {
       [combinedProperties]="combinedProperties"
       (updateModel)="updateModel.emit($event)">
     </aspect-widget-molecule-editor-properties>
+
+    <aspect-tetfolio-properties
+      *ngIf="combinedProperties.type === 'tetfolio'"
+      [combinedProperties]="combinedProperties"
+      (updateModel)="updateModel.emit($event)">
+    </aspect-tetfolio-properties>
   `
 })
 export class EleSpecificPropsComponent {

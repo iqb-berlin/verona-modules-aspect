@@ -387,7 +387,8 @@
     "trigger": "Auslöser",
     "table": "Tabelle",
     "widget-molecule-editor": "Molekül-Editor",
-    "widget-periodic-table": "Periodensystem"
+    "widget-periodic-table": "Periodensystem",
+    "tetfolio": "Tetfolio"
   },
   "section-menu": {
     "height": "Höhe",
@@ -411,6 +412,12 @@
   "numberGreater0": "Zahlenwert größer 0",
   "itemsPerRow": "Anzahl der Elemente",
   "loadGeogebraFile": "GGB-Datei hochladen",
+  "loadTetfolioZip": "Tetfolio-ZIP hochladen",
+  "tetfolioHtmlLoaded": "HTML geladen ({{kb}} KB)",
+  "tetfolioNoHtmlContent": "Kein HTML-Inhalt",
+  "tetfolioZipNoHtml": "Keine HTML-Datei in der ZIP gefunden.",
+  "tetfolioZipPackFailed": "Distpacker konnte die Datei nicht verarbeiten.",
+  "tetfolioZipError": "Fehler: {{message}}",
   "addition": "Addition",
   "subtraction": "Subtraktion",
   "multiplication": "Multiplikation",

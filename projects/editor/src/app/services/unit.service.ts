@@ -28,6 +28,7 @@ export class UnitService {
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   tablePropUpdated: Subject<string> = new Subject<string>();
+  tetfolioElementPropertyUpdated: Subject<string> = new Subject<string>();
   sectionCountUpdated: Subject<void> = new Subject<void>();
   pageOrderChanged: Subject<void> = new Subject<void>();
   referenceManager: ReferenceManager;

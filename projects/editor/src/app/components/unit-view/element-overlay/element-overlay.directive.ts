@@ -14,6 +14,7 @@ import {
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
+import { TetfolioComponent } from 'common/components/tetfolio/tetfolio.component';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -85,6 +86,16 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
         (elementID: string) => {
           if (this.element.type === 'geometry' && this.element.id === elementID) {
             (this.childComponent.instance as GeometryComponent).refresh();
+          }
+        }
+      );
+    // same for tetfolio: rebuild iframe when htmlContent changes
+    this.unitService.tetfolioElementPropertyUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (elementID: string) => {
+          if (this.element.type === 'tetfolio' && this.element.id === elementID) {
+            (this.childComponent.instance as TetfolioComponent).refresh();
           }
         }
       );

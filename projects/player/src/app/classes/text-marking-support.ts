@@ -3,7 +3,7 @@ import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { Subject } from 'rxjs';
-import { TextComponent } from 'common/components/text-group/text/text.component';
+import { TextComponent } from 'common/components/text-group-elements/text/text.component';
 import { MarkingData } from 'common/models/marking-data';
 import { RangeSelectionService } from 'common/services/range-selection.service';
 

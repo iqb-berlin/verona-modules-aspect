@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { TextAreaMath } from 'common/models/elements/input-elements/text-area-math';
+import { TextAreaMath } from 'common/models/elements/text-input-group-elements/text-area-math';
 
 export function textAreaMathRequiredValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {

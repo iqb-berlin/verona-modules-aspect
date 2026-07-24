@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { MathfieldElement } from '@iqb/mathlive';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { FORMULA_KEYBOARD_PRESETS } from 'common/math-editor/formula-keyboard-presets.config';
+import { FORMULA_KEYBOARD_PRESETS } from 'common/modules/math-editor/formula-keyboard-presets.config';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 
 @Component({

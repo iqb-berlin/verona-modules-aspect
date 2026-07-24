@@ -2,7 +2,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { ImageElement } from 'common/models/elements/media-elements/image';
+import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
 import { InteractiveGroupElementComponent } from './interactive-group-element.component';
 
 describe('InteractiveGroupElementComponent', () => {

@@ -1,8 +1,8 @@
 import {
   CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
-import { ButtonElement } from 'common/models/elements/button/button';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { ButtonElement } from 'common/models/elements/action-group-elements/button';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';

@@ -8,8 +8,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'common/environment';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { TableGridRowsPipe } from 'common/pipes/table-grid-rows.pipe';
-import { TableElement, TableProperties } from 'common/models/elements/compound-elements/table/table';
-import { TableChildOverlay } from 'common/components/compound-group/table-child-overlay/table-child-overlay.component';
+import { TableElement, TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import {
+  TableChildOverlay
+} from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
 import { TableComponent } from './table.component';
 
 describe('TableComponent', () => {

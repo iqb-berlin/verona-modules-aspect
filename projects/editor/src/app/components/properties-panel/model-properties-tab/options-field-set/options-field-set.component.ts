@@ -5,7 +5,9 @@ import {
   Output
 } from '@angular/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+import {
+  CombinedProperties
+} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -13,7 +15,9 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { Label, TextImageLabel } from 'common/models/label-interfaces';
 import { OptionElement } from 'common/models/ui-element-interfaces';
-import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
+import {
+  LikertRowElement, LikertRowProperties
+} from 'common/models/elements/compound-group-elements/likert/likert-row';
 
 @Component({
   selector: 'aspect-options-field-set',

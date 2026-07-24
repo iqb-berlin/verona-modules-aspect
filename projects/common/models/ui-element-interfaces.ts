@@ -1,6 +1,6 @@
-import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
-import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
 import { StateVariable } from 'common/models/state-variable';
 import {
   DimensionProperties,
@@ -10,7 +10,7 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { UIElement } from 'common/models/elements/element';
-import { TableHeaderCell } from 'common/models/elements/compound-elements/table/table';
+import { TableHeaderCell } from 'common/models/elements/compound-group-elements/table/table';
 import { TextLabel, Label } from 'common/models/label-interfaces';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
 import { InputElementValue } from 'common/models/input-element-interfaces';

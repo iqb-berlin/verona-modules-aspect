@@ -1,5 +1,5 @@
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
-import { TableElement } from 'common/models/elements/compound-elements/table/table';
+import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
 import {
   AfterViewChecked, ChangeDetectorRef,
   Component, ElementRef, HostListener, OnInit,
@@ -8,7 +8,9 @@ import {
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { UIElement } from 'common/models/elements/element';
-import { TableChildOverlay } from 'common/components/compound-group/table-child-overlay/table-child-overlay.component';
+import {
+  TableChildOverlay
+} from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
 import { Subject } from 'rxjs';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 

@@ -31,7 +31,7 @@ import { BehaviorSubject } from 'rxjs';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
 import { Response } from '@iqb/responses';
 
 @Component({

@@ -2,7 +2,7 @@
 import {
   ComponentFixture, TestBed, fakeAsync, tick
 } from '@angular/core/testing';
-import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
+import { TextAreaMathElement } from 'common/models/elements/text-input-group-elements/text-area-math';
 import { UntypedFormControl, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +15,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { RangeSelectionService } from 'common/services/range-selection.service';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
-import { AreaSegmentComponent } from 'common/components/text-input-group/area-segment/area-segment.component';
+import { AreaSegmentComponent } from 'common/components/text-input-group-elements/area-segment/area-segment.component';
 import { TextAreaMathComponent } from './text-area-math.component';
 
 @Component({

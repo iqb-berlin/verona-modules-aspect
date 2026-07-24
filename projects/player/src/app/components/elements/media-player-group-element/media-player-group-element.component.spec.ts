@@ -3,7 +3,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { MediaPlayerGroupElementComponent } from './media-player-group-element.component';

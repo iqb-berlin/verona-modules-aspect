@@ -1,5 +1,5 @@
 import { Node, mergeAttributes } from '@tiptap/core';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 
 const DropListExtension =
   Node.create({

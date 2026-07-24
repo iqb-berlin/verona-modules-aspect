@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
+import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({

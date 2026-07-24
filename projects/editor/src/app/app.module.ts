@@ -24,15 +24,19 @@ import {
 } from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { MatRadioModule } from '@angular/material/radio';
-import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
-import { MathEditorModule } from 'common/math-editor/math-editor.module';
+import {
+  HotspotEditDialogComponent
+} from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
+import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
 import { TextEditorModule } from 'editor/modules/text-editor/text-editor.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { UnitNavNextComponent } from 'common/components/unit-nav-next/unit-nav-next.component';
-import { MarkingPanelComponent } from 'common/components/interactive-group/marking-panel/marking-panel.component';
+import {
+  MarkingPanelComponent
+} from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
 import { ComponentRegistry } from 'common/utils/component-registry';
 import {
   StateVariablesDialogComponent
@@ -75,14 +79,26 @@ import { UiElementToolboxComponent } from
 import { UnitViewComponent } from 'editor/src/app/components/unit-view/unit-view/unit-view.component';
 import { PageViewComponent } from 'editor/src/app/components/unit-view/page/page-view/page-view.component';
 import { EditorTranslateLoader } from 'editor/src/app/classes/editor-translate-loader';
-import { DeleteConfirmationDialogComponent } from 'editor/src/app/components/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import {
+  DeleteConfirmationDialogComponent
+} from 'editor/src/app/components/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { TextEditDialogComponent } from 'editor/src/app/components/dialogs/text-edit-dialog/text-edit-dialog.component';
-import { TextEditMultilineDialogComponent } from 'editor/src/app/components/dialogs/text-edit-multiline-dialog/text-edit-multiline-dialog.component';
-import { PlayerEditDialogComponent } from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
+import {
+  TextEditMultilineDialogComponent
+} from 'editor/src/app/components/dialogs/text-edit-multiline-dialog/text-edit-multiline-dialog.component';
+import {
+  PlayerEditDialogComponent
+} from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
 import { GetValidAudioVideoAliasAndIDsPipe } from 'editor/src/app/pipes/get-valid-audio-video-alias-and-ids.pipe';
-import { LikertRowEditDialogComponent } from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
-import { RichTextEditDialogComponent } from 'editor/src/app/components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
-import { DropListOptionEditDialogComponent } from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
+import {
+  LikertRowEditDialogComponent
+} from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
+import {
+  RichTextEditDialogComponent
+} from 'editor/src/app/components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
+import {
+  DropListOptionEditDialogComponent
+} from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
 import { PositionFieldSetComponent } from
   'editor/src/app/components/properties-panel/position-properties-tab/position-field-set/position-field-set.component';
 import { DimensionFieldSetComponent } from
@@ -105,17 +121,29 @@ import { InputElementPropertiesComponent } from
 import { PresetValuePropertiesComponent } from
   'editor/src/app/components/properties-panel/model-properties-tab/preset-value-properties/preset-value-properties.component';
 import { LikertRowLabelPipe } from 'editor/src/app/pipes/likert-row-label.pipe';
-import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog/label-edit-dialog.component';
-import { GeogebraAppDefinitionDialogComponent } from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog/geogebra-app-definition-dialog.component';
+import {
+  LabelEditDialogComponent
+} from 'editor/src/app/components/dialogs/label-edit-dialog/label-edit-dialog.component';
+import {
+  GeogebraAppDefinitionDialogComponent
+} from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog/geogebra-app-definition-dialog.component';
 import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
-import { DeleteReferenceDialogComponent } from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
-import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
-import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
+import {
+  DeleteReferenceDialogComponent
+} from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
+import {
+  SanitizationDialogComponent
+} from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
+import {
+  OptionListPanelComponent
+} from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
 import {
   EleSpecificPropsComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/ele-specific-props/ele-specific-props.component';
 import { PageMenu } from 'editor/src/app/components/unit-view/page/page-menu/page-menu.component';
-import { ImageResizeDialogComponent } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import {
+  ImageResizeDialogComponent
+} from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
 import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
 import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
 

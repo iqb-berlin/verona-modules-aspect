@@ -5,7 +5,7 @@ import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { TextElement } from 'common/models/elements/text/text';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
 
 @Component({
   selector: 'aspect-action-properties',

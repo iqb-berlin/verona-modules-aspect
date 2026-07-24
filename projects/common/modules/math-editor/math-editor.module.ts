@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MathInputComponent } from 'common/math-editor/math-input.component';
+import { MathInputComponent } from 'common/modules/math-editor/math-input.component';
 
 @NgModule({
   declarations: [

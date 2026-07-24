@@ -1,6 +1,6 @@
 import { UIElementType } from 'common/models/ui-element-interfaces';
-import { TextComponent } from 'common/components/text-group/text/text.component';
-import { ButtonComponent } from 'common/components/action-group/button/button.component';
+import { TextComponent } from 'common/components/text-group-elements/text/text.component';
+import { ButtonComponent } from 'common/components/action-group-elements/button/button.component';
 import { ComponentRegistry } from './component-registry';
 
 describe('ComponentRegistry', () => {

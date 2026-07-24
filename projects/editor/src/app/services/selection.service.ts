@@ -4,8 +4,10 @@ import { UIElement } from 'common/models/elements/element';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import {
   ClozeChildOverlayComponent
-} from 'common/components/compound-group/cloze-child-overlay/cloze-child-overlay.component';
-import { TableChildOverlay } from 'common/components/compound-group/table-child-overlay/table-child-overlay.component';
+} from 'common/components/compound-group-elements/cloze-child-overlay/cloze-child-overlay.component';
+import {
+  TableChildOverlay
+} from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
 
 @Injectable({
   providedIn: 'root'

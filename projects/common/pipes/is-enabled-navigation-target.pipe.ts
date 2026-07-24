@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { UnitNavParam } from 'common/models/elements/button/button';
+import { UnitNavParam } from 'common/models/elements/action-group-elements/button';
 import { NavigationTarget } from 'player/modules/verona/models/verona';
 import { StateVariable } from 'common/models/state-variable';
 

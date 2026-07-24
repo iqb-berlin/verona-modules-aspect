@@ -2,7 +2,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { TriggerElement, TriggerActionEvent } from 'common/models/elements/trigger/trigger';
+import { TriggerElement, TriggerActionEvent } from 'common/models/elements/action-group-elements/trigger';
 
 @Component({
   selector: 'aspect-trigger',

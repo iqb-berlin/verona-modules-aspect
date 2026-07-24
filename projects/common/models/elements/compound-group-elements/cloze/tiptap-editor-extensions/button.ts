@@ -1,5 +1,5 @@
 import { Node, mergeAttributes } from '@tiptap/core';
-import { ButtonElement } from 'common/models/elements/button/button';
+import { ButtonElement } from 'common/models/elements/action-group-elements/button';
 
 const ButtonExtension =
   Node.create({

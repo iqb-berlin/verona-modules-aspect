@@ -1,10 +1,12 @@
 import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
-import { DropListProperties } from 'common/models/elements/input-elements/drop-list';
+import { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { DropListNodeviewComponent } from 'editor/modules/text-editor/components/drop-list-nodeview/drop-list-nodeview.component';
+import {
+  DropListNodeviewComponent
+} from 'editor/modules/text-editor/components/drop-list-nodeview/drop-list-nodeview.component';
 
 const DropListComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

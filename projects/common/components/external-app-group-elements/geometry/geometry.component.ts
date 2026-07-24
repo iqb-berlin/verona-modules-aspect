@@ -6,7 +6,7 @@ import {
 } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { PageChangeService } from 'common/services/page-change.service';
 import { GeometryVariable } from 'common/models/geometry-interfaces';

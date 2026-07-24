@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { UIElement } from 'common/models/elements/element';
-import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SectionService } from 'editor/src/app/services/section.service';

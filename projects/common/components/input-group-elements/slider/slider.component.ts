@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SliderElement } from 'common/models/elements/input-elements/slider';
+import { SliderElement } from 'common/models/elements/input-group-elements/slider';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 
 @Component({

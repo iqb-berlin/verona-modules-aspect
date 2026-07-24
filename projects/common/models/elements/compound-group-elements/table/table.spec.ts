@@ -1,5 +1,5 @@
 import { Section, SectionProperties } from 'common/models/section';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { TableElement } from './table';

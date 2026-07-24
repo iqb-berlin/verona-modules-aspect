@@ -1,7 +1,7 @@
 import { IDService } from 'editor/src/app/services/id.service';
-import { TextElement } from 'common/models/elements/text/text';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
-import { ButtonElement } from 'common/models/elements/button/button';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
+import { ButtonElement } from 'common/models/elements/action-group-elements/button';
 import { createGeometrySection } from 'editor/src/app/section-templates/builders/geometry-builders';
 
 describe('createGeometrySection', () => {

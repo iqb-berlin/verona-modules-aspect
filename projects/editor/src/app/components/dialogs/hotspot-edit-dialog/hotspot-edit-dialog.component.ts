@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
 
 @Component({
   selector: 'aspect-hotspot-edit-dialog',

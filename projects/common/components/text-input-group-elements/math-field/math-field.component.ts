@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
+import { MathFieldElement } from 'common/models/elements/text-input-group-elements/math-field';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({

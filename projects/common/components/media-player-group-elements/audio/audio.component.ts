@@ -1,7 +1,7 @@
 import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
-import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
 import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 
 @Component({

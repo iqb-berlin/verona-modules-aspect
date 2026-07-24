@@ -1,20 +1,38 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { RadioWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/radio/radio-dialog/radio-dialog.component';
+import {
+  RadioWizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/radio/radio-dialog/radio-dialog.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { UIElement } from 'common/models/elements/element';
-import { LikertWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/likert-dialog/likert-dialog.component';
-import { InputWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text-input-dialog/text-input-dialog.component';
-import { MarkingPanelDialogComponent } from 'editor/src/app/section-templates/dialogs/marking-panel-dialog/marking-panel-dialog.component';
-import { GeometryWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/geometry-dialog/geometry-dialog.component';
-import { DroplistWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/droplist-dialog/droplist-dialog.component';
-import { MathTableWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/mathtable-dialog/mathtable-dialog.component';
-import { Text3WizardDialogComponent } from 'editor/src/app/section-templates/dialogs/text3-dialog/text3-dialog.component';
-import { CheckboxWizardDialogComponent } from 'editor/src/app/section-templates/dialogs/checkbox-dialog/checkbox-dialog.component';
+import {
+  LikertWizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/likert-dialog/likert-dialog.component';
+import {
+  InputWizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/text-input-dialog/text-input-dialog.component';
+import {
+  MarkingPanelDialogComponent
+} from 'editor/src/app/section-templates/dialogs/marking-panel-dialog/marking-panel-dialog.component';
+import {
+  GeometryWizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/geometry-dialog/geometry-dialog.component';
+import {
+  DroplistWizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/droplist-dialog/droplist-dialog.component';
+import {
+  MathTableWizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/mathtable-dialog/mathtable-dialog.component';
+import {
+  Text3WizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/text3-dialog/text3-dialog.component';
+import {
+  CheckboxWizardDialogComponent
+} from 'editor/src/app/section-templates/dialogs/checkbox-dialog/checkbox-dialog.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { PositionedUIElement, UIElementType } from 'common/models/ui-element-interfaces';
 import { TextImageLabel } from 'common/models/label-interfaces';
@@ -40,7 +58,7 @@ import {
   TextStimulusOptions
 } from 'editor/src/app/section-templates/stimulus-interfaces';
 import { ImageRadioOptions, TextRadioOptions } from 'editor/src/app/section-templates/radio-interfaces';
-import { TextElement } from 'common/models/elements/text/text';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 import { CONSTANTS } from 'editor/src/app/section-templates/constants';

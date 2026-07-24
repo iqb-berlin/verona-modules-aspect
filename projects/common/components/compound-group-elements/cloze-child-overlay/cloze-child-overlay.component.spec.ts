@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { ToggleButtonElement } from 'common/models/elements/compound-group-elements/toggle-button';
 import { ClozeChildOverlayComponent } from './cloze-child-overlay.component';
 
 describe('ClozeChildOverlayComponent', () => {

@@ -3,15 +3,15 @@ import {
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextFieldComponent } from 'common/components/text-input-group/text-field/text-field.component';
-import { CheckboxComponent } from 'common/components/input-group/checkbox/checkbox.component';
+import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
+import { CheckboxComponent } from 'common/components/input-group-elements/checkbox/checkbox.component';
 import { UntypedFormGroup } from '@angular/forms';
-import { DropListComponent } from 'common/components/input-group/drop-list/drop-list.component';
-import { AudioComponent } from 'common/components/media-player-group/audio/audio.component';
+import { DropListComponent } from 'common/components/input-group-elements/drop-list/drop-list.component';
+import { AudioComponent } from 'common/components/media-player-group-elements/audio/audio.component';
 import { Subject } from 'rxjs';
-import { TextComponent } from 'common/components/text-group/text/text.component';
-import { TextAreaComponent } from 'common/components/text-input-group/text-area/text-area.component';
-import { ImageComponent } from 'common/components/interactive-group/image/image.component';
+import { TextComponent } from 'common/components/text-group-elements/text/text.component';
+import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
+import { ImageComponent } from 'common/components/interactive-group-elements/image/image.component';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { CommonModule } from '@angular/common';
 

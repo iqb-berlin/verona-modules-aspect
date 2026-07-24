@@ -4,10 +4,10 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
+import { ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import {
   ClozeChildOverlayComponent
-} from 'common/components/compound-group/cloze-child-overlay/cloze-child-overlay.component';
+} from 'common/components/compound-group-elements/cloze-child-overlay/cloze-child-overlay.component';
 
 // TODO background color implementieren
 @Component({

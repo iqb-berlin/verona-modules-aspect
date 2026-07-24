@@ -4,7 +4,7 @@ import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import {
   ExternalAppGroupElementComponent
 } from 'player/src/app/components/elements/external-app-group-element/external-app-group-element.component';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 

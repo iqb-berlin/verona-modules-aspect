@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { takeUntil } from 'rxjs/operators';
-import { TableComponent } from 'common/components/compound-group/table/table.component';
+import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { Subject } from 'rxjs';
 

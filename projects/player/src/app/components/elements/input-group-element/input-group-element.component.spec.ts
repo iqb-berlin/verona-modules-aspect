@@ -3,7 +3,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Component, Input } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
+import { RadioButtonGroupElement } from 'common/models/elements/input-group-elements/radio-button-group';
 import { InputGroupElementComponent } from './input-group-element.component';
 
 describe('InputGroupElementComponent', () => {

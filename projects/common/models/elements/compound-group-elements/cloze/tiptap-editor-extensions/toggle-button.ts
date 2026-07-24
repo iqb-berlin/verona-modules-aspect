@@ -1,5 +1,5 @@
 import { Node, mergeAttributes } from '@tiptap/core';
-import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { ToggleButtonElement } from 'common/models/elements/compound-group-elements/toggle-button';
 
 const ToggleButtonExtension =
   Node.create({

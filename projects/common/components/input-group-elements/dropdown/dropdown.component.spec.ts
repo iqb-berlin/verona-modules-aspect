@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { DropdownElement, DropdownProperties } from 'common/models/elements/input-elements/dropdown';
+import { DropdownElement, DropdownProperties } from 'common/models/elements/input-group-elements/dropdown';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { DropdownComponent } from './dropdown.component';
 

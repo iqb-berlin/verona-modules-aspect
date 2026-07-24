@@ -1,8 +1,8 @@
 import {
   Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
-import { TextAreaMathElement, TextAreaMath } from 'common/models/elements/input-elements/text-area-math';
-import { AreaSegmentComponent } from 'common/components/text-input-group/area-segment/area-segment.component';
+import { TextAreaMathElement, TextAreaMath } from 'common/models/elements/text-input-group-elements/text-area-math';
+import { AreaSegmentComponent } from 'common/components/text-input-group-elements/area-segment/area-segment.component';
 import { BehaviorSubject } from 'rxjs';
 import { RangeSelectionService } from 'common/services/range-selection.service';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';

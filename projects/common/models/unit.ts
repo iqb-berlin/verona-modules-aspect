@@ -4,7 +4,7 @@ import { VariableInfo } from '@iqb/responses';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { IDService } from 'editor/src/app/services/id.service';

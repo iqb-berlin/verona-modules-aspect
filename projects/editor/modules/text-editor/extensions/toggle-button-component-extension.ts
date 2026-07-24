@@ -3,10 +3,12 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import {
   ToggleButtonProperties
-} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+} from 'common/models/elements/compound-group-elements/toggle-button';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { ToggleButtonNodeviewComponent } from 'editor/modules/text-editor/components/toggle-button-nodeview/toggle-button-nodeview.component';
+import {
+  ToggleButtonNodeviewComponent
+} from 'editor/modules/text-editor/components/toggle-button-nodeview/toggle-button-nodeview.component';
 
 const ToggleButtonComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

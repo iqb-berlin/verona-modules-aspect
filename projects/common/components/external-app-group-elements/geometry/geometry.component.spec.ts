@@ -6,7 +6,7 @@ import { PageChangeService } from 'common/services/page-change.service';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
 import { GeometryComponent } from './geometry.component';
 
 describe('GeometryComponent', () => {

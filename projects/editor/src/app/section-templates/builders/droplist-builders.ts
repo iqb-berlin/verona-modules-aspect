@@ -1,7 +1,7 @@
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { SectionProperties } from 'common/models/section';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
   ClassicTemplateOptions, SortTemplateOptions,

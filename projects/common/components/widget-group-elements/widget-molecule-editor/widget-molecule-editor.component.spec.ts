@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'common/environment';
-import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor/widget-molecule-editor';
+import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-group-elements/widget-molecule-editor';
 import { WidgetMoleculeEditorComponent } from './widget-molecule-editor.component';
 
 describe('WidgetMoleculeEditorComponent', () => {

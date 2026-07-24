@@ -3,10 +3,12 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import {
   TextFieldSimpleProperties
-} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+} from 'common/models/elements/compound-group-elements/text-field-simple';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { TextFieldNodeviewComponent } from 'editor/modules/text-editor/components/text-field-nodeview/text-field-nodeview.component';
+import {
+  TextFieldNodeviewComponent
+} from 'editor/modules/text-editor/components/text-field-nodeview/text-field-nodeview.component';
 
 const TextFieldComponentExtension = (injector: Injector): Node => Node.create({
   group: 'inline',

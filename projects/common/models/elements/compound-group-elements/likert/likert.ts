@@ -1,7 +1,9 @@
 import {
   CompoundElement, UIElement
 } from 'common/models/elements/element';
-import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
+import {
+  LikertRowElement, LikertRowProperties
+} from 'common/models/elements/compound-group-elements/likert/likert-row';
 import {
   BasicStyles,
   DimensionProperties,

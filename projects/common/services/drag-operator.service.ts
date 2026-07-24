@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DropListComponent } from 'common/components/input-group/drop-list/drop-list.component';
+import { DropListComponent } from 'common/components/input-group-elements/drop-list/drop-list.component';
 import { DragOperation } from 'common/classes/drag-operation';
 import { DropLogic } from 'common/utils/drop-logic';
 import { DragNDropValueObject } from 'common/models/label-interfaces';

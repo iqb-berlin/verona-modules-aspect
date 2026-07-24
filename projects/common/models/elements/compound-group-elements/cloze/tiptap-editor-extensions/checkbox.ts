@@ -1,5 +1,5 @@
 import { Node, mergeAttributes } from '@tiptap/core';
-import { CheckboxElement } from 'common/models/elements/input-elements/checkbox';
+import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
 
 const CheckboxExtension =
   Node.create({

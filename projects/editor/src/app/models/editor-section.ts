@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 
 export class EditorSection extends Section {
   deleteElements(elements: UIElement[]): void {

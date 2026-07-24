@@ -1,5 +1,5 @@
 import { ApplicationRef, createComponent, Renderer2 } from '@angular/core';
-import { TextComponent } from 'common/components/text-group/text/text.component';
+import { TextComponent } from 'common/components/text-group-elements/text/text.component';
 import { Markable, MarkablesContainer } from 'player/src/app/models/markable.interface';
 import {
   MarkablesContainerComponent

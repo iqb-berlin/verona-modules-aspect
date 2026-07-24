@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CheckboxElement } from 'common/models/elements/input-elements/checkbox';
+import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 
 @Component({

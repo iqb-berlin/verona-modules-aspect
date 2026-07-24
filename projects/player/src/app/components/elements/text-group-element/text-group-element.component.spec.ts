@@ -6,7 +6,7 @@ import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import {
   FloatingMarkingBarComponent
 } from 'player/src/app/components/floating-marking-bar/floating-marking-bar.component';
-import { TextElement } from 'common/models/elements/text/text';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { TextGroupElementComponent } from './text-group-element.component';
 

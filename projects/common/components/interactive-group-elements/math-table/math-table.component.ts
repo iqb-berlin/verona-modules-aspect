@@ -1,4 +1,6 @@
-import { MathTableCell, MathTableElement, MathTableRow } from 'common/models/elements/input-elements/math-table';
+import {
+  MathTableCell, MathTableElement, MathTableRow
+} from 'common/models/elements/interactive-group-elements/math-table';
 import {
   Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren
 } from '@angular/core';

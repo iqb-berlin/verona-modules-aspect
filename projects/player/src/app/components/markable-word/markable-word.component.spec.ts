@@ -39,6 +39,16 @@ describe('MarkableWordComponent', () => {
     component = fixture.componentInstance;
   });
 
+  /*
+   * A started range selection waits for the mouse to be released with
+   * takeUntil(ngUnsubscribe) before first(). Destroying the component first would complete
+   * the stream empty and first() would report an EmptyError, so every test releases the
+   * mouse before the fixture is torn down.
+   */
+  afterEach(() => {
+    mouseUp.next(new MouseEvent('mouseup'));
+  });
+
   it('should create', () => {
     initComponent(undefined);
 

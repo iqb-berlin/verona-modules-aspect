@@ -22,7 +22,8 @@ describe('PageComponent', () => {
   let emittedVisibilities: IsVisibleIndex[];
 
   @Component({
-    selector: 'aspect-section', template: '',
+    selector: 'aspect-section',
+    template: '',
     standalone: false
   })
   class MockSectionComponent {
@@ -32,7 +33,8 @@ describe('PageComponent', () => {
   }
 
   @Component({
-    selector: 'aspect-unit-nav-next', template: '',
+    selector: 'aspect-unit-nav-next',
+    template: '',
     standalone: false
   })
   class MockUnitNavNextComponent {

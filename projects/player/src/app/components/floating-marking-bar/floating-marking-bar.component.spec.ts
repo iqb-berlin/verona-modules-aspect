@@ -23,7 +23,7 @@ describe('FloatingMarkingBarComponent', () => {
   @Pipe({
     name: 'hasReturnKey',
     standalone: false
-})
+  })
   class MockHasReturnKeyPipe implements PipeTransform {
     transform(): boolean {
       return false;

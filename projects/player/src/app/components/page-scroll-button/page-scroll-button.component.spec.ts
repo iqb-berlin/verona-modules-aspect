@@ -14,9 +14,10 @@ describe('PageScrollButtonComponent', () => {
   let scrollTo: ReturnType<typeof vi.fn>;
 
   @Component({
-    selector: 'aspect-section', template: '',
+    selector: 'aspect-section',
+    template: '',
     standalone: false
-})
+  })
   class SectionComponent {
     @Input() section!: Section;
     @Input() pageIndex!: number;

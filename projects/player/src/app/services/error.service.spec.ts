@@ -46,7 +46,9 @@ describe('ErrorService', () => {
     service.handleError(aspectError);
     service.handleError(otherError);
 
+    /* eslint-disable no-console */
     expect(console.error).toHaveBeenCalledWith(aspectError);
     expect(console.error).toHaveBeenCalledWith(otherError);
+    /* eslint-enable no-console */
   });
 });

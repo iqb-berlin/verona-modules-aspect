@@ -1,5 +1,7 @@
 /* eslint-disable max-classes-per-file */
-import { Component, Input, Pipe, PipeTransform } from '@angular/core';
+import {
+  Component, Input, Pipe, PipeTransform
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';

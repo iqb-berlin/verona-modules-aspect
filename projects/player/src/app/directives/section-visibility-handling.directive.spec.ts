@@ -188,7 +188,9 @@ describe('SectionVisibilityHandlingDirective', () => {
   it('should keep a section visible that was already stored as visible', () => {
     stateVariableStateService.getElementCodeById
       .mockImplementation((id: string) => (id === 'section-0-1' ?
-        { id, alias: id, status: 'VALUE_CHANGED', value: 1 } :
+        {
+          id, alias: id, status: 'VALUE_CHANGED', value: 1
+        } :
         undefined));
 
     initDirective(createSection([{ id: 'text-field_1', operator: '=', value: 'yes' }]));

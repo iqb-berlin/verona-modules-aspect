@@ -3,7 +3,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { MarkingData, MarkingPanelMarkingData } from 'common/models/marking-data';
@@ -192,7 +192,9 @@ describe('TextGroupElementComponent', () => {
 
     markingPanelService.broadcastMarkingData({
       id: 'marking-panel_2',
-      markingData: { active: true, mode: 'mark', color: '#f9f871', colorName: 'yellow' }
+      markingData: {
+        active: true, mode: 'mark', color: '#f9f871', colorName: 'yellow'
+      }
     } as MarkingPanelMarkingData);
 
     expect(applyMarkingData).not.toHaveBeenCalled();
@@ -203,7 +205,9 @@ describe('TextGroupElementComponent', () => {
 
     markingPanelService.broadcastMarkingData({
       id: 'marking-panel_1',
-      markingData: { active: false, mode: 'mark', color: '#f9f871', colorName: 'yellow' }
+      markingData: {
+        active: false, mode: 'mark', color: '#f9f871', colorName: 'yellow'
+      }
     } as MarkingPanelMarkingData);
 
     expect(component.elementComponent.selectedColor.value).toBeUndefined();
@@ -234,7 +238,9 @@ describe('TextGroupElementComponent', () => {
     fixture.destroy();
     markingPanelService.broadcastMarkingData({
       id: 'marking-panel_1',
-      markingData: { active: true, mode: 'mark', color: '#f9f871', colorName: 'yellow' }
+      markingData: {
+        active: true, mode: 'mark', color: '#f9f871', colorName: 'yellow'
+      }
     } as MarkingPanelMarkingData);
 
     expect(applyMarkingData).not.toHaveBeenCalled();

@@ -13,9 +13,10 @@ describe('KeyboardComponent', () => {
   let backspaceCount: number;
 
   @Component({
-    selector: 'aspect-keyboard-key', template: '',
+    selector: 'aspect-keyboard-key',
+    template: '',
     standalone: false
-})
+  })
   class KeyboardKeyComponent {
     @Input() key!: string;
     @Input() alternativeKey!: string;

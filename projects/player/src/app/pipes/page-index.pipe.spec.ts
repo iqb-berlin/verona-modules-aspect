@@ -2,52 +2,29 @@ import { Page } from 'common/models/page';
 import { PageIndexPipe } from './page-index.pipe';
 
 describe('PageIndexPipe', () => {
-  const page: Page = new Page({
-    hasMaxWidth: false,
-    maxWidth: 0,
-    margin: 0,
-    backgroundColor: 'white',
-    alwaysVisible: false,
-    alwaysVisiblePagePosition: 'left',
-    alwaysVisibleAspectRatio: 50,
-    sections: []
+  let pipe: PageIndexPipe;
+  let pages: Page[];
+
+  beforeEach(() => {
+    pipe = new PageIndexPipe();
+    pages = [new Page(), new Page(), new Page()];
   });
 
-  const page2: Page = new Page({
-    hasMaxWidth: false,
-    maxWidth: 0,
-    margin: 0,
-    backgroundColor: 'white',
-    alwaysVisible: false,
-    alwaysVisiblePagePosition: 'left',
-    alwaysVisibleAspectRatio: 50,
-    sections: []
+  it('create an instance', () => {
+    expect(pipe).toBeTruthy();
   });
 
-  const pipe = new PageIndexPipe();
-
-  it('should transform pages to the index of given page (0)', () => {
-    const pages = [page, page2, { ...page2, alwaysVisible: true } as Page];
-    expect(pipe.transform(pages, page)).toEqual(0);
+  it('should transform pages to the index of the given page', () => {
+    expect(pipe.transform(pages, pages[0])).toBe(0);
+    expect(pipe.transform(pages, pages[1])).toBe(1);
+    expect(pipe.transform(pages, pages[2])).toBe(2);
   });
 
-  it('should transform pages to the index of given page (not 1)', () => {
-    const pages = [page, page2, { ...page2, alwaysVisible: true } as Page];
-    expect(pipe.transform(pages, page)).not.toEqual(1);
+  it('should match the page by reference, not by equal content', () => {
+    expect(pipe.transform(pages, new Page())).toBe(-1);
   });
 
-  it('should transform pages to the index of given page2 (1)', () => {
-    const pages = [page, page2, { ...page2, alwaysVisible: true } as Page];
-    expect(pipe.transform(pages, page2)).toEqual(1);
-  });
-
-  it('should transform pages to the index of unknown page (-1)', () => {
-    const pages = [page, { ...page2, alwaysVisible: true } as Page];
-    expect(pipe.transform(pages, page2)).toEqual(-1);
-  });
-
-  it('should transform pages to the index of unknown page (-1)', () => {
-    const pages = [page, { ...page2, alwaysVisible: true } as Page];
-    expect(pipe.transform(pages, { ...page2, alwaysVisible: true } as Page)).toEqual(-1);
+  it('should transform pages to -1 without a page to find', () => {
+    expect(pipe.transform(pages, null)).toBe(-1);
   });
 });

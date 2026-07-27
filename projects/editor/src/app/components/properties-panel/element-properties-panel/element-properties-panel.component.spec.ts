@@ -167,6 +167,97 @@ describe('ElementPropertiesPanelComponent', () => {
     expect(combined?.idList).toBeUndefined();
   });
 
+  describe('createCombinedProperties', () => {
+    const element = (properties: Record<string, unknown>): UIElement => properties as unknown as UIElement;
+
+    it('should return undefined for an empty selection', () => {
+      expect(ElementPropertiesPanelComponent.createCombinedProperties([])).toBeUndefined();
+    });
+
+    // The merge adds two keys that the element itself does not have. Templates test for
+    // `rows === undefined` rather than for the key, so both stay compatible with that.
+    it('should add an id list and a rows key for a single element', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'text-field', id: 'a' })
+      ]);
+
+      expect(combined?.idList).toEqual(['a']);
+      expect(combined && 'rows' in combined).toBe(true);
+      expect(combined?.rows).toBeUndefined();
+    });
+
+    // The rows array is copied so that the options panel sees a new reference and re-renders.
+    it('should replace the rows array with a new reference', () => {
+      const rows = [{ id: 'r1' }];
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'likert', id: 'a', rows })
+      ]);
+
+      expect(combined?.rows).not.toBe(rows);
+      expect(combined?.rows).toEqual(rows);
+    });
+
+    it('should merge property groups recursively and null only the diverging entries', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'text-field', id: 'a', position: { xPosition: 0, yPosition: 10 } }),
+        element({ type: 'text-field', id: 'b', position: { xPosition: 5, yPosition: 10 } })
+      ]);
+
+      expect(combined?.position).toEqual(expect.objectContaining({ xPosition: null, yPosition: 10 }));
+    });
+
+    it('should null a diverging array instead of merging it', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'dropdown', id: 'a', options: [{ text: 'one' }] }),
+        element({ type: 'dropdown', id: 'b', options: [{ text: 'two' }] })
+      ]);
+
+      expect(combined?.options).toBeNull();
+    });
+
+    it('should keep an array whose contents are equal', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'dropdown', id: 'a', options: [{ text: 'one' }] }),
+        element({ type: 'dropdown', id: 'b', options: [{ text: 'one' }] })
+      ]);
+
+      expect(combined?.options).toEqual([{ text: 'one' }]);
+    });
+
+    it('should null diverging primitives of any type', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({
+          type: 'text-field', id: 'a', readOnly: false, rowCount: 2, label: 'first'
+        }),
+        element({
+          type: 'text-field', id: 'b', readOnly: true, rowCount: 3, label: 'second'
+        })
+      ]);
+
+      expect(combined?.readOnly).toBeNull();
+      expect(combined?.rowCount).toBeNull();
+      expect(combined?.label).toBeNull();
+    });
+
+    it('should keep the shared type when merging elements of the same type', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'checkbox', id: 'a' }),
+        element({ type: 'checkbox', id: 'b' })
+      ]);
+
+      expect(combined?.type).toBe('checkbox');
+    });
+
+    it('should null the type when merging elements of different types', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'checkbox', id: 'a' }),
+        element({ type: 'dropdown', id: 'b' })
+      ]);
+
+      expect(combined?.type).toBeNull();
+    });
+  });
+
   it('should update the elements property for valid input', () => {
     selectedElements.next([buttonElement]);
     fixture.detectChanges();

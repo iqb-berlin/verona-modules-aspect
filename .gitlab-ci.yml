@@ -4,8 +4,27 @@ stages:
   - build
   - deploy
 
+# A push and the pull request GitLab mirrors from GitHub each start a pipeline for the same
+# commit. Both report to the same GitHub status context (ci/gitlab/scm.cms.hu-berlin.de), so
+# whichever finishes last decides whether the pull request looks green, and both compete for
+# the same runner - four ng serve processes and two Chrome instances at once, which is what
+# makes the e2e job time out during startup. Keep the pull request pipeline, which is the one
+# the required status check links to, and drop the redundant push pipeline on feature
+# branches. Consequence: a branch without an open pull request gets no pipeline.
+workflow:
+  auto_cancel:
+    on_new_commit: interruptible
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH != "develop" && $CI_COMMIT_BRANCH != "master"
+      when: never
+    - when: always
+
 default:
   image: iqbberlin/aspect-test:latest
+  # Lets a pipeline for a newer commit cancel this one instead of both queueing for the
+  # same runner. Effective through workflow:auto_cancel above.
+  interruptible: true
 
 test-unit:
   stage: test

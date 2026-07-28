@@ -90,6 +90,11 @@ export interface PlayerProperties {
   showRestTime: boolean;
   playbackTime: number;
   fileName: string;
+  /**
+   * Still image of the player, shown in the control bar while nothing is playing. Not to be confused
+   * with `CheckboxProperties.imgSrc`, which is an image in place of a text label and sits on the
+   * element itself rather than under `element.player`.
+   */
   imgSrc: string | null;
   imgFileName: string;
 }

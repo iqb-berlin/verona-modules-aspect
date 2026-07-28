@@ -66,6 +66,10 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
 }
 
 export interface CheckboxProperties extends InputElementProperties {
+  /**
+   * Image in place of the text label. Not to be confused with `PlayerProperties.imgSrc`, which is a
+   * player still image and sits under `element.player`.
+   */
   label: string;
   imgSrc: string | null;
   value: boolean;

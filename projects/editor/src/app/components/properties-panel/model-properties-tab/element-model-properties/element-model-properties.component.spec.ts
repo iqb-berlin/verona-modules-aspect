@@ -18,7 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
-import { IsInputElementPipe } from 'editor/src/app/pipes/is-input-element.pipe';
+import { IsInputElementPipe } from 'editor/src/app/components/properties-panel/pipes/is-input-element.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';

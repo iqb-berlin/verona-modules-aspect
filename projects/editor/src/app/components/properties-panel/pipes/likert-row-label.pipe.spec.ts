@@ -1,5 +1,5 @@
 import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
-import { LikertRowLabelPipe } from 'editor/src/app/pipes/likert-row-label.pipe';
+import { LikertRowLabelPipe } from 'editor/src/app/components/properties-panel/pipes/likert-row-label.pipe';
 
 describe('LikertRowLabelPipe', () => {
   const pipe = new LikertRowLabelPipe();

@@ -11,7 +11,7 @@ import { LikertRowElement } from 'common/models/elements/compound-group-elements
 import { Label } from 'common/models/label-interfaces';
 import { OptionElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
-import { LikertRowLabelPipe } from 'editor/src/app/pipes/likert-row-label.pipe';
+import { LikertRowLabelPipe } from 'editor/src/app/components/properties-panel/pipes/likert-row-label.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';

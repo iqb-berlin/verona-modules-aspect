@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { Measurement } from 'common/models/ui-element-interfaces';
-import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
+import { SizeInputPanelComponent } from 'editor/modules/editor-shared/components/size-input-panel/size-input-panel.component';
 
 describe('SizeInputPanelComponent', () => {
   let component: SizeInputPanelComponent;

@@ -15,7 +15,7 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
   OptionListPanelComponent
-} from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
+} from 'editor/modules/editor-shared/components/option-list-panel/option-list-panel.component';
 
 describe('OptionListPanelComponent', () => {
   let component: OptionListPanelComponent;

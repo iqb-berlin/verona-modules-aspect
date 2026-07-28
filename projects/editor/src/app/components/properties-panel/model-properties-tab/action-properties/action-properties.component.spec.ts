@@ -11,8 +11,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
-import { GetStateVariablePipe } from 'editor/src/app/pipes/get-state-variable.pipe';
-import { ScrollPageIndexPipe } from 'editor/src/app/pipes/scroll-page-index.pipe';
+import { GetStateVariablePipe } from 'editor/src/app/components/properties-panel/pipes/get-state-variable.pipe';
+import { ScrollPageIndexPipe } from 'editor/src/app/components/properties-panel/pipes/scroll-page-index.pipe';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {

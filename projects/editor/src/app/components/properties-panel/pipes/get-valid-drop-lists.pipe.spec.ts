@@ -1,6 +1,6 @@
 import { Mock } from 'vitest';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { GetValidDropListsPipe } from 'editor/src/app/pipes/get-valid-drop-lists.pipe';
+import { GetValidDropListsPipe } from 'editor/src/app/components/properties-panel/pipes/get-valid-drop-lists.pipe';
 
 describe('GetValidDropListsPipe', () => {
   let pipe: GetValidDropListsPipe;

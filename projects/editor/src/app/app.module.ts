@@ -30,6 +30,10 @@ import {
 import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
 import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
 import { SectionTemplatesModule } from 'editor/modules/section-templates/section-templates.module';
+import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
+import {
+  PropertiesPanelModule
+} from 'editor/src/app/components/properties-panel/properties-panel.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -52,30 +56,15 @@ import {
   ShowStateVariablesButtonComponent
 } from 'editor/src/app/components/show-state-variables-button/show-state-variables-button.component';
 import {
-  TextFieldElementPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/text-field-element-properties/text-field-element-properties.component';
-import {
-  ScaleAndZoomPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/scale-and-zoom-properties/scale-and-zoom-properties.component';
-import {
   StateVariableEditorComponent
 } from 'editor/src/app/components/state-variable-editor/state-variable-editor.component';
-import { ActionParamStateVariableComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/action-param-state-variable/action-param-state-variable.component';
 import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 
-import { InputAssistancePropertiesComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/input-assistance-properties/input-assistance-properties.component';
 import {
   TooltipPropertiesDialogComponent
 } from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
-import {
-  ActionPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/action-properties/action-properties.component';
-import { GetStateVariablePipe } from 'editor/src/app/pipes/get-state-variable.pipe';
-import { ScrollPageIndexPipe } from 'editor/src/app/pipes/scroll-page-index.pipe';
 import { AppComponent } from 'editor/src/app/app.component';
 import { ToolbarComponent } from 'editor/src/app/components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -103,44 +92,18 @@ import {
 import {
   DropListOptionEditDialogComponent
 } from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
-import { PositionFieldSetComponent } from
-  'editor/src/app/components/properties-panel/position-field-set/position-field-set.component';
-import { DimensionFieldSetComponent } from
-  'editor/src/app/components/properties-panel/dimension-field-set/dimension-field-set.component';
-import { ElementPropertiesPanelComponent }
-  from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import { ElementPositionPropertiesComponent } from
-  'editor/src/app/components/properties-panel/element-position-properties/element-position-properties.component';
-import { ElementStylePropertiesComponent } from
-  'editor/src/app/components/properties-panel/element-style-properties/element-style-properties.component';
-import { ElementModelPropertiesComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/element-model-properties/element-model-properties.component';
-import { IsInputElementPipe } from 'editor/src/app/pipes/is-input-element.pipe';
-import { OptionsFieldSetComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/options-field-set/options-field-set.component';
-import { SelectPropertiesComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/select-properties/select-properties.component';
-import { InputElementPropertiesComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/input-element-properties/input-element-properties.component';
-import { PresetValuePropertiesComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/preset-value-properties/preset-value-properties.component';
-import { LikertRowLabelPipe } from 'editor/src/app/pipes/likert-row-label.pipe';
 import {
   LabelEditDialogComponent
 } from 'editor/src/app/components/dialogs/label-edit-dialog/label-edit-dialog.component';
 import {
   GeogebraAppDefinitionDialogComponent
 } from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog/geogebra-app-definition-dialog.component';
-import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
 import {
   DeleteReferenceDialogComponent
 } from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
 import {
   SanitizationDialogComponent
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
-import {
-  EleSpecificPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/ele-specific-props/ele-specific-props.component';
 import { PageMenu } from 'editor/src/app/components/page-menu/page-menu.component';
 import {
   ImageResizeDialogComponent
@@ -188,51 +151,8 @@ import {
   UnexpectedErrorComponent
 } from 'editor/src/app/components/unexpected-error/unexpected-error.component';
 import {
-  BorderPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/border-properties/border-properties.component';
-import {
-  ButtonPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/button-properties/button-properties.component';
-import {
-  DropListPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/drop-list-properties/drop-list-properties.component';
-import {
-  GeometryPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/geometry-props/geometry-props.component';
-import {
-  HighlightPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/highlight-properties/highlight-properties.component';
-import {
-  HotspotPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/hotspot-props/hotspot-props.component';
-import {
-  MarkingPanelPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/marking-panel-properties/marking-panel-properties.component';
-import {
-  MathFieldPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/math-field-props/math-field-props.component';
-import {
-  MathTablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/math-table-properties/math-table-properties.component';
-import {
-  SliderPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/slider-properties/slider-properties.component';
-import {
-  TablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/table-properties/table-properties.component';
-import {
-  TextPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/text-properties-field-set/text-properties-field-set.component';
-import {
-  WidgetMoleculeEditorPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
-import {
-  WidgetPeriodicTablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-periodic-table-properties/widget-periodic-table-properties.component';
-import {
   ElementGridChangeListenerDirective
 } from 'editor/src/app/directives/element-grid-change-listener.directive';
-import { GetValidDropListsPipe } from 'editor/src/app/pipes/get-valid-drop-lists.pipe';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -249,9 +169,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     UiElementToolboxComponent,
     UnitViewComponent,
     PageViewComponent,
-    ElementPropertiesPanelComponent,
-    ElementStylePropertiesComponent,
-    ElementPositionPropertiesComponent,
     DeleteConfirmationDialogComponent,
     TextEditDialogComponent,
     TextEditMultilineDialogComponent,
@@ -259,34 +176,19 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     LikertRowEditDialogComponent,
     RichTextEditDialogComponent,
     HotspotEditDialogComponent,
-    ElementModelPropertiesComponent,
     DropListOptionEditDialogComponent,
-    PositionFieldSetComponent,
-    DimensionFieldSetComponent,
-    OptionsFieldSetComponent,
-    ActionPropertiesComponent,
-    TextFieldElementPropertiesComponent,
-    ScaleAndZoomPropertiesComponent,
     SectionInsertDialogComponent,
-    SelectPropertiesComponent,
-    InputElementPropertiesComponent,
-    PresetValuePropertiesComponent,
-    LikertRowLabelPipe,
     LabelEditDialogComponent,
     GeogebraAppDefinitionDialogComponent,
-    GetStateVariablePipe,
-    ScrollPageIndexPipe,
     DeleteReferenceDialogComponent,
     VisibilityRuleEditorComponent,
     StateVariablesDialogComponent,
     ShowStateVariablesButtonComponent,
     StateVariableEditorComponent,
-    ActionParamStateVariableComponent,
     VisibilityRulesDialogComponent,
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoAliasAndIDsPipe,
-    InputAssistancePropertiesComponent,
     ImageResizeDialogComponent,
     BytesPipe,
     SupportsQualityPipe,
@@ -303,28 +205,10 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ReferenceListSnackbarComponent,
     SectionComponent,
     SectionMenuComponent,
-    SizeInputPanelComponent,
     StaticOverlayComponent,
     StaticSectionComponent,
     UnexpectedErrorComponent,
-    BorderPropertiesComponent,
-    ButtonPropertiesComponent,
-    DropListPropertiesComponent,
-    EleSpecificPropsComponent,
-    GeometryPropsComponent,
-    HighlightPropertiesComponent,
-    HotspotPropsComponent,
-    MarkingPanelPropertiesComponent,
-    MathFieldPropsComponent,
-    MathTablePropertiesComponent,
-    SliderPropertiesComponent,
-    TablePropertiesComponent,
-    TextPropsComponent,
-    WidgetMoleculeEditorPropertiesComponent,
-    WidgetPeriodicTablePropertiesComponent,
-    ElementGridChangeListenerDirective,
-    GetValidDropListsPipe,
-    IsInputElementPipe
+    ElementGridChangeListenerDirective
   ],
   imports: [
     BrowserModule,
@@ -354,6 +238,8 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     MathEditorModule,
     RichTextEditorModule,
     SectionTemplatesModule,
+    EditorSharedModule,
+    PropertiesPanelModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     MatBadgeModule,

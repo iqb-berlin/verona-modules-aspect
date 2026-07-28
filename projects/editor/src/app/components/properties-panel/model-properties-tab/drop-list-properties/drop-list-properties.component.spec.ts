@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { DragNDropValueObject, Label } from 'common/models/label-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
-import { GetValidDropListsPipe } from 'editor/src/app/pipes/get-valid-drop-lists.pipe';
+import { GetValidDropListsPipe } from 'editor/src/app/components/properties-panel/pipes/get-valid-drop-lists.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';

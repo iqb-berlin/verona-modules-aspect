@@ -63,21 +63,6 @@ export class ElementModelPropertiesComponent implements OnDestroy {
       });
   }
 
-  async changeImgSrc(): Promise<void> {
-    const file = await FileService.getRawFile('image/*');
-    const base64 = await FileService.readFileAsText(file, true);
-    if (FileService.isResizable(file.type)) {
-      this.dialogService.showImageResizeDialog(base64, {}).subscribe(async options => {
-        if (options) {
-          const imgSrc = await FileService.scaleImage(base64, options);
-          this.updateModel.emit({ property: 'imgSrc', value: imgSrc });
-        }
-      });
-    } else {
-      this.updateModel.emit({ property: 'imgSrc', value: base64 });
-    }
-  }
-
   async changeMediaSrc(elementType: string) {
     let media = { name: '', content: '' };
     switch (elementType) {

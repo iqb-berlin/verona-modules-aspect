@@ -25,6 +25,9 @@ import {
 import { ActionPropertiesComponent } from './model-properties-tab/action-properties/action-properties.component';
 import { BorderPropertiesComponent } from './model-properties-tab/border-properties/border-properties.component';
 import { ButtonPropertiesComponent } from './model-properties-tab/button-properties/button-properties.component';
+import {
+  CheckboxPropertiesComponent
+} from './model-properties-tab/checkbox-properties/checkbox-properties.component';
 import { DimensionFieldSetComponent } from './dimension-field-set/dimension-field-set.component';
 import {
   DropListPropertiesComponent
@@ -100,7 +103,7 @@ import {
 /**
  * The element properties panel of the editor — the inspector beside the unit view.
  *
- * Only ElementPropertiesPanelComponent is exported. The other 29 components are internal to
+ * Only ElementPropertiesPanelComponent is exported. The other 35 components are internal to
  * this module on purpose: the panel's structure can then be reworked without checking the rest of
  * the editor for usages. The five pipes are used by this module's templates only.
  *
@@ -120,6 +123,7 @@ import {
     ActionPropertiesComponent,
     BorderPropertiesComponent,
     ButtonPropertiesComponent,
+    CheckboxPropertiesComponent,
     DimensionFieldSetComponent,
     DropListPropertiesComponent,
     EleSpecificPropsComponent,

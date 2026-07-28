@@ -42,13 +42,9 @@
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
-  <button *ngIf="combinedProperties.imgSrc !== undefined"
-          class="media-src-button" [style.align-self]="'center'"
-          mat-fab color="primary"
-          [matTooltip]="'Bild statt Textbeschriftung'" [matTooltipPosition]="'right'"
-          (click)="changeImgSrc()">
-    <mat-icon>image</mat-icon>
-  </button>
+  <aspect-checkbox-properties [combinedProperties]="$any(combinedProperties)"
+                              (updateModel)="updateModel.emit($event)">
+  </aspect-checkbox-properties>
 
   <button *ngIf="combinedProperties.src"
           class="media-src-button" [style.align-self]="'center'"
@@ -117,15 +113,6 @@
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>
 
-  <ng-container *ngIf="combinedProperties.type === 'checkbox'">
-    {{'preset' | translate }}
-    <mat-button-toggle-group [style.align-self]="'flex-start'"
-                             [value]="combinedProperties.value"
-                             (change)="updateModel.emit({ property: 'value', value: $event.value })">
-      <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>
-      <mat-button-toggle [value]="false">{{'propertiesPanel.false' | translate }}</mat-button-toggle>
-    </mat-button-toggle-group>
-  </ng-container>
   <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
     <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
     <input matInput type="number" #presetValue="ngModel"
@@ -148,12 +135,6 @@
   <aspect-sticky-header-properties [combinedProperties]="$any(combinedProperties)"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-sticky-header-properties>
-
-  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.crossOutChecked !== undefined"
-                          [value]="$any(combinedProperties.crossOutChecked)"
-                          (valueChange)="updateModel.emit({ property: 'crossOutChecked', value: $event })">
-    {{'propertiesPanel.crossOutChecked' | translate }}
-  </aspect-merged-checkbox>
 
   <aspect-first-column-ratio-properties [combinedProperties]="$any(combinedProperties)"
                                         (updateModel)="updateModel.emit($event)">

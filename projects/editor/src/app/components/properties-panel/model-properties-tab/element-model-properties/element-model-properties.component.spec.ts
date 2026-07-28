@@ -112,6 +112,12 @@ class MockMultiLineTextPropertiesComponent {
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 
+@Component({ selector: 'aspect-checkbox-properties', standalone: false, template: '' })
+class MockCheckboxPropertiesComponent {
+  @Input() combinedProperties!: CombinedProperties;
+  @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
+}
+
 describe('ElementModelPropertiesComponent', () => {
   let component: ElementModelPropertiesComponent;
   let fixture: ComponentFixture<ElementModelPropertiesComponent>;
@@ -143,6 +149,7 @@ describe('ElementModelPropertiesComponent', () => {
         MockFirstColumnRatioPropertiesComponent,
         MockMathKeyboardPropertiesComponent,
         MockMultiLineTextPropertiesComponent,
+        MockCheckboxPropertiesComponent,
         IsInputElementPipe,
         MergedCheckboxComponent
       ],

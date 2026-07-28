@@ -1,0 +1,6 @@
+/* Carried over from element-model-properties.component.scss, where the button used to live: that
+   rule matched .mat-mdc-fab and is view-encapsulated, so it stops applying once the button moves
+   here. Targeted by its own class rather than the Material one. */
+.media-src-button {
+  margin-bottom: 10px;
+}

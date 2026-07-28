@@ -1,7 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+import { MathFieldProperties } from 'common/models/elements/text-input-group-elements/math-field';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-math-field-props',
@@ -9,7 +10,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
   templateUrl: './math-field-props.component.html'
 })
 export class MathFieldPropsComponent {
-  @Input() combinedProperties!: CombinedProperties;
+  @Input() combinedProperties!: Merged<MathFieldProperties>;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: boolean, isInputValid?: boolean | null }>();
 }

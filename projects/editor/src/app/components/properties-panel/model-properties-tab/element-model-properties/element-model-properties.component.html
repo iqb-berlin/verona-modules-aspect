@@ -12,11 +12,11 @@
     {{ combinedProperties.fileName || ('unknown' | translate)}}</div>
 
   <aspect-input-element-properties *ngIf="combinedProperties | isInputElement"
-                                   [combinedProperties]="combinedProperties"
+                                   [combinedProperties]="$any(combinedProperties)"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-input-element-properties>
 
-  <aspect-preset-value-properties [combinedProperties]="combinedProperties"
+  <aspect-preset-value-properties [combinedProperties]="$any(combinedProperties)"
                                   (updateModel)="updateModel.emit($event)">
   </aspect-preset-value-properties>
 
@@ -38,7 +38,7 @@
     </textarea>
   </mat-form-field>
 
-  <aspect-options-field-set [combinedProperties]="combinedProperties"
+  <aspect-options-field-set [combinedProperties]="$any(combinedProperties)"
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
@@ -58,7 +58,7 @@
     <mat-icon>upload_file</mat-icon>
   </button>
 
-  <aspect-ele-specific-props [combinedProperties]="combinedProperties"
+  <aspect-ele-specific-props [combinedProperties]="$any(combinedProperties)"
                              (updateModel)="updateModel.emit($event)">
   </aspect-ele-specific-props>
 
@@ -93,7 +93,7 @@
     </mat-select>
   </mat-form-field>
 
-  <aspect-select-properties [combinedProperties]="combinedProperties"
+  <aspect-select-properties [combinedProperties]="$any(combinedProperties)"
                              (updateModel)="updateModel.emit($event)">
   </aspect-select-properties>
 
@@ -150,7 +150,7 @@
   <aspect-action-properties *ngIf="unitService.expertMode && combinedProperties.action !== undefined"
     [actions]="combinedProperties.type === 'button' ? ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange'] :
                                                       ['highlightText', 'removeHighlights',  'stateVariableChange']"
-    [combinedProperties]="combinedProperties"
+    [combinedProperties]="$any(combinedProperties)"
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>
 
@@ -173,12 +173,12 @@
                     isInputValid: presetValue.valid})">
   </mat-form-field>
 
-  <aspect-text-field-element-properties [combinedProperties]="combinedProperties"
+  <aspect-text-field-element-properties [combinedProperties]="$any(combinedProperties)"
                                         (updateModel)="updateModel.emit($event)">
   </aspect-text-field-element-properties>
 
   <aspect-input-assistance-properties *ngIf="unitService.expertMode"
-                                      [combinedProperties]="combinedProperties"
+                                      [combinedProperties]="$any(combinedProperties)"
                                       (updateModel)="updateModel.emit($event)">
   </aspect-input-assistance-properties>
 
@@ -205,7 +205,7 @@
   </mat-form-field>
 
   <aspect-scale-and-zoom-properties *ngIf="unitService.expertMode"
-                                    [combinedProperties]="combinedProperties"
+                                    [combinedProperties]="$any(combinedProperties)"
                                     (updateModel)="updateModel.emit($event)">
   </aspect-scale-and-zoom-properties>
 

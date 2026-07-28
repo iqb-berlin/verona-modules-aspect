@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { UIElement } from 'common/models/elements/element';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ButtonPropertiesComponent } from 'editor/src/app/components/properties-panel/model-properties-tab/button-properties/button-properties.component';
@@ -36,7 +35,7 @@ describe('ButtonPropertiesComponent', () => {
       asLink: false,
       tooltipText: 'old text',
       tooltipPosition: 'below'
-    } as unknown as UIElement;
+    };
     fixture.detectChanges();
   });
 
@@ -91,7 +90,7 @@ describe('ButtonPropertiesComponent', () => {
     dialogService.showTooltipDialog.mockReturnValue(of(undefined as never));
     component.combinedProperties = {
       asLink: false, tooltipText: '', tooltipPosition: 'below'
-    } as unknown as UIElement;
+    };
 
     component.editTooltip();
 

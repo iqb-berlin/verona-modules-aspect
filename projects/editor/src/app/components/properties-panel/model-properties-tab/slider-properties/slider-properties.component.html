@@ -21,17 +21,17 @@
                                                         combinedProperties.maxValue : 0">
 </mat-form-field>
 <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.showValues !== undefined"
-                        [value]="$any(combinedProperties.showValues)"
+                        [value]="combinedProperties.showValues"
                         (valueChange)="updateModel.emit({ property: 'showValues', value: $event })">
   {{'propertiesPanel.showValues' | translate }}
 </aspect-merged-checkbox>
 <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.barStyle !== undefined"
-                        [value]="$any(combinedProperties.barStyle)"
+                        [value]="combinedProperties.barStyle"
                         (valueChange)="updateModel.emit({ property: 'barStyle', value: $event })">
   {{'propertiesPanel.barStyle' | translate }}
 </aspect-merged-checkbox>
 <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.thumbLabel !== undefined"
-                        [value]="$any(combinedProperties.thumbLabel)"
+                        [value]="combinedProperties.thumbLabel"
                         (valueChange)="updateModel.emit({ property: 'thumbLabel', value: $event })">
   {{'propertiesPanel.thumbLabel' | translate }}
 </aspect-merged-checkbox>

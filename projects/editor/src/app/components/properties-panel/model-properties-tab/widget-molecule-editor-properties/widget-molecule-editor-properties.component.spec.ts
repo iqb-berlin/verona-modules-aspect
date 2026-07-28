@@ -4,9 +4,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import {
   WidgetMoleculeEditorPropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
 
@@ -27,7 +24,7 @@ describe('WidgetMoleculeEditorPropertiesComponent', () => {
 
     fixture = TestBed.createComponent(WidgetMoleculeEditorPropertiesComponent);
     component = fixture.componentInstance;
-    component.combinedProperties = { bondingType: 'VALENCE' } as unknown as CombinedProperties;
+    component.combinedProperties = { bondingType: 'VALENCE' };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();

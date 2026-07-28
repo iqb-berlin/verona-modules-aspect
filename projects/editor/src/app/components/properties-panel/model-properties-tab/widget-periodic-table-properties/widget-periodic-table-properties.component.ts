@@ -1,7 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { UIElement } from 'common/models/elements/element';
+import { WidgetPeriodicTableProperties } from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-widget-periodic-table-properties',
@@ -9,7 +10,7 @@ import { UIElement } from 'common/models/elements/element';
   templateUrl: './widget-periodic-table-properties.component.html'
 })
 export class WidgetPeriodicTablePropertiesComponent {
-  @Input() combinedProperties!: UIElement;
+  @Input() combinedProperties!: Merged<WidgetPeriodicTableProperties>;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: string | number | boolean | null }>();
 }

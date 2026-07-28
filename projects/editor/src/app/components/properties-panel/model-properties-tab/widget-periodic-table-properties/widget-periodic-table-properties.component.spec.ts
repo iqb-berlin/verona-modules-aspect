@@ -3,7 +3,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { UIElement } from 'common/models/elements/element';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
@@ -35,7 +34,7 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
       showInfoAMass: false,
       closeOnSelection: false,
       maxNumberOfSelections: 3
-    } as unknown as UIElement;
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();

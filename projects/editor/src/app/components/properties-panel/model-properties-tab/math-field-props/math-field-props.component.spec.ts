@@ -5,9 +5,6 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import {
   MathFieldPropsComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/math-field-props/math-field-props.component';
 
@@ -27,7 +24,7 @@ describe('MathFieldPropsComponent', () => {
 
     fixture = TestBed.createComponent(MathFieldPropsComponent);
     component = fixture.componentInstance;
-    component.combinedProperties = { enableModeSwitch: false } as unknown as CombinedProperties;
+    component.combinedProperties = { enableModeSwitch: false };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
@@ -44,7 +41,7 @@ describe('MathFieldPropsComponent', () => {
   });
 
   it('should reflect an enabled mode switch', () => {
-    component.combinedProperties = { enableModeSwitch: true } as unknown as CombinedProperties;
+    component.combinedProperties = { enableModeSwitch: true };
     fixture.detectChanges();
 
     const input = fixture.nativeElement.querySelector('mat-checkbox input') as HTMLInputElement;

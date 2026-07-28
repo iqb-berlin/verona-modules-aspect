@@ -7,7 +7,7 @@
 
   <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
        (cdkDropListDropped)="moveHotspot($event)">
-    <div *ngFor="let item of $any(combinedProperties.value); let i = index" cdkDrag
+    <div *ngFor="let item of combinedProperties.value; let i = index" cdkDrag
          class="option-draggable fx-row-start-stretch">
       <div class="fx-flex" [style.align-self]="'center'">{{'hotspot.'+item.shape | translate}}</div>
       <button mat-icon-button color="primary"

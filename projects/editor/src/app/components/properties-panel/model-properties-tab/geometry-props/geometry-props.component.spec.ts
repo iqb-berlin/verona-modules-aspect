@@ -12,7 +12,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Mock, vi } from 'vitest';
-import { UIElement } from 'common/models/elements/element';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
@@ -86,7 +85,7 @@ describe('GeometryPropsComponent', () => {
       customToolbar: '',
       trackedVariables: [],
       trackedExpectedVariables: [{ id: 'A', value: '' }]
-    } as unknown as UIElement;
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();

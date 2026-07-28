@@ -4,9 +4,8 @@ import {
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+import { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import { IDService } from 'editor/src/app/services/id.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -19,7 +18,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interf
   templateUrl: './drop-list-properties.component.html'
 })
 export class DropListPropertiesComponent {
-  @Input() combinedProperties!: CombinedProperties;
+  @Input() combinedProperties!: Merged<DropListProperties> & { idList?: string[] };
   @Output() updateModel = new EventEmitter<{
     property: string;
     value: string | number | boolean | string[] | DragNDropValueObject[],
@@ -63,11 +62,12 @@ export class DropListPropertiesComponent {
     });
   }
 
-  moveOption(property: string, indices: { previousIndex: number, currentIndex: number }): void {
-    moveItemInArray(this.combinedProperties[property] as TextImageLabel[],
-                    indices.previousIndex,
-                    indices.currentIndex);
-    this.updateModel.emit({ property: property, value: this.combinedProperties[property] as DragNDropValueObject[] });
+  // Only ever called for the option list, so the name can be narrowed instead of indexing the
+  // typed properties with an arbitrary string.
+  moveOption(property: 'value', indices: { previousIndex: number, currentIndex: number }): void {
+    const options = this.combinedProperties[property] as unknown as TextImageLabel[];
+    moveItemInArray(options, indices.previousIndex, indices.currentIndex);
+    this.updateModel.emit({ property: property, value: options as unknown as DragNDropValueObject[] });
   }
 
   async editOption(optionIndex: number): Promise<void> {

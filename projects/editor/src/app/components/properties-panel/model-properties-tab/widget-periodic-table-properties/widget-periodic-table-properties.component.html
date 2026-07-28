@@ -1,19 +1,19 @@
 <fieldset>
   <legend>{{'toolbox.widget-periodic-table' | translate}}</legend>
   <div class="fx-column-start-stretch">
-    <aspect-merged-checkbox [value]="$any(combinedProperties).showInfoOrder"
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoOrder"
                             (valueChange)="updateModel.emit({ property: 'showInfoOrder', value: $event })">
       {{ 'propertiesPanel.showInfoOrder' | translate }}
     </aspect-merged-checkbox>
-    <aspect-merged-checkbox [value]="$any(combinedProperties).showInfoENeg"
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoENeg"
                             (valueChange)="updateModel.emit({ property: 'showInfoENeg', value: $event })">
       {{ 'propertiesPanel.showInfoENeg' | translate }}
     </aspect-merged-checkbox>
-    <aspect-merged-checkbox [value]="$any(combinedProperties).showInfoAMass"
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoAMass"
                             (valueChange)="updateModel.emit({ property: 'showInfoAMass', value: $event })">
       {{ 'propertiesPanel.showInfoAMass' | translate }}
     </aspect-merged-checkbox>
-    <aspect-merged-checkbox [value]="$any(combinedProperties).closeOnSelection"
+    <aspect-merged-checkbox [value]="combinedProperties.closeOnSelection"
                             (valueChange)="updateModel.emit({ property: 'closeOnSelection', value: $event })">
       {{ 'propertiesPanel.closeOnSelection' | translate }}
     </aspect-merged-checkbox>
@@ -21,7 +21,7 @@
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.maxNumberOfSelections' | translate }}</mat-label>
       <input matInput type="number" min="0"
-         [value]="$any(combinedProperties).maxNumberOfSelections"
+         [value]="combinedProperties.maxNumberOfSelections"
          (input)="updateModel
            .emit({ property: 'maxNumberOfSelections', value: $any($event.target).value || 0 })">
     </mat-form-field>

@@ -7,9 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
-import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
   HotspotPropsComponent
@@ -57,7 +54,7 @@ describe('HotspotPropsComponent', () => {
     component.combinedProperties = {
       type: 'hotspot-image',
       value: [createHotspot('rectangle', 0), createHotspot('ellipse', 30)]
-    } as unknown as CombinedProperties;
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();

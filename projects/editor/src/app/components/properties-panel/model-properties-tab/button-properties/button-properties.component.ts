@@ -3,8 +3,9 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UIElement } from 'common/models/elements/element';
 import { TooltipPosition } from 'common/models/ui-element-interfaces';
+import { ButtonProperties } from 'common/models/elements/action-group-elements/button';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({
@@ -14,7 +15,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
   styleUrls: ['./button-properties.component.scss']
 })
 export class ButtonPropertiesComponent implements OnDestroy {
-  @Input() combinedProperties!: UIElement;
+  @Input() combinedProperties!: Merged<ButtonProperties>;
   @Output() updateModel =
     new EventEmitter<{
       property: string; value: string | number | boolean | null, isInputValid?: boolean | null

@@ -22,9 +22,6 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import {
   DropListPropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/drop-list-properties/drop-list-properties.component';
 
@@ -106,7 +103,7 @@ describe('DropListPropertiesComponent', () => {
       startNumberingAtZero: false,
       highlightReceivingDropList: false,
       highlightReceivingDropListColor: '#add8e6'
-    } as unknown as CombinedProperties;
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();

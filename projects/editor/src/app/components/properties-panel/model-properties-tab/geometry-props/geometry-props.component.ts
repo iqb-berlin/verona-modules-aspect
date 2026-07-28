@@ -2,7 +2,6 @@ import {
   Component, ComponentRef, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UIElement } from 'common/models/elements/element';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
@@ -10,6 +9,9 @@ import {
 } from 'rxjs';
 import { GeometryComponent } from 'common/components/external-app-group-elements/geometry/geometry.component';
 import { takeUntil } from 'rxjs/operators';
+import { UIElement } from 'common/models/elements/element';
+import { GeometryProperties } from 'common/models/elements/external-app-group-elements/geometry';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -23,7 +25,7 @@ import { VariableAlias } from 'common/utils/variable-alias';
   templateUrl: './geometry-props.component.html'
 })
 export class GeometryPropsComponent implements OnInit, OnDestroy {
-  @Input() combinedProperties!: UIElement;
+  @Input() combinedProperties!: Merged<GeometryProperties>;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: string | number | boolean | null | GeometryVariable[] }>();
 

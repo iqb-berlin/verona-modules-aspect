@@ -4,7 +4,7 @@
   <div class="fx-column-start-stretch">
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.bondingType' | translate }}</mat-label>
-      <mat-select [value]="$any(combinedProperties).bondingType"
+      <mat-select [value]="combinedProperties.bondingType"
                   (selectionChange)="updateModel.emit({ property: 'bondingType', value: $event.value })">
         <mat-option value="VALENCE">{{ 'propertiesPanel.moleculeBondingTypeValence' | translate }}</mat-option>
         <mat-option value="ELECTRONS">{{ 'propertiesPanel.moleculeBondingTypeElectrons' | translate }}</mat-option>

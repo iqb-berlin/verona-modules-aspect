@@ -11,15 +11,15 @@
         </textarea>
   </mat-form-field>
 
-  <mat-checkbox [checked]="$any(combinedProperties.readOnly)"
-                (change)="updateModel.emit({ property: 'readOnly', value: $event.checked })">
+  <aspect-merged-checkbox [value]="$any(combinedProperties.readOnly)"
+                          (valueChange)="updateModel.emit({ property: 'readOnly', value: $event })">
     {{'propertiesPanel.readOnly' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.required)"
-                (change)="updateModel.emit({ property: 'required', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="$any(combinedProperties.required)"
+                          (valueChange)="updateModel.emit({ property: 'required', value: $event })">
     {{'propertiesPanel.requiredField' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
   <mat-form-field *ngIf="unitService.expertMode" appearance="fill">
     <mat-label>{{'propertiesPanel.requiredWarnMessage' | translate }}</mat-label>

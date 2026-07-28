@@ -7,6 +7,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+import {
   InputElementPropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-element-properties/input-element-properties.component';
 
@@ -20,7 +23,7 @@ describe('InputElementPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [InputElementPropertiesComponent],
+      declarations: [InputElementPropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         MatCheckboxModule,

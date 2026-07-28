@@ -269,8 +269,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = Beschriftung
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
@@ -309,7 +309,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = Beschriftung
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -471,8 +471,8 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 [preset]
 textarea "Neue Option" = 
@@ -522,7 +522,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 [preset]
 textarea "Neue Option" = 
 select "propertiesPanel.connectedDropLists" = []
@@ -596,8 +596,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
@@ -637,7 +637,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "Neue Option" = 
@@ -930,8 +930,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 [propertiesPanel.hotspots]
 button "add"
@@ -969,7 +969,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1127,8 +1127,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
@@ -1165,7 +1165,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -1446,8 +1446,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 button "code"
 checkbox "propertiesPanel.enableModeSwitch" = false
@@ -1487,7 +1487,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 button "code"
 checkbox "propertiesPanel.enableModeSwitch" = false
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1681,8 +1681,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = Beschriftung
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
@@ -1723,7 +1723,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = Beschriftung
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "Neue Option" = 
@@ -1798,8 +1798,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = Beschriftung
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
@@ -1841,7 +1841,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = Beschriftung
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "Neue Option" = 
@@ -1915,8 +1915,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 input[number] "propertiesPanel.minValue" = 0
 input[number] "propertiesPanel.maxValue" = 100
@@ -1959,7 +1959,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "propertiesPanel.minValue" = 0
 input[number] "propertiesPanel.maxValue" = 100
 input[number] "propertiesPanel.preset" = 
@@ -2031,8 +2031,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 [Tastatur]
 checkbox "propertiesPanel.showSoftwareKeyboard" = false
@@ -2075,7 +2075,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -2298,8 +2298,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 checkbox "propertiesPanel.hasAutoHeight" = false
 input[number] "rows" = 2
@@ -2345,7 +2345,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "rows" = 2
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -2421,8 +2421,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 textarea "preset" = 
 checkbox "propertiesPanel.resizeEnabled" = false
@@ -2472,7 +2472,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 textarea "preset" = 
 checkbox "propertiesPanel.hasDynamicRowCount" = false
 [propertiesPanel.textAlign]
@@ -2556,8 +2556,8 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 input[text] "preset" = 
 [propertiesPanel.textAlign]
@@ -2610,7 +2610,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 input[text] "preset" = 
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
@@ -2697,8 +2697,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 input[text] "preset" = 
 [propertiesPanel.textAlign]
@@ -2753,7 +2753,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 input[text] "preset" = 
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
@@ -2944,8 +2944,8 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
-checkbox "propertiesPanel.readOnly" = false
-checkbox "propertiesPanel.requiredField" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
+checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
@@ -2992,7 +2992,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [Eingabeelement]
-checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "Neue Option" = 

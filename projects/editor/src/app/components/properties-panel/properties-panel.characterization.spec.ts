@@ -29,30 +29,13 @@
 import {
   ComponentFixture, fakeAsync, TestBed, tick
 } from '@angular/core/testing';
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelect } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
-import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
-import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -60,119 +43,11 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { SectionService } from 'editor/src/app/services/section.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { GetStateVariablePipe } from 'editor/src/app/pipes/get-state-variable.pipe';
-import { GetValidDropListsPipe } from 'editor/src/app/pipes/get-valid-drop-lists.pipe';
-import { IsInputElementPipe } from 'editor/src/app/pipes/is-input-element.pipe';
-import { LikertRowLabelPipe } from 'editor/src/app/pipes/likert-row-label.pipe';
-import { ScrollPageIndexPipe } from 'editor/src/app/pipes/scroll-page-index.pipe';
-import { SizeInputPanelComponent } from 'editor/src/app/components/size-input-panel/size-input-panel.component';
-import {
-  PANEL_BASELINE
-} from 'editor/src/app/components/properties-panel/properties-panel.baseline';
-import {
-  ElementPropertiesPanelComponent
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import {
-  ElementPositionPropertiesComponent
-} from 'editor/src/app/components/properties-panel/element-position-properties/element-position-properties.component';
-import {
-  ElementStylePropertiesComponent
-} from 'editor/src/app/components/properties-panel/element-style-properties/element-style-properties.component';
-import {
-  DimensionFieldSetComponent
-} from 'editor/src/app/components/properties-panel/dimension-field-set/dimension-field-set.component';
-import {
-  PositionFieldSetComponent
-} from 'editor/src/app/components/properties-panel/position-field-set/position-field-set.component';
-import {
-  OptionListPanelComponent
-} from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
-import {
-  ElementModelPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/element-model-properties/element-model-properties.component';
-import {
-  EleSpecificPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/ele-specific-props/ele-specific-props.component';
-import {
-  ActionParamStateVariableComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/action-param-state-variable/action-param-state-variable.component';
-import {
-  ActionPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/action-properties/action-properties.component';
-import {
-  BorderPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/border-properties/border-properties.component';
-import {
-  ButtonPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/button-properties/button-properties.component';
-import {
-  DropListPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/drop-list-properties/drop-list-properties.component';
-import {
-  GeometryPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/geometry-props/geometry-props.component';
-import {
-  HighlightPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/highlight-properties/highlight-properties.component';
-import {
-  HotspotPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/hotspot-props/hotspot-props.component';
-import {
-  InputAssistancePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-assistance-properties/input-assistance-properties.component';
-import {
-  InputElementPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-element-properties/input-element-properties.component';
-import {
-  MarkingPanelPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/marking-panel-properties/marking-panel-properties.component';
-import {
-  MathFieldPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/math-field-props/math-field-props.component';
-import {
-  MathTablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/math-table-properties/math-table-properties.component';
-import {
-  OptionsFieldSetComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/options-field-set/options-field-set.component';
-import {
-  PresetValuePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/preset-value-properties/preset-value-properties.component';
-import {
-  ScaleAndZoomPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/scale-and-zoom-properties/scale-and-zoom-properties.component';
-import {
-  SelectPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/select-properties/select-properties.component';
-import {
-  SliderPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/slider-properties/slider-properties.component';
-import {
-  TablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/table-properties/table-properties.component';
-import {
-  TextFieldElementPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/text-field-element-properties/text-field-element-properties.component';
-import {
-  TextPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/text-properties-field-set/text-properties-field-set.component';
-import {
-  WidgetMoleculeEditorPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
-import {
-  WidgetPeriodicTablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-periodic-table-properties/widget-periodic-table-properties.component';
-
-/** Stand-in for the MathLive-backed input; its internals are out of scope here. */
-@Component({ selector: 'aspect-math-input', standalone: false, template: '' })
-class MockMathInputComponent {
-  @Input() value!: string;
-  @Input() fullWidth: boolean = true;
-  @Input() readonly: boolean = false;
-  @Input() enableModeSwitch: boolean = false;
-  @Input() mathKeyboardPresets: string[] = [];
-  @Input() placeholder: string = '';
-}
+import { PANEL_BASELINE } from './properties-panel.baseline';
+import { PropertiesPanelModule } from './properties-panel.module';
+import { ElementPropertiesPanelComponent } from './element-properties-panel/element-properties-panel.component';
+import { ElementPositionPropertiesComponent } from './element-position-properties/element-position-properties.component';
+import { ElementStylePropertiesComponent } from './element-style-properties/element-style-properties.component';
 
 /**
  * Exhaustive over UIElementType — a new element type is a compile error here until it is
@@ -360,65 +235,8 @@ describe('properties panel characterization', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        ElementPropertiesPanelComponent,
-        ElementModelPropertiesComponent,
-        ElementPositionPropertiesComponent,
-        ElementStylePropertiesComponent,
-        DimensionFieldSetComponent,
-        PositionFieldSetComponent,
-        OptionListPanelComponent,
-        EleSpecificPropsComponent,
-        ActionParamStateVariableComponent,
-        ActionPropertiesComponent,
-        BorderPropertiesComponent,
-        ButtonPropertiesComponent,
-        DropListPropertiesComponent,
-        GeometryPropsComponent,
-        HighlightPropertiesComponent,
-        HotspotPropsComponent,
-        InputAssistancePropertiesComponent,
-        InputElementPropertiesComponent,
-        MarkingPanelPropertiesComponent,
-        MathFieldPropsComponent,
-        MathTablePropertiesComponent,
-        OptionsFieldSetComponent,
-        PresetValuePropertiesComponent,
-        ScaleAndZoomPropertiesComponent,
-        SelectPropertiesComponent,
-        SliderPropertiesComponent,
-        TablePropertiesComponent,
-        TextFieldElementPropertiesComponent,
-        TextPropsComponent,
-        WidgetMoleculeEditorPropertiesComponent,
-        WidgetPeriodicTablePropertiesComponent,
-        SizeInputPanelComponent,
-        MockMathInputComponent,
-        GetStateVariablePipe,
-        GetValidDropListsPipe,
-        IsInputElementPipe,
-        LikertRowLabelPipe,
-        ScrollPageIndexPipe,
-        SafeResourceHTMLPipe,
-        ScrollPagesPipe
-      ],
       imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        DragDropModule,
-        MatButtonModule,
-        MatButtonToggleModule,
-        MatCheckboxModule,
-        MatChipsModule,
-        MatDividerModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatSelectModule,
-        MatSliderModule,
-        MatTabsModule,
-        MatTooltipModule,
+        PropertiesPanelModule,
         TranslateModule.forRoot()
       ],
       providers: [
@@ -523,42 +341,32 @@ describe('properties panel characterization', () => {
   }
 
   /**
-   * Regenerates `properties-panel.baseline.ts`. Change `describe.skip` to `describe`, run
+   * Regenerates `properties-panel.baseline.ts`. Change `it.skip` to `it`, run
    * `npx ng test editor --include "**\/properties-panel.characterization.spec.ts"`, replace the
-   * body of the baseline file with the logged block, and skip this block again. Always read the
+   * body of the baseline file with the logged block, and skip this test again. Always read the
    * resulting diff — it is the list of behaviour changes the edit caused.
-   *
-   * `describe.skip` rather than `it.skip`: the ProxyZone setup replaces the global `it` and
-   * copies its modifiers with `Object.keys`, which does not reach vitest's `skip`/`only`.
    */
-  describe.skip('baseline regeneration', () => {
-    it('logs a new baseline (see the doc comment before un-skipping)', fakeAsync(() => {
-      const entries = ELEMENT_TYPES.flatMap(type => [
-        [`${type}|standard`, renderPanel(type, false)] as const,
-        [`${type}|expert`, renderPanel(type, true)] as const
-      ]);
-      const escaped = entries
-        .sort((a, b) => a[0].localeCompare(b[0]))
-        .map(([key, value]) => `  '${key}': \`${value
-          .replace(/\\/g, '\\\\')
-          .replace(/`/g, '\\`')
-          .replace(/\$\{/g, '\\${')}\``);
-      // eslint-disable-next-line no-console
-      console.log(`\n>>> COPY FROM HERE >>>\nexport const PANEL_BASELINE: Record<string, string> = {\n${
-        escaped.join(',\n\n')}\n};\n<<< COPY TO HERE <<<`);
-    }));
-  });
+  it.skip('regenerates the baseline (see the doc comment before un-skipping)', fakeAsync(() => {
+    const entries = ELEMENT_TYPES.flatMap(type => [
+      [`${type}|standard`, renderPanel(type, false)] as const,
+      [`${type}|expert`, renderPanel(type, true)] as const
+    ]);
+    const escaped = entries
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([key, value]) => `  '${key}': \`${value
+        .replace(/\\/g, '\\\\')
+        .replace(/`/g, '\\`')
+        .replace(/\$\{/g, '\\${')}\``);
+    // eslint-disable-next-line no-console
+    console.log(`\n>>> COPY FROM HERE >>>\nexport const PANEL_BASELINE: Record<string, string> = {\n${
+      escaped.join(',\n\n')}\n};\n<<< COPY TO HERE <<<`);
+  }));
 
-  // Generated with plain `it` rather than `it.each`: the project's ProxyZone setup
-  // (projects/vitest-proxy-zone.setup.ts) only patches `it`/`test`, so `fakeAsync` inside
-  // `it.each` fails with "Expected to be running in 'ProxyZone'".
-  ELEMENT_TYPES.forEach(type => {
-    it(`should render the standard panel for "${type}"`, fakeAsync(() => {
-      expect(renderPanel(type, false)).toBe(PANEL_BASELINE[`${type}|standard`]);
-    }));
+  it.each(ELEMENT_TYPES)('should render the standard panel for "%s"', fakeAsync((type: UIElementType) => {
+    expect(renderPanel(type, false)).toBe(PANEL_BASELINE[`${type}|standard`]);
+  }));
 
-    it(`should render the expert panel for "${type}"`, fakeAsync(() => {
-      expect(renderPanel(type, true)).toBe(PANEL_BASELINE[`${type}|expert`]);
-    }));
-  });
+  it.each(ELEMENT_TYPES)('should render the expert panel for "%s"', fakeAsync((type: UIElementType) => {
+    expect(renderPanel(type, true)).toBe(PANEL_BASELINE[`${type}|expert`]);
+  }));
 });

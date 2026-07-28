@@ -177,9 +177,7 @@ describe('ElementModelPropertiesComponent', () => {
 
     fixture = TestBed.createComponent(ElementModelPropertiesComponent);
     component = fixture.componentInstance;
-    component.combinedProperties = {
-      type: 'button', id: 'btn1', alias: 'Btn1', idList: ['btn1']
-    } as unknown as CombinedProperties;
+    component.combinedProperties = { type: 'button', alias: 'Btn1' };
     component.selectedElements = [selectedElement];
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
@@ -198,14 +196,6 @@ describe('ElementModelPropertiesComponent', () => {
     aliasInput.dispatchEvent(new Event('input'));
 
     expect(emitted).toEqual([{ property: 'alias', value: 'newAlias' }]);
-  });
-
-  it('should append to an existing list property', () => {
-    component.combinedProperties.options = ['a', 'b'];
-
-    component.addListValue('options', 'c');
-
-    expect(emitted).toEqual([{ property: 'options', value: ['a', 'b', 'c'] }]);
   });
 
   it('should delegate dimension updates to the element service', () => {

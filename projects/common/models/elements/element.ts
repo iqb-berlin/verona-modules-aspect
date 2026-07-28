@@ -119,7 +119,9 @@ export abstract class UIElement implements UIElementProperties {
     (this.position as PositionProperties)[property] = value;
   }
 
-  setDimensionsProperty(property: string, value: number | null): void {
+  // boolean is in here for isWidthFixed / isHeightFixed, which DimensionProperties declares as
+  // booleans; the panel has always written them through this method.
+  setDimensionsProperty(property: string, value: number | boolean | null): void {
     (this.dimensions as DimensionProperties)[property] = value;
   }
 

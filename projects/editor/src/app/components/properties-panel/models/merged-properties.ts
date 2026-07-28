@@ -25,3 +25,15 @@ export type Merged<T> = {
     : T[K] extends object ? Merged<T[K]> | null
       : T[K] | null;
 };
+
+/**
+ * The declared keys of `T`, without the ones an index signature contributes.
+ *
+ * Needed because `DimensionProperties` carries `[index: string]: unknown`, which makes plain
+ * `keyof` collapse to `string | number` — useless as a check on a property name. This keeps the
+ * names that are actually declared, so they stay tied to the interface: rename a field there and
+ * the panel stops compiling, which is the whole point of typing the write path.
+ */
+export type DeclaredKeys<T> = keyof {
+  [K in keyof T as string extends K ? never : number extends K ? never : K]: T[K]
+};

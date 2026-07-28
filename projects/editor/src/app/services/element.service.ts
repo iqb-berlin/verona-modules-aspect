@@ -390,7 +390,7 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | null): void {
+  updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | boolean | null): void {
     elements.forEach(element => {
       element.setDimensionsProperty(property, value);
       if (element.type === 'geometry') {

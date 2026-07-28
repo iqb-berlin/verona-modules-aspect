@@ -100,6 +100,18 @@ class MockFirstColumnRatioPropertiesComponent {
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 
+@Component({ selector: 'aspect-math-keyboard-properties', standalone: false, template: '' })
+class MockMathKeyboardPropertiesComponent {
+  @Input() combinedProperties!: CombinedProperties;
+  @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
+}
+
+@Component({ selector: 'aspect-multi-line-text-properties', standalone: false, template: '' })
+class MockMultiLineTextPropertiesComponent {
+  @Input() combinedProperties!: CombinedProperties;
+  @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
+}
+
 describe('ElementModelPropertiesComponent', () => {
   let component: ElementModelPropertiesComponent;
   let fixture: ComponentFixture<ElementModelPropertiesComponent>;
@@ -129,6 +141,8 @@ describe('ElementModelPropertiesComponent', () => {
         MockActionPropertiesComponent,
         MockStickyHeaderPropertiesComponent,
         MockFirstColumnRatioPropertiesComponent,
+        MockMathKeyboardPropertiesComponent,
+        MockMultiLineTextPropertiesComponent,
         IsInputElementPipe,
         MergedCheckboxComponent
       ],

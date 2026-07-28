@@ -61,8 +61,14 @@ import {
 } from './model-properties-tab/marking-panel-properties/marking-panel-properties.component';
 import { MathFieldPropsComponent } from './model-properties-tab/math-field-props/math-field-props.component';
 import {
+  MathKeyboardPropertiesComponent
+} from './model-properties-tab/math-keyboard-properties/math-keyboard-properties.component';
+import {
   MathTablePropertiesComponent
 } from './model-properties-tab/math-table-properties/math-table-properties.component';
+import {
+  MultiLineTextPropertiesComponent
+} from './model-properties-tab/multi-line-text-properties/multi-line-text-properties.component';
 import { OptionsFieldSetComponent } from './model-properties-tab/options-field-set/options-field-set.component';
 import { PositionFieldSetComponent } from './position-field-set/position-field-set.component';
 import {
@@ -129,7 +135,9 @@ import {
     InputElementPropertiesComponent,
     MarkingPanelPropertiesComponent,
     MathFieldPropsComponent,
+    MathKeyboardPropertiesComponent,
     MathTablePropertiesComponent,
+    MultiLineTextPropertiesComponent,
     OptionsFieldSetComponent,
     PositionFieldSetComponent,
     PresetValuePropertiesComponent,

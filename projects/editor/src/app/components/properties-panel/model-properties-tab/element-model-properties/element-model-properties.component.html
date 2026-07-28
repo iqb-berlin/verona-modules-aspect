@@ -103,49 +103,13 @@
     {{'propertiesPanel.resizeEnabled' | translate }}
   </aspect-merged-checkbox>
 
-  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.hasAutoHeight !== undefined"
-                          [disabled]="$any(combinedProperties.hasDynamicRowCount)"
-                          [value]="$any(combinedProperties.hasAutoHeight)"
-                          (valueChange)="updateModel.emit({ property: 'hasAutoHeight', value: $event })">
-    {{'propertiesPanel.hasAutoHeight' | translate }}
-  </aspect-merged-checkbox>
+  <aspect-multi-line-text-properties [combinedProperties]="$any(combinedProperties)"
+                                     (updateModel)="updateModel.emit($event)">
+  </aspect-multi-line-text-properties>
 
-  <aspect-merged-checkbox *ngIf="combinedProperties.hasDynamicRowCount !== undefined"
-                          [disabled]="$any(combinedProperties.hasAutoHeight)"
-                          [value]="$any(combinedProperties.hasDynamicRowCount)"
-                          (valueChange)="updateModel.emit({ property: 'hasDynamicRowCount', value: $event })">
-    {{'propertiesPanel.hasDynamicRowCount' | translate }}
-  </aspect-merged-checkbox>
-
-  <mat-form-field *ngIf="(combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === false) ||
-                         (combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === undefined)"
-                  appearance="fill" class="mdInput textsingleline">
-    <mat-label>{{'rows' | translate }}</mat-label>
-    <input matInput type="number" [value]="$any(combinedProperties.rowCount)"
-           (input)="updateModel.emit({ property: 'rowCount', value: $any($event.target).value || 0 })">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.expectedCharactersCount != null && combinedProperties.hasDynamicRowCount"
-                  appearance="fill" class="mdInput textsingleline">
-    <mat-label>{{'propertiesPanel.expectedCharactersCount' | translate }}</mat-label>
-    <input matInput type="number"
-           [disabled]="$any(combinedProperties.hasAutoHeight)"
-           [value]="$any(combinedProperties.expectedCharactersCount)"
-           (input)="updateModel.emit({ property: 'expectedCharactersCount', value: $any($event.target).value || 0 })">
-  </mat-form-field>
-
-  @if (unitService.expertMode && combinedProperties.mathKeyboardPresets !== undefined) {
-    <mat-form-field>
-      <mat-label>{{'formulaPreset.title' | translate}}</mat-label>
-      <mat-select multiple
-                  [value]="combinedProperties.mathKeyboardPresets"
-                  (selectionChange)="updateModel.emit({ property: 'mathKeyboardPresets', value: $event.value })">
-        @for (preset of MATH_KEYBOARD_PRESETS; track preset) {
-          <mat-option [value]="preset">{{`formulaPreset.${preset}` | translate}}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  }
+  <aspect-math-keyboard-properties [combinedProperties]="$any(combinedProperties)"
+                                   (updateModel)="updateModel.emit($event)">
+  </aspect-math-keyboard-properties>
 
   <aspect-action-properties *ngIf="unitService.expertMode && combinedProperties.action !== undefined"
     [actions]="combinedProperties.type === 'button' ? BUTTON_ACTIONS : TRIGGER_ACTIONS"

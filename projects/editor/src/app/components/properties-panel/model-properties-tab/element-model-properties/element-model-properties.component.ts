@@ -9,6 +9,9 @@ import { FileService } from 'common/services/file.service';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { MATH_KEYBOARD_PRESETS } from 'common/models/input-element-interfaces';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+import {
+  BUTTON_ACTIONS, TRIGGER_ACTIONS
+} from 'editor/src/app/components/properties-panel/model-properties-tab/action-properties/action-properties.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -30,6 +33,8 @@ export class ElementModelPropertiesComponent implements OnDestroy {
   }>();
 
   MATH_KEYBOARD_PRESETS = MATH_KEYBOARD_PRESETS;
+  BUTTON_ACTIONS = BUTTON_ACTIONS;
+  TRIGGER_ACTIONS = TRIGGER_ACTIONS;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,

@@ -148,8 +148,7 @@
   }
 
   <aspect-action-properties *ngIf="unitService.expertMode && combinedProperties.action !== undefined"
-    [actions]="combinedProperties.type === 'button' ? ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange'] :
-                                                      ['highlightText', 'removeHighlights',  'stateVariableChange']"
+    [actions]="combinedProperties.type === 'button' ? BUTTON_ACTIONS : TRIGGER_ACTIONS"
     [combinedProperties]="$any(combinedProperties)"
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>

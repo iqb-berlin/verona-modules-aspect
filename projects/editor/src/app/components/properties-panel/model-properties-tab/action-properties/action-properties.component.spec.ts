@@ -8,7 +8,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { GetStateVariablePipe } from 'editor/src/app/components/properties-panel/pipes/get-state-variable.pipe';
@@ -16,7 +15,7 @@ import { ScrollPageIndexPipe } from 'editor/src/app/components/properties-panel/
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
-  ActionPropertiesComponent
+  ActionPropertiesComponent, BUTTON_ACTIONS, TRIGGER_ACTIONS
 } from 'editor/src/app/components/properties-panel/model-properties-tab/action-properties/action-properties.component';
 
 @Component({
@@ -68,7 +67,7 @@ describe('ActionPropertiesComponent', () => {
 
     fixture = TestBed.createComponent(ActionPropertiesComponent);
     component = fixture.componentInstance;
-    component.combinedProperties = { action: null, actionParam: null } as unknown as UIElement;
+    component.combinedProperties = { action: null, actionParam: null };
     component.actions = ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange'];
     fixture.detectChanges();
   });
@@ -103,10 +102,18 @@ describe('ActionPropertiesComponent', () => {
     ]);
   });
 
+  // The characterization baseline records a select's value but not the options it offers, so the
+  // offered actions and their order are only covered here.
+  it('should offer the button actions in order', () => {
+    expect(BUTTON_ACTIONS).toEqual(['unitNav', 'pageNav', 'highlightText', 'stateVariableChange']);
+  });
+
+  it('should offer the trigger actions in order, without the navigation ones', () => {
+    expect(TRIGGER_ACTIONS).toEqual(['highlightText', 'removeHighlights', 'stateVariableChange']);
+  });
+
   it('should show a hint instead of the state variable editor when none exist', () => {
-    component.combinedProperties = {
-      action: 'stateVariableChange', actionParam: null
-    } as unknown as UIElement;
+    component.combinedProperties = { action: 'stateVariableChange', actionParam: null };
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain('propertiesPanel.addStateVariables');

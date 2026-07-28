@@ -1,3 +1,4 @@
+import { UIElementProperties, Measurement } from 'common/models/ui-element-interfaces';
 import {
   ComponentFixture, TestBed, fakeAsync, tick
 } from '@angular/core/testing';
@@ -11,8 +12,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
-import { UIElement } from 'common/models/elements/element';
-import { Measurement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
@@ -77,12 +76,12 @@ describe('TablePropertiesComponent', () => {
       elements: [
         { gridRow: 1, gridColumn: 1 },
         { gridRow: 2, gridColumn: 3 }
-      ],
+      ] as unknown as UIElementProperties[],
       gridRowSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }],
       gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 2, unit: 'fr' }, { value: 1, unit: 'fr' }],
       tableEdgesEnabled: false,
       headerEnabled: false
-    } as unknown as UIElement;
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
@@ -98,7 +97,7 @@ describe('TablePropertiesComponent', () => {
   });
 
   it('should recalculate the maximum indices when a table property was updated', fakeAsync(() => {
-    (component.combinedProperties.elements as { gridRow: number; gridColumn: number }[])
+    (component.combinedProperties.elements as unknown as { gridRow: number; gridColumn: number }[])
       .push({ gridRow: 5, gridColumn: 1 });
 
     tablePropUpdated.next('elements');

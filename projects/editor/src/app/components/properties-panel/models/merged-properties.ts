@@ -10,11 +10,18 @@
  * `null` is therefore not "no value" but "more than one value" — the state
  * {@link MergedCheckboxComponent} renders as indeterminate.
  *
+ * The type is recursive for nested property groups and stops at arrays, because that is exactly what
+ * the merge does: it recurses into `position`, `dimensions`, `styling` and the like, and sets a
+ * diverging **array** to `null` rather than merging it element by element. Both are pinned down by
+ * the tests on `createCombinedProperties()`.
+ *
  * Used as the input type of the panel's leaf components, in place of the untyped `UIElement` /
  * `CombinedProperties`. Those carry an index signature (`[index: string]: unknown`), which is why
  * every binding in the panel needed a `$any()` cast; with a concrete `T` the compiler checks the
  * property names again.
  */
 export type Merged<T> = {
-  [K in keyof T]?: T[K] | null;
+  [K in keyof T]?: T[K] extends readonly unknown[] ? T[K] | null
+    : T[K] extends object ? Merged<T[K]> | null
+      : T[K] | null;
 };

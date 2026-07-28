@@ -6,7 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { TranslateModule } from '@ngx-translate/core';
-import { UIElement } from 'common/models/elements/element';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
@@ -41,7 +40,7 @@ describe('ScaleAndZoomPropertiesComponent', () => {
       allowFullscreen: false,
       magnifierSize: 100,
       magnifierZoom: 1.5
-    } as unknown as UIElement;
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
@@ -81,7 +80,7 @@ describe('ScaleAndZoomPropertiesComponent', () => {
   it('should disable the magnifier size when the magnifier is off', async () => {
     component.combinedProperties = {
       scale: false, magnifier: false, magnifierSize: 100, magnifierZoom: 1.5
-    } as unknown as UIElement;
+    };
     fixture.detectChanges();
     // NgModel applies the disabled state in a microtask
     await fixture.whenStable();

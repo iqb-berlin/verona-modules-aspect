@@ -4,7 +4,7 @@
   [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
   [title]="'propertiesPanel.options'"
   [textFieldLabel]="'Neue Option'"
-  [itemList]="$any(combinedProperties.options)"
+  [itemList]="combinedProperties.options ?? []"
   (textItemAdded)="addOption('options', $event)"
   (imageItemAdded)="addImageOption()"
   (itemRemoved)="removeOption('options', $event)"
@@ -16,7 +16,7 @@
 <aspect-option-list-panel
   *ngIf="combinedProperties.rows !== undefined"
   [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
-  [itemList]="$any(combinedProperties).rows | LikertRowLabel"
+  [itemList]="(combinedProperties.rows ?? []) | LikertRowLabel"
   [title]="'rows'"
   [textFieldLabel]="'Neue Zeile'"
   (itemReordered)="moveLikertRow($event)"

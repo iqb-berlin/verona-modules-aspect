@@ -7,8 +7,9 @@ import {
   QueryList,
   ViewChildren
 } from '@angular/core';
-import { UIElement } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { MathTableProperties } from 'common/models/elements/interactive-group-elements/math-table';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-math-table-properties',
@@ -17,7 +18,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
   styleUrls: ['./math-table-properties.component.scss']
 })
 export class MathTablePropertiesComponent {
-  @Input() combinedProperties!: UIElement;
+  @Input() combinedProperties!: Merged<MathTableProperties>;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: string | string[] | boolean }>();
 

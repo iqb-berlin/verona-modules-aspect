@@ -5,9 +5,6 @@ import {
   Output
 } from '@angular/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -18,6 +15,8 @@ import { OptionElement } from 'common/models/ui-element-interfaces';
 import {
   LikertRowElement, LikertRowProperties
 } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-options-field-set',
@@ -25,7 +24,7 @@ import {
   standalone: false
 })
 export class OptionsFieldSetComponent {
-  @Input() combinedProperties!: CombinedProperties;
+  @Input() combinedProperties!: Merged<LikertProperties>;
   @Output() updateModel = new EventEmitter<{
     property: string;
     value: string | number | boolean | string[] | Label[] | LikertRowElement[]
@@ -37,11 +36,12 @@ export class OptionsFieldSetComponent {
               public dialogService: DialogService,
               private idService: IDService) { }
 
-  addOption(property: string, option: string): void {
+  addOption(property: 'options', option: string): void {
     const selectedElements = this.selectionService.getSelectedElements() as OptionElement[];
 
     selectedElements.forEach(element => {
-      const newValue = [...this.combinedProperties[property] as Label[], element.getNewOptionLabel(option)];
+      const current = this.combinedProperties[property as 'options'] as Label[] ?? [];
+      const newValue = [...current, element.getNewOptionLabel(option)];
       this.elementService.updateElementsProperty([element], property, newValue);
     });
   }
@@ -60,7 +60,7 @@ export class OptionsFieldSetComponent {
       });
   }
 
-  removeOption(property: string, optionIndex: number): void {
+  removeOption(property: 'options', optionIndex: number): void {
     (this.combinedProperties[property] as Label[]).splice(optionIndex, 1);
     this.updateModel.emit({
       property,
@@ -68,12 +68,12 @@ export class OptionsFieldSetComponent {
     });
   }
 
-  moveOption(property: string, indices: { previousIndex: number, currentIndex: number }): void {
+  moveOption(property: 'options', indices: { previousIndex: number, currentIndex: number }): void {
     moveItemInArray(this.combinedProperties[property] as Label[], indices.previousIndex, indices.currentIndex);
     this.updateModel.emit({ property, value: this.combinedProperties[property] as Label[] });
   }
 
-  editOption(property: string, optionIndex: number): void {
+  editOption(property: 'options', optionIndex: number): void {
     const selectedOption = (this.combinedProperties[property] as Label[])[optionIndex];
     this.dialogService.showLabelEditDialog(selectedOption)
       .subscribe((result: Label) => {

@@ -15,7 +15,7 @@
                 [ngModel]="combinedProperties.connectedTo"
                 (ngModelChange)="toggleConnectedDropList($event)">
       <mat-select-trigger>
-        {{'propertiesPanel.connectedDropLists' | translate }} ({{$any(combinedProperties.connectedTo).length}})
+        {{'propertiesPanel.connectedDropLists' | translate }} ({{(combinedProperties.connectedTo ?? []).length}})
       </mat-select-trigger>
       <button mat-stroked-button [style.margin-bottom.px]="5"
               (click)="toggleSelectAll()">

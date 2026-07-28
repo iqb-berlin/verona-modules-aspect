@@ -55,7 +55,7 @@
                 (ngModelChange)="setGeometryVariables($event)"
                 [compareWith]="compareGeometryVariables">
       <mat-select-trigger>
-        {{ 'propertiesPanel.trackedVariables' | translate }} ({{ $any(combinedProperties.trackedVariables).length }})
+        {{ 'propertiesPanel.trackedVariables' | translate }} ({{ (combinedProperties.trackedVariables ?? []).length }})
       </mat-select-trigger>
       <mat-option *ngFor="let variable of geometryObjects | async" [value]="variable">
         {{ variable.id }}

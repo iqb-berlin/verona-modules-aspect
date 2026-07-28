@@ -6,9 +6,8 @@ import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
-import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
-import { Label } from 'common/models/label-interfaces';
+import { Label, TextImageLabel } from 'common/models/label-interfaces';
 import { OptionElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { LikertRowLabelPipe } from 'editor/src/app/components/properties-panel/pipes/likert-row-label.pipe';
@@ -17,9 +16,6 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import {
   OptionsFieldSetComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/options-field-set/options-field-set.component';
@@ -66,7 +62,7 @@ describe('OptionsFieldSetComponent', () => {
     dialogService = createSpyObj<DialogService>(['showLabelEditDialog', 'showLikertRowEditDialog']);
     idService = createSpyObj<IDService>(['getAndRegisterNewIDs']);
     const selectionServiceMock = {
-      getSelectedElements: () => [selectedElement as unknown as UIElement]
+      getSelectedElements: () => [selectedElement]
     } as unknown as SelectionService;
 
     await TestBed.configureTestingModule({
@@ -89,8 +85,9 @@ describe('OptionsFieldSetComponent', () => {
     component = fixture.componentInstance;
     component.combinedProperties = {
       type: 'dropdown',
-      options: [{ text: 'A', imgSrc: null }, { text: 'B', imgSrc: null }]
-    } as unknown as CombinedProperties;
+      // Arrays are not merged element by element, so their entries keep their real shape.
+      options: [{ text: 'A', imgSrc: null }, { text: 'B', imgSrc: null }] as TextImageLabel[]
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();

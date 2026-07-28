@@ -46,7 +46,7 @@
     <mat-label>{{'propertiesPanel.minLengthWarnMessage' | translate }}</mat-label>
     <input matInput type="text"
            [disabled]="!combinedProperties.minLength"
-           [value]="$any(combinedProperties.minLengthWarnMessage)"
+           [value]="combinedProperties.minLengthWarnMessage"
            (input)="updateModel.emit({ property: 'minLengthWarnMessage', value: $any($event.target).value })">
   </mat-form-field>
 </ng-container>
@@ -63,7 +63,7 @@
   </mat-form-field>
   <aspect-merged-checkbox *ngIf="combinedProperties.isLimitedToMaxLength !== undefined"
                           [disabled]="!combinedProperties.maxLength"
-                          [value]="$any(combinedProperties.isLimitedToMaxLength)"
+                          [value]="combinedProperties.isLimitedToMaxLength"
                           (valueChange)="updateModel.emit({ property: 'isLimitedToMaxLength', value: $event })">
     {{'propertiesPanel.isLimitedToMaxLength' | translate }}
   </aspect-merged-checkbox>
@@ -71,7 +71,7 @@
     <mat-label>{{'propertiesPanel.maxLengthWarnMessage' | translate }}</mat-label>
     <input matInput type="text"
            [disabled]="!combinedProperties.maxLength"
-           [value]="$any(combinedProperties.maxLengthWarnMessage)"
+           [value]="combinedProperties.maxLengthWarnMessage"
            (input)="updateModel.emit({ property: 'maxLengthWarnMessage', value: $any($event.target).value })">
   </mat-form-field>
 </ng-container>
@@ -87,13 +87,13 @@
     <mat-label>{{'propertiesPanel.patternWarnMessage' | translate }}</mat-label>
     <input matInput type="text"
            [disabled]="!combinedProperties.pattern"
-           [value]="$any(combinedProperties.patternWarnMessage)"
+           [value]="combinedProperties.patternWarnMessage"
            (input)="updateModel.emit({ property: 'patternWarnMessage', value: $any($event.target).value })">
   </mat-form-field>
 </ng-container>
 
 <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.clearable !== undefined"
-                        [value]="$any(combinedProperties.clearable)"
+                        [value]="combinedProperties.clearable"
                         (valueChange)="updateModel.emit({ property: 'clearable', value: $event })">
   {{'propertiesPanel.clearable' | translate }}
 </aspect-merged-checkbox>

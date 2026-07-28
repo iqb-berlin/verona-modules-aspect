@@ -11,7 +11,7 @@
   </mat-form-field>
 
   {{ 'termRows' | translate }}
-  <div *ngFor="let term of $any(combinedProperties).terms; let i = index; trackBy: trackTerm"
+  <div *ngFor="let term of combinedProperties.terms; let i = index; trackBy: trackTerm"
        class="term-list">
     <ng-container *ngIf="combinedProperties.operation !== 'multiplication' || i < 2">
       <mat-form-field (input)="changeTerm($any($event.target).value, i)"
@@ -28,7 +28,7 @@
 
   <button mat-button class="add-button"
           [disabled]="combinedProperties.operation === 'multiplication' &&
-                      $any(combinedProperties.terms).length >= 2"
+                      (combinedProperties.terms ?? []).length >= 2"
           (click)="addTerm()">
     <mat-icon>add</mat-icon>
     {{ 'addTermRow' | translate }}
@@ -37,14 +37,14 @@
   <mat-form-field (input)="updateModel.emit({ property: 'resultHelperRow', value: $any($event.target).value })">
     <mat-label>{{ 'resultHelperRow' | translate }}</mat-label>
     <input matInput [disabled]="combinedProperties.operation === 'variable' &&
-                                !$any(combinedProperties.variableLayoutOptions).showResultRow"
+                                !combinedProperties.variableLayoutOptions?.showResultRow"
            [value]="combinedProperties.resultHelperRow">
   </mat-form-field>
 
   <mat-form-field (input)="updateModel.emit({ property: 'result', value: $any($event.target).value })">
     <mat-label>{{ 'resultRow' | translate }}</mat-label>
     <input matInput [disabled]="combinedProperties.operation === 'variable' &&
-                                !$any(combinedProperties.variableLayoutOptions).showResultRow"
+                                !combinedProperties.variableLayoutOptions?.showResultRow"
            [value]="combinedProperties.result">
   </mat-form-field>
 
@@ -55,27 +55,27 @@
     Variables Layout anpassen
   </button>
   <mat-menu #variableLayoutOptions="matMenu">
-    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).allowArithmeticChars"
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.allowArithmeticChars"
                             (click)="$event.stopPropagation()"
                             (valueChange)="updateModel.emit({ property: 'allowArithmeticChars', value: $event })">
       {{ 'propertiesPanel.allowArithmeticChars' | translate }}
     </aspect-merged-checkbox>
-    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).isFirstLineUnderlined"
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.isFirstLineUnderlined"
                             (click)="$event.stopPropagation()"
                             (valueChange)="updateModel.emit({ property: 'isFirstLineUnderlined', value: $event })">
       {{ 'propertiesPanel.isFirstLineUnderlined' | translate }}
     </aspect-merged-checkbox>
-    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).showResultRow"
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.showResultRow"
                             (click)="$event.stopPropagation()"
                             (valueChange)="updateModel.emit({ property: 'showResultRow', value: $event })">
       {{ 'propertiesPanel.showResultRowWithHelperRow' | translate }}
     </aspect-merged-checkbox>
-    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).showTopHelperRows"
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.showTopHelperRows"
                             (click)="$event.stopPropagation()"
                             (valueChange)="updateModel.emit({ property: 'showTopHelperRows', value: $event })">
       {{ 'propertiesPanel.showTopHelperRows' | translate }}
     </aspect-merged-checkbox>
-    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).allowFirstLineCrossOut"
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.allowFirstLineCrossOut"
                             (click)="$event.stopPropagation()"
                             (valueChange)="updateModel.emit({ property: 'allowFirstLineCrossOut', value: $event })">
       {{ 'propertiesPanel.allowFirstLineCrossOut' | translate }}

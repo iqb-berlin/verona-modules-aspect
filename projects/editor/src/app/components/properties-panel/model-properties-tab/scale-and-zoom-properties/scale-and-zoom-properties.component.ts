@@ -1,7 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { UIElement } from 'common/models/elements/element';
+import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-scale-and-zoom-properties',
@@ -10,7 +11,7 @@ import { UIElement } from 'common/models/elements/element';
   standalone: false
 })
 export class ScaleAndZoomPropertiesComponent {
-  @Input() combinedProperties!: UIElement;
+  @Input() combinedProperties!: Merged<ImageProperties>;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: string | number | boolean | null, isInputValid?: boolean | null }>();
 }

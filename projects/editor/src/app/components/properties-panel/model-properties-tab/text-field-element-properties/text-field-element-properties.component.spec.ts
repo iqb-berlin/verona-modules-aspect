@@ -14,9 +14,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
-import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   TextFieldElementPropertiesComponent
@@ -64,7 +61,7 @@ describe('TextFieldElementPropertiesComponent', () => {
       isLimitedToMaxLength: false,
       pattern: '[a-z]+',
       clearable: false
-    } as unknown as CombinedProperties;
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
@@ -82,7 +79,7 @@ describe('TextFieldElementPropertiesComponent', () => {
     const previousProperties = component.combinedProperties;
     component.combinedProperties = {
       type: 'text-field', pattern: '[0-9]+'
-    } as unknown as CombinedProperties;
+    };
     const changes: SimpleChanges = {
       combinedProperties: new SimpleChange(previousProperties, component.combinedProperties, false)
     };

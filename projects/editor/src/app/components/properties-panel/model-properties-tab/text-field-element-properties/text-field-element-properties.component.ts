@@ -2,8 +2,9 @@ import {
   Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-text-field-element-properties',
@@ -12,7 +13,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 })
 
 export class TextFieldElementPropertiesComponent implements OnInit, OnChanges {
-  @Input() combinedProperties!: CombinedProperties;
+  @Input() combinedProperties!: Merged<TextFieldProperties>;
   @Output() updateModel = new EventEmitter<{
     property: string;
     value: string | number | boolean | string[] | null;

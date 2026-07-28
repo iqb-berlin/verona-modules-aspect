@@ -7,11 +7,11 @@
   <mat-form-field appearance="outline">
     <mat-label>{{ 'section-menu.rowCount' | translate }}</mat-label>
     <input matInput type="number" [min]="maxRowIndex"
-           [value]="$any(combinedProperties.gridRowSizes).length"
+           [value]="(combinedProperties.gridRowSizes ?? []).length"
            (click)="$any($event).stopPropagation()"
            (change)="modifySizeArray('gridRowSizes', $any($event).target.value || 0, $event)">
   </mat-form-field>
-  <ng-container *ngFor="let size of $any(combinedProperties.gridRowSizes); let i = index">
+  <ng-container *ngFor="let size of combinedProperties.gridRowSizes; let i = index">
     <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
                              [value]="size.value"
                              [unit]="size.unit"
@@ -25,11 +25,11 @@
   <mat-form-field appearance="outline">
     <mat-label>{{ 'section-menu.columnCount' | translate }}</mat-label>
     <input matInput type="number" [min]="maxColIndex"
-           [value]="$any(combinedProperties.gridColumnSizes).length"
+           [value]="(combinedProperties.gridColumnSizes ?? []).length"
            (click)="$any($event).stopPropagation()"
            (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0, $event)">
   </mat-form-field>
-  <ng-container *ngFor="let size of $any(combinedProperties.gridColumnSizes); let i = index">
+  <ng-container *ngFor="let size of combinedProperties.gridColumnSizes; let i = index">
     <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
                              [value]="size.value"
                              [unit]="size.unit"
@@ -38,11 +38,11 @@
     </aspect-size-input-panel>
   </ng-container>
 </fieldset>
-<aspect-merged-checkbox [value]="$any(combinedProperties).tableEdgesEnabled"
+<aspect-merged-checkbox [value]="combinedProperties.tableEdgesEnabled"
                         (valueChange)="updateModel.emit({ property: 'tableEdgesEnabled', value: $event })">
   Tabellenränder zeichnen
 </aspect-merged-checkbox>
-<aspect-merged-checkbox [value]="$any(combinedProperties).headerEnabled"
+<aspect-merged-checkbox [value]="combinedProperties.headerEnabled"
                         (valueChange)="updateModel.emit({ property: 'headerEnabled', value: $event })">
   {{'propertiesPanel.tableHeaderEnabled' | translate }}
 </aspect-merged-checkbox>

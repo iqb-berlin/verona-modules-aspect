@@ -1,18 +1,18 @@
 <div class="fx-column-start-stretch" [style.gap.px]="5">
   <aspect-merged-checkbox *ngIf="combinedProperties.scale !== undefined"
-                          [value]="$any(combinedProperties.scale)"
+                          [value]="combinedProperties.scale"
                           (valueChange)="updateModel.emit({ property: 'scale', value: $event })">
     {{'propertiesPanel.scale' | translate }}
   </aspect-merged-checkbox>
 
   <aspect-merged-checkbox *ngIf="combinedProperties.magnifier !== undefined"
-                          [value]="$any(combinedProperties.magnifier)"
+                          [value]="combinedProperties.magnifier"
                           (valueChange)="updateModel.emit({ property: 'magnifier', value: $event })">
     {{'propertiesPanel.magnifier' | translate }}
   </aspect-merged-checkbox>
 
   <aspect-merged-checkbox *ngIf="combinedProperties.allowFullscreen !== undefined"
-                          [value]="$any(combinedProperties.allowFullscreen)"
+                          [value]="combinedProperties.allowFullscreen"
                           (valueChange)="updateModel.emit({ property: 'allowFullscreen', value: $event })">
     {{'propertiesPanel.allowFullscreen' | translate }}
   </aspect-merged-checkbox>

@@ -1,12 +1,14 @@
 import {
   Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
-import { UIElement } from 'common/models/elements/element';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { Subject } from 'rxjs';
+import { UIElement } from 'common/models/elements/element';
+import { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-table-properties',
@@ -15,7 +17,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./table-properties.component.scss']
 })
 export class TablePropertiesComponent implements OnInit, OnDestroy {
-  @Input() combinedProperties!: UIElement;
+  @Input() combinedProperties!: Merged<TableProperties>;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: boolean | { value: number; unit: string }[] | null }>();
 
@@ -41,10 +43,9 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
   }
 
   calculateMaxIndices(): void {
-    this.maxRowIndex =
-      Math.max(...(this.combinedProperties.elements as TableElement[]).map(el => el.gridRow), 1);
-    this.maxColIndex =
-      Math.max(...(this.combinedProperties.elements as TableElement[]).map(el => el.gridColumn), 1);
+    const elements = (this.combinedProperties.elements ?? []) as unknown as TableElement[];
+    this.maxRowIndex = Math.max(...elements.map(el => el.gridRow), 1);
+    this.maxColIndex = Math.max(...elements.map(el => el.gridColumn), 1);
   }
 
   /* Add or remove elements to size array. Default value 1fr. */

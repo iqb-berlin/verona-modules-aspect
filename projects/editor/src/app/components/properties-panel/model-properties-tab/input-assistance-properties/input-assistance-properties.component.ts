@@ -1,8 +1,21 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import { INPUT_ASSISTANCE_CUSTOM_STYLES } from 'common/models/input-element-interfaces';
+import { INPUT_ASSISTANCE_CUSTOM_STYLES, TextInputElementProperties } from 'common/models/input-element-interfaces';
+import { MathTableProperties } from 'common/models/elements/interactive-group-elements/math-table';
+import { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+
+/**
+ * What this component reads. It is offered for text inputs and for the math table, and those do not
+ * share a common level in the element model — the math table implements KeyInputElementProperties
+ * without being a TextInputElement. Composed from existing interfaces rather than a new one, so no
+ * field name is invented here; #1141 is about giving the model the levels that would make this
+ * composition unnecessary.
+ */
+type InputAssistanceHost = TextInputElementProperties &
+Pick<MathTableProperties, 'operation'> &
+Pick<TextAreaProperties, 'hasReturnKey'>;
 
 @Component({
   selector: 'aspect-input-assistance-properties',
@@ -11,7 +24,7 @@ import { INPUT_ASSISTANCE_CUSTOM_STYLES } from 'common/models/input-element-inte
 })
 
 export class InputAssistancePropertiesComponent {
-  @Input() combinedProperties!: CombinedProperties;
+  @Input() combinedProperties!: Merged<InputAssistanceHost>;
   @Output() updateModel = new EventEmitter<{
     property: string;
     value: string | number | boolean | string[] | null;

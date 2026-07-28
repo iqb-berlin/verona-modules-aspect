@@ -1,17 +1,17 @@
 <fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
   <legend>Tastatur</legend>
-  <aspect-merged-checkbox [value]="$any(combinedProperties.showSoftwareKeyboard)"
+  <aspect-merged-checkbox [value]="combinedProperties.showSoftwareKeyboard"
                           (valueChange)="updateShowSoftwareKeyboard($event)">
     {{'propertiesPanel.showSoftwareKeyboard' | translate }}
   </aspect-merged-checkbox>
   <aspect-merged-checkbox [disabled]="!combinedProperties.inputAssistancePreset ||
                             (!!combinedProperties.inputAssistancePreset && !!combinedProperties.showSoftwareKeyboard)"
-                          [value]="$any(combinedProperties.hideNativeKeyboard)"
+                          [value]="combinedProperties.hideNativeKeyboard"
                           (valueChange)="updateModel.emit({ property: 'hideNativeKeyboard', value: $event })">
     {{'propertiesPanel.hideNativeKeyboard' | translate }}
   </aspect-merged-checkbox>
   <aspect-merged-checkbox [disabled]="!combinedProperties.showSoftwareKeyboard"
-                          [value]="$any(combinedProperties.addInputAssistanceToKeyboard)"
+                          [value]="combinedProperties.addInputAssistanceToKeyboard"
                           (valueChange)="updateModel.emit({ property: 'addInputAssistanceToKeyboard', value: $event })">
     {{'propertiesPanel.addInputAssistanceToKeyboard' | translate }}
   </aspect-merged-checkbox>
@@ -32,7 +32,7 @@
         </mat-option>
       </ng-container>
       <ng-container *ngIf="combinedProperties.type === 'math-table' &&
-                           ['addition', 'subtraction'].includes($any(combinedProperties.operation))">
+                           ['addition', 'subtraction'].includes(combinedProperties.operation ?? '')">
         <mat-option *ngFor="let option of [null, 'numbers']"
                     [value]="option">
           {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
@@ -59,7 +59,7 @@
                   class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.inputAssistanceCustomKeys' | translate }}</mat-label>
     <input matInput type="text"
-           [value]="$any(combinedProperties.inputAssistanceCustomKeys)"
+           [value]="combinedProperties.inputAssistanceCustomKeys"
            (input)="updateModel.emit({ property: 'inputAssistanceCustomKeys', value: $any($event.target).value })">
   </mat-form-field>
 
@@ -123,7 +123,7 @@
 
   <aspect-merged-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
                                  combinedProperties.restrictedToInputAssistanceChars !== undefined"
-                          [value]="$any(combinedProperties.restrictedToInputAssistanceChars)"
+                          [value]="combinedProperties.restrictedToInputAssistanceChars"
                           (valueChange)="updateModel
                                       .emit({ property: 'restrictedToInputAssistanceChars', value: $event })">
     {{'propertiesPanel.restrictedToInputAssistanceChars' | translate }}
@@ -131,7 +131,7 @@
 
   <aspect-merged-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
                                  combinedProperties.hasArrowKeys !== undefined"
-                          [value]="$any(combinedProperties.hasArrowKeys)"
+                          [value]="combinedProperties.hasArrowKeys"
                           (valueChange)="updateModel.emit({ property: 'hasArrowKeys', value: $event })">
     {{'propertiesPanel.hasArrowKeys' | translate }}
   </aspect-merged-checkbox>
@@ -140,7 +140,7 @@
                                  combinedProperties.hasBackspaceKey !== undefined"
                           [disabled]="combinedProperties.inputAssistancePreset !== 'custom'"
                           [value]="combinedProperties.inputAssistancePreset === 'custom' ?
-                                      $any(combinedProperties.hasBackspaceKey) :
+                                      combinedProperties.hasBackspaceKey :
                                       combinedProperties.inputAssistancePreset !== 'french'"
                           (valueChange)="updateModel.emit({ property: 'hasBackspaceKey', value: $event })">
     {{'propertiesPanel.hasBackspaceKey' | translate }}
@@ -149,7 +149,7 @@
   <aspect-merged-checkbox *ngIf="combinedProperties.type === 'text-area' &&
                                  combinedProperties.inputAssistancePreset !== null &&
                                  combinedProperties.hasReturnKey !== undefined"
-                          [value]="$any(combinedProperties.hasReturnKey)"
+                          [value]="combinedProperties.hasReturnKey"
                           (valueChange)="updateModel.emit({ property: 'hasReturnKey', value: $event })">
     {{'propertiesPanel.hasReturnKey' | translate }}
   </aspect-merged-checkbox>

@@ -84,7 +84,19 @@ class MockScaleAndZoomPropertiesComponent {
 @Component({ selector: 'aspect-action-properties', standalone: false, template: '' })
 class MockActionPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
-  @Input() actions!: string[];
+  @Input() actions!: readonly string[];
+  @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
+}
+
+@Component({ selector: 'aspect-sticky-header-properties', standalone: false, template: '' })
+class MockStickyHeaderPropertiesComponent {
+  @Input() combinedProperties!: CombinedProperties;
+  @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
+}
+
+@Component({ selector: 'aspect-first-column-ratio-properties', standalone: false, template: '' })
+class MockFirstColumnRatioPropertiesComponent {
+  @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 
@@ -115,6 +127,8 @@ describe('ElementModelPropertiesComponent', () => {
         MockInputAssistancePropertiesComponent,
         MockScaleAndZoomPropertiesComponent,
         MockActionPropertiesComponent,
+        MockStickyHeaderPropertiesComponent,
+        MockFirstColumnRatioPropertiesComponent,
         IsInputElementPipe,
         MergedCheckboxComponent
       ],

@@ -1,0 +1,8 @@
+@if (combinedProperties.firstColumnSizeRatio != null) {
+  <mat-form-field matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
+                  appearance="fill">
+    <mat-label>{{'propertiesPanel.firstColumnSizeRatio' | translate }}</mat-label>
+    <input matInput type="number" [value]="combinedProperties.firstColumnSizeRatio"
+           (input)="updateModel.emit({ property: 'firstColumnSizeRatio', value: $any($event.target).value || 0 })">
+  </mat-form-field>
+}

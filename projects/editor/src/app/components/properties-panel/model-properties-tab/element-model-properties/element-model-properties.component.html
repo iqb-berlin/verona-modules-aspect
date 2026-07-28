@@ -181,13 +181,9 @@
                                       (updateModel)="updateModel.emit($event)">
   </aspect-input-assistance-properties>
 
-  <aspect-merged-checkbox *ngIf="combinedProperties.stickyHeader !== undefined &&
-                                 (combinedProperties.type !== 'likert' || unitService.expertMode)"
-                          [value]="$any(combinedProperties.stickyHeader)"
-                          [disabled]="combinedProperties.type === 'table' && !$any(combinedProperties).headerEnabled"
-                          (valueChange)="updateModel.emit({ property: 'stickyHeader', value: $event })">
-    {{'propertiesPanel.stickyHeader' | translate }}
-  </aspect-merged-checkbox>
+  <aspect-sticky-header-properties [combinedProperties]="$any(combinedProperties)"
+                                   (updateModel)="updateModel.emit($event)">
+  </aspect-sticky-header-properties>
 
   <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.crossOutChecked !== undefined"
                           [value]="$any(combinedProperties.crossOutChecked)"
@@ -195,13 +191,9 @@
     {{'propertiesPanel.crossOutChecked' | translate }}
   </aspect-merged-checkbox>
 
-  <mat-form-field *ngIf="combinedProperties.firstColumnSizeRatio != null"
-                  matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.firstColumnSizeRatio' | translate }}</mat-label>
-    <input matInput type="number" [value]="$any(combinedProperties.firstColumnSizeRatio)"
-           (input)="updateModel.emit({ property: 'firstColumnSizeRatio', value: $any($event.target).value || 0 })">
-  </mat-form-field>
+  <aspect-first-column-ratio-properties [combinedProperties]="$any(combinedProperties)"
+                                        (updateModel)="updateModel.emit($event)">
+  </aspect-first-column-ratio-properties>
 
   <aspect-scale-and-zoom-properties *ngIf="unitService.expertMode"
                                     [combinedProperties]="$any(combinedProperties)"

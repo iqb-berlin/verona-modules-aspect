@@ -38,6 +38,9 @@ import {
 } from './element-position-properties/element-position-properties.component';
 import { ElementPropertiesPanelComponent } from './element-properties-panel/element-properties-panel.component';
 import { ElementStylePropertiesComponent } from './element-style-properties/element-style-properties.component';
+import {
+  FirstColumnRatioPropertiesComponent
+} from './model-properties-tab/first-column-ratio-properties/first-column-ratio-properties.component';
 import { GeometryPropsComponent } from './model-properties-tab/geometry-props/geometry-props.component';
 import { GetStateVariablePipe } from './pipes/get-state-variable.pipe';
 import { GetValidDropListsPipe } from './pipes/get-valid-drop-lists.pipe';
@@ -71,6 +74,9 @@ import {
 import { ScrollPageIndexPipe } from './pipes/scroll-page-index.pipe';
 import { SelectPropertiesComponent } from './model-properties-tab/select-properties/select-properties.component';
 import { SliderPropertiesComponent } from './model-properties-tab/slider-properties/slider-properties.component';
+import {
+  StickyHeaderPropertiesComponent
+} from './model-properties-tab/sticky-header-properties/sticky-header-properties.component';
 import { TablePropertiesComponent } from './model-properties-tab/table-properties/table-properties.component';
 import {
   TextFieldElementPropertiesComponent
@@ -115,6 +121,7 @@ import {
     ElementPositionPropertiesComponent,
     ElementPropertiesPanelComponent,
     ElementStylePropertiesComponent,
+    FirstColumnRatioPropertiesComponent,
     GeometryPropsComponent,
     HighlightPropertiesComponent,
     HotspotPropsComponent,
@@ -129,6 +136,7 @@ import {
     ScaleAndZoomPropertiesComponent,
     SelectPropertiesComponent,
     SliderPropertiesComponent,
+    StickyHeaderPropertiesComponent,
     TablePropertiesComponent,
     TextFieldElementPropertiesComponent,
     TextPropsComponent,

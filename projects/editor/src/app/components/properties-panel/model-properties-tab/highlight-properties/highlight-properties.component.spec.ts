@@ -6,9 +6,6 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import {
   HighlightPropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/highlight-properties/highlight-properties.component';
 
@@ -33,7 +30,7 @@ describe('HighlightPropertiesComponent', () => {
       highlightableYellow: false,
       highlightableTurquoise: true,
       highlightableOrange: false
-    } as unknown as CombinedProperties;
+    };
     component.disabled = false;
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
@@ -55,7 +52,7 @@ describe('HighlightPropertiesComponent', () => {
   });
 
   it('should only render checkboxes for defined properties', () => {
-    component.combinedProperties = { highlightableYellow: false } as unknown as CombinedProperties;
+    component.combinedProperties = { highlightableYellow: false };
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('mat-checkbox').length).toBe(1);

@@ -1,7 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+import { TextProperties } from 'common/models/elements/text-group-elements/text';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-highlight-properties',
@@ -10,7 +11,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
 })
 
 export class HighlightPropertiesComponent {
-  @Input() combinedProperties!: CombinedProperties;
+  @Input() combinedProperties!: Merged<TextProperties>;
   @Input() disabled!: boolean;
   @Output() updateModel =
     new EventEmitter<{

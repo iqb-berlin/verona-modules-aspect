@@ -2,7 +2,7 @@
   Fernsteuerung
   <fieldset class="fx-column-start-stretch">
     <legend>{{'propertiesPanel.marking' | translate }}</legend>
-    <aspect-highlight-properties [combinedProperties]="combinedProperties"
+    <aspect-highlight-properties [combinedProperties]="$any(combinedProperties)"
                                  [disabled]="false"
                                  (updateModel)="updateModel.emit($event)">
     </aspect-highlight-properties>

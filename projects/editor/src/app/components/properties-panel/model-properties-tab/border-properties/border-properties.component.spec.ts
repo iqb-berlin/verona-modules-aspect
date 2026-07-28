@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
-import { UIElement } from 'common/models/elements/element';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
@@ -29,7 +28,7 @@ describe('BorderPropertiesComponent', () => {
       hasBorderBottom: false,
       hasBorderLeft: false,
       hasBorderRight: false
-    } as unknown as UIElement;
+    };
     fixture.detectChanges();
   });
 

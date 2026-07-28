@@ -1,18 +1,18 @@
 <aspect-merged-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
                         [disabled]="disabled"
-                        [value]="$any(combinedProperties.highlightableYellow)"
+                        [value]="combinedProperties.highlightableYellow"
                         (valueChange)="updateModel.emit({ property: 'highlightableYellow', value: $event })">
   {{'propertiesPanel.highlightableYellow' | translate }}
 </aspect-merged-checkbox>
 <aspect-merged-checkbox *ngIf="combinedProperties.highlightableTurquoise !== undefined"
                         [disabled]="disabled"
-                        [value]="$any(combinedProperties.highlightableTurquoise)"
+                        [value]="combinedProperties.highlightableTurquoise"
                         (valueChange)="updateModel.emit({ property: 'highlightableTurquoise', value: $event })">
   {{'propertiesPanel.highlightableTurquoise' | translate }}
 </aspect-merged-checkbox>
 <aspect-merged-checkbox *ngIf="combinedProperties.highlightableOrange !== undefined"
                         [disabled]="disabled"
-                        [value]="$any(combinedProperties.highlightableOrange)"
+                        [value]="combinedProperties.highlightableOrange"
                         (valueChange)="updateModel.emit({ property: 'highlightableOrange', value: $event })">
   {{'propertiesPanel.highlightableOrange' | translate }}
 </aspect-merged-checkbox>

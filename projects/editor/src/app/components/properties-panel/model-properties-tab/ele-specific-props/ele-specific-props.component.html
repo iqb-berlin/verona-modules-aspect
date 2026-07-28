@@ -4,7 +4,7 @@
 </aspect-math-field-props>
 
 <aspect-border-properties *ngIf="combinedProperties.type === 'frame'"
-                          [combinedProperties]="combinedProperties"
+                          [combinedProperties]="$any(combinedProperties)"
                           (updateModel)="updateModel.emit($event)">
 </aspect-border-properties>
 

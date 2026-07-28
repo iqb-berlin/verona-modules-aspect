@@ -18,6 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'common/shared.module';
 import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
 import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
+import { MergedCheckboxComponent } from './fields/merged-checkbox/merged-checkbox.component';
 import {
   ActionParamStateVariableComponent
 } from './model-properties-tab/action-param-state-variable/action-param-state-variable.component';
@@ -102,6 +103,7 @@ import {
  */
 @NgModule({
   declarations: [
+    MergedCheckboxComponent,
     ActionParamStateVariableComponent,
     ActionPropertiesComponent,
     BorderPropertiesComponent,

@@ -4,7 +4,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { UIElement } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   MergedCheckboxComponent
@@ -43,7 +42,7 @@ describe('InputElementPropertiesComponent', () => {
       readOnly: false,
       required: false,
       requiredWarnMessage: 'Pflichtfeld'
-    } as unknown as UIElement;
+    };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
@@ -84,7 +83,7 @@ describe('InputElementPropertiesComponent', () => {
   });
 
   it('should omit the label field for elements without a label', () => {
-    component.combinedProperties = { readOnly: false, required: false } as unknown as UIElement;
+    component.combinedProperties = { readOnly: false, required: false };
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('textarea')).toBeNull();

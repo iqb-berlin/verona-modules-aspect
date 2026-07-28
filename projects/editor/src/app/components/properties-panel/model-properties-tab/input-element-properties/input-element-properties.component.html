@@ -5,18 +5,18 @@
                   appearance="fill">
     <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
     <textarea matInput type="text"
-              [value]="$any(combinedProperties.label)"
-              [disabled]="$any(combinedProperties.imgSrc)"
+              [value]="combinedProperties.label"
+              [disabled]="!!combinedProperties.imgSrc"
               (input)="updateModel.emit({ property: 'label', value: $any($event.target).value })">
         </textarea>
   </mat-form-field>
 
-  <aspect-merged-checkbox [value]="$any(combinedProperties.readOnly)"
+  <aspect-merged-checkbox [value]="combinedProperties.readOnly"
                           (valueChange)="updateModel.emit({ property: 'readOnly', value: $event })">
     {{'propertiesPanel.readOnly' | translate }}
   </aspect-merged-checkbox>
 
-  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="$any(combinedProperties.required)"
+  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="combinedProperties.required"
                           (valueChange)="updateModel.emit({ property: 'required', value: $event })">
     {{'propertiesPanel.requiredField' | translate }}
   </aspect-merged-checkbox>
@@ -24,7 +24,7 @@
   <mat-form-field *ngIf="unitService.expertMode" appearance="fill">
     <mat-label>{{'propertiesPanel.requiredWarnMessage' | translate }}</mat-label>
     <input matInput type="text" [disabled]="!combinedProperties.required"
-           [value]="$any(combinedProperties.requiredWarnMessage)"
+           [value]="combinedProperties.requiredWarnMessage"
            (input)="updateModel.emit({ property: 'requiredWarnMessage', value: $any($event.target).value })">
   </mat-form-field>
 </fieldset>

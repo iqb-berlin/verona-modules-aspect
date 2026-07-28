@@ -118,7 +118,7 @@ describe('EleSpecificPropsComponent', () => {
 
     fixture = TestBed.createComponent(EleSpecificPropsComponent);
     component = fixture.componentInstance;
-    component.combinedProperties = { type: 'frame' } as unknown as CombinedProperties;
+    component.combinedProperties = { type: 'frame' };
     fixture.detectChanges();
   });
 
@@ -133,7 +133,7 @@ describe('EleSpecificPropsComponent', () => {
   });
 
   it('should switch the rendered panel with the element type', () => {
-    component.combinedProperties = { type: 'button' } as unknown as CombinedProperties;
+    component.combinedProperties = { type: 'button' };
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('aspect-border-properties'))).toBeNull();

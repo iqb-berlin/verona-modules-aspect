@@ -10,7 +10,7 @@
 <mat-form-field *ngIf="combinedProperties.type === 'text-field' || combinedProperties.type === 'text-field-simple'"
                 class="wide-form-field" appearance="fill">
   <mat-label>{{'preset' | translate }}</mat-label>
-  <input matInput type="text" [value]="$any(combinedProperties).value"
+  <input matInput type="text" [value]="$any(combinedProperties.value)"
          (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
 </mat-form-field>
 
@@ -40,15 +40,15 @@
   </div>
 
   <aspect-math-input *ngIf="!showLatexEditor"
-                     [value]="$any(combinedProperties).value"
-                     [enableModeSwitch]="$any(combinedProperties).enableModeSwitch"
-                     [mathKeyboardPresets]="$any(combinedProperties).mathKeyboardPresets"
+                     [value]="$any(combinedProperties.value)"
+                     [enableModeSwitch]="$any(combinedProperties.enableModeSwitch)"
+                     [mathKeyboardPresets]="$any(combinedProperties.mathKeyboardPresets)"
                      [placeholder]="'propertiesPanel.formulaPlaceholder' | translate"
                      (valueChange)="updateModel.emit({property: 'value', value: $event })">
   </aspect-math-input>
 
   <mat-form-field *ngIf="showLatexEditor" class="wide-form-field" appearance="fill">
-    <input matInput [value]="$any(combinedProperties).value"
+    <input matInput [value]="$any(combinedProperties.value)"
            [placeholder]="'propertiesPanel.latexPlaceholder' | translate"
            (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
   </mat-form-field>

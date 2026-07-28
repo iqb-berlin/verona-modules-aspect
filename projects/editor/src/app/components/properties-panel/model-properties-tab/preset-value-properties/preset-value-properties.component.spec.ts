@@ -14,9 +14,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import {
-  CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import {
   PresetValuePropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/preset-value-properties/preset-value-properties.component';
 
@@ -55,7 +52,7 @@ describe('PresetValuePropertiesComponent', () => {
 
     fixture = TestBed.createComponent(PresetValuePropertiesComponent);
     component = fixture.componentInstance;
-    component.combinedProperties = { type: 'text-area', value: 'preset text' } as unknown as CombinedProperties;
+    component.combinedProperties = { type: 'text-area', value: 'preset text' };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
@@ -78,7 +75,7 @@ describe('PresetValuePropertiesComponent', () => {
   it('should offer an option for every entry of an option list', () => {
     component.combinedProperties = {
       type: 'dropdown', value: 0, options: [{ text: 'A' }, { text: 'B' }]
-    } as unknown as CombinedProperties;
+    };
     fixture.detectChanges();
 
     const optionSelect = fixture.debugElement.query(By.css('mat-select'));
@@ -90,7 +87,7 @@ describe('PresetValuePropertiesComponent', () => {
   });
 
   it('should emit the value of the math input', () => {
-    component.combinedProperties = { type: 'math-field', value: '1+1' } as unknown as CombinedProperties;
+    component.combinedProperties = { type: 'math-field', value: '1+1' };
     fixture.detectChanges();
 
     const mathInput = fixture.debugElement
@@ -103,7 +100,7 @@ describe('PresetValuePropertiesComponent', () => {
   });
 
   it('should switch between formula and latex editor', () => {
-    component.combinedProperties = { type: 'math-field', value: '1+1' } as unknown as CombinedProperties;
+    component.combinedProperties = { type: 'math-field', value: '1+1' };
     fixture.detectChanges();
 
     const toggleButton = fixture.nativeElement.querySelector('button') as HTMLButtonElement;

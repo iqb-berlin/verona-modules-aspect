@@ -1,7 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement, TextProperties } from 'common/models/elements/text-group-elements/text';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -14,13 +15,22 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 })
 export class TextPropsComponent {
   markingPanelIDs: [string, string][];
-  @Input() combinedProperties!: any;
+  @Input() combinedProperties!: Merged<TextProperties>;
+  /**
+   * `string` rather than `keyof TextProperties`, because the marking colours are emitted by the
+   * child highlight component and pass through here; its own writes go through `emitOwn()`.
+   */
   @Output() updateModel =
     new EventEmitter<{
       property: string;
       value: string | number | boolean | string[],
       isInputValid?: boolean | null
     }>();
+
+  /** Emit one of this component's own properties, with the name checked against the model. */
+  emitOwn(property: keyof TextProperties, value: string | number | boolean | string[]): void {
+    this.updateModel.emit({ property, value });
+  }
 
   constructor(public unitService: UnitService,
               public dialogService: DialogService,
@@ -36,15 +46,12 @@ export class TextPropsComponent {
       (selectedElement as TextElement).styling.fontSize
     ).subscribe((result: string) => {
       if (result) {
-        this.updateModel.emit({ property: 'text', value: result });
+        this.emitOwn('text', result);
       }
     });
   }
 
   toggleConnectedMarkingPanels(markingPanels: string[]) {
-    this.updateModel.emit({
-      property: 'markingPanels',
-      value: [...markingPanels]
-    });
+    this.emitOwn('markingPanels', [...markingPanels]);
   }
 }

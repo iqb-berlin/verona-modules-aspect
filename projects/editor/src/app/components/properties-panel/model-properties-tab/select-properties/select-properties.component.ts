@@ -2,7 +2,6 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
@@ -20,8 +19,8 @@ export class SelectPropertiesComponent {
 
   constructor(public unitService: UnitService) { }
 
-  setItemsPerRow(event: MatCheckboxChange) {
-    if (!event.checked) {
+  setItemsPerRow(isLimited: boolean) {
+    if (!isLimited) {
       this.updateModel.emit({ property: 'itemsPerRow', value: null });
     } else {
       this.updateModel.emit({ property: 'itemsPerRow', value: 4 });

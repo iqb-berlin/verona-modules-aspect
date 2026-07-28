@@ -5,10 +5,10 @@
                 selectionService.isCompoundChildSelected;
                 else elseBlock">
     <ng-container *ngIf="dimensions.isWidthFixed !== undefined else elseBlockWidth">
-      <mat-checkbox #fixedWidth [checked]="$any(dimensions.isWidthFixed)"
-                    (change)="updateDimensionProperty('isWidthFixed', $event.checked)">
+      <aspect-merged-checkbox #fixedWidth [value]="$any(dimensions.isWidthFixed)"
+                              (valueChange)="updateDimensionProperty('isWidthFixed', $event)">
         {{'propertiesPanel.isWidthFixed' | translate }}
-      </mat-checkbox>
+      </aspect-merged-checkbox>
       <mat-form-field appearance="fill">
         <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
         <input matInput type="number" min="0"
@@ -29,10 +29,10 @@
     </ng-template>
 
     <ng-container *ngIf="dimensions.isHeightFixed !== undefined else elseBlockHeight">
-      <mat-checkbox #fixedHeight [checked]="$any(dimensions.isHeightFixed)"
-                    (change)="updateDimensionProperty('isHeightFixed', $event.checked)">
+      <aspect-merged-checkbox #fixedHeight [value]="$any(dimensions.isHeightFixed)"
+                              (valueChange)="updateDimensionProperty('isHeightFixed', $event)">
         {{'propertiesPanel.isHeightFixed' | translate }}
-      </mat-checkbox>
+      </aspect-merged-checkbox>
       <mat-form-field>
         <mat-label>
           {{'propertiesPanel.height' | translate }}

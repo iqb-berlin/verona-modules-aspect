@@ -38,11 +38,11 @@
     </aspect-size-input-panel>
   </ng-container>
 </fieldset>
-<mat-checkbox [checked]="$any(combinedProperties).tableEdgesEnabled"
-              (change)="updateModel.emit({ property: 'tableEdgesEnabled', value: $event.checked })">
+<aspect-merged-checkbox [value]="$any(combinedProperties).tableEdgesEnabled"
+                        (valueChange)="updateModel.emit({ property: 'tableEdgesEnabled', value: $event })">
   Tabellenränder zeichnen
-</mat-checkbox>
-<mat-checkbox [checked]="$any(combinedProperties).headerEnabled"
-              (change)="updateModel.emit({ property: 'headerEnabled', value: $event.checked })">
+</aspect-merged-checkbox>
+<aspect-merged-checkbox [value]="$any(combinedProperties).headerEnabled"
+                        (valueChange)="updateModel.emit({ property: 'headerEnabled', value: $event })">
   {{'propertiesPanel.tableHeaderEnabled' | translate }}
-</mat-checkbox>
+</aspect-merged-checkbox>

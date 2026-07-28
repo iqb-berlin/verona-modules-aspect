@@ -16,6 +16,13 @@ describe('MergedCheckboxComponent', () => {
 
   const checkbox = (): HTMLInputElement => fixture.nativeElement.querySelector('mat-checkbox input');
 
+  /** ngOnChanges is not run for inputs set directly on the instance, so it is called explicitly. */
+  const setValue = (value: boolean | null | undefined): void => {
+    component.value = value;
+    component.ngOnChanges();
+    fixture.detectChanges();
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MergedCheckboxComponent],
@@ -29,22 +36,20 @@ describe('MergedCheckboxComponent', () => {
   });
 
   it('should create', () => {
-    fixture.detectChanges();
+    setValue(false);
 
     expect(fixture.nativeElement.querySelector('mat-checkbox')).toBeTruthy();
   });
 
   it('should be unchecked for false', () => {
-    component.value = false;
-    fixture.detectChanges();
+    setValue(false);
 
     expect(checkbox().checked).toBe(false);
     expect(checkbox().indeterminate).toBe(false);
   });
 
   it('should be checked for true', () => {
-    component.value = true;
-    fixture.detectChanges();
+    setValue(true);
 
     expect(checkbox().checked).toBe(true);
     expect(checkbox().indeterminate).toBe(false);
@@ -52,23 +57,20 @@ describe('MergedCheckboxComponent', () => {
 
   // The case this component exists for: null means the selected elements disagree.
   it('should be indeterminate for null', () => {
-    component.value = null;
-    fixture.detectChanges();
+    setValue(null);
 
     expect(checkbox().indeterminate).toBe(true);
   });
 
   it('should be unchecked and not indeterminate for undefined', () => {
-    component.value = undefined;
-    fixture.detectChanges();
+    setValue(undefined);
 
     expect(checkbox().checked).toBe(false);
     expect(checkbox().indeterminate).toBe(false);
   });
 
   it('should emit true when an unchecked box is clicked', () => {
-    component.value = false;
-    fixture.detectChanges();
+    setValue(false);
 
     checkbox().click();
 
@@ -76,8 +78,7 @@ describe('MergedCheckboxComponent', () => {
   });
 
   it('should emit false when a checked box is clicked', () => {
-    component.value = true;
-    fixture.detectChanges();
+    setValue(true);
 
     checkbox().click();
 
@@ -87,8 +88,7 @@ describe('MergedCheckboxComponent', () => {
   // Same as a plain checkbox did before: clicking a mixed selection turns it on everywhere, so
   // only the display changes, not what a click does.
   it('should emit true when an indeterminate box is clicked', () => {
-    component.value = null;
-    fixture.detectChanges();
+    setValue(null);
 
     checkbox().click();
 
@@ -96,14 +96,27 @@ describe('MergedCheckboxComponent', () => {
   });
 
   it('should not emit while disabled', () => {
-    component.value = null;
     component.disabled = true;
-    fixture.detectChanges();
+    setValue(null);
 
     expect(checkbox().disabled).toBe(true);
 
     checkbox().click();
 
     expect(emitted).toEqual([]);
+  });
+
+  // Call sites read this through a template reference (#fixedWidth and friends) and expect the
+  // same thing a mat-checkbox gave them.
+  it('should expose the live state for template references', () => {
+    setValue(null);
+
+    expect(component.checked).toBe(false);
+    expect(component.indeterminate).toBe(true);
+
+    checkbox().click();
+
+    expect(component.checked).toBe(true);
+    expect(component.indeterminate).toBe(false);
   });
 });

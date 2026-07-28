@@ -1,18 +1,18 @@
-<mat-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
-              [disabled]="disabled"
-              [checked]="$any(combinedProperties.highlightableYellow)"
-              (change)="updateModel.emit({ property: 'highlightableYellow', value: $event.checked })">
+<aspect-merged-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
+                        [disabled]="disabled"
+                        [value]="$any(combinedProperties.highlightableYellow)"
+                        (valueChange)="updateModel.emit({ property: 'highlightableYellow', value: $event })">
   {{'propertiesPanel.highlightableYellow' | translate }}
-</mat-checkbox>
-<mat-checkbox *ngIf="combinedProperties.highlightableTurquoise !== undefined"
-              [disabled]="disabled"
-              [checked]="$any(combinedProperties.highlightableTurquoise)"
-              (change)="updateModel.emit({ property: 'highlightableTurquoise', value: $event.checked })">
+</aspect-merged-checkbox>
+<aspect-merged-checkbox *ngIf="combinedProperties.highlightableTurquoise !== undefined"
+                        [disabled]="disabled"
+                        [value]="$any(combinedProperties.highlightableTurquoise)"
+                        (valueChange)="updateModel.emit({ property: 'highlightableTurquoise', value: $event })">
   {{'propertiesPanel.highlightableTurquoise' | translate }}
-</mat-checkbox>
-<mat-checkbox *ngIf="combinedProperties.highlightableOrange !== undefined"
-              [disabled]="disabled"
-              [checked]="$any(combinedProperties.highlightableOrange)"
-              (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
+</aspect-merged-checkbox>
+<aspect-merged-checkbox *ngIf="combinedProperties.highlightableOrange !== undefined"
+                        [disabled]="disabled"
+                        [value]="$any(combinedProperties.highlightableOrange)"
+                        (valueChange)="updateModel.emit({ property: 'highlightableOrange', value: $event })">
   {{'propertiesPanel.highlightableOrange' | translate }}
-</mat-checkbox>
+</aspect-merged-checkbox>

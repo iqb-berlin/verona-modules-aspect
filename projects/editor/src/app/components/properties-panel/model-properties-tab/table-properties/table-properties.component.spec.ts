@@ -14,6 +14,9 @@ import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { Measurement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -51,7 +54,7 @@ describe('TablePropertiesComponent', () => {
     tablePropUpdated = new Subject<string>();
 
     await TestBed.configureTestingModule({
-      declarations: [TablePropertiesComponent, MockSizeInputPanelComponent],
+      declarations: [TablePropertiesComponent, MockSizeInputPanelComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         MatButtonModule,

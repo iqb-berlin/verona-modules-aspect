@@ -3,6 +3,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+import {
   BorderPropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/border-properties/border-properties.component';
 
@@ -12,7 +15,7 @@ describe('BorderPropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BorderPropertiesComponent],
+      declarations: [BorderPropertiesComponent, MergedCheckboxComponent],
       imports: [
         MatCheckboxModule,
         TranslateModule.forRoot()

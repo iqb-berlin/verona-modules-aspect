@@ -5,6 +5,9 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+import {
   WidgetPeriodicTablePropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/widget-periodic-table-properties/widget-periodic-table-properties.component';
 
@@ -15,7 +18,7 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WidgetPeriodicTablePropertiesComponent],
+      declarations: [WidgetPeriodicTablePropertiesComponent, MergedCheckboxComponent],
       imports: [
         MatCheckboxModule,
         MatFormFieldModule,

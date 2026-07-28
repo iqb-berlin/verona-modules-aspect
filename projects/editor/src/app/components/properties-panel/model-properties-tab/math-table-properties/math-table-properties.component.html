@@ -55,30 +55,30 @@
     Variables Layout anpassen
   </button>
   <mat-menu #variableLayoutOptions="matMenu">
-    <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).allowArithmeticChars"
-                  (click)="$event.stopPropagation()"
-                  (change)="updateModel.emit({ property: 'allowArithmeticChars', value: $event.checked })">
+    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).allowArithmeticChars"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'allowArithmeticChars', value: $event })">
       {{ 'propertiesPanel.allowArithmeticChars' | translate }}
-    </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).isFirstLineUnderlined"
-                  (click)="$event.stopPropagation()"
-                  (change)="updateModel.emit({ property: 'isFirstLineUnderlined', value: $event.checked })">
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).isFirstLineUnderlined"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'isFirstLineUnderlined', value: $event })">
       {{ 'propertiesPanel.isFirstLineUnderlined' | translate }}
-    </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).showResultRow"
-                  (click)="$event.stopPropagation()"
-                  (change)="updateModel.emit({ property: 'showResultRow', value: $event.checked })">
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).showResultRow"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'showResultRow', value: $event })">
       {{ 'propertiesPanel.showResultRowWithHelperRow' | translate }}
-    </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).showTopHelperRows"
-                  (click)="$event.stopPropagation()"
-                  (change)="updateModel.emit({ property: 'showTopHelperRows', value: $event.checked })">
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).showTopHelperRows"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'showTopHelperRows', value: $event })">
       {{ 'propertiesPanel.showTopHelperRows' | translate }}
-    </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).allowFirstLineCrossOut"
-                  (click)="$event.stopPropagation()"
-                  (change)="updateModel.emit({ property: 'allowFirstLineCrossOut', value: $event.checked })">
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="$any(combinedProperties.variableLayoutOptions).allowFirstLineCrossOut"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'allowFirstLineCrossOut', value: $event })">
       {{ 'propertiesPanel.allowFirstLineCrossOut' | translate }}
-    </mat-checkbox>
+    </aspect-merged-checkbox>
   </mat-menu>
 </div>

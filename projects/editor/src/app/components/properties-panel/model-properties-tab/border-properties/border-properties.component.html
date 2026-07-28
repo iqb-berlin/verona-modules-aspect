@@ -1,18 +1,18 @@
 <div class="fx-column-start-stretch">
-  <mat-checkbox [checked]="$any(combinedProperties).hasBorderTop"
-                (change)="updateModel.emit({ property: 'hasBorderTop', value: $event.checked })">
+  <aspect-merged-checkbox [value]="$any(combinedProperties).hasBorderTop"
+                          (valueChange)="updateModel.emit({ property: 'hasBorderTop', value: $event })">
     {{ 'propertiesPanel.hasBorderTop' | translate }}
-  </mat-checkbox>
-  <mat-checkbox [checked]="$any(combinedProperties).hasBorderBottom"
-                (change)="updateModel.emit({ property: 'hasBorderBottom', value: $event.checked })">
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox [value]="$any(combinedProperties).hasBorderBottom"
+                          (valueChange)="updateModel.emit({ property: 'hasBorderBottom', value: $event })">
     {{ 'propertiesPanel.hasBorderBottom' | translate }}
-  </mat-checkbox>
-  <mat-checkbox [checked]="$any(combinedProperties).hasBorderLeft"
-                (change)="updateModel.emit({ property: 'hasBorderLeft', value: $event.checked })">
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox [value]="$any(combinedProperties).hasBorderLeft"
+                          (valueChange)="updateModel.emit({ property: 'hasBorderLeft', value: $event })">
     {{ 'propertiesPanel.hasBorderLeft' | translate }}
-  </mat-checkbox>
-  <mat-checkbox [checked]="$any(combinedProperties).hasBorderRight"
-                (change)="updateModel.emit({ property: 'hasBorderRight', value: $event.checked })">
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox [value]="$any(combinedProperties).hasBorderRight"
+                          (valueChange)="updateModel.emit({ property: 'hasBorderRight', value: $event })">
     {{ 'propertiesPanel.hasBorderRight' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 </div>

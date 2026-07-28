@@ -18,6 +18,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { IsInputElementPipe } from 'editor/src/app/components/properties-panel/pipes/is-input-element.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -102,8 +105,7 @@ describe('ElementModelPropertiesComponent', () => {
     } as unknown as SelectionService;
 
     await TestBed.configureTestingModule({
-      declarations: [
-        ElementModelPropertiesComponent,
+      declarations: [ElementModelPropertiesComponent,
         MockInputElementPropertiesComponent,
         MockPresetValuePropertiesComponent,
         MockOptionsFieldSetComponent,
@@ -113,7 +115,8 @@ describe('ElementModelPropertiesComponent', () => {
         MockInputAssistancePropertiesComponent,
         MockScaleAndZoomPropertiesComponent,
         MockActionPropertiesComponent,
-        IsInputElementPipe
+        IsInputElementPipe,
+        MergedCheckboxComponent
       ],
       imports: [
         CommonModule,

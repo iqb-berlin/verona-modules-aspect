@@ -10,32 +10,32 @@
   </button>
 </mat-form-field>
 
-<mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showResetIcon)"
-              (change)="updateModel.emit({ property: 'showResetIcon', value: $event.checked })">
+<aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="$any(combinedProperties.showResetIcon)"
+                        (valueChange)="updateModel.emit({ property: 'showResetIcon', value: $event })">
   {{ 'propertiesPanel.showResetIcon' | translate }}
-</mat-checkbox>
+</aspect-merged-checkbox>
 <fieldset>
   <legend>{{ 'propertiesPanel.geogebraHeader' | translate }}</legend>
-  <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.enableUndoRedo)"
-                (change)="updateModel.emit({ property: 'enableUndoRedo', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="$any(combinedProperties.enableUndoRedo)"
+                          (valueChange)="updateModel.emit({ property: 'enableUndoRedo', value: $event })">
     {{ 'propertiesPanel.enableUndoRedo' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.enableShiftDragZoom)"
-                (change)="updateModel.emit({ property: 'enableShiftDragZoom', value: $event.checked })">
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="$any(combinedProperties.enableShiftDragZoom)"
+                          (valueChange)="updateModel.emit({ property: 'enableShiftDragZoom', value: $event })">
     {{ 'propertiesPanel.enableShiftDragZoom' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showZoomButtons)"
-                (change)="updateModel.emit({ property: 'showZoomButtons', value: $event.checked })">
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="$any(combinedProperties.showZoomButtons)"
+                          (valueChange)="updateModel.emit({ property: 'showZoomButtons', value: $event })">
     {{ 'propertiesPanel.showZoomButtons' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showFullscreenButton)"
-                (change)="updateModel.emit({ property: 'showFullscreenButton', value: $event.checked })">
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="$any(combinedProperties.showFullscreenButton)"
+                          (valueChange)="updateModel.emit({ property: 'showFullscreenButton', value: $event })">
     {{ 'propertiesPanel.showFullscreenButton' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showToolbar)"
-                (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="$any(combinedProperties.showToolbar)"
+                          (valueChange)="updateModel.emit({ property: 'showToolbar', value: $event })">
     {{ 'propertiesPanel.showToolbar' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
   <mat-form-field *ngIf="unitService.expertMode"
                   class="wide-form-field"
                   matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"

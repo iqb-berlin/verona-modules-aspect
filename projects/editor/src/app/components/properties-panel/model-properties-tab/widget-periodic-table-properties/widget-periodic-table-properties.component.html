@@ -1,22 +1,22 @@
 <fieldset>
   <legend>{{'toolbox.widget-periodic-table' | translate}}</legend>
   <div class="fx-column-start-stretch">
-    <mat-checkbox [checked]="$any(combinedProperties).showInfoOrder"
-                  (change)="updateModel.emit({ property: 'showInfoOrder', value: $event.checked })">
+    <aspect-merged-checkbox [value]="$any(combinedProperties).showInfoOrder"
+                            (valueChange)="updateModel.emit({ property: 'showInfoOrder', value: $event })">
       {{ 'propertiesPanel.showInfoOrder' | translate }}
-    </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties).showInfoENeg"
-                  (change)="updateModel.emit({ property: 'showInfoENeg', value: $event.checked })">
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="$any(combinedProperties).showInfoENeg"
+                            (valueChange)="updateModel.emit({ property: 'showInfoENeg', value: $event })">
       {{ 'propertiesPanel.showInfoENeg' | translate }}
-    </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties).showInfoAMass"
-                  (change)="updateModel.emit({ property: 'showInfoAMass', value: $event.checked })">
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="$any(combinedProperties).showInfoAMass"
+                            (valueChange)="updateModel.emit({ property: 'showInfoAMass', value: $event })">
       {{ 'propertiesPanel.showInfoAMass' | translate }}
-    </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties).closeOnSelection"
-                  (change)="updateModel.emit({ property: 'closeOnSelection', value: $event.checked })">
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="$any(combinedProperties).closeOnSelection"
+                            (valueChange)="updateModel.emit({ property: 'closeOnSelection', value: $event })">
       {{ 'propertiesPanel.closeOnSelection' | translate }}
-    </mat-checkbox>
+    </aspect-merged-checkbox>
 
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.maxNumberOfSelections' | translate }}</mat-label>

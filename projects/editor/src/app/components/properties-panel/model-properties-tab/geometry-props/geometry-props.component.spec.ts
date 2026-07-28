@@ -15,6 +15,9 @@ import { Mock, vi } from 'vitest';
 import { UIElement } from 'common/models/elements/element';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -46,7 +49,7 @@ describe('GeometryPropsComponent', () => {
     } as unknown as SelectionService;
 
     await TestBed.configureTestingModule({
-      declarations: [GeometryPropsComponent],
+      declarations: [GeometryPropsComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         FormsModule,

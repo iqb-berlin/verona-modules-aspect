@@ -10,6 +10,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { Stylings } from 'common/models/elements/property-group-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import {
   ElementStylePropertiesComponent
@@ -24,7 +27,7 @@ describe('ElementStylePropertiesComponent', () => {
     elementService = createSpyObj<ElementService>(['updateSelectedElementsStyleProperty']);
 
     await TestBed.configureTestingModule({
-      declarations: [ElementStylePropertiesComponent],
+      declarations: [ElementStylePropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         FormsModule,

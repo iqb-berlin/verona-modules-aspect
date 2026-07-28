@@ -20,18 +20,18 @@
          (change)="combinedProperties.maxValue = combinedProperties.maxValue ?
                                                         combinedProperties.maxValue : 0">
 </mat-form-field>
-<mat-checkbox *ngIf="unitService.expertMode && combinedProperties.showValues !== undefined"
-              [checked]="$any(combinedProperties.showValues)"
-              (change)="updateModel.emit({ property: 'showValues', value: $event.checked })">
+<aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.showValues !== undefined"
+                        [value]="$any(combinedProperties.showValues)"
+                        (valueChange)="updateModel.emit({ property: 'showValues', value: $event })">
   {{'propertiesPanel.showValues' | translate }}
-</mat-checkbox>
-<mat-checkbox *ngIf="unitService.expertMode && combinedProperties.barStyle !== undefined"
-              [checked]="$any(combinedProperties.barStyle)"
-              (change)="updateModel.emit({ property: 'barStyle', value: $event.checked })">
+</aspect-merged-checkbox>
+<aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.barStyle !== undefined"
+                        [value]="$any(combinedProperties.barStyle)"
+                        (valueChange)="updateModel.emit({ property: 'barStyle', value: $event })">
   {{'propertiesPanel.barStyle' | translate }}
-</mat-checkbox>
-<mat-checkbox *ngIf="unitService.expertMode && combinedProperties.thumbLabel !== undefined"
-              [checked]="$any(combinedProperties.thumbLabel)"
-              (change)="updateModel.emit({ property: 'thumbLabel', value: $event.checked })">
+</aspect-merged-checkbox>
+<aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.thumbLabel !== undefined"
+                        [value]="$any(combinedProperties.thumbLabel)"
+                        (valueChange)="updateModel.emit({ property: 'thumbLabel', value: $event })">
   {{'propertiesPanel.thumbLabel' | translate }}
-</mat-checkbox>
+</aspect-merged-checkbox>

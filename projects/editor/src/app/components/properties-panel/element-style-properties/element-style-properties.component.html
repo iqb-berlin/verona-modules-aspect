@@ -13,11 +13,11 @@
              [value]="styles.helperRowColor"
              (input)="elementService.updateSelectedElementsStyleProperty('helperRowColor', $any($event.target).value)">
 
-      <mat-checkbox *ngIf="styles.lineColoring !== undefined"
-                    [checked]="$any(styles.lineColoring)"
-                    (change)="elementService.updateSelectedElementsStyleProperty('lineColoring', $event.checked)">
+      <aspect-merged-checkbox *ngIf="styles.lineColoring !== undefined"
+                              [value]="$any(styles.lineColoring)"
+                              (valueChange)="elementService.updateSelectedElementsStyleProperty('lineColoring', $event)">
         {{'propertiesPanel.lineColoring' | translate }}
-      </mat-checkbox>
+      </aspect-merged-checkbox>
 
       <mat-form-field *ngIf="styles.lineColoringColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
@@ -34,11 +34,11 @@
              [value]="styles.lineColoringColor"
              (input)="elementService.updateSelectedElementsStyleProperty('lineColoringColor', $any($event.target).value)">
 
-      <mat-checkbox *ngIf="styles.firstLineColoring !== undefined"
-                    [checked]="$any(styles.firstLineColoring)"
-                    (change)="elementService.updateSelectedElementsStyleProperty('firstLineColoring', $event.checked)">
+      <aspect-merged-checkbox *ngIf="styles.firstLineColoring !== undefined"
+                              [value]="$any(styles.firstLineColoring)"
+                              (valueChange)="elementService.updateSelectedElementsStyleProperty('firstLineColoring', $event)">
         {{'propertiesPanel.firstLineColoring' | translate }}
-      </mat-checkbox>
+      </aspect-merged-checkbox>
 
       <mat-form-field *ngIf="styles.firstLineColoringColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
@@ -130,21 +130,21 @@
                (change)="styles.lineHeight = styles.lineHeight ? styles.lineHeight : 0">
       </mat-form-field>
 
-      <mat-checkbox *ngIf="styles.bold !== undefined"
-                    [checked]="$any(styles.bold)"
-                    (change)="elementService.updateSelectedElementsStyleProperty('bold', $event.checked)">
+      <aspect-merged-checkbox *ngIf="styles.bold !== undefined"
+                              [value]="$any(styles.bold)"
+                              (valueChange)="elementService.updateSelectedElementsStyleProperty('bold', $event)">
         {{'propertiesPanel.bold' | translate }}
-      </mat-checkbox>
-      <mat-checkbox *ngIf="styles.italic !== undefined"
-                    [checked]="$any(styles.italic)"
-                    (change)="elementService.updateSelectedElementsStyleProperty('italic', $event.checked)">
+      </aspect-merged-checkbox>
+      <aspect-merged-checkbox *ngIf="styles.italic !== undefined"
+                              [value]="$any(styles.italic)"
+                              (valueChange)="elementService.updateSelectedElementsStyleProperty('italic', $event)">
         {{'propertiesPanel.italic' | translate }}
-      </mat-checkbox>
-      <mat-checkbox *ngIf="styles.underline !== undefined"
-                    [checked]="$any(styles.underline)"
-                    (change)="elementService.updateSelectedElementsStyleProperty('underline', $event.checked)">
+      </aspect-merged-checkbox>
+      <aspect-merged-checkbox *ngIf="styles.underline !== undefined"
+                              [value]="$any(styles.underline)"
+                              (valueChange)="elementService.updateSelectedElementsStyleProperty('underline', $event)">
         {{'propertiesPanel.underline' | translate }}
-      </mat-checkbox>
+      </aspect-merged-checkbox>
 
     </div>
 

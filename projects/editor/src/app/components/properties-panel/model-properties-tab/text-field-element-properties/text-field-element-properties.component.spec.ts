@@ -12,6 +12,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+import {
   CombinedProperties
 } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -31,7 +34,7 @@ describe('TextFieldElementPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [TextFieldElementPropertiesComponent],
+      declarations: [TextFieldElementPropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         FormsModule,

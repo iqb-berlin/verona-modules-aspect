@@ -97,25 +97,25 @@
                              (updateModel)="updateModel.emit($event)">
   </aspect-select-properties>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.resizeEnabled !== undefined"
-                [checked]="$any(combinedProperties.resizeEnabled)"
-                (change)="updateModel.emit({ property: 'resizeEnabled', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.resizeEnabled !== undefined"
+                          [value]="$any(combinedProperties.resizeEnabled)"
+                          (valueChange)="updateModel.emit({ property: 'resizeEnabled', value: $event })">
     {{'propertiesPanel.resizeEnabled' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasAutoHeight !== undefined"
-                [disabled]="$any(combinedProperties.hasDynamicRowCount)"
-                [checked]="$any(combinedProperties.hasAutoHeight)"
-                (change)="updateModel.emit({ property: 'hasAutoHeight', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.hasAutoHeight !== undefined"
+                          [disabled]="$any(combinedProperties.hasDynamicRowCount)"
+                          [value]="$any(combinedProperties.hasAutoHeight)"
+                          (valueChange)="updateModel.emit({ property: 'hasAutoHeight', value: $event })">
     {{'propertiesPanel.hasAutoHeight' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="combinedProperties.hasDynamicRowCount !== undefined"
-                [disabled]="$any(combinedProperties.hasAutoHeight)"
-                [checked]="$any(combinedProperties.hasDynamicRowCount)"
-                (change)="updateModel.emit({ property: 'hasDynamicRowCount', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="combinedProperties.hasDynamicRowCount !== undefined"
+                          [disabled]="$any(combinedProperties.hasAutoHeight)"
+                          [value]="$any(combinedProperties.hasDynamicRowCount)"
+                          (valueChange)="updateModel.emit({ property: 'hasDynamicRowCount', value: $event })">
     {{'propertiesPanel.hasDynamicRowCount' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
   <mat-form-field *ngIf="(combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === false) ||
                          (combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === undefined)"
@@ -182,19 +182,19 @@
                                       (updateModel)="updateModel.emit($event)">
   </aspect-input-assistance-properties>
 
-  <mat-checkbox *ngIf="combinedProperties.stickyHeader !== undefined &&
-                       (combinedProperties.type !== 'likert' || unitService.expertMode)"
-                [checked]="$any(combinedProperties.stickyHeader)"
-                [disabled]="combinedProperties.type === 'table' && !$any(combinedProperties).headerEnabled"
-                (change)="updateModel.emit({ property: 'stickyHeader', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="combinedProperties.stickyHeader !== undefined &&
+                                 (combinedProperties.type !== 'likert' || unitService.expertMode)"
+                          [value]="$any(combinedProperties.stickyHeader)"
+                          [disabled]="combinedProperties.type === 'table' && !$any(combinedProperties).headerEnabled"
+                          (valueChange)="updateModel.emit({ property: 'stickyHeader', value: $event })">
     {{'propertiesPanel.stickyHeader' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.crossOutChecked !== undefined"
-                [checked]="$any(combinedProperties.crossOutChecked)"
-                (change)="updateModel.emit({ property: 'crossOutChecked', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.crossOutChecked !== undefined"
+                          [value]="$any(combinedProperties.crossOutChecked)"
+                          (valueChange)="updateModel.emit({ property: 'crossOutChecked', value: $event })">
     {{'propertiesPanel.crossOutChecked' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
   <mat-form-field *ngIf="combinedProperties.firstColumnSizeRatio != null"
                   matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
@@ -209,11 +209,11 @@
                                     (updateModel)="updateModel.emit($event)">
   </aspect-scale-and-zoom-properties>
 
-  <mat-checkbox *ngIf="combinedProperties.verticalOrientation !== undefined"
-                [checked]="$any(combinedProperties.verticalOrientation)"
-                (change)="updateModel.emit({ property: 'verticalOrientation', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="combinedProperties.verticalOrientation !== undefined"
+                          [value]="$any(combinedProperties.verticalOrientation)"
+                          (valueChange)="updateModel.emit({ property: 'verticalOrientation', value: $event })">
     {{'propertiesPanel.verticalOrientation' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
   <ng-container *ngIf="!unitService.expertMode">
     <mat-divider [style.margin.px]="15"></mat-divider>
@@ -237,10 +237,10 @@
 
     <ng-container *ngIf="combinedProperties.dimensions">
       <ng-container *ngIf="combinedProperties.type === 'drop-list' || combinedProperties.type === 'text-field-simple'">
-        <mat-checkbox #fixedWidth [checked]="$any(combinedProperties.dimensions).isWidthFixed"
-                      (change)="updateDimensionProperty('isWidthFixed', $event.checked)">
+        <aspect-merged-checkbox #fixedWidth [value]="$any(combinedProperties.dimensions).isWidthFixed"
+                                (valueChange)="updateDimensionProperty('isWidthFixed', $event)">
           {{'propertiesPanel.isWidthFixed' | translate }}
-        </mat-checkbox>
+        </aspect-merged-checkbox>
         <mat-form-field appearance="fill">
           <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
           <input matInput type="number" min="0"
@@ -253,10 +253,10 @@
       </ng-container>
 
       <ng-container *ngIf="combinedProperties.dimensions.maxWidth !== undefined">
-        <mat-checkbox #maxWidthEnabled [checked]="$any(combinedProperties.dimensions).maxWidth !== null"
-                      (change)="toggleProperty('maxWidth', $event.checked)">
+        <aspect-merged-checkbox #maxWidthEnabled [value]="$any(combinedProperties.dimensions).maxWidth !== null"
+                                (valueChange)="toggleProperty('maxWidth', $event)">
           {{'propertiesPanel.maxWidthEnabled' | translate }}
-        </mat-checkbox>
+        </aspect-merged-checkbox>
         <mat-form-field>
           <mat-label>
             {{'propertiesPanel.maxWidth' | translate }}
@@ -270,10 +270,13 @@
     </ng-container>
   </ng-container>
 
-  <mat-checkbox *ngIf="unitService.expertMode" [style.margin-top.px]="20"
-                [checked]="$any(combinedProperties.isRelevantForPresentationComplete)"
-                (change)="updateModel
-                .emit({ property: 'isRelevantForPresentationComplete', value: $event.checked })">
-    {{'propertiesPanel.isRelevantForPresentationComplete' | translate }}
-  </mat-checkbox>
+  <!-- The margin sits on a wrapper: aspect-merged-checkbox uses display: contents and has no box
+       of its own to carry it. -->
+  <div *ngIf="unitService.expertMode" [style.margin-top.px]="20">
+    <aspect-merged-checkbox [value]="$any(combinedProperties.isRelevantForPresentationComplete)"
+                            (valueChange)="updateModel
+                            .emit({ property: 'isRelevantForPresentationComplete', value: $event })">
+      {{'propertiesPanel.isRelevantForPresentationComplete' | translate }}
+    </aspect-merged-checkbox>
+  </div>
 </div>

@@ -61,12 +61,12 @@
                 value: $event,
                 isInputValid: maxLength.valid })">
   </mat-form-field>
-  <mat-checkbox *ngIf="combinedProperties.isLimitedToMaxLength !== undefined"
-                [disabled]="!combinedProperties.maxLength"
-                [checked]="$any(combinedProperties.isLimitedToMaxLength)"
-                (change)="updateModel.emit({ property: 'isLimitedToMaxLength', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="combinedProperties.isLimitedToMaxLength !== undefined"
+                          [disabled]="!combinedProperties.maxLength"
+                          [value]="$any(combinedProperties.isLimitedToMaxLength)"
+                          (valueChange)="updateModel.emit({ property: 'isLimitedToMaxLength', value: $event })">
     {{'propertiesPanel.isLimitedToMaxLength' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.maxLengthWarnMessage' | translate }}</mat-label>
     <input matInput type="text"
@@ -92,8 +92,8 @@
   </mat-form-field>
 </ng-container>
 
-<mat-checkbox *ngIf="unitService.expertMode && combinedProperties.clearable !== undefined"
-              [checked]="$any(combinedProperties.clearable)"
-              (change)="updateModel.emit({ property: 'clearable', value: $event.checked })">
+<aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.clearable !== undefined"
+                        [value]="$any(combinedProperties.clearable)"
+                        (valueChange)="updateModel.emit({ property: 'clearable', value: $event })">
   {{'propertiesPanel.clearable' | translate }}
-</mat-checkbox>
+</aspect-merged-checkbox>

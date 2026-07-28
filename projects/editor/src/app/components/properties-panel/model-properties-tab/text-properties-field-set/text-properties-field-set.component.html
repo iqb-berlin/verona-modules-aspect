@@ -61,15 +61,15 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"
-                  [disabled]="combinedProperties.markingMode !== 'selection' ||
-                              (combinedProperties.markingPanels!.length === 0 &&
-                              (!combinedProperties.highlightableYellow &&
-                              !combinedProperties.highlightableTurquoise &&
-                              !combinedProperties.highlightableOrange))"
-                  [checked]="$any(combinedProperties.hasSelectionPopup)"
-                  (change)="updateModel.emit({ property: 'hasSelectionPopup', value: $event.checked })">
+    <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"
+                            [disabled]="combinedProperties.markingMode !== 'selection' ||
+                                        (combinedProperties.markingPanels!.length === 0 &&
+                                        (!combinedProperties.highlightableYellow &&
+                                        !combinedProperties.highlightableTurquoise &&
+                                        !combinedProperties.highlightableOrange))"
+                            [value]="$any(combinedProperties.hasSelectionPopup)"
+                            (valueChange)="updateModel.emit({ property: 'hasSelectionPopup', value: $event })">
       {{ 'propertiesPanel.hasSelectionPopup' | translate }}
-    </mat-checkbox>
+    </aspect-merged-checkbox>
   </fieldset>
 </div>

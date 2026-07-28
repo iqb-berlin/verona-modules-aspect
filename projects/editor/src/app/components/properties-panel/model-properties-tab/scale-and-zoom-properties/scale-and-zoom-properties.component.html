@@ -1,21 +1,21 @@
 <div class="fx-column-start-stretch" [style.gap.px]="5">
-  <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
-                [checked]="$any(combinedProperties.scale)"
-                (change)="updateModel.emit({ property: 'scale', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="combinedProperties.scale !== undefined"
+                          [value]="$any(combinedProperties.scale)"
+                          (valueChange)="updateModel.emit({ property: 'scale', value: $event })">
     {{'propertiesPanel.scale' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="combinedProperties.magnifier !== undefined"
-                [checked]="$any(combinedProperties.magnifier)"
-                (change)="updateModel.emit({ property: 'magnifier', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="combinedProperties.magnifier !== undefined"
+                          [value]="$any(combinedProperties.magnifier)"
+                          (valueChange)="updateModel.emit({ property: 'magnifier', value: $event })">
     {{'propertiesPanel.magnifier' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="combinedProperties.allowFullscreen !== undefined"
-                [checked]="$any(combinedProperties.allowFullscreen)"
-                (change)="updateModel.emit({ property: 'allowFullscreen', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="combinedProperties.allowFullscreen !== undefined"
+                          [value]="$any(combinedProperties.allowFullscreen)"
+                          (valueChange)="updateModel.emit({ property: 'allowFullscreen', value: $event })">
     {{'propertiesPanel.allowFullscreen' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
   <mat-form-field appearance="fill" *ngIf="combinedProperties.magnifierSize !== undefined">
     <mat-label>{{'propertiesPanel.magnifierSize' | translate }} in px</mat-label>

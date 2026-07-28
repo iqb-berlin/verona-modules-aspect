@@ -5,6 +5,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   SliderPropertiesComponent
@@ -20,7 +23,7 @@ describe('SliderPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [SliderPropertiesComponent],
+      declarations: [SliderPropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         FormsModule,

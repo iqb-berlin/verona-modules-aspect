@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import {
   CombinedProperties
 } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
@@ -20,13 +23,11 @@ describe('SelectPropertiesComponent', () => {
   let emitted: { property: string; value: unknown }[];
   let unitServiceMock: { expertMode: boolean };
 
-  const checkboxChange = (checked: boolean): MatCheckboxChange => ({ checked } as MatCheckboxChange);
-
   beforeEach(async () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [SelectPropertiesComponent],
+      declarations: [SelectPropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         FormsModule,
@@ -72,13 +73,13 @@ describe('SelectPropertiesComponent', () => {
   });
 
   it('should set a default of four items per row when the limit is activated', () => {
-    component.setItemsPerRow(checkboxChange(true));
+    component.setItemsPerRow(true);
 
     expect(emitted).toEqual([{ property: 'itemsPerRow', value: 4 }]);
   });
 
   it('should reset the items per row when the limit is deactivated', () => {
-    component.setItemsPerRow(checkboxChange(false));
+    component.setItemsPerRow(false);
 
     expect(emitted).toEqual([{ property: 'itemsPerRow', value: null }]);
   });

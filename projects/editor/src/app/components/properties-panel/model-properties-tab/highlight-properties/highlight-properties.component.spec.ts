@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
 import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+import {
   CombinedProperties
 } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import {
@@ -16,7 +19,7 @@ describe('HighlightPropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HighlightPropertiesComponent],
+      declarations: [HighlightPropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         MatCheckboxModule,

@@ -47,7 +47,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 button "Medienoptionen anpassen"
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -66,9 +66,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = #f1f1f1
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -156,7 +156,7 @@ button "propertiesPanel.editTooltip"
 [propertiesPanel.action]
 select "propertiesPanel.action" = <null>
 select "propertiesPanel.actionParam" = <null>
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -175,9 +175,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = lightgrey
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 [Rahmen]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
@@ -274,8 +274,8 @@ checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
-checkbox "propertiesPanel.crossOutChecked" = false
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.crossOutChecked" = indeterminate
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -294,9 +294,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -368,7 +368,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 button "Text und Elemente editieren"
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -388,9 +388,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 180
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -478,17 +478,17 @@ input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabl
 textarea "Neue Option" = 
 select "propertiesPanel.connectedDropLists" = []
 select "propertiesPanel.alignment" = vertical
-checkbox "propertiesPanel.isSortList" = false
-checkbox "propertiesPanel.onlyOneItem" = false
-checkbox "allowReplacement" = false
-checkbox "propertiesPanel.copyOnDrop" = false
-checkbox "propertiesPanel.permanentPlaceholders" = false
-checkbox "propertiesPanel.permanentPlaceholdersCC" = false (disabled)
-checkbox "propertiesPanel.showNumbering" = false
-checkbox "propertiesPanel.startNumberingAtZero" = false (disabled)
-checkbox "propertiesPanel.highlightReceivingDropList" = false
+checkbox "propertiesPanel.isSortList" = indeterminate
+checkbox "propertiesPanel.onlyOneItem" = indeterminate
+checkbox "allowReplacement" = indeterminate
+checkbox "propertiesPanel.copyOnDrop" = indeterminate
+checkbox "propertiesPanel.permanentPlaceholders" = indeterminate
+checkbox "propertiesPanel.permanentPlaceholdersCC" = indeterminate (disabled)
+checkbox "propertiesPanel.showNumbering" = indeterminate
+checkbox "propertiesPanel.startNumberingAtZero" = indeterminate (disabled)
+checkbox "propertiesPanel.highlightReceivingDropList" = indeterminate
 input[text] "propertiesPanel.highlightReceivingDropListColor" = #006064 (disabled)
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -508,9 +508,9 @@ input[text] "propertiesPanel.itemBackgroundColor" = #c9e0e0
 input[text] "propertiesPanel.backgroundColor" = #ededed
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -527,7 +527,7 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 textarea "Neue Option" = 
 select "propertiesPanel.connectedDropLists" = []
 select "propertiesPanel.alignment" = vertical
-checkbox "propertiesPanel.isWidthFixed" = false
+checkbox "propertiesPanel.isWidthFixed" = indeterminate
 input[number] "propertiesPanel.width" = 240 (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -602,8 +602,8 @@ input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabl
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "Neue Option" = 
-checkbox "propertiesPanel.allowUnset" = false
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.allowUnset" = indeterminate
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -622,9 +622,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -641,7 +641,7 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "Neue Option" = 
-checkbox "propertiesPanel.allowUnset" = false
+checkbox "propertiesPanel.allowUnset" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -706,11 +706,11 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-checkbox "propertiesPanel.hasBorderTop" = false
-checkbox "propertiesPanel.hasBorderBottom" = false
-checkbox "propertiesPanel.hasBorderLeft" = false
-checkbox "propertiesPanel.hasBorderRight" = false
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.hasBorderTop" = indeterminate
+checkbox "propertiesPanel.hasBorderBottom" = indeterminate
+checkbox "propertiesPanel.hasBorderLeft" = indeterminate
+checkbox "propertiesPanel.hasBorderRight" = indeterminate
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -729,9 +729,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 [Rahmen]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
@@ -747,10 +747,10 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-checkbox "propertiesPanel.hasBorderTop" = false
-checkbox "propertiesPanel.hasBorderBottom" = false
-checkbox "propertiesPanel.hasBorderLeft" = false
-checkbox "propertiesPanel.hasBorderRight" = false
+checkbox "propertiesPanel.hasBorderTop" = indeterminate
+checkbox "propertiesPanel.hasBorderBottom" = indeterminate
+checkbox "propertiesPanel.hasBorderLeft" = indeterminate
+checkbox "propertiesPanel.hasBorderRight" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -816,18 +816,18 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 input[text] "propertiesPanel.appDefinition" =  (disabled)
-checkbox "propertiesPanel.showResetIcon" = false
+checkbox "propertiesPanel.showResetIcon" = indeterminate
 [propertiesPanel.geogebraHeader]
-checkbox "propertiesPanel.enableUndoRedo" = false
-checkbox "propertiesPanel.enableShiftDragZoom" = false
-checkbox "propertiesPanel.showZoomButtons" = false
-checkbox "propertiesPanel.showFullscreenButton" = false
-checkbox "propertiesPanel.showToolbar" = false
+checkbox "propertiesPanel.enableUndoRedo" = indeterminate
+checkbox "propertiesPanel.enableShiftDragZoom" = indeterminate
+checkbox "propertiesPanel.showZoomButtons" = indeterminate
+checkbox "propertiesPanel.showFullscreenButton" = indeterminate
+checkbox "propertiesPanel.showToolbar" = indeterminate
 input[text] "propertiesPanel.customToolbar" =  (disabled)
 [propertiesPanel.trackedGeogebraVariables]
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -846,9 +846,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -935,7 +935,7 @@ checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 [propertiesPanel.hotspots]
 button "add"
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -954,9 +954,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1034,12 +1034,12 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 input[text] "Alternativtext" = Bild nicht gefunden
 button "Medienoptionen anpassen"
-checkbox "propertiesPanel.scale" = false
-checkbox "propertiesPanel.magnifier" = false
-checkbox "propertiesPanel.allowFullscreen" = false
+checkbox "propertiesPanel.scale" = indeterminate
+checkbox "propertiesPanel.magnifier" = indeterminate
+checkbox "propertiesPanel.allowFullscreen" = indeterminate
 input[number] "propertiesPanel.magnifierSize in px" = 100 (disabled)
 slider ""
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1058,9 +1058,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1131,7 +1131,7 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1150,9 +1150,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1238,9 +1238,9 @@ textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
 textarea "Neue Option" = 
 [rows]
 textarea "Neue Zeile" = 
-checkbox "propertiesPanel.stickyHeader" = false
+checkbox "propertiesPanel.stickyHeader" = indeterminate
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1256,17 +1256,17 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-checkbox "propertiesPanel.lineColoring" = false
+checkbox "propertiesPanel.lineColoring" = indeterminate
 input[text] "propertiesPanel.lineColoringColor" = #c9e0e0 (disabled)
-checkbox "propertiesPanel.firstLineColoring" = false
+checkbox "propertiesPanel.firstLineColoring" = indeterminate
 input[text] "propertiesPanel.firstLineColoringColor" = #c7f3d0 (disabled)
 input[text] "propertiesPanel.backgroundColor" = white
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 135
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1344,10 +1344,10 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [propertiesPanel.marking]
-checkbox "propertiesPanel.highlightableYellow" = false
-checkbox "propertiesPanel.highlightableTurquoise" = false
-checkbox "propertiesPanel.highlightableOrange" = false
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.highlightableYellow" = indeterminate
+checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
+checkbox "propertiesPanel.highlightableOrange" = indeterminate
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1366,9 +1366,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1380,9 +1380,9 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [propertiesPanel.marking]
-checkbox "propertiesPanel.highlightableYellow" = false
-checkbox "propertiesPanel.highlightableTurquoise" = false
-checkbox "propertiesPanel.highlightableOrange" = false
+checkbox "propertiesPanel.highlightableYellow" = indeterminate
+checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
+checkbox "propertiesPanel.highlightableOrange" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1450,9 +1450,9 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 button "code"
-checkbox "propertiesPanel.enableModeSwitch" = false
+checkbox "propertiesPanel.enableModeSwitch" = indeterminate
 select "formulaPreset.title" = [math, symbols, latin, greek]
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1472,9 +1472,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 135
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1489,7 +1489,7 @@ input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 button "code"
-checkbox "propertiesPanel.enableModeSwitch" = false
+checkbox "propertiesPanel.enableModeSwitch" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1569,12 +1569,12 @@ input[text] "resultHelperRow" =
 input[text] "resultRow" = 
 button "Variables Layout anpassen" (disabled)
 [Tastatur]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
+checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
 [Eingabehilfe]
 select "propertiesPanel.inputAssistance" = <null>
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1594,9 +1594,9 @@ input[text] "propertiesPanel.helperRowColor" = transparent
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1689,7 +1689,7 @@ select "preset" = <null>
 textarea "Neue Option" = 
 checkbox "limitItemPerRow" = false
 input[number] "itemsPerRow" =  (disabled)
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1708,9 +1708,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1805,8 +1805,8 @@ select "preset" = <null>
 [propertiesPanel.options]
 textarea "Neue Option" = 
 select "propertiesPanel.alignment" = column
-checkbox "propertiesPanel.strikeOtherOptions" = false
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.strikeOtherOptions" = indeterminate
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1826,9 +1826,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 100
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1920,11 +1920,11 @@ checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 input[number] "propertiesPanel.minValue" = 0
 input[number] "propertiesPanel.maxValue" = 100
-checkbox "propertiesPanel.showValues" = false
+checkbox "propertiesPanel.showValues" = indeterminate
 checkbox "propertiesPanel.barStyle" = true
 checkbox "propertiesPanel.thumbLabel" = true
 input[number] "propertiesPanel.preset" = 
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -1944,9 +1944,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 5
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -2035,12 +2035,12 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 [Tastatur]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
+checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
 [Eingabehilfe]
 select "propertiesPanel.inputAssistance" = <null>
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -2060,9 +2060,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 135
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -2161,10 +2161,10 @@ input[number] "section-menu.width 1" = 1
 select "Einheit" = fr
 input[number] "section-menu.width 2" = 1
 select "Einheit" = fr
-checkbox "Tabellenränder zeichnen" = false
-checkbox "propertiesPanel.tableHeaderEnabled" = false
-checkbox "propertiesPanel.stickyHeader" = false (disabled)
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "Tabellenränder zeichnen" = indeterminate
+checkbox "propertiesPanel.tableHeaderEnabled" = indeterminate
+checkbox "propertiesPanel.stickyHeader" = indeterminate (disabled)
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -2183,9 +2183,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 [Rahmen]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
@@ -2214,9 +2214,9 @@ input[number] "section-menu.width 1" = 1
 select "Einheit" = fr
 input[number] "section-menu.width 2" = 1
 select "Einheit" = fr
-checkbox "Tabellenränder zeichnen" = false
-checkbox "propertiesPanel.tableHeaderEnabled" = false
-checkbox "propertiesPanel.stickyHeader" = false (disabled)
+checkbox "Tabellenränder zeichnen" = indeterminate
+checkbox "propertiesPanel.tableHeaderEnabled" = indeterminate
+checkbox "propertiesPanel.stickyHeader" = indeterminate (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -2301,16 +2301,16 @@ textarea "propertiesPanel.label" =
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
-checkbox "propertiesPanel.hasAutoHeight" = false
+checkbox "propertiesPanel.hasAutoHeight" = indeterminate
 input[number] "rows" = 2
 select "formulaPreset.title" = [math, symbols, latin, greek]
 [Tastatur]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
+checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
 [Eingabehilfe]
 select "propertiesPanel.inputAssistance" = <null>
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -2330,9 +2330,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 135
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -2425,19 +2425,19 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 textarea "preset" = 
-checkbox "propertiesPanel.resizeEnabled" = false
-checkbox "propertiesPanel.hasAutoHeight" = false
-checkbox "propertiesPanel.hasDynamicRowCount" = false
+checkbox "propertiesPanel.resizeEnabled" = indeterminate
+checkbox "propertiesPanel.hasAutoHeight" = indeterminate
+checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 select "propertiesPanel.appearance" = outline
 [Tastatur]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
+checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
 [Eingabehilfe]
 select "propertiesPanel.inputAssistance" = <null>
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -2457,9 +2457,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 135
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -2474,7 +2474,7 @@ input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 textarea "preset" = 
-checkbox "propertiesPanel.hasDynamicRowCount" = false
+checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2565,18 +2565,18 @@ toggle-group [format_align_left, format_align_center, format_align_right]
 input[number] "propertiesPanel.minLength" = 
 input[text] "propertiesPanel.minLengthWarnMessage" = Eingabe zu kurz (disabled)
 input[number] "propertiesPanel.maxLength" = 
-checkbox "propertiesPanel.isLimitedToMaxLength" = false (disabled)
+checkbox "propertiesPanel.isLimitedToMaxLength" = indeterminate (disabled)
 input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
-checkbox "propertiesPanel.clearable" = false
+checkbox "propertiesPanel.clearable" = indeterminate
 [Tastatur]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
+checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
 [Eingabehilfe]
 select "propertiesPanel.inputAssistance" = <null>
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -2596,9 +2596,9 @@ input[text] "propertiesPanel.backgroundColor" = #f1f1f1
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 135
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -2614,7 +2614,7 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 input[text] "preset" = 
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
-checkbox "propertiesPanel.isWidthFixed" = false
+checkbox "propertiesPanel.isWidthFixed" = indeterminate
 input[number] "propertiesPanel.width" = 100 (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -2707,18 +2707,18 @@ select "propertiesPanel.appearance" = outline
 input[number] "propertiesPanel.minLength" = 
 input[text] "propertiesPanel.minLengthWarnMessage" = Eingabe zu kurz (disabled)
 input[number] "propertiesPanel.maxLength" = 
-checkbox "propertiesPanel.isLimitedToMaxLength" = false (disabled)
+checkbox "propertiesPanel.isLimitedToMaxLength" = indeterminate (disabled)
 input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
-checkbox "propertiesPanel.clearable" = false
+checkbox "propertiesPanel.clearable" = indeterminate
 [Tastatur]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
+checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
 [Eingabehilfe]
 select "propertiesPanel.inputAssistance" = <null>
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -2738,9 +2738,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 135
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -2824,13 +2824,13 @@ input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 button "edit"
 input[number] "propertiesPanel.columnCount" = 1
 [propertiesPanel.marking]
-checkbox "propertiesPanel.highlightableYellow" = false
-checkbox "propertiesPanel.highlightableTurquoise" = false
-checkbox "propertiesPanel.highlightableOrange" = false
+checkbox "propertiesPanel.highlightableYellow" = indeterminate
+checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
+checkbox "propertiesPanel.highlightableOrange" = indeterminate
 select "propertiesPanel.markingPanels" = []
 select "propertiesPanel.markingMode" = selection
-checkbox "propertiesPanel.hasSelectionPopup" = false (disabled)
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.hasSelectionPopup" = indeterminate (disabled)
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -2850,9 +2850,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 135
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -2866,9 +2866,9 @@ input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 button "edit"
 input[number] "propertiesPanel.columnCount" = 1
 [propertiesPanel.marking]
-checkbox "propertiesPanel.highlightableYellow" = false
-checkbox "propertiesPanel.highlightableTurquoise" = false
-checkbox "propertiesPanel.highlightableOrange" = false
+checkbox "propertiesPanel.highlightableYellow" = indeterminate
+checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
+checkbox "propertiesPanel.highlightableOrange" = indeterminate
 select "propertiesPanel.markingPanels" = []
 select "propertiesPanel.markingMode" = selection
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2954,10 +2954,10 @@ button "build"
 button "clear"
 button "build"
 button "clear"
-checkbox "propertiesPanel.strikeOtherOptions" = false
-checkbox "propertiesPanel.strikeSelectedOption" = false
-checkbox "propertiesPanel.verticalOrientation" = false
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.strikeOtherOptions" = indeterminate
+checkbox "propertiesPanel.strikeSelectedOption" = indeterminate
+checkbox "propertiesPanel.verticalOrientation" = indeterminate
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -2978,9 +2978,9 @@ input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 100
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -3000,8 +3000,8 @@ button "build"
 button "clear"
 button "build"
 button "clear"
-checkbox "propertiesPanel.strikeSelectedOption" = false
-checkbox "propertiesPanel.verticalOrientation" = false
+checkbox "propertiesPanel.strikeSelectedOption" = indeterminate
+checkbox "propertiesPanel.verticalOrientation" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3063,7 +3063,7 @@ input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [propertiesPanel.action]
 select "propertiesPanel.action" = <null>
 select "propertiesPanel.actionParam" = <null>
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -3078,9 +3078,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -3142,8 +3142,8 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 button "Medienoptionen anpassen"
-checkbox "propertiesPanel.scale" = false
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.scale" = indeterminate
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -3162,9 +3162,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = #f1f1f1
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -3232,7 +3232,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [toolbox.widget-molecule-editor]
 select "propertiesPanel.bondingType" = VALENCE
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -3251,9 +3251,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = #f1f1f1
 input[text] "propertiesPanel.fontColor" = #006064
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 [Rahmen]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
@@ -3333,12 +3333,12 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [toolbox.widget-periodic-table]
-checkbox "propertiesPanel.showInfoOrder" = false
-checkbox "propertiesPanel.showInfoENeg" = false
-checkbox "propertiesPanel.showInfoAMass" = false
-checkbox "propertiesPanel.closeOnSelection" = false
+checkbox "propertiesPanel.showInfoOrder" = indeterminate
+checkbox "propertiesPanel.showInfoENeg" = indeterminate
+checkbox "propertiesPanel.showInfoAMass" = indeterminate
+checkbox "propertiesPanel.closeOnSelection" = indeterminate
 input[number] "propertiesPanel.maxNumberOfSelections" = 1
-checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
 [Position]
@@ -3357,9 +3357,9 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" = #f1f1f1
 input[text] "propertiesPanel.fontColor" = #006064
 input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
+checkbox "propertiesPanel.bold" = indeterminate
+checkbox "propertiesPanel.italic" = indeterminate
+checkbox "propertiesPanel.underline" = indeterminate
 [Rahmen]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
@@ -3376,10 +3376,10 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 [toolbox.widget-periodic-table]
-checkbox "propertiesPanel.showInfoOrder" = false
-checkbox "propertiesPanel.showInfoENeg" = false
-checkbox "propertiesPanel.showInfoAMass" = false
-checkbox "propertiesPanel.closeOnSelection" = false
+checkbox "propertiesPanel.showInfoOrder" = indeterminate
+checkbox "propertiesPanel.showInfoENeg" = indeterminate
+checkbox "propertiesPanel.showInfoAMass" = indeterminate
+checkbox "propertiesPanel.closeOnSelection" = indeterminate
 input[number] "propertiesPanel.maxNumberOfSelections" = 1
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)

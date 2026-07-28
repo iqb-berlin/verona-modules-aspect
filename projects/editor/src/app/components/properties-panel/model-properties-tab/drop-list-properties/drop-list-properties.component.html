@@ -39,66 +39,66 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.isSortList !== undefined"
-                [disabled]="$any(combinedProperties.permanentPlaceholders)"
-                [checked]="$any(combinedProperties.isSortList)"
-                (change)="updateModel.emit({ property: 'isSortList', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.isSortList !== undefined"
+                          [disabled]="$any(combinedProperties.permanentPlaceholders)"
+                          [value]="$any(combinedProperties.isSortList)"
+                          (valueChange)="updateModel.emit({ property: 'isSortList', value: $event })">
     {{'propertiesPanel.isSortList' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.onlyOneItem !== undefined"
-                [checked]="$any(combinedProperties.onlyOneItem)"
-                (change)="updateOnlyOneItem($event.checked)">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.onlyOneItem !== undefined"
+                          [value]="$any(combinedProperties.onlyOneItem)"
+                          (valueChange)="updateOnlyOneItem($event)">
     {{'propertiesPanel.onlyOneItem' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.allowReplacement !== undefined"
-                [disabled]="$any(combinedProperties.permanentPlaceholders)"
-                [checked]="$any(combinedProperties.allowReplacement)"
-                (change)="updateAllowReplacement($event.checked)">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.allowReplacement !== undefined"
+                          [disabled]="$any(combinedProperties.permanentPlaceholders)"
+                          [value]="$any(combinedProperties.allowReplacement)"
+                          (valueChange)="updateAllowReplacement($event)">
     {{'allowReplacement' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.copyOnDrop !== undefined"
-                [disabled]="$any(combinedProperties.permanentPlaceholders)"
-                [checked]="$any(combinedProperties.copyOnDrop)"
-                (change)="updateModel.emit({ property: 'copyOnDrop', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.copyOnDrop !== undefined"
+                          [disabled]="$any(combinedProperties.permanentPlaceholders)"
+                          [value]="$any(combinedProperties.copyOnDrop)"
+                          (valueChange)="updateModel.emit({ property: 'copyOnDrop', value: $event })">
     {{'propertiesPanel.copyOnDrop' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.permanentPlaceholders !== undefined"
-                [disabled]="$any(combinedProperties.copyOnDrop) ||
-                            $any(combinedProperties.isSortList) ||
-                            $any(combinedProperties.allowReplacement)"
-                [checked]="$any(combinedProperties.permanentPlaceholders)"
-                (change)="updateModel.emit({ property: 'permanentPlaceholders', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.permanentPlaceholders !== undefined"
+                          [disabled]="$any(combinedProperties.copyOnDrop) ||
+                                      $any(combinedProperties.isSortList) ||
+                                      $any(combinedProperties.allowReplacement)"
+                          [value]="$any(combinedProperties.permanentPlaceholders)"
+                          (valueChange)="updateModel.emit({ property: 'permanentPlaceholders', value: $event })">
     {{'propertiesPanel.permanentPlaceholders' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.permanentPlaceholdersCC !== undefined"
-                [disabled]="!combinedProperties.permanentPlaceholders"
-                [checked]="$any(combinedProperties.permanentPlaceholdersCC)"
-                (change)="updateModel.emit({ property: 'permanentPlaceholdersCC', value: $event.checked })">
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.permanentPlaceholdersCC !== undefined"
+                          [disabled]="!combinedProperties.permanentPlaceholders"
+                          [value]="$any(combinedProperties.permanentPlaceholdersCC)"
+                          (valueChange)="updateModel.emit({ property: 'permanentPlaceholdersCC', value: $event })">
     {{'propertiesPanel.permanentPlaceholdersCC' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.showNumbering !== undefined"
-                [checked]="$any(combinedProperties.showNumbering)"
-                (change)="updateModel.emit({ property: 'showNumbering', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.showNumbering !== undefined"
+                          [value]="$any(combinedProperties.showNumbering)"
+                          (valueChange)="updateModel.emit({ property: 'showNumbering', value: $event })">
     {{'propertiesPanel.showNumbering' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.startNumberingAtZero !== undefined"
-                [disabled]="!$any(combinedProperties.showNumbering)"
-                [checked]="$any(combinedProperties.startNumberingAtZero)"
-                (change)="updateModel.emit({ property: 'startNumberingAtZero', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.startNumberingAtZero !== undefined"
+                          [disabled]="!$any(combinedProperties.showNumbering)"
+                          [value]="$any(combinedProperties.startNumberingAtZero)"
+                          (valueChange)="updateModel.emit({ property: 'startNumberingAtZero', value: $event })">
     {{'propertiesPanel.startNumberingAtZero' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
-  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.highlightReceivingDropList !== undefined"
-                [checked]="$any(combinedProperties.highlightReceivingDropList)"
-                (change)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event.checked })">
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.highlightReceivingDropList !== undefined"
+                          [value]="$any(combinedProperties.highlightReceivingDropList)"
+                          (valueChange)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event })">
     {{'propertiesPanel.highlightReceivingDropList' | translate }}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
   <mat-form-field *ngIf="unitService.expertMode" appearance="fill" class="mdInput textsingleline">
     <mat-label>{{'propertiesPanel.highlightReceivingDropListColor' | translate }}</mat-label>
     <input matInput type="text"

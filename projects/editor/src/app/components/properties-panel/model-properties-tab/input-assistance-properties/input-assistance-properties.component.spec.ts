@@ -7,6 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+import {
   CombinedProperties
 } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import {
@@ -20,7 +23,7 @@ describe('InputAssistancePropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InputAssistancePropertiesComponent],
+      declarations: [InputAssistancePropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         MatCheckboxModule,

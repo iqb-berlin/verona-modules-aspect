@@ -8,6 +8,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+import {
   ScaleAndZoomPropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/scale-and-zoom-properties/scale-and-zoom-properties.component';
 
@@ -18,7 +21,7 @@ describe('ScaleAndZoomPropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ScaleAndZoomPropertiesComponent],
+      declarations: [ScaleAndZoomPropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         FormsModule,

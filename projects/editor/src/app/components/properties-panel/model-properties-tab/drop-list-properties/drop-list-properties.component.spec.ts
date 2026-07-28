@@ -13,6 +13,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { DragNDropValueObject, Label } from 'common/models/label-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { GetValidDropListsPipe } from 'editor/src/app/components/properties-panel/pipes/get-valid-drop-lists.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -62,10 +65,10 @@ describe('DropListPropertiesComponent', () => {
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
-      declarations: [
-        DropListPropertiesComponent,
+      declarations: [DropListPropertiesComponent,
         MockOptionListPanelComponent,
-        GetValidDropListsPipe
+        GetValidDropListsPipe,
+        MergedCheckboxComponent
       ],
       imports: [
         CommonModule,

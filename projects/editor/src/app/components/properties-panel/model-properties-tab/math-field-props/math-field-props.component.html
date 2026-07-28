@@ -1,4 +1,4 @@
-<mat-checkbox [checked]="$any(combinedProperties.enableModeSwitch)"
-              (change)="updateModel.emit({ property: 'enableModeSwitch', value: $event.checked })">
+<aspect-merged-checkbox [value]="$any(combinedProperties.enableModeSwitch)"
+                        (valueChange)="updateModel.emit({ property: 'enableModeSwitch', value: $event })">
   {{'propertiesPanel.enableModeSwitch' | translate }}
-</mat-checkbox>
+</aspect-merged-checkbox>

@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, OnChanges, Output
 } from '@angular/core';
 
 /**
@@ -21,9 +21,29 @@ import {
   styleUrls: ['./merged-checkbox.component.scss'],
   standalone: false
 })
-export class MergedCheckboxComponent {
+export class MergedCheckboxComponent implements OnChanges {
   /** `null`: the selected elements disagree. `undefined`: the property is not set at all. */
   @Input() value: boolean | null | undefined;
   @Input() disabled: boolean = false;
   @Output() valueChange = new EventEmitter<boolean>();
+
+  /**
+   * The live state of the box, kept as fields rather than derived in the template so that call
+   * sites reading it through a template reference — `#fixedWidth` and friends — see the same thing
+   * a `mat-checkbox` gave them: the current UI state, updated on click before the model has come
+   * back around.
+   */
+  checked: boolean = false;
+  indeterminate: boolean = false;
+
+  ngOnChanges(): void {
+    this.checked = this.value ?? false;
+    this.indeterminate = this.value === null;
+  }
+
+  toggle(checked: boolean): void {
+    this.checked = checked;
+    this.indeterminate = false;
+    this.valueChange.emit(checked);
+  }
 }

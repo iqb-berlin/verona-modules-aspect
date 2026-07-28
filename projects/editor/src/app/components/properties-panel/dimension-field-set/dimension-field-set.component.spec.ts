@@ -8,6 +8,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -33,7 +36,7 @@ describe('DimensionFieldSetComponent', () => {
     elementService = createSpyObj<ElementService>(['updateElementsDimensionsProperty']);
 
     await TestBed.configureTestingModule({
-      declarations: [DimensionFieldSetComponent],
+      declarations: [DimensionFieldSetComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         FormsModule,

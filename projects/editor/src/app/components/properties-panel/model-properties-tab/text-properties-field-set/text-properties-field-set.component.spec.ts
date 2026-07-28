@@ -18,6 +18,9 @@ import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+import {
   CombinedProperties
 } from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -55,10 +58,10 @@ describe('TextPropsComponent', () => {
     } as unknown as SelectionService;
 
     await TestBed.configureTestingModule({
-      declarations: [
-        TextPropsComponent,
+      declarations: [TextPropsComponent,
         MockHighlightPropertiesComponent,
-        SafeResourceHTMLPipe
+        SafeResourceHTMLPipe,
+        MergedCheckboxComponent
       ],
       imports: [
         CommonModule,

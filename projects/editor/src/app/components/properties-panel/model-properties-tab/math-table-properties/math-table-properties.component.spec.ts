@@ -13,6 +13,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
+import {
+  MergedCheckboxComponent
+} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   MathTablePropertiesComponent
@@ -28,7 +31,7 @@ describe('MathTablePropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [MathTablePropertiesComponent],
+      declarations: [MathTablePropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         MatButtonModule,

@@ -1,19 +1,15 @@
 /**
  * Generated baseline for `properties-panel.characterization.spec.ts` — one entry per
- * (element type, expert mode), holding the controls the panel renders as readable text.
+ * (element type, expert mode, selection), holding the controls the panel renders as readable text.
  *
- * Do NOT hand-edit to make a failing test pass. A diff here means the panel now shows
- * something different; either that change is intended (then regenerate and review the diff
- * as part of the change) or it is a regression.
+ * The `multi-` entries describe a selection of two elements of the same type whose booleans all
+ * disagree. Every such property merges to null, which the panel renders as an unchecked box.
  *
- * Regenerate: un-skip the `baseline regeneration` block in
- * `properties-panel.characterization.spec.ts`, run
- * `npx ng test editor --include "**\/properties-panel.characterization.spec.ts"`, and replace
- * everything below this comment with the logged block.
+ * Do NOT hand-edit to make a failing test pass. A diff here means the panel now shows something
+ * different; either that change is intended — then regenerate and review the diff as part of the
+ * change — or it is a regression.
  *
- * The vitest snapshot mechanism cannot be used here: the `@angular/build:unit-test` builder
- * compiles specs into a fresh `dist/test-out/<timestamp>/` directory, so `.snap` files never
- * persist between runs and could never fail.
+ * Regenerate: see the doc comment on the `baseline regeneration` group in the spec.
  */
 /* eslint-disable max-len */
 export const PANEL_BASELINE: Record<string, string> = {
@@ -44,6 +40,49 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'audio|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+button "Medienoptionen anpassen"
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 90
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = #f1f1f1
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'audio|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'audio|standard': `--- tabs --- element properties
@@ -101,6 +140,74 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'button|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+textarea "propertiesPanel.label" = Knopf
+[propertiesPanel.presentation]
+button "propertiesPanel.button"
+button "propertiesPanel.image"
+button "propertiesPanel.link"
+checkbox "propertiesPanel.super" = false
+checkbox "propertiesPanel.sub" = false
+[propertiesPanel.tooltip]
+button "propertiesPanel.editTooltip"
+[propertiesPanel.action]
+select "propertiesPanel.action" = <null>
+select "propertiesPanel.actionParam" = <null>
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 60
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = lightgrey
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+[Rahmen]
+input[number] "propertiesPanel.borderRadius" = 0
+input[text] "propertiesPanel.borderColor" = black
+select "propertiesPanel.borderStyle" = solid
+input[number] "propertiesPanel.borderWidth" = 0
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'button|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+textarea "propertiesPanel.label" = Knopf
+[propertiesPanel.presentation]
+button "propertiesPanel.button"
+button "propertiesPanel.image"
+button "propertiesPanel.link"
+checkbox "propertiesPanel.super" = false
+checkbox "propertiesPanel.sub" = false
+[propertiesPanel.tooltip]
+button "propertiesPanel.editTooltip"
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'button|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -156,6 +263,61 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'checkbox|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = Beschriftung
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+button "image"
+toggle-group [propertiesPanel.true, propertiesPanel.false]
+checkbox "propertiesPanel.crossOutChecked" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 215
+input[number] "propertiesPanel.height" = 60
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'checkbox|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = Beschriftung
+checkbox "propertiesPanel.readOnly" = false
+button "image"
+toggle-group [propertiesPanel.true, propertiesPanel.false]
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'checkbox|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -199,6 +361,51 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'cloze|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+button "Text und Elemente editieren"
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 200
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 180
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'cloze|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+button "Text und Elemente editieren"
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'cloze|standard': `--- tabs --- element properties
@@ -259,6 +466,75 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'drop-list|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+[preset]
+textarea "Neue Option" = 
+select "propertiesPanel.connectedDropLists" = []
+select "propertiesPanel.alignment" = vertical
+checkbox "propertiesPanel.isSortList" = false
+checkbox "propertiesPanel.onlyOneItem" = false
+checkbox "allowReplacement" = false
+checkbox "propertiesPanel.copyOnDrop" = false
+checkbox "propertiesPanel.permanentPlaceholders" = false
+checkbox "propertiesPanel.permanentPlaceholdersCC" = false (disabled)
+checkbox "propertiesPanel.showNumbering" = false
+checkbox "propertiesPanel.startNumberingAtZero" = false (disabled)
+checkbox "propertiesPanel.highlightReceivingDropList" = false
+input[text] "propertiesPanel.highlightReceivingDropListColor" = #006064 (disabled)
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 240
+input[number] "propertiesPanel.height" = 100
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.itemBackgroundColor" = #c9e0e0
+input[text] "propertiesPanel.backgroundColor" = #ededed
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'drop-list|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+checkbox "propertiesPanel.readOnly" = false
+[preset]
+textarea "Neue Option" = 
+select "propertiesPanel.connectedDropLists" = []
+select "propertiesPanel.alignment" = vertical
+checkbox "propertiesPanel.isWidthFixed" = false
+input[number] "propertiesPanel.width" = 240 (disabled)
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'drop-list|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -312,6 +588,64 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'dropdown|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+select "preset" = <null>
+[propertiesPanel.options]
+textarea "Neue Option" = 
+checkbox "propertiesPanel.allowUnset" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 240
+input[number] "propertiesPanel.height" = 83
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'dropdown|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+select "preset" = <null>
+[propertiesPanel.options]
+textarea "Neue Option" = 
+checkbox "propertiesPanel.allowUnset" = false
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'dropdown|standard': `--- tabs --- element properties
@@ -368,6 +702,61 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'frame|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+checkbox "propertiesPanel.hasBorderTop" = false
+checkbox "propertiesPanel.hasBorderBottom" = false
+checkbox "propertiesPanel.hasBorderLeft" = false
+checkbox "propertiesPanel.hasBorderRight" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = -1
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 180
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+[Rahmen]
+input[number] "propertiesPanel.borderRadius" = 0
+input[text] "propertiesPanel.borderColor" = black
+select "propertiesPanel.borderStyle" = solid
+input[number] "propertiesPanel.borderWidth" = 1
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'frame|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+checkbox "propertiesPanel.hasBorderTop" = false
+checkbox "propertiesPanel.hasBorderBottom" = false
+checkbox "propertiesPanel.hasBorderLeft" = false
+checkbox "propertiesPanel.hasBorderRight" = false
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'frame|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -422,6 +811,67 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'geometry|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.appDefinition" =  (disabled)
+checkbox "propertiesPanel.showResetIcon" = false
+[propertiesPanel.geogebraHeader]
+checkbox "propertiesPanel.enableUndoRedo" = false
+checkbox "propertiesPanel.enableShiftDragZoom" = false
+checkbox "propertiesPanel.showZoomButtons" = false
+checkbox "propertiesPanel.showFullscreenButton" = false
+checkbox "propertiesPanel.showToolbar" = false
+input[text] "propertiesPanel.customToolbar" =  (disabled)
+[propertiesPanel.trackedGeogebraVariables]
+select "propertiesPanel.trackedVariables" = []
+input[text] "propertiesPanel.trackedExpectedVariables" = 
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 600
+input[number] "propertiesPanel.height" = 400
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'geometry|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.appDefinition" =  (disabled)
+[propertiesPanel.geogebraHeader]
+[propertiesPanel.trackedGeogebraVariables]
+select "propertiesPanel.trackedVariables" = []
+input[text] "propertiesPanel.trackedExpectedVariables" = 
+input[number] "propertiesPanel.width" = 600
+input[number] "propertiesPanel.height" = 400
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'geometry|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -474,6 +924,60 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'hotspot-image|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+[propertiesPanel.hotspots]
+button "add"
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 250
+input[number] "propertiesPanel.height" = 100
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'hotspot-image|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+[propertiesPanel.hotspots]
+button "add"
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'hotspot-image|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -524,6 +1028,55 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'image|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "Alternativtext" = Bild nicht gefunden
+button "Medienoptionen anpassen"
+checkbox "propertiesPanel.scale" = false
+checkbox "propertiesPanel.magnifier" = false
+checkbox "propertiesPanel.allowFullscreen" = false
+input[number] "propertiesPanel.magnifierSize in px" = 100 (disabled)
+slider ""
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 100
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'image|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'image|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -566,6 +1119,58 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'likert-row|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[number] "propertiesPanel.firstColumnSizeRatio" = 5
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 50
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'likert-row|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+input[number] "propertiesPanel.firstColumnSizeRatio" = 5
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'likert-row|standard': `--- tabs --- element properties
@@ -623,6 +1228,68 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'likert|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+textarea "propertiesPanel.label" = Optionentabelle Beschriftung
+textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
+[propertiesPanel.options]
+textarea "Neue Option" = 
+[rows]
+textarea "Neue Zeile" = 
+checkbox "propertiesPanel.stickyHeader" = false
+input[number] "propertiesPanel.firstColumnSizeRatio" = 5
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 250
+input[number] "propertiesPanel.height" = 200
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+checkbox "propertiesPanel.lineColoring" = false
+input[text] "propertiesPanel.lineColoringColor" = #c9e0e0 (disabled)
+checkbox "propertiesPanel.firstLineColoring" = false
+input[text] "propertiesPanel.firstLineColoringColor" = #c7f3d0 (disabled)
+input[text] "propertiesPanel.backgroundColor" = white
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 135
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'likert|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+textarea "propertiesPanel.label" = Optionentabelle Beschriftung
+textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
+[propertiesPanel.options]
+textarea "Neue Option" = 
+[rows]
+textarea "Neue Zeile" = 
+input[number] "propertiesPanel.firstColumnSizeRatio" = 5
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'likert|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -670,6 +1337,56 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'marking-panel|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[propertiesPanel.marking]
+checkbox "propertiesPanel.highlightableYellow" = false
+checkbox "propertiesPanel.highlightableTurquoise" = false
+checkbox "propertiesPanel.highlightableOrange" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 98
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'marking-panel|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[propertiesPanel.marking]
+checkbox "propertiesPanel.highlightableYellow" = false
+checkbox "propertiesPanel.highlightableTurquoise" = false
+checkbox "propertiesPanel.highlightableOrange" = false
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'marking-panel|standard': `--- tabs --- element properties
@@ -721,6 +1438,62 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'math-field|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+button "code"
+checkbox "propertiesPanel.enableModeSwitch" = false
+select "formulaPreset.title" = [math, symbols, latin, greek]
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 230
+input[number] "propertiesPanel.height" = 80
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 135
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'math-field|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+button "code"
+checkbox "propertiesPanel.enableModeSwitch" = false
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'math-field|standard': `--- tabs --- element properties
@@ -782,6 +1555,71 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'math-table|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+select "Operation" = addition
+input[text] "Term" = 123
+button "clear"
+input[text] "Term" = 456
+button "clear"
+button "add addTermRow"
+input[text] "resultHelperRow" = 
+input[text] "resultRow" = 
+button "Variables Layout anpassen" (disabled)
+[Tastatur]
+checkbox "propertiesPanel.showSoftwareKeyboard" = false
+checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+[Eingabehilfe]
+select "propertiesPanel.inputAssistance" = <null>
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 230
+input[number] "propertiesPanel.height" = 192
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.helperRowColor" = transparent
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'math-table|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "Term" = 123
+button "clear"
+input[text] "Term" = 456
+button "clear"
+button "add addTermRow"
+input[text] "resultHelperRow" = 
+input[text] "resultRow" = 
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'math-table|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -835,6 +1673,66 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'radio-group-images|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = Beschriftung
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+select "preset" = <null>
+[propertiesPanel.options]
+textarea "Neue Option" = 
+checkbox "limitItemPerRow" = false
+input[number] "itemsPerRow" =  (disabled)
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 250
+input[number] "propertiesPanel.height" = 200
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'radio-group-images|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = Beschriftung
+checkbox "propertiesPanel.readOnly" = false
+select "preset" = <null>
+[propertiesPanel.options]
+textarea "Neue Option" = 
+checkbox "limitItemPerRow" = false
+input[number] "itemsPerRow" =  (disabled)
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'radio-group-images|standard': `--- tabs --- element properties
@@ -894,6 +1792,66 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'radio|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = Beschriftung
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+select "preset" = <null>
+[propertiesPanel.options]
+textarea "Neue Option" = 
+select "propertiesPanel.alignment" = column
+checkbox "propertiesPanel.strikeOtherOptions" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 215
+input[number] "propertiesPanel.height" = 80
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 100
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'radio|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = Beschriftung
+checkbox "propertiesPanel.readOnly" = false
+select "preset" = <null>
+[propertiesPanel.options]
+textarea "Neue Option" = 
+select "propertiesPanel.alignment" = column
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'radio|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -951,6 +1909,66 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'slider|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[number] "propertiesPanel.minValue" = 0
+input[number] "propertiesPanel.maxValue" = 100
+checkbox "propertiesPanel.showValues" = false
+checkbox "propertiesPanel.barStyle" = true
+checkbox "propertiesPanel.thumbLabel" = true
+input[number] "propertiesPanel.preset" = 
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 240
+input[number] "propertiesPanel.height" = 80
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 5
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'slider|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+input[number] "propertiesPanel.minValue" = 0
+input[number] "propertiesPanel.maxValue" = 100
+input[number] "propertiesPanel.preset" = 
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'slider|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -1005,6 +2023,63 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'spell-correct|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+[Tastatur]
+checkbox "propertiesPanel.showSoftwareKeyboard" = false
+checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+[Eingabehilfe]
+select "propertiesPanel.inputAssistance" = <null>
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 230
+input[number] "propertiesPanel.height" = 80
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 135
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'spell-correct|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'spell-correct|standard': `--- tabs --- element properties
@@ -1067,6 +2142,85 @@ input[number] "propertiesPanel.borderWidth" = 1
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'table|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+button "Elemente anpassen"
+[section-menu.rows]
+input[number] "section-menu.rowCount" = 2
+input[number] "section-menu.height 1" = 1
+select "Einheit" = fr
+input[number] "section-menu.height 2" = 1
+select "Einheit" = fr
+[section-menu.columns]
+input[number] "section-menu.columnCount" = 2
+input[number] "section-menu.width 1" = 1
+select "Einheit" = fr
+input[number] "section-menu.width 2" = 1
+select "Einheit" = fr
+checkbox "Tabellenränder zeichnen" = false
+checkbox "propertiesPanel.tableHeaderEnabled" = false
+checkbox "propertiesPanel.stickyHeader" = false (disabled)
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 250
+input[number] "propertiesPanel.height" = 200
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+[Rahmen]
+input[number] "propertiesPanel.borderRadius" = 0
+input[text] "propertiesPanel.borderColor" = black
+select "propertiesPanel.borderStyle" = solid
+input[number] "propertiesPanel.borderWidth" = 1
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'table|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+button "Elemente anpassen"
+[section-menu.rows]
+input[number] "section-menu.rowCount" = 2
+input[number] "section-menu.height 1" = 1
+select "Einheit" = fr
+input[number] "section-menu.height 2" = 1
+select "Einheit" = fr
+[section-menu.columns]
+input[number] "section-menu.columnCount" = 2
+input[number] "section-menu.width 1" = 1
+select "Einheit" = fr
+input[number] "section-menu.width 2" = 1
+select "Einheit" = fr
+checkbox "Tabellenränder zeichnen" = false
+checkbox "propertiesPanel.tableHeaderEnabled" = false
+checkbox "propertiesPanel.stickyHeader" = false (disabled)
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'table|standard': `--- tabs --- element properties
@@ -1138,6 +2292,67 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'text-area-math|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+checkbox "propertiesPanel.hasAutoHeight" = false
+input[number] "rows" = 2
+select "formulaPreset.title" = [math, symbols, latin, greek]
+[Tastatur]
+checkbox "propertiesPanel.showSoftwareKeyboard" = false
+checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+[Eingabehilfe]
+select "propertiesPanel.inputAssistance" = <null>
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 230
+input[number] "propertiesPanel.height" = 132
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 135
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'text-area-math|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+input[number] "rows" = 2
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'text-area-math|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -1198,6 +2413,74 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'text-area|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+textarea "preset" = 
+checkbox "propertiesPanel.resizeEnabled" = false
+checkbox "propertiesPanel.hasAutoHeight" = false
+checkbox "propertiesPanel.hasDynamicRowCount" = false
+[propertiesPanel.textAlign]
+toggle-group [format_align_left, format_align_center, format_align_right]
+select "propertiesPanel.appearance" = outline
+[Tastatur]
+checkbox "propertiesPanel.showSoftwareKeyboard" = false
+checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+[Eingabehilfe]
+select "propertiesPanel.inputAssistance" = <null>
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 230
+input[number] "propertiesPanel.height" = 132
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 135
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'text-area|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+textarea "preset" = 
+checkbox "propertiesPanel.hasDynamicRowCount" = false
+[propertiesPanel.textAlign]
+toggle-group [format_align_left, format_align_center, format_align_right]
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'text-area|standard': `--- tabs --- element properties
@@ -1266,6 +2549,77 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'text-field-simple|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "preset" = 
+[propertiesPanel.textAlign]
+toggle-group [format_align_left, format_align_center, format_align_right]
+input[number] "propertiesPanel.minLength" = 
+input[text] "propertiesPanel.minLengthWarnMessage" = Eingabe zu kurz (disabled)
+input[number] "propertiesPanel.maxLength" = 
+checkbox "propertiesPanel.isLimitedToMaxLength" = false (disabled)
+input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
+input[text] "propertiesPanel.pattern" = 
+input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
+checkbox "propertiesPanel.clearable" = false
+[Tastatur]
+checkbox "propertiesPanel.showSoftwareKeyboard" = false
+checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+[Eingabehilfe]
+select "propertiesPanel.inputAssistance" = <null>
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 100
+input[number] "propertiesPanel.height" = 30
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = #f1f1f1
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 135
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'text-field-simple|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+checkbox "propertiesPanel.readOnly" = false
+input[text] "preset" = 
+[propertiesPanel.textAlign]
+toggle-group [format_align_left, format_align_center, format_align_right]
+checkbox "propertiesPanel.isWidthFixed" = false
+input[number] "propertiesPanel.width" = 100 (disabled)
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'text-field-simple|standard': `--- tabs --- element properties
@@ -1337,6 +2691,78 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'text-field|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "preset" = 
+[propertiesPanel.textAlign]
+toggle-group [format_align_left, format_align_center, format_align_right]
+select "propertiesPanel.appearance" = outline
+input[number] "propertiesPanel.minLength" = 
+input[text] "propertiesPanel.minLengthWarnMessage" = Eingabe zu kurz (disabled)
+input[number] "propertiesPanel.maxLength" = 
+checkbox "propertiesPanel.isLimitedToMaxLength" = false (disabled)
+input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
+input[text] "propertiesPanel.pattern" = 
+input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
+checkbox "propertiesPanel.clearable" = false
+[Tastatur]
+checkbox "propertiesPanel.showSoftwareKeyboard" = false
+checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+[Eingabehilfe]
+select "propertiesPanel.inputAssistance" = <null>
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 120
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 135
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'text-field|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+textarea "propertiesPanel.label" = 
+checkbox "propertiesPanel.readOnly" = false
+input[text] "preset" = 
+[propertiesPanel.textAlign]
+toggle-group [format_align_left, format_align_center, format_align_right]
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'text-field|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -1389,6 +2815,66 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'text|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+button "edit"
+input[number] "propertiesPanel.columnCount" = 1
+[propertiesPanel.marking]
+checkbox "propertiesPanel.highlightableYellow" = false
+checkbox "propertiesPanel.highlightableTurquoise" = false
+checkbox "propertiesPanel.highlightableOrange" = false
+select "propertiesPanel.markingPanels" = []
+select "propertiesPanel.markingMode" = selection
+checkbox "propertiesPanel.hasSelectionPopup" = false (disabled)
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 98
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 135
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'text|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+button "edit"
+input[number] "propertiesPanel.columnCount" = 1
+[propertiesPanel.marking]
+checkbox "propertiesPanel.highlightableYellow" = false
+checkbox "propertiesPanel.highlightableTurquoise" = false
+checkbox "propertiesPanel.highlightableOrange" = false
+select "propertiesPanel.markingPanels" = []
+select "propertiesPanel.markingMode" = selection
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'text|standard': `--- tabs --- element properties
@@ -1453,6 +2939,75 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'toggle-button|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+checkbox "propertiesPanel.readOnly" = false
+checkbox "propertiesPanel.requiredField" = false
+input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+select "preset" = <null>
+[propertiesPanel.options]
+textarea "Neue Option" = 
+button "build"
+button "clear"
+button "build"
+button "clear"
+checkbox "propertiesPanel.strikeOtherOptions" = false
+checkbox "propertiesPanel.strikeSelectedOption" = false
+checkbox "propertiesPanel.verticalOrientation" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 30
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.selectionColor" = #c9e0e0
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+input[number] "propertiesPanel.lineHeight" = 100
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'toggle-button|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[Eingabeelement]
+checkbox "propertiesPanel.readOnly" = false
+select "preset" = <null>
+[propertiesPanel.options]
+textarea "Neue Option" = 
+button "build"
+button "clear"
+button "build"
+button "clear"
+checkbox "propertiesPanel.strikeSelectedOption" = false
+checkbox "propertiesPanel.verticalOrientation" = false
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'toggle-button|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -1501,6 +3056,47 @@ checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
+  'trigger|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[propertiesPanel.action]
+select "propertiesPanel.action" = <null>
+select "propertiesPanel.actionParam" = <null>
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = transparent
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'trigger|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'trigger|standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
@@ -1539,6 +3135,50 @@ checkbox "propertiesPanel.underline" = false
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'video|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+button "Medienoptionen anpassen"
+checkbox "propertiesPanel.scale" = false
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 280
+input[number] "propertiesPanel.height" = 230
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = #f1f1f1
+input[text] "propertiesPanel.fontColor" = #000000
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'video|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'video|standard': `--- tabs --- element properties
@@ -1584,6 +3224,57 @@ input[number] "propertiesPanel.borderWidth" = 0
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'widget-molecule-editor|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[toolbox.widget-molecule-editor]
+select "propertiesPanel.bondingType" = VALENCE
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 60
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = #f1f1f1
+input[text] "propertiesPanel.fontColor" = #006064
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+[Rahmen]
+input[number] "propertiesPanel.borderRadius" = 0
+input[text] "propertiesPanel.borderColor" = black
+select "propertiesPanel.borderStyle" = solid
+input[number] "propertiesPanel.borderWidth" = 0
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'widget-molecule-editor|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[toolbox.widget-molecule-editor]
+select "propertiesPanel.bondingType" = VALENCE
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'widget-molecule-editor|standard': `--- tabs --- element properties
@@ -1635,6 +3326,65 @@ input[number] "propertiesPanel.borderWidth" = 0
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'widget-periodic-table|multi-expert': `--- tabs --- element properties, position and size, styling
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[toolbox.widget-periodic-table]
+checkbox "propertiesPanel.showInfoOrder" = false
+checkbox "propertiesPanel.showInfoENeg" = false
+checkbox "propertiesPanel.showInfoAMass" = false
+checkbox "propertiesPanel.closeOnSelection" = false
+input[number] "propertiesPanel.maxNumberOfSelections" = 1
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = false
+
+--- tab "position and size" ---
+[Position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[Dimensionen]
+input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.height" = 60
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- tab "styling" ---
+input[text] "propertiesPanel.backgroundColor" = #f1f1f1
+input[text] "propertiesPanel.fontColor" = #006064
+input[number] "propertiesPanel.fontSize" = 20
+checkbox "propertiesPanel.bold" = false
+checkbox "propertiesPanel.italic" = false
+checkbox "propertiesPanel.underline" = false
+[Rahmen]
+input[number] "propertiesPanel.borderRadius" = 0
+input[text] "propertiesPanel.borderColor" = black
+select "propertiesPanel.borderStyle" = solid
+input[number] "propertiesPanel.borderWidth" = 0
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'widget-periodic-table|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+[toolbox.widget-periodic-table]
+checkbox "propertiesPanel.showInfoOrder" = false
+checkbox "propertiesPanel.showInfoENeg" = false
+checkbox "propertiesPanel.showInfoAMass" = false
+checkbox "propertiesPanel.closeOnSelection" = false
+input[number] "propertiesPanel.maxNumberOfSelections" = 1
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
 button "propertiesPanel.deleteElement"`,
 
   'widget-periodic-table|standard': `--- tabs --- element properties

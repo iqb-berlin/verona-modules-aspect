@@ -24,7 +24,10 @@
  *   select's current value but not the options it offers.
  * - The panel host's input bindings for the position and styling tabs are mirrored in
  *   `renderPanel()` (see the comment there), so a change to those two bindings is not caught.
- * - Multi-selection is covered by `element-properties-panel.component.spec.ts`, not here.
+ * - Divergent multi-selection is covered by the `multi-` cases: two elements of the same type
+ *   whose booleans all disagree. Every such property merges to null, which the panel currently
+ *   renders as an unchecked box — indistinguishable from "false everywhere". The baseline records
+ *   that as it is today; see the ticket for making it `indeterminate`.
  */
 import {
   ComponentFixture, fakeAsync, TestBed, tick
@@ -288,24 +291,51 @@ describe('properties panel characterization', () => {
     return describeControls(root ?? rendered.nativeElement, selectValuesOf(rendered));
   }
 
+  /** Negates every boolean, nested property groups included, so all of them merge to null. */
+  function flipBooleans(target: Record<string, unknown>): void {
+    Object.keys(target).forEach(key => {
+      if (key === 'idService') return;
+      const value = target[key];
+      if (typeof value === 'boolean') {
+        target[key] = !value;
+      } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+        flipBooleans(value as Record<string, unknown>);
+      }
+    });
+  }
+
   /**
-   * Renders the panel for one element and describes what it shows.
+   * The selection to render. `divergent` puts two elements of the same type in the selection whose
+   * booleans all disagree, so every one of them merges to null — the state the panel currently
+   * cannot tell apart from "false everywhere". See the doc comment above.
+   */
+  function selectionOf(type: UIElementType, mode: 'single' | 'divergent'): UIElement[] {
+    const first = ElementFactory.createElement({ type, id: type, alias: type });
+    if (mode === 'single') return [first];
+    const second = ElementFactory.createElement({ type, id: `${type}_2`, alias: `${type}_2` });
+    flipBooleans(second as unknown as Record<string, unknown>);
+    return [first, second];
+  }
+
+  /**
+   * Renders the panel for a selection and describes what it shows.
    *
    * Only the first tab's body is reachable through the host: Material attaches an inactive
    * tab body's content on a transition event that never fires without an animations module
-   * (which rule 3 rules out). The remaining tabs are therefore rendered directly, gated by
-   * the tab list the host actually produced — so the expert-mode gating still comes from
-   * the real panel, only the rendering of those two tab bodies is short-circuited.
+   * (which rule 3 rules out). The remaining tabs are therefore rendered directly, but fed from
+   * the host's own `combinedProperties` — so the expert-mode gating and the merged values both
+   * come from the real panel; only the rendering of those two tab bodies is short-circuited.
    */
-  function renderPanel(type: UIElementType, expertMode: boolean): string {
+  function renderPanel(type: UIElementType, expertMode: boolean,
+                       mode: 'single' | 'divergent' = 'single'): string {
     unitServiceMock.expertMode = expertMode;
     fixture = TestBed.createComponent(ElementPropertiesPanelComponent);
     fixture.detectChanges();
 
-    const element = ElementFactory.createElement({ type, id: type, alias: type });
-    selectedElements.next([element]);
+    selectedElements.next(selectionOf(type, mode));
     settle(fixture);
 
+    const merged = fixture.componentInstance.combinedProperties;
     const host = fixture.nativeElement as HTMLElement;
     const tabs = Array.from(host.querySelectorAll('.mat-mdc-tab'))
       .map(tab => TAB_NAMES[normalizeText(tab)] ?? normalizeText(tab));
@@ -322,8 +352,8 @@ describe('properties panel characterization', () => {
 
     if (tabs.includes('position and size')) {
       const positionFixture = TestBed.createComponent(ElementPositionPropertiesComponent);
-      positionFixture.componentInstance.dimensions = type === 'trigger' ? null : element.dimensions;
-      positionFixture.componentInstance.positionProperties = element.position;
+      positionFixture.componentInstance.dimensions = type === 'trigger' ? null : merged?.dimensions;
+      positionFixture.componentInstance.positionProperties = merged?.position;
       positionFixture.componentInstance.isZIndexDisabled = type === 'trigger';
       settle(positionFixture);
       sections.push(section('tab "position and size"', describeFixture(positionFixture)));
@@ -331,7 +361,7 @@ describe('properties panel characterization', () => {
 
     if (tabs.includes('styling')) {
       const styleFixture = TestBed.createComponent(ElementStylePropertiesComponent);
-      styleFixture.componentInstance.styles = element.styling;
+      styleFixture.componentInstance.styles = merged?.styling;
       settle(styleFixture);
       sections.push(section('tab "styling"', describeFixture(styleFixture)));
     }
@@ -341,26 +371,35 @@ describe('properties panel characterization', () => {
   }
 
   /**
-   * Regenerates `properties-panel.baseline.ts`. Change `it.skip` to `it`, run
-   * `npx ng test editor --include "**\/properties-panel.characterization.spec.ts"`, replace the
-   * body of the baseline file with the logged block, and skip this test again. Always read the
-   * resulting diff — it is the list of behaviour changes the edit caused.
+   * Regenerates `properties-panel.baseline.ts`.
+   *
+   *   1. change `describe.skip` below to `describe`
+   *   2. `npx ng test editor --include "**\/properties-panel.characterization.spec.ts" > /tmp/b.log`
+   *   3. `node scripts/panel-baseline-from-log.js /tmp/b.log`
+   *   4. skip the group again and read the diff — it is the list of behaviour changes
+   *
+   * One test per entry rather than one for everything: the MathLive field throws
+   * "Mathfield not mounted" as soon as several panel fixtures exist within a single test body,
+   * so each entry needs its own test — the same shape as the assertions above, which do work.
+   * The tests are ordered so that their output is already in the baseline's sort order.
    */
-  it.skip('regenerates the baseline (see the doc comment before un-skipping)', fakeAsync(() => {
-    const entries = ELEMENT_TYPES.flatMap(type => [
-      [`${type}|standard`, renderPanel(type, false)] as const,
-      [`${type}|expert`, renderPanel(type, true)] as const
-    ]);
-    const escaped = entries
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .map(([key, value]) => `  '${key}': \`${value
-        .replace(/\\/g, '\\\\')
-        .replace(/`/g, '\\`')
-        .replace(/\$\{/g, '\\${')}\``);
-    // eslint-disable-next-line no-console
-    console.log(`\n>>> COPY FROM HERE >>>\nexport const PANEL_BASELINE: Record<string, string> = {\n${
-      escaped.join(',\n\n')}\n};\n<<< COPY TO HERE <<<`);
-  }));
+  describe.skip('baseline regeneration', () => {
+    const MODES: [string, boolean, 'single' | 'divergent'][] = [
+      ['expert', true, 'single'],
+      ['multi-expert', true, 'divergent'],
+      ['multi-standard', false, 'divergent'],
+      ['standard', false, 'single']
+    ];
+
+    ELEMENT_TYPES.forEach(type => {
+      MODES.forEach(([suffix, expertMode, selection]) => {
+        it(`logs ${type}|${suffix}`, fakeAsync(() => {
+          // eslint-disable-next-line no-console
+          console.log(`<<<ENTRY ${type}|${suffix}\n${renderPanel(type, expertMode, selection)}\nENTRY>>>`);
+        }));
+      });
+    });
+  });
 
   it.each(ELEMENT_TYPES)('should render the standard panel for "%s"', fakeAsync((type: UIElementType) => {
     expect(renderPanel(type, false)).toBe(PANEL_BASELINE[`${type}|standard`]);
@@ -369,4 +408,14 @@ describe('properties panel characterization', () => {
   it.each(ELEMENT_TYPES)('should render the expert panel for "%s"', fakeAsync((type: UIElementType) => {
     expect(renderPanel(type, true)).toBe(PANEL_BASELINE[`${type}|expert`]);
   }));
+
+  it.each(ELEMENT_TYPES)('should render the standard panel for a divergent selection of "%s"',
+                         fakeAsync((type: UIElementType) => {
+                           expect(renderPanel(type, false, 'divergent')).toBe(PANEL_BASELINE[`${type}|multi-standard`]);
+                         }));
+
+  it.each(ELEMENT_TYPES)('should render the expert panel for a divergent selection of "%s"',
+                         fakeAsync((type: UIElementType) => {
+                           expect(renderPanel(type, true, 'divergent')).toBe(PANEL_BASELINE[`${type}|multi-expert`]);
+                         }));
 });

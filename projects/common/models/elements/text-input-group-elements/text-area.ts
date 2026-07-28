@@ -7,7 +7,7 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { TextInputElementProperties } from 'common/models/input-element-interfaces';
+import { TextInputElementProperties, MultiLineTextProperties } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 
@@ -72,13 +72,11 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   }
 }
 
-export interface TextAreaProperties extends TextInputElementProperties {
+export interface TextAreaProperties extends TextInputElementProperties, MultiLineTextProperties {
   appearance?: 'fill' | 'outline';
   textAlign: 'left' | 'center' | 'right';
   resizeEnabled: boolean;
   hasDynamicRowCount: boolean;
-  hasAutoHeight: boolean;
-  rowCount: number;
   expectedCharactersCount: number;
   hasReturnKey: boolean;
   position: PositionProperties;

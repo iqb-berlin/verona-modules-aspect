@@ -4,7 +4,7 @@ import {
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import { ActionProperties, UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
@@ -28,9 +28,9 @@ export class TriggerElement extends UIElement implements TriggerProperties {
   }
 }
 
-export interface TriggerProperties extends UIElementProperties {
-  action: null | TriggerAction;
-  actionParam: null | string | StateVariable ;
+/** A trigger is an element with an action and nothing else — hence the empty body. */
+export interface TriggerProperties
+  extends UIElementProperties, ActionProperties<TriggerAction, string | StateVariable> {
 }
 
 function isTriggerProperties(blueprint?: Partial<TriggerProperties>): blueprint is TriggerProperties {

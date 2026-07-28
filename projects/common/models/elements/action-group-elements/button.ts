@@ -5,7 +5,9 @@ import {
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { TooltipPosition, UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import {
+  ActionProperties, TooltipPosition, UIElementProperties, UIElementType
+} from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
@@ -64,12 +66,11 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   }
 }
 
-export interface ButtonProperties extends UIElementProperties {
+export interface ButtonProperties
+  extends UIElementProperties, ActionProperties<ButtonAction, UnitNavParam | number | string | StateVariable> {
   label: string;
   imageSrc: string | null;
   asLink: boolean;
-  action: null | ButtonAction;
-  actionParam: null | UnitNavParam | number | string | StateVariable;
   styling: BasicStyles & BorderStyles;
   tooltipText: string;
   tooltipPosition: TooltipPosition;

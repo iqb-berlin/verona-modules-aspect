@@ -7,7 +7,9 @@ import {
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import {
+  UIElementProperties, UIElementType, MediaSourceProperties
+} from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
@@ -73,8 +75,7 @@ export class ImageElement extends UIElement implements ImageProperties {
   }
 }
 
-export interface ImageProperties extends UIElementProperties {
-  src: string | null;
+export interface ImageProperties extends UIElementProperties, MediaSourceProperties {
   alt: string;
   scale: boolean;
   allowFullscreen: boolean
@@ -82,7 +83,6 @@ export interface ImageProperties extends UIElementProperties {
   magnifierSize: number;
   magnifierZoom: number;
   magnifierUsed: boolean;
-  fileName: string;
   position: PositionProperties;
   dimensions: DimensionProperties;
 }

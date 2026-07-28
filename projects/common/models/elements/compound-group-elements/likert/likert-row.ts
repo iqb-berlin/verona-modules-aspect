@@ -6,7 +6,7 @@ import { VariableInfo, VariableValue } from '@iqb/responses';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
 import { TextImageLabel } from 'common/models/label-interfaces';
-import { UIElementType } from 'common/models/ui-element-interfaces';
+import { UIElementType, FirstColumnRatioProperties } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
@@ -60,10 +60,9 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
   }
 }
 
-export interface LikertRowProperties extends InputElementProperties {
+export interface LikertRowProperties extends InputElementProperties, FirstColumnRatioProperties {
   rowLabel: TextImageLabel;
   columnCount: number;
-  firstColumnSizeRatio: number;
   verticalButtonAlignment: 'auto' | 'center';
 }
 

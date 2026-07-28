@@ -44,7 +44,8 @@ describe('SliderPropertiesComponent', () => {
       maxValue: 100,
       showValues: true,
       barStyle: false,
-      thumbLabel: false
+      thumbLabel: false,
+      value: 42
     };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
@@ -55,11 +56,29 @@ describe('SliderPropertiesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the current min and max values', () => {
+  it('should render the current min and max values and the preset', () => {
     const inputs = Array.from(
       fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
     );
-    expect(inputs.map(input => input.value)).toEqual(['0', '100']);
+    expect(inputs.map(input => input.value)).toEqual(['0', '100', '42']);
+  });
+
+  // Moved here from element-model-properties: it is gated on minValue, so it is the slider's.
+  it('should emit the entered preset together with its validity', () => {
+    const presetInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[2];
+    presetInput.value = '7';
+    presetInput.dispatchEvent(new Event('input'));
+
+    expect(emitted).toEqual([{ property: 'value', value: 7, isInputValid: true }]);
+  });
+
+  it('should offer no preset for an element without a minValue', () => {
+    component.combinedProperties = { value: 42 };
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('input[type="number"]').length).toBe(0);
   });
 
   it('should emit the new maximum value', () => {
@@ -86,6 +105,6 @@ describe('SliderPropertiesComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('mat-checkbox').length).toBe(0);
-    expect(fixture.nativeElement.querySelectorAll('input[type="number"]').length).toBe(2);
+    expect(fixture.nativeElement.querySelectorAll('input[type="number"]').length).toBe(3);
   });
 });

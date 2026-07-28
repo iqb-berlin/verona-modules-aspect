@@ -113,16 +113,6 @@
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>
 
-  <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
-    <input matInput type="number" #presetValue="ngModel"
-           [ngModel]="combinedProperties.value"
-           (ngModelChange)="updateModel.emit({
-                    property: 'value',
-                    value: $event,
-                    isInputValid: presetValue.valid})">
-  </mat-form-field>
-
   <aspect-text-field-element-properties [combinedProperties]="$any(combinedProperties)"
                                         (updateModel)="updateModel.emit($event)">
   </aspect-text-field-element-properties>

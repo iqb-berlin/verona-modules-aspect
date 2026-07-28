@@ -35,3 +35,16 @@
                         (valueChange)="updateModel.emit({ property: 'thumbLabel', value: $event })">
   {{'propertiesPanel.thumbLabel' | translate }}
 </aspect-merged-checkbox>
+<!-- The preset sits here rather than with the other preset controls: it is gated on minValue, so
+     it is offered for the slider alone. -->
+@if (combinedProperties.minValue !== undefined) {
+  <mat-form-field appearance="fill">
+    <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
+    <input matInput type="number" #presetValue="ngModel"
+           [ngModel]="combinedProperties.value"
+           (ngModelChange)="updateModel.emit({
+                    property: 'value',
+                    value: $event,
+                    isInputValid: presetValue.valid})">
+  </mat-form-field>
+}

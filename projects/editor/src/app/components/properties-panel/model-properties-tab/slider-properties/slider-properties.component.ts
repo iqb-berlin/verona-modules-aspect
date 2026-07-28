@@ -13,7 +13,11 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 export class SliderPropertiesComponent {
   @Input() combinedProperties!: Merged<SliderProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+    new EventEmitter<{
+      property: keyof SliderProperties;
+      value: string | number | boolean | string[],
+      isInputValid?: boolean | null
+    }>();
 
   constructor(public unitService: UnitService) { }
 }

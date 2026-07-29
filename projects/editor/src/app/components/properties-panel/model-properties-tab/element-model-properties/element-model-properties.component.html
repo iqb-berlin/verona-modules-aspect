@@ -7,9 +7,9 @@
     <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
   </mat-form-field>
 
-  <div class="file-name" *ngIf="combinedProperties.fileName !== undefined">
-    <div class="file-name-label">{{'originalFileName' | translate}}</div>
-    {{ combinedProperties.fileName || ('unknown' | translate)}}</div>
+  <aspect-media-source-properties [combinedProperties]="$any(combinedProperties)"
+                                  (updateModel)="updateModel.emit($event)">
+  </aspect-media-source-properties>
 
   <aspect-input-element-properties *ngIf="$any(combinedProperties) | isInputElement"
                                    [combinedProperties]="$any(combinedProperties)"
@@ -45,14 +45,6 @@
   <aspect-checkbox-properties [combinedProperties]="$any(combinedProperties)"
                               (updateModel)="updateModel.emit($event)">
   </aspect-checkbox-properties>
-
-  <button *ngIf="combinedProperties.src"
-          class="media-src-button" [style.align-self]="'center'"
-          mat-fab color="primary"
-          [matTooltip]="'Medienquelle ändern'" [matTooltipPosition]="'right'"
-          (click)="changeMediaSrc(combinedProperties.type)">
-    <mat-icon>upload_file</mat-icon>
-  </button>
 
   <aspect-ele-specific-props [combinedProperties]="$any(combinedProperties)"
                              (updateModel)="updateModel.emit($event)">

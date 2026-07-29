@@ -70,6 +70,9 @@ import {
   MathTablePropertiesComponent
 } from './model-properties-tab/math-table-properties/math-table-properties.component';
 import {
+  MediaSourcePropertiesComponent
+} from './model-properties-tab/media-source-properties/media-source-properties.component';
+import {
   MultiLineTextPropertiesComponent
 } from './model-properties-tab/multi-line-text-properties/multi-line-text-properties.component';
 import { OptionsFieldSetComponent } from './model-properties-tab/options-field-set/options-field-set.component';
@@ -141,6 +144,7 @@ import {
     MathFieldPropsComponent,
     MathKeyboardPropertiesComponent,
     MathTablePropertiesComponent,
+    MediaSourcePropertiesComponent,
     MultiLineTextPropertiesComponent,
     OptionsFieldSetComponent,
     PositionFieldSetComponent,

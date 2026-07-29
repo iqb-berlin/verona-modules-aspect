@@ -906,12 +906,12 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = hotspot-image
 text "originalFileName" = unknown
+button "upload_file"
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
-button "upload_file"
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -943,12 +943,12 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 text "originalFileName" = unknown
+button "upload_file"
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
-button "upload_file"
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -984,10 +984,10 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
 text "originalFileName" = unknown
+button "upload_file"
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
-button "upload_file"
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1001,10 +1001,10 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = hotspot-image
 text "originalFileName" = unknown
+button "upload_file"
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
-button "upload_file"
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.maxWidthEnabled" = false

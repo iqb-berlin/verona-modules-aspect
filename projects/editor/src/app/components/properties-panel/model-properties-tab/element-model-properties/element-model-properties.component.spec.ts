@@ -22,7 +22,6 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
 import { IsInputElementPipe } from 'editor/src/app/components/properties-panel/pipes/is-input-element.pipe';
-import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -35,6 +34,12 @@ import {
 
 @Component({ selector: 'aspect-input-element-properties', standalone: false, template: '' })
 class MockInputElementPropertiesComponent {
+  @Input() combinedProperties!: CombinedProperties;
+  @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
+}
+
+@Component({ selector: 'aspect-media-source-properties', standalone: false, template: '' })
+class MockMediaSourcePropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
@@ -150,6 +155,7 @@ describe('ElementModelPropertiesComponent', () => {
         MockMathKeyboardPropertiesComponent,
         MockMultiLineTextPropertiesComponent,
         MockCheckboxPropertiesComponent,
+        MockMediaSourcePropertiesComponent,
         IsInputElementPipe,
         MergedCheckboxComponent
       ],
@@ -170,8 +176,7 @@ describe('ElementModelPropertiesComponent', () => {
       providers: [
         { provide: UnitService, useValue: { expertMode: false } as UnitService },
         { provide: ElementService, useValue: elementService },
-        { provide: SelectionService, useValue: selectionServiceMock },
-        { provide: DialogService, useValue: {} as DialogService }
+        { provide: SelectionService, useValue: selectionServiceMock }
       ]
     }).compileComponents();
 

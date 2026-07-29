@@ -1,9 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
-import { FileService } from 'common/services/file.service';
 import { ClozeProperties } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
@@ -11,9 +9,7 @@ import { LikertProperties } from 'common/models/elements/compound-group-elements
 import { RadioButtonGroupProperties } from 'common/models/elements/input-group-elements/radio-button-group';
 import { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
 import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
-import {
-  FileNameProperties, MediaSourceProperties, UIElementProperties, UIElementType, UIElementValue
-} from 'common/models/ui-element-interfaces';
+import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
 import {
   DeclaredKeys, Merged
 } from 'editor/src/app/components/properties-panel/models/merged-properties';
@@ -23,7 +19,6 @@ import {
 import { ElementService } from 'editor/src/app/services/element.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { DialogService } from 'editor/src/app/services/dialog.service';
 
 /**
  * What is left of the panel's grab bag, as a type.
@@ -38,8 +33,6 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
  */
 export type PanelElementModelProperties =
   Pick<UIElementProperties, 'type' | 'alias' | 'isRelevantForPresentationComplete' | 'dimensions' | 'player'> &
-  Pick<MediaSourceProperties, 'src'> &
-  Pick<FileNameProperties, 'fileName'> &
   Pick<PanelActionProperties, 'action'> &
   Pick<LikertProperties, 'label' | 'label2'> &
   Pick<RadioButtonGroupProperties, 'alignment'> &
@@ -77,41 +70,11 @@ export class ElementModelPropertiesComponent {
 
   constructor(public unitService: UnitService,
               public elementService: ElementService,
-              public selectionService: SelectionService,
-              public dialogService: DialogService) { }
+              public selectionService: SelectionService) { }
 
   /** Emit one of this component's own properties, with the name checked against the model. */
   emitOwn(property: keyof PanelElementModelProperties, value: UIElementValue): void {
     this.updateModel.emit({ property, value });
-  }
-
-  async changeMediaSrc(elementType: UIElementType | null | undefined) {
-    let media = { name: '', content: '' };
-    switch (elementType) {
-      case 'hotspot-image':
-      case 'image': {
-        const file = await FileService.getRawFile('image/*');
-        const base64 = await FileService.readFileAsText(file, true);
-        if (FileService.isResizable(file.type)) {
-          const options = await firstValueFrom(this.dialogService.showImageResizeDialog(base64, {}));
-          if (!options) return;
-          media.content = await FileService.scaleImage(base64, options);
-        } else {
-          media.content = base64;
-        }
-        media.name = file.name;
-        break;
-      }
-      case 'audio':
-        media = await FileService.loadAudio();
-        break;
-      case 'video':
-        media = await FileService.loadVideo();
-        break;
-      // no default
-    }
-    this.emitOwn('src', media.content);
-    this.emitOwn('fileName', media.name);
   }
 
   toggleProperty(property: DeclaredKeys<DimensionProperties>, checked: boolean): void {

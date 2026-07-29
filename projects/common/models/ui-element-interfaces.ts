@@ -91,6 +91,15 @@ export interface FirstColumnRatioProperties {
 }
 
 /**
+ * Elements that strike through the options the reader did not choose: radio group and toggle button.
+ * Both are single-choice option lists, but they sit in different groups of the model - the radio
+ * group is an input element, the toggle button a compound one - so this is the only level they share.
+ */
+export interface StrikeOtherOptionsProperties {
+  strikeOtherOptions: boolean;
+}
+
+/**
  * Elements that offer highlighter colours: text (the marked-up element) and marking panel (the
  * remote control for it). The panel is not a text element, so this is the only level they share.
  */

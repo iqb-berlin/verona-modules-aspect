@@ -4,28 +4,28 @@ import {
 import {
   RadioButtonGroupComplexProperties
 } from 'common/models/elements/input-group-elements/radio-button-group-complex';
-import { RadioButtonGroupProperties } from 'common/models/elements/input-group-elements/radio-button-group';
 import { DropdownProperties } from 'common/models/elements/input-group-elements/dropdown';
 import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
+import { StrikeOtherOptionsProperties } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 /**
  * The panel's view of the options-style elements.
  *
- * This component corresponds to no single model level: its four properties come from four
- * interfaces and are offered for four element types — `strikeOtherOptions` for the radio group and
- * the toggle button, `strikeSelectedOption` for the toggle button, `allowUnset` for the dropdown
- * and `itemsPerRow` for the image radio group. Composing them with `Pick` records which property
- * belongs to which element type, instead of inventing one interface spanning all four.
+ * This component corresponds to no single model level: its four properties are offered for four
+ * element types — `strikeOtherOptions` for the radio group and the toggle button,
+ * `strikeSelectedOption` for the toggle button, `allowUnset` for the dropdown and `itemsPerRow` for
+ * the image radio group. The three that belong to exactly one element type are composed with `Pick`,
+ * which records that ownership instead of inventing one interface spanning all four.
  *
- * `strikeOtherOptions` is declared separately and identically by `RadioButtonGroupProperties` and
- * `ToggleButtonProperties` — another instance of the missing shared level that #1141 collected,
- * found too late to be in that survey. It is picked from the radio group here, so the two
- * declarations must not drift apart.
+ * `strikeOtherOptions` used to be declared separately and identically by the radio group and the
+ * toggle button, and was picked from the radio group here — which quietly made this component the
+ * place where the two had to agree. It now has its own level, so the model states the sharing
+ * itself.
  */
 export type PanelSelectProperties =
-  Pick<RadioButtonGroupProperties, 'strikeOtherOptions'> &
+  StrikeOtherOptionsProperties &
   Pick<ToggleButtonProperties, 'strikeSelectedOption'> &
   Pick<DropdownProperties, 'allowUnset'> &
   Pick<RadioButtonGroupComplexProperties, 'itemsPerRow'>;

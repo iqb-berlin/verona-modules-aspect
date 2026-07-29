@@ -15,7 +15,7 @@
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabElementProperties' | translate">build</mat-icon>
       </ng-template>
-      <aspect-element-model-properties-component [combinedProperties]="$any(combinedProperties)"
+      <aspect-element-model-properties-component [combinedProperties]="combinedProperties"
                                                  [selectedElements]="selectedElements"
                                                  (updateModel)="updateModel($event.property, $event.value)">
       </aspect-element-model-properties-component>

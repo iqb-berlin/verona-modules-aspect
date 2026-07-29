@@ -7,16 +7,16 @@
     <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'propertiesPanel.mustBeUnique' | translate">
   </mat-form-field>
 
-  <aspect-media-source-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-media-source-properties [combinedProperties]="combinedProperties"
                                   (updateModel)="updateModel.emit($event)">
   </aspect-media-source-properties>
 
   <aspect-input-element-properties *ngIf="$any(combinedProperties) | isInputElement"
-                                   [combinedProperties]="$any(combinedProperties)"
+                                   [combinedProperties]="combinedProperties"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-input-element-properties>
 
-  <aspect-preset-value-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-preset-value-properties [combinedProperties]="combinedProperties"
                                   (updateModel)="updateModel.emit($event)">
   </aspect-preset-value-properties>
 
@@ -38,15 +38,15 @@
     </textarea>
   </mat-form-field>
 
-  <aspect-options-field-set [combinedProperties]="$any(combinedProperties)"
+  <aspect-options-field-set [combinedProperties]="combinedProperties"
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
-  <aspect-checkbox-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-checkbox-properties [combinedProperties]="combinedProperties"
                               (updateModel)="updateModel.emit($event)">
   </aspect-checkbox-properties>
 
-  <aspect-ele-specific-props [combinedProperties]="$any(combinedProperties)"
+  <aspect-ele-specific-props [combinedProperties]="combinedProperties"
                              (updateModel)="updateModel.emit($event)">
   </aspect-ele-specific-props>
 
@@ -81,6 +81,11 @@
     </mat-select>
   </mat-form-field>
 
+  <!-- $any() only for the four children this component shares no property name with: TypeScript's
+       weak type detection rejects an assignment to an all-optional type when nothing is in common,
+       and having nothing in common is exactly what extracting them achieved. The other children are
+       bound directly - the merged object this component receives carries every property, and its
+       own narrow type is assignable wherever a single name overlaps. -->
   <aspect-select-properties [combinedProperties]="$any(combinedProperties)"
                              (updateModel)="updateModel.emit($event)">
   </aspect-select-properties>
@@ -101,20 +106,20 @@
 
   <aspect-action-properties *ngIf="unitService.expertMode && combinedProperties.action !== undefined"
     [actions]="combinedProperties.type === 'button' ? BUTTON_ACTIONS : TRIGGER_ACTIONS"
-    [combinedProperties]="$any(combinedProperties)"
+    [combinedProperties]="combinedProperties"
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>
 
-  <aspect-text-field-element-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-text-field-element-properties [combinedProperties]="combinedProperties"
                                         (updateModel)="updateModel.emit($event)">
   </aspect-text-field-element-properties>
 
   <aspect-input-assistance-properties *ngIf="unitService.expertMode"
-                                      [combinedProperties]="$any(combinedProperties)"
+                                      [combinedProperties]="combinedProperties"
                                       (updateModel)="updateModel.emit($event)">
   </aspect-input-assistance-properties>
 
-  <aspect-sticky-header-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-sticky-header-properties [combinedProperties]="combinedProperties"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-sticky-header-properties>
 
@@ -123,7 +128,7 @@
   </aspect-first-column-ratio-properties>
 
   <aspect-scale-and-zoom-properties *ngIf="unitService.expertMode"
-                                    [combinedProperties]="$any(combinedProperties)"
+                                    [combinedProperties]="combinedProperties"
                                     (updateModel)="updateModel.emit($event)">
   </aspect-scale-and-zoom-properties>
 

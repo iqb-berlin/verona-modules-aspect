@@ -14,7 +14,7 @@
              (input)="elementService.updateSelectedElementsStyleProperty('helperRowColor', $any($event.target).value)">
 
       <aspect-merged-checkbox *ngIf="styles.lineColoring !== undefined"
-                              [value]="$any(styles.lineColoring)"
+                              [value]="styles.lineColoring"
                               (valueChange)="elementService.updateSelectedElementsStyleProperty('lineColoring', $event)">
         {{'propertiesPanel.lineColoring' | translate }}
       </aspect-merged-checkbox>
@@ -35,7 +35,7 @@
              (input)="elementService.updateSelectedElementsStyleProperty('lineColoringColor', $any($event.target).value)">
 
       <aspect-merged-checkbox *ngIf="styles.firstLineColoring !== undefined"
-                              [value]="$any(styles.firstLineColoring)"
+                              [value]="styles.firstLineColoring"
                               (valueChange)="elementService.updateSelectedElementsStyleProperty('firstLineColoring', $event)">
         {{'propertiesPanel.firstLineColoring' | translate }}
       </aspect-merged-checkbox>
@@ -131,17 +131,17 @@
       </mat-form-field>
 
       <aspect-merged-checkbox *ngIf="styles.bold !== undefined"
-                              [value]="$any(styles.bold)"
+                              [value]="styles.bold"
                               (valueChange)="elementService.updateSelectedElementsStyleProperty('bold', $event)">
         {{'propertiesPanel.bold' | translate }}
       </aspect-merged-checkbox>
       <aspect-merged-checkbox *ngIf="styles.italic !== undefined"
-                              [value]="$any(styles.italic)"
+                              [value]="styles.italic"
                               (valueChange)="elementService.updateSelectedElementsStyleProperty('italic', $event)">
         {{'propertiesPanel.italic' | translate }}
       </aspect-merged-checkbox>
       <aspect-merged-checkbox *ngIf="styles.underline !== undefined"
-                              [value]="$any(styles.underline)"
+                              [value]="styles.underline"
                               (valueChange)="elementService.updateSelectedElementsStyleProperty('underline', $event)">
         {{'propertiesPanel.underline' | translate }}
       </aspect-merged-checkbox>

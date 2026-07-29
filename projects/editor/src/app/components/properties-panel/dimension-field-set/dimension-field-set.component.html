@@ -5,7 +5,7 @@
                 selectionService.isCompoundChildSelected;
                 else elseBlock">
     <ng-container *ngIf="dimensions.isWidthFixed !== undefined else elseBlockWidth">
-      <aspect-merged-checkbox #fixedWidth [value]="$any(dimensions.isWidthFixed)"
+      <aspect-merged-checkbox #fixedWidth [value]="dimensions.isWidthFixed"
                               (valueChange)="updateDimensionProperty('isWidthFixed', $event)">
         {{'propertiesPanel.isWidthFixed' | translate }}
       </aspect-merged-checkbox>
@@ -29,7 +29,7 @@
     </ng-template>
 
     <ng-container *ngIf="dimensions.isHeightFixed !== undefined else elseBlockHeight">
-      <aspect-merged-checkbox #fixedHeight [value]="$any(dimensions.isHeightFixed)"
+      <aspect-merged-checkbox #fixedHeight [value]="dimensions.isHeightFixed"
                               (valueChange)="updateDimensionProperty('isHeightFixed', $event)">
         {{'propertiesPanel.isHeightFixed' | translate }}
       </aspect-merged-checkbox>

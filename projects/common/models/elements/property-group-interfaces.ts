@@ -35,6 +35,23 @@ export interface DimensionProperties {
 export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;
 export type BasicStyles = FontStyles & { backgroundColor: string };
 
+/**
+ * A property that lives in one of the element's nested groups rather than on the element itself.
+ * These have their own setters, and writing one through the generic path puts it on the element
+ * root, where nothing reads it — silently, because UIElement carries an index signature.
+ */
+export type NestedGroupProperty = keyof PositionProperties | keyof DimensionProperties | keyof Stylings;
+
+/**
+ * Accepts any property name except a literal from a nested group. A plain `string` still passes,
+ * which the panel needs: property names travel through its relay chain untyped. So this catches the
+ * mistake where it is actually made — at a call site that names the property outright.
+ *
+ * Both bugs in #1142 were of that shape: the alignment buttons wrote 'xPosition' and the resize
+ * handle wrote 'width' through the generic setter.
+ */
+export type OwnProperty<K extends string> = K extends NestedGroupProperty ? never : K;
+
 export interface FontStyles {
   fontColor: string;
   font: string;

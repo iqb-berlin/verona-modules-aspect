@@ -138,6 +138,18 @@ describe('ElementService', () => {
     expect(bottomElement.position.yPosition).toBe(5);
   });
 
+  /* The counterpart for the dimensions group, which the resize handle writes through (#1142). */
+  it('should write a dimension into the dimensions group of every element', () => {
+    const first = createPositionedElement('frame_a', 0, 0);
+    const second = createPositionedElement('frame_b', 0, 0);
+
+    service.updateElementsDimensionsProperty([first, second], 'width', 240);
+
+    expect(first.dimensions.width).toBe(240);
+    expect(second.dimensions.width).toBe(240);
+    expect(Object.keys(first)).not.toContain('width');
+  });
+
   it('should not leave the aligned coordinate on the element itself', () => {
     const element = createPositionedElement('frame_stray', 10, 0);
 

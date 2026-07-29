@@ -24,13 +24,20 @@ export class StaticOverlayComponent extends ElementOverlay {
     this.element.dimensions.height = Math.max(this.oldY + event.distance.y, 0);
   }
 
+  /*
+   * width and height live in the element's dimensions group, so they have to go through
+   * updateElementsDimensionsProperty. This used to call updateElementsProperty, which ends up in
+   * UIElement.setProperty and puts a stray width on the element itself. The dragged element still
+   * ended up resized, but only because resizeElement() mutates its dimensions directly as a live
+   * preview - so with several elements selected, the others silently kept their size (#1142).
+   */
   updateModel(event: CdkDragEnd): void {
-    this.elementService.updateElementsProperty(
+    this.elementService.updateElementsDimensionsProperty(
       this.selectionService.getSelectedElements(),
       'width',
       Math.max(this.oldX + event.distance.x, 0)
     );
-    this.elementService.updateElementsProperty(
+    this.elementService.updateElementsDimensionsProperty(
       this.selectionService.getSelectedElements(),
       'height',
       Math.max(this.oldY + event.distance.y, 0)

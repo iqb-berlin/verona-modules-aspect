@@ -15,6 +15,7 @@ import { VideoProperties } from 'common/models/elements/media-player-group-eleme
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
 import {
   DimensionProperties,
+  OwnProperty,
   PlayerProperties,
   PositionProperties,
   PropertyGroupGenerators,
@@ -150,7 +151,15 @@ export class ElementService {
     }
   }
 
-  updateElementsProperty(elements: UIElement[], property: string, value: UIElementValue): void {
+  /*
+   * `OwnProperty` rejects a named property that belongs to the position, dimensions or styling
+   * group: those have their own update methods, and going through this one puts the value on the
+   * element root instead, where nothing reads it. Names arriving as a plain string from the panel's
+   * relay chain still pass - see the type for why that is the useful trade.
+   */
+  updateElementsProperty<K extends string>(elements: UIElement[],
+                                           property: K & OwnProperty<K>,
+                                           value: UIElementValue): void {
     // console.log('updateElementsProperty ', elements, property, value);
     elements.forEach(element => {
       if (element.type === 'text' && property === 'text') {

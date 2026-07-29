@@ -211,31 +211,35 @@ export class ElementService {
     }
   }
 
+  // xPosition and yPosition live in the element's position group, so they have to go through
+  // updateElementsPositionProperty. updateElementsProperty would end up in UIElement.setProperty,
+  // which writes this[property] - allowed by the index signature, but it puts a stray xPosition on
+  // the element itself and leaves position.xPosition alone, so alignment did nothing at all.
   alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     switch (alignmentDirection) {
       case 'left':
-        this.updateElementsProperty(
+        this.updateElementsPositionProperty(
           elements,
           'xPosition',
           Math.min(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'right':
-        this.updateElementsProperty(
+        this.updateElementsPositionProperty(
           elements,
           'xPosition',
           Math.max(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'top':
-        this.updateElementsProperty(
+        this.updateElementsPositionProperty(
           elements,
           'yPosition',
           Math.min(...elements.map(element => element.position.yPosition))
         );
         break;
       case 'bottom':
-        this.updateElementsProperty(
+        this.updateElementsPositionProperty(
           elements,
           'yPosition',
           Math.max(...elements.map(element => element.position.yPosition))
@@ -243,8 +247,6 @@ export class ElementService {
         break;
       // no default
     }
-    this.unitService.elementPropertyUpdated.next();
-    this.unitService.updateUnitDefinition();
   }
 
   showDefaultEditDialog(elementParam?: UIElement): void {

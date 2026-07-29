@@ -25,6 +25,8 @@ describe('ElementService', () => {
     mathTableElementPropertyUpdated: Subject<string>;
     tablePropUpdated: Subject<string>;
     updateUnitDefinition: Mock;
+    // Enough of a unit for reorderElements(), which every position write goes through.
+    unit: { pages: { sections: { elements: UIElement[]; dynamicPositioning: boolean }[] }[] };
   };
 
   const createElementMock = (type: string, properties: Record<string, unknown> = {}): UIElement => ({
@@ -34,13 +36,24 @@ describe('ElementService', () => {
     ...properties
   } as unknown as UIElement);
 
+  /* A real element, not a mock: tests about the position group have to see what actually lands in
+     it. Registered with the mock unit, because every position write reorders the section. */
+  const createPositionedElement = (id: string, xPosition: number, yPosition: number): PositionedUIElement => {
+    const element = ElementFactory.createElement({
+      type: 'frame', id, alias: id, position: { xPosition, yPosition }
+    } as unknown as UIElementProperties) as PositionedUIElement;
+    unitServiceMock.unit.pages[0].sections[0].elements.push(element);
+    return element;
+  };
+
   beforeEach(() => {
     unitServiceMock = {
       elementPropertyUpdated: new Subject<void>(),
       geometryElementPropertyUpdated: new Subject<string>(),
       mathTableElementPropertyUpdated: new Subject<string>(),
       tablePropUpdated: new Subject<string>(),
-      updateUnitDefinition: vi.fn()
+      updateUnitDefinition: vi.fn(),
+      unit: { pages: [{ sections: [{ elements: [], dynamicPositioning: false }] }] }
     };
     dialogServiceSpy = createSpyObj<DialogService>(['showTextEditDialog']);
     service = new ElementService(
@@ -91,24 +104,47 @@ describe('ElementService', () => {
     expect(updatedGeometryIDs).toEqual([]);
   });
 
+  /* These assert on the elements' own position group rather than on a setProperty spy. The
+     alignment used to write through setProperty, which put a stray xPosition on the element and
+     left position.xPosition untouched - a spy-based test passed while the buttons did nothing
+     (#1142). */
   it('should align elements to the leftmost x position', () => {
-    const leftElement = createElementMock('frame', { position: { xPosition: 10 } });
-    const rightElement = createElementMock('frame', { position: { xPosition: 30 } });
+    const leftElement = createPositionedElement('frame_left', 10, 0);
+    const rightElement = createPositionedElement('frame_right', 30, 0);
 
-    service.alignElements([leftElement, rightElement] as PositionedUIElement[], 'left');
+    service.alignElements([leftElement, rightElement], 'left');
 
-    expect(leftElement.setProperty).toHaveBeenCalledWith('xPosition', 10);
-    expect(rightElement.setProperty).toHaveBeenCalledWith('xPosition', 10);
+    expect(leftElement.position.xPosition).toBe(10);
+    expect(rightElement.position.xPosition).toBe(10);
   });
 
   it('should align elements to the lowest y position', () => {
-    const topElement = createElementMock('frame', { position: { xPosition: 0, yPosition: 5 } });
-    const bottomElement = createElementMock('frame', { position: { xPosition: 0, yPosition: 25 } });
+    const topElement = createPositionedElement('frame_top', 0, 5);
+    const bottomElement = createPositionedElement('frame_bottom', 0, 25);
 
-    service.alignElements([topElement, bottomElement] as PositionedUIElement[], 'bottom');
+    service.alignElements([topElement, bottomElement], 'bottom');
 
-    expect(topElement.setProperty).toHaveBeenCalledWith('yPosition', 25);
-    expect(bottomElement.setProperty).toHaveBeenCalledWith('yPosition', 25);
+    expect(topElement.position.yPosition).toBe(25);
+    expect(bottomElement.position.yPosition).toBe(25);
+  });
+
+  it('should align elements to the topmost y position', () => {
+    const topElement = createPositionedElement('frame_top', 0, 5);
+    const bottomElement = createPositionedElement('frame_bottom', 0, 25);
+
+    service.alignElements([topElement, bottomElement], 'top');
+
+    expect(topElement.position.yPosition).toBe(5);
+    expect(bottomElement.position.yPosition).toBe(5);
+  });
+
+  it('should not leave the aligned coordinate on the element itself', () => {
+    const element = createPositionedElement('frame_stray', 10, 0);
+
+    service.alignElements([element, createPositionedElement('frame_other', 30, 0)], 'right');
+
+    expect(element.position.xPosition).toBe(30);
+    expect(Object.keys(element)).not.toContain('xPosition');
   });
 
   it('should open the text edit dialog for a radio element and apply the result', () => {

@@ -17,6 +17,8 @@ export const PANEL_BASELINE: Record<string, string> = {
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = audio
+text "originalFileName" = unknown
+button "upload_file"
 button "Medienoptionen anpassen"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
@@ -46,6 +48,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
+button "upload_file"
 button "Medienoptionen anpassen"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -79,6 +83,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
+button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -89,6 +95,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = audio
+text "originalFileName" = unknown
+button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -775,6 +783,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = geometry
+text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 checkbox "propertiesPanel.showResetIcon" = true
 [propertiesPanel.geogebraHeader]
@@ -815,6 +824,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 checkbox "propertiesPanel.showResetIcon" = indeterminate
 [propertiesPanel.geogebraHeader]
@@ -859,6 +869,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 [propertiesPanel.geogebraHeader]
 [propertiesPanel.trackedGeogebraVariables]
@@ -876,6 +887,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = geometry
+text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 [propertiesPanel.geogebraHeader]
 [propertiesPanel.trackedGeogebraVariables]
@@ -893,11 +905,13 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = hotspot-image
+text "originalFileName" = unknown
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+button "upload_file"
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -928,11 +942,13 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+button "upload_file"
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -967,9 +983,11 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
+button "upload_file"
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -982,9 +1000,11 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = hotspot-image
+text "originalFileName" = unknown
 [Eingabeelement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
+button "upload_file"
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -997,6 +1017,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = image
+text "originalFileName" = unknown
+button "upload_file"
 input[text] "Alternativtext" = Bild nicht gefunden
 button "Medienoptionen anpassen"
 checkbox "propertiesPanel.scale" = false
@@ -1032,6 +1054,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
+button "upload_file"
 input[text] "Alternativtext" = Bild nicht gefunden
 button "Medienoptionen anpassen"
 checkbox "propertiesPanel.scale" = indeterminate
@@ -1071,6 +1095,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
+button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1081,6 +1107,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = image
+text "originalFileName" = unknown
+button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3111,6 +3139,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = video
+text "originalFileName" = unknown
+button "upload_file"
 button "Medienoptionen anpassen"
 checkbox "propertiesPanel.scale" = false
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -3141,6 +3171,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
+button "upload_file"
 button "Medienoptionen anpassen"
 checkbox "propertiesPanel.scale" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -3175,6 +3207,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+text "originalFileName" = unknown
+button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3185,6 +3219,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = video
+text "originalFileName" = unknown
+button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 

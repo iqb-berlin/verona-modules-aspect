@@ -141,6 +141,16 @@ function describeCheckbox(checkbox: Element): string {
   return `checkbox "${normalizeText(checkbox)}" = ${state}${input ? flags(input) : ''}`;
 }
 
+/**
+ * The original file name is a readout, not a control, so none of the tag names below match it.
+ * Recognised by its class, which is the only marker it has; keep that class when the markup moves.
+ */
+function describeFileName(element: Element): string {
+  const label = normalizeText(element.querySelector('.file-name-label'));
+  const full = normalizeText(element);
+  return `text "${label}" = ${shorten(full.startsWith(label) ? full.slice(label.length).trim() : full)}`;
+}
+
 function describeToggleGroup(group: Element): string {
   const options = Array.from(group.querySelectorAll('mat-button-toggle'))
     .map(toggle => {
@@ -158,6 +168,10 @@ function describeControls(root: Element, selectValues: SelectValues): string[] {
   const lines: string[] = [];
 
   const walk = (element: Element): void => {
+    if (element.classList.contains('file-name')) {
+      lines.push(describeFileName(element));
+      return;
+    }
     switch (element.tagName.toLowerCase()) {
       case 'mat-form-field':
         lines.push(describeFormField(element, selectValues));
@@ -309,10 +323,22 @@ describe('properties panel characterization', () => {
    * booleans all disagree, so every one of them merges to null — the state the panel currently
    * cannot tell apart from "false everywhere". See the doc comment above.
    */
+  /**
+   * Media elements default to `src: null`, so the "change media source" button never rendered and
+   * the net could not see it. Set after construction, not through the factory: passing `src` makes
+   * the element's own `isXProperties` guard match, and that branch then overwrites `styling`,
+   * `position` and `dimensions` with the blueprint's (absent) values.
+   */
+  function withMediaSource(element: UIElement): UIElement {
+    const withSrc = element as unknown as { src?: string | null };
+    if ('src' in element && withSrc.src === null) withSrc.src = 'data:application/octet-stream;base64,AAAA';
+    return element;
+  }
+
   function selectionOf(type: UIElementType, mode: 'single' | 'divergent'): UIElement[] {
-    const first = ElementFactory.createElement({ type, id: type, alias: type });
+    const first = withMediaSource(ElementFactory.createElement({ type, id: type, alias: type }));
     if (mode === 'single') return [first];
-    const second = ElementFactory.createElement({ type, id: `${type}_2`, alias: `${type}_2` });
+    const second = withMediaSource(ElementFactory.createElement({ type, id: `${type}_2`, alias: `${type}_2` }));
     flipBooleans(second as unknown as Record<string, unknown>);
     return [first, second];
   }

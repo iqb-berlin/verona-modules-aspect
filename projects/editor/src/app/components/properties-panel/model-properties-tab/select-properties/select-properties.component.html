@@ -27,7 +27,7 @@
     {{'limitItemPerRow' | translate}}
   </mat-checkbox>
 
-  <mat-form-field appearance="fill" class="mdInput textsingleline">
+  <mat-form-field appearance="fill">
     <mat-label>{{'itemsPerRow' | translate }}</mat-label>
     <input matInput type="number" [min]="1" [pattern]="'[1-9]'" #itemsPerRow="ngModel" required
            [disabled]="combinedProperties.itemsPerRow === null"

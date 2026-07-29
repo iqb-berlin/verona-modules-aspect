@@ -45,7 +45,7 @@
 
 
   <div class="fx-row-start-stretch fx-fix-gap-10">
-    <mat-form-field appearance="fill" class="mdInput textsingleline fx-flex-50">
+    <mat-form-field appearance="fill" class="fx-flex-50">
       <mat-label>{{'hotspot.backgroundColor' | translate }}</mat-label>
       <input matInput type="text" [(ngModel)]="newHotspot.backgroundColor">
       <button mat-icon-button matSuffix (click)="backgroundColorInput.click()">
@@ -54,7 +54,7 @@
     </mat-form-field>
     <input matInput type="color" hidden #backgroundColorInput [(ngModel)]="newHotspot.backgroundColor">
 
-    <mat-form-field appearance="fill" class="mdInput textsingleline fx-flex-50">
+    <mat-form-field appearance="fill" class="fx-flex-50">
       <mat-label>{{'hotspot.borderColor' | translate }}</mat-label>
       <input matInput type="text" [(ngModel)]="newHotspot.borderColor">
       <button mat-icon-button matSuffix (click)="borderColorInput.click()">

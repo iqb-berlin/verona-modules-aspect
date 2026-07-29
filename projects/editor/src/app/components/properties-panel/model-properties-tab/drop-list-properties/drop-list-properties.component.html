@@ -99,7 +99,7 @@
                           (valueChange)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event })">
     {{'propertiesPanel.highlightReceivingDropList' | translate }}
   </aspect-merged-checkbox>
-  <mat-form-field *ngIf="unitService.expertMode" appearance="fill" class="mdInput textsingleline">
+  <mat-form-field *ngIf="unitService.expertMode" appearance="fill">
     <mat-label>{{'propertiesPanel.highlightReceivingDropListColor' | translate }}</mat-label>
     <input matInput type="text"
            [disabled]="!combinedProperties.highlightReceivingDropList"

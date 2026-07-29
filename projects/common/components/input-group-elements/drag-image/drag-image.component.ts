@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
-import { BasicStyles } from 'common/models/elements/property-group-interfaces';
+import { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 
 @Component({
@@ -10,7 +10,12 @@ import { DragNDropValueObject } from 'common/models/label-interfaces';
 })
 export class DragImageComponent {
   @Input() clozeContext: boolean = false;
-  @Input() styling!: BasicStyles;
+  /**
+   * The drop list's own styling group, not the narrower BasicStyles this used to declare: the
+   * template reads itemBackgroundColor, which only the drop list has. It compiled because the
+   * styling interfaces carried an index signature; the value passed in was always the right one.
+   */
+  @Input() styling!: DropListProperties['styling'];
 
   draggedItem: DragNDropValueObject | undefined;
   dragImageX: number | undefined;

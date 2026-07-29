@@ -52,7 +52,10 @@ describe('DragImageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DragImageComponent);
     component = fixture.componentInstance;
-    component.styling = PropertyGroupGenerators.generateBasicStyleProps();
+    component.styling = {
+      ...PropertyGroupGenerators.generateBasicStyleProps({ fontColor: '#112233', fontSize: 17 }),
+      itemBackgroundColor: '#445566'
+    };
     fixture.detectChanges();
   });
 
@@ -81,6 +84,19 @@ describe('DragImageComponent', () => {
     component.setDragPreviewPosition(50, 60);
     expect(component.dragImageX).toBe(30); // 50 - offsetX (20)
     expect(component.dragImageY).toBe(40); // 60 - offsetY (20)
+  });
+
+  /* itemBackgroundColor belongs to the drop list's styling group, not to BasicStyles, which is what
+     this input used to be declared as. The binding worked anyway because the styling interfaces
+     carried an index signature; nothing checked it. */
+  it('should style the preview from the drop list styling, item background included', () => {
+    component.initDragPreview(testItem, createSourceElement(), 30, 40);
+
+    const preview = fixture.nativeElement.querySelector('.drag-preview') as HTMLElement;
+
+    expect(preview.style.backgroundColor).toBe('rgb(68, 85, 102)');
+    expect(preview.style.color).toBe('rgb(17, 34, 51)');
+    expect(preview.style.fontSize).toBe('17px');
   });
 
   it('should remove the drag preview on unsetDragPreview', () => {

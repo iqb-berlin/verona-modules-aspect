@@ -111,8 +111,8 @@ export abstract class UIElement implements UIElementProperties {
     this[property] = value;
   }
 
-  setStyleProperty(property: string, value: UIElementValue): void {
-    (this.styling as Stylings)[property] = value;
+  setStyleProperty(property: keyof Stylings, value: UIElementValue): void {
+    Object.assign(this.styling, { [property]: value });
   }
 
   /*
@@ -132,8 +132,8 @@ export abstract class UIElement implements UIElementProperties {
     Object.assign(this.dimensions, { [property]: value });
   }
 
-  setPlayerProperty(property: string, value: UIElementValue): void {
-    (this.player as PlayerProperties)[property] = value;
+  setPlayerProperty(property: keyof PlayerProperties, value: UIElementValue): void {
+    Object.assign(this.player as PlayerProperties, { [property]: value });
   }
 
   // eslint-disable-next-line class-methods-use-this

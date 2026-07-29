@@ -36,7 +36,6 @@ export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;
 export type BasicStyles = FontStyles & { backgroundColor: string };
 
 export interface FontStyles {
-  [index: string]: unknown;
   fontColor: string;
   font: string;
   fontSize: number;
@@ -46,7 +45,6 @@ export interface FontStyles {
 }
 
 export interface BorderStyles {
-  [index: string]: unknown;
   borderWidth: number;
   borderColor: string;
   borderStyle: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
@@ -54,7 +52,6 @@ export interface BorderStyles {
 }
 
 export interface OtherStyles {
-  [index: string]: unknown;
   backgroundColor?: string;
   lineHeight?: number;
   itemBackgroundColor?: string;
@@ -67,7 +64,6 @@ export interface OtherStyles {
 }
 
 export interface PlayerProperties {
-  [index: string]: unknown;
   loop: boolean;
   startControl: boolean;
   pauseControl: boolean;
@@ -266,9 +262,15 @@ export abstract class PropertyGroupGenerators {
     return properties.hintLabel !== '';
   }
 
+  /**
+   * Fallback for units written before 4.11.0, where this property was called `hintLabelDelay` (see
+   * `docs/unit_definition_changelog.txt`). The old name is not part of PlayerProperties, so it is
+   * read through a local type rather than through an index signature, which used to hide the fact
+   * that this reads a name the interface does not have.
+   */
   private static sanitizeHintDelay(properties: Partial<PlayerProperties>): number {
-    if (properties.hintLabelDelay === undefined) return 5000;
-    return properties.hintLabelDelay as number;
+    const legacyDelay = (properties as { hintLabelDelay?: number }).hintLabelDelay;
+    return legacyDelay !== undefined ? legacyDelay : 5000;
   }
 
   static generateKeyInputProps(properties: Partial<KeyInputElementProperties> = {}): KeyInputElementProperties {

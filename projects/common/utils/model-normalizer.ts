@@ -187,7 +187,7 @@ export class ModelNormalizer {
       normalized.player = PropertyGroupGenerators.generatePlayerProps({
         ...defaults,
         ...(normalized.player as Record<string, unknown>)
-      } as PlayerProperties);
+      } as Partial<PlayerProperties>);
     }
 
     const keyboardTypes: UIElementType[] = [

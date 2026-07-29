@@ -17,7 +17,8 @@ import {
   DimensionProperties,
   PlayerProperties,
   PositionProperties,
-  PropertyGroupGenerators
+  PropertyGroupGenerators,
+  Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
 import { ReferenceManager } from 'editor/src/app/classes/reference-manager';
@@ -317,7 +318,8 @@ export class ElementService {
           this.dialogService.showPlayerEditDialog(element.id, (element as PlayerElement).player)
             .subscribe((result: PlayerProperties) => {
               if (!result) return;
-              Object.keys(result).forEach(
+              // Object.keys widens to string[]; result is a PlayerProperties, so its keys are its own.
+              (Object.keys(result) as (keyof PlayerProperties)[]).forEach(
                 key => this.updateElementsPlayerProperty([element], key, result[key] as UIElementValue)
               );
             });
@@ -336,7 +338,7 @@ export class ElementService {
     }
   }
 
-  updateSelectedElementsStyleProperty(property: string, value: UIElementValue): void {
+  updateSelectedElementsStyleProperty(property: keyof Stylings, value: UIElementValue): void {
     const elements = this.selectionService.getSelectedElements();
     elements.forEach(element => {
       element.setStyleProperty(property, value);
@@ -345,7 +347,9 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  updateElementsPlayerProperty(elements: UIElement[], property: string, value: UIElementValue): void {
+  updateElementsPlayerProperty(elements: UIElement[],
+                               property: keyof PlayerProperties,
+                               value: UIElementValue): void {
     elements.forEach(element => {
       element.setPlayerProperty(property, value);
     });

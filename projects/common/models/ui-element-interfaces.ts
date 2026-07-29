@@ -91,6 +91,16 @@ export interface FirstColumnRatioProperties {
 }
 
 /**
+ * Elements that offer highlighter colours: text (the marked-up element) and marking panel (the
+ * remote control for it). The panel is not a text element, so this is the only level they share.
+ */
+export interface HighlightableProperties {
+  highlightableYellow: boolean;
+  highlightableTurquoise: boolean;
+  highlightableOrange: boolean;
+}
+
+/**
  * Elements that trigger an action: button, trigger.
  *
  * Generic, because the two share the shape but not the vocabulary — a button navigates, a trigger

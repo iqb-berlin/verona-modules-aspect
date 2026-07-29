@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { TextProperties } from 'common/models/elements/text-group-elements/text';
+import { HighlightableProperties } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 
 @Component({
@@ -11,12 +11,8 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 })
 
 export class HighlightPropertiesComponent {
-  @Input() combinedProperties!: Merged<TextProperties>;
+  @Input() combinedProperties!: Merged<HighlightableProperties>;
   @Input() disabled!: boolean;
   @Output() updateModel =
-    new EventEmitter<{
-      property: string;
-      value: string | number | boolean | string[];
-      isInputValid?: boolean | null
-    }>();
+    new EventEmitter<{ property: keyof HighlightableProperties; value: boolean }>();
 }

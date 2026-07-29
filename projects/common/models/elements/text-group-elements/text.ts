@@ -5,7 +5,9 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import {
+  HighlightableProperties, UIElementProperties, UIElementType
+} from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
@@ -91,13 +93,10 @@ export class TextElement extends UIElement implements TextProperties {
   }
 }
 
-export interface TextProperties extends UIElementProperties {
+export interface TextProperties extends UIElementProperties, HighlightableProperties {
   text: string;
   markingMode: 'selection' | 'word' | 'range';
   markingPanels: string[];
-  highlightableOrange: boolean;
-  highlightableTurquoise: boolean;
-  highlightableYellow: boolean;
   hasSelectionPopup: boolean;
   columnCount: number;
   position: PositionProperties;

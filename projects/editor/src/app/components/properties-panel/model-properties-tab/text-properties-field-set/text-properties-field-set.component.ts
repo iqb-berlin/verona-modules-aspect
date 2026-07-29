@@ -17,12 +17,13 @@ export class TextPropsComponent {
   markingPanelIDs: [string, string][];
   @Input() combinedProperties!: Merged<TextProperties>;
   /**
-   * `string` rather than `keyof TextProperties`, because the marking colours are emitted by the
-   * child highlight component and pass through here; its own writes go through `emitOwn()`.
+   * The marking colours are emitted by the child highlight component and pass through here. Since
+   * `TextProperties` extends `HighlightableProperties`, those names are covered by this key union
+   * too, so the pass-through needs no widening. This component's own writes go through `emitOwn()`.
    */
   @Output() updateModel =
     new EventEmitter<{
-      property: string;
+      property: keyof TextProperties;
       value: string | number | boolean | string[],
       isInputValid?: boolean | null
     }>();

@@ -71,40 +71,57 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       );
   }
 
+  /**
+   * The selected elements as one object, the way the panel's components read it.
+   *
+   * `idList` and `rows` are added here rather than inside the merge, because they are about the
+   * selection as a whole and not about a single property:
+   *
+   * - `idList` holds the ids of everything selected, so the drop list can leave the selected lists
+   *   out of its own "connected lists" options. It used to sit on the merge base, where the loop
+   *   below deleted it again on the first iteration: the loop walks the merge object's keys and
+   *   drops every key the next element does not have - and no element has an `idList` (#1119).
+   * - `rows` is replaced by a copy so the options panel sees a new reference and re-renders.
+   */
   static createCombinedProperties(elements: UIElement[]): CombinedProperties | undefined {
-    if (elements.length > 0) {
-      const combinedProperties = { ...elements[0], idList: [elements[0].id] } as CombinedProperties;
+    if (elements.length === 0) return undefined;
+    const combinedProperties = ElementPropertiesPanelComponent.mergeElements(elements);
+    combinedProperties.idList = elements.map(element => element.id);
+    combinedProperties.rows = combinedProperties.rows ?
+      [...combinedProperties.rows as LikertRowElement[]] :
+      undefined;
+    return combinedProperties;
+  }
 
-      for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
-        const elementToMerge = elements[elementCounter];
-        Object.keys(combinedProperties).forEach((property: keyof UIElement) => {
-          if (Object.prototype.hasOwnProperty.call(elementToMerge, property)) {
-            if (typeof combinedProperties[property] === 'object' &&
-              !Array.isArray(combinedProperties[property]) &&
-              combinedProperties[property] !== null) {
-              combinedProperties[property] =
-                ElementPropertiesPanelComponent.createCombinedProperties(
-                  [(combinedProperties[property] as UIElement),
-                    (elementToMerge[property] as UIElement)]
-                );
-            } else if (JSON.stringify(combinedProperties[property]) !== JSON.stringify(elementToMerge[property])) {
-              if (property === 'id') {
-                combinedProperties.idList?.push(elementToMerge.id as string);
-              } else {
-                combinedProperties[property] = null;
-              }
-            }
-          } else {
-            delete combinedProperties[property];
+  /**
+   * Merges the elements property by property: equal values are kept, diverging ones become `null`,
+   * and a property that not every element has is dropped. Nested property groups recurse through
+   * here too, which is why the two selection-wide keys above are not part of it - a position group
+   * has no id and no rows.
+   */
+  private static mergeElements(elements: UIElement[]): CombinedProperties {
+    const merged = { ...elements[0] } as CombinedProperties;
+
+    for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
+      const elementToMerge = elements[elementCounter];
+      Object.keys(merged).forEach((property: keyof UIElement) => {
+        if (Object.prototype.hasOwnProperty.call(elementToMerge, property)) {
+          if (typeof merged[property] === 'object' &&
+            !Array.isArray(merged[property]) &&
+            merged[property] !== null) {
+            merged[property] = ElementPropertiesPanelComponent.mergeElements(
+              [(merged[property] as UIElement), (elementToMerge[property] as UIElement)]
+            );
+          } else if (JSON.stringify(merged[property]) !== JSON.stringify(elementToMerge[property])) {
+            // `id` keeps the first element's value; the ids of the whole selection are in `idList`.
+            if (property !== 'id') merged[property] = null;
           }
-        });
-      }
-      // replace rows array to trigger change detection for options panel
-      combinedProperties.rows = combinedProperties.rows ? [...combinedProperties.rows as LikertRowElement[]] : undefined;
-      // console.log('combi', combinedProperties);
-      return combinedProperties;
+        } else {
+          delete merged[property];
+        }
+      });
     }
-    return undefined;
+    return merged;
   }
 
   updateModel(property: string, value: UIElementValue, isInputValid: boolean | null = true): void {

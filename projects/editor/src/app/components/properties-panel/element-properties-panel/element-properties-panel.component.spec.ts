@@ -155,16 +155,30 @@ describe('ElementPropertiesPanelComponent', () => {
     expect(combined?.asLink).toBeUndefined();
   });
 
-  // Documents current behaviour: idList is added to the merge base, so the key
-  // is dropped again as soon as a second element without that key is merged in.
-  // See issue #1119 — adapt this test when the merge is fixed.
-  it('should drop the id list when several elements are merged', () => {
+  /* idList used to be added to the merge base, where the merge loop deleted it again on the first
+     iteration - no element has that key, and the loop drops every key the next element lacks. It is
+     now added after merging (#1119). Without it the drop list's "connected lists" options are empty
+     for a multi selection, because GetValidDropListsPipe returns [] for undefined. */
+  it('should list the ids of the whole selection when several elements are merged', () => {
     const combined = ElementPropertiesPanelComponent.createCombinedProperties([
       { type: 'button', id: 'a' } as unknown as UIElement,
       { type: 'button', id: 'b' } as unknown as UIElement
     ]);
 
-    expect(combined?.idList).toBeUndefined();
+    expect(combined?.idList).toEqual(['a', 'b']);
+  });
+
+  /* The two selection-wide keys are added around the merge, not inside it, so the recursion into
+     property groups does not leave them behind on a position or dimensions object. */
+  it('should not put the selection-wide keys on a merged property group', () => {
+    const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+      { type: 'button', id: 'a', position: { xPosition: 0 } } as unknown as UIElement,
+      { type: 'button', id: 'b', position: { xPosition: 5 } } as unknown as UIElement
+    ]);
+
+    const position = combined?.position as unknown as Record<string, unknown>;
+    expect('idList' in position).toBe(false);
+    expect('rows' in position).toBe(false);
   });
 
   describe('createCombinedProperties', () => {

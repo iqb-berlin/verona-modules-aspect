@@ -13,5 +13,9 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class WidgetMoleculeEditorPropertiesComponent {
   @Input() combinedProperties!: Merged<WidgetMoleculeEditorProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: UIElementValue, isInputValid?: boolean | null }>();
+    new EventEmitter<{
+      property: keyof WidgetMoleculeEditorProperties;
+      value: UIElementValue,
+      isInputValid?: boolean | null
+    }>();
 }

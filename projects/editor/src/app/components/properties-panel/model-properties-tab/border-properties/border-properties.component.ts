@@ -12,5 +12,5 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class BorderPropertiesComponent {
   @Input() combinedProperties!: Merged<FrameProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | null }>();
+    new EventEmitter<{ property: keyof FrameProperties; value: string | number | boolean | null }>();
 }

@@ -13,5 +13,9 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class ScaleAndZoomPropertiesComponent {
   @Input() combinedProperties!: Merged<ImageProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | null, isInputValid?: boolean | null }>();
+    new EventEmitter<{
+      property: keyof ImageProperties;
+      value: string | number | boolean | null,
+      isInputValid?: boolean | null
+    }>();
 }

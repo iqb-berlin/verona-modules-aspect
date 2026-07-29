@@ -12,5 +12,5 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class MathFieldPropsComponent {
   @Input() combinedProperties!: Merged<MathFieldProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: boolean, isInputValid?: boolean | null }>();
+    new EventEmitter<{ property: keyof MathFieldProperties; value: boolean, isInputValid?: boolean | null }>();
 }

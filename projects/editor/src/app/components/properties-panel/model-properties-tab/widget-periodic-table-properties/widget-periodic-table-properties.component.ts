@@ -12,5 +12,5 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class WidgetPeriodicTablePropertiesComponent {
   @Input() combinedProperties!: Merged<WidgetPeriodicTableProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | null }>();
+    new EventEmitter<{ property: keyof WidgetPeriodicTableProperties; value: string | number | boolean | null }>();
 }

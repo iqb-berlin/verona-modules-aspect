@@ -1,11 +1,12 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { HotspotImageProperties } from 'common/models/elements/input-group-elements/hotspot-image';
+import {
+  Hotspot, HotspotImageProperties
+} from 'common/models/elements/input-group-elements/hotspot-image';
 import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
 
 @Component({
   selector: 'aspect-hotspot-props',
@@ -14,7 +15,7 @@ import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-ima
 })
 export class HotspotPropsComponent {
   @Input() combinedProperties!: Merged<HotspotImageProperties>;
-  @Output() updateModel = new EventEmitter<{ property: string; value: Hotspot[] }>();
+  @Output() updateModel = new EventEmitter<{ property: keyof HotspotImageProperties; value: Hotspot[] }>();
 
   constructor(private dialogService: DialogService) { }
 

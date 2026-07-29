@@ -2,7 +2,6 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
-import { DeclaredKeys } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
@@ -16,10 +15,9 @@ import { UIElementValue } from 'common/models/ui-element-interfaces';
 export class PositionFieldSetComponent {
   @Input() positionProperties!: PositionProperties;
   @Input() isZIndexDisabled: boolean = false;
-  /** `DeclaredKeys`, not `keyof`: PositionProperties carries an index signature. */
   @Output() updateModel =
     new EventEmitter<{
-      property: DeclaredKeys<PositionProperties>;
+      property: keyof PositionProperties;
       value: UIElementValue,
       isInputValid?: boolean | null
     }>();

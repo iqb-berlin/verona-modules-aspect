@@ -10,9 +10,7 @@ import { RadioButtonGroupProperties } from 'common/models/elements/input-group-e
 import { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
 import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
-import {
-  DeclaredKeys, Merged
-} from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import {
   BUTTON_ACTIONS, PanelActionProperties, TRIGGER_ACTIONS
 } from 'editor/src/app/components/properties-panel/model-properties-tab/action-properties/action-properties.component';
@@ -77,13 +75,13 @@ export class ElementModelPropertiesComponent {
     this.updateModel.emit({ property, value });
   }
 
-  toggleProperty(property: DeclaredKeys<DimensionProperties>, checked: boolean): void {
+  toggleProperty(property: keyof DimensionProperties, checked: boolean): void {
     if (!checked) {
       this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, null);
     }
   }
 
-  updateDimensionProperty(property: DeclaredKeys<DimensionProperties>, value: number | boolean | null): void {
+  updateDimensionProperty(property: keyof DimensionProperties, value: number | boolean | null): void {
     this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, value);
   }
 }

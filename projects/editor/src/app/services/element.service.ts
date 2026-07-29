@@ -14,6 +14,7 @@ import { AudioProperties } from 'common/models/elements/media-player-group-eleme
 import { VideoProperties } from 'common/models/elements/media-player-group-elements/video';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
 import {
+  DimensionProperties,
   PlayerProperties,
   PositionProperties,
   PropertyGroupGenerators
@@ -379,11 +380,13 @@ export class ElementService {
       .filter(el => !TextElement.getAnchorIDs(newValue).includes(el));
   }
 
-  updateSelectedElementsPositionProperty(property: string, value: UIElementValue): void {
+  updateSelectedElementsPositionProperty(property: keyof PositionProperties, value: UIElementValue): void {
     this.updateElementsPositionProperty(this.selectionService.getSelectedElements(), property, value);
   }
 
-  updateElementsPositionProperty(elements: UIElement[], property: string, value: UIElementValue): void {
+  updateElementsPositionProperty(elements: UIElement[],
+                                 property: keyof PositionProperties,
+                                 value: UIElementValue): void {
     elements.forEach(element => {
       element.setPositionProperty(property, value);
     });
@@ -392,7 +395,9 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | boolean | null): void {
+  updateElementsDimensionsProperty(elements: UIElement[],
+                                   property: keyof DimensionProperties,
+                                   value: number | boolean | null): void {
     elements.forEach(element => {
       element.setDimensionsProperty(property, value);
       if (element.type === 'geometry') {

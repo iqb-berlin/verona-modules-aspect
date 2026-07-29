@@ -8,7 +8,6 @@ import { Measurement } from 'common/models/ui-element-interfaces';
 import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 
 export interface PositionProperties {
-  [index: string]: unknown;
   xPosition: number;
   yPosition: number;
   gridColumn: number | null;
@@ -23,7 +22,6 @@ export interface PositionProperties {
 }
 
 export interface DimensionProperties {
-  [index: string]: unknown;
   width: number;
   height: number;
   isWidthFixed?: boolean;

@@ -106,18 +106,14 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
         'gridColumn',
         event.container.data.gridCoordinates[1]
       );
-    } else if (event.item.data.dragType === 'resize') { // TODO unused
-      this.elementService.updateElementsPositionProperty(
-        [dragItemData.element],
-        'gridColumnEnd',
-        event.container.data.gridCoordinates[0] + 1
-      );
-      this.elementService.updateElementsPositionProperty(
-        [dragItemData.element],
-        'gridRowEnd',
-        event.container.data.gridCoordinates[1] + 1
-      );
     } else {
+      /* There used to be a 'resize' branch here, marked "TODO unused". It was: nothing in the
+         editor ever sets that drag type - both overlays drag with 'move' - and it wrote
+         'gridColumnEnd' and 'gridRowEnd', which are not properties of PositionProperties at all
+         (the interface has gridColumn/gridColumnRange and gridRow/gridRowRange). So it would have
+         put two stray keys on the position group and moved nothing. Removed rather than repaired,
+         because there is no caller to repair it for; an unimplemented drag type now reaches the
+         error below, which is what the spec already expects for unknown ones. */
       throw new Error('Unknown drop event');
     }
   }

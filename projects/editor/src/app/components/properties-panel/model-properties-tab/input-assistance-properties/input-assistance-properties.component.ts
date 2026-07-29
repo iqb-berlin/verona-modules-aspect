@@ -26,7 +26,7 @@ Pick<TextAreaProperties, 'hasReturnKey'>;
 export class InputAssistancePropertiesComponent {
   @Input() combinedProperties!: Merged<InputAssistanceHost>;
   @Output() updateModel = new EventEmitter<{
-    property: string;
+    property: keyof InputAssistanceHost;
     value: string | number | boolean | string[] | null;
     isInputValid?: boolean | null;
   }>();

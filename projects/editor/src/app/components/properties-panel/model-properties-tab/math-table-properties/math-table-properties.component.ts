@@ -8,8 +8,18 @@ import {
   ViewChildren
 } from '@angular/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { MathTableProperties } from 'common/models/elements/interactive-group-elements/math-table';
+import {
+  MathTableProperties, VariableLayoutOptions
+} from 'common/models/elements/interactive-group-elements/math-table';
 import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+
+/**
+ * What this component may write. The layout switches are read nested, as
+ * `variableLayoutOptions.showResultRow`, but written flat: MathTableElement overrides `setProperty`
+ * and routes any key of VariableLayoutOptions into that object. So both name spaces are valid here,
+ * and a typo in either one is still caught.
+ */
+type MathTableWritableProperty = keyof MathTableProperties | keyof VariableLayoutOptions;
 
 @Component({
   selector: 'aspect-math-table-properties',
@@ -20,7 +30,7 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class MathTablePropertiesComponent {
   @Input() combinedProperties!: Merged<MathTableProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | string[] | boolean }>();
+    new EventEmitter<{ property: MathTableWritableProperty; value: string | string[] | boolean }>();
 
   @ViewChildren('termInput') termInputs!: QueryList<ElementRef>;
 

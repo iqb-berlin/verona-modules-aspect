@@ -26,7 +26,7 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class OptionsFieldSetComponent {
   @Input() combinedProperties!: Merged<LikertProperties>;
   @Output() updateModel = new EventEmitter<{
-    property: string;
+    property: keyof LikertProperties;
     value: string | number | boolean | string[] | Label[] | LikertRowElement[]
   }>();
 

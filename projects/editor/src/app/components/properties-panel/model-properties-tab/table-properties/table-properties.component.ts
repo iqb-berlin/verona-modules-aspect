@@ -19,7 +19,7 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class TablePropertiesComponent implements OnInit, OnDestroy {
   @Input() combinedProperties!: Merged<TableProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: boolean | { value: number; unit: string }[] | null }>();
+    new EventEmitter<{ property: keyof TableProperties; value: boolean | { value: number; unit: string }[] | null }>();
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -71,7 +71,7 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
     this.updateModel.emit({ property, value: newArray });
   }
 
-  changeGridSize(property: string, index: number, newValue: { value: number; unit: string }): void {
+  changeGridSize(property: keyof TableProperties, index: number, newValue: { value: number; unit: string }): void {
     const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?
       (this.combinedProperties.gridColumnSizes as { value: number; unit: string }[]) :
       (this.combinedProperties.gridRowSizes as { value: number; unit: string }[]);

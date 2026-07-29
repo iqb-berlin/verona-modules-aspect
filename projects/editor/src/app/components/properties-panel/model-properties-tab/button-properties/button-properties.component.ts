@@ -18,7 +18,7 @@ export class ButtonPropertiesComponent implements OnDestroy {
   @Input() combinedProperties!: Merged<ButtonProperties>;
   @Output() updateModel =
     new EventEmitter<{
-      property: string; value: string | number | boolean | null, isInputValid?: boolean | null
+      property: keyof ButtonProperties; value: string | number | boolean | null, isInputValid?: boolean | null
     }>();
 
   checked = false;

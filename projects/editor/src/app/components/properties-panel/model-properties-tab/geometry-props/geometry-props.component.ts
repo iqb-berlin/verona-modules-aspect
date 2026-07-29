@@ -27,7 +27,10 @@ import { VariableAlias } from 'common/utils/variable-alias';
 export class GeometryPropsComponent implements OnInit, OnDestroy {
   @Input() combinedProperties!: Merged<GeometryProperties>;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | null | GeometryVariable[] }>();
+    new EventEmitter<{
+      property: keyof GeometryProperties;
+      value: string | number | boolean | null | GeometryVariable[]
+    }>();
 
   geometryObjects: BehaviorSubject<GeometryVariable[]> = new BehaviorSubject<GeometryVariable[]>([]);
   private ngUnsubscribe = new Subject<void>();

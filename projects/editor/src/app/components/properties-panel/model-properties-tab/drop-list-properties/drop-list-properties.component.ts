@@ -20,7 +20,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interf
 export class DropListPropertiesComponent {
   @Input() combinedProperties!: Merged<DropListProperties> & { idList?: string[] };
   @Output() updateModel = new EventEmitter<{
-    property: string;
+    property: keyof DropListProperties;
     value: string | number | boolean | string[] | DragNDropValueObject[],
     isInputValid?: boolean | null
   }>();

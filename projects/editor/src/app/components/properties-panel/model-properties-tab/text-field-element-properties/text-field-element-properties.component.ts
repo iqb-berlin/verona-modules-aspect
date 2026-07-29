@@ -15,7 +15,7 @@ import { Merged } from 'editor/src/app/components/properties-panel/models/merged
 export class TextFieldElementPropertiesComponent implements OnInit, OnChanges {
   @Input() combinedProperties!: Merged<TextFieldProperties>;
   @Output() updateModel = new EventEmitter<{
-    property: string;
+    property: keyof TextFieldProperties;
     value: string | number | boolean | string[] | null;
     isInputValid?: boolean | null;
   }>();

@@ -1,5 +1,5 @@
 import {
-  ComponentFixture, fakeAsync, TestBed, tick
+  ComponentFixture, TestBed
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
@@ -97,21 +97,46 @@ describe('SelectPropertiesComponent', () => {
   });
 
   /**
-   * Characterizes today's behaviour, which looks wrong: the template binds [disabled] on an input
-   * that also carries [ngModel], so the binding reaches NgModel as well and the form control's
-   * state wins. Switching the limit off therefore leaves the field editable. It *is* disabled when
-   * the panel is built with itemsPerRow already null — see the "(disabled)" in the
-   * radio-group-images baseline entry — so only the switch-over is affected. Recorded rather than
-   * fixed: changing it is a behaviour change, not part of typing this component.
+   * NOT `fakeAsync`, and that is the point of this comment.
+   *
+   * `[disabled]` sits on an input that also carries `[ngModel]`, so NgModel gets the binding too and
+   * disables the form control - but it does that inside `resolvedPromise.then(...)`, chained onto a
+   * promise NgModel created at module load, outside any fake zone. Neither `tick()` nor
+   * `flushMicrotasks()` reaches that callback, so under `fakeAsync` the field looks like it stayed
+   * editable. It only settles with `await fixture.whenStable()`.
+   *
+   * An earlier version of this test asserted the field stays editable and called that the product's
+   * behaviour. It is not: the switch-over disables the field correctly. This is a documented
+   * exception to rule 7 - prefer `fakeAsync`, except where the code under test waits on a promise
+   * from outside the zone.
    */
-  it('should leave the items per row input editable after the limit is switched off', fakeAsync(() => {
-    component.combinedProperties = { itemsPerRow: null };
-    fixture.detectChanges();
-    tick();
-
+  it('should disable the items per row input when the limit is switched off', async () => {
     const input = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
     expect(input.disabled).toBe(false);
-  }));
+
+    component.combinedProperties = { itemsPerRow: null };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(input.disabled).toBe(true);
+  });
+
+  it('should re-enable the items per row input when the limit is switched back on', async () => {
+    const input = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+    component.combinedProperties = { itemsPerRow: null };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(input.disabled).toBe(true);
+
+    component.combinedProperties = { itemsPerRow: 4 };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(input.disabled).toBe(false);
+  });
 
   it('should render nothing for an element with none of the properties', () => {
     component.combinedProperties = {};

@@ -1,7 +1,7 @@
 <div *ngIf="combinedProperties.type === 'drop-list'"
      class="fx-column-start-stretch">
   <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'newOption'"
-                            [itemList]="$any(combinedProperties.value)"
+                            [itemList]="combinedProperties.value ?? []"
                             (textItemAdded)="addOption($event)"
                             (itemRemoved)="removeOption($event)"
                             (itemReordered)="moveOption('value', $event)"
@@ -101,11 +101,11 @@
   </aspect-merged-checkbox>
   <mat-form-field *ngIf="unitService.expertMode" appearance="fill">
     <mat-label>{{'propertiesPanel.highlightReceivingDropListColor' | translate }}</mat-label>
-    <input matInput type="text"
+    <input #highlightReceivingDropListColorField matInput type="text"
            [disabled]="!combinedProperties.highlightReceivingDropList"
            [value]="combinedProperties.highlightReceivingDropListColor"
            (input)="updateModel.emit({
                  property: 'highlightReceivingDropListColor',
-                 value: $any($event.target).value })">
+                 value: highlightReceivingDropListColorField.value })">
   </mat-form-field>
 </div>

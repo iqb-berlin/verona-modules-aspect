@@ -44,10 +44,10 @@
   </mat-form-field>
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.minLengthWarnMessage' | translate }}</mat-label>
-    <input matInput type="text"
+    <input #minLengthWarnMessageField matInput type="text"
            [disabled]="!combinedProperties.minLength"
            [value]="combinedProperties.minLengthWarnMessage"
-           (input)="updateModel.emit({ property: 'minLengthWarnMessage', value: $any($event.target).value })">
+           (input)="updateModel.emit({ property: 'minLengthWarnMessage', value: minLengthWarnMessageField.value })">
   </mat-form-field>
 </ng-container>
 
@@ -69,10 +69,10 @@
   </aspect-merged-checkbox>
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.maxLengthWarnMessage' | translate }}</mat-label>
-    <input matInput type="text"
+    <input #maxLengthWarnMessageField matInput type="text"
            [disabled]="!combinedProperties.maxLength"
            [value]="combinedProperties.maxLengthWarnMessage"
-           (input)="updateModel.emit({ property: 'maxLengthWarnMessage', value: $any($event.target).value })">
+           (input)="updateModel.emit({ property: 'maxLengthWarnMessage', value: maxLengthWarnMessageField.value })">
   </mat-form-field>
 </ng-container>
 
@@ -85,10 +85,10 @@
   </mat-form-field>
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.patternWarnMessage' | translate }}</mat-label>
-    <input matInput type="text"
+    <input #patternWarnMessageField matInput type="text"
            [disabled]="!combinedProperties.pattern"
            [value]="combinedProperties.patternWarnMessage"
-           (input)="updateModel.emit({ property: 'patternWarnMessage', value: $any($event.target).value })">
+           (input)="updateModel.emit({ property: 'patternWarnMessage', value: patternWarnMessageField.value })">
   </mat-form-field>
 </ng-container>
 

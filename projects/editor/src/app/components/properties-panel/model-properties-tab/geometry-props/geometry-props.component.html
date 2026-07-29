@@ -2,9 +2,9 @@
                 matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
                 appearance="fill">
   <mat-label>{{ 'propertiesPanel.appDefinition' | translate }}</mat-label>
-  <input matInput disabled
+  <input #appDefinitionField matInput disabled
          [value]="combinedProperties.appDefinition"
-         (input)="updateModel.emit({ property: 'appDefinition', value: $any($event.target).value })">
+         (input)="updateModel.emit({ property: 'appDefinition', value: appDefinitionField.value })">
   <button mat-icon-button matSuffix (click)="showGeogebraAppDefDialog()">
     <mat-icon>edit</mat-icon>
   </button>
@@ -41,9 +41,9 @@
                   matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
                   appearance="fill">
     <mat-label>{{ 'propertiesPanel.customToolbar' | translate }}</mat-label>
-    <input matInput [disabled]="!combinedProperties.showToolbar"
+    <input #customToolbarField matInput [disabled]="!combinedProperties.showToolbar"
            [value]="combinedProperties.customToolbar"
-           (input)="updateModel.emit({ property: 'customToolbar', value: $any($event.target).value })">
+           (input)="updateModel.emit({ property: 'customToolbar', value: customToolbarField.value })">
   </mat-form-field>
 </fieldset>
 <fieldset>

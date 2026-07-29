@@ -1,8 +1,8 @@
 <div class='fx-column-start-stretch'>
   <mat-form-field appearance="fill">
     <mat-label>{{'propertiesPanel.id' | translate }}</mat-label>
-    <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.alias"
-           (input)="emitOwn('alias', $any($event.target).value)"
+    <input #aliasField matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.alias"
+           (input)="emitOwn('alias', aliasField.value)"
            (keydown.space)="$event.preventDefault();">
     <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'propertiesPanel.mustBeUnique' | translate">
   </mat-form-field>
@@ -24,17 +24,17 @@
   <mat-form-field *ngIf="combinedProperties.label !== undefined && !($any(combinedProperties) | isInputElement)"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
-    <textarea matInput type="text"
+    <textarea #labelField matInput type="text"
               [value]="combinedProperties.label"
-              (input)="emitOwn('label', $any($event.target).value)">
+              (input)="emitOwn('label', labelField.value)">
     </textarea>
   </mat-form-field>
 
   <mat-form-field *ngIf="combinedProperties.label2 !== undefined" appearance="fill">
     <mat-label>{{'propertiesPanel.label2' | translate }}</mat-label>
-    <textarea matInput type="text"
+    <textarea #label2Field matInput type="text"
               [value]="combinedProperties.label2"
-              (input)="emitOwn('label2', $any($event.target).value)">
+              (input)="emitOwn('label2', label2Field.value)">
     </textarea>
   </mat-form-field>
 
@@ -59,8 +59,8 @@
 
   <mat-form-field *ngIf="unitService.expertMode && combinedProperties.alt !== undefined">
     <mat-label>{{ 'propertiesPanel.alt' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.alt"
-           (input)="emitOwn('alt', $any($event.target).value)">
+    <input #altField matInput type="text" [value]="combinedProperties.alt"
+           (input)="emitOwn('alt', altField.value)">
   </mat-form-field>
 
   <button *ngIf="unitService.expertMode && combinedProperties.player"

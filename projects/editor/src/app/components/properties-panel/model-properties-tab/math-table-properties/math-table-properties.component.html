@@ -14,10 +14,9 @@
   <div *ngFor="let term of combinedProperties.terms; let i = index; trackBy: trackTerm"
        class="term-list">
     <ng-container *ngIf="combinedProperties.operation !== 'multiplication' || i < 2">
-      <mat-form-field (input)="changeTerm($any($event.target).value, i)"
-                      [style.flex-grow]="1">
+      <mat-form-field [style.flex-grow]="1">
         <mat-label>Term</mat-label>
-        <input matInput [value]="term" #termInput>
+        <input matInput [value]="term" #termInput (input)="changeTerm(termInput.value, i)">
       </mat-form-field>
       <button mat-icon-button
               (click)="removeTerm(i)">
@@ -34,18 +33,22 @@
     {{ 'addTermRow' | translate }}
   </button>
 
-  <mat-form-field (input)="updateModel.emit({ property: 'resultHelperRow', value: $any($event.target).value })">
+  <mat-form-field>
     <mat-label>{{ 'resultHelperRow' | translate }}</mat-label>
-    <input matInput [disabled]="combinedProperties.operation === 'variable' &&
-                                !combinedProperties.variableLayoutOptions?.showResultRow"
-           [value]="combinedProperties.resultHelperRow">
+    <input matInput #resultHelperRowField
+           [disabled]="combinedProperties.operation === 'variable' &&
+                       !combinedProperties.variableLayoutOptions?.showResultRow"
+           [value]="combinedProperties.resultHelperRow"
+           (input)="updateModel.emit({ property: 'resultHelperRow', value: resultHelperRowField.value })">
   </mat-form-field>
 
-  <mat-form-field (input)="updateModel.emit({ property: 'result', value: $any($event.target).value })">
+  <mat-form-field>
     <mat-label>{{ 'resultRow' | translate }}</mat-label>
-    <input matInput [disabled]="combinedProperties.operation === 'variable' &&
-                                !combinedProperties.variableLayoutOptions?.showResultRow"
-           [value]="combinedProperties.result">
+    <input matInput #resultField
+           [disabled]="combinedProperties.operation === 'variable' &&
+                       !combinedProperties.variableLayoutOptions?.showResultRow"
+           [value]="combinedProperties.result"
+           (input)="updateModel.emit({ property: 'result', value: resultField.value })">
   </mat-form-field>
 
 

@@ -18,18 +18,18 @@
      (combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === undefined)) {
   <mat-form-field appearance="fill">
     <mat-label>{{'rows' | translate }}</mat-label>
-    <input matInput type="number" [value]="combinedProperties.rowCount"
-           (input)="updateModel.emit({ property: 'rowCount', value: $any($event.target).value || 0 })">
+    <input #rowCountField matInput type="number" [value]="combinedProperties.rowCount"
+           (input)="updateModel.emit({ property: 'rowCount', value: rowCountField.value || 0 })">
   </mat-form-field>
 }
 
 @if (combinedProperties.expectedCharactersCount != null && combinedProperties.hasDynamicRowCount) {
   <mat-form-field appearance="fill">
     <mat-label>{{'propertiesPanel.expectedCharactersCount' | translate }}</mat-label>
-    <input matInput type="number"
+    <input #expectedCharactersCountField matInput type="number"
            [disabled]="!!combinedProperties.hasAutoHeight"
            [value]="combinedProperties.expectedCharactersCount"
            (input)="updateModel.emit({
-             property: 'expectedCharactersCount', value: $any($event.target).value || 0 })">
+             property: 'expectedCharactersCount', value: expectedCharactersCountField.value || 0 })">
   </mat-form-field>
 }

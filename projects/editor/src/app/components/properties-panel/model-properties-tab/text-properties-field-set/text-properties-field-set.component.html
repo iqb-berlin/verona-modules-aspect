@@ -11,8 +11,8 @@
   <mat-form-field *ngIf="combinedProperties.columnCount != null"
                   appearance="fill">
     <mat-label>{{ 'propertiesPanel.columnCount' | translate }}</mat-label>
-    <input matInput type="number" [value]="combinedProperties.columnCount"
-           (input)="emitOwn('columnCount', $any($event.target).value)"
+    <input #columnCountField matInput type="number" [value]="combinedProperties.columnCount"
+           (input)="emitOwn('columnCount', columnCountField.value)"
            (change)="combinedProperties.columnCount = combinedProperties.columnCount ?
                                                         combinedProperties.columnCount : 0">
   </mat-form-field>

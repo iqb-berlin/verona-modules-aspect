@@ -29,11 +29,11 @@
 
   <mat-form-field appearance="fill">
     <mat-label>{{'itemsPerRow' | translate }}</mat-label>
-    <input matInput type="number" [min]="1" [pattern]="'[1-9]'" #itemsPerRow="ngModel" required
+    <input #itemsPerRowField matInput type="number" [min]="1" [pattern]="'[1-9]'" #itemsPerRow="ngModel" required
            [disabled]="combinedProperties.itemsPerRow === null"
            [ngModel]="combinedProperties.itemsPerRow"
            (input)="itemsPerRow.valid &&
-                    updateModel.emit({ property: 'itemsPerRow', value: $any($event.target).value })">
+                    updateModel.emit({ property: 'itemsPerRow', value: itemsPerRowField.value })">
     @if (itemsPerRow.errors?.['pattern']) {
       <mat-error>{{'numberGreater0' | translate}}</mat-error>
     }

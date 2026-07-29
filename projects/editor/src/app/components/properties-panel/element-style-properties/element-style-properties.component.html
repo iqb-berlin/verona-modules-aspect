@@ -2,16 +2,16 @@
       <mat-form-field *ngIf="styles.helperRowColor !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.helperRowColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.helperRowColor"
+        <input #helperRowColorField matInput type="text" [value]="styles.helperRowColor"
                (input)="elementService.updateSelectedElementsStyleProperty(
-                          'helperRowColor', $any($event.target).value)">
+                          'helperRowColor', helperRowColorField.value)">
         <button mat-icon-button matSuffix (click)="helperRowColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-form-field>
       <input matInput type="color" hidden #helperRowColorInput
              [value]="styles.helperRowColor"
-             (input)="elementService.updateSelectedElementsStyleProperty('helperRowColor', $any($event.target).value)">
+             (input)="elementService.updateSelectedElementsStyleProperty('helperRowColor', helperRowColorInput.value)">
 
       <aspect-merged-checkbox *ngIf="styles.lineColoring !== undefined"
                               [value]="styles.lineColoring"
@@ -22,17 +22,17 @@
       <mat-form-field *ngIf="styles.lineColoringColor !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.lineColoringColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.lineColoringColor"
+        <input #lineColoringColorField matInput type="text" [value]="styles.lineColoringColor"
                [disabled]="!styles.lineColoring || styles.lineColoringColor === undefined"
                (input)="elementService.updateSelectedElementsStyleProperty(
-                          'lineColoringColor', $any($event.target).value)">
+                          'lineColoringColor', lineColoringColorField.value)">
         <button mat-icon-button matSuffix (click)="lineColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-form-field>
       <input matInput type="color" hidden #lineColorInput
              [value]="styles.lineColoringColor"
-             (input)="elementService.updateSelectedElementsStyleProperty('lineColoringColor', $any($event.target).value)">
+             (input)="elementService.updateSelectedElementsStyleProperty('lineColoringColor', lineColorInput.value)">
 
       <aspect-merged-checkbox *ngIf="styles.firstLineColoring !== undefined"
                               [value]="styles.firstLineColoring"
@@ -43,10 +43,10 @@
       <mat-form-field *ngIf="styles.firstLineColoringColor !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.firstLineColoringColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.firstLineColoringColor"
+        <input #firstLineColoringColorField matInput type="text" [value]="styles.firstLineColoringColor"
                [disabled]="!styles.firstLineColoring || styles.firstLineColoringColor === undefined"
                (input)="elementService.updateSelectedElementsStyleProperty(
-                          'firstLineColoringColor', $any($event.target).value)">
+                          'firstLineColoringColor', firstLineColoringColorField.value)">
         <button mat-icon-button matSuffix (click)="firstLineColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -54,58 +54,58 @@
       <input matInput type="color" hidden #firstLineColorInput
              [value]="styles.firstLineColoringColor"
              (input)="elementService.updateSelectedElementsStyleProperty(
-                'firstLineColoringColor', $any($event.target).value)">
+                'firstLineColoringColor', firstLineColorInput.value)">
 
       <mat-form-field *ngIf="styles.selectionColor !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.selectionColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.selectionColor"
-               (input)="elementService.updateSelectedElementsStyleProperty('selectionColor', $any($event.target).value)">
+        <input #selectionColorField matInput type="text" [value]="styles.selectionColor"
+               (input)="elementService.updateSelectedElementsStyleProperty('selectionColor', selectionColorField.value)">
         <button mat-icon-button matSuffix (click)="selectionColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-form-field>
       <input matInput type="color" hidden #selectionColorInput
              [value]="styles.selectionColor"
-             (input)="elementService.updateSelectedElementsStyleProperty('selectionColor', $any($event.target).value)">
+             (input)="elementService.updateSelectedElementsStyleProperty('selectionColor', selectionColorInput.value)">
 
       <mat-form-field *ngIf="styles.itemBackgroundColor !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.itemBackgroundColor"
-               (input)="elementService.updateSelectedElementsStyleProperty('itemBackgroundColor', $any($event.target).value)">
+        <input #itemBackgroundColorField matInput type="text" [value]="styles.itemBackgroundColor"
+               (input)="elementService.updateSelectedElementsStyleProperty('itemBackgroundColor', itemBackgroundColorField.value)">
         <button mat-icon-button matSuffix (click)="itembackgroundColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-form-field>
       <input matInput type="color" hidden #itembackgroundColorInput
              [value]="styles.itemBackgroundColor"
-             (input)="elementService.updateSelectedElementsStyleProperty('itemBackgroundColor', $any($event.target).value)">
+             (input)="elementService.updateSelectedElementsStyleProperty('itemBackgroundColor', itembackgroundColorInput.value)">
 
       <mat-form-field *ngIf="styles.backgroundColor !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.backgroundColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.backgroundColor"
-               (input)="elementService.updateSelectedElementsStyleProperty('backgroundColor', $any($event.target).value)">
+        <input #backgroundColorField matInput type="text" [value]="styles.backgroundColor"
+               (input)="elementService.updateSelectedElementsStyleProperty('backgroundColor', backgroundColorField.value)">
         <button mat-icon-button matSuffix (click)="backgroundColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-form-field>
       <input matInput type="color" hidden #backgroundColorInput
              [value]="styles.backgroundColor"
-             (input)="elementService.updateSelectedElementsStyleProperty('backgroundColor', $any($event.target).value)">
+             (input)="elementService.updateSelectedElementsStyleProperty('backgroundColor', backgroundColorInput.value)">
 
       <mat-form-field *ngIf="styles.fontColor !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.fontColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.fontColor"
-               (input)="elementService.updateSelectedElementsStyleProperty('fontColor', $any($event.target).value)">
+        <input #fontColorField matInput type="text" [value]="styles.fontColor"
+               (input)="elementService.updateSelectedElementsStyleProperty('fontColor', fontColorField.value)">
         <button mat-icon-button matSuffix (click)="fontColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-form-field>
       <input matInput type="color" hidden #fontColorInput
              [value]="styles.fontColor"
-             (input)="elementService.updateSelectedElementsStyleProperty('fontColor', $any($event.target).value)">
+             (input)="elementService.updateSelectedElementsStyleProperty('fontColor', fontColorInput.value)">
 
 <!--      <mat-form-field *ngIf="styles.font !== undefined"-->
 <!--                      appearance="fill">-->
@@ -161,15 +161,15 @@
       <mat-form-field *ngIf="styles.borderColor !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.borderColor"
-               (input)="elementService.updateSelectedElementsStyleProperty('borderColor', $any($event.target).value)">
+        <input #borderColorField matInput type="text" [value]="styles.borderColor"
+               (input)="elementService.updateSelectedElementsStyleProperty('borderColor', borderColorField.value)">
         <button mat-icon-button matSuffix (click)="borderColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-form-field>
       <input matInput type="color" hidden #borderColorInput
              [value]="styles.borderColor"
-             (input)="elementService.updateSelectedElementsStyleProperty('borderColor', $any($event.target).value)">
+             (input)="elementService.updateSelectedElementsStyleProperty('borderColor', borderColorInput.value)">
 
       <mat-form-field *ngIf="styles.borderStyle !== undefined"
                       appearance="fill">

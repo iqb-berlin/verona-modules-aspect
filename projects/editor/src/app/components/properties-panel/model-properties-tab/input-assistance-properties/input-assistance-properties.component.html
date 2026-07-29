@@ -58,9 +58,9 @@
   <mat-form-field *ngIf="combinedProperties.inputAssistancePreset === 'custom'"
                   class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.inputAssistanceCustomKeys' | translate }}</mat-label>
-    <input matInput type="text"
+    <input #inputAssistanceCustomKeysField matInput type="text"
            [value]="combinedProperties.inputAssistanceCustomKeys"
-           (input)="updateModel.emit({ property: 'inputAssistanceCustomKeys', value: $any($event.target).value })">
+           (input)="updateModel.emit({ property: 'inputAssistanceCustomKeys', value: inputAssistanceCustomKeysField.value })">
   </mat-form-field>
 
 

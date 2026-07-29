@@ -20,10 +20,10 @@
 
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.maxNumberOfSelections' | translate }}</mat-label>
-      <input matInput type="number" min="0"
+      <input #maxNumberOfSelectionsField matInput type="number" min="0"
          [value]="combinedProperties.maxNumberOfSelections"
          (input)="updateModel
-           .emit({ property: 'maxNumberOfSelections', value: $any($event.target).value || 0 })">
+           .emit({ property: 'maxNumberOfSelections', value: maxNumberOfSelectionsField.value || 0 })">
     </mat-form-field>
   </div>
 </fieldset>

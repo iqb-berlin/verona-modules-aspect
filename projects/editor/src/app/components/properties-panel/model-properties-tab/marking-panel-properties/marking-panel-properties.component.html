@@ -1,6 +1,6 @@
 @if (combinedProperties.type === 'marking-panel') {
   <div class="fx-column-start-stretch">
-    Fernsteuerung
+    {{ 'propertiesPanel.remoteControl' | translate }}
     <fieldset class="fx-column-start-stretch">
       <legend>{{'propertiesPanel.marking' | translate }}</legend>
       <aspect-highlight-properties [combinedProperties]="combinedProperties"

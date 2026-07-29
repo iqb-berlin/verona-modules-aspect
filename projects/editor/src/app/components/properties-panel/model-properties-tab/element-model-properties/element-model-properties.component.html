@@ -4,7 +4,7 @@
     <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.alias"
            (input)="emitOwn('alias', $any($event.target).value)"
            (keydown.space)="$event.preventDefault();">
-    <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
+    <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'propertiesPanel.mustBeUnique' | translate">
   </mat-form-field>
 
   <aspect-media-source-properties [combinedProperties]="$any(combinedProperties)"
@@ -54,11 +54,11 @@
           [style.align-self]="'center'"
           mat-raised-button
           (click)="elementService.showDefaultEditDialog(selectedElements[0])">
-    Text und Elemente editieren
+    {{ 'propertiesPanel.editTextAndElements' | translate }}
   </button>
 
   <mat-form-field *ngIf="unitService.expertMode && combinedProperties.alt !== undefined">
-    <mat-label>Alternativtext</mat-label>
+    <mat-label>{{ 'propertiesPanel.alt' | translate }}</mat-label>
     <input matInput type="text" [value]="combinedProperties.alt"
            (input)="emitOwn('alt', $any($event.target).value)">
   </mat-form-field>
@@ -67,7 +67,7 @@
           [style.align-self]="'center'"
           mat-raised-button
           (click)="elementService.showDefaultEditDialog(selectedElements[0])">
-    Medienoptionen anpassen
+    {{ 'propertiesPanel.editPlayerOptions' | translate }}
   </button>
 
   <mat-form-field *ngIf="combinedProperties.alignment" appearance="fill">

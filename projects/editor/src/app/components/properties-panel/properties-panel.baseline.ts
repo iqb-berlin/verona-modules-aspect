@@ -19,15 +19,15 @@ export const PANEL_BASELINE: Record<string, string> = {
 input[text] "propertiesPanel.id" = audio
 text "originalFileName" = unknown
 button "upload_file"
-button "Medienoptionen anpassen"
+button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 90
 
@@ -47,18 +47,18 @@ button "propertiesPanel.deleteElement"`,
   'audio|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 button "upload_file"
-button "Medienoptionen anpassen"
+button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 90
 button "align_horizontal_left"
@@ -82,7 +82,7 @@ button "propertiesPanel.deleteElement"`,
   'audio|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -122,11 +122,11 @@ select "propertiesPanel.actionParam" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 60
 
@@ -137,7 +137,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -151,7 +151,7 @@ button "propertiesPanel.deleteElement"`,
   'button|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = Knopf
 [propertiesPanel.presentation]
 button "propertiesPanel.button"
@@ -167,11 +167,11 @@ select "propertiesPanel.actionParam" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 60
 button "align_horizontal_left"
@@ -186,7 +186,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -200,7 +200,7 @@ button "propertiesPanel.deleteElement"`,
   'button|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = Knopf
 [propertiesPanel.presentation]
 button "propertiesPanel.button"
@@ -239,7 +239,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = checkbox
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -250,11 +250,11 @@ checkbox "propertiesPanel.crossOutChecked" = false
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 215
 input[number] "propertiesPanel.height" = 60
 
@@ -274,8 +274,8 @@ button "propertiesPanel.deleteElement"`,
   'checkbox|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
@@ -286,11 +286,11 @@ checkbox "propertiesPanel.crossOutChecked" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 215
 input[number] "propertiesPanel.height" = 60
 button "align_horizontal_left"
@@ -314,8 +314,8 @@ button "propertiesPanel.deleteElement"`,
   'checkbox|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = indeterminate
 button "image"
@@ -330,7 +330,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = checkbox
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = false
 button "image"
@@ -345,15 +345,15 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = cloze
-button "Text und Elemente editieren"
+button "propertiesPanel.editTextAndElements"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 200
 
@@ -374,16 +374,16 @@ button "propertiesPanel.deleteElement"`,
   'cloze|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-button "Text und Elemente editieren"
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+button "propertiesPanel.editTextAndElements"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 200
 button "align_horizontal_left"
@@ -408,8 +408,8 @@ button "propertiesPanel.deleteElement"`,
   'cloze|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-button "Text und Elemente editieren"
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+button "propertiesPanel.editTextAndElements"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -420,7 +420,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = cloze
-button "Text und Elemente editieren"
+button "propertiesPanel.editTextAndElements"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -431,12 +431,12 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = drop-list
-[Eingabeelement]
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 [preset]
-textarea "Neue Option" = 
+textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
 select "propertiesPanel.alignment" = vertical
 checkbox "propertiesPanel.isSortList" = false
@@ -452,11 +452,11 @@ input[text] "propertiesPanel.highlightReceivingDropListColor" = #006064 (disable
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 240
 input[number] "propertiesPanel.height" = 100
 
@@ -477,13 +477,13 @@ button "propertiesPanel.deleteElement"`,
   'drop-list|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 [preset]
-textarea "Neue Option" = 
+textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
 select "propertiesPanel.alignment" = vertical
 checkbox "propertiesPanel.isSortList" = indeterminate
@@ -499,11 +499,11 @@ input[text] "propertiesPanel.highlightReceivingDropListColor" = #006064 (disable
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 240
 input[number] "propertiesPanel.height" = 100
 button "align_horizontal_left"
@@ -528,11 +528,11 @@ button "propertiesPanel.deleteElement"`,
   'drop-list|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 [preset]
-textarea "Neue Option" = 
+textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
 select "propertiesPanel.alignment" = vertical
 checkbox "propertiesPanel.isWidthFixed" = indeterminate
@@ -547,10 +547,10 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = drop-list
-[Eingabeelement]
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
 [preset]
-textarea "Neue Option" = 
+textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
 select "propertiesPanel.alignment" = vertical
 checkbox "propertiesPanel.isWidthFixed" = false
@@ -565,23 +565,23 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = dropdown
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 checkbox "propertiesPanel.allowUnset" = false
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 240
 input[number] "propertiesPanel.height" = 83
 
@@ -601,24 +601,24 @@ button "propertiesPanel.deleteElement"`,
   'dropdown|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 checkbox "propertiesPanel.allowUnset" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 240
 input[number] "propertiesPanel.height" = 83
 button "align_horizontal_left"
@@ -642,13 +642,13 @@ button "propertiesPanel.deleteElement"`,
   'dropdown|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 checkbox "propertiesPanel.allowUnset" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -660,12 +660,12 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = dropdown
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 checkbox "propertiesPanel.allowUnset" = false
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -684,11 +684,11 @@ checkbox "propertiesPanel.hasBorderRight" = true
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = -1
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 180
 
@@ -699,7 +699,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -713,7 +713,7 @@ button "propertiesPanel.deleteElement"`,
   'frame|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 checkbox "propertiesPanel.hasBorderTop" = indeterminate
 checkbox "propertiesPanel.hasBorderBottom" = indeterminate
 checkbox "propertiesPanel.hasBorderLeft" = indeterminate
@@ -721,11 +721,11 @@ checkbox "propertiesPanel.hasBorderRight" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = -1
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 180
 button "align_horizontal_left"
@@ -740,7 +740,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -754,7 +754,7 @@ button "propertiesPanel.deleteElement"`,
   'frame|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 checkbox "propertiesPanel.hasBorderTop" = indeterminate
 checkbox "propertiesPanel.hasBorderBottom" = indeterminate
 checkbox "propertiesPanel.hasBorderLeft" = indeterminate
@@ -799,11 +799,11 @@ input[text] "propertiesPanel.trackedExpectedVariables" =
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 600
 input[number] "propertiesPanel.height" = 400
 
@@ -823,7 +823,7 @@ button "propertiesPanel.deleteElement"`,
   'geometry|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 checkbox "propertiesPanel.showResetIcon" = indeterminate
@@ -840,11 +840,11 @@ input[text] "propertiesPanel.trackedExpectedVariables" =
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 600
 input[number] "propertiesPanel.height" = 400
 button "align_horizontal_left"
@@ -868,7 +868,7 @@ button "propertiesPanel.deleteElement"`,
   'geometry|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 [propertiesPanel.geogebraHeader]
@@ -907,7 +907,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = hotspot-image
 text "originalFileName" = unknown
 button "upload_file"
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -917,11 +917,11 @@ button "add"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 100
 
@@ -941,10 +941,10 @@ button "propertiesPanel.deleteElement"`,
   'hotspot-image|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 button "upload_file"
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
@@ -954,11 +954,11 @@ button "add"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 100
 button "align_horizontal_left"
@@ -982,10 +982,10 @@ button "propertiesPanel.deleteElement"`,
   'hotspot-image|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 button "upload_file"
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 [propertiesPanel.hotspots]
@@ -1002,7 +1002,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = hotspot-image
 text "originalFileName" = unknown
 button "upload_file"
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 [propertiesPanel.hotspots]
@@ -1019,8 +1019,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = image
 text "originalFileName" = unknown
 button "upload_file"
-input[text] "Alternativtext" = Bild nicht gefunden
-button "Medienoptionen anpassen"
+input[text] "propertiesPanel.alt" = Bild nicht gefunden
+button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.scale" = false
 checkbox "propertiesPanel.magnifier" = false
 checkbox "propertiesPanel.allowFullscreen" = false
@@ -1029,11 +1029,11 @@ slider ""
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 100
 
@@ -1053,11 +1053,11 @@ button "propertiesPanel.deleteElement"`,
   'image|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 button "upload_file"
-input[text] "Alternativtext" = Bild nicht gefunden
-button "Medienoptionen anpassen"
+input[text] "propertiesPanel.alt" = Bild nicht gefunden
+button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.scale" = indeterminate
 checkbox "propertiesPanel.magnifier" = indeterminate
 checkbox "propertiesPanel.allowFullscreen" = indeterminate
@@ -1066,11 +1066,11 @@ slider ""
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 100
 button "align_horizontal_left"
@@ -1094,7 +1094,7 @@ button "propertiesPanel.deleteElement"`,
   'image|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1119,7 +1119,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = likert-row
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -1128,11 +1128,11 @@ input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 50
 
@@ -1152,8 +1152,8 @@ button "propertiesPanel.deleteElement"`,
   'likert-row|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
@@ -1162,11 +1162,11 @@ input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 50
 button "align_horizontal_left"
@@ -1190,8 +1190,8 @@ button "propertiesPanel.deleteElement"`,
   'likert-row|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
@@ -1205,7 +1205,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = likert-row
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
@@ -1222,19 +1222,19 @@ input[text] "propertiesPanel.id" = likert
 textarea "propertiesPanel.label" = Optionentabelle Beschriftung
 textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 [rows]
-textarea "Neue Zeile" = 
+textarea "newRow" = 
 checkbox "propertiesPanel.stickyHeader" = false
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 200
 
@@ -1259,23 +1259,23 @@ button "propertiesPanel.deleteElement"`,
   'likert|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = Optionentabelle Beschriftung
 textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 [rows]
-textarea "Neue Zeile" = 
+textarea "newRow" = 
 checkbox "propertiesPanel.stickyHeader" = indeterminate
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 200
 button "align_horizontal_left"
@@ -1304,13 +1304,13 @@ button "propertiesPanel.deleteElement"`,
   'likert|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = Optionentabelle Beschriftung
 textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 [rows]
-textarea "Neue Zeile" = 
+textarea "newRow" = 
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -1325,9 +1325,9 @@ input[text] "propertiesPanel.id" = likert
 textarea "propertiesPanel.label" = Optionentabelle Beschriftung
 textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 [rows]
-textarea "Neue Zeile" = 
+textarea "newRow" = 
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -1346,11 +1346,11 @@ checkbox "propertiesPanel.highlightableOrange" = false
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 98
 
@@ -1370,7 +1370,7 @@ button "propertiesPanel.deleteElement"`,
   'marking-panel|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.marking]
 checkbox "propertiesPanel.highlightableYellow" = indeterminate
 checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
@@ -1378,11 +1378,11 @@ checkbox "propertiesPanel.highlightableOrange" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 98
 button "align_horizontal_left"
@@ -1406,7 +1406,7 @@ button "propertiesPanel.deleteElement"`,
   'marking-panel|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.marking]
 checkbox "propertiesPanel.highlightableYellow" = indeterminate
 checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
@@ -1435,7 +1435,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = math-field
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -1446,11 +1446,11 @@ select "formulaPreset.title" = [math, symbols, latin, greek]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 80
 
@@ -1471,8 +1471,8 @@ button "propertiesPanel.deleteElement"`,
   'math-field|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
@@ -1483,11 +1483,11 @@ select "formulaPreset.title" = [math, symbols, latin, greek]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 80
 button "align_horizontal_left"
@@ -1512,8 +1512,8 @@ button "propertiesPanel.deleteElement"`,
   'math-field|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 button "code"
@@ -1528,7 +1528,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = math-field
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 button "code"
@@ -1543,7 +1543,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = math-table
-select "Operation" = addition
+select "propertiesPanel.operation" = addition
 input[text] "Term" = 123
 button "clear"
 input[text] "Term" = 456
@@ -1551,21 +1551,21 @@ button "clear"
 button "add addTermRow"
 input[text] "resultHelperRow" = 
 input[text] "resultRow" = 
-button "Variables Layout anpassen" (disabled)
-[Tastatur]
+button "propertiesPanel.editVariableLayout" (disabled)
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = false
 checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 192
 
@@ -1586,8 +1586,8 @@ button "propertiesPanel.deleteElement"`,
   'math-table|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-select "Operation" = addition
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+select "propertiesPanel.operation" = addition
 input[text] "Term" = 123
 button "clear"
 input[text] "Term" = 456
@@ -1595,21 +1595,21 @@ button "clear"
 button "add addTermRow"
 input[text] "resultHelperRow" = 
 input[text] "resultRow" = 
-button "Variables Layout anpassen" (disabled)
-[Tastatur]
+button "propertiesPanel.editVariableLayout" (disabled)
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 192
 button "align_horizontal_left"
@@ -1634,7 +1634,7 @@ button "propertiesPanel.deleteElement"`,
   'math-table|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 input[text] "Term" = 123
 button "clear"
 input[text] "Term" = 456
@@ -1669,24 +1669,24 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = radio-group-images
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 checkbox "limitItemPerRow" = false
 input[number] "itemsPerRow" =  (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 200
 
@@ -1706,25 +1706,25 @@ button "propertiesPanel.deleteElement"`,
   'radio-group-images|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 checkbox "limitItemPerRow" = false
 input[number] "itemsPerRow" =  (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 200
 button "align_horizontal_left"
@@ -1748,13 +1748,13 @@ button "propertiesPanel.deleteElement"`,
   'radio-group-images|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 checkbox "limitItemPerRow" = false
 input[number] "itemsPerRow" =  (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1767,12 +1767,12 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = radio-group-images
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = false
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 checkbox "limitItemPerRow" = false
 input[number] "itemsPerRow" =  (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1785,24 +1785,24 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = radio
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 select "propertiesPanel.alignment" = column
 checkbox "propertiesPanel.strikeOtherOptions" = false
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 215
 input[number] "propertiesPanel.height" = 80
 
@@ -1823,25 +1823,25 @@ button "propertiesPanel.deleteElement"`,
   'radio|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 select "propertiesPanel.alignment" = column
 checkbox "propertiesPanel.strikeOtherOptions" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 215
 input[number] "propertiesPanel.height" = 80
 button "align_horizontal_left"
@@ -1866,13 +1866,13 @@ button "propertiesPanel.deleteElement"`,
   'radio|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 select "propertiesPanel.alignment" = column
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -1884,12 +1884,12 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = radio
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = false
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 select "propertiesPanel.alignment" = column
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -1901,7 +1901,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = slider
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -1915,11 +1915,11 @@ input[number] "propertiesPanel.preset" =
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 240
 input[number] "propertiesPanel.height" = 80
 
@@ -1940,8 +1940,8 @@ button "propertiesPanel.deleteElement"`,
   'slider|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
@@ -1955,11 +1955,11 @@ input[number] "propertiesPanel.preset" =
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 240
 input[number] "propertiesPanel.height" = 80
 button "align_horizontal_left"
@@ -1984,8 +1984,8 @@ button "propertiesPanel.deleteElement"`,
   'slider|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "propertiesPanel.minValue" = 0
@@ -2001,7 +2001,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = slider
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 input[number] "propertiesPanel.minValue" = 0
@@ -2017,25 +2017,25 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = spell-correct
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = false
 checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 80
 
@@ -2056,26 +2056,26 @@ button "propertiesPanel.deleteElement"`,
   'spell-correct|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 80
 button "align_horizontal_left"
@@ -2100,8 +2100,8 @@ button "propertiesPanel.deleteElement"`,
   'spell-correct|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2114,7 +2114,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = spell-correct
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2127,7 +2127,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = table
-button "Elemente anpassen"
+button "propertiesPanel.editTableElements"
 [section-menu.rows]
 input[number] "section-menu.rowCount" = 2
 input[number] "section-menu.height 1" = 1
@@ -2140,17 +2140,17 @@ input[number] "section-menu.width 1" = 1
 select "Einheit" = fr
 input[number] "section-menu.width 2" = 1
 select "Einheit" = fr
-checkbox "Tabellenränder zeichnen" = false
+checkbox "propertiesPanel.tableEdgesEnabled" = false
 checkbox "propertiesPanel.tableHeaderEnabled" = false
 checkbox "propertiesPanel.stickyHeader" = false (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 200
 
@@ -2161,7 +2161,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -2175,8 +2175,8 @@ button "propertiesPanel.deleteElement"`,
   'table|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-button "Elemente anpassen"
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+button "propertiesPanel.editTableElements"
 [section-menu.rows]
 input[number] "section-menu.rowCount" = 2
 input[number] "section-menu.height 1" = 1
@@ -2189,17 +2189,17 @@ input[number] "section-menu.width 1" = 1
 select "Einheit" = fr
 input[number] "section-menu.width 2" = 1
 select "Einheit" = fr
-checkbox "Tabellenränder zeichnen" = indeterminate
+checkbox "propertiesPanel.tableEdgesEnabled" = indeterminate
 checkbox "propertiesPanel.tableHeaderEnabled" = indeterminate
 checkbox "propertiesPanel.stickyHeader" = indeterminate (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 200
 button "align_horizontal_left"
@@ -2214,7 +2214,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -2228,8 +2228,8 @@ button "propertiesPanel.deleteElement"`,
   'table|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-button "Elemente anpassen"
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+button "propertiesPanel.editTableElements"
 [section-menu.rows]
 input[number] "section-menu.rowCount" = 2
 input[number] "section-menu.height 1" = 1
@@ -2242,7 +2242,7 @@ input[number] "section-menu.width 1" = 1
 select "Einheit" = fr
 input[number] "section-menu.width 2" = 1
 select "Einheit" = fr
-checkbox "Tabellenränder zeichnen" = indeterminate
+checkbox "propertiesPanel.tableEdgesEnabled" = indeterminate
 checkbox "propertiesPanel.tableHeaderEnabled" = indeterminate
 checkbox "propertiesPanel.stickyHeader" = indeterminate (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2255,7 +2255,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = table
-button "Elemente anpassen"
+button "propertiesPanel.editTableElements"
 [section-menu.rows]
 input[number] "section-menu.rowCount" = 2
 input[number] "section-menu.height 1" = 1
@@ -2268,7 +2268,7 @@ input[number] "section-menu.width 1" = 1
 select "Einheit" = fr
 input[number] "section-menu.width 2" = 1
 select "Einheit" = fr
-checkbox "Tabellenränder zeichnen" = false
+checkbox "propertiesPanel.tableEdgesEnabled" = false
 checkbox "propertiesPanel.tableHeaderEnabled" = false
 checkbox "propertiesPanel.stickyHeader" = false (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2281,7 +2281,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = text-area-math
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -2289,20 +2289,20 @@ input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabl
 checkbox "propertiesPanel.hasAutoHeight" = false
 input[number] "rows" = 2
 select "formulaPreset.title" = [math, symbols, latin, greek]
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = false
 checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 132
 
@@ -2323,8 +2323,8 @@ button "propertiesPanel.deleteElement"`,
   'text-area-math|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
@@ -2332,20 +2332,20 @@ input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabl
 checkbox "propertiesPanel.hasAutoHeight" = indeterminate
 input[number] "rows" = 2
 select "formulaPreset.title" = [math, symbols, latin, greek]
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 132
 button "align_horizontal_left"
@@ -2370,8 +2370,8 @@ button "propertiesPanel.deleteElement"`,
   'text-area-math|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "rows" = 2
@@ -2385,7 +2385,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = text-area-math
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 input[number] "rows" = 2
@@ -2399,7 +2399,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = text-area
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -2412,20 +2412,20 @@ input[number] "propertiesPanel.expectedCharactersCount" = 135
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 select "propertiesPanel.appearance" = outline
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = false
 checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 132
 
@@ -2446,8 +2446,8 @@ button "propertiesPanel.deleteElement"`,
   'text-area|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
@@ -2459,20 +2459,20 @@ checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 select "propertiesPanel.appearance" = outline
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 230
 input[number] "propertiesPanel.height" = 132
 button "align_horizontal_left"
@@ -2497,8 +2497,8 @@ button "propertiesPanel.deleteElement"`,
   'text-area|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 textarea "preset" = 
@@ -2515,7 +2515,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = text-area
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 textarea "preset" = 
@@ -2533,7 +2533,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = text-field-simple
-[Eingabeelement]
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
@@ -2548,20 +2548,20 @@ input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
 checkbox "propertiesPanel.clearable" = false
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = false
 checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 100
 input[number] "propertiesPanel.height" = 30
 
@@ -2582,8 +2582,8 @@ button "propertiesPanel.deleteElement"`,
   'text-field-simple|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
@@ -2598,20 +2598,20 @@ input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
 checkbox "propertiesPanel.clearable" = indeterminate
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 100
 input[number] "propertiesPanel.height" = 30
 button "align_horizontal_left"
@@ -2636,8 +2636,8 @@ button "propertiesPanel.deleteElement"`,
   'text-field-simple|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[text] "preset" = 
 [propertiesPanel.textAlign]
@@ -2654,7 +2654,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = text-field-simple
-[Eingabeelement]
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
 input[text] "preset" = 
 [propertiesPanel.textAlign]
@@ -2671,7 +2671,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = text-field
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -2688,20 +2688,20 @@ input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
 checkbox "propertiesPanel.clearable" = false
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = false
 checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 120
 
@@ -2722,8 +2722,8 @@ button "propertiesPanel.deleteElement"`,
   'text-field|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
@@ -2740,20 +2740,20 @@ input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
 checkbox "propertiesPanel.clearable" = indeterminate
-[Tastatur]
+[propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
 checkbox "propertiesPanel.addInputAssistanceToKeyboard" = indeterminate (disabled)
-[Eingabehilfe]
+[propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 120
 button "align_horizontal_left"
@@ -2778,8 +2778,8 @@ button "propertiesPanel.deleteElement"`,
   'text-field|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[text] "preset" = 
@@ -2795,7 +2795,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = text-field
-[Eingabeelement]
+[propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 input[text] "preset" = 
@@ -2823,11 +2823,11 @@ checkbox "propertiesPanel.hasSelectionPopup" = false (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 98
 
@@ -2848,7 +2848,7 @@ button "propertiesPanel.deleteElement"`,
   'text|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 button "edit"
 input[number] "propertiesPanel.columnCount" = 1
 [propertiesPanel.marking]
@@ -2861,11 +2861,11 @@ checkbox "propertiesPanel.hasSelectionPopup" = indeterminate (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 98
 button "align_horizontal_left"
@@ -2890,7 +2890,7 @@ button "propertiesPanel.deleteElement"`,
   'text|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 button "edit"
 input[number] "propertiesPanel.columnCount" = 1
 [propertiesPanel.marking]
@@ -2927,13 +2927,13 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = toggle-button
-[Eingabeelement]
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 button "build"
 button "clear"
 button "build"
@@ -2944,11 +2944,11 @@ checkbox "propertiesPanel.verticalOrientation" = false
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 30
 
@@ -2970,14 +2970,14 @@ button "propertiesPanel.deleteElement"`,
   'toggle-button|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 button "build"
 button "clear"
 button "build"
@@ -2988,11 +2988,11 @@ checkbox "propertiesPanel.verticalOrientation" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 30
 button "align_horizontal_left"
@@ -3018,12 +3018,12 @@ button "propertiesPanel.deleteElement"`,
   'toggle-button|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
-[Eingabeelement]
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 button "build"
 button "clear"
 button "build"
@@ -3040,11 +3040,11 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = toggle-button
-[Eingabeelement]
+[propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
 select "preset" = <null>
 [propertiesPanel.options]
-textarea "Neue Option" = 
+textarea "newOption" = 
 button "build"
 button "clear"
 button "build"
@@ -3067,7 +3067,7 @@ select "propertiesPanel.actionParam" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 
@@ -3087,14 +3087,14 @@ button "propertiesPanel.deleteElement"`,
   'trigger|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.action]
 select "propertiesPanel.action" = <null>
 select "propertiesPanel.actionParam" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 button "align_horizontal_left"
@@ -3118,7 +3118,7 @@ button "propertiesPanel.deleteElement"`,
   'trigger|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3141,16 +3141,16 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = video
 text "originalFileName" = unknown
 button "upload_file"
-button "Medienoptionen anpassen"
+button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.scale" = false
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 280
 input[number] "propertiesPanel.height" = 230
 
@@ -3170,19 +3170,19 @@ button "propertiesPanel.deleteElement"`,
   'video|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 button "upload_file"
-button "Medienoptionen anpassen"
+button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.scale" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 280
 input[number] "propertiesPanel.height" = 230
 button "align_horizontal_left"
@@ -3206,7 +3206,7 @@ button "propertiesPanel.deleteElement"`,
   'video|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -3236,11 +3236,11 @@ select "propertiesPanel.bondingType" = VALENCE
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 60
 
@@ -3251,7 +3251,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -3265,17 +3265,17 @@ button "propertiesPanel.deleteElement"`,
   'widget-molecule-editor|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-molecule-editor]
 select "propertiesPanel.bondingType" = VALENCE
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 60
 button "align_horizontal_left"
@@ -3290,7 +3290,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -3304,7 +3304,7 @@ button "propertiesPanel.deleteElement"`,
   'widget-molecule-editor|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-molecule-editor]
 select "propertiesPanel.bondingType" = VALENCE
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -3338,11 +3338,11 @@ input[number] "propertiesPanel.maxNumberOfSelections" = 1
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 60
 
@@ -3353,7 +3353,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -3367,7 +3367,7 @@ button "propertiesPanel.deleteElement"`,
   'widget-periodic-table|multi-expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-periodic-table]
 checkbox "propertiesPanel.showInfoOrder" = indeterminate
 checkbox "propertiesPanel.showInfoENeg" = indeterminate
@@ -3377,11 +3377,11 @@ input[number] "propertiesPanel.maxNumberOfSelections" = 1
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
-[Position]
+[propertiesPanel.position]
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
-[Dimensionen]
+[propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 60
 button "align_horizontal_left"
@@ -3396,7 +3396,7 @@ input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
-[Rahmen]
+[propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
 select "propertiesPanel.borderStyle" = solid
@@ -3410,7 +3410,7 @@ button "propertiesPanel.deleteElement"`,
   'widget-periodic-table|multi-standard': `--- tabs --- element properties
 
 --- tab "element properties" ---
-input[text] "propertiesPanel.id" = Muss eindeutig sein (disabled)
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-periodic-table]
 checkbox "propertiesPanel.showInfoOrder" = indeterminate
 checkbox "propertiesPanel.showInfoENeg" = indeterminate

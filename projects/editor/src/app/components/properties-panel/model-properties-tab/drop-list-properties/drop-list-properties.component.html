@@ -1,6 +1,6 @@
 <div *ngIf="combinedProperties.type === 'drop-list'"
      class="fx-column-start-stretch">
-  <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'Neue Option'"
+  <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'newOption'"
                             [itemList]="$any(combinedProperties.value)"
                             (textItemAdded)="addOption($event)"
                             (itemRemoved)="removeOption($event)"
@@ -19,7 +19,7 @@
       </mat-select-trigger>
       <button mat-stroked-button [style.margin-bottom.px]="5"
               (click)="toggleSelectAll()">
-        Alle Auswählen
+        {{ 'propertiesPanel.selectAll' | translate }}
       </button>
       <mat-option *ngFor="let idPair of (combinedProperties.idList | getValidDropLists)" [value]="idPair.id">
         {{idPair.alias}}

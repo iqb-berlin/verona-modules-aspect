@@ -6,14 +6,14 @@
       <span>{{combinedProperties.alias}}</span>
     </ng-container>
     <ng-container *ngIf="!combinedProperties.type">
-      <i>Mehrfachauswahl</i>
+      <i>{{ 'propertiesPanel.multiSelection' | translate }}</i>
     </ng-container>
   </div>
 
   <mat-tab-group class="fx-flex" mat-stretch-tabs>
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon" [matTooltip]="'Elementspezifische Eigenschaften'">build</mat-icon>
+        <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabElementProperties' | translate">build</mat-icon>
       </ng-template>
       <aspect-element-model-properties-component [combinedProperties]="$any(combinedProperties)"
                                                  [selectedElements]="selectedElements"
@@ -23,7 +23,7 @@
 
     <mat-tab *ngIf="unitService.expertMode && (combinedProperties.position || combinedProperties.dimensions)">
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon" [matTooltip]="'Position & Maße'">format_shapes</mat-icon>
+        <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabPositionAndSize' | translate">format_shapes</mat-icon>
       </ng-template>
       <aspect-position-and-dimension-properties
         [dimensions]="combinedProperties.type === 'trigger' ? null : combinedProperties.dimensions"
@@ -34,7 +34,7 @@
 
     <mat-tab *ngIf="unitService.expertMode && combinedProperties.styling">
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon" [matTooltip]="'Gestaltung'">palette</mat-icon>
+        <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabStyling' | translate">palette</mat-icon>
       </ng-template>
         <aspect-element-style-properties [styles]="combinedProperties.styling">
         </aspect-element-style-properties>

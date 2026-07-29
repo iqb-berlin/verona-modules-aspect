@@ -1,7 +1,7 @@
 @if (combinedProperties.imgSrc !== undefined) {
   <button class="media-src-button" [style.align-self]="'center'"
           mat-fab color="primary"
-          [matTooltip]="'Bild statt Textbeschriftung'" [matTooltipPosition]="'right'"
+          [matTooltip]="'propertiesPanel.imageInsteadOfLabel' | translate" [matTooltipPosition]="'right'"
           (click)="changeImgSrc()">
     <mat-icon>image</mat-icon>
   </button>

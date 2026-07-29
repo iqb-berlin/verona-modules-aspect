@@ -149,7 +149,7 @@
     </div>
 
     <fieldset *ngIf="styles && styles.borderRadius !== undefined">
-      <legend>Rahmen</legend>
+      <legend>{{ 'propertiesPanel.border' | translate }}</legend>
 
       <mat-form-field *ngIf="styles.borderRadius !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>

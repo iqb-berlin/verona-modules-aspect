@@ -1,6 +1,6 @@
 <div [style.display]="'flex'" [style.flex-direction]="'column'">
   <mat-form-field *ngIf="unitService.expertMode">
-    <mat-label>Operation</mat-label>
+    <mat-label>{{ 'propertiesPanel.operation' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.operation"
                 (selectionChange)="updateModel.emit({ property: 'operation', value: $event.value })">
       <mat-option *ngFor="let operation of ['addition', 'subtraction', 'multiplication', 'variable']"
@@ -52,7 +52,7 @@
   <button *ngIf="unitService.expertMode" mat-raised-button color="primary"
           [disabled]="combinedProperties.operation !== 'variable'"
           [matMenuTriggerFor]="variableLayoutOptions">
-    Variables Layout anpassen
+    {{ 'propertiesPanel.editVariableLayout' | translate }}
   </button>
   <mat-menu #variableLayoutOptions="matMenu">
     <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.allowArithmeticChars"

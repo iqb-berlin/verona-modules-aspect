@@ -6,7 +6,7 @@
 }
 @if (combinedProperties.strikeSelectedOption !== undefined) {
   <aspect-merged-checkbox
-      [matTooltip]="'Hierdurch wird die Auswahlfarbe ignoriert und der Hintergrund transparent dargestellt'"
+      [matTooltip]="'propertiesPanel.strikeSelectedOptionTooltip' | translate"
       [value]="combinedProperties.strikeSelectedOption"
       (valueChange)="updateModel.emit({ property: 'strikeSelectedOption', value: $event })">
     {{'propertiesPanel.strikeSelectedOption' | translate }}

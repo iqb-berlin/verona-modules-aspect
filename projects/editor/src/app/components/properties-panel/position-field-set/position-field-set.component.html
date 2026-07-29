@@ -1,5 +1,5 @@
 <fieldset>
-  <legend>Position</legend>
+  <legend>{{ 'propertiesPanel.position' | translate }}</legend>
   <div *ngIf="!unitService.unit
                 .pages[selectionService.selectedPageIndex]
                 .sections[selectionService.selectedSectionIndex]
@@ -107,7 +107,7 @@
   </ng-template>
 
   <ng-container *ngIf="!isZIndexDisabled">
-    Stapelung<br>
+    {{ 'propertiesPanel.stacking' | translate }}<br>
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
       <input matInput type="number" #zIndex="ngModel"

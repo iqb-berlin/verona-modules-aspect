@@ -8,7 +8,7 @@
 @if (combinedProperties.src) {
   <button class="media-src-button" [style.align-self]="'center'"
           mat-fab color="primary"
-          [matTooltip]="'Medienquelle ändern'" [matTooltipPosition]="'right'"
+          [matTooltip]="'propertiesPanel.changeMediaSource' | translate" [matTooltipPosition]="'right'"
           (click)="changeMediaSrc(combinedProperties.type)">
     <mat-icon>upload_file</mat-icon>
   </button>

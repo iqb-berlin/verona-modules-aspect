@@ -81,7 +81,7 @@
                   matTooltip="Angabe als regulärer Ausdruck.">
     <mat-label>{{'propertiesPanel.pattern' | translate }}</mat-label>
     <input matInput [formControl]="regexPatternFormControl" (blur)="validateRegex($event)">
-    <mat-error>Invalides Muster</mat-error>
+    <mat-error>{{ 'propertiesPanel.invalidPattern' | translate }}</mat-error>
   </mat-form-field>
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.patternWarnMessage' | translate }}</mat-label>

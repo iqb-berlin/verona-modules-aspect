@@ -1,6 +1,6 @@
 <button mat-raised-button [style.align-self]="'center'" [style.margin-top.px]="5" [style.margin-bottom.px]="15"
         (click)="elementService.showDefaultEditDialog()">
-  Elemente anpassen
+  {{ 'propertiesPanel.editTableElements' | translate }}
 </button>
 <fieldset>
   <legend>{{'section-menu.rows' | translate }}</legend>
@@ -40,7 +40,7 @@
 </fieldset>
 <aspect-merged-checkbox [value]="combinedProperties.tableEdgesEnabled"
                         (valueChange)="updateModel.emit({ property: 'tableEdgesEnabled', value: $event })">
-  Tabellenränder zeichnen
+  {{ 'propertiesPanel.tableEdgesEnabled' | translate }}
 </aspect-merged-checkbox>
 <aspect-merged-checkbox [value]="combinedProperties.headerEnabled"
                         (valueChange)="updateModel.emit({ property: 'headerEnabled', value: $event })">

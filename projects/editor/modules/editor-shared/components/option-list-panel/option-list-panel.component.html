@@ -9,7 +9,7 @@
 
 <ng-template #optionList>
   <mat-form-field appearance="outline">
-    <mat-label>{{ textFieldLabel }}</mat-label>
+    <mat-label>{{ textFieldLabel | translate }}</mat-label>
     <textarea #newItem matInput cdkTextareaAutosize type="text"
               (keydown.enter)="$event.stopPropagation(); $event.preventDefault();"
               (keyup.enter)="addListItem(newItem.value); newItem.select()"></textarea>

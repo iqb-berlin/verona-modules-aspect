@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { DeclaredKeys } from 'editor/src/app/components/properties-panel/models/merged-properties';
 import { ElementService } from 'editor/src/app/services/element.service';
 
 @Component({
@@ -18,11 +19,15 @@ export class DimensionFieldSetComponent {
               public elementService: ElementService,
               public selectionService: SelectionService) { }
 
-  updateDimensionProperty(property: string, value: any): void {
+  /**
+   * `DeclaredKeys`, not `keyof`: DimensionProperties carries an index signature, which would make
+   * plain `keyof` collapse to `string` and check nothing.
+   */
+  updateDimensionProperty(property: DeclaredKeys<DimensionProperties>, value: number | boolean | null): void {
     this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, value);
   }
 
-  toggleProperty(property: string, checked:boolean): void {
+  toggleProperty(property: DeclaredKeys<DimensionProperties>, checked: boolean): void {
     if (!checked) {
       this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, null);
     }

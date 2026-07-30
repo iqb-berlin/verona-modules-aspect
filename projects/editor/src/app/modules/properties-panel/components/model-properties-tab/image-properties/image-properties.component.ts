@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
   selector: 'aspect-image-properties',
@@ -18,4 +19,6 @@ export class ImagePropertiesComponent {
       value: string | number | boolean | null,
       isInputValid?: boolean | null
     }>();
+
+  constructor(public unitService: UnitService) { }
 }

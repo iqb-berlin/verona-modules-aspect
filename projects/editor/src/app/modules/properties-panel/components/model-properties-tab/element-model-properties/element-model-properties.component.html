@@ -35,12 +35,6 @@
   <aspect-cloze-properties [combinedProperties]="$any(combinedProperties)">
   </aspect-cloze-properties>
 
-  <mat-form-field *ngIf="unitService.expertMode && combinedProperties.alt !== undefined">
-    <mat-label>{{ 'propertiesPanel.alt' | translate }}</mat-label>
-    <input #altField matInput type="text" [value]="combinedProperties.alt"
-           (input)="emitOwn('alt', altField.value)">
-  </mat-form-field>
-
   <button *ngIf="unitService.expertMode && combinedProperties.player"
           [style.align-self]="'center'"
           mat-raised-button

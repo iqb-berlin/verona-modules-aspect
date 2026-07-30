@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
-import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -26,8 +25,7 @@ import {
  */
 export type PanelElementModelProperties =
   Pick<UIElementProperties, 'type' | 'alias' | 'isRelevantForPresentationComplete' | 'dimensions' | 'player'> &
-  Pick<PanelActionProperties, 'action'> &
-  Pick<ImageProperties, 'alt'>;
+  Pick<PanelActionProperties, 'action'>;
 
 @Component({
   selector: 'aspect-element-model-properties-component',

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Rebuilds projects/editor/src/app/components/properties-panel/properties-panel.baseline.ts from
+ * Rebuilds projects/editor/src/app/modules/properties-panel/properties-panel.baseline.ts from
  * the output of the (normally skipped) "baseline regeneration" group in
  * properties-panel.characterization.spec.ts.
  *
@@ -14,7 +14,7 @@
 const { readFileSync, writeFileSync } = require('node:fs');
 
 const BASELINE_PATH =
-  'projects/editor/src/app/components/properties-panel/properties-panel.baseline.ts';
+  'projects/editor/src/app/modules/properties-panel/properties-panel.baseline.ts';
 
 const HEADER = `/**
  * Generated baseline for \`properties-panel.characterization.spec.ts\` — one entry per

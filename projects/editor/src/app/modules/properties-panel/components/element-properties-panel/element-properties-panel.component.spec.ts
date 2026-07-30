@@ -27,11 +27,11 @@ import {
 } from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
 
 @Component({
-  selector: 'aspect-element-model-properties-component',
+  selector: 'aspect-ui-element-properties',
   standalone: false,
   template: ''
 })
-class MockElementModelPropertiesComponent {
+class MockUIElementPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel =
@@ -91,7 +91,7 @@ describe('ElementPropertiesPanelComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         ElementPropertiesPanelComponent,
-        MockElementModelPropertiesComponent,
+        MockUIElementPropertiesComponent,
         MockElementPositionPropertiesComponent,
         MockElementStylePropertiesComponent
       ],

@@ -29,8 +29,8 @@ import {
   CombinedProperties
 } from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
 import {
-  ElementModelPropertiesComponent
-} from './element-model-properties.component';
+  UIElementPropertiesComponent
+} from './ui-element-properties.component';
 
 @Component({ selector: 'aspect-input-element-properties', standalone: false, template: '' })
 class MockInputElementPropertiesComponent {
@@ -128,9 +128,9 @@ class MockCheckboxPropertiesComponent {
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 
-describe('ElementModelPropertiesComponent', () => {
-  let component: ElementModelPropertiesComponent;
-  let fixture: ComponentFixture<ElementModelPropertiesComponent>;
+describe('UIElementPropertiesComponent', () => {
+  let component: UIElementPropertiesComponent;
+  let fixture: ComponentFixture<UIElementPropertiesComponent>;
   let elementService: SpyObj<ElementService>;
   let emitted: { property: string; value: unknown }[];
 
@@ -145,7 +145,7 @@ describe('ElementModelPropertiesComponent', () => {
     } as unknown as SelectionService;
 
     await TestBed.configureTestingModule({
-      declarations: [ElementModelPropertiesComponent,
+      declarations: [UIElementPropertiesComponent,
         MockInputElementPropertiesComponent,
         MockPresetValuePropertiesComponent,
         MockOptionsFieldSetComponent,
@@ -186,7 +186,7 @@ describe('ElementModelPropertiesComponent', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ElementModelPropertiesComponent);
+    fixture = TestBed.createComponent(UIElementPropertiesComponent);
     component = fixture.componentInstance;
     component.combinedProperties = { type: 'button', alias: 'Btn1' };
     component.selectedElements = [selectedElement];

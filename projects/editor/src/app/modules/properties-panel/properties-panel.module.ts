@@ -21,32 +21,32 @@ import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.m
 import { MergedCheckboxComponent } from './components/merged-checkbox/merged-checkbox.component';
 import {
   ActionParamStateVariableComponent
-} from './components/model-properties-tab/action-param-state-variable/action-param-state-variable.component';
+} from './components/element-model-properties/action-param-state-variable/action-param-state-variable.component';
 import {
   ActionPropertiesComponent
-} from './components/model-properties-tab/action-properties/action-properties.component';
+} from './components/element-model-properties/action-properties/action-properties.component';
 import {
   BorderPropertiesComponent
-} from './components/model-properties-tab/border-properties/border-properties.component';
+} from './components/element-model-properties/border-properties/border-properties.component';
 import {
   ButtonPropertiesComponent
-} from './components/model-properties-tab/button-properties/button-properties.component';
+} from './components/element-model-properties/button-properties/button-properties.component';
 import {
   CheckboxPropertiesComponent
-} from './components/model-properties-tab/checkbox-properties/checkbox-properties.component';
+} from './components/element-model-properties/checkbox-properties/checkbox-properties.component';
 import {
   ClozePropertiesComponent
-} from './components/model-properties-tab/cloze-properties/cloze-properties.component';
+} from './components/element-model-properties/cloze-properties/cloze-properties.component';
 import { DimensionFieldSetComponent } from './components/dimension-field-set/dimension-field-set.component';
 import {
   DropListPropertiesComponent
-} from './components/model-properties-tab/drop-list-properties/drop-list-properties.component';
+} from './components/element-model-properties/drop-list-properties/drop-list-properties.component';
 import {
   EleSpecificPropsComponent
-} from './components/model-properties-tab/ele-specific-props/ele-specific-props.component';
+} from './components/element-model-properties/ele-specific-props/ele-specific-props.component';
 import {
-  ElementModelPropertiesComponent
-} from './components/model-properties-tab/element-model-properties/element-model-properties.component';
+  UIElementPropertiesComponent
+} from './components/element-model-properties/ui-element-properties/ui-element-properties.component';
 import {
   ElementPositionPropertiesComponent
 } from './components/element-position-properties/element-position-properties.component';
@@ -58,74 +58,77 @@ import {
 } from './components/element-style-properties/element-style-properties.component';
 import {
   FirstColumnRatioPropertiesComponent
-} from './components/model-properties-tab/first-column-ratio-properties/first-column-ratio-properties.component';
-import { GeometryPropsComponent } from './components/model-properties-tab/geometry-props/geometry-props.component';
+} from './components/element-model-properties/first-column-ratio-properties/first-column-ratio-properties.component';
+import { GeometryPropsComponent } from './components/element-model-properties/geometry-props/geometry-props.component';
 import { GetStateVariablePipe } from './pipes/get-state-variable.pipe';
 import { GetValidDropListsPipe } from './pipes/get-valid-drop-lists.pipe';
 import {
   HighlightPropertiesComponent
-} from './components/model-properties-tab/highlight-properties/highlight-properties.component';
-import { HotspotPropsComponent } from './components/model-properties-tab/hotspot-props/hotspot-props.component';
+} from './components/element-model-properties/highlight-properties/highlight-properties.component';
+import { HotspotPropsComponent } from './components/element-model-properties/hotspot-props/hotspot-props.component';
 import {
   InputAssistancePropertiesComponent
-} from './components/model-properties-tab/input-assistance-properties/input-assistance-properties.component';
+} from './components/element-model-properties/input-assistance-properties/input-assistance-properties.component';
 import {
   InputElementPropertiesComponent
-} from './components/model-properties-tab/input-element-properties/input-element-properties.component';
+} from './components/element-model-properties/input-element-properties/input-element-properties.component';
 import { IsInputElementPipe } from './pipes/is-input-element.pipe';
 import { LikertRowLabelPipe } from './pipes/likert-row-label.pipe';
 import {
   MarkingPanelPropertiesComponent
-} from './components/model-properties-tab/marking-panel-properties/marking-panel-properties.component';
-import { MathFieldPropsComponent } from './components/model-properties-tab/math-field-props/math-field-props.component';
+} from './components/element-model-properties/marking-panel-properties/marking-panel-properties.component';
+import {
+  MathFieldPropsComponent
+} from './components/element-model-properties/math-field-props/math-field-props.component';
 import {
   MathKeyboardPropertiesComponent
-} from './components/model-properties-tab/math-keyboard-properties/math-keyboard-properties.component';
+} from './components/element-model-properties/math-keyboard-properties/math-keyboard-properties.component';
 import {
   MathTablePropertiesComponent
-} from './components/model-properties-tab/math-table-properties/math-table-properties.component';
+} from './components/element-model-properties/math-table-properties/math-table-properties.component';
 import {
   MediaSourcePropertiesComponent
-} from './components/model-properties-tab/media-source-properties/media-source-properties.component';
+} from './components/element-model-properties/media-source-properties/media-source-properties.component';
 import {
   MultiLineTextPropertiesComponent
-} from './components/model-properties-tab/multi-line-text-properties/multi-line-text-properties.component';
+} from './components/element-model-properties/multi-line-text-properties/multi-line-text-properties.component';
 import {
   OptionsFieldSetComponent
-} from './components/model-properties-tab/options-field-set/options-field-set.component';
+} from './components/element-model-properties/options-field-set/options-field-set.component';
 import { PositionFieldSetComponent } from './components/position-field-set/position-field-set.component';
 import {
   PresetValuePropertiesComponent
-} from './components/model-properties-tab/preset-value-properties/preset-value-properties.component';
+} from './components/element-model-properties/preset-value-properties/preset-value-properties.component';
 import {
   ImagePropertiesComponent
-} from './components/model-properties-tab/image-properties/image-properties.component';
+} from './components/element-model-properties/image-properties/image-properties.component';
 import { ScrollPageIndexPipe } from './pipes/scroll-page-index.pipe';
 import {
   SelectPropertiesComponent
-} from './components/model-properties-tab/select-properties/select-properties.component';
+} from './components/element-model-properties/select-properties/select-properties.component';
 import {
   SliderPropertiesComponent
-} from './components/model-properties-tab/slider-properties/slider-properties.component';
+} from './components/element-model-properties/slider-properties/slider-properties.component';
 import {
   StickyHeaderPropertiesComponent
-} from './components/model-properties-tab/sticky-header-properties/sticky-header-properties.component';
+} from './components/element-model-properties/sticky-header-properties/sticky-header-properties.component';
 import {
   TablePropertiesComponent
-} from './components/model-properties-tab/table-properties/table-properties.component';
+} from './components/element-model-properties/table-properties/table-properties.component';
 import {
   TextFieldElementPropertiesComponent
-} from './components/model-properties-tab/text-field-element-properties/text-field-element-properties.component';
+} from './components/element-model-properties/text-field-element-properties/text-field-element-properties.component';
 import {
   TextPropsComponent
-} from './components/model-properties-tab/text-properties-field-set/text-properties-field-set.component';
+} from './components/element-model-properties/text-properties-field-set/text-properties-field-set.component';
 import {
   WidgetMoleculeEditorPropertiesComponent
   // eslint-disable-next-line max-len -- the longest component name in the deepest folder, one char over
-} from './components/model-properties-tab/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
+} from './components/element-model-properties/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
 import {
   WidgetPeriodicTablePropertiesComponent
-} from './components/model-properties-tab/widget-periodic-table-properties/widget-periodic-table-properties.component';
+  // eslint-disable-next-line max-len -- deepest folder plus longest component name, three chars over
+} from './components/element-model-properties/widget-periodic-table-properties/widget-periodic-table-properties.component';
 
 /**
  * The element properties panel of the editor — the inspector beside the unit view.
@@ -155,7 +158,7 @@ import {
     DimensionFieldSetComponent,
     DropListPropertiesComponent,
     EleSpecificPropsComponent,
-    ElementModelPropertiesComponent,
+    UIElementPropertiesComponent,
     ElementPositionPropertiesComponent,
     ElementPropertiesPanelComponent,
     ElementStylePropertiesComponent,

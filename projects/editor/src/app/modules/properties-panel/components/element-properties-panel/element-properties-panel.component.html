@@ -15,10 +15,10 @@
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabElementProperties' | translate">build</mat-icon>
       </ng-template>
-      <aspect-element-model-properties-component [combinedProperties]="combinedProperties"
+      <aspect-ui-element-properties [combinedProperties]="combinedProperties"
                                                  [selectedElements]="selectedElements"
                                                  (updateModel)="updateModel($event.property, $event.value)">
-      </aspect-element-model-properties-component>
+      </aspect-ui-element-properties>
     </mat-tab>
 
     <mat-tab *ngIf="unitService.expertMode && (combinedProperties.position || combinedProperties.dimensions)">

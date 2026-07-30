@@ -23,18 +23,18 @@ import {
  *
  * `action` is read only, to decide whether the action component is offered at all.
  */
-export type PanelElementModelProperties =
+export type PanelUIElementProperties =
   Pick<UIElementProperties, 'type' | 'alias' | 'isRelevantForPresentationComplete' | 'dimensions' | 'player'> &
   Pick<PanelActionProperties, 'action'>;
 
 @Component({
-  selector: 'aspect-element-model-properties-component',
-  templateUrl: './element-model-properties.component.html',
-  styleUrls: ['./element-model-properties.component.scss'],
+  selector: 'aspect-ui-element-properties',
+  templateUrl: './ui-element-properties.component.html',
+  styleUrls: ['./ui-element-properties.component.scss'],
   standalone: false
 })
-export class ElementModelPropertiesComponent {
-  @Input() combinedProperties!: Merged<PanelElementModelProperties>;
+export class UIElementPropertiesComponent {
+  @Input() combinedProperties!: Merged<PanelUIElementProperties>;
   @Input() selectedElements: UIElement[] = [];
   /**
    * Deliberately `string`, unlike the leaf components: this channel also carries the events of the
@@ -59,7 +59,7 @@ export class ElementModelPropertiesComponent {
               public selectionService: SelectionService) { }
 
   /** Emit one of this component's own properties, with the name checked against the model. */
-  emitOwn(property: keyof PanelElementModelProperties, value: UIElementValue): void {
+  emitOwn(property: keyof PanelUIElementProperties, value: UIElementValue): void {
     this.updateModel.emit({ property, value });
   }
 

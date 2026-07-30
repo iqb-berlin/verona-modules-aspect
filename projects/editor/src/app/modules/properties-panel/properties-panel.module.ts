@@ -109,6 +109,10 @@ import {
   SliderPropertiesComponent
 } from './components/element-model-properties/slider-properties/slider-properties.component';
 import {
+  StandardDimensionPropertiesComponent
+  // eslint-disable-next-line max-len -- longest component name in the deepest folder, two chars over
+} from './components/element-model-properties/standard-dimension-properties/standard-dimension-properties.component';
+import {
   StickyHeaderPropertiesComponent
 } from './components/element-model-properties/sticky-header-properties/sticky-header-properties.component';
 import {
@@ -178,6 +182,7 @@ import {
     PresetValuePropertiesComponent,
     SelectPropertiesComponent,
     SliderPropertiesComponent,
+    StandardDimensionPropertiesComponent,
     StickyHeaderPropertiesComponent,
     TablePropertiesComponent,
     TextFieldElementPropertiesComponent,

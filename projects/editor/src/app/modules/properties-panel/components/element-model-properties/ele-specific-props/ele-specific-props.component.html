@@ -19,7 +19,7 @@
 </aspect-button-properties>
 
 <aspect-drop-list-properties *ngIf="show.dropList"
-  [combinedProperties]="combinedProperties"
+                             [combinedProperties]="combinedProperties"
                              (updateModel)="updateModel.emit($event)">
 </aspect-drop-list-properties>
 
@@ -29,12 +29,12 @@
 </aspect-geometry-props>
 
 <aspect-hotspot-props *ngIf="show.hotspot"
-                          [combinedProperties]="combinedProperties"
-                          (updateModel)="updateModel.emit($event)">
+                      [combinedProperties]="combinedProperties"
+                      (updateModel)="updateModel.emit($event)">
 </aspect-hotspot-props>
 
 <aspect-slider-properties *ngIf="show.slider"
-  [combinedProperties]="combinedProperties"
+                          [combinedProperties]="combinedProperties"
                           (updateModel)="updateModel.emit($event)">
 </aspect-slider-properties>
 
@@ -44,8 +44,8 @@
 </aspect-text-props>
 
 <aspect-marking-panel-properties *ngIf="show.markingPanel"
-  [combinedProperties]="combinedProperties"
-                                  (updateModel)="updateModel.emit($event)">
+                                 [combinedProperties]="combinedProperties"
+                                 (updateModel)="updateModel.emit($event)">
 </aspect-marking-panel-properties>
 
 <aspect-table-properties *ngIf="show.table"
@@ -54,12 +54,12 @@
 
 <aspect-widget-periodic-table-properties
   *ngIf="show.widgetPeriodicTable"
-  [combinedProperties]="combinedProperties"
-  (updateModel)="updateModel.emit($event)">
+                                         [combinedProperties]="combinedProperties"
+                                         (updateModel)="updateModel.emit($event)">
 </aspect-widget-periodic-table-properties>
 
 <aspect-widget-molecule-editor-properties
   *ngIf="show.widgetMoleculeEditor"
-  [combinedProperties]="combinedProperties"
-  (updateModel)="updateModel.emit($event)">
+                                          [combinedProperties]="combinedProperties"
+                                          (updateModel)="updateModel.emit($event)">
 </aspect-widget-molecule-editor-properties>

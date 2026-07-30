@@ -2,7 +2,6 @@ import {
   Component, EventEmitter, Input, OnChanges, Output
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import {
@@ -10,7 +9,6 @@ import {
 } from 'editor/src/app/modules/properties-panel/models/panel-sections';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { SelectionService } from 'editor/src/app/services/selection.service';
 import {
   BUTTON_ACTIONS, PanelActionProperties, TRIGGER_ACTIONS
 } from '../action-properties/action-properties.component';
@@ -27,7 +25,7 @@ import {
  * `action` is read only, to decide whether the action component is offered at all.
  */
 export type PanelUIElementProperties =
-  Pick<UIElementProperties, 'type' | 'alias' | 'isRelevantForPresentationComplete' | 'dimensions' | 'player'> &
+  Pick<UIElementProperties, 'type' | 'alias' | 'isRelevantForPresentationComplete' | 'player'> &
   Pick<PanelActionProperties, 'action'>;
 
 @Component({
@@ -64,8 +62,7 @@ export class UIElementPropertiesComponent implements OnChanges {
   TRIGGER_ACTIONS = TRIGGER_ACTIONS;
 
   constructor(public unitService: UnitService,
-              public elementService: ElementService,
-              public selectionService: SelectionService) { }
+              public elementService: ElementService) { }
 
   ngOnChanges(): void {
     this.show = panelSectionsOf(this.selectedElements);
@@ -74,15 +71,5 @@ export class UIElementPropertiesComponent implements OnChanges {
   /** Emit one of this component's own properties, with the name checked against the model. */
   emitOwn(property: keyof PanelUIElementProperties, value: UIElementValue): void {
     this.updateModel.emit({ property, value });
-  }
-
-  toggleProperty(property: keyof DimensionProperties, checked: boolean): void {
-    if (!checked) {
-      this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, null);
-    }
-  }
-
-  updateDimensionProperty(property: keyof DimensionProperties, value: number | boolean | null): void {
-    this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, value);
   }
 }

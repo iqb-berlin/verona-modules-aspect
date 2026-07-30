@@ -8,7 +8,7 @@
   </mat-form-field>
 
   <aspect-media-source-properties *ngIf="show.mediaSource"
-  [combinedProperties]="combinedProperties"
+                                  [combinedProperties]="combinedProperties"
                                   (updateModel)="updateModel.emit($event)">
   </aspect-media-source-properties>
 
@@ -18,17 +18,17 @@
   </aspect-input-element-properties>
 
   <aspect-preset-value-properties *ngIf="show.presetValue"
-  [combinedProperties]="combinedProperties"
+                                  [combinedProperties]="combinedProperties"
                                   (updateModel)="updateModel.emit($event)">
   </aspect-preset-value-properties>
 
   <aspect-options-field-set *ngIf="show.options"
-  [combinedProperties]="combinedProperties"
+                            [combinedProperties]="combinedProperties"
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
   <aspect-checkbox-properties *ngIf="show.checkbox"
-  [combinedProperties]="combinedProperties"
+                              [combinedProperties]="combinedProperties"
                               (updateModel)="updateModel.emit($event)">
   </aspect-checkbox-properties>
 
@@ -38,7 +38,7 @@
   </aspect-ele-specific-props>
 
   <aspect-cloze-properties *ngIf="show.cloze"
-  [combinedProperties]="$any(combinedProperties)">
+                           [combinedProperties]="$any(combinedProperties)">
   </aspect-cloze-properties>
 
   <button *ngIf="unitService.expertMode && combinedProperties.player"
@@ -54,17 +54,17 @@
        bound directly - the merged object this component receives carries every property, and its
        own narrow type is assignable wherever a single name overlaps. -->
   <aspect-select-properties *ngIf="show.select"
-  [combinedProperties]="$any(combinedProperties)"
-                             (updateModel)="updateModel.emit($event)">
+                            [combinedProperties]="$any(combinedProperties)"
+                            (updateModel)="updateModel.emit($event)">
   </aspect-select-properties>
 
   <aspect-multi-line-text-properties *ngIf="show.multiLineText"
-  [combinedProperties]="$any(combinedProperties)"
+                                     [combinedProperties]="$any(combinedProperties)"
                                      (updateModel)="updateModel.emit($event)">
   </aspect-multi-line-text-properties>
 
   <aspect-math-keyboard-properties *ngIf="show.mathKeyboard"
-  [combinedProperties]="$any(combinedProperties)"
+                                   [combinedProperties]="$any(combinedProperties)"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-math-keyboard-properties>
 
@@ -74,13 +74,13 @@
   <aspect-action-properties *ngIf="show.action && unitService.expertMode &&
                                   combinedProperties.action !== undefined &&
                                   combinedProperties.type != null"
-    [actions]="combinedProperties.type === 'button' ? BUTTON_ACTIONS : TRIGGER_ACTIONS"
-    [combinedProperties]="combinedProperties"
-    (updateModel)="updateModel.emit($event)">
+                            [actions]="combinedProperties.type === 'button' ? BUTTON_ACTIONS : TRIGGER_ACTIONS"
+                            [combinedProperties]="combinedProperties"
+                            (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>
 
   <aspect-text-field-element-properties *ngIf="show.textFieldElement"
-  [combinedProperties]="combinedProperties"
+                                        [combinedProperties]="combinedProperties"
                                         (updateModel)="updateModel.emit($event)">
   </aspect-text-field-element-properties>
 
@@ -90,12 +90,12 @@
   </aspect-input-assistance-properties>
 
   <aspect-sticky-header-properties *ngIf="show.stickyHeader"
-  [combinedProperties]="combinedProperties"
+                                   [combinedProperties]="combinedProperties"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-sticky-header-properties>
 
   <aspect-first-column-ratio-properties *ngIf="show.firstColumnRatio"
-  [combinedProperties]="$any(combinedProperties)"
+                                        [combinedProperties]="$any(combinedProperties)"
                                         (updateModel)="updateModel.emit($event)">
   </aspect-first-column-ratio-properties>
 
@@ -104,60 +104,12 @@
                            (updateModel)="updateModel.emit($event)">
   </aspect-image-properties>
 
-  <ng-container *ngIf="!unitService.expertMode">
-    <mat-divider [style.margin.px]="15"></mat-divider>
-
-    <ng-container *ngIf="combinedProperties.type === 'geometry'">
-      <mat-form-field appearance="fill">
-        <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-        <input matInput type="number" min="0"
-               [ngModel]="combinedProperties.dimensions?.width"
-               (ngModelChange)="updateDimensionProperty('width', $event)">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>
-          {{'propertiesPanel.height' | translate }}
-        </mat-label>
-        <input matInput type="number" min="0"
-               [ngModel]="combinedProperties.dimensions?.height"
-               (ngModelChange)="updateDimensionProperty('height', $event)">
-      </mat-form-field>
-    </ng-container>
-
-    <ng-container *ngIf="combinedProperties.dimensions">
-      <ng-container *ngIf="combinedProperties.type === 'drop-list' || combinedProperties.type === 'text-field-simple'">
-        <aspect-merged-checkbox #fixedWidth [value]="combinedProperties.dimensions.isWidthFixed"
-                                (valueChange)="updateDimensionProperty('isWidthFixed', $event)">
-          {{'propertiesPanel.isWidthFixed' | translate }}
-        </aspect-merged-checkbox>
-        <mat-form-field appearance="fill">
-          <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-          <input matInput type="number" min="0"
-                 [disabled]="!fixedWidth.checked"
-                 [ngModel]="combinedProperties.dimensions.width"
-                 (ngModelChange)="updateDimensionProperty('width', $event)"
-                 (change)="combinedProperties.dimensions.width =
-                   combinedProperties.dimensions.width ? combinedProperties.dimensions.width : 0">
-        </mat-form-field>
-      </ng-container>
-
-      <ng-container *ngIf="combinedProperties.dimensions.maxWidth !== undefined">
-        <aspect-merged-checkbox #maxWidthEnabled [value]="combinedProperties.dimensions.maxWidth !== null"
-                                (valueChange)="toggleProperty('maxWidth', $event)">
-          {{'propertiesPanel.maxWidthEnabled' | translate }}
-        </aspect-merged-checkbox>
-        <mat-form-field>
-          <mat-label>
-            {{'propertiesPanel.maxWidth' | translate }}
-          </mat-label>
-          <input matInput type="number" min="0"
-                 [disabled]="!maxWidthEnabled.checked"
-                 [ngModel]="combinedProperties.dimensions.maxWidth"
-                 (ngModelChange)="updateDimensionProperty('maxWidth', $event)">
-        </mat-form-field>
-      </ng-container>
-    </ng-container>
-  </ng-container>
+  <!-- `$any` for the same reason as the block above: this component stopped reading `dimensions`
+       when the size fields moved out, so nothing is left in common with the child's type. -->
+  <aspect-standard-dimension-properties *ngIf="!unitService.expertMode"
+                                        [combinedProperties]="$any(combinedProperties)"
+                                        [show]="show">
+  </aspect-standard-dimension-properties>
 
   <!-- The margin sits on a wrapper: aspect-merged-checkbox uses display: contents and has no box
        of its own to carry it. -->

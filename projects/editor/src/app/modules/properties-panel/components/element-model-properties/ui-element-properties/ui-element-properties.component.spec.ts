@@ -44,6 +44,12 @@ class MockInputElementPropertiesComponent {
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 
+@Component({ selector: 'aspect-standard-dimension-properties', standalone: false, template: '' })
+class MockStandardDimensionPropertiesComponent {
+  @Input() combinedProperties!: CombinedProperties;
+  @Input() show!: Record<PanelSection, boolean>;
+}
+
 @Component({ selector: 'aspect-cloze-properties', standalone: false, template: '' })
 class MockClozePropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
@@ -180,6 +186,7 @@ describe('UIElementPropertiesComponent', () => {
         MockCheckboxPropertiesComponent,
         MockMediaSourcePropertiesComponent,
         MockClozePropertiesComponent,
+        MockStandardDimensionPropertiesComponent,
         MergedCheckboxComponent
       ],
       imports: [
@@ -263,24 +270,5 @@ describe('UIElementPropertiesComponent', () => {
     aliasInput.dispatchEvent(new Event('input'));
 
     expect(emitted).toEqual([{ property: 'alias', value: 'newAlias' }]);
-  });
-
-  it('should delegate dimension updates to the element service', () => {
-    component.updateDimensionProperty('width', 300);
-
-    expect(elementService.updateElementsDimensionsProperty)
-      .toHaveBeenCalledWith([selectedElement], 'width', 300);
-  });
-
-  it('should reset a dimension property to null when a toggle is unchecked', () => {
-    component.toggleProperty('maxWidth', false);
-
-    expect(elementService.updateElementsDimensionsProperty)
-      .toHaveBeenCalledWith([selectedElement], 'maxWidth', null);
-    elementService.updateElementsDimensionsProperty.mockClear();
-
-    component.toggleProperty('maxWidth', true);
-
-    expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
   });
 });

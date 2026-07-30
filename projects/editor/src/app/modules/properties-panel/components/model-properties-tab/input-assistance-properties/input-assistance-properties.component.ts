@@ -4,7 +4,7 @@ import {
 import { INPUT_ASSISTANCE_CUSTOM_STYLES, TextInputElementProperties } from 'common/models/input-element-interfaces';
 import { MathTableProperties } from 'common/models/elements/interactive-group-elements/math-table';
 import { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 /**
  * What this component reads. It is offered for text inputs and for the math table, and those do not

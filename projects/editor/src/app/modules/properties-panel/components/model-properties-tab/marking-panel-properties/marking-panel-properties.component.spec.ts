@@ -8,10 +8,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import {
   CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+} from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
 import {
   MarkingPanelPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/marking-panel-properties/marking-panel-properties.component';
+} from './marking-panel-properties.component';
 
 @Component({ selector: 'aspect-highlight-properties', standalone: false, template: '' })
 class MockHighlightPropertiesComponent {

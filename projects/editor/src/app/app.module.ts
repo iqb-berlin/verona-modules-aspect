@@ -33,7 +33,7 @@ import { SectionTemplatesModule } from 'editor/modules/section-templates/section
 import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
 import {
   PropertiesPanelModule
-} from 'editor/src/app/components/properties-panel/properties-panel.module';
+} from 'editor/src/app/modules/properties-panel/properties-panel.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';

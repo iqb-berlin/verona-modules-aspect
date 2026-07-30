@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 
 /**
  * The component is driven directly rather than through a test host: the AOT compiler cannot resolve

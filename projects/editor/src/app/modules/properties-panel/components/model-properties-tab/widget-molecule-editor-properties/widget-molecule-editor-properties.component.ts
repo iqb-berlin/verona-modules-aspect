@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { WidgetMoleculeEditorProperties } from 'common/models/elements/widget-group-elements/widget-molecule-editor';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-widget-molecule-editor-properties',

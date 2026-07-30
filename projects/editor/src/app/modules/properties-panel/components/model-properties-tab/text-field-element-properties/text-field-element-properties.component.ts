@@ -4,7 +4,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-text-field-element-properties',

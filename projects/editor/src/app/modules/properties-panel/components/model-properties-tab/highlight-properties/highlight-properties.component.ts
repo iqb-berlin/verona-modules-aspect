@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { HighlightableProperties } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-highlight-properties',

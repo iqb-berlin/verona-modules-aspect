@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { TextProperties } from 'common/models/elements/text-group-elements/text';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 /**
  * Picks the component for whatever element type is selected. A pure distributor: it renders no

@@ -5,7 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   WidgetMoleculeEditorPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
+} from './widget-molecule-editor-properties.component';
 
 describe('WidgetMoleculeEditorPropertiesComponent', () => {
   let component: WidgetMoleculeEditorPropertiesComponent;

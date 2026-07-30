@@ -16,14 +16,14 @@ import { GeometryVariable } from 'common/models/geometry-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   GeometryPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/geometry-props/geometry-props.component';
+} from './geometry-props.component';
 
 describe('GeometryPropsComponent', () => {
   let component: GeometryPropsComponent;

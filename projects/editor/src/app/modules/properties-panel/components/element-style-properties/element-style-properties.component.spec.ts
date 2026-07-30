@@ -12,11 +12,11 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import {
   ElementStylePropertiesComponent
-} from 'editor/src/app/components/properties-panel/element-style-properties/element-style-properties.component';
+} from 'editor/src/app/modules/properties-panel/components/element-style-properties/element-style-properties.component';
 
 describe('ElementStylePropertiesComponent', () => {
   let component: ElementStylePropertiesComponent;

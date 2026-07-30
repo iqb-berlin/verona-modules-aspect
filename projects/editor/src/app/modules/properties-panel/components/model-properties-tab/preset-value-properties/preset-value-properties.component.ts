@@ -6,7 +6,7 @@ import { LikertProperties } from 'common/models/elements/compound-group-elements
 import { MathFieldProperties } from 'common/models/elements/text-input-group-elements/math-field';
 import { InputElementProperties, MathKeyboardProperties } from 'common/models/input-element-interfaces';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 /**
  * The preset value of an input element, in the shape the element type calls for: a textarea, a

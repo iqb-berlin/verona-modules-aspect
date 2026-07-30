@@ -7,7 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   MultiLineTextPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/multi-line-text-properties/multi-line-text-properties.component';
+} from './multi-line-text-properties.component';
 
 // Declared instead of importing PropertiesPanelModule: a module import alongside declarations
 // trips the AOT scope check in these specs (NG0304).

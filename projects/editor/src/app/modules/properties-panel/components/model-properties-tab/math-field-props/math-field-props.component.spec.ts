@@ -3,10 +3,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import {
   MathFieldPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/math-field-props/math-field-props.component';
+} from './math-field-props.component';
 
 describe('MathFieldPropsComponent', () => {
   let component: MathFieldPropsComponent;

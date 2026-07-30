@@ -6,7 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { ButtonPropertiesComponent } from 'editor/src/app/components/properties-panel/model-properties-tab/button-properties/button-properties.component';
+import {
+  ButtonPropertiesComponent
+} from './button-properties.component';
 
 describe('ButtonPropertiesComponent', () => {
   let component: ButtonPropertiesComponent;

@@ -5,10 +5,10 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import {
   WidgetPeriodicTablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/widget-periodic-table-properties/widget-periodic-table-properties.component';
+} from './widget-periodic-table-properties.component';
 
 describe('WidgetPeriodicTablePropertiesComponent', () => {
   let component: WidgetPeriodicTablePropertiesComponent;

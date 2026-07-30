@@ -24,7 +24,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   CombinedProperties, ElementPropertiesPanelComponent
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+} from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
 
 @Component({
   selector: 'aspect-element-model-properties-component',

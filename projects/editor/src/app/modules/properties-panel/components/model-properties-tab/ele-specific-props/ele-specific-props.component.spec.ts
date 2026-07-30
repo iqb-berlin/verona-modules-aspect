@@ -8,10 +8,10 @@ import { By } from '@angular/platform-browser';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import {
   CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+} from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
 import {
   EleSpecificPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/ele-specific-props/ele-specific-props.component';
+} from './ele-specific-props.component';
 
 @Component({ selector: 'aspect-math-field-props', standalone: false, template: '' })
 class MockMathFieldPropsComponent {

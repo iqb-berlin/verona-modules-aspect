@@ -14,11 +14,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   MathTablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/math-table-properties/math-table-properties.component';
+} from './math-table-properties.component';
 
 describe('MathTablePropertiesComponent', () => {
   let component: MathTablePropertiesComponent;

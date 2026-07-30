@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-scale-and-zoom-properties',

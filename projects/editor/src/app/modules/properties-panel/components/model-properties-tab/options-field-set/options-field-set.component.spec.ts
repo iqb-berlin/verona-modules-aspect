@@ -10,7 +10,7 @@ import { LikertRowElement } from 'common/models/elements/compound-group-elements
 import { Label, TextImageLabel } from 'common/models/label-interfaces';
 import { OptionElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
-import { LikertRowLabelPipe } from 'editor/src/app/components/properties-panel/pipes/likert-row-label.pipe';
+import { LikertRowLabelPipe } from 'editor/src/app/modules/properties-panel/pipes/likert-row-label.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -18,7 +18,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   OptionsFieldSetComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/options-field-set/options-field-set.component';
+} from './options-field-set.component';
 
 @Component({ selector: 'aspect-option-list-panel', standalone: false, template: '' })
 class MockOptionListPanelComponent {

@@ -7,10 +7,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import {
   InputElementPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-element-properties/input-element-properties.component';
+} from './input-element-properties.component';
 
 describe('InputElementPropertiesComponent', () => {
   let component: InputElementPropertiesComponent;

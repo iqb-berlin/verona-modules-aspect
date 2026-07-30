@@ -13,7 +13,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   PositionFieldSetComponent
-} from 'editor/src/app/components/properties-panel/position-field-set/position-field-set.component';
+} from 'editor/src/app/modules/properties-panel/components/position-field-set/position-field-set.component';
 
 @Component({
   selector: 'aspect-size-input-panel',

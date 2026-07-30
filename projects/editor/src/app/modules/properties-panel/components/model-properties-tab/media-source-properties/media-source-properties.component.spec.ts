@@ -7,7 +7,7 @@ import { FileService } from 'common/services/file.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
   MediaSourcePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/media-source-properties/media-source-properties.component';
+} from './media-source-properties.component';
 
 describe('MediaSourcePropertiesComponent', () => {
   let component: MediaSourcePropertiesComponent;

@@ -1,5 +1,5 @@
 import { EditorPage } from 'editor/src/app/models/editor-page';
-import { ScrollPageIndexPipe } from 'editor/src/app/components/properties-panel/pipes/scroll-page-index.pipe';
+import { ScrollPageIndexPipe } from 'editor/src/app/modules/properties-panel/pipes/scroll-page-index.pipe';
 
 describe('ScrollPageIndexPipe', () => {
   const pipe = new ScrollPageIndexPipe();

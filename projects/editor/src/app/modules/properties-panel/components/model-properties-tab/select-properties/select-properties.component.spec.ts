@@ -11,11 +11,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   SelectPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/select-properties/select-properties.component';
+} from './select-properties.component';
 
 describe('SelectPropertiesComponent', () => {
   let component: SelectPropertiesComponent;

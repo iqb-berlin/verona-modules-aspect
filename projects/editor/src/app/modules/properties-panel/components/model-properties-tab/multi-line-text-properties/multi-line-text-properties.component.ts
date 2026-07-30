@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
 import { MultiLineTextProperties } from 'common/models/input-element-interfaces';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 /**

@@ -11,7 +11,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   MathTableProperties, VariableLayoutOptions
 } from 'common/models/elements/interactive-group-elements/math-table';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 /**
  * What this component may write. The layout switches are read nested, as

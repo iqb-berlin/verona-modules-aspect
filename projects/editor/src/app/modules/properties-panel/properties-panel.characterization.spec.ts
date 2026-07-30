@@ -48,9 +48,15 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { PANEL_BASELINE } from './properties-panel.baseline';
 import { PropertiesPanelModule } from './properties-panel.module';
-import { ElementPropertiesPanelComponent } from './element-properties-panel/element-properties-panel.component';
-import { ElementPositionPropertiesComponent } from './element-position-properties/element-position-properties.component';
-import { ElementStylePropertiesComponent } from './element-style-properties/element-style-properties.component';
+import {
+  ElementPropertiesPanelComponent
+} from './components/element-properties-panel/element-properties-panel.component';
+import {
+  ElementPositionPropertiesComponent
+} from './components/element-position-properties/element-position-properties.component';
+import {
+  ElementStylePropertiesComponent
+} from './components/element-style-properties/element-style-properties.component';
 
 /**
  * Exhaustive over UIElementType — a new element type is a compile error here until it is

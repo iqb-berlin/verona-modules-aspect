@@ -11,7 +11,7 @@ import { GeometryComponent } from 'common/components/external-app-group-elements
 import { takeUntil } from 'rxjs/operators';
 import { UIElement } from 'common/models/elements/element';
 import { GeometryProperties } from 'common/models/elements/external-app-group-elements/geometry';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';

@@ -7,7 +7,7 @@ import {
 import { DropdownProperties } from 'common/models/elements/input-group-elements/dropdown';
 import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
 import { StrikeOtherOptionsProperties } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 /**

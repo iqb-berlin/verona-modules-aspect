@@ -19,16 +19,16 @@ import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import {
   CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+} from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   TextPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/text-properties-field-set/text-properties-field-set.component';
+} from './text-properties-field-set.component';
 
 @Component({ selector: 'aspect-highlight-properties', standalone: false, template: '' })
 class MockHighlightPropertiesComponent {

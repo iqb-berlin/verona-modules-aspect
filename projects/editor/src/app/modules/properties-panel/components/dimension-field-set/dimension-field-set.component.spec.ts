@@ -10,11 +10,13 @@ import { DimensionProperties } from 'common/models/elements/property-group-inter
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { DimensionFieldSetComponent } from 'editor/src/app/components/properties-panel/dimension-field-set/dimension-field-set.component';
+import {
+  DimensionFieldSetComponent
+} from 'editor/src/app/modules/properties-panel/components/dimension-field-set/dimension-field-set.component';
 
 describe('DimensionFieldSetComponent', () => {
   let component: DimensionFieldSetComponent;

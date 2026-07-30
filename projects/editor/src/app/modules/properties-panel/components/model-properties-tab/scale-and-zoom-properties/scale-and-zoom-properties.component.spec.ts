@@ -8,10 +8,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import {
   ScaleAndZoomPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/scale-and-zoom-properties/scale-and-zoom-properties.component';
+} from './scale-and-zoom-properties.component';
 
 describe('ScaleAndZoomPropertiesComponent', () => {
   let component: ScaleAndZoomPropertiesComponent;

@@ -15,13 +15,13 @@ import { Subject } from 'rxjs';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   TablePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/table-properties/table-properties.component';
+} from './table-properties.component';
 
 @Component({ selector: 'aspect-size-input-panel', standalone: false, template: '' })
 class MockSizeInputPanelComponent {

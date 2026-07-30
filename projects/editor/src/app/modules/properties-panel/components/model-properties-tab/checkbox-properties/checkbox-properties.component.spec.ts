@@ -9,7 +9,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   CheckboxPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/checkbox-properties/checkbox-properties.component';
+} from './checkbox-properties.component';
 
 // Declared instead of importing PropertiesPanelModule: a module import alongside declarations
 // trips the AOT scope check in these specs (NG0304).

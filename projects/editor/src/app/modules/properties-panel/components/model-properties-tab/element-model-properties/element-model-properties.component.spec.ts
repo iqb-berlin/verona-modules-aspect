@@ -20,17 +20,17 @@ import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
-import { IsInputElementPipe } from 'editor/src/app/components/properties-panel/pipes/is-input-element.pipe';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
+import { IsInputElementPipe } from 'editor/src/app/modules/properties-panel/pipes/is-input-element.pipe';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   CombinedProperties
-} from 'editor/src/app/components/properties-panel/element-properties-panel/element-properties-panel.component';
+} from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
 import {
   ElementModelPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/element-model-properties/element-model-properties.component';
+} from './element-model-properties.component';
 
 @Component({ selector: 'aspect-input-element-properties', standalone: false, template: '' })
 class MockInputElementPropertiesComponent {

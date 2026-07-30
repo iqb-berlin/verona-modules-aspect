@@ -1,5 +1,5 @@
 import { StateVariable } from 'common/models/state-variable';
-import { GetStateVariablePipe } from 'editor/src/app/components/properties-panel/pipes/get-state-variable.pipe';
+import { GetStateVariablePipe } from 'editor/src/app/modules/properties-panel/pipes/get-state-variable.pipe';
 
 describe('GetStateVariablePipe', () => {
   const pipe = new GetStateVariablePipe();

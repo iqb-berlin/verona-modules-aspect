@@ -5,7 +5,7 @@ import { ButtonAction, UnitNavParam } from 'common/models/elements/action-group-
 import { TriggerAction } from 'common/models/elements/action-group-elements/trigger';
 import { StateVariable } from 'common/models/state-variable';
 import { ActionProperties } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { TextElement } from 'common/models/elements/text-group-elements/text';

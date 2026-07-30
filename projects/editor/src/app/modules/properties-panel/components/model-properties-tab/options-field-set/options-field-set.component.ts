@@ -16,7 +16,7 @@ import {
   LikertRowElement, LikertRowProperties
 } from 'common/models/elements/compound-group-elements/likert/likert-row';
 import { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-options-field-set',

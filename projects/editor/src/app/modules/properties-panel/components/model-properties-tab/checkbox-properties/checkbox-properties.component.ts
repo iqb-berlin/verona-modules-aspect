@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
 import { FileService } from 'common/services/file.service';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 

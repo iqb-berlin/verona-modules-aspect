@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { SliderProperties } from 'common/models/elements/input-group-elements/slider';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({

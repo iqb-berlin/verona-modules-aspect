@@ -15,7 +15,7 @@ import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import {
   PresetValuePropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/preset-value-properties/preset-value-properties.component';
+} from './preset-value-properties.component';
 
 @Component({ selector: 'aspect-math-input', standalone: false, template: '' })
 class MockMathInputComponent {

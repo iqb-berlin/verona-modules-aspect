@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { StateVariable } from 'common/models/state-variable';
 import {
   ActionParamStateVariableComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/action-param-state-variable/action-param-state-variable.component';
+} from './action-param-state-variable.component';
 
 describe('ActionParamStateVariableComponent', () => {
   let component: ActionParamStateVariableComponent;

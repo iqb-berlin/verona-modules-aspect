@@ -2,7 +2,7 @@ import { ElementFactory } from 'common/utils/element-factory';
 import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { IsInputElementPipe } from 'editor/src/app/components/properties-panel/pipes/is-input-element.pipe';
+import { IsInputElementPipe } from 'editor/src/app/modules/properties-panel/pipes/is-input-element.pipe';
 
 describe('IsInputElementPipe', () => {
   const pipe = new IsInputElementPipe();

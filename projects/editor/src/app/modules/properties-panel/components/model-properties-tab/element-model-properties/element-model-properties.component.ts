@@ -10,13 +10,13 @@ import { RadioButtonGroupProperties } from 'common/models/elements/input-group-e
 import { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
 import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
-import {
-  BUTTON_ACTIONS, PanelActionProperties, TRIGGER_ACTIONS
-} from 'editor/src/app/components/properties-panel/model-properties-tab/action-properties/action-properties.component';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
+import {
+  BUTTON_ACTIONS, PanelActionProperties, TRIGGER_ACTIONS
+} from '../action-properties/action-properties.component';
 
 /**
  * What is left of the panel's grab bag, as a type.

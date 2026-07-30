@@ -15,15 +15,15 @@ import { DragNDropValueObject, Label } from 'common/models/label-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
-import { GetValidDropListsPipe } from 'editor/src/app/components/properties-panel/pipes/get-valid-drop-lists.pipe';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
+import { GetValidDropListsPipe } from 'editor/src/app/modules/properties-panel/pipes/get-valid-drop-lists.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   DropListPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/drop-list-properties/drop-list-properties.component';
+} from './drop-list-properties.component';
 
 @Component({
   selector: 'aspect-option-list-panel',

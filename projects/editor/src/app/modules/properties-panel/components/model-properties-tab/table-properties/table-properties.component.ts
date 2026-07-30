@@ -8,7 +8,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-table-properties',

@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TooltipPosition } from 'common/models/ui-element-interfaces';
 import { ButtonProperties } from 'common/models/elements/action-group-elements/button';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Component({

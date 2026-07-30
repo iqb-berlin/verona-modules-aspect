@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   StickyHeaderPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/sticky-header-properties/sticky-header-properties.component';
+} from './sticky-header-properties.component';
 
 // Declared instead of importing PropertiesPanelModule: a module import alongside declarations
 // trips the AOT scope check in these specs (NG0304).

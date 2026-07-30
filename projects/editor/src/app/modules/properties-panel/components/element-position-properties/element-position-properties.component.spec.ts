@@ -18,7 +18,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   ElementPositionPropertiesComponent
-} from 'editor/src/app/components/properties-panel/element-position-properties/element-position-properties.component';
+} from './element-position-properties.component';
 
 @Component({
   selector: 'aspect-position-field-set',

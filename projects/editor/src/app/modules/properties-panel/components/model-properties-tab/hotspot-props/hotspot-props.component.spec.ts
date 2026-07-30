@@ -10,7 +10,7 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
   HotspotPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/hotspot-props/hotspot-props.component';
+} from 'editor/src/app/modules/properties-panel/components/model-properties-tab/hotspot-props/hotspot-props.component';
 
 describe('HotspotPropsComponent', () => {
   let component: HotspotPropsComponent;

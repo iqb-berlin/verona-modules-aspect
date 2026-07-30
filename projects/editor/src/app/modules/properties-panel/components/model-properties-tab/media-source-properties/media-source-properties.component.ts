@@ -6,7 +6,7 @@ import { FileService } from 'common/services/file.service';
 import {
   MediaSourceProperties, UIElementProperties, UIElementType
 } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 /**

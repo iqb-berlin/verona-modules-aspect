@@ -5,7 +5,7 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
-import { Merged } from 'editor/src/app/components/properties-panel/models/merged-properties';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { IDService } from 'editor/src/app/services/id.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';

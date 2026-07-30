@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   MathKeyboardPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/math-keyboard-properties/math-keyboard-properties.component';
+} from './math-keyboard-properties.component';
 
 describe('MathKeyboardPropertiesComponent', () => {
   let component: MathKeyboardPropertiesComponent;

@@ -7,11 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
-} from 'editor/src/app/components/properties-panel/fields/merged-checkbox/merged-checkbox.component';
+} from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   SliderPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/slider-properties/slider-properties.component';
+} from './slider-properties.component';
 
 describe('SliderPropertiesComponent', () => {
   let component: SliderPropertiesComponent;

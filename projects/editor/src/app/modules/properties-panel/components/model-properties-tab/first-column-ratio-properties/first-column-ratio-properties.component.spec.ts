@@ -6,7 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   FirstColumnRatioPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/first-column-ratio-properties/first-column-ratio-properties.component';
+} from './first-column-ratio-properties.component';
 
 describe('FirstColumnRatioPropertiesComponent', () => {
   let component: FirstColumnRatioPropertiesComponent;

@@ -10,13 +10,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { StateVariable } from 'common/models/state-variable';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
-import { GetStateVariablePipe } from 'editor/src/app/components/properties-panel/pipes/get-state-variable.pipe';
-import { ScrollPageIndexPipe } from 'editor/src/app/components/properties-panel/pipes/scroll-page-index.pipe';
+import { GetStateVariablePipe } from 'editor/src/app/modules/properties-panel/pipes/get-state-variable.pipe';
+import { ScrollPageIndexPipe } from 'editor/src/app/modules/properties-panel/pipes/scroll-page-index.pipe';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   ActionPropertiesComponent, BUTTON_ACTIONS, TRIGGER_ACTIONS
-} from 'editor/src/app/components/properties-panel/model-properties-tab/action-properties/action-properties.component';
+} from './action-properties.component';
 
 @Component({
   selector: 'aspect-action-param-state-variable',

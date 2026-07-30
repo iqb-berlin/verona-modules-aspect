@@ -34,6 +34,9 @@ import {
 import {
   CheckboxPropertiesComponent
 } from './components/model-properties-tab/checkbox-properties/checkbox-properties.component';
+import {
+  ClozePropertiesComponent
+} from './components/model-properties-tab/cloze-properties/cloze-properties.component';
 import { DimensionFieldSetComponent } from './components/dimension-field-set/dimension-field-set.component';
 import {
   DropListPropertiesComponent
@@ -95,8 +98,8 @@ import {
   PresetValuePropertiesComponent
 } from './components/model-properties-tab/preset-value-properties/preset-value-properties.component';
 import {
-  ScaleAndZoomPropertiesComponent
-} from './components/model-properties-tab/scale-and-zoom-properties/scale-and-zoom-properties.component';
+  ImagePropertiesComponent
+} from './components/model-properties-tab/image-properties/image-properties.component';
 import { ScrollPageIndexPipe } from './pipes/scroll-page-index.pipe';
 import {
   SelectPropertiesComponent
@@ -148,6 +151,7 @@ import {
     BorderPropertiesComponent,
     ButtonPropertiesComponent,
     CheckboxPropertiesComponent,
+    ClozePropertiesComponent,
     DimensionFieldSetComponent,
     DropListPropertiesComponent,
     EleSpecificPropsComponent,
@@ -170,7 +174,7 @@ import {
     OptionsFieldSetComponent,
     PositionFieldSetComponent,
     PresetValuePropertiesComponent,
-    ScaleAndZoomPropertiesComponent,
+    ImagePropertiesComponent,
     SelectPropertiesComponent,
     SliderPropertiesComponent,
     StickyHeaderPropertiesComponent,

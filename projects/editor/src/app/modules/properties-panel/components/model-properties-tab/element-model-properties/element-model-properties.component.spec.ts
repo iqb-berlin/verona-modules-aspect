@@ -38,6 +38,11 @@ class MockInputElementPropertiesComponent {
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 
+@Component({ selector: 'aspect-cloze-properties', standalone: false, template: '' })
+class MockClozePropertiesComponent {
+  @Input() combinedProperties!: CombinedProperties;
+}
+
 @Component({ selector: 'aspect-media-source-properties', standalone: false, template: '' })
 class MockMediaSourcePropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
@@ -80,8 +85,8 @@ class MockInputAssistancePropertiesComponent {
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 
-@Component({ selector: 'aspect-scale-and-zoom-properties', standalone: false, template: '' })
-class MockScaleAndZoomPropertiesComponent {
+@Component({ selector: 'aspect-image-properties', standalone: false, template: '' })
+class MockImagePropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
@@ -148,7 +153,7 @@ describe('ElementModelPropertiesComponent', () => {
         MockSelectPropertiesComponent,
         MockTextFieldElementPropertiesComponent,
         MockInputAssistancePropertiesComponent,
-        MockScaleAndZoomPropertiesComponent,
+        MockImagePropertiesComponent,
         MockActionPropertiesComponent,
         MockStickyHeaderPropertiesComponent,
         MockFirstColumnRatioPropertiesComponent,
@@ -156,6 +161,7 @@ describe('ElementModelPropertiesComponent', () => {
         MockMultiLineTextPropertiesComponent,
         MockCheckboxPropertiesComponent,
         MockMediaSourcePropertiesComponent,
+        MockClozePropertiesComponent,
         IsInputElementPipe,
         MergedCheckboxComponent
       ],

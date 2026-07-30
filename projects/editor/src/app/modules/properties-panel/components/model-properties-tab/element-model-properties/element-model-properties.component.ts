@@ -2,7 +2,6 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { ClozeProperties } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
@@ -28,8 +27,7 @@ import {
 export type PanelElementModelProperties =
   Pick<UIElementProperties, 'type' | 'alias' | 'isRelevantForPresentationComplete' | 'dimensions' | 'player'> &
   Pick<PanelActionProperties, 'action'> &
-  Pick<ImageProperties, 'alt'> &
-  Pick<ClozeProperties, 'document'>;
+  Pick<ImageProperties, 'alt'>;
 
 @Component({
   selector: 'aspect-element-model-properties-component',

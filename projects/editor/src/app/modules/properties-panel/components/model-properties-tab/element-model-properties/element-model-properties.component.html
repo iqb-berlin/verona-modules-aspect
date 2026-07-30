@@ -32,12 +32,8 @@
                              (updateModel)="updateModel.emit($event)">
   </aspect-ele-specific-props>
 
-  <button *ngIf="combinedProperties.document"
-          [style.align-self]="'center'"
-          mat-raised-button
-          (click)="elementService.showDefaultEditDialog(selectedElements[0])">
-    {{ 'propertiesPanel.editTextAndElements' | translate }}
-  </button>
+  <aspect-cloze-properties [combinedProperties]="$any(combinedProperties)">
+  </aspect-cloze-properties>
 
   <mat-form-field *ngIf="unitService.expertMode && combinedProperties.alt !== undefined">
     <mat-label>{{ 'propertiesPanel.alt' | translate }}</mat-label>
@@ -52,7 +48,7 @@
     {{ 'propertiesPanel.editPlayerOptions' | translate }}
   </button>
 
-  <!-- $any() only for the four children this component shares no property name with: TypeScript's
+  <!-- $any() only for the children this component shares no property name with: TypeScript's
        weak type detection rejects an assignment to an all-optional type when nothing is in common,
        and having nothing in common is exactly what extracting them achieved. The other children are
        bound directly - the merged object this component receives carries every property, and its
@@ -92,10 +88,10 @@
                                         (updateModel)="updateModel.emit($event)">
   </aspect-first-column-ratio-properties>
 
-  <aspect-scale-and-zoom-properties *ngIf="unitService.expertMode"
+  <aspect-image-properties *ngIf="unitService.expertMode"
                                     [combinedProperties]="combinedProperties"
                                     (updateModel)="updateModel.emit($event)">
-  </aspect-scale-and-zoom-properties>
+  </aspect-image-properties>
 
   <ng-container *ngIf="!unitService.expertMode">
     <mat-divider [style.margin.px]="15"></mat-divider>

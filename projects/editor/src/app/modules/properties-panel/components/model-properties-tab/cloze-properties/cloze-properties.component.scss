@@ -1,0 +1,8 @@
+/* Both rules are carried over from element-model-properties.component.scss, where this button used
+   to live. They are view-encapsulated, so they stop applying once it moves here - and the
+   characterization baseline records no CSS, so nothing would have gone red. Targeted by the button's
+   own class rather than by the Material ones it matched before. */
+.edit-document-button {
+  width: 95%;
+  margin-bottom: 10px;
+}

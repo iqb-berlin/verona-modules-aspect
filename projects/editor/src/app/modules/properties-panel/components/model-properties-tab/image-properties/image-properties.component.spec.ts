@@ -10,17 +10,17 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import {
-  ScaleAndZoomPropertiesComponent
-} from './scale-and-zoom-properties.component';
+  ImagePropertiesComponent
+} from './image-properties.component';
 
-describe('ScaleAndZoomPropertiesComponent', () => {
-  let component: ScaleAndZoomPropertiesComponent;
-  let fixture: ComponentFixture<ScaleAndZoomPropertiesComponent>;
+describe('ImagePropertiesComponent', () => {
+  let component: ImagePropertiesComponent;
+  let fixture: ComponentFixture<ImagePropertiesComponent>;
   let emitted: { property: string; value: unknown; isInputValid?: boolean | null }[];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ScaleAndZoomPropertiesComponent, MergedCheckboxComponent],
+      declarations: [ImagePropertiesComponent, MergedCheckboxComponent],
       imports: [
         CommonModule,
         FormsModule,
@@ -32,7 +32,7 @@ describe('ScaleAndZoomPropertiesComponent', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ScaleAndZoomPropertiesComponent);
+    fixture = TestBed.createComponent(ImagePropertiesComponent);
     component = fixture.componentInstance;
     component.combinedProperties = {
       scale: false,

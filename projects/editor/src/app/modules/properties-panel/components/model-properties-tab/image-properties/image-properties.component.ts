@@ -5,12 +5,12 @@ import { ImageProperties } from 'common/models/elements/interactive-group-elemen
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
-  selector: 'aspect-scale-and-zoom-properties',
-  templateUrl: './scale-and-zoom-properties.component.html',
-  styleUrls: ['./scale-and-zoom-properties.component.scss'],
+  selector: 'aspect-image-properties',
+  templateUrl: './image-properties.component.html',
+  styleUrls: ['./image-properties.component.scss'],
   standalone: false
 })
-export class ScaleAndZoomPropertiesComponent {
+export class ImagePropertiesComponent {
   @Input() combinedProperties!: Merged<ImageProperties>;
   @Output() updateModel =
     new EventEmitter<{

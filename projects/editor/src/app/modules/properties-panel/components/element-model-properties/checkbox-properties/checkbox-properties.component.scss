@@ -1,3 +1,12 @@
+/* `:host` has to be a flex column: the button carries `align-self: center`, which is inert without
+   it, so the button would sit flush left. It was centred while it lived in the panel's own flex
+   column and lost that context when it moved here. Same reason cloze-properties and table-properties
+   carry the rule. */
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Carried over from element-model-properties.component.scss, where the button used to live: that
    rule matched .mat-mdc-fab and is view-encapsulated, so it stops applying once the button moves
    here. Targeted by its own class rather than the Material one. */

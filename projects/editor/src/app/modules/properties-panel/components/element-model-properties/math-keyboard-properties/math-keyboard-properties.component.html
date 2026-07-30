@@ -1,5 +1,5 @@
 @if (unitService.expertMode && combinedProperties.mathKeyboardPresets !== undefined) {
-  <mat-form-field>
+  <mat-form-field class="wide-form-field">
     <mat-label>{{'formulaPreset.title' | translate}}</mat-label>
     <mat-select multiple
                 [value]="combinedProperties.mathKeyboardPresets"

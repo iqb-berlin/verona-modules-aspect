@@ -96,6 +96,29 @@ describe('OptionsFieldSetComponent', () => {
     fixture.detectChanges();
   });
 
+  /* A selection whose option lists disagree merges `options` to null. The control used to render
+     anyway with an empty list, and adding an option then replaced BOTH elements' lists with that one
+     option - a silent wipe. (Before this branch the same path threw instead, because the spread hit
+     null.) The panel now refuses to offer the control, the way it refuses to invent an answer
+     elsewhere. */
+  describe('a selection whose lists disagree', () => {
+    it('should offer no option list and write nothing', () => {
+      component.combinedProperties = { type: 'dropdown', options: null };
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.directive(MockOptionListPanelComponent))).toBeNull();
+      expect(emitted).toEqual([]);
+      expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
+    });
+
+    it('should offer no row list either', () => {
+      component.combinedProperties = { type: 'likert', rows: null };
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.directive(MockOptionListPanelComponent))).toBeNull();
+    });
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });

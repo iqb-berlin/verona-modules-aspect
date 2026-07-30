@@ -23,7 +23,7 @@
 
 @if ((combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === false) ||
      (combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === undefined)) {
-  <mat-form-field appearance="fill">
+  <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'rows' | translate }}</mat-label>
     <input #rowCountField matInput type="number" [value]="combinedProperties.rowCount"
            (input)="updateModel.emit({ property: 'rowCount', value: rowCountField.value || 0 })">
@@ -31,7 +31,7 @@
 }
 
 @if (combinedProperties.expectedCharactersCount != null && combinedProperties.hasDynamicRowCount) {
-  <mat-form-field appearance="fill">
+  <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.expectedCharactersCount' | translate }}</mat-label>
     <input #expectedCharactersCountField matInput type="number"
            [disabled]="!!combinedProperties.hasAutoHeight"

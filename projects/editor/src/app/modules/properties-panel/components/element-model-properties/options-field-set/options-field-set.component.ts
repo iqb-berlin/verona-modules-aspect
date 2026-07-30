@@ -40,8 +40,10 @@ export class OptionsFieldSetComponent {
     const selectedElements = this.selectionService.getSelectedElements() as OptionElement[];
 
     selectedElements.forEach(element => {
-      const current = this.combinedProperties[property as 'options'] as Label[] ?? [];
-      const newValue = [...current, element.getNewOptionLabel(option)];
+      const newValue = [
+        ...this.combinedProperties[property as 'options'] as Label[],
+        element.getNewOptionLabel(option)
+      ];
       this.elementService.updateElementsProperty([element], property, newValue);
     });
   }

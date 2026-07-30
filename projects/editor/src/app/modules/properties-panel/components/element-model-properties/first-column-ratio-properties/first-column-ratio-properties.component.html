@@ -1,5 +1,5 @@
 @if (combinedProperties.firstColumnSizeRatio != null) {
-  <mat-form-field matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
+  <mat-form-field class="wide-form-field" matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.firstColumnSizeRatio' | translate }}</mat-label>
     <input #firstColumnSizeRatioField matInput type="number" [value]="combinedProperties.firstColumnSizeRatio"

@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -34,6 +35,7 @@ describe('SelectPropertiesComponent', () => {
         MatCheckboxModule,
         MatFormFieldModule,
         MatInputModule,
+        MatSelectModule,
         MatTooltipModule,
         TranslateModule.forRoot()
       ],
@@ -57,6 +59,44 @@ describe('SelectPropertiesComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  /* alignment and verticalOrientation moved here from the grab bag: they belong to the radio group
+     and the toggle button, both of which this component already served. The baseline says the move
+     is order-neutral - alignment renders directly before strikeOtherOptions for the radio group,
+     verticalOrientation directly after strikeSelectedOption for the toggle button. */
+  describe('the two properties that came from the grab bag', () => {
+    it('should offer the alignment of a radio group and emit the choice', () => {
+      component.combinedProperties = { alignment: 'column', strikeOtherOptions: false };
+      fixture.detectChanges();
+
+      const select = fixture.debugElement.query(By.directive(MatSelect));
+      expect(select.componentInstance.value).toBe('column');
+
+      select.triggerEventHandler('selectionChange', { value: 'row' });
+
+      expect(emitted).toEqual([{ property: 'alignment', value: 'row' }]);
+    });
+
+    it('should offer the vertical orientation of a toggle button and emit the toggle', () => {
+      component.combinedProperties = { strikeSelectedOption: false, verticalOrientation: false };
+      fixture.detectChanges();
+
+      const boxes = fixture.debugElement.queryAll(By.directive(MergedCheckboxComponent));
+      expect(boxes.length).toBe(2);
+
+      boxes[1].triggerEventHandler('valueChange', true);
+
+      expect(emitted).toEqual([{ property: 'verticalOrientation', value: true }]);
+    });
+
+    it('should show neither for an element that has neither', () => {
+      component.combinedProperties = { allowUnset: false };
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.directive(MatSelect))).toBeNull();
+      expect(fixture.nativeElement.textContent).not.toContain('propertiesPanel.verticalOrientation');
+    });
   });
 
   it('should render a checkbox for every defined property', () => {

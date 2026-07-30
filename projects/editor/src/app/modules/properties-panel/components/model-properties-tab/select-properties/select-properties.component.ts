@@ -5,6 +5,9 @@ import {
   RadioButtonGroupComplexProperties
 } from 'common/models/elements/input-group-elements/radio-button-group-complex';
 import { DropdownProperties } from 'common/models/elements/input-group-elements/dropdown';
+import {
+  RadioButtonGroupProperties
+} from 'common/models/elements/input-group-elements/radio-button-group';
 import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
 import { StrikeOtherOptionsProperties } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
@@ -26,7 +29,8 @@ import { UnitService } from 'editor/src/app/services/unit.service';
  */
 export type PanelSelectProperties =
   StrikeOtherOptionsProperties &
-  Pick<ToggleButtonProperties, 'strikeSelectedOption'> &
+  Pick<RadioButtonGroupProperties, 'alignment'> &
+  Pick<ToggleButtonProperties, 'strikeSelectedOption' | 'verticalOrientation'> &
   Pick<DropdownProperties, 'allowUnset'> &
   Pick<RadioButtonGroupComplexProperties, 'itemsPerRow'>;
 

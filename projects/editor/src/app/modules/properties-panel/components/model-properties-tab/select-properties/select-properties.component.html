@@ -1,3 +1,14 @@
+@if (combinedProperties.alignment) {
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'propertiesPanel.alignment' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.alignment"
+                (selectionChange)="updateModel.emit({ property: 'alignment', value: $event.value })">
+      @for (option of ['column', 'row']; track option) {
+        <mat-option [value]="option">{{ 'propertiesPanel.' + option | translate }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+}
 @if (unitService.expertMode && combinedProperties.strikeOtherOptions !== undefined) {
   <aspect-merged-checkbox [value]="combinedProperties.strikeOtherOptions"
                           (valueChange)="updateModel.emit({ property: 'strikeOtherOptions', value: $event })">
@@ -38,4 +49,11 @@
       <mat-error>{{'numberGreater0' | translate}}</mat-error>
     }
   </mat-form-field>
+}
+
+@if (combinedProperties.verticalOrientation !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.verticalOrientation"
+                          (valueChange)="updateModel.emit({ property: 'verticalOrientation', value: $event })">
+    {{ 'propertiesPanel.verticalOrientation' | translate }}
+  </aspect-merged-checkbox>
 }

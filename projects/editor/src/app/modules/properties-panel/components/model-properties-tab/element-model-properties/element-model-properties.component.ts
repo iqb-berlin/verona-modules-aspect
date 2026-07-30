@@ -6,9 +6,7 @@ import { ClozeProperties } from 'common/models/elements/compound-group-elements/
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
 import { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
-import { RadioButtonGroupProperties } from 'common/models/elements/input-group-elements/radio-button-group';
 import { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
-import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -33,11 +31,9 @@ export type PanelElementModelProperties =
   Pick<UIElementProperties, 'type' | 'alias' | 'isRelevantForPresentationComplete' | 'dimensions' | 'player'> &
   Pick<PanelActionProperties, 'action'> &
   Pick<LikertProperties, 'label' | 'label2'> &
-  Pick<RadioButtonGroupProperties, 'alignment'> &
   Pick<ImageProperties, 'alt'> &
   Pick<ClozeProperties, 'document'> &
-  Pick<TextAreaProperties, 'resizeEnabled'> &
-  Pick<ToggleButtonProperties, 'verticalOrientation'>;
+  Pick<TextAreaProperties, 'resizeEnabled'>;
 
 @Component({
   selector: 'aspect-element-model-properties-component',

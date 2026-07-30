@@ -70,17 +70,6 @@
     {{ 'propertiesPanel.editPlayerOptions' | translate }}
   </button>
 
-  <mat-form-field *ngIf="combinedProperties.alignment" appearance="fill">
-    <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
-    <mat-select [value]="combinedProperties.alignment"
-                (selectionChange)="emitOwn('alignment', $event.value)">
-      <mat-option *ngFor="let option of ['column', 'row']"
-                  [value]="option">
-        {{ 'propertiesPanel.' + option | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
   <!-- $any() only for the four children this component shares no property name with: TypeScript's
        weak type detection rejects an assignment to an all-optional type when nothing is in common,
        and having nothing in common is exactly what extracting them achieved. The other children are
@@ -131,12 +120,6 @@
                                     [combinedProperties]="combinedProperties"
                                     (updateModel)="updateModel.emit($event)">
   </aspect-scale-and-zoom-properties>
-
-  <aspect-merged-checkbox *ngIf="combinedProperties.verticalOrientation !== undefined"
-                          [value]="combinedProperties.verticalOrientation"
-                          (valueChange)="emitOwn('verticalOrientation', $event)">
-    {{'propertiesPanel.verticalOrientation' | translate }}
-  </aspect-merged-checkbox>
 
   <ng-container *ngIf="!unitService.expertMode">
     <mat-divider [style.margin.px]="15"></mat-divider>

@@ -1,19 +1,19 @@
-<aspect-math-field-props *ngIf="show.mathField && combinedProperties.type === 'math-field'"
+<aspect-math-field-props *ngIf="show.mathField"
                          [combinedProperties]="combinedProperties"
                          (updateModel)="updateModel.emit($event)">
 </aspect-math-field-props>
 
-<aspect-border-properties *ngIf="show.border && combinedProperties.type === 'frame'"
+<aspect-border-properties *ngIf="show.border"
                           [combinedProperties]="combinedProperties"
                           (updateModel)="updateModel.emit($event)">
 </aspect-border-properties>
 
-<aspect-math-table-properties *ngIf="show.mathTable && combinedProperties.type === 'math-table'"
+<aspect-math-table-properties *ngIf="show.mathTable"
                               [combinedProperties]="combinedProperties"
                               (updateModel)="updateModel.emit($event)">
 </aspect-math-table-properties>
 
-<aspect-button-properties *ngIf="show.button && combinedProperties.type === 'button'"
+<aspect-button-properties *ngIf="show.button"
                           [combinedProperties]="combinedProperties"
                           (updateModel)="updateModel.emit($event)">
 </aspect-button-properties>
@@ -23,12 +23,12 @@
                              (updateModel)="updateModel.emit($event)">
 </aspect-drop-list-properties>
 
-<aspect-geometry-props *ngIf="show.geometry && combinedProperties.type === 'geometry'"
+<aspect-geometry-props *ngIf="show.geometry"
                        [combinedProperties]="combinedProperties"
                        (updateModel)="updateModel.emit($event)">
 </aspect-geometry-props>
 
-<aspect-hotspot-props *ngIf="show.hotspot && combinedProperties.type === 'hotspot-image'"
+<aspect-hotspot-props *ngIf="show.hotspot"
                           [combinedProperties]="combinedProperties"
                           (updateModel)="updateModel.emit($event)">
 </aspect-hotspot-props>
@@ -38,7 +38,7 @@
                           (updateModel)="updateModel.emit($event)">
 </aspect-slider-properties>
 
-<aspect-text-props *ngIf="show.text && combinedProperties.text !== undefined"
+<aspect-text-props *ngIf="show.text"
                    [combinedProperties]="combinedProperties"
                    (updateModel)="updateModel.emit($event)">
 </aspect-text-props>
@@ -48,18 +48,18 @@
                                   (updateModel)="updateModel.emit($event)">
 </aspect-marking-panel-properties>
 
-<aspect-table-properties *ngIf="show.table && combinedProperties.type === 'table'"
+<aspect-table-properties *ngIf="show.table"
                          [combinedProperties]="combinedProperties"
                          (updateModel)="updateModel.emit($event)"></aspect-table-properties>
 
 <aspect-widget-periodic-table-properties
-  *ngIf="show.widgetPeriodicTable && combinedProperties.type === 'widget-periodic-table'"
+  *ngIf="show.widgetPeriodicTable"
   [combinedProperties]="combinedProperties"
   (updateModel)="updateModel.emit($event)">
 </aspect-widget-periodic-table-properties>
 
 <aspect-widget-molecule-editor-properties
-  *ngIf="show.widgetMoleculeEditor && combinedProperties.type === 'widget-molecule-editor'"
+  *ngIf="show.widgetMoleculeEditor"
   [combinedProperties]="combinedProperties"
   (updateModel)="updateModel.emit($event)">
 </aspect-widget-molecule-editor-properties>

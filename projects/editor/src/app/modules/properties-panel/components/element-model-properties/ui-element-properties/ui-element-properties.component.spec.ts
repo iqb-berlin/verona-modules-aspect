@@ -24,7 +24,6 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
-import { IsInputElementPipe } from 'editor/src/app/modules/properties-panel/pipes/is-input-element.pipe';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { By } from '@angular/platform-browser';
@@ -181,7 +180,6 @@ describe('UIElementPropertiesComponent', () => {
         MockCheckboxPropertiesComponent,
         MockMediaSourcePropertiesComponent,
         MockClozePropertiesComponent,
-        IsInputElementPipe,
         MergedCheckboxComponent
       ],
       imports: [

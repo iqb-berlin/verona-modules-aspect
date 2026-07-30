@@ -12,7 +12,7 @@
                                   (updateModel)="updateModel.emit($event)">
   </aspect-media-source-properties>
 
-  <aspect-input-element-properties *ngIf="show.inputElement && ($any(combinedProperties) | isInputElement)"
+  <aspect-input-element-properties *ngIf="show.inputElement"
                                    [combinedProperties]="combinedProperties"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-input-element-properties>

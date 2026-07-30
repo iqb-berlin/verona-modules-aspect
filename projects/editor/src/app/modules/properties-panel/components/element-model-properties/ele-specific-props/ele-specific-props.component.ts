@@ -1,7 +1,6 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { TextProperties } from 'common/models/elements/text-group-elements/text';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import {
@@ -10,10 +9,13 @@ import {
 
 /**
  * Picks the component for whatever element type is selected. A pure distributor: it renders no
- * control of its own, so it reads only what its conditions need and writes nothing.
+ * control of its own, reads nothing and writes nothing.
+ *
+ * Since #1137 it does not even read `type` — which section to offer comes from `PANEL_SECTIONS`,
+ * computed once by the parent. The one remaining field is what the relayed object needs to stay
+ * assignable to the children's own property types.
  */
-export type PanelEleSpecificProperties =
-  Pick<UIElementProperties, 'type'> & Pick<TextProperties, 'text'>;
+export type PanelEleSpecificProperties = Pick<UIElementProperties, 'type'>;
 
 @Component({
   selector: 'aspect-ele-specific-props',

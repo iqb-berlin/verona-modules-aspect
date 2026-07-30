@@ -1,7 +1,14 @@
-/* Both rules are carried over from element-model-properties.component.scss, where this button used
-   to live. They are view-encapsulated, so they stop applying once it moves here - and the
-   characterization baseline records no CSS, so nothing would have gone red. Targeted by the button's
-   own class rather than by the Material ones it matched before. */
+/* The two rules for the button are carried over from ui-element-properties.component.scss, where it
+   used to live; they are view-encapsulated and stop applying once it moves here, and the
+   characterization baseline records no CSS, so nothing would have gone red.
+
+   `:host` has to become a flex column as well - `align-self: center` on the button is inert without
+   it, and the 95%-wide button would sit flush left. Same reason table-properties carries it. */
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 .edit-document-button {
   width: 95%;
   margin-bottom: 10px;

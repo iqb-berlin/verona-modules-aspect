@@ -16,8 +16,8 @@
         <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabElementProperties' | translate">build</mat-icon>
       </ng-template>
       <aspect-ui-element-properties [combinedProperties]="combinedProperties"
-                                                 [selectedElements]="selectedElements"
-                                                 (updateModel)="updateModel($event.property, $event.value)">
+                                    [selectedElements]="selectedElements"
+                                    (updateModel)="updateModel($event.property, $event.value)">
       </aspect-ui-element-properties>
     </mat-tab>
 

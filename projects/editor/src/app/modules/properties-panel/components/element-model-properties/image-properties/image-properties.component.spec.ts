@@ -43,11 +43,40 @@ describe('ImagePropertiesComponent', () => {
     };
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
+    // `alt` is set per test below - the fixture above leaves it out so the other tests see the panel
+    // as it looks for an image that has no alternative text yet.
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  /* The alternative text moved here from the grab bag when this component was renamed from
+     scale-and-zoom to image: it is ImageProperties.alt, the HTML alt attribute of the <img>, shown
+     when the image fails to load and read by screen readers. */
+  describe('the alternative text', () => {
+    const altInput = (): HTMLInputElement | null => fixture.nativeElement
+      .querySelector('input[type="text"]');
+
+    it('should show the current text and emit an edit', () => {
+      component.combinedProperties = { alt: 'Ein Diagramm' };
+      fixture.detectChanges();
+
+      const input = altInput() as HTMLInputElement;
+      expect(input.value).toBe('Ein Diagramm');
+
+      input.value = 'Ein Balkendiagramm';
+      input.dispatchEvent(new Event('input'));
+
+      expect(emitted).toEqual([{ property: 'alt', value: 'Ein Balkendiagramm' }]);
+    });
+
+    /* The component is bound for every element type, so the field has to guard itself - only the
+       image has an alt. */
+    it('should stay away for an element without an alt', () => {
+      expect(altInput()).toBeNull();
+    });
   });
 
   it('should render a checkbox for every defined property', () => {

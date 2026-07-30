@@ -1,20 +1,22 @@
-<!--likert: the captions of the options table and of its first column-->
-<ng-container *ngIf="combinedProperties.type === 'likert'">
-  <mat-form-field appearance="fill">
+<!--likert: the captions of the options table and of its first column. `wide-form-field` because
+    these left the panel's flex column when they moved here, and a mat-form-field is inline-flex -
+    without it they shrink to the textarea's intrinsic width.-->
+@if (combinedProperties.type === 'likert') {
+  <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{ 'propertiesPanel.label' | translate }}</mat-label>
     <textarea #labelField matInput type="text"
               [value]="combinedProperties.label"
               (input)="updateModel.emit({ property: 'label', value: labelField.value })">
     </textarea>
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{ 'propertiesPanel.label2' | translate }}</mat-label>
     <textarea #label2Field matInput type="text"
               [value]="combinedProperties.label2"
               (input)="updateModel.emit({ property: 'label2', value: label2Field.value })">
     </textarea>
   </mat-form-field>
-</ng-container>
+}
 
 <!--dropdown, radio-button-group-->
 <aspect-option-list-panel

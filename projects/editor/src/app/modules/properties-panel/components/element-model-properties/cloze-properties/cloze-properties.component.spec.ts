@@ -32,6 +32,16 @@ describe('ClozePropertiesComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /* The button used to sit in the panel's flex column, which is what made `align-self: center` work.
+     Moving it here took that context away, and no test could have seen it: the characterization
+     baseline records no CSS. The component's own SCSS restores it, and this pins it. */
+  it('should lay the host out as a flex column, which is what centres the button', () => {
+    const host = getComputedStyle(fixture.nativeElement as HTMLElement);
+
+    expect(host.display).toBe('flex');
+    expect(host.flexDirection).toBe('column');
+  });
+
   it('should open the editor for the document', () => {
     button()?.click();
 

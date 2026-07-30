@@ -83,8 +83,8 @@
   </aspect-first-column-ratio-properties>
 
   <aspect-image-properties *ngIf="unitService.expertMode"
-                                    [combinedProperties]="combinedProperties"
-                                    (updateModel)="updateModel.emit($event)">
+                           [combinedProperties]="combinedProperties"
+                           (updateModel)="updateModel.emit($event)">
   </aspect-image-properties>
 
   <ng-container *ngIf="!unitService.expertMode">

@@ -1,5 +1,5 @@
 @if (combinedProperties.alignment) {
-  <mat-form-field appearance="fill">
+  <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{ 'propertiesPanel.alignment' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.alignment"
                 (selectionChange)="updateModel.emit({ property: 'alignment', value: $event.value })">

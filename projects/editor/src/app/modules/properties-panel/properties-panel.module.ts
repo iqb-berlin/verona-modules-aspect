@@ -133,7 +133,7 @@ import {
 /**
  * The element properties panel of the editor — the inspector beside the unit view.
  *
- * Only ElementPropertiesPanelComponent is exported. The other 35 components are internal to
+ * Only ElementPropertiesPanelComponent is exported. The other 37 components are internal to
  * this module on purpose: the panel's structure can then be reworked without checking the rest of
  * the editor for usages. The five pipes are used by this module's templates only.
  *
@@ -158,7 +158,6 @@ import {
     DimensionFieldSetComponent,
     DropListPropertiesComponent,
     EleSpecificPropsComponent,
-    UIElementPropertiesComponent,
     ElementPositionPropertiesComponent,
     ElementPropertiesPanelComponent,
     ElementStylePropertiesComponent,
@@ -166,6 +165,7 @@ import {
     GeometryPropsComponent,
     HighlightPropertiesComponent,
     HotspotPropsComponent,
+    ImagePropertiesComponent,
     InputAssistancePropertiesComponent,
     InputElementPropertiesComponent,
     MarkingPanelPropertiesComponent,
@@ -177,13 +177,13 @@ import {
     OptionsFieldSetComponent,
     PositionFieldSetComponent,
     PresetValuePropertiesComponent,
-    ImagePropertiesComponent,
     SelectPropertiesComponent,
     SliderPropertiesComponent,
     StickyHeaderPropertiesComponent,
     TablePropertiesComponent,
     TextFieldElementPropertiesComponent,
     TextPropsComponent,
+    UIElementPropertiesComponent,
     WidgetMoleculeEditorPropertiesComponent,
     WidgetPeriodicTablePropertiesComponent,
     GetStateVariablePipe,

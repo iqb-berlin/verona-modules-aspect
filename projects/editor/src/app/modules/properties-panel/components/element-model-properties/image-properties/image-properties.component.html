@@ -1,9 +1,12 @@
 <div class="fx-column-start-stretch" [style.gap.px]="5">
-  <mat-form-field *ngIf="unitService.expertMode && combinedProperties.alt !== undefined">
-    <mat-label>{{ 'propertiesPanel.alt' | translate }}</mat-label>
-    <input #altField matInput type="text" [value]="combinedProperties.alt"
-           (input)="updateModel.emit({ property: 'alt', value: altField.value })">
-  </mat-form-field>
+  <!--The parent only renders this component in expert mode, so no check for it here.-->
+  @if (combinedProperties.alt !== undefined) {
+    <mat-form-field>
+      <mat-label>{{ 'propertiesPanel.alt' | translate }}</mat-label>
+      <input #altField matInput type="text" [value]="combinedProperties.alt"
+             (input)="updateModel.emit({ property: 'alt', value: altField.value })">
+    </mat-form-field>
+  }
 
   <aspect-merged-checkbox *ngIf="combinedProperties.scale !== undefined"
                           [value]="combinedProperties.scale"

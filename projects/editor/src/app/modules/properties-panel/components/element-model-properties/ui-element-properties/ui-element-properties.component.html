@@ -59,7 +59,12 @@
                                    (updateModel)="updateModel.emit($event)">
   </aspect-math-keyboard-properties>
 
-  <aspect-action-properties *ngIf="unitService.expertMode && combinedProperties.action !== undefined"
+  <!--`type != null` as well: the two element types with an action have different vocabularies, and a
+      mixed selection merges `type` to null. The ternary below would then fall to the trigger's
+      actions and write one of them to the button, which does not accept it (#1147).-->
+  <aspect-action-properties *ngIf="unitService.expertMode &&
+                                  combinedProperties.action !== undefined &&
+                                  combinedProperties.type != null"
     [actions]="combinedProperties.type === 'button' ? BUTTON_ACTIONS : TRIGGER_ACTIONS"
     [combinedProperties]="combinedProperties"
     (updateModel)="updateModel.emit($event)">

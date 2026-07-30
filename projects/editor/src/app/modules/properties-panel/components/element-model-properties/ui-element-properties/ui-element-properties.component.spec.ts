@@ -24,10 +24,14 @@ import {
 import { IsInputElementPipe } from 'editor/src/app/modules/properties-panel/pipes/is-input-element.pipe';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
+import { By } from '@angular/platform-browser';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   CombinedProperties
 } from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
+import {
+  BUTTON_ACTIONS, TRIGGER_ACTIONS
+} from '../action-properties/action-properties.component';
 import {
   UIElementPropertiesComponent
 } from './ui-element-properties.component';
@@ -133,10 +137,12 @@ describe('UIElementPropertiesComponent', () => {
   let fixture: ComponentFixture<UIElementPropertiesComponent>;
   let elementService: SpyObj<ElementService>;
   let emitted: { property: string; value: unknown }[];
+  let unitServiceMock: { expertMode: boolean };
 
   const selectedElement = { type: 'button', id: 'btn1', alias: 'Btn1' } as unknown as UIElement;
 
   beforeEach(async () => {
+    unitServiceMock = { expertMode: false };
     elementService = createSpyObj<ElementService>(
       ['updateElementsDimensionsProperty', 'showDefaultEditDialog']
     );
@@ -180,7 +186,7 @@ describe('UIElementPropertiesComponent', () => {
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: UnitService, useValue: { expertMode: false } as UnitService },
+        { provide: UnitService, useValue: unitServiceMock as unknown as UnitService },
         { provide: ElementService, useValue: elementService },
         { provide: SelectionService, useValue: selectionServiceMock }
       ]
@@ -193,6 +199,39 @@ describe('UIElementPropertiesComponent', () => {
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
+  });
+
+  /* #1147: the button and the trigger have different action vocabularies, and a mixed selection
+     merges `type` to null - the ternary would then offer the trigger's actions and write one of them
+     to the button. The characterization net cannot cover this: its multi-selection cases always use
+     two elements of the same type, so `type` never merges to null there. */
+  describe('the action control', () => {
+    const actionPanel = () => fixture.debugElement.query(By.directive(MockActionPropertiesComponent));
+
+    beforeEach(() => {
+      unitServiceMock.expertMode = true;
+    });
+
+    it('should offer the button vocabulary for a button', () => {
+      component.combinedProperties = { type: 'button', action: null };
+      fixture.detectChanges();
+
+      expect(actionPanel().componentInstance.actions).toEqual(BUTTON_ACTIONS);
+    });
+
+    it('should offer the trigger vocabulary for a trigger', () => {
+      component.combinedProperties = { type: 'trigger', action: null };
+      fixture.detectChanges();
+
+      expect(actionPanel().componentInstance.actions).toEqual(TRIGGER_ACTIONS);
+    });
+
+    it('should offer nothing when the selection mixes the two types', () => {
+      component.combinedProperties = { type: null, action: null };
+      fixture.detectChanges();
+
+      expect(actionPanel()).toBeNull();
+    });
   });
 
   it('should create', () => {

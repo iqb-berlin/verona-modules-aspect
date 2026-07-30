@@ -130,7 +130,9 @@ describe('TablePropertiesComponent', () => {
 
     component.modifySizeArray('gridRowSizes', 0, event);
 
-    expect(messageService.showError).toHaveBeenCalledWith('Zeile enthält Elemente');
+    // The message goes through TranslateService now; with no translations loaded it yields the key.
+    expect(messageService.showError)
+      .toHaveBeenCalledWith('propertiesPanel.sizeArrayNotEmptyRow');
     expect(emitted).toEqual([]);
     expect(target.value).toBe(2);
   });

@@ -4,7 +4,7 @@ import {
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import {
-  PlayerElementBlueprint, UIElementType, MediaSourceProperties
+  MediaSourceProperties, PlayerElementBlueprint, ScalableProperties, UIElementType
 } from 'common/models/ui-element-interfaces';
 import { PlayerElement } from 'common/models/elements/element';
 import { InstantiationEror } from 'common/classes/instantiation-error';
@@ -40,8 +40,7 @@ export class VideoElement extends PlayerElement implements VideoProperties {
   }
 }
 
-export interface VideoProperties extends PlayerElementBlueprint, MediaSourceProperties {
-  scale: boolean;
+export interface VideoProperties extends PlayerElementBlueprint, MediaSourceProperties, ScalableProperties {
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: { backgroundColor: string };

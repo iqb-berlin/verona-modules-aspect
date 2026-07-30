@@ -78,7 +78,7 @@
 
 <ng-container *ngIf="unitService.expertMode && combinedProperties.pattern !== undefined">
   <mat-form-field class="wide-form-field" appearance="fill"
-                  matTooltip="Angabe als regulärer Ausdruck.">
+                  matTooltip="{{ 'propertiesPanel.patternTooltip' | translate }}">
     <mat-label>{{'propertiesPanel.pattern' | translate }}</mat-label>
     <input matInput [formControl]="regexPatternFormControl" (blur)="validateRegex($event)">
     <mat-error>{{ 'propertiesPanel.invalidPattern' | translate }}</mat-error>

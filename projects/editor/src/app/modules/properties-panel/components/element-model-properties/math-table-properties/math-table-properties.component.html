@@ -15,7 +15,7 @@
        class="term-list">
     <ng-container *ngIf="combinedProperties.operation !== 'multiplication' || i < 2">
       <mat-form-field [style.flex-grow]="1">
-        <mat-label>Term</mat-label>
+        <mat-label>{{ 'propertiesPanel.term' | translate }}</mat-label>
         <input matInput [value]="term" #termInput (input)="changeTerm(termInput.value, i)">
       </mat-form-field>
       <button mat-icon-button

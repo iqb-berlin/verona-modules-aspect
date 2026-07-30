@@ -80,6 +80,12 @@
     "alwaysVisibleAspectRatio": "Seitenverhältnis in %"
   },
   "propertiesPanel": {
+    "patternTooltip": "Angabe als regulärer Ausdruck.",
+    "zIndexTooltip": "Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.",
+    "term": "Term",
+    "addImageOption": "Option mit Bild hinzufügen",
+    "sizeArrayNotEmptyColumn": "Spalte enthält Elemente",
+    "sizeArrayNotEmptyRow": "Zeile enthält Elemente",
     "dimensions": "Dimensionen",
     "position": "Position",
     "stacking": "Stapelung",

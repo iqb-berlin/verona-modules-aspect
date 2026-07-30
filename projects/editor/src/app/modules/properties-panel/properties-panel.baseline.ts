@@ -1544,9 +1544,9 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = math-table
 select "propertiesPanel.operation" = addition
-input[text] "Term" = 123
+input[text] "propertiesPanel.term" = 123
 button "clear"
-input[text] "Term" = 456
+input[text] "propertiesPanel.term" = 456
 button "clear"
 button "add addTermRow"
 input[text] "resultHelperRow" = 
@@ -1588,9 +1588,9 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 select "propertiesPanel.operation" = addition
-input[text] "Term" = 123
+input[text] "propertiesPanel.term" = 123
 button "clear"
-input[text] "Term" = 456
+input[text] "propertiesPanel.term" = 456
 button "clear"
 button "add addTermRow"
 input[text] "resultHelperRow" = 
@@ -1635,9 +1635,9 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-input[text] "Term" = 123
+input[text] "propertiesPanel.term" = 123
 button "clear"
-input[text] "Term" = 456
+input[text] "propertiesPanel.term" = 456
 button "clear"
 button "add addTermRow"
 input[text] "resultHelperRow" = 
@@ -1652,9 +1652,9 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = math-table
-input[text] "Term" = 123
+input[text] "propertiesPanel.term" = 123
 button "clear"
-input[text] "Term" = 456
+input[text] "propertiesPanel.term" = 456
 button "clear"
 button "add addTermRow"
 input[text] "resultHelperRow" = 

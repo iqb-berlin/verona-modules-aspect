@@ -25,9 +25,10 @@
  * - The panel host's input bindings for the position and styling tabs are mirrored in
  *   `renderPanel()` (see the comment there), so a change to those two bindings is not caught.
  * - Divergent multi-selection is covered by the `multi-` cases: two elements of the same type
- *   whose booleans all disagree. Every such property merges to null, which the panel currently
- *   renders as an unchecked box — indistinguishable from "false everywhere". The baseline records
- *   that as it is today; see the ticket for making it `indeterminate`.
+ *   whose booleans all disagree. Every such property merges to null, which the panel renders as
+ *   `indeterminate` (#1136) — `describeCheckbox()` records that, so the baseline distinguishes it
+ *   from "false everywhere". Two elements of *different* types are not covered, which is where a
+ *   control gated on the merged `type` disappears.
  */
 import {
   ComponentFixture, fakeAsync, TestBed, tick
@@ -325,11 +326,6 @@ describe('properties panel characterization', () => {
   }
 
   /**
-   * The selection to render. `divergent` puts two elements of the same type in the selection whose
-   * booleans all disagree, so every one of them merges to null — the state the panel currently
-   * cannot tell apart from "false everywhere". See the doc comment above.
-   */
-  /**
    * Media elements default to `src: null`, so the "change media source" button never rendered and
    * the net could not see it. Set after construction, not through the factory: passing `src` makes
    * the element's own `isXProperties` guard match, and that branch then overwrites `styling`,
@@ -341,6 +337,11 @@ describe('properties panel characterization', () => {
     return element;
   }
 
+  /**
+   * The selection to render. `divergent` puts two elements of the same type in the selection whose
+   * booleans all disagree, so every one of them merges to null — which the panel renders as
+   * indeterminate. See the doc comment at the top of the file.
+   */
   function selectionOf(type: UIElementType, mode: 'single' | 'divergent'): UIElement[] {
     const first = withMediaSource(ElementFactory.createElement({ type, id: type, alias: type }));
     if (mode === 'single') return [first];

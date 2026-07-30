@@ -4,6 +4,7 @@ import {
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
@@ -28,7 +29,8 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
 
   constructor(public elementService: ElementService,
               private messageService: MessageService,
-              private unitService: UnitService) { }
+              private unitService: UnitService,
+              private translateService: TranslateService) { }
 
   ngOnInit(): void {
     this.unitService.tablePropUpdated
@@ -52,7 +54,11 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
   modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number, event?: Event): void {
     if (!(event?.target as HTMLInputElement).checkValidity()) {
       (event as any).target.value = (this.combinedProperties[property] as unknown[]).length;
-      this.messageService.showError(`${property === 'gridColumnSizes' ? 'Spalte' : 'Zeile'} enthält Elemente`);
+      this.messageService.showError(this.translateService.instant(
+        property === 'gridColumnSizes' ?
+          'propertiesPanel.sizeArrayNotEmptyColumn' :
+          'propertiesPanel.sizeArrayNotEmptyRow'
+      ));
       return;
     }
     const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?

@@ -116,7 +116,7 @@
                                                      value: $event,
                                                      isInputValid: zIndex.valid && $event !== null })"
              (change)="positionProperties.zIndex = positionProperties.zIndex ? positionProperties.zIndex : 0"
-             matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
+             matTooltip="{{ 'propertiesPanel.zIndexTooltip' | translate }}">
     </mat-form-field>
   </ng-container>
 </fieldset>

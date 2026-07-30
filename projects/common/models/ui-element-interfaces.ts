@@ -91,6 +91,15 @@ export interface FirstColumnRatioProperties {
 }
 
 /**
+ * Media that can be scaled into its box rather than capped at its natural size: image and video.
+ * Both bind it the same way - `scale ? 'fit-…' : 'max-size-…'` - and the panel offers one control
+ * for both, which is why they need a level to share.
+ */
+export interface ScalableProperties {
+  scale: boolean;
+}
+
+/**
  * Elements that strike through the options the reader did not choose: radio group and toggle button.
  * Both are single-choice option lists, but they sit in different groups of the model - the radio
  * group is an input element, the toggle button a compound one - so this is the only level they share.

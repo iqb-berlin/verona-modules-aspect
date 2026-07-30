@@ -6,10 +6,10 @@ export function createCloze(id: string, text: string, contentType?: string, opti
     addElement('Lückentext', 'Verbund', id);
     // open the cloze inline editor
     // Give some time for properties panel to catch up and ensure correct element is selected
-    cy.get('aspect-element-model-properties-component')
+    cy.get('aspect-ui-element-properties')
         .contains('mat-form-field', 'ID').find('input').should('have.value', id);
 
-    cy.get('aspect-element-model-properties-component')
+    cy.get('aspect-ui-element-properties')
         .contains('button', 'edit').click();
 
     // wait for dialog and replace default Lorem Ipsum text

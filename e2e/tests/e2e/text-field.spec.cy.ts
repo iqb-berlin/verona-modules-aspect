@@ -17,7 +17,7 @@ describe('Text field element', { testIsolation: false }, () => {
         it('creates a required text field (Page 1)', () => {
             addElement('Eingabefeld');
             setPreferencesElement('Pflichtfeld Eingabefeld', { required: true });
-            cy.get('aspect-element-model-properties-component').contains('mat-form-field', 'ID').find('input').clear().type('TF_Required');
+            cy.get('aspect-ui-element-properties').contains('mat-form-field', 'ID').find('input').clear().type('TF_Required');
         });
 
         it('creates a text field with a minimum length of 3 characters (Page 1)', () => {

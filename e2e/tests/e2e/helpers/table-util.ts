@@ -17,7 +17,7 @@ export function createTable(
     addElement('Tabelle', 'Verbund', id);
 
     // Wait for properties panel to reflect the new element
-    cy.get('aspect-element-model-properties-component')
+    cy.get('aspect-ui-element-properties')
         .contains('mat-form-field', 'ID').find('input').should('have.value', id);
 
     // Adjust row count if needed (default is 2)

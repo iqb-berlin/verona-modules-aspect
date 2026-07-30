@@ -68,7 +68,7 @@ function addGeometryElement(title: string, filename: string, id: string): void {
   dismissErrorDialogIfVisible();
   
   cy.get('.cdk-overlay-backdrop').should('not.exist');
-  cy.get('aspect-element-model-properties-component').should('be.visible');
+  cy.get('aspect-ui-element-properties').should('be.visible');
   setID(id);
 }
 

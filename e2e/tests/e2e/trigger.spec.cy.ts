@@ -30,7 +30,7 @@ describe('Trigger element', { testIsolation: false }, () => {
 
     it('adds "highlight text"', () => {
       selectFromDropdown('Aktion', 'Textabschnitt hervorheben');
-      cy.get('aspect-element-model-properties-component')
+      cy.get('aspect-ui-element-properties')
         .contains('mat-form-field', 'Aktionsparameter').find('mat-select').click();
       cy.get('.cdk-overlay-container').find('mat-option').eq(0).click({ force: true });
     });

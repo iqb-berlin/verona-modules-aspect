@@ -37,7 +37,7 @@ describe('Table element', { testIsolation: false }, () => {
             addElement('Tabelle', 'Verbund', 'table-with-content');
 
             // Wait for properties panel to reflect the new element
-            cy.get('aspect-element-model-properties-component')
+            cy.get('aspect-ui-element-properties')
                 .contains('mat-form-field', 'ID').find('input').should('have.value', 'table-with-content');
 
             // Add a third column
@@ -69,13 +69,13 @@ describe('Table element', { testIsolation: false }, () => {
             // Select the checkbox child element on the canvas
             cy.get('aspect-table aspect-checkbox').closest('.wrapper').click();
 
-            cy.get('aspect-element-model-properties-component mat-button-toggle-group')
+            cy.get('aspect-ui-element-properties mat-button-toggle-group')
                 .contains('mat-button-toggle', 'wahr').click();
             cy.get('aspect-table aspect-checkbox .svg-checkbox-cross')
                 .should('have.attr', 'style').and('match', /opacity: 1/);
 
             // Reset, so the player tests below start with an unchecked checkbox
-            cy.get('aspect-element-model-properties-component mat-button-toggle-group')
+            cy.get('aspect-ui-element-properties mat-button-toggle-group')
                 .contains('mat-button-toggle', 'falsch').click();
             cy.get('aspect-table aspect-checkbox .svg-checkbox-cross')
                 .should('have.attr', 'style').and('match', /opacity: 0/);

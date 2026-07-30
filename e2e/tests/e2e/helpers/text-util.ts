@@ -7,7 +7,7 @@ export function addText(numParagraphs: number, numSentences: number, numColumns:
   // Optional element ID
   if (id !== undefined) {
     setID(id);
-    cy.get('aspect-element-model-properties-component')
+    cy.get('aspect-ui-element-properties')
       .contains('mat-form-field', 'ID').find('input').should('have.value', id);
   }
 
@@ -30,7 +30,7 @@ export function addText(numParagraphs: number, numSentences: number, numColumns:
  * @param panelAliases List of marking panel aliases to connect
  */
 export function connectToMarkingPanels(panelAliases: string[]): void {
-  cy.get('aspect-element-model-properties-component')
+  cy.get('aspect-ui-element-properties')
     .contains('mat-form-field', 'Markierungselemente').find('mat-select').click();
   panelAliases.forEach(alias => {
     cy.get('.cdk-overlay-container').contains('mat-option', alias).click({ force: true });

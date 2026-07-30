@@ -1,3 +1,10 @@
+@if (unitService.expertMode && combinedProperties.resizeEnabled !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.resizeEnabled"
+                          (valueChange)="updateModel.emit({ property: 'resizeEnabled', value: $event })">
+    {{ 'propertiesPanel.resizeEnabled' | translate }}
+  </aspect-merged-checkbox>
+}
+
 @if (unitService.expertMode && combinedProperties.hasAutoHeight !== undefined) {
   <aspect-merged-checkbox [disabled]="!!combinedProperties.hasDynamicRowCount"
                           [value]="combinedProperties.hasAutoHeight"

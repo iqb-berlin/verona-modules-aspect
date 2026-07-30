@@ -5,8 +5,6 @@ import { UIElement } from 'common/models/elements/element';
 import { ClozeProperties } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
-import { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
-import { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -30,10 +28,8 @@ import {
 export type PanelElementModelProperties =
   Pick<UIElementProperties, 'type' | 'alias' | 'isRelevantForPresentationComplete' | 'dimensions' | 'player'> &
   Pick<PanelActionProperties, 'action'> &
-  Pick<LikertProperties, 'label' | 'label2'> &
   Pick<ImageProperties, 'alt'> &
-  Pick<ClozeProperties, 'document'> &
-  Pick<TextAreaProperties, 'resizeEnabled'>;
+  Pick<ClozeProperties, 'document'>;
 
 @Component({
   selector: 'aspect-element-model-properties-component',

@@ -3,6 +3,9 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
@@ -71,7 +74,7 @@ describe('OptionsFieldSetComponent', () => {
         MockOptionListPanelComponent,
         LikertRowLabelPipe
       ],
-      imports: [CommonModule],
+      imports: [CommonModule, MatFormFieldModule, MatInputModule, TranslateModule.forRoot()],
       providers: [
         { provide: UnitService, useValue: {} as UnitService },
         { provide: ElementService, useValue: elementService },
@@ -95,6 +98,34 @@ describe('OptionsFieldSetComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  /* The two captions came from the grab bag. They belong to the likert - `label` is the caption of
+     the options table, `label2` the caption of its first column - and this component already read
+     Merged<LikertProperties>, so they came home rather than into another catch-all. The dropdown and
+     the radio group also use this component and must not show them. */
+  describe('the likert captions', () => {
+    const textareas = (): HTMLTextAreaElement[] => Array.from(
+      fixture.nativeElement.querySelectorAll('textarea') as NodeListOf<HTMLTextAreaElement>
+    );
+
+    it('should show both captions for a likert and emit an edit', () => {
+      component.combinedProperties = {
+        type: 'likert', label: 'Tabelle', label2: 'Erste Spalte'
+      };
+      fixture.detectChanges();
+
+      expect(textareas().map(t => t.value)).toEqual(['Tabelle', 'Erste Spalte']);
+
+      textareas()[1].value = 'Neue Spalte';
+      textareas()[1].dispatchEvent(new Event('input'));
+
+      expect(emitted).toEqual([{ property: 'label2', value: 'Neue Spalte' }]);
+    });
+
+    it('should show neither for a dropdown', () => {
+      expect(textareas()).toEqual([]);
+    });
   });
 
   it('should render one option list panel for the options', () => {

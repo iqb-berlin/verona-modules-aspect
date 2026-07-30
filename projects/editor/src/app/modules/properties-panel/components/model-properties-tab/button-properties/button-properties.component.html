@@ -1,4 +1,11 @@
 <ng-container *ngIf="combinedProperties.asLink !== undefined">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'propertiesPanel.label' | translate }}</mat-label>
+    <textarea #labelField matInput type="text"
+              [value]="combinedProperties.label"
+              (input)="updateModel.emit({ property: 'label', value: labelField.value })">
+    </textarea>
+  </mat-form-field>
   <fieldset>
     <legend>{{ 'propertiesPanel.presentation' | translate }}</legend>
     <div class="fx-column-start-stretch" [style.gap.px]="20">

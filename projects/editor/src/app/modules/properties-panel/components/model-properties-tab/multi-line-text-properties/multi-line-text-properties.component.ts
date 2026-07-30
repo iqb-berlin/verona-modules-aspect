@@ -16,7 +16,8 @@ import { UnitService } from 'editor/src/app/services/unit.service';
  * they are picked from it by name rather than assumed to be everywhere.
  */
 export type PanelMultiLineTextProperties =
-  MultiLineTextProperties & Pick<TextAreaProperties, 'hasDynamicRowCount' | 'expectedCharactersCount'>;
+  MultiLineTextProperties &
+  Pick<TextAreaProperties, 'hasDynamicRowCount' | 'expectedCharactersCount' | 'resizeEnabled'>;
 
 @Component({
   selector: 'aspect-multi-line-text-properties',

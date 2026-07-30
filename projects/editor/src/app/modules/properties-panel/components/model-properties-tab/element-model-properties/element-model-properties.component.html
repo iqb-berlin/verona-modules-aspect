@@ -20,24 +20,6 @@
                                   (updateModel)="updateModel.emit($event)">
   </aspect-preset-value-properties>
 
-  <!-- non-InputElement elements that have labels, i.e. Likert, Button-->
-  <mat-form-field *ngIf="combinedProperties.label !== undefined && !($any(combinedProperties) | isInputElement)"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
-    <textarea #labelField matInput type="text"
-              [value]="combinedProperties.label"
-              (input)="emitOwn('label', labelField.value)">
-    </textarea>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.label2 !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.label2' | translate }}</mat-label>
-    <textarea #label2Field matInput type="text"
-              [value]="combinedProperties.label2"
-              (input)="emitOwn('label2', label2Field.value)">
-    </textarea>
-  </mat-form-field>
-
   <aspect-options-field-set [combinedProperties]="combinedProperties"
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
@@ -78,12 +60,6 @@
   <aspect-select-properties [combinedProperties]="$any(combinedProperties)"
                              (updateModel)="updateModel.emit($event)">
   </aspect-select-properties>
-
-  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.resizeEnabled !== undefined"
-                          [value]="combinedProperties.resizeEnabled"
-                          (valueChange)="emitOwn('resizeEnabled', $event)">
-    {{'propertiesPanel.resizeEnabled' | translate }}
-  </aspect-merged-checkbox>
 
   <aspect-multi-line-text-properties [combinedProperties]="$any(combinedProperties)"
                                      (updateModel)="updateModel.emit($event)">

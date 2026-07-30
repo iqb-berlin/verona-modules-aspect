@@ -16,7 +16,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
-import { UIElementValue } from 'common/models/ui-element-interfaces';
+import { UIElementType, UIElementValue } from 'common/models/ui-element-interfaces';
+import {
+  PanelSection
+} from 'editor/src/app/modules/properties-panel/models/panel-sections';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
@@ -68,6 +71,7 @@ class MockOptionsFieldSetComponent {
 @Component({ selector: 'aspect-ele-specific-props', standalone: false, template: '' })
 class MockEleSpecificPropsComponent {
   @Input() combinedProperties!: CombinedProperties;
+  @Input() show!: Record<PanelSection, boolean>;
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 
@@ -141,6 +145,15 @@ describe('UIElementPropertiesComponent', () => {
 
   const selectedElement = { type: 'button', id: 'btn1', alias: 'Btn1' } as unknown as UIElement;
 
+  /**
+   * Sets the selection and recomputes the section map (#1137). Angular calls `ngOnChanges` only for
+   * template-bound inputs, so a spec that assigns them on the instance has to say so itself.
+   */
+  const select = (...types: UIElementType[]): void => {
+    component.selectedElements = types.map(type => ({ type } as UIElement));
+    component.ngOnChanges();
+  };
+
   beforeEach(async () => {
     unitServiceMock = { expertMode: false };
     elementService = createSpyObj<ElementService>(
@@ -196,6 +209,7 @@ describe('UIElementPropertiesComponent', () => {
     component = fixture.componentInstance;
     component.combinedProperties = { type: 'button', alias: 'Btn1' };
     component.selectedElements = [selectedElement];
+    component.ngOnChanges();
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
@@ -214,6 +228,7 @@ describe('UIElementPropertiesComponent', () => {
 
     it('should offer the button vocabulary for a button', () => {
       component.combinedProperties = { type: 'button', action: null };
+      select('button');
       fixture.detectChanges();
 
       expect(actionPanel().componentInstance.actions).toEqual(BUTTON_ACTIONS);
@@ -221,13 +236,17 @@ describe('UIElementPropertiesComponent', () => {
 
     it('should offer the trigger vocabulary for a trigger', () => {
       component.combinedProperties = { type: 'trigger', action: null };
+      select('trigger');
       fixture.detectChanges();
 
       expect(actionPanel().componentInstance.actions).toEqual(TRIGGER_ACTIONS);
     });
 
     it('should offer nothing when the selection mixes the two types', () => {
+      // Both types have the action section, so the map still offers it - it is the `type != null`
+      // guard that has to hide the control here.
       component.combinedProperties = { type: null, action: null };
+      select('button', 'trigger');
       fixture.detectChanges();
 
       expect(actionPanel()).toBeNull();

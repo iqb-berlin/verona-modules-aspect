@@ -5,7 +5,9 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
-import { UIElementValue } from 'common/models/ui-element-interfaces';
+import { UIElementType, UIElementValue } from 'common/models/ui-element-interfaces';
+import { UIElement } from 'common/models/elements/element';
+import { panelSectionsOf } from 'editor/src/app/modules/properties-panel/models/panel-sections';
 import {
   CombinedProperties
 } from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
@@ -95,6 +97,9 @@ describe('EleSpecificPropsComponent', () => {
   let component: EleSpecificPropsComponent;
   let fixture: ComponentFixture<EleSpecificPropsComponent>;
 
+  /** What the real parent passes down: the sections the selected element type has (#1137). */
+  const showFor = (type: UIElementType) => panelSectionsOf([{ type } as UIElement]);
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -119,6 +124,7 @@ describe('EleSpecificPropsComponent', () => {
     fixture = TestBed.createComponent(EleSpecificPropsComponent);
     component = fixture.componentInstance;
     component.combinedProperties = { type: 'frame' };
+    component.show = showFor('frame');
     fixture.detectChanges();
   });
 
@@ -134,10 +140,20 @@ describe('EleSpecificPropsComponent', () => {
 
   it('should switch the rendered panel with the element type', () => {
     component.combinedProperties = { type: 'button' };
+    component.show = showFor('button');
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('aspect-border-properties'))).toBeNull();
     expect(fixture.debugElement.query(By.css('aspect-button-properties'))).not.toBeNull();
+  });
+
+  /* The section map is the outer gate: without it nothing is offered, whatever the type says. That
+     is what makes a new element type without a `PANEL_SECTIONS` entry visible instead of silent. */
+  it('should render nothing while no sections are given', () => {
+    component.show = panelSectionsOf([]);
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.css('aspect-border-properties'))).toBeNull();
   });
 
   it('should forward updateModel events from child panels', () => {

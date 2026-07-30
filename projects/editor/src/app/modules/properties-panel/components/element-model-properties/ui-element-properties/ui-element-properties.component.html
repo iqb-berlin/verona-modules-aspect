@@ -7,32 +7,38 @@
     <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'propertiesPanel.mustBeUnique' | translate">
   </mat-form-field>
 
-  <aspect-media-source-properties [combinedProperties]="combinedProperties"
+  <aspect-media-source-properties *ngIf="show.mediaSource"
+  [combinedProperties]="combinedProperties"
                                   (updateModel)="updateModel.emit($event)">
   </aspect-media-source-properties>
 
-  <aspect-input-element-properties *ngIf="$any(combinedProperties) | isInputElement"
+  <aspect-input-element-properties *ngIf="show.inputElement && ($any(combinedProperties) | isInputElement)"
                                    [combinedProperties]="combinedProperties"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-input-element-properties>
 
-  <aspect-preset-value-properties [combinedProperties]="combinedProperties"
+  <aspect-preset-value-properties *ngIf="show.presetValue"
+  [combinedProperties]="combinedProperties"
                                   (updateModel)="updateModel.emit($event)">
   </aspect-preset-value-properties>
 
-  <aspect-options-field-set [combinedProperties]="combinedProperties"
+  <aspect-options-field-set *ngIf="show.options"
+  [combinedProperties]="combinedProperties"
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
-  <aspect-checkbox-properties [combinedProperties]="combinedProperties"
+  <aspect-checkbox-properties *ngIf="show.checkbox"
+  [combinedProperties]="combinedProperties"
                               (updateModel)="updateModel.emit($event)">
   </aspect-checkbox-properties>
 
   <aspect-ele-specific-props [combinedProperties]="combinedProperties"
+                             [show]="show"
                              (updateModel)="updateModel.emit($event)">
   </aspect-ele-specific-props>
 
-  <aspect-cloze-properties [combinedProperties]="$any(combinedProperties)">
+  <aspect-cloze-properties *ngIf="show.cloze"
+  [combinedProperties]="$any(combinedProperties)">
   </aspect-cloze-properties>
 
   <button *ngIf="unitService.expertMode && combinedProperties.player"
@@ -47,22 +53,25 @@
        and having nothing in common is exactly what extracting them achieved. The other children are
        bound directly - the merged object this component receives carries every property, and its
        own narrow type is assignable wherever a single name overlaps. -->
-  <aspect-select-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-select-properties *ngIf="show.select"
+  [combinedProperties]="$any(combinedProperties)"
                              (updateModel)="updateModel.emit($event)">
   </aspect-select-properties>
 
-  <aspect-multi-line-text-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-multi-line-text-properties *ngIf="show.multiLineText"
+  [combinedProperties]="$any(combinedProperties)"
                                      (updateModel)="updateModel.emit($event)">
   </aspect-multi-line-text-properties>
 
-  <aspect-math-keyboard-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-math-keyboard-properties *ngIf="show.mathKeyboard"
+  [combinedProperties]="$any(combinedProperties)"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-math-keyboard-properties>
 
   <!--`type != null` as well: the two element types with an action have different vocabularies, and a
       mixed selection merges `type` to null. The ternary below would then fall to the trigger's
       actions and write one of them to the button, which does not accept it (#1147).-->
-  <aspect-action-properties *ngIf="unitService.expertMode &&
+  <aspect-action-properties *ngIf="show.action && unitService.expertMode &&
                                   combinedProperties.action !== undefined &&
                                   combinedProperties.type != null"
     [actions]="combinedProperties.type === 'button' ? BUTTON_ACTIONS : TRIGGER_ACTIONS"
@@ -70,24 +79,27 @@
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>
 
-  <aspect-text-field-element-properties [combinedProperties]="combinedProperties"
+  <aspect-text-field-element-properties *ngIf="show.textFieldElement"
+  [combinedProperties]="combinedProperties"
                                         (updateModel)="updateModel.emit($event)">
   </aspect-text-field-element-properties>
 
-  <aspect-input-assistance-properties *ngIf="unitService.expertMode"
+  <aspect-input-assistance-properties *ngIf="show.inputAssistance && unitService.expertMode"
                                       [combinedProperties]="combinedProperties"
                                       (updateModel)="updateModel.emit($event)">
   </aspect-input-assistance-properties>
 
-  <aspect-sticky-header-properties [combinedProperties]="combinedProperties"
+  <aspect-sticky-header-properties *ngIf="show.stickyHeader"
+  [combinedProperties]="combinedProperties"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-sticky-header-properties>
 
-  <aspect-first-column-ratio-properties [combinedProperties]="$any(combinedProperties)"
+  <aspect-first-column-ratio-properties *ngIf="show.firstColumnRatio"
+  [combinedProperties]="$any(combinedProperties)"
                                         (updateModel)="updateModel.emit($event)">
   </aspect-first-column-ratio-properties>
 
-  <aspect-image-properties *ngIf="unitService.expertMode"
+  <aspect-image-properties *ngIf="show.image && unitService.expertMode"
                            [combinedProperties]="combinedProperties"
                            (updateModel)="updateModel.emit($event)">
   </aspect-image-properties>

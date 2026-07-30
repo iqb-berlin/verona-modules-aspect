@@ -1,5 +1,4 @@
-<div *ngIf="combinedProperties.type === 'drop-list'"
-     class="fx-column-start-stretch">
+<div class="fx-column-start-stretch">
   <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'newOption'"
                             [itemList]="combinedProperties.value ?? []"
                             (textItemAdded)="addOption($event)"

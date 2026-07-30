@@ -7,15 +7,13 @@
   </button>
 }
 
-@if (combinedProperties.type === 'checkbox') {
-  {{'preset' | translate }}
-  <mat-button-toggle-group [style.align-self]="'flex-start'"
-                           [value]="combinedProperties.value"
-                           (change)="updateModel.emit({ property: 'value', value: $event.value })">
-    <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>
-    <mat-button-toggle [value]="false">{{'propertiesPanel.false' | translate }}</mat-button-toggle>
-  </mat-button-toggle-group>
-}
+{{'preset' | translate }}
+<mat-button-toggle-group [style.align-self]="'flex-start'"
+                         [value]="combinedProperties.value"
+                         (change)="updateModel.emit({ property: 'value', value: $event.value })">
+  <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>
+  <mat-button-toggle [value]="false">{{'propertiesPanel.false' | translate }}</mat-button-toggle>
+</mat-button-toggle-group>
 
 @if (unitService.expertMode && combinedProperties.crossOutChecked !== undefined) {
   <aspect-merged-checkbox [value]="combinedProperties.crossOutChecked"

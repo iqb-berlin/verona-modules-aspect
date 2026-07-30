@@ -61,12 +61,9 @@ describe('MarkingPanelPropertiesComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('propertiesPanel.marking');
   });
 
-  it('should render nothing for other element types', () => {
-    component.combinedProperties = { type: 'text' };
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.directive(MockHighlightPropertiesComponent))).toBeNull();
-  });
+  /* The component no longer checks the element type: since #1137 PANEL_SECTIONS decides whether
+     this section is offered, and it is offered to the marking panel alone. Covered by
+     panel-sections.spec.ts and by the characterization net, which renders all 30 types. */
 
   it('should forward updateModel events of the highlight properties', () => {
     const highlightProperties = fixture.debugElement

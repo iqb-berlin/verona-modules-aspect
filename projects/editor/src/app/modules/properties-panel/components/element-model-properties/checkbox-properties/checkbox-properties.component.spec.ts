@@ -93,14 +93,16 @@ describe('CheckboxPropertiesComponent', () => {
     expect(toggleGroup()).not.toBeNull();
   });
 
-  // The component is bound for every element type, so each control guards itself.
-  it('should render nothing for an element that is not a checkbox', () => {
-    component.combinedProperties = { type: 'text-field' };
+  /* Since #1137 whether this component appears at all is decided by PANEL_SECTIONS, not by the
+     component - see panel-sections.spec.ts and the characterization net. What stays its own job is
+     the field level: an element that has no imgSrc gets no image button, even though the section is
+     offered. */
+  it('should leave out a control the element does not have', () => {
+    component.combinedProperties = { type: 'checkbox', value: false, crossOutChecked: false };
     fixture.detectChanges();
 
     expect(imageButton()).toBeNull();
-    expect(toggleGroup()).toBeNull();
-    expect(crossOutBox()).toBeNull();
+    expect(toggleGroup()).not.toBeNull();
   });
 
   // A divergent multi selection merges to null; the checkbox renders that as indeterminate.

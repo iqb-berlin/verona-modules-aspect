@@ -1,12 +1,10 @@
-@if (combinedProperties.type === 'marking-panel') {
-  <div class="fx-column-start-stretch">
-    {{ 'propertiesPanel.remoteControl' | translate }}
-    <fieldset class="fx-column-start-stretch">
-      <legend>{{'propertiesPanel.marking' | translate }}</legend>
-      <aspect-highlight-properties [combinedProperties]="combinedProperties"
-                                   [disabled]="false"
-                                   (updateModel)="updateModel.emit($event)">
-      </aspect-highlight-properties>
-    </fieldset>
-  </div>
-}
+<div class="fx-column-start-stretch">
+  {{ 'propertiesPanel.remoteControl' | translate }}
+  <fieldset class="fx-column-start-stretch">
+    <legend>{{'propertiesPanel.marking' | translate }}</legend>
+    <aspect-highlight-properties [combinedProperties]="combinedProperties"
+                                 [disabled]="false"
+                                 (updateModel)="updateModel.emit($event)">
+    </aspect-highlight-properties>
+  </fieldset>
+</div>

@@ -20,6 +20,7 @@ export type PanelStickyHeaderProperties =
 @Component({
   selector: 'aspect-sticky-header-properties',
   templateUrl: './sticky-header-properties.component.html',
+  styleUrls: ['./sticky-header-properties.component.scss'],
   standalone: false
 })
 export class StickyHeaderPropertiesComponent {

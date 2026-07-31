@@ -22,6 +22,7 @@ export type PanelMultiLineTextProperties =
 @Component({
   selector: 'aspect-multi-line-text-properties',
   templateUrl: './multi-line-text-properties.component.html',
+  styleUrls: ['./multi-line-text-properties.component.scss'],
   standalone: false
 })
 export class MultiLineTextPropertiesComponent {

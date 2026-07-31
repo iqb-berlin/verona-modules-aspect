@@ -16,6 +16,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 @Component({
   selector: 'aspect-math-keyboard-properties',
   templateUrl: './math-keyboard-properties.component.html',
+  styleUrls: ['./math-keyboard-properties.component.scss'],
   standalone: false
 })
 export class MathKeyboardPropertiesComponent {

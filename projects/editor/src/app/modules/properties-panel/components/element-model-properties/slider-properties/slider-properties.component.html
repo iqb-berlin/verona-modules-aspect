@@ -36,9 +36,11 @@
   {{'propertiesPanel.thumbLabel' | translate }}
 </aspect-merged-checkbox>
 <!-- The preset sits here rather than with the other preset controls: it is gated on minValue, so
-     it is offered for the slider alone. -->
+     it is offered for the slider alone. `wide-form-field` because it left the panel's flex column
+     when it moved here, and a mat-form-field is inline-flex - without it, it shrinks to the input's
+     intrinsic width. The min/max fields above were never in that column and stay as they are. -->
 @if (combinedProperties.minValue !== undefined) {
-  <mat-form-field appearance="fill">
+  <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
     <input matInput type="number" #presetValue="ngModel"
            [ngModel]="combinedProperties.value"

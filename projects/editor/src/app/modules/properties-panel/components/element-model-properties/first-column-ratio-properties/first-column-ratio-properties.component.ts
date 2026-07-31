@@ -13,6 +13,7 @@ import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-pr
 @Component({
   selector: 'aspect-first-column-ratio-properties',
   templateUrl: './first-column-ratio-properties.component.html',
+  styleUrls: ['./first-column-ratio-properties.component.scss'],
   standalone: false
 })
 export class FirstColumnRatioPropertiesComponent {

@@ -8,7 +8,8 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 @Component({
   selector: 'aspect-slider-properties',
   standalone: false,
-  templateUrl: './slider-properties.component.html'
+  templateUrl: './slider-properties.component.html',
+  styleUrls: ['./slider-properties.component.scss']
 })
 export class SliderPropertiesComponent {
   @Input() combinedProperties!: Merged<SliderProperties>;

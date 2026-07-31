@@ -5,6 +5,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
@@ -26,6 +27,7 @@ class MockMergedCheckboxComponent {
 describe('CheckboxPropertiesComponent', () => {
   let component: CheckboxPropertiesComponent;
   let fixture: ComponentFixture<CheckboxPropertiesComponent>;
+  let dialogService: SpyObj<DialogService>;
   const unitServiceMock = { expertMode: true } as unknown as UnitService;
 
   const imageButton = () => fixture.debugElement.query(By.css('.media-src-button'));
@@ -33,6 +35,8 @@ describe('CheckboxPropertiesComponent', () => {
   const crossOutBox = () => fixture.debugElement.query(By.directive(MockMergedCheckboxComponent));
 
   beforeEach(async () => {
+    dialogService = createSpyObj<DialogService>(['importImage']);
+
     await TestBed.configureTestingModule({
       declarations: [CheckboxPropertiesComponent, MockMergedCheckboxComponent],
       imports: [
@@ -43,7 +47,7 @@ describe('CheckboxPropertiesComponent', () => {
       ],
       providers: [
         { provide: UnitService, useValue: unitServiceMock },
-        { provide: DialogService, useValue: {} }
+        { provide: DialogService, useValue: dialogService }
       ]
     }).compileComponents();
 
@@ -64,6 +68,28 @@ describe('CheckboxPropertiesComponent', () => {
     expect(imageButton()).not.toBeNull();
     expect(toggleGroup()).not.toBeNull();
     expect(crossOutBox()).not.toBeNull();
+  });
+
+  // Goes through DialogService.importImage rather than driving the resize dialog itself: that helper
+  // is what the five other image buttons use, and it reports a cancelled dialog as null.
+  it('should emit the imported image', async () => {
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+    dialogService.importImage.mockResolvedValue({ name: 'bild.png', content: 'data:image/png;base64,abc' });
+
+    await component.changeImgSrc();
+
+    expect(emitted).toEqual([{ property: 'imgSrc', value: 'data:image/png;base64,abc' }]);
+  });
+
+  it('should emit nothing when the image dialog is cancelled', async () => {
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+    dialogService.importImage.mockResolvedValue(null);
+
+    await component.changeImgSrc();
+
+    expect(emitted).toEqual([]);
   });
 
   it('should emit the chosen preset value', () => {

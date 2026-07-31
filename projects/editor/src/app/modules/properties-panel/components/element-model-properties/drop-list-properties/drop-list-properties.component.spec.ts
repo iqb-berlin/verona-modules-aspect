@@ -113,6 +113,15 @@ describe('DropListPropertiesComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // A selection of drop lists whose preset items disagree merges `value` to null. An empty list with
+  // an active add button would claim both lists are empty, and adding one item would replace both.
+  it('should offer no preset list when the item lists diverge', () => {
+    component.combinedProperties = { ...component.combinedProperties, value: null };
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('aspect-option-list-panel')).toBeNull();
+  });
+
   it('should force onlyOneItem when replacement is allowed', () => {
     component.updateAllowReplacement(true);
 

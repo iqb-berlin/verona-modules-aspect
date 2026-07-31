@@ -2,42 +2,49 @@
         (click)="elementService.showDefaultEditDialog()">
   {{ 'propertiesPanel.editTableElements' | translate }}
 </button>
-<fieldset>
-  <legend>{{'section-menu.rows' | translate }}</legend>
-  <mat-form-field appearance="outline">
-    <mat-label>{{ 'section-menu.rowCount' | translate }}</mat-label>
-    <input matInput #rowCountField type="number" [min]="maxRowIndex"
-           [value]="(combinedProperties.gridRowSizes ?? []).length"
-           (click)="$event.stopPropagation()"
-           (change)="modifySizeArray('gridRowSizes', +rowCountField.value || 0, $event)">
-  </mat-form-field>
-  <ng-container *ngFor="let size of combinedProperties.gridRowSizes; let i = index">
-    <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
-                             [value]="size.value"
-                             [unit]="size.unit"
-                             [allowedUnits]="['px', 'fr']"
-                             (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
-    </aspect-size-input-panel>
-  </ng-container>
-</fieldset>
-<fieldset>
-  <legend>{{'section-menu.columns' | translate }}</legend>
-  <mat-form-field appearance="outline">
-    <mat-label>{{ 'section-menu.columnCount' | translate }}</mat-label>
-    <input matInput #columnCountField type="number" [min]="maxColIndex"
-           [value]="(combinedProperties.gridColumnSizes ?? []).length"
-           (click)="$event.stopPropagation()"
-           (change)="modifySizeArray('gridColumnSizes', +columnCountField.value || 0, $event)">
-  </mat-form-field>
-  <ng-container *ngFor="let size of combinedProperties.gridColumnSizes; let i = index">
-    <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
-                             [value]="size.value"
-                             [unit]="size.unit"
-                             [allowedUnits]="['px', 'fr']"
-                             (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
-    </aspect-size-input-panel>
-  </ng-container>
-</fieldset>
+<!--`!= null` on the size arrays: a selection of tables whose grids disagree merges them to null, and
+    the count field would then read 0 - a table claiming no rows. Editing that count reaches into the
+    absent array, so the grid editors are not offered at all for such a selection.-->
+@if (combinedProperties.gridRowSizes != null) {
+  <fieldset>
+    <legend>{{'section-menu.rows' | translate }}</legend>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'section-menu.rowCount' | translate }}</mat-label>
+      <input matInput #rowCountField type="number" [min]="maxRowIndex"
+             [value]="combinedProperties.gridRowSizes.length"
+             (click)="$event.stopPropagation()"
+             (change)="modifySizeArray('gridRowSizes', +rowCountField.value || 0, $event)">
+    </mat-form-field>
+    @for (size of combinedProperties.gridRowSizes; track $index) {
+      <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + ($index + 1)"
+                               [value]="size.value"
+                               [unit]="size.unit"
+                               [allowedUnits]="['px', 'fr']"
+                               (valueUpdated)="changeGridSize('gridRowSizes', $index, $event)">
+      </aspect-size-input-panel>
+    }
+  </fieldset>
+}
+@if (combinedProperties.gridColumnSizes != null) {
+  <fieldset>
+    <legend>{{'section-menu.columns' | translate }}</legend>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'section-menu.columnCount' | translate }}</mat-label>
+      <input matInput #columnCountField type="number" [min]="maxColIndex"
+             [value]="combinedProperties.gridColumnSizes.length"
+             (click)="$event.stopPropagation()"
+             (change)="modifySizeArray('gridColumnSizes', +columnCountField.value || 0, $event)">
+    </mat-form-field>
+    @for (size of combinedProperties.gridColumnSizes; track $index) {
+      <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + ($index + 1)"
+                               [value]="size.value"
+                               [unit]="size.unit"
+                               [allowedUnits]="['px', 'fr']"
+                               (valueUpdated)="changeGridSize('gridColumnSizes', $index, $event)">
+      </aspect-size-input-panel>
+    }
+  </fieldset>
+}
 <aspect-merged-checkbox [value]="combinedProperties.tableEdgesEnabled"
                         (valueChange)="updateModel.emit({ property: 'tableEdgesEnabled', value: $event })">
   {{ 'propertiesPanel.tableEdgesEnabled' | translate }}

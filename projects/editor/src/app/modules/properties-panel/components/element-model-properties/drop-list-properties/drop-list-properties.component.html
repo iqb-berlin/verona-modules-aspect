@@ -1,11 +1,16 @@
 <div class="fx-column-start-stretch">
-  <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'newOption'"
-                            [itemList]="combinedProperties.value ?? []"
-                            (textItemAdded)="addOption($event)"
-                            (itemRemoved)="removeOption($event)"
-                            (itemReordered)="moveOption('value', $event)"
-                            (itemEdited)="editOption($event)">
-  </aspect-option-list-panel>
+  <!--`!= null`, not a fallback: a selection whose preset item lists disagree merges to null, and an
+      empty list plus an active add button would claim both lists are empty - adding one item would
+      then replace both.-->
+  @if (combinedProperties.value != null) {
+    <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'newOption'"
+                              [itemList]="combinedProperties.value"
+                              (textItemAdded)="addOption($event)"
+                              (itemRemoved)="removeOption($event)"
+                              (itemReordered)="moveOption('value', $event)"
+                              (itemEdited)="editOption($event)">
+    </aspect-option-list-panel>
+  }
 
   <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
                   class="wide-form-field" appearance="fill">

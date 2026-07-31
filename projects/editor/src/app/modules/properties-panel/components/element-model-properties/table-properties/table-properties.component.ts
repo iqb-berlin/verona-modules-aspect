@@ -45,6 +45,9 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
   }
 
   calculateMaxIndices(): void {
+    // `?? []` is safe here, unlike in a value binding: the indices are only the lower bound of the
+    // count fields, and a selection whose children disagree (merging `elements` to null) is not
+    // offered those fields at all.
     const elements = (this.combinedProperties.elements ?? []) as unknown as TableElement[];
     this.maxRowIndex = Math.max(...elements.map(el => el.gridRow), 1);
     this.maxColIndex = Math.max(...elements.map(el => el.gridColumn), 1);

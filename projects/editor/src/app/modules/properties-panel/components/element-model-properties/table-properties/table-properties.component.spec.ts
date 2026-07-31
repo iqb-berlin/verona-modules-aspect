@@ -110,6 +110,21 @@ describe('TablePropertiesComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('aspect-size-input-panel').length).toBe(5);
   });
 
+  // A selection of tables whose grids disagree merges the size arrays to null. A count field would
+  // then read 0 - a table claiming no rows - and editing it would reach into the absent array.
+  it('should offer no grid editors when the size arrays diverge', () => {
+    component.combinedProperties = {
+      ...component.combinedProperties, elements: null, gridRowSizes: null, gridColumnSizes: null
+    };
+    component.calculateMaxIndices();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('fieldset').length).toBe(0);
+    expect(fixture.nativeElement.querySelectorAll('aspect-size-input-panel').length).toBe(0);
+    // The properties that do merge stay editable.
+    expect(fixture.nativeElement.querySelectorAll('aspect-merged-checkbox').length).toBe(2);
+  });
+
   it('should append new default sizes when the row count grows', () => {
     component.modifySizeArray('gridRowSizes', 3, createChangeEvent(true, '3').event);
 

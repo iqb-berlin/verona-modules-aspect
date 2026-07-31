@@ -16,12 +16,16 @@
   </aspect-merged-checkbox>
 }
 @if (combinedProperties.strikeSelectedOption !== undefined) {
-  <aspect-merged-checkbox
-      [matTooltip]="'propertiesPanel.strikeSelectedOptionTooltip' | translate"
-      [value]="combinedProperties.strikeSelectedOption"
-      (valueChange)="updateModel.emit({ property: 'strikeSelectedOption', value: $event })">
-    {{'propertiesPanel.strikeSelectedOption' | translate }}
-  </aspect-merged-checkbox>
+  <!--The tooltip hangs on a wrapper: aspect-merged-checkbox is `display: contents` and has no
+      bounding rect of its own, and MatTooltip positions its overlay from that rect - on the tag
+      itself the explanation would appear in the top left corner of the viewport.-->
+  <span [matTooltip]="'propertiesPanel.strikeSelectedOptionTooltip' | translate">
+    <aspect-merged-checkbox
+        [value]="combinedProperties.strikeSelectedOption"
+        (valueChange)="updateModel.emit({ property: 'strikeSelectedOption', value: $event })">
+      {{'propertiesPanel.strikeSelectedOption' | translate }}
+    </aspect-merged-checkbox>
+  </span>
 }
 @if (combinedProperties.allowUnset !== undefined) {
   <aspect-merged-checkbox [value]="combinedProperties.allowUnset"

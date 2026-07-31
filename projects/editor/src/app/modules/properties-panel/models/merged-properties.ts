@@ -20,8 +20,14 @@
  * every binding in the panel needed a `$any()` cast; with a concrete `T` the compiler checks the
  * property names again.
  */
+/*
+ * `NonNullable` in both conditions, not `T[K]` directly: the four groups the merge recurses into are
+ * all declared optional (`dimensions?: DimensionProperties`), and `DimensionProperties | undefined
+ * extends object` is false. Without it every one of them fell through to `T[K] | null`, leaving its
+ * leaves typed as if they could never be `null` — the exact opposite of what this type is for.
+ */
 export type Merged<T> = {
-  [K in keyof T]?: T[K] extends readonly unknown[] ? T[K] | null
-    : T[K] extends object ? Merged<T[K]> | null
+  [K in keyof T]?: NonNullable<T[K]> extends readonly unknown[] ? T[K] | null
+    : NonNullable<T[K]> extends object ? Merged<NonNullable<T[K]>> | null
       : T[K] | null;
 };

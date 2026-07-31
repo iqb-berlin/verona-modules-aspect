@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, Output, SimpleChange
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -155,8 +155,9 @@ describe('UIElementPropertiesComponent', () => {
    * template-bound inputs, so a spec that assigns them on the instance has to say so itself.
    */
   const select = (...types: UIElementType[]): void => {
+    const previous = component.selectedElements;
     component.selectedElements = types.map(type => ({ type } as UIElement));
-    component.ngOnChanges();
+    component.ngOnChanges({ selectedElements: new SimpleChange(previous, component.selectedElements, false) });
   };
 
   beforeEach(async () => {
@@ -214,7 +215,7 @@ describe('UIElementPropertiesComponent', () => {
     component = fixture.componentInstance;
     component.combinedProperties = { type: 'button', alias: 'Btn1' };
     component.selectedElements = [selectedElement];
-    component.ngOnChanges();
+    component.ngOnChanges({ selectedElements: new SimpleChange(undefined, component.selectedElements, true) });
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();

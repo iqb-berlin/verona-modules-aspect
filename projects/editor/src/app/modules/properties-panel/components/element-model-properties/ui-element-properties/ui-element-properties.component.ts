@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, OnChanges, Output
+  Component, EventEmitter, Input, OnChanges, Output, SimpleChanges
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
@@ -64,8 +64,13 @@ export class UIElementPropertiesComponent implements OnChanges {
   constructor(public unitService: UnitService,
               public elementService: ElementService) { }
 
-  ngOnChanges(): void {
-    this.show = panelSectionsOf(this.selectedElements);
+  ngOnChanges(changes: SimpleChanges): void {
+    // Only when the selection itself changed. `combinedProperties` is rebuilt on every keystroke in
+    // any panel field, and recomputing here would hand the two children that read `show` a new
+    // object identity each time, for a value that cannot have changed.
+    if (changes.selectedElements) {
+      this.show = panelSectionsOf(this.selectedElements);
+    }
   }
 
   /** Emit one of this component's own properties, with the name checked against the model. */

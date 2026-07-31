@@ -112,8 +112,7 @@ export function panelSectionsOf(elements: UIElement[]): Record<PanelSection, boo
       .map(element => PANEL_SECTIONS[element.type])
       .reduce((intersection, sections) => intersection.filter(section => sections.includes(section))) :
     [];
-  return ALL_SECTIONS.reduce(
-    (show, section) => ({ ...show, [section]: shared.includes(section) }),
-    {} as Record<PanelSection, boolean>
-  );
+  return Object.fromEntries(
+    ALL_SECTIONS.map(section => [section, shared.includes(section)])
+  ) as Record<PanelSection, boolean>;
 }

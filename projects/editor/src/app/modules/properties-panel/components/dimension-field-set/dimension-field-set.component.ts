@@ -3,6 +3,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { ElementService } from 'editor/src/app/services/element.service';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-dimension-field-set',
@@ -11,8 +12,8 @@ import { ElementService } from 'editor/src/app/services/element.service';
 })
 
 export class DimensionFieldSetComponent {
-  @Input() positionProperties: PositionProperties | undefined;
-  @Input() dimensions!: DimensionProperties;
+  @Input() positionProperties: Merged<PositionProperties> | undefined;
+  @Input() dimensions!: Merged<DimensionProperties>;
 
   constructor(public unitService: UnitService,
               public elementService: ElementService,

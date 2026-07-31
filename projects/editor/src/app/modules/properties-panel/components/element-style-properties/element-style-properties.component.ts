@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { UnitService } from 'editor/src/app/services/unit.service';
 import { Stylings } from 'common/models/elements/property-group-interfaces';
 import { ElementService } from 'editor/src/app/services/element.service';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-element-style-properties',
@@ -9,7 +9,7 @@ import { ElementService } from 'editor/src/app/services/element.service';
   standalone: false
 })
 export class ElementStylePropertiesComponent {
-  @Input() styles!: Stylings | undefined;
+  @Input() styles!: Merged<Stylings> | undefined;
 
   constructor(public elementService: ElementService) { }
 }

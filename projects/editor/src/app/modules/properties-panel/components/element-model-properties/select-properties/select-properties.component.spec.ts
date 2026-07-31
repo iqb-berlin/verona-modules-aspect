@@ -8,7 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
@@ -195,5 +195,24 @@ describe('SelectPropertiesComponent', () => {
     limitCheckboxInput.click();
 
     expect(emitted).toEqual([{ property: 'itemsPerRow', value: null }]);
+  });
+
+  /*
+   * The tooltip needs an anchor whose rect covers its checkbox: MatTooltip both positions the overlay
+   * and takes its hover target from that rect. `aspect-merged-checkbox` is `display: contents` and has
+   * none, and a `span` wrapper does not help either - a block inside an inline element splits the
+   * inline box, so the span's rect was a 17px fragment beside the checkbox. The tooltip then appeared
+   * next to the box and hovering the box did nothing at all.
+   */
+  it('should anchor the strikeSelectedOption tooltip on a box around its checkbox', () => {
+    const anchor = fixture.debugElement.query(By.directive(MatTooltip)).nativeElement as HTMLElement;
+    const anchorRect = anchor.getBoundingClientRect();
+    const checkboxRect = (anchor.querySelector('mat-checkbox') as HTMLElement).getBoundingClientRect();
+
+    expect(anchorRect.height).toBeGreaterThan(0);
+    expect(anchorRect.top).toBeLessThanOrEqual(checkboxRect.top);
+    expect(anchorRect.bottom).toBeGreaterThanOrEqual(checkboxRect.bottom);
+    expect(anchorRect.left).toBeLessThanOrEqual(checkboxRect.left);
+    expect(anchorRect.right).toBeGreaterThanOrEqual(checkboxRect.right);
   });
 });

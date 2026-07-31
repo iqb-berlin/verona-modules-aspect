@@ -18,14 +18,19 @@
 @if (combinedProperties.strikeSelectedOption !== undefined) {
   <!--The tooltip hangs on a wrapper: aspect-merged-checkbox is `display: contents` and has no
       bounding rect of its own, and MatTooltip positions its overlay from that rect - on the tag
-      itself the explanation would appear in the top left corner of the viewport.-->
-  <span [matTooltip]="'propertiesPanel.strikeSelectedOptionTooltip' | translate">
+      itself the explanation would appear in the top left corner of the viewport.
+
+      A `div`, not a `span`: the checkbox is a block, and a block inside an inline element splits its
+      inline box - the span's own rect then covered an empty 17px fragment next to the checkbox
+      instead of the checkbox, which both misplaced the tooltip and made hovering the box do nothing.
+      The spec pins the anchor's rect around the checkbox.-->
+  <div [matTooltip]="'propertiesPanel.strikeSelectedOptionTooltip' | translate">
     <aspect-merged-checkbox
         [value]="combinedProperties.strikeSelectedOption"
         (valueChange)="updateModel.emit({ property: 'strikeSelectedOption', value: $event })">
       {{'propertiesPanel.strikeSelectedOption' | translate }}
     </aspect-merged-checkbox>
-  </span>
+  </div>
 }
 @if (combinedProperties.allowUnset !== undefined) {
   <aspect-merged-checkbox [value]="combinedProperties.allowUnset"

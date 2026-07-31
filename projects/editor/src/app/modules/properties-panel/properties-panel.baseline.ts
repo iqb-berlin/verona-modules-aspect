@@ -2131,15 +2131,15 @@ button "propertiesPanel.editTableElements"
 [section-menu.rows]
 input[number] "section-menu.rowCount" = 2
 input[number] "section-menu.height 1" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 input[number] "section-menu.height 2" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 [section-menu.columns]
 input[number] "section-menu.columnCount" = 2
 input[number] "section-menu.width 1" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 input[number] "section-menu.width 2" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 checkbox "propertiesPanel.tableEdgesEnabled" = false
 checkbox "propertiesPanel.tableHeaderEnabled" = false
 checkbox "propertiesPanel.stickyHeader" = false (disabled)
@@ -2180,15 +2180,15 @@ button "propertiesPanel.editTableElements"
 [section-menu.rows]
 input[number] "section-menu.rowCount" = 2
 input[number] "section-menu.height 1" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 input[number] "section-menu.height 2" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 [section-menu.columns]
 input[number] "section-menu.columnCount" = 2
 input[number] "section-menu.width 1" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 input[number] "section-menu.width 2" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 checkbox "propertiesPanel.tableEdgesEnabled" = indeterminate
 checkbox "propertiesPanel.tableHeaderEnabled" = indeterminate
 checkbox "propertiesPanel.stickyHeader" = indeterminate (disabled)
@@ -2233,15 +2233,15 @@ button "propertiesPanel.editTableElements"
 [section-menu.rows]
 input[number] "section-menu.rowCount" = 2
 input[number] "section-menu.height 1" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 input[number] "section-menu.height 2" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 [section-menu.columns]
 input[number] "section-menu.columnCount" = 2
 input[number] "section-menu.width 1" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 input[number] "section-menu.width 2" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 checkbox "propertiesPanel.tableEdgesEnabled" = indeterminate
 checkbox "propertiesPanel.tableHeaderEnabled" = indeterminate
 checkbox "propertiesPanel.stickyHeader" = indeterminate (disabled)
@@ -2259,15 +2259,15 @@ button "propertiesPanel.editTableElements"
 [section-menu.rows]
 input[number] "section-menu.rowCount" = 2
 input[number] "section-menu.height 1" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 input[number] "section-menu.height 2" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 [section-menu.columns]
 input[number] "section-menu.columnCount" = 2
 input[number] "section-menu.width 1" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 input[number] "section-menu.width 2" = 1
-select "Einheit" = fr
+select "section-menu.unit" = fr
 checkbox "propertiesPanel.tableEdgesEnabled" = false
 checkbox "propertiesPanel.tableHeaderEnabled" = false
 checkbox "propertiesPanel.stickyHeader" = false (disabled)

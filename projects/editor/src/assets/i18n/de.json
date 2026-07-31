@@ -441,7 +441,8 @@
     "width": "Breite",
     "fraction": "Anteile",
     "pixel": "Bildpunkte",
-    "percent": "Prozent"
+    "percent": "Prozent",
+    "unit": "Einheit"
   },
   "Bitte kopierten Abschnitt einfügen": "Bitte kopierten Abschnitt einfügen",
   "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",

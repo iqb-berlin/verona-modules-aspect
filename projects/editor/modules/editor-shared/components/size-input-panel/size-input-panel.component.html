@@ -5,7 +5,7 @@
          (change)="emitMeasurement()">
 </mat-form-field>
 <mat-form-field [style.width.%]="60">
-  <mat-label>Einheit</mat-label>
+  <mat-label>{{'section-menu.unit' | translate }}</mat-label>
   <mat-select [disabled]="disabled"
               [(ngModel)]="unit"
               (selectionChange)="emitMeasurement()">

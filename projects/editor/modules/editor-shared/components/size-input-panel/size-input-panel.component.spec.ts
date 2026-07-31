@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { Measurement } from 'common/models/ui-element-interfaces';
-import { SizeInputPanelComponent } from 'editor/modules/editor-shared/components/size-input-panel/size-input-panel.component';
+import { SizeInputPanelComponent } from './size-input-panel.component';
 
 describe('SizeInputPanelComponent', () => {
   let component: SizeInputPanelComponent;
@@ -43,15 +43,57 @@ describe('SizeInputPanelComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Breite 1');
   });
 
-  it('should combine value and unit', () => {
-    expect(component.getCombinedString()).toEqual({ value: 3, unit: 'fr' });
+  it('should emit the combined measurement', () => {
+    let emitted: Measurement | undefined;
+    component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+
+    component.emitMeasurement();
+
+    expect(emitted).toEqual({ value: 3, unit: 'fr' });
   });
 
-  it('should fall back to zero for an empty value', () => {
-    component.value = null as unknown as number;
+  /*
+   * The case a merged measurement produces: the selected elements disagree, so the field is empty.
+   * This used to substitute 0 and write it to all of them - a value the author never entered.
+   */
+  it('should write nothing while the value is missing', () => {
+    let emitted: Measurement | undefined;
+    component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+    component.value = null;
+    fixture.detectChanges();
 
-    expect(component.getCombinedString()).toEqual({ value: 0, unit: 'fr' });
-    expect(component.value).toBe(0);
+    const unitSelect: HTMLElement = fixture.nativeElement.querySelector('mat-select');
+    unitSelect.dispatchEvent(new Event('selectionChange'));
+    component.emitMeasurement();
+
+    expect(emitted).toBeUndefined();
+    expect(component.value).toBeNull();
+  });
+
+  it('should write nothing while the unit is missing', () => {
+    let emitted: Measurement | undefined;
+    component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+    component.unit = null;
+
+    component.emitMeasurement();
+
+    expect(emitted).toBeUndefined();
+  });
+
+  // A value entered into the empty field still reaches the whole selection.
+  it('should emit once the missing value is entered', () => {
+    let emitted: Measurement | undefined;
+    component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+    component.value = null;
+    fixture.detectChanges();
+
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    input.value = '5';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input.dispatchEvent(new Event('change'));
+
+    expect(emitted).toEqual({ value: 5, unit: 'fr' });
   });
 
   it('should emit the combined measurement when the number input changes', () => {

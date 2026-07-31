@@ -6,6 +6,7 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-position-and-dimension-properties',
@@ -13,8 +14,8 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
   standalone: false
 })
 export class ElementPositionPropertiesComponent {
-  @Input() dimensions!: DimensionProperties | null | undefined;
-  @Input() positionProperties: PositionProperties | undefined;
+  @Input() dimensions!: Merged<DimensionProperties> | null | undefined;
+  @Input() positionProperties: Merged<PositionProperties> | undefined;
   @Input() isZIndexDisabled: boolean = false;
 
   constructor(public unitService: UnitService,

@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -22,8 +23,8 @@ import {
 })
 class MockSizeInputPanelComponent {
   @Input() label!: string;
-  @Input() value!: number;
-  @Input() unit!: string;
+  @Input() value: number | null | undefined;
+  @Input() unit: string | null | undefined;
   @Input() allowedUnits!: string[];
   @Output() valueUpdated = new EventEmitter<{ value: number, unit: string }>();
 }
@@ -32,15 +33,18 @@ describe('PositionFieldSetComponent', () => {
   let component: PositionFieldSetComponent;
   let fixture: ComponentFixture<PositionFieldSetComponent>;
 
-  const unitServiceMock = {
-    unit: { pages: [{ sections: [{ dynamicPositioning: false }] }] }
-  } as unknown as UnitService;
+  // Rebuilt per test: one test switches the section to dynamic positioning.
+  let unitServiceMock: UnitService;
   const selectionServiceMock = {
     selectedPageIndex: 0,
     selectedSectionIndex: 0
   } as unknown as SelectionService;
 
   beforeEach(async () => {
+    unitServiceMock = {
+      unit: { pages: [{ sections: [{ dynamicPositioning: false }] }] }
+    } as unknown as UnitService;
+
     await TestBed.configureTestingModule({
       declarations: [PositionFieldSetComponent, MockSizeInputPanelComponent],
       imports: [
@@ -89,6 +93,26 @@ describe('PositionFieldSetComponent', () => {
     xInput.dispatchEvent(new Event('input'));
 
     expect(emitted).toEqual([{ property: 'xPosition', value: 42, isInputValid: true }]);
+  });
+
+  /*
+   * A multi-selection whose margins disagree merges the measurement's parts to null. The panel has
+   * to see that null - substituting 0 here would let it write a margin nobody entered.
+   */
+  it('should pass a divergent margin on as null', () => {
+    // The margin fields belong to the dynamic-positioning branch of the template.
+    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    component.positionProperties = {
+      ...component.positionProperties, marginTop: { value: null, unit: 'px' }
+    } as typeof component.positionProperties;
+    fixture.detectChanges();
+
+    const topPanel = fixture.debugElement.queryAll(By.directive(MockSizeInputPanelComponent))
+      .map(panel => panel.componentInstance as MockSizeInputPanelComponent)
+      .find(panel => panel.label.includes('propertiesPanel.top'));
+
+    expect(topPanel?.value).toBeNull();
+    expect(topPanel?.unit).toBe('px');
   });
 
   it('should hide the z-index field when disabled', async () => {

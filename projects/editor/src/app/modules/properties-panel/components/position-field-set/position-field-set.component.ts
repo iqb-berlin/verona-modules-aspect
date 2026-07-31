@@ -5,6 +5,7 @@ import { PositionProperties } from 'common/models/elements/property-group-interf
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-position-field-set',
@@ -13,7 +14,7 @@ import { UIElementValue } from 'common/models/ui-element-interfaces';
   standalone: false
 })
 export class PositionFieldSetComponent {
-  @Input() positionProperties!: PositionProperties;
+  @Input() positionProperties!: Merged<PositionProperties>;
   @Input() isZIndexDisabled: boolean = false;
   @Output() updateModel =
     new EventEmitter<{

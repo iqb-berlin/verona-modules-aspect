@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, OnChanges, Output
+  Component, EventEmitter, Input, OnChanges, Output, SimpleChanges
 } from '@angular/core';
 
 /**
@@ -36,9 +36,15 @@ export class MergedCheckboxComponent implements OnChanges {
   checked: boolean = false;
   indeterminate: boolean = false;
 
-  ngOnChanges(): void {
-    this.checked = this.value ?? false;
-    this.indeterminate = this.value === null;
+  ngOnChanges(changes: SimpleChanges): void {
+    // Only a new `value` may overwrite the live state. `ngOnChanges` fires for every input, and many
+    // call sites bind `disabled` to a sibling property (six of them in drop-list-properties alone) —
+    // clicking such a sibling would otherwise reset a box the author has just ticked, while its own
+    // write is still on its way through the panel.
+    if (changes.value) {
+      this.checked = this.value ?? false;
+      this.indeterminate = this.value === null;
+    }
   }
 
   toggle(checked: boolean): void {

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SimpleChange } from '@angular/core';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
@@ -16,10 +17,14 @@ describe('MergedCheckboxComponent', () => {
 
   const checkbox = (): HTMLInputElement => fixture.nativeElement.querySelector('mat-checkbox input');
 
-  /** ngOnChanges is not run for inputs set directly on the instance, so it is called explicitly. */
+  /**
+   * ngOnChanges is not run for inputs set directly on the instance, so it is called explicitly —
+   * with the change record Angular would pass, because the hook acts only on a changed `value`.
+   */
   const setValue = (value: boolean | null | undefined): void => {
+    const previousValue = component.value;
     component.value = value;
-    component.ngOnChanges();
+    component.ngOnChanges({ value: new SimpleChange(previousValue, value, false) });
     fixture.detectChanges();
   };
 
@@ -118,5 +123,20 @@ describe('MergedCheckboxComponent', () => {
 
     expect(component.checked).toBe(true);
     expect(component.indeterminate).toBe(false);
+  });
+
+  // ngOnChanges fires for every input, and many call sites bind `disabled` to a sibling property.
+  // Re-deriving the state there would revert a click whose write is still on its way.
+  it('should keep the live state when an input other than value changes', () => {
+    setValue(null);
+    checkbox().click();
+
+    component.disabled = true;
+    component.ngOnChanges({ disabled: new SimpleChange(false, true, false) });
+    fixture.detectChanges();
+
+    expect(component.checked).toBe(true);
+    expect(component.indeterminate).toBe(false);
+    expect(checkbox().checked).toBe(true);
   });
 });

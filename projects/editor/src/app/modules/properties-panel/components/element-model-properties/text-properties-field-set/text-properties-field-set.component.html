@@ -12,9 +12,8 @@
                   appearance="fill">
     <mat-label>{{ 'propertiesPanel.columnCount' | translate }}</mat-label>
     <input #columnCountField matInput type="number" [value]="combinedProperties.columnCount"
-           (input)="emitOwn('columnCount', columnCountField.value)"
-           (change)="combinedProperties.columnCount = combinedProperties.columnCount ?
-                                                        combinedProperties.columnCount : 0">
+           (input)="columnCountField.value !== '' && emitOwn('columnCount', +columnCountField.value)"
+           (change)="columnCountField.value === '' && emitOwn('columnCount', 0)">
   </mat-form-field>
 
   <fieldset class="fx-column-start-stretch">

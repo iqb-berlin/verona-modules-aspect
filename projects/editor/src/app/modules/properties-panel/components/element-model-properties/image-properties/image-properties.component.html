@@ -35,8 +35,7 @@
                 property: 'magnifierSize',
                 value: $event,
                 isInputValid: magnifierSize.valid})"
-           (change)="magnifierSize.value === null &&
-                     updateModel.emit({ property: 'magnifierSize', value: 0, isInputValid: true })">
+           (change)="commitNumber(magnifierSize, 'magnifierSize', combinedProperties.magnifierSize)">
   </mat-form-field>
 
   <div *ngIf="combinedProperties.magnifierZoom !== undefined"

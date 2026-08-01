@@ -167,8 +167,28 @@ describe('PositionFieldSetComponent', () => {
     rangeInput.dispatchEvent(new Event('input'));
     rangeInput.dispatchEvent(new Event('change'));
 
-    expect(emitted).toEqual([{ property: 'gridRowRange', value: 0 }]);
+    expect(emitted).toEqual([{ property: 'gridRowRange', value: 0, isInputValid: true }]);
     expect(component.positionProperties.gridRowRange).toBe(2); // the view object is not written to
+  });
+
+  /* Now that the guard in the host actually rejects invalid input, the box must not keep showing a
+     number that was never saved. `min="0"` makes -5 invalid, nothing is written, and on leaving the
+     field the box goes back to the model value. */
+  it('should put a rejected value back to what the model holds', async () => {
+    const emitted: unknown[] = [];
+    const xInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+    xInput.value = '-5';
+    xInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    emitted.length = 0;
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    xInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(xInput.value).toBe('10');
+    expect(emitted).toEqual([]); // putting the box back is not a write
   });
 
   // Leaving a field that holds a number must not write it a second time.

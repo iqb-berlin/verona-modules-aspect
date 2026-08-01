@@ -6,8 +6,7 @@
                 property: 'minValue',
                 value: $event,
                 isInputValid: minValue.valid})"
-         (change)="minValue.value === null &&
-                   updateModel.emit({ property: 'minValue', value: 0, isInputValid: true })">
+         (change)="commitNumber(minValue, 'minValue', combinedProperties.minValue)">
 </mat-form-field>
 <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
   <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
@@ -17,8 +16,7 @@
                 property: 'maxValue',
                 value: $event,
                 isInputValid: maxValue.valid})"
-         (change)="maxValue.value === null &&
-                   updateModel.emit({ property: 'maxValue', value: 0, isInputValid: true })">
+         (change)="commitNumber(maxValue, 'maxValue', combinedProperties.maxValue)">
 </mat-form-field>
 <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.showValues !== undefined"
                         [value]="combinedProperties.showValues"

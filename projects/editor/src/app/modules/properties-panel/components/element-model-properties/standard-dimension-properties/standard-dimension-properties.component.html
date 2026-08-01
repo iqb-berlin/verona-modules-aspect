@@ -25,12 +25,11 @@
     </aspect-merged-checkbox>
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-      <input matInput type="number" min="0"
+      <input matInput type="number" min="0" #widthField="ngModel"
              [disabled]="!fixedWidth.checked"
              [ngModel]="combinedProperties.dimensions.width"
-             (ngModelChange)="updateDimensionProperty('width', $event)"
-             (change)="combinedProperties.dimensions.width =
-               combinedProperties.dimensions.width ? combinedProperties.dimensions.width : 0">
+             (ngModelChange)="$event !== null && updateDimensionProperty('width', $event)"
+             (change)="widthField.value === null && updateDimensionProperty('width', 0)">
     </mat-form-field>
   }
 

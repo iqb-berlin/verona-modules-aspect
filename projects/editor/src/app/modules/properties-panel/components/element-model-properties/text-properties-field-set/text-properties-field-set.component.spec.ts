@@ -141,11 +141,29 @@ describe('TextPropsComponent', () => {
     expect(emitted[0].value).not.toBe(markingPanels);
   });
 
-  it('should emit the edited column count', () => {
+  /* A number, not the raw string of `input.value`. `columnCount` is declared `number`, and the
+     string is one of the six entries #1148 lists - fixed here because this field had to be touched
+     anyway: its `(change)` handler used to write into the merged view object (#1154). */
+  it('should emit the edited column count as a number', () => {
     const columnCountInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
     columnCountInput.value = '3';
     columnCountInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'columnCount', value: '3' }]);
+    expect(emitted).toEqual([{ property: 'columnCount', value: 3 }]);
+  });
+
+  /* Empty means zero, committed on leaving the field. Emitting while typing would write over the
+     box; the old `(change)` handler patched only the merged object, so the panel showed 0 while
+     the saved unit definition kept what the emit had put there. */
+  it('should emit zero for a column count left empty', () => {
+    const columnCountInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+
+    columnCountInput.value = '';
+    columnCountInput.dispatchEvent(new Event('input'));
+    expect(emitted).toEqual([]);
+
+    columnCountInput.dispatchEvent(new Event('change'));
+
+    expect(emitted).toEqual([{ property: 'columnCount', value: 0 }]);
   });
 });

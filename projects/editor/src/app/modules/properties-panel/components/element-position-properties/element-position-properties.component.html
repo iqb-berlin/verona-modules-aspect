@@ -3,7 +3,7 @@
     *ngIf="positionProperties"
     [positionProperties]="positionProperties"
     [isZIndexDisabled]="isZIndexDisabled"
-    (updateModel)="elementService.updateSelectedElementsPositionProperty($event.property, $event.value)">
+    (updateModel)="updatePositionModel.emit($event)">
   </aspect-position-field-set>
 
   <aspect-dimension-field-set *ngIf="dimensions"

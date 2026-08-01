@@ -103,13 +103,19 @@ describe('ElementPositionPropertiesComponent', () => {
     expect(elementService.alignElements).toHaveBeenCalledWith(selectedElements.value, 'left');
   });
 
-  it('should forward position updates to the element service', () => {
+  /* Up to the host rather than into the service: the host is the one place that evaluates
+     `isInputValid`, and writing from here meant the field set's own guard never took effect
+     (#1154). The flag has to survive the hop, so it is asserted along with the rest. */
+  it('should send position updates up rather than to the element service', () => {
+    const emitted: unknown[] = [];
+    component.updatePositionModel.subscribe(update => emitted.push(update));
     const positionFieldSet = fixture.debugElement
       .query(debugElement => debugElement.componentInstance instanceof MockPositionFieldSetComponent)
       .componentInstance as MockPositionFieldSetComponent;
 
-    positionFieldSet.updateModel.emit({ property: 'xPosition', value: 10 });
+    positionFieldSet.updateModel.emit({ property: 'xPosition', value: 10, isInputValid: false });
 
-    expect(elementService.updateSelectedElementsPositionProperty).toHaveBeenCalledWith('xPosition', 10);
+    expect(emitted).toEqual([{ property: 'xPosition', value: 10, isInputValid: false }]);
+    expect(elementService.updateSelectedElementsPositionProperty).not.toHaveBeenCalled();
   });
 });

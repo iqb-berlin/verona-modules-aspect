@@ -75,7 +75,8 @@ describe('ElementPropertiesPanelComponent', () => {
 
   beforeEach(async () => {
     elementService = createSpyObj<ElementService>(
-      ['updateElementsProperty', 'deleteElements', 'duplicateSelectedElements']
+      ['updateElementsProperty', 'updateSelectedElementsPositionProperty',
+        'deleteElements', 'duplicateSelectedElements']
     );
     messageService = createSpyObj<MessageService>(['showWarning', 'showError']);
     selectedElements = new BehaviorSubject<UIElement[]>([]);
@@ -402,6 +403,55 @@ describe('ElementPropertiesPanelComponent', () => {
     selectedElements.next([exploding]);
 
     expect(messageService.showError).toHaveBeenCalledTimes(2);
+  });
+
+  /* The leaves compute `isInputValid` and the host evaluates it, but the binding in between passed
+     only two arguments, so the parameter default `true` won every time and the whole validation
+     path was inert (#1154). Asserted through the template, because that binding is the defect. */
+  it('should carry isInputValid from the model tab to the guard', () => {
+    selectedElements.next([buttonElement]);
+    fixture.detectChanges();
+    const modelTab = fixture.debugElement
+      .query(debugElement => debugElement.componentInstance instanceof MockUIElementPropertiesComponent)
+      .componentInstance as MockUIElementPropertiesComponent;
+
+    modelTab.updateModel.emit({ property: 'label', value: 'x', isInputValid: false });
+
+    expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
+    expect(messageService.showWarning).toHaveBeenCalled();
+  });
+
+  // Leaves that do not compute the flag must keep writing - the parameter default covers them.
+  it('should still write when a leaf sends no validity at all', () => {
+    selectedElements.next([buttonElement]);
+    fixture.detectChanges();
+    const modelTab = fixture.debugElement
+      .query(debugElement => debugElement.componentInstance instanceof MockUIElementPropertiesComponent)
+      .componentInstance as MockUIElementPropertiesComponent;
+
+    modelTab.updateModel.emit({ property: 'label', value: 'x' });
+
+    expect(elementService.updateElementsProperty)
+      .toHaveBeenCalledWith([buttonElement], 'label', 'x');
+  });
+
+  it('should write a position property through the guard', () => {
+    selectedElements.next([buttonElement]);
+
+    component.updatePositionModel('xPosition', 5);
+
+    expect(elementService.updateSelectedElementsPositionProperty)
+      .toHaveBeenCalledWith('xPosition', 5);
+    expect(messageService.showWarning).not.toHaveBeenCalled();
+  });
+
+  it('should warn instead of writing an invalid position property', () => {
+    selectedElements.next([buttonElement]);
+
+    component.updatePositionModel('xPosition', -1, false);
+
+    expect(elementService.updateSelectedElementsPositionProperty).not.toHaveBeenCalled();
+    expect(messageService.showWarning).toHaveBeenCalled();
   });
 
   it('should update the elements property for valid input', () => {

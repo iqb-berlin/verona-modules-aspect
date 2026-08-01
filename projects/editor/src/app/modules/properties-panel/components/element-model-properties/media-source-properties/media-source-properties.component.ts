@@ -11,7 +11,8 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 
 /**
  * What this component reads. `type` is not part of the media source: it decides which file dialog
- * to open, because the four media elements accept different formats.
+ * to open, because the four media elements accept different formats — and therefore also whether
+ * the replace button can be offered at all.
  *
  * Geometry has `fileName` without `src` — that is why the two live on separate levels in the model
  * (`FileNameProperties`, and `MediaSourceProperties` extending it), and why each control here has
@@ -57,6 +58,10 @@ export class MediaSourcePropertiesComponent {
         break;
       // no default
     }
+    /* No branch produced a file - an element type without a dialog, or one of the dialogs above
+       returning nothing. Emitting the empty defaults here would clear the source of every selected
+       element without ever having asked for a replacement (#1152). */
+    if (!media.name) return;
     this.updateModel.emit({ property: 'src', value: media.content });
     this.updateModel.emit({ property: 'fileName', value: media.name });
   }

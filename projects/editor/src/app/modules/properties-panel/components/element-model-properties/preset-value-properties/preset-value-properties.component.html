@@ -14,21 +14,26 @@
          (input)="updateModel.emit({property: 'value', value: valueField2.value })">
 </mat-form-field>
 
-<mat-form-field *ngIf="combinedProperties.options !== undefined && combinedProperties.rows === undefined"
-                appearance="fill" class="wide-form-field">
-  <mat-label>{{'preset' | translate }}</mat-label>
-  <mat-select [value]="combinedProperties.value"
-              (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
-    <mat-select-trigger [innerHTML]="combinedProperties.value !== undefined && combinedProperties.value !== null ?
-                                     $any(combinedProperties.options)[$any(combinedProperties.value)].text :
-                                     ''">
-    </mat-select-trigger>
-    <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-    <mat-option *ngFor="let option of $any(combinedProperties.options); let i = index" [value]="i">
-      <div [innerHTML]="option.text + ' (Index: ' + i + ')' | safeResourceHTML"></div>
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<!--dropdown, radio-button-group and the like. `!= null` rather than `!== undefined`: a selection
+    whose option lists disagree merges to null, and then there are no options to pick a preset from -
+    the trigger below would index into null on every change detection cycle. `rows === undefined`
+    excludes the likert, which has options but no single preset.-->
+@if (combinedProperties.options != null && combinedProperties.rows === undefined) {
+  <mat-form-field appearance="fill" class="wide-form-field">
+    <mat-label>{{'preset' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.value"
+                (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
+      <mat-select-trigger [innerHTML]="combinedProperties.options | presetOptionText:combinedProperties.value">
+      </mat-select-trigger>
+      <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
+      @for (option of combinedProperties.options; track $index) {
+        <mat-option [value]="$index">
+          <div [innerHTML]="option.text + ' (Index: ' + $index + ')' | safeResourceHTML"></div>
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+}
 
 <ng-container *ngIf="combinedProperties.type === 'math-field'">
   <div style="display: flex; justify-content: space-between; align-items: center;">

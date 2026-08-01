@@ -95,6 +95,7 @@ import {
   OptionsFieldSetComponent
 } from './components/element-model-properties/options-field-set/options-field-set.component';
 import { PositionFieldSetComponent } from './components/position-field-set/position-field-set.component';
+import { PresetOptionTextPipe } from './pipes/preset-option-text.pipe';
 import {
   PresetValuePropertiesComponent
 } from './components/element-model-properties/preset-value-properties/preset-value-properties.component';
@@ -138,7 +139,7 @@ import {
  *
  * Only ElementPropertiesPanelComponent is exported. The other 37 components are internal to
  * this module on purpose: the panel's structure can then be reworked without checking the rest of
- * the editor for usages. The four pipes are used by this module's templates only.
+ * the editor for usages. The five pipes are used by this module's templates only.
  *
  * This module deliberately lives under src/app rather than under editor/modules/. It is not a
  * self-contained unit — its components reach for the editor's root-provided services
@@ -193,6 +194,7 @@ import {
     GetStateVariablePipe,
     GetValidDropListsPipe,
     LikertRowLabelPipe,
+    PresetOptionTextPipe,
     ScrollPageIndexPipe
   ],
   imports: [

@@ -90,17 +90,26 @@ describe('MediaSourcePropertiesComponent', () => {
     ]);
   });
 
-  /* Characterizes what an unknown type does today: no branch matches, and the empty defaults are
-     emitted anyway - so choosing nothing clears the source. Recorded, not endorsed. */
-  it('should emit empty values for an element type it has no file dialog for', async () => {
+  /* No branch matches, so there is no file to write - and writing the empty defaults would clear
+     the source of every selected element instead (#1152). */
+  it('should emit nothing for an element type it has no file dialog for', async () => {
     const emitted: { property: string; value: unknown }[] = [];
     component.updateModel.subscribe(update => emitted.push(update));
 
     await component.changeMediaSrc('text-field');
 
-    expect(emitted).toEqual([
-      { property: 'src', value: '' },
-      { property: 'fileName', value: '' }
-    ]);
+    expect(emitted).toEqual([]);
+  });
+
+  /* The type of a selection of mixed element types merges to null, and the dialog to open follows
+     from the type - so the panel does not offer the button in the first place (#1152). */
+  it('should hide the source button when the element types disagree', () => {
+    component.combinedProperties = {
+      type: null, fileName: 'bild.png', src: 'data:image/png;base64,abc'
+    };
+    fixture.detectChanges();
+
+    expect(fileName()).not.toBeNull();
+    expect(sourceButton()).toBeNull();
   });
 });

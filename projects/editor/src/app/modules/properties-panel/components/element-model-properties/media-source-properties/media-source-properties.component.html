@@ -5,7 +5,9 @@
   </div>
 }
 
-@if (combinedProperties.src) {
+<!--`type != null` alongside the src: which file dialog to open follows from the element type, so a
+    selection of mixed types - whose type merges to null - has no dialog to offer. See #1152.-->
+@if (combinedProperties.src && combinedProperties.type != null) {
   <button class="media-src-button" [style.align-self]="'center'"
           mat-fab color="primary"
           [matTooltip]="'propertiesPanel.changeMediaSource' | translate" [matTooltipPosition]="'right'"

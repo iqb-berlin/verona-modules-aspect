@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
@@ -88,6 +88,34 @@ describe('PresetValuePropertiesComponent', () => {
     expect(emitted).toEqual([{ property: 'value', value: 1 }]);
   });
 
+  /* The closed select shows the preset's text, and the option it names can be renamed while the
+     panel stays open. The merge hands down the element's own option array (`{...elements[0]}`) and
+     `UIElement.setProperty` splices into it to keep the reference intact, so that rename reaches
+     the trigger as an in-place mutation - nothing the binding could be keyed on changes. */
+  it('should follow a renamed option in the closed select', async () => {
+    const options = [{ text: 'A' }, { text: 'B' }];
+    component.combinedProperties = { type: 'dropdown', value: 1, options };
+    fixture.detectChanges();
+
+    /* MatSelect keeps its options in the overlay and renders the custom trigger only once
+       something is selected, so the preset has to be picked up before the trigger exists. */
+    const select = fixture.debugElement.query(By.directive(MatSelect)).componentInstance as MatSelect;
+    select.open();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    select.close();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const trigger = () => fixture.debugElement.query(By.css('mat-select-trigger')).nativeElement;
+    expect(trigger().textContent).toBe('B');
+
+    options[1].text = 'B neu';
+    fixture.detectChanges();
+
+    expect(trigger().textContent).toBe('B neu');
+  });
+
   /* Option lists that disagree across the selection merge to null, while a preset index shared by
      the elements survives. Offering the select then meant indexing into null - on every change
      detection cycle, because the trigger renders in the closed state too (#1151). */
@@ -98,7 +126,9 @@ describe('PresetValuePropertiesComponent', () => {
     expect(fixture.debugElement.query(By.css('mat-select'))).toBeNull();
   });
 
-  // The likert has options but no single preset of its own, so it keeps the select away.
+  /* The likert has options but no single preset of its own. `PANEL_SECTIONS` does not route it to
+     this component today, so the clause is a belt-and-braces one - pinned down so that giving the
+     likert a preset section cannot quietly hand it a control it has no property for. */
   it('should not offer the select for an element with option rows', () => {
     component.combinedProperties = {
       type: 'likert', options: [{ text: 'A' }], rows: []

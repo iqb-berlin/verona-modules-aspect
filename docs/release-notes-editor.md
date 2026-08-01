@@ -36,6 +36,7 @@ Editor
   - Lange Eingaben ohne Leerzeichen vergrößern das Element auf der Arbeitsfläche nicht mehr über den Abschnittsrand hinaus (überlange Formeln scrollen innerhalb des Feldes, Segmente im Formelbereich brechen um)
 - Eigenschaftenbereich bei gemeinsamer Markierung
   - Sind mehrere Elemente mit unterschiedlichen Optionslisten markiert, wird die Vorbelegung nicht mehr angeboten (verursachte bislang einen fortlaufenden Fehler in der Browser-Konsole)
+  - "Medienquelle ändern" wird bei Elementen unterschiedlichen Typs nicht mehr angeboten; ein Klick darauf löschte zuvor Bild und Dateinamen bei allen markierten Elementen
 
 ## 2.12.4
 ### Fehlerbehebungen 

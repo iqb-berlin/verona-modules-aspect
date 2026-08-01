@@ -52,6 +52,16 @@ describe('panelSectionsOf', () => {
       expect(show.options).toBe(false);
     });
 
+    /* The likert has an option list but no single preset, and this is the only thing keeping it
+       away from the preset control - `preset-value-properties` used to check `rows` itself, which
+       was dead weight once the map existed (#1158). Mixed with a dropdown it is the intersection
+       that decides, so this is where the guarantee lives. */
+    it('should not offer the preset to a likert, alone or mixed with a dropdown', () => {
+      expect(panelSectionsOf([element('likert')]).presetValue).toBe(false);
+      expect(panelSectionsOf([element('likert'), element('dropdown')]).presetValue).toBe(false);
+      expect(panelSectionsOf([element('dropdown')]).presetValue).toBe(true);
+    });
+
     it('should not care about the order of the selection', () => {
       expect(panelSectionsOf([element('radio'), element('dropdown')]))
         .toEqual(panelSectionsOf([element('dropdown'), element('radio')]));

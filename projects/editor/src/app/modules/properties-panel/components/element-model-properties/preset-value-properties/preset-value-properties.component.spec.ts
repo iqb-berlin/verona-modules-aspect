@@ -126,18 +126,6 @@ describe('PresetValuePropertiesComponent', () => {
     expect(fixture.debugElement.query(By.css('mat-select'))).toBeNull();
   });
 
-  /* The likert has options but no single preset of its own. `PANEL_SECTIONS` does not route it to
-     this component today, so the clause is a belt-and-braces one - pinned down so that giving the
-     likert a preset section cannot quietly hand it a control it has no property for. */
-  it('should not offer the select for an element with option rows', () => {
-    component.combinedProperties = {
-      type: 'likert', options: [{ text: 'A' }], rows: []
-    };
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.css('mat-select'))).toBeNull();
-  });
-
   it('should emit the value of the math input', () => {
     component.combinedProperties = { type: 'math-field', value: '1+1' };
     fixture.detectChanges();

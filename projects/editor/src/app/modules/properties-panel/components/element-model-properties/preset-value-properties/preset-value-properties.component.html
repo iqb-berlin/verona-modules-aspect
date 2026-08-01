@@ -16,9 +16,8 @@
 
 <!--dropdown, radio-button-group and the like. `!= null` rather than `!== undefined`: a selection
     whose option lists disagree merges to null, and then there are no options to pick a preset from -
-    the trigger below would index into null on every change detection cycle. `rows === undefined`
-    excludes the likert, which has options but no single preset.-->
-@if (combinedProperties.options != null && combinedProperties.rows === undefined) {
+    the trigger below would index into null on every change detection cycle.-->
+@if (combinedProperties.options != null) {
   <mat-form-field appearance="fill" class="wide-form-field">
     <mat-label>{{'preset' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.value"

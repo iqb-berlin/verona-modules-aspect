@@ -34,6 +34,8 @@ Editor
   - Korrigiert die Element-Auswahl nach dem Einfügen zweiseitiger Abschnittsvorlagen aus einem nachfolgenden Abschnitt
 - Formelfeld, Formelbereich
   - Lange Eingaben ohne Leerzeichen vergrößern das Element auf der Arbeitsfläche nicht mehr über den Abschnittsrand hinaus (überlange Formeln scrollen innerhalb des Feldes, Segmente im Formelbereich brechen um)
+- Eigenschaftenbereich bei gemeinsamer Markierung
+  - Sind mehrere Elemente mit unterschiedlichen Optionslisten markiert, wird die Vorbelegung nicht mehr angeboten (verursachte bislang einen fortlaufenden Fehler in der Browser-Konsole)
 
 ## 2.12.4
 ### Fehlerbehebungen 

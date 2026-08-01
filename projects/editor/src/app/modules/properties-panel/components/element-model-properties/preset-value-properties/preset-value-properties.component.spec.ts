@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
+import { PresetOptionTextPipe } from 'editor/src/app/modules/properties-panel/pipes/preset-option-text.pipe';
 import {
   PresetValuePropertiesComponent
 } from './preset-value-properties.component';
@@ -36,6 +37,7 @@ describe('PresetValuePropertiesComponent', () => {
       declarations: [
         PresetValuePropertiesComponent,
         MockMathInputComponent,
+        PresetOptionTextPipe,
         SafeResourceHTMLPipe
       ],
       imports: [
@@ -84,6 +86,26 @@ describe('PresetValuePropertiesComponent', () => {
     optionSelect.triggerEventHandler('selectionChange', { value: 1 });
 
     expect(emitted).toEqual([{ property: 'value', value: 1 }]);
+  });
+
+  /* Option lists that disagree across the selection merge to null, while a preset index shared by
+     the elements survives. Offering the select then meant indexing into null - on every change
+     detection cycle, because the trigger renders in the closed state too (#1151). */
+  it('should not offer the select when the option lists disagree', () => {
+    component.combinedProperties = { type: 'dropdown', value: 0, options: null };
+
+    expect(() => fixture.detectChanges()).not.toThrow();
+    expect(fixture.debugElement.query(By.css('mat-select'))).toBeNull();
+  });
+
+  // The likert has options but no single preset of its own, so it keeps the select away.
+  it('should not offer the select for an element with option rows', () => {
+    component.combinedProperties = {
+      type: 'likert', options: [{ text: 'A' }], rows: []
+    };
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.css('mat-select'))).toBeNull();
   });
 
   it('should emit the value of the math input', () => {

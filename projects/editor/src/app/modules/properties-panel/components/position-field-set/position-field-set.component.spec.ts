@@ -95,6 +95,36 @@ describe('PositionFieldSetComponent', () => {
     expect(emitted).toEqual([{ property: 'xPosition', value: 42, isInputValid: true }]);
   });
 
+  /* Typing into a number field passes through states the accessor reports as null - an empty box,
+     or a lone "-" the browser cannot parse yet. Anything emitted then is written and comes straight
+     back into the box through the model, stamping over what is being typed. Simulated here by
+     feeding the emitted value back the way the host does. */
+  it('should let a negative number be typed into the z-index', async () => {
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+    component.positionProperties = { xPosition: 10, yPosition: 20, zIndex: -1 } as PositionProperties;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const zInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    ).at(-1) as HTMLInputElement;
+
+    // First keystroke of "-2": the browser cannot parse "-", the accessor reports null.
+    zInput.value = '';
+    zInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    // What the host would do with whatever was emitted.
+    if (emitted.length) {
+      component.positionProperties = {
+        ...component.positionProperties, zIndex: emitted[0].value
+      } as PositionProperties;
+      fixture.detectChanges();
+      await fixture.whenStable();
+    }
+
+    expect(zInput.value).not.toBe('0');
+  });
+
   /* `xPosition` is declared `number`, so an emptied field must not send null down the write path -
      that is how null reached the saved unit definition (#1154). An empty field means 0, and it
      stays a valid input, so it is written rather than warned about. A `(change)` handler used to
@@ -102,15 +132,56 @@ describe('PositionFieldSetComponent', () => {
 
      Note the contrast with the margin test below, where null is the right answer: there it means
      "the selected elements disagree", here it means "the user cleared the box". */
-  it('should emit zero rather than null for an emptied x position', () => {
+  it('should emit zero for an x position left empty, on leaving the field', () => {
     const emitted: { property: string; value: unknown, isInputValid?: boolean | null }[] = [];
     component.updateModel.subscribe(update => emitted.push(update));
-
     const xInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+
     xInput.value = '';
     xInput.dispatchEvent(new Event('input'));
+    expect(emitted).toEqual([]); // still mid-edit, nothing written
+
+    xInput.dispatchEvent(new Event('change'));
 
     expect(emitted).toEqual([{ property: 'xPosition', value: 0, isInputValid: true }]);
+  });
+
+  /* `gridRowRange` is declared `number` like the fields above, but it was left out of the first
+     round of this fix: it emitted the raw value, sent no validity, and kept a `(change)` handler
+     that patched `positionProperties` - the merged view object, not the element. The panel then
+     showed 0 while the saved unit definition held null (#1154). */
+  it('should emit zero for an emptied grid row range', async () => {
+    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    const emitted: { property: string; value: unknown }[] = [];
+    component.positionProperties = {
+      gridRow: 1, gridRowRange: 2, gridColumn: 1, gridColumnRange: 2
+    } as PositionProperties;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    const rangeInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[1];
+    rangeInput.value = '';
+    rangeInput.dispatchEvent(new Event('input'));
+    rangeInput.dispatchEvent(new Event('change'));
+
+    expect(emitted).toEqual([{ property: 'gridRowRange', value: 0 }]);
+    expect(component.positionProperties.gridRowRange).toBe(2); // the view object is not written to
+  });
+
+  // Leaving a field that holds a number must not write it a second time.
+  it('should not emit on leaving a field that has a value', () => {
+    const emitted: unknown[] = [];
+    const xInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+    xInput.value = '7';
+    xInput.dispatchEvent(new Event('input'));
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    xInput.dispatchEvent(new Event('change'));
+
+    expect(emitted).toEqual([]);
   });
 
   /*

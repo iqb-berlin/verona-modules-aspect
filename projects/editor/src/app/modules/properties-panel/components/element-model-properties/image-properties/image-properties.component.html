@@ -31,10 +31,12 @@
     <input matInput type="number" #magnifierSize="ngModel" min="0"
            [disabled]="!combinedProperties.magnifier"
            [ngModel]="combinedProperties.magnifierSize"
-           (ngModelChange)="updateModel.emit({
+           (ngModelChange)="$event !== null && updateModel.emit({
                 property: 'magnifierSize',
-                value: $event ?? 0,
-                isInputValid: magnifierSize.valid})">
+                value: $event,
+                isInputValid: magnifierSize.valid})"
+           (change)="magnifierSize.value === null &&
+                     updateModel.emit({ property: 'magnifierSize', value: 0, isInputValid: true })">
   </mat-form-field>
 
   <div *ngIf="combinedProperties.magnifierZoom !== undefined"

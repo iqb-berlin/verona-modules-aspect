@@ -97,14 +97,29 @@ describe('SliderPropertiesComponent', () => {
 
      The preset below is deliberately not treated this way: its property is `InputElementValue`,
      where null is a legitimate "no preset". */
-  it('should emit zero rather than null for an emptied maximum value', () => {
+  it('should emit zero for a maximum value left empty, on leaving the field', () => {
     const maxValueInput = Array.from(
       fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
     )[1];
+
     maxValueInput.value = '';
     maxValueInput.dispatchEvent(new Event('input'));
+    expect(emitted).toEqual([]); // still mid-edit, nothing written
+
+    maxValueInput.dispatchEvent(new Event('change'));
 
     expect(emitted).toEqual([{ property: 'maxValue', value: 0, isInputValid: true }]);
+  });
+
+  /* The bounds carry no `min`, and negative ones are supported. Emitting on the keystroke that
+     leaves the box unparsable would write 0 and stamp it over the "-" being typed. */
+  it('should let a negative minimum be typed', () => {
+    const minValueInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+
+    minValueInput.value = '';
+    minValueInput.dispatchEvent(new Event('input'));
+
+    expect(emitted).toEqual([]);
   });
 
   it('should emit updateModel when a checkbox is toggled', () => {

@@ -11,16 +11,20 @@
       <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
       <input matInput type="number" #xPosition="ngModel" min="0"
              [ngModel]="positionProperties.xPosition"
-             (ngModelChange)="updateModel.emit(
-                    { property: 'xPosition', value: $event ?? 0, isInputValid: xPosition.valid })">
+             (ngModelChange)="$event !== null &&
+                    updateModel.emit({ property: 'xPosition', value: $event, isInputValid: xPosition.valid })"
+             (change)="xPosition.value === null &&
+                    updateModel.emit({ property: 'xPosition', value: 0, isInputValid: true })">
     </mat-form-field>
     <mat-form-field *ngIf="positionProperties.yPosition !== undefined"
                     appearance="outline">
       <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
       <input matInput type="number" #yPosition="ngModel" min="0"
              [ngModel]="positionProperties.yPosition"
-             (ngModelChange)="updateModel.emit(
-                    { property: 'yPosition', value: $event ?? 0, isInputValid: yPosition.valid })">
+             (ngModelChange)="$event !== null &&
+                    updateModel.emit({ property: 'yPosition', value: $event, isInputValid: yPosition.valid })"
+             (change)="yPosition.value === null &&
+                    updateModel.emit({ property: 'yPosition', value: 0, isInputValid: true })">
     </mat-form-field>
   </div>
 
@@ -35,10 +39,11 @@
       <mat-form-field appearance="outline">
         <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
         <input matInput type="number"
-               [ngModel]="positionProperties.gridRowRange"
-               (ngModelChange)="updateModel.emit({ property: 'gridRowRange', value: $event })"
-               (change)="positionProperties.gridRowRange = positionProperties.gridRowRange ?
-                                                           positionProperties.gridRowRange : 0">
+               [ngModel]="positionProperties.gridRowRange" #gridRowRange="ngModel"
+               (ngModelChange)="$event !== null &&
+                    updateModel.emit({ property: 'gridRowRange', value: $event })"
+               (change)="gridRowRange.value === null &&
+                    updateModel.emit({ property: 'gridRowRange', value: 0 })">
       </mat-form-field>
     </div>
     <div class="flex-row">
@@ -50,10 +55,11 @@
       <mat-form-field appearance="outline">
         <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
         <input matInput type="number"
-               [ngModel]="positionProperties.gridColumnRange"
-               (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })"
-               (change)="positionProperties.gridColumnRange = positionProperties.gridColumnRange ?
-                                                              positionProperties.gridColumnRange : 0">
+               [ngModel]="positionProperties.gridColumnRange" #gridColumnRange="ngModel"
+               (ngModelChange)="$event !== null &&
+                    updateModel.emit({ property: 'gridColumnRange', value: $event })"
+               (change)="gridColumnRange.value === null &&
+                    updateModel.emit({ property: 'gridColumnRange', value: 0 })">
       </mat-form-field>
     </div>
 
@@ -108,9 +114,11 @@
       <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
       <input matInput type="number" #zIndex="ngModel"
              [ngModel]="positionProperties.zIndex"
-             (ngModelChange)="updateModel.emit({ property: 'zIndex',
-                                                     value: $event ?? 0,
+             (ngModelChange)="$event !== null && updateModel.emit({ property: 'zIndex',
+                                                     value: $event,
                                                      isInputValid: zIndex.valid })"
+             (change)="zIndex.value === null &&
+                       updateModel.emit({ property: 'zIndex', value: 0, isInputValid: true })"
              matTooltip="{{ 'propertiesPanel.zIndexTooltip' | translate }}">
     </mat-form-field>
   </ng-container>

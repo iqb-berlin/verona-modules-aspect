@@ -68,3 +68,9 @@
 @if (selectedElements.length === 0) {
   <p class="no-selection">{{'propertiesPanel.noElementSelected' | translate }}</p>
 }
+
+<!--Elements are selected but the merge failed, so there is nothing to render controls from. Without
+    this the pane would simply be blank once the error snackbar times out (#1155).-->
+@if (selectedElements.length > 0 && !combinedProperties) {
+  <p class="no-selection">{{'propertiesPanel.combineFailed' | translate }}</p>
+}

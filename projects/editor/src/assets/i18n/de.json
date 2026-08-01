@@ -91,6 +91,7 @@
     "stacking": "Stapelung",
     "border": "Rahmen",
     "multiSelection": "Mehrfachauswahl",
+    "combineFailed": "Die Eigenschaften der Auswahl konnten nicht zusammengeführt werden. Bitte die Auswahl aufheben und die Elemente einzeln bearbeiten.",
     "inputElement": "Eingabeelement",
     "keyboard": "Tastatur",
     "inputAssistanceGroup": "Eingabehilfe",

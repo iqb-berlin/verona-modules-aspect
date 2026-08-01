@@ -283,6 +283,19 @@ describe('ElementPropertiesPanelComponent', () => {
       expect(combined?.actionParam).toBeNull();
     });
 
+    /* A group against a primitive - a geometry's object-shaped `value` beside a text field's
+       string, say. This never crashed: the recursion ran, found none of the group's keys on the
+       primitive and deleted them all, so the answer was an empty object. `null` is what the merge
+       says everywhere else about two values that disagree (#1155). */
+    it('should null a property group the other element has as a primitive', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'geometry', id: 'a', value: { coordinates: [1, 2] } }),
+        element({ type: 'text-field', id: 'b', value: 'text' })
+      ]);
+
+      expect(combined?.value).toBeNull();
+    });
+
     // The reverse order never crashed, and has to keep answering the same thing.
     it('should null a property group regardless of the selection order', () => {
       const combined = ElementPropertiesPanelComponent.createCombinedProperties([

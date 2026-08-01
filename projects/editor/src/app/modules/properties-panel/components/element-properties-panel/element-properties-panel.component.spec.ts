@@ -64,6 +64,7 @@ describe('ElementPropertiesPanelComponent', () => {
   let elementService: SpyObj<ElementService>;
   let messageService: SpyObj<MessageService>;
   let selectedElements: BehaviorSubject<UIElement[]>;
+  let elementPropertyUpdated: Subject<void>;
 
   const buttonElement = {
     type: 'button', id: 'btn1', alias: 'Btn1', label: 'Click'
@@ -83,9 +84,10 @@ describe('ElementPropertiesPanelComponent', () => {
       selectedElementComponents: [],
       isCompoundChildSelected: false
     } as unknown as SelectionService;
+    elementPropertyUpdated = new Subject<void>();
     const unitServiceMock = {
       expertMode: true,
-      elementPropertyUpdated: new Subject<void>()
+      elementPropertyUpdated
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
@@ -116,6 +118,12 @@ describe('ElementPropertiesPanelComponent', () => {
     fixture = TestBed.createComponent(ElementPropertiesPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  /* Two tests below stub `console.error`. Without this the stub outlives them and swallows what
+     Angular reports in every test declared after them - vitest does not restore mocks by default. */
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('should create', () => {
@@ -344,6 +352,56 @@ describe('ElementPropertiesPanelComponent', () => {
 
     expect(fixture.nativeElement.querySelector('aspect-ui-element-properties')).toBeNull();
     expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
+  });
+
+  /* No controls and no placeholder would leave an empty pane once the snackbar times out - the
+     "no element selected" text does not apply, because elements are selected. */
+  it('should explain the empty pane after a failed merge', () => {
+    const exploding = { type: 'button', id: 'boom' } as unknown as UIElement;
+    Object.defineProperty(exploding, 'label', {
+      get() { throw new Error('merge failed'); },
+      enumerable: true
+    });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    selectedElements.next([exploding]);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.no-selection')).not.toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('propertiesPanel.combineFailed');
+  });
+
+  /* `elementPropertyUpdated` fires for edits anywhere in the unit. Re-running the same failing
+     merge on the unchanged broken selection must not put a snackbar on screen for each of them. */
+  it('should report a persistent merge failure only once', () => {
+    const exploding = { type: 'button', id: 'boom' } as unknown as UIElement;
+    Object.defineProperty(exploding, 'label', {
+      get() { throw new Error('merge failed'); },
+      enumerable: true
+    });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    selectedElements.next([exploding]);
+
+    elementPropertyUpdated.next();
+    elementPropertyUpdated.next();
+
+    expect(messageService.showError).toHaveBeenCalledTimes(1);
+  });
+
+  // A selection that merges again clears the mark, so a later failure is reported afresh.
+  it('should report again after the merge has recovered', () => {
+    const exploding = { type: 'button', id: 'boom' } as unknown as UIElement;
+    Object.defineProperty(exploding, 'label', {
+      get() { throw new Error('merge failed'); },
+      enumerable: true
+    });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    selectedElements.next([exploding]);
+    selectedElements.next([buttonElement]);
+    selectedElements.next([exploding]);
+
+    expect(messageService.showError).toHaveBeenCalledTimes(2);
   });
 
   it('should update the elements property for valid input', () => {

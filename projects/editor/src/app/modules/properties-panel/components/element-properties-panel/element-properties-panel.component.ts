@@ -30,6 +30,8 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
 
   interactionEnabled = false;
   interactionIndeterminate = false;
+  /** Keeps a merge that keeps failing from reporting itself once per unit-wide property update. */
+  private mergeFailureReported = false;
 
   constructor(protected selectionService: SelectionService,
               public unitService: UnitService,
@@ -99,8 +101,12 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
    * `selectedElements` already switched to the new selection while `combinedProperties` still held
    * the previous one - RxJS swallows the error, so the panel went on rendering the old values and
    * `updateModel` wrote them to the newly selected elements on the next edit (#1155). Failing to
-   * `undefined` renders no controls at all, which is the state an empty selection already produces,
-   * so there is nothing left to write with.
+   * `undefined` takes every control away, so there is nothing left to write with; the template
+   * turns that into its own message rather than a blank pane.
+   *
+   * Reported once per failure and not once per call: `elementPropertyUpdated` fires for edits
+   * anywhere in the unit, and re-running the same failing merge on an unchanged broken selection
+   * would put a snackbar on screen for each of them.
    *
    * The bug that made this reachable is fixed; this keeps the next one from corrupting a unit.
    */
@@ -108,8 +114,11 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
     try {
       this.combinedProperties =
         ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
+      this.mergeFailureReported = false;
     } catch (error) {
       this.combinedProperties = undefined;
+      if (this.mergeFailureReported) return;
+      this.mergeFailureReported = true;
       this.messageService.showError(this.translateService.instant('propertiesPanel.combineFailed'));
       // eslint-disable-next-line no-console -- the message above cannot carry the cause
       console.error('Merging the selected elements failed', error);

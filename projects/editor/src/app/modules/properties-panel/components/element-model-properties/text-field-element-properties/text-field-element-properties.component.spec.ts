@@ -110,6 +110,43 @@ describe('TextFieldElementPropertiesComponent', () => {
     expect(emitted).toEqual([{ property: 'textAlign', value: 'center' }]);
   });
 
+  /* `min="0"` makes -1 invalid, so the guard in the host refuses it. Nothing then puts the box
+     back on its own, and it would keep showing a number the model never took (#1154). */
+  it('should put a rejected maximum length back to the model value', async () => {
+    const maxLengthInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[1];
+    maxLengthInput.value = '-1';
+    maxLengthInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    emitted.length = 0;
+
+    maxLengthInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(maxLengthInput.value).toBe('10');
+    expect(emitted).toEqual([]); // putting the box back is not a write
+  });
+
+  /* Unlike the `number` properties elsewhere, these are `number | null` - an empty box means
+     "no limit" and must stay empty rather than being turned into a 0. */
+  it('should leave an emptied maximum length empty', async () => {
+    const maxLengthInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[1];
+    maxLengthInput.value = '';
+    maxLengthInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    maxLengthInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(maxLengthInput.value).toBe('');
+    expect(emitted).toEqual([{ property: 'maxLength', value: null, isInputValid: true }]);
+  });
+
   it('should hide the expert mode fields in simple mode', () => {
     unitServiceMock.expertMode = false;
     fixture.detectChanges();

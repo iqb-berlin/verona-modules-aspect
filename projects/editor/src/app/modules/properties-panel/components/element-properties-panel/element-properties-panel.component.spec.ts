@@ -47,6 +47,10 @@ class MockElementPositionPropertiesComponent {
   @Input() dimensions!: DimensionProperties | null | undefined;
   @Input() positionProperties: PositionProperties | undefined;
   @Input() isZIndexDisabled: boolean = false;
+  /* Without this the binding in the host template is not an output at all - Angular quietly turns
+     an unknown one into a DOM event listener, and the test would pass with the argument missing. */
+  @Output() updatePositionModel =
+    new EventEmitter<{ property: string; value: UIElementValue, isInputValid?: boolean | null }>();
 }
 
 @Component({
@@ -435,6 +439,15 @@ describe('ElementPropertiesPanelComponent', () => {
       .toHaveBeenCalledWith([buttonElement], 'label', 'x');
   });
 
+  /* Asserted through the template rather than by calling the method: the binding is the thing that
+     used to drop the flag, and only the mock's real `@Output` makes it a binding at all. */
+  /* No template-level test for the position tab's binding, unlike the model tab's above.
+     Material attaches an inactive tab body's content on a transition event that never fires
+     without an animations module, which rule 3 rules out - the position tab simply cannot be
+     rendered through the host here. `properties-panel.characterization.spec.ts` hits the same wall
+     and lists it among its known gaps. The mock does declare `updatePositionModel` as a real
+     `@Output`, so the binding is at least wired to something rather than silently degrading to a
+     DOM event listener; the guard itself is covered by the two tests below. */
   it('should write a position property through the guard', () => {
     selectedElements.next([buttonElement]);
 

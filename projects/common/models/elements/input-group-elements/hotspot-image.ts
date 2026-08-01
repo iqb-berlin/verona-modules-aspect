@@ -7,7 +7,7 @@ import {
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
-import { UIElementType } from 'common/models/ui-element-interfaces';
+import { UIElementType, MediaSourceProperties } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 
 export interface Hotspot {
@@ -74,10 +74,8 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
   }
 }
 
-export interface HotspotImageProperties extends InputElementProperties {
+export interface HotspotImageProperties extends InputElementProperties, MediaSourceProperties {
   value: Hotspot[];
-  src: string | null;
-  fileName: string;
   position: PositionProperties;
   dimensions: DimensionProperties;
 }

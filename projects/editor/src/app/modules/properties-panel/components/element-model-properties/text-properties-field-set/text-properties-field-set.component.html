@@ -1,0 +1,75 @@
+<div class="fx-column-start-stretch">
+  {{ 'propertiesPanel.text' | translate }}
+  <div class="text-text" (click)="showTextEditDialog()" [style.cursor]="'pointer'"
+       [innerHTML]="(combinedProperties.text ?? '') | safeResourceHTML">
+  </div>
+  <button mat-fab color="primary" [style.align-self]="'center'" [style.margin-bottom.px]="20"
+          [matTooltip]="'propertiesPanel.editText' | translate"
+          (click)="showTextEditDialog()">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <mat-form-field *ngIf="combinedProperties.columnCount != null"
+                  appearance="fill">
+    <mat-label>{{ 'propertiesPanel.columnCount' | translate }}</mat-label>
+    <input #columnCountField matInput type="number" [value]="combinedProperties.columnCount"
+           (input)="emitOwn('columnCount', columnCountField.value)"
+           (change)="combinedProperties.columnCount = combinedProperties.columnCount ?
+                                                        combinedProperties.columnCount : 0">
+  </mat-form-field>
+
+  <fieldset class="fx-column-start-stretch">
+    <legend>{{ 'propertiesPanel.marking' | translate }}</legend>
+
+    <aspect-highlight-properties [combinedProperties]="combinedProperties"
+                                 (updateModel)="updateModel.emit($event)">
+    </aspect-highlight-properties>
+
+    <mat-form-field *ngIf="combinedProperties.markingPanels !== undefined"
+                    [style.margin-top.px]="5"
+                    appearance="fill">
+      <mat-label>{{ 'propertiesPanel.markingPanels' | translate }}</mat-label>
+      <mat-select multiple
+                  [disabled]="markingPanelIDs.length === 0 &&
+                              !combinedProperties.highlightableYellow &&
+                              !combinedProperties.highlightableTurquoise &&
+                              !combinedProperties.highlightableOrange"
+                  [ngModel]="combinedProperties.markingPanels"
+                  (ngModelChange)="toggleConnectedMarkingPanels($event)">
+        <mat-select-trigger>
+          {{ 'propertiesPanel.markingPanels' | translate }} ({{ combinedProperties.markingPanels?.length }})
+        </mat-select-trigger>
+        <mat-option *ngFor="let idPair of markingPanelIDs" [value]="idPair[0]">
+          {{ idPair[1] }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="combinedProperties.markingMode !== undefined"
+                    [style.margin-top.px]="5"
+                    appearance="fill">
+      <mat-label>{{ 'propertiesPanel.markingMode' | translate }}</mat-label>
+      <mat-select [value]="combinedProperties.markingMode"
+                  [disabled]="combinedProperties.markingPanels?.length === 0 &&
+                              (!combinedProperties.highlightableYellow &&
+                              !combinedProperties.highlightableTurquoise &&
+                              !combinedProperties.highlightableOrange)"
+                  (selectionChange)="emitOwn('markingMode', $event.value)">
+        <mat-option *ngFor="let option of ['selection', 'word', 'range']"
+                    [value]="option">
+          {{ 'propertiesPanel.markingMode-' + option | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"
+                            [disabled]="combinedProperties.markingMode !== 'selection' ||
+                                        (combinedProperties.markingPanels?.length === 0 &&
+                                        (!combinedProperties.highlightableYellow &&
+                                        !combinedProperties.highlightableTurquoise &&
+                                        !combinedProperties.highlightableOrange))"
+                            [value]="combinedProperties.hasSelectionPopup"
+                            (valueChange)="emitOwn('hasSelectionPopup', $event)">
+      {{ 'propertiesPanel.hasSelectionPopup' | translate }}
+    </aspect-merged-checkbox>
+  </fieldset>
+</div>

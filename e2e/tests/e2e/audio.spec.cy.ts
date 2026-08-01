@@ -15,7 +15,7 @@ describe('Audio element', { testIsolation: false }, () => {
     });
 
     it('shows the uploaded filename in the properties panel (Page 1)', () => {
-      cy.get('aspect-element-model-properties-component')
+      cy.get('aspect-ui-element-properties')
         .contains('bird-sound.mp3')
         .should('exist');
     });

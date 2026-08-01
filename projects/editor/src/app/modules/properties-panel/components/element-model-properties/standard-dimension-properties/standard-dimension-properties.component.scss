@@ -1,0 +1,9 @@
+/* The block used to sit directly inside ui-element-properties' `.fx-column-start-stretch`, so its
+   form fields were flex items of that column and stretched to full width. As a component of its own
+   it is one flex item, and its children lay out inside it - which without this rule means
+   `mat-form-field` falls back to its `inline-flex` default and the number fields shrink to their
+   content. Same reason cloze-properties and table-properties carry it. */
+:host {
+  display: flex;
+  flex-direction: column;
+}

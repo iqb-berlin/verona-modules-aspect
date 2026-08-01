@@ -111,20 +111,29 @@ export abstract class UIElement implements UIElementProperties {
     this[property] = value;
   }
 
-  setStyleProperty(property: string, value: UIElementValue): void {
-    (this.styling as Stylings)[property] = value;
+  setStyleProperty(property: keyof Stylings, value: UIElementValue): void {
+    Object.assign(this.styling, { [property]: value });
   }
 
-  setPositionProperty(property: string, value: UIElementValue): void {
-    (this.position as PositionProperties)[property] = value;
+  /*
+   * The property name is checked against the interface, the value is not. Narrowing the value per
+   * property would mean a generic threaded through the whole panel relay chain, where values arrive
+   * as UIElementValue from the templates; Object.assign is what lets the name stay checked without
+   * it. The name is the half that matters: a rename in the model now breaks every call site
+   * (#1137).
+   */
+  setPositionProperty(property: keyof PositionProperties, value: UIElementValue): void {
+    Object.assign(this.position, { [property]: value });
   }
 
-  setDimensionsProperty(property: string, value: number | null): void {
-    (this.dimensions as DimensionProperties)[property] = value;
+  // boolean is in here for isWidthFixed / isHeightFixed, which DimensionProperties declares as
+  // booleans; the panel has always written them through this method.
+  setDimensionsProperty(property: keyof DimensionProperties, value: number | boolean | null): void {
+    Object.assign(this.dimensions, { [property]: value });
   }
 
-  setPlayerProperty(property: string, value: UIElementValue): void {
-    (this.player as PlayerProperties)[property] = value;
+  setPlayerProperty(property: keyof PlayerProperties, value: UIElementValue): void {
+    Object.assign(this.player as PlayerProperties, { [property]: value });
   }
 
   // eslint-disable-next-line class-methods-use-this

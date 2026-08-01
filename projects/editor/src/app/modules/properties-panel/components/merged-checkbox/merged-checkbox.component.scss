@@ -1,0 +1,5 @@
+/* The host must not become a box of its own: the checkboxes it replaces are direct flex items of
+   the panel's column containers, and an extra wrapper box would change their layout. */
+:host {
+  display: contents;
+}

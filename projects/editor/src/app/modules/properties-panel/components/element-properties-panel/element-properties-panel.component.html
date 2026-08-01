@@ -1,0 +1,70 @@
+@if (selectedElements.length > 0 && combinedProperties) {
+  <div class="properties-panel fx-column-start-stretch fill">
+    <div class="panel-title fx-column-start-stretch">
+      @if (combinedProperties.type) {
+        {{'toolbox.' + combinedProperties.type | translate}}
+        <span>{{combinedProperties.alias}}</span>
+      } @else {
+        <i>{{ 'propertiesPanel.multiSelection' | translate }}</i>
+      }
+    </div>
+
+    <mat-tab-group class="fx-flex" mat-stretch-tabs>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabElementProperties' | translate">build</mat-icon>
+        </ng-template>
+        <aspect-ui-element-properties [combinedProperties]="combinedProperties"
+                                      [selectedElements]="selectedElements"
+                                      (updateModel)="updateModel($event.property, $event.value)">
+        </aspect-ui-element-properties>
+      </mat-tab>
+
+      @if (unitService.expertMode && (combinedProperties.position || combinedProperties.dimensions)) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabPositionAndSize' | translate">format_shapes</mat-icon>
+          </ng-template>
+          <aspect-position-and-dimension-properties
+            [dimensions]="combinedProperties.type === 'trigger' ? null : combinedProperties.dimensions"
+            [positionProperties]="combinedProperties.position"
+            [isZIndexDisabled]="combinedProperties.type === 'trigger'">
+          </aspect-position-and-dimension-properties>
+        </mat-tab>
+      }
+
+      @if (unitService.expertMode && combinedProperties.styling) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabStyling' | translate">palette</mat-icon>
+          </ng-template>
+          <aspect-element-style-properties [styles]="combinedProperties.styling">
+          </aspect-element-style-properties>
+        </mat-tab>
+      }
+    </mat-tab-group>
+
+    <div class="button-group fx-column-start-stretch">
+      @if (unitService.expertMode) {
+        <mat-checkbox [style.align-self]="'center'"
+                      [indeterminate]="interactionIndeterminate"
+                      [checked]="interactionEnabled"
+                      (change)="setElementInteractionEnabled($event.checked)">
+          {{'propertiesPanel.setElementInteractionEnabled' | translate }}
+        </mat-checkbox>
+        <button mat-raised-button
+                [disabled]="selectedElements.length > 1 || selectionService.isCompoundChildSelected"
+                (click)="duplicateElement()">
+          {{'propertiesPanel.duplicateElement' | translate }}
+        </button>
+      }
+      <button mat-raised-button color="warn" [disabled]="selectionService.isCompoundChildSelected"
+              (click)="deleteElement()">
+        {{'propertiesPanel.deleteElement' | translate }}
+      </button>
+    </div>
+  </div>
+}
+@if (selectedElements.length === 0) {
+  <p class="no-selection">{{'propertiesPanel.noElementSelected' | translate }}</p>
+}

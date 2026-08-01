@@ -1,0 +1,30 @@
+<fieldset class="fx-column-start-stretch">
+  <legend>{{ 'propertiesPanel.inputElement' | translate }}</legend>
+  <!-- DropList label is unused -->
+  <mat-form-field *ngIf="combinedProperties.label !== undefined"
+                  appearance="fill">
+    <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
+    <textarea #labelField matInput type="text"
+              [value]="combinedProperties.label"
+              [disabled]="!!combinedProperties.imgSrc"
+              (input)="updateModel.emit({ property: 'label', value: labelField.value })">
+        </textarea>
+  </mat-form-field>
+
+  <aspect-merged-checkbox [value]="combinedProperties.readOnly"
+                          (valueChange)="updateModel.emit({ property: 'readOnly', value: $event })">
+    {{'propertiesPanel.readOnly' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="combinedProperties.required"
+                          (valueChange)="updateModel.emit({ property: 'required', value: $event })">
+    {{'propertiesPanel.requiredField' | translate }}
+  </aspect-merged-checkbox>
+
+  <mat-form-field *ngIf="unitService.expertMode" appearance="fill">
+    <mat-label>{{'propertiesPanel.requiredWarnMessage' | translate }}</mat-label>
+    <input #requiredWarnMessageField matInput type="text" [disabled]="!combinedProperties.required"
+           [value]="combinedProperties.requiredWarnMessage"
+           (input)="updateModel.emit({ property: 'requiredWarnMessage', value: requiredWarnMessageField.value })">
+  </mat-form-field>
+</fieldset>

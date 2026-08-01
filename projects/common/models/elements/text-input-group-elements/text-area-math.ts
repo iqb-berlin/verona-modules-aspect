@@ -8,7 +8,9 @@ import {
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { MathKeyboardPreset, TextInputElementProperties } from 'common/models/input-element-interfaces';
+import {
+  MathKeyboardPreset, TextInputElementProperties, MultiLineTextProperties, MathKeyboardProperties
+} from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 
@@ -69,10 +71,8 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
   }
 }
 
-export interface TextAreaMathProperties extends TextInputElementProperties {
-  rowCount: number;
-  hasAutoHeight: boolean;
-  mathKeyboardPresets: MathKeyboardPreset[];
+export interface TextAreaMathProperties
+  extends TextInputElementProperties, MultiLineTextProperties, MathKeyboardProperties {
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: BasicStyles & {

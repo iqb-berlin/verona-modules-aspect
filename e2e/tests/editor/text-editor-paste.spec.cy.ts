@@ -5,7 +5,7 @@ describe('Rich text editor paste', () => {
     cy.viewport(1300, 800);
     cy.openEditor();
     addElement('Text');
-    cy.get('aspect-element-model-properties-component').contains('edit').click();
+    cy.get('aspect-ui-element-properties').contains('edit').click();
     cy.get('mat-dialog-container .ProseMirror').as('editor');
   });
 

@@ -1,0 +1,15 @@
+@if (combinedProperties.fileName !== undefined) {
+  <div class="file-name">
+    <div class="file-name-label">{{ 'originalFileName' | translate }}</div>
+    {{ combinedProperties.fileName || ('unknown' | translate) }}
+  </div>
+}
+
+@if (combinedProperties.src) {
+  <button class="media-src-button" [style.align-self]="'center'"
+          mat-fab color="primary"
+          [matTooltip]="'propertiesPanel.changeMediaSource' | translate" [matTooltipPosition]="'right'"
+          (click)="changeMediaSrc(combinedProperties.type)">
+    <mat-icon>upload_file</mat-icon>
+  </button>
+}

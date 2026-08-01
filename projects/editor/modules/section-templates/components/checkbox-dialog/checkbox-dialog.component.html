@@ -9,7 +9,7 @@
 
   @if (!useImages) {
     <mat-form-field appearance="outline">
-      <mat-label>Neue Option</mat-label>
+      <mat-label>{{ 'newOption' | translate }}</mat-label>
       <textarea #newItem matInput cdkTextareaAutosize type="text"
                 (keydown.enter)="$event.stopPropagation(); $event.preventDefault();"
                 (keyup.enter)="options.push(newItem.value); newItem.select()"></textarea>

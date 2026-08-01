@@ -8,7 +8,6 @@ import { Measurement } from 'common/models/ui-element-interfaces';
 import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 
 export interface PositionProperties {
-  [index: string]: unknown;
   xPosition: number;
   yPosition: number;
   gridColumn: number | null;
@@ -23,7 +22,6 @@ export interface PositionProperties {
 }
 
 export interface DimensionProperties {
-  [index: string]: unknown;
   width: number;
   height: number;
   isWidthFixed?: boolean;
@@ -37,8 +35,24 @@ export interface DimensionProperties {
 export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;
 export type BasicStyles = FontStyles & { backgroundColor: string };
 
+/**
+ * A property that lives in one of the element's nested groups rather than on the element itself.
+ * These have their own setters, and writing one through the generic path puts it on the element
+ * root, where nothing reads it — silently, because UIElement carries an index signature.
+ */
+export type NestedGroupProperty = keyof PositionProperties | keyof DimensionProperties | keyof Stylings;
+
+/**
+ * Accepts any property name except a literal from a nested group. A plain `string` still passes,
+ * which the panel needs: property names travel through its relay chain untyped. So this catches the
+ * mistake where it is actually made — at a call site that names the property outright.
+ *
+ * Both bugs in #1142 were of that shape: the alignment buttons wrote 'xPosition' and the resize
+ * handle wrote 'width' through the generic setter.
+ */
+export type OwnProperty<K extends string> = K extends NestedGroupProperty ? never : K;
+
 export interface FontStyles {
-  [index: string]: unknown;
   fontColor: string;
   font: string;
   fontSize: number;
@@ -48,7 +62,6 @@ export interface FontStyles {
 }
 
 export interface BorderStyles {
-  [index: string]: unknown;
   borderWidth: number;
   borderColor: string;
   borderStyle: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
@@ -56,7 +69,6 @@ export interface BorderStyles {
 }
 
 export interface OtherStyles {
-  [index: string]: unknown;
   backgroundColor?: string;
   lineHeight?: number;
   itemBackgroundColor?: string;
@@ -69,7 +81,6 @@ export interface OtherStyles {
 }
 
 export interface PlayerProperties {
-  [index: string]: unknown;
   loop: boolean;
   startControl: boolean;
   pauseControl: boolean;
@@ -90,6 +101,11 @@ export interface PlayerProperties {
   showRestTime: boolean;
   playbackTime: number;
   fileName: string;
+  /**
+   * Still image of the player, shown in the control bar while nothing is playing. Not to be confused
+   * with `CheckboxProperties.imgSrc`, which is an image in place of a text label and sits on the
+   * element itself rather than under `element.player`.
+   */
   imgSrc: string | null;
   imgFileName: string;
 }
@@ -263,9 +279,15 @@ export abstract class PropertyGroupGenerators {
     return properties.hintLabel !== '';
   }
 
+  /**
+   * Fallback for units written before 4.11.0, where this property was called `hintLabelDelay` (see
+   * `docs/unit_definition_changelog.txt`). The old name is not part of PlayerProperties, so it is
+   * read through a local type rather than through an index signature, which used to hide the fact
+   * that this reads a name the interface does not have.
+   */
   private static sanitizeHintDelay(properties: Partial<PlayerProperties>): number {
-    if (properties.hintLabelDelay === undefined) return 5000;
-    return properties.hintLabelDelay as number;
+    const legacyDelay = (properties as { hintLabelDelay?: number }).hintLabelDelay;
+    return legacyDelay !== undefined ? legacyDelay : 5000;
   }
 
   static generateKeyInputProps(properties: Partial<KeyInputElementProperties> = {}): KeyInputElementProperties {

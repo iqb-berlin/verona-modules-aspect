@@ -40,7 +40,7 @@ describe('Text element', { testIsolation: false }, () => {
             addNewPage();
             addTextElement('Benutzerdefinierter Text mit Formel\n  ');
             setID('text-math');
-            cy.get('aspect-element-model-properties-component')
+            cy.get('aspect-ui-element-properties')
                 .contains('edit').click();
 
             cy.get('mat-icon:contains("functions")').click();
@@ -55,7 +55,7 @@ describe('Text element', { testIsolation: false }, () => {
             addNewPage();
             addTextElement('Originaltext ');
             setID('text-extensions');
-            cy.get('aspect-element-model-properties-component')
+            cy.get('aspect-ui-element-properties')
                 .contains('edit').click();
 
             cy.get('.ProseMirror').click().type('{selectall}{backspace}');
@@ -103,7 +103,7 @@ describe('Text element', { testIsolation: false }, () => {
             cy.get('aspect-text').last().click({ force: true });
 
             // Open Rich Text Editor Dialog
-            cy.get('aspect-element-model-properties-component')
+            cy.get('aspect-ui-element-properties')
                 .contains('edit')
                 .click();
 
@@ -165,7 +165,7 @@ describe('Text element', { testIsolation: false }, () => {
             cy.get('aspect-text').last().click({ force: true });
 
             // Open Rich Text Editor Dialog
-            cy.get('aspect-element-model-properties-component')
+            cy.get('aspect-ui-element-properties')
                 .contains('edit')
                 .click();
 

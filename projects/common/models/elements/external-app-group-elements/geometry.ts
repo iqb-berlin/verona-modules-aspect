@@ -6,7 +6,7 @@ import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
-import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import { UIElementProperties, UIElementType, FileNameProperties } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
@@ -132,7 +132,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   }
 }
 
-export interface GeometryProperties extends UIElementProperties {
+export interface GeometryProperties extends UIElementProperties, FileNameProperties {
   appDefinition: string;
   trackedVariables: GeometryVariable[];
   trackedExpectedVariables: GeometryVariable[];
@@ -143,7 +143,6 @@ export interface GeometryProperties extends UIElementProperties {
   showZoomButtons: boolean;
   showFullscreenButton: boolean;
   customToolbar: string;
-  fileName: string;
   position: PositionProperties;
   dimensions: {
     width: number;

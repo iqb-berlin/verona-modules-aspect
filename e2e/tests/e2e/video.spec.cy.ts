@@ -19,7 +19,7 @@ describe('Video element', { testIsolation: false }, () => {
     });
 
     it('shows the uploaded filename in the properties panel (Page 1)', () => {
-      cy.get('aspect-element-model-properties-component')
+      cy.get('aspect-ui-element-properties')
         .contains('mov_bbb.mp4')
         .should('exist');
     });

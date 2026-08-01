@@ -1,0 +1,52 @@
+<mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
+  <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>
+  <input matInput type="number" #minValue="ngModel"
+         [ngModel]="combinedProperties.minValue"
+         (ngModelChange)="updateModel.emit({
+                property: 'minValue',
+                value: $event,
+                isInputValid: minValue.valid})"
+         (change)="combinedProperties.minValue = combinedProperties.minValue ?
+                                                        combinedProperties.minValue : 0">
+</mat-form-field>
+<mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
+  <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
+  <input matInput type="number" #maxValue="ngModel"
+         [ngModel]="combinedProperties.maxValue"
+         (ngModelChange)="updateModel.emit({
+                property: 'maxValue',
+                value: $event,
+                isInputValid: maxValue.valid})"
+         (change)="combinedProperties.maxValue = combinedProperties.maxValue ?
+                                                        combinedProperties.maxValue : 0">
+</mat-form-field>
+<aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.showValues !== undefined"
+                        [value]="combinedProperties.showValues"
+                        (valueChange)="updateModel.emit({ property: 'showValues', value: $event })">
+  {{'propertiesPanel.showValues' | translate }}
+</aspect-merged-checkbox>
+<aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.barStyle !== undefined"
+                        [value]="combinedProperties.barStyle"
+                        (valueChange)="updateModel.emit({ property: 'barStyle', value: $event })">
+  {{'propertiesPanel.barStyle' | translate }}
+</aspect-merged-checkbox>
+<aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.thumbLabel !== undefined"
+                        [value]="combinedProperties.thumbLabel"
+                        (valueChange)="updateModel.emit({ property: 'thumbLabel', value: $event })">
+  {{'propertiesPanel.thumbLabel' | translate }}
+</aspect-merged-checkbox>
+<!-- The preset sits here rather than with the other preset controls: it is gated on minValue, so
+     it is offered for the slider alone. `wide-form-field` because it left the panel's flex column
+     when it moved here, and a mat-form-field is inline-flex - without it, it shrinks to the input's
+     intrinsic width. The min/max fields above were never in that column and stay as they are. -->
+@if (combinedProperties.minValue !== undefined) {
+  <mat-form-field class="wide-form-field" appearance="fill">
+    <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
+    <input matInput type="number" #presetValue="ngModel"
+           [ngModel]="combinedProperties.value"
+           (ngModelChange)="updateModel.emit({
+                    property: 'value',
+                    value: $event,
+                    isInputValid: presetValue.valid})">
+  </mat-form-field>
+}

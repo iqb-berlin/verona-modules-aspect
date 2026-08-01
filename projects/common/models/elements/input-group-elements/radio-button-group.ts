@@ -6,7 +6,9 @@ import {
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
-import { OptionElement, UIElementType } from 'common/models/ui-element-interfaces';
+import {
+  OptionElement, StrikeOtherOptionsProperties, UIElementType
+} from 'common/models/ui-element-interfaces';
 import { TextLabel } from 'common/models/label-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
@@ -74,11 +76,10 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   }
 }
 
-export interface RadioButtonGroupProperties extends InputElementProperties {
+export interface RadioButtonGroupProperties extends InputElementProperties, StrikeOtherOptionsProperties {
   label: string;
   options: TextLabel[];
   alignment: 'column' | 'row';
-  strikeOtherOptions: boolean;
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: BasicStyles & {

@@ -3,7 +3,7 @@ import {addElement, addNewSection, setID} from "../../util";
 export function addTriggerElement(elementType: string, elementId: string): void {
   addElement(elementType);
   setID(elementId);
-  cy.get('aspect-element-model-properties-component')
+  cy.get('aspect-ui-element-properties')
     .contains('mat-form-field', 'ID').find('input')
     .type('{enter}').blur();
   cy.wait(300);
@@ -22,7 +22,7 @@ export function createSectionWithText(sectionIndex: number, text: string): void 
   addElement('Text');
 
   // Set the text content
-  cy.get('aspect-element-model-properties-component')
+  cy.get('aspect-ui-element-properties')
     .contains('edit').click();
   cy.get('.ProseMirror p').clear();
   cy.get('.ProseMirror p').type(text);

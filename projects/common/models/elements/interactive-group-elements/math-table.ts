@@ -16,6 +16,18 @@ import { InstantiationEror } from 'common/classes/instantiation-error';
 
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
+/**
+ * Layout switches of the variable row. Named rather than spelled out inline at both the class and
+ * the interface, so that consumers — the editor's properties panel among them — can refer to it.
+ */
+export interface VariableLayoutOptions {
+  allowArithmeticChars: boolean;
+  isFirstLineUnderlined: boolean;
+  showResultRow: boolean;
+  showTopHelperRows: boolean;
+  allowFirstLineCrossOut: boolean;
+}
+
 export class MathTableElement extends UIElement implements MathTableProperties, KeyInputElementProperties {
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['math-table']);
@@ -44,13 +56,9 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   keyStyle: 'round' | 'square' = ELEMENT_DEFAULTS['math-table'].keyStyle as 'round' | 'square';
   hideNativeKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].hideNativeKeyboard as boolean;
   hasArrowKeys: boolean = ELEMENT_DEFAULTS['math-table'].hasArrowKeys as boolean;
-  variableLayoutOptions: {
-    allowArithmeticChars: boolean;
-    isFirstLineUnderlined: boolean;
-    showResultRow: boolean;
-    showTopHelperRows: boolean;
-    allowFirstLineCrossOut: boolean;
-  } = { ...ELEMENT_DEFAULTS['math-table'].variableLayoutOptions as MathTableProperties['variableLayoutOptions'] };
+  variableLayoutOptions: VariableLayoutOptions = {
+    ...ELEMENT_DEFAULTS['math-table'].variableLayoutOptions as VariableLayoutOptions
+  };
 
   styling: BasicStyles & {
     helperRowColor: string;
@@ -121,13 +129,7 @@ export interface MathTableProperties extends UIElementProperties, KeyInputElemen
   terms: string[];
   result: string;
   resultHelperRow: string;
-  variableLayoutOptions: {
-    allowArithmeticChars: boolean;
-    isFirstLineUnderlined: boolean;
-    showResultRow: boolean;
-    showTopHelperRows: boolean;
-    allowFirstLineCrossOut: boolean;
-  }
+  variableLayoutOptions: VariableLayoutOptions
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: BasicStyles & {

@@ -12,7 +12,9 @@ import {
 import { environment } from 'common/environment';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { UIElementProperties, UIElementType, UIElementValue } from 'common/models/ui-element-interfaces';
+import {
+  UIElementProperties, UIElementType, UIElementValue, StickyHeaderProperties
+} from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 
 export class TableElement extends CompoundElement implements TableProperties {
@@ -125,14 +127,13 @@ export interface TableHeaderCell {
   alignment: 'left' | 'center' | 'right';
 }
 
-export interface TableProperties extends UIElementProperties {
+export interface TableProperties extends UIElementProperties, StickyHeaderProperties {
   gridColumnSizes: { value: number; unit: string }[];
   gridRowSizes: { value: number; unit: string }[];
   elements: UIElementProperties[];
   tableEdgesEnabled: boolean;
   headerEnabled: boolean;
   headerRows: TableHeaderCell[][];
-  stickyHeader: boolean;
   position: PositionProperties;
   styling: BasicStyles & BorderStyles;
 }

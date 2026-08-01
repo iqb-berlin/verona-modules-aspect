@@ -9,7 +9,7 @@ import { VariableInfo, VariableValue } from '@iqb/responses';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
 import { TextLabel } from 'common/models/label-interfaces';
-import { UIElementType } from 'common/models/ui-element-interfaces';
+import { StrikeOtherOptionsProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
@@ -85,9 +85,8 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   }
 }
 
-export interface ToggleButtonProperties extends InputElementProperties {
+export interface ToggleButtonProperties extends InputElementProperties, StrikeOtherOptionsProperties {
   options: TextLabel[];
-  strikeOtherOptions: boolean;
   strikeSelectedOption: boolean;
   verticalOrientation: boolean;
   dimensions: DimensionProperties;

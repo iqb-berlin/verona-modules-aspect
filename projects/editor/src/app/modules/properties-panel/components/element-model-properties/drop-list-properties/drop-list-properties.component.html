@@ -1,0 +1,115 @@
+<div class="fx-column-start-stretch">
+  <!--`!= null`, not a fallback: a selection whose preset item lists disagree merges to null, and an
+      empty list plus an active add button would claim both lists are empty - adding one item would
+      then replace both.-->
+  @if (combinedProperties.value != null) {
+    <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'newOption'"
+                              [itemList]="combinedProperties.value"
+                              (textItemAdded)="addOption($event)"
+                              (itemRemoved)="removeOption($event)"
+                              (itemReordered)="moveOption('value', $event)"
+                              (itemEdited)="editOption($event)">
+    </aspect-option-list-panel>
+  }
+
+  <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
+                  class="wide-form-field" appearance="fill">
+    <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
+    <mat-select #selectConnectedLists multiple
+                [ngModel]="combinedProperties.connectedTo"
+                (ngModelChange)="toggleConnectedDropList($event)">
+      <mat-select-trigger>
+        {{'propertiesPanel.connectedDropLists' | translate }} ({{(combinedProperties.connectedTo ?? []).length}})
+      </mat-select-trigger>
+      <button mat-stroked-button [style.margin-bottom.px]="5"
+              (click)="toggleSelectAll()">
+        {{ 'propertiesPanel.selectAll' | translate }}
+      </button>
+      <mat-option *ngFor="let idPair of (combinedProperties.idList | getValidDropLists)" [value]="idPair.id">
+        {{idPair.alias}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.orientation !== undefined"
+                  appearance="fill">
+    <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.orientation"
+                (selectionChange)="updateModel.emit({ property: 'orientation', value: $event.value })">
+      <mat-option *ngFor="let option of ['vertical', 'horizontal', 'flex']"
+                  [value]="option">
+        {{ 'propertiesPanel.' + option | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.isSortList !== undefined"
+                          [disabled]="combinedProperties.permanentPlaceholders ?? false"
+                          [value]="combinedProperties.isSortList"
+                          (valueChange)="updateModel.emit({ property: 'isSortList', value: $event })">
+    {{'propertiesPanel.isSortList' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.onlyOneItem !== undefined"
+                          [value]="combinedProperties.onlyOneItem"
+                          (valueChange)="updateOnlyOneItem($event)">
+    {{'propertiesPanel.onlyOneItem' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.allowReplacement !== undefined"
+                          [disabled]="combinedProperties.permanentPlaceholders ?? false"
+                          [value]="combinedProperties.allowReplacement"
+                          (valueChange)="updateAllowReplacement($event)">
+    {{'allowReplacement' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.copyOnDrop !== undefined"
+                          [disabled]="combinedProperties.permanentPlaceholders ?? false"
+                          [value]="combinedProperties.copyOnDrop"
+                          (valueChange)="updateModel.emit({ property: 'copyOnDrop', value: $event })">
+    {{'propertiesPanel.copyOnDrop' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.permanentPlaceholders !== undefined"
+                          [disabled]="(combinedProperties.copyOnDrop ||
+                                       combinedProperties.isSortList ||
+                                       combinedProperties.allowReplacement) ?? false"
+                          [value]="combinedProperties.permanentPlaceholders"
+                          (valueChange)="updateModel.emit({ property: 'permanentPlaceholders', value: $event })">
+    {{'propertiesPanel.permanentPlaceholders' | translate }}
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.permanentPlaceholdersCC !== undefined"
+                          [disabled]="!combinedProperties.permanentPlaceholders"
+                          [value]="combinedProperties.permanentPlaceholdersCC"
+                          (valueChange)="updateModel.emit({ property: 'permanentPlaceholdersCC', value: $event })">
+    {{'propertiesPanel.permanentPlaceholdersCC' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.showNumbering !== undefined"
+                          [value]="combinedProperties.showNumbering"
+                          (valueChange)="updateModel.emit({ property: 'showNumbering', value: $event })">
+    {{'propertiesPanel.showNumbering' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.startNumberingAtZero !== undefined"
+                          [disabled]="!combinedProperties.showNumbering"
+                          [value]="combinedProperties.startNumberingAtZero"
+                          (valueChange)="updateModel.emit({ property: 'startNumberingAtZero', value: $event })">
+    {{'propertiesPanel.startNumberingAtZero' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.highlightReceivingDropList !== undefined"
+                          [value]="combinedProperties.highlightReceivingDropList"
+                          (valueChange)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event })">
+    {{'propertiesPanel.highlightReceivingDropList' | translate }}
+  </aspect-merged-checkbox>
+  <mat-form-field *ngIf="unitService.expertMode" appearance="fill">
+    <mat-label>{{'propertiesPanel.highlightReceivingDropListColor' | translate }}</mat-label>
+    <input #highlightReceivingDropListColorField matInput type="text"
+           [disabled]="!combinedProperties.highlightReceivingDropList"
+           [value]="combinedProperties.highlightReceivingDropListColor"
+           (input)="updateModel.emit({
+                 property: 'highlightReceivingDropListColor',
+                 value: highlightReceivingDropListColorField.value })">
+  </mat-form-field>
+</div>

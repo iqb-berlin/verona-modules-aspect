@@ -14,7 +14,8 @@ import { environment } from 'common/environment';
 import { VariableInfo } from '@iqb/responses';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import {
-  OptionElement, UIElementProperties, UIElementType, UIElementValue
+  OptionElement, UIElementProperties, UIElementType, UIElementValue,
+  StickyHeaderProperties, FirstColumnRatioProperties
 } from 'common/models/ui-element-interfaces';
 import { TextImageLabel } from 'common/models/label-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
@@ -119,13 +120,11 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
   }
 }
 
-export interface LikertProperties extends UIElementProperties {
+export interface LikertProperties extends UIElementProperties, StickyHeaderProperties, FirstColumnRatioProperties {
   rows: LikertRowElement[];
   options: TextImageLabel[];
-  firstColumnSizeRatio: number;
   label: string;
   label2: string;
-  stickyHeader: boolean;
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: BasicStyles & {

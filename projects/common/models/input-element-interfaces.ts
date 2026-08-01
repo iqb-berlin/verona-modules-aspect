@@ -21,6 +21,17 @@ export type InputElementValue =
   | boolean
   | null;
 
+/** Text inputs spanning several lines: text area, math text area. */
+export interface MultiLineTextProperties {
+  rowCount: number;
+  hasAutoHeight: boolean;
+}
+
+/** Inputs offering the formula keyboard: math field, math text area. */
+export interface MathKeyboardProperties {
+  mathKeyboardPresets: MathKeyboardPreset[];
+}
+
 export interface InputElementProperties extends UIElementProperties {
   label?: string;
   value: InputElementValue;

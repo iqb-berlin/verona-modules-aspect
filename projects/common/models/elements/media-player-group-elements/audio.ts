@@ -3,7 +3,9 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { PlayerElementBlueprint, UIElementType } from 'common/models/ui-element-interfaces';
+import {
+  PlayerElementBlueprint, UIElementType, MediaSourceProperties
+} from 'common/models/ui-element-interfaces';
 import { PlayerElement } from 'common/models/elements/element';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
@@ -36,9 +38,7 @@ export class AudioElement extends PlayerElement implements AudioProperties {
   }
 }
 
-export interface AudioProperties extends PlayerElementBlueprint {
-  src: string | null;
-  fileName: string;
+export interface AudioProperties extends PlayerElementBlueprint, MediaSourceProperties {
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: { backgroundColor: string };

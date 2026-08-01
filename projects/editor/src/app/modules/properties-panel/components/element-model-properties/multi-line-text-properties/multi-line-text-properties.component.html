@@ -1,0 +1,42 @@
+@if (unitService.expertMode && combinedProperties.resizeEnabled !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.resizeEnabled"
+                          (valueChange)="updateModel.emit({ property: 'resizeEnabled', value: $event })">
+    {{ 'propertiesPanel.resizeEnabled' | translate }}
+  </aspect-merged-checkbox>
+}
+
+@if (unitService.expertMode && combinedProperties.hasAutoHeight !== undefined) {
+  <aspect-merged-checkbox [disabled]="!!combinedProperties.hasDynamicRowCount"
+                          [value]="combinedProperties.hasAutoHeight"
+                          (valueChange)="updateModel.emit({ property: 'hasAutoHeight', value: $event })">
+    {{'propertiesPanel.hasAutoHeight' | translate }}
+  </aspect-merged-checkbox>
+}
+
+@if (combinedProperties.hasDynamicRowCount !== undefined) {
+  <aspect-merged-checkbox [disabled]="!!combinedProperties.hasAutoHeight"
+                          [value]="combinedProperties.hasDynamicRowCount"
+                          (valueChange)="updateModel.emit({ property: 'hasDynamicRowCount', value: $event })">
+    {{'propertiesPanel.hasDynamicRowCount' | translate }}
+  </aspect-merged-checkbox>
+}
+
+@if ((combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === false) ||
+     (combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === undefined)) {
+  <mat-form-field class="wide-form-field" appearance="fill">
+    <mat-label>{{'rows' | translate }}</mat-label>
+    <input #rowCountField matInput type="number" [value]="combinedProperties.rowCount"
+           (input)="updateModel.emit({ property: 'rowCount', value: rowCountField.value || 0 })">
+  </mat-form-field>
+}
+
+@if (combinedProperties.expectedCharactersCount != null && combinedProperties.hasDynamicRowCount) {
+  <mat-form-field class="wide-form-field" appearance="fill">
+    <mat-label>{{'propertiesPanel.expectedCharactersCount' | translate }}</mat-label>
+    <input #expectedCharactersCountField matInput type="number"
+           [disabled]="!!combinedProperties.hasAutoHeight"
+           [value]="combinedProperties.expectedCharactersCount"
+           (input)="updateModel.emit({
+             property: 'expectedCharactersCount', value: expectedCharactersCountField.value || 0 })">
+  </mat-form-field>
+}

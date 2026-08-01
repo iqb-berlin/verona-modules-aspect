@@ -37,7 +37,9 @@ describe('StaticOverlayComponent', () => {
       getSelectedElements: vi.fn().mockReturnValue(selectedElements),
       clearElementSelection: vi.fn()
     };
-    elementService = createSpyObj<ElementService>(['updateElementsProperty', 'deleteElements']);
+    elementService = createSpyObj<ElementService>([
+      'updateElementsProperty', 'updateElementsDimensionsProperty', 'deleteElements'
+    ]);
 
     component = new StaticOverlayComponent(
       selectionServiceMock as unknown as SelectionService,
@@ -75,15 +77,21 @@ describe('StaticOverlayComponent', () => {
     expect(component.element.dimensions.height).toBe(0);
   });
 
+  /* Asserts on the dimensions setter, not the generic one: width and height belong to the dimensions
+     group, and going through updateElementsProperty wrote them onto the element root instead, where
+     nothing reads them. The dragged element still looked right because resizeElement() mutates its
+     dimensions as a live preview - the other selected elements did not (#1142). */
   it('should persist width and height of the selected elements when the resize drag ends', () => {
+    selectedElements.push({ id: 'text_2' } as unknown as UIElement);
     component.resizeDragStart();
 
     component.updateModel(createDragEvent(20, 10));
 
-    expect(elementService.updateElementsProperty)
+    expect(elementService.updateElementsDimensionsProperty)
       .toHaveBeenCalledWith(selectedElements, 'width', 120);
-    expect(elementService.updateElementsProperty)
+    expect(elementService.updateElementsDimensionsProperty)
       .toHaveBeenCalledWith(selectedElements, 'height', 60);
+    expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
   });
 
   it('should delete the selected elements and clear the selection', () => {

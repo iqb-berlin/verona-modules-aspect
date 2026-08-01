@@ -132,7 +132,7 @@ export class ModelNormalizer {
     normalized.dimensions = PropertyGroupGenerators.generateDimensionProps({
       ...defaults,
       ...filteredDimensions
-    } as DimensionProperties);
+    } as Partial<DimensionProperties>);
 
     const currentPosition = (normalized.position as Record<string, unknown>) || {};
     const filteredPosition = Object.fromEntries(
@@ -148,7 +148,7 @@ export class ModelNormalizer {
     normalized.position = PropertyGroupGenerators.generatePositionProps({
       ...defaults,
       ...filteredPosition
-    } as PositionProperties);
+    } as Partial<PositionProperties>);
 
     const currentStyling = (normalized.styling as Record<string, unknown>) || {};
     const filteredStyling = Object.fromEntries(
@@ -187,7 +187,7 @@ export class ModelNormalizer {
       normalized.player = PropertyGroupGenerators.generatePlayerProps({
         ...defaults,
         ...(normalized.player as Record<string, unknown>)
-      } as PlayerProperties);
+      } as Partial<PlayerProperties>);
     }
 
     const keyboardTypes: UIElementType[] = [

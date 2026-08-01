@@ -1,0 +1,156 @@
+<fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
+  <legend>{{ 'propertiesPanel.keyboard' | translate }}</legend>
+  <aspect-merged-checkbox [value]="combinedProperties.showSoftwareKeyboard"
+                          (valueChange)="updateShowSoftwareKeyboard($event)">
+    {{'propertiesPanel.showSoftwareKeyboard' | translate }}
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox [disabled]="!combinedProperties.inputAssistancePreset ||
+                            (!!combinedProperties.inputAssistancePreset && !!combinedProperties.showSoftwareKeyboard)"
+                          [value]="combinedProperties.hideNativeKeyboard"
+                          (valueChange)="updateModel.emit({ property: 'hideNativeKeyboard', value: $event })">
+    {{'propertiesPanel.hideNativeKeyboard' | translate }}
+  </aspect-merged-checkbox>
+  <aspect-merged-checkbox [disabled]="!combinedProperties.showSoftwareKeyboard"
+                          [value]="combinedProperties.addInputAssistanceToKeyboard"
+                          (valueChange)="updateModel.emit({ property: 'addInputAssistanceToKeyboard', value: $event })">
+    {{'propertiesPanel.addInputAssistanceToKeyboard' | translate }}
+  </aspect-merged-checkbox>
+</fieldset>
+<fieldset *ngIf="combinedProperties.showSoftwareKeyboard !== undefined" class="fx-column-start-stretch">
+  <legend>{{ 'propertiesPanel.inputAssistanceGroup' | translate }}</legend>
+  <mat-form-field appearance="fill"
+                  class="wide-form-field">
+    <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.inputAssistancePreset"
+                (selectionChange)="updateInputAssistancePreset($event.value)">
+      <ng-container *ngIf="combinedProperties.type !== 'math-table'">
+        <mat-option *ngFor="let option of [null, 'french', 'numbers', 'decimals', 'numbersAndOperators',
+                                          'numbersAndBasicOperators', 'comparisonOperators', 'chemicalEquation',
+                                          'squareDashDot', 'placeValue', 'space', 'comma', 'custom']"
+                    [value]="option">
+          {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
+        </mat-option>
+      </ng-container>
+      <ng-container *ngIf="combinedProperties.type === 'math-table' &&
+                           ['addition', 'subtraction'].includes(combinedProperties.operation ?? '')">
+        <mat-option *ngFor="let option of [null, 'numbers']"
+                    [value]="option">
+          {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
+        </mat-option>
+      </ng-container>
+      <ng-container *ngIf="combinedProperties.type === 'math-table' &&
+                           combinedProperties.operation === 'multiplication'">
+        <mat-option *ngFor="let option of [null, 'numbers', 'numbersAndBasicOperators']"
+                    [value]="option">
+          {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
+        </mat-option>
+      </ng-container>
+      <ng-container *ngIf="combinedProperties.type === 'math-table' &&
+                           combinedProperties.operation === 'variable'">
+        <mat-option *ngFor="let option of [null, 'numbers', 'numbersAndBasicOperators', 'numbersAndOperators']"
+                    [value]="option">
+          {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.inputAssistancePreset === 'custom'"
+                  class="wide-form-field" appearance="fill">
+    <mat-label>{{'propertiesPanel.inputAssistanceCustomKeys' | translate }}</mat-label>
+    <input #inputAssistanceCustomKeysField matInput type="text"
+           [value]="combinedProperties.inputAssistanceCustomKeys"
+           (input)="updateModel.emit({ property: 'inputAssistanceCustomKeys', value: inputAssistanceCustomKeysField.value })">
+  </mat-form-field>
+
+
+  <mat-form-field *ngIf="combinedProperties.inputAssistancePreset === 'custom' &&
+                         combinedProperties.inputAssistancePosition === 'floating'"
+                  appearance="fill">
+    <mat-label>{{'propertiesPanel.inputAssistanceCustomStyle' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.inputAssistanceCustomStyle"
+                (selectionChange)="updateModel.emit({
+                  property: 'inputAssistanceCustomStyle',
+                  value: $event.value
+                })">
+      <mat-option *ngFor="let option of INPUT_ASSISTANCE_CUSTOM_STYLES"
+                  [value]="option">
+        {{ 'propertiesPanel.' + option | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                         combinedProperties.inputAssistancePosition !== undefined"
+                  appearance="fill">
+    <mat-label>{{'propertiesPanel.inputAssistancePosition' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.inputAssistancePosition"
+                (selectionChange)="updateModel.emit({ property: 'inputAssistancePosition', value: $event.value })">
+      <mat-option *ngFor="let option of ['floating', 'right']"
+                  [value]="option">
+        {{ 'propertiesPanel.' + option | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                         combinedProperties.inputAssistancePosition === 'floating'"
+                  appearance="fill">
+    <mat-label>{{'propertiesPanel.inputAssistanceFloatingStartPosition' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.inputAssistanceFloatingStartPosition"
+                (selectionChange)="updateModel.emit({
+                  property: 'inputAssistanceFloatingStartPosition',
+                  value: $event.value
+                })">
+      <mat-option *ngFor="let option of ['startBottom', 'endCenter']"
+                  [value]="option">
+        {{ 'propertiesPanel.' + option | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                         combinedProperties.keyStyle !== undefined"
+                  appearance="fill">
+    <mat-label>{{'propertiesPanel.keyStyle' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.keyStyle"
+                (selectionChange)="updateModel.emit({ property: 'keyStyle', value: $event.value })">
+      <mat-option *ngFor="let option of ['round', 'square']"
+                  [value]="option">
+        {{'propertiesPanel.' + option | translate}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <aspect-merged-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                                 combinedProperties.restrictedToInputAssistanceChars !== undefined"
+                          [value]="combinedProperties.restrictedToInputAssistanceChars"
+                          (valueChange)="updateModel
+                                      .emit({ property: 'restrictedToInputAssistanceChars', value: $event })">
+    {{'propertiesPanel.restrictedToInputAssistanceChars' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                                 combinedProperties.hasArrowKeys !== undefined"
+                          [value]="combinedProperties.hasArrowKeys"
+                          (valueChange)="updateModel.emit({ property: 'hasArrowKeys', value: $event })">
+    {{'propertiesPanel.hasArrowKeys' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                                 combinedProperties.hasBackspaceKey !== undefined"
+                          [disabled]="combinedProperties.inputAssistancePreset !== 'custom'"
+                          [value]="combinedProperties.inputAssistancePreset === 'custom' ?
+                                      combinedProperties.hasBackspaceKey :
+                                      combinedProperties.inputAssistancePreset !== 'french'"
+                          (valueChange)="updateModel.emit({ property: 'hasBackspaceKey', value: $event })">
+    {{'propertiesPanel.hasBackspaceKey' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="combinedProperties.type === 'text-area' &&
+                                 combinedProperties.inputAssistancePreset !== null &&
+                                 combinedProperties.hasReturnKey !== undefined"
+                          [value]="combinedProperties.hasReturnKey"
+                          (valueChange)="updateModel.emit({ property: 'hasReturnKey', value: $event })">
+    {{'propertiesPanel.hasReturnKey' | translate }}
+  </aspect-merged-checkbox>
+</fieldset>

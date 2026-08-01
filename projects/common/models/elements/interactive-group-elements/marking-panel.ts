@@ -4,7 +4,9 @@ import {
   PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import {
+  HighlightableProperties, UIElementProperties, UIElementType
+} from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
@@ -37,9 +39,6 @@ function isMarkingPanelProperties(blueprint?: Partial<MarkingPanelProperties>): 
   return blueprint.type === 'marking-panel';
 }
 
-export interface MarkingPanelProperties extends UIElementProperties {
-  highlightableYellow: boolean;
-  highlightableTurquoise: boolean;
-  highlightableOrange: boolean;
+export interface MarkingPanelProperties extends UIElementProperties, HighlightableProperties {
   position: PositionProperties;
 }

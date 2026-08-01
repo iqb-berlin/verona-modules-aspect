@@ -61,6 +61,75 @@ TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | State
 PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[] | UIElement[] |
 TableHeaderCell[][];
 
+/**
+ * Element-level property sets that several element types share.
+ *
+ * They exist because the types below were declared separately, with identical signatures, in every
+ * element interface that has them — which left the editor's properties panel without a type for a
+ * control it offers for more than one element type. Pure extraction: no field name and no signature
+ * changed, so nothing about a stored unit definition is affected.
+ */
+
+/** Elements that reference an uploaded file: audio, video, image, hotspot image, geometry. */
+export interface FileNameProperties {
+  fileName: string;
+}
+
+/** Elements that carry a media file: audio, video, image, hotspot image. */
+export interface MediaSourceProperties extends FileNameProperties {
+  src: string | null;
+}
+
+/** Elements whose header row can be pinned: likert, table. */
+export interface StickyHeaderProperties {
+  stickyHeader: boolean;
+}
+
+/** Elements laid out as a labelled first column plus columns of options: likert and its rows. */
+export interface FirstColumnRatioProperties {
+  firstColumnSizeRatio: number;
+}
+
+/**
+ * Media that can be scaled into its box rather than capped at its natural size: image and video.
+ * Both bind it the same way - `scale ? 'fit-…' : 'max-size-…'` - and the panel offers one control
+ * for both, which is why they need a level to share.
+ */
+export interface ScalableProperties {
+  scale: boolean;
+}
+
+/**
+ * Elements that strike through the options the reader did not choose: radio group and toggle button.
+ * Both are single-choice option lists, but they sit in different groups of the model - the radio
+ * group is an input element, the toggle button a compound one - so this is the only level they share.
+ */
+export interface StrikeOtherOptionsProperties {
+  strikeOtherOptions: boolean;
+}
+
+/**
+ * Elements that offer highlighter colours: text (the marked-up element) and marking panel (the
+ * remote control for it). The panel is not a text element, so this is the only level they share.
+ */
+export interface HighlightableProperties {
+  highlightableYellow: boolean;
+  highlightableTurquoise: boolean;
+  highlightableOrange: boolean;
+}
+
+/**
+ * Elements that trigger an action: button, trigger.
+ *
+ * Generic, because the two share the shape but not the vocabulary — a button navigates, a trigger
+ * does not, and their `actionParam` differs accordingly. Parameterising keeps each element type as
+ * precise as it was while giving the panel a single type to bind against.
+ */
+export interface ActionProperties<TAction extends string, TActionParam> {
+  action: TAction | null;
+  actionParam: TActionParam | null;
+}
+
 export interface UIElementProperties {
   type: UIElementType;
   id: string;

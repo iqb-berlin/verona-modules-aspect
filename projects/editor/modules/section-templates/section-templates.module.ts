@@ -19,10 +19,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'common/shared.module';
+import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
 import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
-import {
-  OptionListPanelComponent
-} from 'editor/src/app/components/properties-panel/option-list-panel/option-list-panel.component';
 import { CheckboxWizardDialogComponent } from './components/checkbox-dialog/checkbox-dialog.component';
 import { DroplistWizardDialogComponent } from './components/droplist-dialog/droplist-dialog.component';
 import { GeometryWizardDialogComponent } from './components/geometry-dialog/geometry-dialog.component';
@@ -63,8 +61,7 @@ import { InputWizardDialogComponent } from './components/text-input-dialog/text-
     StimulusWizardDialogComponent,
     TextStimulusComponent,
     Text3WizardDialogComponent,
-    InputWizardDialogComponent,
-    OptionListPanelComponent
+    InputWizardDialogComponent
   ],
   imports: [
     CommonModule,
@@ -87,10 +84,8 @@ import { InputWizardDialogComponent } from './components/text-input-dialog/text-
     MatTooltipModule,
     TranslateModule,
     SharedModule,
+    EditorSharedModule,
     RichTextEditorModule
-  ],
-  exports: [
-    OptionListPanelComponent
   ]
 })
 export class SectionTemplatesModule { }

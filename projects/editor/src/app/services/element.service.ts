@@ -14,9 +14,12 @@ import { AudioProperties } from 'common/models/elements/media-player-group-eleme
 import { VideoProperties } from 'common/models/elements/media-player-group-elements/video';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
 import {
+  DimensionProperties,
+  OwnProperty,
   PlayerProperties,
   PositionProperties,
-  PropertyGroupGenerators
+  PropertyGroupGenerators,
+  Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
 import { ReferenceManager } from 'editor/src/app/classes/reference-manager';
@@ -148,7 +151,15 @@ export class ElementService {
     }
   }
 
-  updateElementsProperty(elements: UIElement[], property: string, value: UIElementValue): void {
+  /*
+   * `OwnProperty` rejects a named property that belongs to the position, dimensions or styling
+   * group: those have their own update methods, and going through this one puts the value on the
+   * element root instead, where nothing reads it. Names arriving as a plain string from the panel's
+   * relay chain still pass - see the type for why that is the useful trade.
+   */
+  updateElementsProperty<K extends string>(elements: UIElement[],
+                                           property: K & OwnProperty<K>,
+                                           value: UIElementValue): void {
     // console.log('updateElementsProperty ', elements, property, value);
     elements.forEach(element => {
       if (element.type === 'text' && property === 'text') {
@@ -211,31 +222,35 @@ export class ElementService {
     }
   }
 
+  // xPosition and yPosition live in the element's position group, so they have to go through
+  // updateElementsPositionProperty. updateElementsProperty would end up in UIElement.setProperty,
+  // which writes this[property] - allowed by the index signature, but it puts a stray xPosition on
+  // the element itself and leaves position.xPosition alone, so alignment did nothing at all.
   alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     switch (alignmentDirection) {
       case 'left':
-        this.updateElementsProperty(
+        this.updateElementsPositionProperty(
           elements,
           'xPosition',
           Math.min(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'right':
-        this.updateElementsProperty(
+        this.updateElementsPositionProperty(
           elements,
           'xPosition',
           Math.max(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'top':
-        this.updateElementsProperty(
+        this.updateElementsPositionProperty(
           elements,
           'yPosition',
           Math.min(...elements.map(element => element.position.yPosition))
         );
         break;
       case 'bottom':
-        this.updateElementsProperty(
+        this.updateElementsPositionProperty(
           elements,
           'yPosition',
           Math.max(...elements.map(element => element.position.yPosition))
@@ -243,8 +258,6 @@ export class ElementService {
         break;
       // no default
     }
-    this.unitService.elementPropertyUpdated.next();
-    this.unitService.updateUnitDefinition();
   }
 
   showDefaultEditDialog(elementParam?: UIElement): void {
@@ -314,7 +327,8 @@ export class ElementService {
           this.dialogService.showPlayerEditDialog(element.id, (element as PlayerElement).player)
             .subscribe((result: PlayerProperties) => {
               if (!result) return;
-              Object.keys(result).forEach(
+              // Object.keys widens to string[]; result is a PlayerProperties, so its keys are its own.
+              (Object.keys(result) as (keyof PlayerProperties)[]).forEach(
                 key => this.updateElementsPlayerProperty([element], key, result[key] as UIElementValue)
               );
             });
@@ -333,7 +347,7 @@ export class ElementService {
     }
   }
 
-  updateSelectedElementsStyleProperty(property: string, value: UIElementValue): void {
+  updateSelectedElementsStyleProperty(property: keyof Stylings, value: UIElementValue): void {
     const elements = this.selectionService.getSelectedElements();
     elements.forEach(element => {
       element.setStyleProperty(property, value);
@@ -342,7 +356,9 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  updateElementsPlayerProperty(elements: UIElement[], property: string, value: UIElementValue): void {
+  updateElementsPlayerProperty(elements: UIElement[],
+                               property: keyof PlayerProperties,
+                               value: UIElementValue): void {
     elements.forEach(element => {
       element.setPlayerProperty(property, value);
     });
@@ -377,11 +393,13 @@ export class ElementService {
       .filter(el => !TextElement.getAnchorIDs(newValue).includes(el));
   }
 
-  updateSelectedElementsPositionProperty(property: string, value: UIElementValue): void {
+  updateSelectedElementsPositionProperty(property: keyof PositionProperties, value: UIElementValue): void {
     this.updateElementsPositionProperty(this.selectionService.getSelectedElements(), property, value);
   }
 
-  updateElementsPositionProperty(elements: UIElement[], property: string, value: UIElementValue): void {
+  updateElementsPositionProperty(elements: UIElement[],
+                                 property: keyof PositionProperties,
+                                 value: UIElementValue): void {
     elements.forEach(element => {
       element.setPositionProperty(property, value);
     });
@@ -390,7 +408,9 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | null): void {
+  updateElementsDimensionsProperty(elements: UIElement[],
+                                   property: keyof DimensionProperties,
+                                   value: number | boolean | null): void {
     elements.forEach(element => {
       element.setDimensionsProperty(property, value);
       if (element.type === 'geometry') {

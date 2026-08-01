@@ -32,7 +32,7 @@ export function addTextField(label: string): void {
 
 export function addTextElement(text: string): void {
   addElement('Text');
-  cy.get('aspect-element-model-properties-component')
+  cy.get('aspect-ui-element-properties')
     .contains('edit').click();
   cy.get('.ProseMirror p').clear();
   cy.get('.ProseMirror p').type(text);
@@ -40,7 +40,7 @@ export function addTextElement(text: string): void {
 }
 
 export function setID(id: string): void {
-  cy.get('aspect-element-model-properties-component')
+  cy.get('aspect-ui-element-properties')
     .contains('mat-form-field', 'ID').find('input')
     .clear()
     .type(id);
@@ -62,16 +62,20 @@ export function setLabelText(labelText: string): void {
 }
 
 export function setCheckbox(labelText: string): void {
-  cy.get('aspect-element-model-properties-component')
+  cy.get('aspect-ui-element-properties')
     .contains('mat-checkbox', labelText)
     .find('[type="checkbox"]')
     .click();
 }
 
 export function selectFromDropdown(dropdownName: string, optionName: string, closeOverlay: boolean = false) {
-  cy.get('aspect-element-model-properties-component')
+  cy.get('aspect-ui-element-properties')
     .contains('mat-form-field', dropdownName).find('mat-select').click();
-  cy.get('.cdk-overlay-container').contains('mat-option', new RegExp(`^ ${optionName} $`)).click({ force: true });
+  // Anchored so that 'row' does not match 'rowCount', but tolerant of the whitespace around the
+  // option text: whether the mat-option's content sits on its own line is a matter of template
+  // formatting, not of what the option says.
+  cy.get('.cdk-overlay-container')
+    .contains('mat-option', new RegExp(`^\\s*${optionName}\\s*$`)).click({ force: true });
   if (closeOverlay) cy.get('body').click();
 }
 
@@ -247,7 +251,7 @@ export function addMediaElement(type: 'Audio' | 'Video', title: string, filename
   addElement(type, 'Medium');
   uploadFile(filename);
   // Wait for the element to be added to the canvas
-  cy.get('aspect-element-model-properties-component').should('be.visible');
+  cy.get('aspect-ui-element-properties').should('be.visible');
   setID(id);
 }
 
@@ -287,7 +291,7 @@ export function selectParagraphElement($p: JQuery<HTMLElement>): void {
 }
 
 export function editElementConfigDialog(): void {
-  cy.get('aspect-element-model-properties-component')
+  cy.get('aspect-ui-element-properties')
     .contains('button', 'Medienoptionen anpassen')
     .click();
   cy.get('mat-dialog-container').should('be.visible');

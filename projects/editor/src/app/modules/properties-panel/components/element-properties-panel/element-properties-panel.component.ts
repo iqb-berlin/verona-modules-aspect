@@ -94,10 +94,25 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * A value the merge can recurse into: a property group, as opposed to a primitive, an array or
+   * `null`. Arrays are excluded because the merge deliberately treats a diverging array as one
+   * value rather than merging it entry by entry - see {@link Merged}.
+   */
+  private static isPropertyGroup(value: unknown): value is UIElement {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+  }
+
+  /**
    * Merges the elements property by property: equal values are kept, diverging ones become `null`,
    * and a property that not every element has is dropped. Nested property groups recurse through
    * here too, which is why the two selection-wide keys above are not part of it - a position group
    * has no id and no rows.
+   *
+   * The recursion needs a property group on **both** sides. Testing only the side already in
+   * `merged` walked into `hasOwnProperty.call(null, …)` as soon as the other element had `null`
+   * there - a trigger with an `actionParam` selected before one without, say (#1155). A group
+   * against a non-group is as diverging as any other pair, so it takes the branch below and
+   * becomes `null`.
    */
   private static mergeElements(elements: UIElement[]): CombinedProperties {
     const merged = { ...elements[0] } as CombinedProperties;
@@ -106,9 +121,8 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       const elementToMerge = elements[elementCounter];
       Object.keys(merged).forEach((property: keyof UIElement) => {
         if (Object.prototype.hasOwnProperty.call(elementToMerge, property)) {
-          if (typeof merged[property] === 'object' &&
-            !Array.isArray(merged[property]) &&
-            merged[property] !== null) {
+          if (ElementPropertiesPanelComponent.isPropertyGroup(merged[property]) &&
+            ElementPropertiesPanelComponent.isPropertyGroup(elementToMerge[property])) {
             merged[property] = ElementPropertiesPanelComponent.mergeElements(
               [(merged[property] as UIElement), (elementToMerge[property] as UIElement)]
             );

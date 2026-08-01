@@ -270,6 +270,28 @@ describe('ElementPropertiesPanelComponent', () => {
 
       expect(combined?.type).toBeNull();
     });
+
+    /* An object on one side and null on the other: the recursion used to be entered on the strength
+       of the first element alone and then walked into `hasOwnProperty.call(null, …)`. A property
+       group that only one of the elements has filled is as diverging as any other pair (#1155). */
+    it('should null a property group the other element has as null', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'trigger', id: 'a', actionParam: { variableId: 'v1', value: '1' } }),
+        element({ type: 'trigger', id: 'b', actionParam: null })
+      ]);
+
+      expect(combined?.actionParam).toBeNull();
+    });
+
+    // The reverse order never crashed, and has to keep answering the same thing.
+    it('should null a property group regardless of the selection order', () => {
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'trigger', id: 'b', actionParam: null }),
+        element({ type: 'trigger', id: 'a', actionParam: { variableId: 'v1', value: '1' } })
+      ]);
+
+      expect(combined?.actionParam).toBeNull();
+    });
   });
 
   it('should update the elements property for valid input', () => {

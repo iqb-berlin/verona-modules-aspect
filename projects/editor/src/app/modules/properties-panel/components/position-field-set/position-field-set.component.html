@@ -12,9 +12,7 @@
       <input matInput type="number" #xPosition="ngModel" min="0"
              [ngModel]="positionProperties.xPosition"
              (ngModelChange)="updateModel.emit(
-                    { property: 'xPosition', value: $event, isInputValid: xPosition.valid && $event !== null })"
-             (change)="positionProperties.xPosition = positionProperties.xPosition ?
-                                                      positionProperties.xPosition : 0">
+                    { property: 'xPosition', value: $event ?? 0, isInputValid: xPosition.valid })">
     </mat-form-field>
     <mat-form-field *ngIf="positionProperties.yPosition !== undefined"
                     appearance="outline">
@@ -22,9 +20,7 @@
       <input matInput type="number" #yPosition="ngModel" min="0"
              [ngModel]="positionProperties.yPosition"
              (ngModelChange)="updateModel.emit(
-                    { property: 'yPosition', value: $event, isInputValid: yPosition.valid && $event !== null })"
-             (change)="positionProperties.yPosition = positionProperties.yPosition ?
-                                                      positionProperties.yPosition : 0">
+                    { property: 'yPosition', value: $event ?? 0, isInputValid: yPosition.valid })">
     </mat-form-field>
   </div>
 
@@ -113,9 +109,8 @@
       <input matInput type="number" #zIndex="ngModel"
              [ngModel]="positionProperties.zIndex"
              (ngModelChange)="updateModel.emit({ property: 'zIndex',
-                                                     value: $event,
-                                                     isInputValid: zIndex.valid && $event !== null })"
-             (change)="positionProperties.zIndex = positionProperties.zIndex ? positionProperties.zIndex : 0"
+                                                     value: $event ?? 0,
+                                                     isInputValid: zIndex.valid })"
              matTooltip="{{ 'propertiesPanel.zIndexTooltip' | translate }}">
     </mat-form-field>
   </ng-container>

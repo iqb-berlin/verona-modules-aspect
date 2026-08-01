@@ -95,6 +95,24 @@ describe('PositionFieldSetComponent', () => {
     expect(emitted).toEqual([{ property: 'xPosition', value: 42, isInputValid: true }]);
   });
 
+  /* `xPosition` is declared `number`, so an emptied field must not send null down the write path -
+     that is how null reached the saved unit definition (#1154). An empty field means 0, and it
+     stays a valid input, so it is written rather than warned about. A `(change)` handler used to
+     patch the display to 0 afterwards; the value now arrives correct in the first place.
+
+     Note the contrast with the margin test below, where null is the right answer: there it means
+     "the selected elements disagree", here it means "the user cleared the box". */
+  it('should emit zero rather than null for an emptied x position', () => {
+    const emitted: { property: string; value: unknown, isInputValid?: boolean | null }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    const xInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+    xInput.value = '';
+    xInput.dispatchEvent(new Event('input'));
+
+    expect(emitted).toEqual([{ property: 'xPosition', value: 0, isInputValid: true }]);
+  });
+
   /*
    * A multi-selection whose margins disagree merges the measurement's parts to null. The panel has
    * to see that null - substituting 0 here would let it write a margin nobody entered.

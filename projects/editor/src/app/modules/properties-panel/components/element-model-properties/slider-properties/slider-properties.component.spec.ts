@@ -91,6 +91,22 @@ describe('SliderPropertiesComponent', () => {
     expect(emitted).toEqual([{ property: 'maxValue', value: 50, isInputValid: true }]);
   });
 
+  /* `minValue`/`maxValue` are declared `number`. An empty number field is *valid* to Angular, so
+     before #1154 nothing stopped null from being written here - unlike the position fields, this
+     leaf never even checked for it. Empty means 0 now, and the value is written as such.
+
+     The preset below is deliberately not treated this way: its property is `InputElementValue`,
+     where null is a legitimate "no preset". */
+  it('should emit zero rather than null for an emptied maximum value', () => {
+    const maxValueInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[1];
+    maxValueInput.value = '';
+    maxValueInput.dispatchEvent(new Event('input'));
+
+    expect(emitted).toEqual([{ property: 'maxValue', value: 0, isInputValid: true }]);
+  });
+
   it('should emit updateModel when a checkbox is toggled', () => {
     const barStyleInput = Array.from(
       fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>

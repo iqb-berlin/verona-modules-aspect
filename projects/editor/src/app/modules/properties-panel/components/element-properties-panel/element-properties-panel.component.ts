@@ -44,8 +44,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         () => {
-          this.combinedProperties =
-            ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
+          this.refreshCombinedProperties();
         }
       );
     this.selectionService.selectedElements
@@ -53,8 +52,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       .subscribe(
         (selectedElements: UIElement[]) => {
           this.selectedElements = selectedElements;
-          this.combinedProperties =
-            ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
+          this.refreshCombinedProperties();
 
           this.interactionEnabled = this.selectionService.selectedElementComponents
             .filter(elementOverlay => elementOverlay instanceof ElementOverlay)
@@ -91,6 +89,31 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       [...combinedProperties.rows as LikertRowElement[]] :
       undefined;
     return combinedProperties;
+  }
+
+  /**
+   * Rebuilds the merged view of the current selection.
+   *
+   * The merge is the one thing between the selection and everything the panel shows, and it used
+   * to be called straight from both subscribers. An exception in it therefore left
+   * `selectedElements` already switched to the new selection while `combinedProperties` still held
+   * the previous one - RxJS swallows the error, so the panel went on rendering the old values and
+   * `updateModel` wrote them to the newly selected elements on the next edit (#1155). Failing to
+   * `undefined` renders no controls at all, which is the state an empty selection already produces,
+   * so there is nothing left to write with.
+   *
+   * The bug that made this reachable is fixed; this keeps the next one from corrupting a unit.
+   */
+  private refreshCombinedProperties(): void {
+    try {
+      this.combinedProperties =
+        ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
+    } catch (error) {
+      this.combinedProperties = undefined;
+      this.messageService.showError(this.translateService.instant('propertiesPanel.combineFailed'));
+      // eslint-disable-next-line no-console -- the message above cannot carry the cause
+      console.error('Merging the selected elements failed', error);
+    }
   }
 
   /**

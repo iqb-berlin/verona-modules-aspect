@@ -76,7 +76,7 @@ describe('ElementPropertiesPanelComponent', () => {
     elementService = createSpyObj<ElementService>(
       ['updateElementsProperty', 'deleteElements', 'duplicateSelectedElements']
     );
-    messageService = createSpyObj<MessageService>(['showWarning']);
+    messageService = createSpyObj<MessageService>(['showWarning', 'showError']);
     selectedElements = new BehaviorSubject<UIElement[]>([]);
     const selectionServiceMock = {
       selectedElements: selectedElements.asObservable(),
@@ -292,6 +292,45 @@ describe('ElementPropertiesPanelComponent', () => {
 
       expect(combined?.actionParam).toBeNull();
     });
+  });
+
+  /* A merge that throws used to leave `selectedElements` on the new selection and
+     `combinedProperties` on the previous one - the panel then showed the old values and wrote them
+     to the newly selected elements. Failing to `undefined` takes the controls away instead (#1155).
+     Provoked through a getter rather than through real elements, because the crash this ticket is
+     about is fixed: what is pinned here is the handling, not that one cause. */
+  it('should show no properties and report when the merge throws', () => {
+    const exploding = { type: 'button', id: 'boom' } as unknown as UIElement;
+    Object.defineProperty(exploding, 'label', {
+      get() { throw new Error('merge failed'); },
+      enumerable: true
+    });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    selectedElements.next([buttonElement]);
+    expect(component.combinedProperties).toBeDefined();
+
+    selectedElements.next([exploding]);
+
+    expect(component.combinedProperties).toBeUndefined();
+    expect(messageService.showError).toHaveBeenCalled();
+  });
+
+  // The write path reads `selectedElements`, so the guarantee is that no control is left to call it.
+  it('should not write the previous selection after a failed merge', () => {
+    const exploding = { type: 'button', id: 'boom' } as unknown as UIElement;
+    Object.defineProperty(exploding, 'label', {
+      get() { throw new Error('merge failed'); },
+      enumerable: true
+    });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    selectedElements.next([buttonElement]);
+    fixture.detectChanges();
+
+    selectedElements.next([exploding]);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('aspect-ui-element-properties')).toBeNull();
+    expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
   });
 
   it('should update the elements property for valid input', () => {

@@ -11,7 +11,7 @@
       </aspect-merged-checkbox>
       <mat-form-field appearance="fill">
         <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
+        <input matInput type="number" min="0" aspectNumberField required
                [disabled]="!fixedWidth.checked"
                [ngModel]="dimensions.width"
                (numberChange)="commitDimension('width', $event)">
@@ -20,7 +20,7 @@
     <ng-template #elseBlockWidth>
       <mat-form-field appearance="fill">
         <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
+        <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.width"
                (numberChange)="commitDimension('width', $event)">
       </mat-form-field>
@@ -35,7 +35,7 @@
         <mat-label>
           {{'propertiesPanel.height' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
+        <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.height"
                (numberChange)="commitDimension('height', $event)">
       </mat-form-field>
@@ -45,7 +45,7 @@
         <mat-label>
           {{'propertiesPanel.height' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
+        <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.height"
                (numberChange)="commitDimension('height', $event)">
       </mat-form-field>
@@ -60,7 +60,7 @@
         <mat-label>
           {{'propertiesPanel.minWidth' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField [emptyValue]="null"
+        <input matInput type="number" min="0" aspectNumberField
                [disabled]="!minWidthEnabled.checked"
                [ngModel]="dimensions.minWidth"
                (numberChange)="commitDimension('minWidth', $event)">
@@ -76,7 +76,7 @@
         <mat-label>
           {{'propertiesPanel.maxWidth' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField [emptyValue]="null"
+        <input matInput type="number" min="0" aspectNumberField
                [disabled]="!maxWidthEnabled.checked"
                [ngModel]="dimensions.maxWidth"
                (numberChange)="commitDimension('maxWidth', $event)">
@@ -92,7 +92,7 @@
         <mat-label>
           {{'propertiesPanel.minHeight' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField [emptyValue]="null"
+        <input matInput type="number" min="0" aspectNumberField
                [disabled]="!minHeightEnabled.checked"
                [ngModel]="dimensions.minHeight"
                (numberChange)="commitDimension('minHeight', $event)">
@@ -108,7 +108,7 @@
         <mat-label>
           {{'propertiesPanel.maxHeight' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField [emptyValue]="null"
+        <input matInput type="number" min="0" aspectNumberField
                [disabled]="!maxHeightEnabled.checked"
                [ngModel]="dimensions.maxHeight"
                (numberChange)="commitDimension('maxHeight', $event)">
@@ -119,7 +119,7 @@
   <ng-template #elseBlock>
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-      <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
+      <input matInput type="number" min="0" aspectNumberField required
              [ngModel]="dimensions.width"
              (numberChange)="commitDimension('width', $event)">
     </mat-form-field>
@@ -127,7 +127,7 @@
       <mat-label>
         {{'propertiesPanel.height' | translate }}
       </mat-label>
-      <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
+      <input matInput type="number" min="0" aspectNumberField required
              [ngModel]="dimensions.height"
              (numberChange)="commitDimension('height', $event)">
     </mat-form-field>

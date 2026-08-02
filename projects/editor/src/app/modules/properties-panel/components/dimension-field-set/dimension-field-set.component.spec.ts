@@ -129,7 +129,7 @@ describe('DimensionFieldSetComponent', () => {
       fixture.detectChanges();
     };
     const leave = async (box: HTMLInputElement): Promise<void> => {
-      box.dispatchEvent(new Event('change'));
+      box.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       await fixture.whenStable();
     };
@@ -150,17 +150,18 @@ describe('DimensionFieldSetComponent', () => {
         .toHaveBeenCalledWith(selectedElements, 'width', 250);
     });
 
-    /* `width` is declared `number`, so an emptied box means 0 - and it arrives when the field is
-       left, not on the keystroke that empties it. */
-    it('should write zero for a width left empty, on leaving the field', async () => {
+    /* `width` is declared `number`, so its box is `required` and an emptied one is refused rather
+       than saved as a 0 the user never typed - reported when the field is left, not on the
+       keystroke that empties it. */
+    it('should refuse a width left empty and put the box back', async () => {
       type(boxes()[0], '');
       expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
 
       await leave(boxes()[0]);
 
-      expect(elementService.updateElementsDimensionsProperty)
-        .toHaveBeenCalledWith(selectedElements, 'width', 0);
-      expect(messageService.showWarning).not.toHaveBeenCalled();
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+      expect(boxes()[0].value).toBe('100');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
     });
 
     /* `min="0"` sat on every box before this and nothing acted on it, so a negative size was
@@ -176,9 +177,9 @@ describe('DimensionFieldSetComponent', () => {
       expect(messageService.showWarning).toHaveBeenCalledTimes(1);
     });
 
-    /* The maximum is `number | null`, so its box is not marked `emptyValue`: clearing it means
-       "no maximum" and must reach the model as null, or a maximum once set could never be taken
-       off again. */
+    /* The maximum is `number | null`, so its box carries no `required`: clearing it means "no
+       maximum" and must reach the model as null, or a maximum once set could never be taken off
+       again. */
     it('should clear a maximum width to null rather than zero', async () => {
       const maxWidthBox = boxes()[3];
 

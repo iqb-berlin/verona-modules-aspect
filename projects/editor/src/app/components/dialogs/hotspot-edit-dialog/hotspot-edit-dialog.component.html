@@ -2,15 +2,16 @@
   <div class="fx-row-start-stretch fx-fix-gap-10">
     <mat-form-field class="fx-flex-50" appearance="fill">
       <mat-label>{{ 'hotspot.top' | translate }}</mat-label>
-      <input matInput type="number" min="0"
-             aspectNumberField [emptyValue]="0"
+      <!-- No `min`: a hotspot may hang over the edge of the image, and the player renders it there. -->
+      <input matInput type="number"
+             aspectNumberField required
              [ngModel]="newHotspot.top"
              (numberChange)="commitNumber('top', $event)">
     </mat-form-field>
     <mat-form-field class="fx-flex-50"  appearance="fill">
       <mat-label>{{ 'hotspot.left' | translate }}</mat-label>
-      <input matInput type="number" min="0"
-             aspectNumberField [emptyValue]="0"
+      <input matInput type="number"
+             aspectNumberField required
              [ngModel]="newHotspot.left"
              (numberChange)="commitNumber('left', $event)">
     </mat-form-field>
@@ -19,14 +20,14 @@
     <mat-form-field class="fx-flex-50"  appearance="fill">
       <mat-label>{{ 'hotspot.width' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             aspectNumberField [emptyValue]="0"
+             aspectNumberField required
              [ngModel]="newHotspot.width"
              (numberChange)="commitNumber('width', $event)">
     </mat-form-field>
     <mat-form-field class="fx-flex-50" appearance="fill">
       <mat-label>{{ 'hotspot.height' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             aspectNumberField [emptyValue]="0"
+             aspectNumberField required
              [ngModel]="newHotspot.height"
              (numberChange)="commitNumber('height', $event)">
     </mat-form-field>
@@ -42,7 +43,7 @@
     <mat-form-field class="fx-flex-50" appearance="fill">
       <mat-label>{{ 'hotspot.borderWidth' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             aspectNumberField [emptyValue]="0"
+             aspectNumberField required
              [ngModel]="newHotspot.borderWidth"
              (numberChange)="commitNumber('borderWidth', $event)">
     </mat-form-field>
@@ -72,8 +73,9 @@
   <div class="fx-row-start-stretch fx-fix-gap-10">
     <mat-form-field  class="fx-flex-50" appearance="fill">
       <mat-label>{{ 'hotspot.rotation' | translate }}</mat-label>
-      <input matInput type="number" min="0"
-             aspectNumberField [emptyValue]="0"
+      <!-- No `min`: a negative rotation turns the shape the other way and always did. -->
+      <input matInput type="number"
+             aspectNumberField required
              [ngModel]="newHotspot.rotation"
              (numberChange)="commitNumber('rotation', $event)">
     </mat-form-field>

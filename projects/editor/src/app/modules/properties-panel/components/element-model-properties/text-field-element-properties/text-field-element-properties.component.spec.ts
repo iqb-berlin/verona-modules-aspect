@@ -128,7 +128,7 @@ describe('TextFieldElementPropertiesComponent', () => {
     });
     expect(emitted).toEqual([]);
 
-    maxLengthInput.dispatchEvent(new Event('change'));
+    maxLengthInput.dispatchEvent(new Event('blur'));
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -146,7 +146,7 @@ describe('TextFieldElementPropertiesComponent', () => {
     maxLengthInput.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    maxLengthInput.dispatchEvent(new Event('change'));
+    maxLengthInput.dispatchEvent(new Event('blur'));
     fixture.detectChanges();
     await fixture.whenStable();
 

@@ -135,17 +135,23 @@ describe('StandardDimensionPropertiesComponent', () => {
       await fixture.whenStable();
     });
 
-    it('should write zero for a width left empty, on leaving the field', () => {
+    /* `width` is declared `number`, so its box is `required`: an empty one is refused like a
+       negative value rather than saved as a 0 the user never typed (#1161). */
+    it('should refuse a width left empty and put the box back', async () => {
       const widthField = numberFields()[0];
 
       widthField.value = '';
       widthField.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
       expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled(); // mid-edit
 
-      widthField.dispatchEvent(new Event('change'));
+      widthField.dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
 
-      expect(elementService.updateElementsDimensionsProperty)
-        .toHaveBeenCalledWith([selectedElement], 'width', 0);
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+      expect(widthField.value).toBe('240');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
     });
 
     it('should refuse a negative height and put the box back', async () => {
@@ -156,7 +162,7 @@ describe('StandardDimensionPropertiesComponent', () => {
       fixture.detectChanges();
       expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
 
-      heightField.dispatchEvent(new Event('change'));
+      heightField.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -175,7 +181,7 @@ describe('StandardDimensionPropertiesComponent', () => {
         heightField.dispatchEvent(new Event('input'));
         fixture.detectChanges();
       });
-      heightField.dispatchEvent(new Event('change'));
+      heightField.dispatchEvent(new Event('blur'));
       await fixture.whenStable();
 
       expect(messageService.showWarning).toHaveBeenCalledTimes(1);
@@ -188,7 +194,7 @@ describe('StandardDimensionPropertiesComponent', () => {
 
       maxWidthField.value = '';
       maxWidthField.dispatchEvent(new Event('input'));
-      maxWidthField.dispatchEvent(new Event('change'));
+      maxWidthField.dispatchEvent(new Event('blur'));
 
       expect(elementService.updateElementsDimensionsProperty)
         .toHaveBeenCalledWith([selectedElement], 'maxWidth', null);
@@ -201,7 +207,7 @@ describe('StandardDimensionPropertiesComponent', () => {
       maxWidthField.value = '-1';
       maxWidthField.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      maxWidthField.dispatchEvent(new Event('change'));
+      maxWidthField.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       await fixture.whenStable();
 

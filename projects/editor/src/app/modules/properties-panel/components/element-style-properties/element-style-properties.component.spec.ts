@@ -112,7 +112,7 @@ describe('ElementStylePropertiesComponent', () => {
       fixture.detectChanges();
     };
     const leave = async (): Promise<void> => {
-      box().dispatchEvent(new Event('change'));
+      box().dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       await fixture.whenStable();
     };
@@ -123,16 +123,18 @@ describe('ElementStylePropertiesComponent', () => {
       expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('fontSize', 24);
     });
 
-    /* `fontSize` is declared `number`, so an emptied box means 0 - written through the service on
-       leaving, rather than assigned into the merged object as before. */
-    it('should write zero for a font size left empty, on leaving the field', async () => {
+    /* `fontSize` is declared `number`, so its box is `required` and an empty one is refused. The
+       0 it used to stand in for was destructive here on top of everything else: `font-size: 0px`
+       makes the text invisible, and the same box for `lineHeight` collapses it (#1161). */
+    it('should refuse a font size left empty and put the box back', async () => {
       type('');
       expect(elementService.updateSelectedElementsStyleProperty).not.toHaveBeenCalled();
 
       await leave();
 
-      expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('fontSize', 0);
-      expect(messageService.showWarning).not.toHaveBeenCalled();
+      expect(elementService.updateSelectedElementsStyleProperty).not.toHaveBeenCalled();
+      expect(box().value).toBe('20');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
     });
 
     it('should refuse a negative font size and put the box back', async () => {
@@ -146,14 +148,31 @@ describe('ElementStylePropertiesComponent', () => {
     });
 
     /* #1153: the border width box committed to `borderRadius`, a copy-paste slip that existed
-       because the pattern was written out by hand at every box. Migrating removes it - the
-       property name is now given once, and the directive holds the rest.
+       because the pattern was written out by hand at every box. Migrating removes it - each box
+       names its property once, and the directive holds the rest. What is left to get wrong is that
+       one name, so that is what this pins, at the last box rather than the first. */
+    it('should commit the border width to the border width', async () => {
+      component.styles = { ...component.styles, borderRadius: 4, borderWidth: 2 } as Stylings;
+      fixture.detectChanges();
+      await fixture.whenStable();
+      const borderWidthBox = Array.from(
+        fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+      ).at(-1) as HTMLInputElement;
 
-       Emptying the box is what exposes it: the substitute belongs on the border width, and the
-       old handler put it on the corner radius instead. Asserting on an edit alone would not do -
-       the old markup emitted the width from `ngModelChange` just fine, and its `(change)` was a
-       no-op whenever the radius happened to be truthy. */
-    it('should commit an emptied border width to the border width', async () => {
+      borderWidthBox.value = '3';
+      borderWidthBox.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('borderWidth', 3);
+      expect(elementService.updateSelectedElementsStyleProperty)
+        .not.toHaveBeenCalledWith('borderRadius', expect.anything());
+      expect(component.styles?.borderRadius).toBe(4);
+    });
+
+    /* And nothing at all reaches the service for a refused entry - neither the box's own property
+       nor, as in the slip above, someone else's. */
+    it('should write nothing for an emptied border width', async () => {
       component.styles = { ...component.styles, borderRadius: 4, borderWidth: 2 } as Stylings;
       fixture.detectChanges();
       await fixture.whenStable();
@@ -163,14 +182,14 @@ describe('ElementStylePropertiesComponent', () => {
 
       borderWidthBox.value = '';
       borderWidthBox.dispatchEvent(new Event('input'));
-      borderWidthBox.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      borderWidthBox.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('borderWidth', 0);
-      expect(elementService.updateSelectedElementsStyleProperty)
-        .not.toHaveBeenCalledWith('borderRadius', expect.anything());
-      expect(component.styles?.borderRadius).toBe(4);
+      expect(elementService.updateSelectedElementsStyleProperty).not.toHaveBeenCalled();
+      expect(borderWidthBox.value).toBe('2');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -17,13 +17,16 @@ export class HotspotEditDialogComponent {
    * What `aspectNumberField` worked out for one of the six number boxes.
    *
    * Unlike the properties panel this dialog edits a draft that only reaches the model when it is
-   * confirmed, so assigning into `newHotspot` is sound here - what was missing is that `min="0"`
-   * on every box meant nothing, and a negative size or rotation could be confirmed (#1161). A
-   * refused entry is dropped; the directive has already put the box back to the draft value, which
-   * is why the binding had to become one-way.
+   * confirmed, so assigning into `newHotspot` is sound here - what was missing is that the `min`
+   * on the size boxes meant nothing, and a negative width could be confirmed (#1161). A refused
+   * entry is dropped; the directive has already put the box back to the draft value, which is why
+   * the binding had to become one-way.
+   *
+   * All six boxes are `required`, so a valid update carries a number - the null check narrows the
+   * type rather than standing in for a value.
    */
   commitNumber(property: 'top' | 'left' | 'width' | 'height' | 'borderWidth' | 'rotation',
                update: { value: number | null; isInputValid: boolean }): void {
-    if (update.isInputValid) this.newHotspot[property] = update.value ?? 0;
+    if (update.isInputValid && update.value !== null) this.newHotspot[property] = update.value;
   }
 }

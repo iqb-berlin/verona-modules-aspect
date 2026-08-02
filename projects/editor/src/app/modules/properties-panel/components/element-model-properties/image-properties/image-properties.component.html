@@ -28,7 +28,7 @@
 
   <mat-form-field appearance="fill" *ngIf="combinedProperties.magnifierSize !== undefined">
     <mat-label>{{'propertiesPanel.magnifierSize' | translate }} in px</mat-label>
-    <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
+    <input matInput type="number" min="0" aspectNumberField required
            [disabled]="!combinedProperties.magnifier"
            [ngModel]="combinedProperties.magnifierSize"
            (numberChange)="updateModel.emit(

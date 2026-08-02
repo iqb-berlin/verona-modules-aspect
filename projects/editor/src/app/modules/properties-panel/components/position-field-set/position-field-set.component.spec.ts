@@ -123,24 +123,27 @@ describe('PositionFieldSetComponent', () => {
   });
 
   /* `xPosition` is declared `number`, so an emptied field must not send null down the write path -
-     that is how null reached the saved unit definition (#1154). An empty field means 0, and it
-     stays a valid input, so it is written rather than warned about. A `(change)` handler used to
-     patch the display to 0 afterwards; the value now arrives correct in the first place.
+     that is how null reached the saved unit definition (#1154). The box is `required`, so an empty
+     one is refused like a negative value: nothing is written and the host warns (#1161).
 
      Note the contrast with the margin test below, where null is the right answer: there it means
      "the selected elements disagree", here it means "the user cleared the box". */
-  it('should emit zero for an x position left empty, on leaving the field', () => {
+  it('should refuse an x position left empty', async () => {
     const emitted: { property: string; value: unknown, isInputValid?: boolean | null }[] = [];
     component.updateModel.subscribe(update => emitted.push(update));
     const xInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
 
     xInput.value = '';
     xInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
     expect(emitted).toEqual([]); // still mid-edit, nothing written
 
-    xInput.dispatchEvent(new Event('change'));
+    xInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
 
-    expect(emitted).toEqual([{ property: 'xPosition', value: 0, isInputValid: true }]);
+    expect(emitted).toEqual([{ property: 'xPosition', value: null, isInputValid: false }]);
+    expect(xInput.value).toBe('10'); // and the box shows what is saved again
   });
 
   /* `gridRowRange` is declared `number` like the fields above, but it was left out of the first
@@ -148,10 +151,10 @@ describe('PositionFieldSetComponent', () => {
      that patched `positionProperties` - the merged view object, not the element. The panel then
      showed 0 while the saved unit definition held null (#1154).
 
-     Its substitute is 1, not 0: a range counts a span, and the consumers render
+     It carries `min="1"` on top of `required`: a range counts a span, and the consumers render
      `grid-row: N / (N + range)`, so a stored 0 collapses to `auto` and the layout would show a
      span of 1 while the unit definition claimed 0. */
-  it('should emit one for an emptied grid row range', async () => {
+  it('should refuse an emptied grid row range', async () => {
     unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
     const emitted: { property: string; value: unknown }[] = [];
     component.positionProperties = {
@@ -166,10 +169,41 @@ describe('PositionFieldSetComponent', () => {
     )[1];
     rangeInput.value = '';
     rangeInput.dispatchEvent(new Event('input'));
-    rangeInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    rangeInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
 
-    expect(emitted).toEqual([{ property: 'gridRowRange', value: 1, isInputValid: true }]);
+    expect(emitted).toEqual([{ property: 'gridRowRange', value: null, isInputValid: false }]);
+    expect(rangeInput.value).toBe('2');
     expect(component.positionProperties.gridRowRange).toBe(2); // the view object is not written to
+  });
+
+  /* And a zero, which the box takes without `min="1"` and which reaches the model as a span the
+     layout cannot show: `grid-row: N / N` collapses to `auto`, one row, over a definition claiming
+     none. */
+  it('should refuse a grid row range of zero', async () => {
+    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    const emitted: { property: string; value: unknown }[] = [];
+    component.positionProperties = {
+      gridRow: 1, gridRowRange: 2, gridColumn: 1, gridColumnRange: 2
+    } as PositionProperties;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    const rangeInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[1];
+    rangeInput.value = '0';
+    rangeInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    rangeInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual([{ property: 'gridRowRange', value: 0, isInputValid: false }]);
+    expect(rangeInput.value).toBe('2');
   });
 
   /* Now that the guard in the host actually rejects invalid input, the box must not keep showing a
@@ -190,7 +224,7 @@ describe('PositionFieldSetComponent', () => {
     });
     expect(emitted).toEqual([]); // nothing at all while it is being typed
 
-    xInput.dispatchEvent(new Event('change'));
+    xInput.dispatchEvent(new Event('blur'));
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -206,7 +240,7 @@ describe('PositionFieldSetComponent', () => {
     xInput.dispatchEvent(new Event('input'));
     component.updateModel.subscribe(update => emitted.push(update));
 
-    xInput.dispatchEvent(new Event('change'));
+    xInput.dispatchEvent(new Event('blur'));
 
     expect(emitted).toEqual([]);
   });

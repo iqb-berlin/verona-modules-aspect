@@ -35,7 +35,7 @@
 <ng-container *ngIf="unitService.expertMode && combinedProperties.minLength !== undefined">
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.minLength' | translate }}</mat-label>
-    <input matInput type="number" min="0" aspectNumberField [emptyValue]="null"
+    <input matInput type="number" min="0" aspectNumberField
            [ngModel]="combinedProperties.minLength"
            (numberChange)="updateModel.emit(
                 { property: 'minLength', value: $event.value, isInputValid: $event.isInputValid })">
@@ -52,7 +52,7 @@
 <ng-container *ngIf="unitService.expertMode && combinedProperties.maxLength !== undefined">
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.maxLength' | translate }}</mat-label>
-    <input matInput type="number" min="0" aspectNumberField [emptyValue]="null"
+    <input matInput type="number" min="0" aspectNumberField
            [ngModel]="combinedProperties.maxLength"
            (numberChange)="updateModel.emit(
                 { property: 'maxLength', value: $event.value, isInputValid: $event.isInputValid })">

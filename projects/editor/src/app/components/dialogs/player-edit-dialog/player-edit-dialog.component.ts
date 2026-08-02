@@ -22,10 +22,14 @@ export class PlayerEditDialogComponent {
    * into `newPlayerConfig` is sound - what was missing is that the `min`/`max` on every box meant
    * nothing, and a negative volume or run count could be confirmed (#1161). A refused entry is
    * dropped; the directive has put the box back to the draft value already.
+   *
+   * All five boxes are `required`, so a valid update carries a number - the null check narrows the
+   * type rather than standing in for a value. `maxRuns` is declared `number | null`, but its null
+   * and its 0 mean the same thing to the player, so the box asks for the number.
    */
   commitNumber(property: 'defaultVolume' | 'minVolume' | 'hintDelay' | 'minRuns' | 'maxRuns',
                update: { value: number | null; isInputValid: boolean }): void {
-    if (update.isInputValid) this.newPlayerConfig[property] = update.value ?? 0;
+    if (update.isInputValid && update.value !== null) this.newPlayerConfig[property] = update.value;
   }
 
   constructor(@Inject(MAT_DIALOG_DATA)protected data: { elementID: string, playerProps: PlayerProperties },

@@ -84,14 +84,16 @@ describe('HotspotEditDialogComponent', () => {
     expect(checkboxes[1].checked).toBe(false);
   });
 
-  it('should fall back to 0 for an emptied number input', () => {
+  it('should keep the draft value for an emptied number input', async () => {
     const topInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
     topInput.value = '';
     topInput.dispatchEvent(new Event('input'));
-    topInput.dispatchEvent(new Event('change'));
     fixture.detectChanges();
+    topInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
 
-    expect(component.newHotspot.top).toBe(0);
+    expect(component.newHotspot.top).toBe(10);
   });
 
   it('should close with the edited copy', () => {
@@ -116,7 +118,7 @@ describe('HotspotEditDialogComponent', () => {
       box.value = value;
       box.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      box.dispatchEvent(new Event('change'));
+      box.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       await fixture.whenStable();
     };
@@ -127,10 +129,24 @@ describe('HotspotEditDialogComponent', () => {
       expect(component.newHotspot.top).toBe(25);
     });
 
-    it('should turn an emptied box into a zero', async () => {
+    /* All six boxes are `required`: an empty one is refused like a negative value rather than
+       confirmed as a zero the user never typed (#1161). */
+    it('should refuse an emptied box and put it back', async () => {
       await edit(boxes()[2], '');
 
-      expect(component.newHotspot.width).toBe(0);
+      expect(component.newHotspot.width).toBe(30);
+      expect(boxes()[2].value).toBe('30');
+    });
+
+    /* A hotspot may hang over the edge of its image and may be turned the other way, and the
+       player renders both - so `top`, `left` and `rotation` carry no `min`, which the first round
+       of this fix had put on them (#1161). */
+    it('should take a negative position and rotation', async () => {
+      await edit(boxes()[0], '-5');
+      await edit(boxes()[5], '-90');
+
+      expect(component.newHotspot.top).toBe(-5);
+      expect(component.newHotspot.rotation).toBe(-90);
     });
 
     it('should refuse a negative size and put the box back', async () => {

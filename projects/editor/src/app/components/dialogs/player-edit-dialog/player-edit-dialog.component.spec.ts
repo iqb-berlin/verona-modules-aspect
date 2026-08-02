@@ -128,7 +128,7 @@ describe('PlayerEditDialogComponent', () => {
       box.value = value;
       box.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      box.dispatchEvent(new Event('change'));
+      box.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       await fixture.whenStable();
     };

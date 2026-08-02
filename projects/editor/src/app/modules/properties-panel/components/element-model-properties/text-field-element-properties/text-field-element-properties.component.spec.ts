@@ -110,6 +110,49 @@ describe('TextFieldElementPropertiesComponent', () => {
     expect(emitted).toEqual([{ property: 'textAlign', value: 'center' }]);
   });
 
+  /* `min="0"` makes -1 invalid. Nothing is written while it is typed, and nothing would put the box
+     back on its own either - it would keep showing a number the model never took (#1154).
+
+     The single emit is what makes the host warn. It carries `isInputValid: false`, so it is a
+     report rather than a write, and it comes on leaving the field: typing `-12` passes through
+     `-1`, and warning per keystroke put one warning on screen after the other. */
+  it('should report a rejected maximum length once and put the box back', async () => {
+    const maxLengthInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[1];
+    ['-1', '-12'].forEach(value => {
+      maxLengthInput.value = value;
+      maxLengthInput.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    });
+    expect(emitted).toEqual([]);
+
+    maxLengthInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(maxLengthInput.value).toBe('10');
+    expect(emitted).toEqual([{ property: 'maxLength', value: -12, isInputValid: false }]);
+  });
+
+  /* Unlike the `number` properties elsewhere, these are `number | null` - an empty box means
+     "no limit" and must stay empty rather than being turned into a 0. */
+  it('should leave an emptied maximum length empty', async () => {
+    const maxLengthInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[1];
+    maxLengthInput.value = '';
+    maxLengthInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    maxLengthInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(maxLengthInput.value).toBe('');
+    expect(emitted).toEqual([{ property: 'maxLength', value: null }]);
+  });
+
   it('should hide the expert mode fields in simple mode', () => {
     unitServiceMock.expertMode = false;
     fixture.detectChanges();

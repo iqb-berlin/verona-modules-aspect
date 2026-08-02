@@ -3,17 +3,19 @@
 @if (show.geometrySize) {
   <mat-form-field appearance="fill">
     <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-    <input matInput type="number" min="0"
+    <input matInput type="number" min="0" #geometryWidth="ngModel"
            [ngModel]="combinedProperties.dimensions?.width"
-           (ngModelChange)="updateDimensionProperty('width', $event)">
+           (ngModelChange)="$event !== null && geometryWidth.valid && updateDimensionProperty('width', $event)"
+           (change)="commitNumber(geometryWidth, 'width', combinedProperties.dimensions?.width)">
   </mat-form-field>
   <mat-form-field>
     <mat-label>
       {{'propertiesPanel.height' | translate }}
     </mat-label>
-    <input matInput type="number" min="0"
+    <input matInput type="number" min="0" #geometryHeight="ngModel"
            [ngModel]="combinedProperties.dimensions?.height"
-           (ngModelChange)="updateDimensionProperty('height', $event)">
+           (ngModelChange)="$event !== null && geometryHeight.valid && updateDimensionProperty('height', $event)"
+           (change)="commitNumber(geometryHeight, 'height', combinedProperties.dimensions?.height)">
   </mat-form-field>
 }
 
@@ -25,12 +27,11 @@
     </aspect-merged-checkbox>
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-      <input matInput type="number" min="0"
+      <input matInput type="number" min="0" #widthField="ngModel"
              [disabled]="!fixedWidth.checked"
              [ngModel]="combinedProperties.dimensions.width"
-             (ngModelChange)="updateDimensionProperty('width', $event)"
-             (change)="combinedProperties.dimensions.width =
-               combinedProperties.dimensions.width ? combinedProperties.dimensions.width : 0">
+             (ngModelChange)="$event !== null && widthField.valid && updateDimensionProperty('width', $event)"
+             (change)="commitNumber(widthField, 'width', combinedProperties.dimensions.width)">
     </mat-form-field>
   }
 
@@ -45,10 +46,11 @@
       <mat-label>
         {{'propertiesPanel.maxWidth' | translate }}
       </mat-label>
-      <input matInput type="number" min="0"
+      <input matInput type="number" min="0" #maxWidthField="ngModel"
              [disabled]="!maxWidthEnabled.checked"
              [ngModel]="combinedProperties.dimensions.maxWidth"
-             (ngModelChange)="updateDimensionProperty('maxWidth', $event)">
+             (ngModelChange)="maxWidthField.valid && updateDimensionProperty('maxWidth', $event)"
+             (change)="revertIfInvalid(maxWidthField, combinedProperties.dimensions.maxWidth)">
     </mat-form-field>
   }
 }

@@ -1,9 +1,9 @@
 import {
-  Component, Input
+  Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { ElementService } from 'editor/src/app/services/element.service';
-import { PositionedUIElement } from 'common/models/ui-element-interfaces';
+import { PositionedUIElement, UIElementValue } from 'common/models/ui-element-interfaces';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
@@ -17,6 +17,17 @@ export class ElementPositionPropertiesComponent {
   @Input() dimensions!: Merged<DimensionProperties> | null | undefined;
   @Input() positionProperties: Merged<PositionProperties> | undefined;
   @Input() isZIndexDisabled: boolean = false;
+  /**
+   * Position edits go up to the host rather than into the `ElementService` from here. The host is
+   * the one place that evaluates `isInputValid`; writing directly meant the guard the field set
+   * computes could never take effect (#1154).
+   */
+  @Output() updatePositionModel =
+    new EventEmitter<{
+      property: keyof PositionProperties;
+      value: UIElementValue;
+      isInputValid?: boolean | null
+    }>();
 
   constructor(public unitService: UnitService,
               public selectionService: SelectionService,

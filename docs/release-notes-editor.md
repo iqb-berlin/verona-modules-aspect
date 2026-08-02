@@ -37,6 +37,11 @@ Editor
 - Eigenschaftenbereich bei gemeinsamer Markierung
   - Sind mehrere Elemente mit unterschiedlichen Optionslisten markiert, wird die Vorbelegung nicht mehr angeboten (verursachte bislang einen fortlaufenden Fehler in der Browser-Konsole)
   - "Medienquelle ändern" wird bei Elementen unterschiedlichen Typs nicht mehr angeboten; ein Klick darauf löschte zuvor Bild und Dateinamen bei allen markierten Elementen
+  - Behebt einen Fehler, der beim gemeinsamen Markieren von Elementen mit unterschiedlich gefüllten Eigenschaftsgruppen auftrat (z. B. zwei Auslöser, von denen nur einer eine Aktion hat); der Eigenschaftenbereich zeigte danach die Werte der zuvor markierten Elemente an und schrieb sie beim nächsten Bearbeiten auf die neu markierten
+- Zahlenfelder im Eigenschaftenbereich
+  - Ein geleertes Zahlenfeld (z. B. X-Position, z-Index, Schieberegler-Grenzen, Lupengröße, Spaltenanzahl, Breite und Höhe im Standardmodus) speichert jetzt 0, statt einen ungültigen Leerwert in die Aufgabendatei zu schreiben; der Wert wird beim Verlassen des Feldes übernommen
+  - Eingaben, die nicht erlaubt sind (z. B. negative Werte), werden nicht mehr gespeichert; das Feld zeigt beim Verlassen wieder den gespeicherten Wert und es erscheint einmal der Hinweis "Eingabe ungültig"
+  - Bei gemeinsamer Markierung wirken diese Änderungen auf alle markierten Elemente
 
 ## 2.12.4
 ### Fehlerbehebungen 

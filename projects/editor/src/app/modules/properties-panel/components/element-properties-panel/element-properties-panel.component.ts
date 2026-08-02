@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SectionService } from 'editor/src/app/services/section.service';
@@ -173,6 +174,21 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   updateModel(property: string, value: UIElementValue, isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.elementService.updateElementsProperty(this.selectedElements, property, value);
+    } else {
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
+    }
+  }
+
+  /**
+   * The same guard for the position tab, which writes into a nested group and therefore cannot go
+   * through `updateModel`. It used to call the `ElementService` straight from its own template,
+   * which is how the `isInputValid` its field set computes got lost (#1154).
+   */
+  updatePositionModel(property: keyof PositionProperties,
+                      value: UIElementValue,
+                      isInputValid: boolean | null = true): void {
+    if (isInputValid) {
+      this.elementService.updateSelectedElementsPositionProperty(property, value);
     } else {
       this.messageService.showWarning(this.translateService.instant('inputInvalid'));
     }

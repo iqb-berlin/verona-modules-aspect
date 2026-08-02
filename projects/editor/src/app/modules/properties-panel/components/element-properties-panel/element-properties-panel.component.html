@@ -16,7 +16,7 @@
         </ng-template>
         <aspect-ui-element-properties [combinedProperties]="combinedProperties"
                                       [selectedElements]="selectedElements"
-                                      (updateModel)="updateModel($event.property, $event.value)">
+                                      (updateModel)="updateModel($event.property, $event.value, $event.isInputValid)">
         </aspect-ui-element-properties>
       </mat-tab>
 
@@ -28,7 +28,8 @@
           <aspect-position-and-dimension-properties
             [dimensions]="combinedProperties.type === 'trigger' ? null : combinedProperties.dimensions"
             [positionProperties]="combinedProperties.position"
-            [isZIndexDisabled]="combinedProperties.type === 'trigger'">
+            [isZIndexDisabled]="combinedProperties.type === 'trigger'"
+            (updatePositionModel)="updatePositionModel($event.property, $event.value, $event.isInputValid)">
           </aspect-position-and-dimension-properties>
         </mat-tab>
       }

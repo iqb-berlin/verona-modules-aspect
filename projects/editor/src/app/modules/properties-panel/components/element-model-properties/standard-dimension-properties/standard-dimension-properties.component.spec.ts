@@ -10,6 +10,7 @@ import { UIElement } from 'common/models/elements/element';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ElementService } from 'editor/src/app/services/element.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import {
   MergedCheckboxComponent
@@ -23,6 +24,7 @@ describe('StandardDimensionPropertiesComponent', () => {
   let component: StandardDimensionPropertiesComponent;
   let fixture: ComponentFixture<StandardDimensionPropertiesComponent>;
   let elementService: SpyObj<ElementService>;
+  let messageService: SpyObj<MessageService>;
 
   const selectedElement = { type: 'drop-list', id: 'dl1' } as unknown as UIElement;
 
@@ -40,6 +42,7 @@ describe('StandardDimensionPropertiesComponent', () => {
 
   beforeEach(async () => {
     elementService = createSpyObj<ElementService>(['updateElementsDimensionsProperty']);
+    messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
       declarations: [StandardDimensionPropertiesComponent, MergedCheckboxComponent],
@@ -54,6 +57,7 @@ describe('StandardDimensionPropertiesComponent', () => {
       ],
       providers: [
         { provide: ElementService, useValue: elementService },
+        { provide: MessageService, useValue: messageService },
         { provide: SelectionService, useValue: { getSelectedElements: () => [selectedElement] } }
       ]
     }).compileComponents();
@@ -115,6 +119,95 @@ describe('StandardDimensionPropertiesComponent', () => {
     component.toggleProperty('maxWidth', true);
 
     expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+  });
+
+  /* These fields write into the ElementService straight from this component instead of emitting up
+     to the host, so the host's guard never saw them: `min="0"` was on all four boxes and meant
+     nothing, and an emptied box sent null into a property declared `number` (#1154). */
+  describe('the guard on the size fields', () => {
+    beforeEach(async () => {
+      select('geometry');
+      component.combinedProperties = {
+        dimensions: { width: 240, height: 100, maxWidth: 400 }
+      };
+      fixture.detectChanges();
+      await fixture.whenStable();
+    });
+
+    it('should write zero for a width left empty, on leaving the field', () => {
+      const widthField = numberFields()[0];
+
+      widthField.value = '';
+      widthField.dispatchEvent(new Event('input'));
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled(); // mid-edit
+
+      widthField.dispatchEvent(new Event('change'));
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([selectedElement], 'width', 0);
+    });
+
+    it('should refuse a negative height and put the box back', async () => {
+      const heightField = numberFields()[1];
+
+      heightField.value = '-5';
+      heightField.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+
+      heightField.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+      expect(heightField.value).toBe('100');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    /* One warning for the whole edit: typing `-50` passes through `-5`, and warning on the
+       keystroke put one warning on screen after the other for a single edit. */
+    it('should warn once for an edit that passes through several invalid values', async () => {
+      const heightField = numberFields()[1];
+
+      ['-5', '-50'].forEach(value => {
+        heightField.value = value;
+        heightField.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+      });
+      heightField.dispatchEvent(new Event('change'));
+      await fixture.whenStable();
+
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    /* `maxWidth` is `number | null`, so unlike width and height an empty box is the legitimate
+       "no maximum" and must not be turned into a 0. */
+    it('should leave an emptied maximum width empty', () => {
+      const maxWidthField = numberFields()[2];
+
+      maxWidthField.value = '';
+      maxWidthField.dispatchEvent(new Event('input'));
+      maxWidthField.dispatchEvent(new Event('change'));
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([selectedElement], 'maxWidth', null);
+      expect(messageService.showWarning).not.toHaveBeenCalled();
+    });
+
+    it('should refuse a negative maximum width', async () => {
+      const maxWidthField = numberFields()[2];
+
+      maxWidthField.value = '-1';
+      maxWidthField.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      maxWidthField.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+      expect(maxWidthField.value).toBe('400');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
   });
 
   /* The block used to be a direct child of the panel's flex column; as a component it needs to be

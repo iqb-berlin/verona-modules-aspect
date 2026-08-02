@@ -88,7 +88,38 @@ describe('SliderPropertiesComponent', () => {
     maxValueInput.value = '50';
     maxValueInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'maxValue', value: 50, isInputValid: true }]);
+    expect(emitted).toEqual([{ property: 'maxValue', value: 50 }]);
+  });
+
+  /* `minValue`/`maxValue` are declared `number`. An empty number field is *valid* to Angular, so
+     before #1154 nothing stopped null from being written here - unlike the position fields, this
+     leaf never even checked for it. Empty means 0 now, and the value is written as such.
+
+     The preset below is deliberately not treated this way: its property is `InputElementValue`,
+     where null is a legitimate "no preset". */
+  it('should emit zero for a maximum value left empty, on leaving the field', () => {
+    const maxValueInput = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    )[1];
+
+    maxValueInput.value = '';
+    maxValueInput.dispatchEvent(new Event('input'));
+    expect(emitted).toEqual([]); // still mid-edit, nothing written
+
+    maxValueInput.dispatchEvent(new Event('change'));
+
+    expect(emitted).toEqual([{ property: 'maxValue', value: 0, isInputValid: true }]);
+  });
+
+  /* The bounds carry no `min`, and negative ones are supported. Emitting on the keystroke that
+     leaves the box unparsable would write 0 and stamp it over the "-" being typed. */
+  it('should let a negative minimum be typed', () => {
+    const minValueInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+
+    minValueInput.value = '';
+    minValueInput.dispatchEvent(new Event('input'));
+
+    expect(emitted).toEqual([]);
   });
 
   it('should emit updateModel when a checkbox is toggled', () => {

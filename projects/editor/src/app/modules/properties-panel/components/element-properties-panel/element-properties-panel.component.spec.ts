@@ -47,6 +47,10 @@ class MockElementPositionPropertiesComponent {
   @Input() dimensions!: DimensionProperties | null | undefined;
   @Input() positionProperties: PositionProperties | undefined;
   @Input() isZIndexDisabled: boolean = false;
+  /* Without this the binding in the host template is not an output at all - Angular quietly turns
+     an unknown one into a DOM event listener, and the test would pass with the argument missing. */
+  @Output() updatePositionModel =
+    new EventEmitter<{ property: string; value: UIElementValue, isInputValid?: boolean | null }>();
 }
 
 @Component({
@@ -75,7 +79,8 @@ describe('ElementPropertiesPanelComponent', () => {
 
   beforeEach(async () => {
     elementService = createSpyObj<ElementService>(
-      ['updateElementsProperty', 'deleteElements', 'duplicateSelectedElements']
+      ['updateElementsProperty', 'updateSelectedElementsPositionProperty',
+        'deleteElements', 'duplicateSelectedElements']
     );
     messageService = createSpyObj<MessageService>(['showWarning', 'showError']);
     selectedElements = new BehaviorSubject<UIElement[]>([]);
@@ -402,6 +407,64 @@ describe('ElementPropertiesPanelComponent', () => {
     selectedElements.next([exploding]);
 
     expect(messageService.showError).toHaveBeenCalledTimes(2);
+  });
+
+  /* The leaves compute `isInputValid` and the host evaluates it, but the binding in between passed
+     only two arguments, so the parameter default `true` won every time and the whole validation
+     path was inert (#1154). Asserted through the template, because that binding is the defect. */
+  it('should carry isInputValid from the model tab to the guard', () => {
+    selectedElements.next([buttonElement]);
+    fixture.detectChanges();
+    const modelTab = fixture.debugElement
+      .query(debugElement => debugElement.componentInstance instanceof MockUIElementPropertiesComponent)
+      .componentInstance as MockUIElementPropertiesComponent;
+
+    modelTab.updateModel.emit({ property: 'label', value: 'x', isInputValid: false });
+
+    expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
+    expect(messageService.showWarning).toHaveBeenCalled();
+  });
+
+  // Leaves that do not compute the flag must keep writing - the parameter default covers them.
+  it('should still write when a leaf sends no validity at all', () => {
+    selectedElements.next([buttonElement]);
+    fixture.detectChanges();
+    const modelTab = fixture.debugElement
+      .query(debugElement => debugElement.componentInstance instanceof MockUIElementPropertiesComponent)
+      .componentInstance as MockUIElementPropertiesComponent;
+
+    modelTab.updateModel.emit({ property: 'label', value: 'x' });
+
+    expect(elementService.updateElementsProperty)
+      .toHaveBeenCalledWith([buttonElement], 'label', 'x');
+  });
+
+  /* Asserted through the template rather than by calling the method: the binding is the thing that
+     used to drop the flag, and only the mock's real `@Output` makes it a binding at all. */
+  /* No template-level test for the position tab's binding, unlike the model tab's above.
+     Material attaches an inactive tab body's content on a transition event that never fires
+     without an animations module, which rule 3 rules out - the position tab simply cannot be
+     rendered through the host here. `properties-panel.characterization.spec.ts` hits the same wall
+     and lists it among its known gaps. The mock does declare `updatePositionModel` as a real
+     `@Output`, so the binding is at least wired to something rather than silently degrading to a
+     DOM event listener; the guard itself is covered by the two tests below. */
+  it('should write a position property through the guard', () => {
+    selectedElements.next([buttonElement]);
+
+    component.updatePositionModel('xPosition', 5);
+
+    expect(elementService.updateSelectedElementsPositionProperty)
+      .toHaveBeenCalledWith('xPosition', 5);
+    expect(messageService.showWarning).not.toHaveBeenCalled();
+  });
+
+  it('should warn instead of writing an invalid position property', () => {
+    selectedElements.next([buttonElement]);
+
+    component.updatePositionModel('xPosition', -1, false);
+
+    expect(elementService.updateSelectedElementsPositionProperty).not.toHaveBeenCalled();
+    expect(messageService.showWarning).toHaveBeenCalled();
   });
 
   it('should update the elements property for valid input', () => {

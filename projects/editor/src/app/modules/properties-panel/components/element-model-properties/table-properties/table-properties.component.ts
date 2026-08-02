@@ -53,17 +53,35 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
     this.maxColIndex = Math.max(...elements.map(el => el.gridColumn), 1);
   }
 
-  /* Add or remove elements to size array. Default value 1fr. */
-  modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number, event?: Event): void {
-    if (!(event?.target as HTMLInputElement).checkValidity()) {
-      (event as any).target.value = (this.combinedProperties[property] as unknown[]).length;
+  /**
+   * What `aspectNumberField` worked out for one of the two count fields.
+   *
+   * The guard used to be written out here, reading `checkValidity()` off the event and putting the
+   * box back by hand. It caught a count below `min` - a row that still holds elements - but not an
+   * emptied box: an empty number input has no range underflow, so it passed as valid and the whole
+   * size array was cut to nothing, silently and without a message (#1164).
+   *
+   * `required` closes that, and the two refusals want different words. `min` is about this table -
+   * the row you are trying to drop still has something in it - while an empty box is simply not a
+   * count. They are told apart by the value: a box refused for being empty carries null.
+   */
+  commitCount(property: 'gridColumnSizes' | 'gridRowSizes',
+              update: { value: number | null; isInputValid: boolean }): void {
+    if (!update.isInputValid || update.value === null) {
       this.messageService.showError(this.translateService.instant(
-        property === 'gridColumnSizes' ?
-          'propertiesPanel.sizeArrayNotEmptyColumn' :
-          'propertiesPanel.sizeArrayNotEmptyRow'
+        // eslint-disable-next-line no-nested-ternary
+        update.value === null ? 'inputInvalid' :
+          (property === 'gridColumnSizes' ?
+            'propertiesPanel.sizeArrayNotEmptyColumn' :
+            'propertiesPanel.sizeArrayNotEmptyRow')
       ));
       return;
     }
+    this.modifySizeArray(property, update.value);
+  }
+
+  /* Add or remove elements to size array. Default value 1fr. */
+  modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {
     const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?
       (this.combinedProperties.gridColumnSizes as { value: number; unit: string }[]) :
       (this.combinedProperties.gridRowSizes as { value: number; unit: string }[]);

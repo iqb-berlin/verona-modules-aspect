@@ -4,6 +4,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { TranslateService } from '@ngx-translate/core';
 import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -40,6 +41,7 @@ export class SectionMenuComponent implements OnDestroy {
               private dialogService: DialogService,
               private messageService: MessageService,
               private idService: IDService,
+              private translateService: TranslateService,
               private clipboard: Clipboard) { }
 
   updateModel(
@@ -69,6 +71,39 @@ export class SectionMenuComponent implements OnDestroy {
 
   deleteSection(): void {
     this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
+  }
+
+  /**
+   * What `aspectNumberField` worked out for the section height.
+   *
+   * The four number boxes in this menu passed `$event.target.value` straight on - a string, into
+   * `height`, which is declared `number` - and `|| 0` turned an emptied box into a 0, which
+   * collapses the section. Neither `min` nor anything else was enforced anywhere (#1164).
+   */
+  commitHeight(update: { value: number | null; isInputValid: boolean }): void {
+    if (!update.isInputValid || update.value === null) {
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
+      return;
+    }
+    this.updateModel('height', update.value);
+  }
+
+  /**
+   * The same for the two grid track counts, where an emptied box did more than write a wrong
+   * number: `|| 0` cut the size array to nothing, so a section lost every row or column definition
+   * at once. `min="1"` because a grid with no tracks is not a grid.
+   *
+   * Unlike the table, this has no floor tied to the elements inside it - shrinking the grid past an
+   * element leaves that element with a track that no longer exists. That was so before and is left
+   * alone here; #1164 is about the boxes.
+   */
+  commitCount(property: 'gridColumnSizes' | 'gridRowSizes',
+              update: { value: number | null; isInputValid: boolean }): void {
+    if (!update.isInputValid || update.value === null) {
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
+      return;
+    }
+    this.modifySizeArray(property, update.value);
   }
 
   /* Add or remove elements to size array. Default value 1fr. */

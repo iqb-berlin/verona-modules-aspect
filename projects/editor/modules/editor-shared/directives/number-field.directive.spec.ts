@@ -2,6 +2,7 @@
 import { Component, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { userEvent } from '@vitest/browser/context';
 import { NumberFieldModule } from './number-field.module';
 
 /**
@@ -66,12 +67,29 @@ class TwoWayHostComponent {
   value: number | null = 10;
 }
 
+/* And one for real typing and real focus changes, which needs somewhere to move the focus to. */
+@Component({
+  standalone: false,
+  template: `
+    <input id="box" type="number" min="0" required aspectNumberField
+           [ngModel]="value"
+           (numberChange)="emitted.push($event)">
+    <input id="other" type="text">
+  `
+})
+class RealInputHostComponent {
+  value: number | null = null;
+  emitted: { value: number | null; isInputValid: boolean }[] = [];
+}
+
 /* Declaring the hosts through a module rather than through `TestBed.declarations`: the AOT compiler
    resolves an inline template against the NgModule the component belongs to, and a component that
    belongs to none knows neither `ngModel` nor the directive under test. The directive itself is
    pulled in through its own module - declaring it here as well would make it part of two modules. */
 @NgModule({
-  declarations: [HostComponent, UnboundedHostComponent, OptionalHostComponent, TwoWayHostComponent],
+  declarations: [
+    HostComponent, UnboundedHostComponent, OptionalHostComponent, TwoWayHostComponent, RealInputHostComponent
+  ],
   imports: [FormsModule, NumberFieldModule]
 })
 class TestHostModule {}
@@ -283,6 +301,72 @@ describe('NumberFieldDirective', () => {
       await leave();
 
       expect(host.emitted).toEqual([]);
+    });
+  });
+
+  /* Everything above dispatches its own events, and a dispatched `change` fires whether or not the
+     value moved - so those tests cannot tell the two events apart, whichever one the directive
+     listens on. These three drive the browser instead, with real keystrokes and a real focus
+     change, and the first is the one that decided the question: it passes as written and fails
+     with the listener put back on `change`. */
+  describe('with real typing and real focus changes', () => {
+    let real: ComponentFixture<RealInputHostComponent>;
+
+    const box = (): HTMLInputElement => real.nativeElement.querySelector('#box') as HTMLInputElement;
+    const other = (): HTMLInputElement => real.nativeElement.querySelector('#other') as HTMLInputElement;
+    const settle = async (): Promise<void> => {
+      real.detectChanges();
+      await real.whenStable();
+    };
+
+    beforeEach(async () => {
+      real = TestBed.createComponent(RealInputHostComponent);
+      document.body.appendChild(real.nativeElement);
+      await settle();
+    });
+
+    /* `change` is only fired when the value at blur differs from the value at focus. An edit that
+       ends where it started therefore never reported the ending: the 50 below reached the model on
+       the keystroke and the clearing that took it back never did, leaving a saved number under an
+       empty box. */
+    it('should answer for an edit that ends where it started', async () => {
+      await userEvent.click(box());
+      await userEvent.type(box(), '50');
+      await settle();
+      expect(real.componentInstance.emitted.at(-1)).toEqual({ value: 50, isInputValid: true });
+
+      await userEvent.clear(box());
+      await userEvent.click(other());
+      await settle();
+
+      expect(real.componentInstance.emitted.at(-1)).toEqual({ value: null, isInputValid: false });
+      expect(box().value).toBe('');
+    });
+
+    it('should put a refused value back on a real blur', async () => {
+      real.componentInstance.value = 10;
+      await settle();
+
+      await userEvent.click(box());
+      await userEvent.clear(box());
+      await userEvent.type(box(), '-5');
+      await settle();
+      await userEvent.click(other());
+      await settle();
+
+      expect(real.componentInstance.emitted.filter(update => !update.isInputValid).length).toBe(1);
+      expect(box().value).toBe('10');
+    });
+
+    /* The other half of listening on `blur`: it fires for a field that was only passed through,
+       and the box here is empty and therefore invalid from the start - as any box is whose
+       property the selection has no common value for. */
+    it('should stay silent when the field is only tabbed through', async () => {
+      await userEvent.click(box());
+      await userEvent.click(other());
+      await settle();
+
+      expect(real.componentInstance.emitted).toEqual([]);
     });
   });
 });

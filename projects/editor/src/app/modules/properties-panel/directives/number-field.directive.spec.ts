@@ -162,6 +162,23 @@ describe('NumberFieldDirective', () => {
       expect(host.emitted.filter(update => update.isInputValid)).toEqual([]);
     });
 
+    /* Emitting the substitute is not enough to make it appear. If the model already holds it, the
+       bound expression does not change, `ngOnChanges` never fires, and the box would stay empty
+       over a property that reads 0 - an x position at 0 is the everyday case. Same mechanism as
+       the browser's bad input, where `1e` leaves `value` empty while the text stays on screen. */
+    it('should put the substitute into the box, not only into the emit', async () => {
+      host.value = 0;
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(field().value).toBe('0');
+
+      type('');
+      await leave();
+
+      expect(host.emitted).toEqual([{ value: 0, isInputValid: true }]);
+      expect(field().value).toBe('0');
+    });
+
     it('should not emit for a box that holds a value', async () => {
       type('7');
       host.emitted.length = 0;

@@ -39,8 +39,13 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
    * `number | null` and empty says "no limit" / "no preset" / "no maximum". Either way it is sent
    * on leaving the field - clearing a box is an edit and has to reach the model, or a limit once
    * set could never be taken off again.
+   *
+   * Required on purpose, with no default: of the fields this replaces all but the two length limits
+   * are `number`, so a default would be right most of the time and silently wrong the rest - and
+   * wrong here means writing `null` into a non-nullable property, the very defect of #1154. Making
+   * it a decision per call site costs one attribute and cannot be skipped by accident.
    */
-  @Input({ transform: booleanAttribute }) emptyMeansZero: boolean = false;
+  @Input({ required: true, transform: booleanAttribute }) emptyMeansZero!: boolean;
 
   /**
    * A value the caller should act on. `isInputValid` is false only for a refused entry, where the
@@ -55,7 +60,14 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
 
   constructor(@Self() private ngModel: NgModel) {}
 
-  /** What the model holds, i.e. the value bound through `[ngModel]`, untouched by typing. */
+  /**
+   * What the model holds, i.e. the value bound through `[ngModel]`, untouched by typing.
+   *
+   * This is why the binding has to be one-way. The selector matches two other shapes and neither
+   * works: with a bare `ngModel` there is no bound value, so a refused entry would clear the box
+   * instead of restoring it; with `[(ngModel)]` the banana box has already written the refused
+   * value into the parent, so the directive would "restore" exactly what it just rejected.
+   */
   private get modelValue(): number | null {
     return (this.ngModel.model ?? null) as number | null;
   }
@@ -78,7 +90,7 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
   onCommit(): void {
     const control = this.ngModel.control;
     if (control.invalid) {
-      this.numberChange.emit({ value: control.value as number, isInputValid: false });
+      this.numberChange.emit({ value: control.value as number | null, isInputValid: false });
       /* `emitViewToModelChange: false` says this write is not the user typing, so it does not go
          back out through `ngModel.update`.
 
@@ -91,7 +103,17 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
       return;
     }
     if (control.value === null) {
-      this.numberChange.emit({ value: this.emptyMeansZero ? 0 : null, isInputValid: true });
+      const substitute = this.emptyMeansZero ? 0 : null;
+      /* Into the box as well, not just out to the caller. Writing the value does not necessarily
+         bring it back: if the model already holds it, the bound expression does not change,
+         `ngOnChanges` never fires, and the box would stay empty over a property that reads 0 -
+         an x position at 0 is the everyday case.
+         It also settles what the browser calls bad input. `1e` or `--` make `input.value` read as
+         empty while the box goes on showing the raw text, so without this the model would take the
+         substitute and the screen would keep `1e` - the same mismatch the branch above exists to
+         undo. */
+      control.setValue(substitute, { emitViewToModelChange: false, emitEvent: false });
+      this.numberChange.emit({ value: substitute, isInputValid: true });
     }
   }
 }

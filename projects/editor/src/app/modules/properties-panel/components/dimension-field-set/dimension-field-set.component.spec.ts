@@ -12,16 +12,19 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { ElementService } from 'editor/src/app/services/element.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   DimensionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/dimension-field-set/dimension-field-set.component';
+import { NumberFieldDirective } from '../../directives/number-field.directive';
 
 describe('DimensionFieldSetComponent', () => {
   let component: DimensionFieldSetComponent;
   let fixture: ComponentFixture<DimensionFieldSetComponent>;
   let elementService: SpyObj<ElementService>;
+  let messageService: SpyObj<MessageService>;
 
   const selectedElements = [{ id: 'el1' } as UIElement];
   const unitServiceMock = {
@@ -36,9 +39,10 @@ describe('DimensionFieldSetComponent', () => {
 
   beforeEach(async () => {
     elementService = createSpyObj<ElementService>(['updateElementsDimensionsProperty']);
+    messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
-      declarations: [DimensionFieldSetComponent, MergedCheckboxComponent],
+      declarations: [DimensionFieldSetComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -50,7 +54,8 @@ describe('DimensionFieldSetComponent', () => {
       providers: [
         { provide: UnitService, useValue: unitServiceMock },
         { provide: SelectionService, useValue: selectionServiceMock },
-        { provide: ElementService, useValue: elementService }
+        { provide: ElementService, useValue: elementService },
+        { provide: MessageService, useValue: messageService }
       ]
     }).compileComponents();
 
@@ -99,5 +104,89 @@ describe('DimensionFieldSetComponent', () => {
     component.toggleProperty('minWidth', true);
 
     expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+  });
+
+  /* All ten size boxes write into the ElementService from this component instead of emitting up to
+     the host, so the host's guard never covered them: `min="0"` was on every one of them and meant
+     nothing, and an emptied width or height sent null into a property declared `number` (#1161).
+     The mechanics now sit in `aspectNumberField`; what is left here is the decision what to do
+     with its two outcomes, and these go through the boxes so the wiring is covered too.
+
+     Note the directive is listed in `declarations` rather than pulled in through
+     `NumberFieldModule`: with the module in `imports` it does not reach this template and every
+     binding on it fails with NG0303, and a test module of its own collides with
+     PropertiesPanelModule, which the test build also sees (NG6007). Same wall as the NG0304 case
+     already known for this suite. */
+  describe('the size boxes', () => {
+    /** In template order, under dynamic positioning: width, height, then the four min/max boxes. */
+    const boxes = (): HTMLInputElement[] => Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    );
+
+    const type = (box: HTMLInputElement, value: string): void => {
+      box.value = value;
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    };
+    const leave = async (box: HTMLInputElement): Promise<void> => {
+      box.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    beforeEach(async () => {
+      // Both size boxes are disabled until their fixed-size checkbox is ticked.
+      component.dimensions = {
+        ...component.dimensions, isWidthFixed: true, isHeightFixed: true, maxWidth: 400
+      };
+      fixture.detectChanges();
+      await fixture.whenStable();
+    });
+
+    it('should write an edited width', () => {
+      type(boxes()[0], '250');
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith(selectedElements, 'width', 250);
+    });
+
+    /* `width` is declared `number`, so an emptied box means 0 - and it arrives when the field is
+       left, not on the keystroke that empties it. */
+    it('should write zero for a width left empty, on leaving the field', async () => {
+      type(boxes()[0], '');
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+
+      await leave(boxes()[0]);
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith(selectedElements, 'width', 0);
+      expect(messageService.showWarning).not.toHaveBeenCalled();
+    });
+
+    /* `min="0"` sat on every box before this and nothing acted on it, so a negative size was
+       saved. One warning for the whole edit, and the box goes back to what the model holds. */
+    it('should refuse a negative height and put the box back', async () => {
+      type(boxes()[1], '-5');
+      type(boxes()[1], '-50');
+
+      await leave(boxes()[1]);
+
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
+      expect(boxes()[1].value).toBe('50');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    /* The maximum is `number | null`, so its box is not marked `emptyMeansZero`: clearing it means
+       "no maximum" and must reach the model as null, or a maximum once set could never be taken
+       off again. */
+    it('should clear a maximum width to null rather than zero', async () => {
+      const maxWidthBox = boxes()[3];
+
+      type(maxWidthBox, '');
+      await leave(maxWidthBox);
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith(selectedElements, 'maxWidth', null);
+    });
   });
 });

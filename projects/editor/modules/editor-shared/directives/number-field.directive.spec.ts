@@ -99,6 +99,22 @@ class RealInputHostComponent {
   emitted: { value: number | null; isInputValid: boolean }[] = [];
 }
 
+/* The same without `required`, for what the browser cannot read: only a box that may legitimately
+   be empty can mistake bad input for a clearing, and only real typing produces bad input at all. */
+@Component({
+  standalone: false,
+  template: `
+    <input id="box" type="number" min="0" aspectNumberField
+           [ngModel]="value"
+           (numberChange)="emitted.push($event)">
+    <input id="other" type="text">
+  `
+})
+class OptionalRealInputHostComponent {
+  value: number | null = 300;
+  emitted: { value: number | null; isInputValid: boolean }[] = [];
+}
+
 /* Declaring the hosts through a module rather than through `TestBed.declarations`: the AOT compiler
    resolves an inline template against the NgModule the component belongs to, and a component that
    belongs to none knows neither `ngModel` nor the directive under test. The directive itself is
@@ -106,7 +122,7 @@ class RealInputHostComponent {
 @NgModule({
   declarations: [
     HostComponent, UnboundedHostComponent, OptionalHostComponent, TwoWayHostComponent,
-    RealInputHostComponent, FormFieldHostComponent
+    RealInputHostComponent, OptionalRealInputHostComponent, FormFieldHostComponent
   ],
   imports: [FormsModule, MatFormFieldModule, MatInputModule, NumberFieldModule]
 })
@@ -176,6 +192,10 @@ describe('NumberFieldDirective', () => {
     expect(box.value).toBe('-2');
   });
 
+  /* While developing, which is where a test runs: the built editor logs the same message instead,
+     so a template that slipped through does not take the panel down with it. That branch is not
+     covered here - `enableProdMode()` cannot be undone, so calling it would settle the question for
+     every test that follows in the same run. */
   it('should refuse a call site that binds two-way', () => {
     const twoWay = TestBed.createComponent(TwoWayHostComponent);
 
@@ -385,6 +405,51 @@ describe('NumberFieldDirective', () => {
       await settle();
 
       expect(real.componentInstance.emitted).toEqual([]);
+    });
+
+    /* What the browser could not read is not the same as a box the user emptied, and only a box
+       that may be empty can confuse the two. `5e` is a half-typed exponent: `value` reads empty
+       while the box shows the text, so a maximum width would have come off, its checkbox unticked
+       and its field disabled, with nothing said. Measured, not assumed - `validity.badInput` is
+       only ever set by real typing, which is why this cannot be tested with dispatched events. */
+    it('should refuse what the browser could not read, rather than clear the property', async () => {
+      const optional = TestBed.createComponent(OptionalRealInputHostComponent);
+      document.body.appendChild(optional.nativeElement);
+      optional.detectChanges();
+      await optional.whenStable();
+      const halfTyped = optional.nativeElement.querySelector('#box') as HTMLInputElement;
+
+      await userEvent.click(halfTyped);
+      await userEvent.clear(halfTyped);
+      await userEvent.type(halfTyped, '5e');
+      optional.detectChanges();
+      expect(halfTyped.validity.badInput).toBe(true); // the state this exists for
+
+      await userEvent.click(optional.nativeElement.querySelector('#other') as HTMLInputElement);
+      optional.detectChanges();
+      await optional.whenStable();
+
+      expect(optional.componentInstance.emitted.at(-1)).toEqual({ value: null, isInputValid: false });
+      expect(halfTyped.value).toBe('300');
+    });
+
+    /* And the clearing it must not swallow: the same box, actually emptied, still reports null as a
+       value of its own. */
+    it('should still report a box that was really emptied', async () => {
+      const optional = TestBed.createComponent(OptionalRealInputHostComponent);
+      document.body.appendChild(optional.nativeElement);
+      optional.detectChanges();
+      await optional.whenStable();
+      const emptied = optional.nativeElement.querySelector('#box') as HTMLInputElement;
+
+      await userEvent.click(emptied);
+      await userEvent.clear(emptied);
+      await userEvent.click(optional.nativeElement.querySelector('#other') as HTMLInputElement);
+      optional.detectChanges();
+      await optional.whenStable();
+
+      expect(optional.componentInstance.emitted.at(-1)).toEqual({ value: null, isInputValid: true });
+      expect(emptied.value).toBe('');
     });
   });
 

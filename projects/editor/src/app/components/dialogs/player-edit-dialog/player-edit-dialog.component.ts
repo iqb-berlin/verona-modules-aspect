@@ -14,6 +14,20 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 })
 export class PlayerEditDialogComponent {
   newPlayerConfig: PlayerProperties = { ...this.data.playerProps };
+
+  /**
+   * What `aspectNumberField` worked out for one of the five number boxes.
+   *
+   * Like the hotspot dialog this edits a draft that only reaches the model on confirm, so writing
+   * into `newPlayerConfig` is sound - what was missing is that the `min`/`max` on every box meant
+   * nothing, and a negative volume or run count could be confirmed (#1161). A refused entry is
+   * dropped; the directive has put the box back to the draft value already.
+   */
+  commitNumber(property: 'defaultVolume' | 'minVolume' | 'hintDelay' | 'minRuns' | 'maxRuns',
+               update: { value: number | null; isInputValid: boolean }): void {
+    if (update.isInputValid) this.newPlayerConfig[property] = update.value ?? 0;
+  }
+
   constructor(@Inject(MAT_DIALOG_DATA)protected data: { elementID: string, playerProps: PlayerProperties },
               private dialogService: DialogService) {
   }

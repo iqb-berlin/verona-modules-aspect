@@ -20,6 +20,9 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
   PlayerEditDialogComponent
 } from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
+import {
+  NumberFieldDirective
+} from 'editor/src/app/modules/properties-panel/directives/number-field.directive';
 
 describe('PlayerEditDialogComponent', () => {
   let component: PlayerEditDialogComponent;
@@ -41,10 +44,8 @@ describe('PlayerEditDialogComponent', () => {
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
-      declarations: [
-        PlayerEditDialogComponent,
-        GetValidAudioVideoAliasAndIDsPipe
-      ],
+      declarations: [PlayerEditDialogComponent,
+        GetValidAudioVideoAliasAndIDsPipe, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -115,5 +116,38 @@ describe('PlayerEditDialogComponent', () => {
     saveButton.click();
 
     expect(dialogRefMock.close).toHaveBeenCalledWith(component.newPlayerConfig);
+  });
+
+  /* The five number boxes carried `min`/`max` and nothing enforced them, so a negative volume or
+     run count could be confirmed (#1161). The draft assignment itself was fine - the dialog only
+     hands its copy back on confirm - but the binding had to become one-way for the directive. */
+  describe('the number boxes', () => {
+    const volumeBox = (): HTMLInputElement => fixture.nativeElement
+      .querySelector('input[type="number"]') as HTMLInputElement;
+    const edit = async (box: HTMLInputElement, value: string): Promise<void> => {
+      box.value = value;
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should take an edited volume into the draft', async () => {
+      await edit(volumeBox(), '0.5');
+
+      expect(component.newPlayerConfig.defaultVolume).toBe(0.5);
+    });
+
+    /* `max="1"` counts too, not just the minimum - the directive reads whatever validators the
+       box declares. */
+    it('should refuse a volume above the maximum', async () => {
+      const before = component.newPlayerConfig.defaultVolume;
+
+      await edit(volumeBox(), '5');
+
+      expect(component.newPlayerConfig.defaultVolume).toBe(before);
+      expect(volumeBox().value).toBe(String(before));
+    });
   });
 });

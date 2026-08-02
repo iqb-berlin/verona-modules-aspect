@@ -13,6 +13,9 @@ import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-ima
 import {
   HotspotEditDialogComponent
 } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
+import {
+  NumberFieldDirective
+} from 'editor/src/app/modules/properties-panel/directives/number-field.directive';
 
 describe('HotspotEditDialogComponent', () => {
   let component: HotspotEditDialogComponent;
@@ -37,7 +40,7 @@ describe('HotspotEditDialogComponent', () => {
     dialogRefMock = { close: vi.fn() };
 
     await TestBed.configureTestingModule({
-      declarations: [HotspotEditDialogComponent],
+      declarations: [HotspotEditDialogComponent, NumberFieldDirective],
       imports: [
         FormsModule,
         MatDialogModule,
@@ -99,5 +102,44 @@ describe('HotspotEditDialogComponent', () => {
 
     expect(dialogRefMock.close).toHaveBeenCalledWith(component.newHotspot);
     expect(hotspot.shape).toBe('rectangle');
+  });
+
+  /* The six number boxes carried `min="0"` and nothing enforced it, so a negative size or rotation
+     could be confirmed into the unit definition (#1161). Unlike the panel, assigning into the
+     draft was never the problem here - the dialog hands its copy back on confirm - but the binding
+     had to become one-way so the directive can put a refused entry back. */
+  describe('the number boxes', () => {
+    const boxes = (): HTMLInputElement[] => Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    );
+    const edit = async (box: HTMLInputElement, value: string): Promise<void> => {
+      box.value = value;
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should take an edited value into the draft', async () => {
+      await edit(boxes()[0], '25');
+
+      expect(component.newHotspot.top).toBe(25);
+    });
+
+    it('should turn an emptied box into a zero', async () => {
+      await edit(boxes()[2], '');
+
+      expect(component.newHotspot.width).toBe(0);
+    });
+
+    it('should refuse a negative size and put the box back', async () => {
+      const before = component.newHotspot.width;
+
+      await edit(boxes()[2], '-10');
+
+      expect(component.newHotspot.width).toBe(before);
+      expect(boxes()[2].value).toBe(String(before));
+    });
   });
 });

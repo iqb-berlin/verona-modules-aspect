@@ -56,17 +56,16 @@
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.defaultVolume' | translate }}</mat-label>
               <input matInput type="number" min="0" max="1" step="0.1"
+                     aspectNumberField [emptyValue]="0"
                      [ngModel]="newPlayerConfig.defaultVolume"
-                     (ngModelChange)="newPlayerConfig.defaultVolume = $event"
-                     (change)="newPlayerConfig.defaultVolume = newPlayerConfig.defaultVolume ?
-                                                               newPlayerConfig.defaultVolume : 0">
+                     (numberChange)="commitNumber('defaultVolume', $event)">
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.minVolume' | translate }}</mat-label>
               <input matInput type="number" min="0" max="1" step="0.1"
+                     aspectNumberField [emptyValue]="0"
                      [ngModel]="newPlayerConfig.minVolume"
-                     (ngModelChange)="newPlayerConfig.minVolume = $event"
-                     (change)="newPlayerConfig.minVolume = newPlayerConfig.minVolume ? newPlayerConfig.minVolume : 0">
+                     (numberChange)="commitNumber('minVolume', $event)">
             </mat-form-field>
             <mat-checkbox #muteControl
                           [checked]="newPlayerConfig.muteControl"
@@ -109,10 +108,9 @@
               <mat-label>{{ 'player.hintDelay' | translate }}</mat-label>
               <input matInput type="number" step="1000" min="0"
                      [disabled]="!newPlayerConfig.showHint"
+                     aspectNumberField [emptyValue]="0"
                      [ngModel]="newPlayerConfig.hintDelay"
-                     (ngModelChange)="newPlayerConfig.hintDelay = $event"
-                     (change)="newPlayerConfig.hintDelay = newPlayerConfig.hintDelay ?
-                                                                newPlayerConfig.hintDelay : 0">
+                     (numberChange)="commitNumber('hintDelay', $event)">
             </mat-form-field>
           </div>
         </fieldset>
@@ -127,16 +125,16 @@
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.minRuns' | translate }}</mat-label>
               <input matInput type="number" min="0"
+                     aspectNumberField [emptyValue]="0"
                      [ngModel]="newPlayerConfig.minRuns"
-                     (ngModelChange)="newPlayerConfig.minRuns = $event"
-                     (change)="newPlayerConfig.minRuns = newPlayerConfig.minRuns ? newPlayerConfig.minRuns : 0">
+                     (numberChange)="commitNumber('minRuns', $event)">
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.maxRuns' | translate }}</mat-label>
               <input matInput type="number" min="0"
+                     aspectNumberField [emptyValue]="0"
                      [ngModel]="newPlayerConfig.maxRuns"
-                     (ngModelChange)="newPlayerConfig.maxRuns = $event"
-                     (change)="newPlayerConfig.maxRuns = newPlayerConfig.maxRuns ? newPlayerConfig.maxRuns : 0">
+                     (numberChange)="commitNumber('maxRuns', $event)">
             </mat-form-field>
             <mat-checkbox [checked]="newPlayerConfig.showRestRuns"
                           (change)="newPlayerConfig.showRestRuns = $event.checked">

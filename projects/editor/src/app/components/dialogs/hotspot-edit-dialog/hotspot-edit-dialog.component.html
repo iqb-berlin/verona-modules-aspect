@@ -3,28 +3,32 @@
     <mat-form-field class="fx-flex-50" appearance="fill">
       <mat-label>{{ 'hotspot.top' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             [(ngModel)]="newHotspot.top"
-             (change)="newHotspot.top = newHotspot.top ? newHotspot.top : 0">
+             aspectNumberField [emptyValue]="0"
+             [ngModel]="newHotspot.top"
+             (numberChange)="commitNumber('top', $event)">
     </mat-form-field>
     <mat-form-field class="fx-flex-50"  appearance="fill">
       <mat-label>{{ 'hotspot.left' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             [(ngModel)]="newHotspot.left"
-             (change)="newHotspot.left = newHotspot.left ? newHotspot.left : 0">
+             aspectNumberField [emptyValue]="0"
+             [ngModel]="newHotspot.left"
+             (numberChange)="commitNumber('left', $event)">
     </mat-form-field>
   </div>
   <div class="fx-row-start-stretch fx-fix-gap-10">
     <mat-form-field class="fx-flex-50"  appearance="fill">
       <mat-label>{{ 'hotspot.width' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             [(ngModel)]="newHotspot.width"
-             (change)="newHotspot.width = newHotspot.width ? newHotspot.width : 0">
+             aspectNumberField [emptyValue]="0"
+             [ngModel]="newHotspot.width"
+             (numberChange)="commitNumber('width', $event)">
     </mat-form-field>
     <mat-form-field class="fx-flex-50" appearance="fill">
       <mat-label>{{ 'hotspot.height' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             [(ngModel)]="newHotspot.height"
-             (change)="newHotspot.height = newHotspot.height ? newHotspot.height : 0">
+             aspectNumberField [emptyValue]="0"
+             [ngModel]="newHotspot.height"
+             (numberChange)="commitNumber('height', $event)">
     </mat-form-field>
   </div>
   <div class="fx-row-space-between-center fx-fix-gap-10">
@@ -38,8 +42,9 @@
     <mat-form-field class="fx-flex-50" appearance="fill">
       <mat-label>{{ 'hotspot.borderWidth' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             [(ngModel)]="newHotspot.borderWidth"
-             (change)="newHotspot.borderWidth = newHotspot.borderWidth ? newHotspot.borderWidth : 0">
+             aspectNumberField [emptyValue]="0"
+             [ngModel]="newHotspot.borderWidth"
+             (numberChange)="commitNumber('borderWidth', $event)">
     </mat-form-field>
   </div>
 
@@ -68,8 +73,9 @@
     <mat-form-field  class="fx-flex-50" appearance="fill">
       <mat-label>{{ 'hotspot.rotation' | translate }}</mat-label>
       <input matInput type="number" min="0"
-             [(ngModel)]="newHotspot.rotation"
-             (change)="newHotspot.rotation = newHotspot.rotation ? newHotspot.rotation : 0">
+             aspectNumberField [emptyValue]="0"
+             [ngModel]="newHotspot.rotation"
+             (numberChange)="commitNumber('rotation', $event)">
     </mat-form-field>
     <div  class="fx-flex-50">
       <mat-checkbox [checked]="newHotspot.value"

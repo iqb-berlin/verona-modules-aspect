@@ -14,10 +14,14 @@ import { ErrorStateMatcher } from '@angular/material/core';
  * mistake nobody made (#1161).
  *
  * `dirty` says the box was typed in, which is exactly when an empty one is the user's doing and
- * worth pointing at. It is also what the directive uses to decide whether leaving the field has
- * anything to answer for, and it clears the marker afterwards - so the red is live feedback while
- * an entry that would be refused stands in the box, and it goes when the entry does: leaving the
- * field puts the old value back, and the warning that follows says more than a red border can.
+ * worth pointing at. `invalid` covers text the browser could not read as well, because
+ * `NumberFieldBadInputDirective` says so as a validation error - otherwise `5e` would sit there
+ * looking accepted while the same keystrokes in a `required` box went red at once.
+ *
+ * `dirty` is also what the directive uses to decide whether leaving the field has anything to
+ * answer for, and it clears the marker afterwards - so the red is live feedback while an entry that
+ * would be refused stands in the box, and it goes when the entry does: leaving the field puts the
+ * old value back, and the warning that follows says more than a red border can.
  *
  * Provided by the directive itself, on the element - MatInput reads its default matcher from the
  * same node injector, so this reaches the boxes that carry the directive and nothing else.

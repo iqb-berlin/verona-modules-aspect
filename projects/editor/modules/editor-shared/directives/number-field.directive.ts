@@ -1,5 +1,5 @@
 import {
-  Directive, ElementRef, EventEmitter, HostListener, isDevMode, OnDestroy, OnInit, Output, Self
+  Directive, EventEmitter, HostListener, isDevMode, OnDestroy, OnInit, Output, Self
 } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -62,24 +62,14 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(@Self() private ngModel: NgModel,
-              private element: ElementRef<HTMLInputElement>) {}
-
   /**
-   * Text the browser could not read as a number, as opposed to a box the user left empty.
-   *
-   * A number input reports both as no value at all - `5e`, `1.2.3` or a decimal comma where the
-   * locale does not take one leave `value` empty while the box goes on showing what was typed. The
-   * control cannot tell them apart, so without this a half-typed number would be committed as
-   * "cleared" wherever empty is a legitimate value: type `5e` into a maximum width and the limit
-   * would come off, the checkbox would untick and the field disable, with nothing said (#1161).
-   *
-   * `validity.badInput` is the only place the difference survives, and it is on the element rather
-   * than on the control - which is why the element is injected at all.
+   * Set when the call site binds two-way, which leaves the directive unable to do its job. See
+   * `ngOnInit`: in a built editor that is logged rather than thrown, and the directive then keeps
+   * out of the way entirely.
    */
-  private get isBadInput(): boolean {
-    return this.element.nativeElement.validity.badInput;
-  }
+  private isMisused = false;
+
+  constructor(@Self() private ngModel: NgModel) {}
 
   /**
    * What the model holds, i.e. the value bound through `[ngModel]`, untouched by typing.
@@ -100,12 +90,21 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
 
        Thrown while developing, where it fires on the first render of the offending template and
        cannot be missed - but only logged in the built editor, because a template that slipped
-       through would otherwise take the whole panel or dialog down for the user. */
+       through would otherwise take the whole panel or dialog down for the user.
+
+       And then the directive stands down rather than half working. Carrying on would be worse than
+       doing nothing: `modelValue` reads what the banana box has already written, so the write-back
+       would put the refused value into the box while the caller is being told it was refused, and
+       the model would keep it too. Standing down leaves the field behaving as it did before the
+       directive was put on it. */
     if (this.ngModel.update.observed) {
       const misuse = 'aspectNumberField needs a one-way [ngModel] and reports through (numberChange): ' +
         'with [(ngModel)] or (ngModelChange) a refused value has already reached the caller.';
       if (isDevMode()) throw new Error(misuse);
+      // eslint-disable-next-line no-console -- a built editor has nowhere else to say this
       console.error(misuse);
+      this.isMisused = true;
+      return;
     }
 
     this.ngModel.update
@@ -136,10 +135,15 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
    */
   @HostListener('blur')
   onLeave(): void {
+    if (this.isMisused) return;
+
     const control = this.ngModel.control;
     if (control.pristine) return;
 
-    if (control.invalid || this.isBadInput) {
+    /* Text the browser could not read counts as invalid here, which is not something the control
+       knows by itself - `NumberFieldBadInputDirective` puts it there, so that this, the red border
+       and Material all read the same answer. */
+    if (control.invalid) {
       this.numberChange.emit({ value: control.value as number | null, isInputValid: false });
       this.writeBack(this.modelValue);
     } else if (control.value === null) {

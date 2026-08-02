@@ -33,13 +33,18 @@ export class PositionFieldSetComponent {
    * - the box is empty. These properties are declared `number`, so an empty box means zero (#1154).
    *   Nothing is emitted while typing, because a box the browser cannot parse yet - a lone `-`,
    *   say - also reads as empty, and writing then stamps the value back over what is being typed.
-   * - the value is invalid, so the guard in the host refused it and the model still holds the old
-   *   one. The box has to follow, or it keeps showing a number that was never saved.
+   * - the value is invalid. Nothing was written while typing either, so the model still holds the
+   *   old one and the box has to follow, or it keeps showing a number that was never saved.
+   *
+   * Reporting the invalid value is what this method is for, rather than `ngModelChange`: typing
+   * `-50` passes through `-5`, and warning per keystroke put one warning on screen after the other
+   * for a single edit. One edit, one warning.
    */
   commitNumber(control: NgModel,
                property: keyof PositionProperties,
                modelValue: UIElementValue): void {
     if (control.invalid) {
+      this.updateModel.emit({ property, value: control.value, isInputValid: false });
       /* `emitViewToModelChange: false`, or putting the box back would itself look like the user
          typing and emit the rejected value straight out again. */
       control.control.setValue(modelValue, { emitViewToModelChange: false, emitEvent: false });

@@ -88,7 +88,7 @@ describe('SliderPropertiesComponent', () => {
     maxValueInput.value = '50';
     maxValueInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'maxValue', value: 50, isInputValid: true }]);
+    expect(emitted).toEqual([{ property: 'maxValue', value: 50 }]);
   });
 
   /* `minValue`/`maxValue` are declared `number`. An empty number field is *valid* to Angular, so

@@ -92,19 +92,19 @@ describe('PositionFieldSetComponent', () => {
     xInput.value = '42';
     xInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'xPosition', value: 42, isInputValid: true }]);
+    expect(emitted).toEqual([{ property: 'xPosition', value: 42 }]);
   });
 
   /* Typing into a number field passes through states the accessor reports as null - an empty box,
      or a lone "-" the browser cannot parse yet. Anything emitted then is written and comes straight
-     back into the box through the model, stamping over what is being typed. Simulated here by
-     feeding the emitted value back the way the host does. */
+     back into the box through the model, stamping over what is being typed. The z-index carries no
+     `min`, so a negative value is legitimate and has to survive being typed. */
   it('should let a negative number be typed into the z-index', async () => {
     const emitted: { property: string; value: unknown }[] = [];
-    component.updateModel.subscribe(update => emitted.push(update));
-    component.positionProperties = { xPosition: 10, yPosition: 20, zIndex: -1 } as PositionProperties;
+    component.positionProperties = { xPosition: 10, yPosition: 20, zIndex: 3 } as PositionProperties;
     fixture.detectChanges();
     await fixture.whenStable();
+    component.updateModel.subscribe(update => emitted.push(update));
     const zInput = Array.from(
       fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
     ).at(-1) as HTMLInputElement;
@@ -113,16 +113,12 @@ describe('PositionFieldSetComponent', () => {
     zInput.value = '';
     zInput.dispatchEvent(new Event('input'));
     fixture.detectChanges();
-    // What the host would do with whatever was emitted.
-    if (emitted.length) {
-      component.positionProperties = {
-        ...component.positionProperties, zIndex: emitted[0].value
-      } as PositionProperties;
-      fixture.detectChanges();
-      await fixture.whenStable();
-    }
+    expect(emitted).toEqual([]); // a 0 written here would come back and overwrite the "-"
 
-    expect(zInput.value).not.toBe('0');
+    zInput.value = '-2';
+    zInput.dispatchEvent(new Event('input'));
+
+    expect(emitted).toEqual([{ property: 'zIndex', value: -2 }]);
   });
 
   /* `xPosition` is declared `number`, so an emptied field must not send null down the write path -
@@ -172,23 +168,29 @@ describe('PositionFieldSetComponent', () => {
   });
 
   /* Now that the guard in the host actually rejects invalid input, the box must not keep showing a
-     number that was never saved. `min="0"` makes -5 invalid, nothing is written, and on leaving the
-     field the box goes back to the model value. */
-  it('should put a rejected value back to what the model holds', async () => {
+     number that was never saved. `min="0"` makes -5 invalid, nothing is written while it is typed,
+     and on leaving the field the box goes back to the model value.
+
+     The one emit is what makes the host warn. It carries `isInputValid: false`, so it is a report,
+     not a write - and it happens here rather than on the keystroke, or typing `-50` would warn
+     twice on its way through `-5`. */
+  it('should report a rejected value once and put the box back', async () => {
     const emitted: unknown[] = [];
     const xInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
-    xInput.value = '-5';
-    xInput.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    emitted.length = 0;
     component.updateModel.subscribe(update => emitted.push(update));
+    ['-5', '-50'].forEach(value => {
+      xInput.value = value;
+      xInput.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    });
+    expect(emitted).toEqual([]); // nothing at all while it is being typed
 
     xInput.dispatchEvent(new Event('change'));
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(xInput.value).toBe('10');
-    expect(emitted).toEqual([]); // putting the box back is not a write
+    expect(emitted).toEqual([{ property: 'xPosition', value: -50, isInputValid: false }]);
   });
 
   // Leaving a field that holds a number must not write it a second time.

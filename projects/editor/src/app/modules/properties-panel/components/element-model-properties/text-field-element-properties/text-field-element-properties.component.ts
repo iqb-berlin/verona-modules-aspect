@@ -50,12 +50,17 @@ export class TextFieldElementPropertiesComponent implements OnInit, OnChanges {
    *
    * Unlike the `number` properties elsewhere in the panel these are `number | null`, where an empty
    * box legitimately means "no limit" - so there is nothing to substitute. What is needed is the
-   * other half: `min="0"` makes -1 invalid, the guard in the host refuses it, and the box must not
-   * go on showing a value the model never took (#1154).
+   * other half: `min="0"` makes -1 invalid, nothing is written while it is being typed, and the box
+   * must not go on showing a value the model never took (#1154).
+   *
+   * The warning is raised from here rather than on every keystroke, because typing `-50` passes
+   * through `-5` and put one warning on screen after the other for a single edit.
    */
-  // eslint-disable-next-line class-methods-use-this
-  revertIfInvalid(control: NgModel, modelValue: number | null | undefined): void {
+  revertIfInvalid(control: NgModel, property: keyof TextFieldProperties,
+                  modelValue: number | null | undefined): void {
+    if (!control.invalid) return;
+    this.updateModel.emit({ property, value: control.value, isInputValid: false });
     // `emitViewToModelChange: false`, or putting the box back would emit the refused value again.
-    if (control.invalid) control.control.setValue(modelValue, { emitViewToModelChange: false, emitEvent: false });
+    control.control.setValue(modelValue, { emitViewToModelChange: false, emitEvent: false });
   }
 }

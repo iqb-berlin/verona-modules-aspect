@@ -11,8 +11,8 @@
       <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
       <input matInput type="number" #xPosition="ngModel" min="0"
              [ngModel]="positionProperties.xPosition"
-             (ngModelChange)="$event !== null &&
-                    updateModel.emit({ property: 'xPosition', value: $event, isInputValid: xPosition.valid })"
+             (ngModelChange)="$event !== null && xPosition.valid &&
+                    updateModel.emit({ property: 'xPosition', value: $event })"
              (change)="commitNumber(xPosition, 'xPosition', positionProperties.xPosition)">
     </mat-form-field>
     <mat-form-field *ngIf="positionProperties.yPosition !== undefined"
@@ -20,8 +20,8 @@
       <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
       <input matInput type="number" #yPosition="ngModel" min="0"
              [ngModel]="positionProperties.yPosition"
-             (ngModelChange)="$event !== null &&
-                    updateModel.emit({ property: 'yPosition', value: $event, isInputValid: yPosition.valid })"
+             (ngModelChange)="$event !== null && yPosition.valid &&
+                    updateModel.emit({ property: 'yPosition', value: $event })"
              (change)="commitNumber(yPosition, 'yPosition', positionProperties.yPosition)">
     </mat-form-field>
   </div>
@@ -38,7 +38,7 @@
         <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
         <input matInput type="number"
                [ngModel]="positionProperties.gridRowRange" #gridRowRange="ngModel"
-               (ngModelChange)="$event !== null &&
+               (ngModelChange)="$event !== null && gridRowRange.valid &&
                     updateModel.emit({ property: 'gridRowRange', value: $event })"
                (change)="commitNumber(gridRowRange, 'gridRowRange', positionProperties.gridRowRange)">
       </mat-form-field>
@@ -53,7 +53,7 @@
         <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
         <input matInput type="number"
                [ngModel]="positionProperties.gridColumnRange" #gridColumnRange="ngModel"
-               (ngModelChange)="$event !== null &&
+               (ngModelChange)="$event !== null && gridColumnRange.valid &&
                     updateModel.emit({ property: 'gridColumnRange', value: $event })"
                (change)="commitNumber(gridColumnRange, 'gridColumnRange', positionProperties.gridColumnRange)">
       </mat-form-field>
@@ -110,9 +110,8 @@
       <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
       <input matInput type="number" #zIndex="ngModel"
              [ngModel]="positionProperties.zIndex"
-             (ngModelChange)="$event !== null && updateModel.emit({ property: 'zIndex',
-                                                     value: $event,
-                                                     isInputValid: zIndex.valid })"
+             (ngModelChange)="$event !== null && zIndex.valid &&
+                                 updateModel.emit({ property: 'zIndex', value: $event })"
              (change)="commitNumber(zIndex, 'zIndex', positionProperties.zIndex)"
              matTooltip="{{ 'propertiesPanel.zIndexTooltip' | translate }}">
     </mat-form-field>

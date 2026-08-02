@@ -26,10 +26,13 @@ export class ImagePropertiesComponent {
    * refused by the guard in the host, so the box has to go back to what the model holds.
    *
    * Nothing is emitted while typing, because a box the browser cannot parse yet reads as empty too
-   * and writing then stamps the value back over what is being typed.
+   * and writing then stamps the value back over what is being typed. The invalid value is reported
+   * from here for the same reason: warning per keystroke put one warning after the other on screen
+   * for a single edit. One edit, one warning.
    */
   commitNumber(control: NgModel, property: keyof ImageProperties, modelValue: number | null | undefined): void {
     if (control.invalid) {
+      this.updateModel.emit({ property, value: control.value, isInputValid: false });
       /* `emitViewToModelChange: false`, or putting the box back would itself look like the user
          typing and emit the rejected value straight out again. */
       control.control.setValue(modelValue, { emitViewToModelChange: false, emitEvent: false });

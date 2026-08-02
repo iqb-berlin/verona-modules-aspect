@@ -37,11 +37,10 @@
     <mat-label>{{'propertiesPanel.minLength' | translate }}</mat-label>
     <input matInput type="number" #minLength="ngModel" min="0"
            [ngModel]="combinedProperties.minLength"
-           (ngModelChange)="updateModel.emit({
+           (ngModelChange)="minLength.valid && updateModel.emit({
                 property: 'minLength',
-                value: $event,
-                isInputValid: minLength.valid })"
-           (change)="revertIfInvalid(minLength, combinedProperties.minLength)">
+                value: $event })"
+           (change)="revertIfInvalid(minLength, 'minLength', combinedProperties.minLength)">
   </mat-form-field>
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.minLengthWarnMessage' | translate }}</mat-label>
@@ -57,11 +56,10 @@
     <mat-label>{{'propertiesPanel.maxLength' | translate }}</mat-label>
     <input matInput type="number" #maxLength="ngModel" min="0"
            [ngModel]="combinedProperties.maxLength"
-           (ngModelChange)="updateModel.emit({
+           (ngModelChange)="maxLength.valid && updateModel.emit({
                 property: 'maxLength',
-                value: $event,
-                isInputValid: maxLength.valid })"
-           (change)="revertIfInvalid(maxLength, combinedProperties.maxLength)">
+                value: $event })"
+           (change)="revertIfInvalid(maxLength, 'maxLength', combinedProperties.maxLength)">
   </mat-form-field>
   <aspect-merged-checkbox *ngIf="combinedProperties.isLimitedToMaxLength !== undefined"
                           [disabled]="!combinedProperties.maxLength"

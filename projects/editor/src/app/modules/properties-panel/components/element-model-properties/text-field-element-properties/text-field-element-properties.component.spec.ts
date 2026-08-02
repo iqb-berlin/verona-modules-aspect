@@ -15,6 +15,7 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   TextFieldElementPropertiesComponent
 } from './text-field-element-properties.component';
@@ -31,7 +32,7 @@ describe('TextFieldElementPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [TextFieldElementPropertiesComponent, MergedCheckboxComponent],
+      declarations: [TextFieldElementPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -127,7 +128,7 @@ describe('TextFieldElementPropertiesComponent', () => {
     });
     expect(emitted).toEqual([]);
 
-    maxLengthInput.dispatchEvent(new Event('change'));
+    maxLengthInput.dispatchEvent(new Event('blur'));
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -145,12 +146,12 @@ describe('TextFieldElementPropertiesComponent', () => {
     maxLengthInput.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    maxLengthInput.dispatchEvent(new Event('change'));
+    maxLengthInput.dispatchEvent(new Event('blur'));
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(maxLengthInput.value).toBe('');
-    expect(emitted).toEqual([{ property: 'maxLength', value: null }]);
+    expect(emitted).toEqual([{ property: 'maxLength', value: null, isInputValid: true }]);
   });
 
   it('should hide the expert mode fields in simple mode', () => {

@@ -17,15 +17,20 @@ import {
   GetValidAudioVideoAliasAndIDsPipe
 } from 'editor/src/app/pipes/get-valid-audio-video-alias-and-ids.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import {
   PlayerEditDialogComponent
 } from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
+import {
+  NumberFieldDirective
+} from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('PlayerEditDialogComponent', () => {
   let component: PlayerEditDialogComponent;
   let fixture: ComponentFixture<PlayerEditDialogComponent>;
   let dialogService: SpyObj<DialogService>;
   let dialogRefMock: { close: Mock };
+  let messageService: SpyObj<MessageService>;
   let playerProps: PlayerProperties;
 
   beforeEach(async () => {
@@ -35,16 +40,15 @@ describe('PlayerEditDialogComponent', () => {
       minRuns: 2
     });
     dialogService = createSpyObj<DialogService>(['importImage']);
+    messageService = createSpyObj<MessageService>(['showWarning']);
     dialogRefMock = { close: vi.fn() };
     const unitServiceMock = {
       unit: { getAllElements: () => [] }
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
-      declarations: [
-        PlayerEditDialogComponent,
-        GetValidAudioVideoAliasAndIDsPipe
-      ],
+      declarations: [PlayerEditDialogComponent,
+        GetValidAudioVideoAliasAndIDsPipe, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -61,7 +65,8 @@ describe('PlayerEditDialogComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { elementID: 'audio_1', playerProps } },
         { provide: MatDialogRef, useValue: dialogRefMock },
         { provide: DialogService, useValue: dialogService },
-        { provide: UnitService, useValue: unitServiceMock }
+        { provide: UnitService, useValue: unitServiceMock },
+        { provide: MessageService, useValue: messageService }
       ]
     }).compileComponents();
 
@@ -115,5 +120,52 @@ describe('PlayerEditDialogComponent', () => {
     saveButton.click();
 
     expect(dialogRefMock.close).toHaveBeenCalledWith(component.newPlayerConfig);
+  });
+
+  /* The five number boxes carried `min`/`max` and nothing enforced them, so a negative volume or
+     run count could be confirmed (#1161). The draft assignment itself was fine - the dialog only
+     hands its copy back on confirm - but the binding had to become one-way for the directive. */
+  describe('the number boxes', () => {
+    const volumeBox = (): HTMLInputElement => fixture.nativeElement
+      .querySelector('input[type="number"]') as HTMLInputElement;
+    const edit = async (box: HTMLInputElement, value: string): Promise<void> => {
+      box.value = value;
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box.dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should take an edited volume into the draft', async () => {
+      await edit(volumeBox(), '0.5');
+
+      expect(component.newPlayerConfig.defaultVolume).toBe(0.5);
+    });
+
+    /* `max="1"` counts too, not just the minimum - the directive reads whatever validators the
+       box declares. */
+    it('should refuse a volume above the maximum', async () => {
+      const before = component.newPlayerConfig.defaultVolume;
+
+      await edit(volumeBox(), '5');
+
+      expect(component.newPlayerConfig.defaultVolume).toBe(before);
+      expect(volumeBox().value).toBe(String(before));
+    });
+
+    /* The box goes back to its old value on its own, so without a word for it the edit looks
+       swallowed - the panel says the same thing at its own boxes. */
+    it('should say why a refused entry disappeared', async () => {
+      await edit(volumeBox(), '5');
+
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    it('should stay quiet for an entry it takes', async () => {
+      await edit(volumeBox(), '0.5');
+
+      expect(messageService.showWarning).not.toHaveBeenCalled();
+    });
   });
 });

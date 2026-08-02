@@ -9,6 +9,7 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   SliderPropertiesComponent
 } from './slider-properties.component';
@@ -23,7 +24,7 @@ describe('SliderPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [SliderPropertiesComponent, MergedCheckboxComponent],
+      declarations: [SliderPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -88,27 +89,31 @@ describe('SliderPropertiesComponent', () => {
     maxValueInput.value = '50';
     maxValueInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'maxValue', value: 50 }]);
+    expect(emitted).toEqual([{ property: 'maxValue', value: 50, isInputValid: true }]);
   });
 
   /* `minValue`/`maxValue` are declared `number`. An empty number field is *valid* to Angular, so
      before #1154 nothing stopped null from being written here - unlike the position fields, this
-     leaf never even checked for it. Empty means 0 now, and the value is written as such.
+     leaf never even checked for it. The boxes are `required` now, so an empty one is refused.
 
      The preset below is deliberately not treated this way: its property is `InputElementValue`,
-     where null is a legitimate "no preset". */
-  it('should emit zero for a maximum value left empty, on leaving the field', () => {
+     where null is a legitimate "no preset", so its box carries no `required`. */
+  it('should refuse a maximum value left empty', async () => {
     const maxValueInput = Array.from(
       fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
     )[1];
 
     maxValueInput.value = '';
     maxValueInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
     expect(emitted).toEqual([]); // still mid-edit, nothing written
 
-    maxValueInput.dispatchEvent(new Event('change'));
+    maxValueInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
 
-    expect(emitted).toEqual([{ property: 'maxValue', value: 0, isInputValid: true }]);
+    expect(emitted).toEqual([{ property: 'maxValue', value: null, isInputValid: false }]);
+    expect(maxValueInput.value).toBe('100');
   });
 
   /* The bounds carry no `min`, and negative ones are supported. Emitting on the keystroke that

@@ -9,6 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   ImagePropertiesComponent
 } from './image-properties.component';
@@ -20,7 +21,7 @@ describe('ImagePropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ImagePropertiesComponent, MergedCheckboxComponent],
+      declarations: [ImagePropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -103,24 +104,29 @@ describe('ImagePropertiesComponent', () => {
     sizeInput.value = '200';
     sizeInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'magnifierSize', value: 200 }]);
+    expect(emitted).toEqual([{ property: 'magnifierSize', value: 200, isInputValid: true }]);
   });
 
-  /* `magnifierSize` is declared `number`, so an emptied box means zero rather than null - and the
-     zero belongs on leaving the field, not on the keystroke that empties it, because a box the
-     browser cannot parse yet reads as empty too (#1154). */
+  /* `magnifierSize` is declared `number`, so its box is `required` and an emptied one is refused
+     rather than written as null (#1154) or as a zero nobody typed (#1161). The refusal belongs on
+     leaving the field, not on the keystroke that empties it, because a box the browser cannot
+     parse yet reads as empty too. */
   describe('leaving the magnifier size field', () => {
     const sizeInput = (): HTMLInputElement => fixture.nativeElement
       .querySelector('input[type="number"]') as HTMLInputElement;
 
-    it('should emit zero for a size left empty', () => {
+    it('should refuse a size left empty and put the box back', async () => {
       sizeInput().value = '';
       sizeInput().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
       expect(emitted).toEqual([]); // still mid-edit, nothing written
 
-      sizeInput().dispatchEvent(new Event('change'));
+      sizeInput().dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
 
-      expect(emitted).toEqual([{ property: 'magnifierSize', value: 0, isInputValid: true }]);
+      expect(emitted).toEqual([{ property: 'magnifierSize', value: null, isInputValid: false }]);
+      expect(sizeInput().value).toBe('100');
     });
 
     /* `min="0"` makes -5 invalid. Nothing is written while it is typed, the host is told once on
@@ -133,7 +139,7 @@ describe('ImagePropertiesComponent', () => {
       });
       expect(emitted).toEqual([]);
 
-      sizeInput().dispatchEvent(new Event('change'));
+      sizeInput().dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -146,7 +152,7 @@ describe('ImagePropertiesComponent', () => {
       sizeInput().dispatchEvent(new Event('input'));
       emitted.length = 0;
 
-      sizeInput().dispatchEvent(new Event('change'));
+      sizeInput().dispatchEvent(new Event('blur'));
 
       expect(emitted).toEqual([]);
     });

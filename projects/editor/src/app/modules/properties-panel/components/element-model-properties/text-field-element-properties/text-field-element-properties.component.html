@@ -35,12 +35,10 @@
 <ng-container *ngIf="unitService.expertMode && combinedProperties.minLength !== undefined">
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.minLength' | translate }}</mat-label>
-    <input matInput type="number" #minLength="ngModel" min="0"
+    <input matInput type="number" min="0" aspectNumberField
            [ngModel]="combinedProperties.minLength"
-           (ngModelChange)="minLength.valid && updateModel.emit({
-                property: 'minLength',
-                value: $event })"
-           (change)="revertIfInvalid(minLength, 'minLength', combinedProperties.minLength)">
+           (numberChange)="updateModel.emit(
+                { property: 'minLength', value: $event.value, isInputValid: $event.isInputValid })">
   </mat-form-field>
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.minLengthWarnMessage' | translate }}</mat-label>
@@ -54,12 +52,10 @@
 <ng-container *ngIf="unitService.expertMode && combinedProperties.maxLength !== undefined">
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.maxLength' | translate }}</mat-label>
-    <input matInput type="number" #maxLength="ngModel" min="0"
+    <input matInput type="number" min="0" aspectNumberField
            [ngModel]="combinedProperties.maxLength"
-           (ngModelChange)="maxLength.valid && updateModel.emit({
-                property: 'maxLength',
-                value: $event })"
-           (change)="revertIfInvalid(maxLength, 'maxLength', combinedProperties.maxLength)">
+           (numberChange)="updateModel.emit(
+                { property: 'maxLength', value: $event.value, isInputValid: $event.isInputValid })">
   </mat-form-field>
   <aspect-merged-checkbox *ngIf="combinedProperties.isLimitedToMaxLength !== undefined"
                           [disabled]="!combinedProperties.maxLength"

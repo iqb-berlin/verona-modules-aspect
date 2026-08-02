@@ -116,18 +116,16 @@
       <mat-form-field *ngIf="styles.fontSize !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.fontSize' | translate }}</mat-label>
-        <input matInput type="number" #fontSize="ngModel" min="0"
+        <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.fontSize"
-               (ngModelChange)="elementService.updateSelectedElementsStyleProperty('fontSize', $event)"
-               (change)="styles.fontSize = styles.fontSize ? styles.fontSize : 0">
+               (numberChange)="commitStyle('fontSize', $event)">
       </mat-form-field>
       <mat-form-field *ngIf="styles.lineHeight !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.lineHeight' | translate }}</mat-label>
-        <input matInput type="number" #lineHeight="ngModel" min="0"
+        <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.lineHeight"
-               (ngModelChange)="elementService.updateSelectedElementsStyleProperty('lineHeight', $event)"
-               (change)="styles.lineHeight = styles.lineHeight ? styles.lineHeight : 0">
+               (numberChange)="commitStyle('lineHeight', $event)">
       </mat-form-field>
 
       <aspect-merged-checkbox *ngIf="styles.bold !== undefined"
@@ -153,9 +151,9 @@
 
       <mat-form-field *ngIf="styles.borderRadius !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
-        <input matInput type="number" [ngModel]="styles.borderRadius"
-               (ngModelChange)="elementService.updateSelectedElementsStyleProperty('borderRadius', $event)"
-               (change)="styles.borderRadius = styles.borderRadius ? styles.borderRadius : 0">
+        <input matInput type="number" min="0" aspectNumberField required
+               [ngModel]="styles.borderRadius"
+               (numberChange)="commitStyle('borderRadius', $event)">
       </mat-form-field>
 
       <mat-form-field *ngIf="styles.borderColor !== undefined"
@@ -186,9 +184,8 @@
       <mat-form-field *ngIf="styles.borderWidth !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
-        <input matInput type="number" #borderWidth="ngModel"
+        <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.borderWidth"
-               (ngModelChange)="elementService.updateSelectedElementsStyleProperty('borderWidth', $event)"
-               (change)="styles.borderRadius = styles.borderRadius ? styles.borderRadius : 0">
+               (numberChange)="commitStyle('borderWidth', $event)">
       </mat-form-field>
     </fieldset>

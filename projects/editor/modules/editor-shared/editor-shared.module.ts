@@ -11,13 +11,19 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'common/shared.module';
 import { OptionListPanelComponent } from './components/option-list-panel/option-list-panel.component';
 import { SizeInputPanelComponent } from './components/size-input-panel/size-input-panel.component';
+import { NumberFieldModule } from './directives/number-field.module';
 
 /**
  * Leaf controls of the editor that more than one feature area needs.
  *
- * Both components below are used by the properties panel and from outside it, so neither can be
- * declared by one of those without making it a dependency of the other. Add a component here only
- * when a second place actually needs it — this is not a dumping ground for shared-looking things.
+ * All three below are used by the properties panel and from outside it, so none can be declared by
+ * one of those without making it a dependency of the other — the number field directive sat in the
+ * panel's folder while two dialogs outside it pulled the module in. Add something here only when a
+ * second place actually needs it — this is not a dumping ground for shared-looking things.
+ *
+ * The directive keeps a module of its own, re-exported here, so it has a single owner: its spec
+ * declares a host component of its own, and that host's NgModule has to import the directive
+ * rather than declare it a second time.
  */
 @NgModule({
   declarations: [
@@ -34,11 +40,13 @@ import { SizeInputPanelComponent } from './components/size-input-panel/size-inpu
     MatSelectModule,
     MatTooltipModule,
     TranslateModule,
-    SharedModule
+    SharedModule,
+    NumberFieldModule
   ],
   exports: [
     OptionListPanelComponent,
-    SizeInputPanelComponent
+    SizeInputPanelComponent,
+    NumberFieldModule
   ]
 })
 export class EditorSharedModule { }

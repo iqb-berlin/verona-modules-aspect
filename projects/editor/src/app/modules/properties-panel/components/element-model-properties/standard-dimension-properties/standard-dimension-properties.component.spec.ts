@@ -16,10 +16,10 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { panelSectionsOf } from 'editor/src/app/modules/properties-panel/models/panel-sections';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   StandardDimensionPropertiesComponent
 } from './standard-dimension-properties.component';
-import { NumberFieldDirective } from '../../../directives/number-field.directive';
 
 describe('StandardDimensionPropertiesComponent', () => {
   let component: StandardDimensionPropertiesComponent;

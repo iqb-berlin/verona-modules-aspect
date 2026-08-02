@@ -18,7 +18,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   DimensionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/dimension-field-set/dimension-field-set.component';
-import { NumberFieldDirective } from '../../directives/number-field.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('DimensionFieldSetComponent', () => {
   let component: DimensionFieldSetComponent;

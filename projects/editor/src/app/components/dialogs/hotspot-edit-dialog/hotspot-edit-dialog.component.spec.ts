@@ -15,7 +15,7 @@ import {
 } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
 import {
   NumberFieldDirective
-} from 'editor/src/app/modules/properties-panel/directives/number-field.directive';
+} from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('HotspotEditDialogComponent', () => {
   let component: HotspotEditDialogComponent;

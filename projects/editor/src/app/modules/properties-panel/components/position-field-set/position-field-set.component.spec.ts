@@ -15,7 +15,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   PositionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/position-field-set/position-field-set.component';
-import { NumberFieldDirective } from '../../directives/number-field.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 
 @Component({
   selector: 'aspect-size-input-panel',

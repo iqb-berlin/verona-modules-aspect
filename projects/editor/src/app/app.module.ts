@@ -32,9 +32,6 @@ import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-
 import { SectionTemplatesModule } from 'editor/modules/section-templates/section-templates.module';
 import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
 import {
-  NumberFieldModule
-} from 'editor/src/app/modules/properties-panel/directives/number-field.module';
-import {
   PropertiesPanelModule
 } from 'editor/src/app/modules/properties-panel/properties-panel.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
@@ -243,7 +240,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     SectionTemplatesModule,
     EditorSharedModule,
     PropertiesPanelModule,
-    NumberFieldModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     MatBadgeModule,

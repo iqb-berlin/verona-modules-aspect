@@ -9,10 +9,10 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   SliderPropertiesComponent
 } from './slider-properties.component';
-import { NumberFieldDirective } from '../../../directives/number-field.directive';
 
 describe('SliderPropertiesComponent', () => {
   let component: SliderPropertiesComponent;

@@ -9,10 +9,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   ImagePropertiesComponent
 } from './image-properties.component';
-import { NumberFieldDirective } from '../../../directives/number-field.directive';
 
 describe('ImagePropertiesComponent', () => {
   let component: ImagePropertiesComponent;

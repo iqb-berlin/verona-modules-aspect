@@ -19,7 +19,6 @@ import { SharedModule } from 'common/shared.module';
 import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
 import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
 import { MergedCheckboxComponent } from './components/merged-checkbox/merged-checkbox.component';
-import { NumberFieldModule } from './directives/number-field.module';
 import {
   ActionParamStateVariableComponent
 } from './components/element-model-properties/action-param-state-variable/action-param-state-variable.component';
@@ -202,7 +201,6 @@ import {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NumberFieldModule,
     DragDropModule,
     MatButtonModule,
     MatButtonToggleModule,

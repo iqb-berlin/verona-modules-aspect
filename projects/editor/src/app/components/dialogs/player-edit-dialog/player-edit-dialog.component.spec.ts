@@ -22,7 +22,7 @@ import {
 } from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
 import {
   NumberFieldDirective
-} from 'editor/src/app/modules/properties-panel/directives/number-field.directive';
+} from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('PlayerEditDialogComponent', () => {
   let component: PlayerEditDialogComponent;

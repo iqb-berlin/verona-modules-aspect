@@ -18,7 +18,7 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import {
   ElementStylePropertiesComponent
 } from 'editor/src/app/modules/properties-panel/components/element-style-properties/element-style-properties.component';
-import { NumberFieldDirective } from '../../directives/number-field.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('ElementStylePropertiesComponent', () => {
   let component: ElementStylePropertiesComponent;

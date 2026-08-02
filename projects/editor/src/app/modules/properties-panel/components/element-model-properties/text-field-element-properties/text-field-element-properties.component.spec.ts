@@ -15,10 +15,10 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   TextFieldElementPropertiesComponent
 } from './text-field-element-properties.component';
-import { NumberFieldDirective } from '../../../directives/number-field.directive';
 
 describe('TextFieldElementPropertiesComponent', () => {
   let component: TextFieldElementPropertiesComponent;

@@ -5,7 +5,7 @@ import { NgModel } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 /**
- * What a number field in the properties panel has to do beyond binding a value, in one place.
+ * What a number field in the editor has to do beyond binding a value, in one place.
  *
  * The panel had this written out six times after #1154 - four copies of `commitNumber`, two of
  * `revertIfInvalid` - and eleven further fields still carried the broken version it replaced

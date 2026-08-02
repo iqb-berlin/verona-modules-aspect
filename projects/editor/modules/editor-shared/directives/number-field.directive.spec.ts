@@ -100,13 +100,16 @@ class RealInputHostComponent {
 }
 
 /* The same without `required`, for what the browser cannot read: only a box that may legitimately
-   be empty can mistake bad input for a clearing, and only real typing produces bad input at all. */
+   be empty can mistake bad input for a clearing, and only real typing produces bad input at all.
+   In a `mat-form-field`, because whether an unreadable entry looks refused is half the question. */
 @Component({
   standalone: false,
   template: `
-    <input id="box" type="number" min="0" aspectNumberField
-           [ngModel]="value"
-           (numberChange)="emitted.push($event)">
+    <mat-form-field>
+      <input id="box" matInput type="number" min="0" aspectNumberField
+             [ngModel]="value"
+             (numberChange)="emitted.push($event)">
+    </mat-form-field>
     <input id="other" type="text">
   `
 })
@@ -359,7 +362,6 @@ describe('NumberFieldDirective', () => {
 
     beforeEach(async () => {
       real = TestBed.createComponent(RealInputHostComponent);
-      document.body.appendChild(real.nativeElement);
       await settle();
     });
 
@@ -406,50 +408,68 @@ describe('NumberFieldDirective', () => {
 
       expect(real.componentInstance.emitted).toEqual([]);
     });
+  });
 
-    /* What the browser could not read is not the same as a box the user emptied, and only a box
-       that may be empty can confuse the two. `5e` is a half-typed exponent: `value` reads empty
-       while the box shows the text, so a maximum width would have come off, its checkbox unticked
-       and its field disabled, with nothing said. Measured, not assumed - `validity.badInput` is
-       only ever set by real typing, which is why this cannot be tested with dispatched events. */
-    it('should refuse what the browser could not read, rather than clear the property', async () => {
-      const optional = TestBed.createComponent(OptionalRealInputHostComponent);
-      document.body.appendChild(optional.nativeElement);
+  /* Text the browser could not read is not the same as a box the user emptied, and only a box that
+     may legitimately be empty can confuse the two. `5e` is a half-typed exponent: `value` reads
+     empty while the box shows the text, so a maximum width would have come off, its checkbox
+     unticked and its field disabled, with nothing said. `validity.badInput` is only ever set by
+     real typing, so none of this can be tested with dispatched events. */
+  describe('with text the browser cannot read', () => {
+    let optional: ComponentFixture<OptionalRealInputHostComponent>;
+
+    const box = (): HTMLInputElement => optional.nativeElement.querySelector('#box') as HTMLInputElement;
+    const other = (): HTMLInputElement => optional.nativeElement.querySelector('#other') as HTMLInputElement;
+    const isRed = (): boolean => !!optional.nativeElement.querySelector('.mat-form-field-invalid');
+    const settle = async (): Promise<void> => {
       optional.detectChanges();
       await optional.whenStable();
-      const halfTyped = optional.nativeElement.querySelector('#box') as HTMLInputElement;
+    };
 
-      await userEvent.click(halfTyped);
-      await userEvent.clear(halfTyped);
-      await userEvent.type(halfTyped, '5e');
-      optional.detectChanges();
-      expect(halfTyped.validity.badInput).toBe(true); // the state this exists for
+    beforeEach(async () => {
+      optional = TestBed.createComponent(OptionalRealInputHostComponent);
+      await settle();
+    });
 
-      await userEvent.click(optional.nativeElement.querySelector('#other') as HTMLInputElement);
-      optional.detectChanges();
-      await optional.whenStable();
+    it('should refuse it, rather than clear the property', async () => {
+      await userEvent.click(box());
+      await userEvent.clear(box());
+      await userEvent.type(box(), '5e');
+      await settle();
+      expect(box().validity.badInput).toBe(true); // the state this exists for
+
+      await userEvent.click(other());
+      await settle();
 
       expect(optional.componentInstance.emitted.at(-1)).toEqual({ value: null, isInputValid: false });
-      expect(halfTyped.value).toBe('300');
+      expect(box().value).toBe('300');
+    });
+
+    /* And it has to look refused while it stands there. The control cannot see bad input by itself,
+       so without the validator the box stayed neutral until the field was left - while the same
+       keystrokes in a `required` box went red at once. */
+    it('should look refused while it is still in the box', async () => {
+      await userEvent.click(box());
+      await userEvent.clear(box());
+      await userEvent.type(box(), '5e');
+      await settle();
+
+      expect(isRed()).toBe(true);
     });
 
     /* And the clearing it must not swallow: the same box, actually emptied, still reports null as a
-       value of its own. */
+       value of its own - and does not look refused, because it is not. */
     it('should still report a box that was really emptied', async () => {
-      const optional = TestBed.createComponent(OptionalRealInputHostComponent);
-      document.body.appendChild(optional.nativeElement);
-      optional.detectChanges();
-      await optional.whenStable();
-      const emptied = optional.nativeElement.querySelector('#box') as HTMLInputElement;
+      await userEvent.click(box());
+      await userEvent.clear(box());
+      await settle();
+      expect(isRed()).toBe(false);
 
-      await userEvent.click(emptied);
-      await userEvent.clear(emptied);
-      await userEvent.click(optional.nativeElement.querySelector('#other') as HTMLInputElement);
-      optional.detectChanges();
-      await optional.whenStable();
+      await userEvent.click(other());
+      await settle();
 
       expect(optional.componentInstance.emitted.at(-1)).toEqual({ value: null, isInputValid: true });
-      expect(emptied.value).toBe('');
+      expect(box().value).toBe('');
     });
   });
 
@@ -466,7 +486,6 @@ describe('NumberFieldDirective', () => {
 
     beforeEach(async () => {
       formField = TestBed.createComponent(FormFieldHostComponent);
-      document.body.appendChild(formField.nativeElement);
       await settle();
     });
 

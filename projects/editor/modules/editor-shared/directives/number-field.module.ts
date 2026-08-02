@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NumberFieldDirective } from './number-field.directive';
+import { NumberFieldBadInputDirective } from './number-field-bad-input.directive';
 
 /**
  * A module of its own so the directive has one owner and can be pulled into a spec's own host
@@ -10,7 +11,7 @@ import { NumberFieldDirective } from './number-field.directive';
  * neither of them.
  */
 @NgModule({
-  declarations: [NumberFieldDirective],
-  exports: [NumberFieldDirective]
+  declarations: [NumberFieldDirective, NumberFieldBadInputDirective],
+  exports: [NumberFieldDirective, NumberFieldBadInputDirective]
 })
 export class NumberFieldModule {}

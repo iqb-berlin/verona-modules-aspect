@@ -147,8 +147,13 @@ describe('ElementStylePropertiesComponent', () => {
 
     /* #1153: the border width box committed to `borderRadius`, a copy-paste slip that existed
        because the pattern was written out by hand at every box. Migrating removes it - the
-       property name is now given once, and the directive holds the rest. */
-    it('should write the border width to the border width', async () => {
+       property name is now given once, and the directive holds the rest.
+
+       Emptying the box is what exposes it: the substitute belongs on the border width, and the
+       old handler put it on the corner radius instead. Asserting on an edit alone would not do -
+       the old markup emitted the width from `ngModelChange` just fine, and its `(change)` was a
+       no-op whenever the radius happened to be truthy. */
+    it('should commit an emptied border width to the border width', async () => {
       component.styles = { ...component.styles, borderRadius: 4, borderWidth: 2 } as Stylings;
       fixture.detectChanges();
       await fixture.whenStable();
@@ -156,12 +161,16 @@ describe('ElementStylePropertiesComponent', () => {
         fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
       ).at(-1) as HTMLInputElement;
 
-      borderWidthBox.value = '3';
+      borderWidthBox.value = '';
       borderWidthBox.dispatchEvent(new Event('input'));
+      borderWidthBox.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      await fixture.whenStable();
 
-      expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('borderWidth', 3);
+      expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('borderWidth', 0);
       expect(elementService.updateSelectedElementsStyleProperty)
         .not.toHaveBeenCalledWith('borderRadius', expect.anything());
+      expect(component.styles?.borderRadius).toBe(4);
     });
   });
 });

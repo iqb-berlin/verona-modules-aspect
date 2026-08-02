@@ -176,7 +176,7 @@ describe('DimensionFieldSetComponent', () => {
       expect(messageService.showWarning).toHaveBeenCalledTimes(1);
     });
 
-    /* The maximum is `number | null`, so its box is not marked `emptyMeansZero`: clearing it means
+    /* The maximum is `number | null`, so its box is not marked `emptyValue`: clearing it means
        "no maximum" and must reach the model as null, or a maximum once set could never be taken
        off again. */
     it('should clear a maximum width to null rather than zero', async () => {

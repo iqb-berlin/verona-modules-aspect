@@ -146,8 +146,12 @@ describe('PositionFieldSetComponent', () => {
   /* `gridRowRange` is declared `number` like the fields above, but it was left out of the first
      round of this fix: it emitted the raw value, sent no validity, and kept a `(change)` handler
      that patched `positionProperties` - the merged view object, not the element. The panel then
-     showed 0 while the saved unit definition held null (#1154). */
-  it('should emit zero for an emptied grid row range', async () => {
+     showed 0 while the saved unit definition held null (#1154).
+
+     Its substitute is 1, not 0: a range counts a span, and the consumers render
+     `grid-row: N / (N + range)`, so a stored 0 collapses to `auto` and the layout would show a
+     span of 1 while the unit definition claimed 0. */
+  it('should emit one for an emptied grid row range', async () => {
     unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
     const emitted: { property: string; value: unknown }[] = [];
     component.positionProperties = {
@@ -164,7 +168,7 @@ describe('PositionFieldSetComponent', () => {
     rangeInput.dispatchEvent(new Event('input'));
     rangeInput.dispatchEvent(new Event('change'));
 
-    expect(emitted).toEqual([{ property: 'gridRowRange', value: 0, isInputValid: true }]);
+    expect(emitted).toEqual([{ property: 'gridRowRange', value: 1, isInputValid: true }]);
     expect(component.positionProperties.gridRowRange).toBe(2); // the view object is not written to
   });
 

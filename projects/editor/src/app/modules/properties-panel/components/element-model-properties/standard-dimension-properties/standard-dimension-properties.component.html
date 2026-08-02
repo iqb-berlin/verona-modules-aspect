@@ -3,7 +3,7 @@
 @if (show.geometrySize) {
   <mat-form-field appearance="fill">
     <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-    <input matInput type="number" min="0" aspectNumberField emptyMeansZero
+    <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
            [ngModel]="combinedProperties.dimensions?.width"
            (numberChange)="commitDimension('width', $event)">
   </mat-form-field>
@@ -11,7 +11,7 @@
     <mat-label>
       {{'propertiesPanel.height' | translate }}
     </mat-label>
-    <input matInput type="number" min="0" aspectNumberField emptyMeansZero
+    <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
            [ngModel]="combinedProperties.dimensions?.height"
            (numberChange)="commitDimension('height', $event)">
   </mat-form-field>
@@ -25,7 +25,7 @@
     </aspect-merged-checkbox>
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-      <input matInput type="number" min="0" aspectNumberField emptyMeansZero
+      <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
              [disabled]="!fixedWidth.checked"
              [ngModel]="combinedProperties.dimensions.width"
              (numberChange)="commitDimension('width', $event)">
@@ -43,7 +43,7 @@
       <mat-label>
         {{'propertiesPanel.maxWidth' | translate }}
       </mat-label>
-      <input matInput type="number" min="0" aspectNumberField [emptyMeansZero]="false"
+      <input matInput type="number" min="0" aspectNumberField [emptyValue]="null"
              [disabled]="!maxWidthEnabled.checked"
              [ngModel]="combinedProperties.dimensions.maxWidth"
              (numberChange)="commitDimension('maxWidth', $event)">

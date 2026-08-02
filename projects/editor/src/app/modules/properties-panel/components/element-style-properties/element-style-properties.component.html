@@ -116,14 +116,14 @@
       <mat-form-field *ngIf="styles.fontSize !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.fontSize' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField emptyMeansZero
+        <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
                [ngModel]="styles.fontSize"
                (numberChange)="commitStyle('fontSize', $event)">
       </mat-form-field>
       <mat-form-field *ngIf="styles.lineHeight !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.lineHeight' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField emptyMeansZero
+        <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
                [ngModel]="styles.lineHeight"
                (numberChange)="commitStyle('lineHeight', $event)">
       </mat-form-field>
@@ -151,7 +151,7 @@
 
       <mat-form-field *ngIf="styles.borderRadius !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
-        <input matInput type="number" aspectNumberField emptyMeansZero
+        <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
                [ngModel]="styles.borderRadius"
                (numberChange)="commitStyle('borderRadius', $event)">
       </mat-form-field>
@@ -184,7 +184,7 @@
       <mat-form-field *ngIf="styles.borderWidth !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
-        <input matInput type="number" aspectNumberField emptyMeansZero
+        <input matInput type="number" min="0" aspectNumberField [emptyValue]="0"
                [ngModel]="styles.borderWidth"
                (numberChange)="commitStyle('borderWidth', $event)">
       </mat-form-field>

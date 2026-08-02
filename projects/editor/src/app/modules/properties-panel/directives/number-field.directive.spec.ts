@@ -13,13 +13,13 @@ import { NumberFieldModule } from './number-field.module';
   template: `
     <input type="number" min="0" aspectNumberField
            [ngModel]="value"
-           [emptyMeansZero]="emptyMeansZero"
+           [emptyValue]="emptyValue"
            (numberChange)="emitted.push($event)">
   `
 })
 class HostComponent {
   value: number | null = 10;
-  emptyMeansZero: boolean = true;
+  emptyValue: number | null = 0;
   emitted: { value: number | null; isInputValid: boolean }[] = [];
 }
 
@@ -29,7 +29,7 @@ class HostComponent {
 @Component({
   standalone: false,
   template: `
-    <input type="number" aspectNumberField emptyMeansZero
+    <input type="number" aspectNumberField [emptyValue]="0"
            [ngModel]="value"
            (numberChange)="emitted.push($event)">
   `
@@ -113,7 +113,7 @@ describe('NumberFieldDirective', () => {
   });
 
   describe('leaving the field', () => {
-    it('should emit zero for an emptied box when empty means zero', async () => {
+    it('should emit the substitute for an emptied box', async () => {
       type('');
       expect(host.emitted).toEqual([]);
 
@@ -125,8 +125,8 @@ describe('NumberFieldDirective', () => {
     /* `number | null` properties - minLength, the slider preset, maxWidth - where an empty box is
        the legitimate "no limit". It must not become a 0, but it must still be sent: without it a
        limit once set could never be cleared, because nothing else reports the empty box. */
-    it('should send null for an emptied box when empty does not mean zero', async () => {
-      host.emptyMeansZero = false;
+    it('should send null where that is what empty stands for', async () => {
+      host.emptyValue = null;
       fixture.detectChanges();
 
       type('');
@@ -200,6 +200,19 @@ describe('NumberFieldDirective', () => {
       await fixture.whenStable();
 
       expect(field().value).toBe('');
+    });
+
+    /* Not every empty box means 0 or null. A grid range counts a span, and the consumers render
+       `grid-row: N / (N + range)` - a stored 0 collapses to `auto`, so the layout would show 1
+       while the unit definition claims 0. */
+    it('should send whatever the caller says empty stands for', async () => {
+      host.emptyValue = 1;
+      fixture.detectChanges();
+
+      type('');
+      await leave();
+
+      expect(host.emitted).toEqual([{ value: 1, isInputValid: true }]);
     });
 
     it('should not emit for a box that holds a value', async () => {

@@ -1,5 +1,5 @@
 import {
-  booleanAttribute, Directive, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, Self
+  Directive, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, Self
 } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -15,10 +15,10 @@ import { Subject, takeUntil } from 'rxjs';
  *   as null while it is being typed: an empty box, or a lone `-` the browser cannot parse yet.
  *   Writing then means the value comes straight back through the model and stamps over what is
  *   being typed - typing `-2` used to give `2`.
- * - **An emptied box is written on leaving**, as 0 where the property is declared `number` and as
- *   `null` where it is `number | null` and empty means "no limit". Hence `emptyMeansZero`, which
- *   the caller sets from its own model type. Both cases have to be sent: skipping the `null` one
- *   would mean a limit, once set, could never be cleared again.
+ * - **An emptied box is written on leaving**, as whatever `emptyValue` says it stands for - 0, or
+ *   `null` for "no limit", or 1 for a grid span. The caller reads that off its own model type.
+ *   Every case has to be sent: skipping the `null` one would mean a limit, once set, could never
+ *   be cleared again.
  * - **Put a refused value back.** An invalid entry is not written, so the model still holds the old
  *   value and the box has to follow, or it goes on showing a number that was never saved.
  *
@@ -35,17 +35,20 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class NumberFieldDirective implements OnInit, OnDestroy {
   /**
-   * What an emptied box means: 0 where the property is declared `number`, `null` where it is
-   * `number | null` and empty says "no limit" / "no preset" / "no maximum". Either way it is sent
-   * on leaving the field - clearing a box is an edit and has to reach the model, or a limit once
-   * set could never be taken off again.
+   * What an emptied box stands for. `0` where the property is declared `number`, `null` where it is
+   * `number | null` and empty says "no limit" / "no preset" / "no maximum" - and `1` for the grid
+   * ranges, where a span is counted rather than measured and 0 would mean nothing: the consumers
+   * render `grid-row: N / (N + range)`, so a stored 0 collapses to `auto` and the layout shows a
+   * span of 1 while the unit definition claims 0.
    *
-   * Required on purpose, with no default: of the fields this replaces all but the two length limits
-   * are `number`, so a default would be right most of the time and silently wrong the rest - and
-   * wrong here means writing `null` into a non-nullable property, the very defect of #1154. Making
-   * it a decision per call site costs one attribute and cannot be skipped by accident.
+   * Whichever it is, it is sent on leaving the field: clearing a box is an edit and has to reach
+   * the model, or a limit once set could never be taken off again.
+   *
+   * Required on purpose, with no default. Most boxes want 0, so a default would be right most of
+   * the time and silently wrong the rest - and wrong here means writing `null` into a non-nullable
+   * property, the very defect of #1154. One binding per call site cannot be skipped by accident.
    */
-  @Input({ required: true, transform: booleanAttribute }) emptyMeansZero!: boolean;
+  @Input({ required: true }) emptyValue!: number | null;
 
   /**
    * A value the caller should act on. `isInputValid` is false only for a refused entry, where the
@@ -95,7 +98,7 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
       return;
     }
     if (control.value === null) {
-      const substitute = this.emptyMeansZero ? 0 : null;
+      const substitute = this.emptyValue;
       /* Into the box as well, not just out to the caller. Writing the value does not necessarily
          bring it back: if the model already holds it, the bound expression does not change,
          `ngOnChanges` never fires, and the box would stay empty over a property that reads 0 -

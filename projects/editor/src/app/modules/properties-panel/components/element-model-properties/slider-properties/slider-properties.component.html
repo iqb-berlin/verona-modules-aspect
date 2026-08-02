@@ -1,13 +1,13 @@
 <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
   <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>
-  <input matInput type="number" aspectNumberField emptyMeansZero
+  <input matInput type="number" aspectNumberField [emptyValue]="0"
          [ngModel]="combinedProperties.minValue"
          (numberChange)="updateModel.emit(
                 { property: 'minValue', value: $event.value, isInputValid: $event.isInputValid })">
 </mat-form-field>
 <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
   <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
-  <input matInput type="number" aspectNumberField emptyMeansZero
+  <input matInput type="number" aspectNumberField [emptyValue]="0"
          [ngModel]="combinedProperties.maxValue"
          (numberChange)="updateModel.emit(
                 { property: 'maxValue', value: $event.value, isInputValid: $event.isInputValid })">
@@ -34,7 +34,7 @@
 @if (combinedProperties.minValue !== undefined) {
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
-    <input matInput type="number" aspectNumberField [emptyMeansZero]="false"
+    <input matInput type="number" aspectNumberField [emptyValue]="null"
            [ngModel]="combinedProperties.value"
            (numberChange)="updateModel.emit(
                     { property: 'value', value: $event.value, isInputValid: $event.isInputValid })">

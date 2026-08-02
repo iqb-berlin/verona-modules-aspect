@@ -28,13 +28,11 @@
 
   <mat-form-field appearance="fill" *ngIf="combinedProperties.magnifierSize !== undefined">
     <mat-label>{{'propertiesPanel.magnifierSize' | translate }} in px</mat-label>
-    <input matInput type="number" #magnifierSize="ngModel" min="0"
+    <input matInput type="number" min="0" aspectNumberField emptyMeansZero
            [disabled]="!combinedProperties.magnifier"
            [ngModel]="combinedProperties.magnifierSize"
-           (ngModelChange)="$event !== null && magnifierSize.valid && updateModel.emit({
-                property: 'magnifierSize',
-                value: $event})"
-           (change)="commitNumber(magnifierSize, 'magnifierSize', combinedProperties.magnifierSize)">
+           (numberChange)="updateModel.emit(
+                { property: 'magnifierSize', value: $event.value, isInputValid: $event.isInputValid })">
   </mat-form-field>
 
   <div *ngIf="combinedProperties.magnifierZoom !== undefined"

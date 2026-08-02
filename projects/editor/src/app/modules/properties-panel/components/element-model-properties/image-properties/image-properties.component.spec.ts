@@ -12,6 +12,7 @@ import {
 import {
   ImagePropertiesComponent
 } from './image-properties.component';
+import { NumberFieldDirective } from '../../../directives/number-field.directive';
 
 describe('ImagePropertiesComponent', () => {
   let component: ImagePropertiesComponent;
@@ -20,7 +21,7 @@ describe('ImagePropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ImagePropertiesComponent, MergedCheckboxComponent],
+      declarations: [ImagePropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -103,7 +104,7 @@ describe('ImagePropertiesComponent', () => {
     sizeInput.value = '200';
     sizeInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'magnifierSize', value: 200 }]);
+    expect(emitted).toEqual([{ property: 'magnifierSize', value: 200, isInputValid: true }]);
   });
 
   /* `magnifierSize` is declared `number`, so an emptied box means zero rather than null - and the

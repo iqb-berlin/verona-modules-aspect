@@ -3,19 +3,17 @@
 @if (show.geometrySize) {
   <mat-form-field appearance="fill">
     <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-    <input matInput type="number" min="0" #geometryWidth="ngModel"
+    <input matInput type="number" min="0" aspectNumberField emptyMeansZero
            [ngModel]="combinedProperties.dimensions?.width"
-           (ngModelChange)="$event !== null && geometryWidth.valid && updateDimensionProperty('width', $event)"
-           (change)="commitNumber(geometryWidth, 'width', combinedProperties.dimensions?.width)">
+           (numberChange)="commitDimension('width', $event)">
   </mat-form-field>
   <mat-form-field>
     <mat-label>
       {{'propertiesPanel.height' | translate }}
     </mat-label>
-    <input matInput type="number" min="0" #geometryHeight="ngModel"
+    <input matInput type="number" min="0" aspectNumberField emptyMeansZero
            [ngModel]="combinedProperties.dimensions?.height"
-           (ngModelChange)="$event !== null && geometryHeight.valid && updateDimensionProperty('height', $event)"
-           (change)="commitNumber(geometryHeight, 'height', combinedProperties.dimensions?.height)">
+           (numberChange)="commitDimension('height', $event)">
   </mat-form-field>
 }
 
@@ -27,11 +25,10 @@
     </aspect-merged-checkbox>
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-      <input matInput type="number" min="0" #widthField="ngModel"
+      <input matInput type="number" min="0" aspectNumberField emptyMeansZero
              [disabled]="!fixedWidth.checked"
              [ngModel]="combinedProperties.dimensions.width"
-             (ngModelChange)="$event !== null && widthField.valid && updateDimensionProperty('width', $event)"
-             (change)="commitNumber(widthField, 'width', combinedProperties.dimensions.width)">
+             (numberChange)="commitDimension('width', $event)">
     </mat-form-field>
   }
 
@@ -46,11 +43,10 @@
       <mat-label>
         {{'propertiesPanel.maxWidth' | translate }}
       </mat-label>
-      <input matInput type="number" min="0" #maxWidthField="ngModel"
+      <input matInput type="number" min="0" aspectNumberField [emptyMeansZero]="false"
              [disabled]="!maxWidthEnabled.checked"
              [ngModel]="combinedProperties.dimensions.maxWidth"
-             (ngModelChange)="maxWidthField.valid && updateDimensionProperty('maxWidth', $event)"
-             (change)="revertIfInvalid(maxWidthField, combinedProperties.dimensions.maxWidth)">
+             (numberChange)="commitDimension('maxWidth', $event)">
     </mat-form-field>
   }
 }

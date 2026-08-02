@@ -18,6 +18,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   TextFieldElementPropertiesComponent
 } from './text-field-element-properties.component';
+import { NumberFieldDirective } from '../../../directives/number-field.directive';
 
 describe('TextFieldElementPropertiesComponent', () => {
   let component: TextFieldElementPropertiesComponent;
@@ -31,7 +32,7 @@ describe('TextFieldElementPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [TextFieldElementPropertiesComponent, MergedCheckboxComponent],
+      declarations: [TextFieldElementPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -150,7 +151,7 @@ describe('TextFieldElementPropertiesComponent', () => {
     await fixture.whenStable();
 
     expect(maxLengthInput.value).toBe('');
-    expect(emitted).toEqual([{ property: 'maxLength', value: null }]);
+    expect(emitted).toEqual([{ property: 'maxLength', value: null, isInputValid: true }]);
   });
 
   it('should hide the expert mode fields in simple mode', () => {

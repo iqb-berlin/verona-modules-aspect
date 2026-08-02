@@ -15,6 +15,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   PositionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/position-field-set/position-field-set.component';
+import { NumberFieldDirective } from '../../directives/number-field.directive';
 
 @Component({
   selector: 'aspect-size-input-panel',
@@ -46,7 +47,7 @@ describe('PositionFieldSetComponent', () => {
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
-      declarations: [PositionFieldSetComponent, MockSizeInputPanelComponent],
+      declarations: [PositionFieldSetComponent, MockSizeInputPanelComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -92,7 +93,7 @@ describe('PositionFieldSetComponent', () => {
     xInput.value = '42';
     xInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'xPosition', value: 42 }]);
+    expect(emitted).toEqual([{ property: 'xPosition', value: 42, isInputValid: true }]);
   });
 
   /* Typing into a number field passes through states the accessor reports as null - an empty box,
@@ -118,7 +119,7 @@ describe('PositionFieldSetComponent', () => {
     zInput.value = '-2';
     zInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'zIndex', value: -2 }]);
+    expect(emitted).toEqual([{ property: 'zIndex', value: -2, isInputValid: true }]);
   });
 
   /* `xPosition` is declared `number`, so an emptied field must not send null down the write path -

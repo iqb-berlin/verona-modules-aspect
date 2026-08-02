@@ -19,6 +19,7 @@ import { panelSectionsOf } from 'editor/src/app/modules/properties-panel/models/
 import {
   StandardDimensionPropertiesComponent
 } from './standard-dimension-properties.component';
+import { NumberFieldDirective } from '../../../directives/number-field.directive';
 
 describe('StandardDimensionPropertiesComponent', () => {
   let component: StandardDimensionPropertiesComponent;
@@ -45,7 +46,7 @@ describe('StandardDimensionPropertiesComponent', () => {
     messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
-      declarations: [StandardDimensionPropertiesComponent, MergedCheckboxComponent],
+      declarations: [StandardDimensionPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,

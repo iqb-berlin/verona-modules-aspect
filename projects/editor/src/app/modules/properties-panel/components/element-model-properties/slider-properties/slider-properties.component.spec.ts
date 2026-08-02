@@ -12,6 +12,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   SliderPropertiesComponent
 } from './slider-properties.component';
+import { NumberFieldDirective } from '../../../directives/number-field.directive';
 
 describe('SliderPropertiesComponent', () => {
   let component: SliderPropertiesComponent;
@@ -23,7 +24,7 @@ describe('SliderPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [SliderPropertiesComponent, MergedCheckboxComponent],
+      declarations: [SliderPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -88,7 +89,7 @@ describe('SliderPropertiesComponent', () => {
     maxValueInput.value = '50';
     maxValueInput.dispatchEvent(new Event('input'));
 
-    expect(emitted).toEqual([{ property: 'maxValue', value: 50 }]);
+    expect(emitted).toEqual([{ property: 'maxValue', value: 50, isInputValid: true }]);
   });
 
   /* `minValue`/`maxValue` are declared `number`. An empty number field is *valid* to Angular, so

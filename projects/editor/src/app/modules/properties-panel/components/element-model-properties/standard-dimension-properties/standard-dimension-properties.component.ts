@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { NgModel } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
@@ -52,38 +51,19 @@ export class StandardDimensionPropertiesComponent {
   }
 
   /**
-   * A size field has been left. `width` and `height` are declared `number`, so an empty box means
-   * zero (#1154). Nothing is written while typing, because a box the browser cannot parse yet - a
-   * lone `-`, say - reads as empty too, and writing then stamps the value back over what is being
-   * typed.
+   * What `aspectNumberField` worked out for one of the four standard-mode size boxes.
+   *
+   * This component writes into the `ElementService` itself rather than emitting up, so it applies
+   * the guard the host applies elsewhere - without it the `min="0"` on all four boxes meant nothing
+   * and a negative size was saved (#1154). Warning on leaving rather than per keystroke: typing
+   * `-50` passes through `-5`, and a warning each would put one after the other on screen.
    */
-  commitNumber(control: NgModel,
-               property: keyof DimensionProperties,
-               modelValue: number | null | undefined): void {
-    if (control.invalid) {
-      this.refuse(control, modelValue);
+  commitDimension(property: keyof DimensionProperties,
+                  update: { value: number | null; isInputValid: boolean }): void {
+    if (!update.isInputValid) {
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
       return;
     }
-    if (control.value === null) this.updateDimensionProperty(property, 0);
-  }
-
-  /** `maxWidth` is `number | null`: an empty box means "no maximum" and is left alone. */
-  revertIfInvalid(control: NgModel, modelValue: number | null | undefined): void {
-    if (control.invalid) this.refuse(control, modelValue);
-  }
-
-  /**
-   * Unlike every other tab, these fields write into the `ElementService` from this component rather
-   * than emitting up to the host, so the guard the host applies has to be repeated here - without
-   * it the `min="0"` on all four boxes meant nothing and a negative size was saved (#1154).
-   *
-   * Warning on leaving rather than per keystroke: typing `-50` passes through `-5`, and a warning
-   * each would put one after the other on screen for a single edit.
-   */
-  private refuse(control: NgModel, modelValue: number | null | undefined): void {
-    this.messageService.showWarning(this.translateService.instant('inputInvalid'));
-    /* `emitViewToModelChange: false`, or putting the box back would itself look like the user
-       typing and write the rejected value after all. */
-    control.control.setValue(modelValue, { emitViewToModelChange: false, emitEvent: false });
+    this.updateDimensionProperty(property, update.value);
   }
 }

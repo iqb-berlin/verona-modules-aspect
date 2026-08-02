@@ -17,6 +17,7 @@ import {
   GetValidAudioVideoAliasAndIDsPipe
 } from 'editor/src/app/pipes/get-valid-audio-video-alias-and-ids.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import {
   PlayerEditDialogComponent
 } from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
@@ -29,6 +30,7 @@ describe('PlayerEditDialogComponent', () => {
   let fixture: ComponentFixture<PlayerEditDialogComponent>;
   let dialogService: SpyObj<DialogService>;
   let dialogRefMock: { close: Mock };
+  let messageService: SpyObj<MessageService>;
   let playerProps: PlayerProperties;
 
   beforeEach(async () => {
@@ -38,6 +40,7 @@ describe('PlayerEditDialogComponent', () => {
       minRuns: 2
     });
     dialogService = createSpyObj<DialogService>(['importImage']);
+    messageService = createSpyObj<MessageService>(['showWarning']);
     dialogRefMock = { close: vi.fn() };
     const unitServiceMock = {
       unit: { getAllElements: () => [] }
@@ -62,7 +65,8 @@ describe('PlayerEditDialogComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { elementID: 'audio_1', playerProps } },
         { provide: MatDialogRef, useValue: dialogRefMock },
         { provide: DialogService, useValue: dialogService },
-        { provide: UnitService, useValue: unitServiceMock }
+        { provide: UnitService, useValue: unitServiceMock },
+        { provide: MessageService, useValue: messageService }
       ]
     }).compileComponents();
 
@@ -148,6 +152,20 @@ describe('PlayerEditDialogComponent', () => {
 
       expect(component.newPlayerConfig.defaultVolume).toBe(before);
       expect(volumeBox().value).toBe(String(before));
+    });
+
+    /* The box goes back to its old value on its own, so without a word for it the edit looks
+       swallowed - the panel says the same thing at its own boxes. */
+    it('should say why a refused entry disappeared', async () => {
+      await edit(volumeBox(), '5');
+
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    it('should stay quiet for an entry it takes', async () => {
+      await edit(volumeBox(), '0.5');
+
+      expect(messageService.showWarning).not.toHaveBeenCalled();
     });
   });
 });

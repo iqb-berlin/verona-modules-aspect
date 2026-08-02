@@ -10,6 +10,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import { MessageService } from 'editor/src/app/services/message.service';
 import {
   HotspotEditDialogComponent
 } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
@@ -21,6 +23,7 @@ describe('HotspotEditDialogComponent', () => {
   let component: HotspotEditDialogComponent;
   let fixture: ComponentFixture<HotspotEditDialogComponent>;
   let dialogRefMock: { close: Mock };
+  let messageService: SpyObj<MessageService>;
   let hotspot: Hotspot;
 
   beforeEach(async () => {
@@ -38,6 +41,7 @@ describe('HotspotEditDialogComponent', () => {
       readOnly: false
     };
     dialogRefMock = { close: vi.fn() };
+    messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
       declarations: [HotspotEditDialogComponent, NumberFieldDirective],
@@ -54,7 +58,8 @@ describe('HotspotEditDialogComponent', () => {
       ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { hotspot } },
-        { provide: MatDialogRef, useValue: dialogRefMock }
+        { provide: MatDialogRef, useValue: dialogRefMock },
+        { provide: MessageService, useValue: messageService }
       ]
     }).compileComponents();
 
@@ -156,6 +161,20 @@ describe('HotspotEditDialogComponent', () => {
 
       expect(component.newHotspot.width).toBe(before);
       expect(boxes()[2].value).toBe(String(before));
+    });
+
+    /* The box goes back to its old value on its own, so without a word for it the edit looks
+       swallowed - the panel says the same thing at its own boxes. */
+    it('should say why a refused entry disappeared', async () => {
+      await edit(boxes()[2], '-10');
+
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    it('should stay quiet for an entry it takes', async () => {
+      await edit(boxes()[2], '35');
+
+      expect(messageService.showWarning).not.toHaveBeenCalled();
     });
   });
 });

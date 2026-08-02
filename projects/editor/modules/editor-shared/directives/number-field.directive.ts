@@ -2,7 +2,9 @@ import {
   Directive, EventEmitter, HostListener, OnDestroy, OnInit, Output, Self
 } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { Subject, takeUntil } from 'rxjs';
+import { NumberFieldErrorStateMatcher } from './number-field-error-state.matcher';
 
 /**
  * What a number field in the editor has to do beyond binding a value, in one place.
@@ -39,7 +41,10 @@ import { Subject, takeUntil } from 'rxjs';
  */
 @Directive({
   selector: 'input[type=number][ngModel][aspectNumberField]',
-  standalone: false
+  standalone: false,
+  /* On the element, so it reaches the MatInput sitting next to it and nothing else: an empty box
+     goes red once it has been typed in, not merely visited. See the matcher for why. */
+  providers: [{ provide: ErrorStateMatcher, useClass: NumberFieldErrorStateMatcher }]
 })
 export class NumberFieldDirective implements OnInit, OnDestroy {
   /**

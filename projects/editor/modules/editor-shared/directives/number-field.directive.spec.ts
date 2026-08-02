@@ -2,6 +2,8 @@
 import { Component, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { userEvent } from '@vitest/browser/context';
 import { NumberFieldModule } from './number-field.module';
 
@@ -67,6 +69,21 @@ class TwoWayHostComponent {
   value: number | null = 10;
 }
 
+/* And one inside a `mat-form-field`, which is where `required` becomes visible: the asterisk on the
+   label and the red invalid state. */
+@Component({
+  standalone: false,
+  template: `
+    <mat-form-field>
+      <mat-label>Breite</mat-label>
+      <input matInput type="number" min="0" required aspectNumberField [ngModel]="value">
+    </mat-form-field>
+  `
+})
+class FormFieldHostComponent {
+  value: number | null = null;
+}
+
 /* And one for real typing and real focus changes, which needs somewhere to move the focus to. */
 @Component({
   standalone: false,
@@ -88,9 +105,10 @@ class RealInputHostComponent {
    pulled in through its own module - declaring it here as well would make it part of two modules. */
 @NgModule({
   declarations: [
-    HostComponent, UnboundedHostComponent, OptionalHostComponent, TwoWayHostComponent, RealInputHostComponent
+    HostComponent, UnboundedHostComponent, OptionalHostComponent, TwoWayHostComponent,
+    RealInputHostComponent, FormFieldHostComponent
   ],
-  imports: [FormsModule, NumberFieldModule]
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, NumberFieldModule]
 })
 class TestHostModule {}
 
@@ -367,6 +385,71 @@ describe('NumberFieldDirective', () => {
       await settle();
 
       expect(real.componentInstance.emitted).toEqual([]);
+    });
+  });
+
+  /* What `required` looks like, which is the part of this that the user sees. */
+  describe('inside a form field', () => {
+    let formField: ComponentFixture<FormFieldHostComponent>;
+
+    const box = (): HTMLInputElement => formField.nativeElement.querySelector('input') as HTMLInputElement;
+    const isRed = (): boolean => !!formField.nativeElement.querySelector('.mat-form-field-invalid');
+    const settle = async (): Promise<void> => {
+      formField.detectChanges();
+      await formField.whenStable();
+    };
+
+    beforeEach(async () => {
+      formField = TestBed.createComponent(FormFieldHostComponent);
+      document.body.appendChild(formField.nativeElement);
+      await settle();
+    });
+
+    it('should mark the label as required', () => {
+      expect(formField.nativeElement.querySelector('.mat-mdc-form-field-required-marker')).not.toBeNull();
+    });
+
+    /* Material's own rule is `invalid && touched`, and touched means the field was left - clicking
+       in and tabbing on is enough. The boxes here are empty whenever the panel has no single value
+       to show, so that rule paints a mistake nobody made: select two elements of different widths
+       and walk past the box. Hence the matcher of our own (#1161). */
+    it('should not go red for a box that was only visited', async () => {
+      await userEvent.click(box());
+      await userEvent.click(document.body);
+      await settle();
+
+      expect(box().matches(':not(:focus)')).toBe(true); // it really was left
+      expect(isRed()).toBe(false);
+    });
+
+    /* The other side of it: while a box is being typed into, red is live feedback and shows as soon
+       as what is in it would be refused. */
+    it('should go red while an entry that would be refused is being typed', async () => {
+      formField.componentInstance.value = 10;
+      await settle();
+
+      await userEvent.click(box());
+      await userEvent.clear(box());
+      await settle();
+
+      expect(isRed()).toBe(true);
+    });
+
+    /* And it goes away with the entry itself. Leaving the field puts the model value back and takes
+       the dirty marker off with it, so there is nothing left to be red about - what is left is the
+       warning the caller shows, which says more than a red border can. */
+    it('should stop being red once the refused entry has been put back', async () => {
+      formField.componentInstance.value = 10;
+      await settle();
+
+      await userEvent.click(box());
+      await userEvent.clear(box());
+      await settle();
+      await userEvent.click(document.body);
+      await settle();
+
+      expect(box().value).toBe('10');
+      expect(isRed()).toBe(false);
     });
   });
 });

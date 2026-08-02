@@ -41,7 +41,8 @@ Editor
 - Zahlenfelder im Eigenschaftenbereich
   - Ein geleertes Zahlenfeld (z. B. X-Position, z-Index, Schieberegler-Grenzen, Lupengröße, Spaltenanzahl sowie Breite und Höhe im Standardmodus und im Bereich "Position und Größe") speichert jetzt 0, statt einen ungültigen Leerwert in die Aufgabendatei zu schreiben; der Wert wird beim Verlassen des Feldes übernommen
   - Felder für eine Ober- oder Untergrenze (Mindest- und Maximalbreite, Mindest- und Maximalhöhe, Zeichenzahl, Vorbelegung des Schiebereglers) bleiben dagegen leer: dort bedeutet ein leeres Feld "keine Grenze" und wird auch so gespeichert. Eine einmal gesetzte Grenze lässt sich damit wieder entfernen
-  - Eingaben, die nicht erlaubt sind (z. B. negative Werte), werden nicht mehr gespeichert; das Feld zeigt beim Verlassen wieder den gespeicherten Wert und es erscheint einmal der Hinweis "Eingabe ungültig". Das gilt jetzt auch für die Größenfelder im Bereich "Position und Größe", wo negative Werte bislang gespeichert wurden
+  - Eingaben, die nicht erlaubt sind (z. B. negative Werte), werden nicht mehr gespeichert; das Feld zeigt beim Verlassen wieder den gespeicherten Wert und es erscheint einmal der Hinweis "Eingabe ungültig". Das gilt jetzt auch für die Größenfelder im Bereich "Position und Größe" sowie für Schriftgröße und Zeilenhöhe im Bereich "Aussehen", wo negative Werte bislang gespeichert wurden
+  - Das Feld "Rahmenbreite" setzte beim Verlassen den Eckenradius zurück statt die Rahmenbreite zu übernehmen; beide Werte bleiben jetzt unabhängig voneinander
   - Bei gemeinsamer Markierung wirken diese Änderungen auf alle markierten Elemente
 
 ## 2.12.4

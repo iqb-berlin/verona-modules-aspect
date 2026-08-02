@@ -14,20 +14,24 @@ import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { ElementService } from 'editor/src/app/services/element.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import {
   ElementStylePropertiesComponent
 } from 'editor/src/app/modules/properties-panel/components/element-style-properties/element-style-properties.component';
+import { NumberFieldDirective } from '../../directives/number-field.directive';
 
 describe('ElementStylePropertiesComponent', () => {
   let component: ElementStylePropertiesComponent;
   let fixture: ComponentFixture<ElementStylePropertiesComponent>;
   let elementService: SpyObj<ElementService>;
+  let messageService: SpyObj<MessageService>;
 
   beforeEach(async () => {
     elementService = createSpyObj<ElementService>(['updateSelectedElementsStyleProperty']);
+    messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
-      declarations: [ElementStylePropertiesComponent, MergedCheckboxComponent],
+      declarations: [ElementStylePropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -40,7 +44,8 @@ describe('ElementStylePropertiesComponent', () => {
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: ElementService, useValue: elementService }
+        { provide: ElementService, useValue: elementService },
+        { provide: MessageService, useValue: messageService }
       ]
     }).compileComponents();
 
@@ -88,5 +93,75 @@ describe('ElementStylePropertiesComponent', () => {
 
     expect(elementService.updateSelectedElementsStyleProperty)
       .toHaveBeenCalledWith('backgroundColor', '#ff0000');
+  });
+
+  /* The four number boxes here wrote into the ElementService straight from the template, so the
+     host's guard never covered them: an emptied box sent null into a property declared `number`,
+     and the `(change)` handler that patched the display back to 0 assigned into `styles` - with
+     one element selected that is the element's own object, so it wrote past the service (#1161).
+
+     They go through `aspectNumberField` now. The directive is in `declarations` rather than pulled
+     in through `NumberFieldModule`, for the reason recorded in the dimension-field-set spec. */
+  describe('the number boxes', () => {
+    const box = (): HTMLInputElement => fixture.nativeElement
+      .querySelector('input[type="number"]') as HTMLInputElement;
+
+    const type = (value: string): void => {
+      box().value = value;
+      box().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    };
+    const leave = async (): Promise<void> => {
+      box().dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should write an edited font size', () => {
+      type('24');
+
+      expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('fontSize', 24);
+    });
+
+    /* `fontSize` is declared `number`, so an emptied box means 0 - written through the service on
+       leaving, rather than assigned into the merged object as before. */
+    it('should write zero for a font size left empty, on leaving the field', async () => {
+      type('');
+      expect(elementService.updateSelectedElementsStyleProperty).not.toHaveBeenCalled();
+
+      await leave();
+
+      expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('fontSize', 0);
+      expect(messageService.showWarning).not.toHaveBeenCalled();
+    });
+
+    it('should refuse a negative font size and put the box back', async () => {
+      type('-5');
+
+      await leave();
+
+      expect(elementService.updateSelectedElementsStyleProperty).not.toHaveBeenCalled();
+      expect(box().value).toBe('20');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    /* #1153: the border width box committed to `borderRadius`, a copy-paste slip that existed
+       because the pattern was written out by hand at every box. Migrating removes it - the
+       property name is now given once, and the directive holds the rest. */
+    it('should write the border width to the border width', async () => {
+      component.styles = { ...component.styles, borderRadius: 4, borderWidth: 2 } as Stylings;
+      fixture.detectChanges();
+      await fixture.whenStable();
+      const borderWidthBox = Array.from(
+        fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+      ).at(-1) as HTMLInputElement;
+
+      borderWidthBox.value = '3';
+      borderWidthBox.dispatchEvent(new Event('input'));
+
+      expect(elementService.updateSelectedElementsStyleProperty).toHaveBeenCalledWith('borderWidth', 3);
+      expect(elementService.updateSelectedElementsStyleProperty)
+        .not.toHaveBeenCalledWith('borderRadius', expect.anything());
+    });
   });
 });

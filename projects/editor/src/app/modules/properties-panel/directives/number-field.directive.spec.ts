@@ -179,6 +179,29 @@ describe('NumberFieldDirective', () => {
       expect(field().value).toBe('0');
     });
 
+    /* Writing the box back must not leave `NgModel.viewModel` behind. `ngOnChanges` decides whether
+       to redraw by comparing the incoming value against `viewModel`, so a stale one silently
+       swallows a later binding change that happens to equal it.
+
+       The path: clear a width that already reads 0 and leave, then add an element of a different
+       width to the selection. The merge answers null for "the selection disagrees", `viewModel` is
+       still the null from typing, and without the fix the box goes on showing 0 - ready to write
+       that 0 onto both elements. */
+    it('should follow the binding after a write-back', async () => {
+      host.value = 0;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      type('');
+      await leave();
+
+      host.value = null; // a second element joins the selection and the widths disagree
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(field().value).toBe('');
+    });
+
     it('should not emit for a box that holds a value', async () => {
       type('7');
       host.emitted.length = 0;

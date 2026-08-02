@@ -91,15 +91,7 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
     const control = this.ngModel.control;
     if (control.invalid) {
       this.numberChange.emit({ value: control.value as number | null, isInputValid: false });
-      /* `emitViewToModelChange: false` says this write is not the user typing, so it does not go
-         back out through `ngModel.update`.
-
-         Measured, because it matters for anyone changing the guard above: the flag is currently
-         belt and braces. `setValue` runs the view callbacks before `updateValueAndValidity`, so at
-         the moment the re-emit would happen the control still carries the invalid status and the
-         `valid` guard drops it anyway - taking the flag out breaks no test. It stays because it
-         states the intent, and because the guard is the only thing holding the line without it. */
-      control.setValue(this.modelValue, { emitViewToModelChange: false, emitEvent: false });
+      this.writeBack(this.modelValue);
       return;
     }
     if (control.value === null) {
@@ -112,8 +104,33 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
          empty while the box goes on showing the raw text, so without this the model would take the
          substitute and the screen would keep `1e` - the same mismatch the branch above exists to
          undo. */
-      control.setValue(substitute, { emitViewToModelChange: false, emitEvent: false });
+      this.writeBack(substitute);
       this.numberChange.emit({ value: substitute, isInputValid: true });
     }
+  }
+
+  /**
+   * Put a value into the box without it counting as user input.
+   *
+   * `emitViewToModelChange: false` keeps the write from going back out through `ngModel.update`,
+   * but it also skips the only place that maintains `NgModel.viewModel`. That matters later:
+   * `ngOnChanges` decides whether to redraw by comparing the incoming value against `viewModel`,
+   * so once the two have drifted apart, a binding change that happens to equal the stale
+   * `viewModel` is read as "nothing changed" and the box is never rewritten.
+   *
+   * Reachable, and pinned by a test: clear a width that already reads 0 and leave the field, then
+   * add an element of a different width to the selection. The merge yields null for "the selection
+   * disagrees", `viewModel` is still the null from typing, the two match - and the box goes on
+   * showing 0 where it has to be empty, ready to write that 0 onto both elements.
+   *
+   * One asymmetry worth knowing before changing the guard in `ngOnInit`: for the refused value the
+   * flag is belt and braces, because `setValue` runs the view callbacks before
+   * `updateValueAndValidity` and the control still reads invalid when the re-emit would happen, so
+   * the validity guard drops it anyway. For the substitute it is load-bearing - that value is
+   * valid, and without the flag it would go straight back out as a second edit.
+   */
+  private writeBack(value: number | null): void {
+    this.ngModel.control.setValue(value, { emitViewToModelChange: false, emitEvent: false });
+    this.ngModel.viewModel = value;
   }
 }

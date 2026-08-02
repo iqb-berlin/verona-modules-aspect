@@ -20,7 +20,7 @@ import { NumberFieldModule } from './number-field.module';
 class HostComponent {
   value: number | null = 10;
   emptyMeansZero: boolean = true;
-  emitted: { value: number; isInputValid: boolean }[] = [];
+  emitted: { value: number | null; isInputValid: boolean }[] = [];
 }
 
 /* A second host without `min`, for the fields that legitimately take negative values - the z-index
@@ -36,7 +36,7 @@ class HostComponent {
 })
 class UnboundedHostComponent {
   value: number | null = 3;
-  emitted: { value: number; isInputValid: boolean }[] = [];
+  emitted: { value: number | null; isInputValid: boolean }[] = [];
 }
 
 /* Declaring the host through a module rather than through `TestBed.declarations`: the AOT compiler
@@ -123,15 +123,18 @@ describe('NumberFieldDirective', () => {
     });
 
     /* `number | null` properties - minLength, the slider preset, maxWidth - where an empty box is
-       the legitimate "no limit" and must not be turned into a 0. */
-    it('should leave an emptied box alone when empty does not mean zero', async () => {
+       the legitimate "no limit". It must not become a 0, but it must still be sent: without it a
+       limit once set could never be cleared, because nothing else reports the empty box. */
+    it('should send null for an emptied box when empty does not mean zero', async () => {
       host.emptyMeansZero = false;
       fixture.detectChanges();
 
       type('');
+      expect(host.emitted).toEqual([]); // still mid-edit
+
       await leave();
 
-      expect(host.emitted).toEqual([]);
+      expect(host.emitted).toEqual([{ value: null, isInputValid: true }]);
       expect(field().value).toBe('');
     });
 

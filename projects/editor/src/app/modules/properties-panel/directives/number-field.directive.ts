@@ -15,9 +15,10 @@ import { Subject, takeUntil } from 'rxjs';
  *   as null while it is being typed: an empty box, or a lone `-` the browser cannot parse yet.
  *   Writing then means the value comes straight back through the model and stamps over what is
  *   being typed - typing `-2` used to give `2`.
- * - **An empty box means zero, on leaving.** For properties declared `number` only; where the model
- *   says `number | null`, an empty box is the legitimate "no limit" and stays empty. Hence
- *   `emptyMeansZero`, which the caller sets from its own model type.
+ * - **An emptied box is written on leaving**, as 0 where the property is declared `number` and as
+ *   `null` where it is `number | null` and empty means "no limit". Hence `emptyMeansZero`, which
+ *   the caller sets from its own model type. Both cases have to be sent: skipping the `null` one
+ *   would mean a limit, once set, could never be cleared again.
  * - **Put a refused value back.** An invalid entry is not written, so the model still holds the old
  *   value and the box has to follow, or it goes on showing a number that was never saved.
  *
@@ -34,16 +35,21 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class NumberFieldDirective implements OnInit, OnDestroy {
   /**
-   * Whether an emptied box means 0 (the property is declared `number`) or stays empty (it is
-   * `number | null`, where empty says "no limit" / "no preset" / "no maximum").
+   * What an emptied box means: 0 where the property is declared `number`, `null` where it is
+   * `number | null` and empty says "no limit" / "no preset" / "no maximum". Either way it is sent
+   * on leaving the field - clearing a box is an edit and has to reach the model, or a limit once
+   * set could never be taken off again.
    */
   @Input({ transform: booleanAttribute }) emptyMeansZero: boolean = false;
 
   /**
    * A value the caller should act on. `isInputValid` is false only for a refused entry, where the
    * caller is expected to warn rather than write - the box has been put back already.
+   *
+   * Bind this instead of `(ngModelChange)`, not next to it: the directive listens on the same
+   * update, so a call site that keeps both writes everything twice.
    */
-  @Output() numberChange = new EventEmitter<{ value: number; isInputValid: boolean }>();
+  @Output() numberChange = new EventEmitter<{ value: number | null; isInputValid: boolean }>();
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -84,8 +90,8 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
       control.setValue(this.modelValue, { emitViewToModelChange: false, emitEvent: false });
       return;
     }
-    if (control.value === null && this.emptyMeansZero) {
-      this.numberChange.emit({ value: 0, isInputValid: true });
+    if (control.value === null) {
+      this.numberChange.emit({ value: this.emptyMeansZero ? 0 : null, isInputValid: true });
     }
   }
 }

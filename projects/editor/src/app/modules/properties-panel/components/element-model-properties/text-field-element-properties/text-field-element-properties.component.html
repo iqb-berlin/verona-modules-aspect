@@ -46,6 +46,9 @@
            [disabled]="!combinedProperties.minLength"
            [value]="combinedProperties.minLengthWarnMessage"
            (input)="updateModel.emit({ property: 'minLengthWarnMessage', value: minLengthWarnMessageField.value })">
+    @if (combinedProperties.minLengthWarnMessage === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 </ng-container>
 
@@ -69,6 +72,9 @@
            [disabled]="!combinedProperties.maxLength"
            [value]="combinedProperties.maxLengthWarnMessage"
            (input)="updateModel.emit({ property: 'maxLengthWarnMessage', value: maxLengthWarnMessageField.value })">
+    @if (combinedProperties.maxLengthWarnMessage === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 </ng-container>
 
@@ -85,6 +91,9 @@
            [disabled]="!combinedProperties.pattern"
            [value]="combinedProperties.patternWarnMessage"
            (input)="updateModel.emit({ property: 'patternWarnMessage', value: patternWarnMessageField.value })">
+    @if (combinedProperties.patternWarnMessage === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 </ng-container>
 

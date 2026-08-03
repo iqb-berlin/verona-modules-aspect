@@ -61,6 +61,9 @@
     <input #inputAssistanceCustomKeysField matInput type="text"
            [value]="combinedProperties.inputAssistanceCustomKeys"
            (input)="updateModel.emit({ property: 'inputAssistanceCustomKeys', value: inputAssistanceCustomKeysField.value })">
+    @if (combinedProperties.inputAssistanceCustomKeys === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
 

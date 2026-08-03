@@ -324,24 +324,33 @@ describe('properties panel characterization', () => {
   }
 
   /**
-   * Makes every boolean and every number differ from the other element's, nested property groups
+   * Makes every boolean, number and text differ from the other element's, nested property groups
    * included, so all of them merge to null.
    *
-   * Numbers were added for #1138: until then the divergent cases only disagreed on booleans, so no
-   * number field ever showed a merged null - and the net could not see the marker that now
-   * distinguishes "the selection disagrees" from "empty everywhere" on those fields.
+   * Numbers and text were added for #1138: until then the divergent cases only disagreed on
+   * booleans, so no number or text field ever showed a merged null - and the net could not see the
+   * marker that now distinguishes "the selection disagrees" from "empty everywhere" on them.
    *
-   * Arrays are left alone. They merge by a different route, and changing their length here would
-   * hide or add whole controls rather than diverge a value.
+   * `type` is left alone because the panel decides from it which controls exist at all: diverging
+   * it would compare two different panels rather than two values. `id` and `alias` are left alone
+   * because the merge treats them specially - the id becomes a list, and the alias field is not
+   * offered for a multi-selection in the first place.
+   *
+   * Arrays are left alone too. They merge by a different route, and changing their length here
+   * would hide or add whole controls rather than diverge a value.
    */
+  const KEPT_IDENTICAL = ['idService', 'type', 'id', 'alias'];
+
   function diverge(target: Record<string, unknown>): void {
     Object.keys(target).forEach(key => {
-      if (key === 'idService') return;
+      if (KEPT_IDENTICAL.includes(key)) return;
       const value = target[key];
       if (typeof value === 'boolean') {
         target[key] = !value;
       } else if (typeof value === 'number') {
         target[key] = value + 1;
+      } else if (typeof value === 'string') {
+        target[key] = `${value}_2`;
       } else if (value && typeof value === 'object' && !Array.isArray(value)) {
         diverge(value as Record<string, unknown>);
       }

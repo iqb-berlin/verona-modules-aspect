@@ -49,7 +49,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-button "upload_file"
 button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -67,8 +66,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = #f1f1f1
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -84,7 +83,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -152,7 +150,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-textarea "propertiesPanel.label" = Knopf
+textarea "propertiesPanel.label" = 
 [propertiesPanel.presentation]
 button "propertiesPanel.button"
 button "propertiesPanel.image"
@@ -180,16 +178,16 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = lightgrey
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
-input[text] "propertiesPanel.borderColor" = black
-select "propertiesPanel.borderStyle" = solid
+input[text] "propertiesPanel.borderColor" =  [merged]
+select "propertiesPanel.borderStyle" = <null>
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---
@@ -201,7 +199,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-textarea "propertiesPanel.label" = Knopf
+textarea "propertiesPanel.label" = 
 [propertiesPanel.presentation]
 button "propertiesPanel.button"
 button "propertiesPanel.image"
@@ -276,10 +274,10 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = Beschriftung
+textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
 checkbox "propertiesPanel.crossOutChecked" = indeterminate
@@ -299,8 +297,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -316,7 +314,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = Beschriftung
+textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
@@ -392,8 +390,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -481,11 +479,11 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 [preset]
 textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
-select "propertiesPanel.alignment" = vertical
+select "propertiesPanel.alignment" = <null>
 checkbox "propertiesPanel.isSortList" = indeterminate
 checkbox "propertiesPanel.onlyOneItem" = indeterminate
 checkbox "allowReplacement" = indeterminate
@@ -495,7 +493,7 @@ checkbox "propertiesPanel.permanentPlaceholdersCC" = indeterminate (disabled)
 checkbox "propertiesPanel.showNumbering" = indeterminate
 checkbox "propertiesPanel.startNumberingAtZero" = indeterminate (disabled)
 checkbox "propertiesPanel.highlightReceivingDropList" = indeterminate
-input[text] "propertiesPanel.highlightReceivingDropListColor" = #006064 (disabled)
+input[text] "propertiesPanel.highlightReceivingDropListColor" =  (disabled) [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
@@ -512,9 +510,9 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.itemBackgroundColor" = #c9e0e0
-input[text] "propertiesPanel.backgroundColor" = #ededed
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.itemBackgroundColor" =  [merged]
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -534,7 +532,7 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 [preset]
 textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
-select "propertiesPanel.alignment" = vertical
+select "propertiesPanel.alignment" = <null>
 checkbox "propertiesPanel.isWidthFixed" = indeterminate
 input[number] "propertiesPanel.width" =  (disabled) [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -606,7 +604,7 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
@@ -627,8 +625,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -734,16 +732,16 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
-input[text] "propertiesPanel.borderColor" = black
-select "propertiesPanel.borderStyle" = solid
+input[text] "propertiesPanel.borderColor" =  [merged]
+select "propertiesPanel.borderStyle" = <null>
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---
@@ -853,8 +851,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -943,12 +941,11 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-button "upload_file"
 [propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 [propertiesPanel.hotspots]
 button "add"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -967,8 +964,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -984,7 +981,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-button "upload_file"
 [propertiesPanel.inputElement]
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
@@ -1055,9 +1051,8 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-button "upload_file"
 button "propertiesPanel.editPlayerOptions"
-input[text] "propertiesPanel.alt" = Bild nicht gefunden
+input[text] "propertiesPanel.alt" =  [merged]
 checkbox "propertiesPanel.scale" = indeterminate
 checkbox "propertiesPanel.magnifier" = indeterminate
 checkbox "propertiesPanel.allowFullscreen" = indeterminate
@@ -1079,8 +1074,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -1096,7 +1091,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1157,7 +1151,7 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 input[number] "propertiesPanel.firstColumnSizeRatio" =  [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -1175,8 +1169,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -1260,8 +1254,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-textarea "propertiesPanel.label" = Optionentabelle Beschriftung
-textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
+textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label2" = 
 [propertiesPanel.options]
 textarea "newOption" = 
 [rows]
@@ -1285,11 +1279,11 @@ button "align_vertical_bottom"
 
 --- tab "styling" ---
 checkbox "propertiesPanel.lineColoring" = indeterminate
-input[text] "propertiesPanel.lineColoringColor" = #c9e0e0 (disabled)
+input[text] "propertiesPanel.lineColoringColor" =  (disabled) [merged]
 checkbox "propertiesPanel.firstLineColoring" = indeterminate
-input[text] "propertiesPanel.firstLineColoringColor" = #c7f3d0 (disabled)
-input[text] "propertiesPanel.backgroundColor" = white
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.firstLineColoringColor" =  (disabled) [merged]
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -1305,8 +1299,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-textarea "propertiesPanel.label" = Optionentabelle Beschriftung
-textarea "propertiesPanel.label2" = Beschriftung Erste Spalte
+textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label2" = 
 [propertiesPanel.options]
 textarea "newOption" = 
 [rows]
@@ -1391,8 +1385,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -1476,7 +1470,7 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 button "code"
 checkbox "propertiesPanel.enableModeSwitch" = indeterminate
 select "formulaPreset.title" = [math, symbols, latin, greek]
@@ -1496,8 +1490,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -1587,7 +1581,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-select "propertiesPanel.operation" = addition
+select "propertiesPanel.operation" = <null>
 input[text] "propertiesPanel.term" = 123
 button "clear"
 input[text] "propertiesPanel.term" = 456
@@ -1618,9 +1612,9 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.helperRowColor" = transparent
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.helperRowColor" =  [merged]
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -1708,10 +1702,10 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = Beschriftung
+textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
@@ -1733,8 +1727,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -1750,7 +1744,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = Beschriftung
+textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
@@ -1825,14 +1819,13 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = Beschriftung
+textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
-select "propertiesPanel.alignment" = column
 checkbox "propertiesPanel.strikeOtherOptions" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -1850,8 +1843,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -1868,12 +1861,11 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = Beschriftung
+textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
-select "propertiesPanel.alignment" = column
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1945,12 +1937,12 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 input[number] "propertiesPanel.minValue" =  [merged]
 input[number] "propertiesPanel.maxValue" =  [merged]
 checkbox "propertiesPanel.showValues" = indeterminate
-checkbox "propertiesPanel.barStyle" = true
-checkbox "propertiesPanel.thumbLabel" = true
+checkbox "propertiesPanel.barStyle" = indeterminate
+checkbox "propertiesPanel.thumbLabel" = indeterminate
 input[number] "propertiesPanel.preset" = 
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -1968,8 +1960,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -2061,7 +2053,7 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 [propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
@@ -2084,8 +2076,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -2208,16 +2200,16 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
-input[text] "propertiesPanel.borderColor" = black
-select "propertiesPanel.borderStyle" = solid
+input[text] "propertiesPanel.borderColor" =  [merged]
+select "propertiesPanel.borderStyle" = <null>
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---
@@ -2328,7 +2320,7 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 checkbox "propertiesPanel.hasAutoHeight" = indeterminate
 input[number] "rows" =  [merged]
 select "formulaPreset.title" = [math, symbols, latin, greek]
@@ -2354,8 +2346,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -2451,14 +2443,14 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 textarea "preset" = 
 checkbox "propertiesPanel.resizeEnabled" = indeterminate
 checkbox "propertiesPanel.hasAutoHeight" = indeterminate
 checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
-select "propertiesPanel.appearance" = outline
+select "propertiesPanel.appearance" = <null>
 [propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
@@ -2481,8 +2473,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -2586,17 +2578,17 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 input[text] "preset" = 
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 input[number] "propertiesPanel.minLength" = 
-input[text] "propertiesPanel.minLengthWarnMessage" = Eingabe zu kurz (disabled)
+input[text] "propertiesPanel.minLengthWarnMessage" =  (disabled) [merged]
 input[number] "propertiesPanel.maxLength" = 
 checkbox "propertiesPanel.isLimitedToMaxLength" = indeterminate (disabled)
-input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
+input[text] "propertiesPanel.maxLengthWarnMessage" =  (disabled) [merged]
 input[text] "propertiesPanel.pattern" = 
-input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
+input[text] "propertiesPanel.patternWarnMessage" =  (disabled) [merged]
 checkbox "propertiesPanel.clearable" = indeterminate
 [propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
@@ -2620,8 +2612,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = #f1f1f1
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -2727,18 +2719,18 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 input[text] "preset" = 
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
-select "propertiesPanel.appearance" = outline
+select "propertiesPanel.appearance" = <null>
 input[number] "propertiesPanel.minLength" = 
-input[text] "propertiesPanel.minLengthWarnMessage" = Eingabe zu kurz (disabled)
+input[text] "propertiesPanel.minLengthWarnMessage" =  (disabled) [merged]
 input[number] "propertiesPanel.maxLength" = 
 checkbox "propertiesPanel.isLimitedToMaxLength" = indeterminate (disabled)
-input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
+input[text] "propertiesPanel.maxLengthWarnMessage" =  (disabled) [merged]
 input[text] "propertiesPanel.pattern" = 
-input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
+input[text] "propertiesPanel.patternWarnMessage" =  (disabled) [merged]
 checkbox "propertiesPanel.clearable" = indeterminate
 [propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
@@ -2762,8 +2754,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -2856,7 +2848,7 @@ checkbox "propertiesPanel.highlightableYellow" = indeterminate
 checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
 checkbox "propertiesPanel.highlightableOrange" = indeterminate
 select "propertiesPanel.markingPanels" = []
-select "propertiesPanel.markingMode" = selection
+select "propertiesPanel.markingMode" = <null>
 checkbox "propertiesPanel.hasSelectionPopup" = indeterminate (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -2874,8 +2866,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -2898,7 +2890,7 @@ checkbox "propertiesPanel.highlightableYellow" = indeterminate
 checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
 checkbox "propertiesPanel.highlightableOrange" = indeterminate
 select "propertiesPanel.markingPanels" = []
-select "propertiesPanel.markingMode" = selection
+select "propertiesPanel.markingMode" = <null>
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -2974,7 +2966,7 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
-input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
+input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
@@ -3001,9 +2993,9 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.selectionColor" = #c9e0e0
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.selectionColor" =  [merged]
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -3103,8 +3095,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -3172,7 +3164,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-button "upload_file"
 button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.scale" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -3191,8 +3182,8 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = #f1f1f1
-input[text] "propertiesPanel.fontColor" = #000000
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
@@ -3208,7 +3199,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3267,7 +3257,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-molecule-editor]
-select "propertiesPanel.bondingType" = VALENCE
+select "propertiesPanel.bondingType" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
@@ -3284,16 +3274,16 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = #f1f1f1
-input[text] "propertiesPanel.fontColor" = #006064
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
-input[text] "propertiesPanel.borderColor" = black
-select "propertiesPanel.borderStyle" = solid
+input[text] "propertiesPanel.borderColor" =  [merged]
+select "propertiesPanel.borderStyle" = <null>
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---
@@ -3306,7 +3296,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-molecule-editor]
-select "propertiesPanel.bondingType" = VALENCE
+select "propertiesPanel.bondingType" = <null>
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3390,16 +3380,16 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = #f1f1f1
-input[text] "propertiesPanel.fontColor" = #006064
+input[text] "propertiesPanel.backgroundColor" =  [merged]
+input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
-input[text] "propertiesPanel.borderColor" = black
-select "propertiesPanel.borderStyle" = solid
+input[text] "propertiesPanel.borderColor" =  [merged]
+select "propertiesPanel.borderStyle" = <null>
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---

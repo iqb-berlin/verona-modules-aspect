@@ -5,6 +5,9 @@
       <mat-label>{{ 'propertiesPanel.alt' | translate }}</mat-label>
       <input #altField matInput type="text" [value]="combinedProperties.alt"
              (input)="updateModel.emit({ property: 'alt', value: altField.value })">
+      @if (combinedProperties.alt === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
   }
 

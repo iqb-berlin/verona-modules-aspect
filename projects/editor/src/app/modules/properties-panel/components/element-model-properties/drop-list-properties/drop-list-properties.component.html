@@ -111,5 +111,8 @@
            (input)="updateModel.emit({
                  property: 'highlightReceivingDropListColor',
                  value: highlightReceivingDropListColorField.value })">
+    @if (combinedProperties.highlightReceivingDropListColor === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 </div>

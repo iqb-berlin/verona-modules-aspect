@@ -14,7 +14,7 @@ import {
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   MergedMarkerComponent
-} from 'editor/src/app/modules/properties-panel/components/merged-marker/merged-marker.component';
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 import {
   ImagePropertiesComponent
 } from './image-properties.component';

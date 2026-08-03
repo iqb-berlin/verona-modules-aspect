@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { Measurement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
@@ -12,6 +14,9 @@ import {
   NumberFieldBadInputDirective
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 import { SizeInputPanelComponent } from './size-input-panel.component';
 
 describe('SizeInputPanelComponent', () => {
@@ -23,13 +28,18 @@ describe('SizeInputPanelComponent', () => {
     messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
-      declarations: [SizeInputPanelComponent, NumberFieldDirective, NumberFieldBadInputDirective],
+      declarations: [
+        SizeInputPanelComponent, MergedMarkerComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective
+      ],
       imports: [
         CommonModule,
         FormsModule,
         MatFormFieldModule,
+        MatIconModule,
         MatInputModule,
         MatSelectModule,
+        MatTooltipModule,
         TranslateModule.forRoot()
       ],
       providers: [{ provide: MessageService, useValue: messageService }]
@@ -266,5 +276,30 @@ describe('SizeInputPanelComponent', () => {
     await fixture.whenStable();
 
     expect(emits).toBe(0);
+  });
+
+  /* The four margin fields in the position tab are this panel, and their number is not nullable in
+     the model - so a null can only be the merge's "the selected elements disagree". Until #1138
+     they showed an empty box like every other, and unlike the x/y position beside them they had
+     nothing to say so. */
+  describe('a measurement the selection disagrees about', () => {
+    const marker = (): HTMLElement | null => fixture.nativeElement
+      .querySelector('aspect-merged-marker mat-icon');
+
+    it('should mark the field', async () => {
+      component.value = null;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(marker()).not.toBeNull();
+    });
+
+    it('should stay away where the selection agrees', async () => {
+      component.value = 3;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(marker()).toBeNull();
+    });
   });
 });

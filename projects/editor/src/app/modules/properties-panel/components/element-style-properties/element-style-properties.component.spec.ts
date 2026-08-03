@@ -17,7 +17,7 @@ import {
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import {
   MergedMarkerComponent
-} from 'editor/src/app/modules/properties-panel/components/merged-marker/merged-marker.component';
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import {

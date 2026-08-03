@@ -94,4 +94,22 @@ describe('FirstColumnRatioPropertiesComponent', () => {
 
     expect(fixture.debugElement.query(By.css('mat-form-field'))).toBeNull();
   });
+
+  /* The ratio ends up in `grid-template-columns: Nfr 1fr`, so a 0 collapses the label column and a
+     negative one is not a length at all. Nothing enforced that before (#1164). */
+  it('should refuse a ratio below one', async () => {
+    const emitted: { property: string; value: unknown; isInputValid?: boolean | null }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    const input = fixture.debugElement.query(By.css('input'));
+    input.nativeElement.value = '0';
+    input.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input.nativeElement.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual([{ property: 'firstColumnSizeRatio', value: 0, isInputValid: false }]);
+    expect(input.nativeElement.value).toBe('3');
+  });
 });

@@ -164,4 +164,22 @@ describe('MultiLineTextPropertiesComponent', () => {
     expect(checkboxes().length).toBe(0);
     expect(inputs().length).toBe(0);
   });
+
+  /* `rowCount` becomes the `rows` attribute of the textarea, so a 0 or a negative one is not a
+     count at all. Nothing enforced that before (#1164). */
+  it('should refuse a row count below one', async () => {
+    const emitted: { property: string; value: unknown; isInputValid?: boolean | null }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    const input = inputs()[0];
+    input.nativeElement.value = '0';
+    input.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input.nativeElement.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual([{ property: 'rowCount', value: 0, isInputValid: false }]);
+    expect(input.nativeElement.value).toBe('3');
+  });
 });

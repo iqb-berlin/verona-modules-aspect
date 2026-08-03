@@ -175,4 +175,19 @@ describe('TextPropsComponent', () => {
     expect(emitted).toEqual([{ property: 'columnCount', value: null, isInputValid: false }]);
     expect(columnCountInput.value).toBe('1');
   });
+
+  /* `columnCount` becomes the CSS `column-count`, where a 0 is not a count (#1164). */
+  it('should refuse a column count below one', async () => {
+    const columnCountInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+
+    columnCountInput.value = '0';
+    columnCountInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    columnCountInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual([{ property: 'columnCount', value: 0, isInputValid: false }]);
+    expect(columnCountInput.value).toBe('1');
+  });
 });

@@ -25,7 +25,7 @@
      (combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === undefined)) {
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'rows' | translate }}</mat-label>
-    <input matInput type="number" required aspectNumberField
+    <input matInput type="number" min="1" required aspectNumberField
            [ngModel]="combinedProperties.rowCount"
            (numberChange)="updateModel.emit(
                   { property: 'rowCount', value: $event.value, isInputValid: $event.isInputValid })">
@@ -35,7 +35,7 @@
 @if (combinedProperties.expectedCharactersCount != null && combinedProperties.hasDynamicRowCount) {
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.expectedCharactersCount' | translate }}</mat-label>
-    <input matInput type="number" required aspectNumberField
+    <input matInput type="number" min="1" required aspectNumberField
            [disabled]="!!combinedProperties.hasAutoHeight"
            [ngModel]="combinedProperties.expectedCharactersCount"
            (numberChange)="updateModel.emit(

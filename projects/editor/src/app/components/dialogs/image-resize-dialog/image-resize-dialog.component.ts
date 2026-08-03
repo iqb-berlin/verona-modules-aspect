@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { ImageResizeDialogData } from 'common/models/image-interfaces';
 import { IMAGE_COMPRESSION_QUALITY, IMAGE_MAX_WIDTH } from 'common/config';
+import { MessageService } from 'editor/src/app/services/message.service';
 
 @Component({
   selector: 'aspect-image-resize-dialog',
@@ -16,7 +18,9 @@ export class ImageResizeDialogComponent implements OnInit {
   originalSize: number = 0;
   estimatedSize: number = 0;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ImageResizeDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ImageResizeDialogData,
+              private messageService: MessageService,
+              private translateService: TranslateService) {
     this.data.options.maxWidth = this.data.options.maxWidth || IMAGE_MAX_WIDTH;
     this.data.options.quality = this.data.options.quality || IMAGE_COMPRESSION_QUALITY;
   }
@@ -42,6 +46,35 @@ export class ImageResizeDialogComponent implements OnInit {
   async updateEstimatedSize(): Promise<void> {
     const res = await FileService.scaleImage(this.data.base64, this.data.options);
     this.estimatedSize = Math.round((res.length * 3) / 4);
+  }
+
+  /**
+   * What `aspectNumberField` worked out for one of the two dimension boxes.
+   *
+   * The `min="1"` on both was never enforced, and the binding was two-way, so a 0, a negative
+   * number or an emptied box went straight into the scaling options - and from there into
+   * `FileService.scaleImage`, which is asked for an estimated size on every keystroke (#1164).
+   *
+   * The other dimension follows from the aspect ratio, which is why the write is not a plain
+   * assignment: refusing one box has to leave both alone.
+   */
+  commitWidth(update: { value: number | null; isInputValid: boolean }): void {
+    if (!this.accept(update)) return;
+    this.data.options.maxWidth = update.value as number;
+    this.onWidthChange(update.value as number);
+  }
+
+  commitHeight(update: { value: number | null; isInputValid: boolean }): void {
+    if (!this.accept(update)) return;
+    this.data.options.maxHeight = update.value as number;
+    this.onHeightChange(update.value as number);
+  }
+
+  /** Both boxes are `required`, so a valid update carries a number; a refused one is said out loud. */
+  private accept(update: { value: number | null; isInputValid: boolean }): boolean {
+    if (update.isInputValid && update.value !== null) return true;
+    this.messageService.showWarning(this.translateService.instant('inputInvalid'));
+    return false;
   }
 
   onWidthChange(value: number): void {

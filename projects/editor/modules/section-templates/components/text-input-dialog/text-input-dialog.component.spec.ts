@@ -12,6 +12,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import { MessageService } from 'editor/src/app/services/message.service';
 import {
   InputWizardDialogComponent
 } from 'editor/modules/section-templates/components/text-input-dialog/text-input-dialog.component';
@@ -30,6 +36,7 @@ class MockRichTextEditorComponent {
 describe('InputWizardDialogComponent', () => {
   let component: InputWizardDialogComponent;
   let fixture: ComponentFixture<InputWizardDialogComponent>;
+  let messageService: SpyObj<MessageService>;
 
   const mockDialogRef = {
     close: vi.fn()
@@ -38,10 +45,14 @@ describe('InputWizardDialogComponent', () => {
   beforeEach(async () => {
     mockDialogRef.close.mockClear();
 
+    messageService = createSpyObj<MessageService>(['showWarning']);
+
     await TestBed.configureTestingModule({
       declarations: [
         InputWizardDialogComponent,
-        MockRichTextEditorComponent
+        MockRichTextEditorComponent,
+        NumberFieldDirective,
+        NumberFieldBadInputDirective
       ],
       imports: [
         CommonModule,
@@ -56,7 +67,8 @@ describe('InputWizardDialogComponent', () => {
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: MatDialogRef, useValue: mockDialogRef }
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: MessageService, useValue: messageService }
       ]
     }).compileComponents();
 
@@ -139,6 +151,47 @@ describe('InputWizardDialogComponent', () => {
       useMathFields: false,
       numberingWithText: false,
       subQuestions: []
+    });
+  });
+
+  /* Both number boxes were bound two-way with a `min`/`max` that nothing enforced: `answerCount`
+     decides how many answer fields the wizard generates and how long the sub-question array is, so
+     an emptied box or a 0 reached that logic directly (#1164). */
+  describe('the answer count box', () => {
+    const box = (): HTMLInputElement => fixture.nativeElement
+      .querySelector('input[type="number"]') as HTMLInputElement;
+
+    const edit = async (value: string): Promise<void> => {
+      box().value = value;
+      box().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box().dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should take an edited count and rebuild the sub-questions', async () => {
+      component.numberingWithText = true;
+
+      await edit('3');
+
+      expect(component.answerCount).toBe(3);
+      expect(component.subQuestions.length).toBe(3);
+    });
+
+    it('should refuse a count above the maximum and put the box back', async () => {
+      await edit('12');
+
+      expect(component.answerCount).toBe(1);
+      expect(box().value).toBe('1');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    it('should refuse an emptied count', async () => {
+      await edit('');
+
+      expect(component.answerCount).toBe(1);
+      expect(box().value).toBe('1');
     });
   });
 });

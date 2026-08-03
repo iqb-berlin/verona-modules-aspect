@@ -10,7 +10,10 @@
 
 <h3>Bilder je Zeile</h3>
 <mat-form-field [style.align-self]="'flex-start'">
-  <input matInput type="number" min="1" max="9" [style.margin-left]="'unset'" [(ngModel)]="options.itemsPerRow">
+  <input matInput type="number" min="1" max="9" required aspectNumberField
+         [style.margin-left]="'unset'"
+         [ngModel]="options.itemsPerRow"
+         (numberChange)="commitItemsPerRow($event)">
 </mat-form-field>
 <p>4 Bilder pro Zeile: empfohlen für kleine Bilder oder einseitige Aufgaben<br>
   2 Bilder pro Zeile: empfohlen für zweiseitige Aufgaben oder große Bilder</p>

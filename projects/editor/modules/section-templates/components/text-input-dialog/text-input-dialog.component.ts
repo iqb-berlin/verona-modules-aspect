@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'editor/src/app/services/message.service';
 
 @Component({
   standalone: false,
@@ -16,6 +18,33 @@ export class InputWizardDialogComponent {
   multilineInputs: boolean = false;
   expectedCharsCount: number = 90;
   useMathFields: boolean = false;
+
+  constructor(private messageService: MessageService,
+              private translateService: TranslateService) {}
+
+  /**
+   * What `aspectNumberField` worked out for the two number boxes.
+   *
+   * Both were bound two-way with a `min`/`max` that nothing enforced, so an emptied box or a 0
+   * reached the wizard: `answerCount` decides how many answer fields are generated and how long the
+   * sub-question array is, `expectedCharsCount` sizes the generated field (#1164).
+   */
+  commitAnswerCount(update: { value: number | null; isInputValid: boolean }): void {
+    if (!this.accept(update)) return;
+    this.answerCount = update.value as number;
+    this.updateSubQuestions();
+  }
+
+  commitExpectedCharsCount(update: { value: number | null; isInputValid: boolean }): void {
+    if (!this.accept(update)) return;
+    this.expectedCharsCount = update.value as number;
+  }
+
+  private accept(update: { value: number | null; isInputValid: boolean }): boolean {
+    if (update.isInputValid && update.value !== null) return true;
+    this.messageService.showWarning(this.translateService.instant('inputInvalid'));
+    return false;
+  }
 
   updateSubQuestions() {
     if (!this.numberingWithText) {

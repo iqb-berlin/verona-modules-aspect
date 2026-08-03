@@ -13,7 +13,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ImageResizeDialogData } from 'common/models/image-interfaces';
 import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
 import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
-import { ImageResizeDialogComponent } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import {
+  ImageResizeDialogComponent
+} from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('ImageResizeDialogComponent', () => {
   let component: ImageResizeDialogComponent;
@@ -34,7 +40,9 @@ describe('ImageResizeDialogComponent', () => {
       declarations: [
         ImageResizeDialogComponent,
         BytesPipe,
-        SupportsQualityPipe
+        SupportsQualityPipe,
+        NumberFieldDirective,
+        NumberFieldBadInputDirective
       ],
       imports: [
         CommonModule,
@@ -127,5 +135,65 @@ describe('ImageResizeDialogComponent', () => {
     component.data.options.maxHeight = 75;
     component.onWidthChange(null as unknown as number);
     expect(component.data.options.maxHeight).toBe(75);
+  });
+
+  /* The two dimension boxes were bound two-way with an unenforced `min="1"`, so a 0, a negative
+     number or an emptied box went into the scaling options and on to `FileService.scaleImage`,
+     which is asked for an estimate on every keystroke (#1164). */
+  describe('the dimension boxes', () => {
+    const widthBox = (): HTMLInputElement => fixture.nativeElement
+      .querySelectorAll('input[type="number"]')[0] as HTMLInputElement;
+
+    /* `ngOnInit` loads the image and then clamps the width to it - and the fixture's image is a
+       single pixel. Waiting for that to happen before setting a starting point of our own is what
+       makes these deterministic; otherwise `img.onload` lands in the middle of a test and puts the
+       width back to 1. */
+    beforeEach(async () => {
+      await new Promise<void>(resolve => {
+        const waitForImage = (): void => {
+          if (component.originalWidth !== 0) resolve();
+          else setTimeout(waitForImage);
+        };
+        waitForImage();
+      });
+
+      component.originalWidth = 800;
+      component.originalHeight = 400;
+      component.data.options.maxWidth = 400;
+      component.data.options.maxHeight = 200;
+      fixture.detectChanges();
+      await fixture.whenStable();
+    });
+
+    const edit = async (box: HTMLInputElement, value: string): Promise<void> => {
+      box.value = value;
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box.dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should take an edited width and follow it with the height', async () => {
+      await edit(widthBox(), '300');
+
+      expect(component.data.options.maxWidth).toBe(300);
+      expect(component.data.options.maxHeight).toBe(150); // the aspect ratio is kept
+    });
+
+    it('should refuse a width below the minimum and put the box back', async () => {
+      await edit(widthBox(), '0');
+
+      expect(component.data.options.maxWidth).toBe(400);
+      expect(component.data.options.maxHeight).toBe(200); // and the other box is left alone
+      expect(widthBox().value).toBe('400');
+    });
+
+    it('should refuse an emptied width', async () => {
+      await edit(widthBox(), '');
+
+      expect(component.data.options.maxWidth).toBe(400);
+      expect(widthBox().value).toBe('400');
+    });
   });
 });

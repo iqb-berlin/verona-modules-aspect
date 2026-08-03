@@ -6,7 +6,9 @@
 
   <h3>Anzahl Antwortfelder</h3>
   <mat-form-field class="align-start">
-    <input matInput type="number" min="1" max="9" [(ngModel)]="answerCount" (change)="updateSubQuestions()">
+    <input matInput type="number" min="1" max="9" required aspectNumberField
+           [ngModel]="answerCount"
+           (numberChange)="commitAnswerCount($event)">
   </mat-form-field>
 
   <h3>Nummerierung</h3>
@@ -51,8 +53,9 @@
     <ng-container *ngIf="multilineInputs">
       <mat-form-field [style]="'width: 270px;'">
         <mat-label>Erwartete Zeichenanzahl</mat-label>
-        <input matInput type="number" maxlength="4"
-               [(ngModel)]="expectedCharsCount" [disabled]="!multilineInputs">
+        <input matInput type="number" min="1" required aspectNumberField
+               [ngModel]="expectedCharsCount" [disabled]="!multilineInputs"
+               (numberChange)="commitExpectedCharsCount($event)">
       </mat-form-field>
     </ng-container>
   </div>

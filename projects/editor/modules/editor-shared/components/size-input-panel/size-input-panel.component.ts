@@ -42,6 +42,8 @@ export class SizeInputPanelComponent {
    * render brought it back. Measured (#1164).
    */
   commitValue(update: { value: number | null; isInputValid: boolean }): void {
+    // The box is `required`, so a valid update always carries a number - the null check is
+    // what narrows the type, not a case that can occur.
     if (!update.isInputValid || update.value === null) {
       this.messageService.showWarning(this.translateService.instant('inputInvalid'));
       this.pendingValue = null;
@@ -59,6 +61,13 @@ export class SizeInputPanelComponent {
    */
   applyValue(): void {
     if (this.pendingValue === null) return;
+    /* Retyping what is already there is not an edit, and the original `(change)` handler did not
+       fire for it either - a `change` event only comes when the value at blur differs from the one
+       at focus. Without this, selecting a 3 and typing 3 wrote a fresh measurement to the model. */
+    if (this.pendingValue === this.value) {
+      this.pendingValue = null;
+      return;
+    }
     this.value = this.pendingValue;
     this.pendingValue = null;
     this.emitMeasurement();

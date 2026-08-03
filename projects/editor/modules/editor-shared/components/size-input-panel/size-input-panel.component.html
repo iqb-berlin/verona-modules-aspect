@@ -5,7 +5,8 @@
          [min]="min"
          [ngModel]="value"
          (numberChange)="commitValue($event)"
-         (blur)="applyValue()">
+         (blur)="applyValue()"
+         (keydown.enter)="applyValue()">
 </mat-form-field>
 <mat-form-field [style.width.%]="60">
   <mat-label>{{'section-menu.unit' | translate }}</mat-label>

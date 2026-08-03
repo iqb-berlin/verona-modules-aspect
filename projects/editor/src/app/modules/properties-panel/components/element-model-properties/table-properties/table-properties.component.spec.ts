@@ -6,6 +6,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -111,6 +112,17 @@ describe('TablePropertiesComponent', () => {
 
   it('should render a size input panel for every row and column', () => {
     expect(fixture.nativeElement.querySelectorAll('aspect-size-input-panel').length).toBe(5);
+  });
+
+  /* The shared panel takes its floor from the call site, because it also serves the margins, where
+     a negative measurement is meant. A grid track shorter than nothing is not a length (#1164). */
+  it('should give the size panels a floor of zero', () => {
+    const panels = fixture.debugElement.queryAll(By.directive(MockSizeInputPanelComponent));
+
+    expect(panels.length).toBe(5);
+    panels.forEach(panel => {
+      expect((panel.componentInstance as MockSizeInputPanelComponent).min).toBe(0);
+    });
   });
 
   // A selection of tables whose grids disagree merges the size arrays to null. A count field would

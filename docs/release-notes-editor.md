@@ -46,6 +46,12 @@ Editor
   - Das Feld "Stärke" im Bereich "Rahmen" setzte beim Verlassen den Radius zurück statt die Stärke zu übernehmen; beide Werte bleiben jetzt unabhängig voneinander
   - Bei gemeinsamer Markierung wirken diese Änderungen auf alle markierten Elemente
   - Auch in den Dialogen "Hotspot bearbeiten" und "Player-Einstellungen" werden unerlaubte oder leere Zahlen nicht mehr übernommen, mit demselben Hinweis "Eingabe ungültig" wie im Eigenschaftenbereich; dort ließen sich bislang z. B. negative Größen oder eine Lautstärke über 1 bestätigen. "Abstand von oben", "Abstand von links" und "Drehung" eines Hotspots dürfen dabei weiterhin negativ sein
+- Zahlenfelder außerhalb des Eigenschaftenbereichs
+  - Dieselbe Regel gilt jetzt auch im Seitenmenü ("Seitenbreite", "Randbreite", "Seitenverhältnis"), im Abschnittsmenü ("Höhe", "Anzahl der Zeilen"/"Spalten"), in den Dialogen "Bildgröße ändern" und "Sichtbarkeitsregeln" ("Verzögerung") sowie in den Assistenten (Antwortfelder, erwartete Zeichenanzahl, Bilder je Zeile, maximale Abspielhäufigkeit): eine unerlaubte oder leere Eingabe wird nicht mehr gespeichert, das Feld zeigt wieder den gespeicherten Wert und es erscheint einmal der Hinweis "Eingabe ungültig"
+  - Bislang wurde dort eine geleerte Eingabe als 0 gespeichert, und die angezeigten Grenzen (z. B. "mindestens 1") wurden nirgends durchgesetzt — eine Abspielhäufigkeit von 0 bedeutet im Player etwa "unbegrenzt", also das Gegenteil der Eingabe
+  - Die Zeilen- und Spaltenanzahl von Tabelle und Abschnitt lässt sich nicht mehr leeren: das löschte bisher alle Zeilen- bzw. Spaltendefinitionen auf einmal, ohne Rückfrage und ohne Hinweis
+  - Mehrere Felder speicherten die Eingabe als Text statt als Zahl (u. a. "Anzahl der Spalten", "Zeilenanzahl", "Spaltenverhältnis", Abschnittshöhe); die Aufgabendatei enthielt dort "5" statt 5
+  - Bei den Maßfeldern (Ränder, Zeilenhöhen, Spaltenbreiten) blieb ein geleertes Feld bisher stumm leer stehen, während der alte Wert gespeichert blieb; jetzt wird der gespeicherte Wert wieder angezeigt und der Hinweis erscheint. Negative Ränder bleiben erlaubt, negative Zeilen- und Spaltengrößen nicht
 
 ## 2.12.4
 ### Fehlerbehebungen 

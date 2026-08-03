@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
+import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatButtonModule } from '@angular/material/button';
@@ -225,6 +226,17 @@ describe('SectionMenuComponent', () => {
 
       expect(sectionService.updateSectionProperty).not.toHaveBeenCalled();
       expect(boxes()[1].value).toBe('2');
+    });
+
+    /* The shared panel takes its floor from the call site: a grid track shorter than nothing is not
+       a length, while the margins that use the same panel do want negative values (#1164). */
+    it('should give the track size panels a floor of zero', () => {
+      const panels = fixture.debugElement.queryAll(By.directive(MockSizeInputPanelComponent));
+
+      expect(panels.length).toBeGreaterThan(0);
+      panels.forEach(panel => {
+        expect((panel.componentInstance as MockSizeInputPanelComponent).min).toBe(0);
+      });
     });
 
     it('should take a valid row count', async () => {

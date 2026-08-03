@@ -68,6 +68,8 @@ export class PageMenu implements OnDestroy {
   commitNumber(page: EditorPage,
                property: 'maxWidth' | 'margin' | 'alwaysVisibleAspectRatio',
                update: { value: number | null; isInputValid: boolean }): void {
+    // The box is `required`, so a valid update always carries a number - the null check is
+    // what narrows the type, not a case that can occur.
     if (!update.isInputValid || update.value === null) {
       this.messageService.showWarning(this.translateService.instant('inputInvalid'));
       return;

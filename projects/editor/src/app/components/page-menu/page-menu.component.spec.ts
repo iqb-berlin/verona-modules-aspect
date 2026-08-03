@@ -191,6 +191,24 @@ describe('PageMenu', () => {
       expect(boxes()[0].value).toBe('750');
     });
 
+    /* The margin box had the same guard and the same hole, and nothing pinned either. */
+    it('should refuse an emptied margin', async () => {
+      type(boxes()[1], '');
+      await leave(boxes()[1]);
+
+      expect(component.page.margin).toBe(30);
+      expect(boxes()[1].value).toBe('30');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    it('should refuse a negative margin', async () => {
+      type(boxes()[1], '-10');
+      await leave(boxes()[1]);
+
+      expect(component.page.margin).toBe(30);
+      expect(boxes()[1].value).toBe('30');
+    });
+
     /* The aspect ratio passed no validity at all, so its `min="0" max="100"` meant nothing. */
     it('should refuse an aspect ratio above the maximum', async () => {
       component.page.alwaysVisible = true;

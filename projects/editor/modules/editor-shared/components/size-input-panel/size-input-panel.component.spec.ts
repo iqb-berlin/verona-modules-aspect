@@ -191,4 +191,80 @@ describe('SizeInputPanelComponent', () => {
       expect(emitted).toEqual({ value: -20, unit: 'fr' });
     });
   });
+
+  /* Enter is how a number gets confirmed without leaving the field, and the old `(change)` handler
+     fired on it. Hanging the write on `blur` alone silently dropped that: the box showed 15 and the
+     model kept the old value until the focus moved on (#1164). */
+  it('should write on Enter, not only on leaving the field', async () => {
+    let emitted: Measurement | undefined;
+    component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+    const box = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    box.value = '15';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual({ value: 15, unit: 'fr' });
+  });
+
+  /* And then not a second time when the field is left: what was pending has been used up. */
+  it('should not write the same entry twice after Enter', async () => {
+    let emits = 0;
+    component.valueUpdated.subscribe(() => { emits += 1; });
+    const box = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    box.value = '15';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    fixture.detectChanges();
+    box.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emits).toBe(1);
+  });
+
+  /* A refused entry has to drop what an earlier keystroke made pending, or leaving the field would
+     warn and write the deleted value anyway. This is what pins the order the whole pending scheme
+     rests on: the directive's blur listener runs before the template's. */
+  it('should not write a value that was typed and then deleted again', async () => {
+    let emitted: Measurement | undefined;
+    component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+    const box = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    box.value = '5';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.value = '';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toBeUndefined();
+    expect(box.value).toBe('3');
+    expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+  });
+
+  /* Retyping what is already there is not an edit. The old `(change)` handler did not fire for it,
+     because the value at blur equalled the value at focus. */
+  it('should not write an entry that changes nothing', async () => {
+    let emits = 0;
+    component.valueUpdated.subscribe(() => { emits += 1; });
+    const box = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    box.value = '3';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emits).toBe(0);
+  });
 });

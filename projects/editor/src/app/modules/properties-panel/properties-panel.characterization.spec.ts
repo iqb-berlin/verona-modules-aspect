@@ -127,19 +127,30 @@ function formatValue(value: unknown): string {
   return String(value);
 }
 
+/**
+ * The counterpart of `indeterminate` on a checkbox: for every other control a merged `null` renders
+ * as an empty field, which the value alone cannot tell from "empty everywhere". `merged-marker`
+ * makes the difference visible (#1138), and it has to be in the baseline for the same reason the
+ * checkbox state is - otherwise the net cannot see the marker appear or disappear.
+ */
+function mergedFlag(field: Element): string {
+  return field.querySelector('aspect-merged-marker mat-icon') ? ' [merged]' : '';
+}
+
 function describeFormField(field: Element, selectValues: SelectValues): string {
   const label = normalizeText(field.querySelector('mat-label')) || '<no label>';
+  const merged = mergedFlag(field);
   const select = field.querySelector('mat-select');
   if (select) {
     const multiple = select.getAttribute('aria-multiselectable') === 'true' ? '[multiple]' : '';
     return `select${multiple} "${label}" = ` +
-      `${shorten(formatValue(selectValues.get(select)))}${flags(select)}`;
+      `${shorten(formatValue(selectValues.get(select)))}${flags(select)}${merged}`;
   }
   const textarea = field.querySelector('textarea') as HTMLTextAreaElement | null;
-  if (textarea) return `textarea "${label}" = ${shorten(textarea.value)}${flags(textarea)}`;
+  if (textarea) return `textarea "${label}" = ${shorten(textarea.value)}${flags(textarea)}${merged}`;
   const input = field.querySelector('input') as HTMLInputElement | null;
-  if (input) return `input[${input.type}] "${label}" = ${shorten(input.value)}${flags(input)}`;
-  return `field "${label}"`;
+  if (input) return `input[${input.type}] "${label}" = ${shorten(input.value)}${flags(input)}${merged}`;
+  return `field "${label}"${merged}`;
 }
 
 function describeCheckbox(checkbox: Element): string {
@@ -312,15 +323,27 @@ describe('properties panel characterization', () => {
     return describeControls(root ?? rendered.nativeElement, selectValuesOf(rendered));
   }
 
-  /** Negates every boolean, nested property groups included, so all of them merge to null. */
-  function flipBooleans(target: Record<string, unknown>): void {
+  /**
+   * Makes every boolean and every number differ from the other element's, nested property groups
+   * included, so all of them merge to null.
+   *
+   * Numbers were added for #1138: until then the divergent cases only disagreed on booleans, so no
+   * number field ever showed a merged null - and the net could not see the marker that now
+   * distinguishes "the selection disagrees" from "empty everywhere" on those fields.
+   *
+   * Arrays are left alone. They merge by a different route, and changing their length here would
+   * hide or add whole controls rather than diverge a value.
+   */
+  function diverge(target: Record<string, unknown>): void {
     Object.keys(target).forEach(key => {
       if (key === 'idService') return;
       const value = target[key];
       if (typeof value === 'boolean') {
         target[key] = !value;
+      } else if (typeof value === 'number') {
+        target[key] = value + 1;
       } else if (value && typeof value === 'object' && !Array.isArray(value)) {
-        flipBooleans(value as Record<string, unknown>);
+        diverge(value as Record<string, unknown>);
       }
     });
   }
@@ -346,7 +369,7 @@ describe('properties panel characterization', () => {
     const first = withMediaSource(ElementFactory.createElement({ type, id: type, alias: type }));
     if (mode === 'single') return [first];
     const second = withMediaSource(ElementFactory.createElement({ type, id: `${type}_2`, alias: `${type}_2` }));
-    flipBooleans(second as unknown as Record<string, unknown>);
+    diverge(second as unknown as Record<string, unknown>);
     return [first, second];
   }
 

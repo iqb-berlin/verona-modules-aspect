@@ -341,7 +341,8 @@
     "maxNumberOfSelections": "Max. Anzahl Auswahlen",
     "bondingType": "Darstellungsart",
     "moleculeBondingTypeValence": "Valenzstrichformel",
-    "moleculeBondingTypeElectrons": "Elektronenformel"
+    "moleculeBondingTypeElectrons": "Elektronenformel",
+    "valuesDiffer": "Werte unterschiedlich"
   },
   "formulaPreset": {
     "title": "Formeleingabelayouts auswählen",

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
@@ -16,6 +17,9 @@ import {
   PositionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/position-field-set/position-field-set.component';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
+  MergedMarkerComponent
+} from 'editor/src/app/modules/properties-panel/components/merged-marker/merged-marker.component';
 
 @Component({
   selector: 'aspect-size-input-panel',
@@ -48,8 +52,11 @@ describe('PositionFieldSetComponent', () => {
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
-      declarations: [PositionFieldSetComponent, MockSizeInputPanelComponent, NumberFieldDirective],
+      declarations: [PositionFieldSetComponent, MockSizeInputPanelComponent, NumberFieldDirective,
+        MergedMarkerComponent
+      ],
       imports: [
+        MatIconModule,
         CommonModule,
         FormsModule,
         MatFormFieldModule,

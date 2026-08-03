@@ -21,18 +21,19 @@
   </aspect-merged-checkbox>
 }
 
-@if ((combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === false) ||
-     (combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === undefined)) {
+@if ((combinedProperties.rowCount !== undefined && combinedProperties.hasDynamicRowCount === false) ||
+     (combinedProperties.rowCount !== undefined && combinedProperties.hasDynamicRowCount === undefined)) {
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'rows' | translate }}</mat-label>
     <input matInput type="number" min="1" required aspectNumberField
            [ngModel]="combinedProperties.rowCount"
            (numberChange)="updateModel.emit(
                   { property: 'rowCount', value: $event.value, isInputValid: $event.isInputValid })">
+    <aspect-merged-marker matSuffix [value]="combinedProperties.rowCount"></aspect-merged-marker>
   </mat-form-field>
 }
 
-@if (combinedProperties.expectedCharactersCount != null && combinedProperties.hasDynamicRowCount) {
+@if (combinedProperties.expectedCharactersCount !== undefined && combinedProperties.hasDynamicRowCount) {
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.expectedCharactersCount' | translate }}</mat-label>
     <input matInput type="number" min="1" required aspectNumberField
@@ -40,5 +41,6 @@
            [ngModel]="combinedProperties.expectedCharactersCount"
            (numberChange)="updateModel.emit(
                   { property: 'expectedCharactersCount', value: $event.value, isInputValid: $event.isInputValid })">
+    <aspect-merged-marker matSuffix [value]="combinedProperties.expectedCharactersCount"></aspect-merged-marker>
   </mat-form-field>
 }

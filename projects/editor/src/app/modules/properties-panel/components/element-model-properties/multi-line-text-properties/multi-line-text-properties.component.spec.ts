@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -10,6 +12,9 @@ import {
   NumberFieldBadInputDirective
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
+  MergedMarkerComponent
+} from 'editor/src/app/modules/properties-panel/components/merged-marker/merged-marker.component';
 import {
   MultiLineTextPropertiesComponent
 } from './multi-line-text-properties.component';
@@ -45,9 +50,13 @@ describe('MultiLineTextPropertiesComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MultiLineTextPropertiesComponent, MockMergedCheckboxComponent,
-        NumberFieldDirective, NumberFieldBadInputDirective
+        NumberFieldDirective, NumberFieldBadInputDirective,
+        MergedMarkerComponent
       ],
-      imports: [FormsModule, MatFormFieldModule, MatInputModule, TranslateModule.forRoot()],
+      imports: [
+        FormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule,
+        TranslateModule.forRoot()
+      ],
       providers: [{ provide: UnitService, useValue: unitServiceMock }]
     }).compileComponents();
 

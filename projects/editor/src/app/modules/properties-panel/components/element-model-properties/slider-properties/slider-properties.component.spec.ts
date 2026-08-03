@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -10,6 +12,9 @@ import {
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
+  MergedMarkerComponent
+} from 'editor/src/app/modules/properties-panel/components/merged-marker/merged-marker.component';
 import {
   SliderPropertiesComponent
 } from './slider-properties.component';
@@ -24,8 +29,12 @@ describe('SliderPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [SliderPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
+      declarations: [SliderPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective,
+        MergedMarkerComponent
+      ],
       imports: [
+        MatTooltipModule,
+        MatIconModule,
         CommonModule,
         FormsModule,
         MatCheckboxModule,

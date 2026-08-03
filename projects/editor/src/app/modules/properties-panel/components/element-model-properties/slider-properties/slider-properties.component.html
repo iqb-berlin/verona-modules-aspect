@@ -4,6 +4,7 @@
          [ngModel]="combinedProperties.minValue"
          (numberChange)="updateModel.emit(
                 { property: 'minValue', value: $event.value, isInputValid: $event.isInputValid })">
+  <aspect-merged-marker matSuffix [value]="combinedProperties.minValue"></aspect-merged-marker>
 </mat-form-field>
 <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
   <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
@@ -11,6 +12,7 @@
          [ngModel]="combinedProperties.maxValue"
          (numberChange)="updateModel.emit(
                 { property: 'maxValue', value: $event.value, isInputValid: $event.isInputValid })">
+  <aspect-merged-marker matSuffix [value]="combinedProperties.maxValue"></aspect-merged-marker>
 </mat-form-field>
 <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.showValues !== undefined"
                         [value]="combinedProperties.showValues"

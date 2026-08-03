@@ -33,6 +33,7 @@
            [ngModel]="combinedProperties.magnifierSize"
            (numberChange)="updateModel.emit(
                 { property: 'magnifierSize', value: $event.value, isInputValid: $event.isInputValid })">
+    <aspect-merged-marker matSuffix [value]="combinedProperties.magnifierSize"></aspect-merged-marker>
   </mat-form-field>
 
   <div *ngIf="combinedProperties.magnifierZoom !== undefined"

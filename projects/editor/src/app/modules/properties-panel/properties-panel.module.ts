@@ -19,6 +19,7 @@ import { SharedModule } from 'common/shared.module';
 import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
 import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
 import { MergedCheckboxComponent } from './components/merged-checkbox/merged-checkbox.component';
+import { MergedMarkerComponent } from './components/merged-marker/merged-marker.component';
 import {
   ActionParamStateVariableComponent
 } from './components/element-model-properties/action-param-state-variable/action-param-state-variable.component';
@@ -153,6 +154,7 @@ import {
 @NgModule({
   declarations: [
     MergedCheckboxComponent,
+    MergedMarkerComponent,
     ActionParamStateVariableComponent,
     ActionPropertiesComponent,
     BorderPropertiesComponent,

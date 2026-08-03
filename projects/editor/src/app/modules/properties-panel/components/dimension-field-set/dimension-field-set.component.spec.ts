@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -19,6 +21,9 @@ import {
   DimensionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/dimension-field-set/dimension-field-set.component';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
+  MergedMarkerComponent
+} from 'editor/src/app/modules/properties-panel/components/merged-marker/merged-marker.component';
 
 describe('DimensionFieldSetComponent', () => {
   let component: DimensionFieldSetComponent;
@@ -42,8 +47,12 @@ describe('DimensionFieldSetComponent', () => {
     messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
-      declarations: [DimensionFieldSetComponent, MergedCheckboxComponent, NumberFieldDirective],
+      declarations: [DimensionFieldSetComponent, MergedCheckboxComponent, NumberFieldDirective,
+        MergedMarkerComponent
+      ],
       imports: [
+        MatTooltipModule,
+        MatIconModule,
         CommonModule,
         FormsModule,
         MatCheckboxModule,

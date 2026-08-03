@@ -7,17 +7,25 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { Stylings } from 'common/models/elements/property-group-interfaces';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
+import {
+  MergedMarkerComponent
+} from 'editor/src/app/modules/properties-panel/components/merged-marker/merged-marker.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import {
   ElementStylePropertiesComponent
 } from 'editor/src/app/modules/properties-panel/components/element-style-properties/element-style-properties.component';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('ElementStylePropertiesComponent', () => {
@@ -31,7 +39,10 @@ describe('ElementStylePropertiesComponent', () => {
     messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
-      declarations: [ElementStylePropertiesComponent, MergedCheckboxComponent, NumberFieldDirective],
+      declarations: [
+        ElementStylePropertiesComponent, MergedCheckboxComponent, MergedMarkerComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective
+      ],
       imports: [
         CommonModule,
         FormsModule,
@@ -41,6 +52,7 @@ describe('ElementStylePropertiesComponent', () => {
         MatIconModule,
         MatInputModule,
         MatSelectModule,
+        MatTooltipModule,
         TranslateModule.forRoot()
       ],
       providers: [
@@ -190,6 +202,30 @@ describe('ElementStylePropertiesComponent', () => {
       expect(elementService.updateSelectedElementsStyleProperty).not.toHaveBeenCalled();
       expect(borderWidthBox.value).toBe('2');
       expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  /* With more than one element selected, a property the elements disagree about is merged to null
+     and the box renders empty - which reads like "empty everywhere". The marker says which of the
+     two it is; a checkbox has shown this as `indeterminate` since #1136 (#1138). */
+  describe('the marker for values the selection disagrees about', () => {
+    const marker = (): HTMLElement | null => fixture.nativeElement
+      .querySelector('aspect-merged-marker mat-icon');
+
+    it('should mark a font size the selection disagrees about', async () => {
+      component.styles = { ...component.styles, fontSize: null } as unknown as Merged<Stylings>;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(marker()).not.toBeNull();
+    });
+
+    it('should stay away where the selection agrees', async () => {
+      component.styles = { ...component.styles, fontSize: 20 } as unknown as Merged<Stylings>;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(marker()).toBeNull();
     });
   });
 });

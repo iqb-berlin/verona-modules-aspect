@@ -15,6 +15,7 @@
                [disabled]="!fixedWidth.checked"
                [ngModel]="dimensions.width"
                (numberChange)="commitDimension('width', $event)">
+        <aspect-merged-marker matSuffix [value]="dimensions.width"></aspect-merged-marker>
       </mat-form-field>
     </ng-container>
     <ng-template #elseBlockWidth>
@@ -23,6 +24,7 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.width"
                (numberChange)="commitDimension('width', $event)">
+        <aspect-merged-marker matSuffix [value]="dimensions.width"></aspect-merged-marker>
       </mat-form-field>
     </ng-template>
 
@@ -38,6 +40,7 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.height"
                (numberChange)="commitDimension('height', $event)">
+        <aspect-merged-marker matSuffix [value]="dimensions.height"></aspect-merged-marker>
       </mat-form-field>
     </ng-container>
     <ng-template #elseBlockHeight>
@@ -48,6 +51,7 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.height"
                (numberChange)="commitDimension('height', $event)">
+        <aspect-merged-marker matSuffix [value]="dimensions.height"></aspect-merged-marker>
       </mat-form-field>
     </ng-template>
 
@@ -122,6 +126,7 @@
       <input matInput type="number" min="0" aspectNumberField required
              [ngModel]="dimensions.width"
              (numberChange)="commitDimension('width', $event)">
+      <aspect-merged-marker matSuffix [value]="dimensions.width"></aspect-merged-marker>
     </mat-form-field>
     <mat-form-field>
       <mat-label>
@@ -130,6 +135,7 @@
       <input matInput type="number" min="0" aspectNumberField required
              [ngModel]="dimensions.height"
              (numberChange)="commitDimension('height', $event)">
+      <aspect-merged-marker matSuffix [value]="dimensions.height"></aspect-merged-marker>
     </mat-form-field>
   </ng-template>
 </fieldset>

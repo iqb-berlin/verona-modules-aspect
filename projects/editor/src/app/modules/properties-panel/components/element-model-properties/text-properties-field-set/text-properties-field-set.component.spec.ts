@@ -31,6 +31,9 @@ import {
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
+  MergedMarkerComponent
+} from 'editor/src/app/modules/properties-panel/components/merged-marker/merged-marker.component';
+import {
   TextPropsComponent
 } from './text-properties-field-set.component';
 
@@ -66,7 +69,9 @@ describe('TextPropsComponent', () => {
         MockHighlightPropertiesComponent,
         SafeResourceHTMLPipe,
         MergedCheckboxComponent,
-        NumberFieldDirective, NumberFieldBadInputDirective],
+        NumberFieldDirective, NumberFieldBadInputDirective,
+        MergedMarkerComponent
+      ],
       imports: [
         CommonModule,
         FormsModule,

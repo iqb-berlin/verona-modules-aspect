@@ -6,6 +6,8 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { By } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,11 +22,16 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
   TablePropertiesComponent
 } from './table-properties.component';
 
 @Component({ selector: 'aspect-size-input-panel', standalone: false, template: '' })
 class MockSizeInputPanelComponent {
+  @Input() min: number | null = null;
   @Input() label!: string;
   @Input() value!: number;
   @Input() unit!: string;
@@ -40,22 +47,19 @@ describe('TablePropertiesComponent', () => {
   let tablePropUpdated: Subject<string>;
   let emitted: { property: string; value: unknown }[];
 
-  interface InputEventTargetMock { checkValidity: () => boolean; value: string | number }
-
-  const createChangeEvent = (valid: boolean, value: string): { event: Event, target: InputEventTargetMock } => {
-    const target: InputEventTargetMock = { checkValidity: () => valid, value };
-    return { event: { target } as unknown as Event, target };
-  };
-
   beforeEach(async () => {
     elementService = createSpyObj<ElementService>(['showDefaultEditDialog']);
     messageService = createSpyObj<MessageService>(['showError']);
     tablePropUpdated = new Subject<string>();
 
     await TestBed.configureTestingModule({
-      declarations: [TablePropertiesComponent, MockSizeInputPanelComponent, MergedCheckboxComponent],
+      declarations: [
+        TablePropertiesComponent, MockSizeInputPanelComponent, MergedCheckboxComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective
+      ],
       imports: [
         CommonModule,
+        FormsModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -110,6 +114,17 @@ describe('TablePropertiesComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('aspect-size-input-panel').length).toBe(5);
   });
 
+  /* The shared panel takes its floor from the call site, because it also serves the margins, where
+     a negative measurement is meant. A grid track shorter than nothing is not a length (#1164). */
+  it('should give the size panels a floor of zero', () => {
+    const panels = fixture.debugElement.queryAll(By.directive(MockSizeInputPanelComponent));
+
+    expect(panels.length).toBe(5);
+    panels.forEach(panel => {
+      expect((panel.componentInstance as MockSizeInputPanelComponent).min).toBe(0);
+    });
+  });
+
   // A selection of tables whose grids disagree merges the size arrays to null. A count field would
   // then read 0 - a table claiming no rows - and editing it would reach into the absent array.
   it('should offer no grid editors when the size arrays diverge', () => {
@@ -126,7 +141,7 @@ describe('TablePropertiesComponent', () => {
   });
 
   it('should append new default sizes when the row count grows', () => {
-    component.modifySizeArray('gridRowSizes', 3, createChangeEvent(true, '3').event);
+    component.modifySizeArray('gridRowSizes', 3);
 
     expect(emitted).toEqual([{
       property: 'gridRowSizes',
@@ -135,21 +150,82 @@ describe('TablePropertiesComponent', () => {
   });
 
   it('should cut off sizes when the column count shrinks', () => {
-    component.modifySizeArray('gridColumnSizes', 1, createChangeEvent(true, '1').event);
+    component.modifySizeArray('gridColumnSizes', 1);
 
     expect(emitted).toEqual([{ property: 'gridColumnSizes', value: [{ value: 1, unit: 'fr' }] }]);
   });
 
-  it('should refuse an invalid size count and show an error message', () => {
-    const { event, target } = createChangeEvent(false, '0');
+  /* The two count fields go through `aspectNumberField` now, so these go through the boxes: what is
+     left in the component is the decision what to do with a refusal, and the wiring is what used to
+     be wrong. `min` is bound to the highest row or column a child element sits in. */
+  describe('the count fields', () => {
+    const rowCount = (): HTMLInputElement => fixture.nativeElement
+      .querySelector('input[type="number"]') as HTMLInputElement;
 
-    component.modifySizeArray('gridRowSizes', 0, event);
+    const edit = async (box: HTMLInputElement, value: string): Promise<void> => {
+      box.value = value;
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box.dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
 
-    // The message goes through TranslateService now; with no translations loaded it yields the key.
-    expect(messageService.showError)
-      .toHaveBeenCalledWith('propertiesPanel.sizeArrayNotEmptyRow');
-    expect(emitted).toEqual([]);
-    expect(target.value).toBe(2);
+    it('should take a count that clears the elements in the table', async () => {
+      await edit(rowCount(), '3');
+
+      expect(emitted).toEqual([{
+        property: 'gridRowSizes',
+        value: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }]
+      }]);
+    });
+
+    /* The row count may not drop below the last row that still holds an element. This worked before
+       through `checkValidity()` and works now through the bound `min`. */
+    it('should refuse a count that would drop an occupied row', async () => {
+      await edit(rowCount(), '1');
+
+      expect(emitted).toEqual([]);
+      expect(messageService.showError).toHaveBeenCalledWith('propertiesPanel.sizeArrayNotEmptyRow');
+      expect(rowCount().value).toBe('2');
+    });
+
+    /* Every two-digit entry passes through a single digit first. Applying that digit cut the size
+       array down to it, and raising it again filled the gap with default tracks - so typing 12 over
+       a 2 lost the second row's height. The count is applied on leaving the field now, which is
+       where the original handler had it. */
+    it('should not cut the size array while a two-digit count is being typed', async () => {
+      component.combinedProperties = {
+        ...component.combinedProperties,
+        elements: [{ gridRow: 1, gridColumn: 1 }] as never,
+        gridRowSizes: [{ value: 200, unit: 'px' }, { value: 300, unit: 'px' }]
+      };
+      component.calculateMaxIndices();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      rowCount().value = '1';
+      rowCount().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      expect(emitted).toEqual([]); // nothing applied while it is being typed
+
+      await edit(rowCount(), '12');
+
+      expect(emitted.length).toBe(1);
+      expect((emitted[0].value as { value: number; unit: string }[]).slice(0, 2))
+        .toEqual([{ value: 200, unit: 'px' }, { value: 300, unit: 'px' }]);
+    });
+
+    /* And the hole that was left: an empty number input has no range underflow, so it passed
+       `checkValidity()` as valid, and the size array was cut to nothing - every row of the table
+       gone, silently and with no message (#1164). */
+    it('should refuse an emptied count rather than drop every row', async () => {
+      await edit(rowCount(), '');
+
+      expect(emitted).toEqual([]);
+      expect(messageService.showError).toHaveBeenCalledWith('inputInvalid');
+      expect(rowCount().value).toBe('2');
+    });
   });
 
   it('should emit the changed size of a single column', () => {

@@ -64,10 +64,10 @@
     <ng-container *ngIf="!section.dynamicPositioning">
       <mat-form-field class="section-height-input" appearance="outline">
         <mat-label>{{'section-menu.height' | translate }}</mat-label>
-        <input matInput type="number"
-               [value]="$any(section.height)"
+        <input matInput type="number" min="0" required aspectNumberField
+               [ngModel]="section.height"
                (click)="$any($event).stopPropagation()"
-               (change)="updateModel('height', $any($event.target).value || 0)">
+               (numberChange)="commitHeight($event)">
       </mat-form-field>
     </ng-container>
     <div *ngIf="section.dynamicPositioning">
@@ -81,24 +81,27 @@
         <ng-container *ngIf="!section.autoRowSize">
           <mat-form-field appearance="outline">
             <mat-label>{{'section-menu.height' | translate }}</mat-label>
-            <input matInput type="number"
-                   [value]="$any(section.height)"
+            <input matInput type="number" min="0" required aspectNumberField
+                   [ngModel]="section.height"
                    (click)="$any($event).stopPropagation()"
-                   (change)="updateModel('height', $any($event.target).value || 0)">
+                   (numberChange)="commitHeight($event)">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>{{'section-menu.rowCount' | translate }}</mat-label>
-            <input matInput type="number"
-                   [value]="$any(section.gridRowSizes.length)"
+            <input matInput type="number" min="1" required aspectNumberField
+                   [ngModel]="section.gridRowSizes.length"
                    (click)="$any($event).stopPropagation()"
-                   (change)="modifySizeArray('gridRowSizes', $any($event).target.value || 0)">
+                   (numberChange)="commitCount('gridRowSizes', $event)"
+                   (blur)="applyCount('gridRowSizes')"
+                   (keydown.enter)="applyCount('gridRowSizes')">
           </mat-form-field>
           <ng-container *ngFor="let size of section.gridRowSizes ; let i = index">
             <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
                                      [value]="size.value"
                                      [unit]="size.unit"
                                      [allowedUnits]="['px', 'fr']"
+                                     [min]="0"
                                      (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
             </aspect-size-input-panel>
           </ng-container>
@@ -114,16 +117,19 @@
         <ng-container *ngIf="!section.autoColumnSize">
           <mat-form-field appearance="outline">
             <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
-            <input matInput type="number"
-                   [value]="$any(section.gridColumnSizes.length)"
+            <input matInput type="number" min="1" required aspectNumberField
+                   [ngModel]="section.gridColumnSizes.length"
                    (click)="$any($event).stopPropagation()"
-                   (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0)">
+                   (numberChange)="commitCount('gridColumnSizes', $event)"
+                   (blur)="applyCount('gridColumnSizes')"
+                   (keydown.enter)="applyCount('gridColumnSizes')">
           </mat-form-field>
           <ng-container *ngFor="let size of section.gridColumnSizes; let i = index">
             <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
                                      [value]="size.value"
                                      [unit]="size.unit"
                                      [allowedUnits]="['px', 'fr']"
+                                     [min]="0"
                                      (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
             </aspect-size-input-panel>
           </ng-container>

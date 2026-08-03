@@ -49,7 +49,8 @@ export class SelectPropertiesComponent {
   @Output() updateModel =
     new EventEmitter<{
       property: keyof PanelSelectProperties,
-      value: string | number | boolean | string[] | null
+      value: string | number | boolean | string[] | null,
+      isInputValid?: boolean | null
     }>();
 
   constructor(public unitService: UnitService) { }

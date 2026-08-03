@@ -5,6 +5,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import { MessageService } from 'editor/src/app/services/message.service';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   AudioRowComponent
 } from 'editor/modules/section-templates/components/stimulus/audio-row/audio-row.component';
@@ -12,18 +19,23 @@ import {
 describe('AudioRowComponent', () => {
   let component: AudioRowComponent;
   let fixture: ComponentFixture<AudioRowComponent>;
+  let messageService: SpyObj<MessageService>;
 
   beforeEach(async () => {
+    messageService = createSpyObj<MessageService>(['showWarning']);
+
     await TestBed.configureTestingModule({
-      declarations: [AudioRowComponent],
+      declarations: [AudioRowComponent, NumberFieldDirective, NumberFieldBadInputDirective],
       imports: [
         FormsModule,
         MatButtonModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-        MatTooltipModule
-      ]
+        MatTooltipModule,
+        TranslateModule.forRoot()
+      ],
+      providers: [{ provide: MessageService, useValue: messageService }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AudioRowComponent);
@@ -63,5 +75,25 @@ describe('AudioRowComponent', () => {
     fixture.detectChanges();
 
     expect(emitSpy).toHaveBeenCalledWith(5);
+  });
+
+  /* `min="1"` was on the box and enforced nowhere, and the binding was two-way: a 0 or an emptied
+     box reached the generated element, where 0 means "no limit" to the player - the opposite of
+     what the box asks for (#1164). */
+  it('should refuse a play count below the minimum and put the box back', async () => {
+    const emitSpy = vi.spyOn(component.maxRunsChange, 'emit');
+    const input = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+
+    input.value = '0';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+    expect(component.maxRuns).toBe(1);
+    expect(input.value).toBe('1');
+    expect(messageService.showWarning).toHaveBeenCalledTimes(1);
   });
 });

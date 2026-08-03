@@ -24,7 +24,7 @@ export class TextPropsComponent {
   @Output() updateModel =
     new EventEmitter<{
       property: keyof TextProperties;
-      value: string | number | boolean | string[],
+      value: string | number | boolean | string[] | null,
       isInputValid?: boolean | null
     }>();
 

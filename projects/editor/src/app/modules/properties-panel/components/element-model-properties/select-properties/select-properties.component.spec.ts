@@ -15,6 +15,10 @@ import {
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
   SelectPropertiesComponent
 } from './select-properties.component';
 
@@ -28,7 +32,10 @@ describe('SelectPropertiesComponent', () => {
     unitServiceMock = { expertMode: true };
 
     await TestBed.configureTestingModule({
-      declarations: [SelectPropertiesComponent, MergedCheckboxComponent],
+      declarations: [
+        SelectPropertiesComponent, MergedCheckboxComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective
+      ],
       imports: [
         CommonModule,
         FormsModule,

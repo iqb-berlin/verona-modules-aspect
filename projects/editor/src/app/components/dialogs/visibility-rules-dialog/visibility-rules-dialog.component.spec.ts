@@ -18,6 +18,10 @@ import {
 import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('VisibilityRulesDialogComponent', () => {
   let component: VisibilityRulesDialogComponent;
@@ -37,7 +41,8 @@ describe('VisibilityRulesDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         VisibilityRulesDialogComponent,
-        VisibilityRuleEditorComponent
+        VisibilityRuleEditorComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective
       ],
       imports: [
         CommonModule,
@@ -159,6 +164,55 @@ describe('VisibilityRulesDialogComponent', () => {
 
       expect(dialogRefMock.close).toHaveBeenCalledTimes(1);
       expect(dialogRefMock.close.mock.lastCall?.[0]).toBeFalsy();
+    });
+  });
+
+  /* The delay box carried the old rule in its last hand-written form: a two-way binding plus
+     `(change)="visibilityDelay = visibilityDelay || 0"`, so an emptied box became a 0 and nothing
+     stopped a negative delay (#1164). */
+  describe('the delay box', () => {
+    beforeEach(async () => {
+      await configureTestBed({
+        visibilityRules: [{ id: 'checkbox_1', operator: '=', value: 'true' }],
+        logicalConnectiveOfRules: 'conjunction',
+        visibilityDelay: 1000,
+        animatedVisibility: true,
+        controlIds: [{ id: 'checkbox_1', alias: 'Kontrollkästchen' }],
+        enableReHide: false // the box is disabled while re-hiding is on
+      });
+      await fixture.whenStable();
+    });
+
+    const delayBox = (): HTMLInputElement => fixture.nativeElement
+      .querySelector('input[type="number"]') as HTMLInputElement;
+
+    const edit = async (value: string): Promise<void> => {
+      delayBox().value = value;
+      delayBox().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      delayBox().dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should take an edited delay', async () => {
+      await edit('2000');
+
+      expect(component.visibilityDelay).toBe(2000);
+    });
+
+    it('should refuse a negative delay and put the box back', async () => {
+      await edit('-1000');
+
+      expect(component.visibilityDelay).toBe(1000);
+      expect(delayBox().value).toBe('1000');
+    });
+
+    it('should refuse an emptied delay rather than make it zero', async () => {
+      await edit('');
+
+      expect(component.visibilityDelay).toBe(1000);
+      expect(delayBox().value).toBe('1000');
     });
   });
 });

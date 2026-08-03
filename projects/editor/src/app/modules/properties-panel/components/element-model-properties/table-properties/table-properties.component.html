@@ -10,16 +10,19 @@
     <legend>{{'section-menu.rows' | translate }}</legend>
     <mat-form-field appearance="outline">
       <mat-label>{{ 'section-menu.rowCount' | translate }}</mat-label>
-      <input matInput #rowCountField type="number" [min]="maxRowIndex"
-             [value]="combinedProperties.gridRowSizes.length"
+      <input matInput type="number" required [min]="maxRowIndex" aspectNumberField
+             [ngModel]="combinedProperties.gridRowSizes.length"
              (click)="$event.stopPropagation()"
-             (change)="modifySizeArray('gridRowSizes', +rowCountField.value || 0, $event)">
+             (numberChange)="commitCount('gridRowSizes', $event)"
+             (blur)="applyCount('gridRowSizes')"
+             (keydown.enter)="applyCount('gridRowSizes')">
     </mat-form-field>
     @for (size of combinedProperties.gridRowSizes; track $index) {
       <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + ($index + 1)"
                                [value]="size.value"
                                [unit]="size.unit"
                                [allowedUnits]="['px', 'fr']"
+                               [min]="0"
                                (valueUpdated)="changeGridSize('gridRowSizes', $index, $event)">
       </aspect-size-input-panel>
     }
@@ -30,16 +33,19 @@
     <legend>{{'section-menu.columns' | translate }}</legend>
     <mat-form-field appearance="outline">
       <mat-label>{{ 'section-menu.columnCount' | translate }}</mat-label>
-      <input matInput #columnCountField type="number" [min]="maxColIndex"
-             [value]="combinedProperties.gridColumnSizes.length"
+      <input matInput type="number" required [min]="maxColIndex" aspectNumberField
+             [ngModel]="combinedProperties.gridColumnSizes.length"
              (click)="$event.stopPropagation()"
-             (change)="modifySizeArray('gridColumnSizes', +columnCountField.value || 0, $event)">
+             (numberChange)="commitCount('gridColumnSizes', $event)"
+             (blur)="applyCount('gridColumnSizes')"
+             (keydown.enter)="applyCount('gridColumnSizes')">
     </mat-form-field>
     @for (size of combinedProperties.gridColumnSizes; track $index) {
       <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + ($index + 1)"
                                [value]="size.value"
                                [unit]="size.unit"
                                [allowedUnits]="['px', 'fr']"
+                               [min]="0"
                                (valueUpdated)="changeGridSize('gridColumnSizes', $index, $event)">
       </aspect-size-input-panel>
     }

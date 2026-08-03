@@ -28,7 +28,9 @@
       <div class="fx-row-start-center dimensions-row">
         <mat-form-field appearance="fill" style="flex: 1;">
           <mat-label>{{ 'imageResizeDialog.maxWidth' | translate }}</mat-label>
-          <input matInput type="number" min="1" [(ngModel)]="data.options.maxWidth" (ngModelChange)="onWidthChange($event)">
+          <input matInput type="number" min="1" required aspectNumberField
+                 [ngModel]="data.options.maxWidth"
+                 (numberChange)="commitWidth($event)">
         </mat-form-field>
 
         <mat-icon class="aspect-ratio-lock" color="primary"
@@ -38,7 +40,9 @@
 
         <mat-form-field appearance="fill" style="flex: 1;">
           <mat-label>{{ 'imageResizeDialog.maxHeight' | translate }}</mat-label>
-          <input matInput type="number" min="1" [(ngModel)]="data.options.maxHeight" (ngModelChange)="onHeightChange($event)">
+          <input matInput type="number" min="1" required aspectNumberField
+                 [ngModel]="data.options.maxHeight"
+                 (numberChange)="commitHeight($event)">
         </mat-form-field>
       </div>
 

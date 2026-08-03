@@ -4,6 +4,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { TranslateService } from '@ngx-translate/core';
 import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -34,12 +35,16 @@ export class SectionMenuComponent implements OnDestroy {
 
   sectionElements: UIElement[] = [];
 
+  /** The last valid entry per count box, applied when that field is left. */
+  private pendingCount: Partial<Record<'gridColumnSizes' | 'gridRowSizes', number>> = {};
+
   constructor(public unitService: UnitService,
               private sectionService: SectionService,
               private selectionService: SelectionService,
               private dialogService: DialogService,
               private messageService: MessageService,
               private idService: IDService,
+              private translateService: TranslateService,
               private clipboard: Clipboard) { }
 
   updateModel(
@@ -69,6 +74,58 @@ export class SectionMenuComponent implements OnDestroy {
 
   deleteSection(): void {
     this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
+  }
+
+  /**
+   * What `aspectNumberField` worked out for the section height.
+   *
+   * The four number boxes in this menu passed `$event.target.value` straight on - a string, into
+   * `height`, which is declared `number` - and `|| 0` turned an emptied box into a 0, which
+   * collapses the section. Neither `min` nor anything else was enforced anywhere (#1164).
+   */
+  commitHeight(update: { value: number | null; isInputValid: boolean }): void {
+    if (!update.isInputValid || update.value === null) {
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
+      return;
+    }
+    this.updateModel('height', update.value);
+  }
+
+  /**
+   * The same for the two grid track counts, where an emptied box did more than write a wrong
+   * number: `|| 0` cut the size array to nothing, so a section lost every row or column definition
+   * at once. `min="1"` because a grid with no tracks is not a grid.
+   *
+   * Unlike the table, this has no floor tied to the elements inside it - shrinking the grid past an
+   * element leaves that element with a track that no longer exists. That was so before and is left
+   * alone here; #1164 is about the boxes.
+   */
+  commitCount(property: 'gridColumnSizes' | 'gridRowSizes',
+              update: { value: number | null; isInputValid: boolean }): void {
+    if (!update.isInputValid || update.value === null) {
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
+      delete this.pendingCount[property];
+      return;
+    }
+    this.pendingCount[property] = update.value;
+  }
+
+  /**
+   * The count is applied on leaving the field, not on the keystroke.
+   *
+   * Every two-digit entry passes through a single digit first, and applying that digit cuts the
+   * size array down to it - so typing 12 over a 2 dropped the second row's height and came back
+   * with ten default tracks instead. The original handler was on `(change)`, i.e. here; the
+   * migration is what moved it to the keystroke (#1164).
+   *
+   * The directive's own blur listener runs first (measured), so a refused entry has already cleared
+   * what was pending by the time this asks.
+   */
+  applyCount(property: 'gridColumnSizes' | 'gridRowSizes'): void {
+    const pending = this.pendingCount[property];
+    if (pending === undefined) return;
+    delete this.pendingCount[property];
+    this.modifySizeArray(property, pending);
   }
 
   /* Add or remove elements to size array. Default value 1fr. */

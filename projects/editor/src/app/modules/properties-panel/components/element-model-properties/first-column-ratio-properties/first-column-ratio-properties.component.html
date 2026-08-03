@@ -2,7 +2,9 @@
   <mat-form-field class="wide-form-field" matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.firstColumnSizeRatio' | translate }}</mat-label>
-    <input #firstColumnSizeRatioField matInput type="number" [value]="combinedProperties.firstColumnSizeRatio"
-           (input)="updateModel.emit({ property: 'firstColumnSizeRatio', value: firstColumnSizeRatioField.value || 0 })">
+    <input matInput type="number" min="1" required aspectNumberField
+           [ngModel]="combinedProperties.firstColumnSizeRatio"
+           (numberChange)="updateModel.emit(
+                  { property: 'firstColumnSizeRatio', value: $event.value, isInputValid: $event.isInputValid })">
   </mat-form-field>
 }

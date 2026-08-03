@@ -6,5 +6,7 @@
 </button>
 <mat-form-field appearance="outline">
   <mat-label>Maximale Abspielhäufigkeit</mat-label>
-  <input matInput type="number" min="1" [(ngModel)]="maxRuns" (ngModelChange)="maxRunsChange.emit($event)">
+  <input matInput type="number" min="1" required aspectNumberField
+         [ngModel]="maxRuns"
+         (numberChange)="commitMaxRuns($event)">
 </mat-form-field>

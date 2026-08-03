@@ -19,6 +19,16 @@ export class InputWizardDialogComponent {
   expectedCharsCount: number = 90;
   useMathFields: boolean = false;
 
+  /**
+   * Whether a numbering can be chosen, i.e. whether there is more than one answer field.
+   *
+   * Kept as a field rather than derived from `answerCount` in the template, because the count is
+   * only applied when the box is left while the control beside it has to follow at once: typing a
+   * 3 and reaching for the numbering has to find it enabled. A getter in the binding would do the
+   * same but re-run on every check (rules.md §1).
+   */
+  numberingAvailable: boolean = false;
+
   /** The last valid entry in the answer count box, applied when the field is left. */
   private pendingAnswerCount: number | null = null;
 
@@ -35,9 +45,11 @@ export class InputWizardDialogComponent {
   commitAnswerCount(update: { value: number | null; isInputValid: boolean }): void {
     if (!this.accept(update)) {
       this.pendingAnswerCount = null;
+      this.numberingAvailable = this.answerCount >= 2;
       return;
     }
     this.pendingAnswerCount = update.value as number;
+    this.numberingAvailable = this.pendingAnswerCount >= 2;
   }
 
   /**
@@ -55,6 +67,7 @@ export class InputWizardDialogComponent {
     if (this.pendingAnswerCount === null) return;
     this.answerCount = this.pendingAnswerCount;
     this.pendingAnswerCount = null;
+    this.numberingAvailable = this.answerCount >= 2;
     this.updateSubQuestions();
   }
 

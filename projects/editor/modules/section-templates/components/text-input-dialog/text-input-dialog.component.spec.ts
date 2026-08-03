@@ -179,6 +179,43 @@ describe('InputWizardDialogComponent', () => {
       expect(component.subQuestions.length).toBe(3);
     });
 
+    /* The numbering beside the box may only be chosen for more than one answer field. Because the
+       count itself is applied on leaving, the control has to follow the pending entry instead - or
+       it stays disabled while the author is still in the box, and reaching for it does nothing.
+       Found by the e2e suite, which could not click it. */
+    it('should offer the numbering as soon as a second field is typed', async () => {
+      const numbering = (): HTMLElement => fixture.nativeElement
+        .querySelector('mat-select') as HTMLElement;
+      // NgModel applies the disabled state in a microtask, and MatSelect renders it on the run after
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(numbering().getAttribute('aria-disabled')).toBe('true');
+
+      box().value = '3';
+      box().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(numbering().getAttribute('aria-disabled')).toBe('false');
+    });
+
+    it('should take the numbering away again when the entry is refused', async () => {
+      box().value = '3';
+      box().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box().value = '30';
+      box().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box().dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const numbering = fixture.nativeElement.querySelector('mat-select') as HTMLElement;
+      expect(numbering.getAttribute('aria-disabled')).toBe('true');
+    });
+
     it('should refuse a count above the maximum and put the box back', async () => {
       await edit('12');
 

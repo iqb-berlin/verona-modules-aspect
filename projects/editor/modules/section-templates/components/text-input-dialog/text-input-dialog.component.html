@@ -15,7 +15,7 @@
 
   <h3>Nummerierung</h3>
   <mat-form-field class="align-start">
-    <mat-select [disabled]="answerCount < 2" [(ngModel)]="numbering">
+    <mat-select [disabled]="!numberingAvailable" [(ngModel)]="numbering">
       <mat-option [value]="'latin'">a), b), ...</mat-option>
       <mat-option [value]="'decimal'">1), 2), ...</mat-option>
       <mat-option [value]="'bullets'">&#x2022;, &#x2022;, ...</mat-option>

@@ -19,14 +19,14 @@ import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-pr
 export class FirstColumnRatioPropertiesComponent {
   @Input() combinedProperties!: Merged<FirstColumnRatioProperties>;
   /**
-   * `value` is a string for anything the author types: `input[type=number].value` is a string, and
-   * the panel has always passed it on unconverted, so the model ends up holding `'5'` rather than
-   * `5`. Typed as it actually behaves; normalising it would be a change of behaviour, not of types.
+   * A number now. The box used to pass `input.value` on unconverted, so the model ended up holding
+   * `'5'` rather than `5` - that is what #1164 changed here. `null` is what a refused entry carries;
+   * the caller acts on `isInputValid` rather than on the value.
    */
   @Output() updateModel =
     new EventEmitter<{
       property: keyof FirstColumnRatioProperties;
-      value: number | string | null;
+      value: number | null;
       isInputValid?: boolean | null
     }>();
 }

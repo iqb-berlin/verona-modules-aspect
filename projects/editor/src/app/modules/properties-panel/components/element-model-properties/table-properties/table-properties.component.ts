@@ -27,6 +27,9 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
   maxRowIndex!: number;
   maxColIndex!: number;
 
+  /** The last valid entry per count box, applied when that field is left. */
+  private pendingCount: Partial<Record<'gridColumnSizes' | 'gridRowSizes', number>> = {};
+
   constructor(public elementService: ElementService,
               private messageService: MessageService,
               private unitService: UnitService,
@@ -75,9 +78,28 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
             'propertiesPanel.sizeArrayNotEmptyColumn' :
             'propertiesPanel.sizeArrayNotEmptyRow')
       ));
+      delete this.pendingCount[property];
       return;
     }
-    this.modifySizeArray(property, update.value);
+    this.pendingCount[property] = update.value;
+  }
+
+  /**
+   * The count is applied on leaving the field, not on the keystroke.
+   *
+   * Every two-digit entry passes through a single digit first, and applying that digit cuts the
+   * size array down to it - so typing 12 over a 2 dropped the second row's height and came back
+   * with ten default tracks instead. The original handler was on `(change)`, i.e. here; the
+   * migration is what moved it to the keystroke (#1164).
+   *
+   * The directive's own blur listener runs first (measured), so a refused entry has already cleared
+   * what was pending by the time this asks.
+   */
+  applyCount(property: 'gridColumnSizes' | 'gridRowSizes'): void {
+    const pending = this.pendingCount[property];
+    if (pending === undefined) return;
+    delete this.pendingCount[property];
+    this.modifySizeArray(property, pending);
   }
 
   /* Add or remove elements to size array. Default value 1fr. */

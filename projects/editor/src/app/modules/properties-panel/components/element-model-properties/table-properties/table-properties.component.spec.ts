@@ -177,6 +177,32 @@ describe('TablePropertiesComponent', () => {
       expect(rowCount().value).toBe('2');
     });
 
+    /* Every two-digit entry passes through a single digit first. Applying that digit cut the size
+       array down to it, and raising it again filled the gap with default tracks - so typing 12 over
+       a 2 lost the second row's height. The count is applied on leaving the field now, which is
+       where the original handler had it. */
+    it('should not cut the size array while a two-digit count is being typed', async () => {
+      component.combinedProperties = {
+        ...component.combinedProperties,
+        elements: [{ gridRow: 1, gridColumn: 1 }] as never,
+        gridRowSizes: [{ value: 200, unit: 'px' }, { value: 300, unit: 'px' }]
+      };
+      component.calculateMaxIndices();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      rowCount().value = '1';
+      rowCount().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      expect(emitted).toEqual([]); // nothing applied while it is being typed
+
+      await edit(rowCount(), '12');
+
+      expect(emitted.length).toBe(1);
+      expect((emitted[0].value as { value: number; unit: string }[]).slice(0, 2))
+        .toEqual([{ value: 200, unit: 'px' }, { value: 300, unit: 'px' }]);
+    });
+
     /* And the hole that was left: an empty number input has no range underflow, so it passed
        `checkValidity()` as valid, and the size array was cut to nothing - every row of the table
        gone, silently and with no message (#1164). */

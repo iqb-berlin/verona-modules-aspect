@@ -149,9 +149,14 @@ describe('ImageResizeDialogComponent', () => {
        makes these deterministic; otherwise `img.onload` lands in the middle of a test and puts the
        width back to 1. */
     beforeEach(async () => {
-      await new Promise<void>(resolve => {
+      await new Promise<void>((resolve, reject) => {
+        // Bounded on purpose: without it a decoder that never fires would hang the whole block
+        // until the runner's timeout, which says nothing about what went wrong.
+        let attempts = 0;
         const waitForImage = (): void => {
+          attempts += 1;
           if (component.originalWidth !== 0) resolve();
+          else if (attempts > 100) reject(new Error('the fixture image never loaded'));
           else setTimeout(waitForImage);
         };
         waitForImage();

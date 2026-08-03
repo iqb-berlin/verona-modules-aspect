@@ -52,8 +52,12 @@ export class ImageResizeDialogComponent implements OnInit {
    * What `aspectNumberField` worked out for one of the two dimension boxes.
    *
    * The `min="1"` on both was never enforced, and the binding was two-way, so a 0, a negative
-   * number or an emptied box went straight into the scaling options - and from there into
-   * `FileService.scaleImage`, which is asked for an estimated size on every keystroke (#1164).
+   * number or an emptied box went straight into the scaling options, and from there into
+   * `FileService.scaleImage` (#1164).
+   *
+   * The estimate is still recalculated per keystroke, and those calls are neither awaited nor
+   * sequenced - whichever scaling finishes last wins, so a fast typist can be left with the
+   * estimate for an earlier width. That was so before and is not touched here.
    *
    * The other dimension follows from the aspect ratio, which is why the write is not a plain
    * assignment: refusing one box has to leave both alone.

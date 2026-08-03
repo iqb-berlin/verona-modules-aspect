@@ -194,4 +194,32 @@ describe('InputWizardDialogComponent', () => {
       expect(box().value).toBe('1');
     });
   });
+
+  /* `max="9"` means every two-digit entry passes through a valid single digit. Applying that digit
+     at once shortened `subQuestions` to it and the texts beyond were gone - selecting a 5 and
+     typing 15 left one answer field, four lost texts and a 1 in the box (#1164). */
+  it('should not shorten the sub-questions while a two-digit count is being typed', async () => {
+    component.numberingWithText = true;
+    component.answerCount = 5;
+    component.subQuestions = ['a', 'b', 'c', 'd', 'e'];
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const box = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+
+    box.value = '1';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(component.subQuestions).toEqual(['a', 'b', 'c', 'd', 'e']); // nothing yet
+
+    box.value = '15';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.answerCount).toBe(5);
+    expect(component.subQuestions).toEqual(['a', 'b', 'c', 'd', 'e']);
+    expect(box.value).toBe('5');
+  });
 });

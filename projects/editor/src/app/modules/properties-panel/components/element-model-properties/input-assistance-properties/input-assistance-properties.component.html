@@ -81,6 +81,9 @@
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.inputAssistanceCustomStyle === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
@@ -94,6 +97,9 @@
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.inputAssistancePosition === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
   <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
                          combinedProperties.inputAssistancePosition === 'floating'"
@@ -109,6 +115,9 @@
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.inputAssistanceFloatingStartPosition === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
@@ -122,6 +131,9 @@
         {{'propertiesPanel.' + option | translate}}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.keyStyle === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <aspect-merged-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&

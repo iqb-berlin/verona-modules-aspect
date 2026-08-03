@@ -45,6 +45,9 @@
           {{ idPair[1] }}
         </mat-option>
       </mat-select>
+      @if (combinedProperties.markingPanels === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
 
     <mat-form-field *ngIf="combinedProperties.markingMode !== undefined"
@@ -62,6 +65,9 @@
           {{ 'propertiesPanel.markingMode-' + option | translate }}
         </mat-option>
       </mat-select>
+      @if (combinedProperties.markingMode === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
 
     <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"

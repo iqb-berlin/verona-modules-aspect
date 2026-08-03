@@ -150,7 +150,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 [propertiesPanel.presentation]
 button "propertiesPanel.button"
 button "propertiesPanel.image"
@@ -187,7 +187,7 @@ checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
 input[text] "propertiesPanel.borderColor" =  [merged]
-select "propertiesPanel.borderStyle" = <null>
+select "propertiesPanel.borderStyle" = <null> [merged]
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---
@@ -199,7 +199,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 [propertiesPanel.presentation]
 button "propertiesPanel.button"
 button "propertiesPanel.image"
@@ -274,7 +274,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -314,7 +314,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
@@ -483,7 +483,7 @@ input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 [preset]
 textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
-select "propertiesPanel.alignment" = <null>
+select "propertiesPanel.alignment" = <null> [merged]
 checkbox "propertiesPanel.isSortList" = indeterminate
 checkbox "propertiesPanel.onlyOneItem" = indeterminate
 checkbox "allowReplacement" = indeterminate
@@ -532,7 +532,7 @@ checkbox "propertiesPanel.readOnly" = indeterminate
 [preset]
 textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
-select "propertiesPanel.alignment" = <null>
+select "propertiesPanel.alignment" = <null> [merged]
 checkbox "propertiesPanel.isWidthFixed" = indeterminate
 input[number] "propertiesPanel.width" =  (disabled) [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -601,7 +601,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -642,7 +642,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
@@ -741,7 +741,7 @@ checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
 input[text] "propertiesPanel.borderColor" =  [merged]
-select "propertiesPanel.borderStyle" = <null>
+select "propertiesPanel.borderStyle" = <null> [merged]
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---
@@ -942,7 +942,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -982,7 +982,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 [propertiesPanel.hotspots]
 button "add"
@@ -1148,7 +1148,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -1186,7 +1186,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "propertiesPanel.firstColumnSizeRatio" =  [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1254,8 +1254,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-textarea "propertiesPanel.label" = 
-textarea "propertiesPanel.label2" = 
+textarea "propertiesPanel.label" =  [merged]
+textarea "propertiesPanel.label2" =  [merged]
 [propertiesPanel.options]
 textarea "newOption" = 
 [rows]
@@ -1299,8 +1299,8 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-textarea "propertiesPanel.label" = 
-textarea "propertiesPanel.label2" = 
+textarea "propertiesPanel.label" =  [merged]
+textarea "propertiesPanel.label2" =  [merged]
 [propertiesPanel.options]
 textarea "newOption" = 
 [rows]
@@ -1467,7 +1467,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -1508,7 +1508,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 button "code"
 checkbox "propertiesPanel.enableModeSwitch" = indeterminate
@@ -1581,7 +1581,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-select "propertiesPanel.operation" = <null>
+select "propertiesPanel.operation" = <null> [merged]
 input[text] "propertiesPanel.term" = 123
 button "clear"
 input[text] "propertiesPanel.term" = 456
@@ -1702,7 +1702,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -1744,7 +1744,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
@@ -1819,13 +1819,14 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
+select "propertiesPanel.alignment" = <null> [merged]
 checkbox "propertiesPanel.strikeOtherOptions" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -1861,11 +1862,12 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
+select "propertiesPanel.alignment" = <null> [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1934,7 +1936,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -1978,7 +1980,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "propertiesPanel.minValue" =  [merged]
 input[number] "propertiesPanel.maxValue" =  [merged]
@@ -2050,7 +2052,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -2094,7 +2096,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -2209,7 +2211,7 @@ checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
 input[text] "propertiesPanel.borderColor" =  [merged]
-select "propertiesPanel.borderStyle" = <null>
+select "propertiesPanel.borderStyle" = <null> [merged]
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---
@@ -2317,7 +2319,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -2364,7 +2366,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "rows" =  [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2440,7 +2442,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -2450,7 +2452,7 @@ checkbox "propertiesPanel.hasAutoHeight" = indeterminate
 checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
-select "propertiesPanel.appearance" = <null>
+select "propertiesPanel.appearance" = <null> [merged]
 [propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)
@@ -2491,7 +2493,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 textarea "preset" = 
 checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
@@ -2716,14 +2718,14 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 input[text] "preset" = 
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
-select "propertiesPanel.appearance" = <null>
+select "propertiesPanel.appearance" = <null> [merged]
 input[number] "propertiesPanel.minLength" = 
 input[text] "propertiesPanel.minLengthWarnMessage" =  (disabled) [merged]
 input[number] "propertiesPanel.maxLength" = 
@@ -2772,7 +2774,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
+textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[text] "preset" = 
 [propertiesPanel.textAlign]
@@ -2848,7 +2850,7 @@ checkbox "propertiesPanel.highlightableYellow" = indeterminate
 checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
 checkbox "propertiesPanel.highlightableOrange" = indeterminate
 select "propertiesPanel.markingPanels" = []
-select "propertiesPanel.markingMode" = <null>
+select "propertiesPanel.markingMode" = <null> [merged]
 checkbox "propertiesPanel.hasSelectionPopup" = indeterminate (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -2890,7 +2892,7 @@ checkbox "propertiesPanel.highlightableYellow" = indeterminate
 checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
 checkbox "propertiesPanel.highlightableOrange" = indeterminate
 select "propertiesPanel.markingPanels" = []
-select "propertiesPanel.markingMode" = <null>
+select "propertiesPanel.markingMode" = <null> [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3257,7 +3259,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-molecule-editor]
-select "propertiesPanel.bondingType" = <null>
+select "propertiesPanel.bondingType" = <null> [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
@@ -3283,7 +3285,7 @@ checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
 input[text] "propertiesPanel.borderColor" =  [merged]
-select "propertiesPanel.borderStyle" = <null>
+select "propertiesPanel.borderStyle" = <null> [merged]
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---
@@ -3296,7 +3298,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-molecule-editor]
-select "propertiesPanel.bondingType" = <null>
+select "propertiesPanel.bondingType" = <null> [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3389,7 +3391,7 @@ checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
 input[text] "propertiesPanel.borderColor" =  [merged]
-select "propertiesPanel.borderStyle" = <null>
+select "propertiesPanel.borderStyle" = <null> [merged]
 input[number] "propertiesPanel.borderWidth" =  [merged]
 
 --- footer ---

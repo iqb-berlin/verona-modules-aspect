@@ -30,6 +30,9 @@
       {{'propertiesPanel.' + option.displayValue | translate}}
     </mat-option>
   </mat-select>
+  @if (combinedProperties.appearance === null) {
+    <aspect-merged-marker matSuffix></aspect-merged-marker>
+  }
 </mat-form-field>
 
 <ng-container *ngIf="unitService.expertMode && combinedProperties.minLength !== undefined">

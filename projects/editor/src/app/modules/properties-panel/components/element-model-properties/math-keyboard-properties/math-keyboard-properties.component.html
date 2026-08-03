@@ -8,5 +8,8 @@
         <mat-option [value]="preset">{{`formulaPreset.${preset}` | translate}}</mat-option>
       }
     </mat-select>
+    @if (combinedProperties.mathKeyboardPresets === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }

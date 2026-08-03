@@ -8,6 +8,9 @@
         {{ operation | translate }}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.operation === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   {{ 'termRows' | translate }}

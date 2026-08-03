@@ -67,6 +67,9 @@
         {{ variable.id }}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.trackedVariables === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <mat-form-field class="wide-form-field" appearance="fill">

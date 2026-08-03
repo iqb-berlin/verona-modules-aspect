@@ -1,8 +1,7 @@
-<!--A known defect, not a deliberate guard: this asks for plain truthiness, so a selection whose
-    elements disagree merges `alignment` to null and the field disappears instead of being offered
-    empty and marked. `!== undefined` is what the panel writes elsewhere. Frozen as-is in the
-    baseline's `radio|multi-*` entries until it is fixed with the other selects (#1138).-->
-@if (combinedProperties.alignment) {
+<!--`!== undefined` rather than plain truthiness: the merge answers null for "the selected elements
+    disagree", and asking for truthiness made the field disappear for that instead of offering it
+    empty and marked. `undefined` still means the property is not part of this selection (#1138).-->
+@if (combinedProperties.alignment !== undefined) {
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{ 'propertiesPanel.alignment' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.alignment"
@@ -11,6 +10,9 @@
         <mat-option [value]="option">{{ 'propertiesPanel.' + option | translate }}</mat-option>
       }
     </mat-select>
+    @if (combinedProperties.alignment === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }
 @if (unitService.expertMode && combinedProperties.strikeOtherOptions !== undefined) {

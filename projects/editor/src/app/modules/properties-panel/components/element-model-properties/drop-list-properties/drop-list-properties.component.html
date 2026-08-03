@@ -12,7 +12,10 @@
     </aspect-option-list-panel>
   }
 
-  <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
+  <!--`!== undefined`, not `!== null`: null is what the merge answers for a selection of drop lists
+      whose connections differ, and hiding the field for that left no way to connect them together.
+      The handler replaces the whole array, so writing from an empty box is sound (#1138).-->
+  <mat-form-field *ngIf="combinedProperties.connectedTo !== undefined"
                   class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
     <mat-select #selectConnectedLists multiple
@@ -29,6 +32,9 @@
         {{idPair.alias}}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.connectedTo === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <mat-form-field *ngIf="combinedProperties.orientation !== undefined"
@@ -41,6 +47,9 @@
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.orientation === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.isSortList !== undefined"

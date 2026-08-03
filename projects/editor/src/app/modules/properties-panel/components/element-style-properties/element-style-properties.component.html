@@ -213,6 +213,9 @@
             {{option}}
           </mat-option>
         </mat-select>
+        @if (styles.borderStyle === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
       <mat-form-field *ngIf="styles.borderWidth !== undefined"
                       appearance="fill">

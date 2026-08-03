@@ -1,10 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   MultiLineTextPropertiesComponent
 } from './multi-line-text-properties.component';
@@ -38,8 +43,11 @@ describe('MultiLineTextPropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MultiLineTextPropertiesComponent, MockMergedCheckboxComponent],
-      imports: [MatFormFieldModule, MatInputModule, TranslateModule.forRoot()],
+      declarations: [
+        MultiLineTextPropertiesComponent, MockMergedCheckboxComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective
+      ],
+      imports: [FormsModule, MatFormFieldModule, MatInputModule, TranslateModule.forRoot()],
       providers: [{ provide: UnitService, useValue: unitServiceMock }]
     }).compileComponents();
 
@@ -61,25 +69,48 @@ describe('MultiLineTextPropertiesComponent', () => {
     expect(inputs()[0].nativeElement.value).toBe('3');
   });
 
-  it('should swap the row count for the expected characters on a dynamic row count', () => {
+  it('should swap the row count for the expected characters on a dynamic row count', async () => {
     component.combinedProperties = {
       rowCount: 3, hasAutoHeight: false, hasDynamicRowCount: true, expectedCharactersCount: 100
     };
     fixture.detectChanges();
+    await fixture.whenStable(); // NgModel writes the box in a microtask
 
     expect(inputs().length).toBe(1);
     expect(inputs()[0].nativeElement.value).toBe('100');
   });
 
-  it('should emit the entered row count', () => {
-    const emitted: { property: string; value: unknown }[] = [];
+  /* `rowCount` is declared `number`, and the box handed on `field.value` - the raw string. On top
+     of that `|| 0` made every unreadable keystroke a 0, so clearing the box to retype wrote a 0
+     first (#1164). */
+  it('should emit the entered row count as a number', () => {
+    const emitted: { property: string; value: unknown; isInputValid?: boolean | null }[] = [];
     component.updateModel.subscribe(update => emitted.push(update));
 
     const input = inputs()[0];
     input.nativeElement.value = '7';
-    input.triggerEventHandler('input', { target: input.nativeElement });
+    input.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
 
-    expect(emitted).toEqual([{ property: 'rowCount', value: '7' }]);
+    expect(emitted).toEqual([{ property: 'rowCount', value: 7, isInputValid: true }]);
+  });
+
+  it('should refuse an emptied row count and put the box back', async () => {
+    const emitted: { property: string; value: unknown; isInputValid?: boolean | null }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    const input = inputs()[0];
+    input.nativeElement.value = '';
+    input.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(emitted).toEqual([]);
+
+    input.nativeElement.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual([{ property: 'rowCount', value: null, isInputValid: false }]);
+    expect(input.nativeElement.value).toBe('3');
   });
 
   it('should emit the toggled auto height', () => {
@@ -116,9 +147,10 @@ describe('MultiLineTextPropertiesComponent', () => {
   });
 
   // The math text area shares only rowCount and hasAutoHeight.
-  it('should show only the shared controls when the text-area-only ones are absent', () => {
+  it('should show only the shared controls when the text-area-only ones are absent', async () => {
     component.combinedProperties = { rowCount: 4, hasAutoHeight: false };
     fixture.detectChanges();
+    await fixture.whenStable(); // NgModel writes the box in a microtask
 
     expect(findCheckbox('hasDynamicRowCount')).toBeUndefined();
     expect(inputs().length).toBe(1);

@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   FirstColumnRatioPropertiesComponent
 } from './first-column-ratio-properties.component';
@@ -14,8 +19,11 @@ describe('FirstColumnRatioPropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FirstColumnRatioPropertiesComponent],
+      declarations: [
+        FirstColumnRatioPropertiesComponent, NumberFieldDirective, NumberFieldBadInputDirective
+      ],
       imports: [
+        FormsModule,
         MatFormFieldModule,
         MatInputModule,
         MatTooltipModule,
@@ -37,15 +45,38 @@ describe('FirstColumnRatioPropertiesComponent', () => {
     expect(fixture.debugElement.query(By.css('input')).nativeElement.value).toBe('3');
   });
 
-  it('should emit the entered ratio', () => {
-    const emitted: { property: string; value: number | string }[] = [];
+  /* `firstColumnSizeRatio` is declared `number`, and the box used to hand on `field.value` - the
+     raw string - so the unit definition ended up with "5" where a 5 belongs (#1164). */
+  it('should emit the entered ratio as a number', () => {
+    const emitted: { property: string; value: unknown; isInputValid?: boolean | null }[] = [];
     component.updateModel.subscribe(update => emitted.push(update));
 
     const input = fixture.debugElement.query(By.css('input'));
     input.nativeElement.value = '5';
-    input.triggerEventHandler('input', { target: input.nativeElement });
+    input.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
 
-    expect(emitted).toEqual([{ property: 'firstColumnSizeRatio', value: '5' }]);
+    expect(emitted).toEqual([{ property: 'firstColumnSizeRatio', value: 5, isInputValid: true }]);
+  });
+
+  /* And `|| 0` turned every keystroke that left the box unreadable into a 0 - the first press of
+     a minus sign, or clearing it to retype. It is refused on leaving now, and the box goes back. */
+  it('should refuse an emptied ratio and put the box back', async () => {
+    const emitted: { property: string; value: unknown; isInputValid?: boolean | null }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    const input = fixture.debugElement.query(By.css('input'));
+    input.nativeElement.value = '';
+    input.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(emitted).toEqual([]);
+
+    input.nativeElement.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual([{ property: 'firstColumnSizeRatio', value: null, isInputValid: false }]);
+    expect(input.nativeElement.value).toBe('3');
   });
 
   // The panel offers the control only for elements that have the property at all.

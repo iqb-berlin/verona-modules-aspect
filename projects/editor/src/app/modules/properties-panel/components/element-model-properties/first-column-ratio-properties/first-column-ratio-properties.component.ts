@@ -24,5 +24,9 @@ export class FirstColumnRatioPropertiesComponent {
    * `5`. Typed as it actually behaves; normalising it would be a change of behaviour, not of types.
    */
   @Output() updateModel =
-    new EventEmitter<{ property: keyof FirstColumnRatioProperties; value: number | string }>();
+    new EventEmitter<{
+      property: keyof FirstColumnRatioProperties;
+      value: number | string | null;
+      isInputValid?: boolean | null
+    }>();
 }

@@ -11,9 +11,10 @@
   <mat-form-field *ngIf="combinedProperties.columnCount != null"
                   appearance="fill">
     <mat-label>{{ 'propertiesPanel.columnCount' | translate }}</mat-label>
-    <input #columnCountField matInput type="number" [value]="combinedProperties.columnCount"
-           (input)="columnCountField.value !== '' && emitOwn('columnCount', +columnCountField.value)"
-           (change)="columnCountField.value === '' && emitOwn('columnCount', 0)">
+    <input matInput type="number" required aspectNumberField
+           [ngModel]="combinedProperties.columnCount"
+           (numberChange)="updateModel.emit(
+                  { property: 'columnCount', value: $event.value, isInputValid: $event.isInputValid })">
   </mat-form-field>
 
   <fieldset class="fx-column-start-stretch">

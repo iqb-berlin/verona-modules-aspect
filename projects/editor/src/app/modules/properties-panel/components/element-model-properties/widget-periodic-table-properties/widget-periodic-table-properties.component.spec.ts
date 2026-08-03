@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -6,6 +7,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
   WidgetPeriodicTablePropertiesComponent
 } from './widget-periodic-table-properties.component';
@@ -17,8 +22,12 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WidgetPeriodicTablePropertiesComponent, MergedCheckboxComponent],
+      declarations: [
+        WidgetPeriodicTablePropertiesComponent, MergedCheckboxComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective
+      ],
       imports: [
+        FormsModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatInputModule,
@@ -61,19 +70,31 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     expect(emitted).toEqual([{ property: 'showInfoENeg', value: true }]);
   });
 
-  it('should emit the maximum number of selections', () => {
+  /* `maxNumberOfSelections` is declared `number`, and the box handed on `field.value` - the raw
+     string (#1164). */
+  it('should emit the maximum number of selections as a number', () => {
     const numberInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
     numberInput.value = '5';
     numberInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
 
-    expect(emitted).toEqual([{ property: 'maxNumberOfSelections', value: '5' }]);
+    expect(emitted).toEqual([{ property: 'maxNumberOfSelections', value: 5, isInputValid: true }]);
   });
 
-  it('should fall back to zero for an empty maximum number of selections', () => {
+  /* An emptied box used to write a 0 on the keystroke that emptied it - so clearing the field to
+     retype set "no selection allowed" in passing. It is refused on leaving now. */
+  it('should refuse an emptied maximum number of selections', async () => {
     const numberInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
     numberInput.value = '';
     numberInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(emitted).toEqual([]);
 
-    expect(emitted).toEqual([{ property: 'maxNumberOfSelections', value: 0 }]);
+    numberInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual([{ property: 'maxNumberOfSelections', value: null, isInputValid: false }]);
+    expect(numberInput.value).toBe('3');
   });
 });

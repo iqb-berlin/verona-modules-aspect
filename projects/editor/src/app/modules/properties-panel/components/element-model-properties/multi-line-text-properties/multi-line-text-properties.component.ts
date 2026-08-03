@@ -31,7 +31,8 @@ export class MultiLineTextPropertiesComponent {
   @Output() updateModel =
     new EventEmitter<{
       property: keyof PanelMultiLineTextProperties;
-      value: boolean | number | string;
+      value: boolean | number | string | null;
+      isInputValid?: boolean | null;
     }>();
 
   constructor(public unitService: UnitService) { }

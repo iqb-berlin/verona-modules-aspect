@@ -27,6 +27,10 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
   TextPropsComponent
 } from './text-properties-field-set.component';
 
@@ -61,8 +65,8 @@ describe('TextPropsComponent', () => {
       declarations: [TextPropsComponent,
         MockHighlightPropertiesComponent,
         SafeResourceHTMLPipe,
-        MergedCheckboxComponent
-      ],
+        MergedCheckboxComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -148,22 +152,27 @@ describe('TextPropsComponent', () => {
     const columnCountInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
     columnCountInput.value = '3';
     columnCountInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
 
-    expect(emitted).toEqual([{ property: 'columnCount', value: 3 }]);
+    expect(emitted).toEqual([{ property: 'columnCount', value: 3, isInputValid: true }]);
   });
 
-  /* Empty means zero, committed on leaving the field. Emitting while typing would write over the
-     box; the old `(change)` handler patched only the merged object, so the panel showed 0 while
-     the saved unit definition kept what the emit had put there. */
-  it('should emit zero for a column count left empty', () => {
+  /* This box kept the last hand-written copy of the old rule: a `(change)` handler that wrote a 0
+     for an emptied field. `columnCount` is declared `number`, so it is `required` now and an empty
+     box is refused like everywhere else (#1164). */
+  it('should refuse a column count left empty', async () => {
     const columnCountInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
 
     columnCountInput.value = '';
     columnCountInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
     expect(emitted).toEqual([]);
 
-    columnCountInput.dispatchEvent(new Event('change'));
+    columnCountInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
 
-    expect(emitted).toEqual([{ property: 'columnCount', value: 0 }]);
+    expect(emitted).toEqual([{ property: 'columnCount', value: null, isInputValid: false }]);
+    expect(columnCountInput.value).toBe('1');
   });
 });

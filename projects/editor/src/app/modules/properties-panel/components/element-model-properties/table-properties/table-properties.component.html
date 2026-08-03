@@ -21,6 +21,7 @@
                                [value]="size.value"
                                [unit]="size.unit"
                                [allowedUnits]="['px', 'fr']"
+                               [min]="0"
                                (valueUpdated)="changeGridSize('gridRowSizes', $index, $event)">
       </aspect-size-input-panel>
     }
@@ -42,6 +43,7 @@
                                [value]="size.value"
                                [unit]="size.unit"
                                [allowedUnits]="['px', 'fr']"
+                               [min]="0"
                                (valueUpdated)="changeGridSize('gridColumnSizes', $index, $event)">
       </aspect-size-input-panel>
     }

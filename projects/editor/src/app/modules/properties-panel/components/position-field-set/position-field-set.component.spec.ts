@@ -23,6 +23,7 @@ import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/nu
   template: ''
 })
 class MockSizeInputPanelComponent {
+  @Input() min: number | null = null;
   @Input() label!: string;
   @Input() value: number | null | undefined;
   @Input() unit: string | null | undefined;

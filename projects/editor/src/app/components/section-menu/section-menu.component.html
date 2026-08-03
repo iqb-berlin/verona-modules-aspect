@@ -100,6 +100,7 @@
                                      [value]="size.value"
                                      [unit]="size.unit"
                                      [allowedUnits]="['px', 'fr']"
+                                     [min]="0"
                                      (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
             </aspect-size-input-panel>
           </ng-container>
@@ -126,6 +127,7 @@
                                      [value]="size.value"
                                      [unit]="size.unit"
                                      [allowedUnits]="['px', 'fr']"
+                                     [min]="0"
                                      (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
             </aspect-size-input-panel>
           </ng-container>

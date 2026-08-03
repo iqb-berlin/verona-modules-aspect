@@ -1,8 +1,11 @@
 <mat-form-field [style.width.%]="40">
   <mat-label>{{label}}</mat-label>
-  <input matInput type="number" [disabled]="disabled"
-         [(ngModel)]="value"
-         (change)="emitMeasurement()">
+  <input matInput type="number" required aspectNumberField
+         [disabled]="disabled"
+         [min]="min"
+         [ngModel]="value"
+         (numberChange)="commitValue($event)"
+         (blur)="applyValue()">
 </mat-form-field>
 <mat-form-field [style.width.%]="60">
   <mat-label>{{'section-menu.unit' | translate }}</mat-label>

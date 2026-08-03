@@ -34,6 +34,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({ selector: 'aspect-size-input-panel', standalone: false, template: '' })
 class MockSizeInputPanelComponent {
+  @Input() min: number | null = null;
   @Input() label!: string;
   @Input() value!: number;
   @Input() unit!: string;

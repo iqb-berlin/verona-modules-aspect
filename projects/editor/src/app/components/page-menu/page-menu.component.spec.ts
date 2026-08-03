@@ -18,6 +18,10 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { PageService } from 'editor/src/app/services/page.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import {
+  NumberFieldBadInputDirective
+} from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
+import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 
 describe('PageMenu', () => {
   let component: PageMenu;
@@ -47,7 +51,7 @@ describe('PageMenu', () => {
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
-      declarations: [PageMenu],
+      declarations: [PageMenu, NumberFieldDirective, NumberFieldBadInputDirective],
       imports: [
         CommonModule,
         FormsModule,
@@ -107,11 +111,13 @@ describe('PageMenu', () => {
     expect(messageService.showWarning).not.toHaveBeenCalled();
   });
 
+  /* The message goes through TranslateService now; with no translations loaded it yields the key.
+     It used to be a German literal in the component (rules.md §5). */
   it('should warn instead of writing an invalid value', () => {
     component.updateModel(component.page, 'maxWidth', 900, false);
 
     expect(component.page.maxWidth).toBe(750);
-    expect(messageService.showWarning).toHaveBeenCalledWith('Eingabe ungültig');
+    expect(messageService.showWarning).toHaveBeenCalledWith('inputInvalid');
     expect(updateUnitDefinition).not.toHaveBeenCalled();
   });
 
@@ -133,5 +139,70 @@ describe('PageMenu', () => {
     expect(updateSectionCounter).toHaveBeenCalled();
     expect(orderChanged).toBe(true);
     expect(alwaysVisibleModified).toBe(true);
+  });
+
+  /* The three number boxes had a guard already, and it was the closest of the pre-#1161 fields to
+     the right shape - but it hung on `(ngModelChange)`, so it judged every keystroke, and
+     `$event || 0` wrote a 0 for the one that emptied the box (#1164). */
+  describe('the number boxes', () => {
+    /* In template order: page width, margin, and - only in expert mode - the aspect ratio. */
+    const boxes = (): HTMLInputElement[] => Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    );
+
+    const type = (box: HTMLInputElement, value: string): void => {
+      box.value = value;
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    };
+    const leave = async (box: HTMLInputElement): Promise<void> => {
+      box.dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should write an edited page width', async () => {
+      type(boxes()[0], '900');
+      await leave(boxes()[0]);
+
+      expect(component.page.maxWidth).toBe(900);
+      expect(messageService.showWarning).not.toHaveBeenCalled();
+    });
+
+    /* One warning for the whole edit: typing `-50` passes through `-5`, and judging the keystroke
+       put one warning on screen after the other. */
+    it('should warn once for an edit that passes through several invalid values', async () => {
+      type(boxes()[0], '-5');
+      type(boxes()[0], '-50');
+      expect(messageService.showWarning).not.toHaveBeenCalled();
+
+      await leave(boxes()[0]);
+
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+      expect(component.page.maxWidth).toBe(750);
+      expect(boxes()[0].value).toBe('750');
+    });
+
+    it('should refuse an emptied width rather than write a zero', async () => {
+      type(boxes()[0], '');
+      await leave(boxes()[0]);
+
+      expect(component.page.maxWidth).toBe(750);
+      expect(boxes()[0].value).toBe('750');
+    });
+
+    /* The aspect ratio passed no validity at all, so its `min="0" max="100"` meant nothing. */
+    it('should refuse an aspect ratio above the maximum', async () => {
+      component.page.alwaysVisible = true;
+      fixture.detectChanges();
+      await fixture.whenStable();
+      const ratio = boxes()[2];
+
+      type(ratio, '150');
+      await leave(ratio);
+
+      expect(component.page.alwaysVisibleAspectRatio).toBe(50);
+      expect(ratio.value).toBe('50');
+    });
   });
 });

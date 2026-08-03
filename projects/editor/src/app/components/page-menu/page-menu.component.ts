@@ -1,6 +1,7 @@
 import {
   Component, EventEmitter, Input, OnDestroy, Output
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -24,7 +25,8 @@ export class PageMenu implements OnDestroy {
   constructor(public unitService: UnitService,
               public pageService: PageService,
               public selectionService: SelectionService,
-              private messageService: MessageService) {}
+              private messageService: MessageService,
+              private translateService: TranslateService) {}
 
   movePage(direction: 'left' | 'right'): void {
     this.pageService.moveSelectedPage(this.selectionService.selectedPageIndex, direction);
@@ -50,8 +52,27 @@ export class PageMenu implements OnDestroy {
       page[property] = value;
       this.unitService.updateUnitDefinition(); // TODO
     } else {
-      this.messageService.showWarning('Eingabe ungültig');
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
     }
+  }
+
+  /**
+   * What `aspectNumberField` worked out for one of the three number boxes.
+   *
+   * They had a guard already, and it was the closest of all the pre-#1161 fields to the right
+   * shape - but it hung on `(ngModelChange)`, so it judged every keystroke: typing `-50` warned
+   * twice on its way through `-5`, and `$event || 0` wrote a 0 for the keystroke that emptied the
+   * box. The aspect ratio passed no validity at all, so its `min="0" max="100"` meant nothing
+   * (#1164).
+   */
+  commitNumber(page: EditorPage,
+               property: 'maxWidth' | 'margin' | 'alwaysVisibleAspectRatio',
+               update: { value: number | null; isInputValid: boolean }): void {
+    if (!update.isInputValid || update.value === null) {
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
+      return;
+    }
+    this.updateModel(page, property, update.value);
   }
 
   private movePageToFront(page: EditorPage): void {

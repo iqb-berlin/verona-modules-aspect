@@ -5,6 +5,9 @@
   <input #appDefinitionField matInput disabled
          [value]="combinedProperties.appDefinition"
          (input)="updateModel.emit({ property: 'appDefinition', value: appDefinitionField.value })">
+  @if (combinedProperties.appDefinition === null) {
+    <aspect-merged-marker matSuffix></aspect-merged-marker>
+  }
   <button mat-icon-button matSuffix (click)="showGeogebraAppDefDialog()">
     <mat-icon>edit</mat-icon>
   </button>
@@ -44,6 +47,9 @@
     <input #customToolbarField matInput [disabled]="!combinedProperties.showToolbar"
            [value]="combinedProperties.customToolbar"
            (input)="updateModel.emit({ property: 'customToolbar', value: customToolbarField.value })">
+    @if (combinedProperties.customToolbar === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 </fieldset>
 <fieldset>

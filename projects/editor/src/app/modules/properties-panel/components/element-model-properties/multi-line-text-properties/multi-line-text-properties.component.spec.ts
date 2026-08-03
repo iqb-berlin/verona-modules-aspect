@@ -191,4 +191,37 @@ describe('MultiLineTextPropertiesComponent', () => {
     expect(emitted).toEqual([{ property: 'rowCount', value: 0, isInputValid: false }]);
     expect(input.nativeElement.value).toBe('3');
   });
+
+  /* Both halves of this field were unpinned: its guard (changed from `!= null` to `!== undefined`,
+     so a divergent selection is offered the field at all) and its marker. The characterization net
+     cannot reach it - the field hangs on `hasDynamicRowCount`, which merges to null in every
+     divergent fixture and hides it - so it has to be pinned here (#1138). */
+  describe('the expected characters field on a divergent selection', () => {
+    beforeEach(async () => {
+      component.combinedProperties = {
+        rowCount: 3, hasAutoHeight: false, hasDynamicRowCount: true, expectedCharactersCount: null
+      };
+      fixture.detectChanges();
+      await fixture.whenStable();
+    });
+
+    it('should be offered rather than hidden', () => {
+      expect(inputs().length).toBe(1);
+      expect(inputs()[0].nativeElement.value).toBe('');
+    });
+
+    it('should be marked as a value the selection disagrees about', () => {
+      expect(fixture.nativeElement.querySelector('aspect-merged-marker mat-icon')).not.toBeNull();
+    });
+
+    it('should stay unmarked where the selection agrees', async () => {
+      component.combinedProperties = {
+        rowCount: 3, hasAutoHeight: false, hasDynamicRowCount: true, expectedCharactersCount: 200
+      };
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(fixture.nativeElement.querySelector('aspect-merged-marker mat-icon')).toBeNull();
+    });
+  });
 });

@@ -6,7 +6,12 @@
 }
 
 <!--`type != null` alongside the src: which file dialog to open follows from the element type, so a
-    selection of mixed types - whose type merges to null - has no dialog to offer. See #1152.-->
+    selection of mixed types - whose type merges to null - has no dialog to offer. See #1152.
+
+    The `src` half is a different matter and a known defect: two elements of the SAME type with
+    different files merge `src` to null, so the button disappears and there is no way left to give
+    both of them one new file - while the file name beside it reads "unknown". Same class as the
+    guards fixed in #1138; to be picked up there.-->
 @if (combinedProperties.src && combinedProperties.type != null) {
   <button class="media-src-button" [style.align-self]="'center'"
           mat-fab color="primary"

@@ -823,7 +823,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-input[text] "propertiesPanel.appDefinition" =  (disabled)
+input[text] "propertiesPanel.appDefinition" =  (disabled) [merged]
 checkbox "propertiesPanel.showResetIcon" = indeterminate
 [propertiesPanel.geogebraHeader]
 checkbox "propertiesPanel.enableUndoRedo" = indeterminate
@@ -831,7 +831,7 @@ checkbox "propertiesPanel.enableShiftDragZoom" = indeterminate
 checkbox "propertiesPanel.showZoomButtons" = indeterminate
 checkbox "propertiesPanel.showFullscreenButton" = indeterminate
 checkbox "propertiesPanel.showToolbar" = indeterminate
-input[text] "propertiesPanel.customToolbar" =  (disabled)
+input[text] "propertiesPanel.customToolbar" =  (disabled) [merged]
 [propertiesPanel.trackedGeogebraVariables]
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
@@ -868,7 +868,7 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" = unknown
-input[text] "propertiesPanel.appDefinition" =  (disabled)
+input[text] "propertiesPanel.appDefinition" =  (disabled) [merged]
 [propertiesPanel.geogebraHeader]
 [propertiesPanel.trackedGeogebraVariables]
 select "propertiesPanel.trackedVariables" = []
@@ -1587,8 +1587,8 @@ button "clear"
 input[text] "propertiesPanel.term" = 456
 button "clear"
 button "add addTermRow"
-input[text] "resultHelperRow" = 
-input[text] "resultRow" = 
+input[text] "resultHelperRow" =  [merged]
+input[text] "resultRow" =  [merged]
 button "propertiesPanel.editVariableLayout" (disabled)
 [propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
@@ -1634,8 +1634,8 @@ button "clear"
 input[text] "propertiesPanel.term" = 456
 button "clear"
 button "add addTermRow"
-input[text] "resultHelperRow" = 
-input[text] "resultRow" = 
+input[text] "resultHelperRow" =  [merged]
+input[text] "resultRow" =  [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 

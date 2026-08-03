@@ -40,6 +40,9 @@
                        !combinedProperties.variableLayoutOptions?.showResultRow"
            [value]="combinedProperties.resultHelperRow"
            (input)="updateModel.emit({ property: 'resultHelperRow', value: resultHelperRowField.value })">
+    @if (combinedProperties.resultHelperRow === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <mat-form-field>
@@ -49,6 +52,9 @@
                        !combinedProperties.variableLayoutOptions?.showResultRow"
            [value]="combinedProperties.result"
            (input)="updateModel.emit({ property: 'result', value: resultField.value })">
+    @if (combinedProperties.result === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
 

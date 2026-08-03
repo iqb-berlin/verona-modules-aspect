@@ -119,7 +119,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.fontSize"
                (numberChange)="commitStyle('fontSize', $event)">
-        <aspect-merged-marker matSuffix [value]="styles.fontSize"></aspect-merged-marker>
+        @if (styles.fontSize === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
       <mat-form-field *ngIf="styles.lineHeight !== undefined"
                       appearance="fill">
@@ -127,7 +129,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.lineHeight"
                (numberChange)="commitStyle('lineHeight', $event)">
-        <aspect-merged-marker matSuffix [value]="styles.lineHeight"></aspect-merged-marker>
+        @if (styles.lineHeight === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
 
       <aspect-merged-checkbox *ngIf="styles.bold !== undefined"
@@ -156,7 +160,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.borderRadius"
                (numberChange)="commitStyle('borderRadius', $event)">
-        <aspect-merged-marker matSuffix [value]="styles.borderRadius"></aspect-merged-marker>
+        @if (styles.borderRadius === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
 
       <mat-form-field *ngIf="styles.borderColor !== undefined"
@@ -190,6 +196,8 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.borderWidth"
                (numberChange)="commitStyle('borderWidth', $event)">
-        <aspect-merged-marker matSuffix [value]="styles.borderWidth"></aspect-merged-marker>
+        @if (styles.borderWidth === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
     </fieldset>

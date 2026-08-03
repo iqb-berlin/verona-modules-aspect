@@ -1,7 +1,9 @@
-@if (value === null) {
-  <mat-icon class="merged-marker"
-            [matTooltip]="'propertiesPanel.valuesDiffer' | translate"
-            [attr.aria-label]="'propertiesPanel.valuesDiffer' | translate">
-    remove
-  </mat-icon>
-}
+<!-- `aria-hidden="false"` as a static attribute, which is Material's documented opt-out: MatIcon
+     sets `aria-hidden="true"` on itself unless it finds one written on the element, and a bound
+     `[attr.aria-hidden]` comes too late for that. Without it the label below reaches nobody. -->
+<mat-icon class="merged-marker"
+          aria-hidden="false"
+          [matTooltip]="'propertiesPanel.valuesDiffer' | translate"
+          [attr.aria-label]="'propertiesPanel.valuesDiffer' | translate">
+  remove
+</mat-icon>

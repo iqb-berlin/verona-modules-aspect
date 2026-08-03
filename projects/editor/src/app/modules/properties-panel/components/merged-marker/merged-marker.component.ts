@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 /**
  * Marks a field whose selected elements disagree about the value.
@@ -16,13 +16,19 @@ import { Component, Input } from '@angular/core';
  * Information rather than an action, so it is not focusable; the tooltip is duplicated as an
  * `aria-label` because a tooltip alone never reaches a screen reader.
  *
- * Placed at the call site with `matSuffix`:
+ * The call site decides when to show it, rather than the component taking the value and hiding
+ * itself. `matSuffix` is read from the element, not from what it renders: a marker that renders
+ * nothing still counts as an icon suffix, and Material then drops the field's right inset from
+ * 16px to 4px - on every such field, in the ordinary single-selection case. Written as a condition
+ * around the element, the field is untouched until there is something to say.
  *
  * ```html
  * <mat-form-field>
  *   <mat-label>…</mat-label>
  *   <input matInput …>
- *   <aspect-merged-marker matSuffix [value]="styles.fontSize"></aspect-merged-marker>
+ *   @if (styles.fontSize === null) {
+ *     <aspect-merged-marker matSuffix></aspect-merged-marker>
+ *   }
  * </mat-form-field>
  * ```
  */
@@ -32,11 +38,4 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./merged-marker.component.scss'],
   standalone: false
 })
-export class MergedMarkerComponent {
-  /**
-   * The merged property this field shows. Only `null` is marked: it is what the merge produces for
-   * "the selection disagrees". `undefined` means the property is not part of the selection at all,
-   * and such a field is not rendered in the first place.
-   */
-  @Input() value: unknown;
-}
+export class MergedMarkerComponent {}

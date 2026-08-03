@@ -29,7 +29,9 @@
            [ngModel]="combinedProperties.rowCount"
            (numberChange)="updateModel.emit(
                   { property: 'rowCount', value: $event.value, isInputValid: $event.isInputValid })">
-    <aspect-merged-marker matSuffix [value]="combinedProperties.rowCount"></aspect-merged-marker>
+    @if (combinedProperties.rowCount === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }
 
@@ -41,6 +43,8 @@
            [ngModel]="combinedProperties.expectedCharactersCount"
            (numberChange)="updateModel.emit(
                   { property: 'expectedCharactersCount', value: $event.value, isInputValid: $event.isInputValid })">
-    <aspect-merged-marker matSuffix [value]="combinedProperties.expectedCharactersCount"></aspect-merged-marker>
+    @if (combinedProperties.expectedCharactersCount === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }

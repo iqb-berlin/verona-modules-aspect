@@ -15,7 +15,9 @@
            [ngModel]="combinedProperties.columnCount"
            (numberChange)="updateModel.emit(
                   { property: 'columnCount', value: $event.value, isInputValid: $event.isInputValid })">
-    <aspect-merged-marker matSuffix [value]="combinedProperties.columnCount"></aspect-merged-marker>
+    @if (combinedProperties.columnCount === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <fieldset class="fx-column-start-stretch">

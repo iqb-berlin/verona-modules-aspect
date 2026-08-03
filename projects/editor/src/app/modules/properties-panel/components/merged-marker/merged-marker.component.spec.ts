@@ -4,11 +4,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { MergedMarkerComponent } from './merged-marker.component';
 
+/**
+ * Whether the marker is shown is the call site's decision (see the component's doc comment), so
+ * what is left here is what it looks like when it is - and the one part of that which is easy to
+ * get wrong.
+ */
 describe('MergedMarkerComponent', () => {
-  let component: MergedMarkerComponent;
   let fixture: ComponentFixture<MergedMarkerComponent>;
 
-  const marker = (): HTMLElement | null => fixture.nativeElement.querySelector('mat-icon');
+  const icon = (): HTMLElement => fixture.nativeElement.querySelector('mat-icon') as HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -17,52 +21,25 @@ describe('MergedMarkerComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(MergedMarkerComponent);
-    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  /* `null` is what the merge produces for "the selected elements disagree". It is the only state
-     this marks - see the two cases below for what it must stay quiet about. */
-  it('should mark a value the selection disagrees about', () => {
-    component.value = null;
-    fixture.detectChanges();
-
-    expect(marker()).not.toBeNull();
+  it('should draw the dash an indeterminate checkbox uses', () => {
+    expect(icon()).not.toBeNull();
+    expect(icon().textContent?.trim()).toBe('remove');
   });
 
-  it('should stay away where the selection agrees', () => {
-    component.value = 42;
-    fixture.detectChanges();
-
-    expect(marker()).toBeNull();
-  });
-
-  /* A value that is falsy but shared: 0 is a width every selected element has, and marking it would
-     claim a disagreement that is not there. */
-  it('should stay away for a shared zero and a shared empty string', () => {
-    component.value = 0;
-    fixture.detectChanges();
-    expect(marker()).toBeNull();
-
-    component.value = '';
-    fixture.detectChanges();
-    expect(marker()).toBeNull();
-  });
-
-  /* `undefined` means the property is not part of the selection at all - such a field is not
-     rendered in the first place, and it is not a disagreement. */
-  it('should stay away for a property the selection does not have', () => {
-    component.value = undefined;
-    fixture.detectChanges();
-
-    expect(marker()).toBeNull();
-  });
-
-  /* The tooltip never reaches a screen reader on its own, so the same text is on the element. */
-  it('should carry the explanation for a screen reader too', () => {
-    component.value = null;
-    fixture.detectChanges();
-
+  /* The part that was wrong once and is invisible in every other test: MatIcon marks itself
+     `aria-hidden="true"` unless the element carries one, and a bound `[attr.aria-hidden]` is too
+     late. The label is then on an element no screen reader reports, so the marker exists for the
+     eye alone - which is exactly what the tooltip already fails at. */
+  it('should be reported to a screen reader rather than hidden from it', () => {
+    expect(icon().getAttribute('aria-hidden')).toBe('false');
     // With no translations loaded the pipe yields the key.
-    expect(marker()?.getAttribute('aria-label')).toBe('propertiesPanel.valuesDiffer');
+    expect(icon().getAttribute('aria-label')).toBe('propertiesPanel.valuesDiffer');
+  });
+
+  it('should explain itself on hover as well', () => {
+    expect(icon().classList).toContain('mat-mdc-tooltip-trigger');
   });
 });

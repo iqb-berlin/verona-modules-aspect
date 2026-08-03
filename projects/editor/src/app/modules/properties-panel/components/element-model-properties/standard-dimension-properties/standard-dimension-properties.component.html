@@ -6,7 +6,9 @@
     <input matInput type="number" min="0" aspectNumberField required
            [ngModel]="combinedProperties.dimensions?.width"
            (numberChange)="commitDimension('width', $event)">
-    <aspect-merged-marker matSuffix [value]="combinedProperties.dimensions?.width"></aspect-merged-marker>
+    @if (combinedProperties.dimensions?.width === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>
@@ -15,7 +17,9 @@
     <input matInput type="number" min="0" aspectNumberField required
            [ngModel]="combinedProperties.dimensions?.height"
            (numberChange)="commitDimension('height', $event)">
-    <aspect-merged-marker matSuffix [value]="combinedProperties.dimensions?.height"></aspect-merged-marker>
+    @if (combinedProperties.dimensions?.height === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }
 
@@ -31,7 +35,9 @@
              [disabled]="!fixedWidth.checked"
              [ngModel]="combinedProperties.dimensions.width"
              (numberChange)="commitDimension('width', $event)">
-      <aspect-merged-marker matSuffix [value]="combinedProperties.dimensions.width"></aspect-merged-marker>
+      @if (combinedProperties.dimensions.width === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
   }
 

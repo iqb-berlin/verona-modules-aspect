@@ -6,6 +6,8 @@
            [ngModel]="combinedProperties.firstColumnSizeRatio"
            (numberChange)="updateModel.emit(
                   { property: 'firstColumnSizeRatio', value: $event.value, isInputValid: $event.isInputValid })">
-    <aspect-merged-marker matSuffix [value]="combinedProperties.firstColumnSizeRatio"></aspect-merged-marker>
+    @if (combinedProperties.firstColumnSizeRatio === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }

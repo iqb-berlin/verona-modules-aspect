@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
@@ -10,12 +11,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   PositionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/position-field-set/position-field-set.component';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 
 @Component({
   selector: 'aspect-size-input-panel',
@@ -48,8 +53,11 @@ describe('PositionFieldSetComponent', () => {
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
-      declarations: [PositionFieldSetComponent, MockSizeInputPanelComponent, NumberFieldDirective],
+      declarations: [PositionFieldSetComponent, MockSizeInputPanelComponent, NumberFieldDirective,
+        MergedMarkerComponent
+      ],
       imports: [
+        MatIconModule,
         CommonModule,
         FormsModule,
         MatFormFieldModule,
@@ -274,5 +282,47 @@ describe('PositionFieldSetComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.nativeElement.textContent).not.toContain('propertiesPanel.zIndex');
+  });
+
+  /* The two grid range boxes are the only markers in this tab the characterization net cannot
+     reach: it renders static positioning only, and these appear under dynamic positioning (#1138).
+     Verified by mutation that nothing else covers them. */
+  describe('the marker on the grid ranges', () => {
+    const markers = (): NodeListOf<HTMLElement> => fixture.nativeElement
+      .querySelectorAll('aspect-merged-marker mat-icon');
+
+    beforeEach(() => {
+      unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    });
+
+    it('should mark a row range the selection disagrees about', async () => {
+      component.positionProperties = {
+        gridRow: 1, gridRowRange: null, gridColumn: 1, gridColumnRange: 2
+      } as unknown as Merged<PositionProperties>;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(markers().length).toBe(1);
+    });
+
+    it('should mark both ranges when both disagree', async () => {
+      component.positionProperties = {
+        gridRow: 1, gridRowRange: null, gridColumn: 1, gridColumnRange: null
+      } as unknown as Merged<PositionProperties>;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(markers().length).toBe(2);
+    });
+
+    it('should stay away where the selection agrees', async () => {
+      component.positionProperties = {
+        gridRow: 1, gridRowRange: 2, gridColumn: 1, gridColumnRange: 2
+      } as unknown as Merged<PositionProperties>;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(markers().length).toBe(0);
+    });
   });
 });

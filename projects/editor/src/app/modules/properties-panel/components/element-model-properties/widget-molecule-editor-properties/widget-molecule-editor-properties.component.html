@@ -9,6 +9,9 @@
         <mat-option value="VALENCE">{{ 'propertiesPanel.moleculeBondingTypeValence' | translate }}</mat-option>
         <mat-option value="ELECTRONS">{{ 'propertiesPanel.moleculeBondingTypeElectrons' | translate }}</mat-option>
       </mat-select>
+      @if (combinedProperties.bondingType === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
   </div>
 </fieldset>

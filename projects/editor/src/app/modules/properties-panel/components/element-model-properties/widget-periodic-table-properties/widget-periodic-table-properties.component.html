@@ -24,6 +24,9 @@
              [ngModel]="combinedProperties.maxNumberOfSelections"
              (numberChange)="updateModel.emit(
                     { property: 'maxNumberOfSelections', value: $event.value, isInputValid: $event.isInputValid })">
+      @if (combinedProperties.maxNumberOfSelections === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
   </div>
 </fieldset>

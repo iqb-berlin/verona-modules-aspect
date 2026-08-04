@@ -5,6 +5,9 @@
               [value]="combinedProperties.label"
               (input)="updateModel.emit({ property: 'label', value: labelField.value })">
     </textarea>
+    @if (combinedProperties.label === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
   <fieldset>
     <legend>{{ 'propertiesPanel.presentation' | translate }}</legend>

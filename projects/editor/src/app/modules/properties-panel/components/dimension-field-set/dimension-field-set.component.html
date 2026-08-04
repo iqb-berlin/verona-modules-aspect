@@ -15,6 +15,9 @@
                [disabled]="!fixedWidth.checked"
                [ngModel]="dimensions.width"
                (numberChange)="commitDimension('width', $event)">
+        @if (dimensions.width === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
     </ng-container>
     <ng-template #elseBlockWidth>
@@ -23,6 +26,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.width"
                (numberChange)="commitDimension('width', $event)">
+        @if (dimensions.width === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
     </ng-template>
 
@@ -38,6 +44,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.height"
                (numberChange)="commitDimension('height', $event)">
+        @if (dimensions.height === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
     </ng-container>
     <ng-template #elseBlockHeight>
@@ -48,6 +57,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="dimensions.height"
                (numberChange)="commitDimension('height', $event)">
+        @if (dimensions.height === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
     </ng-template>
 
@@ -122,6 +134,9 @@
       <input matInput type="number" min="0" aspectNumberField required
              [ngModel]="dimensions.width"
              (numberChange)="commitDimension('width', $event)">
+      @if (dimensions.width === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
     <mat-form-field>
       <mat-label>
@@ -130,6 +145,9 @@
       <input matInput type="number" min="0" aspectNumberField required
              [ngModel]="dimensions.height"
              (numberChange)="commitDimension('height', $event)">
+      @if (dimensions.height === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
   </ng-template>
 </fieldset>

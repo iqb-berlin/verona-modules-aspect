@@ -12,24 +12,31 @@
     </aspect-option-list-panel>
   }
 
-  <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
-                  class="wide-form-field" appearance="fill">
-    <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
-    <mat-select #selectConnectedLists multiple
-                [ngModel]="combinedProperties.connectedTo"
-                (ngModelChange)="toggleConnectedDropList($event)">
-      <mat-select-trigger>
-        {{'propertiesPanel.connectedDropLists' | translate }} ({{(combinedProperties.connectedTo ?? []).length}})
-      </mat-select-trigger>
-      <button mat-stroked-button [style.margin-bottom.px]="5"
-              (click)="toggleSelectAll()">
-        {{ 'propertiesPanel.selectAll' | translate }}
-      </button>
-      <mat-option *ngFor="let idPair of (combinedProperties.idList | getValidDropLists)" [value]="idPair.id">
-        {{idPair.alias}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <!--`!== undefined`, not `!== null`: null is what the merge answers for a selection of drop lists
+      whose connections differ, and hiding the field for that left no way to connect them together.
+      The handler replaces the whole array, so writing from an empty box is sound (#1138).-->
+  @if (combinedProperties.connectedTo !== undefined) {
+    <mat-form-field class="wide-form-field" appearance="fill">
+      <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
+      <mat-select #selectConnectedLists multiple
+                  [ngModel]="combinedProperties.connectedTo"
+                  (ngModelChange)="toggleConnectedDropList($event)">
+        <mat-select-trigger>
+          {{'propertiesPanel.connectedDropLists' | translate }} ({{(combinedProperties.connectedTo ?? []).length}})
+        </mat-select-trigger>
+        <button mat-stroked-button [style.margin-bottom.px]="5"
+                (click)="toggleSelectAll()">
+          {{ 'propertiesPanel.selectAll' | translate }}
+        </button>
+        <mat-option *ngFor="let idPair of (combinedProperties.idList | getValidDropLists)" [value]="idPair.id">
+          {{idPair.alias}}
+        </mat-option>
+      </mat-select>
+      @if (combinedProperties.connectedTo === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  }
 
   <mat-form-field *ngIf="combinedProperties.orientation !== undefined"
                   appearance="fill">
@@ -41,6 +48,9 @@
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>
     </mat-select>
+    @if (combinedProperties.orientation === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 
   <aspect-merged-checkbox *ngIf="unitService.expertMode && combinedProperties.isSortList !== undefined"
@@ -111,5 +121,8 @@
            (input)="updateModel.emit({
                  property: 'highlightReceivingDropListColor',
                  value: highlightReceivingDropListColorField.value })">
+    @if (combinedProperties.highlightReceivingDropListColor === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 </div>

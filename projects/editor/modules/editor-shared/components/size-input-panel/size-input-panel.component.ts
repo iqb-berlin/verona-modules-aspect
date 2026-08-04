@@ -68,8 +68,27 @@ export class SizeInputPanelComponent {
       this.pendingValue = null;
       return;
     }
+    /* A measurement whose selected elements disagree arrives with BOTH halves null, and
+       `emitMeasurement` refuses to write half a measurement. Taking the number over anyway cleared
+       the field's marker and showed a value that had reached no element at all, with nothing said -
+       so the entry stays pending until `applyUnit` has the other half. Measured (#1138). */
+    if (this.unit == null) return;
     this.value = this.pendingValue;
     this.pendingValue = null;
+    this.emitMeasurement();
+  }
+
+  /**
+   * The unit half of the measurement.
+   *
+   * It carries the value with it, because a number entered while the unit was still undecided is
+   * waiting here rather than in the model - see `applyValue`.
+   */
+  applyUnit(): void {
+    if (this.pendingValue !== null && this.unit != null) {
+      this.value = this.pendingValue;
+      this.pendingValue = null;
+    }
     this.emitMeasurement();
   }
 

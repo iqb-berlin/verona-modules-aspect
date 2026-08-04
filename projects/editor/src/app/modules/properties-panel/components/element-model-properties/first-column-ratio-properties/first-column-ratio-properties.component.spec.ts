@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +11,9 @@ import {
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
+import {
   FirstColumnRatioPropertiesComponent
 } from './first-column-ratio-properties.component';
 
@@ -20,9 +24,11 @@ describe('FirstColumnRatioPropertiesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        FirstColumnRatioPropertiesComponent, NumberFieldDirective, NumberFieldBadInputDirective
+        FirstColumnRatioPropertiesComponent, NumberFieldDirective, NumberFieldBadInputDirective,
+        MergedMarkerComponent
       ],
       imports: [
+        MatIconModule,
         FormsModule,
         MatFormFieldModule,
         MatInputModule,
@@ -87,9 +93,24 @@ describe('FirstColumnRatioPropertiesComponent', () => {
     expect(fixture.debugElement.query(By.css('mat-form-field'))).toBeNull();
   });
 
-  // A divergent multi selection merges to null, which must not be shown as a value.
-  it('should render nothing when the selected elements disagree', () => {
+  /* A divergent multi selection merges to null. The field used to disappear for that, because its
+     guard was `!= null` and so caught the merge's null along with the "not this element type"
+     undefined - the author could not edit the ratio for such a selection at all. It is offered
+     now, empty and marked; the null must still not be shown as a value (#1138). */
+  it('should offer the field, empty and marked, when the selected elements disagree', async () => {
     component.combinedProperties = { firstColumnSizeRatio: null };
+    fixture.detectChanges();
+    await fixture.whenStable(); // NgModel writes the box in a microtask
+
+    expect(fixture.debugElement.query(By.css('mat-form-field'))).not.toBeNull();
+    expect(fixture.debugElement.query(By.css('input')).nativeElement.value).toBe('');
+    expect(fixture.nativeElement.querySelector('aspect-merged-marker mat-icon')).not.toBeNull();
+  });
+
+  /* And the other half of what the old guard did, which has to keep working: a property this
+     element type does not have at all is `undefined`, and then there is no field. */
+  it('should render nothing for an element without the property', () => {
+    component.combinedProperties = {};
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('mat-form-field'))).toBeNull();

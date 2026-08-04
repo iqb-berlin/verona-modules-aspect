@@ -8,6 +8,9 @@
               [value]="combinedProperties.label"
               (input)="updateModel.emit({ property: 'label', value: labelField.value })">
     </textarea>
+    @if (combinedProperties.label === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{ 'propertiesPanel.label2' | translate }}</mat-label>
@@ -15,6 +18,9 @@
               [value]="combinedProperties.label2"
               (input)="updateModel.emit({ property: 'label2', value: label2Field.value })">
     </textarea>
+    @if (combinedProperties.label2 === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }
 

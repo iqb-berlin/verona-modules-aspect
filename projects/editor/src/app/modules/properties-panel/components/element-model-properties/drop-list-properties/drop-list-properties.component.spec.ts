@@ -7,8 +7,10 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { DragNDropValueObject, Label } from 'common/models/label-interfaces';
@@ -21,6 +23,9 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 import {
   DropListPropertiesComponent
 } from './drop-list-properties.component';
@@ -65,7 +70,8 @@ describe('DropListPropertiesComponent', () => {
       declarations: [DropListPropertiesComponent,
         MockOptionListPanelComponent,
         GetValidDropListsPipe,
-        MergedCheckboxComponent
+        MergedCheckboxComponent,
+        MergedMarkerComponent
       ],
       imports: [
         CommonModule,
@@ -73,8 +79,10 @@ describe('DropListPropertiesComponent', () => {
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
+        MatIconModule,
         MatInputModule,
         MatSelectModule,
+        MatTooltipModule,
         TranslateModule.forRoot()
       ],
       providers: [
@@ -168,5 +176,28 @@ describe('DropListPropertiesComponent', () => {
     component.editOption(1);
 
     expect(elementService.updateDropListValueObject).toHaveBeenCalledWith(1, editedValue);
+  });
+
+  /* The connected-lists field guarded with `!== null`, so a selection of drop lists whose
+     connections differ lost the field altogether - and with it the only way to connect them to the
+     same targets. `diverge()` in the characterization net leaves arrays alone, so nothing there
+     covers this (#1138). */
+  describe('connected lists the selection disagrees about', () => {
+    beforeEach(async () => {
+      component.combinedProperties = { ...component.combinedProperties, connectedTo: null };
+      fixture.detectChanges();
+      await fixture.whenStable();
+    });
+
+    it('should offer the field rather than hide it', () => {
+      const labels = Array.from(
+        fixture.nativeElement.querySelectorAll('mat-label') as NodeListOf<HTMLElement>
+      ).map(l => l.textContent);
+      expect(labels.some(l => l?.includes('connectedDropLists'))).toBe(true);
+    });
+
+    it('should mark it', () => {
+      expect(fixture.nativeElement.querySelector('aspect-merged-marker mat-icon')).not.toBeNull();
+    });
   });
 });

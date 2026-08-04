@@ -127,19 +127,30 @@ function formatValue(value: unknown): string {
   return String(value);
 }
 
+/**
+ * The counterpart of `indeterminate` on a checkbox: for every other control a merged `null` renders
+ * as an empty field, which the value alone cannot tell from "empty everywhere". `merged-marker`
+ * makes the difference visible (#1138), and it has to be in the baseline for the same reason the
+ * checkbox state is - otherwise the net cannot see the marker appear or disappear.
+ */
+function mergedFlag(field: Element): string {
+  return field.querySelector('aspect-merged-marker mat-icon') ? ' [merged]' : '';
+}
+
 function describeFormField(field: Element, selectValues: SelectValues): string {
   const label = normalizeText(field.querySelector('mat-label')) || '<no label>';
+  const merged = mergedFlag(field);
   const select = field.querySelector('mat-select');
   if (select) {
     const multiple = select.getAttribute('aria-multiselectable') === 'true' ? '[multiple]' : '';
     return `select${multiple} "${label}" = ` +
-      `${shorten(formatValue(selectValues.get(select)))}${flags(select)}`;
+      `${shorten(formatValue(selectValues.get(select)))}${flags(select)}${merged}`;
   }
   const textarea = field.querySelector('textarea') as HTMLTextAreaElement | null;
-  if (textarea) return `textarea "${label}" = ${shorten(textarea.value)}${flags(textarea)}`;
+  if (textarea) return `textarea "${label}" = ${shorten(textarea.value)}${flags(textarea)}${merged}`;
   const input = field.querySelector('input') as HTMLInputElement | null;
-  if (input) return `input[${input.type}] "${label}" = ${shorten(input.value)}${flags(input)}`;
-  return `field "${label}"`;
+  if (input) return `input[${input.type}] "${label}" = ${shorten(input.value)}${flags(input)}${merged}`;
+  return `field "${label}"${merged}`;
 }
 
 function describeCheckbox(checkbox: Element): string {
@@ -154,8 +165,12 @@ function describeCheckbox(checkbox: Element): string {
  */
 function describeFileName(element: Element): string {
   const label = normalizeText(element.querySelector('.file-name-label'));
-  const full = normalizeText(element);
-  return `text "${label}" = ${shorten(full.startsWith(label) ? full.slice(label.length).trim() : full)}`;
+  const merged = mergedFlag(element);
+  /* When the marker is there it IS the value, and reading the element's text would put the icon's
+     ligature ("remove") in the baseline as if it were the file name. */
+  const full = merged ? '' : normalizeText(element);
+  return `text "${label}" = ` +
+    `${shorten(full.startsWith(label) ? full.slice(label.length).trim() : full)}${merged}`;
 }
 
 function describeToggleGroup(group: Element): string {
@@ -312,15 +327,36 @@ describe('properties panel characterization', () => {
     return describeControls(root ?? rendered.nativeElement, selectValuesOf(rendered));
   }
 
-  /** Negates every boolean, nested property groups included, so all of them merge to null. */
-  function flipBooleans(target: Record<string, unknown>): void {
+  /**
+   * Makes every boolean, number and text differ from the other element's, nested property groups
+   * included, so all of them merge to null.
+   *
+   * Numbers and text were added for #1138: until then the divergent cases only disagreed on
+   * booleans, so no number or text field ever showed a merged null - and the net could not see the
+   * marker that now distinguishes "the selection disagrees" from "empty everywhere" on them.
+   *
+   * `type` is left alone because the panel decides from it which controls exist at all: diverging
+   * it would compare two different panels rather than two values. `id` and `alias` are left alone
+   * because the merge treats them specially - the id becomes a list, and the alias field is not
+   * offered for a multi-selection in the first place.
+   *
+   * Arrays are left alone too. They merge by a different route, and changing their length here
+   * would hide or add whole controls rather than diverge a value.
+   */
+  const KEPT_IDENTICAL = ['idService', 'type', 'id', 'alias'];
+
+  function diverge(target: Record<string, unknown>): void {
     Object.keys(target).forEach(key => {
-      if (key === 'idService') return;
+      if (KEPT_IDENTICAL.includes(key)) return;
       const value = target[key];
       if (typeof value === 'boolean') {
         target[key] = !value;
+      } else if (typeof value === 'number') {
+        target[key] = value + 1;
+      } else if (typeof value === 'string') {
+        target[key] = `${value}_2`;
       } else if (value && typeof value === 'object' && !Array.isArray(value)) {
-        flipBooleans(value as Record<string, unknown>);
+        diverge(value as Record<string, unknown>);
       }
     });
   }
@@ -346,7 +382,7 @@ describe('properties panel characterization', () => {
     const first = withMediaSource(ElementFactory.createElement({ type, id: type, alias: type }));
     if (mode === 'single') return [first];
     const second = withMediaSource(ElementFactory.createElement({ type, id: `${type}_2`, alias: `${type}_2` }));
-    flipBooleans(second as unknown as Record<string, unknown>);
+    diverge(second as unknown as Record<string, unknown>);
     return [first, second];
   }
 

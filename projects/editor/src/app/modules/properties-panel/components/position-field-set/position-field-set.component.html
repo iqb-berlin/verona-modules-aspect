@@ -13,6 +13,9 @@
              [ngModel]="positionProperties.xPosition"
              (numberChange)="updateModel.emit(
                     { property: 'xPosition', value: $event.value, isInputValid: $event.isInputValid })">
+      @if (positionProperties.xPosition === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
     <mat-form-field *ngIf="positionProperties.yPosition !== undefined"
                     appearance="outline">
@@ -21,6 +24,9 @@
              [ngModel]="positionProperties.yPosition"
              (numberChange)="updateModel.emit(
                     { property: 'yPosition', value: $event.value, isInputValid: $event.isInputValid })">
+      @if (positionProperties.yPosition === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
   </div>
 
@@ -40,6 +46,9 @@
                [ngModel]="positionProperties.gridRowRange"
                (numberChange)="updateModel.emit(
                     { property: 'gridRowRange', value: $event.value, isInputValid: $event.isInputValid })">
+        @if (positionProperties.gridRowRange === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
     </div>
     <div class="flex-row">
@@ -56,6 +65,9 @@
                [ngModel]="positionProperties.gridColumnRange"
                (numberChange)="updateModel.emit(
                     { property: 'gridColumnRange', value: $event.value, isInputValid: $event.isInputValid })">
+        @if (positionProperties.gridColumnRange === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
     </div>
 
@@ -113,6 +125,9 @@
              (numberChange)="updateModel.emit(
                     { property: 'zIndex', value: $event.value, isInputValid: $event.isInputValid })"
              matTooltip="{{ 'propertiesPanel.zIndexTooltip' | translate }}">
+      @if (positionProperties.zIndex === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
     </mat-form-field>
   </ng-container>
 </fieldset>

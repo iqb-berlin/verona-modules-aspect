@@ -17,6 +17,9 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   MergedCheckboxComponent
 } from 'editor/src/app/modules/properties-panel/components/merged-checkbox/merged-checkbox.component';
+import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -48,7 +51,7 @@ describe('GeometryPropsComponent', () => {
     } as unknown as SelectionService;
 
     await TestBed.configureTestingModule({
-      declarations: [GeometryPropsComponent, MergedCheckboxComponent],
+      declarations: [GeometryPropsComponent, MergedCheckboxComponent, MergedMarkerComponent],
       imports: [
         CommonModule,
         FormsModule,
@@ -160,5 +163,27 @@ describe('GeometryPropsComponent', () => {
       { property: 'appDefinition', value: 'newDefinition' },
       { property: 'fileName', value: 'new.ggb' }
     ]);
+  });
+
+  /* Both variable lists are arrays, and the merge answers a disagreeing array with null the same way
+     it answers any other value. The characterization net cannot pin this: it diverges booleans,
+     numbers and strings, but leaves arrays as they are - so the marking is held here (#1138). */
+  describe('a selection whose tracked variables differ', () => {
+    const markers = (): NodeListOf<HTMLElement> => fixture.nativeElement
+      .querySelectorAll('aspect-merged-marker mat-icon');
+
+    it('should mark both variable fields', async () => {
+      component.combinedProperties = {
+        ...component.combinedProperties, trackedVariables: null, trackedExpectedVariables: null
+      };
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(markers().length).toBe(2);
+    });
+
+    it('should stay away where the selection agrees', () => {
+      expect(markers().length).toBe(0);
+    });
   });
 });

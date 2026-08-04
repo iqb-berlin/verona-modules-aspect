@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'common/shared.module';
+import { MergedMarkerComponent } from './components/merged-marker/merged-marker.component';
 import { OptionListPanelComponent } from './components/option-list-panel/option-list-panel.component';
 import { SizeInputPanelComponent } from './components/size-input-panel/size-input-panel.component';
 import { NumberFieldModule } from './directives/number-field.module';
@@ -16,7 +17,7 @@ import { NumberFieldModule } from './directives/number-field.module';
 /**
  * Leaf controls of the editor that more than one feature area needs.
  *
- * All three below are used by the properties panel and from outside it, so none can be declared by
+ * All of them are used by the properties panel and from outside it, so none can be declared by
  * one of those without making it a dependency of the other — the number field directive sat in the
  * panel's folder while two dialogs outside it pulled the module in. Add something here only when a
  * second place actually needs it — this is not a dumping ground for shared-looking things.
@@ -27,6 +28,7 @@ import { NumberFieldModule } from './directives/number-field.module';
  */
 @NgModule({
   declarations: [
+    MergedMarkerComponent,
     OptionListPanelComponent,
     SizeInputPanelComponent
   ],
@@ -44,6 +46,7 @@ import { NumberFieldModule } from './directives/number-field.module';
     NumberFieldModule
   ],
   exports: [
+    MergedMarkerComponent,
     OptionListPanelComponent,
     SizeInputPanelComponent,
     NumberFieldModule

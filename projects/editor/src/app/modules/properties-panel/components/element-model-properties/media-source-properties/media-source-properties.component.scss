@@ -22,6 +22,21 @@
     color: #aaa;
     margin-bottom: 5px;
   }
+
+  /* This readout is a plain text line, not a form field, so the marker has no suffix slot to sit
+     in. The row is made a flex line of its own to put it where a form field would - at the right
+     edge, not at the left where the file name starts - and the suffix padding comes off so it ends
+     on the same inset as the label above it. */
+  .file-name-marker {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 24px;
+
+    ::ng-deep .merged-marker {
+      padding: 0;
+    }
+  }
 }
 
 .media-src-button {

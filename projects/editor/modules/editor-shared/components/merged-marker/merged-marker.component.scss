@@ -1,0 +1,14 @@
+/* Smaller than a stock mat-icon: this sits inside a dense field row and marks a state, it is not a
+   control. The muted colour keeps it from reading as an error.
+
+   The horizontal padding is Material's own for a trailing icon
+   (`.mat-mdc-form-field-icon-suffix > .mat-icon`), repeated here because that rule matches only a
+   direct child of the suffix container and this icon sits one element deeper. */
+.merged-marker {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  padding: 0 12px;
+  opacity: 0.6;
+  cursor: default;
+}

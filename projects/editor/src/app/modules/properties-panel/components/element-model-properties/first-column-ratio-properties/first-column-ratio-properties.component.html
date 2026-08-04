@@ -1,4 +1,4 @@
-@if (combinedProperties.firstColumnSizeRatio != null) {
+@if (combinedProperties.firstColumnSizeRatio !== undefined) {
   <mat-form-field class="wide-form-field" matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.firstColumnSizeRatio' | translate }}</mat-label>
@@ -6,5 +6,8 @@
            [ngModel]="combinedProperties.firstColumnSizeRatio"
            (numberChange)="updateModel.emit(
                   { property: 'firstColumnSizeRatio', value: $event.value, isInputValid: $event.isInputValid })">
+    @if (combinedProperties.firstColumnSizeRatio === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }

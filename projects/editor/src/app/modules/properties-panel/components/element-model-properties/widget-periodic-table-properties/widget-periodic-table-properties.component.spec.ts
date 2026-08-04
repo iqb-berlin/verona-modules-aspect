@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +14,9 @@ import {
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
+import {
   WidgetPeriodicTablePropertiesComponent
 } from './widget-periodic-table-properties.component';
 
@@ -24,9 +29,12 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         WidgetPeriodicTablePropertiesComponent, MergedCheckboxComponent,
-        NumberFieldDirective, NumberFieldBadInputDirective
+        NumberFieldDirective, NumberFieldBadInputDirective,
+        MergedMarkerComponent
       ],
       imports: [
+        MatTooltipModule,
+        MatIconModule,
         FormsModule,
         MatCheckboxModule,
         MatFormFieldModule,

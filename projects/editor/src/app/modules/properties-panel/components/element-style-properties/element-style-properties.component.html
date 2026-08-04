@@ -5,6 +5,9 @@
         <input #helperRowColorField matInput type="text" [value]="styles.helperRowColor"
                (input)="elementService.updateSelectedElementsStyleProperty(
                           'helperRowColor', helperRowColorField.value)">
+        @if (styles.helperRowColor === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
         <button mat-icon-button matSuffix (click)="helperRowColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -26,6 +29,9 @@
                [disabled]="!styles.lineColoring || styles.lineColoringColor === undefined"
                (input)="elementService.updateSelectedElementsStyleProperty(
                           'lineColoringColor', lineColoringColorField.value)">
+        @if (styles.lineColoringColor === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
         <button mat-icon-button matSuffix (click)="lineColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -47,6 +53,9 @@
                [disabled]="!styles.firstLineColoring || styles.firstLineColoringColor === undefined"
                (input)="elementService.updateSelectedElementsStyleProperty(
                           'firstLineColoringColor', firstLineColoringColorField.value)">
+        @if (styles.firstLineColoringColor === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
         <button mat-icon-button matSuffix (click)="firstLineColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -60,6 +69,9 @@
         <mat-label>{{'propertiesPanel.selectionColor' | translate }}</mat-label>
         <input #selectionColorField matInput type="text" [value]="styles.selectionColor"
                (input)="elementService.updateSelectedElementsStyleProperty('selectionColor', selectionColorField.value)">
+        @if (styles.selectionColor === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
         <button mat-icon-button matSuffix (click)="selectionColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -73,6 +85,9 @@
         <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
         <input #itemBackgroundColorField matInput type="text" [value]="styles.itemBackgroundColor"
                (input)="elementService.updateSelectedElementsStyleProperty('itemBackgroundColor', itemBackgroundColorField.value)">
+        @if (styles.itemBackgroundColor === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
         <button mat-icon-button matSuffix (click)="itembackgroundColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -86,6 +101,9 @@
         <mat-label>{{'propertiesPanel.backgroundColor' | translate }}</mat-label>
         <input #backgroundColorField matInput type="text" [value]="styles.backgroundColor"
                (input)="elementService.updateSelectedElementsStyleProperty('backgroundColor', backgroundColorField.value)">
+        @if (styles.backgroundColor === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
         <button mat-icon-button matSuffix (click)="backgroundColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -99,6 +117,9 @@
         <mat-label>{{'propertiesPanel.fontColor' | translate }}</mat-label>
         <input #fontColorField matInput type="text" [value]="styles.fontColor"
                (input)="elementService.updateSelectedElementsStyleProperty('fontColor', fontColorField.value)">
+        @if (styles.fontColor === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
         <button mat-icon-button matSuffix (click)="fontColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -119,6 +140,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.fontSize"
                (numberChange)="commitStyle('fontSize', $event)">
+        @if (styles.fontSize === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
       <mat-form-field *ngIf="styles.lineHeight !== undefined"
                       appearance="fill">
@@ -126,6 +150,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.lineHeight"
                (numberChange)="commitStyle('lineHeight', $event)">
+        @if (styles.lineHeight === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
 
       <aspect-merged-checkbox *ngIf="styles.bold !== undefined"
@@ -154,6 +181,9 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.borderRadius"
                (numberChange)="commitStyle('borderRadius', $event)">
+        @if (styles.borderRadius === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
 
       <mat-form-field *ngIf="styles.borderColor !== undefined"
@@ -161,6 +191,9 @@
         <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
         <input #borderColorField matInput type="text" [value]="styles.borderColor"
                (input)="elementService.updateSelectedElementsStyleProperty('borderColor', borderColorField.value)">
+        @if (styles.borderColor === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
         <button mat-icon-button matSuffix (click)="borderColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -180,6 +213,9 @@
             {{option}}
           </mat-option>
         </mat-select>
+        @if (styles.borderStyle === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
       <mat-form-field *ngIf="styles.borderWidth !== undefined"
                       appearance="fill">
@@ -187,5 +223,8 @@
         <input matInput type="number" min="0" aspectNumberField required
                [ngModel]="styles.borderWidth"
                (numberChange)="commitStyle('borderWidth', $event)">
+        @if (styles.borderWidth === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
       </mat-form-field>
     </fieldset>

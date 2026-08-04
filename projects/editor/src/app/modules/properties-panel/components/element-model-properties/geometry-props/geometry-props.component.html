@@ -91,5 +91,8 @@
       [matChipInputFor]="trackedExpectedVariables"
       (matChipInputTokenEnd)="addTrackedExpectedVariable($event)"
     />
+    @if (combinedProperties.trackedExpectedVariables === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 </fieldset>

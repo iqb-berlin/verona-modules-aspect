@@ -112,4 +112,35 @@ describe('MediaSourcePropertiesComponent', () => {
     expect(fileName()).not.toBeNull();
     expect(sourceButton()).toBeNull();
   });
+
+  /* Two elements of the SAME type holding different files merge both halves to null. The button
+     used to go with them, so there was no way left to give the selection one new file - while the
+     name beside it read "unknown", which is what an element without a file says and the one state
+     these are not. `src` cannot tell the two apart (it is nullable, and null is also "no file"),
+     `fileName` can (#1138). */
+  describe('a selection whose files differ', () => {
+    beforeEach(() => {
+      component.combinedProperties = { type: 'audio', fileName: null, src: null };
+      fixture.detectChanges();
+    });
+
+    it('should keep the source button', () => {
+      expect(sourceButton()).not.toBeNull();
+    });
+
+    it('should say the values differ instead of claiming there is no file', () => {
+      expect(fileName().nativeElement.textContent).toContain('valuesDiffer');
+      expect(fileName().nativeElement.textContent).not.toContain('unknown');
+    });
+
+    /* Geometry names a file but keeps no src, so there is nothing for this button to replace - it
+       has to stay away even though the names differ, which the readout above still reports. */
+    it('should keep the button away where the element has no src at all', () => {
+      component.combinedProperties = { type: 'geometry', fileName: null };
+      fixture.detectChanges();
+
+      expect(sourceButton()).toBeNull();
+      expect(fileName().nativeElement.textContent).toContain('valuesDiffer');
+    });
+  });
 });

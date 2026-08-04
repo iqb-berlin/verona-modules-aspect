@@ -1,18 +1,32 @@
 @if (combinedProperties.fileName !== undefined) {
   <div class="file-name">
     <div class="file-name-label">{{ 'originalFileName' | translate }}</div>
-    {{ combinedProperties.fileName || ('unknown' | translate) }}
+    <!--`fileName` is a plain string in the model, so a null can only be the merge's "they disagree".
+        It used to fall into the `||` below and read "unknown", which is what an element without a
+        file says - the one state it is not (#1138).-->
+    @if (combinedProperties.fileName === null) {
+      {{ 'propertiesPanel.valuesDiffer' | translate }}
+    } @else {
+      {{ combinedProperties.fileName || ('unknown' | translate) }}
+    }
   </div>
 }
 
-<!--`type != null` alongside the src: which file dialog to open follows from the element type, so a
-    selection of mixed types - whose type merges to null - has no dialog to offer. See #1152.
+<!--Three separate questions, and each of them has bitten once:
 
-    The `src` half is a different matter and a known defect: two elements of the SAME type with
-    different files merge `src` to null, so the button disappears and there is no way left to give
-    both of them one new file - while the file name beside it reads "unknown". Same class as the
-    guards fixed in #1138; to be picked up there.-->
-@if (combinedProperties.src && combinedProperties.type != null) {
+    `type != null` - which file dialog to open follows from the element type, so a selection of
+    mixed types, whose type merges to null, has no dialog to offer (#1152).
+
+    `src !== undefined` - geometry names a file but keeps no src, so it gets the readout above
+    without this button.
+
+    The last one used to be a plain truthiness check on `src`, which swallowed the case this ticket
+    is about: `src` is nullable in the model, so a null there is either "no file yet" or "the
+    selected elements hold different ones", and both lost the button - leaving no way to give the
+    selection one new file. `fileName` tells the two apart, because it is not nullable: '' for no
+    file, null only ever from the merge (#1138).-->
+@if (combinedProperties.type != null && combinedProperties.src !== undefined &&
+     (combinedProperties.src !== null || combinedProperties.fileName === null)) {
   <button class="media-src-button" [style.align-self]="'center'"
           mat-fab color="primary"
           [matTooltip]="'propertiesPanel.changeMediaSource' | translate" [matTooltipPosition]="'right'"

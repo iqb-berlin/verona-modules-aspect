@@ -149,6 +149,15 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
    *
    * On `keydown` rather than `keyup`, so that it runs before the call site's own
    * `(keydown.enter)` - see `settle` for why that order is the whole point.
+   *
+   * It answers for a box that may legitimately be empty as well, i.e. it clears the property rather
+   * than only reporting refusals. Asked in review, and deliberate: the reason the clearing waits at
+   * all is the *keystroke* that empties a box on the way to another number, where writing null would
+   * pull the field out from under what is being typed. Enter is not that - it says the edit is
+   * finished. Clearing a limit does take its field away, because the checkbox above reads the model
+   * and disables the box the caret is in, but that is the state the author asked for and the same one
+   * a blur produces; the checkbox leads back in, and nothing stays focused. Pinned in
+   * `dimension-field-set.component.spec.ts`.
    */
   @HostListener('keydown.enter')
   onConfirm(): void {

@@ -8,17 +8,18 @@
           (click)="showTextEditDialog()">
     <mat-icon>edit</mat-icon>
   </button>
-  <mat-form-field *ngIf="combinedProperties.columnCount !== undefined"
-                  appearance="fill">
-    <mat-label>{{ 'propertiesPanel.columnCount' | translate }}</mat-label>
-    <input matInput type="number" min="1" required aspectNumberField
-           [ngModel]="combinedProperties.columnCount"
-           (numberChange)="updateModel.emit(
-                  { property: 'columnCount', value: $event.value, isInputValid: $event.isInputValid })">
-    @if (combinedProperties.columnCount === null) {
-      <aspect-merged-marker matSuffix></aspect-merged-marker>
-    }
-  </mat-form-field>
+  @if (combinedProperties.columnCount !== undefined) {
+    <mat-form-field appearance="fill">
+      <mat-label>{{ 'propertiesPanel.columnCount' | translate }}</mat-label>
+      <input matInput type="number" min="1" required aspectNumberField
+             [ngModel]="combinedProperties.columnCount"
+             (numberChange)="updateModel.emit(
+                    { property: 'columnCount', value: $event.value, isInputValid: $event.isInputValid })">
+      @if (combinedProperties.columnCount === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  }
 
   <fieldset class="fx-column-start-stretch">
     <legend>{{ 'propertiesPanel.marking' | translate }}</legend>

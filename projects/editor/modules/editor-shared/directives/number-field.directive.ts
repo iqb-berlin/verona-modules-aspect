@@ -32,8 +32,9 @@ import { NumberFieldErrorStateMatcher } from './number-field-error-state.matcher
  * (model and box, which drift apart), and told apart from the browser's bad input. An empty box is
  * simply not a number, and refusing it costs none of that.
  *
- * The refusal is reported once, on leaving, rather than per keystroke: typing `-50` passes through
- * `-5`, and a warning each put one after the other on screen for a single edit.
+ * The refusal is reported once, when the edit ends - by leaving the field or by pressing Enter -
+ * rather than per keystroke: typing `-50` passes through `-5`, and a warning each put one after the
+ * other on screen for a single edit.
  *
  * What to do with either outcome is the caller's business - emit it up to the host, or write it to
  * a service - so both leave through `numberChange` carrying the same `isInputValid` the panel's
@@ -114,7 +115,7 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
            it is refused there is nothing to report until the user is done; where it is a value in
            its own right, reporting it mid-edit would clear the property under the box being typed
            in - and the panel hangs decisions off that null, a cleared limit unticks its checkbox
-           and disables the very field. Both are settled on leaving. */
+           and disables the very field. Both are settled once the edit ends, see `settle`. */
         if (value !== null && this.ngModel.valid) this.numberChange.emit({ value, isInputValid: true });
       });
   }
@@ -125,16 +126,59 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
   }
 
   /**
-   * The field has been left, which is where an empty box is answered for.
+   * The field has been left, which is one of the two ways an edit ends.
    *
-   * On `blur` rather than `change`, and guarded by `dirty` instead: `change` does not fire when the
-   * value at blur equals the value at focus, so typing a number into an empty box and clearing it
-   * again reported the number and never the clearing - measured against a real browser, not
-   * assumed. `dirty` is what tells an edit from tabbing through, and it has to be put back
-   * afterwards or every further blur would answer for the same edit again.
+   * On `blur` rather than `change`: `change` does not fire when the value at blur equals the value at
+   * focus, so typing a number into an empty box and clearing it again reported the number and never
+   * the clearing - measured against a real browser, not assumed.
    */
   @HostListener('blur')
   onLeave(): void {
+    this.settle();
+  }
+
+  /**
+   * And the other: Enter confirms an entry where it stands, without the focus going anywhere.
+   *
+   * It has to answer for the entry here too, because the call sites hang their write on Enter as
+   * well and nothing else along that path speaks for an emptied box - the directive stays silent per
+   * keystroke by design, so a refusal reported only on `blur` was simply skipped. Typing a number
+   * into a field and deleting it again, then pressing Enter, wrote the deleted number to the model:
+   * a wrong measurement in the size panel, and lost rows or columns where the number is a count
+   * (#1169).
+   *
+   * On `keydown` rather than `keyup`, so that it runs before the call site's own
+   * `(keydown.enter)` - see `settle` for why that order is the whole point.
+   *
+   * It answers for a box that may legitimately be empty as well, i.e. it clears the property rather
+   * than only reporting refusals. Asked in review, and deliberate: the reason the clearing waits at
+   * all is the *keystroke* that empties a box on the way to another number, where writing null would
+   * pull the field out from under what is being typed. Enter is not that - it says the edit is
+   * finished. Clearing a limit does take its field away, because the checkbox above reads the model
+   * and disables the box the caret is in, but that is the state the author asked for and the same one
+   * a blur produces; the checkbox leads back in, and nothing stays focused. Pinned in
+   * `dimension-field-set.component.spec.ts`.
+   */
+  @HostListener('keydown.enter')
+  onConfirm(): void {
+    this.settle();
+  }
+
+  /**
+   * Answer for what is in the box, which is where an empty one is refused.
+   *
+   * Guarded by `dirty`, which is what tells an edit from tabbing through, and it has to be put back
+   * afterwards or every further blur would answer for the same edit again. That also settles what
+   * happens when an entry is confirmed with Enter and the field is then left: the edit has been
+   * answered for, so the blur finds nothing to do and no second warning follows.
+   *
+   * The call sites remember the last valid entry and write it when the field is left or Enter is
+   * pressed, so this has to run *first* on both paths - a refusal reported afterwards would arrive
+   * to find the refused value already written. Both listeners above are host listeners on the
+   * element, which Angular registers while creating the directive, i.e. before the listeners the
+   * template binds on the same element. Pinned by the call site's tests, not by this note.
+   */
+  private settle(): void {
     if (this.isMisused) return;
 
     const control = this.ngModel.control;

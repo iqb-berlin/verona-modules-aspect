@@ -28,7 +28,7 @@ export class SizeInputPanelComponent {
   @Input() min: number | null = null;
   @Output() valueUpdated = new EventEmitter<Measurement>();
 
-  /** The last valid entry in the number box, applied when the field is left. */
+  /** The last valid entry in the number box, applied when the field is left or Enter is pressed. */
   private pendingValue: number | null = null;
 
   constructor(private messageService: MessageService,
@@ -56,8 +56,9 @@ export class SizeInputPanelComponent {
    * Written when the field is left, which is where the original `(change)` handler had it - so an
    * edit still reaches the model once rather than once per keystroke.
    *
-   * The directive's own blur listener runs first, so a refused entry has already cleared what was
-   * pending by the time this asks.
+   * The directive answers for the entry first on both paths - it listens on `blur` and on Enter
+   * itself - so a refused entry has already cleared what was pending by the time this asks. It
+   * listened on `blur` alone until #1169, and Enter therefore wrote a value that had been deleted.
    */
   applyValue(): void {
     if (this.pendingValue === null) return;

@@ -29,7 +29,7 @@ export class InputWizardDialogComponent {
    */
   numberingAvailable: boolean = false;
 
-  /** The last valid entry in the answer count box, applied when the field is left. */
+  /** The last valid entry in the answer count box, applied when the field is left or Enter is pressed. */
   private pendingAnswerCount: number | null = null;
 
   constructor(private messageService: MessageService,
@@ -60,8 +60,10 @@ export class InputWizardDialogComponent {
    * 15 left one answer field and four lost texts, with the box put back to 1 rather than 5, because
    * the model had already followed the 1. The original handler was on `(change)`, i.e. here.
    *
-   * The directive's own blur listener runs first (measured), so a refused entry has already cleared
-   * what was pending by the time this asks.
+   * The directive answers for the entry first on both paths (measured), so a refused entry has
+   * already cleared what was pending by the time this asks. It answered for `blur` alone until
+   * #1169, and Enter - the likeliest way out of a box in a dialog - therefore applied a count that
+   * had been deleted again.
    */
   applyAnswerCount(): void {
     if (this.pendingAnswerCount === null) return;

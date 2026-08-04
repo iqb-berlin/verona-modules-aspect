@@ -261,6 +261,46 @@ describe('SizeInputPanelComponent', () => {
     expect(messageService.showWarning).toHaveBeenCalledTimes(1);
   });
 
+  /* And the same over Enter, which never passes through `blur`: the box showed 3 again but the 5 was
+     written to the model, and no warning was shown. The refusal therefore cannot be answered for in
+     the directive's blur listener alone (#1169). */
+  it('should not write a value that was typed and then deleted again before Enter', async () => {
+    let emitted: Measurement | undefined;
+    component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+    const box = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    box.value = '5';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.value = '';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toBeUndefined();
+    expect(box.value).toBe('3');
+    expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+  });
+
+  /* Enter answers for the edit, so the blur that follows has nothing left to answer for - otherwise
+     a refusal confirmed with Enter would warn a second time when the focus moves on. */
+  it('should warn once for an entry refused on Enter and then left', async () => {
+    const box = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    box.value = '';
+    box.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    box.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    fixture.detectChanges();
+    box.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+  });
+
   /* Retyping what is already there is not an edit. The old `(change)` handler did not fire for it,
      because the value at blur equalled the value at focus. */
   it('should not write an entry that changes nothing', async () => {

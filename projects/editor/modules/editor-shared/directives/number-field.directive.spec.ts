@@ -148,6 +148,12 @@ describe('NumberFieldDirective', () => {
     fixture.detectChanges();
     await fixture.whenStable();
   };
+  /** The other way an edit ends: confirmed where it stands, with the focus staying put. */
+  const confirm = async (): Promise<void> => {
+    field().dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -342,6 +348,104 @@ describe('NumberFieldDirective', () => {
       await leave();
 
       expect(host.emitted).toEqual([]);
+    });
+  });
+
+  /* The second way an edit ends. The call sites write their pending entry on Enter as well, so a
+     refusal answered for on `blur` alone was skipped entirely: a number typed and deleted again was
+     written when Enter followed, while the same keystrokes ending in a `blur` were refused (#1169). */
+  describe('confirming with Enter', () => {
+    it('should refuse an emptied box and put it back', async () => {
+      type('5');
+      type('');
+
+      await confirm();
+
+      expect(host.emitted).toEqual([
+        { value: 5, isInputValid: true },
+        { value: null, isInputValid: false }
+      ]);
+      expect(field().value).toBe('10');
+    });
+
+    it('should report a refused value and put the box back', async () => {
+      type('-5');
+
+      await confirm();
+
+      expect(host.emitted).toEqual([{ value: -5, isInputValid: false }]);
+      expect(field().value).toBe('10');
+    });
+
+    it('should report null where the box may be empty', async () => {
+      const optional = TestBed.createComponent(OptionalHostComponent);
+      optional.detectChanges();
+      await optional.whenStable();
+      const box = optional.nativeElement.querySelector('input') as HTMLInputElement;
+
+      box.value = '';
+      box.dispatchEvent(new Event('input'));
+      optional.detectChanges();
+      box.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      optional.detectChanges();
+      await optional.whenStable();
+
+      expect(optional.componentInstance.emitted).toEqual([{ value: null, isInputValid: true }]);
+      expect(box.value).toBe('');
+    });
+
+    /* Enter answers for the edit, so the blur that follows finds nothing left - otherwise a refusal
+       confirmed with Enter would be reported again when the focus moves on, and the call site would
+       warn twice for one entry. */
+    it('should answer for an edit once, not again when the field is then left', async () => {
+      type('-5');
+      await confirm();
+      host.emitted.length = 0;
+
+      await leave();
+
+      expect(host.emitted).toEqual([]);
+    });
+
+    /* Enter in a box nobody typed in is a confirmation of what is already there - most often the
+       Enter that closes a dialog. Answering for it would warn at every box the selection has no
+       common value for. */
+    it('should stay silent for a box that was not typed in', async () => {
+      host.value = null; // empty of its own accord, i.e. invalid
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      await confirm();
+
+      expect(host.emitted).toEqual([]);
+    });
+
+    it('should not emit for a box that holds a value', async () => {
+      type('7');
+      host.emitted.length = 0;
+
+      await confirm();
+
+      expect(host.emitted).toEqual([]);
+    });
+
+    /* And with a real keypress in a real browser, which is what the call sites see. */
+    it('should refuse an emptied box on a real Enter', async () => {
+      const real = TestBed.createComponent(RealInputHostComponent);
+      real.componentInstance.value = 10;
+      real.detectChanges();
+      await real.whenStable();
+      const box = real.nativeElement.querySelector('#box') as HTMLInputElement;
+
+      await userEvent.click(box);
+      await userEvent.type(box, '5');
+      await userEvent.clear(box);
+      await userEvent.keyboard('{Enter}');
+      real.detectChanges();
+      await real.whenStable();
+
+      expect(real.componentInstance.emitted.at(-1)).toEqual({ value: null, isInputValid: false });
+      expect(box.value).toBe('10');
     });
   });
 

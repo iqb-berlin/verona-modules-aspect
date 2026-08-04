@@ -230,6 +230,50 @@ describe('InputWizardDialogComponent', () => {
       expect(component.answerCount).toBe(1);
       expect(box().value).toBe('1');
     });
+
+    /* And over Enter, which in a dialog is the likeliest way out of the box. The refusal was
+       answered for on `blur` only, so the count typed before the box was cleared was still pending
+       when Enter applied it - a 3 typed and deleted again generated three answer fields, and with
+       sub-question texts in play it also lost the ones beyond the count (#1169). */
+    it('should refuse a count that was typed and then deleted again before Enter', async () => {
+      component.numberingWithText = true;
+      component.answerCount = 5;
+      component.subQuestions = ['a', 'b', 'c', 'd', 'e'];
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      box().value = '3';
+      box().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box().value = '';
+      box().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box().dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component.answerCount).toBe(5);
+      expect(component.subQuestions).toEqual(['a', 'b', 'c', 'd', 'e']);
+      expect(box().value).toBe('5');
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    /* The numbering reads the pending count while the box is being typed in, so it has to follow the
+       refusal as well - Enter now settles the entry, and what it settles on is the model's 5. */
+    it('should put the numbering back to the model count after a refusal on Enter', async () => {
+      component.answerCount = 5;
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      box().value = '';
+      box().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box().dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component.numberingAvailable).toBe(true);
+    });
   });
 
   /* `max="9"` means every two-digit entry passes through a valid single digit. Applying that digit

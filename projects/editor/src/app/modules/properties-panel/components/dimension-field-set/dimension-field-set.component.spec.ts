@@ -198,5 +198,51 @@ describe('DimensionFieldSetComponent', () => {
       expect(elementService.updateElementsDimensionsProperty)
         .toHaveBeenCalledWith(selectedElements, 'maxWidth', null);
     });
+
+    /* And the same with Enter, which since #1169 ends an edit like leaving the field does. This box
+       may legitimately be empty, so the clearing is written rather than refused - the deferral it
+       waits for is about the *keystroke* that empties it, where the user is on their way to another
+       number, not about a confirmation.
+       Worth pinning because clearing this property is what takes the box away: the checkbox above it
+       reads the model, unticks, and disables the box the caret is still in. That is the state the
+       author asked for - there is no limit left to type - and it is the same state a blur produces;
+       Enter only reaches it at the moment they said so. What must not happen is the box staying
+       behind unusable, so the checkbox has to lead back in. */
+    it('should clear a maximum width on Enter and offer the way back', async () => {
+      const maxWidthBox = boxes()[3];
+      maxWidthBox.focus();
+      type(maxWidthBox, '');
+
+      maxWidthBox.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith(selectedElements, 'maxWidth', null);
+      expect(messageService.showWarning).not.toHaveBeenCalled();
+
+      // The service is a spy here, so the model is followed by hand - the round trip the real one makes.
+      component.dimensions = { ...component.dimensions, maxWidth: null };
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const maxWidthCheckbox = (): HTMLInputElement => fixture.nativeElement
+        .querySelectorAll('mat-checkbox input')[3] as HTMLInputElement;
+      expect(maxWidthCheckbox().checked).toBe(false);
+      expect(boxes()[3].disabled).toBe(true);
+      /* And it lets go cleanly: disabling the box the caret sat in leaves neither the browser's
+         focus nor Material's focused state behind. Measured, because a form field that keeps
+         `mat-focused` goes on showing a raised label over a box nobody can reach. */
+      expect(document.activeElement).toBe(document.body);
+      expect((fixture.nativeElement.querySelectorAll('mat-form-field')[3] as HTMLElement)
+        .classList.contains('mat-focused')).toBe(false);
+
+      // Ticking it again hands the box back, so nothing is stuck.
+      maxWidthCheckbox().click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(boxes()[3].disabled).toBe(false);
+    });
   });
 });

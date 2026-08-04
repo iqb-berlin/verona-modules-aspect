@@ -165,8 +165,12 @@ function describeCheckbox(checkbox: Element): string {
  */
 function describeFileName(element: Element): string {
   const label = normalizeText(element.querySelector('.file-name-label'));
-  const full = normalizeText(element);
-  return `text "${label}" = ${shorten(full.startsWith(label) ? full.slice(label.length).trim() : full)}`;
+  const merged = mergedFlag(element);
+  /* When the marker is there it IS the value, and reading the element's text would put the icon's
+     ligature ("remove") in the baseline as if it were the file name. */
+  const full = merged ? '' : normalizeText(element);
+  return `text "${label}" = ` +
+    `${shorten(full.startsWith(label) ? full.slice(label.length).trim() : full)}${merged}`;
 }
 
 function describeToggleGroup(group: Element): string {

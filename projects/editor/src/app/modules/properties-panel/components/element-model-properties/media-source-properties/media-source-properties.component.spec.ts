@@ -6,6 +6,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
+import {
   MediaSourcePropertiesComponent
 } from './media-source-properties.component';
 
@@ -18,7 +21,7 @@ describe('MediaSourcePropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MediaSourcePropertiesComponent],
+      declarations: [MediaSourcePropertiesComponent, MergedMarkerComponent],
       imports: [
         MatIconModule,
         MatTooltipModule,
@@ -128,8 +131,10 @@ describe('MediaSourcePropertiesComponent', () => {
       expect(sourceButton()).not.toBeNull();
     });
 
-    it('should say the values differ instead of claiming there is no file', () => {
-      expect(fileName().nativeElement.textContent).toContain('valuesDiffer');
+    /* Empty plus the marker, the same thing every field in the panel says for this - and above all
+       not "unknown", which is what an element without a file says. */
+    it('should mark the readout instead of claiming there is no file', () => {
+      expect(fileName().query(By.css('aspect-merged-marker'))).not.toBeNull();
       expect(fileName().nativeElement.textContent).not.toContain('unknown');
     });
 
@@ -140,7 +145,7 @@ describe('MediaSourcePropertiesComponent', () => {
       fixture.detectChanges();
 
       expect(sourceButton()).toBeNull();
-      expect(fileName().nativeElement.textContent).toContain('valuesDiffer');
+      expect(fileName().query(By.css('aspect-merged-marker'))).not.toBeNull();
     });
   });
 });

@@ -48,7 +48,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 button "upload_file"
 button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -83,7 +83,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -824,7 +824,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 input[text] "propertiesPanel.appDefinition" =  (disabled) [merged]
 checkbox "propertiesPanel.showResetIcon" = indeterminate
 [propertiesPanel.geogebraHeader]
@@ -869,7 +869,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 input[text] "propertiesPanel.appDefinition" =  (disabled) [merged]
 [propertiesPanel.geogebraHeader]
 [propertiesPanel.trackedGeogebraVariables]
@@ -942,7 +942,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 button "upload_file"
 [propertiesPanel.inputElement]
 textarea "propertiesPanel.label" =  [merged]
@@ -983,7 +983,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 button "upload_file"
 [propertiesPanel.inputElement]
 textarea "propertiesPanel.label" =  [merged]
@@ -1054,7 +1054,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 button "upload_file"
 button "propertiesPanel.editPlayerOptions"
 input[text] "propertiesPanel.alt" =  [merged]
@@ -1095,7 +1095,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
@@ -3171,7 +3171,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 button "upload_file"
 button "propertiesPanel.editPlayerOptions"
 checkbox "propertiesPanel.scale" = indeterminate
@@ -3207,7 +3207,7 @@ button "propertiesPanel.deleteElement"`,
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
-text "originalFileName" = propertiesPanel.valuesDiffer
+text "originalFileName" =  [merged]
 button "upload_file"
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)

@@ -3,9 +3,11 @@
     <div class="file-name-label">{{ 'originalFileName' | translate }}</div>
     <!--`fileName` is a plain string in the model, so a null can only be the merge's "they disagree".
         It used to fall into the `||` below and read "unknown", which is what an element without a
-        file says - the one state it is not (#1138).-->
+        file says - the one state it is not. Empty plus the marker, rather than a sentence of its
+        own: that is what every field in the panel says for this, and this readout should not speak
+        a second language for it (#1138).-->
     @if (combinedProperties.fileName === null) {
-      {{ 'propertiesPanel.valuesDiffer' | translate }}
+      <aspect-merged-marker class="file-name-marker"></aspect-merged-marker>
     } @else {
       {{ combinedProperties.fileName || ('unknown' | translate) }}
     }

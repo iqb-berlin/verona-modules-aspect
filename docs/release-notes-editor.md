@@ -52,6 +52,10 @@ Editor
   - Die Zeilen- und Spaltenanzahl von Tabelle und Abschnitt lässt sich nicht mehr leeren: das löschte bisher alle Zeilen- bzw. Spaltendefinitionen auf einmal, ohne Rückfrage und ohne Hinweis
   - Mehrere Felder speicherten die Eingabe als Text statt als Zahl (u. a. "Anzahl der Spalten", "Zeilenanzahl", "Spaltenverhältnis", Abschnittshöhe); die Aufgabendatei enthielt dort "5" statt 5
   - Bei den Maßfeldern (Ränder, Zeilenhöhen, Spaltenbreiten) blieb ein geleertes Feld bisher stumm leer stehen, während der alte Wert gespeichert blieb; jetzt wird der gespeicherte Wert wieder angezeigt und der Hinweis erscheint. Negative Ränder bleiben erlaubt, negative Zeilen- und Spaltengrößen nicht
+- Mehrfachauswahl: abweichende Werte sind jetzt erkennbar
+  - Sind mehrere Elemente markiert, deren Werte sich unterscheiden, zeigte der Eigenschaftenbereich bisher ein leeres Feld — nicht zu unterscheiden von "bei allen leer". Solche Felder tragen jetzt am rechten Rand einen Strich mit dem Hinweis "Werte unterschiedlich", dasselbe Zeichen, das ein Kontrollkästchen in diesem Fall schon zeigt. Betrifft Zahlen-, Text-, Farb- und Auswahlfelder, Textbereiche sowie die Maßangaben (Ränder, Zeilenhöhen, Spaltenbreiten)
+  - Sechs Felder verschwanden bei unterschiedlichen Werten sogar ganz und waren damit für die gemeinsame Bearbeitung unerreichbar: "Spaltenverhältnis", "Anzahl der Spalten", "Zeilenanzahl", "Erwartete Zeichenanzahl", "Ausrichtung" und "Verbundene Ablagelisten". Sie werden jetzt leer und gekennzeichnet angeboten und lassen sich für die ganze Auswahl setzen — bei den verbundenen Ablagelisten gab es vorher überhaupt keine Möglichkeit, unterschiedlich verbundene Listen gemeinsam zu verknüpfen
+  - Nicht gekennzeichnet werden Felder, in denen ein leerer Wert eine gültige Angabe ist (z. B. "keine Grenze" bei Mindest- und Maximalbreite, "keine Vorbelegung", "keine Aktion"): dort ist leer nicht dasselbe wie uneinig
 
 ## 2.12.4
 ### Fehlerbehebungen 

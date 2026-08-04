@@ -239,6 +239,26 @@ describe('SectionMenuComponent', () => {
       });
     });
 
+    /* And over Enter, where the refusal was skipped: it was answered for on `blur` only, so a count
+       typed and deleted again was still pending when Enter applied it - a 3 typed into a two-row
+       section and cleared again added a row (#1169). */
+    it('should refuse a row count that was typed and then deleted again before Enter', async () => {
+      const box = boxes()[1];
+      box.value = '3';
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box.value = '';
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(sectionService.updateSectionProperty).not.toHaveBeenCalled();
+      expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+      expect(boxes()[1].value).toBe('2');
+    });
+
     it('should take a valid row count', async () => {
       await edit(boxes()[1], '3');
 

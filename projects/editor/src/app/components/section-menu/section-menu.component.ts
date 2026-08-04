@@ -111,15 +111,16 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   /**
-   * The count is applied on leaving the field, not on the keystroke.
+   * The count is applied on leaving the field or on Enter, not on the keystroke.
    *
    * Every two-digit entry passes through a single digit first, and applying that digit cuts the
    * size array down to it - so typing 12 over a 2 dropped the second row's height and came back
    * with ten default tracks instead. The original handler was on `(change)`, i.e. here; the
    * migration is what moved it to the keystroke (#1164).
    *
-   * The directive's own blur listener runs first (measured), so a refused entry has already cleared
-   * what was pending by the time this asks.
+   * The directive answers for the entry first on both paths (measured), so a refused entry has
+   * already cleared what was pending by the time this asks. It answered for `blur` alone until
+   * #1169, and Enter therefore applied a count that had been deleted again.
    */
   applyCount(property: 'gridColumnSizes' | 'gridRowSizes'): void {
     const pending = this.pendingCount[property];

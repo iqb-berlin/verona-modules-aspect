@@ -226,6 +226,25 @@ describe('TablePropertiesComponent', () => {
       expect(messageService.showError).toHaveBeenCalledWith('inputInvalid');
       expect(rowCount().value).toBe('2');
     });
+
+    /* The same over Enter, which is how a count gets confirmed without leaving the field. The
+       refusal used to be answered for on `blur` only, so the count typed before the box was cleared
+       was still pending and got applied - a 3 typed and deleted again added a row (#1169). */
+    it('should refuse a count that was typed and then deleted again before Enter', async () => {
+      rowCount().value = '3';
+      rowCount().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      rowCount().value = '';
+      rowCount().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      rowCount().dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(emitted).toEqual([]);
+      expect(messageService.showError).toHaveBeenCalledWith('inputInvalid');
+      expect(rowCount().value).toBe('2');
+    });
   });
 
   it('should emit the changed size of a single column', () => {

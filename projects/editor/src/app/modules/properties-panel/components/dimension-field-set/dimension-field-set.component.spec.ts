@@ -323,7 +323,14 @@ describe('DimensionFieldSetComponent', () => {
     });
 
     /* Clicking an indeterminate box means "give them all a limit", which is what `MergedCheckbox`
-       emits `true` for. Nothing is written yet - the number the author types next is the write. */
+       emits `true` for. Nothing is written yet - the number the author types next is the write.
+
+       And the limit of this solution, pinned rather than hidden: the click leaves the box ticked,
+       and it stays ticked even though the elements still disagree. `MergedCheckbox` reacts to a new
+       `value` only, and the value it is bound to is still null, so nothing restores the third state.
+       For "100 against 200" the tick is true anyway - every element does have a limit - and only for
+       "a limit against no limit" does it overstate. What carries the disagreement either way is the
+       marker in the field, which reads the divergence set directly and is unaffected by the click. */
     it('should not write anything when an indeterminate box is clicked', async () => {
       await withDivergingMaxWidth();
 
@@ -333,6 +340,8 @@ describe('DimensionFieldSetComponent', () => {
 
       expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
       expect(boxes()[3].disabled).toBe(false);
+      expect((fixture.nativeElement.querySelectorAll('mat-form-field')[3] as HTMLElement)
+        .querySelector('aspect-merged-marker')).not.toBeNull();
     });
   });
 });

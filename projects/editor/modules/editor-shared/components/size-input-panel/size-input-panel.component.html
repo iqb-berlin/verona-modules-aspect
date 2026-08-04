@@ -18,7 +18,7 @@
   <mat-label>{{'section-menu.unit' | translate }}</mat-label>
   <mat-select [disabled]="disabled"
               [(ngModel)]="unit"
-              (selectionChange)="emitMeasurement()">
+              (selectionChange)="applyUnit()">
     <mat-option *ngIf="allowedUnits.includes('fr')"
                 value="fr">{{'section-menu.fraction' | translate }}</mat-option>
     <mat-option *ngIf="allowedUnits.includes('px')"
@@ -26,4 +26,10 @@
     <mat-option *ngIf="allowedUnits.includes('%')"
                 value="%">{{'section-menu.percent' | translate }}</mat-option>
   </mat-select>
+  <!-- The merge splits a measurement into its two halves, so a selection that disagrees empties this
+       box just like the number beside it. Marking only the number said the unit was settled when it
+       was not, and an entry made on that belief was dropped without a word (#1138). -->
+  @if (unit === null) {
+    <aspect-merged-marker matSuffix></aspect-merged-marker>
+  }
 </mat-form-field>

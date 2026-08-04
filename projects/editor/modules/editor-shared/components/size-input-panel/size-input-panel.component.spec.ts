@@ -302,4 +302,69 @@ describe('SizeInputPanelComponent', () => {
       expect(marker()).toBeNull();
     });
   });
+
+  /* Both halves of a measurement merge on their own, so a selection that disagrees empties the unit
+     box as well. Marking only the number said the unit was settled when it was not, and an entry
+     made on that belief went nowhere: `emitMeasurement` refuses half a measurement, but the number
+     had already been taken over, which cleared the marker and showed a value no element held. */
+  describe('a measurement whose units disagree too', () => {
+    const markers = (): NodeListOf<HTMLElement> => fixture.nativeElement
+      .querySelectorAll('aspect-merged-marker mat-icon');
+
+    const enter = async (value: string): Promise<void> => {
+      const box = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+      box.value = value;
+      box.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      box.dispatchEvent(new Event('blur'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    beforeEach(async () => {
+      component.value = null;
+      component.unit = null;
+      fixture.detectChanges();
+      await fixture.whenStable();
+    });
+
+    it('should mark both halves', () => {
+      expect(markers().length).toBe(2);
+    });
+
+    it('should hold a number entered before a unit was picked instead of dropping it', async () => {
+      let emitted: Measurement | undefined;
+      component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+
+      await enter('5');
+
+      expect(emitted).toBeUndefined();
+      expect(component.value).toBeNull(); // nothing taken over, so nothing to write back later
+      expect(markers().length).toBe(2); // and the field still says why it is empty
+    });
+
+    // Picking the unit is what completes the measurement; the held number goes with it.
+    it('should write the held number once a unit is picked', async () => {
+      let emitted: Measurement | undefined;
+      component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+      await enter('5');
+
+      component.unit = 'px'; // what the two-way binding does before `selectionChange` fires
+      component.applyUnit();
+
+      expect(emitted).toEqual({ value: 5, unit: 'px' });
+      expect(component.value).toBe(5);
+    });
+
+    // Picking a unit alone still writes nothing - that was the #1164 fix and it has to hold.
+    it('should write nothing when only a unit is picked', () => {
+      let emitted: Measurement | undefined;
+      component.valueUpdated.subscribe((measurement: Measurement) => { emitted = measurement; });
+
+      component.unit = 'px';
+      component.applyUnit();
+
+      expect(emitted).toBeUndefined();
+    });
+  });
 });

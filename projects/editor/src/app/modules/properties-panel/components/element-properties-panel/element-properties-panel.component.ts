@@ -27,6 +27,12 @@ export type CombinedProperties = UIElement & { idList?: string[] };
 export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   selectedElements: UIElement[] = [];
   combinedProperties: CombinedProperties | undefined;
+  /**
+   * Where the selected elements disagree, as dotted paths - see {@link mergeElements}. Passed to the
+   * leaf components that show a nullable property, next to the merged values rather than inside
+   * them: a `null` in the merge keeps meaning what it always meant, so no existing reader changes.
+   */
+  divergingProperties: ReadonlySet<string> = new Set<string>();
   private ngUnsubscribe = new Subject<void>();
 
   interactionEnabled = false;
@@ -84,9 +90,10 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
    *   drops every key the next element does not have - and no element has an `idList` (#1119).
    * - `rows` is replaced by a copy so the options panel sees a new reference and re-renders.
    */
-  static createCombinedProperties(elements: UIElement[]): CombinedProperties | undefined {
+  static createCombinedProperties(elements: UIElement[],
+                                  divergingPaths?: Set<string>): CombinedProperties | undefined {
     if (elements.length === 0) return undefined;
-    const combinedProperties = ElementPropertiesPanelComponent.mergeElements(elements);
+    const combinedProperties = ElementPropertiesPanelComponent.mergeElements(elements, divergingPaths);
     combinedProperties.idList = elements.map(element => element.id);
     combinedProperties.rows = combinedProperties.rows ?
       [...combinedProperties.rows as LikertRowElement[]] :
@@ -113,11 +120,16 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
    */
   private refreshCombinedProperties(): void {
     try {
+      /* A new set rather than a cleared one: the panel hands it to pure pipes, which re-run on a
+         changed reference and would otherwise keep showing the previous selection's answer. */
+      const divergingPaths = new Set<string>();
       this.combinedProperties =
-        ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
+        ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements, divergingPaths);
+      this.divergingProperties = divergingPaths;
       this.mergeFailureReported = false;
     } catch (error) {
       this.combinedProperties = undefined;
+      this.divergingProperties = new Set<string>();
       if (this.mergeFailureReported) return;
       this.mergeFailureReported = true;
       this.messageService.showError(this.translateService.instant('propertiesPanel.combineFailed'));
@@ -146,8 +158,17 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
    * there - a trigger with an `actionParam` selected before one without, say (#1155). A group
    * against a non-group is as diverging as any other pair, so it takes the branch below and
    * becomes `null`.
+   *
+   * `divergingPaths` collects where that happened, keyed by dotted path (`dimensions.maxWidth`).
+   * The merged value stays `null` either way - for the properties declared `number` that is already
+   * unambiguous, and {@link MergedMarkerComponent} reads it directly. It is the nullable ones that
+   * need this set: there `null` is a value of its own ("no limit", "no preset"), so a panel reading
+   * only the merge cannot tell "they disagree" from "none of them has one" and ends up claiming the
+   * latter (#1167).
    */
-  private static mergeElements(elements: UIElement[]): CombinedProperties {
+  private static mergeElements(elements: UIElement[],
+                               divergingPaths?: Set<string>,
+                               pathPrefix: string = ''): CombinedProperties {
     const merged = { ...elements[0] } as CombinedProperties;
 
     for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
@@ -157,11 +178,16 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
           if (ElementPropertiesPanelComponent.isPropertyGroup(merged[property]) &&
             ElementPropertiesPanelComponent.isPropertyGroup(elementToMerge[property])) {
             merged[property] = ElementPropertiesPanelComponent.mergeElements(
-              [(merged[property] as UIElement), (elementToMerge[property] as UIElement)]
+              [(merged[property] as UIElement), (elementToMerge[property] as UIElement)],
+              divergingPaths,
+              `${pathPrefix}${property}.`
             );
           } else if (JSON.stringify(merged[property]) !== JSON.stringify(elementToMerge[property])) {
             // `id` keeps the first element's value; the ids of the whole selection are in `idList`.
-            if (property !== 'id') merged[property] = null;
+            if (property !== 'id') {
+              merged[property] = null;
+              divergingPaths?.add(`${pathPrefix}${property}`);
+            }
           }
         } else {
           delete merged[property];

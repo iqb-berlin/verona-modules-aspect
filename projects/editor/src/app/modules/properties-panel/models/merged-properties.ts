@@ -31,3 +31,18 @@ export type Merged<T> = {
     : NonNullable<T[K]> extends object ? Merged<NonNullable<T[K]>> | null
       : T[K] | null;
 };
+
+/**
+ * Where the selection disagrees, as dotted paths into the merged object (`dimensions.maxWidth`).
+ *
+ * Travels next to a `Merged<T>` rather than inside it, and only to the components that need it. For
+ * everything declared `number`, `string` or `boolean` the merged `null` already says "they disagree"
+ * on its own — that is what {@link Merged} is about. This set exists for the properties that are
+ * **nullable in the model**, where `null` is also a value the author chose ("no limit", "no
+ * preset"): there the merge alone cannot tell the two apart, and a panel that guesses claims
+ * something false about the selection (#1167).
+ *
+ * Read through `limitEnabledState` and `propertyDiverges` rather than in the templates directly:
+ * `has()` is a method call, which bindings must not make (rules.md §1).
+ */
+export type DivergingProperties = ReadonlySet<string>;

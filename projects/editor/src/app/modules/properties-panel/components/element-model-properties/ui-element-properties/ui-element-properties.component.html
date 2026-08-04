@@ -42,6 +42,7 @@
   }
 
   <aspect-ele-specific-props [combinedProperties]="combinedProperties"
+                             [divergingProperties]="divergingProperties"
                              [show]="show"
                              (updateModel)="updateModel.emit($event)">
   </aspect-ele-specific-props>
@@ -66,6 +67,7 @@
        own narrow type is assignable wherever a single name overlaps. -->
   @if (show.select) {
     <aspect-select-properties [combinedProperties]="$any(combinedProperties)"
+                              [divergingProperties]="divergingProperties"
                               (updateModel)="updateModel.emit($event)">
     </aspect-select-properties>
   }
@@ -129,6 +131,7 @@
        when the size fields moved out, so nothing is left in common with the child's type. -->
   @if (!unitService.expertMode) {
     <aspect-standard-dimension-properties [combinedProperties]="$any(combinedProperties)"
+                                          [divergingProperties]="divergingProperties"
                                           [show]="show">
     </aspect-standard-dimension-properties>
   }

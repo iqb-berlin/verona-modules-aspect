@@ -15,6 +15,7 @@
           <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabElementProperties' | translate">build</mat-icon>
         </ng-template>
         <aspect-ui-element-properties [combinedProperties]="combinedProperties"
+                                      [divergingProperties]="divergingProperties"
                                       [selectedElements]="selectedElements"
                                       (updateModel)="updateModel($event.property, $event.value, $event.isInputValid)">
         </aspect-ui-element-properties>
@@ -27,6 +28,7 @@
           </ng-template>
           <aspect-position-and-dimension-properties
             [dimensions]="combinedProperties.type === 'trigger' ? null : combinedProperties.dimensions"
+            [divergingProperties]="divergingProperties"
             [positionProperties]="combinedProperties.position"
             [isZIndexDisabled]="combinedProperties.type === 'trigger'"
             (updatePositionModel)="updatePositionModel($event.property, $event.value, $event.isInputValid)">

@@ -10,7 +10,9 @@ import {
 } from 'common/models/elements/input-group-elements/radio-button-group';
 import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
 import { StrikeOtherOptionsProperties } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
+import {
+  DivergingProperties, Merged
+} from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 /**
@@ -40,12 +42,13 @@ export type PanelSelectProperties =
   standalone: false
 })
 export class SelectPropertiesComponent {
+  @Input() combinedProperties!: Merged<PanelSelectProperties>;
   /**
    * On `itemsPerRow`: the model already uses `null` for "no limit", while `Merged<T>` uses `null`
-   * for "the selected elements disagree". Both arrive as the same value here, which is why the
-   * limit checkbox stays a plain `mat-checkbox` instead of an `aspect-merged-checkbox`.
+   * for "the selected elements disagree". Both arrive as the same value in `combinedProperties`,
+   * so the limit box gets its state from here instead of from the value (#1167).
    */
-  @Input() combinedProperties!: Merged<PanelSelectProperties>;
+  @Input() divergingProperties: DivergingProperties | undefined;
   @Output() updateModel =
     new EventEmitter<{
       property: keyof PanelSelectProperties,

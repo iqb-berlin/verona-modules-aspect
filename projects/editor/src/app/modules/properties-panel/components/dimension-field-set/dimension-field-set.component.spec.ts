@@ -24,6 +24,12 @@ import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/nu
 import {
   MergedMarkerComponent
 } from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
+import {
+  LimitEnabledStatePipe
+} from 'editor/src/app/modules/properties-panel/pipes/limit-enabled-state.pipe';
+import {
+  PropertyDivergesPipe
+} from 'editor/src/app/modules/properties-panel/pipes/property-diverges.pipe';
 
 describe('DimensionFieldSetComponent', () => {
   let component: DimensionFieldSetComponent;
@@ -48,7 +54,7 @@ describe('DimensionFieldSetComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [DimensionFieldSetComponent, MergedCheckboxComponent, NumberFieldDirective,
-        MergedMarkerComponent
+        MergedMarkerComponent, LimitEnabledStatePipe, PropertyDivergesPipe
       ],
       imports: [
         MatTooltipModule,
@@ -242,6 +248,90 @@ describe('DimensionFieldSetComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
+      expect(boxes()[3].disabled).toBe(false);
+    });
+  });
+
+  /* The four limit properties are `number | null`, so the merge's null for "they disagree" is
+     indistinguishable from the model's null for "no limit" - and the box, reading only the value,
+     used to claim the latter about a selection where every element has a limit (#1167). The panel
+     now hands down where the selection diverges, and these pin what the pair does with it. */
+  describe('the limit boxes under a diverging selection', () => {
+    /** Template order under dynamic positioning: fixed width, fixed height, min/max width, min/max height. */
+    const checkboxes = (): HTMLInputElement[] => Array.from(
+      fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
+    );
+    const boxes = (): HTMLInputElement[] => Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>
+    );
+
+    const withDivergingMaxWidth = async (): Promise<void> => {
+      // What the merge produces for 100 against 200: the value is gone, the divergence is recorded.
+      component.dimensions = { ...component.dimensions, maxWidth: null };
+      component.divergingProperties = new Set(['dimensions.maxWidth']);
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should show the maximum width box as indeterminate rather than unchecked', async () => {
+      await withDivergingMaxWidth();
+
+      expect(checkboxes()[3].getAttribute('aria-checked')).toBe('mixed');
+      expect(checkboxes()[3].checked).toBe(false);
+    });
+
+    /* The state the author has to be able to leave: an indeterminate box means there is something
+       to overwrite, so its field stays editable - typing one number is how the selection is
+       resolved. A disabled field would have offered no way out but unticking, which clears all. */
+    it('should keep the maximum width field editable while the box is indeterminate', async () => {
+      await withDivergingMaxWidth();
+
+      expect(boxes()[3].disabled).toBe(false);
+
+      boxes()[3].value = '150';
+      boxes()[3].dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith(selectedElements, 'maxWidth', 150);
+    });
+
+    it('should mark the diverging field and leave the others unmarked', async () => {
+      await withDivergingMaxWidth();
+
+      const markedFields = Array.from(
+        fixture.nativeElement.querySelectorAll('mat-form-field') as NodeListOf<HTMLElement>
+      ).map(field => !!field.querySelector('aspect-merged-marker'));
+      expect(markedFields[3]).toBe(true);
+      expect(markedFields[4]).toBe(false);
+      expect(markedFields[5]).toBe(false);
+    });
+
+    /* The counter-case, and the reason the set is needed at all: elements that agree on having no
+       limit produce the very same null, and there the box is right to say so. */
+    it('should leave a shared absent limit unchecked and unmarked', async () => {
+      component.dimensions = { ...component.dimensions, maxWidth: null };
+      component.divergingProperties = new Set<string>();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(checkboxes()[3].getAttribute('aria-checked')).not.toBe('mixed');
+      expect(checkboxes()[3].checked).toBe(false);
+      expect(boxes()[3].disabled).toBe(true);
+      expect((fixture.nativeElement.querySelectorAll('mat-form-field')[3] as HTMLElement)
+        .querySelector('aspect-merged-marker')).toBeNull();
+    });
+
+    /* Clicking an indeterminate box means "give them all a limit", which is what `MergedCheckbox`
+       emits `true` for. Nothing is written yet - the number the author types next is the write. */
+    it('should not write anything when an indeterminate box is clicked', async () => {
+      await withDivergingMaxWidth();
+
+      checkboxes()[3].click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
       expect(boxes()[3].disabled).toBe(false);
     });
   });

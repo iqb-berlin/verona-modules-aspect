@@ -35,6 +35,7 @@
 
 <aspect-slider-properties *ngIf="show.slider"
                           [combinedProperties]="combinedProperties"
+                          [divergingProperties]="divergingProperties"
                           (updateModel)="updateModel.emit($event)">
 </aspect-slider-properties>
 

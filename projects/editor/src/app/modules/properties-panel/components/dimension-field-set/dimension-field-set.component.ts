@@ -5,7 +5,9 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
-import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
+import {
+  DivergingProperties, Merged
+} from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
   selector: 'aspect-dimension-field-set',
@@ -16,6 +18,12 @@ import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-pr
 export class DimensionFieldSetComponent {
   @Input() positionProperties: Merged<PositionProperties> | undefined;
   @Input() dimensions!: Merged<DimensionProperties>;
+  /**
+   * Needed by the four limit boxes: their properties are `number | null`, so a merged `null` is
+   * either "no limit anywhere" or "the selection disagrees", and the box has to show a different
+   * state for each (#1167).
+   */
+  @Input() divergingProperties: DivergingProperties | undefined;
 
   constructor(public unitService: UnitService,
               public elementService: ElementService,

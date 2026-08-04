@@ -44,5 +44,10 @@
            [ngModel]="combinedProperties.value"
            (numberChange)="updateModel.emit(
                     { property: 'value', value: $event.value, isInputValid: $event.isInputValid })">
+    <!-- Through the pipe, not `value === null` as above: an empty box is a legitimate "no preset",
+         and the marker may only speak for a selection that actually disagrees (#1167). -->
+    @if (divergingProperties | propertyDiverges : 'value') {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
   </mat-form-field>
 }

@@ -46,22 +46,28 @@
 }
 
 @if (combinedProperties.itemsPerRow !== undefined) {
-  <!-- Not an aspect-merged-checkbox: itemsPerRow is a number, and null means "no limit" here
-       rather than "the selected elements disagree". -->
-  <mat-checkbox (change)="setItemsPerRow($event.checked)"
-                [checked]="!!combinedProperties.itemsPerRow">
+  <!-- `itemsPerRow` is a number whose `null` means "no limit", so neither the box nor the field may
+       read the merged value alone: two elements limited to different counts merge to `null` and used
+       to be shown as "not limited", with the field disabled on top (#1167). -->
+  <aspect-merged-checkbox
+    #itemsPerRowEnabled
+    [value]="divergingProperties | limitEnabledState : 'itemsPerRow' : combinedProperties.itemsPerRow"
+    (valueChange)="setItemsPerRow($event)">
     {{'limitItemPerRow' | translate}}
-  </mat-checkbox>
+  </aspect-merged-checkbox>
 
   <mat-form-field appearance="fill">
     <mat-label>{{'itemsPerRow' | translate }}</mat-label>
     <input matInput type="number" [min]="1" [pattern]="'[1-9]'" #itemsPerRow="ngModel" required aspectNumberField
-           [disabled]="combinedProperties.itemsPerRow === null"
+           [disabled]="!itemsPerRowEnabled.checked && !itemsPerRowEnabled.indeterminate"
            [ngModel]="combinedProperties.itemsPerRow"
            (numberChange)="updateModel.emit(
                   { property: 'itemsPerRow', value: $event.value, isInputValid: $event.isInputValid })">
     @if (itemsPerRow.errors?.['pattern']) {
       <mat-error>{{'numberGreater0' | translate}}</mat-error>
+    }
+    @if (divergingProperties | propertyDiverges : 'itemsPerRow') {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
     }
   </mat-form-field>
 }

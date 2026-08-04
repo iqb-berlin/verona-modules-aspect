@@ -23,6 +23,12 @@ import {
   MergedMarkerComponent
 } from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 import {
+  LimitEnabledStatePipe
+} from 'editor/src/app/modules/properties-panel/pipes/limit-enabled-state.pipe';
+import {
+  PropertyDivergesPipe
+} from 'editor/src/app/modules/properties-panel/pipes/property-diverges.pipe';
+import {
   StandardDimensionPropertiesComponent
 } from './standard-dimension-properties.component';
 
@@ -52,7 +58,7 @@ describe('StandardDimensionPropertiesComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [StandardDimensionPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective,
-        MergedMarkerComponent
+        MergedMarkerComponent, LimitEnabledStatePipe, PropertyDivergesPipe
       ],
       imports: [
         MatTooltipModule,
@@ -223,6 +229,49 @@ describe('StandardDimensionPropertiesComponent', () => {
       expect(elementService.updateElementsDimensionsProperty).not.toHaveBeenCalled();
       expect(maxWidthField.value).toBe('400');
       expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  /* The box used to read `maxWidth !== null`, a boolean that can never reach the third state - so
+     two elements with *different* maximum widths were shown as having none, and their field was
+     disabled on top (#1167). This is the standard-mode twin of the same pair in the size tab. */
+  describe('the maximum width under a diverging selection', () => {
+    const limitBox = (): HTMLInputElement => Array.from(
+      fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
+    ).slice(-1)[0];
+
+    beforeEach(async () => {
+      select('text'); // The maximum width alone, so it is the last box and the only number field.
+      component.divergingProperties = new Set(['dimensions.maxWidth']);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    });
+
+    it('should show the box as indeterminate and keep its field editable', () => {
+      expect(limitBox().getAttribute('aria-checked')).toBe('mixed');
+      expect(numberFields()[0].disabled).toBe(false);
+      expect(fixture.nativeElement.querySelector('aspect-merged-marker')).not.toBeNull();
+    });
+
+    it('should write a number typed into the indeterminate field to the whole selection', () => {
+      numberFields()[0].value = '150';
+      numberFields()[0].dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([selectedElement], 'maxWidth', 150);
+    });
+
+    it('should leave a shared absent maximum unchecked and unmarked', async () => {
+      component.divergingProperties = new Set<string>();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(limitBox().getAttribute('aria-checked')).not.toBe('mixed');
+      expect(numberFields()[0].disabled).toBe(true);
+      expect(fixture.nativeElement.querySelector('aspect-merged-marker')).toBeNull();
     });
   });
 

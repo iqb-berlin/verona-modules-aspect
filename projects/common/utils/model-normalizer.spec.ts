@@ -76,38 +76,19 @@ describe('ModelNormalizer', () => {
       expect(nestedElements[0].isRelevantForPresentationComplete).toBe(true);
     });
 
-    /* barStyle and thumbLabel are declared boolean, but their defaults were the strings 'default' and
-       'always' from 020d49fc until #1139 - and this normalizer put them into every unit that lacked
-       the properties. Repaired here rather than in a versioned step, because the units carrying the
-       string were already stamped 4.12.0 by a 3.0.0 beta and no migration step would touch them. */
+    /* This is how #1139 spread: the loop above backfills every missing property from the defaults, and
+       the slider's two display switches had the strings 'default' and 'always' there while being
+       declared boolean. Every unit that lacked them got the string written into it. No repair for
+       stored values is needed - the only units carrying one were saved by a 3.0.0 beta and are
+       throwaway data - so what has to hold is that the defaults themselves are booleans. */
     describe('the slider booleans', () => {
-      const normalizeSlider = (properties: Record<string, unknown>): Record<string, unknown> => ModelNormalizer
-        .normalizeElement({ type: 'slider', id: 's1', ...properties });
-
-      it('should turn a leftover string into false', () => {
-        const normalized = normalizeSlider({ barStyle: 'default', thumbLabel: 'always' });
-
-        expect(normalized.barStyle).toBe(false);
-        expect(normalized.thumbLabel).toBe(false);
-      });
-
-      // A boolean is somebody's choice in the panel and has to survive the repair.
-      it('should keep a chosen true', () => {
-        const normalized = normalizeSlider({ barStyle: true, thumbLabel: true });
-
-        expect(normalized.barStyle).toBe(true);
-        expect(normalized.thumbLabel).toBe(true);
-      });
-
       it('should backfill missing properties as false', () => {
-        const normalized = normalizeSlider({});
+        const normalized = ModelNormalizer.normalizeElement({ type: 'slider', id: 's1' });
 
         expect(normalized.barStyle).toBe(false);
         expect(normalized.thumbLabel).toBe(false);
       });
 
-      /* The defaults are what the loop above backfills with, so a non-boolean there would travel into
-         every unit again - which is how this bug spread in the first place. */
       it('should have boolean defaults in the registry', () => {
         expect(typeof ELEMENT_DEFAULTS.slider.barStyle).toBe('boolean');
         expect(typeof ELEMENT_DEFAULTS.slider.thumbLabel).toBe('boolean');

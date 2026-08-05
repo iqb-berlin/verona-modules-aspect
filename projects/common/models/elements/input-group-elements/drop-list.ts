@@ -48,13 +48,18 @@ export class DropListElement extends InputElement implements DropListProperties 
     super({ type: 'drop-list', ...element }, idService);
     if (isDropListProperties(element)) {
       if (element.value !== undefined) {
+        /* A value without an id comes from `getBlueprint()`, which clears them so that a copy does not
+           inherit them - and nothing assigned new ones, so a duplicated list ended up with values
+           whose id field was empty and could not be edited (#1179). The element does the same for its
+           own id one level up; `getAndRegisterNewID` registers what it hands out, and
+           `registerValueIDs()` below only registers ids that were passed in. */
         this.value = element.value.map((value, index) => ({
           text: value.text,
           imgSrc: value.imgSrc,
           imgFileName: value.imgFileName,
           imgPosition: value.imgPosition,
-          id: value.id,
-          alias: value.alias,
+          id: value.id ?? this.idService?.getAndRegisterNewID('value') as string,
+          alias: value.alias ?? this.idService?.getAndRegisterNewID('value', true) as string,
           originListID: this.id,
           originListIndex: index,
           audioSrc: value.audioSrc,

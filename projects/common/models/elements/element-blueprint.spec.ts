@@ -7,6 +7,7 @@ import { DropdownElement } from 'common/models/elements/input-group-elements/dro
 import {
   RadioButtonGroupElement
 } from 'common/models/elements/input-group-elements/radio-button-group';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 
 /**
  * What a duplicate may share with its original: nothing.
@@ -145,6 +146,66 @@ describe('UIElement.getBlueprint', () => {
     const element = ElementFactory.createElement({ type: 'text-field' }, idService);
 
     expect('idService' in element.getBlueprint()).toBe(false);
+  });
+
+  /* The ids inside a drop list's values are cleared by `getBlueprint()` so a copy does not inherit
+     them - but nothing handed out new ones, so a duplicated list had values with an empty id field
+     that could not be edited. Found while reviewing #1179 in the editor; it predates that change,
+     which is why it is pinned here for both paths a copy can take. */
+  describe('the ids inside drop list values', () => {
+    const dropListProperties = {
+      type: 'drop-list' as UIElementType,
+      id: 'drop-list_1',
+      alias: 'drop-list_1',
+      value: [{
+        text: 'Wert A',
+        id: 'value_1',
+        alias: 'value_1',
+        imgSrc: null,
+        imgFileName: '',
+        imgPosition: 'above',
+        originListID: 'drop-list_1',
+        originListIndex: 0,
+        audioSrc: null,
+        audioFileName: ''
+      }]
+    };
+
+    it('should give a duplicated list new value ids', () => {
+      const original = ElementFactory.createElement(dropListProperties, idService) as DropListElement;
+
+      const copy = duplicate(original) as DropListElement;
+
+      expect(copy.value[0].id).toBeTruthy();
+      expect(copy.value[0].id).not.toBe(original.value[0].id);
+      expect(copy.value[0].alias).toBeTruthy();
+    });
+
+    // The same list inside a cloze, which duplicates its children through their own blueprints.
+    it('should give the values of a duplicated cloze new ids', () => {
+      const clozeProperties = {
+        type: 'cloze' as UIElementType,
+        document: {
+          type: 'doc',
+          content: [{
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left', indent: null, indentSize: 20, hangingIndent: false, margin: 0
+            },
+            content: [{ type: 'DropList', attrs: { model: dropListProperties } }]
+          }]
+        }
+      };
+      const original = ElementFactory.createElement(clozeProperties, idService);
+
+      const copy = duplicate(original);
+      const copiedList = copy.getChildElements()
+        .find(child => child.type === 'drop-list') as DropListElement;
+
+      expect(copiedList).toBeDefined();
+      expect(copiedList.value[0].id).toBeTruthy();
+      expect(copiedList.value[0].id).not.toBe('value_1');
+    });
   });
 
   /* The two cases that were reproduced in the editor: what editing a duplicate does to its original.

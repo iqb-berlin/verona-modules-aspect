@@ -1,3 +1,4 @@
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import { ModelNormalizer } from './model-normalizer';
 
 describe('ModelNormalizer', () => {
@@ -73,6 +74,44 @@ describe('ModelNormalizer', () => {
       const normalized = ModelNormalizer.normalizeElement(partialLikert as Record<string, unknown>);
       const nestedElements = normalized.elements as Record<string, unknown>[];
       expect(nestedElements[0].isRelevantForPresentationComplete).toBe(true);
+    });
+
+    /* barStyle and thumbLabel are declared boolean, but their defaults were the strings 'default' and
+       'always' from 020d49fc until #1139 - and this normalizer put them into every unit that lacked
+       the properties. Repaired here rather than in a versioned step, because the units carrying the
+       string were already stamped 4.12.0 by a 3.0.0 beta and no migration step would touch them. */
+    describe('the slider booleans', () => {
+      const normalizeSlider = (properties: Record<string, unknown>): Record<string, unknown> => ModelNormalizer
+        .normalizeElement({ type: 'slider', id: 's1', ...properties });
+
+      it('should turn a leftover string into false', () => {
+        const normalized = normalizeSlider({ barStyle: 'default', thumbLabel: 'always' });
+
+        expect(normalized.barStyle).toBe(false);
+        expect(normalized.thumbLabel).toBe(false);
+      });
+
+      // A boolean is somebody's choice in the panel and has to survive the repair.
+      it('should keep a chosen true', () => {
+        const normalized = normalizeSlider({ barStyle: true, thumbLabel: true });
+
+        expect(normalized.barStyle).toBe(true);
+        expect(normalized.thumbLabel).toBe(true);
+      });
+
+      it('should backfill missing properties as false', () => {
+        const normalized = normalizeSlider({});
+
+        expect(normalized.barStyle).toBe(false);
+        expect(normalized.thumbLabel).toBe(false);
+      });
+
+      /* The defaults are what the loop above backfills with, so a non-boolean there would travel into
+         every unit again - which is how this bug spread in the first place. */
+      it('should have boolean defaults in the registry', () => {
+        expect(typeof ELEMENT_DEFAULTS.slider.barStyle).toBe('boolean');
+        expect(typeof ELEMENT_DEFAULTS.slider.thumbLabel).toBe('boolean');
+      });
     });
 
     it('should initialize required properties for input elements', () => {

@@ -109,6 +109,22 @@ export class ModelNormalizer {
       });
     }
 
+    /* Both are declared boolean in SliderProperties, but from 020d49fc until #1139 their defaults were
+       the strings 'default' and 'always' - and the loop above wrote whatever the defaults held into
+       every unit that lacked the properties. So a string in a stored unit means "nobody ever chose
+       this", which is exactly what the boolean default before that commit said as well: it reads as
+       false. A real boolean is somebody's choice and is left alone.
+
+       Here rather than in a versioned migration step: the units carrying the string were saved by a
+       3.0.0 beta, which already stamps them 4.12.0, and MigrationManager skips any step whose
+       toVersion is not newer than the unit's version. This normalizer runs on every load regardless
+       of version - the same reason the margin conversion below lives here. */
+    if (type === 'slider') {
+      ['barStyle', 'thumbLabel'].forEach(key => {
+        if (typeof normalized[key] !== 'boolean') normalized[key] = false;
+      });
+    }
+
     // 1. Base properties
     normalized.isRelevantForPresentationComplete =
       normalized.isRelevantForPresentationComplete !== undefined ?

@@ -2,7 +2,6 @@ import {
   CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
 import { ButtonElement } from 'common/models/elements/action-group-elements/button';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -66,19 +65,12 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
     }
   }
 
+  /* Since #1179 the base class deep copies and turns child elements into blueprints of their own, so
+     the child models in the document arrive without id and alias, and a child drop list has already
+     cleared its values' ids. What is left here is the cast: the document is typed, the generic
+     blueprint is not. */
   getBlueprint(): ClozeProperties {
-    const newDoc = structuredClone(this.document);
-    ClozeElement.getCustomNodes(newDoc.content).forEach((node: CustomDocumentNode) => {
-      node.attrs.model.id = undefined as unknown as string;
-      node.attrs.model.alias = undefined as unknown as string;
-      if (node.attrs.model.type === 'drop-list') {
-        node.attrs.model.value = (node.attrs.model as DropListElement).value
-          .map(val => ({ ...val, id: undefined, alias: undefined }));
-      }
-    });
-    return {
-      ...this, document: newDoc, id: undefined, alias: undefined
-    };
+    return super.getBlueprint() as unknown as ClozeProperties;
   }
 
   getRemovedClozeElements(newClozeDoc: ClozeDocument): UIElement[] {

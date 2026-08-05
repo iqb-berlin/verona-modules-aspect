@@ -169,9 +169,27 @@ export abstract class UIElement implements UIElementProperties {
     };
   }
 
-  /* ID and alias are removed, so they can be re-assigned by the element constructor. */
+  /**
+   * The element as plain data, for creating another one from it - duplicating an element, duplicating
+   * a section, inserting a copy.
+   *
+   * ID and alias are removed, so the constructor can assign new ones. Everything else is **deep
+   * copied**: this used to be `{ ...this }`, and a shallow copy left original and duplicate on the
+   * same nested values. Editing the copy's option list then changed the original's, because
+   * `setProperty` splices into arrays in place - measured for every element type in #1179, and the
+   * same for `EditorSection.getDuplicate()`, which builds on this method.
+   *
+   * `idService` is left out: the constructor takes it as its own argument and never reads it off the
+   * blueprint. It also has no place in plain data - `copySectionToClipboard` strips it again on the
+   * way out.
+   */
   getBlueprint(): UIElementProperties {
-    return { ...this, id: undefined, alias: undefined };
+    const blueprint: Record<string, unknown> = {};
+    Object.entries(this as unknown as Record<string, unknown>).forEach(([key, value]) => {
+      if (key === 'idService') return;
+      blueprint[key] = cloneForBlueprint(value);
+    });
+    return { ...blueprint, id: undefined, alias: undefined } as unknown as UIElementProperties;
   }
 
   registerIDs(): void {
@@ -285,7 +303,10 @@ export abstract class TextInputElement extends InputElement implements TextInput
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
 
-  abstract getBlueprint(): UIElementProperties;
+  /* `getBlueprint()` used to be abstract here, so that every compound element had to turn its
+     children into blueprints itself. Since #1179 the base class does that for any nested element it
+     finds, so the requirement only invited copies that also had to remember the deep copy. Subclasses
+     still override it where the return type matters or where ids inside values have to go. */
 }
 
 function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): blueprint is PlayerElementBlueprint {
@@ -343,4 +364,26 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
       valuesComplete: false
     }];
   }
+}
+
+/**
+ * Deep copy for {@link UIElement.getBlueprint}.
+ *
+ * Child elements are turned into blueprints of their own rather than cloned as objects: they are
+ * class instances, a blueprint is plain data, and their own `getBlueprint()` knows what else has to
+ * be dropped - the drop list clears the ids of its values, the cloze those of its child models.
+ *
+ * `idService` is skipped wherever it appears, including on child elements: it is a service, not data,
+ * and `structuredClone` would refuse it depending on how its methods are declared.
+ */
+function cloneForBlueprint<T>(value: T): T {
+  if (Array.isArray(value)) return value.map(entry => cloneForBlueprint(entry)) as unknown as T;
+  if (value === null || typeof value !== 'object') return value;
+  if (value instanceof UIElement) return value.getBlueprint() as unknown as T;
+  const clone: Record<string, unknown> = {};
+  Object.entries(value as Record<string, unknown>).forEach(([key, entry]) => {
+    if (key === 'idService') return;
+    clone[key] = cloneForBlueprint(entry);
+  });
+  return clone as T;
 }

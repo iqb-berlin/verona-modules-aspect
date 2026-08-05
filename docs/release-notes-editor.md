@@ -60,6 +60,7 @@ Editor
   - Ohne Kennzeichnung bleiben weiterhin die Vorbelegung von Eingabefeld, Eingabebereich, Auswahlliste, Auswahlknöpfen und Formelfeld sowie "keine Aktion" bei Knopf und Auslöser: dort steht das leere Feld weiterhin für beides
   - Sind mehrere Medienelemente (Bild, Audio, Video, Hotspot-Bild) mit unterschiedlichen Dateien markiert, fehlte der Knopf zum Austauschen der Datei — es gab also keine Möglichkeit, ihnen gemeinsam eine neue zu geben. Daneben stand als Dateiname "unbekannt", obwohl beide eine Datei haben; dort steht jetzt "Werte unterschiedlich"
   - Bei den Maßangaben (Ränder, Zeilenhöhen, Spaltenbreiten) wird jetzt auch die Einheit gekennzeichnet, wenn sie sich unterscheidet. Bisher wirkte sie nur leer, und eine allein eingegebene Zahl wurde ohne Hinweis verworfen — sie wird jetzt übernommen, sobald die Einheit gewählt ist
+  - Zieht man bei mehreren markierten Elementen am Größengriff, wächst oder schrumpft jetzt jedes Element um denselben Betrag, ausgehend von seiner eigenen Größe — so wie es das Verschieben mehrerer Elemente schon immer gemacht hat. Bisher bekamen alle die absolute Größe des gezogenen Elements: ein Bild mit 400×300 wurde, gemeinsam mit einem 100×50 großen Rahmen markiert, bei einem Zug um 20 Pixel auf 120×70 gestaucht — und der Editor kennt kein Rückgängig. Wer mehreren Elementen bewusst dieselbe Größe geben will, kann dazu weiterhin die Felder "Breite" und "Höhe" im Eigenschaftenbereich verwenden, die für alle markierten Elemente gelten
 
 ## 2.12.4
 ### Fehlerbehebungen 

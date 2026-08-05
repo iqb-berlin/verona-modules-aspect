@@ -24,6 +24,7 @@ describe('StaticOverlayComponent', () => {
   };
   let elementService: SpyObj<ElementService>;
   let selectedElements: UIElement[];
+  let draggedElement: PositionedUIElement;
 
   const createDragEvent = (x: number, y: number): CdkDragMove & CdkDragEnd => {
     const event = { distance: { x, y } };
@@ -31,7 +32,14 @@ describe('StaticOverlayComponent', () => {
   };
 
   beforeEach(() => {
-    selectedElements = [{ id: 'text_1' } as unknown as UIElement];
+    /* The dragged element *is* the selected one, the same object the SelectionService hands out -
+       the drag starts by selecting it. And it carries `dimensions` like every UIElement does, because
+       the resize reads the starting size of each selected element, not just of the dragged one
+       (#1156). */
+    draggedElement = {
+      type: 'text', id: 'text_1', dimensions: { width: 100, height: 50 }
+    } as unknown as PositionedUIElement;
+    selectedElements = [draggedElement];
     selectionServiceMock = {
       selectedElements: of(selectedElements),
       getSelectedElements: vi.fn().mockReturnValue(selectedElements),
@@ -48,11 +56,7 @@ describe('StaticOverlayComponent', () => {
       new DragNDropService(),
       { detectChanges: vi.fn() } as unknown as ChangeDetectorRef
     );
-    component.element = {
-      type: 'text',
-      id: 'text_1',
-      dimensions: { width: 100, height: 50 }
-    } as unknown as PositionedUIElement;
+    component.element = draggedElement;
   });
 
   it('should create', () => {
@@ -79,19 +83,90 @@ describe('StaticOverlayComponent', () => {
 
   /* Asserts on the dimensions setter, not the generic one: width and height belong to the dimensions
      group, and going through updateElementsProperty wrote them onto the element root instead, where
-     nothing reads them. The dragged element still looked right because resizeElement() mutates its
-     dimensions as a live preview - the other selected elements did not (#1142). */
-  it('should persist width and height of the selected elements when the resize drag ends', () => {
-    selectedElements.push({ id: 'text_2' } as unknown as UIElement);
+     nothing reads them (#1142). */
+  it('should persist width and height when the resize drag ends', () => {
     component.resizeDragStart();
 
     component.updateModel(createDragEvent(20, 10));
 
     expect(elementService.updateElementsDimensionsProperty)
-      .toHaveBeenCalledWith(selectedElements, 'width', 120);
+      .toHaveBeenCalledWith([component.element], 'width', 120);
     expect(elementService.updateElementsDimensionsProperty)
-      .toHaveBeenCalledWith(selectedElements, 'height', 60);
+      .toHaveBeenCalledWith([component.element], 'height', 60);
     expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
+  });
+
+  /* Every selected element takes the distance dragged on top of its own size, the way a move works
+     (SectionComponent.elementDropped). Until #1156 they were all given the absolute size of the
+     dragged element, so a large image selected with a small border was shrunk to the border's size -
+     with no undo in the editor to take it back. */
+  describe('with several elements selected', () => {
+    let secondElement: UIElement;
+
+    beforeEach(() => {
+      secondElement = { id: 'image_1', dimensions: { width: 400, height: 300 } } as unknown as UIElement;
+      selectedElements.push(secondElement);
+    });
+
+    it('should grow each element by the dragged distance from its own size', () => {
+      component.resizeDragStart();
+
+      component.updateModel(createDragEvent(20, 10));
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([component.element], 'width', 120);
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([component.element], 'height', 60);
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([secondElement], 'width', 420);
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([secondElement], 'height', 310);
+    });
+
+    /* The floor applies per element, so shrinking past zero stops the small one at zero without
+       dragging the large one down by the same amount twice. */
+    it('should not take any element below zero', () => {
+      component.resizeDragStart();
+
+      component.updateModel(createDragEvent(-200, -100));
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([component.element], 'width', 0);
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([secondElement], 'width', 200);
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([secondElement], 'height', 200);
+    });
+
+    /* The live preview stays on the dragged element - as with a move, where the CDK only transforms
+       what is under the cursor. The others follow when the drag ends. */
+    it('should preview the drag on the dragged element only', () => {
+      component.resizeDragStart();
+
+      component.resizeElement(createDragEvent(20, 10));
+
+      expect(component.element.dimensions.width).toBe(120);
+      expect(secondElement.dimensions.width).toBe(400);
+      expect(secondElement.dimensions.height).toBe(300);
+    });
+
+    /* A second drag must measure from where the first one left off, not from the sizes of the drag
+       before it - the map is rebuilt on every drag start. */
+    it('should measure a second drag from the new sizes', () => {
+      component.resizeDragStart();
+      component.updateModel(createDragEvent(20, 10));
+      // The service is a spy, so the model is followed by hand for the elements it would have written.
+      component.element.dimensions.width = 120;
+      secondElement.dimensions.width = 420;
+
+      component.resizeDragStart();
+      component.updateModel(createDragEvent(5, 0));
+
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([component.element], 'width', 125);
+      expect(elementService.updateElementsDimensionsProperty)
+        .toHaveBeenCalledWith([secondElement], 'width', 425);
+    });
   });
 
   it('should delete the selected elements and clear the selection', () => {

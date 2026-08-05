@@ -3,7 +3,9 @@ import {
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
+import {
+  DivergingProperties, Merged
+} from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import {
   PanelSection, panelSectionsOf
 } from 'editor/src/app/modules/properties-panel/models/panel-sections';
@@ -36,6 +38,7 @@ export type PanelUIElementProperties =
 })
 export class UIElementPropertiesComponent implements OnChanges {
   @Input() combinedProperties!: Merged<PanelUIElementProperties>;
+  @Input() divergingProperties: DivergingProperties | undefined;
   @Input() selectedElements: UIElement[] = [];
   /**
    * Deliberately `string`, unlike the leaf components: this channel also carries the events of the

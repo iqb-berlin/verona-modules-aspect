@@ -33,6 +33,7 @@ import {
 })
 class MockUIElementPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
+  @Input() divergingProperties: ReadonlySet<string> | undefined;
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel =
     new EventEmitter<{ property: string; value: UIElementValue, isInputValid?: boolean | null }>();
@@ -45,6 +46,7 @@ class MockUIElementPropertiesComponent {
 })
 class MockElementPositionPropertiesComponent {
   @Input() dimensions!: DimensionProperties | null | undefined;
+  @Input() divergingProperties: ReadonlySet<string> | undefined;
   @Input() positionProperties: PositionProperties | undefined;
   @Input() isZIndexDisabled: boolean = false;
   /* Without this the binding in the host template is not an output at all - Angular quietly turns
@@ -156,6 +158,43 @@ describe('ElementPropertiesPanelComponent', () => {
     expect(component.combinedProperties?.label).toBeNull();
   });
 
+  /* Handed to the leaves next to the merged values, and rebuilt each time: the leaves read it
+     through pure pipes, which re-run on a changed reference - a cleared set would keep the previous
+     selection's answer on screen (#1167). */
+  it('should publish where the selection diverges as a new set per merge', () => {
+    selectedElements.next([buttonElement, secondButtonElement]);
+    fixture.detectChanges();
+    const firstMerge = component.divergingProperties;
+
+    expect(firstMerge.has('label')).toBe(true);
+
+    selectedElements.next([buttonElement]);
+    fixture.detectChanges();
+
+    expect(component.divergingProperties).not.toBe(firstMerge);
+    expect(component.divergingProperties.size).toBe(0);
+  });
+
+  /* A failed merge takes every control away, so the paths of the selection it half-walked must go
+     too - they would otherwise describe a selection the panel no longer shows (#1155). */
+  it('should drop the diverging paths when a merge fails', () => {
+    const exploding = { type: 'button', id: 'boom' } as unknown as UIElement;
+    Object.defineProperty(exploding, 'label', {
+      get() { throw new Error('merge failed'); },
+      enumerable: true
+    });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    selectedElements.next([buttonElement, secondButtonElement]);
+    fixture.detectChanges();
+    expect(component.divergingProperties.size).toBeGreaterThan(0);
+
+    selectedElements.next([buttonElement, exploding]);
+    fixture.detectChanges();
+
+    expect(component.combinedProperties).toBeUndefined();
+    expect(component.divergingProperties.size).toBe(0);
+  });
+
   it('should merge shared properties and drop non-shared ones', () => {
     const combined = ElementPropertiesPanelComponent.createCombinedProperties([
       {
@@ -264,6 +303,102 @@ describe('ElementPropertiesPanelComponent', () => {
       expect(combined?.readOnly).toBeNull();
       expect(combined?.rowCount).toBeNull();
       expect(combined?.label).toBeNull();
+    });
+
+    /* Where the selection diverges, collected next to the merge rather than encoded in it: the
+       nullable properties ("no limit", "no preset") produce the same null for "they disagree" as for
+       "none of them has one", and a panel reading only the value claimed the latter (#1167). */
+    describe('the diverging paths', () => {
+      it('should record a diverging property and leave a shared one out', () => {
+        const diverging = new Set<string>();
+
+        ElementPropertiesPanelComponent.createCombinedProperties([
+          element({
+            type: 'text-field', id: 'a', label: 'same', rowCount: 2
+          }),
+          element({
+            type: 'text-field', id: 'b', label: 'same', rowCount: 3
+          })
+        ], diverging);
+
+        expect(diverging.has('rowCount')).toBe(true);
+        expect(diverging.has('label')).toBe(false);
+      });
+
+      // Dotted, so a leaf inside a property group is distinguishable from a top-level one.
+      it('should record a nested property with its group as a path', () => {
+        const diverging = new Set<string>();
+
+        ElementPropertiesPanelComponent.createCombinedProperties([
+          element({ type: 'text-field', id: 'a', dimensions: { maxWidth: 100, minWidth: 20 } }),
+          element({ type: 'text-field', id: 'b', dimensions: { maxWidth: 200, minWidth: 20 } })
+        ], diverging);
+
+        expect([...diverging]).toEqual(['dimensions.maxWidth']);
+      });
+
+      /* The counter-case the whole set is for: elements that agree on having no limit produce the
+         same `null` as diverging ones, and there the panel is right to show "no limit". */
+      it('should record nothing when the elements agree on null', () => {
+        const diverging = new Set<string>();
+
+        const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+          element({ type: 'text-field', id: 'a', dimensions: { maxWidth: null } }),
+          element({ type: 'text-field', id: 'b', dimensions: { maxWidth: null } })
+        ], diverging);
+
+        expect((combined?.dimensions as unknown as Record<string, unknown>).maxWidth).toBeNull();
+        expect(diverging.size).toBe(0);
+      });
+
+      /* A third element that disagrees with an already-nulled property: the merge compares against
+         the null it wrote itself, so the divergence has to be recorded when it first happens. */
+      it('should keep a divergence recorded once a later element matches the null', () => {
+        const diverging = new Set<string>();
+
+        ElementPropertiesPanelComponent.createCombinedProperties([
+          element({ type: 'text-field', id: 'a', dimensions: { maxWidth: 100 } }),
+          element({ type: 'text-field', id: 'b', dimensions: { maxWidth: 200 } }),
+          element({ type: 'text-field', id: 'c', dimensions: { maxWidth: null } })
+        ], diverging);
+
+        expect(diverging.has('dimensions.maxWidth')).toBe(true);
+      });
+
+      // Only the third element brings the disagreement, and the first two must not hide it.
+      it('should record a divergence that only a later element introduces', () => {
+        const diverging = new Set<string>();
+
+        ElementPropertiesPanelComponent.createCombinedProperties([
+          element({ type: 'text-field', id: 'a', dimensions: { maxWidth: null } }),
+          element({ type: 'text-field', id: 'b', dimensions: { maxWidth: null } }),
+          element({ type: 'text-field', id: 'c', dimensions: { maxWidth: 300 } })
+        ], diverging);
+
+        expect(diverging.has('dimensions.maxWidth')).toBe(true);
+      });
+
+      // `id` diverges by definition and is exempt from the merge; it has no field to speak for.
+      it('should not record the id', () => {
+        const diverging = new Set<string>();
+
+        ElementPropertiesPanelComponent.createCombinedProperties([
+          element({ type: 'text-field', id: 'a' }),
+          element({ type: 'text-field', id: 'b' })
+        ], diverging);
+
+        expect(diverging.has('id')).toBe(false);
+      });
+
+      it('should record nothing for a single element', () => {
+        const diverging = new Set<string>();
+
+        ElementPropertiesPanelComponent.createCombinedProperties([
+          element({ type: 'text-field', id: 'a', dimensions: { maxWidth: null } })
+        ], diverging);
+
+        expect(diverging.size).toBe(0);
+      });
     });
 
     it('should keep the shared type when merging elements of the same type', () => {

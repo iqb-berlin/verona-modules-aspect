@@ -47,6 +47,7 @@ class MockInputElementPropertiesComponent {
 @Component({ selector: 'aspect-standard-dimension-properties', standalone: false, template: '' })
 class MockStandardDimensionPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
+  @Input() divergingProperties: ReadonlySet<string> | undefined;
   @Input() show!: Record<PanelSection, boolean>;
 }
 
@@ -76,6 +77,7 @@ class MockOptionsFieldSetComponent {
 @Component({ selector: 'aspect-ele-specific-props', standalone: false, template: '' })
 class MockEleSpecificPropsComponent {
   @Input() combinedProperties!: CombinedProperties;
+  @Input() divergingProperties: ReadonlySet<string> | undefined;
   @Input() show!: Record<PanelSection, boolean>;
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
@@ -83,6 +85,7 @@ class MockEleSpecificPropsComponent {
 @Component({ selector: 'aspect-select-properties', standalone: false, template: '' })
 class MockSelectPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
+  @Input() divergingProperties: ReadonlySet<string> | undefined;
   @Output() updateModel = new EventEmitter<{ property: string; value: UIElementValue }>();
 }
 

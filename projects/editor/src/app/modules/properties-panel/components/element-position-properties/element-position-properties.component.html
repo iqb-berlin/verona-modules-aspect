@@ -8,7 +8,8 @@
 
   <aspect-dimension-field-set *ngIf="dimensions"
                               [positionProperties]="positionProperties"
-                              [dimensions]="dimensions">
+                              [dimensions]="dimensions"
+                              [divergingProperties]="divergingProperties">
   </aspect-dimension-field-set>
 
   <ng-container *ngIf="(selectionService.selectedElements | async)!.length > 1">

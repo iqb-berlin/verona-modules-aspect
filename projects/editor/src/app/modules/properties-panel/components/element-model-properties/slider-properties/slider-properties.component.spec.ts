@@ -16,6 +16,9 @@ import {
   MergedMarkerComponent
 } from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 import {
+  PropertyDivergesPipe
+} from 'editor/src/app/modules/properties-panel/pipes/property-diverges.pipe';
+import {
   SliderPropertiesComponent
 } from './slider-properties.component';
 
@@ -30,7 +33,7 @@ describe('SliderPropertiesComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [SliderPropertiesComponent, MergedCheckboxComponent, NumberFieldDirective,
-        MergedMarkerComponent
+        MergedMarkerComponent, PropertyDivergesPipe
       ],
       imports: [
         MatTooltipModule,
@@ -151,5 +154,41 @@ describe('SliderPropertiesComponent', () => {
 
     expect(fixture.nativeElement.querySelectorAll('mat-checkbox').length).toBe(0);
     expect(fixture.nativeElement.querySelectorAll('input[type="number"]').length).toBe(3);
+  });
+
+  /* The preset is the one box here whose property is nullable, so it cannot test its value for the
+     marker the way min and max do: an empty box is a legitimate "no preset", and the marker would
+     have appeared for a selection that simply has none (#1167). */
+  describe('the marker on the preset', () => {
+    /** Template order: minimum, maximum, preset. */
+    const markedBoxes = (): boolean[] => Array.from(
+      fixture.nativeElement.querySelectorAll('mat-form-field') as NodeListOf<HTMLElement>
+    ).map(field => !!field.querySelector('aspect-merged-marker'));
+
+    it('should mark a diverging preset', () => {
+      component.combinedProperties = { ...component.combinedProperties, value: null };
+      component.divergingProperties = new Set(['value']);
+      fixture.detectChanges();
+
+      expect(markedBoxes()[2]).toBe(true);
+    });
+
+    it('should not mark a preset the selection agrees is unset', () => {
+      component.combinedProperties = { ...component.combinedProperties, value: null };
+      component.divergingProperties = new Set<string>();
+      fixture.detectChanges();
+
+      expect(markedBoxes()[2]).toBe(false);
+    });
+
+    /* The bounds keep reading their own value: they are declared `number`, so a null there can only
+       have come from the merge, and nothing about them changed. */
+    it('should still mark a diverging minimum from its value alone', () => {
+      component.combinedProperties = { ...component.combinedProperties, minValue: null };
+      component.divergingProperties = new Set<string>();
+      fixture.detectChanges();
+
+      expect(markedBoxes()[0]).toBe(true);
+    });
   });
 });

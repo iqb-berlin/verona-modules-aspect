@@ -19,6 +19,15 @@ import {
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
 import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
+import {
+  LimitEnabledStatePipe
+} from 'editor/src/app/modules/properties-panel/pipes/limit-enabled-state.pipe';
+import {
+  PropertyDivergesPipe
+} from 'editor/src/app/modules/properties-panel/pipes/property-diverges.pipe';
+import {
   SelectPropertiesComponent
 } from './select-properties.component';
 
@@ -33,8 +42,9 @@ describe('SelectPropertiesComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [
-        SelectPropertiesComponent, MergedCheckboxComponent,
-        NumberFieldDirective, NumberFieldBadInputDirective
+        SelectPropertiesComponent, MergedCheckboxComponent, MergedMarkerComponent,
+        NumberFieldDirective, NumberFieldBadInputDirective,
+        LimitEnabledStatePipe, PropertyDivergesPipe
       ],
       imports: [
         CommonModule,
@@ -183,6 +193,44 @@ describe('SelectPropertiesComponent', () => {
     fixture.detectChanges();
 
     expect(input.disabled).toBe(false);
+  });
+
+  /* `itemsPerRow` is nullable in the model, so "no limit" and "the selection disagrees" arrive as
+     the same null and the box needs the panel's set to tell them apart (#1167). Before that, two
+     image radio groups limited to different counts were shown as not limited at all, with the
+     number box disabled on top - no way to give them a common limit without unticking first. */
+  describe('the items per row limit under a diverging selection', () => {
+    const limitBox = (): HTMLInputElement => Array.from(
+      fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
+    )[3];
+    const numberBox = (): HTMLInputElement => fixture.nativeElement
+      .querySelector('input[type="number"]') as HTMLInputElement;
+
+    beforeEach(async () => {
+      component.combinedProperties = { ...component.combinedProperties, itemsPerRow: null };
+      component.divergingProperties = new Set(['itemsPerRow']);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    });
+
+    it('should show the limit box as indeterminate', () => {
+      expect(limitBox().getAttribute('aria-checked')).toBe('mixed');
+    });
+
+    it('should keep the number box editable and marked', () => {
+      expect(numberBox().disabled).toBe(false);
+      expect(fixture.nativeElement.querySelector('aspect-merged-marker')).not.toBeNull();
+    });
+
+    /* Clicking the indeterminate box means "give them all a limit" and writes the same default a
+       plain checkbox wrote before - only the state shown ahead of the click has changed. */
+    it('should give the whole selection the default limit when clicked', () => {
+      limitBox().click();
+      fixture.detectChanges();
+
+      expect(emitted).toEqual([{ property: 'itemsPerRow', value: 4 }]);
+    });
   });
 
   it('should render nothing for an element with none of the properties', () => {

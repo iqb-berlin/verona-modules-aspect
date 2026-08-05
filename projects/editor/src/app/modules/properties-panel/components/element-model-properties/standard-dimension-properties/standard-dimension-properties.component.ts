@@ -2,7 +2,9 @@ import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
+import {
+  DivergingProperties, Merged
+} from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import {
   PanelSection, panelSectionsOf
 } from 'editor/src/app/modules/properties-panel/models/panel-sections';
@@ -31,6 +33,8 @@ export type PanelStandardDimensionProperties = Pick<UIElementProperties, 'dimens
 })
 export class StandardDimensionPropertiesComponent {
   @Input() combinedProperties!: Merged<PanelStandardDimensionProperties>;
+  /** For the maximum width, which is `number | null` and needs the third box state (#1167). */
+  @Input() divergingProperties: DivergingProperties | undefined;
   /** Which sections the selection has, computed once by the panel's distributor. */
   @Input() show: Record<PanelSection, boolean> = panelSectionsOf([]);
 

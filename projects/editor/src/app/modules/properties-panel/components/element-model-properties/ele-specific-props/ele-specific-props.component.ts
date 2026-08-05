@@ -2,7 +2,9 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
+import {
+  DivergingProperties, Merged
+} from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import {
   PanelSection, panelSectionsOf
 } from 'editor/src/app/modules/properties-panel/models/panel-sections';
@@ -24,6 +26,8 @@ export type PanelEleSpecificProperties = Pick<UIElementProperties, 'type'>;
 })
 export class EleSpecificPropsComponent {
   @Input() combinedProperties!: Merged<PanelEleSpecificProperties>;
+  /** Relayed unread, like `combinedProperties` - the slider's preset is the child that needs it. */
+  @Input() divergingProperties: DivergingProperties | undefined;
   /**
    * Which sections the selection has, computed once by the parent. Defaults to none, so a caller
    * that forgets it renders an empty distributor instead of throwing - the characterization net

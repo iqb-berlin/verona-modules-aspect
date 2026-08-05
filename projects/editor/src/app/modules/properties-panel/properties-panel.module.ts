@@ -73,6 +73,7 @@ import {
   InputElementPropertiesComponent
 } from './components/element-model-properties/input-element-properties/input-element-properties.component';
 import { LikertRowLabelPipe } from './pipes/likert-row-label.pipe';
+import { LimitEnabledStatePipe } from './pipes/limit-enabled-state.pipe';
 import {
   MarkingPanelPropertiesComponent
 } from './components/element-model-properties/marking-panel-properties/marking-panel-properties.component';
@@ -102,6 +103,7 @@ import {
 import {
   ImagePropertiesComponent
 } from './components/element-model-properties/image-properties/image-properties.component';
+import { PropertyDivergesPipe } from './pipes/property-diverges.pipe';
 import { ScrollPageIndexPipe } from './pipes/scroll-page-index.pipe';
 import {
   SelectPropertiesComponent
@@ -139,7 +141,7 @@ import {
  *
  * Only ElementPropertiesPanelComponent is exported. The other 37 components are internal to
  * this module on purpose: the panel's structure can then be reworked without checking the rest of
- * the editor for usages. The five pipes are used by this module's templates only.
+ * the editor for usages. The seven pipes are used by this module's templates only.
  *
  * This module deliberately lives under src/app rather than under editor/modules/. It is not a
  * self-contained unit — its components reach for the editor's root-provided services
@@ -194,7 +196,9 @@ import {
     GetStateVariablePipe,
     GetValidDropListsPipe,
     LikertRowLabelPipe,
+    LimitEnabledStatePipe,
     PresetOptionTextPipe,
+    PropertyDivergesPipe,
     ScrollPageIndexPipe
   ],
   imports: [

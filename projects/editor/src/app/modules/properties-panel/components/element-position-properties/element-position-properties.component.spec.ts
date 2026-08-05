@@ -40,6 +40,7 @@ class MockPositionFieldSetComponent {
 class MockDimensionFieldSetComponent {
   @Input() positionProperties: PositionProperties | undefined;
   @Input() dimensions!: DimensionProperties;
+  @Input() divergingProperties: ReadonlySet<string> | undefined;
 }
 
 describe('ElementPositionPropertiesComponent', () => {

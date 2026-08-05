@@ -208,6 +208,103 @@ describe('UIElement.getBlueprint', () => {
     });
   });
 
+  /* A copy needs its own identity, on every level. The child elements of a compound carry ids of their
+     own, and those must not be inherited either - otherwise two elements answer to the same variable.
+     Loading is the counter-case in the same code path: there the ids are present and have to stay. */
+  describe('identity of copied children', () => {
+    it('should give a duplicated likert new row ids', () => {
+      const original = ElementFactory.createElement({
+        type: 'likert',
+        options: [{ text: 'ja' }, { text: 'nein' }],
+        rows: [
+          { type: 'likert-row', id: 'row_1', alias: 'row_1' },
+          { type: 'likert-row', id: 'row_2', alias: 'row_2' }
+        ]
+      } as unknown as { type: UIElementType }, idService);
+
+      const copy = duplicate(original);
+
+      const originalIds = original.getChildElements().map(child => child.id);
+      const copyIds = copy.getChildElements().map(child => child.id);
+      expect(copyIds.length).toBe(2);
+      expect(copyIds.every(id => !!id)).toBe(true);
+      expect(copyIds.some(id => originalIds.includes(id))).toBe(false);
+    });
+
+    it('should give a duplicated table new child ids', () => {
+      const original = ElementFactory.createElement({
+        type: 'table',
+        elements: [
+          { type: 'text-field', id: 'tf_1', alias: 'tf_1' },
+          { type: 'checkbox', id: 'cb_1', alias: 'cb_1' }
+        ],
+        gridColumnSizes: [{ value: 1, unit: 'fr' }],
+        gridRowSizes: [{ value: 1, unit: 'fr' }]
+      } as unknown as { type: UIElementType }, idService);
+
+      const copy = duplicate(original);
+
+      const originalIds = original.getChildElements().map(child => child.id);
+      const copyIds = copy.getChildElements().map(child => child.id);
+      expect(copyIds.length).toBe(2);
+      expect(copyIds.some(id => originalIds.includes(id))).toBe(false);
+    });
+
+    it('should give a duplicated cloze new child ids', () => {
+      const original = ElementFactory.createElement({
+        type: 'cloze',
+        document: {
+          type: 'doc',
+          content: [{
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left', indent: null, indentSize: 20, hangingIndent: false, margin: 0
+            },
+            content: [{
+              type: 'TextField',
+              attrs: { model: { type: 'text-field', id: 'child_1', alias: 'child_1' } }
+            }]
+          }]
+        }
+      } as unknown as { type: UIElementType }, idService);
+
+      const copy = duplicate(original);
+
+      expect(copy.getChildElements().length).toBe(1);
+      expect(copy.getChildElements()[0].id).toBeTruthy();
+      expect(copy.getChildElements()[0].id).not.toBe(original.getChildElements()[0].id);
+    });
+
+    /* Loading is not duplicating: an element built from stored data keeps the ids it was saved with,
+       including those inside a drop list's values. Only a blueprint, which has them cleared, gets new
+       ones - the distinction the constructor makes since #1179. */
+    it('should keep the ids when an element is built from stored data', () => {
+      const stored = {
+        type: 'drop-list' as UIElementType,
+        id: 'drop-list_9',
+        alias: 'drop-list_9',
+        value: [{
+          text: 'Wert',
+          id: 'value_9',
+          alias: 'value_9',
+          imgSrc: null,
+          imgFileName: '',
+          imgPosition: 'above',
+          originListID: 'drop-list_9',
+          originListIndex: 0,
+          audioSrc: null,
+          audioFileName: ''
+        }]
+      };
+
+      const loaded = ElementFactory.createElement(stored, idService) as DropListElement;
+
+      expect(loaded.id).toBe('drop-list_9');
+      expect(loaded.value[0].id).toBe('value_9');
+      expect(loaded.value[0].alias).toBe('value_9');
+    });
+  });
+
   /* The two cases that were reproduced in the editor: what editing a duplicate does to its original.
      Through the model rather than the panel, because that is where the copy is made. */
   describe('editing a duplicate', () => {

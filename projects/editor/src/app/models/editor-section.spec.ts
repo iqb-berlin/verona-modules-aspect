@@ -81,12 +81,50 @@ describe('EditorSection', () => {
       expect(originalDropdown.options.length).toBe(2);
     });
 
+    /* A compound element in the section: its children carry ids of their own, and a duplicate must not
+       answer to the original's variables. */
+    it('should give the children of a copied table new ids', () => {
+      const original = new EditorSection(sectionProperties([{
+        type: 'table',
+        id: 'table_1',
+        alias: 'table_1',
+        elements: [{ type: 'text-field', id: 'tf_1', alias: 'tf_1' }],
+        gridColumnSizes: [{ value: 1, unit: 'fr' }],
+        gridRowSizes: [{ value: 1, unit: 'fr' }]
+      } as unknown as UIElementProperties]), idService);
+
+      const copy = original.getDuplicate();
+
+      const originalChildIds = original.elements[0].getChildElements().map(child => child.id);
+      const copiedChildIds = copy.elements[0].getChildElements().map(child => child.id);
+      expect(copiedChildIds.length).toBe(1);
+      expect(copiedChildIds[0]).toBeTruthy();
+      expect(originalChildIds).not.toContain(copiedChildIds[0]);
+    });
+
     it('should give the copied element a new id', () => {
       const original = sectionWithDropdown();
 
       const copy = original.getDuplicate();
 
       expect(copy.elements[0].id).not.toBe(original.elements[0].id);
+    });
+  });
+
+  /* Saving and loading is the other path a section takes, and it must behave the opposite way: the ids
+     are part of the stored data and have to survive. The JSON round trip is what the clipboard and the
+     insert dialog do, with `idService` stripped on the way out. */
+  describe('a section through a JSON round trip', () => {
+    it('should keep its ids and elements', () => {
+      const original = sectionWithDropdown();
+
+      const serialized = JSON.stringify(original, (key, value) => (key === 'idService' ? undefined : value));
+      const loaded = new EditorSection(JSON.parse(serialized), idService);
+
+      expect(loaded.elements.length).toBe(1);
+      expect(loaded.elements[0].id).toBe(original.elements[0].id);
+      expect((loaded.elements[0] as DropdownElement).options.length).toBe(2);
+      expect(loaded.gridColumnSizes).toEqual(original.gridColumnSizes);
     });
   });
 });

@@ -5,7 +5,7 @@ import {
 } from 'common/components/text-input-group-elements/spell-correct/spell-correct.component';
 import {
   TextFieldSimpleComponent
-} from 'common/components/compound-group-elements/text-field-simple/text-field-simple.component';
+} from 'common/components/text-input-group-elements/text-field-simple/text-field-simple.component';
 import {
   TextAreaMathComponent
 } from 'common/components/text-input-group-elements/text-area-math/text-area-math.component';

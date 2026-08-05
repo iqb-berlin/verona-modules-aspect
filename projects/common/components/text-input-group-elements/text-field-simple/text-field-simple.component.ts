@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/compound-group-elements/text-field-simple';
+} from 'common/models/elements/text-input-group-elements/text-field-simple';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({

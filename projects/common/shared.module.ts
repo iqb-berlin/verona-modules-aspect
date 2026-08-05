@@ -58,7 +58,7 @@ import { ButtonComponent } from './components/action-group-elements/button/butto
 import { TextFieldComponent } from './components/text-input-group-elements/text-field/text-field.component';
 import {
   TextFieldSimpleComponent
-} from './components/compound-group-elements/text-field-simple/text-field-simple.component';
+} from './components/text-input-group-elements/text-field-simple/text-field-simple.component';
 import { TextAreaComponent } from './components/text-input-group-elements/text-area/text-area.component';
 import { AutoHeightDirective } from './directives/auto-height.directive';
 import { CheckboxComponent } from './components/input-group-elements/checkbox/checkbox.component';
@@ -96,7 +96,7 @@ import { SpellCorrectComponent } from './components/text-input-group-elements/sp
 import { FrameComponent } from './components/base-group-elements/frame/frame.component';
 import {
   ToggleButtonComponent
-} from './components/compound-group-elements/toggle-button/toggle-button.component';
+} from './components/input-group-elements/toggle-button/toggle-button.component';
 import { TextMarkingBarComponent } from './components/text-group-elements/text-marking-bar/text-marking-bar.component';
 import { StyleMarksPipe } from './pipes/style-marks.pipe';
 import {

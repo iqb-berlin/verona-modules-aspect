@@ -5,7 +5,7 @@ import { ButtonElement } from 'common/models/elements/action-group-elements/butt
 import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/compound-group-elements/text-field-simple';
+} from 'common/models/elements/text-input-group-elements/text-field-simple';
 import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
 import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
 import { DropdownElement } from 'common/models/elements/input-group-elements/dropdown';
@@ -20,7 +20,7 @@ import { ClozeElement } from 'common/models/elements/compound-group-elements/clo
 import { SliderElement } from 'common/models/elements/input-group-elements/slider';
 import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
 import { FrameElement } from 'common/models/elements/base-group-elements/frame';
-import { ToggleButtonElement } from 'common/models/elements/compound-group-elements/toggle-button';
+import { ToggleButtonElement } from 'common/models/elements/input-group-elements/toggle-button';
 import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
 import { HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
 import { MathFieldElement } from 'common/models/elements/text-input-group-elements/math-field';

@@ -4,7 +4,7 @@ import { ButtonComponent } from 'common/components/action-group-elements/button/
 import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
 import {
   TextFieldSimpleComponent
-} from 'common/components/compound-group-elements/text-field-simple/text-field-simple.component';
+} from 'common/components/text-input-group-elements/text-field-simple/text-field-simple.component';
 import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
 import { CheckboxComponent } from 'common/components/input-group-elements/checkbox/checkbox.component';
 import { DropdownComponent } from 'common/components/input-group-elements/dropdown/dropdown.component';
@@ -32,7 +32,7 @@ import {
 import { FrameComponent } from 'common/components/base-group-elements/frame/frame.component';
 import {
   ToggleButtonComponent
-} from 'common/components/compound-group-elements/toggle-button/toggle-button.component';
+} from 'common/components/input-group-elements/toggle-button/toggle-button.component';
 import { GeometryComponent } from 'common/components/external-app-group-elements/geometry/geometry.component';
 import { MathFieldComponent } from 'common/components/text-input-group-elements/math-field/math-field.component';
 import { MathTableComponent } from 'common/components/interactive-group-elements/math-table/math-table.component';

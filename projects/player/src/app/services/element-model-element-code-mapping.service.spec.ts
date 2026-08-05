@@ -21,13 +21,13 @@ import { ImageElement } from 'common/models/elements/interactive-group-elements/
 import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/compound-group-elements/text-field-simple';
+} from 'common/models/elements/text-input-group-elements/text-field-simple';
 import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
 import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
 import { RadioButtonGroupElement } from 'common/models/elements/input-group-elements/radio-button-group';
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-group-elements/radio-button-group-complex';
 import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
-import { ToggleButtonElement } from 'common/models/elements/compound-group-elements/toggle-button';
+import { ToggleButtonElement } from 'common/models/elements/input-group-elements/toggle-button';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';

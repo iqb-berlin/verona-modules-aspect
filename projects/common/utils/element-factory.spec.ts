@@ -4,7 +4,7 @@ import { CheckboxElement } from 'common/models/elements/input-group-elements/che
 import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/compound-group-elements/text-field-simple';
+} from 'common/models/elements/text-input-group-elements/text-field-simple';
 import { isInputElement } from 'common/models/elements/element';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 

@@ -3,7 +3,7 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import {
   TextFieldSimpleProperties
-} from 'common/models/elements/compound-group-elements/text-field-simple';
+} from 'common/models/elements/text-input-group-elements/text-field-simple';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {

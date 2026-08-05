@@ -145,4 +145,47 @@ describe('MigrationManager', () => {
     const migratedUnit = MigrationManager.migrate(unit, '4.12.0');
     expect(migratedUnit.version).toBe('4.12.0');
   });
+
+  /* Which units a step reaches, and which it cannot. Both directions matter when deciding whether a
+     repair belongs in a step or in the ModelNormalizer, and the answer is not obvious from the filter
+     expression alone - see the class comment. Measured on the audio margin, because that is a
+     transformation only Migration4m10To4m11 performs: the normalizer would never subtract anything. */
+  describe('which units a step reaches', () => {
+    const unitWithAudioMargin = (version: string): Record<string, unknown> => ({
+      type: 'aspect-unit-definition',
+      version,
+      pages: [{
+        sections: [{
+          elements: [{
+            type: 'audio',
+            id: 'audio_1',
+            position: { marginTop: { value: 20, unit: 'px' } }
+          }]
+        }]
+      }]
+    });
+
+    const marginTopOf = (unit: Record<string, unknown>): number => {
+      const pages = unit.pages as Record<string, unknown>[];
+      const sections = pages[0].sections as Record<string, unknown>[];
+      const elements = sections[0].elements as Record<string, unknown>[];
+      const position = elements[0].position as Record<string, unknown>;
+      return (position.marginTop as Record<string, unknown>).value as number;
+    };
+
+    it('should run a step for a unit older than its target version', () => {
+      const migrated = MigrationManager.migrate(unitWithAudioMargin('4.10.0'), '4.12.0');
+
+      expect(marginTopOf(migrated)).toBe(16);
+    });
+
+    /* The trap: a unit already stamped with the step's target version is skipped, even when migrating
+       to something newer. Data written by a version whose step exists is therefore beyond that step's
+       reach - repairing it needs a newer version to migrate to, or the normalizer. */
+    it('should skip a step for a unit that already carries its target version', () => {
+      const migrated = MigrationManager.migrate(unitWithAudioMargin('4.11.0'), '4.12.0');
+
+      expect(marginTopOf(migrated)).toBe(20);
+    });
+  });
 });

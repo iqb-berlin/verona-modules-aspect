@@ -184,3 +184,30 @@ Rationale:
 - keeps the whole codebase on one consistent module architecture
 - matches the existing convention across the project
 
+## 14) Changing the unit definition: normalizer or migration step?
+
+Stored unit definitions are brought up to the current model on every load. Which mechanism a
+change belongs to depends on what the change does — the long version is the class comment on
+`MigrationManager`.
+
+- **A new property with a default** → nothing to write. `ModelNormalizer` fills every missing
+  property from `ELEMENT_DEFAULTS` on load, independently of the unit's version. Raise
+  `unit_definition_version` and note it in `docs/unit_definition_changelog.txt`, but do not add
+  a migration step.
+- **Existing values have to be transformed** (rename, changed unit, restructured group) → a
+  migration step via `npm run generate-migration <from> <to>`, registered in `MigrationManager`.
+- **Wrong values have to be repaired** → mind the reach: a step only touches units **older** than
+  its `toVersion`, so data written by the version being migrated to is out of its reach. Either
+  migrate to a newer version, or handle it in `ModelNormalizer` — and only if the data is worth a
+  case that then runs on every load of every unit, forever.
+
+Defaults in `ELEMENT_DEFAULTS` are what the normalizer writes into units, so their types must match
+what the model declares. The map is `Record<string, unknown>`, so no compiler checks this: a string
+default for a `boolean` property travelled into stored units unnoticed for months (#1139). Cover new
+defaults with a spec, as `model-normalizer.spec.ts` does.
+
+Rationale:
+- most model changes need no migration step at all; writing one anyway adds code that must be
+  maintained and can silently miss the units it was written for
+- the reach of a step is not obvious from its version numbers and has been misjudged twice
+

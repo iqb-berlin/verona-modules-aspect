@@ -25,6 +25,7 @@
 
   @if (show.presetValue) {
     <aspect-preset-value-properties [combinedProperties]="combinedProperties"
+                                    [divergingProperties]="divergingProperties"
                                     (updateModel)="updateModel.emit($event)">
     </aspect-preset-value-properties>
   }

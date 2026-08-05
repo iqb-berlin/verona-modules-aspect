@@ -1,3 +1,6 @@
+<!-- Every shape below carries the marker for the same reason: `value` is nullable, so an empty control
+     means either "no preset" or "the selected elements disagree", and only the panel's divergence set
+     tells the two apart (#1173). Read through `propertyDiverges` rather than testing the value. -->
 <mat-form-field *ngIf="combinedProperties.type === 'text-area'"
                 class="wide-form-field" appearance="fill">
   <mat-label>{{'preset' | translate }}</mat-label>
@@ -5,6 +8,9 @@
             [value]="$any(combinedProperties.value)"
             (input)="updateModel.emit({ property: 'value', value: valueField.value })">
         </textarea>
+  @if (divergingProperties | propertyDiverges : 'value') {
+    <aspect-merged-marker matSuffix></aspect-merged-marker>
+  }
 </mat-form-field>
 
 <mat-form-field *ngIf="combinedProperties.type === 'text-field' || combinedProperties.type === 'text-field-simple'"
@@ -12,6 +18,9 @@
   <mat-label>{{'preset' | translate }}</mat-label>
   <input #valueField2 matInput type="text" [value]="$any(combinedProperties.value)"
          (input)="updateModel.emit({property: 'value', value: valueField2.value })">
+  @if (divergingProperties | propertyDiverges : 'value') {
+    <aspect-merged-marker matSuffix></aspect-merged-marker>
+  }
 </mat-form-field>
 
 <!--dropdown, radio-button-group and the like. `!= null` rather than `!== undefined`: a selection
@@ -20,6 +29,14 @@
 @if (combinedProperties.options != null) {
   <mat-form-field appearance="fill" class="wide-form-field">
     <mat-label>{{'preset' | translate }}</mat-label>
+    <!-- As a prefix, so it reads at the start of the closed display rather than next to the dropdown
+         arrow. Not inside `mat-select-trigger`, although that is where the chosen option's text sits:
+         a diverging preset merges to `null`, and MatSelect never selects an option whose value is
+         null (`_selectValue` skips them), so the field stays `empty` and renders its placeholder
+         instead of the custom trigger - the marker would never appear. Measured, see the spec. -->
+    @if (divergingProperties | propertyDiverges : 'value') {
+      <aspect-merged-marker matPrefix></aspect-merged-marker>
+    }
     <mat-select [value]="combinedProperties.value"
                 (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
       <mat-select-trigger [innerHTML]="combinedProperties.options | presetOptionText:combinedProperties.value">
@@ -35,12 +52,20 @@
 }
 
 <ng-container *ngIf="combinedProperties.type === 'math-field'">
+  <!-- The marker sits in the label row rather than in a field: the formula editor is no
+       mat-form-field, so there is no suffix to put it in, and the row already carries the mode
+       switch. From here it speaks for both views (#1173). -->
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <mat-label>{{'preset' | translate }}</mat-label>
-    <button mat-icon-button (click)="showLatexEditor = !showLatexEditor"
-            [matTooltip]="(showLatexEditor ? 'propertiesPanel.showFormula' : 'propertiesPanel.showLatex') | translate">
-      <mat-icon>{{ showLatexEditor ? 'functions' : 'code' }}</mat-icon>
-    </button>
+    <div style="display: flex; align-items: center;">
+      @if (divergingProperties | propertyDiverges : 'value') {
+        <aspect-merged-marker></aspect-merged-marker>
+      }
+      <button mat-icon-button (click)="showLatexEditor = !showLatexEditor"
+              [matTooltip]="(showLatexEditor ? 'propertiesPanel.showFormula' : 'propertiesPanel.showLatex') | translate">
+        <mat-icon>{{ showLatexEditor ? 'functions' : 'code' }}</mat-icon>
+      </button>
+    </div>
   </div>
 
   <aspect-math-input *ngIf="!showLatexEditor"

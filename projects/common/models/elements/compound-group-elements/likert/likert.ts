@@ -109,14 +109,13 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     return this.rows;
   }
 
-  getVariableInfos(): VariableInfo[] {
-    return [...super.getVariableInfos(), ...this.rows.map(row => row.getVariableInfoOfRow(this.options))];
+  /* Only for the return type - see TableElement.getBlueprint (#1179). */
+  getBlueprint(): LikertElement {
+    return super.getBlueprint() as unknown as LikertElement;
   }
 
-  getBlueprint(): LikertElement {
-    return {
-      ...this, rows: this.rows.map(el => el.getBlueprint()), id: undefined, alias: undefined
-    } as LikertElement;
+  getVariableInfos(): VariableInfo[] {
+    return [...super.getVariableInfos(), ...this.rows.map(row => row.getVariableInfoOfRow(this.options))];
   }
 }
 

@@ -5,7 +5,9 @@ import { DropdownProperties } from 'common/models/elements/input-group-elements/
 import { MathFieldProperties } from 'common/models/elements/text-input-group-elements/math-field';
 import { InputElementProperties, MathKeyboardProperties } from 'common/models/input-element-interfaces';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
-import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
+import {
+  DivergingProperties, Merged
+} from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 /**
  * The preset value of an input element, in the shape the element type calls for: a textarea, a
@@ -32,6 +34,13 @@ export type PanelPresetValueProperties =
 })
 export class PresetValuePropertiesComponent {
   @Input() combinedProperties!: Merged<PanelPresetValueProperties>;
+  /**
+   * The preset is nullable in the model - an empty field means "no preset" - so the merged `null`
+   * cannot say whether the selection disagrees. Without this the four shapes below showed an empty
+   * control for both cases, which is what #1173 is about; the slider's preset got the same treatment
+   * in #1167.
+   */
+  @Input() divergingProperties: DivergingProperties | undefined;
   @Output() updateModel =
     new EventEmitter<{
       property: keyof PanelPresetValueProperties;

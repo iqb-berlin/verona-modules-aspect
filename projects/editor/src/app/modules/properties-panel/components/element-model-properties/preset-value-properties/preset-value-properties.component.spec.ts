@@ -13,7 +13,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
+import {
+  MergedMarkerComponent
+} from 'editor/modules/editor-shared/components/merged-marker/merged-marker.component';
 import { PresetOptionTextPipe } from 'editor/src/app/modules/properties-panel/pipes/preset-option-text.pipe';
+import {
+  PropertyDivergesPipe
+} from 'editor/src/app/modules/properties-panel/pipes/property-diverges.pipe';
 import {
   PresetValuePropertiesComponent
 } from './preset-value-properties.component';
@@ -37,7 +43,9 @@ describe('PresetValuePropertiesComponent', () => {
       declarations: [
         PresetValuePropertiesComponent,
         MockMathInputComponent,
+        MergedMarkerComponent,
         PresetOptionTextPipe,
+        PropertyDivergesPipe,
         SafeResourceHTMLPipe
       ],
       imports: [
@@ -114,6 +122,80 @@ describe('PresetValuePropertiesComponent', () => {
     fixture.detectChanges();
 
     expect(trigger().textContent).toBe('B neu');
+  });
+
+  /* The preset is nullable, so an empty control is either "no preset" or "the elements disagree", and
+     only the panel's divergence set tells them apart (#1173). One case per shape. */
+  describe('the marker on a diverging preset', () => {
+    const marker = (): HTMLElement | null => fixture.nativeElement.querySelector('aspect-merged-marker');
+
+    it('should mark a text area', () => {
+      component.combinedProperties = { type: 'text-area', value: null };
+      component.divergingProperties = new Set(['value']);
+      fixture.detectChanges();
+
+      expect(marker()).not.toBeNull();
+    });
+
+    it('should mark a text field', () => {
+      component.combinedProperties = { type: 'text-field', value: null };
+      component.divergingProperties = new Set(['value']);
+      fixture.detectChanges();
+
+      expect(marker()).not.toBeNull();
+    });
+
+    it('should not mark a preset the selection agrees is unset', () => {
+      component.combinedProperties = { type: 'text-area', value: null };
+      component.divergingProperties = new Set<string>();
+      fixture.detectChanges();
+
+      expect(marker()).toBeNull();
+    });
+
+    /* At the start of the closed display, as a form field prefix. It cannot go into
+       `mat-select-trigger`, where the chosen option's text sits: a diverging preset is `null`, and
+       MatSelect never selects an option with a null value, so the field stays `empty` and renders its
+       placeholder rather than the custom trigger. Written as a test first, and it failed - hence the
+       prefix. */
+    it('should mark the closed select', async () => {
+      component.combinedProperties = {
+        type: 'dropdown', value: null, options: [{ text: 'A' }, { text: 'B' }]
+      };
+      component.divergingProperties = new Set(['value']);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(marker()).not.toBeNull();
+    });
+
+    // And it stays out of the way of a preset that is actually set.
+    it('should not mark a select whose preset the elements agree on', async () => {
+      component.combinedProperties = {
+        type: 'dropdown', value: 1, options: [{ text: 'A' }, { text: 'B' }]
+      };
+      component.divergingProperties = new Set<string>();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(marker()).toBeNull();
+    });
+
+    /* The formula editor is no mat-form-field, so the marker sits in the label row and speaks for
+       both views - the formula one is the default, where a suffix would never be seen. */
+    it('should mark the formula field in both views', () => {
+      component.combinedProperties = { type: 'math-field', value: null };
+      component.divergingProperties = new Set(['value']);
+      fixture.detectChanges();
+      expect(marker()).not.toBeNull();
+
+      component.showLatexEditor = true;
+      fixture.detectChanges();
+
+      expect(marker()).not.toBeNull();
+    });
   });
 
   /* Option lists that disagree across the selection merge to null, while a preset index shared by

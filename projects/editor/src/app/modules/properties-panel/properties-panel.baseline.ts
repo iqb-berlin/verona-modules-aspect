@@ -1909,8 +1909,8 @@ input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabl
 input[number] "propertiesPanel.minValue" = 0
 input[number] "propertiesPanel.maxValue" = 100
 checkbox "propertiesPanel.showValues" = true
-checkbox "propertiesPanel.barStyle" = true
-checkbox "propertiesPanel.thumbLabel" = true
+checkbox "propertiesPanel.barStyle" = false
+checkbox "propertiesPanel.thumbLabel" = false
 input[number] "propertiesPanel.preset" = 
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 

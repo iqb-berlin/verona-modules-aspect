@@ -1,3 +1,4 @@
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import { ModelNormalizer } from './model-normalizer';
 
 describe('ModelNormalizer', () => {
@@ -73,6 +74,25 @@ describe('ModelNormalizer', () => {
       const normalized = ModelNormalizer.normalizeElement(partialLikert as Record<string, unknown>);
       const nestedElements = normalized.elements as Record<string, unknown>[];
       expect(nestedElements[0].isRelevantForPresentationComplete).toBe(true);
+    });
+
+    /* This is how #1139 spread: the loop above backfills every missing property from the defaults, and
+       the slider's two display switches had the strings 'default' and 'always' there while being
+       declared boolean. Every unit that lacked them got the string written into it. No repair for
+       stored values is needed - the only units carrying one were saved by a 3.0.0 beta and are
+       throwaway data - so what has to hold is that the defaults themselves are booleans. */
+    describe('the slider booleans', () => {
+      it('should backfill missing properties as false', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'slider', id: 's1' });
+
+        expect(normalized.barStyle).toBe(false);
+        expect(normalized.thumbLabel).toBe(false);
+      });
+
+      it('should have boolean defaults in the registry', () => {
+        expect(typeof ELEMENT_DEFAULTS.slider.barStyle).toBe('boolean');
+        expect(typeof ELEMENT_DEFAULTS.slider.thumbLabel).toBe('boolean');
+      });
     });
 
     it('should initialize required properties for input elements', () => {

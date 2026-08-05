@@ -231,8 +231,13 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     minValue: 0,
     maxValue: 100,
     showValues: true,
-    barStyle: 'default',
-    thumbLabel: 'always',
+    // Booleans, and not the strings 'default'/'always' they were between 020d49fc and #1139: both
+    // are truthy, so every new slider silently showed the arrow bar and the thumb label, and
+    // ModelNormalizer wrote the string into every unit that lacked the properties. SliderProperties
+    // declares them boolean, but this map is Record<string, unknown> and no compiler was going to
+    // say so - the specs on the defaults do.
+    barStyle: false,
+    thumbLabel: false,
     width: 240,
     height: 80,
     lineHeight: 5

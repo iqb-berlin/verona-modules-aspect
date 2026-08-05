@@ -6,7 +6,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import {
   TextFieldSimpleComponent
-} from 'common/components/compound-group-elements/text-field-simple/text-field-simple.component';
+} from 'common/components/text-input-group-elements/text-field-simple/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
 import {

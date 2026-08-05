@@ -8,7 +8,7 @@ import { DropdownProperties } from 'common/models/elements/input-group-elements/
 import {
   RadioButtonGroupProperties
 } from 'common/models/elements/input-group-elements/radio-button-group';
-import { ToggleButtonProperties } from 'common/models/elements/compound-group-elements/toggle-button';
+import { ToggleButtonProperties } from 'common/models/elements/input-group-elements/toggle-button';
 import { StrikeOtherOptionsProperties } from 'common/models/ui-element-interfaces';
 import {
   DivergingProperties, Merged

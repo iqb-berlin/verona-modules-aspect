@@ -1,7 +1,7 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/compound-group-elements/text-field-simple';
+} from 'common/models/elements/text-input-group-elements/text-field-simple';
 
 const TextFieldExtension =
   Node.create({

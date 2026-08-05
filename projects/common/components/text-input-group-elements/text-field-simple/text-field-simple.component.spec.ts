@@ -5,7 +5,7 @@ import {
 import { Component, Input } from '@angular/core';
 import {
   TextFieldSimpleElement, TextFieldSimpleProperties
-} from 'common/models/elements/compound-group-elements/text-field-simple';
+} from 'common/models/elements/text-input-group-elements/text-field-simple';
 import { InputElement } from 'common/models/elements/element';
 import { TextFieldSimpleComponent } from './text-field-simple.component';
 

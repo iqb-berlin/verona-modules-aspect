@@ -4,7 +4,7 @@ import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
 import {
   TextFieldSimpleComponent
-} from 'common/components/compound-group-elements/text-field-simple/text-field-simple.component';
+} from 'common/components/text-input-group-elements/text-field-simple/text-field-simple.component';
 import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
 import {
   SpellCorrectComponent

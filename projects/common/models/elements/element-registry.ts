@@ -131,6 +131,14 @@ interface ElementPropertiesMap {
  * look the type up first. */
 type ElementDefaultsMap = { [K in UIElementType]: FlatDefaults<ElementPropertiesMap[K]> };
 
+/* One entry of the table, for consumers that read a whole entry rather than a
+ * single key -- the property-group generators do, because the table is flat
+ * and they pick their own group's keys out of it. Exposing the entry union
+ * instead of a structural stand-in (Record<string, unknown>) keeps their
+ * parameters checked: a wrong-typed group key, or an object that is no entry
+ * at all, is not assignable to any member. */
+export type ElementDefaultsEntry = ElementDefaultsMap[UIElementType];
+
 export const ELEMENT_DEFAULTS = {
   text: {
     text: 'Lorem ipsum dolor sit amet',

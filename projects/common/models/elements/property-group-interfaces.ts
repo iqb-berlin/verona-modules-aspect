@@ -6,6 +6,7 @@ import {
 } from 'common/models/input-element-interfaces';
 import { Measurement } from 'common/models/ui-element-interfaces';
 import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
+import type { ElementDefaultsEntry } from 'common/models/elements/element-registry';
 
 export interface PositionProperties {
   xPosition: number;
@@ -188,13 +189,14 @@ export abstract class PropertyGroupValidators {
 
 export abstract class PropertyGroupGenerators {
   /* The generators accept either a nested group object (constructors pass
-   * element.position etc.) or a flat defaults record from ELEMENT_DEFAULTS,
-   * whose per-entry literal types may share no key with the group at all --
-   * a plain Partial<> parameter rejects those as weak-type errors. The single
-   * internal cast is a read adapter: every access below checks its key for
-   * undefined before use. */
+   * element.position etc.) or one whole ELEMENT_DEFAULTS entry, whose flat
+   * shape may share no key with the group at all -- a plain Partial<>
+   * parameter rejects those as weak-type errors. Both alternatives stay
+   * checked: neither accepts a wrong-typed group key. The cast below is a
+   * read adapter for the union, not a hole; every access checks its key for
+   * undefined first. */
   static generatePositionProps(
-    defaults: Partial<PositionProperties> | Record<string, unknown> = {}
+    defaults: Partial<PositionProperties> | ElementDefaultsEntry = {}
   ): PositionProperties {
     const d = defaults as Partial<PositionProperties>;
     return {
@@ -213,7 +215,7 @@ export abstract class PropertyGroupGenerators {
   }
 
   static generateDimensionProps(
-    defaults: Partial<DimensionProperties> | Record<string, unknown> = {}
+    defaults: Partial<DimensionProperties> | ElementDefaultsEntry = {}
   ): DimensionProperties {
     const d = defaults as Partial<DimensionProperties>;
     return {
@@ -228,7 +230,7 @@ export abstract class PropertyGroupGenerators {
     };
   }
 
-  static generateBasicStyleProps(defaults: Partial<BasicStyles> | Record<string, unknown> = {}): BasicStyles {
+  static generateBasicStyleProps(defaults: Partial<BasicStyles> | ElementDefaultsEntry = {}): BasicStyles {
     const d = defaults as Partial<BasicStyles>;
     return {
       backgroundColor: d.backgroundColor !== undefined ?
@@ -237,15 +239,15 @@ export abstract class PropertyGroupGenerators {
     };
   }
 
-  static generateFontStylingProps(defaults: Partial<FontStyles> | Record<string, unknown> = {}): FontStyles {
+  static generateFontStylingProps(defaults: Partial<FontStyles> | ElementDefaultsEntry = {}): FontStyles {
     const d = defaults as Partial<FontStyles>;
     return {
-      fontColor: d.fontColor !== undefined ? d.fontColor as string : GLOBAL_DEFAULTS.fontColor,
-      font: d?.font !== undefined ? d.font as string : GLOBAL_DEFAULTS.font,
-      fontSize: d?.fontSize !== undefined ? d.fontSize as number : GLOBAL_DEFAULTS.fontSize,
-      bold: d?.bold !== undefined ? d.bold as boolean : GLOBAL_DEFAULTS.bold,
-      italic: d?.italic !== undefined ? d.italic as boolean : GLOBAL_DEFAULTS.italic,
-      underline: d?.underline !== undefined ? d.underline as boolean : GLOBAL_DEFAULTS.underline
+      fontColor: d.fontColor !== undefined ? d.fontColor : GLOBAL_DEFAULTS.fontColor,
+      font: d.font !== undefined ? d.font : GLOBAL_DEFAULTS.font,
+      fontSize: d.fontSize !== undefined ? d.fontSize : GLOBAL_DEFAULTS.fontSize,
+      bold: d.bold !== undefined ? d.bold : GLOBAL_DEFAULTS.bold,
+      italic: d.italic !== undefined ? d.italic : GLOBAL_DEFAULTS.italic,
+      underline: d.underline !== undefined ? d.underline : GLOBAL_DEFAULTS.underline
     };
   }
 

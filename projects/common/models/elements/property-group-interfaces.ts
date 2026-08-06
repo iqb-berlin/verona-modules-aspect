@@ -35,6 +35,18 @@ export interface DimensionProperties {
 export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;
 export type BasicStyles = FontStyles & { backgroundColor: string };
 
+/* The styling keys that live OUTSIDE BasicStyles/BorderStyles on individual
+ * elements (styling: BasicStyles & { lineHeight ... }). ModelNormalizer lifts
+ * exactly these keys from the flat defaults into the styling group and
+ * preserves stored values for them -- a key missing here is silently stripped
+ * from every loaded unit even if the element interface and ELEMENT_DEFAULTS
+ * both declare it (#1177 review). Keep this list in sync when adding an extra
+ * styling property to any element. */
+export const EXTRA_STYLING_KEYS = [
+  'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
+  'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
+] as const;
+
 /**
  * A property that lives in one of the element's nested groups rather than on the element itself.
  * These have their own setters, and writing one through the generic path puts it on the element
@@ -175,51 +187,65 @@ export abstract class PropertyGroupValidators {
 }
 
 export abstract class PropertyGroupGenerators {
-  static generatePositionProps(defaults: Partial<PositionProperties> = {}): PositionProperties {
+  /* The generators accept either a nested group object (constructors pass
+   * element.position etc.) or a flat defaults record from ELEMENT_DEFAULTS,
+   * whose per-entry literal types may share no key with the group at all --
+   * a plain Partial<> parameter rejects those as weak-type errors. The single
+   * internal cast is a read adapter: every access below checks its key for
+   * undefined before use. */
+  static generatePositionProps(
+    defaults: Partial<PositionProperties> | Record<string, unknown> = {}
+  ): PositionProperties {
+    const d = defaults as Partial<PositionProperties>;
     return {
-      xPosition: defaults.xPosition !== undefined ? defaults.xPosition : GLOBAL_DEFAULTS.xPosition,
-      yPosition: defaults.yPosition !== undefined ? defaults.yPosition : GLOBAL_DEFAULTS.yPosition,
-      gridColumn: defaults.gridColumn !== undefined ? defaults.gridColumn : null,
-      gridColumnRange: defaults.gridColumnRange !== undefined ? defaults.gridColumnRange : 1,
-      gridRow: defaults.gridRow !== undefined ? defaults.gridRow : null,
-      gridRowRange: defaults.gridRowRange !== undefined ? defaults.gridRowRange : 1,
-      marginLeft: defaults.marginLeft !== undefined ? defaults.marginLeft : { value: 0, unit: 'px' },
-      marginRight: defaults.marginRight !== undefined ? defaults.marginRight : { value: 0, unit: 'px' },
-      marginTop: defaults.marginTop !== undefined ? defaults.marginTop : { value: 0, unit: 'px' },
-      marginBottom: defaults.marginBottom !== undefined ? defaults.marginBottom : { value: 0, unit: 'px' },
-      zIndex: defaults.zIndex !== undefined ? defaults.zIndex : GLOBAL_DEFAULTS.zIndex
+      xPosition: d.xPosition !== undefined ? d.xPosition : GLOBAL_DEFAULTS.xPosition,
+      yPosition: d.yPosition !== undefined ? d.yPosition : GLOBAL_DEFAULTS.yPosition,
+      gridColumn: d.gridColumn !== undefined ? d.gridColumn : null,
+      gridColumnRange: d.gridColumnRange !== undefined ? d.gridColumnRange : 1,
+      gridRow: d.gridRow !== undefined ? d.gridRow : null,
+      gridRowRange: d.gridRowRange !== undefined ? d.gridRowRange : 1,
+      marginLeft: d.marginLeft !== undefined ? d.marginLeft : { value: 0, unit: 'px' },
+      marginRight: d.marginRight !== undefined ? d.marginRight : { value: 0, unit: 'px' },
+      marginTop: d.marginTop !== undefined ? d.marginTop : { value: 0, unit: 'px' },
+      marginBottom: d.marginBottom !== undefined ? d.marginBottom : { value: 0, unit: 'px' },
+      zIndex: d.zIndex !== undefined ? d.zIndex : GLOBAL_DEFAULTS.zIndex
     };
   }
 
-  static generateDimensionProps(defaults: Partial<DimensionProperties> = {}): DimensionProperties {
+  static generateDimensionProps(
+    defaults: Partial<DimensionProperties> | Record<string, unknown> = {}
+  ): DimensionProperties {
+    const d = defaults as Partial<DimensionProperties>;
     return {
-      width: defaults.width !== undefined ? defaults.width : GLOBAL_DEFAULTS.width,
-      height: defaults.height !== undefined ? defaults.height : GLOBAL_DEFAULTS.height,
-      isWidthFixed: defaults.isWidthFixed !== undefined ? defaults.isWidthFixed : false,
-      isHeightFixed: defaults.isHeightFixed !== undefined ? defaults.isHeightFixed : false,
-      minWidth: defaults.minWidth !== undefined ? defaults.minWidth : null,
-      maxWidth: defaults.maxWidth !== undefined ? defaults.maxWidth : null,
-      minHeight: defaults.minHeight !== undefined ? defaults.minHeight : null,
-      maxHeight: defaults.maxHeight !== undefined ? defaults.maxHeight : null
+      width: d.width !== undefined ? d.width : GLOBAL_DEFAULTS.width,
+      height: d.height !== undefined ? d.height : GLOBAL_DEFAULTS.height,
+      isWidthFixed: d.isWidthFixed !== undefined ? d.isWidthFixed : false,
+      isHeightFixed: d.isHeightFixed !== undefined ? d.isHeightFixed : false,
+      minWidth: d.minWidth !== undefined ? d.minWidth : null,
+      maxWidth: d.maxWidth !== undefined ? d.maxWidth : null,
+      minHeight: d.minHeight !== undefined ? d.minHeight : null,
+      maxHeight: d.maxHeight !== undefined ? d.maxHeight : null
     };
   }
 
-  static generateBasicStyleProps(defaults: Partial<BasicStyles> = {}): BasicStyles {
+  static generateBasicStyleProps(defaults: Partial<BasicStyles> | Record<string, unknown> = {}): BasicStyles {
+    const d = defaults as Partial<BasicStyles>;
     return {
-      backgroundColor: defaults.backgroundColor !== undefined ?
-        defaults.backgroundColor : GLOBAL_DEFAULTS.backgroundColor,
+      backgroundColor: d.backgroundColor !== undefined ?
+        d.backgroundColor : GLOBAL_DEFAULTS.backgroundColor,
       ...PropertyGroupGenerators.generateFontStylingProps(defaults)
     };
   }
 
-  static generateFontStylingProps(defaults: Partial<FontStyles> = {}): FontStyles {
+  static generateFontStylingProps(defaults: Partial<FontStyles> | Record<string, unknown> = {}): FontStyles {
+    const d = defaults as Partial<FontStyles>;
     return {
-      fontColor: defaults.fontColor !== undefined ? defaults.fontColor as string : GLOBAL_DEFAULTS.fontColor,
-      font: defaults?.font !== undefined ? defaults.font as string : GLOBAL_DEFAULTS.font,
-      fontSize: defaults?.fontSize !== undefined ? defaults.fontSize as number : GLOBAL_DEFAULTS.fontSize,
-      bold: defaults?.bold !== undefined ? defaults.bold as boolean : GLOBAL_DEFAULTS.bold,
-      italic: defaults?.italic !== undefined ? defaults.italic as boolean : GLOBAL_DEFAULTS.italic,
-      underline: defaults?.underline !== undefined ? defaults.underline as boolean : GLOBAL_DEFAULTS.underline
+      fontColor: d.fontColor !== undefined ? d.fontColor as string : GLOBAL_DEFAULTS.fontColor,
+      font: d?.font !== undefined ? d.font as string : GLOBAL_DEFAULTS.font,
+      fontSize: d?.fontSize !== undefined ? d.fontSize as number : GLOBAL_DEFAULTS.fontSize,
+      bold: d?.bold !== undefined ? d.bold as boolean : GLOBAL_DEFAULTS.bold,
+      italic: d?.italic !== undefined ? d.italic as boolean : GLOBAL_DEFAULTS.italic,
+      underline: d?.underline !== undefined ? d.underline as boolean : GLOBAL_DEFAULTS.underline
     };
   }
 

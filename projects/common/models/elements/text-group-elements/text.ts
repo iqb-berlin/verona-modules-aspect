@@ -28,7 +28,7 @@ export class TextElement extends UIElement implements TextProperties {
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.text),
       lineHeight: ELEMENT_DEFAULTS.text.lineHeight
     };
 

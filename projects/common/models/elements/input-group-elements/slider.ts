@@ -20,14 +20,14 @@ export class SliderElement extends InputElement implements SliderProperties {
   showValues: boolean = ELEMENT_DEFAULTS.slider.showValues;
   barStyle: boolean = ELEMENT_DEFAULTS.slider.barStyle;
   thumbLabel: boolean = ELEMENT_DEFAULTS.slider.thumbLabel;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.slider);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.slider);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.slider),
       lineHeight: ELEMENT_DEFAULTS.slider.lineHeight
     };
 

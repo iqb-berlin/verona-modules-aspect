@@ -1,6 +1,6 @@
 import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
+  DimensionProperties, EXTRA_STYLING_KEYS, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { KeyInputElementProperties, TextInputElementProperties } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
@@ -166,12 +166,10 @@ export class ModelNormalizer {
         } as Stylings))
     };
 
-    // Special handling for extra styling properties like lineHeight and itemBackgroundColor
-    const otherStyleKeys = [
-      'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
-      'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
-    ];
-    otherStyleKeys.forEach(key => {
+    // Special handling for extra styling properties like lineHeight and
+    // itemBackgroundColor; the catalogue is shared with the styling type
+    // declarations (see EXTRA_STYLING_KEYS).
+    EXTRA_STYLING_KEYS.forEach(key => {
       if (defaults[key] !== undefined) {
         (stylingProps as Record<string, unknown>)[key] =
           filteredStyling[key] !== undefined ? filteredStyling[key] : defaults[key];

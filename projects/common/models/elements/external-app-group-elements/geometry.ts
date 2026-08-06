@@ -25,7 +25,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton;
   customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar;
   fileName: string = ELEMENT_DEFAULTS.geometry.fileName;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.geometry);
   dimensions: {
     width: number;
     height: number;

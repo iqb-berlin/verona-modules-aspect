@@ -21,13 +21,13 @@ export class RadioButtonGroupComplexElement extends InputElement
   options: TextImageLabel[] = [...ELEMENT_DEFAULTS['radio-group-images'].options];
   itemsPerRow: number | null = ELEMENT_DEFAULTS['radio-group-images'].itemsPerRow;
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps();
+    .generatePositionProps(ELEMENT_DEFAULTS['radio-group-images']);
 
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['radio-group-images']);
 
   styling: BasicStyles = PropertyGroupGenerators
-    .generateBasicStyleProps();
+    .generateBasicStyleProps(ELEMENT_DEFAULTS['radio-group-images']);
 
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';

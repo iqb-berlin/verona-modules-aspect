@@ -24,13 +24,13 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     .generateDimensionProps(ELEMENT_DEFAULTS['toggle-button']);
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps();
+    .generatePositionProps(ELEMENT_DEFAULTS['toggle-button']);
 
   styling: BasicStyles & {
     lineHeight: number;
     selectionColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['toggle-button']),
       lineHeight: ELEMENT_DEFAULTS['toggle-button'].lineHeight,
       selectionColor: ELEMENT_DEFAULTS['toggle-button'].selectionColor
     };

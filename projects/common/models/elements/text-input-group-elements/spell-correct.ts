@@ -16,7 +16,7 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class SpellCorrectElement extends TextInputElement implements SpellCorrectProperties {
   type: UIElementType = 'spell-correct';
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps();
+    .generatePositionProps(ELEMENT_DEFAULTS['spell-correct']);
 
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['spell-correct']);
@@ -26,7 +26,7 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   // load and the editor panel renders it. The interface used to omit it -- the
   // typed defaults table made that visible (#1177).
   styling: BasicStyles & { lineHeight: number } = {
-    ...PropertyGroupGenerators.generateBasicStyleProps(),
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['spell-correct']),
     lineHeight: ELEMENT_DEFAULTS['spell-correct'].lineHeight
   };
 

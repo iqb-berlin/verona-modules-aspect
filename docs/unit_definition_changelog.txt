@@ -252,3 +252,11 @@ iqb-aspect-definition@1.0.0
   - new property: stickyHeader: boolean
 - ButtonElement and tooltip mark in text elements:
   - tooltipText (data-tooltip-text) may now contain HTML markup (formatted tooltip text)
+
+(#1177, no version raise -- no new property)
+- RadioButtonGroupElement: styling.lineHeight stored in a unit now survives loading.
+  Before, normalization dropped the stored value (the radio defaults entry had no
+  lineHeight, so the styling lift skipped the key) and the model forced 100 on every
+  load -- user-set line heights silently reverted. With lineHeight: 100 in the radio
+  defaults the stored value is preserved; units that never changed it keep rendering
+  with 100 as before.

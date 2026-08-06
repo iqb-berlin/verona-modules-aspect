@@ -30,7 +30,7 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
   src: string | null = ELEMENT_DEFAULTS['hotspot-image'].src;
   fileName: string = ELEMENT_DEFAULTS['hotspot-image'].fileName;
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps();
+    .generatePositionProps(ELEMENT_DEFAULTS['hotspot-image']);
 
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['hotspot-image']);

@@ -18,11 +18,11 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   imgSrc: string | null = ELEMENT_DEFAULTS.checkbox.imgSrc;
   value: boolean = ELEMENT_DEFAULTS.checkbox.value;
   crossOutChecked: boolean = ELEMENT_DEFAULTS.checkbox.crossOutChecked;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.checkbox);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.checkbox);
 
-  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.checkbox);
 
   static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';

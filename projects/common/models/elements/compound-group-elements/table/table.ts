@@ -36,7 +36,6 @@ export class TableElement extends CompoundElement implements TableProperties {
 
   styling: BasicStyles & BorderStyles = {
     ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.table),
-    backgroundColor: ELEMENT_DEFAULTS.table.backgroundColor,
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.table)
   };
 

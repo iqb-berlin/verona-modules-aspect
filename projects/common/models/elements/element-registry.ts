@@ -39,8 +39,9 @@ import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import type {
-  DimensionProperties, PositionProperties
+  BasicStyles, DimensionProperties, PlayerProperties, PositionProperties
 } from 'common/models/elements/property-group-interfaces';
+import type { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 
 export const GLOBAL_DEFAULTS = {
   fontSize: 20,
@@ -72,7 +73,9 @@ export const GLOBAL_DEFAULTS = {
   showRestRuns: false,
   showRestTime: true,
   playbackTime: 0
-};
+} satisfies Partial<
+UIElementProperties & PositionProperties & DimensionProperties & BasicStyles & PlayerProperties
+>;
 
 /* The defaults table is FLAT while the Properties interfaces nest position,
  * dimensions and styling: the PropertyGroupGenerators pick their keys straight
@@ -83,43 +86,50 @@ export const GLOBAL_DEFAULTS = {
  * every value of the wrong type, is now a compile error instead of data that
  * ModelNormalizer writes into every loaded unit (#1177, #1139). */
 type FlatDefaults<P> =
-  Partial<Omit<P, 'type' | 'position' | 'dimensions' | 'styling'>> &
+  Partial<Omit<P, 'type' | 'position' | 'dimensions' | 'styling' | 'player'>> &
   Partial<PositionProperties> &
   Partial<DimensionProperties> &
-  (P extends { styling: infer S } ? Partial<S> : unknown);
+  (P extends { styling: infer S } ? Partial<S> : unknown) &
+  (P extends { player: infer PL } ? Partial<PL> : unknown);
 
-interface ElementDefaultsMap {
-  text: FlatDefaults<TextProperties>;
-  button: FlatDefaults<ButtonProperties>;
-  'text-field': FlatDefaults<TextFieldProperties>;
-  'text-field-simple': FlatDefaults<TextFieldSimpleProperties>;
-  'text-area': FlatDefaults<TextAreaProperties>;
-  checkbox: FlatDefaults<CheckboxProperties>;
-  dropdown: FlatDefaults<DropdownProperties>;
-  radio: FlatDefaults<RadioButtonGroupProperties>;
-  image: FlatDefaults<ImageProperties>;
-  audio: FlatDefaults<AudioProperties>;
-  video: FlatDefaults<VideoProperties>;
-  cloze: FlatDefaults<ClozeProperties>;
-  'marking-panel': FlatDefaults<MarkingPanelProperties>;
-  slider: FlatDefaults<SliderProperties>;
-  'spell-correct': FlatDefaults<SpellCorrectProperties>;
-  frame: FlatDefaults<FrameProperties>;
-  'toggle-button': FlatDefaults<ToggleButtonProperties>;
-  geometry: FlatDefaults<GeometryProperties>;
-  'hotspot-image': FlatDefaults<HotspotImageProperties>;
-  'math-field': FlatDefaults<MathFieldProperties>;
-  'math-table': FlatDefaults<MathTableProperties>;
-  'text-area-math': FlatDefaults<TextAreaMathProperties>;
-  trigger: FlatDefaults<TriggerProperties>;
-  table: FlatDefaults<TableProperties>;
-  'radio-group-images': FlatDefaults<RadioButtonGroupComplexProperties>;
-  'drop-list': FlatDefaults<DropListProperties>;
-  'likert-row': FlatDefaults<LikertRowProperties>;
-  likert: FlatDefaults<LikertProperties>;
-  'widget-molecule-editor': FlatDefaults<WidgetMoleculeEditorProperties>;
-  'widget-periodic-table': FlatDefaults<WidgetPeriodicTableProperties>;
+interface ElementPropertiesMap {
+  text: TextProperties;
+  button: ButtonProperties;
+  'text-field': TextFieldProperties;
+  'text-field-simple': TextFieldSimpleProperties;
+  'text-area': TextAreaProperties;
+  checkbox: CheckboxProperties;
+  dropdown: DropdownProperties;
+  radio: RadioButtonGroupProperties;
+  image: ImageProperties;
+  audio: AudioProperties;
+  video: VideoProperties;
+  cloze: ClozeProperties;
+  'marking-panel': MarkingPanelProperties;
+  slider: SliderProperties;
+  'spell-correct': SpellCorrectProperties;
+  frame: FrameProperties;
+  'toggle-button': ToggleButtonProperties;
+  geometry: GeometryProperties;
+  'hotspot-image': HotspotImageProperties;
+  'math-field': MathFieldProperties;
+  'math-table': MathTableProperties;
+  'text-area-math': TextAreaMathProperties;
+  trigger: TriggerProperties;
+  table: TableProperties;
+  'radio-group-images': RadioButtonGroupComplexProperties;
+  'drop-list': DropListProperties;
+  'likert-row': LikertRowProperties;
+  likert: LikertProperties;
+  'widget-molecule-editor': WidgetMoleculeEditorProperties;
+  'widget-periodic-table': WidgetPeriodicTableProperties;
 }
+
+/* Mapped over UIElementType, so the table and the union cannot drift: a new
+ * element type without a defaults entry (or a stale key after a rename) is a
+ * compile error HERE, not a stray index error in whichever consumer happens to
+ * look the type up first. */
+type ElementDefaultsMap = { [K in UIElementType]: FlatDefaults<ElementPropertiesMap[K]> };
 
 export const ELEMENT_DEFAULTS = {
   text: {

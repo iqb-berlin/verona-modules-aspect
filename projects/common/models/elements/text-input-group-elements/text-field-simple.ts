@@ -35,7 +35,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     };
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps();
+    .generatePositionProps(ELEMENT_DEFAULTS['text-field-simple']);
 
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['text-field-simple']);

@@ -33,7 +33,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
     .generateDimensionProps(ELEMENT_DEFAULTS['math-table']);
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps();
+    .generatePositionProps(ELEMENT_DEFAULTS['math-table']);
 
   type: UIElementType = 'math-table';
   operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' =
@@ -63,7 +63,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   styling: BasicStyles & {
     helperRowColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-table']),
       helperRowColor: ELEMENT_DEFAULTS['math-table'].helperRowColor
     };
 

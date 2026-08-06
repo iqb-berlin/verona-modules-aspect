@@ -18,11 +18,11 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
   type: UIElementType = 'dropdown';
   options: TextLabel[] = ELEMENT_DEFAULTS.dropdown.options;
   allowUnset: boolean = ELEMENT_DEFAULTS.dropdown.allowUnset;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.dropdown);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.dropdown);
 
-  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.dropdown);
 
   static title: string = 'Klappliste';
   static icon: string = 'menu_open';

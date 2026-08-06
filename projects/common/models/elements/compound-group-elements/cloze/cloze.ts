@@ -22,7 +22,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.cloze),
       lineHeight: ELEMENT_DEFAULTS.cloze.lineHeight
     };
 

@@ -23,8 +23,7 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   action: null | ButtonAction = ELEMENT_DEFAULTS.button.action;
 
   actionParam: null | UnitNavParam | number | string | StateVariable =
-    ELEMENT_DEFAULTS.button.actionParam as
-    null | UnitNavParam | number | string | StateVariable;
+    ELEMENT_DEFAULTS.button.actionParam;
 
   tooltipText: string = ELEMENT_DEFAULTS.button.tooltipText;
 
@@ -33,9 +32,9 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   labelAlignment: 'super' | 'sub' | 'baseline' =
     ELEMENT_DEFAULTS.button.labelAlignment;
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps();
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.button);
 
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.button);
 
   styling: BasicStyles & BorderStyles = {
     ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.button),

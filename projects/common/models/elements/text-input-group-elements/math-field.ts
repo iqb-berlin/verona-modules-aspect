@@ -19,14 +19,14 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
   mathKeyboardPresets: MathKeyboardPreset[] =
     ELEMENT_DEFAULTS['math-field'].mathKeyboardPresets;
 
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['math-field']);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS['math-field']);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-field']),
       lineHeight: ELEMENT_DEFAULTS['math-field'].lineHeight
     };
 

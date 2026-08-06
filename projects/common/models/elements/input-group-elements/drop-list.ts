@@ -33,7 +33,7 @@ export class DropListElement extends InputElement implements DropListProperties 
   startNumberingAtZero: boolean = ELEMENT_DEFAULTS['drop-list'].startNumberingAtZero;
   highlightReceivingDropList: boolean = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropList;
   highlightReceivingDropListColor: string = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropListColor;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['drop-list']);
   styling: BasicStyles & {
     itemBackgroundColor: string;
   } = {

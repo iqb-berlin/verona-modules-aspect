@@ -24,7 +24,7 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
   mathKeyboardPresets: MathKeyboardPreset[] = [...ELEMENT_DEFAULTS['text-area-math'].mathKeyboardPresets];
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps();
+    .generatePositionProps(ELEMENT_DEFAULTS['text-area-math']);
 
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['text-area-math']);
@@ -32,7 +32,7 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area-math']),
       lineHeight: ELEMENT_DEFAULTS['text-area-math'].lineHeight
     };
 

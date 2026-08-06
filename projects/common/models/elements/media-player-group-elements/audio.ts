@@ -12,13 +12,13 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class AudioElement extends PlayerElement implements AudioProperties {
   type: UIElementType = 'audio';
-  src: string | null = ELEMENT_DEFAULTS.audio.src as string | null;
-  fileName: string = ELEMENT_DEFAULTS.audio.fileName as string;
+  src: string | null = ELEMENT_DEFAULTS.audio.src;
+  fileName: string = ELEMENT_DEFAULTS.audio.fileName;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.audio);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.audio);
   styling: { backgroundColor: string } = {
-    backgroundColor: ELEMENT_DEFAULTS.audio.backgroundColor as string
+    backgroundColor: ELEMENT_DEFAULTS.audio.backgroundColor
   };
 
   static title: string = 'Audio';

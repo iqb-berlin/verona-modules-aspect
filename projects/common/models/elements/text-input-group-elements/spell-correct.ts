@@ -16,13 +16,19 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class SpellCorrectElement extends TextInputElement implements SpellCorrectProperties {
   type: UIElementType = 'spell-correct';
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['spell-correct']);
+    .generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['spell-correct']);
 
-  styling: BasicStyles = PropertyGroupGenerators
-    .generateBasicStyleProps(ELEMENT_DEFAULTS['spell-correct']);
+  // lineHeight is not part of BasicStyles, but it IS part of this element's
+  // reality: ModelNormalizer lifts it from the defaults into styling on every
+  // load and the editor panel renders it. The interface used to omit it -- the
+  // typed defaults table made that visible (#1177).
+  styling: BasicStyles & { lineHeight: number } = {
+    ...PropertyGroupGenerators.generateBasicStyleProps(),
+    lineHeight: ELEMENT_DEFAULTS['spell-correct'].lineHeight
+  };
 
   static title: string = 'Wort korrigieren';
   static icon: string = 'format_strikethrough';
@@ -57,7 +63,7 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
 export interface SpellCorrectProperties extends TextInputElementProperties {
   position: PositionProperties;
   dimensions: DimensionProperties;
-  styling: BasicStyles;
+  styling: BasicStyles & { lineHeight: number };
 }
 
 function isSpellCorrectProperties(blueprint?: Partial<SpellCorrectProperties>): blueprint is SpellCorrectProperties {

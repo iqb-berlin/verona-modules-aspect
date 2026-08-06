@@ -17,25 +17,25 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   type: UIElementType = 'text-field-simple';
 
   textAlign: 'left' | 'center' | 'right' =
-    ELEMENT_DEFAULTS['text-field-simple'].textAlign as 'left' | 'center' | 'right';
+    ELEMENT_DEFAULTS['text-field-simple'].textAlign;
 
-  minLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].minLength as number | null;
-  minLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].minLengthWarnMessage as string;
-  maxLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].maxLength as number | null;
-  maxLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].maxLengthWarnMessage as string;
-  isLimitedToMaxLength: boolean = ELEMENT_DEFAULTS['text-field-simple'].isLimitedToMaxLength as boolean;
-  pattern: string | null = ELEMENT_DEFAULTS['text-field-simple'].pattern as string | null;
-  patternWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].patternWarnMessage as string;
-  clearable: boolean = ELEMENT_DEFAULTS['text-field-simple'].clearable as boolean;
+  minLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].minLength;
+  minLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].minLengthWarnMessage;
+  maxLength: number | null = ELEMENT_DEFAULTS['text-field-simple'].maxLength;
+  maxLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].maxLengthWarnMessage;
+  isLimitedToMaxLength: boolean = ELEMENT_DEFAULTS['text-field-simple'].isLimitedToMaxLength;
+  pattern: string | null = ELEMENT_DEFAULTS['text-field-simple'].pattern;
+  patternWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].patternWarnMessage;
+  clearable: boolean = ELEMENT_DEFAULTS['text-field-simple'].clearable;
   styling: BasicStyles & {
     lineHeight: number;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field-simple']),
-      lineHeight: ELEMENT_DEFAULTS['text-field-simple'].lineHeight as number
+      lineHeight: ELEMENT_DEFAULTS['text-field-simple'].lineHeight
     };
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['text-field-simple']);
+    .generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['text-field-simple']);

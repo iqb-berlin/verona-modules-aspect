@@ -16,13 +16,13 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class DropdownElement extends InputElement implements OptionElement, DropdownProperties {
   type: UIElementType = 'dropdown';
-  options: TextLabel[] = ELEMENT_DEFAULTS.dropdown.options as TextLabel[];
-  allowUnset: boolean = ELEMENT_DEFAULTS.dropdown.allowUnset as boolean;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.dropdown);
+  options: TextLabel[] = ELEMENT_DEFAULTS.dropdown.options;
+  allowUnset: boolean = ELEMENT_DEFAULTS.dropdown.allowUnset;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.dropdown);
 
-  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.dropdown);
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
 
   static title: string = 'Klappliste';
   static icon: string = 'menu_open';

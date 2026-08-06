@@ -13,14 +13,14 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
-  text: string = ELEMENT_DEFAULTS.text.text as string;
-  markingMode: 'selection' | 'word' | 'range' = ELEMENT_DEFAULTS.text.markingMode as 'selection' | 'word' | 'range';
-  markingPanels: string[] = ELEMENT_DEFAULTS.text.markingPanels as string[];
-  highlightableOrange: boolean = ELEMENT_DEFAULTS.text.highlightableOrange as boolean;
-  highlightableTurquoise: boolean = ELEMENT_DEFAULTS.text.highlightableTurquoise as boolean;
-  highlightableYellow: boolean = ELEMENT_DEFAULTS.text.highlightableYellow as boolean;
-  hasSelectionPopup: boolean = ELEMENT_DEFAULTS.text.hasSelectionPopup as boolean;
-  columnCount: number = ELEMENT_DEFAULTS.text.columnCount as number;
+  text: string = ELEMENT_DEFAULTS.text.text;
+  markingMode: 'selection' | 'word' | 'range' = ELEMENT_DEFAULTS.text.markingMode;
+  markingPanels: string[] = ELEMENT_DEFAULTS.text.markingPanels;
+  highlightableOrange: boolean = ELEMENT_DEFAULTS.text.highlightableOrange;
+  highlightableTurquoise: boolean = ELEMENT_DEFAULTS.text.highlightableTurquoise;
+  highlightableYellow: boolean = ELEMENT_DEFAULTS.text.highlightableYellow;
+  hasSelectionPopup: boolean = ELEMENT_DEFAULTS.text.hasSelectionPopup;
+  columnCount: number = ELEMENT_DEFAULTS.text.columnCount;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.text);
@@ -28,8 +28,8 @@ export class TextElement extends UIElement implements TextProperties {
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.text),
-      lineHeight: ELEMENT_DEFAULTS.text.lineHeight as number
+      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      lineHeight: ELEMENT_DEFAULTS.text.lineHeight
     };
 
   static title: string = 'Text';

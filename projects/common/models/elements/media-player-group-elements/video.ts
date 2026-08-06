@@ -12,14 +12,14 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class VideoElement extends PlayerElement implements VideoProperties {
   type: UIElementType = 'video';
-  src: string | null = ELEMENT_DEFAULTS.video.src as string | null;
-  fileName: string = ELEMENT_DEFAULTS.video.fileName as string;
-  scale: boolean = ELEMENT_DEFAULTS.video.scale as boolean;
+  src: string | null = ELEMENT_DEFAULTS.video.src;
+  fileName: string = ELEMENT_DEFAULTS.video.fileName;
+  scale: boolean = ELEMENT_DEFAULTS.video.scale;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.video);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.video);
   styling: { backgroundColor: string } = {
-    backgroundColor: ELEMENT_DEFAULTS.video.backgroundColor as string
+    backgroundColor: ELEMENT_DEFAULTS.video.backgroundColor
   };
 
   static title: string = 'Video';

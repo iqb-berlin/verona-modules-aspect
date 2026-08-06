@@ -15,20 +15,20 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class SliderElement extends InputElement implements SliderProperties {
   type: UIElementType = 'slider';
-  minValue: number = ELEMENT_DEFAULTS.slider.minValue as number;
-  maxValue: number = ELEMENT_DEFAULTS.slider.maxValue as number;
-  showValues: boolean = ELEMENT_DEFAULTS.slider.showValues as boolean;
-  barStyle: boolean = ELEMENT_DEFAULTS.slider.barStyle as boolean;
-  thumbLabel: boolean = ELEMENT_DEFAULTS.slider.thumbLabel as boolean;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.slider);
+  minValue: number = ELEMENT_DEFAULTS.slider.minValue;
+  maxValue: number = ELEMENT_DEFAULTS.slider.maxValue;
+  showValues: boolean = ELEMENT_DEFAULTS.slider.showValues;
+  barStyle: boolean = ELEMENT_DEFAULTS.slider.barStyle;
+  thumbLabel: boolean = ELEMENT_DEFAULTS.slider.thumbLabel;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.slider);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.slider),
-      lineHeight: ELEMENT_DEFAULTS.slider.lineHeight as number || 100
+      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      lineHeight: ELEMENT_DEFAULTS.slider.lineHeight
     };
 
   static title: string = 'Schieberegler';

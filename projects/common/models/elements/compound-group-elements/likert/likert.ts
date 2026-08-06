@@ -24,12 +24,12 @@ import { ModelNormalizer } from 'common/utils/model-normalizer';
 
 export class LikertElement extends CompoundElement implements OptionElement, LikertProperties {
   type: UIElementType = 'likert';
-  rows: LikertRowElement[] = [...ELEMENT_DEFAULTS.likert.rows as LikertRowElement[]];
-  options: TextImageLabel[] = [...ELEMENT_DEFAULTS.likert.options as TextImageLabel[]];
-  firstColumnSizeRatio: number = ELEMENT_DEFAULTS.likert.firstColumnSizeRatio as number;
-  label: string = ELEMENT_DEFAULTS.likert.label as string;
-  label2: string = ELEMENT_DEFAULTS.likert.label2 as string;
-  stickyHeader: boolean = ELEMENT_DEFAULTS.likert.stickyHeader as boolean;
+  rows: LikertRowElement[] = [...ELEMENT_DEFAULTS.likert.rows];
+  options: TextImageLabel[] = [...ELEMENT_DEFAULTS.likert.options];
+  firstColumnSizeRatio: number = ELEMENT_DEFAULTS.likert.firstColumnSizeRatio;
+  label: string = ELEMENT_DEFAULTS.likert.label;
+  label2: string = ELEMENT_DEFAULTS.likert.label2;
+  stickyHeader: boolean = ELEMENT_DEFAULTS.likert.stickyHeader;
 
   position: PositionProperties = PropertyGroupGenerators
     .generatePositionProps(ELEMENT_DEFAULTS.likert);
@@ -45,11 +45,11 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     firstLineColoringColor: string;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.likert),
-      lineHeight: ELEMENT_DEFAULTS.likert.lineHeight as number,
-      lineColoring: ELEMENT_DEFAULTS.likert.lineColoring as boolean,
-      lineColoringColor: ELEMENT_DEFAULTS.likert.lineColoringColor as string,
-      firstLineColoring: ELEMENT_DEFAULTS.likert.firstLineColoring as boolean,
-      firstLineColoringColor: ELEMENT_DEFAULTS.likert.firstLineColoringColor as string
+      lineHeight: ELEMENT_DEFAULTS.likert.lineHeight,
+      lineColoring: ELEMENT_DEFAULTS.likert.lineColoring,
+      lineColoringColor: ELEMENT_DEFAULTS.likert.lineColoringColor,
+      firstLineColoring: ELEMENT_DEFAULTS.likert.firstLineColoring,
+      firstLineColoringColor: ELEMENT_DEFAULTS.likert.firstLineColoringColor
     };
 
   static title: string = 'Optionentabelle';

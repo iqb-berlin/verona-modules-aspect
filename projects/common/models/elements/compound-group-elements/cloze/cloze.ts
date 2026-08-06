@@ -14,16 +14,16 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class ClozeElement extends CompoundElement implements ClozeProperties {
   type: UIElementType = 'cloze';
-  document: ClozeDocument = structuredClone(ELEMENT_DEFAULTS.cloze.document) as ClozeDocument;
-  columnCount: number = ELEMENT_DEFAULTS.cloze.columnCount as number;
+  document: ClozeDocument = structuredClone(ELEMENT_DEFAULTS.cloze.document);
+  columnCount: number = ELEMENT_DEFAULTS.cloze.columnCount;
 
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.cloze);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.cloze),
-      lineHeight: ELEMENT_DEFAULTS.cloze.lineHeight as number
+      ...PropertyGroupGenerators.generateBasicStyleProps(),
+      lineHeight: ELEMENT_DEFAULTS.cloze.lineHeight
     };
 
   static title: string = 'Lückentext';
@@ -96,28 +96,6 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       .forEach((customNode: CustomDocumentNode) => {
         customNode.attrs.model = ClozeElement.createChildElement(customNode.attrs.model, idService);
       });
-  }
-
-  static getDefaultDocument(): ClozeDocument {
-    return {
-      type: 'doc',
-      content: [{
-        type: 'paragraph',
-        attrs: {
-          textAlign: 'left',
-          indent: null,
-          indentSize: 20,
-          hangingIndent: false,
-          margin: 0
-        },
-        content: [
-          {
-            text: 'Lorem Ipsum',
-            type: 'text'
-          }
-        ]
-      }]
-    };
   }
 
   getChildElements(): UIElement[] {

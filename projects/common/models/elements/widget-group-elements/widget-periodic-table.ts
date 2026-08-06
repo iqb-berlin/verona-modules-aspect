@@ -15,12 +15,12 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS['widget-periodic-table'])
   };
 
-  showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoOrder as boolean;
-  showInfoENeg: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoENeg as boolean;
-  showInfoAMass: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoAMass as boolean;
-  closeOnSelection: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].closeOnSelection as boolean;
-  maxNumberOfSelections: number = ELEMENT_DEFAULTS['widget-periodic-table'].maxNumberOfSelections as number;
-  state: string | null = ELEMENT_DEFAULTS['widget-periodic-table'].state as string | null;
+  showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoOrder;
+  showInfoENeg: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoENeg;
+  showInfoAMass: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoAMass;
+  closeOnSelection: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].closeOnSelection;
+  maxNumberOfSelections: number = ELEMENT_DEFAULTS['widget-periodic-table'].maxNumberOfSelections;
+  state: string | null = ELEMENT_DEFAULTS['widget-periodic-table'].state;
 
   static title: string = 'Periodensystem';
   static icon: string = 'grid_on';

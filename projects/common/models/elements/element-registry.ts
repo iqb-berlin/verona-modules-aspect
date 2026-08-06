@@ -1,3 +1,47 @@
+// The interface imports below are type-only on purpose: the element model files
+// import ELEMENT_DEFAULTS from this file, so value imports in the other
+// direction would be circular at runtime. Type-only imports are erased by the
+// compiler and cannot cycle.
+import type { ButtonProperties } from 'common/models/elements/action-group-elements/button';
+import type { TriggerProperties } from 'common/models/elements/action-group-elements/trigger';
+import type { FrameProperties } from 'common/models/elements/base-group-elements/frame';
+import type { ClozeProperties } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import type { LikertRowProperties } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import type { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
+import type { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import type { GeometryProperties } from 'common/models/elements/external-app-group-elements/geometry';
+import type { CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
+import type { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
+import type { DropdownProperties } from 'common/models/elements/input-group-elements/dropdown';
+import type { HotspotImageProperties } from 'common/models/elements/input-group-elements/hotspot-image';
+import type {
+  RadioButtonGroupComplexProperties
+} from 'common/models/elements/input-group-elements/radio-button-group-complex';
+import type { RadioButtonGroupProperties } from 'common/models/elements/input-group-elements/radio-button-group';
+import type { SliderProperties } from 'common/models/elements/input-group-elements/slider';
+import type { ToggleButtonProperties } from 'common/models/elements/input-group-elements/toggle-button';
+import type { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
+import type { MarkingPanelProperties } from 'common/models/elements/interactive-group-elements/marking-panel';
+import type { MathTableProperties } from 'common/models/elements/interactive-group-elements/math-table';
+import type { AudioProperties } from 'common/models/elements/media-player-group-elements/audio';
+import type { VideoProperties } from 'common/models/elements/media-player-group-elements/video';
+import type { TextProperties } from 'common/models/elements/text-group-elements/text';
+import type { MathFieldProperties } from 'common/models/elements/text-input-group-elements/math-field';
+import type { SpellCorrectProperties } from 'common/models/elements/text-input-group-elements/spell-correct';
+import type { TextAreaMathProperties } from 'common/models/elements/text-input-group-elements/text-area-math';
+import type { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
+import type { TextFieldSimpleProperties } from 'common/models/elements/text-input-group-elements/text-field-simple';
+import type { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
+import type {
+  WidgetMoleculeEditorProperties
+} from 'common/models/elements/widget-group-elements/widget-molecule-editor';
+import type {
+  WidgetPeriodicTableProperties
+} from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import type {
+  DimensionProperties, PositionProperties
+} from 'common/models/elements/property-group-interfaces';
+
 export const GLOBAL_DEFAULTS = {
   fontSize: 20,
   fontColor: '#000000',
@@ -30,7 +74,54 @@ export const GLOBAL_DEFAULTS = {
   playbackTime: 0
 };
 
-export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
+/* The defaults table is FLAT while the Properties interfaces nest position,
+ * dimensions and styling: the PropertyGroupGenerators pick their keys straight
+ * out of an element's defaults record. FlatDefaults mirrors that reading
+ * contract in the type system -- an entry may carry any own property of the
+ * element (except the nested group objects and the fixed type discriminator)
+ * plus any flattened position/dimension/styling key. Everything else, and
+ * every value of the wrong type, is now a compile error instead of data that
+ * ModelNormalizer writes into every loaded unit (#1177, #1139). */
+type FlatDefaults<P> =
+  Partial<Omit<P, 'type' | 'position' | 'dimensions' | 'styling'>> &
+  Partial<PositionProperties> &
+  Partial<DimensionProperties> &
+  (P extends { styling: infer S } ? Partial<S> : unknown);
+
+interface ElementDefaultsMap {
+  text: FlatDefaults<TextProperties>;
+  button: FlatDefaults<ButtonProperties>;
+  'text-field': FlatDefaults<TextFieldProperties>;
+  'text-field-simple': FlatDefaults<TextFieldSimpleProperties>;
+  'text-area': FlatDefaults<TextAreaProperties>;
+  checkbox: FlatDefaults<CheckboxProperties>;
+  dropdown: FlatDefaults<DropdownProperties>;
+  radio: FlatDefaults<RadioButtonGroupProperties>;
+  image: FlatDefaults<ImageProperties>;
+  audio: FlatDefaults<AudioProperties>;
+  video: FlatDefaults<VideoProperties>;
+  cloze: FlatDefaults<ClozeProperties>;
+  'marking-panel': FlatDefaults<MarkingPanelProperties>;
+  slider: FlatDefaults<SliderProperties>;
+  'spell-correct': FlatDefaults<SpellCorrectProperties>;
+  frame: FlatDefaults<FrameProperties>;
+  'toggle-button': FlatDefaults<ToggleButtonProperties>;
+  geometry: FlatDefaults<GeometryProperties>;
+  'hotspot-image': FlatDefaults<HotspotImageProperties>;
+  'math-field': FlatDefaults<MathFieldProperties>;
+  'math-table': FlatDefaults<MathTableProperties>;
+  'text-area-math': FlatDefaults<TextAreaMathProperties>;
+  trigger: FlatDefaults<TriggerProperties>;
+  table: FlatDefaults<TableProperties>;
+  'radio-group-images': FlatDefaults<RadioButtonGroupComplexProperties>;
+  'drop-list': FlatDefaults<DropListProperties>;
+  'likert-row': FlatDefaults<LikertRowProperties>;
+  likert: FlatDefaults<LikertProperties>;
+  'widget-molecule-editor': FlatDefaults<WidgetMoleculeEditorProperties>;
+  'widget-periodic-table': FlatDefaults<WidgetPeriodicTableProperties>;
+}
+
+export const ELEMENT_DEFAULTS = {
   text: {
     text: 'Lorem ipsum dolor sit amet',
     markingMode: 'selection',
@@ -160,7 +251,8 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     alignment: 'column',
     strikeOtherOptions: false,
     width: 215,
-    height: 80
+    height: 80,
+    lineHeight: 100
   },
   image: {
     src: null,
@@ -395,7 +487,6 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     itemBackgroundColor: '#c9e0e0'
   },
   'likert-row': {
-    rowID: '',
     rowLabel: {
       text: '', imgSrc: null, imgFileName: '', imgPosition: 'above'
     },
@@ -437,4 +528,4 @@ export const ELEMENT_DEFAULTS: Record<string, Record<string, unknown>> = {
     backgroundColor: '#f1f1f1',
     fontColor: '#006064'
   }
-};
+} satisfies ElementDefaultsMap;

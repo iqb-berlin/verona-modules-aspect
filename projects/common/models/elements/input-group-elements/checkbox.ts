@@ -14,15 +14,15 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class CheckboxElement extends InputElement implements CheckboxProperties {
   type: UIElementType = 'checkbox';
-  label: string = ELEMENT_DEFAULTS.checkbox.label as string;
-  imgSrc: string | null = ELEMENT_DEFAULTS.checkbox.imgSrc as string | null;
-  value: boolean = ELEMENT_DEFAULTS.checkbox.value as boolean;
-  crossOutChecked: boolean = ELEMENT_DEFAULTS.checkbox.crossOutChecked as boolean;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.checkbox);
+  label: string = ELEMENT_DEFAULTS.checkbox.label;
+  imgSrc: string | null = ELEMENT_DEFAULTS.checkbox.imgSrc;
+  value: boolean = ELEMENT_DEFAULTS.checkbox.value;
+  crossOutChecked: boolean = ELEMENT_DEFAULTS.checkbox.crossOutChecked;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.checkbox);
 
-  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.checkbox);
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
 
   static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';

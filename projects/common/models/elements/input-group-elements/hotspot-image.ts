@@ -26,11 +26,11 @@ export interface Hotspot {
 
 export class HotspotImageElement extends InputElement implements HotspotImageProperties {
   type: UIElementType = 'hotspot-image';
-  value: Hotspot[] = ELEMENT_DEFAULTS['hotspot-image'].value as Hotspot[];
-  src: string | null = ELEMENT_DEFAULTS['hotspot-image'].src as string | null;
-  fileName: string = ELEMENT_DEFAULTS['hotspot-image'].fileName as string;
+  value: Hotspot[] = ELEMENT_DEFAULTS['hotspot-image'].value;
+  src: string | null = ELEMENT_DEFAULTS['hotspot-image'].src;
+  fileName: string = ELEMENT_DEFAULTS['hotspot-image'].fileName;
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['hotspot-image']);
+    .generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['hotspot-image']);

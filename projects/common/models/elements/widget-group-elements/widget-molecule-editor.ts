@@ -18,7 +18,7 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS['widget-molecule-editor'])
   };
 
-  state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state as string | null;
+  state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state;
 
   static title: string = 'Molekül-Editor';
   static icon: string = 'hub';

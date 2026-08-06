@@ -15,15 +15,15 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class ImageElement extends UIElement implements ImageProperties {
   type: UIElementType = 'image';
-  src: string | null = ELEMENT_DEFAULTS.image.src as string | null;
-  alt: string = ELEMENT_DEFAULTS.image.alt as string;
-  scale: boolean = ELEMENT_DEFAULTS.image.scale as boolean;
-  allowFullscreen: boolean = ELEMENT_DEFAULTS.image.allowFullscreen as boolean;
-  magnifier: boolean = ELEMENT_DEFAULTS.image.magnifier as boolean;
-  magnifierSize: number = ELEMENT_DEFAULTS.image.magnifierSize as number;
-  magnifierZoom: number = ELEMENT_DEFAULTS.image.magnifierZoom as number;
-  magnifierUsed: boolean = ELEMENT_DEFAULTS.image.magnifierUsed as boolean;
-  fileName: string = ELEMENT_DEFAULTS.image.fileName as string;
+  src: string | null = ELEMENT_DEFAULTS.image.src;
+  alt: string = ELEMENT_DEFAULTS.image.alt;
+  scale: boolean = ELEMENT_DEFAULTS.image.scale;
+  allowFullscreen: boolean = ELEMENT_DEFAULTS.image.allowFullscreen;
+  magnifier: boolean = ELEMENT_DEFAULTS.image.magnifier;
+  magnifierSize: number = ELEMENT_DEFAULTS.image.magnifierSize;
+  magnifierZoom: number = ELEMENT_DEFAULTS.image.magnifierZoom;
+  magnifierUsed: boolean = ELEMENT_DEFAULTS.image.magnifierUsed;
+  fileName: string = ELEMENT_DEFAULTS.image.fileName;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.image);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.image);

@@ -18,27 +18,27 @@ import { VariableAlias } from 'common/utils/variable-alias';
 
 export class DropListElement extends InputElement implements DropListProperties {
   type: UIElementType = 'drop-list';
-  value: DragNDropValueObject[] = ELEMENT_DEFAULTS['drop-list'].value as DragNDropValueObject[];
-  isSortList: boolean = ELEMENT_DEFAULTS['drop-list'].isSortList as boolean;
-  onlyOneItem: boolean = ELEMENT_DEFAULTS['drop-list'].onlyOneItem as boolean;
-  connectedTo: string[] = [...ELEMENT_DEFAULTS['drop-list'].connectedTo as string[]];
-  copyOnDrop: boolean = ELEMENT_DEFAULTS['drop-list'].copyOnDrop as boolean;
-  allowReplacement: boolean = ELEMENT_DEFAULTS['drop-list'].allowReplacement as boolean;
-  permanentPlaceholders: boolean = ELEMENT_DEFAULTS['drop-list'].permanentPlaceholders as boolean;
-  permanentPlaceholdersCC: boolean = ELEMENT_DEFAULTS['drop-list'].permanentPlaceholdersCC as boolean;
+  value: DragNDropValueObject[] = ELEMENT_DEFAULTS['drop-list'].value;
+  isSortList: boolean = ELEMENT_DEFAULTS['drop-list'].isSortList;
+  onlyOneItem: boolean = ELEMENT_DEFAULTS['drop-list'].onlyOneItem;
+  connectedTo: string[] = [...ELEMENT_DEFAULTS['drop-list'].connectedTo];
+  copyOnDrop: boolean = ELEMENT_DEFAULTS['drop-list'].copyOnDrop;
+  allowReplacement: boolean = ELEMENT_DEFAULTS['drop-list'].allowReplacement;
+  permanentPlaceholders: boolean = ELEMENT_DEFAULTS['drop-list'].permanentPlaceholders;
+  permanentPlaceholdersCC: boolean = ELEMENT_DEFAULTS['drop-list'].permanentPlaceholdersCC;
   orientation: 'vertical' | 'horizontal' | 'flex' =
-    ELEMENT_DEFAULTS['drop-list'].orientation as 'vertical' | 'horizontal' | 'flex';
+    ELEMENT_DEFAULTS['drop-list'].orientation;
 
-  showNumbering: boolean = ELEMENT_DEFAULTS['drop-list'].showNumbering as boolean;
-  startNumberingAtZero: boolean = ELEMENT_DEFAULTS['drop-list'].startNumberingAtZero as boolean;
-  highlightReceivingDropList: boolean = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropList as boolean;
-  highlightReceivingDropListColor: string = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropListColor as string;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['drop-list']);
+  showNumbering: boolean = ELEMENT_DEFAULTS['drop-list'].showNumbering;
+  startNumberingAtZero: boolean = ELEMENT_DEFAULTS['drop-list'].startNumberingAtZero;
+  highlightReceivingDropList: boolean = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropList;
+  highlightReceivingDropListColor: string = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropListColor;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
   styling: BasicStyles & {
     itemBackgroundColor: string;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['drop-list']),
-      itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].itemBackgroundColor as string
+      itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].itemBackgroundColor
     };
 
   static title: string = 'Ablegeliste';

@@ -10,9 +10,9 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class TriggerElement extends UIElement implements TriggerProperties {
   type: UIElementType = 'trigger';
-  action: null | TriggerAction = ELEMENT_DEFAULTS.trigger.action as TriggerAction | null;
+  action: null | TriggerAction = ELEMENT_DEFAULTS.trigger.action;
 
-  actionParam: null | string | StateVariable = ELEMENT_DEFAULTS.trigger.actionParam as string | StateVariable | null;
+  actionParam: null | string | StateVariable = ELEMENT_DEFAULTS.trigger.actionParam;
 
   static title: string = 'Auslöser';
   static icon: string = 'bolt';

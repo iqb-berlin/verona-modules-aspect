@@ -12,11 +12,11 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class LikertRowElement extends InputElement implements LikertRowProperties {
   type: UIElementType = 'likert-row';
-  rowLabel: TextImageLabel = ELEMENT_DEFAULTS['likert-row'].rowLabel as TextImageLabel;
-  columnCount: number = ELEMENT_DEFAULTS['likert-row'].columnCount as number;
-  firstColumnSizeRatio: number = ELEMENT_DEFAULTS['likert-row'].firstColumnSizeRatio as number;
+  rowLabel: TextImageLabel = ELEMENT_DEFAULTS['likert-row'].rowLabel;
+  columnCount: number = ELEMENT_DEFAULTS['likert-row'].columnCount;
+  firstColumnSizeRatio: number = ELEMENT_DEFAULTS['likert-row'].firstColumnSizeRatio;
   verticalButtonAlignment: 'auto' | 'center' =
-    ELEMENT_DEFAULTS['likert-row'].verticalButtonAlignment as 'auto' | 'center';
+    ELEMENT_DEFAULTS['likert-row'].verticalButtonAlignment;
 
   constructor(element?: Partial<LikertRowProperties>, idService?: AbstractIDService) {
     super({ type: 'likert-row', ...element }, idService);

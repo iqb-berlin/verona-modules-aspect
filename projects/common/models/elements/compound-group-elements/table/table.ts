@@ -20,23 +20,23 @@ import { InstantiationEror } from 'common/classes/instantiation-error';
 export class TableElement extends CompoundElement implements TableProperties {
   type: UIElementType = 'table';
   gridColumnSizes: { value: number; unit: string }[] =
-    [...ELEMENT_DEFAULTS.table.gridColumnSizes as { value: number; unit: string }[]];
+    [...ELEMENT_DEFAULTS.table.gridColumnSizes];
 
   gridRowSizes: { value: number; unit: string }[] =
-    [...ELEMENT_DEFAULTS.table.gridRowSizes as { value: number; unit: string }[]];
+    [...ELEMENT_DEFAULTS.table.gridRowSizes];
 
   elements: UIElement[] = [];
-  tableEdgesEnabled: boolean = ELEMENT_DEFAULTS.table.tableEdgesEnabled as boolean;
-  headerEnabled: boolean = ELEMENT_DEFAULTS.table.headerEnabled as boolean;
+  tableEdgesEnabled: boolean = ELEMENT_DEFAULTS.table.tableEdgesEnabled;
+  headerEnabled: boolean = ELEMENT_DEFAULTS.table.headerEnabled;
   headerRows: TableHeaderCell[][] = [];
-  stickyHeader: boolean = ELEMENT_DEFAULTS.table.stickyHeader as boolean;
+  stickyHeader: boolean = ELEMENT_DEFAULTS.table.stickyHeader;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.table);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.table);
 
   styling: BasicStyles & BorderStyles = {
     ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.table),
-    backgroundColor: (ELEMENT_DEFAULTS.table as Record<string, unknown>).backgroundColor as string || '#d3d3d3',
+    backgroundColor: ELEMENT_DEFAULTS.table.backgroundColor,
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.table)
   };
 

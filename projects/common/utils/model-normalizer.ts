@@ -1,6 +1,6 @@
-import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
+import { ELEMENT_DEFAULTS, EXTRA_STYLING_KEYS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 import {
-  DimensionProperties, EXTRA_STYLING_KEYS, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
+  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { KeyInputElementProperties, TextInputElementProperties } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
@@ -167,8 +167,11 @@ export class ModelNormalizer {
     };
 
     // Special handling for extra styling properties like lineHeight and
-    // itemBackgroundColor; the catalogue is shared with the styling type
-    // declarations (see EXTRA_STYLING_KEYS).
+    // itemBackgroundColor. EXTRA_STYLING_KEYS is checked against the element
+    // interfaces, so a newly declared extra styling key cannot go unlisted -- but
+    // mind the second gate on this line: a listed key whose element defaults
+    // entry has no value for it is still dropped from the stored styling, and no
+    // type catches that (#1185).
     EXTRA_STYLING_KEYS.forEach(key => {
       if (defaults[key] !== undefined) {
         (stylingProps as Record<string, unknown>)[key] =

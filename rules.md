@@ -210,6 +210,16 @@ new or changed default VALUES with a spec, as `model-normalizer.spec.ts` does. H
 as an untyped `Record<string, unknown>`, a string default for a `boolean` property travelled into
 stored units unnoticed for months (#1139).
 
+A styling property outside `BasicStyles`/`BorderStyles` (an element declaring
+`styling: BasicStyles & { lineHeight: number }`) has to be listed in `EXTRA_STYLING_KEYS` AND to
+exist in `OtherStyles`: `ModelNormalizer` rebuilds the styling group from scratch and carries over
+exactly the listed keys, while the editor's write path is keyed on `keyof Stylings`. Since #1185
+both are checked against the element interfaces, so forgetting either fails to compile, naming the
+key. Being listed is necessary but NOT sufficient: the carry-over is additionally gated on the
+element's own `ELEMENT_DEFAULTS` entry holding that key, and no type checks this half — give a new
+extra styling key a default on every element whose interface declares it, or stored values are
+still dropped on load.
+
 Rationale:
 - most model changes need no migration step at all; writing one anyway adds code that must be
   maintained and can silently miss the units it was written for

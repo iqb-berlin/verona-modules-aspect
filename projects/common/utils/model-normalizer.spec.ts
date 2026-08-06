@@ -65,6 +65,23 @@ describe('ModelNormalizer', () => {
       expect(variableLayoutOptions.isFirstLineUnderlined).toBe(true); // Default backfilled
     });
 
+    /* #1185: the styling group is rebuilt from scratch, so an extra styling key
+       survives a load only because EXTRA_STYLING_KEYS names it. These specs pin
+       both directions the catalogue is responsible for. */
+    describe('extra styling keys (#1185)', () => {
+      it('lifts an extra styling default into the styling group', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'toggle-button', id: 'tb1' });
+        expect((normalized.styling as Record<string, unknown>).selectionColor).toBe('#c9e0e0');
+      });
+
+      it('keeps a stored extra styling value instead of overwriting it with the default', () => {
+        const normalized = ModelNormalizer.normalizeElement({
+          type: 'likert', id: 'l2', rows: [], styling: { lineColoring: false }
+        });
+        expect((normalized.styling as Record<string, unknown>).lineColoring).toBe(false);
+      });
+    });
+
     /* #1177: the typed defaults table fixed three entries; these specs pin the
        intended VALUES and the normalizer behavior the types cannot check. */
     describe('defaults changed with the typed registry (#1177)', () => {

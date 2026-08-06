@@ -36,18 +36,6 @@ export interface DimensionProperties {
 export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;
 export type BasicStyles = FontStyles & { backgroundColor: string };
 
-/* The styling keys that live OUTSIDE BasicStyles/BorderStyles on individual
- * elements (styling: BasicStyles & { lineHeight ... }). ModelNormalizer lifts
- * exactly these keys from the flat defaults into the styling group and
- * preserves stored values for them -- a key missing here is silently stripped
- * from every loaded unit even if the element interface and ELEMENT_DEFAULTS
- * both declare it (#1177 review). Keep this list in sync when adding an extra
- * styling property to any element. */
-export const EXTRA_STYLING_KEYS = [
-  'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
-  'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
-] as const;
-
 /**
  * A property that lives in one of the element's nested groups rather than on the element itself.
  * These have their own setters, and writing one through the generic path puts it on the element

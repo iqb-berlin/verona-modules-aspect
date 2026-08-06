@@ -39,7 +39,7 @@ import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import type {
-  BasicStyles, DimensionProperties, PlayerProperties, PositionProperties
+  BasicStyles, BorderStyles, DimensionProperties, PlayerProperties, PositionProperties
 } from 'common/models/elements/property-group-interfaces';
 import type { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 
@@ -138,6 +138,29 @@ type ElementDefaultsMap = { [K in UIElementType]: FlatDefaults<ElementProperties
  * parameters checked: a wrong-typed group key, or an object that is no entry
  * at all, is not assignable to any member. */
 export type ElementDefaultsEntry = ElementDefaultsMap[UIElementType];
+
+/* Which styling keys exist beyond BasicStyles and BorderStyles, derived from
+ * the element interfaces instead of listed by hand: ModelNormalizer rebuilds
+ * the styling group from scratch and lifts exactly these keys out of the flat
+ * defaults, so a key the list does not know is stripped from every loaded unit
+ * even though the interface and the table both declare it (#1185). The
+ * declaration below is the single place where the two can no longer drift. */
+type ElementProperties = ElementPropertiesMap[keyof ElementPropertiesMap];
+type StylingOf<P> = P extends { styling: infer S } ? S : never;
+type KeysOf<T> = T extends unknown ? keyof T : never;
+type ExtraStylingKey =
+  Exclude<KeysOf<StylingOf<ElementProperties>>, keyof BasicStyles | keyof BorderStyles>;
+
+export const EXTRA_STYLING_KEYS = [
+  'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
+  'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
+] as const satisfies readonly ExtraStylingKey[];
+
+/* Fails to compile, naming the culprit, when an element declares an extra
+ * styling key that EXTRA_STYLING_KEYS does not list. */
+type UnlistedStylingKey = Exclude<ExtraStylingKey, typeof EXTRA_STYLING_KEYS[number]>;
+export const EXTRA_STYLING_KEYS_COMPLETE: UnlistedStylingKey extends never ? true :
+  ['EXTRA_STYLING_KEYS is missing', UnlistedStylingKey] = true;
 
 export const ELEMENT_DEFAULTS = {
   text: {

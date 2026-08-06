@@ -16,8 +16,8 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class DropdownElement extends InputElement implements OptionElement, DropdownProperties {
   type: UIElementType = 'dropdown';
-  options: TextLabel[] = ELEMENT_DEFAULTS.dropdown.options as TextLabel[];
-  allowUnset: boolean = ELEMENT_DEFAULTS.dropdown.allowUnset as boolean;
+  options: TextLabel[] = ELEMENT_DEFAULTS.dropdown.options;
+  allowUnset: boolean = ELEMENT_DEFAULTS.dropdown.allowUnset;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.dropdown);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.dropdown);

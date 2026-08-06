@@ -37,34 +37,34 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
 
   type: UIElementType = 'math-table';
   operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' =
-    ELEMENT_DEFAULTS['math-table'].operation as 'variable' | 'addition' | 'subtraction' | 'multiplication';
+    ELEMENT_DEFAULTS['math-table'].operation;
 
-  terms: string[] = [...ELEMENT_DEFAULTS['math-table'].terms as string[]];
-  result: string = ELEMENT_DEFAULTS['math-table'].result as string;
-  resultHelperRow: string = ELEMENT_DEFAULTS['math-table'].resultHelperRow as string;
+  terms: string[] = [...ELEMENT_DEFAULTS['math-table'].terms];
+  result: string = ELEMENT_DEFAULTS['math-table'].result;
+  resultHelperRow: string = ELEMENT_DEFAULTS['math-table'].resultHelperRow;
   inputAssistancePreset: InputAssistancePreset =
-    ELEMENT_DEFAULTS['math-table'].inputAssistancePreset as InputAssistancePreset;
+    ELEMENT_DEFAULTS['math-table'].inputAssistancePreset;
 
   inputAssistancePosition: 'floating' | 'right' =
-    ELEMENT_DEFAULTS['math-table'].inputAssistancePosition as 'floating' | 'right';
+    ELEMENT_DEFAULTS['math-table'].inputAssistancePosition;
 
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' =
-    ELEMENT_DEFAULTS['math-table'].inputAssistanceFloatingStartPosition as 'startBottom' | 'endCenter';
+    ELEMENT_DEFAULTS['math-table'].inputAssistanceFloatingStartPosition;
 
-  showSoftwareKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].showSoftwareKeyboard as boolean;
-  addInputAssistanceToKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].addInputAssistanceToKeyboard as boolean;
-  keyStyle: 'round' | 'square' = ELEMENT_DEFAULTS['math-table'].keyStyle as 'round' | 'square';
-  hideNativeKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].hideNativeKeyboard as boolean;
-  hasArrowKeys: boolean = ELEMENT_DEFAULTS['math-table'].hasArrowKeys as boolean;
+  showSoftwareKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].showSoftwareKeyboard;
+  addInputAssistanceToKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].addInputAssistanceToKeyboard;
+  keyStyle: 'round' | 'square' = ELEMENT_DEFAULTS['math-table'].keyStyle;
+  hideNativeKeyboard: boolean = ELEMENT_DEFAULTS['math-table'].hideNativeKeyboard;
+  hasArrowKeys: boolean = ELEMENT_DEFAULTS['math-table'].hasArrowKeys;
   variableLayoutOptions: VariableLayoutOptions = {
-    ...ELEMENT_DEFAULTS['math-table'].variableLayoutOptions as VariableLayoutOptions
+    ...ELEMENT_DEFAULTS['math-table'].variableLayoutOptions
   };
 
   styling: BasicStyles & {
     helperRowColor: string;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-table']),
-      helperRowColor: ELEMENT_DEFAULTS['math-table'].helperRowColor as string
+      helperRowColor: ELEMENT_DEFAULTS['math-table'].helperRowColor
     };
 
   static title: string = 'Rechenkästchen';

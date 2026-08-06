@@ -13,9 +13,9 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class MarkingPanelElement extends UIElement implements MarkingPanelProperties {
   type: UIElementType = 'marking-panel';
-  highlightableYellow: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableYellow as boolean;
-  highlightableTurquoise: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableTurquoise as boolean;
-  highlightableOrange: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableOrange as boolean;
+  highlightableYellow: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableYellow;
+  highlightableTurquoise: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableTurquoise;
+  highlightableOrange: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableOrange;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['marking-panel']);
 
   static title: string = 'Textmarkierung';

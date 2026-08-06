@@ -16,10 +16,10 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class ToggleButtonElement extends InputElement implements ToggleButtonProperties {
   type: UIElementType = 'toggle-button';
-  options: TextLabel[] = ELEMENT_DEFAULTS['toggle-button'].options as TextLabel[];
-  strikeOtherOptions: boolean = ELEMENT_DEFAULTS['toggle-button'].strikeOtherOptions as boolean;
-  strikeSelectedOption: boolean = ELEMENT_DEFAULTS['toggle-button'].strikeSelectedOption as boolean;
-  verticalOrientation: boolean = ELEMENT_DEFAULTS['toggle-button'].verticalOrientation as boolean;
+  options: TextLabel[] = ELEMENT_DEFAULTS['toggle-button'].options;
+  strikeOtherOptions: boolean = ELEMENT_DEFAULTS['toggle-button'].strikeOtherOptions;
+  strikeSelectedOption: boolean = ELEMENT_DEFAULTS['toggle-button'].strikeSelectedOption;
+  verticalOrientation: boolean = ELEMENT_DEFAULTS['toggle-button'].verticalOrientation;
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['toggle-button']);
 
@@ -31,8 +31,8 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     selectionColor: string;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['toggle-button']),
-      lineHeight: ELEMENT_DEFAULTS['toggle-button'].lineHeight as number,
-      selectionColor: ELEMENT_DEFAULTS['toggle-button'].selectionColor as string
+      lineHeight: ELEMENT_DEFAULTS['toggle-button'].lineHeight,
+      selectionColor: ELEMENT_DEFAULTS['toggle-button'].selectionColor
     };
 
   static icon: string = 'radio_button_checked';

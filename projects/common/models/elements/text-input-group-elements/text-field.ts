@@ -14,22 +14,22 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class TextFieldElement extends TextInputElement implements TextFieldProperties {
   type: UIElementType = 'text-field';
-  appearance?: 'fill' | 'outline' = ELEMENT_DEFAULTS['text-field'].appearance as 'fill' | 'outline';
-  textAlign: 'left' | 'center' | 'right' = ELEMENT_DEFAULTS['text-field'].textAlign as 'left' | 'center' | 'right';
-  minLength: number | null = ELEMENT_DEFAULTS['text-field'].minLength as number | null;
-  minLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field'].minLengthWarnMessage as string;
-  maxLength: number | null = ELEMENT_DEFAULTS['text-field'].maxLength as number | null;
-  maxLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field'].maxLengthWarnMessage as string;
-  isLimitedToMaxLength: boolean = ELEMENT_DEFAULTS['text-field'].isLimitedToMaxLength as boolean;
-  pattern: string | null = ELEMENT_DEFAULTS['text-field'].pattern as string | null;
-  patternWarnMessage: string = ELEMENT_DEFAULTS['text-field'].patternWarnMessage as string;
-  clearable: boolean = ELEMENT_DEFAULTS['text-field'].clearable as boolean;
+  appearance?: 'fill' | 'outline' = ELEMENT_DEFAULTS['text-field'].appearance;
+  textAlign: 'left' | 'center' | 'right' = ELEMENT_DEFAULTS['text-field'].textAlign;
+  minLength: number | null = ELEMENT_DEFAULTS['text-field'].minLength;
+  minLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field'].minLengthWarnMessage;
+  maxLength: number | null = ELEMENT_DEFAULTS['text-field'].maxLength;
+  maxLengthWarnMessage: string = ELEMENT_DEFAULTS['text-field'].maxLengthWarnMessage;
+  isLimitedToMaxLength: boolean = ELEMENT_DEFAULTS['text-field'].isLimitedToMaxLength;
+  pattern: string | null = ELEMENT_DEFAULTS['text-field'].pattern;
+  patternWarnMessage: string = ELEMENT_DEFAULTS['text-field'].patternWarnMessage;
+  clearable: boolean = ELEMENT_DEFAULTS['text-field'].clearable;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-field']);
   styling: BasicStyles & {
     lineHeight: number;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field']),
-      lineHeight: ELEMENT_DEFAULTS['text-field'].lineHeight as number
+      lineHeight: ELEMENT_DEFAULTS['text-field'].lineHeight
     };
 
   static title: string = 'Eingabefeld';

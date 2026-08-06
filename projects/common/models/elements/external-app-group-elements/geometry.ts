@@ -12,25 +12,25 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class GeometryElement extends UIElement implements GeometryProperties {
   type: UIElementType = 'geometry';
-  appDefinition: string = ELEMENT_DEFAULTS.geometry.appDefinition as string;
-  trackedVariables: GeometryVariable[] = ELEMENT_DEFAULTS.geometry.trackedVariables as GeometryVariable[];
+  appDefinition: string = ELEMENT_DEFAULTS.geometry.appDefinition;
+  trackedVariables: GeometryVariable[] = ELEMENT_DEFAULTS.geometry.trackedVariables;
   trackedExpectedVariables: GeometryVariable[] =
-    ELEMENT_DEFAULTS.geometry.trackedExpectedVariables as GeometryVariable[];
+    ELEMENT_DEFAULTS.geometry.trackedExpectedVariables;
 
-  showResetIcon: boolean = ELEMENT_DEFAULTS.geometry.showResetIcon as boolean;
-  enableUndoRedo: boolean = ELEMENT_DEFAULTS.geometry.enableUndoRedo as boolean;
-  showToolbar: boolean = ELEMENT_DEFAULTS.geometry.showToolbar as boolean;
-  enableShiftDragZoom: boolean = ELEMENT_DEFAULTS.geometry.enableShiftDragZoom as boolean;
-  showZoomButtons: boolean = ELEMENT_DEFAULTS.geometry.showZoomButtons as boolean;
-  showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton as boolean;
-  customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar as string;
-  fileName: string = ELEMENT_DEFAULTS.geometry.fileName as string;
+  showResetIcon: boolean = ELEMENT_DEFAULTS.geometry.showResetIcon;
+  enableUndoRedo: boolean = ELEMENT_DEFAULTS.geometry.enableUndoRedo;
+  showToolbar: boolean = ELEMENT_DEFAULTS.geometry.showToolbar;
+  enableShiftDragZoom: boolean = ELEMENT_DEFAULTS.geometry.enableShiftDragZoom;
+  showZoomButtons: boolean = ELEMENT_DEFAULTS.geometry.showZoomButtons;
+  showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton;
+  customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar;
+  fileName: string = ELEMENT_DEFAULTS.geometry.fileName;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.geometry);
   dimensions: {
     width: number;
     height: number;
   } = PropertyGroupGenerators
-      .generateDimensionProps(ELEMENT_DEFAULTS.geometry) as { width: number; height: number; };
+      .generateDimensionProps(ELEMENT_DEFAULTS.geometry);
 
   static title: string = 'Geometrie';
   static icon: string = 'architecture';

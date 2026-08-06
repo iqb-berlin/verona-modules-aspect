@@ -15,9 +15,9 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class MathFieldElement extends InputElement implements MathFieldProperties {
   type: UIElementType = 'math-field';
-  enableModeSwitch: boolean = ELEMENT_DEFAULTS['math-field'].enableModeSwitch as boolean;
+  enableModeSwitch: boolean = ELEMENT_DEFAULTS['math-field'].enableModeSwitch;
   mathKeyboardPresets: MathKeyboardPreset[] =
-    ELEMENT_DEFAULTS['math-field'].mathKeyboardPresets as MathKeyboardPreset[];
+    ELEMENT_DEFAULTS['math-field'].mathKeyboardPresets;
 
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['math-field']);
 
@@ -27,7 +27,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     lineHeight: number;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-field']),
-      lineHeight: ELEMENT_DEFAULTS['math-field'].lineHeight as number
+      lineHeight: ELEMENT_DEFAULTS['math-field'].lineHeight
     };
 
   static title: string = 'Formelfeld';

@@ -10,15 +10,14 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class WidgetMoleculeEditorElement extends UIElement implements WidgetMoleculeEditorProperties {
   type: UIElementType = 'widget-molecule-editor';
-  bondingType: 'VALENCE' | 'ELECTRONS' = ELEMENT_DEFAULTS['widget-molecule-editor']
-    .bondingType as 'VALENCE' | 'ELECTRONS';
+  bondingType: 'VALENCE' | 'ELECTRONS' = ELEMENT_DEFAULTS['widget-molecule-editor'].bondingType;
 
   styling: BasicStyles & BorderStyles = {
     ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['widget-molecule-editor']),
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS['widget-molecule-editor'])
   };
 
-  state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state as string | null;
+  state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state;
 
   static title: string = 'Molekül-Editor';
   static icon: string = 'hub';

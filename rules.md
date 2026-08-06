@@ -202,9 +202,13 @@ change belongs to depends on what the change does — the long version is the cl
   case that then runs on every load of every unit, forever.
 
 Defaults in `ELEMENT_DEFAULTS` are what the normalizer writes into units, so their types must match
-what the model declares. The map is `Record<string, unknown>`, so no compiler checks this: a string
-default for a `boolean` property travelled into stored units unnoticed for months (#1139). Cover new
-defaults with a spec, as `model-normalizer.spec.ts` does.
+what the model declares. Since #1177 the table is typed against the element property interfaces
+(`FlatDefaults` in `element-registry.ts`): a default with the wrong type or an unknown key is a
+compile error, and reading a default the table does not define is one too. The compiler checks
+types, not values — a plausible-but-wrong value (100 where 135 was meant) still compiles, so cover
+new or changed default VALUES with a spec, as `model-normalizer.spec.ts` does. Historical context:
+as an untyped `Record<string, unknown>`, a string default for a `boolean` property travelled into
+stored units unnoticed for months (#1139).
 
 Rationale:
 - most model changes need no migration step at all; writing one anyway adds code that must be

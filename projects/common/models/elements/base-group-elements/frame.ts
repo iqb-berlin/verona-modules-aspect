@@ -12,14 +12,14 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class FrameElement extends UIElement implements FrameProperties {
   type: UIElementType = 'frame';
-  hasBorderTop: boolean = ELEMENT_DEFAULTS.frame.hasBorderTop as boolean;
-  hasBorderBottom: boolean = ELEMENT_DEFAULTS.frame.hasBorderBottom as boolean;
-  hasBorderLeft: boolean = ELEMENT_DEFAULTS.frame.hasBorderLeft as boolean;
-  hasBorderRight: boolean = ELEMENT_DEFAULTS.frame.hasBorderRight as boolean;
+  hasBorderTop: boolean = ELEMENT_DEFAULTS.frame.hasBorderTop;
+  hasBorderBottom: boolean = ELEMENT_DEFAULTS.frame.hasBorderBottom;
+  hasBorderLeft: boolean = ELEMENT_DEFAULTS.frame.hasBorderLeft;
+  hasBorderRight: boolean = ELEMENT_DEFAULTS.frame.hasBorderRight;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.frame);
   styling: BorderStyles & { backgroundColor: string; } = {
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.frame),
-    backgroundColor: ELEMENT_DEFAULTS.frame.backgroundColor as string
+    backgroundColor: ELEMENT_DEFAULTS.frame.backgroundColor
   };
 
   static title: string = 'Rahmen';

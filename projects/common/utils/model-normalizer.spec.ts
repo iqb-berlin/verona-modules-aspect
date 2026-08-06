@@ -65,6 +65,32 @@ describe('ModelNormalizer', () => {
       expect(variableLayoutOptions.isFirstLineUnderlined).toBe(true); // Default backfilled
     });
 
+    /* #1177: the typed defaults table fixed three entries; these specs pin the
+       intended VALUES and the normalizer behavior the types cannot check. */
+    describe('defaults changed with the typed registry (#1177)', () => {
+      it('lifts the radio lineHeight default into styling when the unit has none', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'radio', id: 'r1' });
+        expect((normalized.styling as Record<string, unknown>).lineHeight).toBe(100);
+      });
+
+      it('preserves a stored radio styling.lineHeight instead of dropping it', () => {
+        const normalized = ModelNormalizer.normalizeElement({
+          type: 'radio', id: 'r1', styling: { lineHeight: 200 }
+        });
+        expect((normalized.styling as Record<string, unknown>).lineHeight).toBe(200);
+      });
+
+      it('lifts the spell-correct lineHeight default into styling', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'spell-correct', id: 's1' });
+        expect((normalized.styling as Record<string, unknown>).lineHeight).toBe(135);
+      });
+
+      it('no longer backfills the retired rowID key into likert rows', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'likert-row', id: 'lr1' });
+        expect(normalized.rowID).toBeUndefined();
+      });
+    });
+
     it('should recursively normalize compound elements (likert)', () => {
       const partialLikert = {
         type: 'likert',

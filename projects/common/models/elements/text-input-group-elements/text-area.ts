@@ -15,14 +15,14 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class TextAreaElement extends TextInputElement implements TextAreaProperties {
   type: UIElementType = 'text-area';
-  appearance: 'fill' | 'outline' = ELEMENT_DEFAULTS['text-area'].appearance as 'fill' | 'outline';
-  textAlign: 'left' | 'center' | 'right' = ELEMENT_DEFAULTS['text-area'].textAlign as 'left' | 'center' | 'right';
-  resizeEnabled: boolean = ELEMENT_DEFAULTS['text-area'].resizeEnabled as boolean;
-  hasDynamicRowCount: boolean = ELEMENT_DEFAULTS['text-area'].hasDynamicRowCount as boolean;
-  hasAutoHeight: boolean = ELEMENT_DEFAULTS['text-area'].hasAutoHeight as boolean;
-  rowCount: number = ELEMENT_DEFAULTS['text-area'].rowCount as number;
-  expectedCharactersCount: number = ELEMENT_DEFAULTS['text-area'].expectedCharactersCount as number;
-  hasReturnKey: boolean = ELEMENT_DEFAULTS['text-area'].hasReturnKey as boolean;
+  appearance: 'fill' | 'outline' = ELEMENT_DEFAULTS['text-area'].appearance;
+  textAlign: 'left' | 'center' | 'right' = ELEMENT_DEFAULTS['text-area'].textAlign;
+  resizeEnabled: boolean = ELEMENT_DEFAULTS['text-area'].resizeEnabled;
+  hasDynamicRowCount: boolean = ELEMENT_DEFAULTS['text-area'].hasDynamicRowCount;
+  hasAutoHeight: boolean = ELEMENT_DEFAULTS['text-area'].hasAutoHeight;
+  rowCount: number = ELEMENT_DEFAULTS['text-area'].rowCount;
+  expectedCharactersCount: number = ELEMENT_DEFAULTS['text-area'].expectedCharactersCount;
+  hasReturnKey: boolean = ELEMENT_DEFAULTS['text-area'].hasReturnKey;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-area']);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS['text-area']);
@@ -31,7 +31,7 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
     lineHeight: number;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area']),
-      lineHeight: ELEMENT_DEFAULTS['text-area'].lineHeight as number
+      lineHeight: ELEMENT_DEFAULTS['text-area'].lineHeight
     };
 
   static title: string = 'Eingabebereich';

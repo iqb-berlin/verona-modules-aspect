@@ -15,10 +15,10 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class RadioButtonGroupElement extends InputElement implements OptionElement, RadioButtonGroupProperties {
   type: UIElementType = 'radio';
-  label: string = ELEMENT_DEFAULTS.radio.label as string;
-  options: TextLabel[] = ELEMENT_DEFAULTS.radio.options as TextLabel[];
-  alignment: 'column' | 'row' = ELEMENT_DEFAULTS.radio.alignment as 'column' | 'row';
-  strikeOtherOptions: boolean = ELEMENT_DEFAULTS.radio.strikeOtherOptions as boolean;
+  label: string = ELEMENT_DEFAULTS.radio.label;
+  options: TextLabel[] = ELEMENT_DEFAULTS.radio.options;
+  alignment: 'column' | 'row' = ELEMENT_DEFAULTS.radio.alignment;
+  strikeOtherOptions: boolean = ELEMENT_DEFAULTS.radio.strikeOtherOptions;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.radio);
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.radio);
@@ -27,7 +27,7 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
     lineHeight: number;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.radio),
-      lineHeight: ELEMENT_DEFAULTS.radio.lineHeight as number || 100
+      lineHeight: ELEMENT_DEFAULTS.radio.lineHeight
     };
 
   static title: string = 'Optionsfelder';

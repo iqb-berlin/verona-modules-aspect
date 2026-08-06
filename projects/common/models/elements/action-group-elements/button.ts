@@ -14,24 +14,23 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class ButtonElement extends UIElement implements ButtonProperties {
   type: UIElementType = 'button';
 
-  label: string = ELEMENT_DEFAULTS.button.label as string;
+  label: string = ELEMENT_DEFAULTS.button.label;
 
-  imageSrc: string | null = ELEMENT_DEFAULTS.button.imageSrc as string | null;
+  imageSrc: string | null = ELEMENT_DEFAULTS.button.imageSrc;
 
-  asLink: boolean = ELEMENT_DEFAULTS.button.asLink as boolean;
+  asLink: boolean = ELEMENT_DEFAULTS.button.asLink;
 
-  action: null | ButtonAction = ELEMENT_DEFAULTS.button.action as ButtonAction | null;
+  action: null | ButtonAction = ELEMENT_DEFAULTS.button.action;
 
   actionParam: null | UnitNavParam | number | string | StateVariable =
-    ELEMENT_DEFAULTS.button.actionParam as
-    null | UnitNavParam | number | string | StateVariable;
+    ELEMENT_DEFAULTS.button.actionParam;
 
-  tooltipText: string = ELEMENT_DEFAULTS.button.tooltipText as string;
+  tooltipText: string = ELEMENT_DEFAULTS.button.tooltipText;
 
-  tooltipPosition: TooltipPosition = ELEMENT_DEFAULTS.button.tooltipPosition as TooltipPosition;
+  tooltipPosition: TooltipPosition = ELEMENT_DEFAULTS.button.tooltipPosition;
 
   labelAlignment: 'super' | 'sub' | 'baseline' =
-    ELEMENT_DEFAULTS.button.labelAlignment as 'super' | 'sub' | 'baseline';
+    ELEMENT_DEFAULTS.button.labelAlignment;
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.button);
 

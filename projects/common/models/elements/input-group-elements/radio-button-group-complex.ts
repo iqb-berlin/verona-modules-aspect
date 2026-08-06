@@ -17,9 +17,9 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class RadioButtonGroupComplexElement extends InputElement
   implements OptionElement, RadioButtonGroupComplexProperties {
   type: UIElementType = 'radio-group-images';
-  label: string = ELEMENT_DEFAULTS['radio-group-images'].label as string;
-  options: TextImageLabel[] = [...ELEMENT_DEFAULTS['radio-group-images'].options as TextImageLabel[]];
-  itemsPerRow: number | null = ELEMENT_DEFAULTS['radio-group-images'].itemsPerRow as number | null;
+  label: string = ELEMENT_DEFAULTS['radio-group-images'].label;
+  options: TextImageLabel[] = [...ELEMENT_DEFAULTS['radio-group-images'].options];
+  itemsPerRow: number | null = ELEMENT_DEFAULTS['radio-group-images'].itemsPerRow;
   position: PositionProperties = PropertyGroupGenerators
     .generatePositionProps(ELEMENT_DEFAULTS['radio-group-images']);
 

@@ -19,11 +19,9 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class TextAreaMathElement extends TextInputElement implements TextAreaMathProperties {
   type: UIElementType = 'text-area-math';
   value: TextAreaMath[] = [];
-  rowCount: number = ELEMENT_DEFAULTS['text-area-math'].rowCount as number || 2;
-  hasAutoHeight: boolean = ELEMENT_DEFAULTS['text-area-math'].hasAutoHeight as boolean || false;
-  mathKeyboardPresets: MathKeyboardPreset[] =
-    ELEMENT_DEFAULTS['text-area-math'].mathKeyboardPresets as MathKeyboardPreset[] ||
-    ['math', 'symbols', 'latin', 'greek'];
+  rowCount: number = ELEMENT_DEFAULTS['text-area-math'].rowCount;
+  hasAutoHeight: boolean = ELEMENT_DEFAULTS['text-area-math'].hasAutoHeight;
+  mathKeyboardPresets: MathKeyboardPreset[] = [...ELEMENT_DEFAULTS['text-area-math'].mathKeyboardPresets];
 
   position: PositionProperties = PropertyGroupGenerators
     .generatePositionProps(ELEMENT_DEFAULTS['text-area-math']);
@@ -35,7 +33,7 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
     lineHeight: number;
   } = {
       ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area-math']),
-      lineHeight: ELEMENT_DEFAULTS['text-area-math'].lineHeight as number
+      lineHeight: ELEMENT_DEFAULTS['text-area-math'].lineHeight
     };
 
   static title: string = 'Formelbereich';

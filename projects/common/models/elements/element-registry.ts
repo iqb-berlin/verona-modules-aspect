@@ -39,7 +39,7 @@ import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import type {
-  BasicStyles, BorderStyles, DimensionProperties, PlayerProperties, PositionProperties
+  BasicStyles, BorderStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import type { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 
@@ -77,6 +77,13 @@ export const GLOBAL_DEFAULTS = {
 UIElementProperties & PositionProperties & DimensionProperties & BasicStyles & PlayerProperties
 >;
 
+/* An element's styling type, whether the interface declares `styling` as
+ * required or leaves it optional -- six elements (geometry, hotspot-image,
+ * image, marking-panel, trigger, likert-row) inherit `styling?: Stylings` from
+ * UIElementProperties, and a predicate matching only the required form is blind
+ * to exactly those (#1185 review). */
+type StylingOf<P> = P extends { styling?: infer S } ? NonNullable<S> : never;
+
 /* The defaults table is FLAT while the Properties interfaces nest position,
  * dimensions and styling: the PropertyGroupGenerators pick their keys straight
  * out of an element's defaults record. FlatDefaults mirrors that reading
@@ -89,7 +96,7 @@ type FlatDefaults<P> =
   Partial<Omit<P, 'type' | 'position' | 'dimensions' | 'styling' | 'player'>> &
   Partial<PositionProperties> &
   Partial<DimensionProperties> &
-  (P extends { styling: infer S } ? Partial<S> : unknown) &
+  Partial<StylingOf<P>> &
   (P extends { player: infer PL } ? Partial<PL> : unknown);
 
 interface ElementPropertiesMap {
@@ -139,28 +146,36 @@ type ElementDefaultsMap = { [K in UIElementType]: FlatDefaults<ElementProperties
  * at all, is not assignable to any member. */
 export type ElementDefaultsEntry = ElementDefaultsMap[UIElementType];
 
-/* Which styling keys exist beyond BasicStyles and BorderStyles, derived from
- * the element interfaces instead of listed by hand: ModelNormalizer rebuilds
- * the styling group from scratch and lifts exactly these keys out of the flat
- * defaults, so a key the list does not know is stripped from every loaded unit
- * even though the interface and the table both declare it (#1185). The
- * declaration below is the single place where the two can no longer drift. */
-type ElementProperties = ElementPropertiesMap[keyof ElementPropertiesMap];
-type StylingOf<P> = P extends { styling: infer S } ? S : never;
+/* Which styling keys exist beyond BasicStyles and BorderStyles. The list itself
+ * stays written out; what the types do is CHECK it against the element
+ * interfaces, in both directions. ModelNormalizer rebuilds the styling group
+ * from scratch and carries over exactly the listed keys, so a key the list does
+ * not know is stripped from every loaded unit even though the interface and the
+ * table both declare it (#1185).
+ *
+ * Being listed is necessary but NOT sufficient: the carry-over is additionally
+ * gated on the element's own ELEMENT_DEFAULTS entry holding that key, and no
+ * type enforces this half -- an element whose entry lacks the key still loses
+ * stored values on load. */
 type KeysOf<T> = T extends unknown ? keyof T : never;
-type ExtraStylingKey =
-  Exclude<KeysOf<StylingOf<ElementProperties>>, keyof BasicStyles | keyof BorderStyles>;
+type AllElementStylingKeys = KeysOf<StylingOf<ElementPropertiesMap[UIElementType]>>;
+type ExtraStylingKey = Exclude<AllElementStylingKeys, keyof BasicStyles | keyof BorderStyles>;
 
 export const EXTRA_STYLING_KEYS = [
   'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
   'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
 ] as const satisfies readonly ExtraStylingKey[];
 
-/* Fails to compile, naming the culprit, when an element declares an extra
- * styling key that EXTRA_STYLING_KEYS does not list. */
+/* Two type-level assertions, no runtime value: the first fails to compile when
+ * an element declares an extra styling key the list omits, naming it; the second
+ * when a listed key is unknown to `Stylings`, which is the type the editor's
+ * write path is keyed on (setStyleProperty, commitStyle) -- a key the normalizer
+ * carries but the panel cannot set would be preserved and unreachable. */
+type AssertNever<T extends never> = T;
 type UnlistedStylingKey = Exclude<ExtraStylingKey, typeof EXTRA_STYLING_KEYS[number]>;
-export const EXTRA_STYLING_KEYS_COMPLETE: UnlistedStylingKey extends never ? true :
-  ['EXTRA_STYLING_KEYS is missing', UnlistedStylingKey] = true;
+type UnwritableStylingKey = Exclude<typeof EXTRA_STYLING_KEYS[number], keyof Stylings>;
+export type ExtraStylingKeysAreListed = AssertNever<UnlistedStylingKey>;
+export type ExtraStylingKeysAreWritable = AssertNever<UnwritableStylingKey>;
 
 export const ELEMENT_DEFAULTS = {
   text: {

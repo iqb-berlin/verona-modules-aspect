@@ -167,9 +167,11 @@ export class ModelNormalizer {
     };
 
     // Special handling for extra styling properties like lineHeight and
-    // itemBackgroundColor. The catalogue is derived from the element interfaces
-    // (see EXTRA_STYLING_KEYS), so a newly declared extra styling key cannot be
-    // silently stripped here anymore -- it fails to compile until it is listed.
+    // itemBackgroundColor. EXTRA_STYLING_KEYS is checked against the element
+    // interfaces, so a newly declared extra styling key cannot go unlisted -- but
+    // mind the second gate on this line: a listed key whose element defaults
+    // entry has no value for it is still dropped from the stored styling, and no
+    // type catches that (#1185).
     EXTRA_STYLING_KEYS.forEach(key => {
       if (defaults[key] !== undefined) {
         (stylingProps as Record<string, unknown>)[key] =

@@ -162,8 +162,12 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       let initialValue: ResponseValueType;
       switch (childModel.type) {
         case 'image':
+          // childModel, not this.elementModel: the line was taken over from the single-element path
+          // in InteractiveGroupElementComponent, where `this.elementModel` IS the image. Here it is
+          // the compound, which has no magnifierUsed -- so every image child registered undefined,
+          // and the mapping ran on the compound's type rather than 'image' (#1125).
           initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
-            (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type);
+            (childModel as ImageElement).magnifierUsed, childModel.type);
           break;
         case 'audio':
           initialValue = this.elementModelElementCodeMappingService.mapToElementModelValue(

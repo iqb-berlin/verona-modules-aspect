@@ -1,5 +1,36 @@
-import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
+import { UIElementType } from 'common/models/ui-element-interfaces';
+import { ElementFactory } from 'common/utils/element-factory';
 import { ModelNormalizer } from './model-normalizer';
+
+/* Every object reachable from the defaults tables, as identities. Built ONCE from the whole table, not
+   per element type: a text element holding image's Measurement is just as wrong as one holding its
+   own, and a per-type set cannot see that. The `acc` guard deduplicates -- the tables are plain data
+   and acyclic. */
+const registryOwned = (source: unknown, acc: Set<unknown> = new Set()): Set<unknown> => {
+  if (source !== null && typeof source === 'object' && !acc.has(source)) {
+    acc.add(source);
+    Object.values(source as Record<string, unknown>).forEach(value => registryOwned(value, acc));
+  }
+  return acc;
+};
+
+const OWNED_BY_REGISTRY = registryOwned({ ELEMENT_DEFAULTS, GLOBAL_DEFAULTS });
+
+/* The idService skip is taken from element-blueprint.spec.ts's walker; `visited` is NOT -- that one
+   bounds recursion with `depth > 6`, which is why it never reaches a cloze child (#1194). A visited set
+   does the same job without a cutoff, and it is needed here because a constructed element holds
+   services that reference each other. It costs reported paths, not findings: a registry object
+   reachable twice is named once, at whichever path the walk hit first. */
+const registryObjectsIn = (node: unknown, path: string, visited: WeakSet<object> = new WeakSet()): string[] => {
+  if (node === null || typeof node !== 'object' || visited.has(node)) return [];
+  visited.add(node);
+  return (OWNED_BY_REGISTRY.has(node) ? [path] : []).concat(
+    Object.entries(node as Record<string, unknown>)
+      .filter(([key]) => key !== 'idService')
+      .flatMap(([key, value]) => registryObjectsIn(value, `${path}.${key}`, visited))
+  );
+};
 
 describe('ModelNormalizer', () => {
   describe('normalizeUnit', () => {
@@ -162,6 +193,53 @@ describe('ModelNormalizer', () => {
 
       expect((button.styling as Record<string, unknown>).borderWidth).toBeDefined();
       expect((text.styling as Record<string, unknown>).borderWidth).toBeUndefined();
+    });
+  });
+
+  /* #1184: no element may hold an object that ELEMENT_DEFAULTS or GLOBAL_DEFAULTS owns, or an in-place
+     write reaches the table and moves the value for every element of that type. The fix is in
+     generatePositionProps (the four margins were forwarded by reference); these sweeps guard the
+     invariant rather than that one line, by comparing IDENTITY over all types -- so a new
+     object-valued default, or a new generator that forwards one, is caught without editing them.
+
+     What they do NOT cover, so the heading is not read as more than it is: sharing that does not
+     originate in the tables. The base constructor merges the INCOMING properties object shallowly, and
+     the editor's position write path hands one Measurement to every selected element (#1193).
+
+     PAYLOAD gives the compound types real children -- a bare `{ type }` leaves rows/elements/document
+     empty, so the recursion would never run.
+
+     Two boundaries. normalizeElement is a production boundary of its own (NormalizationMigration calls
+     it with no constructor involved). createElement is what the editor and player use; today it is
+     equivalent, because the normalizer fills every key and the constructors overwrite their class
+     fields from it -- these sweeps pin that equivalence, which nothing else states. */
+  describe('objects the registry owns (#1184)', () => {
+    const PAYLOAD: Partial<Record<UIElementType, Record<string, unknown>>> = {
+      cloze: {
+        document: {
+          type: 'doc',
+          content: [{
+            type: 'paragraph',
+            content: [{ type: 'TextField', attrs: { model: { type: 'text-field', id: 'child_1' } } }]
+          }]
+        }
+      },
+      table: { elements: [{ type: 'text', id: 'cell_1' }] },
+      likert: { rows: [{ type: 'likert-row', id: 'row_1' }] }
+    };
+
+    const allTypes = Object.keys(ELEMENT_DEFAULTS) as UIElementType[];
+    const blueprintFor = (type: UIElementType) => ({ type, ...(PAYLOAD[type] ?? {}) });
+
+    ([
+      ['normalizeElement', (type: UIElementType) => ModelNormalizer.normalizeElement(blueprintFor(type))],
+      ['ElementFactory.createElement', (type: UIElementType) => ElementFactory.createElement(blueprintFor(type))]
+    ] as const).forEach(([name, build]) => {
+      it(`should hand out no registry object from ${name}, for any type`, () => {
+        const findings = allTypes.flatMap(type => registryObjectsIn(build(type), type));
+
+        expect(findings).toEqual([]);
+      });
     });
   });
 });

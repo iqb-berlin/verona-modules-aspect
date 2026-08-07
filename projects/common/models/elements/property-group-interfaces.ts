@@ -194,10 +194,15 @@ export abstract class PropertyGroupGenerators {
       gridColumnRange: d.gridColumnRange !== undefined ? d.gridColumnRange : 1,
       gridRow: d.gridRow !== undefined ? d.gridRow : null,
       gridRowRange: d.gridRowRange !== undefined ? d.gridRowRange : 1,
-      marginLeft: d.marginLeft !== undefined ? d.marginLeft : { value: 0, unit: 'px' },
-      marginRight: d.marginRight !== undefined ? d.marginRight : { value: 0, unit: 'px' },
-      marginTop: d.marginTop !== undefined ? d.marginTop : { value: 0, unit: 'px' },
-      marginBottom: d.marginBottom !== undefined ? d.marginBottom : { value: 0, unit: 'px' },
+      // Copied, not forwarded: the margins are the only object-valued group members, and `defaults` is
+      // usually an ELEMENT_DEFAULTS entry. Returning the incoming object handed the registry's own
+      // Measurement to every element built from it, shared with the table and with each other. Every
+      // writer replaces the margin object today, so nothing broke -- this closes the hole before the
+      // first one mutates it in place (#1184).
+      marginLeft: d.marginLeft !== undefined ? { ...d.marginLeft } : { value: 0, unit: 'px' },
+      marginRight: d.marginRight !== undefined ? { ...d.marginRight } : { value: 0, unit: 'px' },
+      marginTop: d.marginTop !== undefined ? { ...d.marginTop } : { value: 0, unit: 'px' },
+      marginBottom: d.marginBottom !== undefined ? { ...d.marginBottom } : { value: 0, unit: 'px' },
       zIndex: d.zIndex !== undefined ? d.zIndex : GLOBAL_DEFAULTS.zIndex
     };
   }

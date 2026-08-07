@@ -172,6 +172,9 @@ export class ModelNormalizer {
     // mind the second gate on this line: a listed key whose element defaults
     // entry has no value for it is still dropped from the stored styling, and no
     // type catches that (#1185).
+    // This is the one place that hands a default out by reference. All eight listed
+    // values are scalars, so nothing is shared; an object-valued one would leak and
+    // is caught by the identity sweep in the spec, not by a clone here (#1184).
     EXTRA_STYLING_KEYS.forEach(key => {
       if (defaults[key] !== undefined) {
         (stylingProps as Record<string, unknown>)[key] =

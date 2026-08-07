@@ -210,6 +210,14 @@ new or changed default VALUES with a spec, as `model-normalizer.spec.ts` does. H
 as an untyped `Record<string, unknown>`, a string default for a `boolean` property travelled into
 stored units unnoticed for months (#1139).
 
+An OBJECT-valued default needs one thing more, and no type enforces it: what reaches an element has
+to be the element's own object, never the table's. The table is module state, so a shared object
+means every element of that type — and the default itself — move together on the first in-place
+write. Whatever hands the value out has to copy it; `PropertyGroupGenerators.generatePositionProps`
+does this for the margins (#1184), and `ModelNormalizer` clones each object default it fills in. The
+identity sweep in `model-normalizer.spec.ts` fails with the offending path if a new default or a new
+generator misses it.
+
 A styling property outside `BasicStyles`/`BorderStyles` (an element declaring
 `styling: BasicStyles & { lineHeight: number }`) has to be listed in `EXTRA_STYLING_KEYS` AND to
 exist in `OtherStyles`: `ModelNormalizer` rebuilds the styling group from scratch and carries over

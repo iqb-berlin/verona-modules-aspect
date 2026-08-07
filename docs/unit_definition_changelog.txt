@@ -273,3 +273,15 @@ iqb-aspect-definition@1.0.0
   softwareKeyboardShowFrench removed in 4.0.0. With toVersion 4.0.0 the step no
   longer reaches those units; they are brought up to date by NormalizationMigration,
   which runs regardless of the filter, exactly as before.
+
+(#1184, no version raise -- no new property)
+- Elements no longer share their margin objects with the defaults table.
+  PropertyGroupGenerators.generatePositionProps returned the marginLeft/Right/Top/Bottom
+  object it was given, and it is usually given an ELEMENT_DEFAULTS entry -- so every
+  element built without a stored margin of its own held the registry's Measurement,
+  shared with the table and with every other element of that type. Nothing broke: every
+  writer replaces the margin object rather than editing it, so the sharing stayed
+  invisible. The generator now copies, which closes the hole before the first in-place
+  write appears. Margin values are unchanged; what changes is object identity, and one
+  edge case -- a stored margin that is not an object at all (an explicit null, say)
+  used to come back out unchanged and is now an empty object.

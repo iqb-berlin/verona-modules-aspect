@@ -188,4 +188,107 @@ describe('MigrationManager', () => {
       expect(marginTopOf(migrated)).toBe(20);
     });
   });
+
+  /* What must survive MigrationLegacy losing its reach over these units is the STORED data -- the
+     reasoning is on the declaration in {@link MigrationLegacy} (#1190).
+
+     The fixture is stamped 4.0.0 ON PURPOSE: that is the boundary the defect moved. A fixture from
+     the middle of the range would still pass if someone set toVersion to 4.1.0, which would re-open
+     the bug for every 4.0/4.1/4.2 unit. Note this covers MigrationLegacy only; Migration4m10To4m11
+     still reaches these units and mangles audio elements, which is why none is in the fixture. */
+  describe('a unit that already carries the 4.x shape', () => {
+    const unit4x = (): Record<string, unknown> => ({
+      type: 'aspect-unit-definition',
+      version: '4.0.0',
+      pages: [{
+        sections: [{
+          visibilityRules: [{ id: 'text_1', operator: '=', value: 'ok' }],
+          visibilityDelay: 500,
+          animatedVisibility: true,
+          elements: [
+            {
+              type: 'text',
+              id: 'text_1',
+              text: 'Bestand',
+              dimensions: {
+                width: 333, height: 111, isWidthFixed: true, isHeightFixed: true, minWidth: 300, maxWidth: 400
+              }
+            },
+            {
+              type: 'text-field',
+              id: 'text_field_1',
+              addInputAssistanceToKeyboard: true
+            }
+          ]
+        }]
+      }]
+    });
+
+    const migrate4x = (): UnitProperties => MigrationManager
+      .migrate(unit4x(), '4.12.0') as unknown as UnitProperties;
+
+    it('should keep the stored dimensions instead of falling back to the element defaults', () => {
+      const element = migrate4x().pages[0].sections[0].elements[0] as unknown as TextProperties;
+
+      expect(element.dimensions?.width).toBe(333);
+      expect(element.dimensions?.height).toBe(111);
+      expect(element.dimensions?.isWidthFixed).toBe(true);
+      expect(element.dimensions?.minWidth).toBe(300);
+      expect(element.dimensions?.maxWidth).toBe(400);
+    });
+
+    it('should keep the stored section visibility', () => {
+      const section = migrate4x().pages[0].sections[0];
+
+      expect(section.visibilityRules).toEqual([{ id: 'text_1', operator: '=', value: 'ok' }]);
+      expect(section.visibilityDelay).toBe(500);
+      expect(section.animatedVisibility).toBe(true);
+    });
+
+    it('should keep a stored addInputAssistanceToKeyboard on a text input element', () => {
+      const element = migrate4x().pages[0].sections[0].elements[1] as unknown as TextFieldProperties;
+
+      expect(element.addInputAssistanceToKeyboard).toBe(true);
+    });
+
+    /* Documents the target state rather than guarding the fix: migrate() stamps the version
+       unconditionally and NormalizationMigration fills the defaults whatever the step filter did, so
+       these three hold with or without #1190. They are here to state what "brought up to date" means
+       for such a unit -- the regression protection sits in the three tests above. */
+    it('should still arrive at the target version with its defaults filled', () => {
+      const migrated = migrate4x();
+      const element = migrated.pages[0].sections[0].elements[0] as unknown as TextProperties;
+
+      expect(migrated.version).toBe('4.12.0');
+      expect(element.markingMode).toBe('selection');
+      expect(element.styling?.lineHeight).toBe(135);
+    });
+  });
+
+  /* The counter-check: a genuine 3.10 unit must still be converted, or the fix above would have been
+     bought by disabling the step. */
+  it('should still convert the 3.10 shape of a legacy unit', () => {
+    const legacyUnit = {
+      type: 'aspect-unit-definition',
+      version: '3.10.0',
+      pages: [{
+        sections: [{
+          activeAfterID: 'text_1',
+          activeAfterIdDelay: 500,
+          elements: [{
+            type: 'text', id: 'text_1', text: 'Legacy', width: 250, height: 60
+          }]
+        }]
+      }]
+    };
+
+    const migrated = MigrationManager.migrate(legacyUnit, '4.12.0') as unknown as UnitProperties;
+    const section = migrated.pages[0].sections[0];
+    const element = section.elements[0] as unknown as TextProperties;
+
+    expect(element.dimensions?.width).toBe(250);
+    expect(element.dimensions?.height).toBe(60);
+    expect(section.visibilityRules).toEqual([{ id: 'text_1', operator: '≥', value: '1' }]);
+    expect(section.visibilityDelay).toBe(500);
+  });
 });

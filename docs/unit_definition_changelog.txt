@@ -260,3 +260,16 @@ iqb-aspect-definition@1.0.0
   load -- user-set line heights silently reverted. With lineHeight: 100 in the radio
   defaults the stored value is preserved; units that never changed it keep rendering
   with 100 as before.
+
+(#1190, no version raise -- no new property)
+- Units stored with a version between 4.0.0 and 4.9.x keep their data on loading.
+  MigrationLegacy converts the 3.10 shape to the 4.0 shape, but declared
+  toVersion 4.10.0, and the step filter reads that declaration -- so it also ran
+  over units that already carried the 4.x shape. Three of its transformations have
+  no guard against being handed the new shape and overwrote what they found:
+  dimensions was rebuilt from the flat width/height removed in 4.0.0 (the element
+  defaults then won), visibilityRules became [] and animatedVisibility false because
+  activeAfterID no longer exists, and addInputAssistanceToKeyboard was set from the
+  softwareKeyboardShowFrench removed in 4.0.0. With toVersion 4.0.0 the step no
+  longer reaches those units; they are brought up to date by NormalizationMigration,
+  which runs regardless of the filter, exactly as before.

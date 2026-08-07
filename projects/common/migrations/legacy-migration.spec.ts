@@ -7,9 +7,9 @@ describe('MigrationLegacy', () => {
     migration = new MigrationLegacy();
   });
 
-  it('should have correct versions', () => {
+  it('should have correct versions (#1190)', () => {
     expect(migration.fromVersion).toBe('3.10.0');
-    expect(migration.toVersion).toBe('4.10.0');
+    expect(migration.toVersion).toBe('4.0.0');
   });
 
   it('should migrate section visibility based on legacy properties', () => {

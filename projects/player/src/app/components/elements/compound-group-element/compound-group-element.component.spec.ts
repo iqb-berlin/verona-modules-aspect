@@ -278,11 +278,12 @@ describe('CompoundGroupElementComponent', () => {
   });
 
   /*
-   * Documents current behaviour: for an image child the initial value is read from the
-   * magnifierUsed property of the compound element itself, which a table does not have,
-   * so the registered value stays undefined.
+   * The initial value has to come from the child, as it does on the single-element path in
+   * InteractiveGroupElementComponent. Reading it from the compound gave every image child
+   * `undefined` -- which is not even a ResponseValueType, so the reported element code lost its
+   * `value` key entirely on serialization (#1125).
    */
-  it('should register an image child without a magnifier state', () => {
+  it('should register an image child with its own magnifier state', () => {
     initComponent(createTable([]));
     const child = createChild(
       new ImageElement({ type: 'image', id: 'image_1', alias: 'image_1' }),
@@ -292,7 +293,7 @@ describe('CompoundGroupElementComponent', () => {
     component.registerCompoundChildren([child]);
 
     expect(unitStateService.registerElementCode)
-      .toHaveBeenCalledWith('image_1', 'image_1', undefined, child.domElement, 1);
+      .toHaveBeenCalledWith('image_1', 'image_1', false, child.domElement, 1);
   });
 
   it('should report a changed audio playback time of a child', () => {

@@ -23,10 +23,18 @@ export class SelectionService {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
   }
 
+  // Called when a unit is (re)loaded, so everything left behind here describes a unit that is gone.
+  // Emptying `selectedElementComponents` left the subject the properties panel reads at its last
+  // value, so the panel kept offering controls for elements the incoming unit does not contain.
+  // After loadUnit that is brief -- every ElementOverlay re-selects itself as it renders -- but the
+  // empty branch of loadUnitDefinition renders no overlay at all, so there it persists (#1089).
+  // isCompoundChildSelected goes with them: the panel and dimension-field-set read it to decide
+  // which controls to offer, and it describes a selection that no longer exists.
   reset(): void {
     this.selectedPageIndex = 0;
     this.selectedSectionIndex = 0;
-    this.selectedElementComponents = [];
+    this.isCompoundChildSelected = false;
+    this.clearElementSelection();
   }
 
   updateSelection(pageIndex: number, sectionIndex: number): void {

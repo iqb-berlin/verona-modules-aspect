@@ -74,8 +74,22 @@ export class UnitService {
         if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message);
       }
     } else {
+      /* The host replays the stored definition on every load, and for a unit that was never saved
+       * with content it is empty -- discarding such a unit lands here (#1089). Swapping `unit` alone
+       * left the selection pointing into the unit that just went away: with the second section
+       * selected, the properties panel read `sections[1]` of the fresh single-section unit, and the
+       * dialog the ErrorHandler opens runs change detection straight back into the same throw.
+       * This is also the one load path on which a stale selection survives: an empty unit renders no
+       * element overlay, so nothing re-selects and papers over it the way it does after loadUnit.
+       * Of what loadUnit does beyond these resets, nothing fits here. An empty unit has no references
+       * to repair and no variable infos to validate, and reRegisterAll would find neither a state
+       * variable nor an element to register. updateUnitDefinition is left out on purpose: it reports
+       * the unit to the host as changed, and a discard must not hand back a fresh change at once. */
+      this.idService.reset();
+      this.selectionService.reset();
       this.unit = new EditorUnit(undefined, this.idService);
       this.referenceManager = new ReferenceManager(this.unit);
+      this.updateSectionCounter();
     }
   }
 

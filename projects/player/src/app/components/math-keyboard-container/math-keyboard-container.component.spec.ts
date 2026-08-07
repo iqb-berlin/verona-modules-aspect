@@ -55,6 +55,16 @@ describe('MathKeyboardContainerComponent', () => {
     expect(addEventListener).toHaveBeenCalledWith('geometrychange', expect.any(Function));
   });
 
+  it('should stop listening for geometry changes when destroyed', () => {
+    const removeEventListener = vi.spyOn(window.mathVirtualKeyboard, 'removeEventListener');
+    const registeredListener = addEventListener.mock.calls[0][1];
+
+    component.ngOnDestroy();
+
+    /* The same reference, not merely a function: removeEventListener matches by identity (#1123). */
+    expect(removeEventListener).toHaveBeenCalledWith('geometrychange', registeredListener);
+  });
+
   it('should take over the keyboard height and scroll the input into view', fakeAsync(() => {
     setKeyboardHeight(300);
 

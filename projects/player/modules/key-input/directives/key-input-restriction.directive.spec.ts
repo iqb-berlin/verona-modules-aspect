@@ -131,6 +131,24 @@ describe('KeyInputRestrictionDirective', () => {
     expect(event.defaultPrevented).toBe(true);
   });
 
+  it('should stop restricting keys when destroyed', () => {
+    initDirective();
+
+    directive.ngOnDestroy();
+
+    expect(keyDown('x').defaultPrevented).toBe(false);
+  });
+
+  it('should stop preventing pasting when destroyed', () => {
+    initDirective();
+    const event = new ClipboardEvent('paste', { cancelable: true });
+
+    directive.ngOnDestroy();
+    inputElement.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(false);
+  });
+
   it('should not restrict anything without key restriction', () => {
     initDirective(false);
 

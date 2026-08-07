@@ -4,7 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges, OnDestroy,
+  OnChanges,
   Output,
   SimpleChanges,
   ViewChild
@@ -20,7 +20,7 @@ import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
   styleUrls: ['./math-input.component.scss'],
   standalone: false
 })
-export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class MathInputComponent implements AfterViewInit, OnChanges {
   @Input() value!: string;
   @Input() fullWidth: boolean = true;
   @Input() readonly: boolean = false;
@@ -55,8 +55,15 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     }); // Disable context menu
   }
 
+  /* Static and held, so the keyboard registers it exactly once no matter how many math inputs a unit
+     has: mathlive keeps its listeners in a Set, and the fresh arrow this used to pass grew that Set by
+     one entry per component, each firing resetShift again on every layer change. No component leaked
+     with it -- the arrow calls a static and captures no `this` -- which is why this half of #1123 is
+     the harmless one. */
+  private static readonly onLayerChange = (): void => MathInputComponent.resetShift();
+
   private static setupMathKeyboard(): void {
-    window.mathVirtualKeyboard.addEventListener('virtual-keyboard-layer-change', () => MathInputComponent.resetShift());
+    window.mathVirtualKeyboard.addEventListener('virtual-keyboard-layer-change', MathInputComponent.onLayerChange);
   }
 
   private static resetShift(): void {
@@ -115,9 +122,8 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     window.mathVirtualKeyboard.hide();
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  ngOnDestroy(): void {
-    window.mathVirtualKeyboard
-      .removeEventListener('virtual-keyboard-layer-change', () => MathInputComponent.resetShift());
-  }
+  /* No teardown for the layer-change listener, deliberately: it belongs to the window-wide keyboard
+     singleton, not to one component, and the single shared registration means the first math input
+     destroyed would otherwise take shift-reset away from every one still on the page. It never was
+     removed -- the removeEventListener here matched nothing -- so nothing regresses by saying so. */
 }

@@ -12,9 +12,15 @@ export abstract class KeyInputRestrictionDirective implements AfterViewInit, OnD
 
   allowedKeys: string[] = [];
 
+  // Bound once: `bind` returns a new function every call, so the reference ngOnDestroy passed to
+  // removeEventListener was never the one that had been registered and the keydown listener stayed
+  // on the input for its lifetime. The `paste` listener next to it was always removed correctly --
+  // `preventPaste` is a static property, so both calls see the same function object (#1123).
+  private readonly restrictKeys = this.restrict.bind(this);
+
   ngAfterViewInit(): void {
     if (this.restrictToAllowedKeys) {
-      this.inputElement.addEventListener('keydown', this.restrict.bind(this));
+      this.inputElement.addEventListener('keydown', this.restrictKeys);
       this.inputElement.addEventListener('paste', KeyInputRestrictionDirective.preventPaste);
     }
   }
@@ -77,7 +83,7 @@ export abstract class KeyInputRestrictionDirective implements AfterViewInit, OnD
   }
 
   ngOnDestroy(): void {
-    this.inputElement.removeEventListener('keydown', this.restrict.bind(this));
+    this.inputElement.removeEventListener('keydown', this.restrictKeys);
     this.inputElement.removeEventListener('paste', KeyInputRestrictionDirective.preventPaste);
   }
 }

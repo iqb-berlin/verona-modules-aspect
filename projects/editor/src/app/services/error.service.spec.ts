@@ -31,9 +31,11 @@ describe('ErrorService', () => {
   let translateServiceSpy: SpyObj<TranslateService>;
   let dialogClosed: Subject<void>;
   let startCommand: Subject<StartCommand>;
+  let veronaApiServiceMock: Pick<VeronaAPIService, 'startCommand'>;
 
   beforeEach(() => {
     startCommand = new Subject<StartCommand>();
+    veronaApiServiceMock = { startCommand };
     messageServiceSpy = createSpyObj<MessageService>(['showPrompt', 'showError', 'showErrorPrompt']);
     dialogClosed = new Subject<void>();
     messageServiceSpy.showErrorPrompt.mockReturnValue({
@@ -46,7 +48,7 @@ describe('ErrorService', () => {
     service = new ErrorService(
       translateServiceSpy,
       messageServiceSpy,
-      { startCommand } as Pick<VeronaAPIService, 'startCommand'> as VeronaAPIService
+      veronaApiServiceMock as VeronaAPIService
     );
   });
 

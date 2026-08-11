@@ -10,10 +10,17 @@ import {
   UnexpectedErrorComponent
 } from 'editor/src/app/components/unexpected-error/unexpected-error.component';
 
-/** Errors with a fixed stack, so that two of them are the same fault only when meant to be. */
+/** Errors with a fixed V8-shaped stack, so two of them are the same fault only when meant to be. */
 const errorFrom = (message: string, frame: string): Error => {
   const error = new Error(message);
   error.stack = `Error: ${message}\n    at ${frame}`;
+  return error;
+};
+
+/** The same, in the shape Firefox and Safari produce: no header line, no "at" prefix. */
+const firefoxErrorFrom = (message: string, frame: string): Error => {
+  const error = new Error(message);
+  error.stack = `${frame}@http://localhost/main.js:12:5\nrefreshView@http://localhost/main.js:99:1`;
   return error;
 };
 
@@ -126,6 +133,9 @@ describe('ErrorService', () => {
 
     expect(reentered).toBe(true);
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+    // the follow-up error gets no dialog, but it does reach the console
+    // eslint-disable-next-line no-console
+    expect(console.error).toHaveBeenCalledTimes(2);
 
     // and the gate opens again once the dialog is gone
     dialogClosed.next();
@@ -188,5 +198,60 @@ describe('ErrorService', () => {
     service.handleError(errorFrom('Cannot read properties of undefined', 'ElementOverlay.template'));
 
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should tell them apart on a stack without a header line, as Firefox produces', () => {
+    service.handleError(firefoxErrorFrom('t is undefined', 'SectionComponent_Template'));
+    dialogClosed.next();
+    service.handleError(firefoxErrorFrom('t is undefined', 'ElementOverlay_Template'));
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should tell two errors without any stack apart by their message', () => {
+    const first = new Error('Erster Fehler');
+    const second = new Error('Zweiter Fehler');
+    first.stack = undefined;
+    second.stack = undefined;
+
+    service.handleError(first);
+    dialogClosed.next();
+    service.handleError(second);
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should show a dialog for an error that first arrived while another dialog was open', () => {
+    const second = errorFrom('Zweiter Fehler', 'ElementOverlay.template');
+    service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
+    service.handleError(second);
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+
+    dialogClosed.next();
+    service.handleError(second);
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenLastCalledWith(second);
+  });
+
+  it('should read the message of an error-shaped throw that is not an Error', () => {
+    service.handleError({ message: 'Http failure response for /units/1: 404 Not Found', status: 404 });
+
+    expect(messageServiceSpy.showErrorPrompt)
+      .toHaveBeenCalledWith(expect.objectContaining({ message: 'Http failure response for /units/1: 404 Not Found' }));
+  });
+
+  it('should not crash on a throw that refuses to be stringified', () => {
+    const hostile = { message: 42, toString: () => { throw new Error('nope'); } };
+
+    expect(() => service.handleError(hostile)).not.toThrow();
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+  });
+
+  it('should keep repeating the corrupt element prompt', () => {
+    service.handleError(new AspectError('sanitization-needed', 'Elementfehler'));
+    service.handleError(new AspectError('sanitization-needed', 'Elementfehler'));
+
+    expect(messageServiceSpy.showPrompt).toHaveBeenCalledTimes(2);
   });
 });

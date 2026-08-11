@@ -24,7 +24,7 @@ sed -i -e 's/version-placeholder/'${2}'/g' dist/$1/index.html
 # from the minimum processable version up to the current (maximum) version.
 MIN_VERSION=$(node -p "require('./package.json').config.unit_definition_min_version.split('.').slice(0,2).join('.')")
 MAX_VERSION=$(node -p "require('./package.json').config.unit_definition_version.split('.').slice(0,2).join('.')")
-sed -i -e "s/model-version-placeholder/>=${MIN_VERSION} <=${MAX_VERSION}/g" dist/$1/index.html
+sed -i -e "s/model-range-placeholder/>=${MIN_VERSION} <=${MAX_VERSION}/g" dist/$1/index.html
 
 # Create final file by merging intermediate files into index.html
 node scripts/distpacker.js dist/$1 iqb-$1-aspect-$2.html

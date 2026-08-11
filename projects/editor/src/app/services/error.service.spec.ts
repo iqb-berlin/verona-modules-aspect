@@ -6,6 +6,7 @@ import { IDError } from 'common/classes/id-error';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ErrorService } from 'editor/src/app/services/error.service';
 import { MessageService } from 'editor/src/app/services/message.service';
+import { StartCommand, VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import {
   UnexpectedErrorComponent
 } from 'editor/src/app/components/unexpected-error/unexpected-error.component';
@@ -29,8 +30,10 @@ describe('ErrorService', () => {
   let messageServiceSpy: SpyObj<MessageService>;
   let translateServiceSpy: SpyObj<TranslateService>;
   let dialogClosed: Subject<void>;
+  let startCommand: Subject<StartCommand>;
 
   beforeEach(() => {
+    startCommand = new Subject<StartCommand>();
     messageServiceSpy = createSpyObj<MessageService>(['showPrompt', 'showError', 'showErrorPrompt']);
     dialogClosed = new Subject<void>();
     messageServiceSpy.showErrorPrompt.mockReturnValue({
@@ -40,12 +43,19 @@ describe('ErrorService', () => {
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    service = new ErrorService(translateServiceSpy, messageServiceSpy);
+    service = new ErrorService(
+      translateServiceSpy,
+      messageServiceSpy,
+      { startCommand } as VeronaAPIService
+    );
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
   });
+
+  /** What the host sends when it hands the editor another unit. */
+  const startNextUnit = (): void => startCommand.next({} as StartCommand);
 
   it('should show a prompt for high severity ID errors', () => {
     service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
@@ -245,6 +255,37 @@ describe('ErrorService', () => {
     const hostile = { message: 42, toString: () => { throw new Error('nope'); } };
 
     expect(() => service.handleError(hostile)).not.toThrow();
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+  });
+
+  it('should show the same error again once the host started another unit', () => {
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+    dialogClosed.next();
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+
+    startNextUnit();
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should log the same error again once the host started another unit', () => {
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+    startNextUnit();
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+
+    // eslint-disable-next-line no-console
+    expect(console.error).toHaveBeenCalledTimes(2);
+  });
+
+  it('should keep the open dialog gated across a unit start', () => {
+    service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
+
+    // the dialog of the previous unit is still on screen, so nothing new may open behind it
+    startNextUnit();
+    service.handleError(errorFrom('Zweiter Fehler', 'ElementOverlay.template'));
+
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
   });
 

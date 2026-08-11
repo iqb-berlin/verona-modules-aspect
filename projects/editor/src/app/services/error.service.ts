@@ -2,6 +2,7 @@ import { ErrorHandler, Injectable } from '@angular/core';
 import { AspectError } from 'common/classes/aspect-error';
 import { IDError } from 'common/classes/id-error';
 import { MessageService } from 'editor/src/app/services/message.service';
+import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { TranslateService } from '@ngx-translate/core';
 
 /**
@@ -24,9 +25,9 @@ import { TranslateService } from '@ngx-translate/core';
  * that signature alone: every distinct error reaches the console exactly once, including one that
  * arrives while a dialog is open, and including one whose dialog is still to come.
  *
- * Two limits worth knowing. The memory is per editor instance, and the Studio replaces unit
- * definitions in a running editor, so "at most once" spans every unit opened in that tab - the same
- * fault in a second unit stays silent. And an error whose dialog fails to open is logged but not
+ * "At most once" is scoped to the unit: the memory is cleared when the host starts another one, so
+ * the same fault in the next unit is reported again. Within one unit it holds, which is what keeps
+ * the circle closed. One limit remains: an error whose dialog fails to open is logged but not
  * prompted again; retrying would reopen the flood it is guarding against.
  *
  * The IDError and AspectError branches are NOT gated: they report a concrete element or resource
@@ -44,7 +45,17 @@ export class ErrorService implements ErrorHandler {
 
   constructor(
     private translateService: TranslateService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    veronaApiService: VeronaAPIService) {
+    // A unit the host starts is a fresh start: what was reported for the previous one is allowed to
+    // be reported again. Subscribed here rather than called from outside, because the ErrorHandler
+    // registration mints its own instance (#1206) and a caller would clear the wrong one. The open
+    // flag is deliberately not reset - a dialog from the previous unit may still be on screen.
+    veronaApiService.startCommand.subscribe(() => {
+      this.loggedSignatures.clear();
+      this.promptedSignatures.clear();
+    });
+  }
 
   handleError(error: unknown): void {
     if (error instanceof IDError) {

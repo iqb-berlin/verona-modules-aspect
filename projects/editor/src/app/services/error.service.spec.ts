@@ -46,7 +46,7 @@ describe('ErrorService', () => {
     service = new ErrorService(
       translateServiceSpy,
       messageServiceSpy,
-      { startCommand } as VeronaAPIService
+      { startCommand } as Pick<VeronaAPIService, 'startCommand'> as VeronaAPIService
     );
   });
 
@@ -54,7 +54,7 @@ describe('ErrorService', () => {
     vi.restoreAllMocks();
   });
 
-  /** What the host sends when it hands the editor another unit. */
+  /** The reset ignores the payload, so an empty command stands in for any unit the host loads. */
   const startNextUnit = (): void => startCommand.next({} as StartCommand);
 
   it('should show a prompt for high severity ID errors', () => {
@@ -287,6 +287,20 @@ describe('ErrorService', () => {
     service.handleError(errorFrom('Zweiter Fehler', 'ElementOverlay.template'));
 
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+  });
+
+  it('should open a dialog again once the previous unit\'s dialog is dismissed', () => {
+    const ofNextUnit = errorFrom('Zweiter Fehler', 'ElementOverlay.template');
+    service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
+    startNextUnit();
+    service.handleError(ofNextUnit);
+
+    // the dialog left over from the previous unit is what gates it, and dismissing it opens the gate
+    dialogClosed.next();
+    service.handleError(ofNextUnit);
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenLastCalledWith(ofNextUnit);
   });
 
   it('should keep repeating the corrupt element prompt', () => {

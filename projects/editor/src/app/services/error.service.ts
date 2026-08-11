@@ -22,13 +22,18 @@ import { TranslateService } from '@ngx-translate/core';
  *   fresh dialog on every dismissal.
  *
  * "The same error" means name, message and topmost stack frame. Logging is gated separately, on
- * that signature alone: every distinct error reaches the console exactly once, including one that
- * arrives while a dialog is open, and including one whose dialog is still to come.
+ * that signature alone: every distinct error reaches the console once, including one that arrives
+ * while a dialog is open, and including one whose dialog is still to come.
  *
- * "At most once" is scoped to the unit: the memory is cleared when the host starts another one, so
- * the same fault in the next unit is reported again. Within one unit it holds, which is what keeps
- * the circle closed. One limit remains: an error whose dialog fails to open is logged but not
- * prompted again; retrying would reopen the flood it is guarding against.
+ * Both memories are cleared on every start command the host sends - a different unit, and equally a
+ * replay of the one already open, which the Studio does on every load (see the comment on
+ * UnitService.loadUnitDefinition). "At most once" therefore means once per loaded unit, not once per
+ * editor. Within one load the gate holds, which is what keeps the circle closed.
+ *
+ * Two things the clearing does not cover. An error whose dialog fails to open is logged but not
+ * prompted again - retrying would reopen the flood this guards against. And the open flag survives a
+ * start command, deliberately: the previous unit's dialog can still be on screen, so until it is
+ * dismissed the new unit's first error only reaches the console.
  *
  * The IDError and AspectError branches are NOT gated: they report a concrete element or resource
  * ("ID is already taken", a broken image), are thrown from event handlers rather than from a
@@ -47,10 +52,10 @@ export class ErrorService implements ErrorHandler {
     private translateService: TranslateService,
     private messageService: MessageService,
     veronaApiService: VeronaAPIService) {
-    // A unit the host starts is a fresh start: what was reported for the previous one is allowed to
-    // be reported again. Subscribed here rather than called from outside, because the ErrorHandler
-    // registration mints its own instance (#1206) and a caller would clear the wrong one. The open
-    // flag is deliberately not reset - a dialog from the previous unit may still be on screen.
+    // Subscribed here rather than called from outside, because the ErrorHandler registration mints
+    // its own instance (#1206) and a caller would clear the wrong one - silently. It also puts the
+    // clearing ahead of the load: Angular builds the ErrorHandler at bootstrap, so this subscriber
+    // is registered before the one in AppComponent that loads the definition.
     veronaApiService.startCommand.subscribe(() => {
       this.loggedSignatures.clear();
       this.promptedSignatures.clear();

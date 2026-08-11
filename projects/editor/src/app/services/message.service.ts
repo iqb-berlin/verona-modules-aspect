@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import { UIElement } from 'common/models/elements/element';
 import {
@@ -35,8 +35,8 @@ export class MessageService {
     this._snackBar.open(text, undefined, { duration: duration, panelClass: 'snackbar-error' });
   }
 
-  showErrorPrompt(error: Error): void {
-    this.dialog.open(UnexpectedErrorComponent, {
+  showErrorPrompt(error: Error): MatDialogRef<UnexpectedErrorComponent> {
+    return this.dialog.open(UnexpectedErrorComponent, {
       data: error
     });
   }

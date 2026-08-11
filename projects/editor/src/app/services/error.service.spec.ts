@@ -1,17 +1,34 @@
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 import { AspectError } from 'common/classes/aspect-error';
 import { IDError } from 'common/classes/id-error';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ErrorService } from 'editor/src/app/services/error.service';
 import { MessageService } from 'editor/src/app/services/message.service';
+import {
+  UnexpectedErrorComponent
+} from 'editor/src/app/components/unexpected-error/unexpected-error.component';
+
+/** Errors with a fixed stack, so that two of them are the same fault only when meant to be. */
+const errorFrom = (message: string, frame: string): Error => {
+  const error = new Error(message);
+  error.stack = `Error: ${message}\n    at ${frame}`;
+  return error;
+};
 
 describe('ErrorService', () => {
   let service: ErrorService;
   let messageServiceSpy: SpyObj<MessageService>;
   let translateServiceSpy: SpyObj<TranslateService>;
+  let dialogClosed: Subject<void>;
 
   beforeEach(() => {
     messageServiceSpy = createSpyObj<MessageService>(['showPrompt', 'showError', 'showErrorPrompt']);
+    dialogClosed = new Subject<void>();
+    messageServiceSpy.showErrorPrompt.mockReturnValue({
+      afterClosed: () => dialogClosed.asObservable()
+    } as unknown as MatDialogRef<UnexpectedErrorComponent>);
     translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -60,5 +77,116 @@ describe('ErrorService', () => {
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledWith(error);
     // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledWith(error);
+  });
+
+  it('should keep repeating ID error feedback for a repeated user action', () => {
+    service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
+    service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
+
+    expect(messageServiceSpy.showPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should not open a second dialog while the first one is still open', () => {
+    service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
+    service.handleError(errorFrom('Zweiter Fehler', 'ElementOverlay.template'));
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+  });
+
+  it('should log a distinct error that arrives while the dialog is open', () => {
+    const second = errorFrom('Zweiter Fehler', 'ElementOverlay.template');
+    service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
+    service.handleError(second);
+
+    // eslint-disable-next-line no-console
+    expect(console.error).toHaveBeenCalledWith(second);
+  });
+
+  it('should log a repeated error only once', () => {
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+
+    // eslint-disable-next-line no-console
+    expect(console.error).toHaveBeenCalledTimes(1);
+  });
+
+  it('should survive a dialog that throws back into handleError while opening', () => {
+    // MatDialog.open runs change detection synchronously, which re-evaluates the broken template
+    // and reports the next error before open() has even returned.
+    let reentered = false;
+    messageServiceSpy.showErrorPrompt.mockImplementation(() => {
+      if (!reentered) {
+        reentered = true;
+        service.handleError(errorFrom('Folgefehler', 'ElementOverlay.template'));
+      }
+      return { afterClosed: () => dialogClosed.asObservable() } as unknown as MatDialogRef<UnexpectedErrorComponent>;
+    });
+
+    service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
+
+    expect(reentered).toBe(true);
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+
+    // and the gate opens again once the dialog is gone
+    dialogClosed.next();
+    service.handleError(errorFrom('Dritter Fehler', 'PageComponent.template'));
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should report throws that are not Error instances', () => {
+    service.handleError('kaputter String');
+
+    expect(messageServiceSpy.showErrorPrompt)
+      .toHaveBeenCalledWith(expect.objectContaining({ message: 'kaputter String' }));
+  });
+
+  it('should tell two different non-Error throws apart', () => {
+    service.handleError('erster kaputter String');
+    dialogClosed.next();
+    service.handleError('zweiter kaputter String');
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should not crash while reporting a thrown null', () => {
+    expect(() => service.handleError(null)).not.toThrow();
+
+    expect(messageServiceSpy.showErrorPrompt)
+      .toHaveBeenCalledWith(expect.objectContaining({ message: 'null' }));
+  });
+
+  it('should still open a dialog for a later error when opening one failed', () => {
+    messageServiceSpy.showErrorPrompt.mockImplementationOnce(() => {
+      throw new Error('Dialog lässt sich nicht öffnen');
+    });
+
+    service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
+    service.handleError(errorFrom('Zweiter Fehler', 'ElementOverlay.template'));
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should not show the same error a second time after the dialog was closed', () => {
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+    dialogClosed.next();
+    service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
+  });
+
+  it('should show a different error after the dialog was closed', () => {
+    service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
+    dialogClosed.next();
+    service.handleError(errorFrom('Zweiter Fehler', 'ElementOverlay.template'));
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it('should tell two throws of the same message from different places apart', () => {
+    service.handleError(errorFrom('Cannot read properties of undefined', 'SectionComponent.template'));
+    dialogClosed.next();
+    service.handleError(errorFrom('Cannot read properties of undefined', 'ElementOverlay.template'));
+
+    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
   });
 });

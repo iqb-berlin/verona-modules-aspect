@@ -55,9 +55,12 @@ describe('MessageService', () => {
       .toHaveBeenCalledWith('Bitte bestätigen', 'OK', { panelClass: 'snackbar-error' });
   });
 
-  it('should open the unexpected error dialog with the error as data', () => {
+  it('should open the unexpected error dialog with the error as data and return its ref', () => {
+    const dialogRef = { afterClosed: vi.fn() };
+    dialogMock.open.mockReturnValue(dialogRef);
     const error = new Error('kaputt');
-    service.showErrorPrompt(error);
+
+    expect(service.showErrorPrompt(error)).toBe(dialogRef);
     expect(dialogMock.open).toHaveBeenCalledWith(UnexpectedErrorComponent, { data: error });
   });
 

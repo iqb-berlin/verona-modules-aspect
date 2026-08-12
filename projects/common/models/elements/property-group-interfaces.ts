@@ -37,6 +37,33 @@ export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;
 export type BasicStyles = FontStyles & { backgroundColor: string };
 
 /**
+ * Compiles only for `never`. For type-level assertions whose whole product is the error message: the
+ * argument is built so that the compiler prints the offending name.
+ */
+export type AssertNever<T extends never> = T;
+
+/*
+ * An index signature on a styling type degenerates `keyof` to `string | number`, and everything keyed
+ * on a styling type then accepts any name at all: `setStyleProperty(property: keyof Stylings)` loses
+ * the check that #1137 exists for, and `NestedGroupProperty` below -- the basis of `OwnProperty`, the
+ * #1142 guard -- widens to plain `string`. Neither failure announces itself (#1187).
+ *
+ * The check sits here, ONCE, and not per element, because the shared groups are the only styling
+ * types with any precedent for carrying an index signature: FontStyles, BorderStyles and OtherStyles
+ * did until #1137 removed it, while no element interface ever has. A per-element check reports names
+ * of correct declarations instead of the group that degenerated them (#1186 review) -- from here the
+ * error names the group itself.
+ */
+type OpenGroup<T, Name extends string> =
+  string extends keyof T ? Name : (number extends keyof T ? Name : never);
+export type StylingGroupsAreClosed = AssertNever<
+OpenGroup<FontStyles, 'FontStyles'> |
+OpenGroup<BorderStyles, 'BorderStyles'> |
+OpenGroup<OtherStyles, 'OtherStyles'> |
+OpenGroup<BasicStyles, 'BasicStyles'> |
+OpenGroup<Stylings, 'Stylings'>>;
+
+/**
  * A property that lives in one of the element's nested groups rather than on the element itself.
  * These have their own setters, and writing one through the generic path puts it on the element
  * root, where nothing reads it — silently, because UIElement carries an index signature.

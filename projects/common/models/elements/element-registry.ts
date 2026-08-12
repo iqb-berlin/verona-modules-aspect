@@ -39,7 +39,7 @@ import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import type {
-  BasicStyles, BorderStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
+  AssertNever, BasicStyles, BorderStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import type { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 
@@ -84,6 +84,16 @@ UIElementProperties & PositionProperties & DimensionProperties & BasicStyles & P
  * to exactly those (#1185 review). */
 type StylingOf<P> = P extends { styling?: infer S } ? NonNullable<S> : never;
 
+/* Named keys only. An index signature on a styling type would make the Partial<> below accept any
+ * key of the right value type, which switches off the excess-property check this table exists for:
+ * giving one element's styling an `& Record<string, unknown>` makes three TS2353 errors disappear on
+ * the spot -- a junk key in an ELEMENT_DEFAULTS entry and two invented arguments to the property
+ * group generators (#1187). The shared styling groups are additionally asserted to be closed, in
+ * property-group-interfaces.ts, where an error can name the group. */
+type NamedKeysOnly<T> = {
+  [K in keyof T as string extends K ? never : (number extends K ? never : K)]: T[K]
+};
+
 /* The defaults table is FLAT while the Properties interfaces nest position,
  * dimensions and styling: the PropertyGroupGenerators pick their keys straight
  * out of an element's defaults record. FlatDefaults mirrors that reading
@@ -96,7 +106,7 @@ type FlatDefaults<P> =
   Partial<Omit<P, 'type' | 'position' | 'dimensions' | 'styling' | 'player'>> &
   Partial<PositionProperties> &
   Partial<DimensionProperties> &
-  Partial<StylingOf<P>> &
+  Partial<NamedKeysOnly<StylingOf<P>>> &
   (P extends { player: infer PL } ? Partial<PL> : unknown);
 
 interface ElementPropertiesMap {
@@ -171,7 +181,6 @@ export const EXTRA_STYLING_KEYS = [
  * when a listed key is unknown to `Stylings`, which is the type the editor's
  * write path is keyed on (setStyleProperty, commitStyle) -- a key the normalizer
  * carries but the panel cannot set would be preserved and unreachable. */
-type AssertNever<T extends never> = T;
 type UnlistedStylingKey = Exclude<ExtraStylingKey, typeof EXTRA_STYLING_KEYS[number]>;
 type UnwritableStylingKey = Exclude<typeof EXTRA_STYLING_KEYS[number], keyof Stylings>;
 export type ExtraStylingKeysAreListed = AssertNever<UnlistedStylingKey>;

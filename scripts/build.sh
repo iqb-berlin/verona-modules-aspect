@@ -61,7 +61,7 @@ assert_metadata() {
 }
 
 assert_metadata "\"version\": \"$2\"" version
-assert_metadata "\"model\": \"aspect@${MODEL_RANGE}\"" model
+assert_metadata "\"model\": \"aspect-unit-definition@${MODEL_RANGE}\"" model
 
 # Create final file by merging intermediate files into index.html
 node scripts/distpacker.js dist/$1 iqb-$1-aspect-$2.html

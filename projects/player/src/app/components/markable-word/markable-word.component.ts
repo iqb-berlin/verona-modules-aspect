@@ -22,6 +22,7 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
   @Output() colorChange = new EventEmitter<string | null>();
 
   private ngUnsubscribe = new Subject<void>();
+  private cleanMarkingTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private nativeEventService: NativeEventService) {}
 
@@ -85,7 +86,7 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
   }
 
   private cleanMarking(): void {
-    setTimeout(() => {
+    this.cleanMarkingTimeout = setTimeout(() => {
       if (this.markingRange?.value) {
         this.markingRange.next(null);
       }
@@ -118,7 +119,13 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
     this.colorChange.emit(this.color);
   }
 
+  /* The deferred end of a range selection has to be cancelled explicitly, otherwise it writes
+   * into the marking range of a text this component no longer belongs to. */
   ngOnDestroy(): void {
+    if (this.cleanMarkingTimeout !== null) {
+      clearTimeout(this.cleanMarkingTimeout);
+      this.cleanMarkingTimeout = null;
+    }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

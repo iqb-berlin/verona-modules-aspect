@@ -1,4 +1,6 @@
-import { ApplicationRef, createComponent, Renderer2 } from '@angular/core';
+import {
+  ApplicationRef, ComponentRef, createComponent, Renderer2
+} from '@angular/core';
 import { TextComponent } from 'common/components/text-group-elements/text/text.component';
 import { Markable, MarkablesContainer } from 'player/src/app/models/markable.interface';
 import {
@@ -14,6 +16,7 @@ export class MarkableSupport {
   private applicationRef: ApplicationRef;
   private markingPanelService: MarkingPanelService;
   private ngUnsubscribe = new Subject<void>();
+  private componentRefs: ComponentRef<MarkablesContainerComponent>[] = [];
 
   // eslint-disable-next-line max-len
   private static markables: RegExp = /[^\p{L}\d\-']*[\p{L}\d\-']+[^\p{L}\d\-']*|[^\p{L}\d\-']+[\p{L}\d\-']*[^\p{L}\d\-']*|[^\p{L}\d\-']*[\p{L}\d\-']*[^\p{L}\d\-']+/gu;
@@ -99,6 +102,7 @@ export class MarkableSupport {
         );
       });
     this.applicationRef.attachView(componentRef.hostView);
+    this.componentRefs.push(componentRef);
   }
 
   private static getMarkablesContainers(nodes: Node[], savedMarks: string[]): MarkablesContainer[] {
@@ -155,7 +159,15 @@ export class MarkableSupport {
       .find(mark => mark[0] === id.toString())?.[2] || null;
   }
 
-  reset(): void {
+  /* The containers are created outside of any template, so nothing destroys them implicitly:
+   * their views stay registered at the ApplicationRef and are checked on every tick until they
+   * are destroyed here. ViewRef.destroy() detaches the view from the ApplicationRef by itself.
+   *
+   * An instance is spent afterwards: the text nodes it replaced with the containers are gone
+   * with them, and a completed ngUnsubscribe no longer guards new subscriptions. */
+  destroy(): void {
+    this.componentRefs.forEach(componentRef => componentRef.destroy());
+    this.componentRefs = [];
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

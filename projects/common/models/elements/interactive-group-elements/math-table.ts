@@ -82,7 +82,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       }
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
       if (element.inputAssistancePreset !== undefined) this.inputAssistancePreset = element.inputAssistancePreset;
       if (element.inputAssistancePosition !== undefined) this.inputAssistancePosition = element.inputAssistancePosition;
       if (element.inputAssistanceFloatingStartPosition !== undefined) {

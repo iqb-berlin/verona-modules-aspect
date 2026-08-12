@@ -50,7 +50,7 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       if (element.hasReturnKey !== undefined) this.hasReturnKey = element.hasReturnKey;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at TextArea instantiation', element);
     }

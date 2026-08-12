@@ -33,7 +33,7 @@ export class VideoElement extends PlayerElement implements VideoProperties {
       this.scale = element.scale;
       this.position = PropertyGroupGenerators.generatePositionProps(element.position);
       this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Video instantiation', element);
     }

@@ -34,7 +34,7 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
       if (element.allowUnset !== undefined) this.allowUnset = element.allowUnset;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Dropdown instantiation', element);
     }

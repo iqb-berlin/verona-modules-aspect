@@ -33,11 +33,6 @@ input[number] "propertiesPanel.height" = 90
 
 --- tab "styling" ---
 input[text] "propertiesPanel.backgroundColor" = #f1f1f1
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -68,11 +63,6 @@ button "align_vertical_bottom"
 
 --- tab "styling" ---
 input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -694,11 +684,6 @@ input[number] "propertiesPanel.height" = 180
 
 --- tab "styling" ---
 input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" = 0
 input[text] "propertiesPanel.borderColor" = black
@@ -735,11 +720,6 @@ button "align_vertical_bottom"
 
 --- tab "styling" ---
 input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 [propertiesPanel.border]
 input[number] "propertiesPanel.borderRadius" =  [merged]
 input[text] "propertiesPanel.borderColor" =  [merged]
@@ -3156,11 +3136,6 @@ input[number] "propertiesPanel.height" = 230
 
 --- tab "styling" ---
 input[text] "propertiesPanel.backgroundColor" = #f1f1f1
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -3192,11 +3167,6 @@ button "align_vertical_bottom"
 
 --- tab "styling" ---
 input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false

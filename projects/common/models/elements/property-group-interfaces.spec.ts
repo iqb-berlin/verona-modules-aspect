@@ -38,4 +38,48 @@ describe('PropertyGroupGenerators', () => {
       expect(first.marginTop).not.toBe(second.marginTop);
     });
   });
+
+  /* This is where the set of styling keys an element keeps is decided (#1187): the group the class
+     built for itself is the whitelist, and the compiler checks it against the element's declared
+     styling type. Both directions matter -- a declared key must not be lost on load (#1177, #1185),
+     and a key the model no longer knows must not ride along into a saved unit. */
+  describe('mergeStyling', () => {
+    const own = { backgroundColor: 'white', bold: false, fontSize: 20 };
+
+    it('should take a stored value for a key the element declares', () => {
+      const merged = PropertyGroupGenerators.mergeStyling(own, { backgroundColor: 'red' });
+
+      expect(merged.backgroundColor).toBe('red');
+    });
+
+    it('should drop a stored key the element does not declare', () => {
+      const merged = PropertyGroupGenerators.mergeStyling(own, { lineHeight: 135 });
+
+      expect(Object.keys(merged).sort()).toEqual(['backgroundColor', 'bold', 'fontSize']);
+    });
+
+    /* `false` and `0` are styling values, not absences: an `||` fallback here would silently restore
+       the default for every switch a user turned off. */
+    it('should keep a stored false over the element default', () => {
+      const merged = PropertyGroupGenerators.mergeStyling({ bold: true }, { bold: false });
+
+      expect(merged.bold).toBe(false);
+    });
+
+    it('should fall back to the element value for a key the stored group leaves undefined', () => {
+      const merged = PropertyGroupGenerators.mergeStyling(own, { backgroundColor: undefined });
+
+      expect(merged.backgroundColor).toBe('white');
+    });
+
+    /* A blueprint without styling is what the eight replacing constructors used to turn into an empty
+       group: `{ ...element.styling }` of undefined is `{}`, so every default was lost. Invisible in the
+       apps, because ElementFactory normalizes first, and a trap for every other caller. */
+    it('should return the element group unchanged when nothing is stored', () => {
+      const merged = PropertyGroupGenerators.mergeStyling(own, undefined);
+
+      expect(merged).toEqual(own);
+      expect(merged).not.toBe(own);
+    });
+  });
 });

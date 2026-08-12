@@ -42,7 +42,7 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
       if (element.strikeOtherOptions !== undefined) this.strikeOtherOptions = element.strikeOtherOptions;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
     }

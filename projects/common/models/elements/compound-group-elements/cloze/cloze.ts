@@ -38,7 +38,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       this.document = structuredClone(element.document);
       this.instantiateChildElements(idService);
       this.position = { ...element.position };
-      this.styling = { ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Cloze instantiation', element);
     }

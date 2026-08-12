@@ -46,7 +46,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
       if (element.verticalOrientation !== undefined) this.verticalOrientation = element.verticalOrientation;
       this.dimensions = { ...this.dimensions, ...element.dimensions };
       this.position = { ...this.position, ...element.position };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at ToggleButton instantiation', element);
     }

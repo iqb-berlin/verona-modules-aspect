@@ -280,6 +280,28 @@ export abstract class PropertyGroupGenerators {
     };
   }
 
+  /**
+   * Merges a stored styling group into the one the element built for itself, keeping ONLY the keys
+   * that own group has -- so the class field initializer is the whitelist for `styling`.
+   *
+   * That is the one place where the set of styling keys can be decided without a list to maintain:
+   * the initializer is checked against the element's declared styling type by the compiler, in the
+   * same file, right above it. An element therefore cannot lose a declared key on load (#1177,
+   * #1185), and a key the model no longer knows cannot ride along in a saved unit -- the two
+   * failure directions that four hand-kept lists in `ModelNormalizer` used to arbitrate (#1187).
+   *
+   * `undefined` is the only value that loses to the element's own: `false` and `0` are styling values
+   * in their own right.
+   */
+  static mergeStyling<T extends object>(own: T, stored?: Stylings): T {
+    const storedGroup = stored as Record<string, unknown> | undefined;
+    return Object.fromEntries(
+      Object.entries(own).map(([key, value]) => [
+        key, storedGroup?.[key] !== undefined ? storedGroup[key] : value
+      ])
+    ) as T;
+  }
+
   static generatePlayerProps(properties: Partial<PlayerProperties> = {}): PlayerProperties {
     return {
       loop: properties.loop !== undefined ? properties.loop as boolean : GLOBAL_DEFAULTS.loop,

@@ -49,7 +49,7 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
       if (element.clearable !== undefined) this.clearable = element.clearable;
       this.position = { ...this.position, ...element.position };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at TextField instantiation', element);
     }

@@ -36,7 +36,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
       if (element.crossOutChecked !== undefined) this.crossOutChecked = element.crossOutChecked;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Checkbox instantiation', element);
     }

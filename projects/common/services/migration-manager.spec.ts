@@ -4,6 +4,8 @@ import { TextProperties } from 'common/models/elements/text-group-elements/text'
 import { ClozeProperties, CustomDocumentNode } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
 import { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
+import { ElementFactory } from 'common/utils/element-factory';
+import { UIElementProperties } from 'common/models/ui-element-interfaces';
 
 describe('MigrationManager', () => {
   it('should normalize legacy elements during migration', () => {
@@ -99,8 +101,11 @@ describe('MigrationManager', () => {
       expect(textField.required).toBe(false);
       expect(textField.readOnly).toBe(false);
       expect(textField.requiredWarnMessage).toBe('Eingabe erforderlich');
-      expect(textField.styling).toBeDefined();
-      expect(textField.styling?.fontSize).toBe(20);
+      /* Styling is the element class's own group since #1187, so a child stored without one is
+         migrated without one -- what has to hold is that the default still reaches the element. */
+      expect(textField.styling).toBeUndefined();
+      expect(ElementFactory.createElement(textField as unknown as UIElementProperties).styling?.fontSize)
+        .toBe(20);
 
       // Check if dimensions are filled
       expect(textField.dimensions).toBeDefined();
@@ -261,7 +266,8 @@ describe('MigrationManager', () => {
 
       expect(migrated.version).toBe('4.12.0');
       expect(element.markingMode).toBe('selection');
-      expect(element.styling?.lineHeight).toBe(135);
+      expect(ElementFactory.createElement(element as unknown as UIElementProperties).styling?.lineHeight)
+        .toBe(135);
     });
   });
 

@@ -41,7 +41,10 @@ describe('NormalizationMigration', () => {
     expect(dimensions).toBeDefined();
     expect(dimensions.width).toBeDefined();
     expect(element.position).toBeDefined();
-    expect(element.styling).toBeDefined();
+    /* Styling is deliberately NOT part of what normalization fills: the element's own class builds
+       that group from its declared type, which the compiler checks (#1187). An element stored without
+       one therefore stays without one until it is instantiated. */
+    expect(element.styling).toBeUndefined();
   });
 
   it('should recursively normalize elements within cloze documents', () => {
@@ -90,6 +93,6 @@ describe('NormalizationMigration', () => {
     expect(childModel.id).toBe('child-1');
     // Verify child element was normalized
     expect(childModel.dimensions).toBeDefined();
-    expect(childModel.styling).toBeDefined();
+    expect(childModel.styling).toBeUndefined(); // built by the element class, not here (#1187)
   });
 });

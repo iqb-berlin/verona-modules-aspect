@@ -78,6 +78,23 @@ describe('the styling group an element keeps', () => {
     expect(Object.keys(stylingOf('text'))).toEqual(expect.arrayContaining(FONT_KEYS));
   });
 
+  it('should give the border group to the element types that declare it, and to no others', () => {
+    expect(stylingOf('button').borderWidth).toBeDefined();
+    expect(stylingOf('table').borderWidth).toBeDefined();
+    expect(stylingOf('text').borderWidth).toBeUndefined();
+    expect(stylingOf('likert').borderWidth).toBeUndefined();
+  });
+
+  /* The VALUES of the extra styling defaults, which no type checks: #1177 turned a plausible-looking
+     100 into the intended one for radio, and the spell-correct entry was added for the same reason. */
+  it('should lift the extra styling defaults of an element into its group', () => {
+    expect(stylingOf('radio').lineHeight).toBe(100);
+    expect(stylingOf('spell-correct').lineHeight).toBe(135);
+    expect(stylingOf('toggle-button').selectionColor).toBe('#c9e0e0');
+    expect(stylingOf('drop-list').itemBackgroundColor).toBe('#c9e0e0');
+    expect(stylingOf('math-table').helperRowColor).toBe('transparent');
+  });
+
   /* The other half of the contract: a key the element declares survives a load with its stored value,
      which is what the catalogue in ModelNormalizer was for (#1177, #1185). */
   it('should keep stored values for the keys an element declares', () => {

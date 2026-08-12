@@ -197,6 +197,22 @@ describe('MarkableWordComponent', () => {
     expect(unhandledErrors).toEqual([]);
   }));
 
+  /*
+   * Releasing the mouse ends the range selection deferred by a timeout. A teardown in between
+   * would otherwise write into the marking range of a text this component has already left.
+   */
+  it('should not end the range selection after it has been destroyed', fakeAsync(() => {
+    const markingRange = new BehaviorSubject<MarkingRange | null>(null);
+    initComponent('yellow', markingRange);
+    word().click();
+    mouseUp.next(new MouseEvent('mouseup'));
+
+    fixture.destroy();
+    tick();
+
+    expect(markingRange.value).toEqual({ first: 1, second: null });
+  }));
+
   it('should stop reacting on range changes after destruction', () => {
     const markingRange = new BehaviorSubject<MarkingRange | null>(null);
     initComponent('yellow', markingRange);

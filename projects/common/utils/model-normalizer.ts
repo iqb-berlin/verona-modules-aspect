@@ -1,6 +1,7 @@
 import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators
+  DimensionProperties, NESTED_GROUP_KEYS, NestedGroupProperty, PlayerProperties, PositionProperties,
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { KeyInputElementProperties, TextInputElementProperties } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
@@ -91,7 +92,17 @@ export class ModelNormalizer {
     const defaults: Record<string, unknown> = { ...GLOBAL_DEFAULTS, ...(ELEMENT_DEFAULTS[type] || {}) };
     const normalized: Record<string, unknown> = { ...element };
 
+    /* 0. Own properties from the flat defaults entry. The group members in that entry belong to
+       `position`, `dimensions` and `styling`, and the generators below pick them out of `defaults`
+       themselves -- writing them here as well gave every element a second `width`, `fontSize` and
+       `lineHeight` on its root, next to the group that holds the value anything reads (#1187). No
+       element declares an own root property by a group member's name; that is asserted in
+       element-registry.ts, so the skip cannot swallow one.
+
+       Object defaults are cloned: the table is module state, and an element holding its object moves
+       the default for every element of that type on the first in-place write (#1184). */
     Object.keys(defaults).forEach(key => {
+      if (NESTED_GROUP_KEYS.includes(key as NestedGroupProperty)) return;
       if (normalized[key] === undefined) {
         normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ?
           structuredClone(defaults[key]) : defaults[key];
@@ -185,23 +196,11 @@ export class ModelNormalizer {
       };
     }
 
-    // 5. Top-level properties
-    // We fill in all other defaults from the registry that aren't part of the groups above.
-    Object.keys(defaults).forEach(key => {
-      const groupProps = [
-        'width', 'height', 'isWidthFixed', 'isHeightFixed', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
-        'xPosition', 'yPosition', 'gridColumn', 'gridColumnRange', 'gridRow', 'gridRowRange',
-        'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'zIndex',
-        'backgroundColor', 'fontColor', 'font', 'fontSize', 'bold', 'italic', 'underline', 'lineHeight'
-      ];
-      if (groupProps.includes(key)) return;
-
-      if (normalized[key] === undefined) {
-        normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ?
-          JSON.parse(JSON.stringify(defaults[key])) :
-          defaults[key];
-      }
-    });
+    /* A second fill of the same defaults used to stand here, with an exclusion list of its own that
+       named 8 of the 19 styling keys and could not have any effect anyway: step 0 above fills every
+       own property, and nothing between the two removes one. Its list was therefore dead in both
+       halves -- adding a key to it changed nothing, and the keys it forgot were written to the root
+       regardless. Nothing replaces it; step 0 does the whole job (#1187). */
 
     // 6. Recursive normalization for compound elements
     if (type === 'cloze' && normalized.document) {

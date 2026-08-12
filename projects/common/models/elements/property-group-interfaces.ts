@@ -80,6 +80,34 @@ export type NestedGroupProperty = keyof PositionProperties | keyof DimensionProp
  */
 export type OwnProperty<K extends string> = K extends NestedGroupProperty ? never : K;
 
+/**
+ * The runtime twin of `NestedGroupProperty`, for the one caller that has to decide this per key at
+ * runtime: `ModelNormalizer` fills an element's own properties from the flat defaults table and has to
+ * leave the group members to the generators, or every element carries a second copy of `width`,
+ * `fontSize` and `lineHeight` on its root, where nothing reads them (#1187).
+ *
+ * Checked in both directions and therefore not a list to maintain by hand: `satisfies` rejects a name
+ * that is no group member, and the assertion below fails to compile -- naming the key -- when a group
+ * gains a member this array does not have.
+ *
+ * The fourth group, `player`, is deliberately absent: `PlayerProperties` shares `fileName` and
+ * `imgSrc`/`imgFileName` with genuine root properties of six element types, so skipping its members
+ * wholesale would stop those from being filled. Its 16 members from GLOBAL_DEFAULTS therefore still
+ * reach every element's root. Filed separately.
+ */
+export const NESTED_GROUP_KEYS = [
+  'xPosition', 'yPosition', 'gridColumn', 'gridColumnRange', 'gridRow', 'gridRowRange',
+  'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'zIndex',
+  'width', 'height', 'isWidthFixed', 'isHeightFixed', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
+  'fontColor', 'font', 'fontSize', 'bold', 'italic', 'underline',
+  'borderWidth', 'borderColor', 'borderStyle', 'borderRadius',
+  'backgroundColor', 'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
+  'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
+] as const satisfies readonly NestedGroupProperty[];
+
+type UnlistedGroupKey = Exclude<NestedGroupProperty, typeof NESTED_GROUP_KEYS[number]>;
+export type NestedGroupKeysAreListed = AssertNever<UnlistedGroupKey>;
+
 export interface FontStyles {
   fontColor: string;
   font: string;

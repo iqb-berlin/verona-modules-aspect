@@ -39,7 +39,8 @@ import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import type {
-  AssertNever, BasicStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
+  AssertNever, BasicStyles, DimensionProperties, NestedGroupProperty, PlayerProperties, PositionProperties,
+  Stylings
 } from 'common/models/elements/property-group-interfaces';
 import type { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 
@@ -179,6 +180,18 @@ type UnwritableStylingKey = {
   [K in UIElementType]: Exclude<keyof NamedKeysOnly<StylingOf<ElementPropertiesMap[K]>>, keyof Stylings>
 }[UIElementType];
 export type ElementStylingIsWritable = AssertNever<UnwritableStylingKey>;
+
+/* ModelNormalizer fills an element's own properties from the flat defaults entry and skips the group
+ * members (NESTED_GROUP_KEYS), which is only safe as long as no element declares an own root property
+ * that shares a name with a group member -- such a property would silently stop being filled. Nothing
+ * about the model prevents such a name, so this states that none exists, and names the offender if one
+ * appears (#1187). */
+type RootPropertyShadowingAGroup = {
+  [K in UIElementType]: Extract<
+  keyof Omit<ElementPropertiesMap[K], 'type' | 'position' | 'dimensions' | 'styling' | 'player'>,
+  NestedGroupProperty>
+}[UIElementType];
+export type NoRootPropertyShadowsAGroup = AssertNever<RootPropertyShadowingAGroup>;
 
 export const ELEMENT_DEFAULTS = {
   text: {

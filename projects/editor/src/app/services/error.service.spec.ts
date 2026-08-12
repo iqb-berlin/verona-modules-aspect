@@ -67,9 +67,9 @@ describe('ErrorService', () => {
   });
 
   it('should show a dismissable error for low severity ID errors', () => {
-    service.handleError(new IDError('ID länger als 20 Zeichen'));
+    service.handleError(new IDError('ID enthält unerlaubtes Leerzeichen'));
 
-    expect(messageServiceSpy.showError).toHaveBeenCalledWith('ID länger als 20 Zeichen');
+    expect(messageServiceSpy.showError).toHaveBeenCalledWith('ID enthält unerlaubtes Leerzeichen');
     expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
   });
 

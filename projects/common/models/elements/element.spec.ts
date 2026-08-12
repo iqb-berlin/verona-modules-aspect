@@ -37,7 +37,10 @@ describe('UIElement setProperty alias validation', () => {
     expect(() => element.setProperty('alias', 'weiter ')).toThrowError(/Leerzeichen/);
   });
 
-  it('should reject aliases longer than 20 characters', () => {
-    expect(() => element.setProperty('alias', 'a'.repeat(21))).toThrowError(/20 Zeichen/);
+  /* The Verona contract sets no maximum length, therefore neither does Aspect (#1129). */
+  it('should accept aliases longer than 20 characters', () => {
+    const longAlias = 'a'.repeat(21);
+    element.setProperty('alias', longAlias);
+    expect(element.alias).toBe(longAlias);
   });
 });

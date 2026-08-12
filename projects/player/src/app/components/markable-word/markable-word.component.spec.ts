@@ -2,7 +2,7 @@ import {
   ComponentFixture, fakeAsync, TestBed, tick
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, config, Subject } from 'rxjs';
 import { MarkingRange } from 'common/models/marking-data';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { MarkableWordComponent } from './markable-word.component';
@@ -37,16 +37,6 @@ describe('MarkableWordComponent', () => {
 
     fixture = TestBed.createComponent(MarkableWordComponent);
     component = fixture.componentInstance;
-  });
-
-  /*
-   * A started range selection waits for the mouse to be released with
-   * takeUntil(ngUnsubscribe) before first(). Destroying the component first would complete
-   * the stream empty and first() would report an EmptyError, so every test releases the
-   * mouse before the fixture is torn down.
-   */
-  afterEach(() => {
-    mouseUp.next(new MouseEvent('mouseup'));
   });
 
   it('should create', () => {
@@ -178,11 +168,6 @@ describe('MarkableWordComponent', () => {
     expect(colorChanges).toEqual([null]);
   });
 
-  /*
-   * Starting a range selection subscribes with takeUntil(ngUnsubscribe) before first().
-   * Destroying the component before the mouse is released therefore completes the stream
-   * empty and first() reports an EmptyError — visible as a logged error in this suite.
-   */
   it('should end the range selection when the mouse is released', fakeAsync(() => {
     const markingRange = new BehaviorSubject<MarkingRange | null>(null);
     initComponent('yellow', markingRange);
@@ -192,6 +177,24 @@ describe('MarkableWordComponent', () => {
     tick();
 
     expect(markingRange.value).toBeNull();
+  }));
+
+  it('should not report an error when it is destroyed before the mouse is released', fakeAsync(() => {
+    const markingRange = new BehaviorSubject<MarkingRange | null>(null);
+    initComponent('yellow', markingRange);
+    word().click();
+
+    const unhandledErrors: unknown[] = [];
+    const restoreOnUnhandledError = config.onUnhandledError;
+    config.onUnhandledError = (error: unknown) => { unhandledErrors.push(error); };
+    try {
+      fixture.destroy();
+      tick();
+    } finally {
+      config.onUnhandledError = restoreOnUnhandledError;
+    }
+
+    expect(unhandledErrors).toEqual([]);
   }));
 
   it('should stop reacting on range changes after destruction', () => {

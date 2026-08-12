@@ -425,4 +425,13 @@ describe('CompoundGroupElementComponent', () => {
 
     expect(navigationService.setPage).not.toHaveBeenCalled();
   });
+
+  it('should shut down the marking support of text children on destruction', () => {
+    initComponent(createTable([createText('text_1', { markingMode: 'selection' })]));
+    const destroy = vi.spyOn(component.textMarkingSupports.text_1, 'destroy');
+
+    fixture.destroy();
+
+    expect(destroy).toHaveBeenCalled();
+  });
 });

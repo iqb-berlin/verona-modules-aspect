@@ -5,7 +5,7 @@ import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MarkingRange } from 'common/models/marking-data';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
-import { first, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'aspect-markable-word',
@@ -80,7 +80,7 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
 
   private subscribeForMouseUp(): void {
     this.nativeEventService.mouseUp
-      .pipe(takeUntil(this.ngUnsubscribe), first())
+      .pipe(takeUntil(this.ngUnsubscribe), take(1))
       .subscribe(() => this.cleanMarking());
   }
 

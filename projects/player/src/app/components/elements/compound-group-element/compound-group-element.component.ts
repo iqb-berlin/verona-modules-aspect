@@ -414,7 +414,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   }
 
   ngOnDestroy(): void {
-    Object.keys(this.markableSupports).forEach(key => this.markableSupports[key].reset());
+    Object.keys(this.markableSupports).forEach(key => this.markableSupports[key].destroy());
     Object.keys(this.textMarkingSupports).forEach(key => this.textMarkingSupports[key].destroy());
     super.ngOnDestroy();
   }

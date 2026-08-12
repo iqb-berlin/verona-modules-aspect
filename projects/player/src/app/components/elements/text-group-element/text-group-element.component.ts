@@ -132,7 +132,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   }
 
   ngOnDestroy(): void {
-    this.markableSupport.reset();
+    this.markableSupport.destroy();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.textMarkingSupport.destroy();

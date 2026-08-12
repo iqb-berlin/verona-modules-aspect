@@ -74,20 +74,20 @@ describe('MarkableSupport', () => {
     expect(applicationRef.viewCount).toBe(viewCountBefore + 1);
   });
 
-  it('should detach the created views on reset', () => {
+  it('should detach the created views on destruction', () => {
     support.createMarkables([], elementComponent);
     applicationRef.tick();
 
-    support.reset();
+    support.destroy();
 
     expect(applicationRef.viewCount).toBe(viewCountBefore);
   });
 
-  it('should destroy the markable words on reset', () => {
+  it('should destroy the markable words on destruction', () => {
     support.createMarkables([], elementComponent);
     applicationRef.tick();
 
-    support.reset();
+    support.destroy();
 
     expect(words().length).toBe(0);
   });
@@ -97,13 +97,13 @@ describe('MarkableSupport', () => {
    * destroyed here, MarkableWordComponent.ngOnDestroy never ran outside of tests, so a range
    * selection waiting for the mouse to be released outlived its text.
    */
-  it('should end a pending range selection of its words on reset', () => {
+  it('should end a pending range selection of its words on destruction', () => {
     support.createMarkables([], elementComponent);
     applicationRef.tick();
     (words()[0].querySelector('span') as HTMLElement).click();
     expect(mouseUp.observed).toBeTruthy();
 
-    support.reset();
+    support.destroy();
 
     expect(mouseUp.observed).toBeFalsy();
   });

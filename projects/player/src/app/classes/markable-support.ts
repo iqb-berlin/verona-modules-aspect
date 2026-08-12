@@ -161,8 +161,11 @@ export class MarkableSupport {
 
   /* The containers are created outside of any template, so nothing destroys them implicitly:
    * their views stay registered at the ApplicationRef and are checked on every tick until they
-   * are destroyed here. destroy() detaches the view from the ApplicationRef by itself. */
-  reset(): void {
+   * are destroyed here. ViewRef.destroy() detaches the view from the ApplicationRef by itself.
+   *
+   * An instance is spent afterwards: the text nodes it replaced with the containers are gone
+   * with them, and a completed ngUnsubscribe no longer guards new subscriptions. */
+  destroy(): void {
     this.componentRefs.forEach(componentRef => componentRef.destroy());
     this.componentRefs = [];
     this.ngUnsubscribe.next();

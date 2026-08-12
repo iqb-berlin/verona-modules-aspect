@@ -22,6 +22,9 @@ Player
   - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
   - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen innerhalb des Feldes, im Formelbereich brechen Text und Formel-Segmente in die nächste Zeile um
 
+## 2.12.6
+### Fehlerbehebungen
+- Behebt die Touch-Erkennung im Safe Exam Browser: Auf Rechnern ohne Touchscreen wird die Bildschirmtastatur nicht mehr eingeblendet, wenn eine Hardware-Tastatur vorhanden ist ([#1122](https://github.com/orgs/iqb-berlin/projects/13?pane=issue&itemId=219008227&issue=iqb-berlin%7Cverona-modules-aspect%7C1122))
 
 ## 2.12.3
 ### Fehlerbehebungen

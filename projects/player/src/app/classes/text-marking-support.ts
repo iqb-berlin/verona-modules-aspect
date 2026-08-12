@@ -1,4 +1,4 @@
-import { first, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
@@ -39,7 +39,7 @@ export class TextMarkingSupport {
     this.isMarkingBarOpen = false;
     this.anchorService.hideAllAnchors();
     this.nativeEventService.pointerUp
-      .pipe(takeUntil(this.ngUnsubscribe), first())
+      .pipe(takeUntil(this.ngUnsubscribe), take(1))
       .subscribe((pointerUp: PointerEvent) => {
         this.stopTextSelection(
           {
@@ -111,7 +111,7 @@ export class TextMarkingSupport {
     this.textComponentRect = elementComponent.domElement.getBoundingClientRect();
     this.isMarkingBarOpen = true;
     this.nativeEventService.pointerDown
-      .pipe(takeUntil(this.ngUnsubscribe), first())
+      .pipe(takeUntil(this.ngUnsubscribe), take(1))
       .subscribe(() => this.closeMarkingBar());
   }
 

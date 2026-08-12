@@ -44,7 +44,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "Roboto",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -149,7 +148,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -254,7 +252,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -310,7 +307,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -415,7 +411,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -471,7 +466,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -576,7 +570,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -632,7 +625,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -737,7 +729,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -940,7 +931,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 20,
       "bold": false,
       "italic": false,
@@ -996,7 +986,6 @@ export function getEmailTemplateString(
     "styling": {
       "backgroundColor": "transparent",
       "fontColor": "#000000",
-      "font": "NunitoSans",
       "fontSize": 14,
       "bold": false,
       "italic": false,

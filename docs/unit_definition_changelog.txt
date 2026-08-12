@@ -307,3 +307,16 @@ iqb-aspect-definition@1.0.0
   though interface and defaults table both declared it (#1177 for radio.lineHeight,
   #1185 in general). No unit needs repairing: what was dropped was never stored.
 
+(#1182, no version raise -- a property is retired, none is added)
+- styling.font is gone from the model. Every element had it, with the default
+  NunitoSans, and it did next to nothing: the input in the inspector was commented out
+  and additionally disabled, so it was never operable, and only two components read the
+  value at all -- table and the formula area (text-area-math).
+  Nothing renders differently. Two assistant templates set "Roboto" there, a font the
+  player does not ship, but both sit on text elements, and the text component never read
+  the property -- so those two rendered in the player's font before this change as well.
+  On table and formula area the value has only ever been the default. (The framing in
+  #1182, that the system substituted a font there, does not hold for that reason.)
+  The property stays in stored units and is ignored from now on; it is dropped from the
+  styling group on the next load, and no migration step is needed. Should a font choice
+  return, it belongs on the unit rather than on each element (#921).

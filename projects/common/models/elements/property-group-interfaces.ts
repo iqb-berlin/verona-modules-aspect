@@ -99,7 +99,7 @@ export const NESTED_GROUP_KEYS = [
   'xPosition', 'yPosition', 'gridColumn', 'gridColumnRange', 'gridRow', 'gridRowRange',
   'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'zIndex',
   'width', 'height', 'isWidthFixed', 'isHeightFixed', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
-  'fontColor', 'font', 'fontSize', 'bold', 'italic', 'underline',
+  'fontColor', 'fontSize', 'bold', 'italic', 'underline',
   'borderWidth', 'borderColor', 'borderStyle', 'borderRadius',
   'backgroundColor', 'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
   'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
@@ -110,7 +110,6 @@ export type NestedGroupKeysAreListed = AssertNever<UnlistedGroupKey>;
 
 export interface FontStyles {
   fontColor: string;
-  font: string;
   fontSize: number;
   bold: boolean;
   italic: boolean;
@@ -214,7 +213,6 @@ export abstract class PropertyGroupValidators {
   static isValidFontStyles(blueprint: FontStyles): boolean {
     if (!blueprint) return false;
     return blueprint.fontColor !== undefined &&
-      blueprint.font !== undefined &&
       blueprint.fontSize !== undefined &&
       blueprint.bold !== undefined &&
       blueprint.italic !== undefined &&
@@ -291,7 +289,6 @@ export abstract class PropertyGroupGenerators {
     const d = defaults as Partial<FontStyles>;
     return {
       fontColor: d.fontColor !== undefined ? d.fontColor : GLOBAL_DEFAULTS.fontColor,
-      font: d.font !== undefined ? d.font : GLOBAL_DEFAULTS.font,
       fontSize: d.fontSize !== undefined ? d.fontSize : GLOBAL_DEFAULTS.fontSize,
       bold: d.bold !== undefined ? d.bold : GLOBAL_DEFAULTS.bold,
       italic: d.italic !== undefined ? d.italic : GLOBAL_DEFAULTS.italic,

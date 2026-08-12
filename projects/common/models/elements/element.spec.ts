@@ -51,7 +51,7 @@ describe('UIElement setProperty alias validation', () => {
    constructors deferred to the result -- so frame, audio and video, whose declared styling has no font
    member at all, carried six of them, and the panel offered sliders that render nothing. */
 describe('the styling group an element keeps', () => {
-  const FONT_KEYS = ['bold', 'italic', 'underline', 'font', 'fontColor', 'fontSize'];
+  const FONT_KEYS = ['bold', 'italic', 'underline', 'fontColor', 'fontSize'];
 
   /* Realistic payloads for the compound types; a bare `{ type }` never reaches their children. */
   const stylingOf = (type: UIElementType, styling?: Record<string, unknown>): Record<string, unknown> => {
@@ -130,7 +130,8 @@ describe('the styling group an element keeps', () => {
 
   /* A sweep rather than three cases: storing every styling key there is must widen no element's group.
      This is the direction the type machinery structurally cannot see -- it checks that declared keys
-     survive, not that undeclared ones stay out (#1187). */
+     survive, not that undeclared ones stay out (#1187). Two of the keys below are retired rather than
+     unknown: `font` was a styling property until #1182, and stored units still carry it. */
   it('should widen no element group, whatever a stored unit carries', () => {
     const everyStylingKey = {
       backgroundColor: 'red',

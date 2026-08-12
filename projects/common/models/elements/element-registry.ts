@@ -47,7 +47,6 @@ import type { UIElementProperties, UIElementType } from 'common/models/ui-elemen
 export const GLOBAL_DEFAULTS = {
   fontSize: 20,
   fontColor: '#000000',
-  font: 'NunitoSans',
   bold: false,
   italic: false,
   underline: false,

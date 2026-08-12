@@ -20,6 +20,7 @@ describe('DeviceService', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   it('should be created', () => {
@@ -48,9 +49,24 @@ describe('DeviceService', () => {
   it('should not treat a device without touch support as mobile', () => {
     setTouchSupport(0);
 
-    /* 'ontouchstart' in window is true in the test browser, so only the touch point
-       count can be varied; the check below documents the combined condition. */
-    expect(createService().isMobileWithoutHardwareKeyboard)
-      .toBe('ontouchstart' in window);
+    expect(createService().isMobileWithoutHardwareKeyboard).toBe(false);
+  });
+
+  it('should not treat a machine that merely exposes the touch events API as mobile', () => {
+    /* The situation in the Safe Exam Browser (#1122): it enables the touch events API
+       unconditionally, so 'ontouchstart' in window says nothing about the hardware. Reading it
+       made every desktop machine look like a touch device and covered task content with the
+       software keyboard. The test browser does not expose the API, hence it is stubbed here. */
+    vi.stubGlobal('ontouchstart', null);
+    setTouchSupport(0);
+
+    expect('ontouchstart' in window).toBe(true);
+    expect(createService().isMobileWithoutHardwareKeyboard).toBe(false);
+  });
+
+  it('should not treat a single point digitizer as a touch device', () => {
+    setTouchSupport(1);
+
+    expect(createService().isMobileWithoutHardwareKeyboard).toBe(false);
   });
 });

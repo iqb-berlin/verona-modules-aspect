@@ -96,9 +96,6 @@ export abstract class UIElement implements UIElementProperties {
       if (!this.idService.isAliasAvailable(value as string)) {
         throw new IDError('ID ist bereits vergeben');
       }
-      if ((value as string).length > 20) {
-        throw new IDError('ID länger als 20 Zeichen');
-      }
       if ((value as string).includes(' ')) {
         throw new IDError('ID enthält unerlaubtes Leerzeichen');
       }

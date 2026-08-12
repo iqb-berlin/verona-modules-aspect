@@ -14,6 +14,7 @@ Editor
   - Der Tooltip eines Knopfes wird über die neue Schaltfläche "Tooltip bearbeiten" im Eigenschaftenbereich im selben Dialog bearbeitet (Text, Position und Löschen)
 
 ### Änderungen
+- Element-IDs dürfen jetzt beliebig lang sein; die Begrenzung auf 20 Zeichen ist entfallen, weil sie im Verona-Vertrag für Variablen nicht vorgesehen ist. Die übrigen Regeln (Buchstaben, Ziffern, Unterstrich und Bindestrich, keine Leerzeichen) gelten unverändert
 - Formelfeld
   - UI-Verbesserung der Eingabemöglichkeit zur Vorbelegung  
 - Texteditor

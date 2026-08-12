@@ -16,6 +16,7 @@ export class TextMarkingSupport {
   textComponentRect!: DOMRect;
 
   private ngUnsubscribe = new Subject<void>();
+  private openMarkingBarTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor(private nativeEventService: NativeEventService,
               private anchorService: AnchorService) {
@@ -84,7 +85,7 @@ export class TextMarkingSupport {
         this.applyMarkingDataToText(this.selectedMode, this.selectedColor, elementComponent);
       } else if (!this.isMarkingBarOpen) {
         // hack for windows mobile to prevent opening marking bar while selection is removed on FF
-        setTimeout(() => {
+        this.openMarkingBarTimeout = setTimeout(() => {
           const selectionTest = window.getSelection();
           if (selectionTest && TextMarkingUtils.isSelectionValid(selectionTest) && selectionTest.rangeCount > 0) {
             this.openMarkingBar(textSelectionPosition, elementComponent);
@@ -119,7 +120,14 @@ export class TextMarkingSupport {
     this.isMarkingBarOpen = false;
   }
 
+  /* The delayed opening of the marking bar has to be cancelled explicitly: a completed
+   * ngUnsubscribe does not stop takeUntil from passing on a subscription that is created
+   * afterwards, so a timeout that survives would leave a pointer subscription behind. */
   destroy(): void {
+    if (this.openMarkingBarTimeout !== null) {
+      clearTimeout(this.openMarkingBarTimeout);
+      this.openMarkingBarTimeout = null;
+    }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

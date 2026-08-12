@@ -180,13 +180,13 @@ describe('MarkableWordComponent', () => {
   }));
 
   it('should not report an error when it is destroyed before the mouse is released', fakeAsync(() => {
-    const unhandledErrors: unknown[] = [];
-    const restoreOnUnhandledError = config.onUnhandledError;
-    config.onUnhandledError = (error: unknown) => { unhandledErrors.push(error); };
     const markingRange = new BehaviorSubject<MarkingRange | null>(null);
     initComponent('yellow', markingRange);
     word().click();
 
+    const unhandledErrors: unknown[] = [];
+    const restoreOnUnhandledError = config.onUnhandledError;
+    config.onUnhandledError = (error: unknown) => { unhandledErrors.push(error); };
     try {
       fixture.destroy();
       tick();

@@ -125,4 +125,32 @@ describe('TextMarkingSupport', () => {
 
     expect(support.isMarkingBarOpen).toBeTruthy();
   }));
+
+  it('should not open the marking bar when it is destroyed within the opening delay', fakeAsync(() => {
+    selectTextContainerContent();
+    support.startTextSelection(new PointerEvent('pointerdown'), elementComponent);
+    pointerUp.next(new PointerEvent('pointerup'));
+
+    support.destroy();
+    tick(100);
+
+    expect(support.isMarkingBarOpen).toBeFalsy();
+  }));
+
+  /*
+   * A completed ngUnsubscribe no longer stops takeUntil: it reacts to the notifier emitting,
+   * not to its completion. A subscription created after the teardown would therefore never be
+   * unsubscribed, which is why the delayed opening has to be cancelled.
+   */
+  it('should leave no pointer subscription behind when it is destroyed within the opening delay', fakeAsync(() => {
+    selectTextContainerContent();
+    support.startTextSelection(new PointerEvent('pointerdown'), elementComponent);
+    pointerUp.next(new PointerEvent('pointerup'));
+
+    support.destroy();
+    tick(100);
+
+    expect(pointerDown.observed).toBeFalsy();
+    expect(pointerUp.observed).toBeFalsy();
+  }));
 });

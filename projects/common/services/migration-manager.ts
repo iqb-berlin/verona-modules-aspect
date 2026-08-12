@@ -10,8 +10,11 @@ import { NormalizationMigration } from '../migrations/normalization';
  * for a step:
  *
  * - **A new property with a default** - nothing to do. `NormalizationMigration` runs at the end of
- *   every migration, whatever the version, and `ModelNormalizer` fills every missing property from
- *   `ELEMENT_DEFAULTS`. That is why 4.12 has no step of its own: everything it added has a default.
+ *   every migration, whatever the version, and `ModelNormalizer` fills every missing own property of
+ *   an element from `ELEMENT_DEFAULTS`, plus its position and dimensions. A new member of the
+ *   `styling` group needs nothing here either, but it is the element's own class that fills it -- see
+ *   rules.md 14 and `PropertyGroupGenerators.mergeStyling` (#1187). That is why 4.12 has no step of
+ *   its own: everything it added has a default.
  * - **Existing values have to be transformed** - a rename, a changed unit, a restructured group: that
  *   is a step, together with a bumped `unit_definition_version` and an entry in
  *   `docs/unit_definition_changelog.txt`. See {@link MigrationLegacy}, which converts the pre-4.0

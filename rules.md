@@ -206,7 +206,8 @@ what the model declares. Since #1177 the table is typed against the element prop
 (`FlatDefaults` in `element-registry.ts`): a default with the wrong type or an unknown key is a
 compile error, and reading a default the table does not define is one too. The compiler checks
 types, not values — a plausible-but-wrong value (100 where 135 was meant) still compiles, so cover
-new or changed default VALUES with a spec, as `model-normalizer.spec.ts` does. Historical context:
+new or changed default VALUES with a spec, as `model-normalizer.spec.ts` does for the flat
+properties and `element.spec.ts` for the styling group. Historical context:
 as an untyped `Record<string, unknown>`, a string default for a `boolean` property travelled into
 stored units unnoticed for months (#1139).
 
@@ -218,15 +219,23 @@ does this for the margins (#1184), and `ModelNormalizer` clones each object defa
 identity sweep in `model-normalizer.spec.ts` fails with the offending path if a new default or a new
 generator misses it.
 
-A styling property outside `BasicStyles`/`BorderStyles` (an element declaring
-`styling: BasicStyles & { lineHeight: number }`) has to be listed in `EXTRA_STYLING_KEYS` AND to
-exist in `OtherStyles`: `ModelNormalizer` rebuilds the styling group from scratch and carries over
-exactly the listed keys, while the editor's write path is keyed on `keyof Stylings`. Since #1185
-both are checked against the element interfaces, so forgetting either fails to compile, naming the
-key. Being listed is necessary but NOT sufficient: the carry-over is additionally gated on the
-element's own `ELEMENT_DEFAULTS` entry holding that key, and no type checks this half — give a new
-extra styling key a default on every element whose interface declares it, or stored values are
-still dropped on load.
+The `styling` group is the one group the normalizer does **not** touch (#1187). Which keys an
+element has is decided by the group its own class builds, and the stored group is merged into that
+one — keys only, no list anywhere: `PropertyGroupGenerators.mergeStyling` keeps exactly the keys
+the class put there, filling the rest from the stored unit. So a new styling property on an element
+is three edits in the element's own file:
+
+- declare it in the `styling` type of its `…Properties` interface,
+- give the class field its value from `ELEMENT_DEFAULTS` — the compiler demands this as soon as the
+  interface declares it, which is what makes the whitelist self-maintaining,
+- if it is outside `BasicStyles`/`BorderStyles`, add it to `OtherStyles` too. The editor's write
+  path is keyed on `keyof Stylings`, so a key outside it would be a value the panel displays and
+  can never change; `ElementStylingIsWritable` in `element-registry.ts` fails to compile and names
+  the key.
+
+Nothing else has to know about it. What this replaced — a rebuild in `ModelNormalizer` deciding the
+same question from four hand-kept lists — dropped stored values for keys no list named (#1177,
+#1185) and handed six font keys to three elements whose styling declares none (#1187).
 
 Rationale:
 - most model changes need no migration step at all; writing one anyway adds code that must be

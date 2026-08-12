@@ -285,3 +285,25 @@ iqb-aspect-definition@1.0.0
   write appears. Margin values are unchanged; what changes is object identity, and one
   edge case -- a stored margin that is not an object at all (an explicit null, say)
   used to come back out unchanged and is now an empty object.
+
+(#1187, no version raise -- no new property)
+- Frame, audio and video no longer carry font styling. Their styling declares border
+  and background (frame) or background alone (audio, video) and no font member at all,
+  but normalization added fontColor, font, fontSize, bold, italic and underline to every
+  element on load, whatever its type -- so the inspector offered these three element
+  types five controls that render nothing (font colour, font size, bold, italic,
+  underline), and the keys were saved back into the unit. Which styling keys an
+  element keeps is now decided by the group its own class builds, which the compiler
+  checks against the declared type. Font values stored on one of the three are dropped
+  on the next load; nothing renders them, so nothing changes on screen. The other 27
+  element types keep exactly the styling group they had.
+  Not covered, because their styling type does not say so: image, geometry, trigger,
+  hotspot-image, marking-panel and likert-row declare no styling of their own and
+  therefore keep the basic group the base class builds, although none of their
+  components reads it either. Their controls are as dead as the three above; narrowing
+  their declaration is a decision about the inspector and is filed separately.
+- A stored styling value now survives for every key an element declares. Before, the
+  group was rebuilt from four hand-kept lists, and a key no list named was dropped even
+  though interface and defaults table both declared it (#1177 for radio.lineHeight,
+  #1185 in general). No unit needs repairing: what was dropped was never stored.
+

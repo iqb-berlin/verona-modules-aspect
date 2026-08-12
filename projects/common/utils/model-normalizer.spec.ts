@@ -224,9 +224,11 @@ describe('ModelNormalizer', () => {
      empty, so the recursion would never run.
 
      Two boundaries. normalizeElement is a production boundary of its own (NormalizationMigration calls
-     it with no constructor involved). createElement is what the editor and player use; today it is
-     equivalent, because the normalizer fills every key and the constructors overwrite their class
-     fields from it -- these sweeps pin that equivalence, which nothing else states. */
+     it with no constructor involved). createElement is what the editor and player use; the two are
+     equivalent for the object identities these sweeps are about, because whatever the normalizer
+     hands out reaches the constructors unchanged -- these sweeps pin that equivalence, which nothing
+     else states. The styling group is no longer part of it: the classes build that themselves
+     (#1187). */
   describe('objects the registry owns (#1184)', () => {
     const PAYLOAD: Partial<Record<UIElementType, Record<string, unknown>>> = {
       cloze: {

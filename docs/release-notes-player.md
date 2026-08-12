@@ -18,6 +18,8 @@ Player
   - Bindet den Status von GeoGebra-Variablen an das übergeordnete Element: Variablen werden mit dem Status des GeoGebra-Elements initialisiert und die Statusänderung "DISPLAYED" wird an sie weitergegeben
 
 ### Fehlerbehebungen
+- Textmarkierung
+  - Verlassene Aufgaben mit Wort- oder Bereichsmarkierung geben ihre Ressourcen wieder frei; der Player bleibt über lange Sitzungen flüssig
 - Formelfeld, Formelbereich
   - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
   - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen innerhalb des Feldes, im Formelbereich brechen Text und Formel-Segmente in die nächste Zeile um

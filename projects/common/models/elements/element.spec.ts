@@ -80,6 +80,15 @@ describe('the styling group an element keeps', () => {
       });
   });
 
+  /* The widgets apply exactly two styling values -- the colours of the button that opens them. They
+     declared eleven until #1230, so the inspector offered eight controls that did nothing; the borders
+     in the periodic table come from its stylesheet, not from the model. */
+  it('should give the two widgets only the two colours they render', () => {
+    (['widget-molecule-editor', 'widget-periodic-table'] as UIElementType[]).forEach(type => {
+      expect(Object.keys(stylingOf(type)).sort()).toEqual(['backgroundColor', 'fontColor']);
+    });
+  });
+
   it('should keep the border group of a frame and the background of a video', () => {
     expect(Object.keys(stylingOf('frame')).sort())
       .toEqual(['backgroundColor', 'borderColor', 'borderRadius', 'borderStyle', 'borderWidth']);

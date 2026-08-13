@@ -759,7 +759,7 @@ input[number] "propertiesPanel.maxWidth" =  (disabled)
 --- footer ---
 button "propertiesPanel.deleteElement"`,
 
-  'geometry|expert': `--- tabs --- element properties, position and size, styling
+  'geometry|expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = geometry
@@ -787,20 +787,12 @@ input[number] "propertiesPanel.zIndex" = 0
 input[number] "propertiesPanel.width" = 600
 input[number] "propertiesPanel.height" = 400
 
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
-
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
-  'geometry|multi-expert': `--- tabs --- element properties, position and size, styling
+  'geometry|multi-expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
@@ -831,14 +823,6 @@ button "align_horizontal_left"
 button "align_horizontal_right"
 button "align_vertical_top"
 button "align_vertical_bottom"
-
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -881,7 +865,7 @@ input[number] "propertiesPanel.maxWidth" =  (disabled)
 --- footer ---
 button "propertiesPanel.deleteElement"`,
 
-  'hotspot-image|expert': `--- tabs --- element properties, position and size, styling
+  'hotspot-image|expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = hotspot-image
@@ -905,20 +889,12 @@ input[number] "propertiesPanel.zIndex" = 0
 input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 100
 
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
-
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
-  'hotspot-image|multi-expert': `--- tabs --- element properties, position and size, styling
+  'hotspot-image|multi-expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
@@ -945,14 +921,6 @@ button "align_horizontal_left"
 button "align_horizontal_right"
 button "align_vertical_top"
 button "align_vertical_bottom"
-
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -993,7 +961,7 @@ input[number] "propertiesPanel.maxWidth" =  (disabled)
 --- footer ---
 button "propertiesPanel.deleteElement"`,
 
-  'image|expert': `--- tabs --- element properties, position and size, styling
+  'image|expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = image
@@ -1017,20 +985,12 @@ input[number] "propertiesPanel.zIndex" = 0
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 100
 
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
-
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
-  'image|multi-expert': `--- tabs --- element properties, position and size, styling
+  'image|multi-expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
@@ -1057,14 +1017,6 @@ button "align_horizontal_left"
 button "align_horizontal_right"
 button "align_vertical_top"
 button "align_vertical_bottom"
-
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1095,7 +1047,7 @@ input[number] "propertiesPanel.maxWidth" =  (disabled)
 --- footer ---
 button "propertiesPanel.deleteElement"`,
 
-  'likert-row|expert': `--- tabs --- element properties, position and size, styling
+  'likert-row|expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = likert-row
@@ -1116,20 +1068,12 @@ input[number] "propertiesPanel.zIndex" = 0
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 50
 
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
-
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
-  'likert-row|multi-expert': `--- tabs --- element properties, position and size, styling
+  'likert-row|multi-expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
@@ -1153,14 +1097,6 @@ button "align_horizontal_left"
 button "align_horizontal_right"
 button "align_vertical_top"
 button "align_vertical_bottom"
-
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -1315,7 +1251,7 @@ input[number] "propertiesPanel.maxWidth" =  (disabled)
 --- footer ---
 button "propertiesPanel.deleteElement"`,
 
-  'marking-panel|expert': `--- tabs --- element properties, position and size, styling
+  'marking-panel|expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = marking-panel
@@ -1334,20 +1270,12 @@ input[number] "propertiesPanel.zIndex" = 0
 input[number] "propertiesPanel.width" = 180
 input[number] "propertiesPanel.height" = 98
 
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
-
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
-  'marking-panel|multi-expert': `--- tabs --- element properties, position and size, styling
+  'marking-panel|multi-expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
@@ -1369,14 +1297,6 @@ button "align_horizontal_left"
 button "align_horizontal_right"
 button "align_vertical_top"
 button "align_vertical_bottom"
-
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
@@ -3037,7 +2957,7 @@ input[number] "propertiesPanel.maxWidth" =  (disabled)
 --- footer ---
 button "propertiesPanel.deleteElement"`,
 
-  'trigger|expert': `--- tabs --- element properties, position and size, styling
+  'trigger|expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = trigger
@@ -3051,20 +2971,12 @@ checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
-input[text] "propertiesPanel.fontColor" = #000000
-input[number] "propertiesPanel.fontSize" = 20
-checkbox "propertiesPanel.bold" = false
-checkbox "propertiesPanel.italic" = false
-checkbox "propertiesPanel.underline" = false
-
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false
 button "propertiesPanel.duplicateElement"
 button "propertiesPanel.deleteElement"`,
 
-  'trigger|multi-expert': `--- tabs --- element properties, position and size, styling
+  'trigger|multi-expert': `--- tabs --- element properties, position and size
 
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
@@ -3081,14 +2993,6 @@ button "align_horizontal_left"
 button "align_horizontal_right"
 button "align_vertical_top"
 button "align_vertical_bottom"
-
---- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" =  [merged]
-input[text] "propertiesPanel.fontColor" =  [merged]
-input[number] "propertiesPanel.fontSize" =  [merged]
-checkbox "propertiesPanel.bold" = indeterminate
-checkbox "propertiesPanel.italic" = indeterminate
-checkbox "propertiesPanel.underline" = indeterminate
 
 --- footer ---
 checkbox "propertiesPanel.setElementInteractionEnabled" = false

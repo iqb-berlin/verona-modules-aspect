@@ -21,7 +21,8 @@
         </aspect-ui-element-properties>
       </mat-tab>
 
-      @if (unitService.expertMode && (combinedProperties.position || combinedProperties.dimensions)) {
+      @if (unitService.expertMode &&
+        ((combinedProperties.position | hasAnyProperty) || (combinedProperties.dimensions | hasAnyProperty))) {
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabPositionAndSize' | translate">format_shapes</mat-icon>
@@ -36,7 +37,7 @@
         </mat-tab>
       }
 
-      @if (unitService.expertMode && combinedProperties.styling) {
+      @if (unitService.expertMode && (combinedProperties.styling | hasAnyProperty)) {
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabStyling' | translate">palette</mat-icon>

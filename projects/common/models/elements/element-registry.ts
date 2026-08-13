@@ -77,11 +77,9 @@ export const GLOBAL_DEFAULTS = {
 UIElementProperties & PositionProperties & DimensionProperties & BasicStyles & PlayerProperties
 >;
 
-/* An element's styling type, whether the interface declares `styling` as
- * required or leaves it optional -- six elements (geometry, hotspot-image,
- * image, marking-panel, trigger, likert-row) inherit `styling?: Stylings` from
- * UIElementProperties, and a predicate matching only the required form is blind
- * to exactly those (#1185 review). */
+/* An element's styling type, whether the interface declares `styling` as required or leaves it
+ * optional -- six elements declare the optional form (`styling?: Record<never, never>`, #1226), and a
+ * predicate matching only the required form is blind to exactly those (#1185 review). */
 type StylingOf<P> = P extends { styling?: infer S } ? NonNullable<S> : never;
 
 /* Named keys only. An index signature on a styling type would make the Partial<> below accept any
@@ -94,14 +92,17 @@ type NamedKeysOnly<T> = {
   [K in keyof T as string extends K ? never : (number extends K ? never : K)]: T[K]
 };
 
-/* An element that declares no styling of its own -- image, geometry, trigger, hotspot-image,
- * marking-panel, likert-row -- gets the group the BASE class builds, and the base class builds it from
- * GLOBAL_DEFAULTS: it never reads the element's own entry. A styling key in the entry of one of those
- * six would therefore reach neither the root (the normalizer leaves group members to the generators)
- * nor the group. It would evaporate, silently. This turns it into a compile error instead.
+/* An element whose declared styling holds no keys -- image, geometry, trigger, hotspot-image,
+ * marking-panel, likert-row since #1226 -- can carry no styling default either: the value would reach
+ * neither the root (the normalizer leaves group members to the generators) nor the group, so it would
+ * evaporate silently. This turns it into a compile error instead, and the same held before #1226, when
+ * those six inherited a group from the base class that was built from GLOBAL_DEFAULTS rather than from
+ * their own entry (#1187 review).
  *
- * For the 24 elements that do declare their styling the compiler already covers this from the other
- * side: the declared field type demands that the class initializer wire the key up (#1187 review). */
+ * Where a styling type DOES hold keys, the compiler covers the other direction on its own: the
+ * declared field type demands that the class initializer wire each key up. The empty direction it
+ * cannot cover -- every object is assignable to `Record<never, never>` -- so that the six really keep
+ * nothing is pinned by a spec, not by a type. */
 type DeclaredStylingOf<P> = Stylings extends StylingOf<P> ? Record<never, never> : StylingOf<P>;
 
 /* The defaults table is FLAT while the Properties interfaces nest position,

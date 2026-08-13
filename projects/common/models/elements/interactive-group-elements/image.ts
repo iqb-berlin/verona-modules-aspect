@@ -28,6 +28,15 @@ export class ImageElement extends UIElement implements ImageProperties {
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.image);
 
+  /* No styling at all: not one of this element's templates reads a styling value, and the group it
+     used to get came from the base class rather than from any declaration (#1226). Declared here so
+     the merge in the constructor keeps nothing and the inspector offers nothing.
+
+     Deleting this field compiles: the inherited `styling: Stylings` is assignable to the interface's
+     optional empty group, because every object is. What holds the emptiness is the spec in
+     element.spec.ts, not the type. */
+  styling: Record<never, never> = {};
+
   static title: string = 'Bild';
   static icon: string = 'image';
 
@@ -76,6 +85,8 @@ export class ImageElement extends UIElement implements ImageProperties {
 }
 
 export interface ImageProperties extends UIElementProperties, MediaSourceProperties, ScalableProperties {
+  /** No styling: see the class field (#1226). */
+  styling?: Record<never, never>;
   alt: string;
   allowFullscreen: boolean
   magnifier: boolean;

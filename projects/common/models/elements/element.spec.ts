@@ -68,6 +68,18 @@ describe('the styling group an element keeps', () => {
     });
   });
 
+  /* The six that declare no styling at all, because not one of their templates reads one. They had
+     the basic group until #1226 -- from the base class, not from any declaration of their own -- and
+     the inspector offered six controls for it that rendered nothing. In the shipped master they had
+     no group either: there the base field was optional and unset. */
+  it('should give the six elements that declare no styling an empty group', () => {
+    (['image', 'geometry', 'trigger', 'hotspot-image', 'marking-panel', 'likert-row'] as UIElementType[])
+      .forEach(type => {
+        expect(stylingOf(type)).toEqual({});
+        expect(stylingOf(type, { backgroundColor: 'red', fontSize: 40 })).toEqual({});
+      });
+  });
+
   it('should keep the border group of a frame and the background of a video', () => {
     expect(Object.keys(stylingOf('frame')).sort())
       .toEqual(['backgroundColor', 'borderColor', 'borderRadius', 'borderStyle', 'borderWidth']);

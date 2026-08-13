@@ -104,6 +104,7 @@ import {
   ImagePropertiesComponent
 } from './components/element-model-properties/image-properties/image-properties.component';
 import { PropertyDivergesPipe } from './pipes/property-diverges.pipe';
+import { HasAnyPropertyPipe } from './pipes/has-any-property.pipe';
 import { ScrollPageIndexPipe } from './pipes/scroll-page-index.pipe';
 import {
   SelectPropertiesComponent
@@ -199,6 +200,7 @@ import {
     LimitEnabledStatePipe,
     PresetOptionTextPipe,
     PropertyDivergesPipe,
+    HasAnyPropertyPipe,
     ScrollPageIndexPipe
   ],
   imports: [

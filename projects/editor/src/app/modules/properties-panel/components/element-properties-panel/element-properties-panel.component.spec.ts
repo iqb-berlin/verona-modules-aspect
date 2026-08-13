@@ -25,6 +25,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   CombinedProperties, ElementPropertiesPanelComponent
 } from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
+import { HasAnyPropertyPipe } from 'editor/src/app/modules/properties-panel/pipes/has-any-property.pipe';
 
 @Component({
   selector: 'aspect-ui-element-properties',
@@ -102,7 +103,8 @@ describe('ElementPropertiesPanelComponent', () => {
         ElementPropertiesPanelComponent,
         MockUIElementPropertiesComponent,
         MockElementPositionPropertiesComponent,
-        MockElementStylePropertiesComponent
+        MockElementStylePropertiesComponent,
+        HasAnyPropertyPipe
       ],
       imports: [
         CommonModule,
@@ -231,6 +233,21 @@ describe('ElementPropertiesPanelComponent', () => {
     const position = combined?.position as unknown as Record<string, unknown>;
     expect('idList' in position).toBe(false);
     expect('rows' in position).toBe(false);
+  });
+
+  /* Since #1226 six element types have an empty styling group, and the merge drops every key the
+     selection does not share -- so a text together with an image leaves nothing to show, and the
+     styling tab disappears for that selection. Same as in the shipped 2.x line, where those six
+     carried no styling at all; between the two it briefly stayed, offering the text's font size while
+     an image was co-selected. Pinned here because the characterization net does not cover mixed-type
+     selections. */
+  it('should leave no styling for a selection that mixes a styled and an unstyled element', () => {
+    const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+      { type: 'text', id: 'a', styling: { fontSize: 20, backgroundColor: 'white' } } as unknown as UIElement,
+      { type: 'image', id: 'b', styling: {} } as unknown as UIElement
+    ]);
+
+    expect(combined?.styling).toEqual({});
   });
 
   describe('createCombinedProperties', () => {

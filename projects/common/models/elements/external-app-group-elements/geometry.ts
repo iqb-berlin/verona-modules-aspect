@@ -32,6 +32,15 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   } = PropertyGroupGenerators
       .generateDimensionProps(ELEMENT_DEFAULTS.geometry);
 
+  /* No styling at all: not one of this element's templates reads a styling value, and the group it
+     used to get came from the base class rather than from any declaration (#1226). Declared here so
+     the merge in the constructor keeps nothing and the inspector offers nothing.
+
+     Deleting this field compiles: the inherited `styling: Stylings` is assignable to the interface's
+     optional empty group, because every object is. What holds the emptiness is the spec in
+     element.spec.ts, not the type. */
+  styling: Record<never, never> = {};
+
   static title: string = 'Geometrie';
   static icon: string = 'architecture';
 
@@ -133,6 +142,8 @@ export class GeometryElement extends UIElement implements GeometryProperties {
 }
 
 export interface GeometryProperties extends UIElementProperties, FileNameProperties {
+  /** No styling: see the class field (#1226). */
+  styling?: Record<never, never>;
   appDefinition: string;
   trackedVariables: GeometryVariable[];
   trackedExpectedVariables: GeometryVariable[];

@@ -18,6 +18,15 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   highlightableOrange: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableOrange;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['marking-panel']);
 
+  /* No styling at all: not one of this element's templates reads a styling value, and the group it
+     used to get came from the base class rather than from any declaration (#1226). Declared here so
+     the merge in the constructor keeps nothing and the inspector offers nothing.
+
+     Deleting this field compiles: the inherited `styling: Stylings` is assignable to the interface's
+     optional empty group, because every object is. What holds the emptiness is the spec in
+     element.spec.ts, not the type. */
+  styling: Record<never, never> = {};
+
   static title: string = 'Textmarkierung';
   static icon: string = 'border_color';
 
@@ -40,5 +49,7 @@ function isMarkingPanelProperties(blueprint?: Partial<MarkingPanelProperties>): 
 }
 
 export interface MarkingPanelProperties extends UIElementProperties, HighlightableProperties {
+  /** No styling: see the class field (#1226). */
+  styling?: Record<never, never>;
   position: PositionProperties;
 }

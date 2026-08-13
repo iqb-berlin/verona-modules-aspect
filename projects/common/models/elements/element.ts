@@ -72,9 +72,11 @@ export abstract class UIElement implements UIElementProperties {
       }
       this.dimensions = { ...this.dimensions, ...element.dimensions };
       this.position = { ...this.position, ...element.position };
-      /* The six elements that declare no styling of their own end their merge here, with the basic
-         group above as their whitelist. For every other type this runs before the subclass field
-         initializer replaces the group, and the subclass merges again with its own keys. */
+      /* Every element type declares its own styling group today, so this merge is never the last
+         word: it runs before the subclass field initializer replaces the group, and the subclass
+         merges again with its own keys. It is kept because the basic group above is what this class
+         promises for a type that declares nothing -- and because an element built through a failing
+         guard never reaches its subclass merge. */
       this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
       if (element.player) this.player = { ...element.player };
     } else {

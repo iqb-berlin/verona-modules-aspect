@@ -14,6 +14,15 @@ export class TriggerElement extends UIElement implements TriggerProperties {
 
   actionParam: null | string | StateVariable = ELEMENT_DEFAULTS.trigger.actionParam;
 
+  /* No styling at all: not one of this element's templates reads a styling value, and the group it
+     used to get came from the base class rather than from any declaration (#1226). Declared here so
+     the merge in the constructor keeps nothing and the inspector offers nothing.
+
+     Deleting this field compiles: the inherited `styling: Stylings` is assignable to the interface's
+     optional empty group, because every object is. What holds the emptiness is the spec in
+     element.spec.ts, not the type. */
+  styling: Record<never, never> = {};
+
   static title: string = 'Auslöser';
   static icon: string = 'bolt';
 
@@ -28,9 +37,11 @@ export class TriggerElement extends UIElement implements TriggerProperties {
   }
 }
 
-/** A trigger is an element with an action and nothing else — hence the empty body. */
+/** A trigger is an element with an action and nothing else — hence the one declaration below. */
 export interface TriggerProperties
   extends UIElementProperties, ActionProperties<TriggerAction, string | StateVariable> {
+  /** No styling: see the class field (#1226). */
+  styling?: Record<never, never>;
 }
 
 function isTriggerProperties(blueprint?: Partial<TriggerProperties>): blueprint is TriggerProperties {

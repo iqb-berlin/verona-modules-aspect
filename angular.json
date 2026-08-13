@@ -104,7 +104,8 @@
           "options": {
             "tsConfig": "projects/editor/tsconfig.spec.json",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "@angular/compiler"
             ],
             "assets": [
               "projects/editor/src/favicon.ico",
@@ -140,8 +141,8 @@
               "projects/vitest-proxy-zone.setup.ts"
             ],
             "providersFile": "projects/editor/src/vitest-providers.ts",
-            "codeCoverage": false,
-            "codeCoverageReporters": [
+            "coverage": false,
+            "coverageReporters": [
               [
                 "html",
                 {
@@ -291,7 +292,8 @@
           "options": {
             "tsConfig": "projects/player/tsconfig.spec.json",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "@angular/compiler"
             ],
             "assets": [
               "projects/player/src/favicon.ico",
@@ -326,8 +328,8 @@
               "projects/vitest-proxy-zone.setup.ts"
             ],
             "providersFile": "projects/player/src/vitest-providers.ts",
-            "codeCoverage": false,
-            "codeCoverageReporters": [
+            "coverage": false,
+            "coverageReporters": [
               [
                 "html",
                 {
@@ -406,8 +408,8 @@
             "setupFiles": [
               "projects/vitest-proxy-zone.setup.ts"
             ],
-            "codeCoverage": false,
-            "codeCoverageReporters": [
+            "coverage": false,
+            "coverageReporters": [
               [
                 "html",
                 {
@@ -446,8 +448,8 @@
             "setupFiles": [
               "projects/vitest-proxy-zone.setup.ts"
             ],
-            "codeCoverage": false,
-            "codeCoverageReporters": [
+            "coverage": false,
+            "coverageReporters": [
               [
                 "html",
                 {
@@ -493,8 +495,8 @@
             "setupFiles": [
               "projects/vitest-proxy-zone.setup.ts"
             ],
-            "codeCoverage": false,
-            "codeCoverageReporters": [
+            "coverage": false,
+            "coverageReporters": [
               [
                 "html",
                 {

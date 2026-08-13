@@ -5,7 +5,8 @@ import { FirstColumnRatioProperties } from 'common/models/ui-element-interfaces'
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 /**
- * Width of the label column relative to the option columns, for likert and its rows.
+ * Width of the label column relative to the option columns of a likert table. That table's value
+ * governs its own grid and the grid of every row in it.
  *
  * Corresponds exactly to `FirstColumnRatioProperties`, so the property name is checked on both the
  * read and the write side.

@@ -394,3 +394,12 @@ iqb-aspect-definition@1.0.0
   this element only in a test fixture.
 - Stored values for all four are dropped on the next load, and nothing ever displayed
   them. No migration step.
+
+(#1234, no version raise -- a member is retired, none is added)
+- LikertRowElement no longer has `firstColumnSizeRatio`, and no longer extends
+  FirstColumnRatioProperties; the table it sits in keeps both. The row declared a ratio of
+  its own and the inspector offered a number field for it, but the grid of the table AND of
+  each row is built from the TABLE's value: likert.component.html hands its own value down
+  as an input, and the row component reads nothing else. The row's value had no reader
+  anywhere -- in the released master no more than today, where the same construction stands.
+  Stored values are dropped on the next load; nothing displayed them.

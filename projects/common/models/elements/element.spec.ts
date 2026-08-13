@@ -100,16 +100,32 @@ describe('the styling group an element keeps', () => {
       .toEqual(['bold', 'fontColor', 'fontSize', 'italic', 'underline']);
   });
 
+  /* Same realistic payloads as `stylingOf`: a bare `{ type }` never reaches a compound's children. */
+  const elementOf = (type: UIElementType, extra: Record<string, unknown> = {}): Record<string, unknown> => {
+    const blueprint = {
+      type, id: `${type}_1`, alias: `${type}_1`, ...extra
+    };
+    return ElementFactory.createElement(blueprint as unknown as UIElementProperties) as
+      unknown as Record<string, unknown>;
+  };
+
   /* `label` comes from the InputElement base class, so an element that does not render one has to
      drop it -- and by deleting rather than blanking, or the panel's merge brings the field back for a
      mixed selection (#1233). */
   it('should leave no label on the elements that render none', () => {
     (['hotspot-image', 'likert-row', 'text-field-simple', 'toggle-button', 'drop-list'] as UIElementType[])
       .forEach(type => {
-        const element = ElementFactory.createElement({ type, id: `${type}_1`, alias: `${type}_1` } as
-          unknown as UIElementProperties) as unknown as Record<string, unknown>;
-        expect(Object.prototype.hasOwnProperty.call(element, 'label')).toBe(false);
+        expect(Object.prototype.hasOwnProperty.call(elementOf(type), 'label')).toBe(false);
       });
+  });
+
+  /* The row's own first column ratio had no reader: both grids are built from the TABLE's value, which
+     the likert template hands down as an input. The table keeps its own (#1234). */
+  it('should leave no first column ratio on a likert row', () => {
+    expect(Object.prototype.hasOwnProperty.call(elementOf('likert-row'), 'firstColumnSizeRatio'))
+      .toBe(false);
+    expect(elementOf('likert', { rows: [] }).firstColumnSizeRatio)
+      .toBe(ELEMENT_DEFAULTS.likert.firstColumnSizeRatio);
   });
 
   it('should keep the border group of a frame and the background of a video', () => {

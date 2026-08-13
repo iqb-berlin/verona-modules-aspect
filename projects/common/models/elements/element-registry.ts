@@ -561,7 +561,6 @@ export const ELEMENT_DEFAULTS = {
       text: '', imgSrc: null, imgFileName: '', imgPosition: 'above'
     },
     columnCount: 0,
-    firstColumnSizeRatio: 5,
     verticalButtonAlignment: 'center',
     height: 50
   },

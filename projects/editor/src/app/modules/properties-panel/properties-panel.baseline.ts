@@ -1051,7 +1051,6 @@ input[text] "propertiesPanel.id" = likert-row
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
-input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
@@ -1076,7 +1075,6 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
-input[number] "propertiesPanel.firstColumnSizeRatio" =  [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
@@ -1103,7 +1101,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
-input[number] "propertiesPanel.firstColumnSizeRatio" =  [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1116,7 +1113,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = likert-row
 [propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
-input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 

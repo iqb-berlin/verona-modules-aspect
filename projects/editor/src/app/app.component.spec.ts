@@ -261,7 +261,6 @@ function createLikertUnitBlueprint(marker: string, label: string) {
                       text: label, imgSrc: null, imgFileName: '', imgPosition: 'above'
                     },
                     columnCount: 2,
-                    firstColumnSizeRatio: 3,
                     verticalButtonAlignment: 'center'
                   },
                   {
@@ -270,7 +269,6 @@ function createLikertUnitBlueprint(marker: string, label: string) {
                       text: `${label}-2`, imgSrc: null, imgFileName: '', imgPosition: 'above'
                     },
                     columnCount: 2,
-                    firstColumnSizeRatio: 3,
                     verticalButtonAlignment: 'center'
                   }
                 ],

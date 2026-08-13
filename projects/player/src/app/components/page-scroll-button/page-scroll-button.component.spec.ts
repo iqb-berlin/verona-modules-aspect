@@ -24,10 +24,17 @@ describe('PageScrollButtonComponent', () => {
   }
 
   /* The component reads the scroll geometry of its host element, which stays empty in the
-     test, so the geometry is handed in explicitly where the API allows it. */
-  const scrollableElement = (scrollTop: number): HTMLElement => ({
-    scrollHeight: 1000, offsetHeight: 500, scrollTop
-  } as HTMLElement);
+     test, so the geometry is handed in explicitly where the API allows it. It has to be a
+     real element: onScroll narrows its EventTarget argument with instanceof. */
+  const scrollableElement = (scrollTop: number): HTMLElement => {
+    const element = document.createElement('div');
+    Object.defineProperties(element, {
+      scrollHeight: { value: 1000 },
+      offsetHeight: { value: 500 },
+      scrollTop: { value: scrollTop }
+    });
+    return element;
+  };
 
   beforeEach(async () => {
     pageChanged = new Subject<number>();

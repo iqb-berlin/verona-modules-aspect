@@ -92,7 +92,7 @@ export class DraggableDirective {
     }
   }
 
-  @HostListener('touchcancel', ['$event'])
+  @HostListener('touchcancel')
   onTouchCancel() {
     this.activeTouchId = null;
     this.dragCancel.emit();

@@ -360,3 +360,16 @@ iqb-aspect-definition@1.0.0
 - Also gone, invisible either way: both widget templates bound `vertical-align` to
   `labelAlignment`, a property only the button element declares. The value was always
   undefined.
+
+(#1232, no version raise -- a styling member is retired, none is added)
+- The spell correction element no longer carries styling.lineHeight. It applies six
+  styling values -- background colour, font colour, font size, bold, italic, underline --
+  and never a line height: it is a single-line input with a button under it. Of the twelve
+  element types with a lineHeight default it was the only one that rendered nothing from
+  it. Its history is not one straight line: added to the model alone in 2021 (51204206),
+  never to a component, then lost in the 2.x styling rework -- the released master carries
+  no lineHeight for this element at all -- and introduced again by #1177, which gave it a
+  default in the typed table so a stored value would survive the load. That was consistent
+  while the property was declared, and is what made its uselessness visible. No component
+  rendered it in any of those states. Stored values are dropped on the next load; nothing
+  displayed them.

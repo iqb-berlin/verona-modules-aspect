@@ -89,6 +89,12 @@ describe('the styling group an element keeps', () => {
     });
   });
 
+  /* Held by a name rather than only by the editor baseline: the generic sweeps further down compare a
+     group against itself and stay green if the declaration comes back (#1232). */
+  it('should give spell-correct no line height', () => {
+    expect(stylingOf('spell-correct').lineHeight).toBeUndefined();
+  });
+
   it('should keep the border group of a frame and the background of a video', () => {
     expect(Object.keys(stylingOf('frame')).sort())
       .toEqual(['backgroundColor', 'borderColor', 'borderRadius', 'borderStyle', 'borderWidth']);
@@ -107,10 +113,11 @@ describe('the styling group an element keeps', () => {
   });
 
   /* The VALUES of the extra styling defaults, which no type checks: #1177 turned a plausible-looking
-     100 into the intended one for radio, and the spell-correct entry was added for the same reason. */
+     100 into the intended one for radio. The spell-correct entry it added at the same time is gone
+     again -- that element renders no line height at all (#1232). */
   it('should lift the extra styling defaults of an element into its group', () => {
     expect(stylingOf('radio').lineHeight).toBe(100);
-    expect(stylingOf('spell-correct').lineHeight).toBe(135);
+    expect(stylingOf('cloze').lineHeight).toBe(180);
     expect(stylingOf('toggle-button').selectionColor).toBe('#c9e0e0');
     expect(stylingOf('drop-list').itemBackgroundColor).toBe('#c9e0e0');
     expect(stylingOf('math-table').helperRowColor).toBe('transparent');
@@ -122,7 +129,7 @@ describe('the styling group an element keeps', () => {
     expect(stylingOf('likert', { lineColoring: false, lineHeight: 200 }))
       .toEqual(expect.objectContaining({ lineColoring: false, lineHeight: 200 }));
     expect(stylingOf('toggle-button', { selectionColor: '#123456' }).selectionColor).toBe('#123456');
-    expect(stylingOf('spell-correct', { lineHeight: 210 }).lineHeight).toBe(210);
+    expect(stylingOf('text', { lineHeight: 210 }).lineHeight).toBe(210);
   });
 
   /* The three cases above name three of the 25 merge sites, and a class that forgets its merge loses

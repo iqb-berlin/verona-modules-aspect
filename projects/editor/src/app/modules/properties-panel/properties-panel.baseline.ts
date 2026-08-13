@@ -1943,7 +1943,6 @@ input[number] "propertiesPanel.height" = 80
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-input[number] "propertiesPanel.lineHeight" = 135
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
@@ -1987,7 +1986,6 @@ button "align_vertical_bottom"
 input[text] "propertiesPanel.backgroundColor" =  [merged]
 input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
-input[number] "propertiesPanel.lineHeight" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
 checkbox "propertiesPanel.italic" = indeterminate
 checkbox "propertiesPanel.underline" = indeterminate

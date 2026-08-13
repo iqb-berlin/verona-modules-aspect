@@ -409,7 +409,6 @@ export const ELEMENT_DEFAULTS = {
   'spell-correct': {
     width: 230,
     height: 80,
-    lineHeight: 135,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',

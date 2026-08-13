@@ -21,14 +21,13 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['spell-correct']);
 
-  // lineHeight is not part of BasicStyles, but it IS part of this element's reality: the initializer
-  // below lifts it from the defaults, the editor panel renders it, and a stored value is merged over
-  // it on load. The interface used to omit it -- the typed defaults table made that visible (#1177),
-  // and since #1187 the declared type is what decides the key set, so omitting it would drop it.
-  styling: BasicStyles & { lineHeight: number } = {
-    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['spell-correct']),
-    lineHeight: ELEMENT_DEFAULTS['spell-correct'].lineHeight
-  };
+  /* No lineHeight, unlike the eleven other elements that have one: this is a single-line input with a
+     button under it, and the component applies no line height anywhere. Added to the model in 2021
+     (51204206), lost again in the 2.x styling rework -- the released master has none for this element
+     -- and reintroduced by #1177; no component ever rendered it (#1232).
+     #1177 gave it a default so a stored value would survive the load, which was consistent while the
+     property was declared, and is what made its uselessness visible. */
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['spell-correct']);
 
   static title: string = 'Wort korrigieren';
   static icon: string = 'format_strikethrough';
@@ -63,7 +62,7 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
 export interface SpellCorrectProperties extends TextInputElementProperties {
   position: PositionProperties;
   dimensions: DimensionProperties;
-  styling: BasicStyles & { lineHeight: number };
+  styling: BasicStyles;
 }
 
 function isSpellCorrectProperties(blueprint?: Partial<SpellCorrectProperties>): blueprint is SpellCorrectProperties {

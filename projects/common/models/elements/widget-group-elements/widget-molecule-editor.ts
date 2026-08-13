@@ -1,7 +1,5 @@
 import { UIElement } from 'common/models/elements/element';
-import {
-  BasicStyles, BorderStyles, PropertyGroupGenerators
-} from 'common/models/elements/property-group-interfaces';
+import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
@@ -12,9 +10,13 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
   type: UIElementType = 'widget-molecule-editor';
   bondingType: 'VALENCE' | 'ELECTRONS' = ELEMENT_DEFAULTS['widget-molecule-editor'].bondingType;
 
-  styling: BasicStyles & BorderStyles = {
-    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['widget-molecule-editor']),
-    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS['widget-molecule-editor'])
+  /* The button that opens the widget takes its two colours from here, and nothing else in this
+     element renders a styling value -- what it shows besides the button is the stored molecule, as an
+     image or as text. So the declaration says two keys, not eleven: font size, weight, slant,
+     underline and the four border members offered controls that did nothing (#1230). */
+  styling: { backgroundColor: string; fontColor: string } = {
+    backgroundColor: ELEMENT_DEFAULTS['widget-molecule-editor'].backgroundColor,
+    fontColor: ELEMENT_DEFAULTS['widget-molecule-editor'].fontColor
   };
 
   state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state;
@@ -36,7 +38,7 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
 
 export interface WidgetMoleculeEditorProperties extends UIElementProperties {
   bondingType: 'VALENCE' | 'ELECTRONS';
-  styling: BasicStyles & BorderStyles;
+  styling: { backgroundColor: string; fontColor: string };
   state: string | null;
 }
 

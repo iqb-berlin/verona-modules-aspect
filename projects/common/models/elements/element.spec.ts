@@ -80,6 +80,54 @@ describe('the styling group an element keeps', () => {
       });
   });
 
+  /* The widgets apply exactly two styling values -- the colours of the button that opens them. They
+     declared eleven until #1230, so the inspector offered eight controls that did nothing; the borders
+     in the periodic table come from its stylesheet, not from the model. */
+  it('should give the two widgets only the two colours they render', () => {
+    (['widget-molecule-editor', 'widget-periodic-table'] as UIElementType[]).forEach(type => {
+      expect(Object.keys(stylingOf(type)).sort()).toEqual(['backgroundColor', 'fontColor']);
+    });
+  });
+
+  /* Both narrowings below are held by a name rather than only by the editor baseline: the generic
+     sweeps further down compare a group against itself and stay green if a declaration comes back. */
+  it('should give spell-correct no line height', () => {
+    expect(stylingOf('spell-correct').lineHeight).toBeUndefined();
+  });
+
+  it('should give radio-group-images no background colour', () => {
+    expect(Object.keys(stylingOf('radio-group-images')).sort())
+      .toEqual(['bold', 'fontColor', 'fontSize', 'italic', 'underline']);
+  });
+
+  /* Same realistic payloads as `stylingOf`: a bare `{ type }` never reaches a compound's children. */
+  const elementOf = (type: UIElementType, extra: Record<string, unknown> = {}): Record<string, unknown> => {
+    const blueprint = {
+      type, id: `${type}_1`, alias: `${type}_1`, ...extra
+    };
+    return ElementFactory.createElement(blueprint as unknown as UIElementProperties) as
+      unknown as Record<string, unknown>;
+  };
+
+  /* `label` comes from the InputElement base class, so an element that does not render one has to
+     drop it -- and by deleting rather than blanking, or the panel's merge brings the field back for a
+     mixed selection (#1233). */
+  it('should leave no label on the elements that render none', () => {
+    (['hotspot-image', 'likert-row', 'text-field-simple', 'toggle-button', 'drop-list'] as UIElementType[])
+      .forEach(type => {
+        expect(Object.prototype.hasOwnProperty.call(elementOf(type), 'label')).toBe(false);
+      });
+  });
+
+  /* The row's own first column ratio had no reader: both grids are built from the TABLE's value, which
+     the likert template hands down as an input. The table keeps its own (#1234). */
+  it('should leave no first column ratio on a likert row', () => {
+    expect(Object.prototype.hasOwnProperty.call(elementOf('likert-row'), 'firstColumnSizeRatio'))
+      .toBe(false);
+    expect(elementOf('likert', { rows: [] }).firstColumnSizeRatio)
+      .toBe(ELEMENT_DEFAULTS.likert.firstColumnSizeRatio);
+  });
+
   it('should keep the border group of a frame and the background of a video', () => {
     expect(Object.keys(stylingOf('frame')).sort())
       .toEqual(['backgroundColor', 'borderColor', 'borderRadius', 'borderStyle', 'borderWidth']);
@@ -98,10 +146,11 @@ describe('the styling group an element keeps', () => {
   });
 
   /* The VALUES of the extra styling defaults, which no type checks: #1177 turned a plausible-looking
-     100 into the intended one for radio, and the spell-correct entry was added for the same reason. */
+     100 into the intended one for radio. The spell-correct entry it added at the same time is gone
+     again -- that element renders no line height at all (#1232). */
   it('should lift the extra styling defaults of an element into its group', () => {
     expect(stylingOf('radio').lineHeight).toBe(100);
-    expect(stylingOf('spell-correct').lineHeight).toBe(135);
+    expect(stylingOf('cloze').lineHeight).toBe(180);
     expect(stylingOf('toggle-button').selectionColor).toBe('#c9e0e0');
     expect(stylingOf('drop-list').itemBackgroundColor).toBe('#c9e0e0');
     expect(stylingOf('math-table').helperRowColor).toBe('transparent');
@@ -113,7 +162,7 @@ describe('the styling group an element keeps', () => {
     expect(stylingOf('likert', { lineColoring: false, lineHeight: 200 }))
       .toEqual(expect.objectContaining({ lineColoring: false, lineHeight: 200 }));
     expect(stylingOf('toggle-button', { selectionColor: '#123456' }).selectionColor).toBe('#123456');
-    expect(stylingOf('spell-correct', { lineHeight: 210 }).lineHeight).toBe(210);
+    expect(stylingOf('text', { lineHeight: 210 }).lineHeight).toBe(210);
   });
 
   /* The three cases above name three of the 25 merge sites, and a class that forgets its merge loses

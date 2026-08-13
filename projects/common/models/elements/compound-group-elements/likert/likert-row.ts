@@ -6,7 +6,7 @@ import { VariableInfo, VariableValue } from '@iqb/responses';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
 import { TextImageLabel } from 'common/models/label-interfaces';
-import { UIElementType, FirstColumnRatioProperties } from 'common/models/ui-element-interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
@@ -14,7 +14,6 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
   type: UIElementType = 'likert-row';
   rowLabel: TextImageLabel = ELEMENT_DEFAULTS['likert-row'].rowLabel;
   columnCount: number = ELEMENT_DEFAULTS['likert-row'].columnCount;
-  firstColumnSizeRatio: number = ELEMENT_DEFAULTS['likert-row'].firstColumnSizeRatio;
   verticalButtonAlignment: 'auto' | 'center' =
     ELEMENT_DEFAULTS['likert-row'].verticalButtonAlignment;
 
@@ -32,11 +31,13 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
     if (isLikertRowProperties(element)) {
       if (element.rowLabel !== undefined) this.rowLabel = element.rowLabel;
       if (element.columnCount !== undefined) this.columnCount = element.columnCount;
-      if (element.firstColumnSizeRatio !== undefined) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
       if (element.verticalButtonAlignment !== undefined) this.verticalButtonAlignment = element.verticalButtonAlignment;
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Likert-Row instantiation', element);
     }
+    /* The row renders `rowLabel`; the label the base class hands to every input element is deleted
+       rather than blanked, so the inspector shows no field for it -- see HotspotImage (#1233). */
+    delete (this as Partial<InputElement>).label;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -69,7 +70,7 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
   }
 }
 
-export interface LikertRowProperties extends InputElementProperties, FirstColumnRatioProperties {
+export interface LikertRowProperties extends InputElementProperties {
   /** No styling: see the class field (#1226). */
   styling?: Record<never, never>;
   rowLabel: TextImageLabel;

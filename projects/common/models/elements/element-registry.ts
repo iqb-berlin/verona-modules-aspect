@@ -257,7 +257,6 @@ export const ELEMENT_DEFAULTS = {
     isLimitedToMaxLength: true,
     pattern: null,
     patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
-    clearable: false,
     backgroundColor: '#f1f1f1',
     width: 100,
     height: 30,
@@ -409,7 +408,6 @@ export const ELEMENT_DEFAULTS = {
   'spell-correct': {
     width: 230,
     height: 80,
-    lineHeight: 135,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',
@@ -563,7 +561,6 @@ export const ELEMENT_DEFAULTS = {
       text: '', imgSrc: null, imgFileName: '', imgPosition: 'above'
     },
     columnCount: 0,
-    firstColumnSizeRatio: 5,
     verticalButtonAlignment: 'center',
     height: 50
   },

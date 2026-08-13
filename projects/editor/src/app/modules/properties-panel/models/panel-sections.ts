@@ -76,7 +76,7 @@ export const PANEL_SECTIONS: Record<UIElementType, readonly PanelSection[]> = {
   'hotspot-image': ['mediaSource', 'inputElement', 'hotspot'],
   image: ['mediaSource', 'image'],
   likert: ['options', 'stickyHeader', 'firstColumnRatio'],
-  'likert-row': ['inputElement', 'firstColumnRatio'],
+  'likert-row': ['inputElement'],
   'marking-panel': ['markingPanel'],
   'math-field': ['inputElement', 'presetValue', 'mathField', 'mathKeyboard'],
   'math-table': ['mathTable', 'inputAssistance'],

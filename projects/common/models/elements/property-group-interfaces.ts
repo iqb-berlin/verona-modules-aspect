@@ -37,6 +37,33 @@ export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;
 export type BasicStyles = FontStyles & { backgroundColor: string };
 
 /**
+ * Compiles only for `never`. For type-level assertions whose whole product is the error message: the
+ * argument is built so that the compiler prints the offending name.
+ */
+export type AssertNever<T extends never> = T;
+
+/*
+ * An index signature on a styling type degenerates `keyof` to `string | number`, and everything keyed
+ * on a styling type then accepts any name at all: `setStyleProperty(property: keyof Stylings)` loses
+ * the check that #1137 exists for, and `NestedGroupProperty` below -- the basis of `OwnProperty`, the
+ * #1142 guard -- widens to plain `string`. Neither failure announces itself (#1187).
+ *
+ * The check sits here, ONCE, and not per element, because the shared groups are the only styling
+ * types with any precedent for carrying an index signature: FontStyles, BorderStyles and OtherStyles
+ * did until #1137 removed it, while no element interface ever has. A per-element check reports names
+ * of correct declarations instead of the group that degenerated them (#1186 review) -- from here the
+ * error names the group itself.
+ */
+type OpenGroup<T, Name extends string> =
+  string extends keyof T ? Name : (number extends keyof T ? Name : never);
+export type StylingGroupsAreClosed = AssertNever<
+OpenGroup<FontStyles, 'FontStyles'> |
+OpenGroup<BorderStyles, 'BorderStyles'> |
+OpenGroup<OtherStyles, 'OtherStyles'> |
+OpenGroup<BasicStyles, 'BasicStyles'> |
+OpenGroup<Stylings, 'Stylings'>>;
+
+/**
  * A property that lives in one of the element's nested groups rather than on the element itself.
  * These have their own setters, and writing one through the generic path puts it on the element
  * root, where nothing reads it — silently, because UIElement carries an index signature.
@@ -53,9 +80,36 @@ export type NestedGroupProperty = keyof PositionProperties | keyof DimensionProp
  */
 export type OwnProperty<K extends string> = K extends NestedGroupProperty ? never : K;
 
+/**
+ * The runtime twin of `NestedGroupProperty`, for the one caller that has to decide this per key at
+ * runtime: `ModelNormalizer` fills an element's own properties from the flat defaults table and has to
+ * leave the group members to the generators, or every element carries a second copy of `width`,
+ * `fontSize` and `lineHeight` on its root, where nothing reads them (#1187).
+ *
+ * Checked in both directions and therefore not a list to maintain by hand: `satisfies` rejects a name
+ * that is no group member, and the assertion below fails to compile -- naming the key -- when a group
+ * gains a member this array does not have.
+ *
+ * The fourth group, `player`, is deliberately absent: `PlayerProperties` shares `fileName` and
+ * `imgSrc`/`imgFileName` with genuine root properties of six element types, so skipping its members
+ * wholesale would stop those from being filled. Its 16 members from GLOBAL_DEFAULTS therefore still
+ * reach every element's root. Filed separately.
+ */
+export const NESTED_GROUP_KEYS = [
+  'xPosition', 'yPosition', 'gridColumn', 'gridColumnRange', 'gridRow', 'gridRowRange',
+  'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'zIndex',
+  'width', 'height', 'isWidthFixed', 'isHeightFixed', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
+  'fontColor', 'fontSize', 'bold', 'italic', 'underline',
+  'borderWidth', 'borderColor', 'borderStyle', 'borderRadius',
+  'backgroundColor', 'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
+  'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
+] as const satisfies readonly NestedGroupProperty[];
+
+type UnlistedGroupKey = Exclude<NestedGroupProperty, typeof NESTED_GROUP_KEYS[number]>;
+export type NestedGroupKeysAreListed = AssertNever<UnlistedGroupKey>;
+
 export interface FontStyles {
   fontColor: string;
-  font: string;
   fontSize: number;
   bold: boolean;
   italic: boolean;
@@ -159,7 +213,6 @@ export abstract class PropertyGroupValidators {
   static isValidFontStyles(blueprint: FontStyles): boolean {
     if (!blueprint) return false;
     return blueprint.fontColor !== undefined &&
-      blueprint.font !== undefined &&
       blueprint.fontSize !== undefined &&
       blueprint.bold !== undefined &&
       blueprint.italic !== undefined &&
@@ -236,7 +289,6 @@ export abstract class PropertyGroupGenerators {
     const d = defaults as Partial<FontStyles>;
     return {
       fontColor: d.fontColor !== undefined ? d.fontColor : GLOBAL_DEFAULTS.fontColor,
-      font: d.font !== undefined ? d.font : GLOBAL_DEFAULTS.font,
       fontSize: d.fontSize !== undefined ? d.fontSize : GLOBAL_DEFAULTS.fontSize,
       bold: d.bold !== undefined ? d.bold : GLOBAL_DEFAULTS.bold,
       italic: d.italic !== undefined ? d.italic : GLOBAL_DEFAULTS.italic,
@@ -251,6 +303,28 @@ export abstract class PropertyGroupGenerators {
       borderStyle: defaults.borderStyle !== undefined ? defaults.borderStyle : 'solid',
       borderRadius: defaults.borderRadius !== undefined ? defaults.borderRadius : 0
     };
+  }
+
+  /**
+   * Merges a stored styling group into the one the element built for itself, keeping ONLY the keys
+   * that own group has -- so the class field initializer is the whitelist for `styling`.
+   *
+   * That is the one place where the set of styling keys can be decided without a list to maintain:
+   * the initializer is checked against the element's declared styling type by the compiler, in the
+   * same file, right above it. An element therefore cannot lose a declared key on load (#1177,
+   * #1185), and a key the model no longer knows cannot ride along in a saved unit -- the two
+   * failure directions that four hand-kept lists in `ModelNormalizer` used to arbitrate (#1187).
+   *
+   * `undefined` is the only value that loses to the element's own: `false` and `0` are styling values
+   * in their own right.
+   */
+  static mergeStyling<T extends object>(own: T, stored?: Stylings): T {
+    const storedGroup = stored as Record<string, unknown> | undefined;
+    return Object.fromEntries(
+      Object.entries(own).map(([key, value]) => [
+        key, storedGroup?.[key] !== undefined ? storedGroup[key] : value
+      ])
+    ) as T;
   }
 
   static generatePlayerProps(properties: Partial<PlayerProperties> = {}): PlayerProperties {

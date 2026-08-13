@@ -98,7 +98,7 @@ describe('TextAreaMathComponent', () => {
       dimensions: PropertyGroupGenerators.generateDimensionProps({ width: 100, height: 100 }),
       position: PropertyGroupGenerators.generatePositionProps(),
       styling: {
-        ...PropertyGroupGenerators.generateFontStylingProps({ fontSize: 12, font: 'Arial', fontColor: 'black' }),
+        ...PropertyGroupGenerators.generateFontStylingProps({ fontSize: 12, fontColor: 'black' }),
         backgroundColor: 'white',
         lineHeight: 135
       }

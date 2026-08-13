@@ -28,7 +28,7 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   constructor(element?: Partial<WidgetPeriodicTableProperties>, idService?: AbstractIDService) {
     super({ type: 'widget-periodic-table', ...element }, idService);
     if (isWidgetPeriodicTableProperties(element)) {
-      if (element.styling !== undefined) this.styling = { ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
       if (element.showInfoOrder !== undefined) this.showInfoOrder = element.showInfoOrder;
       if (element.showInfoENeg !== undefined) this.showInfoENeg = element.showInfoENeg;
       if (element.showInfoAMass !== undefined) this.showInfoAMass = element.showInfoAMass;

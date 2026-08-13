@@ -39,14 +39,14 @@ import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import type {
-  BasicStyles, BorderStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
+  AssertNever, BasicStyles, DimensionProperties, NestedGroupProperty, PlayerProperties, PositionProperties,
+  Stylings
 } from 'common/models/elements/property-group-interfaces';
 import type { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 
 export const GLOBAL_DEFAULTS = {
   fontSize: 20,
   fontColor: '#000000',
-  font: 'NunitoSans',
   bold: false,
   italic: false,
   underline: false,
@@ -84,6 +84,26 @@ UIElementProperties & PositionProperties & DimensionProperties & BasicStyles & P
  * to exactly those (#1185 review). */
 type StylingOf<P> = P extends { styling?: infer S } ? NonNullable<S> : never;
 
+/* Named keys only. An index signature on a styling type would make the Partial<> below accept any
+ * key of the right value type, which switches off the excess-property check this table exists for:
+ * giving one element's styling an `& Record<string, unknown>` makes three TS2353 errors disappear on
+ * the spot -- a junk key in an ELEMENT_DEFAULTS entry and two invented arguments to the property
+ * group generators (#1187). The shared styling groups are additionally asserted to be closed, in
+ * property-group-interfaces.ts, where an error can name the group. */
+type NamedKeysOnly<T> = {
+  [K in keyof T as string extends K ? never : (number extends K ? never : K)]: T[K]
+};
+
+/* An element that declares no styling of its own -- image, geometry, trigger, hotspot-image,
+ * marking-panel, likert-row -- gets the group the BASE class builds, and the base class builds it from
+ * GLOBAL_DEFAULTS: it never reads the element's own entry. A styling key in the entry of one of those
+ * six would therefore reach neither the root (the normalizer leaves group members to the generators)
+ * nor the group. It would evaporate, silently. This turns it into a compile error instead.
+ *
+ * For the 24 elements that do declare their styling the compiler already covers this from the other
+ * side: the declared field type demands that the class initializer wire the key up (#1187 review). */
+type DeclaredStylingOf<P> = Stylings extends StylingOf<P> ? Record<never, never> : StylingOf<P>;
+
 /* The defaults table is FLAT while the Properties interfaces nest position,
  * dimensions and styling: the PropertyGroupGenerators pick their keys straight
  * out of an element's defaults record. FlatDefaults mirrors that reading
@@ -96,7 +116,7 @@ type FlatDefaults<P> =
   Partial<Omit<P, 'type' | 'position' | 'dimensions' | 'styling' | 'player'>> &
   Partial<PositionProperties> &
   Partial<DimensionProperties> &
-  Partial<StylingOf<P>> &
+  Partial<NamedKeysOnly<DeclaredStylingOf<P>>> &
   (P extends { player: infer PL } ? Partial<PL> : unknown);
 
 interface ElementPropertiesMap {
@@ -146,36 +166,31 @@ type ElementDefaultsMap = { [K in UIElementType]: FlatDefaults<ElementProperties
  * at all, is not assignable to any member. */
 export type ElementDefaultsEntry = ElementDefaultsMap[UIElementType];
 
-/* Which styling keys exist beyond BasicStyles and BorderStyles. The list itself
- * stays written out; what the types do is CHECK it against the element
- * interfaces, in both directions. ModelNormalizer rebuilds the styling group
- * from scratch and carries over exactly the listed keys, so a key the list does
- * not know is stripped from every loaded unit even though the interface and the
- * table both declare it (#1185).
+/* Which styling keys an element keeps needs no catalogue here: the element's class
+ * builds its own styling group and the compiler checks that group against the
+ * declared type, in the same file (see PropertyGroupGenerators.mergeStyling).
  *
- * Being listed is necessary but NOT sufficient: the carry-over is additionally
- * gated on the element's own ELEMENT_DEFAULTS entry holding that key, and no
- * type enforces this half -- an element whose entry lacks the key still loses
- * stored values on load. */
-type KeysOf<T> = T extends unknown ? keyof T : never;
-type AllElementStylingKeys = KeysOf<StylingOf<ElementPropertiesMap[UIElementType]>>;
-type ExtraStylingKey = Exclude<AllElementStylingKeys, keyof BasicStyles | keyof BorderStyles>;
+ * What no local check can see is whether the EDITOR can reach a declared key.
+ * `Stylings` is the type its write path is keyed on (setStyleProperty,
+ * commitStyle), so a styling key outside it would be a value the panel displays
+ * and can never change. The assertion below has no runtime value and names the
+ * offending key (#1185, #1187). */
+type UnwritableStylingKey = {
+  [K in UIElementType]: Exclude<keyof NamedKeysOnly<StylingOf<ElementPropertiesMap[K]>>, keyof Stylings>
+}[UIElementType];
+export type ElementStylingIsWritable = AssertNever<UnwritableStylingKey>;
 
-export const EXTRA_STYLING_KEYS = [
-  'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
-  'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
-] as const satisfies readonly ExtraStylingKey[];
-
-/* Two type-level assertions, no runtime value: the first fails to compile when
- * an element declares an extra styling key the list omits, naming it; the second
- * when a listed key is unknown to `Stylings`, which is the type the editor's
- * write path is keyed on (setStyleProperty, commitStyle) -- a key the normalizer
- * carries but the panel cannot set would be preserved and unreachable. */
-type AssertNever<T extends never> = T;
-type UnlistedStylingKey = Exclude<ExtraStylingKey, typeof EXTRA_STYLING_KEYS[number]>;
-type UnwritableStylingKey = Exclude<typeof EXTRA_STYLING_KEYS[number], keyof Stylings>;
-export type ExtraStylingKeysAreListed = AssertNever<UnlistedStylingKey>;
-export type ExtraStylingKeysAreWritable = AssertNever<UnwritableStylingKey>;
+/* ModelNormalizer fills an element's own properties from the flat defaults entry and skips the group
+ * members (NESTED_GROUP_KEYS), which is only safe as long as no element declares an own root property
+ * that shares a name with a group member -- such a property would silently stop being filled. Nothing
+ * about the model prevents such a name, so this states that none exists, and names the offender if one
+ * appears (#1187). */
+type RootPropertyShadowingAGroup = {
+  [K in UIElementType]: Extract<
+  keyof Omit<ElementPropertiesMap[K], 'type' | 'position' | 'dimensions' | 'styling' | 'player'>,
+  NestedGroupProperty>
+}[UIElementType];
+export type NoRootPropertyShadowsAGroup = AssertNever<RootPropertyShadowingAGroup>;
 
 export const ELEMENT_DEFAULTS = {
   text: {

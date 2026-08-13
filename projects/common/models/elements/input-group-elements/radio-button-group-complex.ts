@@ -40,7 +40,7 @@ export class RadioButtonGroupComplexElement extends InputElement
       if (element.itemsPerRow !== undefined) this.itemsPerRow = element.itemsPerRow;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at RadioButtonGroupComplex instantiation', element);
     }

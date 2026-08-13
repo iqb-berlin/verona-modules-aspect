@@ -1,6 +1,7 @@
-import { ELEMENT_DEFAULTS, EXTRA_STYLING_KEYS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
+import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
+  DimensionProperties, NESTED_GROUP_KEYS, NestedGroupProperty, PlayerProperties, PositionProperties,
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { KeyInputElementProperties, TextInputElementProperties } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
@@ -21,10 +22,6 @@ const INPUT_ELEMENT_TYPES: UIElementType[] = [
   'likert-row',
   'math-field',
   'text-area-math'
-];
-
-const BORDER_ELEMENT_TYPES: UIElementType[] = [
-  'button', 'frame', 'table', 'widget-molecule-editor', 'widget-periodic-table'
 ];
 
 export class ModelNormalizer {
@@ -95,7 +92,17 @@ export class ModelNormalizer {
     const defaults: Record<string, unknown> = { ...GLOBAL_DEFAULTS, ...(ELEMENT_DEFAULTS[type] || {}) };
     const normalized: Record<string, unknown> = { ...element };
 
+    /* 0. Own properties from the flat defaults entry. The group members in that entry belong to
+       `position`, `dimensions` and `styling`, and the generators below pick them out of `defaults`
+       themselves -- writing them here as well gave every element a second `width`, `fontSize` and
+       `lineHeight` on its root, next to the group that holds the value anything reads (#1187). No
+       element declares an own root property by a group member's name; that is asserted in
+       element-registry.ts, so the skip cannot swallow one.
+
+       Object defaults are cloned: the table is module state, and an element holding its object moves
+       the default for every element of that type on the first in-place write (#1184). */
     Object.keys(defaults).forEach(key => {
+      if (NESTED_GROUP_KEYS.includes(key as NestedGroupProperty)) return;
       if (normalized[key] === undefined) {
         normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ?
           structuredClone(defaults[key]) : defaults[key];
@@ -150,39 +157,14 @@ export class ModelNormalizer {
       ...filteredPosition
     } as Partial<PositionProperties>);
 
-    const currentStyling = (normalized.styling as Record<string, unknown>) || {};
-    const filteredStyling = Object.fromEntries(
-      Object.entries(currentStyling).filter(([key, v]) => key && v !== undefined)
-    );
-    const stylingProps = {
-      ...PropertyGroupGenerators.generateBasicStyleProps({
-        ...defaults,
-        ...filteredStyling
-      } as Stylings),
-      ...(BORDER_ELEMENT_TYPES.includes(type) &&
-        PropertyGroupGenerators.generateBorderStylingProps({
-          ...defaults,
-          ...filteredStyling
-        } as Stylings))
-    };
-
-    // Special handling for extra styling properties like lineHeight and
-    // itemBackgroundColor. EXTRA_STYLING_KEYS is checked against the element
-    // interfaces, so a newly declared extra styling key cannot go unlisted -- but
-    // mind the second gate on this line: a listed key whose element defaults
-    // entry has no value for it is still dropped from the stored styling, and no
-    // type catches that (#1185).
-    // This is the one place that hands a default out by reference. All eight listed
-    // values are scalars, so nothing is shared; an object-valued one would leak and
-    // is caught by the identity sweep in the spec, not by a clone here (#1184).
-    EXTRA_STYLING_KEYS.forEach(key => {
-      if (defaults[key] !== undefined) {
-        (stylingProps as Record<string, unknown>)[key] =
-          filteredStyling[key] !== undefined ? filteredStyling[key] : defaults[key];
-      }
-    });
-
-    normalized.styling = stylingProps;
+    /* The styling group is NOT built here, and deliberately so: which keys an element has is decided
+       by the group its class builds for itself, which the compiler checks against the element's
+       declared styling type (see PropertyGroupGenerators.mergeStyling). Rebuilding it here meant
+       deciding the same question from four hand-kept lists, without the declaration at hand -- and
+       getting it wrong in both directions: a stored `radio` lineHeight was dropped because no list
+       named it (#1177, #1185), while `frame`, `audio` and `video` were handed six font keys their
+       styling does not declare (#1187). Stored styling passes through untouched; the constructors
+       fill what is missing from ELEMENT_DEFAULTS and drop what the element does not declare. */
 
     // Player properties
     // We only generate them if they are either already present or if the element
@@ -214,23 +196,11 @@ export class ModelNormalizer {
       };
     }
 
-    // 5. Top-level properties
-    // We fill in all other defaults from the registry that aren't part of the groups above.
-    Object.keys(defaults).forEach(key => {
-      const groupProps = [
-        'width', 'height', 'isWidthFixed', 'isHeightFixed', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
-        'xPosition', 'yPosition', 'gridColumn', 'gridColumnRange', 'gridRow', 'gridRowRange',
-        'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'zIndex',
-        'backgroundColor', 'fontColor', 'font', 'fontSize', 'bold', 'italic', 'underline', 'lineHeight'
-      ];
-      if (groupProps.includes(key)) return;
-
-      if (normalized[key] === undefined) {
-        normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ?
-          JSON.parse(JSON.stringify(defaults[key])) :
-          defaults[key];
-      }
-    });
+    /* A second fill of the same defaults used to stand here, with an exclusion list of its own that
+       named 8 of the 19 styling keys and could not have any effect anyway: step 0 above fills every
+       own property, and nothing between the two removes one. Its list was therefore dead in both
+       halves -- adding a key to it changed nothing, and the keys it forgot were written to the root
+       regardless. Nothing replaces it; step 0 does the whole job (#1187). */
 
     // 6. Recursive normalization for compound elements
     if (type === 'cloze' && normalized.document) {

@@ -1,6 +1,7 @@
 import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
+import { NESTED_GROUP_KEYS } from 'common/models/elements/property-group-interfaces';
 import { ModelNormalizer } from './model-normalizer';
 
 /* Every object reachable from the defaults tables, as identities. Built ONCE from the whole table, not
@@ -81,7 +82,61 @@ describe('ModelNormalizer', () => {
       expect(normalized.isRelevantForPresentationComplete).toBe(true);
       expect(normalized.dimensions).toBeDefined();
       expect(normalized.position).toBeDefined();
-      expect(normalized.styling).toBeDefined();
+    });
+
+    /* The boundary this class no longer crosses (#1187). Position and dimensions are still built
+       here; styling is not, because the element's own class builds that group from its declared
+       type -- and does so with the compiler checking it, which four hand-kept lists here could
+       not. What arrives at the element is pinned in element.spec.ts. */
+    describe('the styling group (#1187)', () => {
+      it('should leave an element without a stored styling group without one', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'text', id: 'el1' });
+
+        expect(normalized.styling).toBeUndefined();
+      });
+
+      it('should pass a stored styling group through untouched', () => {
+        const styling = { lineHeight: 200, keyTheModelNeverKnew: 'x' };
+        const normalized = ModelNormalizer.normalizeElement({ type: 'radio', id: 'r1', styling });
+
+        expect(normalized.styling).toEqual(styling);
+      });
+    });
+
+    /* The flat defaults entry mixes an element's own properties with the members of its position,
+       dimensions and styling groups. Only the own ones belong on the root: the groups take their
+       values from the same entry, so filling both gave every element a second `width`, `fontSize` and
+       `lineHeight` beside the group that holds the value anything reads (#1187).
+
+       Two specs, because two things can go wrong and the compiler only sees one of them: that a group
+       member reaches the root (the sweep), and that the skip swallows an own property whose name looks
+       like a group member's -- `NoRootPropertyShadowsAGroup` states no such name exists today, and the
+       second spec measures the fill for the three entries that carry the most own properties.
+
+       The fourth group, `player`, is NOT covered -- neither by the sweep nor by the assertion. Its 16
+       members from GLOBAL_DEFAULTS still reach the root of every element, `text` and `button`
+       included, beside the group that `generatePlayerProps` builds from the same entry. Extending the
+       skip is not a one-liner: PlayerProperties shares `fileName` with audio, video, image, geometry
+       and hotspot-image and `imgSrc`/`imgFileName` with checkbox, where those are genuine root
+       properties that would stop being filled. Filed separately. */
+    describe('own properties and group members on the root (#1187)', () => {
+      it('should write no position, dimension or styling member onto the element root, for any type', () => {
+        const onRoot = (Object.keys(ELEMENT_DEFAULTS) as UIElementType[]).flatMap(type => {
+          const blueprint: Record<string, unknown> = { type, id: `${type}_1` };
+          if (type === 'likert') blueprint.rows = [];
+          return Object.keys(ModelNormalizer.normalizeElement(blueprint))
+            .filter(key => (NESTED_GROUP_KEYS as readonly string[]).includes(key))
+            .map(key => `${type}.${key}`);
+        });
+
+        expect(onRoot).toEqual([]);
+      });
+
+      it('should still fill the own properties of an element', () => {
+        expect(ModelNormalizer.normalizeElement({ type: 'audio', id: 'a1' }).fileName).toBe('');
+        expect(ModelNormalizer.normalizeElement({ type: 'text', id: 't1' }).markingMode).toBe('selection');
+        expect(ModelNormalizer.normalizeElement({ type: 'frame', id: 'f1' }).hasBorderTop).toBe(true);
+      });
     });
 
     it('should handle math-table specifically', () => {
@@ -96,43 +151,10 @@ describe('ModelNormalizer', () => {
       expect(variableLayoutOptions.isFirstLineUnderlined).toBe(true); // Default backfilled
     });
 
-    /* #1185: the styling group is rebuilt from scratch, so an extra styling key
-       survives a load only because EXTRA_STYLING_KEYS names it. These specs pin
-       both directions the catalogue is responsible for. */
-    describe('extra styling keys (#1185)', () => {
-      it('lifts an extra styling default into the styling group', () => {
-        const normalized = ModelNormalizer.normalizeElement({ type: 'toggle-button', id: 'tb1' });
-        expect((normalized.styling as Record<string, unknown>).selectionColor).toBe('#c9e0e0');
-      });
-
-      it('keeps a stored extra styling value instead of overwriting it with the default', () => {
-        const normalized = ModelNormalizer.normalizeElement({
-          type: 'likert', id: 'l2', rows: [], styling: { lineColoring: false }
-        });
-        expect((normalized.styling as Record<string, unknown>).lineColoring).toBe(false);
-      });
-    });
-
-    /* #1177: the typed defaults table fixed three entries; these specs pin the
-       intended VALUES and the normalizer behavior the types cannot check. */
+    /* #1177: the typed defaults table fixed three entries; this spec pins the
+       intended VALUES the types cannot check. The styling half of #1177 and #1185
+       moved to element.spec.ts with the group itself (#1187). */
     describe('defaults changed with the typed registry (#1177)', () => {
-      it('lifts the radio lineHeight default into styling when the unit has none', () => {
-        const normalized = ModelNormalizer.normalizeElement({ type: 'radio', id: 'r1' });
-        expect((normalized.styling as Record<string, unknown>).lineHeight).toBe(100);
-      });
-
-      it('preserves a stored radio styling.lineHeight instead of dropping it', () => {
-        const normalized = ModelNormalizer.normalizeElement({
-          type: 'radio', id: 'r1', styling: { lineHeight: 200 }
-        });
-        expect((normalized.styling as Record<string, unknown>).lineHeight).toBe(200);
-      });
-
-      it('lifts the spell-correct lineHeight default into styling', () => {
-        const normalized = ModelNormalizer.normalizeElement({ type: 'spell-correct', id: 's1' });
-        expect((normalized.styling as Record<string, unknown>).lineHeight).toBe(135);
-      });
-
       it('no longer backfills the retired rowID key into likert rows', () => {
         const normalized = ModelNormalizer.normalizeElement({ type: 'likert-row', id: 'lr1' });
         expect(normalized.rowID).toBeUndefined();
@@ -186,14 +208,6 @@ describe('ModelNormalizer', () => {
       expect(normalized.requiredWarnMessage).toBeUndefined();
       expect(normalized.readOnly).toBeUndefined();
     });
-
-    it('should add border properties only to specific element types', () => {
-      const button = ModelNormalizer.normalizeElement({ type: 'button', id: 'b1' });
-      const text = ModelNormalizer.normalizeElement({ type: 'text', id: 't1' });
-
-      expect((button.styling as Record<string, unknown>).borderWidth).toBeDefined();
-      expect((text.styling as Record<string, unknown>).borderWidth).toBeUndefined();
-    });
   });
 
   /* #1184: no element may hold an object that ELEMENT_DEFAULTS or GLOBAL_DEFAULTS owns, or an in-place
@@ -210,9 +224,11 @@ describe('ModelNormalizer', () => {
      empty, so the recursion would never run.
 
      Two boundaries. normalizeElement is a production boundary of its own (NormalizationMigration calls
-     it with no constructor involved). createElement is what the editor and player use; today it is
-     equivalent, because the normalizer fills every key and the constructors overwrite their class
-     fields from it -- these sweeps pin that equivalence, which nothing else states. */
+     it with no constructor involved). createElement is what the editor and player use; the two are
+     equivalent for the object identities these sweeps are about, because whatever the normalizer
+     hands out reaches the constructors unchanged -- these sweeps pin that equivalence, which nothing
+     else states. The styling group is no longer part of it: the classes build that themselves
+     (#1187). */
   describe('objects the registry owns (#1184)', () => {
     const PAYLOAD: Partial<Record<UIElementType, Record<string, unknown>>> = {
       cloze: {

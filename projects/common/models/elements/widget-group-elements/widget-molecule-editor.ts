@@ -26,7 +26,7 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
     super({ type: 'widget-molecule-editor', ...element }, idService);
     if (isWidgetMoleculeEditorProperties(element)) {
       if (element.bondingType !== undefined) this.bondingType = element.bondingType;
-      if (element.styling !== undefined) this.styling = { ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
       if (element.state !== undefined) this.state = element.state;
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at WidgetMoleculeEditor instantiation', element);

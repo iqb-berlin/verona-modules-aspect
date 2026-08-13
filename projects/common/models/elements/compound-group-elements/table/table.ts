@@ -63,7 +63,7 @@ export class TableElement extends CompoundElement implements TableProperties {
       if (element.stickyHeader !== undefined) this.stickyHeader = element.stickyHeader;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
-      this.styling = { ...this.styling, ...element.styling } as BasicStyles & BorderStyles;
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Table instantiation', element);
     }

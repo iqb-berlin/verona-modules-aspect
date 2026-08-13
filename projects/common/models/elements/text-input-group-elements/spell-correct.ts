@@ -21,10 +21,10 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['spell-correct']);
 
-  // lineHeight is not part of BasicStyles, but it IS part of this element's
-  // reality: ModelNormalizer lifts it from the defaults into styling on every
-  // load and the editor panel renders it. The interface used to omit it -- the
-  // typed defaults table made that visible (#1177).
+  // lineHeight is not part of BasicStyles, but it IS part of this element's reality: the initializer
+  // below lifts it from the defaults, the editor panel renders it, and a stored value is merged over
+  // it on load. The interface used to omit it -- the typed defaults table made that visible (#1177),
+  // and since #1187 the declared type is what decides the key set, so omitting it would drop it.
   styling: BasicStyles & { lineHeight: number } = {
     ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['spell-correct']),
     lineHeight: ELEMENT_DEFAULTS['spell-correct'].lineHeight
@@ -38,7 +38,7 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
     if (isSpellCorrectProperties(element)) {
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
-      this.styling = { ...this.styling, ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at SpellCorrect instantiation', element);
     }

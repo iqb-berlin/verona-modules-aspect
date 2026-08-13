@@ -128,12 +128,6 @@
              [value]="styles.fontColor"
              (input)="elementService.updateSelectedElementsStyleProperty('fontColor', fontColorInput.value)">
 
-<!--      <mat-form-field *ngIf="styles.font !== undefined"-->
-<!--                      appearance="fill">-->
-<!--        <mat-label>{{'propertiesPanel.font' | translate }}</mat-label>-->
-<!--        <input matInput type="text" [value]="styles.font" disabled-->
-<!--               (input)="elementService.updateSelectedElementsStyleProperty('font', $any($event.target).value)">-->
-<!--      </mat-form-field>-->
       <mat-form-field *ngIf="styles.fontSize !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.fontSize' | translate }}</mat-label>

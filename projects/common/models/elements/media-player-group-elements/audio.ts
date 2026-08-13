@@ -31,7 +31,7 @@ export class AudioElement extends PlayerElement implements AudioProperties {
       this.fileName = element.fileName;
       this.position = PropertyGroupGenerators.generatePositionProps(element.position);
       this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
-      this.styling = { ...element.styling };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Audio instantiation', element);
     }

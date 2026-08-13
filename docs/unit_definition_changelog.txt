@@ -338,3 +338,25 @@ iqb-aspect-definition@1.0.0
   element now leaves no styling tab, because the merge keeps only what the whole
   selection shares. That was the behaviour of the 2.x line as well; in between, the
   text's font size stayed editable while an image was co-selected.
+
+(#1230, no version raise -- styling members are retired, none is added)
+- The two widget elements, molecule editor and periodic table, no longer carry font and
+  border styling. They declared eleven styling members and applied two: the background
+  colour and the font colour of the button that opens the widget. Font size, bold,
+  italic, underline and the four border members had controls in the inspector that
+  rendered nothing -- the borders around the periodic table's element squares come from
+  the component's stylesheet, not from the model. Sixteen controls disappear, eight per
+  widget. Stored values for them are dropped on the next load. No RELEASED version ever
+  displayed them: the buttons did bind these eight values while they were mat-buttons,
+  between 2026-02-26 (c8357781) and 2026-05-06 (fce5af06), but that window closed before
+  the first beta -- both 3.0.0-beta tags already carry the mini-fab buttons with two
+  colours. Both elements were added after the 2.x line, so unlike #1226 there is no
+  earlier released behaviour to restore -- the rule is the same either way: no control
+  for something the element cannot do.
+  One editor detail follows, as it did in #1226: a widget selected together with a text
+  element used to offer font size, bold, italic and underline, and those writes reached
+  the TEXT element, which renders them. For that mixed selection only the two colours
+  remain, so the text's font size is no longer editable while a widget is co-selected.
+- Also gone, invisible either way: both widget templates bound `vertical-align` to
+  `labelAlignment`, a property only the button element declares. The value was always
+  undefined.

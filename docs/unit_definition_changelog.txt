@@ -362,7 +362,7 @@ iqb-aspect-definition@1.0.0
   undefined.
 
 (#1232, no version raise -- a styling member is retired, none is added)
-- The spell correction element no longer carries styling.lineHeight. It applies six
+- The spell correction element no longer carries styling.lineHeight. It applies five
   styling values -- background colour, font colour, font size, bold, italic, underline --
   and never a line height: it is a single-line input with a button under it. Of the twelve
   element types with a lineHeight default it was the only one that rendered nothing from
@@ -373,3 +373,24 @@ iqb-aspect-definition@1.0.0
   while the property was declared, and is what made its uselessness visible. No component
   rendered it in any of those states. Stored values are dropped on the next load; nothing
   displayed them.
+
+(#1233, no version raise -- four members are retired, none is added)
+- TextFieldSimpleElement no longer has `clearable`. It offered a checkbox for a clear
+  button the component never rendered; in the released 2.x line the property appears in
+  model files only, in no component. The full text field keeps its clear button. Should
+  the simple one want it, that is a feature for a later release rather than a reason to
+  keep offering the checkbox.
+- HotspotImageElement and LikertRowElement no longer have `label`. The property comes
+  from the InputElement base class, so every input element carries one; ten of the fifteen
+  render it. These two never did -- the inspector offered a text box whose content
+  appeared nowhere, and the likert row has its own `rowLabel` for what it does show. Both
+  now delete the inherited property in their constructor, the way TextFieldSimple,
+  ToggleButton and DropList already did: blanking it instead would leave an own key, which
+  the panel's merge reports as a diverging value and the field comes back for a mixed
+  selection.
+- RadioButtonGroupComplexElement (radio-group-images) no longer has styling.backgroundColor.
+  Its component applies font colour, size, bold, italic and underline and never a
+  background; the declaration is FontStyles now. In the released line the key appears for
+  this element only in a test fixture.
+- Stored values for all four are dropped on the next load, and nothing ever displayed
+  them. No migration step.

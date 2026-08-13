@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
-  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
+  FontStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
@@ -26,8 +26,11 @@ export class RadioButtonGroupComplexElement extends InputElement
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['radio-group-images']);
 
-  styling: BasicStyles = PropertyGroupGenerators
-    .generateBasicStyleProps(ELEMENT_DEFAULTS['radio-group-images']);
+  /* Font styling only: the component applies fontColor, fontSize, bold, italic and underline, and
+     never a background -- the inspector offered a colour field that changed nothing, in the
+     released 2.x line as well (#1233). */
+  styling: FontStyles = PropertyGroupGenerators
+    .generateFontStylingProps(ELEMENT_DEFAULTS['radio-group-images']);
 
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';
@@ -80,7 +83,7 @@ export interface RadioButtonGroupComplexProperties extends InputElementPropertie
   itemsPerRow: number | null;
   position: PositionProperties;
   dimensions: DimensionProperties;
-  styling: BasicStyles;
+  styling: FontStyles;
 }
 
 function isRadioButtonGroupComplexProperties(blueprint?: Partial<RadioButtonGroupComplexProperties>)

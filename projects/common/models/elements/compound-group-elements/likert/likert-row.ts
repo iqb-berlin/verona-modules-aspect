@@ -37,6 +37,9 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
     } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
       throw new InstantiationEror('Error at Likert-Row instantiation', element);
     }
+    /* The row renders `rowLabel`; the label the base class hands to every input element is deleted
+       rather than blanked, so the inspector shows no field for it -- see HotspotImage (#1233). */
+    delete (this as Partial<InputElement>).label;
   }
 
   // eslint-disable-next-line class-methods-use-this

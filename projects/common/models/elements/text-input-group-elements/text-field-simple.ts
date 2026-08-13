@@ -26,7 +26,6 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   isLimitedToMaxLength: boolean = ELEMENT_DEFAULTS['text-field-simple'].isLimitedToMaxLength;
   pattern: string | null = ELEMENT_DEFAULTS['text-field-simple'].pattern;
   patternWarnMessage: string = ELEMENT_DEFAULTS['text-field-simple'].patternWarnMessage;
-  clearable: boolean = ELEMENT_DEFAULTS['text-field-simple'].clearable;
   styling: BasicStyles & {
     lineHeight: number;
   } = {
@@ -53,7 +52,6 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       if (element.isLimitedToMaxLength !== undefined) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
       if (element.pattern !== undefined) this.pattern = element.pattern;
       if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
-      if (element.clearable !== undefined) this.clearable = element.clearable;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
       this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
@@ -88,7 +86,6 @@ export interface TextFieldSimpleProperties extends TextInputElementProperties {
   isLimitedToMaxLength: boolean;
   pattern: string | null;
   patternWarnMessage: string;
-  clearable: boolean;
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: BasicStyles & {

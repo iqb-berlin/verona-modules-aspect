@@ -872,7 +872,6 @@ input[text] "propertiesPanel.id" = hotspot-image
 text "originalFileName" = unknown
 button "upload_file"
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
@@ -901,7 +900,6 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" =  [merged]
 button "upload_file"
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -934,7 +932,6 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" =  [merged]
 button "upload_file"
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 [propertiesPanel.hotspots]
 button "add"
@@ -951,7 +948,6 @@ input[text] "propertiesPanel.id" = hotspot-image
 text "originalFileName" = unknown
 button "upload_file"
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 [propertiesPanel.hotspots]
 button "add"
@@ -1052,7 +1048,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = likert-row
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
@@ -1078,7 +1073,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
@@ -1108,7 +1102,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 input[number] "propertiesPanel.firstColumnSizeRatio" =  [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1122,7 +1115,6 @@ button "propertiesPanel.deleteElement"`,
 --- tab "element properties" ---
 input[text] "propertiesPanel.id" = likert-row
 [propertiesPanel.inputElement]
-textarea "propertiesPanel.label" = 
 checkbox "propertiesPanel.readOnly" = false
 input[number] "propertiesPanel.firstColumnSizeRatio" = 5
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -1591,7 +1583,6 @@ input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 200
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 checkbox "propertiesPanel.bold" = false
@@ -1633,7 +1624,6 @@ button "align_vertical_top"
 button "align_vertical_bottom"
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" =  [merged]
 input[text] "propertiesPanel.fontColor" =  [merged]
 input[number] "propertiesPanel.fontSize" =  [merged]
 checkbox "propertiesPanel.bold" = indeterminate
@@ -2445,7 +2435,6 @@ checkbox "propertiesPanel.isLimitedToMaxLength" = true (disabled)
 input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
-checkbox "propertiesPanel.clearable" = false
 [propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = false
 checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
@@ -2495,7 +2484,6 @@ checkbox "propertiesPanel.isLimitedToMaxLength" = indeterminate (disabled)
 input[text] "propertiesPanel.maxLengthWarnMessage" =  (disabled) [merged]
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" =  (disabled) [merged]
-checkbox "propertiesPanel.clearable" = indeterminate
 [propertiesPanel.keyboard]
 checkbox "propertiesPanel.showSoftwareKeyboard" = indeterminate
 checkbox "propertiesPanel.hideNativeKeyboard" = indeterminate (disabled)

@@ -257,7 +257,6 @@ export const ELEMENT_DEFAULTS = {
     isLimitedToMaxLength: true,
     pattern: null,
     patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
-    clearable: false,
     backgroundColor: '#f1f1f1',
     width: 100,
     height: 30,

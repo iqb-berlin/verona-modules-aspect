@@ -89,10 +89,27 @@ describe('the styling group an element keeps', () => {
     });
   });
 
-  /* Held by a name rather than only by the editor baseline: the generic sweeps further down compare a
-     group against itself and stay green if the declaration comes back (#1232). */
+  /* Both narrowings below are held by a name rather than only by the editor baseline: the generic
+     sweeps further down compare a group against itself and stay green if a declaration comes back. */
   it('should give spell-correct no line height', () => {
     expect(stylingOf('spell-correct').lineHeight).toBeUndefined();
+  });
+
+  it('should give radio-group-images no background colour', () => {
+    expect(Object.keys(stylingOf('radio-group-images')).sort())
+      .toEqual(['bold', 'fontColor', 'fontSize', 'italic', 'underline']);
+  });
+
+  /* `label` comes from the InputElement base class, so an element that does not render one has to
+     drop it -- and by deleting rather than blanking, or the panel's merge brings the field back for a
+     mixed selection (#1233). */
+  it('should leave no label on the elements that render none', () => {
+    (['hotspot-image', 'likert-row', 'text-field-simple', 'toggle-button', 'drop-list'] as UIElementType[])
+      .forEach(type => {
+        const element = ElementFactory.createElement({ type, id: `${type}_1`, alias: `${type}_1` } as
+          unknown as UIElementProperties) as unknown as Record<string, unknown>;
+        expect(Object.prototype.hasOwnProperty.call(element, 'label')).toBe(false);
+      });
   });
 
   it('should keep the border group of a frame and the background of a video', () => {

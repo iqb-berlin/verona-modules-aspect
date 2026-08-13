@@ -58,6 +58,14 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at HotspotImage instantiation', element);
     }
+    /* The base class hands a label to every input element; this one never renders it, and the
+       inspector offers a field for whatever the element HAS. Deleted rather than set to undefined:
+       a field assignment leaves an own enumerable key, and the panel's merge reports an own key with
+       a diverging value as `null`, which brings the box back for a mixed selection (#1233). Same
+       pattern as TextFieldSimple, ToggleButton and DropList. A stored unit may well carry a label
+       for this element -- that is the key being deleted here, which is why HotspotImageProperties
+       still types one. */
+    delete (this as Partial<InputElement>).label;
   }
 
   getVariableInfos(): VariableInfo[] {

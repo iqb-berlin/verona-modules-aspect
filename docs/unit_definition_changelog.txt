@@ -320,3 +320,21 @@ iqb-aspect-definition@1.0.0
   The property stays in stored units and is ignored from now on; it is dropped from the
   styling group on the next load, and no migration step is needed. Should a font choice
   return, it belongs on the unit rather than on each element (#921).
+
+(#1226, no version raise -- a property group is retired, none is added)
+- Image, geometry, trigger, hotspot-image, marking panel and likert row no longer have a
+  styling group. Not one of their components ever read a styling value -- not even the
+  background colour -- but the inspector offered six controls for each of them
+  (background colour, font colour, font size, bold, italic, underline) whose values were
+  stored and never used. In the shipped 2.x line these elements had no styling group
+  either, and therefore no controls: the base class declared it optional and left it
+  unset. The group appeared with the 3.0.0 beta, when normalization started building it
+  for every element, so this restores the released behaviour rather than removing a
+  feature. Values a beta-era unit stored on one of the six are dropped on the next load;
+  nothing rendered them. Newly saved units carry an empty `"styling": {}` for these six.
+  Should a background colour be wanted on an image or a geometry app, that is a feature
+  of its own: the property would have to be USED, rather than offered and ignored.
+  One editor detail follows from it: selecting one of the six together with a styled
+  element now leaves no styling tab, because the merge keeps only what the whole
+  selection shares. That was the behaviour of the 2.x line as well; in between, the
+  text's font size stayed editable while an image was co-selected.

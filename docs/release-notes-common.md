@@ -10,7 +10,7 @@ Allgemein
   - Moleküleditor und Periodensystem
 
 ### Änderungen
-- Update auf Angular 20.3.x und zugehörige Systemabhängigkeiten
+- Update auf Angular 21.2.x und zugehörige Systemabhängigkeiten
 - Vereinheitlichung der internen Dateistruktur zur Verbesserung der Wartbarkeit
 
 ## editor/2.12.5+player/2.12.5

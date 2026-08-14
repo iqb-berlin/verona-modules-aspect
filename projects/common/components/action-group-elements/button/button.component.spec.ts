@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonElement, ButtonProperties } from 'common/models/elements/action-group-elements/button';
 import { TooltipPosition } from 'common/models/ui-element-interfaces';
-import { SafeResourceUrlPipe } from 'common/pipes/safe-resource-url.pipe';
 import { ButtonComponent } from './button.component';
 
 @Directive({
@@ -24,8 +23,7 @@ describe('ButtonComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         ButtonComponent,
-        MockPointerEventTooltipDirective,
-        SafeResourceUrlPipe
+        MockPointerEventTooltipDirective
       ],
       imports: [
         MatButtonModule,
@@ -93,10 +91,14 @@ describe('ButtonComponent', () => {
   });
 
   it('should render an image input when imageSrc is set', () => {
-    component.elementModel.imageSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    const imageSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    component.elementModel.imageSrc = imageSrc;
     fixture.detectChanges();
     const imageInput = fixture.nativeElement.querySelector('input[type="image"]') as HTMLInputElement;
     expect(imageInput).not.toBeNull();
     expect(fixture.nativeElement.querySelector('button')).toBeNull();
+    // Asserting that the input exists is not enough: it renders either way, and a src that
+    // Angular refuses to unwrap ends up as the sanitizer's complaint in the attribute.
+    expect(imageInput.getAttribute('src')).toBe(imageSrc);
   });
 });

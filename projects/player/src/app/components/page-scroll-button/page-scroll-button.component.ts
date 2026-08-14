@@ -14,8 +14,10 @@ import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface
 })
 export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
   @HostListener('scroll', ['$event.target'])
-  onScroll(element: HTMLElement) {
-    this.checkScrollPosition(element);
+  onScroll(target: EventTarget | null) {
+    if (target instanceof HTMLElement) {
+      this.checkScrollPosition(target);
+    }
   }
 
   @HostListener('scrollend')

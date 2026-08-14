@@ -58,6 +58,20 @@ describe('TooltipEventTooltipDirective', () => {
     expect(document.body.querySelector('aspect-tooltip')).toBeNull();
   });
 
+  it('should not show a tooltip when the data attributes behind the detail are absent', () => {
+    childElement.dispatchEvent(new CustomEvent(
+      'pointerDownTooltip',
+      { detail: { tooltipText: null, tooltipPosition: null }, bubbles: true }
+    ));
+    expect(document.body.querySelector('aspect-tooltip')).toBeNull();
+  });
+
+  it('should ignore an event that carries no detail at all', () => {
+    expect(() => childElement.dispatchEvent(new Event('pointerDownTooltip', { bubbles: true })))
+      .not.toThrow();
+    expect(document.body.querySelector('aspect-tooltip')).toBeNull();
+  });
+
   it('should hide the tooltip on mouseLeaveTooltip', () => {
     childElement.dispatchEvent(createTooltipEvent('pointerDownTooltip', 'text from event'));
     fixture.detectChanges();

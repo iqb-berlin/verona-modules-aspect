@@ -34,7 +34,7 @@ import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.m
 import {
   PropertiesPanelModule
 } from 'editor/src/app/modules/properties-panel/properties-panel.module';
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin, OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -249,6 +249,10 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     MatChipsModule
   ],
   providers: [
+    // Keeps overlays in the global container. Since CDK 21 they render through the native
+    // popover API next to their trigger instead, which the e2e suite addresses through
+    // '.cdk-overlay-container' throughout (#986).
+    { provide: OVERLAY_DEFAULT_CONFIG, useValue: { usePopover: false } },
     {
       provide: APIService,
       useExisting: VeronaAPIService

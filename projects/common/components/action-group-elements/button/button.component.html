@@ -46,7 +46,7 @@
 <input *ngIf="elementModel.imageSrc"
        type="image"
        class="full-size image"
-       [src]="elementModel.imageSrc | safeResourceUrl"
+       [src]="elementModel.imageSrc"
        [alt]="'imageNotFound' | translate"
        pointerEventTooltip
        [tooltipPosition]="elementModel.tooltipPosition"

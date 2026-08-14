@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayModule, OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { SharedModule, APIService } from 'common/shared.module';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
@@ -146,6 +146,11 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     PrintModule
   ],
   providers: [
+    // Keeps overlays in the global container. Since CDK 21 they render through the native
+    // popover API next to their trigger instead, which puts a select panel or a tooltip
+    // inside the component tree, where it inherits font, colour and line height from
+    // whatever surrounds it (#986).
+    { provide: OVERLAY_DEFAULT_CONFIG, useValue: { usePopover: false } },
     { provide: APIService, useExisting: MetaDataService },
     { provide: ErrorHandler, useClass: ErrorService }
   ]

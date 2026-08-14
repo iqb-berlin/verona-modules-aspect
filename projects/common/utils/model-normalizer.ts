@@ -24,6 +24,14 @@ const INPUT_ELEMENT_TYPES: UIElementType[] = [
   'text-area-math'
 ];
 
+/* Exported because the values of the keyboard properties are decided by ELEMENT_DEFAULTS for every
+   type in this list, while `generateKeyInputProps` keeps a `false` fallback for whoever does not
+   name them - the pair that produced #1235. `model-normalizer.spec.ts` holds the list to the
+   registry. */
+export const KEYBOARD_TYPES: UIElementType[] = [
+  'text-field', 'text-area', 'spell-correct', 'text-field-simple', 'text-area-math', 'math-table'
+];
+
 export class ModelNormalizer {
   static normalizeUnit(unit: Record<string, unknown>): Record<string, unknown> {
     const normalized = { ...unit };
@@ -176,10 +184,7 @@ export class ModelNormalizer {
       } as Partial<PlayerProperties>);
     }
 
-    const keyboardTypes: UIElementType[] = [
-      'text-field', 'text-area', 'spell-correct', 'text-field-simple', 'text-area-math', 'math-table'
-    ];
-    if (keyboardTypes.includes(type as UIElementType)) {
+    if (KEYBOARD_TYPES.includes(type as UIElementType)) {
       const keyboardProps = (type === 'math-table') ?
         PropertyGroupGenerators.generateKeyInputProps(normalized as unknown as Partial<KeyInputElementProperties>) :
         PropertyGroupGenerators.generateTextInputProps(

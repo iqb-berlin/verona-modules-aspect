@@ -91,14 +91,12 @@ describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: fa
     it('creates a text field with software keyboard (Page 6)', () => {
       addNewPage();
       addTextField('Tastatur einblenden');
-      setCheckbox('Tastatur einblenden');
+      setCheckbox('Tastatur einblenden', true);
     });
 
     it('creates a text field with software keyboard + numbers input assistance (Page 6)', () => {
       addTextField('Tastatur & Eingabehilfe');
-      setCheckbox('Tastatur einblenden');
-      setInputAssistance('Ziffern', 'schwebend');
-      setCheckbox('Tastatur mit Eingabehilfe erweitern');
+      setInputAssistance('Ziffern', 'schwebend', undefined, { help: true });
     });
 
     after('saves the unit definition', () => {

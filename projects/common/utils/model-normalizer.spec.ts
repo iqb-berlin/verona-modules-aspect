@@ -2,7 +2,15 @@ import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/elemen
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
 import { NESTED_GROUP_KEYS } from 'common/models/elements/property-group-interfaces';
-import { ModelNormalizer } from './model-normalizer';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/text-input-group-elements/text-field-simple';
+import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
+import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
+import { TextAreaMathElement } from 'common/models/elements/text-input-group-elements/text-area-math';
+import { TextInputElement } from 'common/models/elements/element';
+import { KEYBOARD_TYPES, ModelNormalizer } from './model-normalizer';
 
 /* Every object reachable from the defaults tables, as identities. Built ONCE from the whole table, not
    per element type: a text element holding image's Measurement is just as wrong as one holding its
@@ -189,6 +197,67 @@ describe('ModelNormalizer', () => {
         expect(typeof ELEMENT_DEFAULTS.slider.barStyle).toBe('boolean');
         expect(typeof ELEMENT_DEFAULTS.slider.thumbLabel).toBe('boolean');
       });
+    });
+
+    /* The three switches were `true` up to the 2.12 release and reached a new element from the class
+       field of TextInputElement; the same three sat in PropertyGroupGenerators with a `false`
+       fallback. Merging both into one flat table let the fallback win, and every text input was
+       created with its keyboard off (#1235). math-table is the counter-case: it declared `false`
+       for itself back then and has to keep it. */
+    describe('the keyboard switches of the text inputs (#1235)', () => {
+      const KEYBOARD_ON = ['text-field', 'text-field-simple', 'text-area', 'spell-correct', 'text-area-math'];
+      const SWITCHES = ['showSoftwareKeyboard', 'addInputAssistanceToKeyboard', 'hideNativeKeyboard'];
+      const KEYBOARD_ON_CONSTRUCTORS: [string, () => TextInputElement][] = [
+        ['text-field', () => new TextFieldElement({ type: 'text-field', id: 'tf_2' })],
+        ['text-field-simple', () => new TextFieldSimpleElement({ type: 'text-field-simple', id: 'tfs_2' })],
+        /* rowCount is what makes the blueprint pass this one's type guard - without it the
+           constructor throws under `strictInstantiation` instead of reaching its class fields. */
+        ['text-area', () => new TextAreaElement({ type: 'text-area', id: 'ta_2', rowCount: 3 })],
+        ['spell-correct', () => new SpellCorrectElement({ type: 'spell-correct', id: 'sc_2' })],
+        ['text-area-math', () => new TextAreaMathElement({ type: 'text-area-math', id: 'tam_2' })]
+      ];
+
+      it.each(KEYBOARD_ON)('should create %s with its keyboard on', type => {
+        const normalized = ModelNormalizer.normalizeElement({ type, id: `${type}_1` });
+
+        expect(normalized.showSoftwareKeyboard).toBe(true);
+        expect(normalized.addInputAssistanceToKeyboard).toBe(true);
+        expect(normalized.hideNativeKeyboard).toBe(true);
+      });
+
+      it('should leave the math table without a keyboard', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'math-table', id: 'mt1' });
+
+        expect(normalized.showSoftwareKeyboard).toBe(false);
+        expect(normalized.addInputAssistanceToKeyboard).toBe(false);
+        expect(normalized.hideNativeKeyboard).toBe(false);
+      });
+
+      /* text-area-math named none of the three until #1235, so `generateKeyInputProps` decided for
+         it with its `false` fallback - the one type the registry fix alone did not reach. That
+         fallback is still there for whoever does not name them, which is why this walks the list
+         the normalizer itself uses instead of the five above: a type added to it without the three
+         in the registry gets `false` handed to it in silence. */
+      it.each(KEYBOARD_TYPES)('should decide the switches of %s in the registry', type => {
+        SWITCHES.forEach(property => {
+          expect(ELEMENT_DEFAULTS[type as keyof typeof ELEMENT_DEFAULTS]).toHaveProperty(property);
+        });
+      });
+
+      /* The registry is not the only way in: the cloze editor extension builds its child field as
+         `new TextFieldSimpleElement()`, bypassing the normalizer, so a blueprint that does not name
+         the three leaves the class field of TextInputElement deciding. It has to agree with the
+         registry - the two drifting apart is what #1235 was. */
+      it.each(KEYBOARD_ON_CONSTRUCTORS)(
+        'should carry the same values in the class field of %s, for a blueprint without them',
+        (_type, create) => {
+          const element = create();
+
+          expect(element.showSoftwareKeyboard).toBe(true);
+          expect(element.addInputAssistanceToKeyboard).toBe(true);
+          expect(element.hideNativeKeyboard).toBe(true);
+        }
+      );
     });
 
     it('should initialize required properties for input elements', () => {

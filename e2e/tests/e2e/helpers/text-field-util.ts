@@ -60,7 +60,13 @@ export function setInputAssistance(keyboard:string = '', position: string = 'sch
 
   if (options?.disableOtherCharacters) setCheckbox('Bearbeitung anderer Zeichen verhindern');
   if (options?.addArrowButtons) setCheckbox('Pfeiltasten hinzufügen');
-  if (options?.help) setCheckbox('Tastatur mit Eingabehilfe erweitern');
+
+  /* A text field carries the software keyboard by default again (#1235), and a keyboard that also
+     shows the assistance swallows the separate keypad on a touch device - see `shallOpenKeypad`.
+     Callers asking for the keypad therefore get the keyboard switched off; `help` is the opposite
+     request, the assistance as a row of the keyboard. */
+  setCheckbox('Tastatur einblenden', !!options?.help);
+  if (options?.help) setCheckbox('Tastatur mit Eingabehilfe erweitern', true);
 }
 
 export function validateTextField(fieldName: string, input: string, error?: string) {

@@ -61,11 +61,24 @@ export function setLabelText(labelText: string): void {
     .type(labelText);
 }
 
-export function setCheckbox(labelText: string): void {
-  cy.get('aspect-ui-element-properties')
+function checkboxInput(labelText: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.get('aspect-ui-element-properties')
     .contains('mat-checkbox', labelText)
-    .find('[type="checkbox"]')
-    .click();
+    .find('[type="checkbox"]');
+}
+
+/**
+ * Without `checked` this toggles, which is what most callers want. Pass `checked` wherever the
+ * test depends on the resulting state rather than on the change: a blind toggle silently inverts
+ * its meaning as soon as the element default behind the box moves (#1235).
+ */
+export function setCheckbox(labelText: string, checked?: boolean): void {
+  checkboxInput(labelText).then($box => {
+    /* The state is read from a snapshot, so the click has to query again rather than wrap it: the
+       properties panel re-renders on every model update, and a click on the detached element of a
+       previous render fails. */
+    if (checked === undefined || $box.is(':checked') !== checked) checkboxInput(labelText).click();
+  });
 }
 
 export function selectFromDropdown(dropdownName: string, optionName: string, closeOverlay: boolean = false) {

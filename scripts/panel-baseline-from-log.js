@@ -39,7 +39,11 @@ if (!logPath) {
   process.exit(1);
 }
 
-const lines = readFileSync(logPath, 'utf8').split('\n');
+/* The forwarded console arrives with whatever colour codes the reporter added. A marker would then
+   no longer sit at the start of its line, and the codes would travel into the baseline. */
+const ANSI = /\u001b\[[0-9;]*m/g;
+
+const lines = readFileSync(logPath, 'utf8').replace(ANSI, '').split('\n');
 const entries = new Map();
 let key = null;
 let body = [];

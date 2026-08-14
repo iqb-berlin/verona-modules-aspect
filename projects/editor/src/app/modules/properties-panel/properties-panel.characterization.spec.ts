@@ -443,7 +443,11 @@ describe('properties panel characterization', () => {
    * Regenerates `properties-panel.baseline.ts`.
    *
    *   1. change `describe.skip` below to `describe`
-   *   2. `npx ng test editor --include "**\/properties-panel.characterization.spec.ts" > /tmp/b.log`
+   *   2. `npx ng test editor --reporters=default \
+   *          --include "**\/properties-panel.characterization.spec.ts" > /tmp/b.log`
+   *      `--reporters=default` matters wherever Vitest reaches for its `agent` reporter, which
+   *      it does once std-env reports an agent environment: that reporter keeps the console of
+   *      passing tests to itself, and the log then holds no entries at all.
    *   3. `node scripts/panel-baseline-from-log.js /tmp/b.log`
    *   4. skip the group again and read the diff — it is the list of behaviour changes
    *

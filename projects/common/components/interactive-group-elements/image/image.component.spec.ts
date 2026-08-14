@@ -60,6 +60,7 @@ describe('ImageComponent', () => {
     const image = fixture.nativeElement.querySelector('img') as HTMLImageElement;
     expect(image).not.toBeNull();
     expect(image.alt).toBe('Test image');
+    expect(image.getAttribute('src')).toBe(imageSrc);
   });
 
   it('should not render the image container when src is null', () => {

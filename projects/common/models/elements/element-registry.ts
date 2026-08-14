@@ -258,9 +258,10 @@ export const ELEMENT_DEFAULTS = {
     pattern: null,
     patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
     backgroundColor: '#f1f1f1',
-    width: 100,
+    width: 150,
     height: 30,
-    lineHeight: 135,
+    isWidthFixed: true,
+    lineHeight: 100,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',
@@ -322,8 +323,8 @@ export const ELEMENT_DEFAULTS = {
     alignment: 'column',
     strikeOtherOptions: false,
     width: 215,
-    height: 80,
-    lineHeight: 100
+    height: 100,
+    lineHeight: 135
   },
   image: {
     src: null,
@@ -342,7 +343,7 @@ export const ELEMENT_DEFAULTS = {
   audio: {
     src: null,
     fileName: '',
-    width: 180,
+    width: 250,
     height: 90,
     marginBottom: { value: 15, unit: 'px' },
     backgroundColor: '#f1f1f1'
@@ -396,14 +397,15 @@ export const ELEMENT_DEFAULTS = {
     showValues: true,
     // Booleans, and not the strings 'default'/'always' they were between 020d49fc and #1139: both
     // are truthy, so every new slider silently showed the arrow bar and the thumb label, and
-    // ModelNormalizer wrote the string into every unit that lacked the properties. SliderProperties
-    // declares them boolean, but this map is Record<string, unknown> and no compiler was going to
-    // say so - the specs on the defaults do.
+    // ModelNormalizer wrote the string into every unit that lacked the properties. The typing this
+    // table got in #1177 catches that shape. It did not catch what arrived from the same commit one
+    // line below: lineHeight went in as 5, a number in a number's slot, and the template renders it
+    // as `line-height: 5%` (#1235). Values are the specs' job, not the compiler's.
     barStyle: false,
     thumbLabel: false,
     width: 240,
     height: 80,
-    lineHeight: 5
+    lineHeight: 135
   },
   'spell-correct': {
     width: 230,
@@ -555,7 +557,7 @@ export const ELEMENT_DEFAULTS = {
     highlightReceivingDropList: false,
     highlightReceivingDropListColor: '#006064',
     permanentPlaceholders: false,
-    permanentPlaceholdersCC: false,
+    permanentPlaceholdersCC: true,
     backgroundColor: '#ededed',
     itemBackgroundColor: '#c9e0e0'
   },

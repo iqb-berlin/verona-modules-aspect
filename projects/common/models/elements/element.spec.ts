@@ -145,11 +145,13 @@ describe('the styling group an element keeps', () => {
     expect(stylingOf('likert').borderWidth).toBeUndefined();
   });
 
-  /* The VALUES of the extra styling defaults, which no type checks: #1177 turned a plausible-looking
-     100 into the intended one for radio. The spell-correct entry it added at the same time is gone
-     again -- that element renders no line height at all (#1232). */
+  /* The VALUES of the extra styling defaults, which no type checks. Radio's is the cautionary one:
+     the 100 that #1177 wrote into the table was the `undefined || 100` the model had been falling
+     back to, not a value anyone had picked - a radio group rendered 135 up to the 2.12 release, and
+     does again since #1235. The spell-correct entry #1177 added at the same time is gone again --
+     that element renders no line height at all (#1232). */
   it('should lift the extra styling defaults of an element into its group', () => {
-    expect(stylingOf('radio').lineHeight).toBe(100);
+    expect(stylingOf('radio').lineHeight).toBe(135);
     expect(stylingOf('cloze').lineHeight).toBe(180);
     expect(stylingOf('toggle-button').selectionColor).toBe('#c9e0e0');
     expect(stylingOf('drop-list').itemBackgroundColor).toBe('#c9e0e0');

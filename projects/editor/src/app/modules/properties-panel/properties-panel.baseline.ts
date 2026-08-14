@@ -28,7 +28,7 @@ input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
 [propertiesPanel.dimensions]
-input[number] "propertiesPanel.width" = 180
+input[number] "propertiesPanel.width" = 250
 input[number] "propertiesPanel.height" = 90
 
 --- tab "styling" ---
@@ -434,7 +434,7 @@ checkbox "propertiesPanel.onlyOneItem" = false
 checkbox "allowReplacement" = false
 checkbox "propertiesPanel.copyOnDrop" = false
 checkbox "propertiesPanel.permanentPlaceholders" = false
-checkbox "propertiesPanel.permanentPlaceholdersCC" = false (disabled)
+checkbox "propertiesPanel.permanentPlaceholdersCC" = true (disabled)
 checkbox "propertiesPanel.showNumbering" = false
 checkbox "propertiesPanel.startNumberingAtZero" = false (disabled)
 checkbox "propertiesPanel.highlightReceivingDropList" = false
@@ -1690,13 +1690,13 @@ input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
 [propertiesPanel.dimensions]
 input[number] "propertiesPanel.width" = 215
-input[number] "propertiesPanel.height" = 80
+input[number] "propertiesPanel.height" = 100
 
 --- tab "styling" ---
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-input[number] "propertiesPanel.lineHeight" = 100
+input[number] "propertiesPanel.lineHeight" = 135
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
@@ -1813,7 +1813,7 @@ input[number] "propertiesPanel.height" = 80
 input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-input[number] "propertiesPanel.lineHeight" = 5
+input[number] "propertiesPanel.lineHeight" = 135
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
@@ -2445,14 +2445,14 @@ input[number] "propertiesPanel.xPosition" = 0
 input[number] "propertiesPanel.yPosition" = 0
 input[number] "propertiesPanel.zIndex" = 0
 [propertiesPanel.dimensions]
-input[number] "propertiesPanel.width" = 100
+input[number] "propertiesPanel.width" = 150
 input[number] "propertiesPanel.height" = 30
 
 --- tab "styling" ---
 input[text] "propertiesPanel.backgroundColor" = #f1f1f1
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
-input[number] "propertiesPanel.lineHeight" = 135
+input[number] "propertiesPanel.lineHeight" = 100
 checkbox "propertiesPanel.bold" = false
 checkbox "propertiesPanel.italic" = false
 checkbox "propertiesPanel.underline" = false
@@ -2541,8 +2541,8 @@ checkbox "propertiesPanel.readOnly" = false
 input[text] "preset" = 
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
-checkbox "propertiesPanel.isWidthFixed" = false
-input[number] "propertiesPanel.width" = 100 (disabled)
+checkbox "propertiesPanel.isWidthFixed" = true
+input[number] "propertiesPanel.width" = 150
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 

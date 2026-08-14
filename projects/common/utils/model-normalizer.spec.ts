@@ -260,6 +260,50 @@ describe('ModelNormalizer', () => {
       );
     });
 
+    describe('the element values the move to the table changed (#1235)', () => {
+      const at = (element: object, path: string): unknown => path.split('.')
+        .reduce<unknown>((value, key) => (value as Record<string, unknown> | undefined)?.[key], element);
+
+      /* What the element carried in the 2.12 release and lost when the defaults moved into the flat
+         table. Each replacement had a source and none of them was a choice: a generic fallback for
+         audio's width, `undefined || 100` in the radio model, and for slider a 5 that arrived in the
+         same commit as the string booleans of #1139 and renders as `line-height: 5%`. */
+      const RESTORED: [UIElementType, string, unknown][] = [
+        ['slider', 'styling.lineHeight', 135],
+        ['radio', 'styling.lineHeight', 135],
+        ['radio', 'dimensions.height', 100],
+        ['audio', 'dimensions.width', 250],
+        ['drop-list', 'permanentPlaceholdersCC', true],
+        ['text-field-simple', 'styling.lineHeight', 100],
+        ['text-field-simple', 'dimensions.width', 150],
+        ['text-field-simple', 'dimensions.isWidthFixed', true]
+      ];
+
+      /* Values that moved too and are deliberately NOT the 2.12 ones. Only the first was picked in
+         a commit of its own (b496db38 "Fix styles of cloze children"); the other two come from the
+         same transcription as the rows above, where 2.12 had no element value at all but the
+         generic 180 - and a wider radio group and a taller image group are what 3.0 wants. They are
+         asserted so that the next comparison against 2.12 does not "restore" them by mistake. */
+      const KEPT: [UIElementType, string, unknown][] = [
+        ['text-field-simple', 'styling.backgroundColor', '#f1f1f1'],
+        ['radio', 'dimensions.width', 215],
+        ['radio-group-images', 'dimensions.height', 200]
+      ];
+
+      it.each([...RESTORED, ...KEPT])('should create %s with %s = %s', (type, path, value) => {
+        expect(at(ElementFactory.createElement({ type }), path)).toBe(value);
+      });
+
+      /* The other way in, and the one #1235 was about: the normalizer splits the flat entry into the
+         groups when a stored unit does not carry them. Every assertion above goes through the
+         constructors, which would stay green if that split lost a key again (#1187). */
+      it('should split the restored dimensions into the group on the load path', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'text-field-simple', id: 'tfs_3' });
+
+        expect(normalized.dimensions).toMatchObject({ width: 150, isWidthFixed: true });
+      });
+    });
+
     it('should initialize required properties for input elements', () => {
       const partialInputElement = { type: 'dropdown', id: 'dd1' };
       const normalized = ModelNormalizer.normalizeElement(partialInputElement);

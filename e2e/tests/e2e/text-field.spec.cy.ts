@@ -1,6 +1,17 @@
 import { addElement, setPreferencesElement, addNewPage, setCheckbox } from '../util';
 import { setRegexPattern, setPreferences, validateTextField, setInputAssistance } from './helpers/text-field-util';
 
+/* Page 1 is about validation, and its player tests type into the fields. On a field that shows the
+   software keyboard - which every text field does again since #1235 - the first keystroke tells the
+   player a hardware keyboard is present (`detectHardwareKeyboard`), and that verdict holds for the
+   whole session: the keyboard test on page 2 would then find no keyboard. Page 1 therefore says
+   that it wants none. */
+function addTextFieldWithoutKeyboard(label: string, settings?: { readOnly?: boolean, required?: boolean }): void {
+    addElement('Eingabefeld');
+    setPreferencesElement(label, settings);
+    setCheckbox('Tastatur einblenden', false);
+}
+
 describe('Text field element', { testIsolation: false }, () => {
     context('editor', () => {
         before('opens an editor', () => {
@@ -10,37 +21,31 @@ describe('Text field element', { testIsolation: false }, () => {
 
         // ── Page 1: basic tests ──────────────────────────────────────────────────
         it('creates a readonly text field (Page 1)', () => {
-            addElement('Eingabefeld');
-            setPreferencesElement('Eingabefeld mit Schreibschutz', { readOnly: true });
+            addTextFieldWithoutKeyboard('Eingabefeld mit Schreibschutz', { readOnly: true });
         });
 
         it('creates a required text field (Page 1)', () => {
-            addElement('Eingabefeld');
-            setPreferencesElement('Pflichtfeld Eingabefeld', { required: true });
+            addTextFieldWithoutKeyboard('Pflichtfeld Eingabefeld', { required: true });
             cy.get('aspect-ui-element-properties').contains('mat-form-field', 'ID').find('input').clear().type('TF_Required');
         });
 
         it('creates a text field with a minimum length of 3 characters (Page 1)', () => {
-            addElement('Eingabefeld');
-            setPreferencesElement('Minimallänge 3');
+            addTextFieldWithoutKeyboard('Minimallänge 3');
             setPreferences({ minLength: 3 });
         });
 
         it('creates a text field with a maximum length of 10 characters (Page 1)', () => {
-            addElement('Eingabefeld');
-            setPreferencesElement('Maximallänge 10');
+            addTextFieldWithoutKeyboard('Maximallänge 10');
             setPreferences({ maxLength: 10, settings: { isLimitedToMaxLength: true } });
         });
 
         it('creates a text field with clear option (Page 1)', () => {
-            addElement('Eingabefeld');
-            setPreferencesElement('Löschtaste');
+            addTextFieldWithoutKeyboard('Löschtaste');
             setPreferences({ settings: { clearable: true } });
         });
 
         it('creates a text field that accepts only the pattern 1[a-z]000 (Page 1)', () => {
-            addElement('Eingabefeld');
-            setPreferencesElement('1[a-z]000 Muster');
+            addTextFieldWithoutKeyboard('1[a-z]000 Muster');
             setRegexPattern('1[a-z]000');
         });
 
@@ -61,7 +66,7 @@ describe('Text field element', { testIsolation: false }, () => {
         it('creates a text field with software keyboard enabled (Page 2)', () => {
             addElement('Eingabefeld');
             setPreferencesElement('Tastatur Eingabefeld');
-            setCheckbox('Tastatur einblenden');
+            setCheckbox('Tastatur einblenden', true);
         });
 
         after('save an unit definition', () => {

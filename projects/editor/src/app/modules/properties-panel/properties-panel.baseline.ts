@@ -1909,9 +1909,9 @@ checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 [propertiesPanel.keyboard]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = true
+checkbox "propertiesPanel.hideNativeKeyboard" = true (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = true
 [propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -2174,9 +2174,9 @@ checkbox "propertiesPanel.hasAutoHeight" = false
 input[number] "rows" = 2
 select "formulaPreset.title" = [math, symbols, latin, greek]
 [propertiesPanel.keyboard]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = true
+checkbox "propertiesPanel.hideNativeKeyboard" = true (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = true
 [propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -2297,9 +2297,9 @@ input[number] "propertiesPanel.expectedCharactersCount" = 135
 toggle-group [format_align_left, format_align_center, format_align_right]
 select "propertiesPanel.appearance" = outline
 [propertiesPanel.keyboard]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = true
+checkbox "propertiesPanel.hideNativeKeyboard" = true (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = true
 [propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -2432,9 +2432,9 @@ input[text] "propertiesPanel.maxLengthWarnMessage" = Eingabe zu lang (disabled)
 input[text] "propertiesPanel.pattern" = 
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
 [propertiesPanel.keyboard]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = true
+checkbox "propertiesPanel.hideNativeKeyboard" = true (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = true
 [propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -2571,9 +2571,9 @@ input[text] "propertiesPanel.pattern" =
 input[text] "propertiesPanel.patternWarnMessage" = Eingabe entspricht nicht der Vorgabe (disabled)
 checkbox "propertiesPanel.clearable" = false
 [propertiesPanel.keyboard]
-checkbox "propertiesPanel.showSoftwareKeyboard" = false
-checkbox "propertiesPanel.hideNativeKeyboard" = false (disabled)
-checkbox "propertiesPanel.addInputAssistanceToKeyboard" = false (disabled)
+checkbox "propertiesPanel.showSoftwareKeyboard" = true
+checkbox "propertiesPanel.hideNativeKeyboard" = true (disabled)
+checkbox "propertiesPanel.addInputAssistanceToKeyboard" = true
 [propertiesPanel.inputAssistanceGroup]
 select "propertiesPanel.inputAssistance" = <null>
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true

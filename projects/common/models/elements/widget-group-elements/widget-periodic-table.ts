@@ -13,8 +13,8 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
      stylesheet, not from the model. So the declaration says two keys, not eleven: font size, weight,
      slant, underline and the four border members offered controls that did nothing (#1230). */
   styling: { backgroundColor: string; fontColor: string } = {
-    backgroundColor: ELEMENT_DEFAULTS['widget-periodic-table'].backgroundColor,
-    fontColor: ELEMENT_DEFAULTS['widget-periodic-table'].fontColor
+    backgroundColor: ELEMENT_DEFAULTS['widget-periodic-table'].styling.backgroundColor,
+    fontColor: ELEMENT_DEFAULTS['widget-periodic-table'].styling.fontColor
   };
 
   showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoOrder;

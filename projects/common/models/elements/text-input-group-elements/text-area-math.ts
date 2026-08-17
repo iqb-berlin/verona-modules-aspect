@@ -24,16 +24,16 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
   mathKeyboardPresets: MathKeyboardPreset[] = [...ELEMENT_DEFAULTS['text-area-math'].mathKeyboardPresets];
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['text-area-math']);
+    .generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS['text-area-math']);
+    .generateDimensionProps(ELEMENT_DEFAULTS['text-area-math'].dimensions);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area-math']),
-      lineHeight: ELEMENT_DEFAULTS['text-area-math'].lineHeight
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area-math'].styling),
+      lineHeight: ELEMENT_DEFAULTS['text-area-math'].styling.lineHeight
     };
 
   static title: string = 'Formelbereich';

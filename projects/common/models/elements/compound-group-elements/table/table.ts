@@ -30,13 +30,13 @@ export class TableElement extends CompoundElement implements TableProperties {
   headerEnabled: boolean = ELEMENT_DEFAULTS.table.headerEnabled;
   headerRows: TableHeaderCell[][] = [];
   stickyHeader: boolean = ELEMENT_DEFAULTS.table.stickyHeader;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.table);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.table.position);
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.table);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.table.dimensions);
 
   styling: BasicStyles & BorderStyles = {
-    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.table),
-    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.table)
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.table.styling),
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.table.styling)
   };
 
   static title: string = 'Tabelle';

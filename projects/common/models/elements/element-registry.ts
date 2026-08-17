@@ -39,43 +39,57 @@ import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-group-elements/widget-periodic-table';
 import type {
-  AssertNever, BasicStyles, DimensionProperties, NestedGroupProperty, PlayerProperties, PositionProperties,
-  Stylings
+  AssertNever, BasicStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
 } from 'common/models/elements/property-group-interfaces';
-import type { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import type {
+  InputElementProperties, KeyInputElementProperties, TextInputElementProperties
+} from 'common/models/input-element-interfaces';
+import type { UIElementType } from 'common/models/ui-element-interfaces';
 
+/* What a group member falls back to when neither the element's entry nor the stored unit names it.
+ * Grouped like the entries below and like the model, so each generator reads its own section. */
 export const GLOBAL_DEFAULTS = {
-  fontSize: 20,
-  fontColor: '#000000',
-  bold: false,
-  italic: false,
-  underline: false,
-  backgroundColor: 'transparent',
-  width: 180,
-  height: 60,
-  xPosition: 0,
-  yPosition: 0,
-  zIndex: 0,
-  isRelevantForPresentationComplete: undefined,
-  loop: false,
-  startControl: true,
-  pauseControl: false,
-  progressBar: true,
-  interactiveProgressbar: false,
-  volumeControl: true,
-  defaultVolume: 0.8,
-  minVolume: 0.2,
-  muteControl: true,
-  interactiveMuteControl: false,
-  hintLabel: 'Bitte starten',
-  minRuns: 1,
-  maxRuns: 1,
-  showRestRuns: false,
-  showRestTime: true,
-  playbackTime: 0
-} satisfies Partial<
-UIElementProperties & PositionProperties & DimensionProperties & BasicStyles & PlayerProperties
->;
+  position: {
+    xPosition: 0,
+    yPosition: 0,
+    zIndex: 0
+  },
+  dimensions: {
+    width: 180,
+    height: 60
+  },
+  styling: {
+    fontSize: 20,
+    fontColor: '#000000',
+    bold: false,
+    italic: false,
+    underline: false,
+    backgroundColor: 'transparent'
+  },
+  player: {
+    loop: false,
+    startControl: true,
+    pauseControl: false,
+    progressBar: true,
+    interactiveProgressbar: false,
+    volumeControl: true,
+    defaultVolume: 0.8,
+    minVolume: 0.2,
+    muteControl: true,
+    interactiveMuteControl: false,
+    hintLabel: 'Bitte starten',
+    minRuns: 1,
+    maxRuns: 1,
+    showRestRuns: false,
+    showRestTime: true,
+    playbackTime: 0
+  }
+} satisfies {
+  position: Partial<PositionProperties>;
+  dimensions: Partial<DimensionProperties>;
+  styling: Partial<BasicStyles>;
+  player: Partial<PlayerProperties>;
+};
 
 /* An element's styling type, whether the interface declares `styling` as required or leaves it
  * optional -- six elements declare the optional form (`styling?: Record<never, never>`, #1226), and a
@@ -105,20 +119,49 @@ type NamedKeysOnly<T> = {
  * nothing is pinned by a spec, not by a type. */
 type DeclaredStylingOf<P> = Stylings extends StylingOf<P> ? Record<never, never> : StylingOf<P>;
 
-/* The defaults table is FLAT while the Properties interfaces nest position,
- * dimensions and styling: the PropertyGroupGenerators pick their keys straight
- * out of an element's defaults record. FlatDefaults mirrors that reading
- * contract in the type system -- an entry may carry any own property of the
- * element (except the nested group objects and the fixed type discriminator)
- * plus any flattened position/dimension/styling key. Everything else, and
- * every value of the wrong type, is now a compile error instead of data that
- * ModelNormalizer writes into every loaded unit (#1177, #1139). */
-type FlatDefaults<P> =
-  Partial<Omit<P, 'type' | 'position' | 'dimensions' | 'styling' | 'player'>> &
-  Partial<PositionProperties> &
-  Partial<DimensionProperties> &
-  Partial<NamedKeysOnly<DeclaredStylingOf<P>>> &
-  (P extends { player: infer PL } ? Partial<PL> : unknown);
+/* An entry is shaped like the element: its own defaults sit on the entry, the four nested groups in
+ * sections of the same name. Nothing about a key has to be inferred from its NAME -- each generator
+ * is handed its own section, and ModelNormalizer fills the entry's own keys onto the element root.
+ *
+ * The type therefore checks WHERE a default sits, not just its value: `lineHeight` on the entry is an
+ * excess property, and so is an own property inside a group section. Until #1224 the table was flat
+ * and both were the same place, which is what the four parts of one bug class had in common (#1139,
+ * #1177/#1185, #1187, #1223): a name that two groups could claim, or that a hand-kept list forgot,
+ * decided where a value went -- silently, in either direction.
+ *
+ * `player` is the one section whose PRESENCE carries meaning: it is what makes ModelNormalizer build
+ * the group for that type. The model cannot narrow this (`UIElementProperties.player` is optional for
+ * every element, and image has its group through that route rather than through
+ * PlayerElementBlueprint), so which types carry one is pinned by a spec instead. */
+type GroupSection = 'position' | 'dimensions' | 'styling' | 'player';
+
+type GroupedDefaults<P> =
+  Partial<Omit<P, 'type' | GroupSection>> & {
+    position?: Partial<PositionProperties>;
+    dimensions?: Partial<DimensionProperties>;
+    styling?: Partial<NamedKeysOnly<DeclaredStylingOf<P>>>;
+    player?: Partial<PlayerProperties>;
+  };
+
+/* The runtime twin of `GroupSection`, for the one caller that has to tell a section from an own
+ * property per key: `ModelNormalizer` fills the own ones onto the element root. Checked in both
+ * directions -- `satisfies` rejects a name that is no section, and the assertion names a section this
+ * array is missing. Four names, and the same four for every element; the flat table needed a list of
+ * all 38 group MEMBERS here, which is where #1187 and #1223 came from. */
+export const GROUP_SECTIONS = ['position', 'dimensions', 'styling', 'player'] as const satisfies
+readonly GroupSection[];
+type UnlistedSection = Exclude<GroupSection, typeof GROUP_SECTIONS[number]>;
+export type GroupSectionsAreListed = AssertNever<UnlistedSection>;
+
+/* What all entries have in common, for the one consumer that looks an entry up by a type known only at
+ * runtime and therefore cannot have that entry's own type. Deliberately not the union of the 30 entry
+ * types: a section is absent from most of them, so every read would need a per-member narrowing. */
+export type ElementDefaultsEntry = {
+  position?: Partial<PositionProperties>;
+  dimensions?: Partial<DimensionProperties>;
+  styling?: Stylings;
+  player?: Partial<PlayerProperties>;
+};
 
 interface ElementPropertiesMap {
   text: TextProperties;
@@ -157,15 +200,7 @@ interface ElementPropertiesMap {
  * element type without a defaults entry (or a stale key after a rename) is a
  * compile error HERE, not a stray index error in whichever consumer happens to
  * look the type up first. */
-type ElementDefaultsMap = { [K in UIElementType]: FlatDefaults<ElementPropertiesMap[K]> };
-
-/* One entry of the table, for consumers that read a whole entry rather than a
- * single key -- the property-group generators do, because the table is flat
- * and they pick their own group's keys out of it. Exposing the entry union
- * instead of a structural stand-in (Record<string, unknown>) keeps their
- * parameters checked: a wrong-typed group key, or an object that is no entry
- * at all, is not assignable to any member. */
-export type ElementDefaultsEntry = ElementDefaultsMap[UIElementType];
+type ElementDefaultsMap = { [K in UIElementType]: GroupedDefaults<ElementPropertiesMap[K]> };
 
 /* Which styling keys an element keeps needs no catalogue here: the element's class
  * builds its own styling group and the compiler checks that group against the
@@ -181,18 +216,6 @@ type UnwritableStylingKey = {
 }[UIElementType];
 export type ElementStylingIsWritable = AssertNever<UnwritableStylingKey>;
 
-/* ModelNormalizer fills an element's own properties from the flat defaults entry and skips the group
- * members (NESTED_GROUP_KEYS), which is only safe as long as no element declares an own root property
- * that shares a name with a group member -- such a property would silently stop being filled. Nothing
- * about the model prevents such a name, so this states that none exists, and names the offender if one
- * appears (#1187). */
-type RootPropertyShadowingAGroup = {
-  [K in UIElementType]: Extract<
-  keyof Omit<ElementPropertiesMap[K], 'type' | 'position' | 'dimensions' | 'styling' | 'player'>,
-  NestedGroupProperty>
-}[UIElementType];
-export type NoRootPropertyShadowsAGroup = AssertNever<RootPropertyShadowingAGroup>;
-
 export const ELEMENT_DEFAULTS = {
   text: {
     text: 'Lorem ipsum dolor sit amet',
@@ -203,9 +226,15 @@ export const ELEMENT_DEFAULTS = {
     highlightableYellow: false,
     hasSelectionPopup: false,
     columnCount: 1,
-    height: 98,
-    marginBottom: { value: 10, unit: 'px' },
-    lineHeight: 135
+    position: {
+      marginBottom: { value: 10, unit: 'px' }
+    },
+    dimensions: {
+      height: 98
+    },
+    styling: {
+      lineHeight: 135
+    }
   },
   button: {
     label: 'Knopf',
@@ -216,7 +245,9 @@ export const ELEMENT_DEFAULTS = {
     tooltipText: '',
     tooltipPosition: 'below',
     labelAlignment: 'baseline',
-    backgroundColor: 'lightgrey'
+    styling: {
+      backgroundColor: 'lightgrey'
+    }
   },
   'text-field': {
     appearance: 'outline',
@@ -232,9 +263,6 @@ export const ELEMENT_DEFAULTS = {
     required: false,
     requiredWarnMessage: 'Eingabe erforderlich',
     readOnly: false,
-    width: 180,
-    height: 120,
-    lineHeight: 135,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',
@@ -246,7 +274,14 @@ export const ELEMENT_DEFAULTS = {
     inputAssistanceCustomKeys: '',
     inputAssistanceCustomStyle: 'medium',
     restrictedToInputAssistanceChars: false,
-    hasBackspaceKey: false
+    hasBackspaceKey: false,
+    dimensions: {
+      width: 180,
+      height: 120
+    },
+    styling: {
+      lineHeight: 135
+    }
   },
   'text-field-simple': {
     textAlign: 'left',
@@ -257,11 +292,6 @@ export const ELEMENT_DEFAULTS = {
     isLimitedToMaxLength: true,
     pattern: null,
     patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
-    backgroundColor: '#f1f1f1',
-    width: 150,
-    height: 30,
-    isWidthFixed: true,
-    lineHeight: 100,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',
@@ -273,7 +303,19 @@ export const ELEMENT_DEFAULTS = {
     inputAssistanceCustomKeys: '',
     inputAssistanceCustomStyle: 'medium',
     restrictedToInputAssistanceChars: false,
-    hasBackspaceKey: false
+    hasBackspaceKey: false,
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 150,
+      height: 30,
+      isWidthFixed: true
+    },
+    styling: {
+      backgroundColor: '#f1f1f1',
+      lineHeight: 100
+    }
   },
   'text-area': {
     appearance: 'outline',
@@ -284,9 +326,6 @@ export const ELEMENT_DEFAULTS = {
     rowCount: 3,
     expectedCharactersCount: 135,
     hasReturnKey: false,
-    width: 230,
-    height: 132,
-    lineHeight: 135,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',
@@ -298,7 +337,17 @@ export const ELEMENT_DEFAULTS = {
     inputAssistanceCustomKeys: '',
     inputAssistanceCustomStyle: 'medium',
     restrictedToInputAssistanceChars: false,
-    hasBackspaceKey: false
+    hasBackspaceKey: false,
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 230,
+      height: 132
+    },
+    styling: {
+      lineHeight: 135
+    }
   },
   checkbox: {
     label: 'Beschriftung',
@@ -308,23 +357,37 @@ export const ELEMENT_DEFAULTS = {
     requiredWarnMessage: 'Eingabe erforderlich',
     readOnly: false,
     crossOutChecked: false,
-    width: 215,
-    height: 60
+    dimensions: {
+      width: 215,
+      height: 60
+    }
   },
   dropdown: {
     options: [],
     allowUnset: false,
-    width: 240,
-    height: 83
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 240,
+      height: 83
+    }
   },
   radio: {
     options: [],
     label: 'Beschriftung',
     alignment: 'column',
     strikeOtherOptions: false,
-    width: 215,
-    height: 100,
-    lineHeight: 135
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 215,
+      height: 100
+    },
+    styling: {
+      lineHeight: 135
+    }
   },
   image: {
     src: null,
@@ -336,26 +399,49 @@ export const ELEMENT_DEFAULTS = {
     magnifierZoom: 1.5,
     magnifierUsed: false,
     fileName: '',
-    width: 180,
-    height: 100,
-    marginBottom: { value: 15, unit: 'px' }
+    position: {
+      marginBottom: { value: 15, unit: 'px' }
+    },
+    dimensions: {
+      width: 180,
+      height: 100
+    },
+    /* Empty, and not to be tidied away: an entry with a `player` section is what makes ModelNormalizer
+       build the group, and image, audio and video take every value in it from GLOBAL_DEFAULTS. Image
+       reaches its group this way rather than through PlayerElementBlueprint, which its interface does
+       not extend -- so no type can state which elements have one, and a spec pins the three. */
+    player: {}
   },
   audio: {
     src: null,
     fileName: '',
-    width: 250,
-    height: 90,
-    marginBottom: { value: 15, unit: 'px' },
-    backgroundColor: '#f1f1f1'
+    position: {
+      marginBottom: { value: 15, unit: 'px' }
+    },
+    dimensions: {
+      width: 250,
+      height: 90
+    },
+    styling: {
+      backgroundColor: '#f1f1f1'
+    },
+    player: {}
   },
   video: {
     src: null,
     fileName: '',
     scale: false,
-    width: 280,
-    height: 230,
-    marginBottom: { value: 15, unit: 'px' },
-    backgroundColor: '#f1f1f1'
+    position: {
+      marginBottom: { value: 15, unit: 'px' }
+    },
+    dimensions: {
+      width: 280,
+      height: 230
+    },
+    styling: {
+      backgroundColor: '#f1f1f1'
+    },
+    player: {}
   },
   cloze: {
     document: {
@@ -378,18 +464,28 @@ export const ELEMENT_DEFAULTS = {
       }]
     },
     columnCount: 1,
-    width: 180,
-    height: 200,
-    marginBottom: { value: 35, unit: 'px' },
-    lineHeight: 180
+    position: {
+      marginBottom: { value: 35, unit: 'px' }
+    },
+    dimensions: {
+      width: 180,
+      height: 200
+    },
+    styling: {
+      lineHeight: 180
+    }
   },
   'marking-panel': {
     highlightableYellow: true,
     highlightableTurquoise: false,
     highlightableOrange: false,
-    width: 180,
-    height: 98,
-    marginBottom: { value: 10, unit: 'px' }
+    position: {
+      marginBottom: { value: 10, unit: 'px' }
+    },
+    dimensions: {
+      width: 180,
+      height: 98
+    }
   },
   slider: {
     minValue: 0,
@@ -398,18 +494,23 @@ export const ELEMENT_DEFAULTS = {
     // Booleans, and not the strings 'default'/'always' they were between 020d49fc and #1139: both
     // are truthy, so every new slider silently showed the arrow bar and the thumb label, and
     // ModelNormalizer wrote the string into every unit that lacked the properties. The typing this
-    // table got in #1177 catches that shape. It did not catch what arrived from the same commit one
-    // line below: lineHeight went in as 5, a number in a number's slot, and the template renders it
-    // as `line-height: 5%` (#1235). Values are the specs' job, not the compiler's.
+    // table got in #1177 catches that shape. It did not catch what arrived from the same commit for
+    // this element's lineHeight: a 5, a number in a number's slot, which the template renders as
+    // `line-height: 5%` (#1235). Values are the specs' job, not the compiler's.
     barStyle: false,
     thumbLabel: false,
-    width: 240,
-    height: 80,
-    lineHeight: 135
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 240,
+      height: 80
+    },
+    styling: {
+      lineHeight: 135
+    }
   },
   'spell-correct': {
-    width: 230,
-    height: 80,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',
@@ -421,34 +522,52 @@ export const ELEMENT_DEFAULTS = {
     inputAssistanceCustomKeys: '',
     inputAssistanceCustomStyle: 'medium',
     restrictedToInputAssistanceChars: false,
-    hasBackspaceKey: false
+    hasBackspaceKey: false,
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 230,
+      height: 80
+    }
   },
   frame: {
-    width: 180,
-    height: 180,
-    zIndex: -1,
     hasBorderTop: true,
     hasBorderBottom: true,
     hasBorderLeft: true,
     hasBorderRight: true,
-    borderWidth: 1,
-    backgroundColor: 'transparent'
+    position: {
+      zIndex: -1
+    },
+    dimensions: {
+      width: 180,
+      height: 180
+    },
+    styling: {
+      borderWidth: 1,
+      backgroundColor: 'transparent'
+    }
   },
   'toggle-button': {
     options: [{ text: 'Option A' }, { text: 'Option B' }],
     strikeOtherOptions: false,
     strikeSelectedOption: false,
     verticalOrientation: false,
-    selectionColor: '#c9e0e0',
-    width: 180,
-    height: 30,
-    lineHeight: 100
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 180,
+      height: 30
+    },
+    styling: {
+      selectionColor: '#c9e0e0',
+      lineHeight: 100
+    }
   },
   geometry: {
     appDefinition: '',
     fileName: '',
-    height: 400,
-    width: 600,
     showResetIcon: true,
     enableUndoRedo: true,
     showToolbar: true,
@@ -457,28 +576,39 @@ export const ELEMENT_DEFAULTS = {
     showFullscreenButton: false,
     customToolbar: '',
     trackedVariables: [],
-    trackedExpectedVariables: []
+    trackedExpectedVariables: [],
+    dimensions: {
+      height: 400,
+      width: 600
+    }
   },
   'hotspot-image': {
     src: null,
     fileName: '',
     value: [],
-    width: 250,
-    height: 100
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 250,
+      height: 100
+    }
   },
   'math-field': {
-    width: 230,
-    height: 80,
-    lineHeight: 135,
     enableModeSwitch: false,
     mathKeyboardPresets: ['math', 'symbols', 'latin', 'greek'],
     required: false,
     requiredWarnMessage: 'Eingabe erforderlich',
-    readOnly: false
+    readOnly: false,
+    dimensions: {
+      width: 230,
+      height: 80
+    },
+    styling: {
+      lineHeight: 135
+    }
   },
   'math-table': {
-    width: 230,
-    height: 192,
     operation: 'addition',
     terms: ['123', '456'],
     result: '',
@@ -498,12 +628,15 @@ export const ELEMENT_DEFAULTS = {
       showTopHelperRows: false,
       allowFirstLineCrossOut: false
     },
-    helperRowColor: 'transparent'
+    dimensions: {
+      width: 230,
+      height: 192
+    },
+    styling: {
+      helperRowColor: 'transparent'
+    }
   },
   'text-area-math': {
-    width: 230,
-    height: 132,
-    lineHeight: 135,
     required: false,
     requiredWarnMessage: 'Eingabe erforderlich',
     readOnly: false,
@@ -512,17 +645,33 @@ export const ELEMENT_DEFAULTS = {
     mathKeyboardPresets: ['math', 'symbols', 'latin', 'greek'],
     showSoftwareKeyboard: true,
     addInputAssistanceToKeyboard: true,
-    hideNativeKeyboard: true
+    hideNativeKeyboard: true,
+    inputAssistancePreset: null,
+    inputAssistancePosition: 'floating',
+    inputAssistanceFloatingStartPosition: 'startBottom',
+    keyStyle: 'round',
+    hasArrowKeys: false,
+    inputAssistanceCustomKeys: '',
+    inputAssistanceCustomStyle: 'medium',
+    restrictedToInputAssistanceChars: false,
+    hasBackspaceKey: false,
+    dimensions: {
+      width: 230,
+      height: 132
+    },
+    styling: {
+      lineHeight: 135
+    }
   },
   trigger: {
     action: null,
     actionParam: null,
-    width: 20,
-    height: 20
+    dimensions: {
+      width: 20,
+      height: 20
+    }
   },
   table: {
-    width: 250,
-    height: 200,
     gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }],
     gridRowSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }],
     elements: [],
@@ -530,22 +679,32 @@ export const ELEMENT_DEFAULTS = {
     headerEnabled: false,
     headerRows: [],
     stickyHeader: false,
-    marginBottom: { value: 30, unit: 'px' },
-    borderWidth: 1,
-    backgroundColor: 'transparent'
+    position: {
+      marginBottom: { value: 30, unit: 'px' }
+    },
+    dimensions: {
+      width: 250,
+      height: 200
+    },
+    styling: {
+      borderWidth: 1,
+      backgroundColor: 'transparent'
+    }
   },
   'radio-group-images': {
     options: [],
     label: 'Beschriftung',
     itemsPerRow: null,
-    width: 250,
-    height: 200
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 250,
+      height: 200
+    }
   },
   'drop-list': {
     value: [],
-    width: 240,
-    height: 100,
-    minHeight: 57,
     isSortList: false,
     onlyOneItem: false,
     connectedTo: [],
@@ -558,8 +717,18 @@ export const ELEMENT_DEFAULTS = {
     highlightReceivingDropListColor: '#006064',
     permanentPlaceholders: false,
     permanentPlaceholdersCC: true,
-    backgroundColor: '#ededed',
-    itemBackgroundColor: '#c9e0e0'
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      width: 240,
+      height: 100,
+      minHeight: 57
+    },
+    styling: {
+      backgroundColor: '#ededed',
+      itemBackgroundColor: '#c9e0e0'
+    }
   },
   'likert-row': {
     rowLabel: {
@@ -567,7 +736,12 @@ export const ELEMENT_DEFAULTS = {
     },
     columnCount: 0,
     verticalButtonAlignment: 'center',
-    height: 50
+    required: false,
+    requiredWarnMessage: 'Eingabe erforderlich',
+    readOnly: false,
+    dimensions: {
+      height: 50
+    }
   },
   likert: {
     rows: [],
@@ -576,21 +750,29 @@ export const ELEMENT_DEFAULTS = {
     label: 'Optionentabelle Beschriftung',
     label2: 'Beschriftung Erste Spalte',
     stickyHeader: false,
-    width: 250,
-    height: 200,
-    marginBottom: { value: 35, unit: 'px' },
-    lineHeight: 135,
-    backgroundColor: 'white',
-    lineColoring: true,
-    lineColoringColor: '#c9e0e0',
-    firstLineColoring: false,
-    firstLineColoringColor: '#c7f3d0'
+    position: {
+      marginBottom: { value: 35, unit: 'px' }
+    },
+    dimensions: {
+      width: 250,
+      height: 200
+    },
+    styling: {
+      lineHeight: 135,
+      backgroundColor: 'white',
+      lineColoring: true,
+      lineColoringColor: '#c9e0e0',
+      firstLineColoring: false,
+      firstLineColoringColor: '#c7f3d0'
+    }
   },
   'widget-molecule-editor': {
     bondingType: 'VALENCE',
     state: null,
-    backgroundColor: '#f1f1f1',
-    fontColor: '#006064'
+    styling: {
+      backgroundColor: '#f1f1f1',
+      fontColor: '#006064'
+    }
   },
   'widget-periodic-table': {
     showInfoOrder: true,
@@ -599,7 +781,41 @@ export const ELEMENT_DEFAULTS = {
     closeOnSelection: false,
     maxNumberOfSelections: 1,
     state: null,
-    backgroundColor: '#f1f1f1',
-    fontColor: '#006064'
+    styling: {
+      backgroundColor: '#f1f1f1',
+      fontColor: '#006064'
+    }
   }
 } satisfies ElementDefaultsMap;
+
+/* Whether an element gets the input properties, and whether it gets the keyboard properties, was
+ * decided by two lists of TYPE NAMES in ModelNormalizer until #1228: correct at the time, held to the
+ * model by nothing. A new input element missing from the list loaded without `required` and `readOnly`,
+ * and since the inspector goes by presence, without their controls -- at a green compiler. The values
+ * now sit in the entries, where every other default sits, and the two directions are checked here: the
+ * interfaces decide WHO needs them, the table decides what they are.
+ *
+ * `ElementPropertiesMap[K] extends …` is the same derivation #1228 proposed, applied to the table
+ * rather than to a runtime list. math-table stays out of the input half on its own, because its
+ * interface declares the keyboard properties and not the input ones -- the distinction that was
+ * previously only spoken (#1228). */
+type MissingDefaultsOf<Declared, K extends UIElementType> =
+  ElementPropertiesMap[K] extends Declared ?
+    Extract<Exclude<keyof Declared, keyof (typeof ELEMENT_DEFAULTS)[K]>, string> extends infer Missing ?
+      (Missing extends string ? `${K}: ${Missing}` : never) : never : never;
+
+type InputTypeMissingADefault = {
+  [K in UIElementType]: MissingDefaultsOf<
+  Pick<InputElementProperties, 'required' | 'requiredWarnMessage' | 'readOnly'>, K>
+}[UIElementType];
+export type InputDefaultsAreComplete = AssertNever<InputTypeMissingADefault>;
+
+/* The keyboard half of TextInputElementProperties: it extends InputElementProperties as well, and
+ * `value`, `label` and the base keys of an element are no business of this check. */
+type TextKeyboardProperties = Omit<TextInputElementProperties, keyof InputElementProperties>;
+
+type KeyboardTypeMissingADefault = {
+  [K in UIElementType]:
+  MissingDefaultsOf<KeyInputElementProperties, K> | MissingDefaultsOf<TextKeyboardProperties, K>
+}[UIElementType];
+export type KeyboardDefaultsAreComplete = AssertNever<KeyboardTypeMissingADefault>;

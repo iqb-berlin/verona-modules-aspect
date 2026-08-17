@@ -29,15 +29,15 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field-simple']),
-      lineHeight: ELEMENT_DEFAULTS['text-field-simple'].lineHeight
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field-simple'].styling),
+      lineHeight: ELEMENT_DEFAULTS['text-field-simple'].styling.lineHeight
     };
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['text-field-simple']);
+    .generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS['text-field-simple']);
+    .generateDimensionProps(ELEMENT_DEFAULTS['text-field-simple'].dimensions);
 
   static icon: string = 'edit';
 

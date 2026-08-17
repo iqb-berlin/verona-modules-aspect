@@ -32,10 +32,10 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
   stickyHeader: boolean = ELEMENT_DEFAULTS.likert.stickyHeader;
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS.likert);
+    .generatePositionProps(ELEMENT_DEFAULTS.likert.position);
 
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS.likert);
+    .generateDimensionProps(ELEMENT_DEFAULTS.likert.dimensions);
 
   styling: BasicStyles & {
     lineHeight: number;
@@ -44,12 +44,12 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     firstLineColoring: boolean;
     firstLineColoringColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.likert),
-      lineHeight: ELEMENT_DEFAULTS.likert.lineHeight,
-      lineColoring: ELEMENT_DEFAULTS.likert.lineColoring,
-      lineColoringColor: ELEMENT_DEFAULTS.likert.lineColoringColor,
-      firstLineColoring: ELEMENT_DEFAULTS.likert.firstLineColoring,
-      firstLineColoringColor: ELEMENT_DEFAULTS.likert.firstLineColoringColor
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.likert.styling),
+      lineHeight: ELEMENT_DEFAULTS.likert.styling.lineHeight,
+      lineColoring: ELEMENT_DEFAULTS.likert.styling.lineColoring,
+      lineColoringColor: ELEMENT_DEFAULTS.likert.styling.lineColoringColor,
+      firstLineColoring: ELEMENT_DEFAULTS.likert.styling.firstLineColoring,
+      firstLineColoringColor: ELEMENT_DEFAULTS.likert.styling.firstLineColoringColor
     };
 
   static title: string = 'Optionentabelle';

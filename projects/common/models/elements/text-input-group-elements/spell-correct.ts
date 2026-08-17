@@ -16,10 +16,10 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class SpellCorrectElement extends TextInputElement implements SpellCorrectProperties {
   type: UIElementType = 'spell-correct';
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['spell-correct']);
+    .generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS['spell-correct']);
+    .generateDimensionProps(ELEMENT_DEFAULTS['spell-correct'].dimensions);
 
   /* No lineHeight, unlike the eleven other elements that have one: this is a single-line input with a
      button under it, and the component applies no line height anywhere. Added to the model in 2021
@@ -27,7 +27,7 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
      -- and reintroduced by #1177; no component ever rendered it (#1232).
      #1177 gave it a default so a stored value would survive the load, which was consistent while the
      property was declared, and is what made its uselessness visible. */
-  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['spell-correct']);
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
 
   static title: string = 'Wort korrigieren';
   static icon: string = 'format_strikethrough';

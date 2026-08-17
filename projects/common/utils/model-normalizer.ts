@@ -1,36 +1,6 @@
-import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
-import {
-  DimensionProperties, NESTED_GROUP_KEYS, NestedGroupProperty, PlayerProperties, PositionProperties,
-  PropertyGroupGenerators
-} from 'common/models/elements/property-group-interfaces';
-import { KeyInputElementProperties, TextInputElementProperties } from 'common/models/input-element-interfaces';
+import { ELEMENT_DEFAULTS, ElementDefaultsEntry, GROUP_SECTIONS } from 'common/models/elements/element-registry';
+import { PlayerProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
-
-const INPUT_ELEMENT_TYPES: UIElementType[] = [
-  'text-field',
-  'text-field-simple',
-  'text-area',
-  'checkbox',
-  'dropdown',
-  'radio',
-  'radio-group-images',
-  'hotspot-image',
-  'drop-list',
-  'slider',
-  'spell-correct',
-  'toggle-button',
-  'likert-row',
-  'math-field',
-  'text-area-math'
-];
-
-/* Exported because the values of the keyboard properties are decided by ELEMENT_DEFAULTS for every
-   type in this list, while `generateKeyInputProps` keeps a `false` fallback for whoever does not
-   name them - the pair that produced #1235. `model-normalizer.spec.ts` holds the list to the
-   registry. */
-export const KEYBOARD_TYPES: UIElementType[] = [
-  'text-field', 'text-area', 'spell-correct', 'text-field-simple', 'text-area-math', 'math-table'
-];
 
 export class ModelNormalizer {
   static normalizeUnit(unit: Record<string, unknown>): Record<string, unknown> {
@@ -97,23 +67,22 @@ export class ModelNormalizer {
 
   static normalizeElement(element: Record<string, unknown>): Record<string, unknown> {
     const type = element.type as UIElementType;
-    const defaults: Record<string, unknown> = { ...GLOBAL_DEFAULTS, ...(ELEMENT_DEFAULTS[type] || {}) };
+    const defaults = ELEMENT_DEFAULTS[type] as ElementDefaultsEntry | undefined ?? {};
     const normalized: Record<string, unknown> = { ...element };
 
-    /* 0. Own properties from the flat defaults entry. The group members in that entry belong to
-       `position`, `dimensions` and `styling`, and the generators below pick them out of `defaults`
-       themselves -- writing them here as well gave every element a second `width`, `fontSize` and
-       `lineHeight` on its root, next to the group that holds the value anything reads (#1187). No
-       element declares an own root property by a group member's name; that is asserted in
-       element-registry.ts, so the skip cannot swallow one.
+    /* 0. The entry's own properties, onto the element root. The four group sections are skipped by
+       NAME -- there are four of them, and they are the same four for every element, so this needs no
+       catalogue of member names. Before #1224 the entry was flat and the skip went through a list of
+       38 names that had to hold every group's members: what the list forgot landed on the root beside
+       the group that holds the value anything reads (#1187), and its 16 player members could not be
+       listed at all without stopping audio's own `fileName` from being filled (#1223).
 
        Object defaults are cloned: the table is module state, and an element holding its object moves
        the default for every element of that type on the first in-place write (#1184). */
-    Object.keys(defaults).forEach(key => {
-      if (NESTED_GROUP_KEYS.includes(key as NestedGroupProperty)) return;
+    Object.entries(defaults).forEach(([key, value]) => {
+      if ((GROUP_SECTIONS as readonly string[]).includes(key)) return;
       if (normalized[key] === undefined) {
-        normalized[key] = (typeof defaults[key] === 'object' && defaults[key] !== null) ?
-          structuredClone(defaults[key]) : defaults[key];
+        normalized[key] = (typeof value === 'object' && value !== null) ? structuredClone(value) : value;
       }
     });
 
@@ -129,25 +98,16 @@ export class ModelNormalizer {
       normalized.isRelevantForPresentationComplete !== undefined ?
         normalized.isRelevantForPresentationComplete : true;
 
-    if (INPUT_ELEMENT_TYPES.includes(type)) {
-      normalized.required = normalized.required !== undefined ? normalized.required : false;
-      normalized.requiredWarnMessage = normalized.requiredWarnMessage !== undefined ?
-        normalized.requiredWarnMessage :
-        'Eingabe erforderlich';
-      normalized.readOnly = normalized.readOnly !== undefined ? normalized.readOnly : false;
-    }
-
-    // 2. Property Groups
-    // We pass the defaults to the generators so that element-specific defaults
-    // (like height: 98 for text) are respected.
+    /* 2. Property groups, each from its own section of the entry: the stored group wins over the
+       element's default, which wins over GLOBAL_DEFAULTS inside the generator. */
     const currentDimensions = (normalized.dimensions as Record<string, unknown>) || {};
     const filteredDimensions = Object.fromEntries(
       Object.entries(currentDimensions).filter(([key, v]) => key && v !== undefined)
     );
     normalized.dimensions = PropertyGroupGenerators.generateDimensionProps({
-      ...defaults,
+      ...defaults.dimensions,
       ...filteredDimensions
-    } as Partial<DimensionProperties>);
+    });
 
     const currentPosition = (normalized.position as Record<string, unknown>) || {};
     const filteredPosition = Object.fromEntries(
@@ -161,9 +121,9 @@ export class ModelNormalizer {
     });
 
     normalized.position = PropertyGroupGenerators.generatePositionProps({
-      ...defaults,
+      ...defaults.position,
       ...filteredPosition
-    } as Partial<PositionProperties>);
+    });
 
     /* The styling group is NOT built here, and deliberately so: which keys an element has is decided
        by the group its class builds for itself, which the compiler checks against the element's
@@ -174,26 +134,17 @@ export class ModelNormalizer {
        styling does not declare (#1187). Stored styling passes through untouched; the constructors
        fill what is missing from ELEMENT_DEFAULTS and drop what the element does not declare. */
 
-    // Player properties
-    // We only generate them if they are either already present or if the element
-    // type is fundamentally a PlayerElement (has player defaults).
-    if (normalized.player || ['audio', 'video', 'image'].includes(type)) {
+    /* The group is built for an element whose entry has a `player` section, and for any element that
+       arrives with a stored one. Which types those are is thus decided in the defaults table, where
+       the values are, and no longer by a list of type names here (#1228). */
+    if (normalized.player || defaults.player) {
       normalized.player = PropertyGroupGenerators.generatePlayerProps({
-        ...defaults,
-        ...(normalized.player as Record<string, unknown>)
-      } as Partial<PlayerProperties>);
+        ...defaults.player,
+        ...(normalized.player as Partial<PlayerProperties>)
+      });
     }
 
-    if (KEYBOARD_TYPES.includes(type as UIElementType)) {
-      const keyboardProps = (type === 'math-table') ?
-        PropertyGroupGenerators.generateKeyInputProps(normalized as unknown as Partial<KeyInputElementProperties>) :
-        PropertyGroupGenerators.generateTextInputProps(
-          normalized as unknown as Partial<TextInputElementProperties>
-        );
-      Object.assign(normalized, keyboardProps);
-    }
-
-    // 4. MathTable specific (nested objects)
+    // 3. MathTable specific (nested objects)
     if (type === 'math-table') {
       normalized.variableLayoutOptions = {
         ...(defaults as Record<string, unknown>).variableLayoutOptions as Record<string, unknown>,
@@ -201,13 +152,7 @@ export class ModelNormalizer {
       };
     }
 
-    /* A second fill of the same defaults used to stand here, with an exclusion list of its own that
-       named 8 of the 19 styling keys and could not have any effect anyway: step 0 above fills every
-       own property, and nothing between the two removes one. Its list was therefore dead in both
-       halves -- adding a key to it changed nothing, and the keys it forgot were written to the root
-       regardless. Nothing replaces it; step 0 does the whole job (#1187). */
-
-    // 6. Recursive normalization for compound elements
+    // 4. Recursive normalization for compound elements
     if (type === 'cloze' && normalized.document) {
       this.normalizeClozeDocument(normalized.document as Record<string, unknown>);
     }

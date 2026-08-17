@@ -21,16 +21,16 @@ export class RadioButtonGroupComplexElement extends InputElement
   options: TextImageLabel[] = [...ELEMENT_DEFAULTS['radio-group-images'].options];
   itemsPerRow: number | null = ELEMENT_DEFAULTS['radio-group-images'].itemsPerRow;
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['radio-group-images']);
+    .generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS['radio-group-images']);
+    .generateDimensionProps(ELEMENT_DEFAULTS['radio-group-images'].dimensions);
 
   /* Font styling only: the component applies fontColor, fontSize, bold, italic and underline, and
      never a background -- the inspector offered a colour field that changed nothing, in the
      released 2.x line as well (#1233). */
   styling: FontStyles = PropertyGroupGenerators
-    .generateFontStylingProps(ELEMENT_DEFAULTS['radio-group-images']);
+    .generateFontStylingProps();
 
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';

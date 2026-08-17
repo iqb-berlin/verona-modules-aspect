@@ -14,11 +14,11 @@ export class AudioElement extends PlayerElement implements AudioProperties {
   type: UIElementType = 'audio';
   src: string | null = ELEMENT_DEFAULTS.audio.src;
   fileName: string = ELEMENT_DEFAULTS.audio.fileName;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.audio);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.audio.position);
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.audio);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.audio.dimensions);
   styling: { backgroundColor: string } = {
-    backgroundColor: ELEMENT_DEFAULTS.audio.backgroundColor
+    backgroundColor: ELEMENT_DEFAULTS.audio.styling.backgroundColor
   };
 
   static title: string = 'Audio';

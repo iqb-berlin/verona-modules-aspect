@@ -16,7 +16,8 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   highlightableYellow: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableYellow;
   highlightableTurquoise: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableTurquoise;
   highlightableOrange: boolean = ELEMENT_DEFAULTS['marking-panel'].highlightableOrange;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['marking-panel']);
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS['marking-panel'].position);
 
   /* No styling at all: not one of this element's templates reads a styling value, and the group it
      used to get came from the base class rather than from any declaration (#1226). Declared here so

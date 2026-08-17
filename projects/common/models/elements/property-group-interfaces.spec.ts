@@ -9,23 +9,23 @@ describe('PropertyGroupGenerators', () => {
      or null, so this is the one generator that can leak. */
   describe('generatePositionProps', () => {
     it('should copy the margins instead of returning the ones it was given', () => {
-      const position = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text);
+      const position = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text.position);
 
-      expect(position.marginBottom).toEqual(ELEMENT_DEFAULTS.text.marginBottom);
-      expect(position.marginBottom).not.toBe(ELEMENT_DEFAULTS.text.marginBottom);
+      expect(position.marginBottom).toEqual(ELEMENT_DEFAULTS.text.position.marginBottom);
+      expect(position.marginBottom).not.toBe(ELEMENT_DEFAULTS.text.position.marginBottom);
     });
 
     /* Acted out rather than reasoned from identity, because this is the damage the copy prevents. The
        identity is asserted BEFORE the write: on a regression the returned margin IS the registry's, so
        writing first would leave the table at 999 and every later test would fail for the wrong reason. */
     it('should leave the entry untouched when a returned margin is edited', () => {
-      const before = ELEMENT_DEFAULTS.text.marginBottom.value;
-      const position = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text);
-      expect(position.marginBottom).not.toBe(ELEMENT_DEFAULTS.text.marginBottom);
+      const before = ELEMENT_DEFAULTS.text.position.marginBottom.value;
+      const position = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text.position);
+      expect(position.marginBottom).not.toBe(ELEMENT_DEFAULTS.text.position.marginBottom);
 
       position.marginBottom.value = before + 989;
 
-      expect(ELEMENT_DEFAULTS.text.marginBottom.value).toBe(before);
+      expect(ELEMENT_DEFAULTS.text.position.marginBottom.value).toBe(before);
     });
 
     /* The fallback for an entry without margins was always a fresh literal; pinned so the two branches

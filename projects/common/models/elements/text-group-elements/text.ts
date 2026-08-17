@@ -21,15 +21,15 @@ export class TextElement extends UIElement implements TextProperties {
   highlightableYellow: boolean = ELEMENT_DEFAULTS.text.highlightableYellow;
   hasSelectionPopup: boolean = ELEMENT_DEFAULTS.text.hasSelectionPopup;
   columnCount: number = ELEMENT_DEFAULTS.text.columnCount;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.text.position);
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.text);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.text.dimensions);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.text),
-      lineHeight: ELEMENT_DEFAULTS.text.lineHeight
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.text.styling),
+      lineHeight: ELEMENT_DEFAULTS.text.styling.lineHeight
     };
 
   static title: string = 'Text';

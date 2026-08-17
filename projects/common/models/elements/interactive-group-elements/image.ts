@@ -24,9 +24,9 @@ export class ImageElement extends UIElement implements ImageProperties {
   magnifierZoom: number = ELEMENT_DEFAULTS.image.magnifierZoom;
   magnifierUsed: boolean = ELEMENT_DEFAULTS.image.magnifierUsed;
   fileName: string = ELEMENT_DEFAULTS.image.fileName;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.image);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.image.position);
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.image);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.image.dimensions);
 
   /* No styling at all: not one of this element's templates reads a styling value, and the group it
      used to get came from the base class rather than from any declaration (#1226). Declared here so

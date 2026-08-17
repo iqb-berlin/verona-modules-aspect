@@ -15,11 +15,11 @@ export class VideoElement extends PlayerElement implements VideoProperties {
   src: string | null = ELEMENT_DEFAULTS.video.src;
   fileName: string = ELEMENT_DEFAULTS.video.fileName;
   scale: boolean = ELEMENT_DEFAULTS.video.scale;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.video);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.video.position);
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.video);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.video.dimensions);
   styling: { backgroundColor: string } = {
-    backgroundColor: ELEMENT_DEFAULTS.video.backgroundColor
+    backgroundColor: ELEMENT_DEFAULTS.video.styling.backgroundColor
   };
 
   static title: string = 'Video';

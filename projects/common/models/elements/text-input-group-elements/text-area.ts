@@ -23,15 +23,16 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   rowCount: number = ELEMENT_DEFAULTS['text-area'].rowCount;
   expectedCharactersCount: number = ELEMENT_DEFAULTS['text-area'].expectedCharactersCount;
   hasReturnKey: boolean = ELEMENT_DEFAULTS['text-area'].hasReturnKey;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-area']);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS['text-area']);
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['text-area'].dimensions);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area']),
-      lineHeight: ELEMENT_DEFAULTS['text-area'].lineHeight
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area'].styling),
+      lineHeight: ELEMENT_DEFAULTS['text-area'].styling.lineHeight
     };
 
   static title: string = 'Eingabebereich';

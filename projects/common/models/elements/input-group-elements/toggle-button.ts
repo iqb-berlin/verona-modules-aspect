@@ -21,18 +21,18 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   strikeSelectedOption: boolean = ELEMENT_DEFAULTS['toggle-button'].strikeSelectedOption;
   verticalOrientation: boolean = ELEMENT_DEFAULTS['toggle-button'].verticalOrientation;
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS['toggle-button']);
+    .generateDimensionProps(ELEMENT_DEFAULTS['toggle-button'].dimensions);
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['toggle-button']);
+    .generatePositionProps();
 
   styling: BasicStyles & {
     lineHeight: number;
     selectionColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['toggle-button']),
-      lineHeight: ELEMENT_DEFAULTS['toggle-button'].lineHeight,
-      selectionColor: ELEMENT_DEFAULTS['toggle-button'].selectionColor
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['toggle-button'].styling),
+      lineHeight: ELEMENT_DEFAULTS['toggle-button'].styling.lineHeight,
+      selectionColor: ELEMENT_DEFAULTS['toggle-button'].styling.selectionColor
     };
 
   static icon: string = 'radio_button_checked';

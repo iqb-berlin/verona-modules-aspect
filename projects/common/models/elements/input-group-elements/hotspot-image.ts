@@ -30,10 +30,10 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
   src: string | null = ELEMENT_DEFAULTS['hotspot-image'].src;
   fileName: string = ELEMENT_DEFAULTS['hotspot-image'].fileName;
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['hotspot-image']);
+    .generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS['hotspot-image']);
+    .generateDimensionProps(ELEMENT_DEFAULTS['hotspot-image'].dimensions);
 
   /* No styling at all: not one of this element's templates reads a styling value, and the group it
      used to get came from the base class rather than from any declaration (#1226). Declared here so

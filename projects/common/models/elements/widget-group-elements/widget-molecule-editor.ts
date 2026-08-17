@@ -15,8 +15,8 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
      image or as text. So the declaration says two keys, not eleven: font size, weight, slant,
      underline and the four border members offered controls that did nothing (#1230). */
   styling: { backgroundColor: string; fontColor: string } = {
-    backgroundColor: ELEMENT_DEFAULTS['widget-molecule-editor'].backgroundColor,
-    fontColor: ELEMENT_DEFAULTS['widget-molecule-editor'].fontColor
+    backgroundColor: ELEMENT_DEFAULTS['widget-molecule-editor'].styling.backgroundColor,
+    fontColor: ELEMENT_DEFAULTS['widget-molecule-editor'].styling.fontColor
   };
 
   state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state;

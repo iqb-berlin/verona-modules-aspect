@@ -16,10 +16,10 @@ export class FrameElement extends UIElement implements FrameProperties {
   hasBorderBottom: boolean = ELEMENT_DEFAULTS.frame.hasBorderBottom;
   hasBorderLeft: boolean = ELEMENT_DEFAULTS.frame.hasBorderLeft;
   hasBorderRight: boolean = ELEMENT_DEFAULTS.frame.hasBorderRight;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.frame);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.frame.position);
   styling: BorderStyles & { backgroundColor: string; } = {
-    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.frame),
-    backgroundColor: ELEMENT_DEFAULTS.frame.backgroundColor
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.frame.styling),
+    backgroundColor: ELEMENT_DEFAULTS.frame.styling.backgroundColor
   };
 
   static title: string = 'Rahmen';

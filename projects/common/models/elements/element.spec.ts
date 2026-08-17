@@ -131,7 +131,7 @@ describe('the styling group an element keeps', () => {
   it('should keep the border group of a frame and the background of a video', () => {
     expect(Object.keys(stylingOf('frame')).sort())
       .toEqual(['backgroundColor', 'borderColor', 'borderRadius', 'borderStyle', 'borderWidth']);
-    expect(stylingOf('video')).toEqual({ backgroundColor: ELEMENT_DEFAULTS.video.backgroundColor });
+    expect(stylingOf('video')).toEqual({ backgroundColor: ELEMENT_DEFAULTS.video.styling.backgroundColor });
   });
 
   it('should still give a text element its font styling', () => {

@@ -32,13 +32,13 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   labelAlignment: 'super' | 'sub' | 'baseline' =
     ELEMENT_DEFAULTS.button.labelAlignment;
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.button);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps();
 
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.button);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
   styling: BasicStyles & BorderStyles = {
-    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.button),
-    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.button)
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.button.styling),
+    ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.button.styling)
   };
 
   static title: string = 'Knopf';

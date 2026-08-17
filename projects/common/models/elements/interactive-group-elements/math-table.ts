@@ -30,10 +30,10 @@ export interface VariableLayoutOptions {
 
 export class MathTableElement extends UIElement implements MathTableProperties, KeyInputElementProperties {
   dimensions: DimensionProperties = PropertyGroupGenerators
-    .generateDimensionProps(ELEMENT_DEFAULTS['math-table']);
+    .generateDimensionProps(ELEMENT_DEFAULTS['math-table'].dimensions);
 
   position: PositionProperties = PropertyGroupGenerators
-    .generatePositionProps(ELEMENT_DEFAULTS['math-table']);
+    .generatePositionProps();
 
   type: UIElementType = 'math-table';
   operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' =
@@ -63,8 +63,8 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   styling: BasicStyles & {
     helperRowColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-table']),
-      helperRowColor: ELEMENT_DEFAULTS['math-table'].helperRowColor
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-table'].styling),
+      helperRowColor: ELEMENT_DEFAULTS['math-table'].styling.helperRowColor
     };
 
   static title: string = 'Rechenkästchen';

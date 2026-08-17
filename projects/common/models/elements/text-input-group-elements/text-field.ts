@@ -24,12 +24,12 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   pattern: string | null = ELEMENT_DEFAULTS['text-field'].pattern;
   patternWarnMessage: string = ELEMENT_DEFAULTS['text-field'].patternWarnMessage;
   clearable: boolean = ELEMENT_DEFAULTS['text-field'].clearable;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['text-field']);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field']),
-      lineHeight: ELEMENT_DEFAULTS['text-field'].lineHeight
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field'].styling),
+      lineHeight: ELEMENT_DEFAULTS['text-field'].styling.lineHeight
     };
 
   static title: string = 'Eingabefeld';

@@ -17,13 +17,13 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
   document: ClozeDocument = structuredClone(ELEMENT_DEFAULTS.cloze.document);
   columnCount: number = ELEMENT_DEFAULTS.cloze.columnCount;
 
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.cloze);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.cloze.position);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.cloze),
-      lineHeight: ELEMENT_DEFAULTS.cloze.lineHeight
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.cloze.styling),
+      lineHeight: ELEMENT_DEFAULTS.cloze.styling.lineHeight
     };
 
   static title: string = 'Lückentext';

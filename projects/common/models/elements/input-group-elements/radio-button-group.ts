@@ -19,15 +19,15 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   options: TextLabel[] = ELEMENT_DEFAULTS.radio.options;
   alignment: 'column' | 'row' = ELEMENT_DEFAULTS.radio.alignment;
   strikeOtherOptions: boolean = ELEMENT_DEFAULTS.radio.strikeOtherOptions;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.radio);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.radio);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.radio.dimensions);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.radio),
-      lineHeight: ELEMENT_DEFAULTS.radio.lineHeight
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.radio.styling),
+      lineHeight: ELEMENT_DEFAULTS.radio.styling.lineHeight
     };
 
   static title: string = 'Optionsfelder';

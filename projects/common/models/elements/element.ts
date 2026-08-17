@@ -40,9 +40,9 @@ export abstract class UIElement implements UIElementProperties {
   alias!: string;
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS);
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS);
-  styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS.position);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS.dimensions);
+  styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS.styling);
   player?: PlayerProperties;
   idService?: AbstractIDService;
 

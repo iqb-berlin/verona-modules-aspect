@@ -6,7 +6,6 @@ import {
 } from 'common/models/input-element-interfaces';
 import { Measurement } from 'common/models/ui-element-interfaces';
 import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
-import type { ElementDefaultsEntry } from 'common/models/elements/element-registry';
 
 export interface PositionProperties {
   xPosition: number;
@@ -79,34 +78,6 @@ export type NestedGroupProperty = keyof PositionProperties | keyof DimensionProp
  * handle wrote 'width' through the generic setter.
  */
 export type OwnProperty<K extends string> = K extends NestedGroupProperty ? never : K;
-
-/**
- * The runtime twin of `NestedGroupProperty`, for the one caller that has to decide this per key at
- * runtime: `ModelNormalizer` fills an element's own properties from the flat defaults table and has to
- * leave the group members to the generators, or every element carries a second copy of `width`,
- * `fontSize` and `lineHeight` on its root, where nothing reads them (#1187).
- *
- * Checked in both directions and therefore not a list to maintain by hand: `satisfies` rejects a name
- * that is no group member, and the assertion below fails to compile -- naming the key -- when a group
- * gains a member this array does not have.
- *
- * The fourth group, `player`, is deliberately absent: `PlayerProperties` shares `fileName` and
- * `imgSrc`/`imgFileName` with genuine root properties of six element types, so skipping its members
- * wholesale would stop those from being filled. Its 16 members from GLOBAL_DEFAULTS therefore still
- * reach every element's root. Filed separately.
- */
-export const NESTED_GROUP_KEYS = [
-  'xPosition', 'yPosition', 'gridColumn', 'gridColumnRange', 'gridRow', 'gridRowRange',
-  'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'zIndex',
-  'width', 'height', 'isWidthFixed', 'isHeightFixed', 'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
-  'fontColor', 'fontSize', 'bold', 'italic', 'underline',
-  'borderWidth', 'borderColor', 'borderStyle', 'borderRadius',
-  'backgroundColor', 'lineHeight', 'itemBackgroundColor', 'lineColoring', 'lineColoringColor',
-  'firstLineColoring', 'firstLineColoringColor', 'selectionColor', 'helperRowColor'
-] as const satisfies readonly NestedGroupProperty[];
-
-type UnlistedGroupKey = Exclude<NestedGroupProperty, typeof NESTED_GROUP_KEYS[number]>;
-export type NestedGroupKeysAreListed = AssertNever<UnlistedGroupKey>;
 
 export interface FontStyles {
   fontColor: string;
@@ -229,70 +200,62 @@ export abstract class PropertyGroupValidators {
 }
 
 export abstract class PropertyGroupGenerators {
-  /* The generators accept either a nested group object (constructors pass
-   * element.position etc.) or one whole ELEMENT_DEFAULTS entry, whose flat
-   * shape may share no key with the group at all -- a plain Partial<>
-   * parameter rejects those as weak-type errors. Both alternatives stay
-   * checked: neither accepts a wrong-typed group key. The cast below is a
-   * read adapter for the union, not a hole; every access checks its key for
-   * undefined first. */
-  static generatePositionProps(
-    defaults: Partial<PositionProperties> | ElementDefaultsEntry = {}
-  ): PositionProperties {
-    const d = defaults as Partial<PositionProperties>;
+  /* Each generator takes ITS OWN group: the section of an ELEMENT_DEFAULTS entry from a class field,
+   * or `element.position` etc. from a constructor. Before #1224 the table was flat, so the parameter
+   * had to accept a whole entry as well and read it through a cast -- which is what let a value be
+   * picked up by the group whose name it happened to match. */
+  static generatePositionProps(defaults: Partial<PositionProperties> = {}): PositionProperties {
     return {
-      xPosition: d.xPosition !== undefined ? d.xPosition : GLOBAL_DEFAULTS.xPosition,
-      yPosition: d.yPosition !== undefined ? d.yPosition : GLOBAL_DEFAULTS.yPosition,
-      gridColumn: d.gridColumn !== undefined ? d.gridColumn : null,
-      gridColumnRange: d.gridColumnRange !== undefined ? d.gridColumnRange : 1,
-      gridRow: d.gridRow !== undefined ? d.gridRow : null,
-      gridRowRange: d.gridRowRange !== undefined ? d.gridRowRange : 1,
+      xPosition: defaults.xPosition !== undefined ? defaults.xPosition : GLOBAL_DEFAULTS.position.xPosition,
+      yPosition: defaults.yPosition !== undefined ? defaults.yPosition : GLOBAL_DEFAULTS.position.yPosition,
+      gridColumn: defaults.gridColumn !== undefined ? defaults.gridColumn : null,
+      gridColumnRange: defaults.gridColumnRange !== undefined ? defaults.gridColumnRange : 1,
+      gridRow: defaults.gridRow !== undefined ? defaults.gridRow : null,
+      gridRowRange: defaults.gridRowRange !== undefined ? defaults.gridRowRange : 1,
       // Copied, not forwarded: the margins are the only object-valued group members, and `defaults` is
-      // usually an ELEMENT_DEFAULTS entry. Returning the incoming object handed the registry's own
-      // Measurement to every element built from it, shared with the table and with each other. Every
-      // writer replaces the margin object today, so nothing broke -- this closes the hole before the
-      // first one mutates it in place (#1184).
-      marginLeft: d.marginLeft !== undefined ? { ...d.marginLeft } : { value: 0, unit: 'px' },
-      marginRight: d.marginRight !== undefined ? { ...d.marginRight } : { value: 0, unit: 'px' },
-      marginTop: d.marginTop !== undefined ? { ...d.marginTop } : { value: 0, unit: 'px' },
-      marginBottom: d.marginBottom !== undefined ? { ...d.marginBottom } : { value: 0, unit: 'px' },
-      zIndex: d.zIndex !== undefined ? d.zIndex : GLOBAL_DEFAULTS.zIndex
+      // usually the position section of an ELEMENT_DEFAULTS entry. Returning the incoming object handed
+      // the registry's own Measurement to every element built from it, shared with the table and with
+      // each other. Every writer replaces the margin object today, so nothing broke -- this closes the
+      // hole before the first one mutates it in place (#1184).
+      marginLeft: defaults.marginLeft !== undefined ? { ...defaults.marginLeft } : { value: 0, unit: 'px' },
+      marginRight: defaults.marginRight !== undefined ? { ...defaults.marginRight } : { value: 0, unit: 'px' },
+      marginTop: defaults.marginTop !== undefined ? { ...defaults.marginTop } : { value: 0, unit: 'px' },
+      marginBottom: defaults.marginBottom !== undefined ? { ...defaults.marginBottom } : { value: 0, unit: 'px' },
+      zIndex: defaults.zIndex !== undefined ? defaults.zIndex : GLOBAL_DEFAULTS.position.zIndex
     };
   }
 
-  static generateDimensionProps(
-    defaults: Partial<DimensionProperties> | ElementDefaultsEntry = {}
-  ): DimensionProperties {
-    const d = defaults as Partial<DimensionProperties>;
+  static generateDimensionProps(defaults: Partial<DimensionProperties> = {}): DimensionProperties {
     return {
-      width: d.width !== undefined ? d.width : GLOBAL_DEFAULTS.width,
-      height: d.height !== undefined ? d.height : GLOBAL_DEFAULTS.height,
-      isWidthFixed: d.isWidthFixed !== undefined ? d.isWidthFixed : false,
-      isHeightFixed: d.isHeightFixed !== undefined ? d.isHeightFixed : false,
-      minWidth: d.minWidth !== undefined ? d.minWidth : null,
-      maxWidth: d.maxWidth !== undefined ? d.maxWidth : null,
-      minHeight: d.minHeight !== undefined ? d.minHeight : null,
-      maxHeight: d.maxHeight !== undefined ? d.maxHeight : null
+      width: defaults.width !== undefined ? defaults.width : GLOBAL_DEFAULTS.dimensions.width,
+      height: defaults.height !== undefined ? defaults.height : GLOBAL_DEFAULTS.dimensions.height,
+      isWidthFixed: defaults.isWidthFixed !== undefined ? defaults.isWidthFixed : false,
+      isHeightFixed: defaults.isHeightFixed !== undefined ? defaults.isHeightFixed : false,
+      minWidth: defaults.minWidth !== undefined ? defaults.minWidth : null,
+      maxWidth: defaults.maxWidth !== undefined ? defaults.maxWidth : null,
+      minHeight: defaults.minHeight !== undefined ? defaults.minHeight : null,
+      maxHeight: defaults.maxHeight !== undefined ? defaults.maxHeight : null
     };
   }
 
-  static generateBasicStyleProps(defaults: Partial<BasicStyles> | ElementDefaultsEntry = {}): BasicStyles {
-    const d = defaults as Partial<BasicStyles>;
+  /* Takes the element's whole styling section, not just the keys it returns: a section that holds only
+   * `lineHeight` shares no key with BasicStyles, and a narrower parameter rejects it as a weak type --
+   * which would make the call sites differ by which keys an element happens to declare. */
+  static generateBasicStyleProps(defaults: Partial<Stylings> = {}): BasicStyles {
     return {
-      backgroundColor: d.backgroundColor !== undefined ?
-        d.backgroundColor : GLOBAL_DEFAULTS.backgroundColor,
+      backgroundColor: defaults.backgroundColor !== undefined ?
+        defaults.backgroundColor : GLOBAL_DEFAULTS.styling.backgroundColor,
       ...PropertyGroupGenerators.generateFontStylingProps(defaults)
     };
   }
 
-  static generateFontStylingProps(defaults: Partial<FontStyles> | ElementDefaultsEntry = {}): FontStyles {
-    const d = defaults as Partial<FontStyles>;
+  static generateFontStylingProps(defaults: Partial<Stylings> = {}): FontStyles {
     return {
-      fontColor: d.fontColor !== undefined ? d.fontColor : GLOBAL_DEFAULTS.fontColor,
-      fontSize: d.fontSize !== undefined ? d.fontSize : GLOBAL_DEFAULTS.fontSize,
-      bold: d.bold !== undefined ? d.bold : GLOBAL_DEFAULTS.bold,
-      italic: d.italic !== undefined ? d.italic : GLOBAL_DEFAULTS.italic,
-      underline: d.underline !== undefined ? d.underline : GLOBAL_DEFAULTS.underline
+      fontColor: defaults.fontColor !== undefined ? defaults.fontColor : GLOBAL_DEFAULTS.styling.fontColor,
+      fontSize: defaults.fontSize !== undefined ? defaults.fontSize : GLOBAL_DEFAULTS.styling.fontSize,
+      bold: defaults.bold !== undefined ? defaults.bold : GLOBAL_DEFAULTS.styling.bold,
+      italic: defaults.italic !== undefined ? defaults.italic : GLOBAL_DEFAULTS.styling.italic,
+      underline: defaults.underline !== undefined ? defaults.underline : GLOBAL_DEFAULTS.styling.underline
     };
   }
 
@@ -329,40 +292,40 @@ export abstract class PropertyGroupGenerators {
 
   static generatePlayerProps(properties: Partial<PlayerProperties> = {}): PlayerProperties {
     return {
-      loop: properties.loop !== undefined ? properties.loop as boolean : GLOBAL_DEFAULTS.loop,
+      loop: properties.loop !== undefined ? properties.loop as boolean : GLOBAL_DEFAULTS.player.loop,
       startControl: properties.startControl !== undefined ?
-        properties.startControl as boolean : GLOBAL_DEFAULTS.startControl,
+        properties.startControl as boolean : GLOBAL_DEFAULTS.player.startControl,
       pauseControl: properties.pauseControl !== undefined ?
-        properties.pauseControl as boolean : GLOBAL_DEFAULTS.pauseControl,
+        properties.pauseControl as boolean : GLOBAL_DEFAULTS.player.pauseControl,
       progressBar: properties.progressBar !== undefined ?
-        properties.progressBar as boolean : GLOBAL_DEFAULTS.progressBar,
+        properties.progressBar as boolean : GLOBAL_DEFAULTS.player.progressBar,
       interactiveProgressbar: properties.interactiveProgressbar !== undefined ?
-        properties.interactiveProgressbar as boolean : GLOBAL_DEFAULTS.interactiveProgressbar,
+        properties.interactiveProgressbar as boolean : GLOBAL_DEFAULTS.player.interactiveProgressbar,
       volumeControl: properties.volumeControl !== undefined ?
-        properties.volumeControl as boolean : GLOBAL_DEFAULTS.volumeControl,
+        properties.volumeControl as boolean : GLOBAL_DEFAULTS.player.volumeControl,
       defaultVolume: properties.defaultVolume !== undefined ?
-        properties.defaultVolume as number : GLOBAL_DEFAULTS.defaultVolume,
+        properties.defaultVolume as number : GLOBAL_DEFAULTS.player.defaultVolume,
       minVolume: properties.minVolume !== undefined ?
-        properties.minVolume as number : GLOBAL_DEFAULTS.minVolume,
+        properties.minVolume as number : GLOBAL_DEFAULTS.player.minVolume,
       muteControl: properties.muteControl !== undefined ?
-        properties.muteControl as boolean : GLOBAL_DEFAULTS.muteControl,
+        properties.muteControl as boolean : GLOBAL_DEFAULTS.player.muteControl,
       interactiveMuteControl: properties.interactiveMuteControl !== undefined ?
-        properties.interactiveMuteControl as boolean : GLOBAL_DEFAULTS.interactiveMuteControl,
+        properties.interactiveMuteControl as boolean : GLOBAL_DEFAULTS.player.interactiveMuteControl,
       showHint: properties.showHint !== undefined ? properties.showHint as boolean : PropertyGroupGenerators
         .sanitizeShowHint(properties),
       hintLabel: properties.hintLabel !== undefined ?
-        properties.hintLabel as string : GLOBAL_DEFAULTS.hintLabel as string,
+        properties.hintLabel as string : GLOBAL_DEFAULTS.player.hintLabel as string,
       hintDelay: properties.hintDelay !== undefined ?
         properties.hintDelay as number : PropertyGroupGenerators.sanitizeHintDelay(properties),
       activeAfterID: properties.activeAfterID !== undefined ? properties.activeAfterID as string : '',
-      minRuns: properties.minRuns !== undefined ? properties.minRuns as number : GLOBAL_DEFAULTS.minRuns,
-      maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : GLOBAL_DEFAULTS.maxRuns,
+      minRuns: properties.minRuns !== undefined ? properties.minRuns as number : GLOBAL_DEFAULTS.player.minRuns,
+      maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : GLOBAL_DEFAULTS.player.maxRuns,
       showRestRuns: properties.showRestRuns !== undefined ?
-        properties.showRestRuns as boolean : GLOBAL_DEFAULTS.showRestRuns,
+        properties.showRestRuns as boolean : GLOBAL_DEFAULTS.player.showRestRuns,
       showRestTime: properties.showRestTime !== undefined ?
-        properties.showRestTime as boolean : GLOBAL_DEFAULTS.showRestTime,
+        properties.showRestTime as boolean : GLOBAL_DEFAULTS.player.showRestTime,
       playbackTime: properties.playbackTime !== undefined ?
-        properties.playbackTime as number : GLOBAL_DEFAULTS.playbackTime,
+        properties.playbackTime as number : GLOBAL_DEFAULTS.player.playbackTime,
       fileName: properties.fileName !== undefined ? properties.fileName as string : '',
       imgSrc: properties.imgSrc !== undefined ? properties.imgSrc as string | null : null,
       imgFileName: properties.imgFileName !== undefined ? properties.imgFileName as string : ''

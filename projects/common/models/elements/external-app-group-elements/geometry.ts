@@ -25,12 +25,12 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton;
   customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar;
   fileName: string = ELEMENT_DEFAULTS.geometry.fileName;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.geometry);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
   dimensions: {
     width: number;
     height: number;
   } = PropertyGroupGenerators
-      .generateDimensionProps(ELEMENT_DEFAULTS.geometry);
+      .generateDimensionProps(ELEMENT_DEFAULTS.geometry.dimensions);
 
   /* No styling at all: not one of this element's templates reads a styling value, and the group it
      used to get came from the base class rather than from any declaration (#1226). Declared here so

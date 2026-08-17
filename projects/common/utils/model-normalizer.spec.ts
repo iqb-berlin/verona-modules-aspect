@@ -1,7 +1,6 @@
-import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
+import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS, GROUP_SECTIONS } from 'common/models/elements/element-registry';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
-import { NESTED_GROUP_KEYS } from 'common/models/elements/property-group-interfaces';
 import {
   TextFieldSimpleElement
 } from 'common/models/elements/text-input-group-elements/text-field-simple';
@@ -10,7 +9,7 @@ import { TextAreaElement } from 'common/models/elements/text-input-group-element
 import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
 import { TextAreaMathElement } from 'common/models/elements/text-input-group-elements/text-area-math';
 import { TextInputElement } from 'common/models/elements/element';
-import { KEYBOARD_TYPES, ModelNormalizer } from './model-normalizer';
+import { ModelNormalizer } from './model-normalizer';
 
 /* Every object reachable from the defaults tables, as identities. Built ONCE from the whole table, not
    per element type: a text element holding image's Measurement is just as wrong as one holding its
@@ -111,39 +110,58 @@ describe('ModelNormalizer', () => {
       });
     });
 
-    /* The flat defaults entry mixes an element's own properties with the members of its position,
-       dimensions and styling groups. Only the own ones belong on the root: the groups take their
-       values from the same entry, so filling both gave every element a second `width`, `fontSize` and
-       `lineHeight` beside the group that holds the value anything reads (#1187).
+    /* What lands on an element's root, measured against the entry rather than against a list of names:
+       every own key of the entry has to be there, and nothing beyond it except what this class adds
+       itself. Both directions matter and the compiler sees neither -- a group member on the root is
+       junk that nothing reads (#1187, and its player half #1223), while an own property missing from
+       the root is a default that silently stopped arriving (#1177, #1185).
 
-       Two specs, because two things can go wrong and the compiler only sees one of them: that a group
-       member reaches the root (the sweep), and that the skip swallows an own property whose name looks
-       like a group member's -- `NoRootPropertyShadowsAGroup` states no such name exists today, and the
-       second spec measures the fill for the three entries that carry the most own properties.
+       Grouped entries make the measurement exact: before #1224 the entry was flat, so "own key" could
+       only be guessed by name and the sweep had to be limited to naming what must NOT be there. */
+    describe('own properties and group members on the root (#1187, #1223)', () => {
+      /* Not from the entry: `type` and `id` come with the blueprint, the other three are built here.
+         Nothing else is: since #1228 there is no property this class hands out by element type. */
+      const ADDED_HERE = ['type', 'id', 'isRelevantForPresentationComplete', 'position', 'dimensions'];
 
-       The fourth group, `player`, is NOT covered -- neither by the sweep nor by the assertion. Its 16
-       members from GLOBAL_DEFAULTS still reach the root of every element, `text` and `button`
-       included, beside the group that `generatePlayerProps` builds from the same entry. Extending the
-       skip is not a one-liner: PlayerProperties shares `fileName` with audio, video, image, geometry
-       and hotspot-image and `imgSrc`/`imgFileName` with checkbox, where those are genuine root
-       properties that would stop being filled. Filed separately. */
-    describe('own properties and group members on the root (#1187)', () => {
-      it('should write no position, dimension or styling member onto the element root, for any type', () => {
-        const onRoot = (Object.keys(ELEMENT_DEFAULTS) as UIElementType[]).flatMap(type => {
-          const blueprint: Record<string, unknown> = { type, id: `${type}_1` };
-          if (type === 'likert') blueprint.rows = [];
-          return Object.keys(ModelNormalizer.normalizeElement(blueprint))
-            .filter(key => (NESTED_GROUP_KEYS as readonly string[]).includes(key))
-            .map(key => `${type}.${key}`);
+      const allTypes = Object.keys(ELEMENT_DEFAULTS) as UIElementType[];
+      const ownKeysOf = (type: UIElementType): string[] => Object.keys(ELEMENT_DEFAULTS[type])
+        .filter(key => !(GROUP_SECTIONS as readonly string[]).includes(key));
+      const rootKeysOf = (type: UIElementType): string[] => {
+        const blueprint: Record<string, unknown> = { type, id: `${type}_1` };
+        if (type === 'likert') blueprint.rows = [];
+        return Object.keys(ModelNormalizer.normalizeElement(blueprint));
+      };
+
+      it('should write nothing onto the element root that is not an own property, for any type', () => {
+        const unexpected = allTypes.flatMap(type => {
+          const allowed = [
+            ...ownKeysOf(type), ...ADDED_HERE,
+            ...('player' in ELEMENT_DEFAULTS[type] ? ['player'] : []),
+            ...(type === 'likert' ? ['rows'] : [])
+          ];
+          return rootKeysOf(type).filter(key => !allowed.includes(key)).map(key => `${type}.${key}`);
         });
 
-        expect(onRoot).toEqual([]);
+        expect(unexpected).toEqual([]);
       });
 
-      it('should still fill the own properties of an element', () => {
-        expect(ModelNormalizer.normalizeElement({ type: 'audio', id: 'a1' }).fileName).toBe('');
-        expect(ModelNormalizer.normalizeElement({ type: 'text', id: 't1' }).markingMode).toBe('selection');
-        expect(ModelNormalizer.normalizeElement({ type: 'frame', id: 'f1' }).hasBorderTop).toBe(true);
+      it('should fill every own property of an entry onto the element root, for any type', () => {
+        const missing = allTypes.flatMap(type => {
+          const onRoot = rootKeysOf(type);
+          return ownKeysOf(type).filter(key => !onRoot.includes(key)).map(key => `${type}.${key}`);
+        });
+
+        expect(missing).toEqual([]);
+      });
+
+      /* Sorted, because the set is the claim and the order of the table is not: regrouping the entries
+         would otherwise fail this with a diff that reads like a wrong player group. */
+      it('should build the player group for exactly the types whose entry has that section', () => {
+        const withGroup = allTypes.filter(type => ModelNormalizer.normalizeElement(
+          { type, id: `${type}_1`, ...(type === 'likert' ? { rows: [] } : {}) }
+        ).player !== undefined);
+
+        expect(withGroup.sort()).toEqual(['audio', 'image', 'video']);
       });
     });
 
@@ -203,10 +221,10 @@ describe('ModelNormalizer', () => {
        field of TextInputElement; the same three sat in PropertyGroupGenerators with a `false`
        fallback. Merging both into one flat table let the fallback win, and every text input was
        created with its keyboard off (#1235). math-table is the counter-case: it declared `false`
-       for itself back then and has to keep it. */
+       for itself back then and has to keep it -- which is why the values are pinned here and not
+       derived from anything. */
     describe('the keyboard switches of the text inputs (#1235)', () => {
       const KEYBOARD_ON = ['text-field', 'text-field-simple', 'text-area', 'spell-correct', 'text-area-math'];
-      const SWITCHES = ['showSoftwareKeyboard', 'addInputAssistanceToKeyboard', 'hideNativeKeyboard'];
       const KEYBOARD_ON_CONSTRUCTORS: [string, () => TextInputElement][] = [
         ['text-field', () => new TextFieldElement({ type: 'text-field', id: 'tf_2' })],
         ['text-field-simple', () => new TextFieldSimpleElement({ type: 'text-field-simple', id: 'tfs_2' })],
@@ -233,16 +251,11 @@ describe('ModelNormalizer', () => {
         expect(normalized.hideNativeKeyboard).toBe(false);
       });
 
-      /* text-area-math named none of the three until #1235, so `generateKeyInputProps` decided for
-         it with its `false` fallback - the one type the registry fix alone did not reach. That
-         fallback is still there for whoever does not name them, which is why this walks the list
-         the normalizer itself uses instead of the five above: a type added to it without the three
-         in the registry gets `false` handed to it in silence. */
-      it.each(KEYBOARD_TYPES)('should decide the switches of %s in the registry', type => {
-        SWITCHES.forEach(property => {
-          expect(ELEMENT_DEFAULTS[type as keyof typeof ELEMENT_DEFAULTS]).toHaveProperty(property);
-        });
-      });
+      /* That every keyboard element's entry carries all of these is no longer a spec but a compile
+         error: `KeyboardDefaultsAreComplete` in element-registry.ts derives who needs them from the
+         interfaces and checks the table for them. The load path no longer reaches the `false` fallback
+         of `generateKeyInputProps` at all -- the normalizer fills these like any other own property,
+         and has no list of keyboard types left to forget one (#1224, #1228). */
 
       /* The registry is not the only way in: the cloze editor extension builds its child field as
          `new TextFieldSimpleElement()`, bypassing the normalizer, so a blueprint that does not name

@@ -19,15 +19,16 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
   mathKeyboardPresets: MathKeyboardPreset[] =
     ELEMENT_DEFAULTS['math-field'].mathKeyboardPresets;
 
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['math-field']);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
-  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS['math-field']);
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['math-field'].dimensions);
 
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-field']),
-      lineHeight: ELEMENT_DEFAULTS['math-field'].lineHeight
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-field'].styling),
+      lineHeight: ELEMENT_DEFAULTS['math-field'].styling.lineHeight
     };
 
   static title: string = 'Formelfeld';

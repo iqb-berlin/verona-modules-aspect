@@ -33,12 +33,12 @@ export class DropListElement extends InputElement implements DropListProperties 
   startNumberingAtZero: boolean = ELEMENT_DEFAULTS['drop-list'].startNumberingAtZero;
   highlightReceivingDropList: boolean = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropList;
   highlightReceivingDropListColor: string = ELEMENT_DEFAULTS['drop-list'].highlightReceivingDropListColor;
-  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS['drop-list']);
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
   styling: BasicStyles & {
     itemBackgroundColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['drop-list']),
-      itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].itemBackgroundColor
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['drop-list'].styling),
+      itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].styling.itemBackgroundColor
     };
 
   static title: string = 'Ablegeliste';

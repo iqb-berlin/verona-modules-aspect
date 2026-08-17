@@ -43,6 +43,10 @@ export abstract class UIElement implements UIElementProperties {
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS.position);
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS.dimensions);
   styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS.styling);
+  /* Filled by PlayerElement and by nothing else: the group belongs to the types whose interface
+     declares it, so a stored group on any other element is dropped at construction -- the same rule
+     `mergeStyling` applies to an undeclared styling key (#1187). An image carried one for months,
+     which gave it an inspector button that did nothing (#1241). */
   player?: PlayerProperties;
   idService?: AbstractIDService;
 
@@ -78,7 +82,6 @@ export abstract class UIElement implements UIElementProperties {
          promises for a type that declares nothing -- and because an element built through a failing
          guard never reaches its subclass merge. */
       this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
-      if (element.player) this.player = { ...element.player };
     } else {
       if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
         throw new InstantiationEror('Error at UIElement instantiation', element);

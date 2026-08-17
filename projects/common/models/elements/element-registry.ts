@@ -130,9 +130,10 @@ type DeclaredStylingOf<P> = Stylings extends StylingOf<P> ? Record<never, never>
  * decided where a value went -- silently, in either direction.
  *
  * `player` is the one section whose PRESENCE carries meaning: it is what makes ModelNormalizer build
- * the group for that type. The model cannot narrow this (`UIElementProperties.player` is optional for
- * every element, and image has its group through that route rather than through
- * PlayerElementBlueprint), so which types carry one is pinned by a spec instead. */
+ * the group for that type. Only an element whose interface DECLARES the group may have the section --
+ * that is `PlayerElementBlueprint`, hence audio and video. Every other element inherits `player` as
+ * optional from `UIElementProperties`, which is not a declaration that it has one: image had a section
+ * on that basis and got a group nothing reads, plus an inspector button that did nothing (#1241). */
 type GroupSection = 'position' | 'dimensions' | 'styling' | 'player';
 
 type GroupedDefaults<P> =
@@ -140,7 +141,8 @@ type GroupedDefaults<P> =
     position?: Partial<PositionProperties>;
     dimensions?: Partial<DimensionProperties>;
     styling?: Partial<NamedKeysOnly<DeclaredStylingOf<P>>>;
-    player?: Partial<PlayerProperties>;
+    player?: P extends { player: PlayerProperties } ? Partial<PlayerProperties> :
+      'this element does not declare a player group';
   };
 
 /* The runtime twin of `GroupSection`, for the one caller that has to tell a section from an own
@@ -405,12 +407,7 @@ export const ELEMENT_DEFAULTS = {
     dimensions: {
       width: 180,
       height: 100
-    },
-    /* Empty, and not to be tidied away: an entry with a `player` section is what makes ModelNormalizer
-       build the group, and image, audio and video take every value in it from GLOBAL_DEFAULTS. Image
-       reaches its group this way rather than through PlayerElementBlueprint, which its interface does
-       not extend -- so no type can state which elements have one, and a spec pins the three. */
-    player: {}
+    }
   },
   audio: {
     src: null,
@@ -425,6 +422,8 @@ export const ELEMENT_DEFAULTS = {
     styling: {
       backgroundColor: '#f1f1f1'
     },
+    /* Empty, and not to be tidied away: the section's PRESENCE is what makes ModelNormalizer build the
+       group, and audio and video take every value in it from GLOBAL_DEFAULTS. */
     player: {}
   },
   video: {

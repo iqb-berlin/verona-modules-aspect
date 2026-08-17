@@ -963,7 +963,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = image
 text "originalFileName" = unknown
 button "upload_file"
-button "propertiesPanel.editPlayerOptions"
 input[text] "propertiesPanel.alt" = Bild nicht gefunden
 checkbox "propertiesPanel.scale" = false
 checkbox "propertiesPanel.magnifier" = false
@@ -992,7 +991,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" =  [merged]
 button "upload_file"
-button "propertiesPanel.editPlayerOptions"
 input[text] "propertiesPanel.alt" =  [merged]
 checkbox "propertiesPanel.scale" = indeterminate
 checkbox "propertiesPanel.magnifier" = indeterminate

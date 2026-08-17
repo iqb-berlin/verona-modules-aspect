@@ -154,14 +154,30 @@ describe('ModelNormalizer', () => {
         expect(missing).toEqual([]);
       });
 
-      /* Sorted, because the set is the claim and the order of the table is not: regrouping the entries
-         would otherwise fail this with a diff that reads like a wrong player group. */
+      /* Which types MAY carry the section is a compile error since #1241 (`GroupedDefaults` allows it
+         only where the interface declares the group); this measures what the normalizer then does with
+         it. Image was in this list until #1241, on the strength of the optional `player` every element
+         inherits -- it got a group nothing reads and an inspector button that did nothing.
+
+         Sorted, because the set is the claim and the order of the table is not. */
       it('should build the player group for exactly the types whose entry has that section', () => {
         const withGroup = allTypes.filter(type => ModelNormalizer.normalizeElement(
           { type, id: `${type}_1`, ...(type === 'likert' ? { rows: [] } : {}) }
         ).player !== undefined);
 
-        expect(withGroup.sort()).toEqual(['audio', 'image', 'video']);
+        expect(withGroup.sort()).toEqual(['audio', 'video']);
+      });
+
+      /* A stored group passes through here even for an element whose entry has no section -- this class
+         does not decide group membership, the element's class does, and it drops what it does not
+         declare (`the player group an element keeps` in element.spec.ts, #1241). The same layering as
+         for styling: the normalizer hands values along, the constructor is the whitelist (#1187). */
+      it('should pass a stored player group through for an element whose entry has no section', () => {
+        const normalized = ModelNormalizer.normalizeElement({
+          type: 'image', id: 'image_1', player: { minRuns: 3 }
+        });
+
+        expect((normalized.player as { minRuns: number }).minRuns).toBe(3);
       });
     });
 

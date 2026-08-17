@@ -3,6 +3,7 @@ import { AbstractIDService } from 'common/models/id-interfaces';
 import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 
 describe('UIElement setProperty alias validation', () => {
   let element: UIElement;
@@ -222,5 +223,34 @@ describe('the styling group an element keeps', () => {
       .filter(type => Object.keys(stylingOf(type, everyStylingKey)).length !== Object.keys(stylingOf(type)).length);
 
     expect(widened).toEqual([]);
+  });
+});
+
+/* The same rule for the fourth group: which elements have a `player` group is decided by their class,
+   and a stored group reaches only the ones that declare it. Until #1241 the base class copied any
+   stored group onto any element, and ModelNormalizer built one for images -- which showed the media
+   options button in the inspector, where it did nothing. */
+describe('the player group an element keeps', () => {
+  /* A complete group, as a stored unit carries it -- the guard in PlayerElement demands every member,
+     so a partial literal would send audio down its fallback branch instead. */
+  const STORED_PLAYER = PropertyGroupGenerators.generatePlayerProps({ minRuns: 3, defaultVolume: 0.5 });
+
+  const playerOf = (type: UIElementType): unknown => {
+    const blueprint: Record<string, unknown> = {
+      type, id: `${type}_1`, alias: `${type}_1`, player: { ...STORED_PLAYER }
+    };
+    if (type === 'likert') blueprint.rows = [];
+    return (ElementFactory.createElement(blueprint as unknown as UIElementProperties) as UIElement).player;
+  };
+
+  it('should hand a stored player group to exactly the element types that declare one', () => {
+    const withGroup = (Object.keys(ELEMENT_DEFAULTS) as UIElementType[])
+      .filter(type => playerOf(type) !== undefined);
+
+    expect(withGroup.sort()).toEqual(['audio', 'video']);
+  });
+
+  it('should keep the stored values for an element that declares the group', () => {
+    expect(playerOf('audio')).toMatchObject({ minRuns: 3, defaultVolume: 0.5 });
   });
 });

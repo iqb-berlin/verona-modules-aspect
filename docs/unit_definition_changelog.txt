@@ -403,3 +403,25 @@ iqb-aspect-definition@1.0.0
   as an input, and the row component reads nothing else. The row's value had no reader
   anywhere -- in the released master no more than today, where the same construction stands.
   Stored values are dropped on the next load; nothing displayed them.
+
+(#1241, no version raise -- a property group is retired, none is added)
+- An image no longer has a player group. Its interface never declared one: only
+  PlayerElementBlueprint does, which is audio and video, while every element inherits an
+  optional `player` from UIElementProperties -- and that is not a declaration that it has
+  one. Nothing read an image's group either; the image component never mentions `player`,
+  the player's code mapping casts to AudioElement/VideoElement, and the reference manager
+  collects audio and video by type. But the inspector shows the media options button by
+  PRESENCE of the group, so every image offered it in expert mode, and the click did
+  nothing at all: the dialog switch has no case for images. The group appeared with the
+  3.0.0 beta, when normalization started building it for audio, video AND image from a
+  hand-written list of type names; the shipped 2.x line has an image without any player,
+  so this restores the released behaviour rather than removing a feature.
+  Unlike #1226, stored values are also dropped for beta-era units, and for the same
+  reason the styling group drops undeclared keys: the group now reaches only the classes
+  that declare it, so a stored group on an image is not copied onto the element and does
+  not survive the next save. The button therefore disappears for existing units too.
+  One editor detail follows, as in #1226 and #1230: an image selected together with an
+  audio or video no longer offers the media options button, because the merge keeps only
+  what the whole selection shares. Editing an audio's player options now means selecting
+  it on its own; in between, the button was shown for such a mixed selection and wrote to
+  the first selected element.

@@ -23,6 +23,9 @@ Player
 - Formelfeld, Formelbereich
   - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
   - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen innerhalb des Feldes, im Formelbereich brechen Text und Formel-Segmente in die nächste Zeile um
+- Formeln in Texten, Beschriftungen und Optionen
+  - Formeln aus Aufgaben, die vor Editor 2.12.4 geschrieben wurden, wurden in Chrome-basierten Browsern (auch im Safe Exam Browser) und auf iPads falsch dargestellt: der Überstrich lag nur über dem ersten Zeichen, Brüche waren zu klein, Wurzeln verzerrt. In Firefox sah dieselbe Aufgabe korrekt aus. Ursache war das in der Aufgabe mitgespeicherte HTML der Formel, das der jeweilige Browser selbst setzen musste. Die Darstellung wird jetzt aus dem ebenfalls gespeicherten LaTeX aufgebaut und sieht damit in allen Browsern gleich aus
+  - **Folge für vorhandene Antworten:** In solchen Aufgaben verschieben sich Textmarkierungen, die vor dieser Version gesetzt wurden, sofern sie hinter einer Formel liegen — die Markierungen sind als Zeichenpositionen gespeichert, und die Formel hat jetzt eine andere Länge. Neu gesetzte Markierungen sind davon nicht betroffen
 
 ## 2.12.6
 ### Fehlerbehebungen

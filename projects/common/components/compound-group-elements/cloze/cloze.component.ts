@@ -1,7 +1,6 @@
 import {
   Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
@@ -24,7 +23,7 @@ export class ClozeComponent extends CompoundElementComponent {
   protected readonly ClozeElement = ClozeElement;
   editorMode: boolean = false;
 
-  constructor(public elementRef: ElementRef, public domSanitizer: DomSanitizer) {
+  constructor(public elementRef: ElementRef) {
     super(elementRef);
   }
 

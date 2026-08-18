@@ -8,11 +8,12 @@
                            [color]="markable.color">
     </aspect-markable-delimiter>
   }
-  @if (markable.word) {
+  @if (markable.word || markable.contentNode) {
     <aspect-markable-word class="prevent-select"
                           [id]="markable.id"
                           [markingRange]="markingRange"
                           [text]="markable.word"
+                          [contentNode]="markable.contentNode"
                           [markColor]="selectedColor.value"
                           [(color)]="markable.color"
                           (colorChange)="onColorChange()">

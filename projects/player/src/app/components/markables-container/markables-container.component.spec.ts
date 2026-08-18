@@ -17,7 +17,7 @@ describe('MarkablesContainerComponent', () => {
   let fixture: ComponentFixture<MarkablesContainerComponent>;
 
   const createMarkable = (id: number, word: string, properties: Partial<Markable> = {}): Markable => ({
-    id, prefix: '', word, suffix: '', isActive: true, color: null, ...properties
+    id, prefix: '', word, suffix: '', isActive: true, color: null, contentNode: null, ...properties
   });
 
   const delimiters = (): MarkableDelimiterComponent[] => fixture.debugElement
@@ -54,6 +54,26 @@ describe('MarkablesContainerComponent', () => {
     fixture.detectChanges();
 
     expect(words().map(word => word.text)).toEqual(['Lorem', 'ipsum']);
+  });
+
+  it('should hand the content node of a markable over to its word', () => {
+    const formula = document.createElement('aspect-nodeview-math-formula');
+    component.markables = [createMarkable(0, '', { contentNode: formula })];
+    component.allMarkables = component.markables;
+
+    fixture.detectChanges();
+
+    expect(words().length).toBe(1);
+    expect(words()[0].contentNode).toBe(formula);
+  });
+
+  it('should show nothing for a markable with neither word nor content node', () => {
+    component.markables = [createMarkable(0, '')];
+    component.allMarkables = component.markables;
+
+    fixture.detectChanges();
+
+    expect(words().length).toBe(0);
   });
 
   it('should show prefix and suffix as delimiters', () => {

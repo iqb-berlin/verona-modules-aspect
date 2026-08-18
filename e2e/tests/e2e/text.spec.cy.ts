@@ -1,4 +1,6 @@
-import {addNewPage, setID, addTextElement, selectParagraphElement, addElement} from '../util';
+import {
+    addNewPage, setID, addTextElement, selectParagraphElement, addElement, setCheckbox, selectFromDropdown
+} from '../util';
 import { addText, selectRange } from "./helpers/text-util";
 
 describe('Text element', { testIsolation: false }, () => {
@@ -212,6 +214,27 @@ describe('Text element', { testIsolation: false }, () => {
             // Save the second unit definition containing the deleted tooltip
             cy.clickOutside();
             cy.saveUnit('e2e/downloads/tooltips-deleted.json');
+        });
+
+        // ── Page 7: word marking with a formula ─────────────────────────────────
+        it('creates a text element in word selection mode with a formula (page 7)', () => {
+            addNewPage();
+            addTextElement('Der Term ');
+            setID('text-math-words');
+
+            cy.get('aspect-ui-element-properties')
+                .contains('edit').click();
+            /* Scoped to the dialog: the formula of page 4 is still in the DOM of the editor canvas. */
+            cy.get('mat-dialog-container').find('.ProseMirror p').click().type('{end}');
+            cy.get('mat-dialog-container').find('mat-icon:contains("functions")').click();
+            cy.get('mat-dialog-container').find('aspect-nodeview-math-formula').click();
+            cy.get('mat-dialog-container').find('aspect-nodeview-math-formula [contenteditable="true"]')
+                .type(' \\overline{{}S\\cap M{}}+\\frac{{}1{}}{{}2{}}{enter}');
+            cy.get('mat-dialog-container').find('.ProseMirror p').type('{end} ist der Term');
+            cy.contains('Speichern').click();
+
+            setCheckbox('Gelb', true);
+            selectFromDropdown('Markierungsmodus', 'Wort');
         });
 
         after('saves the unit definition', () => {
@@ -545,6 +568,33 @@ describe('Text element', { testIsolation: false }, () => {
             cy.goToPlayerPage(6);
             cy.get('aspect-text').should('exist');
             cy.get('aspect-text tooltip').should('not.exist');
+        });
+
+        /* The case the ticket asked for: a formula in a text that is marked by word. Its glyphs used to
+           become markable words of their own, so a formula could be marked in fragments only, and the
+           ids behind it moved with its markup (#1244). */
+        it('marks a formula as one word (page 7)', () => {
+            cy.loadUnit('../downloads/text.json');
+            cy.goToPlayerPage(7);
+
+            cy.getElementByAlias('text-math-words')
+                .find('button.marking-button').eq(0).click();
+
+            cy.getElementByAlias('text-math-words')
+                .find('aspect-markable-word').eq(2)
+                .find('aspect-nodeview-math-formula').should('exist');
+
+            cy.getElementByAlias('text-math-words')
+                .find('aspect-markable-word').eq(2).click();
+
+            cy.getElementByAlias('text-math-words')
+                .find('aspect-markable-word').eq(2).find('span').first()
+                .should('have.css', 'background-color', 'rgb(249, 248, 113)');
+
+            cy.getElementByAlias('text-math-words').within(() => {
+                cy.get('aspect-nodeview-math-formula .ML__latex').should('exist');
+                cy.get('aspect-nodeview-math-formula aspect-markable-word').should('not.exist');
+            });
         });
     });
 });

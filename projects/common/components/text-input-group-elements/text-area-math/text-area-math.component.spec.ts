@@ -112,6 +112,15 @@ describe('TextAreaMathComponent', () => {
     fixture.detectChanges();
   });
 
+  /* The spies below reach into the static methods of RangeSelectionService, which is module state
+     shared with every other spec file in the run. Left standing, they travel: whenever Vitest puts
+     range-selection.service.spec.ts into the same worker after this file, six of its tests read this
+     file's mocked values ('test' for the range, true for isRangeInside, {4, 4} for the offsets)
+     instead of the browser's. It was blamed on a leaked selection before -- it is a leaked spy. */
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });

@@ -160,6 +160,25 @@ describe('MarkableSupport', () => {
       .toBe('rgb(249, 248, 113)');
   });
 
+  /* The form the markup is in must not matter. A formula written before editor 2.12.4 stores KaTeX
+     MathML, which carries the LaTeX of the formula as text on top of its glyphs; since #1105 the
+     display is rebuilt from that LaTeX, but a formula without one keeps the stored MathML. The node
+     tag is what all these forms have in common -- and what MathFormulaMarkup leaves untouched when it
+     replaces the content -- so all of them contribute exactly one id. */
+  it('should count a formula stored as MathML as one markable', () => {
+    textContainer.innerHTML =
+      'Lorem <aspect-nodeview-math-formula><span class="katex"><math><semantics><mrow><msup>' +
+      '<mi>x</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2</annotation>' +
+      '</semantics></math></span></aspect-nodeview-math-formula> dolor';
+
+    support.createMarkables(['2-2-#f9f871'], elementComponent);
+    applicationRef.tick();
+
+    expect(words().length).toBe(3);
+    expect(formula()?.closest('aspect-markable-word')).toBe(words()[1]);
+    expect(markedWords()).toEqual(['dolor']);
+  });
+
   it('should leave a formula without markup out of the markables', () => {
     textContainer.innerHTML =
       'Lorem <aspect-nodeview-math-formula formula=""><span></span></aspect-nodeview-math-formula> dolor';

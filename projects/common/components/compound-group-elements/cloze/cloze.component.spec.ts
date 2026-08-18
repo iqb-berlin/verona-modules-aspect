@@ -4,6 +4,7 @@ import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { StyleMarksPipe } from 'common/pipes/style-marks.pipe';
 import { MarkListPipe } from 'common/pipes/mark-list.pipe';
 import { ArrayIncludesPipe } from 'common/pipes/array-includes.pipe';
+import { MathFormulaPipe } from 'common/pipes/math-formula.pipe';
 import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
@@ -39,7 +40,8 @@ describe('ClozeComponent', () => {
         SafeResourceHTMLPipe,
         StyleMarksPipe,
         MarkListPipe,
-        ArrayIncludesPipe
+        ArrayIncludesPipe,
+        MathFormulaPipe
       ]
     }).compileComponents();
   });
@@ -69,5 +71,35 @@ describe('ClozeComponent', () => {
   it('should render the document content', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('p')?.textContent).toContain('Test text');
+  });
+
+  /* The cloze renders a formula node itself, from the LaTeX on the node, so a document carrying one
+     built by an older editor still displays like one written today (#1105). Without a case that has
+     such a node the `mathFormula` pipe would never be resolved here either, and a missing declaration
+     would only surface as NG0302 in production. */
+  it('should build a formula in its document from the LaTeX, not from the stored markup', () => {
+    component.elementModel = new ClozeElement({
+      type: 'cloze',
+      id: 'cloze-formula',
+      columnCount: 1,
+      document: {
+        type: 'doc',
+        content: [{
+          type: 'paragraph',
+          content: [
+            { type: 'text', text: 'Fläche ' },
+            {
+              type: 'math-formula',
+              attrs: { formula: '\\overline{BC}', formulaHTML: '<span class="katex"><math></math></span>' }
+            }
+          ]
+        }]
+      }
+    } as Partial<ClozeProperties>);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.ML__latex')).toBeTruthy();
+    expect(compiled.querySelector('math')).toBeNull();
   });
 });

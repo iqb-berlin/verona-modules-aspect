@@ -463,6 +463,14 @@ describe('Text element', { testIsolation: false }, () => {
                 cy.get('aspect-nodeview-math-formula').get('.overline').should('exist');
                 cy.get('aspect-nodeview-math-formula').get('.ML__cmr').should('exist');
                 cy.get('aspect-nodeview-math-formula').get('cap').should('not.exist');
+                /* That what reaches the reader is MathLive markup and not MathML. This unit is written
+                   by the editor in this very spec, so it does NOT cover #1105 -- a fresh formula is
+                   stored as MathLive markup either way, and these lines are green without that fix.
+                   What they do cover is the authoring path: were the editor to go back to a renderer
+                   whose output the browser typesets itself, this fails. #1105 is pinned in the pipe
+                   specs, which need a stored formula in the old form to be meaningful. */
+                cy.get('aspect-nodeview-math-formula').find('.ML__latex').should('exist');
+                cy.get('aspect-nodeview-math-formula').find('math').should('not.exist');
             });
         });
 

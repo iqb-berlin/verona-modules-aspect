@@ -73,6 +73,7 @@ import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
 import { InputBackgroundColorDirective } from './directives/input-background-color.directive';
 import { ErrorTransformPipe } from './pipes/error-transform.pipe';
 import { SafeResourceHTMLPipe } from './pipes/safe-resource-html.pipe';
+import { MathFormulaPipe } from './pipes/math-formula.pipe';
 import { MediaPlayerControlBarComponent }
   from './components/media-player-group-elements/media-player-control-bar/media-player-control-bar.component';
 import {
@@ -152,6 +153,7 @@ import { HasTextContentPipe } from './pipes/has-text-content.pipe';
     InputBackgroundColorDirective,
     ErrorTransformPipe,
     SafeResourceHTMLPipe,
+    MathFormulaPipe,
     ScrollPagesPipe,
     MediaPlayerControlBarComponent,
     MediaPlayerTimeFormatPipe,
@@ -223,6 +225,7 @@ import { HasTextContentPipe } from './pipes/has-text-content.pipe';
     MatDialogModule,
     TranslateModule,
     SafeResourceHTMLPipe,
+    MathFormulaPipe,
     HasTextContentPipe,
     ScrollPagesPipe,
     TextMarkingBarComponent,

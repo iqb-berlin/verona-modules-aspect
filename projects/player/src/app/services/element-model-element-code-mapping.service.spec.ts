@@ -16,6 +16,8 @@ import * as dragNDropValues_01_130 from 'test-data/values/dragNDropValues_01_130
 import * as dragNDropValues_02_130 from 'test-data/values/dragNDropValues_02_130.json';
 import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
+import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
 import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
 import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
 import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
@@ -614,5 +616,52 @@ describe('ElementModelElementCodeMappingService', () => {
     } as any) as WidgetPeriodicTableElement;
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual('initial_state');
+  });
+
+  /* Selection marks are stored as character offsets into the text as the browser rendered it, and they
+     are restored into what `markingBase` returns -- so the two must be the same string. Since #1105 the
+     display rebuilds a formula from its LaTeX, and a base that still held the stored markup would put
+     every offset behind a formula inside that markup: for one formula, over 1600 characters off. */
+  describe('the base a marking answer is measured against (#1105)', () => {
+    /* A formula as an editor before 2.12.4 stored it, shortened: KaTeX MathML in both places. */
+    const OLD_FORM = '<aspect-nodeview-math-formula formula="\\overline{BC}" ' +
+      'formulahtml="&lt;span class=&quot;katex&quot;&gt;&lt;math&gt;&lt;/math&gt;&lt;/span&gt;">' +
+      '<span><span class="katex"><math><mi>B</mi></math></span></span></aspect-nodeview-math-formula>';
+
+    /* Built through the factory and then set, rather than passed in: the factory's parameter takes the
+       base properties only, and a blueprint wide enough to carry `text` would need a cast. */
+    const textWithFormula = (): TextElement => {
+      const element = ElementFactory
+        .createElement({ type: 'text', id: 'text1', alias: 'text1' }) as TextElement;
+      element.text = `<p>Vor ${OLD_FORM} nach</p>`;
+      element.markingMode = 'selection';
+      return element;
+    };
+
+    it('should hand out the same text the display renders', () => {
+      const base = ElementModelElementCodeMappingService.markingBase(textWithFormula());
+
+      expect(base).toContain('ML__latex');
+      expect(base).not.toContain('<math>');
+      expect(MathFormulaMarkup.refreshInStoredHtml(base)).toBe(base);
+    });
+
+    /* The mark has to land on the word again, not inside the formula. The tag itself is rebuilt in a
+       canonical form by `restoreMarkedTextIndices`, so the assertion is about WHERE it sits. */
+    it('should restore a mark at the offset the rendered text gave it', () => {
+      const elementModel = textWithFormula();
+      const base = ElementModelElementCodeMappingService.markingBase(elementModel);
+      const marked = base.replace(
+        'nach', '<aspect-marked style="background-color: rgb(249, 248, 113);">nach</aspect-marked>'
+      );
+      const offsets = TextMarkingUtils.getMarkedTextIndices(marked);
+
+      const restored = service.mapToElementModelValue(offsets, elementModel) as string;
+
+      expect(offsets).toHaveLength(1);
+      expect(restored).toContain('>nach</aspect-marked>');
+      expect(restored.indexOf('<aspect-marked'))
+        .toBeGreaterThan(restored.indexOf('</aspect-nodeview-math-formula>'));
+    });
   });
 });

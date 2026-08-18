@@ -15,6 +15,7 @@ import { InputElementValue } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';
@@ -28,6 +29,20 @@ export class ElementModelElementCodeMappingService {
   static modifyAnchors(text: string): string {
     const regEx = /<aspect-anchor /g;
     return text.replace(regEx, '<aspect-anchor class="" ');
+  }
+
+  /**
+   * The text a marking answer is measured against. Selection marks are stored as CHARACTER OFFSETS
+   * taken from what the browser rendered (`TextMarkingUtils.applyMarkingDataToText` emits
+   * `element.innerHTML`), and they are restored into the text this returns -- so the two have to be
+   * the same string, character for character. `modifyAnchors` exists for exactly that reason, and
+   * since #1105 the formulas do too: the display rebuilds them from their LaTeX, so a base that still
+   * carried the stored markup would be up to 1600 characters longer per formula and every offset
+   * behind it would land inside the markup.
+   */
+  static markingBase(elementModel: TextElement): string {
+    return ElementModelElementCodeMappingService
+      .modifyAnchors(MathFormulaMarkup.refreshInStoredHtml(elementModel.text));
   }
 
   mapToElementModelValue(elementCodeValue: ResponseValueType | undefined, elementModel: UIElement): InputElementValue {
@@ -55,8 +70,8 @@ export class ElementModelElementCodeMappingService {
           TextMarkingUtils
             .restoreMarkedTextIndices(
               elementCodeValue as string[],
-              ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
-          ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
+              ElementModelElementCodeMappingService.markingBase(elementModel as TextElement)) :
+          ElementModelElementCodeMappingService.markingBase(elementModel as TextElement);
       case 'audio':
         return elementCodeValue !== undefined ?
           elementCodeValue as number :

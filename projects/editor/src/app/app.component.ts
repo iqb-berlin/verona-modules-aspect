@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { VeronaAPIService, StartCommand } from './services/verona-api.service';
 import { UnitService } from './services/unit.service';
 
@@ -15,7 +16,7 @@ import { UnitService } from './services/unit.service';
 
 export class AppComponent implements OnInit, OnDestroy {
   isStandalone = window === window.parent;
-  private loadingSubscription: Subscription | undefined;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(private unitService: UnitService,
               private translateService: TranslateService,
@@ -26,12 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.veronaApiService.startCommand
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: StartCommand): void => {
-        // Unsubscribe from previous loading operation if it exists
-        if (this.loadingSubscription) {
-          this.loadingSubscription.unsubscribe();
-        }
-
         this.unitService.loadUnitDefinition(message.unitDefinition);
         if (message.editorConfig.role === 'developer') {
           this.unitService.expertMode = false;
@@ -43,8 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.loadingSubscription) {
-      this.loadingSubscription.unsubscribe();
-    }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

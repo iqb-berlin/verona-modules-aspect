@@ -245,6 +245,20 @@ describe('UnitComponent', () => {
     expect(component.playerConfig).toEqual({});
   }));
 
+  it('should ignore verona messages after the component was destroyed', fakeAsync(() => {
+    fixture.destroy();
+
+    startUnit({ unitDefinition: createUnitDefinition({ pages: [{ sections: [] }] }) });
+    vopPlayerConfigChangedNotification.next({
+      type: 'vopPlayerConfigChangedNotification',
+      sessionId: 'session_1',
+      playerConfig: { pagingMode: 'concat-scroll' }
+    } as VopPlayerConfigChangedNotification);
+
+    expect(component.pages.length).toBe(0);
+    expect(component.playerConfig).toEqual({});
+  }));
+
   it('should take over a changed player config', () => {
     vopPlayerConfigChangedNotification.next({
       type: 'vopPlayerConfigChangedNotification',

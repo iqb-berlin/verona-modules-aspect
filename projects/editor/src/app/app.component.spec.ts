@@ -119,6 +119,23 @@ describe('AppComponent startCommand loading', () => {
     expect(unitService.unit.getAllElements('checkbox').length).toBe(1);
     expect((veronaApiServiceMock.sendReady as Mock).mock.calls.length).toBe(1);
   }));
+
+  it('ignores startCommands after the component was destroyed', fakeAsync(() => {
+    const appComponent = new AppComponent(
+      unitService,
+      translateServiceMock as TranslateService,
+      veronaApiServiceMock as VeronaAPIService
+    );
+
+    appComponent.ngOnInit();
+    const loadUnitDefinition = vi.spyOn(unitService, 'loadUnitDefinition');
+    appComponent.ngOnDestroy();
+
+    startCommand$.next(createStartCommand('after-destroy', 'Checkbox C'));
+    tick();
+
+    expect(loadUnitDefinition).not.toHaveBeenCalled();
+  }));
 });
 
 function createStartCommand(marker: string, label: string): StartCommand {

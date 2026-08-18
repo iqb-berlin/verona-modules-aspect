@@ -12,6 +12,8 @@ export interface Markable {
   suffix: string;
   isActive: boolean;
   color: string | null;
+  /** Markup this markable stands for instead of a word -- a formula -- moved into it as it is. */
+  contentNode: Node | null;
 }
 
 export interface MarkingColorData {

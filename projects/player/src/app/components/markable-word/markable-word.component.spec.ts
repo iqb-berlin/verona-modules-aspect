@@ -16,9 +16,11 @@ describe('MarkableWordComponent', () => {
   const word = (): HTMLElement => fixture.debugElement.query(By.css('span')).nativeElement;
 
   const initComponent = (markColor: string | undefined,
-                         markingRange: BehaviorSubject<MarkingRange | null> | null = null): void => {
+                         markingRange: BehaviorSubject<MarkingRange | null> | null = null,
+                         contentNode: Node | null = null): void => {
     component.id = 1;
-    component.text = 'ipsum';
+    component.text = contentNode ? '' : 'ipsum';
+    component.contentNode = contentNode;
     component.markColor = markColor;
     component.markingRange = markingRange;
     component.colorChange.subscribe(color => colorChanges.push(color));
@@ -49,6 +51,28 @@ describe('MarkableWordComponent', () => {
     initComponent(undefined);
 
     expect(word().textContent).toBe('ipsum');
+  });
+
+  /* A formula is handed over as a node, because its markup does not survive being split into words. */
+  it('should show a handed over node instead of text', () => {
+    const formula = document.createElement('aspect-nodeview-math-formula');
+    formula.innerHTML = '<span class="ML__latex">x</span>';
+
+    initComponent('yellow', null, formula);
+
+    expect(word().firstElementChild).toBe(formula);
+    expect(formula.innerHTML).toBe('<span class="ML__latex">x</span>');
+  });
+
+  it('should mark a handed over node like a word', () => {
+    const formula = document.createElement('aspect-nodeview-math-formula');
+    initComponent('yellow', null, formula);
+
+    word().click();
+    fixture.detectChanges();
+
+    expect(colorChanges).toEqual(['#f9f871']);
+    expect(word().style.backgroundColor).toBe('rgb(249, 248, 113)');
   });
 
   it('should ignore clicks without an active marking colour', () => {

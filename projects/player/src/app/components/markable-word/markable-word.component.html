@@ -1,4 +1,5 @@
-<span [class.is-active]="!!(markColor && markColor !== 'none')"
+<span #wordRef
+      [class.is-active]="!!(markColor && markColor !== 'none')"
       [class.is-selected-yellow]="markColor === 'yellow' &&
                                   markingRange?.value?.first === id &&
                                   markingRange?.value?.second === null"

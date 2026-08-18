@@ -7,6 +7,9 @@ import {
   RadioButtonGroupElement, RadioButtonGroupProperties
 } from 'common/models/elements/input-group-elements/radio-button-group';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
+import {
+  FirstLineAlignedControlDirective
+} from 'common/directives/first-line-aligned-control.directive';
 import { RadioButtonGroupComponent } from './radio-button-group.component';
 
 @Pipe({ name: 'errorTransform', standalone: false })
@@ -22,6 +25,7 @@ describe('RadioButtonGroupComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         RadioButtonGroupComponent,
+        FirstLineAlignedControlDirective,
         SafeResourceHTMLPipe,
         MockErrorTransformPipe
       ],

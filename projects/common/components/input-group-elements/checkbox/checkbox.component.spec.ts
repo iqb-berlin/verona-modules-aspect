@@ -9,6 +9,9 @@ import {
 import { CheckboxElement, CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
 import { InputElement } from 'common/models/elements/element';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
+import {
+  FirstLineAlignedControlDirective
+} from 'common/directives/first-line-aligned-control.directive';
 import { CheckboxComponent } from './checkbox.component';
 
 @Component({
@@ -34,6 +37,7 @@ describe('CheckboxComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         CheckboxComponent,
+        FirstLineAlignedControlDirective,
         MockClozeChildErrorMessageComponent,
         MockErrorTransformPipe,
         SafeResourceHTMLPipe

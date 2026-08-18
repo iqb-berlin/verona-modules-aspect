@@ -350,6 +350,37 @@ describe('ModelNormalizer', () => {
       expect(normalized.requiredWarnMessage).toBeUndefined();
       expect(normalized.readOnly).toBeUndefined();
     });
+
+    /* #960: the option control's vertical alignment. 'auto' is the behaviour every stored unit has
+       shown since 2.11, so a unit written before this property existed has to come out of the load
+       with exactly that -- which is what makes the migration step unnecessary. */
+    describe('verticalButtonAlignment (#960)', () => {
+      it.each<[UIElementType]>([['radio'], ['checkbox']])(
+        'should default %s to alignment on the first line',
+        type => {
+          expect(ELEMENT_DEFAULTS[type as 'radio' | 'checkbox'].verticalButtonAlignment).toBe('auto');
+          expect(ElementFactory.createElement({ type }).verticalButtonAlignment).toBe('auto');
+        }
+      );
+
+      it('should fill it into a unit stored without it', () => {
+        expect(ModelNormalizer.normalizeElement({ type: 'radio', id: 'r1' }).verticalButtonAlignment)
+          .toBe('auto');
+      });
+
+      it('should keep a stored choice', () => {
+        const normalized = ModelNormalizer
+          .normalizeElement({ type: 'checkbox', id: 'cb1', verticalButtonAlignment: 'center' });
+
+        expect(normalized.verticalButtonAlignment).toBe('center');
+      });
+
+      /* The option table has carried the property since 3.2.0 and centres its rows -- unchanged by
+         the two entries above, which the shared model level could have dragged along. */
+      it('should leave the option table row centred', () => {
+        expect(ELEMENT_DEFAULTS['likert-row'].verticalButtonAlignment).toBe('center');
+      });
+    });
   });
 
   /* #1184: no element may hold an object that ELEMENT_DEFAULTS or GLOBAL_DEFAULTS owns, or an in-place

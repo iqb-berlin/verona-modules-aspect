@@ -7,7 +7,7 @@ import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
 import {
-  OptionElement, StrikeOtherOptionsProperties, UIElementType
+  OptionElement, StrikeOtherOptionsProperties, UIElementType, VerticalButtonAlignmentProperties
 } from 'common/models/ui-element-interfaces';
 import { TextLabel } from 'common/models/label-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
@@ -19,6 +19,8 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   options: TextLabel[] = ELEMENT_DEFAULTS.radio.options;
   alignment: 'column' | 'row' = ELEMENT_DEFAULTS.radio.alignment;
   strikeOtherOptions: boolean = ELEMENT_DEFAULTS.radio.strikeOtherOptions;
+
+  verticalButtonAlignment: 'auto' | 'center' = ELEMENT_DEFAULTS.radio.verticalButtonAlignment;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.radio.dimensions);
@@ -40,6 +42,9 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
       if (element.options !== undefined) this.options = [...element.options];
       if (element.alignment !== undefined) this.alignment = element.alignment;
       if (element.strikeOtherOptions !== undefined) this.strikeOtherOptions = element.strikeOtherOptions;
+      if (element.verticalButtonAlignment !== undefined) {
+        this.verticalButtonAlignment = element.verticalButtonAlignment;
+      }
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
       this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
@@ -76,7 +81,8 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   }
 }
 
-export interface RadioButtonGroupProperties extends InputElementProperties, StrikeOtherOptionsProperties {
+export interface RadioButtonGroupProperties extends
+  InputElementProperties, StrikeOtherOptionsProperties, VerticalButtonAlignmentProperties {
   label: string;
   options: TextLabel[];
   alignment: 'column' | 'row';

@@ -10,6 +10,8 @@ Player
   - Stellt die im Editor konfigurierte Kopfzeile (auch mehrzeilig) dar; optional bleibt sie beim Scrollen am oberen Rand des sichtbaren Bereichs fixiert
 - Tooltip (Text und Knopf)
   - Stellt die im Editor eingestellte Formatierung des Tooltip-Textes dar
+- Optionsfelder, Kontrollkästchen
+  - Stellt die im Editor eingestellte vertikale Knopfausrichtung dar ("an der ersten Zeile" oder "zentriert")
 
 ### Änderungen
 - Eingabehilfe/Tastatur

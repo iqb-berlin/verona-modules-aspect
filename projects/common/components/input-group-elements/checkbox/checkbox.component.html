@@ -4,7 +4,10 @@
        [style.height.%]="100"
        [style.background-color]="elementModel.styling.backgroundColor">
     <mat-checkbox #checkbox class="example-margin"
-                  [firstLineAlignedControl]="!elementModel.imgSrc"
+                  [firstLineAlignedControl]="!elementModel.imgSrc &&
+                                            elementModel.verticalButtonAlignment !== 'center'"
+                  [class.centered-control]="!elementModel.imgSrc &&
+                                            elementModel.verticalButtonAlignment === 'center'"
                   [formControl]="elementFormControl"
                   [class.image]="elementModel.imgSrc"
                   [checked]="$any(elementModel.value)"

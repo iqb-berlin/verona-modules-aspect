@@ -1,0 +1,17 @@
+<!--`!== undefined` rather than plain truthiness: the merge answers null for "the selected elements
+    disagree", which has to leave the field visible and marked (#1138).-->
+@if (combinedProperties.verticalButtonAlignment !== undefined) {
+  <mat-form-field class="wide-form-field" appearance="fill">
+    <mat-label>{{ 'propertiesPanel.verticalButtonAlignment' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.verticalButtonAlignment"
+                (selectionChange)="updateModel.emit(
+                  { property: 'verticalButtonAlignment', value: $event.value })">
+      @for (alignment of alignments; track alignment.value) {
+        <mat-option [value]="alignment.value">{{ alignment.label | translate }}</mat-option>
+      }
+    </mat-select>
+    @if (combinedProperties.verticalButtonAlignment === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+}

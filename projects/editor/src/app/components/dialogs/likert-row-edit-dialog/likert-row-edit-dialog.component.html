@@ -29,11 +29,13 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>{{'verticalButtonAlignment' | translate }}</mat-label>
+      <mat-label>{{'propertiesPanel.verticalButtonAlignment' | translate }}</mat-label>
       <mat-select [(ngModel)]="newLikertRow.verticalButtonAlignment">
+        <!--Same keys as the panel field for the same property: one setting, one wording (#960).-->
         <mat-option *ngFor="let option of ['auto', 'center']"
                     [value]="option">
-          {{ option | translate }}
+          {{ (option === 'auto' ? 'propertiesPanel.buttonAlignmentFirstLine' :
+                                  'propertiesPanel.buttonAlignmentCentered') | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>

@@ -73,6 +73,12 @@
     </aspect-select-properties>
   }
 
+  @if (show.buttonAlignment) {
+    <aspect-button-alignment-properties [combinedProperties]="$any(combinedProperties)"
+                                       (updateModel)="updateModel.emit($event)">
+    </aspect-button-alignment-properties>
+  }
+
   @if (show.multiLineText) {
     <aspect-multi-line-text-properties [combinedProperties]="$any(combinedProperties)"
                                        (updateModel)="updateModel.emit($event)">

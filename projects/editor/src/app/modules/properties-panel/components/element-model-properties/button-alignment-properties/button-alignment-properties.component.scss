@@ -1,0 +1,6 @@
+/* A flex column like its sibling sections: the panel lays its children out that way, and the field
+   needs the full width the class asks for. */
+:host {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,5 +1,5 @@
 import {
-  ChangeDetectorRef, Component, Input, OnInit
+  ChangeDetectorRef, Component, Input, OnDestroy, OnInit
 } from '@angular/core';
 import {
   PlayerConfig,
@@ -27,7 +27,8 @@ import { StateVariableStateService } from 'player/src/app/services/state-variabl
 import { TranslateService } from '@ngx-translate/core';
 import { SectionCounter } from 'common/utils/section-counter';
 import { NavigationService } from 'player/src/app/services/navigation.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
@@ -40,7 +41,7 @@ import { Response } from '@iqb/responses';
   styleUrls: ['./unit.component.scss'],
   standalone: false
 })
-export class UnitComponent implements OnInit {
+export class UnitComponent implements OnInit, OnDestroy {
   @Input() isStandalone!: boolean;
   pages: Page[] = [];
   playerConfig: PlayerConfig = {};
@@ -51,6 +52,8 @@ export class UnitComponent implements OnInit {
   };
 
   presentationProgressStatus: BehaviorSubject<Progress> = new BehaviorSubject<Progress>('none');
+
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitStateService: UnitStateService,
               public stateVariableStateService: StateVariableStateService,
@@ -68,8 +71,10 @@ export class UnitComponent implements OnInit {
 
   ngOnInit(): void {
     this.veronaSubscriptionService.vopStartCommand
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopStartCommand) => this.configureUnit(message));
     this.veronaSubscriptionService.vopPlayerConfigChangedNotification
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopPlayerConfigChangedNotification) => this.onVopPlayerConfigChangedNotification(message));
   }
 
@@ -188,5 +193,10 @@ export class UnitComponent implements OnInit {
     this.playerConfig = {};
     this.anchorService.reset();
     this.changeDetectorRef.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

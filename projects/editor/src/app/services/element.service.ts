@@ -146,6 +146,9 @@ export class ElementService {
   async deleteElements(elements: UIElement[]): Promise<void> {
     if (await this.unitService.prepareDelete('elements', elements)) {
       elements.forEach(el => el.unregisterIDs());
+      /* Whatever else is selected stays selected -- the overview dialog deletes elements the user is
+         not working on (#1258). */
+      this.selectionService.deselectElements(elements);
       this.unitService.unit.deleteElements(elements);
       this.unitService.updateUnitDefinition();
     }

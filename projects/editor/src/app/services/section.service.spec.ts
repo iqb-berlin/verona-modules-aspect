@@ -8,6 +8,7 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorSection } from 'editor/src/app/models/editor-section';
+import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 
 describe('SectionService', () => {
   let service: SectionService;
@@ -140,6 +141,42 @@ describe('SectionService', () => {
     expect(element.unregisterIDs).toHaveBeenCalled();
     expect(unitServiceMock.unit.pages[0].sections).toEqual([]);
     expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
+  });
+
+  /* Element overlays select themselves as they render and drop nothing when they are destroyed, and the
+     sections around a deleted one are not re-rendered (ngFor tracks them by identity). So whatever was
+     selected inside the deleted section stays selected, and the properties panel -- which only reacts
+     to emissions of selectedElements -- goes on offering its controls (#1258). */
+  it('should drop the selection of elements that went with the deleted section', async () => {
+    const element = createElementMock();
+    const section = createSectionMock([element]);
+    unitServiceMock.unit.pages = [{ sections: [section] } as unknown as EditorPage];
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+    selectionService.selectElement({
+      elementComponent: { element, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    await service.deleteSection(0, 0);
+
+    expect(selectionService.getSelectedElements()).toEqual([]);
+  });
+
+  it('should keep a selection that lives in another section', async () => {
+    const elementElsewhere = createElementMock();
+    const sectionToDelete = createSectionMock([createElementMock()]);
+    unitServiceMock.unit.pages = [{
+      sections: [sectionToDelete, createSectionMock([elementElsewhere])]
+    } as unknown as EditorPage];
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+    selectionService.selectElement({
+      elementComponent: { element: elementElsewhere, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    await service.deleteSection(0, 0);
+
+    expect(selectionService.getSelectedElements()).toEqual([elementElsewhere]);
   });
 
   it('should keep the section when the deletion is not confirmed', async () => {

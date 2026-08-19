@@ -38,6 +38,9 @@ export class SectionService {
     const sectionToDelete = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
     if (!await this.unitService.prepareDelete('section', sectionToDelete)) return false;
     sectionToDelete.getAllElements().forEach(el => el.unregisterIDs());
+    /* The sections that stay keep their overlays -- ngFor tracks them by identity -- so nothing
+       re-selects and takes the gone elements out of the selection on its own (#1258). */
+    this.selectionService.deselectElements(sectionToDelete.getAllElements());
     this.unitService.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
     this.selectionService.selectedSectionIndex =
       Math.max(0, this.selectionService.selectedSectionIndex - 1);

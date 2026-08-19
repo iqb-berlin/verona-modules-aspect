@@ -26,6 +26,43 @@ describe('SelectionService', () => {
     });
   };
 
+  it('should take only the named elements out of the selection', () => {
+    const staying = new TextElement({ type: 'text', id: 'text_2', alias: 'text_2' });
+    selectAnElement();
+    service.selectElement({
+      elementComponent: { element: staying, setSelected } as unknown as ElementOverlay,
+      multiSelect: true
+    });
+    const going = service.getSelectedElements()[0];
+
+    service.deselectElements([going]);
+
+    expect(service.getSelectedElements()).toEqual([staying]);
+    expect(service.selectedElementComponents.length).toBe(1);
+  });
+
+  it('should leave a selection that none of the named elements is part of', () => {
+    selectAnElement();
+    const untouched = service.getSelectedElements();
+
+    service.deselectElements([new TextElement({ type: 'text', id: 'text_9', alias: 'text_9' })]);
+
+    expect(service.getSelectedElements()).toEqual(untouched);
+  });
+
+  /* Whoever empties the selection is saying that nothing is selected any more, and a compound child is
+     something selected -- the panel and dimension-field-set read the flag to decide which controls to
+     offer. The delete paths rely on this (#1258). */
+  it('should clear the compound child flag with the element selection', () => {
+    selectAnElement();
+    service.isCompoundChildSelected = true;
+
+    service.clearElementSelection();
+
+    expect(service.getSelectedElements()).toEqual([]);
+    expect(service.isCompoundChildSelected).toBe(false);
+  });
+
   /* reset() runs when a unit is (re)loaded, so everything it leaves behind describes a unit that is
      gone. The element selection used to survive it: `selectedElementComponents` was emptied, but the
      subject the properties panel reads kept emitting the old elements, so the panel went on offering

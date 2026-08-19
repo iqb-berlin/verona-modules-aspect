@@ -169,10 +169,12 @@ describe('StaticOverlayComponent', () => {
     });
   });
 
-  it('should delete the selected elements and clear the selection', () => {
+  /* The selection is dropped by deleteElements, once the deletion has actually happened -- not here,
+     where the confirmation dialog is still open (#1258). */
+  it('should hand the selected elements to the delete and leave the selection to it', () => {
     component.deleteSelectedElements();
 
     expect(elementService.deleteElements).toHaveBeenCalledWith(selectedElements);
-    expect(selectionServiceMock.clearElementSelection).toHaveBeenCalled();
+    expect(selectionServiceMock.clearElementSelection).not.toHaveBeenCalled();
   });
 });

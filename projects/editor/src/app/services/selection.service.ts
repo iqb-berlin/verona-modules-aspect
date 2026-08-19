@@ -28,12 +28,9 @@ export class SelectionService {
   // value, so the panel kept offering controls for elements the incoming unit does not contain.
   // After loadUnit that is brief -- every ElementOverlay re-selects itself as it renders -- but the
   // empty branch of loadUnitDefinition renders no overlay at all, so there it persists (#1089).
-  // isCompoundChildSelected goes with them: the panel and dimension-field-set read it to decide
-  // which controls to offer, and it describes a selection that no longer exists.
   reset(): void {
     this.selectedPageIndex = 0;
     this.selectedSectionIndex = 0;
-    this.isCompoundChildSelected = false;
     this.clearElementSelection();
   }
 
@@ -63,7 +60,25 @@ export class SelectionService {
     this._selectedElements.next(this.selectedElementComponents.map(componentElement => componentElement.element));
   }
 
+  /* Takes the named elements out of the selection and leaves the rest of it alone -- a delete has no
+     reason to unselect what it did not touch, and nothing would re-select it: the overlays that stay
+     are not rebuilt. Compound children are named too, because getAllElements reaches them (#1258). */
+  deselectElements(elements: UIElement[]): void {
+    const goneComponents = this.selectedElementComponents
+      .filter(overlayComponent => elements.includes(overlayComponent.element));
+    if (goneComponents.length === 0) return;
+    goneComponents.forEach(overlayComponent => overlayComponent.setSelected(false));
+    this.selectedElementComponents = this.selectedElementComponents
+      .filter(overlayComponent => !elements.includes(overlayComponent.element));
+    if (this.selectedElementComponents.length === 0) this.isCompoundChildSelected = false;
+    this._selectedElements.next(this.selectedElementComponents.map(overlayComponent => overlayComponent.element));
+  }
+
+  /* isCompoundChildSelected describes the selection, so it goes with it: an empty selection cannot be a
+     compound child, and the panel and dimension-field-set read the flag to decide which controls to
+     offer (#1258). */
   clearElementSelection(): void {
+    this.isCompoundChildSelected = false;
     this.selectedElementComponents
       .forEach((overlayComponent: ElementOverlay | ClozeChildOverlayComponent | TableChildOverlay) => {
         overlayComponent.setSelected(false);

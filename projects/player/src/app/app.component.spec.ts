@@ -104,6 +104,14 @@ describe('AppComponent', () => {
     expect(veronaPostService.sendVopWindowFocusChangedNotification).toHaveBeenNthCalledWith(2, false);
   });
 
+  it('should stop reporting the window focus after the component was destroyed', () => {
+    fixture.destroy();
+
+    focus.next(true);
+
+    expect(veronaPostService.sendVopWindowFocusChangedNotification).not.toHaveBeenCalled();
+  });
+
   it('should show the unit', () => {
     expect(fixture.nativeElement.querySelector('aspect-unit')).toBeTruthy();
   });

@@ -178,7 +178,7 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   showSectionInsertDialog(): void {
-    this.dialogService.showSectionInsertDialog(this.section.elements.length === 0)
+    this.dialogService.showSectionInsertDialog(this.section.isEmpty())
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: { newSection: EditorSection, replaceSection: boolean }) => {
         if (data.newSection) {

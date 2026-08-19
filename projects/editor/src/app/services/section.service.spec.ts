@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 import { Mock } from 'vitest';
+import { TranslateService } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { SectionService } from 'editor/src/app/services/section.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -13,6 +16,7 @@ import { ElementOverlay } from 'editor/src/app/directives/element-overlay.direct
 describe('SectionService', () => {
   let service: SectionService;
   let selectionService: SelectionService;
+  let messageService: SpyObj<MessageService>;
   let unitServiceMock: {
     unit: { pages: EditorPage[] };
     elementPropertyUpdated: Subject<void>;
@@ -28,6 +32,8 @@ describe('SectionService', () => {
   } as unknown as UIElement);
 
   const createSectionMock = (elements: UIElement[] = []): EditorSection => ({
+    elements,
+    isEmpty: vi.fn(() => elements.length === 0),
     getAllElements: vi.fn(() => elements),
     setProperty: vi.fn()
   } as unknown as EditorSection);
@@ -41,10 +47,13 @@ describe('SectionService', () => {
       prepareDelete: vi.fn(),
       getSelectedPage: vi.fn()
     };
+    messageService = createSpyObj<MessageService>(['showWarning']);
     TestBed.configureTestingModule({
       providers: [
         { provide: UnitService, useValue: unitServiceMock },
-        { provide: ElementService, useValue: {} }
+        { provide: ElementService, useValue: {} },
+        { provide: MessageService, useValue: messageService },
+        { provide: TranslateService, useValue: { instant: (key: string) => key } }
       ]
     });
     service = TestBed.inject(SectionService);
@@ -112,9 +121,10 @@ describe('SectionService', () => {
     expect(selectionService.selectedSectionIndex).toBe(1);
   });
 
+  /* A section that holds something goes through the confirmation, which is the path #1255 was about. */
   it('should select the section it puts in place of another', async () => {
     const page = new EditorPage();
-    const sectionToReplace = createSectionMock();
+    const sectionToReplace = createSectionMock([createElementMock()]);
     const sectionBelow = createSectionMock();
     page.sections.push(sectionToReplace, sectionBelow);
     const newSection = createSectionMock();
@@ -191,8 +201,8 @@ describe('SectionService', () => {
 
   /* Replacing runs the deletion first; both halves belong to the same unit, so the insertion has to
      wait for the deletion to have happened (#1253). */
-  it('should replace a section once its deletion is confirmed', async () => {
-    const sectionToReplace = createSectionMock();
+  it('should replace a section that holds elements once its deletion is confirmed', async () => {
+    const sectionToReplace = createSectionMock([createElementMock()]);
     const newSection = createSectionMock([createElementMock()]);
     const page = { sections: [sectionToReplace], addSection: vi.fn() } as unknown as EditorPage;
     unitServiceMock.unit.pages = [page];
@@ -203,8 +213,24 @@ describe('SectionService', () => {
     expect(page.addSection).toHaveBeenCalledWith(newSection, 0);
   });
 
-  it('should keep the section and insert nothing when its deletion is not confirmed', async () => {
+  /* An empty section holds nothing to lose and is referenced by nothing -- references are read off
+     the elements -- so the question has no answer that decides anything. It is also the case the
+     insert dialog pre-checks its replace box for (#1259). */
+  it('should replace an empty section without asking', async () => {
     const sectionToReplace = createSectionMock();
+    const newSection = createSectionMock([createElementMock()]);
+    const page = { sections: [sectionToReplace], addSection: vi.fn() } as unknown as EditorPage;
+    unitServiceMock.unit.pages = [page];
+
+    await service.replaceSection(0, 0, newSection);
+
+    expect(unitServiceMock.prepareDelete).not.toHaveBeenCalled();
+    expect(page.sections).toEqual([]);
+    expect(page.addSection).toHaveBeenCalledWith(newSection, 0);
+  });
+
+  it('should keep the section and insert nothing when its deletion is not confirmed', async () => {
+    const sectionToReplace = createSectionMock([createElementMock()]);
     const newSection = createSectionMock([createElementMock()]);
     const page = { sections: [sectionToReplace], addSection: vi.fn() } as unknown as EditorPage;
     unitServiceMock.unit.pages = [page];
@@ -215,6 +241,34 @@ describe('SectionService', () => {
     expect(page.addSection).not.toHaveBeenCalled();
     expect(page.sections).toEqual([sectionToReplace]);
     expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+  });
+
+  /* The section stays, which is what the user asked for -- but the section they picked in the insert
+     dialog is gone with it, and that is not visible anywhere else (#1259). */
+  it('should report a replacement the user declined', async () => {
+    const sectionToReplace = createSectionMock([createElementMock()]);
+    const page = { sections: [sectionToReplace], addSection: vi.fn() } as unknown as EditorPage;
+    unitServiceMock.unit.pages = [page];
+    unitServiceMock.prepareDelete.mockResolvedValue(false);
+
+    await service.replaceSection(0, 0, createSectionMock());
+
+    expect(messageService.showWarning).toHaveBeenCalledWith('sectionNotReplaced');
+  });
+
+  /* The other way prepareDelete says no: the host loaded another unit while the dialog stood. Nobody
+     declined anything, and the section the message would be about is gone with the unit (#1253). */
+  it('should not report a replacement whose unit was replaced under the dialog', async () => {
+    const page = { sections: [createSectionMock([createElementMock()])], addSection: vi.fn() } as unknown as EditorPage;
+    unitServiceMock.unit.pages = [page];
+    unitServiceMock.prepareDelete.mockImplementation(() => {
+      unitServiceMock.unit = { pages: [page] };
+      return Promise.resolve(false);
+    });
+
+    await service.replaceSection(0, 0, createSectionMock());
+
+    expect(messageService.showWarning).not.toHaveBeenCalled();
   });
 
   /* A deletion that did not happen is nothing to tell the host about -- neither when the user cancels

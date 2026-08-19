@@ -23,11 +23,12 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
+  /* Where the section lands is up to the page the caller passes, and a selection needs the page as much
+     as the index -- so the callers set it: insertSection and replaceSection to the section they put in,
+     PageViewComponent to the one it appended (#1255). */
   addSection(page: EditorPage, section?: EditorSection, sectionIndex?: number): void {
     if (section) section.getAllElements().forEach(el => el.registerIDs());
     page.addSection(section, sectionIndex);
-    this.selectionService.selectedSectionIndex =
-      Math.max(0, this.selectionService.selectedSectionIndex - 1);
     this.unitService.updateSectionCounter();
     this.unitService.updateUnitDefinition();
   }
@@ -89,12 +90,14 @@ export class SectionService {
   async replaceSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): Promise<void> {
     if (await this.deleteSection(pageIndex, sectionIndex)) {
       this.addSection(this.unitService.unit.pages[pageIndex], newSection, sectionIndex);
+      this.selectionService.updateSelection(pageIndex, sectionIndex);
     }
   }
 
   insertSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): void {
     const page = this.unitService.unit.pages[pageIndex];
     this.addSection(page, newSection, sectionIndex);
+    this.selectionService.updateSelection(pageIndex, sectionIndex);
   }
 
   /* Move element between sections */

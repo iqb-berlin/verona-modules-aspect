@@ -47,8 +47,9 @@ export class PageViewComponent implements OnInit, OnDestroy {
 
   addSection(pageIndex: number): void {
     this.sectionService.addSection(this.page);
-    this.selectionService.selectedPageIndex = pageIndex;
-    this.selectionService.selectedSectionIndex = this.page.sections.length - 1;
+    /* The section is appended, so its index is only known here -- as with the other callers of
+       addSection, naming it is this side's job (#1255). */
+    this.selectionService.updateSelection(pageIndex, this.page.sections.length - 1);
   }
 
   moveSectionToNewpage(pageIndex: number): void {

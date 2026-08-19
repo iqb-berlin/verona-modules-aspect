@@ -48,7 +48,7 @@ describe('UnitComponent', () => {
     ...properties
   });
 
-  const startUnit = (message: Partial<VopStartCommand>): void => {
+  const sendStartCommand = (message: Partial<VopStartCommand>): void => {
     vopStartCommand.next({
       type: 'vopStartCommand',
       sessionId: 'session_1',
@@ -56,6 +56,10 @@ describe('UnitComponent', () => {
       playerConfig: {},
       ...message
     } as VopStartCommand);
+  };
+
+  const startUnit = (message: Partial<VopStartCommand>): void => {
+    sendStartCommand(message);
     tick();
   };
 
@@ -208,6 +212,30 @@ describe('UnitComponent', () => {
     expect(component.pages.length).toBe(0);
     expect(anchorService.reset).toHaveBeenCalled();
     expect(component.presentationProgressStatus.value).toBe('none');
+  }));
+
+  it('should build only the last of two start commands that arrive in quick succession', fakeAsync(() => {
+    sendStartCommand({
+      sessionId: 'session_1',
+      unitDefinition: createUnitDefinition({ pages: [{ sections: [] }] })
+    });
+    sendStartCommand({
+      sessionId: 'session_2',
+      unitDefinition: createUnitDefinition({ pages: [{ sections: [] }, { sections: [] }] })
+    });
+    tick();
+
+    expect(component.pages.length).toBe(2);
+    expect(veronaPostService.sessionID).toBe('session_2');
+    expect(unitStateService.setElementCodes).toHaveBeenCalledTimes(1);
+  }));
+
+  it('should not build a unit after the component was destroyed', fakeAsync(() => {
+    sendStartCommand({ unitDefinition: createUnitDefinition({ pages: [{ sections: [] }] }) });
+    fixture.destroy();
+    tick();
+
+    expect(component.pages.length).toBe(0);
   }));
 
   it('should show an error dialog for an unreadable unit definition', fakeAsync(() => {

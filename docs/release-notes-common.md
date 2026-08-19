@@ -13,6 +13,10 @@ Allgemein
 - Update auf Angular 21.2.x und zugehörige Systemabhängigkeiten
 - Vereinheitlichung der internen Dateistruktur zur Verbesserung der Wartbarkeit
 
+### Fehlerbehebungen
+- Eingabebereich
+  - Ein verlassener Eingabebereich gibt die Überwachung seiner Breite wieder frei, mit der er die Zeilenzahl berechnet
+
 ## editor/2.12.5+player/2.12.5
 ### Fehlerbehebungen
 - Behebt Fehler beim Einbetten der Math-Live fonts im produktiven Modus

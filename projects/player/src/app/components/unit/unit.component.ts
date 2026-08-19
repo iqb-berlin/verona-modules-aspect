@@ -54,6 +54,8 @@ export class UnitComponent implements OnInit, OnDestroy {
   presentationProgressStatus: BehaviorSubject<Progress> = new BehaviorSubject<Progress>('none');
 
   private ngUnsubscribe = new Subject<void>();
+  private unitBuildTimeout?: ReturnType<typeof setTimeout>;
+  private startPageTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(public unitStateService: UnitStateService,
               public stateVariableStateService: StateVariableStateService,
@@ -93,7 +95,7 @@ export class UnitComponent implements OnInit, OnDestroy {
 
   private configureUnit(message: VopStartCommand): void {
     this.reset();
-    setTimeout(() => {
+    this.unitBuildTimeout = setTimeout(() => {
       if (message.unitDefinition) {
         try {
           LogService.debug('player: unitDefinition', message.unitDefinition);
@@ -149,7 +151,7 @@ export class UnitComponent implements OnInit, OnDestroy {
     if (this.playerConfig.startPage !== undefined) {
       const startPage = +this.playerConfig.startPage || 0;
       // delay is needed for scroll and snap scroll pages to work
-      setTimeout(() => this.navigationService.setPage(startPage), 10);
+      this.startPageTimeout = setTimeout(() => this.navigationService.setPage(startPage), 10);
     }
   }
 
@@ -188,6 +190,7 @@ export class UnitComponent implements OnInit, OnDestroy {
   }
 
   private reset(): void {
+    this.cancelPendingUnitBuild();
     this.presentationProgressStatus.next('none');
     this.pages = [];
     this.playerConfig = {};
@@ -195,7 +198,16 @@ export class UnitComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
   }
 
+  /* A start command that arrives while the previous unit is still being built makes that build
+     obsolete: it would render a unit the host has already replaced, and cost the time of a full
+     rebuild for a state nobody sees (#1144). */
+  private cancelPendingUnitBuild(): void {
+    clearTimeout(this.unitBuildTimeout);
+    clearTimeout(this.startPageTimeout);
+  }
+
   ngOnDestroy(): void {
+    this.cancelPendingUnitBuild();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

@@ -11,6 +11,7 @@ import { DropListProperties } from 'common/models/elements/input-group-elements/
 import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -25,7 +26,8 @@ export class TableEditDialogComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { table: TableElement },
               private idService: IDService,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private selectionService: SelectionService) {
     this.newTable = data.table;
   }
 
@@ -81,7 +83,12 @@ export class TableEditDialogComponent {
   removeElement(coords: { row: number, col: number }): void {
     const index = this.newTable.elements
       .findIndex(el => el.gridRow === (coords.row + 1) && el.gridColumn === (coords.col + 1));
-    this.newTable.elements[index].unregisterIDs();
+    const removedElement = this.newTable.elements[index];
+    removedElement.unregisterIDs();
     this.newTable.elements.splice(index, 1);
+    /* The dialog edits the table itself, so the cell is out of the unit at this point. A cell can be
+       selected -- a click selects it, a double click opens this dialog without changing that -- and
+       its overlay is destroyed with the cell, so nothing else takes it out of the selection (#1261). */
+    this.selectionService.deselectElements([removedElement]);
   }
 }

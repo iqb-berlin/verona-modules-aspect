@@ -10,10 +10,14 @@ import { Mock } from 'vitest';
 import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
 import { UIElement } from 'common/models/elements/element';
 import { TableElement, TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import {
+  TableChildOverlay
+} from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
 import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
   TableEditDialogComponent
@@ -144,6 +148,23 @@ describe('TableEditDialogComponent', () => {
 
     expect(element.unregisterIDs).toHaveBeenCalled();
     expect(component.newTable.elements).toEqual([otherElement]);
+  });
+
+  /* The dialog edits the table itself, so the cell leaves the unit here. A selected cell keeps the
+     properties panel offering its controls, and its overlay is destroyed with it, so nothing else
+     would take it out of the selection (#1261). */
+  it('should take the removed cell out of the selection', () => {
+    const selectionService = TestBed.inject(SelectionService);
+    const element = { gridRow: 2, gridColumn: 1, unregisterIDs: vi.fn() } as unknown as UIElement;
+    component.newTable.elements = [element];
+    selectionService.selectElement({
+      elementComponent: { element, setSelected: () => {} } as unknown as TableChildOverlay,
+      multiSelect: false
+    });
+
+    component.removeElement({ row: 1, col: 0 });
+
+    expect(selectionService.getSelectedElements()).toEqual([]);
   });
 
   it('should react on the table component outputs', () => {

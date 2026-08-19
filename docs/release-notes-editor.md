@@ -32,6 +32,7 @@ Editor
 - Gelöschte Elemente sind nicht mehr ausgewählt. Bisher zeigte der Eigenschaftenbereich nach dem Löschen eines Abschnitts oder von Elementen weiter deren Einstellungen; Änderungen daran gingen ins Leere, die Aufgabe wurde aber als geändert gemeldet. Eine Auswahl an anderer Stelle bleibt dabei erhalten
 - Die Entf-Taste löscht kein ausgewähltes Kind eines zusammengesetzten Elements mehr (Lücke im Lückentext, Zelle einer Tabelle). Entfernt wurde es ohnehin nie, seine ID wurde aber freigegeben und konnte ein zweites Mal vergeben werden; beim nächsten Löschen traf es dann das falsche Element. Solche Kinder werden weiterhin im Bearbeitungsdialog ihres Elternelements entfernt
 - Beim Löschen eines zusammengesetzten Elements (Lückentext, Tabelle, Optionentabelle) werden jetzt auch die IDs der enthaltenen Elemente wieder frei, und deren Auswahl im Eigenschaftenbereich wird aufgehoben
+- Löscht man eine Lücke im Lückentext oder eine Zelle im Dialog "Elemente anpassen" einer Tabelle, ist das entfernte Element nicht mehr ausgewählt. Bisher bot der Eigenschaftenbereich weiter dessen Einstellungen an; Änderungen daran gingen ins Leere, die Aufgabe wurde aber als geändert gemeldet
 - Verbesserung des Ladeverhaltens der Erweiterungen für den Texteditor
 - Verhindert, dass Zustandsvariablen die gleiche ID oder den gleichen Alias haben können, wie Elemente 
 - Verbessert die Stabilität beim Erzeugen von Elementen aus unvollständigen Vorlagen (Standardwerte, Position und Dimensionen bleiben erhalten)

@@ -12,15 +12,17 @@ import { ElementOverlay } from 'editor/src/app/directives/element-overlay.direct
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
 
 /* Methods that need file imports or a fully built unit (addElementToSection,
-   handleTextElementChange, handleClozeDocumentChange, reorderElements, ...) are not
-   covered here; they depend on FileService dialogs and the real EditorUnit and are
-   exercised via the unit service and component specs. */
+   handleTextElementChange, reorderElements, ...) are not covered here; they depend on
+   FileService dialogs and the real EditorUnit and are exercised via the unit service and
+   component specs. */
 describe('ElementService', () => {
   let service: ElementService;
   let dialogServiceSpy: SpyObj<DialogService>;
   let selectionService: SelectionService;
+  let idService: IDService;
   let unitServiceMock: {
     elementPropertyUpdated: Subject<void>;
     geometryElementPropertyUpdated: Subject<string>;
@@ -28,6 +30,7 @@ describe('ElementService', () => {
     tablePropUpdated: Subject<string>;
     updateUnitDefinition: Mock;
     prepareDelete: Mock;
+    referenceManager: { getElementsReferences: Mock };
     // Enough of a unit for reorderElements(), which every position write goes through.
     unit: {
       pages: { sections: { elements: UIElement[]; dynamicPositioning: boolean }[] }[];
@@ -42,6 +45,22 @@ describe('ElementService', () => {
     getChildElements: vi.fn(() => []),
     ...properties
   } as unknown as UIElement);
+
+  /* One gap in a paragraph, and the same document without it -- what the rich text editor hands over
+     when the user deletes the gap. */
+  const clozeDocument = (withChild: boolean): ClozeDocument => ({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: withChild ?
+        [{ type: 'TextField', attrs: { model: { type: 'text-field', id: 'child_1', alias: 'child_1' } } }] :
+        []
+    }]
+  } as unknown as ClozeDocument);
+
+  const clozeWithChild = (): ClozeElement => ElementFactory.createElement({
+    type: 'cloze', id: 'cloze_1', alias: 'cloze_1', document: clozeDocument(true)
+  } as unknown as UIElementProperties, idService) as ClozeElement;
 
   /* Deleting reads the elements a section holds itself, so an element only counts as deletable once
      it is in that list (#1262). */
@@ -68,19 +87,21 @@ describe('ElementService', () => {
       tablePropUpdated: new Subject<string>(),
       updateUnitDefinition: vi.fn(),
       prepareDelete: vi.fn(),
+      referenceManager: { getElementsReferences: vi.fn(() => []) },
       unit: {
         pages: [{ sections: [{ elements: [], dynamicPositioning: false }] }],
         deleteElements: vi.fn((elements: UIElement[]) => elements)
       }
     };
-    dialogServiceSpy = createSpyObj<DialogService>(['showTextEditDialog']);
+    dialogServiceSpy = createSpyObj<DialogService>(['showTextEditDialog', 'showDeleteReferenceDialog']);
     selectionService = new SelectionService();
+    idService = new IDService();
     service = new ElementService(
       unitServiceMock as unknown as UnitService,
       selectionService,
       dialogServiceSpy,
       createSpyObj<MessageService>(['showReferencePanel']),
-      new IDService(),
+      idService,
       { bypassSecurityTrustHtml: (value: string) => value } as unknown as DomSanitizer
     );
   });
@@ -160,6 +181,41 @@ describe('ElementService', () => {
     await service.deleteElements([element]);
 
     expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
+  });
+
+  /* A gap removed in the rich text editor leaves the unit with the new document, and no overlay is
+     rebuilt that could take it out of the selection -- the properties panel went on offering the
+     controls of a child that is not in the unit any more (#1261). */
+  it('should drop the selection of a cloze child that left the document', () => {
+    const cloze = clozeWithChild();
+    const child = cloze.getChildElements()[0];
+    selectionService.selectElement({
+      elementComponent: { element: child, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    service.updateElementsProperty([cloze], 'document', clozeDocument(false));
+
+    expect(cloze.getChildElements()).toEqual([]);
+    expect(selectionService.getSelectedElements()).toEqual([]);
+  });
+
+  /* The other way through: references to the gap have to be confirmed first, and the document is set
+     from the dialog's answer -- so the deselection has to sit there too (#1261). */
+  it('should drop the selection of a cloze child whose references were confirmed', () => {
+    const cloze = clozeWithChild();
+    const child = cloze.getChildElements()[0];
+    unitServiceMock.referenceManager.getElementsReferences.mockReturnValue([{ refs: [], element: child }]);
+    dialogServiceSpy.showDeleteReferenceDialog.mockReturnValue(of(true));
+    selectionService.selectElement({
+      elementComponent: { element: child, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    service.updateElementsProperty([cloze], 'document', clozeDocument(false));
+
+    expect(cloze.getChildElements()).toEqual([]);
+    expect(selectionService.getSelectedElements()).toEqual([]);
   });
 
   it('should set an element property and notify the unit', () => {

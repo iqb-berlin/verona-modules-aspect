@@ -12,7 +12,7 @@ export class EditorUnit extends Unit {
         [new EditorPage(undefined, idService)];
   }
 
-  deleteElements(elements: UIElement[]): void {
-    this.pages.forEach(page => page.deleteElements(elements));
+  deleteElements(elements: UIElement[]): UIElement[] {
+    return this.pages.map(page => page.deleteElements(elements)).flat();
   }
 }

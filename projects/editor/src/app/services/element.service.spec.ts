@@ -39,8 +39,16 @@ describe('ElementService', () => {
     type,
     id: `${type}_1`,
     setProperty: vi.fn(),
+    getChildElements: vi.fn(() => []),
     ...properties
   } as unknown as UIElement);
+
+  /* Deleting reads the elements a section holds itself, so an element only counts as deletable once
+     it is in that list (#1262). */
+  const putIntoSection = (element: UIElement): UIElement => {
+    unitServiceMock.unit.pages[0].sections[0].elements.push(element);
+    return element;
+  };
 
   /* A real element, not a mock: tests about the position group have to see what actually lands in
      it. Registered with the mock unit, because every position write reorders the section. */
@@ -62,7 +70,7 @@ describe('ElementService', () => {
       prepareDelete: vi.fn(),
       unit: {
         pages: [{ sections: [{ elements: [], dynamicPositioning: false }] }],
-        deleteElements: vi.fn()
+        deleteElements: vi.fn((elements: UIElement[]) => elements)
       }
     };
     dialogServiceSpy = createSpyObj<DialogService>(['showTextEditDialog']);
@@ -80,7 +88,7 @@ describe('ElementService', () => {
   /* Deleting elements takes exactly the selected ones, and no overlay is left to re-select and take
      them out of the selection -- the properties panel would go on offering their controls (#1258). */
   it('should drop the selection of the elements it deletes', async () => {
-    const element = createElementMock('radio', { unregisterIDs: vi.fn() });
+    const element = putIntoSection(createElementMock('radio', { unregisterIDs: vi.fn() }));
     unitServiceMock.prepareDelete.mockResolvedValue(true);
     selectionService.selectElement({
       elementComponent: { element, setSelected: () => {} } as unknown as ElementOverlay,
@@ -90,6 +98,68 @@ describe('ElementService', () => {
     await service.deleteElements([element]);
 
     expect(selectionService.getSelectedElements()).toEqual([]);
+  });
+
+  /* A child of a compound element is in the list of its parent, not in the one the section holds, so
+     no deletion here can reach it. It used to be asked about and its ID released all the same, which
+     handed the same ID to the next element that asked for one; the next deletion by ID then took out
+     the wrong element (#1262). The delete key arrives here with the child selected, because the click
+     that selects it leaves the focus on the overlay of its parent. */
+  it('should not ask about deleting a compound child', async () => {
+    const child = createElementMock('text-field', { unregisterIDs: vi.fn() });
+    selectionService.selectElement({
+      elementComponent: { element: child, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    await service.deleteElements([child]);
+
+    expect(unitServiceMock.prepareDelete).not.toHaveBeenCalled();
+    expect(child.unregisterIDs).not.toHaveBeenCalled();
+    expect(selectionService.getSelectedElements()).toEqual([child]);
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+  });
+
+  it('should ask only about the elements it can delete', async () => {
+    const element = putIntoSection(createElementMock('radio', { unregisterIDs: vi.fn() }));
+    const child = createElementMock('text-field', { unregisterIDs: vi.fn() });
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+
+    await service.deleteElements([element, child]);
+
+    expect(unitServiceMock.prepareDelete).toHaveBeenCalledWith('elements', [element]);
+    expect(element.unregisterIDs).toHaveBeenCalled();
+    expect(child.unregisterIDs).not.toHaveBeenCalled();
+  });
+
+  /* `unregisterIDs()` covers one element, and the overlay of a deleted compound is gone with it, so
+     nothing takes its children out of the selection either (#1262, #1258). */
+  it('should release the IDs of the children that went with a deleted compound element', async () => {
+    const child = createElementMock('text-field', { unregisterIDs: vi.fn() });
+    const table = putIntoSection(createElementMock('table', {
+      unregisterIDs: vi.fn(), getChildElements: vi.fn(() => [child])
+    }));
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+    selectionService.selectElement({
+      elementComponent: { element: child, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    await service.deleteElements([table]);
+
+    expect(child.unregisterIDs).toHaveBeenCalled();
+    expect(selectionService.getSelectedElements()).toEqual([]);
+  });
+
+  /* A confirmed deletion has removed the references of the elements it was about before it got here,
+     so the host is told about the unit either way. */
+  it('should report the unit after a confirmed deletion', async () => {
+    const element = putIntoSection(createElementMock('radio', { unregisterIDs: vi.fn() }));
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+
+    await service.deleteElements([element]);
+
+    expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
   });
 
   it('should set an element property and notify the unit', () => {

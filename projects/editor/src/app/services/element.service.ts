@@ -143,13 +143,28 @@ export class ElementService {
     return ElementFactory.createElement(props, this.idService) as LikertRowElement;
   }
 
+  /* Only what a section holds itself can be deleted here. A child of a compound element -- a cloze
+     gap, a table cell -- lives in the list of its parent and goes through the parent's edit dialog;
+     the unit cannot take it out, and releasing its ID all the same handed the same ID to the next
+     element that asked for one (#1262). Asking about it first is no better: the confirmation would
+     name an element that stays. The keyboard reaches this with a child in the selection because the
+     click that selects a child leaves the focus on the overlay of its parent.
+     What is released and unselected afterwards is what the unit reports as gone, plus the children
+     that went with it: `unregisterIDs()` covers one element, and no overlay of a deleted compound is
+     left to take its children out of the selection (#1258). */
   async deleteElements(elements: UIElement[]): Promise<void> {
-    if (await this.unitService.prepareDelete('elements', elements)) {
-      elements.forEach(el => el.unregisterIDs());
+    const sectionElements = this.unitService.unit.pages
+      .flatMap(page => page.sections)
+      .flatMap(section => section.elements);
+    const deletableElements = elements.filter(element => sectionElements.includes(element));
+    if (deletableElements.length === 0) return;
+    if (await this.unitService.prepareDelete('elements', deletableElements)) {
+      const goneElements = this.unitService.unit.deleteElements(deletableElements)
+        .flatMap(element => [element, ...element.getChildElements()]);
+      goneElements.forEach(el => el.unregisterIDs());
       /* Whatever else is selected stays selected -- the overview dialog deletes elements the user is
          not working on (#1258). */
-      this.selectionService.deselectElements(elements);
-      this.unitService.unit.deleteElements(elements);
+      this.selectionService.deselectElements(goneElements);
       this.unitService.updateUnitDefinition();
     }
   }

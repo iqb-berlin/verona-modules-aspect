@@ -47,6 +47,15 @@ describe('EditorSection', () => {
     options: [{ text: 'A' }, { text: 'B' }]
   } as unknown as UIElementProperties]), idService);
 
+  const sectionWithTable = (): EditorSection => new EditorSection(sectionProperties([{
+    type: 'table',
+    id: 'table_1',
+    alias: 'table_1',
+    elements: [{ type: 'text-field', id: 'tf_1', alias: 'tf_1' }],
+    gridColumnSizes: [{ value: 1, unit: 'fr' }],
+    gridRowSizes: [{ value: 1, unit: 'fr' }]
+  } as unknown as UIElementProperties]), idService);
+
   describe('getDuplicate', () => {
     it('should give the copy its own column and row sizes', () => {
       const original = sectionWithDropdown();
@@ -84,14 +93,7 @@ describe('EditorSection', () => {
     /* A compound element in the section: its children carry ids of their own, and a duplicate must not
        answer to the original's variables. */
     it('should give the children of a copied table new ids', () => {
-      const original = new EditorSection(sectionProperties([{
-        type: 'table',
-        id: 'table_1',
-        alias: 'table_1',
-        elements: [{ type: 'text-field', id: 'tf_1', alias: 'tf_1' }],
-        gridColumnSizes: [{ value: 1, unit: 'fr' }],
-        gridRowSizes: [{ value: 1, unit: 'fr' }]
-      } as unknown as UIElementProperties]), idService);
+      const original = sectionWithTable();
 
       const copy = original.getDuplicate();
 
@@ -108,6 +110,45 @@ describe('EditorSection', () => {
       const copy = original.getDuplicate();
 
       expect(copy.elements[0].id).not.toBe(original.elements[0].id);
+    });
+  });
+
+  describe('deleteElements', () => {
+    it('should take out the named elements and report them', () => {
+      const section = sectionWithDropdown();
+      const dropdown = section.elements[0];
+
+      const deletedElements = section.deleteElements([dropdown]);
+
+      expect(section.elements).toEqual([]);
+      expect(deletedElements).toEqual([dropdown]);
+    });
+
+    /* A child of a compound element is not on the section level. Reporting it as deleted was what
+       released its ID while the child stayed in the table (#1262). */
+    it('should leave a compound child in place and report nothing', () => {
+      const section = sectionWithTable();
+      const child = section.elements[0].getChildElements()[0];
+
+      const deletedElements = section.deleteElements([child]);
+
+      expect(section.elements.length).toBe(1);
+      expect(section.elements[0].getChildElements()).toEqual([child]);
+      expect(deletedElements).toEqual([]);
+    });
+
+    /* Two elements can share an ID once one has been handed out twice, and that is exactly the state
+       this method used to produce. Identity keeps it from taking out the other one. */
+    it('should take out the given element, not another one carrying the same id', () => {
+      const section = sectionWithDropdown();
+      const dropdown = section.elements[0];
+      const twin = sectionWithDropdown();
+      expect(twin.elements[0].id).toBe(dropdown.id);
+
+      const deletedElements = twin.deleteElements([dropdown]);
+
+      expect(twin.elements.length).toBe(1);
+      expect(deletedElements).toEqual([]);
     });
   });
 

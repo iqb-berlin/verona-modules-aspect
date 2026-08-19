@@ -16,6 +16,8 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { PageService } from 'editor/src/app/services/page.service';
+import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import {
   SanitizationDialogComponent
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
@@ -295,6 +297,150 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
     afterClosed.next(true);
     tick();
 
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  }));
+});
+
+/* A delete waits for its confirmation, and the object, the references and the index the caller kept all
+   belong to the unit as it was then. A start command arriving in between replaces that unit, so these
+   tests use the real DialogService and fake only MatDialog itself (#1253). */
+describe('UnitService - a delete whose unit is replaced while the confirmation is open (#1253)', () => {
+  let service: UnitService;
+  let selectionService: SelectionService;
+  let messageServiceSpy: SpyObj<MessageService>;
+  let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
+  let afterClosed: Subject<boolean>;
+  let close: Mock;
+
+  beforeEach(() => {
+    afterClosed = new Subject<boolean>();
+    /* Like MatDialogRef: the result is reported once the dialog is gone, not from inside close(). */
+    close = vi.fn((result?: boolean) => {
+      Promise.resolve().then(() => {
+        afterClosed.next(result as boolean);
+        afterClosed.complete();
+      });
+    });
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    selectionService = new SelectionService();
+    messageServiceSpy = createSpyObj<MessageService>([
+      'showFixedReferencePanel', 'showReferencePanel', 'showPrompt'
+    ]);
+    veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
+
+    service = new UnitService(
+      selectionService,
+      veronaApiServiceSpy,
+      messageServiceSpy,
+      new DialogService({
+        open: vi.fn().mockReturnValue({ afterClosed: () => afterClosed, close })
+      } as unknown as MatDialog),
+      new IDService(),
+      translateServiceSpy
+    );
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('unit-to-delete-from')));
+  });
+
+  /* Two pages, so that a delete carried over from the unit before finds something at its index to
+     remove -- with fewer pages than the one it was asked for, the wrong splice would hit nothing. */
+  const loadAnotherUnit = (): void => {
+    const blueprint = createUnitBlueprint('unit-loaded-in-between');
+    blueprint.pages.push({ ...blueprint.pages[0] });
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  };
+
+  it('does not confirm the delete once the unit it was asked for is gone', fakeAsync(() => {
+    let confirmed: boolean | undefined;
+    service.prepareDelete('page', service.unit.pages[0], 0).then(result => { confirmed = result; });
+
+    loadAnotherUnit();
+    afterClosed.next(true);
+    tick();
+
+    expect(confirmed).toBe(false);
+  }));
+
+  /* Leaving it up would let the user answer a question about a unit that is no longer on screen; the
+     answer is dropped either way, but the dialog has to go with its unit. */
+  it('takes the confirmation dialog away with the unit it belongs to', fakeAsync(() => {
+    service.prepareDelete('page', service.unit.pages[0], 0);
+
+    loadAnotherUnit();
+    tick();
+
+    expect(close).toHaveBeenCalledWith(false);
+  }));
+
+  /* Discarding a unit goes through the empty branch, which swaps the unit just as a regular load does. */
+  it('takes it away when the host discards the unit instead', fakeAsync(() => {
+    service.prepareDelete('page', service.unit.pages[0], 0);
+
+    service.loadUnitDefinition('');
+    tick();
+
+    expect(close).toHaveBeenCalledWith(false);
+  }));
+
+  /* The swap happens early in the load; everything after it can still throw into the error dialog, and
+     the unit is replaced all the same. */
+  it('takes it away even when the load fails after the unit was swapped', fakeAsync(() => {
+    service.prepareDelete('page', service.unit.pages[0], 0);
+    service.updateSectionCounter = vi.fn(() => { throw new Error('fails after the swap'); });
+
+    loadAnotherUnit();
+    tick();
+
+    expect(close).toHaveBeenCalledWith(false);
+  }));
+
+  it('confirms the delete while the unit it was asked for is still loaded', fakeAsync(() => {
+    let confirmed: boolean | undefined;
+    service.prepareDelete('page', service.unit.pages[0], 0).then(result => { confirmed = result; });
+
+    afterClosed.next(true);
+    tick();
+
+    expect(confirmed).toBe(true);
+  }));
+
+  /* Cancelling reports the references the deletion would have broken. Those name elements of the unit
+     that is gone, so a replaced unit must not bring up that panel. */
+  it('does not offer the references of the replaced unit', fakeAsync(() => {
+    const references: ReferenceList[] = [{ element: { alias: 'page_1', type: 'page' }, refs: [] }];
+    service.referenceManager.getPageElementsReferences = vi.fn(() => references);
+    service.prepareDelete('page', service.unit.pages[0], 0);
+
+    loadAnotherUnit();
+    tick();
+
+    expect(messageServiceSpy.showReferencePanel).not.toHaveBeenCalled();
+  }));
+
+  it('offers them when the user cancels the delete herself', fakeAsync(() => {
+    const references: ReferenceList[] = [{ element: { alias: 'page_1', type: 'page' }, refs: [] }];
+    service.referenceManager.getPageElementsReferences = vi.fn(() => references);
+    service.prepareDelete('page', service.unit.pages[0], 0);
+
+    afterClosed.next(false);
+    tick();
+
+    expect(messageServiceSpy.showReferencePanel).toHaveBeenCalledWith(references);
+  }));
+
+  /* The loss the ticket describes, through the caller that keeps the index: the page at that position
+     in the newly loaded unit would be the one to go. */
+  it('leaves the newly loaded unit untouched when the delete is confirmed', fakeAsync(() => {
+    const pageService = new PageService(service, selectionService);
+    service.unit.pages.push(service.unit.pages[0]);
+    pageService.deletePage(1);
+
+    loadAnotherUnit();
+    afterClosed.next(true);
+    tick();
+
+    expect(service.unit.stateVariables[0].id).toBe('unit-loaded-in-between');
+    expect(service.unit.pages.length).toBe(2);
     expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
   }));
 });

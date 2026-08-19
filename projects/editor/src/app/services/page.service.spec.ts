@@ -5,6 +5,7 @@ import { PageService } from 'editor/src/app/services/page.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { EditorPage } from 'editor/src/app/models/editor-page';
+import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 
 describe('PageService', () => {
   let service: PageService;
@@ -45,6 +46,23 @@ describe('PageService', () => {
     expect(unitServiceMock.unit.pages[0]).toBeInstanceOf(EditorPage);
     expect(unitServiceMock.updateSectionCounter).toHaveBeenCalled();
     expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
+  });
+
+  /* Covered here by selectPreviousPage, which goes through selectPage and empties the element
+     selection -- unlike deleting a section or elements, where nothing else does it (#1258). */
+  it('should drop the selection of elements that went with the deleted page', async () => {
+    const element = createElementMock();
+    unitServiceMock.unit.pages = [createPageMock(), createPageMock([element])];
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+    selectionService.updateSelection(1, 0);
+    selectionService.selectElement({
+      elementComponent: { element, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    await service.deletePage(1);
+
+    expect(selectionService.getSelectedElements()).toEqual([]);
   });
 
   it('should delete a page after confirmation and unregister its element IDs', async () => {

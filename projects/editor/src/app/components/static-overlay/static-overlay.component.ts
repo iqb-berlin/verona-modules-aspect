@@ -71,12 +71,14 @@ export class StaticOverlayComponent extends ElementOverlay {
     });
   }
 
+  /* deleteElements is not awaited -- it hangs on its confirmation dialog -- and it takes the deleted
+     elements out of the selection itself. Unselecting here would happen while the dialog is still
+     open, so a user who declines would be left with the elements still there but unselected (#1258). */
   deleteSelectedElements(): void {
     this.selectionService.selectedElements
       .pipe(take(1))
       .subscribe((selectedElements: UIElement[]) => {
         this.elementService.deleteElements(selectedElements);
-        this.selectionService.clearElementSelection();
       })
       .unsubscribe();
   }

@@ -8,6 +8,7 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
+import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -19,14 +20,19 @@ import { IDService } from 'editor/src/app/services/id.service';
 describe('ElementService', () => {
   let service: ElementService;
   let dialogServiceSpy: SpyObj<DialogService>;
+  let selectionService: SelectionService;
   let unitServiceMock: {
     elementPropertyUpdated: Subject<void>;
     geometryElementPropertyUpdated: Subject<string>;
     mathTableElementPropertyUpdated: Subject<string>;
     tablePropUpdated: Subject<string>;
     updateUnitDefinition: Mock;
+    prepareDelete: Mock;
     // Enough of a unit for reorderElements(), which every position write goes through.
-    unit: { pages: { sections: { elements: UIElement[]; dynamicPositioning: boolean }[] }[] };
+    unit: {
+      pages: { sections: { elements: UIElement[]; dynamicPositioning: boolean }[] }[];
+      deleteElements: Mock;
+    };
   };
 
   const createElementMock = (type: string, properties: Record<string, unknown> = {}): UIElement => ({
@@ -53,17 +59,37 @@ describe('ElementService', () => {
       mathTableElementPropertyUpdated: new Subject<string>(),
       tablePropUpdated: new Subject<string>(),
       updateUnitDefinition: vi.fn(),
-      unit: { pages: [{ sections: [{ elements: [], dynamicPositioning: false }] }] }
+      prepareDelete: vi.fn(),
+      unit: {
+        pages: [{ sections: [{ elements: [], dynamicPositioning: false }] }],
+        deleteElements: vi.fn()
+      }
     };
     dialogServiceSpy = createSpyObj<DialogService>(['showTextEditDialog']);
+    selectionService = new SelectionService();
     service = new ElementService(
       unitServiceMock as unknown as UnitService,
-      new SelectionService(),
+      selectionService,
       dialogServiceSpy,
       createSpyObj<MessageService>(['showReferencePanel']),
       new IDService(),
       { bypassSecurityTrustHtml: (value: string) => value } as unknown as DomSanitizer
     );
+  });
+
+  /* Deleting elements takes exactly the selected ones, and no overlay is left to re-select and take
+     them out of the selection -- the properties panel would go on offering their controls (#1258). */
+  it('should drop the selection of the elements it deletes', async () => {
+    const element = createElementMock('radio', { unregisterIDs: vi.fn() });
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+    selectionService.selectElement({
+      elementComponent: { element, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    await service.deleteElements([element]);
+
+    expect(selectionService.getSelectedElements()).toEqual([]);
   });
 
   it('should set an element property and notify the unit', () => {

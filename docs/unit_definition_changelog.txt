@@ -254,180 +254,28 @@ iqb-aspect-definition@1.0.0
   - tooltipText (data-tooltip-text) may now contain HTML markup (formatted tooltip text)
 - RadioButtonGroupElement, CheckboxElement:
   - new property: verticalButtonAlignment: 'auto' | 'center' (default 'auto')
-    'auto' puts the control on the first line of the label, 'center' on the middle of the
-    whole label. Stored units get 'auto' from the defaults on load, which is the behaviour
-    they have shown since 2.11, so there is no migration step. LikertRowElement has carried
-    the same property since 3.2.0 and is unchanged; the three now share one model level.
-
-(#1177, no version raise -- no new property)
-- RadioButtonGroupElement: styling.lineHeight stored in a unit now survives loading.
-  Before, normalization dropped the stored value (the radio defaults entry had no
-  lineHeight, so the styling lift skipped the key) and the model forced 100 on every
-  load -- user-set line heights silently reverted. With lineHeight: 100 in the radio
-  defaults the stored value is preserved; units that never changed it keep rendering
-  with 100 as before.
-
-(#1190, no version raise -- no new property)
-- Units stored with a version between 4.0.0 and 4.9.x keep their data on loading.
-  MigrationLegacy converts the 3.10 shape to the 4.0 shape, but declared
-  toVersion 4.10.0, and the step filter reads that declaration -- so it also ran
-  over units that already carried the 4.x shape. Three of its transformations have
-  no guard against being handed the new shape and overwrote what they found:
-  dimensions was rebuilt from the flat width/height removed in 4.0.0 (the element
-  defaults then won), visibilityRules became [] and animatedVisibility false because
-  activeAfterID no longer exists, and addInputAssistanceToKeyboard was set from the
-  softwareKeyboardShowFrench removed in 4.0.0. With toVersion 4.0.0 the step no
-  longer reaches those units; they are brought up to date by NormalizationMigration,
-  which runs regardless of the filter, exactly as before.
-
-(#1184, no version raise -- no new property)
-- Elements no longer share their margin objects with the defaults table.
-  PropertyGroupGenerators.generatePositionProps returned the marginLeft/Right/Top/Bottom
-  object it was given, and it is usually given an ELEMENT_DEFAULTS entry -- so every
-  element built without a stored margin of its own held the registry's Measurement,
-  shared with the table and with every other element of that type. Nothing broke: every
-  writer replaces the margin object rather than editing it, so the sharing stayed
-  invisible. The generator now copies, which closes the hole before the first in-place
-  write appears. Margin values are unchanged; what changes is object identity, and one
-  edge case -- a stored margin that is not an object at all (an explicit null, say)
-  used to come back out unchanged and is now an empty object.
-
-(#1187, no version raise -- no new property)
-- Frame, audio and video no longer carry font styling. Their styling declares border
-  and background (frame) or background alone (audio, video) and no font member at all,
-  but normalization added fontColor, font, fontSize, bold, italic and underline to every
-  element on load, whatever its type -- so the inspector offered these three element
-  types five controls that render nothing (font colour, font size, bold, italic,
-  underline), and the keys were saved back into the unit. Which styling keys an
-  element keeps is now decided by the group its own class builds, which the compiler
-  checks against the declared type. Font values stored on one of the three are dropped
-  on the next load; nothing renders them, so nothing changes on screen. The other 27
-  element types keep exactly the styling group they had.
-  Not covered, because their styling type does not say so: image, geometry, trigger,
-  hotspot-image, marking-panel and likert-row declare no styling of their own and
-  therefore keep the basic group the base class builds, although none of their
-  components reads it either. Their controls are as dead as the three above; narrowing
-  their declaration is a decision about the inspector and is filed separately.
-- A stored styling value now survives for every key an element declares. Before, the
-  group was rebuilt from four hand-kept lists, and a key no list named was dropped even
-  though interface and defaults table both declared it (#1177 for radio.lineHeight,
-  #1185 in general). No unit needs repairing: what was dropped was never stored.
-
-(#1182, no version raise -- a property is retired, none is added)
-- styling.font is gone from the model. Every element had it, with the default
-  NunitoSans, and it did next to nothing: the input in the inspector was commented out
-  and additionally disabled, so it was never operable, and only two components read the
-  value at all -- table and the formula area (text-area-math).
-  Nothing renders differently. Two assistant templates set "Roboto" there, a font the
-  player does not ship, but both sit on text elements, and the text component never read
-  the property -- so those two rendered in the player's font before this change as well.
-  On table and formula area the value has only ever been the default. (The framing in
-  #1182, that the system substituted a font there, does not hold for that reason.)
-  The property stays in stored units and is ignored from now on; it is dropped from the
-  styling group on the next load, and no migration step is needed. Should a font choice
-  return, it belongs on the unit rather than on each element (#921).
-
-(#1226, no version raise -- a property group is retired, none is added)
-- Image, geometry, trigger, hotspot-image, marking panel and likert row no longer have a
-  styling group. Not one of their components ever read a styling value -- not even the
-  background colour -- but the inspector offered six controls for each of them
-  (background colour, font colour, font size, bold, italic, underline) whose values were
-  stored and never used. In the shipped 2.x line these elements had no styling group
-  either, and therefore no controls: the base class declared it optional and left it
-  unset. The group appeared with the 3.0.0 beta, when normalization started building it
-  for every element, so this restores the released behaviour rather than removing a
-  feature. Values a beta-era unit stored on one of the six are dropped on the next load;
-  nothing rendered them. Newly saved units carry an empty `"styling": {}` for these six.
-  Should a background colour be wanted on an image or a geometry app, that is a feature
-  of its own: the property would have to be USED, rather than offered and ignored.
-  One editor detail follows from it: selecting one of the six together with a styled
-  element now leaves no styling tab, because the merge keeps only what the whole
-  selection shares. That was the behaviour of the 2.x line as well; in between, the
-  text's font size stayed editable while an image was co-selected.
-
-(#1230, no version raise -- styling members are retired, none is added)
-- The two widget elements, molecule editor and periodic table, no longer carry font and
-  border styling. They declared eleven styling members and applied two: the background
-  colour and the font colour of the button that opens the widget. Font size, bold,
-  italic, underline and the four border members had controls in the inspector that
-  rendered nothing -- the borders around the periodic table's element squares come from
-  the component's stylesheet, not from the model. Sixteen controls disappear, eight per
-  widget. Stored values for them are dropped on the next load. No RELEASED version ever
-  displayed them: the buttons did bind these eight values while they were mat-buttons,
-  between 2026-02-26 (c8357781) and 2026-05-06 (fce5af06), but that window closed before
-  the first beta -- both 3.0.0-beta tags already carry the mini-fab buttons with two
-  colours. Both elements were added after the 2.x line, so unlike #1226 there is no
-  earlier released behaviour to restore -- the rule is the same either way: no control
-  for something the element cannot do.
-  One editor detail follows, as it did in #1226: a widget selected together with a text
-  element used to offer font size, bold, italic and underline, and those writes reached
-  the TEXT element, which renders them. For that mixed selection only the two colours
-  remain, so the text's font size is no longer editable while a widget is co-selected.
-- Also gone, invisible either way: both widget templates bound `vertical-align` to
-  `labelAlignment`, a property only the button element declares. The value was always
-  undefined.
-
-(#1232, no version raise -- a styling member is retired, none is added)
-- The spell correction element no longer carries styling.lineHeight. It applies five
-  styling values -- background colour, font colour, font size, bold, italic, underline --
-  and never a line height: it is a single-line input with a button under it. Of the twelve
-  element types with a lineHeight default it was the only one that rendered nothing from
-  it. Its history is not one straight line: added to the model alone in 2021 (51204206),
-  never to a component, then lost in the 2.x styling rework -- the released master carries
-  no lineHeight for this element at all -- and introduced again by #1177, which gave it a
-  default in the typed table so a stored value would survive the load. That was consistent
-  while the property was declared, and is what made its uselessness visible. No component
-  rendered it in any of those states. Stored values are dropped on the next load; nothing
-  displayed them.
-
-(#1233, no version raise -- four members are retired, none is added)
-- TextFieldSimpleElement no longer has `clearable`. It offered a checkbox for a clear
-  button the component never rendered; in the released 2.x line the property appears in
-  model files only, in no component. The full text field keeps its clear button. Should
-  the simple one want it, that is a feature for a later release rather than a reason to
-  keep offering the checkbox.
-- HotspotImageElement and LikertRowElement no longer have `label`. The property comes
-  from the InputElement base class, so every input element carries one; ten of the fifteen
-  render it. These two never did -- the inspector offered a text box whose content
-  appeared nowhere, and the likert row has its own `rowLabel` for what it does show. Both
-  now delete the inherited property in their constructor, the way TextFieldSimple,
-  ToggleButton and DropList already did: blanking it instead would leave an own key, which
-  the panel's merge reports as a diverging value and the field comes back for a mixed
-  selection.
-- RadioButtonGroupComplexElement (radio-group-images) no longer has styling.backgroundColor.
-  Its component applies font colour, size, bold, italic and underline and never a
-  background; the declaration is FontStyles now. In the released line the key appears for
-  this element only in a test fixture.
-- Stored values for all four are dropped on the next load, and nothing ever displayed
-  them. No migration step.
-
-(#1234, no version raise -- a member is retired, none is added)
-- LikertRowElement no longer has `firstColumnSizeRatio`, and no longer extends
-  FirstColumnRatioProperties; the table it sits in keeps both. The row declared a ratio of
-  its own and the inspector offered a number field for it, but the grid of the table AND of
-  each row is built from the TABLE's value: likert.component.html hands its own value down
-  as an input, and the row component reads nothing else. The row's value had no reader
-  anywhere -- in the released master no more than today, where the same construction stands.
-  Stored values are dropped on the next load; nothing displayed them.
-
-(#1241, no version raise -- a property group is retired, none is added)
-- An image no longer has a player group. Its interface never declared one: only
-  PlayerElementBlueprint does, which is audio and video, while every element inherits an
-  optional `player` from UIElementProperties -- and that is not a declaration that it has
-  one. Nothing read an image's group either; the image component never mentions `player`,
-  the player's code mapping casts to AudioElement/VideoElement, and the reference manager
-  collects audio and video by type. But the inspector shows the media options button by
-  PRESENCE of the group, so every image offered it in expert mode, and the click did
-  nothing at all: the dialog switch has no case for images. The group appeared with the
-  3.0.0 beta, when normalization started building it for audio, video AND image from a
-  hand-written list of type names; the shipped 2.x line has an image without any player,
-  so this restores the released behaviour rather than removing a feature.
-  Unlike #1226, stored values are also dropped for beta-era units, and for the same
-  reason the styling group drops undeclared keys: the group now reaches only the classes
-  that declare it, so a stored group on an image is not copied onto the element and does
-  not survive the next save. The button therefore disappears for existing units too.
-  One editor detail follows, as in #1226 and #1230: an image selected together with an
-  audio or video no longer offers the media options button, because the merge keeps only
-  what the whole selection shares. Editing an audio's player options now means selecting
-  it on its own; in between, the button was shown for such a mixed selection and wrote to
-  the first selected element.
+    LikertRowElement has carried the same property since 3.2.0 and is unchanged.
+- All elements:
+  - remove styling.font (#1182)
+- FrameElement, AudioElement, VideoElement:
+  - remove styling.fontColor, styling.fontSize, styling.bold, styling.italic,
+    styling.underline (#1187)
+- ImageElement, GeometryElement, TriggerElement, HotspotImageElement,
+  MarkingPanelElement, LikertRowElement:
+  - remove the styling group; newly saved units carry "styling": {} (#1226)
+- MoleculeEditorElement, PeriodicTableElement:
+  - remove styling.fontSize, styling.bold, styling.italic, styling.underline,
+    styling.borderWidth, styling.borderColor, styling.borderStyle, styling.borderRadius;
+    backgroundColor and fontColor remain (#1230)
+- SpellCorrectElement:
+  - remove styling.lineHeight (#1232)
+- TextFieldSimpleElement:
+  - remove clearable (#1233)
+- HotspotImageElement, LikertRowElement:
+  - remove label (inherited from InputElement) (#1233)
+- RadioButtonGroupComplexElement:
+  - remove styling.backgroundColor (#1233)
+- LikertRowElement:
+  - remove firstColumnSizeRatio (#1234)
+- ImageElement:
+  - remove the player group (#1241)

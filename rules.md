@@ -201,6 +201,15 @@ change belongs to depends on what the change does — the long version is the cl
   migrate to a newer version, or handle it in `ModelNormalizer` — and only if the data is worth a
   case that then runs on every load of every unit, forever.
 
+**What goes into `docs/unit_definition_changelog.txt`:** which element gains, loses or changes which
+property, one line per change, grouped under the version — nothing else. It is read to see at a glance
+how the stored definition differs between two versions. Not the reason for the change, not what it
+fixed, not what the inspector shows, not what an earlier release did: that belongs in the ticket, in
+the PR text and, where a reader of the code needs it, in a comment next to the code. A change that
+leaves the stored definition as it is has no entry at all. Under 4.12.0 this rule was lost — eleven
+prose blocks, each announcing "no version raise, no new property" in its own headline, grew the section
+to 190 lines while 17 of them said what the file is for.
+
 Defaults in `ELEMENT_DEFAULTS` are what the normalizer writes into units, so their types must match
 what the model declares. Since #1177 the table is typed against the element property interfaces
 (`FlatDefaults` in `element-registry.ts`): a default with the wrong type or an unknown key is a

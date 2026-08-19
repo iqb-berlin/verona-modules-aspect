@@ -32,16 +32,20 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
-  async deleteSection(pageIndex: number, sectionIndex: number): Promise<void> {
+  /* Reports whether the section is gone, which is what replaceSection hangs its insertion on. */
+  async deleteSection(pageIndex: number, sectionIndex: number): Promise<boolean> {
     const sectionToDelete = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
-    if (await this.unitService.prepareDelete('section', sectionToDelete)) {
-      sectionToDelete.getAllElements().forEach(el => el.unregisterIDs());
-      this.unitService.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
-      this.selectionService.selectedSectionIndex =
-        Math.max(0, this.selectionService.selectedSectionIndex - 1);
-      this.unitService.updateSectionCounter();
-    }
+    if (!await this.unitService.prepareDelete('section', sectionToDelete)) return false;
+    sectionToDelete.getAllElements().forEach(el => el.unregisterIDs());
+    this.unitService.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
+    this.selectionService.selectedSectionIndex =
+      Math.max(0, this.selectionService.selectedSectionIndex - 1);
+    this.unitService.updateSectionCounter();
+    /* Inside the branch, as in deletePage and deleteElements: what the host is told about is a
+       deletion, and there is none when the user cancels or when the unit was replaced under the
+       dialog (#1253). */
     this.unitService.updateUnitDefinition();
+    return true;
   }
 
   duplicateSection(sectionIndex: number): void {
@@ -79,10 +83,13 @@ export class SectionService {
     }
   }
 
+  /* Replacing is the deletion plus the insertion, so the insertion waits for the deletion to happen:
+     the page is read afterwards, and a delete the user declined -- or one whose unit the host replaced
+     while the dialog was open -- leaves the section it was about in place and inserts nothing (#1253). */
   async replaceSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): Promise<void> {
-    const page = this.unitService.unit.pages[pageIndex];
-    await this.deleteSection(pageIndex, sectionIndex);
-    this.addSection(page, newSection, sectionIndex);
+    if (await this.deleteSection(pageIndex, sectionIndex)) {
+      this.addSection(this.unitService.unit.pages[pageIndex], newSection, sectionIndex);
+    }
   }
 
   insertSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): void {

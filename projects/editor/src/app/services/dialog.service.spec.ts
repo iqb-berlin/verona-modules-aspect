@@ -54,7 +54,7 @@ describe('DialogService', () => {
     mockDialogResult(true);
 
     let result: boolean | undefined;
-    service.showDeleteConfirmDialog('Wirklich löschen?').subscribe(dialogResult => {
+    service.showDeleteConfirmDialog('Wirklich löschen?', new Subject<void>()).subscribe(dialogResult => {
       result = dialogResult;
     });
 
@@ -63,6 +63,34 @@ describe('DialogService', () => {
       { data: { text: 'Wirklich löschen?', elementList: undefined, refs: undefined } }
     );
     expect(result).toBe(true);
+  });
+
+  /* The dialog belongs to the unit the caller asked about; UnitService.prepareDelete drops the result
+     of one that outlived its unit, and leaving the dialog up would let the user answer for a unit that
+     is no longer there (#1253). */
+  it('should close the delete confirmation dialog when the unit under it is replaced', () => {
+    const afterClosed = new Subject<boolean>();
+    const close = vi.fn();
+    dialogMock.open.mockReturnValue({ afterClosed: () => afterClosed, close });
+    const unitReplaced = new Subject<void>();
+    service.showDeleteConfirmDialog('Wirklich löschen?', unitReplaced).subscribe();
+
+    unitReplaced.next();
+
+    expect(close).toHaveBeenCalledWith(false);
+  });
+
+  it('should stop watching for a replaced unit once the delete confirmation dialog is closed', () => {
+    const afterClosed = new Subject<boolean>();
+    const close = vi.fn();
+    dialogMock.open.mockReturnValue({ afterClosed: () => afterClosed, close });
+    const unitReplaced = new Subject<void>();
+    service.showDeleteConfirmDialog('Wirklich löschen?', unitReplaced).subscribe();
+
+    afterClosed.next(true);
+    unitReplaced.next();
+
+    expect(close).not.toHaveBeenCalled();
   });
 
   it('should open the unit definition error dialog without close option', () => {

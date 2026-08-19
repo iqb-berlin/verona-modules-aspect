@@ -85,10 +85,19 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showDeleteConfirmDialog(text: string, elementList?: UIElement[], refs?: ReferenceList[]): Observable<boolean> {
+  /* The confirmation belongs to the unit the caller asked about, and the dialog outlives that unit as
+     soon as the host loads another one -- so a replaced unit takes the dialog with it. Narrowing the
+     result the way showSanitizationDialog does is left to the caller here: a cancelled delete still has
+     its references to report, so this one has to tell that apart from a superseded delete rather than
+     drop both. UnitService.prepareDelete does, on the unit it asked about (#1253). */
+  showDeleteConfirmDialog(text: string, supersededBy: Observable<void>,
+                          elementList?: UIElement[], refs?: ReferenceList[]): Observable<boolean> {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       data: { text, elementList, refs }
     });
+    supersededBy
+      .pipe(takeUntil(dialogRef.afterClosed()))
+      .subscribe(() => dialogRef.close(false));
     return dialogRef.afterClosed();
   }
 

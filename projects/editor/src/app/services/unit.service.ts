@@ -40,6 +40,11 @@ export class UnitService {
      older one to the host under the newer session. Announcing the newer load is all this side has to
      do -- the dialog is then closed and its result no longer reaches the callback below (#1247). */
   private loadSuperseded = new Subject<void>();
+  /* Fires once `unit` has actually been swapped. The load above announces its own start, which is what
+     a dialog belonging to that load needs; a dialog belonging to the unit -- a delete waiting for its
+     confirmation -- has to know when the unit under it is gone, which a load that ends in an error or
+     in the sanitization dialog never does (#1253). */
+  private unitReplaced = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
@@ -96,6 +101,7 @@ export class UnitService {
       this.unit = new EditorUnit(undefined, this.idService);
       this.referenceManager = new ReferenceManager(this.unit);
       this.updateSectionCounter();
+      this.unitReplaced.next();
     }
   }
 
@@ -105,6 +111,9 @@ export class UnitService {
     this.unit = new EditorUnit(parsedUnitDefinition as unknown as UnitProperties, this.idService);
     this.reRegisterAll();
     this.referenceManager = new ReferenceManager(this.unit);
+    /* As early as the unit and its reference manager are in place: everything below can throw into the
+       error dialog of loadUnitDefinition, and the unit would be replaced all the same. */
+    this.unitReplaced.next();
 
     const invalidRefs = this.referenceManager.getAllInvalidRefs();
     if (invalidRefs.length > 0) {
@@ -189,6 +198,7 @@ export class UnitService {
                 object: EditorPage | Section | UIElement[],
                 pageIndex?: number): Promise<boolean> {
     return new Promise(resolve => {
+      const unitAtRequest = this.unit;
       let refs: ReferenceList[] = [];
       let dialogText: string = '';
       switch (deletedObjectType) {
@@ -218,9 +228,18 @@ export class UnitService {
 
       this.dialogService.showDeleteConfirmDialog(
         dialogText,
+        this.unitReplaced,
         deletedObjectType === 'elements' ? object as UIElement[] : undefined,
         refs)
         .subscribe(result => {
+          /* Everything gathered above -- the object, the refs, and the index the caller kept -- belongs
+             to the unit as it was when the dialog opened. Once that unit is gone, deleting would hit
+             the same position in the newly loaded one, and reporting the refs would name elements the
+             user cannot see; so this leaves both alone (#1253). */
+          if (this.unit !== unitAtRequest) {
+            resolve(false);
+            return;
+          }
           if (result) {
             if (refs.length > 0) ReferenceManager.deleteReferences(refs); // TODO rollback?
             resolve(true);

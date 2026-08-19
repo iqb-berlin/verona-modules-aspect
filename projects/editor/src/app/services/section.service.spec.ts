@@ -111,6 +111,45 @@ describe('SectionService', () => {
     expect(unitServiceMock.unit.pages[0].sections).toEqual([section]);
   });
 
+  /* Replacing runs the deletion first; both halves belong to the same unit, so the insertion has to
+     wait for the deletion to have happened (#1253). */
+  it('should replace a section once its deletion is confirmed', async () => {
+    const sectionToReplace = createSectionMock();
+    const newSection = createSectionMock([createElementMock()]);
+    const page = { sections: [sectionToReplace], addSection: vi.fn() } as unknown as EditorPage;
+    unitServiceMock.unit.pages = [page];
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+
+    await service.replaceSection(0, 0, newSection);
+
+    expect(page.addSection).toHaveBeenCalledWith(newSection, 0);
+  });
+
+  it('should keep the section and insert nothing when its deletion is not confirmed', async () => {
+    const sectionToReplace = createSectionMock();
+    const newSection = createSectionMock([createElementMock()]);
+    const page = { sections: [sectionToReplace], addSection: vi.fn() } as unknown as EditorPage;
+    unitServiceMock.unit.pages = [page];
+    unitServiceMock.prepareDelete.mockResolvedValue(false);
+
+    await service.replaceSection(0, 0, newSection);
+
+    expect(page.addSection).not.toHaveBeenCalled();
+    expect(page.sections).toEqual([sectionToReplace]);
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+  });
+
+  /* A deletion that did not happen is nothing to tell the host about -- neither when the user cancels
+     nor when the unit was replaced while the dialog was open (#1253). */
+  it('should not report the unit when the deletion is not confirmed', async () => {
+    unitServiceMock.unit.pages = [{ sections: [createSectionMock()] } as unknown as EditorPage];
+    unitServiceMock.prepareDelete.mockResolvedValue(false);
+
+    await service.deleteSection(0, 0);
+
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+  });
+
   it('should move a section within the selected page and follow it with the selection', () => {
     const firstSection = createSectionMock();
     const secondSection = createSectionMock();

@@ -43,6 +43,59 @@ describe('TextImagePanelComponent', () => {
     expect(textElement.innerHTML).toContain('<b>Welt</b>');
   });
 
+  /* The label is one box of rich text: what belongs to a line stays on it, what is a paragraph of its
+     own gets a line of its own. As a flex container this box gave every child a line (#970, #699). */
+  it('should keep text and an inline element of one line on the same line', () => {
+    component.label = { ...textImageLabel, text: '15 <span>cm</span>' };
+    fixture.detectChanges();
+    const textElement: HTMLElement = fixture.nativeElement.querySelector('.text');
+    const leadingText = document.createRange();
+    leadingText.selectNodeContents(textElement.firstChild as Node);
+    const inlineElement = textElement.querySelector('span') as HTMLElement;
+    expect(leadingText.getBoundingClientRect().top)
+      .toBeCloseTo(inlineElement.getBoundingClientRect().top, 0);
+  });
+
+  it('should stack the paragraphs of a label below each other', () => {
+    component.label = { ...textImageLabel, text: '<p>erster Absatz</p><p>zweiter Absatz</p>' };
+    fixture.detectChanges();
+    const paragraphs: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.text p'));
+    expect(paragraphs.length).toBe(2);
+    expect(paragraphs[1].getBoundingClientRect().top)
+      .toBeGreaterThanOrEqual(paragraphs[0].getBoundingClientRect().bottom);
+  });
+
+  it('should centre a paragraph narrower than the label box', () => {
+    component.label = {
+      ...textImageLabel,
+      text: '<p>ein Absatz, der die Breite des Kastens bestimmt</p><p>kurz</p>'
+    };
+    fixture.detectChanges();
+    const textElement: HTMLElement = fixture.nativeElement.querySelector('.text');
+    const shortParagraph = fixture.nativeElement.querySelectorAll('.text p')[1] as HTMLElement;
+    const boxRect = textElement.getBoundingClientRect();
+    const paragraphRect = shortParagraph.getBoundingClientRect();
+
+    expect(paragraphRect.width).toBeLessThan(boxRect.width);
+    expect(paragraphRect.left - boxRect.left).toBeCloseTo(boxRect.right - paragraphRect.right, 0);
+  });
+
+  /* With an image above or below it, the text box is as wide as the image; the text belongs in the middle
+     of that width, not at its left edge. The width is set here directly -- in a unit it comes from the
+     image, which would have to load first. */
+  it('should centre the text across a box wider than the text', () => {
+    const wrapper: HTMLElement = fixture.nativeElement.querySelector('.image-wrapper');
+    wrapper.style.width = '400px';
+    const textElement: HTMLElement = fixture.nativeElement.querySelector('.text');
+    const content = document.createRange();
+    content.selectNodeContents(textElement);
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const contentRect = content.getBoundingClientRect();
+
+    expect(contentRect.width).toBeLessThan(wrapperRect.width);
+    expect(contentRect.left - wrapperRect.left).toBeCloseTo(wrapperRect.right - contentRect.right, 0);
+  });
+
   it('should not render a text element for an empty label text', () => {
     component.label = { ...textImageLabel, text: '' };
     fixture.detectChanges();

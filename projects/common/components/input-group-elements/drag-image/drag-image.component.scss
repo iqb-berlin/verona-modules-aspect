@@ -1,6 +1,8 @@
+/* A flex box like the item it was picked up from -- the preview keeps that item's size, so a label
+   centred there must not jump to the top edge the moment it is grabbed (#970). */
 .drag-preview {
   position: fixed;
-  display: block;
+  display: flex;
   box-sizing: border-box;
   border-radius: 5px;
   pointer-events: none;

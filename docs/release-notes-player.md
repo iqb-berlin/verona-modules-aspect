@@ -30,6 +30,8 @@ Player
   - Verlassene Aufgaben mit Wort- oder Bereichsmarkierung geben ihre Ressourcen wieder frei; der Player bleibt über lange Sitzungen flüssig
   - Eine Formel in einem Text wird in der Wort- und der Bereichsmarkierung als Ganzes markiert. Bisher wurde jedes Zeichen einer Formel zu einem eigenen markierbaren Wort, sodass sich nur einzelne Teile einer Formel markieren ließen
   - **Folge für vorhandene Antworten:** In Texten mit Formeln verschieben sich Wort- und Bereichsmarkierungen, die vor dieser Version gesetzt wurden, sofern sie hinter einer Formel liegen — die Markierungen sind als Wortnummern gespeichert, und eine Formel zählt jetzt als ein Wort. Neu gesetzte Markierungen sind davon nicht betroffen
+- Wiederholte Aufgaben-Starts im selben Player (z. B. beim Replay in der Kodierbox)
+  - Eine ersetzte Aufgabe wird jetzt vollständig freigegeben. Bisher blieb sie bei jedem weiteren Start im Speicher — nach 20 Wechseln lagen rund 200.000 Elemente und 170 MB unnötig im Browser, was den Hauptthread zunehmend belastete. Ein Start-Kommando, das von einem neueren überholt wird, baut seine Aufgabe außerdem nicht mehr auf
 - Formelfeld, Formelbereich
   - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
   - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen innerhalb des Feldes, im Formelbereich brechen Text und Formel-Segmente in die nächste Zeile um

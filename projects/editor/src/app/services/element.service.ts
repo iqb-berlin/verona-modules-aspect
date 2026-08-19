@@ -230,14 +230,25 @@ export class ElementService {
         .subscribe((result: boolean) => {
           if (result) {
             ReferenceManager.deleteReferences(refs);
-            element.setProperty('document', newValue);
+            this.setClozeDocument(element, newValue, deletedElements);
           } else {
             this.messageService.showReferencePanel(refs);
           }
         });
     } else {
-      element.setProperty('document', newValue);
+      this.setClozeDocument(element, newValue, deletedElements);
     }
+  }
+
+  /* A gap the user removed in the rich text editor leaves the unit with the document: the model
+     drops it and releases its IDs. Its overlay goes with the node it sat in, and no overlay is
+     rebuilt, so nothing takes it out of the selection -- the properties panel would go on offering
+     the controls of a child that is not in the unit any more (#1261, the symptom of #1258 reached
+     through the cloze editor). The deselection belongs here and not in ClozeElement.setProperty:
+     the model lives in common/ and knows no SelectionService. */
+  private setClozeDocument(element: ClozeElement, newValue: ClozeDocument, deletedElements: UIElement[]): void {
+    element.setProperty('document', newValue);
+    this.selectionService.deselectElements(deletedElements);
   }
 
   // xPosition and yPosition live in the element's position group, so they have to go through

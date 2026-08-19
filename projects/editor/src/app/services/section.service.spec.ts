@@ -73,6 +73,8 @@ describe('SectionService', () => {
     expect(unitServiceMock.updateSectionCounter).toHaveBeenCalled();
   });
 
+  /* The selection stays with the caller: addSection is handed a page, not its position, and only the
+     caller knows both (#1255). */
   it('should add a given section at the requested index and re-register its element IDs', () => {
     const page = new EditorPage();
     const element = createElementMock();
@@ -83,8 +85,47 @@ describe('SectionService', () => {
 
     expect(page.sections[0]).toBe(section);
     expect(element.registerIDs).toHaveBeenCalled();
-    expect(selectionService.selectedSectionIndex).toBe(1);
+    expect(selectionService.selectedSectionIndex).toBe(2);
     expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
+  });
+
+  /* Both go through the section insert dialog, which offers the new section either next to the current
+     one or in its place -- and either way the user is then working on the section that just arrived. */
+  it('should select the section it inserts', () => {
+    const page = new EditorPage();
+    const sectionBelow = createSectionMock();
+    page.sections.push(sectionBelow);
+    const newSection = createSectionMock();
+    unitServiceMock.unit.pages = [new EditorPage(), page];
+    /* Starting elsewhere, so that naming the page counts as much as naming the section. */
+    selectionService.updateSelection(0, 0);
+
+    service.insertSection(1, 1, newSection);
+
+    /* Both halves of the same statement: the selection has to name the section that just arrived, so it
+       is only right as long as the section really sits at that index -- with one below it to be pushed
+       down, that index is a claim about the order and not just about the length. */
+    expect(page.sections[1]).toBe(newSection);
+    expect(page.sections[2]).toBe(sectionBelow);
+    expect(selectionService.selectedPageIndex).toBe(1);
+    expect(selectionService.selectedSectionIndex).toBe(1);
+  });
+
+  it('should select the section it puts in place of another', async () => {
+    const page = new EditorPage();
+    const sectionToReplace = createSectionMock();
+    const sectionBelow = createSectionMock();
+    page.sections.push(sectionToReplace, sectionBelow);
+    const newSection = createSectionMock();
+    unitServiceMock.unit.pages = [page];
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+    selectionService.updateSelection(0, 1);
+
+    await service.replaceSection(0, 1, newSection);
+
+    expect(page.sections[1]).toBe(newSection);
+    expect(page.sections[2]).toBe(sectionBelow);
+    expect(selectionService.selectedSectionIndex).toBe(1);
   });
 
   it('should delete a section after confirmation and unregister its element IDs', async () => {

@@ -17,6 +17,14 @@ mat-radio-button {
 :host ::ng-deep mat-radio-button .mdc-form-field .mdc-label {
   padding-top: calc((var(--mat-radio-state-layer-size) - 20px) / 2);
 }
+/* verticalButtonAlignment: 'center' -- the dot on the middle of the whole option instead of its
+   first line. The padding above would push the label out of that middle, so it goes. */
+:host ::ng-deep mat-radio-button.centered-control .mdc-form-field {
+  align-items: center;
+}
+:host ::ng-deep mat-radio-button.centered-control .mdc-form-field .mdc-label {
+  padding-top: 0;
+}
 :host ::ng-deep .strike .mdc-form-field {
   text-decoration: line-through;
 }

@@ -237,6 +237,7 @@ input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabl
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
 checkbox "propertiesPanel.crossOutChecked" = false
+select "propertiesPanel.verticalButtonAlignment" = auto
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
@@ -273,6 +274,7 @@ input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
 checkbox "propertiesPanel.crossOutChecked" = indeterminate
+select "propertiesPanel.verticalButtonAlignment" = <null> [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
@@ -310,6 +312,7 @@ textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
+select "propertiesPanel.verticalButtonAlignment" = <null> [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -325,6 +328,7 @@ textarea "propertiesPanel.label" = Beschriftung
 checkbox "propertiesPanel.readOnly" = false
 button "image"
 toggle-group [propertiesPanel.true, propertiesPanel.false]
+select "propertiesPanel.verticalButtonAlignment" = auto
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1679,6 +1683,7 @@ select "preset" = <null>
 textarea "newOption" = 
 select "propertiesPanel.alignment" = column
 checkbox "propertiesPanel.strikeOtherOptions" = false
+select "propertiesPanel.verticalButtonAlignment" = auto
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
@@ -1718,6 +1723,7 @@ select "preset" = <null>
 textarea "newOption" = 
 select "propertiesPanel.alignment" = <null> [merged]
 checkbox "propertiesPanel.strikeOtherOptions" = indeterminate
+select "propertiesPanel.verticalButtonAlignment" = <null> [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
@@ -1758,6 +1764,7 @@ select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
 select "propertiesPanel.alignment" = <null> [merged]
+select "propertiesPanel.verticalButtonAlignment" = <null> [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1775,6 +1782,7 @@ select "preset" = <null>
 [propertiesPanel.options]
 textarea "newOption" = 
 select "propertiesPanel.alignment" = column
+select "propertiesPanel.verticalButtonAlignment" = auto
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 

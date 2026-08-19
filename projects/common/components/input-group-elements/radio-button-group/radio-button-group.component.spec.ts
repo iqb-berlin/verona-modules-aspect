@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +8,9 @@ import {
   RadioButtonGroupElement, RadioButtonGroupProperties
 } from 'common/models/elements/input-group-elements/radio-button-group';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
+import {
+  FirstLineAlignedControlDirective
+} from 'common/directives/first-line-aligned-control.directive';
 import { RadioButtonGroupComponent } from './radio-button-group.component';
 
 @Pipe({ name: 'errorTransform', standalone: false })
@@ -22,6 +26,7 @@ describe('RadioButtonGroupComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         RadioButtonGroupComponent,
+        FirstLineAlignedControlDirective,
         SafeResourceHTMLPipe,
         MockErrorTransformPipe
       ],
@@ -86,5 +91,28 @@ describe('RadioButtonGroupComponent', () => {
     fixture.detectChanges();
     const radioButton = fixture.nativeElement.querySelector('mat-radio-button');
     expect(radioButton.style.pointerEvents).toBe('none');
+  });
+
+  /* #960: which of the two alignments a task chose has to reach the option -- the class for the
+     centred one, the measuring directive for the other. */
+  describe('verticalButtonAlignment', () => {
+    const options = (): HTMLElement[] => Array
+      .from(fixture.nativeElement.querySelectorAll('mat-radio-button'));
+    const directives = (): FirstLineAlignedControlDirective[] => fixture.debugElement
+      .queryAll(By.directive(FirstLineAlignedControlDirective))
+      .map(found => found.injector.get(FirstLineAlignedControlDirective));
+
+    it('should align on the first line by default', () => {
+      expect(options().every(option => !option.classList.contains('centered-control'))).toBe(true);
+      expect(directives().every(directive => directive.firstLineAlignedControl)).toBe(true);
+    });
+
+    it('should mark every option and switch the directive off when centred', () => {
+      component.elementModel.verticalButtonAlignment = 'center';
+      fixture.detectChanges();
+
+      expect(options().every(option => option.classList.contains('centered-control'))).toBe(true);
+      expect(directives().every(directive => !directive.firstLineAlignedControl)).toBe(true);
+    });
   });
 });

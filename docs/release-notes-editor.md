@@ -12,6 +12,8 @@ Editor
 - Tooltip (Text und Knopf)
   - Der Tooltip-Text kann jetzt formatiert werden (Fett, Kursiv, Unterstrichen, Hoch-/Tiefstellung, Schrift- und Hintergrundfarbe, Sonderzeichen); der Dialog enthält dafür den reduzierten Texteditor
   - Der Tooltip eines Knopfes wird über die neue Schaltfläche "Tooltip bearbeiten" im Eigenschaftenbereich im selben Dialog bearbeitet (Text, Position und Löschen)
+- Optionsfelder, Kontrollkästchen
+  - Neue Eigenschaft "Vertikale Knopfausrichtung": "an der ersten Zeile" (Voreinstellung, bisheriges Verhalten) oder "zentriert" (Knopf in der Mitte der gesamten Beschriftung). Die Optionstabelle hat diese Einstellung schon je Zeile
 
 ### Änderungen
 - Element-IDs dürfen jetzt beliebig lang sein; die Begrenzung auf 20 Zeichen ist entfallen, weil sie im Verona-Vertrag für Variablen nicht vorgesehen ist. Die übrigen Regeln (Buchstaben, Ziffern, Unterstrich und Bindestrich, keine Leerzeichen) gelten unverändert

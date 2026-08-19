@@ -133,6 +133,7 @@ import { MeasurePipe } from './pipes/measure.pipe';
 import { TableGridRowsPipe } from './pipes/table-grid-rows.pipe';
 import { MarkingPanelComponent } from './components/interactive-group-elements/marking-panel/marking-panel.component';
 import { HasTextContentPipe } from './pipes/has-text-content.pipe';
+import { FirstLineAlignedControlDirective } from './directives/first-line-aligned-control.directive';
 
 @NgModule({
   declarations: [
@@ -203,6 +204,7 @@ import { HasTextContentPipe } from './pipes/has-text-content.pipe';
     TableGridRowsPipe,
     HasTextContentPipe,
     DraggableDirective,
+    FirstLineAlignedControlDirective,
     ImageFullscreenDirective,
     ImageFullscreenDialog,
     AreaSegmentComponent,

@@ -36,9 +36,6 @@
   "below": "unterhalb",
   "preset": "Vorbelegung",
   "id": "ID",
-  "verticalButtonAlignment": "Vertikale Knopfausrichtung",
-  "auto": "oben",
-  "center": "zentriert",
   "allowReplacement": "Verdrängen erlauben",
   "stateVariable": "Zustandsvariable",
   "stateVariables": "Zustandsvariablen",
@@ -341,7 +338,10 @@
     "bondingType": "Darstellungsart",
     "moleculeBondingTypeValence": "Valenzstrichformel",
     "moleculeBondingTypeElectrons": "Elektronenformel",
-    "valuesDiffer": "Werte unterschiedlich"
+    "valuesDiffer": "Werte unterschiedlich",
+    "verticalButtonAlignment": "Vertikale Knopfausrichtung",
+    "buttonAlignmentFirstLine": "an der ersten Zeile",
+    "buttonAlignmentCentered": "zentriert"
   },
   "formulaPreset": {
     "title": "Formeleingabelayouts auswählen",

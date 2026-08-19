@@ -1,5 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +10,9 @@ import {
 import { CheckboxElement, CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
 import { InputElement } from 'common/models/elements/element';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
+import {
+  FirstLineAlignedControlDirective
+} from 'common/directives/first-line-aligned-control.directive';
 import { CheckboxComponent } from './checkbox.component';
 
 @Component({
@@ -34,6 +38,7 @@ describe('CheckboxComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         CheckboxComponent,
+        FirstLineAlignedControlDirective,
         MockClozeChildErrorMessageComponent,
         MockErrorTransformPipe,
         SafeResourceHTMLPipe
@@ -103,5 +108,45 @@ describe('CheckboxComponent', () => {
     fixture.detectChanges();
     const checkbox = fixture.nativeElement.querySelector('mat-checkbox');
     expect(checkbox.classList).toContain('strike');
+  });
+
+  /* #960: which of the two alignments a task chose has to reach the box -- the class for the centred
+     one, the measuring directive for the other. An image label is neither: it sits above the box. */
+  describe('verticalButtonAlignment', () => {
+    const box = (): HTMLElement => fixture.nativeElement.querySelector('mat-checkbox');
+    const directive = (): FirstLineAlignedControlDirective => fixture.debugElement
+      .query(By.directive(FirstLineAlignedControlDirective))
+      .injector.get(FirstLineAlignedControlDirective);
+
+    it('should align on the first line by default', () => {
+      expect(box().classList).not.toContain('centered-control');
+      expect(directive().firstLineAlignedControl).toBe(true);
+    });
+
+    it('should mark the box and switch the directive off when centred', () => {
+      component.elementModel.verticalButtonAlignment = 'center';
+      fixture.detectChanges();
+
+      expect(box().classList).toContain('centered-control');
+      expect(directive().firstLineAlignedControl).toBe(false);
+    });
+
+    it('should not measure a line when an image stands in for the label', () => {
+      component.elementModel.imgSrc = 'data:image/png;base64,iVBORw0KGgo=';
+      fixture.detectChanges();
+
+      expect(directive().firstLineAlignedControl).toBe(false);
+    });
+
+    /* An image label stacks image over box, so neither alignment means anything there -- and the
+       centred rules would drop the gap between the two (found in review). */
+    it('should leave an image label alone even when centred', () => {
+      component.elementModel.imgSrc = 'data:image/png;base64,iVBORw0KGgo=';
+      component.elementModel.verticalButtonAlignment = 'center';
+      fixture.detectChanges();
+
+      expect(box().classList).not.toContain('centered-control');
+      expect(directive().firstLineAlignedControl).toBe(false);
+    });
   });
 });

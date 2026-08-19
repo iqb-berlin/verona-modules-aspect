@@ -109,6 +109,19 @@ export interface StrikeOtherOptionsProperties {
 }
 
 /**
+ * Elements whose reader-facing control sits next to a label it has to line up with: the radio group,
+ * the checkbox, and the rows of an option table.
+ *
+ * `'auto'` puts the control on the first line of the label, `'center'` on the middle of the whole
+ * label. Which one a task wants is a question the two audiences answer differently -- primary school
+ * asked for the first line (#873), maths for the middle (#960) -- so the task decides instead of the
+ * player.
+ */
+export interface VerticalButtonAlignmentProperties {
+  verticalButtonAlignment: 'auto' | 'center';
+}
+
+/**
  * Elements that offer highlighter colours: text (the marked-up element) and marking panel (the
  * remote control for it). The panel is not a text element, so this is the only level they share.
  */

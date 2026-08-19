@@ -8,7 +8,7 @@ import {
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
-import { UIElementType } from 'common/models/ui-element-interfaces';
+import { UIElementType, VerticalButtonAlignmentProperties } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
@@ -18,6 +18,8 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   imgSrc: string | null = ELEMENT_DEFAULTS.checkbox.imgSrc;
   value: boolean = ELEMENT_DEFAULTS.checkbox.value;
   crossOutChecked: boolean = ELEMENT_DEFAULTS.checkbox.crossOutChecked;
+
+  verticalButtonAlignment: 'auto' | 'center' = ELEMENT_DEFAULTS.checkbox.verticalButtonAlignment;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
@@ -35,6 +37,9 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
       if (element.imgSrc !== undefined) this.imgSrc = element.imgSrc;
       if (element.value !== undefined) this.value = element.value;
       if (element.crossOutChecked !== undefined) this.crossOutChecked = element.crossOutChecked;
+      if (element.verticalButtonAlignment !== undefined) {
+        this.verticalButtonAlignment = element.verticalButtonAlignment;
+      }
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
       this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
@@ -66,7 +71,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   }
 }
 
-export interface CheckboxProperties extends InputElementProperties {
+export interface CheckboxProperties extends InputElementProperties, VerticalButtonAlignmentProperties {
   label: string;
   /**
    * Image in place of the text label. Not to be confused with `PlayerProperties.imgSrc`, which is a

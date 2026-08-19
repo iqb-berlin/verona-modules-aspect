@@ -14,6 +14,14 @@
 :host ::ng-deep mat-checkbox .mdc-form-field .mdc-label {
   padding-top: calc((var(--mat-checkbox-state-layer-size) - 18px) / 2);
 }
+/* verticalButtonAlignment: 'center' -- the box on the middle of the whole label instead of its first
+   line. The padding above would push the label out of that middle, so it goes. */
+:host ::ng-deep mat-checkbox.centered-control .mdc-form-field {
+  align-items: center;
+}
+:host ::ng-deep mat-checkbox.centered-control .mdc-form-field .mdc-label {
+  padding-top: 0;
+}
 .error-message {
   position: absolute;
   display: block;

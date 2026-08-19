@@ -10,6 +10,8 @@ Player
   - Stellt die im Editor konfigurierte Kopfzeile (auch mehrzeilig) dar; optional bleibt sie beim Scrollen am oberen Rand des sichtbaren Bereichs fixiert
 - Tooltip (Text und Knopf)
   - Stellt die im Editor eingestellte Formatierung des Tooltip-Textes dar
+- Optionsfelder, Kontrollkästchen
+  - Stellt die im Editor eingestellte vertikale Knopfausrichtung dar ("an der ersten Zeile" oder "zentriert")
 
 ### Änderungen
 - Eingabehilfe/Tastatur
@@ -18,6 +20,8 @@ Player
   - Bindet den Status von GeoGebra-Variablen an das übergeordnete Element: Variablen werden mit dem Status des GeoGebra-Elements initialisiert und die Statusänderung "DISPLAYED" wird an sie weitergegeben
 
 ### Fehlerbehebungen
+- Optionsfelder, Kontrollkästchen
+  - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält. Bei einer Option, die aus einem Bruch besteht, stand er neben dem Zähler, weil die Ausrichtung mit einer festen Zeilenhöhe von 20 Pixeln rechnete; jetzt wird die Zeile gemessen. Bei einer Option, die nur eine Formel enthält, steht der Knopf damit in ihrer Mitte, bei mehrzeiligen Beschriftungen unverändert an der ersten Zeile. Aus demselben Grund saß der Knopf auch bei anderen Schriftgrößen als 20 Pixeln nicht mittig
 - Textmarkierung
   - Verlassene Aufgaben mit Wort- oder Bereichsmarkierung geben ihre Ressourcen wieder frei; der Player bleibt über lange Sitzungen flüssig
   - Eine Formel in einem Text wird in der Wort- und der Bereichsmarkierung als Ganzes markiert. Bisher wurde jedes Zeichen einer Formel zu einem eigenen markierbaren Wort, sodass sich nur einzelne Teile einer Formel markieren ließen

@@ -252,6 +252,12 @@ iqb-aspect-definition@1.0.0
   - new property: stickyHeader: boolean
 - ButtonElement and tooltip mark in text elements:
   - tooltipText (data-tooltip-text) may now contain HTML markup (formatted tooltip text)
+- RadioButtonGroupElement, CheckboxElement:
+  - new property: verticalButtonAlignment: 'auto' | 'center' (default 'auto')
+    'auto' puts the control on the first line of the label, 'center' on the middle of the
+    whole label. Stored units get 'auto' from the defaults on load, which is the behaviour
+    they have shown since 2.11, so there is no migration step. LikertRowElement has carried
+    the same property since 3.2.0 and is unchanged; the three now share one model level.
 
 (#1177, no version raise -- no new property)
 - RadioButtonGroupElement: styling.lineHeight stored in a unit now survives loading.

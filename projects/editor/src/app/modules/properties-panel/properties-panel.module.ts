@@ -32,6 +32,9 @@ import {
   ButtonPropertiesComponent
 } from './components/element-model-properties/button-properties/button-properties.component';
 import {
+  ButtonAlignmentPropertiesComponent
+} from './components/element-model-properties/button-alignment-properties/button-alignment-properties.component';
+import {
   CheckboxPropertiesComponent
 } from './components/element-model-properties/checkbox-properties/checkbox-properties.component';
 import {
@@ -160,6 +163,7 @@ import {
     ActionPropertiesComponent,
     BorderPropertiesComponent,
     ButtonPropertiesComponent,
+    ButtonAlignmentPropertiesComponent,
     CheckboxPropertiesComponent,
     ClozePropertiesComponent,
     DimensionFieldSetComponent,

@@ -22,6 +22,8 @@ Player
 ### Fehlerbehebungen
 - Optionsfelder, Kontrollkästchen
   - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält. Bei einer Option, die aus einem Bruch besteht, stand er neben dem Zähler, weil die Ausrichtung mit einer festen Zeilenhöhe von 20 Pixeln rechnete; jetzt wird die Zeile gemessen. Bei einer Option, die nur eine Formel enthält, steht der Knopf damit in ihrer Mitte, bei mehrzeiligen Beschriftungen unverändert an der ersten Zeile. Aus demselben Grund saß der Knopf auch bei anderen Schriftgrößen als 20 Pixeln nicht mittig
+- Ablegelisten, Optionentabelle, Bildoptionen
+  - Eine Beschriftung, die aus mehreren Teilen eine Zeile bildet, bleibt in einer Zeile: Text mit einer Formel, aber auch Text mit einer Formatierung wie fett, kursiv, hoch- oder tiefgestellt, oder mit einem Bild im Beschriftungstext. Bisher stand jeder Teil in einer eigenen Zeile — aus "15 cm²" wurden zwei Zeilen, obwohl das Feld breit genug war. Betraf Ziehelemente in Ablegelisten, Zeilen- und Spaltenbeschriftungen der Optionentabelle und die Beschriftungen der Bildoptionen
 - Textmarkierung
   - Verlassene Aufgaben mit Wort- oder Bereichsmarkierung geben ihre Ressourcen wieder frei; der Player bleibt über lange Sitzungen flüssig
   - Eine Formel in einem Text wird in der Wort- und der Bereichsmarkierung als Ganzes markiert. Bisher wurde jedes Zeichen einer Formel zu einem eigenen markierbaren Wort, sodass sich nur einzelne Teile einer Formel markieren ließen

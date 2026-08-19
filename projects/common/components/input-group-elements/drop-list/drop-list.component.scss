@@ -56,8 +56,14 @@
   padding-right: 5px;
 }
 
+/* A flex box, because the item is stretched to the tallest one of its row and a label shorter than that
+   belongs in its middle, not at its top edge (#970). The panel asks for that itself, with
+   `align-self: center`, and only a flex box grants it -- as a block, this one left the label at its top
+   edge. The centring below then comes from this layout rather than from the panel inheriting
+   `justify-content`. */
 .drop-list-item {
   flex: 1;
+  display: flex;
   border-radius: 5px;
   cursor: grab;
   transition: all .3s linear;

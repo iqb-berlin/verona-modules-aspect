@@ -16,6 +16,9 @@ import { DropListComponent } from './drop-list.component';
 @Component({
   selector: 'aspect-text-image-panel',
   template: '',
+  /* A height of its own, so that the layout tests can tell stretched from centred -- a label that fills
+     its box measures the same either way -- and the `align-self` the real panel asks its parent for. */
+  styles: [':host { display: block; height: 20px; align-self: center; }'],
   standalone: false
 })
 class MockTextImagePanelComponent {
@@ -131,6 +134,19 @@ describe('DropListComponent', () => {
   it('should render one list item per value object', () => {
     const listItems = fixture.nativeElement.querySelectorAll('.drop-list-item');
     expect(listItems.length).toBe(2);
+  });
+
+  /* An item is stretched to the tallest one of its row, so a label shorter than that has to sit in the
+     item's middle instead of at its top edge (#970). */
+  it('should centre a label vertically in an item taller than the label', () => {
+    const listItem: HTMLElement = fixture.nativeElement.querySelector('.drop-list-item');
+    listItem.style.height = '100px';
+    const label = listItem.querySelector('aspect-text-image-panel') as HTMLElement;
+    const itemBox = listItem.getBoundingClientRect();
+    const labelBox = label.getBoundingClientRect();
+
+    expect(itemBox.height).toBeGreaterThan(labelBox.height);
+    expect(labelBox.top - itemBox.top).toBeCloseTo(itemBox.bottom - labelBox.bottom, 0);
   });
 
   it('should render numbering when showNumbering is set', () => {

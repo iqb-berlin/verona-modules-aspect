@@ -8,6 +8,9 @@ import { DragImageComponent } from './drag-image.component';
 @Component({
   selector: 'aspect-text-image-panel',
   template: '',
+  /* A height of its own, so that the layout tests can tell stretched from centred -- a label that fills
+     its box measures the same either way -- and the `align-self` the real panel asks its parent for. */
+  styles: [':host { display: block; height: 20px; align-self: center; }'],
   standalone: false
 })
 class MockTextImagePanelComponent {
@@ -97,6 +100,20 @@ describe('DragImageComponent', () => {
     expect(preview.style.backgroundColor).toBe('rgb(68, 85, 102)');
     expect(preview.style.color).toBe('rgb(17, 34, 51)');
     expect(preview.style.fontSize).toBe('17px');
+  });
+
+  /* The preview keeps the size of the item it was picked up from, so a label shorter than that has to
+     sit in its middle -- as it does in the item itself (#970). */
+  it('should centre the label in a preview taller than the label', () => {
+    component.initDragPreview(testItem, createSourceElement(), 30, 40);
+
+    const preview = fixture.nativeElement.querySelector('.drag-preview') as HTMLElement;
+    const label = preview.querySelector('aspect-text-image-panel') as HTMLElement;
+    const previewBox = preview.getBoundingClientRect();
+    const labelBox = label.getBoundingClientRect();
+
+    expect(previewBox.height).toBeGreaterThan(labelBox.height);
+    expect(labelBox.top - previewBox.top).toBeCloseTo(previewBox.bottom - labelBox.bottom, 0);
   });
 
   it('should remove the drag preview on unsetDragPreview', () => {

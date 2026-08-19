@@ -34,6 +34,7 @@ Editor
 - Duplizieren einer Ablegeliste: Die Ziehelemente der Kopie hatten keine ID mehr — das Feld im Dialog "ID bearbeiten" war leer, und die Kopie war damit nicht vollständig. Sie erhalten jetzt eigene IDs. Betraf auch Ablegelisten innerhalb eines Lückentexts
 - Beschriftungen (Ablegeliste, Optionentabelle, Bildoptionen)
   - Was in einer Beschriftung zusammen eine Zeile bildet — Text mit einer Formel, einer Formatierung wie hoch- oder tiefgestellt, oder einem Bild — bleibt auf der Arbeitsfläche und in der Vorschau des Bearbeitungsdialogs in einer Zeile. Bisher stand jeder Teil in einer eigenen Zeile — aus "15 cm²" wurden zwei Zeilen
+  - Die Beschriftung eines Ziehelements steht auf der Arbeitsfläche in der Mitte des Elements statt an seinem oberen Rand, sobald das Element (in der Ausrichtung "horizontal linksbündig") auf die Höhe des höchsten Elements seiner Zeile gestreckt wird
 - Tabelle
   - Neu angelegte Tabellen erhalten korrekt ihren voreingestellten unteren Abstand (30px)
   - Der Fokusrahmen von Texteingaben in Tabellenzellen wird innerhalb der Zelle dargestellt und überlagert keine benachbarten Zellen mehr

@@ -36,6 +36,6 @@ export class InViewDetectionDirective implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    if (this.intersectionDetector) this.intersectionDetector.disconnect(this.elementRef.nativeElement);
+    if (this.intersectionDetector) this.intersectionDetector.destroy();
   }
 }

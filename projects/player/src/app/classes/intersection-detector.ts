@@ -45,9 +45,10 @@ export class IntersectionDetector {
     }
   }
 
-  disconnect(element: Element): void {
-    this.intersectionObserver.unobserve(element);
+  destroy(): void {
     this.intersectionObserver.disconnect();
+    this.elements = [];
+    this.intersecting.complete();
   }
 
   private intersectionDetected(element: Element): void {
@@ -56,7 +57,7 @@ export class IntersectionDetector {
       const intersectedElement = this.elements[intersectedElementIndex];
       this.intersecting.emit(intersectedElement.id);
     } else {
-      this.intersecting.emit();
+      this.intersecting.emit(null);
     }
   }
 }

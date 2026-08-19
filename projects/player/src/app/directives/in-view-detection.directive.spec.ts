@@ -66,13 +66,12 @@ describe('InViewDetectionDirective', () => {
     expect(intersectingCount).toBe(0);
   });
 
-  it('should disconnect the detector on destruction', () => {
+  it('should destroy the detector on destruction', () => {
     initDirective();
-    const disconnect = vi.spyOn(directive.intersectionDetector, 'disconnect');
-    const hostElement = fixture.debugElement.query(By.css('#detection-area')).nativeElement;
+    const destroy = vi.spyOn(directive.intersectionDetector, 'destroy');
 
     fixture.destroy();
 
-    expect(disconnect).toHaveBeenCalledWith(hostElement);
+    expect(destroy).toHaveBeenCalled();
   });
 });

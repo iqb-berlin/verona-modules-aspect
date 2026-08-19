@@ -28,7 +28,7 @@ export class UnitStateService extends ElementCodeService {
               private rendererFactory: RendererFactory2) {
     super();
     this.renderer = this.rendererFactory.createRenderer(null, null);
-    this.intersectionDetector = new IntersectionDetector(document, '0px 0px 0px 0px');
+    this.intersectionDetector = this.createIntersectionDetector();
   }
 
   get pagePresented(): Observable<number> {
@@ -65,20 +65,30 @@ export class UnitStateService extends ElementCodeService {
     this.presentedPages = [];
     this.elementIdPageIndexMap = {};
     this.ignoredPageIndexElementIds = [];
-    this.intersectionDetector = new IntersectionDetector(this.document, '0px 0px 0px 0px');
+    /* Until it is disconnected, the detector of the previous unit keeps observing every element it
+       was given -- and each of those keeps that unit's whole detached DOM alive (#1144). */
+    this.intersectionDetector.destroy();
+    this.intersectionDetector = this.createIntersectionDetector();
+  }
+
+  /* One subscription per detector, not one per element: the detector reports which element
+     intersected, so a single handler can look that element up. */
+  private createIntersectionDetector(): IntersectionDetector {
+    const intersectionDetector = new IntersectionDetector(this.document, '0px 0px 0px 0px');
+    intersectionDetector.intersecting
+      .subscribe((id: string | null) => {
+        if (id) {
+          this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
+          intersectionDetector.unobserve(id);
+        }
+      });
+    return intersectionDetector;
   }
 
   private addIntersectionDetection(elementId: string, domElement: Element): void {
     const elementToObserve = this.renderer.createElement('div');
     this.renderer.appendChild(domElement, elementToObserve);
     this.intersectionDetector.observe(elementToObserve, elementId);
-    this.intersectionDetector.intersecting
-      .subscribe((id: string) => {
-        if (elementId === id) {
-          this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
-          this.intersectionDetector.unobserve(id);
-        }
-      });
   }
 
   private get elementPageIndices(): number[] {

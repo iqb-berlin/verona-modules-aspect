@@ -1,3 +1,7 @@
+import { fakeAsync, tick } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { Mock } from 'vitest';
 import { VersionManager } from 'common/services/version-manager';
 import { UnitProperties } from 'common/models/unit';
 import { StateVariable } from 'common/models/state-variable';
@@ -12,6 +16,9 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import {
+  SanitizationDialogComponent
+} from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
 
 describe('UnitService - rapid load handling', () => {
   let service: UnitService;
@@ -194,6 +201,102 @@ describe('UnitService - discarding a unit that was never saved with content (#10
        creates is numbered around them. */
     expect(idService.isIDAvailable('discarded-unit')).toBe(true);
   });
+});
+
+/* The sanitization dialog stays open until the user confirms it, and the definition it carries is the
+   one read when it opened. What keeps a later load safe is the interplay of UnitService and
+   DialogService, so these tests use the real DialogService and fake only MatDialog itself (#1247). */
+describe('UnitService - a load superseded while its sanitization dialog is open (#1247)', () => {
+  let service: UnitService;
+  let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
+  let dialogOpen: Mock;
+  let afterClosed: Subject<boolean>;
+  let close: Mock;
+
+  beforeEach(() => {
+    afterClosed = new Subject<boolean>();
+    /* Like MatDialogRef: the result is never reported from inside close() but once the dialog is gone,
+       and the stream then ends, so a click on a dialog that is no longer there cannot reach the
+       caller. The delay is what puts the report after the load that caused it -- the order the bug
+       needs. */
+    close = vi.fn((result?: boolean) => {
+      Promise.resolve().then(() => {
+        afterClosed.next(result as boolean);
+        afterClosed.complete();
+      });
+    });
+    dialogOpen = vi.fn().mockReturnValue({ afterClosed: () => afterClosed, close });
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
+
+    service = new UnitService(
+      new SelectionService(),
+      veronaApiServiceSpy,
+      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      new DialogService({ open: dialogOpen } as unknown as MatDialog),
+      new IDService(),
+      translateServiceSpy
+    );
+  });
+
+  /* Only a lesser major version from 3.10.0 on takes the dialog path; anything from 4.0.0 on migrates
+     silently. The expectation keeps the tests below from passing without a dialog at all, should that
+     lower bound ever move. */
+  const loadOutdatedUnit = (marker: string): void => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint(marker, '3.10.0')));
+    expect(dialogOpen).toHaveBeenCalledWith(SanitizationDialogComponent, { disableClose: true });
+  };
+
+  it('migrates the outdated unit when the user confirms its own dialog', () => {
+    loadOutdatedUnit('outdated-unit');
+
+    afterClosed.next(true);
+
+    expect(service.unit.stateVariables[0].id).toBe('outdated-unit');
+    expect(service.unit.version).toBe(VersionManager.getCurrentVersion());
+  });
+
+  it('takes the dialog away with the load it belongs to', () => {
+    loadOutdatedUnit('outdated-unit');
+
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('current-unit')));
+
+    expect(close).toHaveBeenCalledWith(false);
+  });
+
+  it('does not take the close it caused itself for a confirmation', fakeAsync(() => {
+    loadOutdatedUnit('outdated-unit');
+
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('current-unit')));
+    tick();
+
+    expect(service.unit.stateVariables[0].id).toBe('current-unit');
+  }));
+
+  /* Since the dialog is taken away rather than left for the user, the click #1247 needs is one she can
+     only land in the moment it goes away. */
+  it('ignores a confirmation that reaches the superseded dialog while it closes', fakeAsync(() => {
+    loadOutdatedUnit('outdated-unit');
+
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('current-unit')));
+    afterClosed.next(true);
+    tick();
+
+    expect(service.unit.stateVariables[0].id).toBe('current-unit');
+  }));
+
+  /* The other half of the loss: updateUnitDefinition reports to the host under whatever session the
+     latest start command left behind, so the outdated unit would be stored as the newer one. */
+  it('reports no such confirmation to the host', fakeAsync(() => {
+    loadOutdatedUnit('outdated-unit');
+
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('current-unit')));
+    afterClosed.next(true);
+    tick();
+
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  }));
 });
 
 function createUnitBlueprint(marker: string, version: string = VersionManager.getCurrentVersion()): UnitProperties {

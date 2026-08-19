@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
@@ -106,10 +107,24 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showSanitizationDialog(): Observable<boolean> {
-    const dialogRef = this.dialog.open(SanitizationDialogComponent,
-                                       { disableClose: true });
-    return dialogRef.afterClosed();
+  /* The dialog carries no close option and stays up until the user confirms it, so the load that
+     opened it can be superseded while it is still on screen. It then describes a unit that is no
+     longer loaded, and a second outdated unit would stack another dialog on top of it -- therefore a
+     superseding load closes it. What the caller may act on is a confirmation of the load it asked
+     about, and the returned stream is narrowed to exactly that. Ending it with the superseding load
+     covers the click that still reaches the closing dialog; the value check covers every close that
+     comes from somewhere other than the dialog's own button, which is the only one reporting true --
+     the superseding close, and the result-less close MatDialog performs on its own dialogs when it is
+     torn down (#1247). */
+  showSanitizationDialog(supersededBy: Observable<void>): Observable<boolean> {
+    const dialogRef = this.dialog.open<SanitizationDialogComponent, undefined, boolean>(
+      SanitizationDialogComponent, { disableClose: true }
+    );
+    supersededBy
+      .pipe(takeUntil(dialogRef.afterClosed()))
+      .subscribe(() => dialogRef.close(false));
+    return dialogRef.afterClosed()
+      .pipe(takeUntil(supersededBy), filter(confirmed => confirmed === true));
   }
 
   showTextEditDialog(text: string): Observable<string> {

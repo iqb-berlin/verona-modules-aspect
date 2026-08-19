@@ -35,7 +35,7 @@ export class EditorPage extends Page {
     this.addSection(newSection, sectionIndex + 1);
   }
 
-  deleteElements(elements: UIElement[]): void {
-    this.sections.forEach(section => section.deleteElements(elements));
+  deleteElements(elements: UIElement[]): UIElement[] {
+    return this.sections.map(section => section.deleteElements(elements)).flat();
   }
 }

@@ -83,6 +83,20 @@ describe('DynamicRowsDirective', () => {
     expect(emittedRows).toEqual([10, 10]);
   });
 
+  it('should disconnect the observer when the directive is destroyed', () => {
+    vi.stubGlobal('ResizeObserver', FakeResizeObserver);
+    try {
+      directive.ngOnInit();
+      const observer = FakeResizeObserver.lastInstance;
+
+      directive.ngOnDestroy();
+
+      expect(observer?.disconnected).toBe(true);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('should measure the width and recalculate when the observed element resizes', () => {
     vi.stubGlobal('ResizeObserver', FakeResizeObserver);
     try {

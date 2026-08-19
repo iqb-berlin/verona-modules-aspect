@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { Mock } from 'vitest';
 import { Label } from 'common/models/label-interfaces';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
@@ -16,6 +16,9 @@ import {
 import {
   RichTextEditDialogComponent
 } from 'editor/src/app/components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
+import {
+  SanitizationDialogComponent
+} from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
 
 describe('DialogService', () => {
   let service: DialogService;
@@ -69,6 +72,89 @@ describe('DialogService', () => {
       UnitDefErrorDialogComponent,
       { data: { text: 'Fehlertext' }, disableClose: true }
     );
+  });
+
+  describe('sanitization dialog superseded by a later load (#1247)', () => {
+    let afterClosed: Subject<boolean | undefined>;
+    let close: Mock;
+    let superseded: Subject<void>;
+
+    beforeEach(() => {
+      afterClosed = new Subject<boolean | undefined>();
+      close = vi.fn();
+      superseded = new Subject<void>();
+      dialogMock.open.mockReturnValue({ afterClosed: () => afterClosed, close });
+    });
+
+    it('should open the sanitization dialog without close option', () => {
+      service.showSanitizationDialog(superseded).subscribe();
+
+      expect(dialogMock.open).toHaveBeenCalledWith(
+        SanitizationDialogComponent,
+        { disableClose: true }
+      );
+    });
+
+    it('should close the sanitization dialog when a later load supersedes it', () => {
+      service.showSanitizationDialog(superseded).subscribe();
+
+      superseded.next();
+
+      /* Not the value the dialog's own button reports -- that is what tells the two apart below. */
+      expect(close).toHaveBeenCalledWith(false);
+    });
+
+    it('should emit when the user confirms the sanitization dialog', () => {
+      let confirmed = false;
+      service.showSanitizationDialog(superseded).subscribe(() => { confirmed = true; });
+
+      afterClosed.next(true);
+
+      expect(confirmed).toBe(true);
+    });
+
+    /* MatDialogRef reports the result after the dialog is gone, so the stream has already ended by the
+       time the superseding close arrives. The value it carries is what holds even without that order. */
+    it('should emit nothing when the close it causes reports back at once', () => {
+      close.mockImplementation((result?: boolean) => afterClosed.next(result as boolean));
+      let confirmed = false;
+      service.showSanitizationDialog(superseded).subscribe(() => { confirmed = true; });
+
+      superseded.next();
+
+      expect(confirmed).toBe(false);
+    });
+
+    it('should emit nothing once superseded, not even for a confirmation', () => {
+      let confirmed = false;
+      service.showSanitizationDialog(superseded).subscribe(() => { confirmed = true; });
+
+      superseded.next();
+      afterClosed.next(true);
+
+      expect(confirmed).toBe(false);
+    });
+
+    /* MatDialog closes its open dialogs on teardown, with no result. Without a load behind it, that
+       close reaches the stream unended -- migrating and reporting a unit to the host while the editor
+       is going away. */
+    it('should emit nothing when the dialog is closed without a confirmation', () => {
+      let confirmed = false;
+      service.showSanitizationDialog(superseded).subscribe(() => { confirmed = true; });
+
+      afterClosed.next(undefined);
+
+      expect(confirmed).toBe(false);
+    });
+
+    it('should stop watching for supersession once the sanitization dialog is closed', () => {
+      service.showSanitizationDialog(superseded).subscribe();
+
+      afterClosed.next(true);
+      superseded.next();
+
+      expect(close).not.toHaveBeenCalled();
+    });
   });
 
   it('should open the text edit dialog and pass through the edited text', () => {

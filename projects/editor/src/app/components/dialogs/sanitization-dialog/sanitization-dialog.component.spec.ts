@@ -40,7 +40,7 @@ describe('SanitizationDialogComponent', () => {
       .toContain('veraltete Unit-Definition');
   });
 
-  it('should close on the single action button', () => {
+  it('should confirm on the single action button', () => {
     const buttons = fixture.nativeElement
       .querySelectorAll('.mat-mdc-dialog-actions button') as NodeListOf<HTMLButtonElement>;
     expect(buttons.length).toBe(1);
@@ -48,6 +48,8 @@ describe('SanitizationDialogComponent', () => {
     buttons[0].click();
 
     expect(dialogRefMock.close).toHaveBeenCalledTimes(1);
-    expect(dialogRefMock.close.mock.lastCall?.[0]).toBeFalsy();
+    /* The only way the user can confirm; a close from anywhere else must be distinguishable from it
+       (DialogService.showSanitizationDialog, #1247). */
+    expect(dialogRefMock.close.mock.lastCall?.[0]).toBe(true);
   });
 });

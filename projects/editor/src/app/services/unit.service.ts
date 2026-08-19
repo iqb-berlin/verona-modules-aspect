@@ -35,6 +35,11 @@ export class UnitService {
   savedSectionCode: string | undefined;
   allowExpertMode: boolean = true;
   expertMode: boolean = true;
+  /* A pending sanitization dialog holds the definition of the load that opened it. Every further load
+     supersedes it: confirming it later would replace the unit that is loaded by then and report the
+     older one to the host under the newer session. Announcing the newer load is all this side has to
+     do -- the dialog is then closed and its result no longer reaches the callback below (#1247). */
+  private loadSuperseded = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
@@ -47,6 +52,7 @@ export class UnitService {
   }
 
   loadUnitDefinition(unitDefinition: string): void {
+    this.loadSuperseded.next();
     if (unitDefinition) {
       try {
         let unitDef = JSON.parse(unitDefinition);
@@ -57,7 +63,7 @@ export class UnitService {
           if (!VersionManager.needsMigration(unitDef)) {
             throw Error('Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden.');
           }
-          this.dialogService.showSanitizationDialog().subscribe(() => {
+          this.dialogService.showSanitizationDialog(this.loadSuperseded).subscribe(() => {
             unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
             this.loadUnit(unitDef);
             this.updateUnitDefinition();

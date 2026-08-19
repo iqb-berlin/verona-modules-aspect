@@ -25,6 +25,7 @@ Editor
 ### Fehlerbehebungen
 - Behebung von Fehlern bei der Vergabe von IDs und Aliasen (insbesondere beim Duplizieren und Einfügen von Abschnitten)
 - Verbesserung der Stabilität beim Laden von Aufgaben, um beim schnellen Wechsel von Aufgaben im Studio den Initialisierungsfehler (z. B. doppelte IDs) zu verhindern
+- Wird eine veraltete Aufgabe geladen, erscheint der Hinweis, dass ihre Definition aktualisiert wird. Wechselt man im Studio zu einer anderen Aufgabe, während dieser Hinweis noch offen steht, wird er nun mitsamt der alten Aufgabe verworfen. Bisher konnte ein späteres Bestätigen die inzwischen geladene Aufgabe überschreiben und unter deren Namen gespeichert werden
 - Verbesserung des Ladeverhaltens der Erweiterungen für den Texteditor
 - Verhindert, dass Zustandsvariablen die gleiche ID oder den gleichen Alias haben können, wie Elemente 
 - Verbessert die Stabilität beim Erzeugen von Elementen aus unvollständigen Vorlagen (Standardwerte, Position und Dimensionen bleiben erhalten)

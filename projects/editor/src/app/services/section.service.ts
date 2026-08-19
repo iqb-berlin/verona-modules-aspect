@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { PositionedUIElement, UIElementValue } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
 import { ArrayUtils } from 'common/utils/array-utils';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ElementService } from 'editor/src/app/services/element.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 
@@ -14,7 +16,9 @@ import { EditorSection } from 'editor/src/app/models/editor-section';
 export class SectionService {
   constructor(private unitService: UnitService,
               private elementService: ElementService,
-              private selectionService: SelectionService) { }
+              private selectionService: SelectionService,
+              private messageService: MessageService,
+              private translateService: TranslateService) { }
 
   updateSectionProperty(section: EditorSection, property: string, value: UIElementValue): void {
     section.setProperty(property, value);
@@ -37,6 +41,13 @@ export class SectionService {
   async deleteSection(pageIndex: number, sectionIndex: number): Promise<boolean> {
     const sectionToDelete = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
     if (!await this.unitService.prepareDelete('section', sectionToDelete)) return false;
+    this.removeSection(pageIndex, sectionIndex);
+    return true;
+  }
+
+  /* The removal itself; whether a question comes first is up to the caller (#1259). */
+  private removeSection(pageIndex: number, sectionIndex: number): void {
+    const sectionToDelete = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
     sectionToDelete.getAllElements().forEach(el => el.unregisterIDs());
     /* The sections that stay keep their overlays -- ngFor tracks them by identity -- so nothing
        re-selects and takes the gone elements out of the selection on its own (#1258). */
@@ -45,11 +56,9 @@ export class SectionService {
     this.selectionService.selectedSectionIndex =
       Math.max(0, this.selectionService.selectedSectionIndex - 1);
     this.unitService.updateSectionCounter();
-    /* Inside the branch, as in deletePage and deleteElements: what the host is told about is a
-       deletion, and there is none when the user cancels or when the unit was replaced under the
-       dialog (#1253). */
+    /* Reached only where a section really goes -- what the host is told about is a deletion, and
+       there is none when the user cancels or when the unit was replaced under the dialog (#1253). */
     this.unitService.updateUnitDefinition();
-    return true;
   }
 
   duplicateSection(sectionIndex: number): void {
@@ -89,12 +98,29 @@ export class SectionService {
 
   /* Replacing is the deletion plus the insertion, so the insertion waits for the deletion to happen:
      the page is read afterwards, and a delete the user declined -- or one whose unit the host replaced
-     while the dialog was open -- leaves the section it was about in place and inserts nothing (#1253). */
+     while the dialog was open -- leaves the section it was about in place and inserts nothing (#1253).
+     An empty section is replaced without the question. What the question is about is what its dialog
+     shows: the elements that go and the references that break -- and an empty section has neither,
+     references being read off the elements. Its own settings (height, background, grid sizes,
+     visibility rules) do go, but that is what replacing means, and the insert dialog pre-checks its
+     replace box for exactly this case -- so the question stood on the most ordinary way through
+     (#1259). Only prepareDelete is skipped; the removal itself is the same one. */
   async replaceSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): Promise<void> {
-    if (await this.deleteSection(pageIndex, sectionIndex)) {
-      this.addSection(this.unitService.unit.pages[pageIndex], newSection, sectionIndex);
-      this.selectionService.updateSelection(pageIndex, sectionIndex);
+    const unitAtRequest = this.unitService.unit;
+    if (this.unitService.unit.pages[pageIndex].sections[sectionIndex].isEmpty()) {
+      this.removeSection(pageIndex, sectionIndex);
+    } else if (!await this.deleteSection(pageIndex, sectionIndex)) {
+      /* Declining the deletion leaves the section in place, and that is the right answer -- but the
+         section picked in the insert dialog goes with it, so this does not pass silently. A unit the
+         host replaced under the dialog is not a declined replacement, and the message would be about
+         a section nobody can see any more (#1253, #1259). */
+      if (this.unitService.unit === unitAtRequest) {
+        this.messageService.showWarning(this.translateService.instant('sectionNotReplaced'));
+      }
+      return;
     }
+    this.addSection(this.unitService.unit.pages[pageIndex], newSection, sectionIndex);
+    this.selectionService.updateSelection(pageIndex, sectionIndex);
   }
 
   insertSection(pageIndex: number, sectionIndex: number, newSection: EditorSection): void {

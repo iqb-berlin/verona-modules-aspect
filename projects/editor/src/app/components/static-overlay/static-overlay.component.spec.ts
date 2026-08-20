@@ -21,6 +21,7 @@ describe('StaticOverlayComponent', () => {
     selectedElements: Observable<UIElement[]>;
     getSelectedElements: Mock;
     clearElementSelection: Mock;
+    isCompoundChildSelected: boolean;
   };
   let elementService: SpyObj<ElementService>;
   let selectedElements: UIElement[];
@@ -43,7 +44,8 @@ describe('StaticOverlayComponent', () => {
     selectionServiceMock = {
       selectedElements: of(selectedElements),
       getSelectedElements: vi.fn().mockReturnValue(selectedElements),
-      clearElementSelection: vi.fn()
+      clearElementSelection: vi.fn(),
+      isCompoundChildSelected: false
     };
     elementService = createSpyObj<ElementService>([
       'updateElementsProperty', 'updateElementsDimensionsProperty', 'deleteElements'
@@ -176,5 +178,15 @@ describe('StaticOverlayComponent', () => {
 
     expect(elementService.deleteElements).toHaveBeenCalledWith(selectedElements);
     expect(selectionServiceMock.clearElementSelection).not.toHaveBeenCalled();
+  });
+
+  /* A cloze gap or a table cell in the selection takes deleting away, here as in the properties
+     panel: the key would otherwise delete everything around the child and leave the child (#1268). */
+  it('should not delete while a compound child is selected', () => {
+    selectionServiceMock.isCompoundChildSelected = true;
+
+    component.deleteSelectedElements();
+
+    expect(elementService.deleteElements).not.toHaveBeenCalled();
   });
 });

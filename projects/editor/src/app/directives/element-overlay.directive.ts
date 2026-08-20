@@ -62,7 +62,6 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((elementSelectionEvent: ClozeChildOverlayComponent) => {
           this.selectionService.selectElement({ elementComponent: elementSelectionEvent, multiSelect: false });
-          this.selectionService.isCompoundChildSelected = true;
         });
     }
 
@@ -74,7 +73,6 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selectedElementComponent: TableChildOverlay) => {
           this.selectionService.selectElement({ elementComponent: selectedElementComponent, multiSelect: false });
-          this.selectionService.isCompoundChildSelected = true;
         });
     }
 

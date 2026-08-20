@@ -17,7 +17,24 @@ export class SelectionService {
   selectedSectionIndex: number = 0;
   private _selectedElements!: BehaviorSubject<UIElement[]>;
   selectedElementComponents: (ElementOverlay | ClozeChildOverlayComponent | TableChildOverlay)[] = [];
+  /**
+   * Whether a child of a compound element -- a cloze gap, a table cell -- is among the selected
+   * elements. What it turns off is what cannot be done to such a child: the properties panel takes
+   * away deleting and duplicating, because a child is not on the section level and no deletion there
+   * reaches it (#1262).
+   *
+   * Derived from the selection whenever the selection changes, never written from outside: it used to
+   * be set by whoever had just clicked, so a shift-click on another element cleared it while the
+   * child stayed selected (#1268).
+   */
   isCompoundChildSelected: boolean = false;
+  /**
+   * Whether the selection is nothing but such children. The dimension field set asks this rather than
+   * the one above: the controls it decides on describe how an element is laid out, and a child is laid
+   * out inline like an element in a dynamically positioned section. An element the section places
+   * itself is not, so a selection holding both keeps what the section says (#1268).
+   */
+  onlyCompoundChildrenSelected: boolean = false;
 
   constructor() {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
@@ -54,10 +71,21 @@ export class SelectionService {
     if (!event.multiSelect) {
       this.clearElementSelection();
     }
-    this.isCompoundChildSelected = false;
     this.selectedElementComponents.push(event.elementComponent);
     event.elementComponent.setSelected(true);
-    this._selectedElements.next(this.selectedElementComponents.map(componentElement => componentElement.element));
+    this.publishSelection();
+  }
+
+  /* The one way out of here: every change of `selectedElementComponents` ends in this, so the flag and
+     the subject cannot describe different selections (#1268). */
+  private publishSelection(): void {
+    const compoundChildren = this.selectedElementComponents
+      .filter(overlayComponent => overlayComponent instanceof ClozeChildOverlayComponent ||
+        overlayComponent instanceof TableChildOverlay);
+    this.isCompoundChildSelected = compoundChildren.length > 0;
+    this.onlyCompoundChildrenSelected = compoundChildren.length > 0 &&
+      compoundChildren.length === this.selectedElementComponents.length;
+    this._selectedElements.next(this.selectedElementComponents.map(overlayComponent => overlayComponent.element));
   }
 
   /* Takes the named elements out of the selection and leaves the rest of it alone -- a delete has no
@@ -70,21 +98,16 @@ export class SelectionService {
     goneComponents.forEach(overlayComponent => overlayComponent.setSelected(false));
     this.selectedElementComponents = this.selectedElementComponents
       .filter(overlayComponent => !elements.includes(overlayComponent.element));
-    if (this.selectedElementComponents.length === 0) this.isCompoundChildSelected = false;
-    this._selectedElements.next(this.selectedElementComponents.map(overlayComponent => overlayComponent.element));
+    this.publishSelection();
   }
 
-  /* isCompoundChildSelected describes the selection, so it goes with it: an empty selection cannot be a
-     compound child, and the panel and dimension-field-set read the flag to decide which controls to
-     offer (#1258). */
   clearElementSelection(): void {
-    this.isCompoundChildSelected = false;
     this.selectedElementComponents
       .forEach((overlayComponent: ElementOverlay | ClozeChildOverlayComponent | TableChildOverlay) => {
         overlayComponent.setSelected(false);
       });
     this.selectedElementComponents = [];
-    this._selectedElements.next([]);
+    this.publishSelection();
   }
 
   selectPage(index: number) {

@@ -45,8 +45,13 @@ describe('DimensionFieldSetComponent', () => {
     selectedPageIndex: 0,
     selectedSectionIndex: 0,
     isCompoundChildSelected: false,
+    onlyCompoundChildrenSelected: false,
     getSelectedElements: () => selectedElements
   } as unknown as SelectionService;
+
+  const hasFixedWidthCheckbox = (): boolean => Array.from(
+    fixture.nativeElement.querySelectorAll('mat-checkbox') as NodeListOf<HTMLElement>
+  ).some(checkbox => checkbox.textContent?.includes('propertiesPanel.isWidthFixed'));
 
   beforeEach(async () => {
     elementService = createSpyObj<ElementService>(['updateElementsDimensionsProperty']);
@@ -90,15 +95,41 @@ describe('DimensionFieldSetComponent', () => {
     await fixture.whenStable();
   });
 
+  /* The two mocks are shared by the whole file, so a test that moves them puts them back. */
+  afterEach(() => {
+    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    selectionServiceMock.isCompoundChildSelected = false;
+    selectionServiceMock.onlyCompoundChildrenSelected = false;
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should show the fixed width checkbox in dynamic positioning mode', () => {
-    const checkboxLabels = Array.from(
-      fixture.nativeElement.querySelectorAll('mat-checkbox') as NodeListOf<HTMLElement>
-    ).map(checkbox => checkbox.textContent);
-    expect(checkboxLabels.some(label => label?.includes('propertiesPanel.isWidthFixed'))).toBe(true);
+    expect(hasFixedWidthCheckbox()).toBe(true);
+  });
+
+  /* Children of compound elements are laid out inline, so they get the same controls as elements in a
+     dynamically positioned section -- but only while they are all the selection holds: an element the
+     section places itself is not laid out that way, and the limits below would be written to it and
+     ignored (#1268). */
+  it('should show the fixed width checkbox for a selection of compound children only', () => {
+    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = false;
+    selectionServiceMock.onlyCompoundChildrenSelected = true;
+
+    fixture.detectChanges();
+
+    expect(hasFixedWidthCheckbox()).toBe(true);
+  });
+
+  it('should not show it for a selection that mixes a compound child with another element', () => {
+    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = false;
+    selectionServiceMock.isCompoundChildSelected = true;
+
+    fixture.detectChanges();
+
+    expect(hasFixedWidthCheckbox()).toBe(false);
   });
 
   it('should delegate dimension updates to the element service', () => {

@@ -34,6 +34,7 @@ Editor
 - Beim Löschen eines zusammengesetzten Elements (Lückentext, Tabelle, Optionentabelle) werden jetzt auch die IDs der enthaltenen Elemente wieder frei, und deren Auswahl im Eigenschaftenbereich wird aufgehoben
 - Löscht man eine Lücke im Lückentext oder eine Zelle im Dialog "Elemente anpassen" einer Tabelle, ist das entfernte Element nicht mehr ausgewählt. Bisher bot der Eigenschaftenbereich weiter dessen Einstellungen an; Änderungen daran gingen ins Leere, die Aufgabe wurde aber als geändert gemeldet
 - Im Übersichtsdialog ist die Schaltfläche "Löschen" in den Zeilen von Elementen gesperrt, die in einem Lückentext, einer Tabelle oder einer Optionentabelle stecken; ein Hinweis sagt, dass diese Elemente beim übergeordneten Element gelöscht werden. Bisher war sie dort aktiv, ohne dass ein Klick etwas bewirkte
+- Ist ein Element aus einem Lückentext oder einer Tabelle mit ausgewählt, ist Löschen gesperrt — im Eigenschaftenbereich wie mit der Entf-Taste. Bisher hing das von der Reihenfolge der Klicks ab: Kam ein weiteres Element mit gedrückter Umschalttaste hinzu, galt die Auswahl nicht mehr als eine mit einem solchen Element, und gelöscht wurde alles außer diesem
 - Verbesserung des Ladeverhaltens der Erweiterungen für den Texteditor
 - Verhindert, dass Zustandsvariablen die gleiche ID oder den gleichen Alias haben können, wie Elemente 
 - Verbessert die Stabilität beim Erzeugen von Elementen aus unvollständigen Vorlagen (Standardwerte, Position und Dimensionen bleiben erhalten)

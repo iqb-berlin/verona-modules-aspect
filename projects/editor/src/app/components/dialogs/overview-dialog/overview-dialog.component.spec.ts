@@ -7,7 +7,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
@@ -21,7 +21,6 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { IDEditDialogComponent } from 'editor/src/app/components/dialogs/id-edit-dialog/id-edit-dialog.component';
 import { OverviewDialogComponent } from 'editor/src/app/components/dialogs/overview-dialog/overview-dialog.component';
-import { IsCompoundChildPipe } from 'editor/src/app/pipes/is-compound-child.pipe';
 
 describe('OverviewDialogComponent', () => {
   let component: OverviewDialogComponent;
@@ -72,7 +71,7 @@ describe('OverviewDialogComponent', () => {
     matDialog.open.mockReturnValue({ afterClosed: () => of('neuer_alias') });
 
     await TestBed.configureTestingModule({
-      declarations: [OverviewDialogComponent, IsCompoundChildPipe],
+      declarations: [OverviewDialogComponent],
       imports: [
         CommonModule,
         FormsModule,
@@ -106,12 +105,33 @@ describe('OverviewDialogComponent', () => {
 
   it('should collect all elements of all pages and sections with their indices', () => {
     expect(component.tableData.data.length).toBe(5);
-    expect(component.tableData.data.map(element => element.alias))
+    expect(component.tableData.data.map(row => row.element.alias))
       .toEqual(['text_1', 'button_1', 'text_2', 'cloze_1', 'gap_1']);
     expect(component.tableData.data[1].pageIndex).toBe(0);
     expect(component.tableData.data[1].sectionIndex).toBe(1);
     expect(component.tableData.data[2].pageIndex).toBe(1);
     expect(component.tableData.data[2].sectionIndex).toBe(0);
+  });
+
+  /* Written onto the elements, as it was before, the two numbers were own properties of the model and
+     travelled into the stored unit definition with the next report (#1273). */
+  it('should keep the position out of the elements', () => {
+    const [element] = firstSectionElements;
+
+    expect(Object.keys(element)).not.toContain('pageIndex');
+    expect(Object.keys(element)).not.toContain('sectionIndex');
+  });
+
+  /* Alias, type and the presentation flag sit on the element, not on the row, so sorting reads them
+     through the accessor -- the default data[columnName] finds nothing there and leaves the order as
+     it is. */
+  it('should sort by a column that lives on the element', () => {
+    const sorted = component.tableData.sortData(
+      component.tableData.data, { active: 'alias', direction: 'asc' } as MatSort
+    );
+
+    expect(sorted.map(row => row.element.alias))
+      .toEqual(['button_1', 'cloze_1', 'gap_1', 'text_1', 'text_2']);
   });
 
   it('should offer as many section filter options as the page with the most sections has', () => {
@@ -123,7 +143,7 @@ describe('OverviewDialogComponent', () => {
 
     component.updatePageFilter();
 
-    expect(component.tableData.filteredData.map(element => element.alias))
+    expect(component.tableData.filteredData.map(row => row.element.alias))
       .toEqual(['text_2', 'cloze_1', 'gap_1']);
     expect(component.availableSections.length).toBe(1);
   });
@@ -133,7 +153,7 @@ describe('OverviewDialogComponent', () => {
 
     component.updateSectionFilter();
 
-    expect(component.tableData.filteredData.map(element => element.alias)).toEqual(['button_1']);
+    expect(component.tableData.filteredData.map(row => row.element.alias)).toEqual(['button_1']);
   });
 
   it('should toggle the selection of all filtered rows', () => {
@@ -172,7 +192,7 @@ describe('OverviewDialogComponent', () => {
     component.applyValueToSelection();
 
     expect(elementService.updateElementsProperty).toHaveBeenCalledWith(
-      component.elementSelection.selected, 'isRelevantForPresentationComplete', false
+      component.elementSelection.selected.map(row => row.element), 'isRelevantForPresentationComplete', false
     );
   });
 
@@ -180,8 +200,8 @@ describe('OverviewDialogComponent', () => {
      the unit removes what a section holds itself (#1262). Offering the button anyway made it a
      confirmed no-op (#1267). */
   it('should name the children of compound elements', () => {
-    expect(component.compoundChildren.has(gap)).toBe(true);
-    expect(component.compoundChildren.size).toBe(1);
+    expect(component.tableData.data.filter(row => row.isCompoundChild).map(row => row.element))
+      .toEqual([gap]);
   });
 
   /* aria-disabled and not disabled: the button stays interactive so that its tooltip -- the only
@@ -189,7 +209,7 @@ describe('OverviewDialogComponent', () => {
   it('should disable the delete button in the row of a compound child', () => {
     const deleteButtons = fixture.debugElement.queryAll(By.css('.delete-button'));
 
-    expect(component.tableData.data[4].alias).toBe('gap_1');
+    expect(component.tableData.data[4].element.alias).toBe('gap_1');
     expect(deleteButtons[4].nativeElement.getAttribute('aria-disabled')).toBe('true');
     expect(deleteButtons[4].nativeElement.classList).not.toContain('deletable');
     expect(deleteButtons[3].nativeElement.getAttribute('aria-disabled')).toBeNull();
@@ -206,26 +226,37 @@ describe('OverviewDialogComponent', () => {
 
   /* The button is still clickable, so the refusal has to be in the handler too. */
   it('should not delete a compound child', async () => {
-    await component.deleteElement(gap);
+    await component.deleteElement(component.tableData.data[4]);
 
     expect(elementService.deleteElements).not.toHaveBeenCalled();
   });
 
   it('should delete an element and refresh the table data', async () => {
-    const [element] = component.tableData.data;
+    const [row] = component.tableData.data;
     elementService.deleteElements.mockImplementation(() => {
       firstSectionElements.splice(0, 1);
       return Promise.resolve();
     });
 
-    await component.deleteElement(element);
+    await component.deleteElement(row);
 
-    expect(elementService.deleteElements).toHaveBeenCalledWith([element]);
+    expect(elementService.deleteElements).toHaveBeenCalledWith([row.element]);
     expect(component.tableData.data.length).toBe(4);
   });
 
+  /* Refreshing builds new rows, and a selection that compared them by identity would silently come
+     loose from the table it belongs to. */
+  it('should keep a selection across a refresh of the rows', () => {
+    const [, secondRow] = component.tableData.data;
+    component.selectRow(secondRow);
+
+    component.tableData.data = component.getTableData();
+
+    expect(component.elementSelection.isSelected(component.tableData.data[1])).toBe(true);
+  });
+
   it('should apply the new alias returned by the ID edit dialog', () => {
-    const [element] = component.tableData.data;
+    const [{ element }] = component.tableData.data;
 
     component.editAlias(element);
 

@@ -109,7 +109,6 @@ import {
   ImageResizeDialogComponent
 } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
 import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
-import { IsCompoundChildPipe } from 'editor/src/app/pipes/is-compound-child.pipe';
 import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
 
 import { ReferenceListComponent } from 'editor/src/app/components/reference-list/reference-list.component';
@@ -192,7 +191,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     GetValidAudioVideoAliasAndIDsPipe,
     ImageResizeDialogComponent,
     BytesPipe,
-    IsCompoundChildPipe,
     SupportsQualityPipe,
     IDEditDialogComponent,
     OverviewDialogComponent,

@@ -36,6 +36,12 @@ export class OverviewDialogComponent implements AfterViewInit {
     control: 'bool'
   }];
 
+  /* The children of compound elements among the rows -- a cloze gap, a table cell, a row of an option
+     table. They are listed like everything else, but deleting cannot reach them: what a section holds
+     itself is what `ElementService.deleteElements` removes (#1262), and a child goes through the edit
+     dialog of its parent. Rebuilt with the rows (#1267). */
+  compoundChildren: ReadonlySet<UIElement> = new Set<UIElement>();
+
   selectedEditableProperty?: EditableProperty;
   editablePropertyValue?: boolean = false;
 
@@ -63,15 +69,22 @@ export class OverviewDialogComponent implements AfterViewInit {
 
   getTableData(): GroupedUIElement[] {
     const groupedElements: GroupedUIElement[] = [];
+    const compoundChildren = new Set<UIElement>();
     this.unitService.unit.pages.forEach((page: EditorPage, pageIndex: number) => {
       page.sections.forEach((section: Section, sectionIndex: number) => {
+        const ownElements = new Set<UIElement>(section.elements);
         section.getAllElements().forEach((el: UIElement) => {
           el.pageIndex = pageIndex;
           el.sectionIndex = sectionIndex;
+          /* Whatever getAllElements() has beyond what the section holds itself is a child of a
+             compound element -- read off the rows rather than gathered a second time, so the two
+             cannot drift apart if the reach of getAllElements ever changes. */
+          if (!ownElements.has(el)) compoundChildren.add(el);
           groupedElements.push(el as GroupedUIElement);
         });
       });
     });
+    this.compoundChildren = compoundChildren;
     return groupedElements;
   }
 
@@ -108,7 +121,11 @@ export class OverviewDialogComponent implements AfterViewInit {
     );
   }
 
+  /* The button of a compound child stays clickable so that it can carry its tooltip and the keyboard
+     can reach it (`disabledInteractive`), so the refusal lives here as well as in the template: what
+     a section does not hold itself cannot be deleted from this dialog (#1267). */
   async deleteElement(el: UIElement) {
+    if (this.compoundChildren.has(el)) return;
     await this.elementService.deleteElements([el]);
     this.tableData.data = this.getTableData();
   }

@@ -64,4 +64,10 @@ mat-dialog-content {
       display: flex;
       align-items: center;
     }
+    /* Only while it does something: a red button that cannot be pressed reads as a broken control
+       rather than a locked one. The class comes from the same expression as the disabled state, so
+       the colour does not depend on which attribute Material renders for it (#1267). */
+    .delete-button.deletable {
+      color: red;
+    }
 

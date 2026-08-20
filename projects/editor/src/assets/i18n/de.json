@@ -468,6 +468,9 @@
   "sectionTemplates": {
     "geometrySource": "Erstellt mit GeoGebra, https://www.geogebra.org (es gelten die GeoGebra-Lizenzbedingungen)"
   },
+  "overviewDialog": {
+    "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."
+  },
   "imageResizeDialog": {
     "title": "Bild komprimieren",
     "originalSize": "Originalgröße",

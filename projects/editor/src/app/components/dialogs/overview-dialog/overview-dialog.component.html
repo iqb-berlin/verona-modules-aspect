@@ -113,7 +113,16 @@
               ID ändern
               </span>
             </button>
-            <button mat-icon-button [style.color]="'red'" (click)="$event.stopPropagation(); deleteElement(element)">
+            <!-- disabledInteractive: the button keeps its tooltip and stays focusable, so the reason
+                 reaches mouse and keyboard alike. It marks itself aria-disabled, but it does fire its
+                 click - which is why deleteElement refuses the same rows. The colour hangs on a class
+                 of our own rather than on what Material renders for the disabled state. -->
+            @let isCompoundChild = element | isCompoundChild : compoundChildren;
+            <button class="delete-button" mat-icon-button disabledInteractive
+                    [class.deletable]="!isCompoundChild"
+                    [disabled]="isCompoundChild"
+                    [matTooltip]="isCompoundChild ? ('overviewDialog.compoundChildNotDeletable' | translate) : ''"
+                    (click)="$event.stopPropagation(); deleteElement(element)">
               <mat-icon>delete</mat-icon>
               Löschen
             </button>

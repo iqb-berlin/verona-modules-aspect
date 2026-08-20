@@ -299,6 +299,35 @@ describe('ElementService', () => {
     expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
   });
 
+  /* The panel builds its value from the first selected element, and setProperty splices the entries
+     into each element's own array -- so one value reached them all as the same objects, and editing a
+     label on one changed it on the others (#1188). */
+  it('should give every element its own copy of an object value', () => {
+    const first = createElementMock('radio');
+    const second = createElementMock('radio');
+
+    service.updateElementsProperty([first, second], 'options', [{ text: 'A' }]);
+
+    const firstValue = (first.setProperty as Mock).mock.calls[0][1] as { text: string }[];
+    const secondValue = (second.setProperty as Mock).mock.calls[0][1] as { text: string }[];
+    expect(firstValue).toEqual([{ text: 'A' }]);
+    expect(firstValue).not.toBe(secondValue);
+    expect(firstValue[0]).not.toBe(secondValue[0]);
+  });
+
+  /* Element models are not copied: they belong to the unit, and a copy would carry their IDs a
+     second time. */
+  it('should write element models as they are', () => {
+    const row = ElementFactory.createElement({
+      type: 'likert-row', id: 'row_1', alias: 'row_1'
+    } as unknown as UIElementProperties);
+    const element = createElementMock('likert');
+
+    service.updateElementsProperty([element], 'rows', [row]);
+
+    expect(((element.setProperty as Mock).mock.calls[0][1] as UIElement[])[0]).toBe(row);
+  });
+
   it('should notify geometry elements about property updates', () => {
     const element = createElementMock('geometry');
     const updatedGeometryIDs: string[] = [];

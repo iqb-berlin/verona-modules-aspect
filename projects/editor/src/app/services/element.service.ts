@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { copyPlainData } from 'editor/src/app/utils/copy-plain-data';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
@@ -186,7 +187,10 @@ export class ElementService {
       } else if (property === 'document') {
         this.handleClozeDocumentChange(element as ClozeElement, value as ClozeDocument);
       } else {
-        element.setProperty(property, value);
+        /* Its own copy for every element: `setProperty` splices the value's entries into each of
+           them, so one value handed to a selection would leave them all holding the same objects --
+           editing a label on one would change it on the others (#1188). */
+        element.setProperty(property, copyPlainData(value));
         if (element.type === 'geometry' && property !== 'trackedVariables' && property !== 'trackedExpectedVariables') {
           this.unitService.geometryElementPropertyUpdated.next(element.id);
         }

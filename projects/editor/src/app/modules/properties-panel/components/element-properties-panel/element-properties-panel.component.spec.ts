@@ -12,10 +12,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
+import { ElementFactory } from 'common/utils/element-factory';
 import {
   DimensionProperties, PositionProperties, Stylings
 } from 'common/models/elements/property-group-interfaces';
-import { UIElementValue } from 'common/models/ui-element-interfaces';
+import { UIElementProperties, UIElementValue } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -253,19 +254,50 @@ describe('ElementPropertiesPanelComponent', () => {
   describe('createCombinedProperties', () => {
     const element = (properties: Record<string, unknown>): UIElement => properties as unknown as UIElement;
 
+    /* The panel edits some of what it is given in place -- removing an option splices the array it
+       reads -- so a view that shared it would change the element without any write path seeing it,
+       and leave every selected element holding the same label objects (#1188). */
+    it('should share no plain data with the selected element', () => {
+      const options = [{ text: 'A' }, { text: 'B' }];
+      const position = { xPosition: 5 };
+      const selected = element({
+        type: 'radio', id: 'a', options, position
+      });
+
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([selected]);
+
+      expect(combined?.options).toEqual(options);
+      expect(combined?.options).not.toBe(options);
+      expect((combined?.options as { text: string }[])[0]).not.toBe(options[0]);
+      expect(combined?.position).not.toBe(position);
+    });
+
+    /* Element models are the exception: they belong to the unit, and a copy would carry their IDs a
+       second time. */
+    it('should keep element models of the selection as they are', () => {
+      const row = ElementFactory.createElement({
+        type: 'likert-row', id: 'row_1', alias: 'row_1'
+      } as unknown as UIElementProperties);
+
+      const combined = ElementPropertiesPanelComponent.createCombinedProperties([
+        element({ type: 'likert', id: 'a', rows: [row] })
+      ]);
+
+      expect((combined?.rows as UIElement[])[0]).toBe(row);
+    });
+
     it('should return undefined for an empty selection', () => {
       expect(ElementPropertiesPanelComponent.createCombinedProperties([])).toBeUndefined();
     });
 
-    // The merge adds two keys that the element itself does not have. Templates test for
-    // `rows === undefined` rather than for the key, so both stay compatible with that.
-    it('should add an id list and a rows key for a single element', () => {
+    // The merge adds a key that the element itself does not have. Templates test the value rather
+    // than the key, so an element without rows stays compatible with that.
+    it('should add an id list for a single element', () => {
       const combined = ElementPropertiesPanelComponent.createCombinedProperties([
         element({ type: 'text-field', id: 'a' })
       ]);
 
       expect(combined?.idList).toEqual(['a']);
-      expect(combined && 'rows' in combined).toBe(true);
       expect(combined?.rows).toBeUndefined();
     });
 

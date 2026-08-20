@@ -6,8 +6,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'editor/src/app/services/message.service';
+import { copyPlainData } from 'editor/src/app/utils/copy-plain-data';
 import { UIElement } from 'common/models/elements/element';
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -81,23 +81,27 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   /**
    * The selected elements as one object, the way the panel's components read it.
    *
-   * `idList` and `rows` are added here rather than inside the merge, because they are about the
-   * selection as a whole and not about a single property:
+   * The merge copies flat, so every object and array in it was the one of the first selected
+   * element. The panel edits some of them in place -- removing, moving and editing an option all
+   * work on `combinedProperties.options` and hand the same array back as the new value -- which
+   * changed that element before any write path saw it, and left every selected element holding the
+   * same label objects afterwards (#1188). What the panel gets is therefore a view that shares no
+   * plain data with the unit; element models in it (the likert rows) stay what they are, because
+   * they belong to the unit and a copy would carry their IDs a second time.
    *
-   * - `idList` holds the ids of everything selected, so the drop list can leave the selected lists
-   *   out of its own "connected lists" options. It used to sit on the merge base, where the loop
-   *   below deleted it again on the first iteration: the loop walks the merge object's keys and
-   *   drops every key the next element does not have - and no element has an `idList` (#1119).
-   * - `rows` is replaced by a copy so the options panel sees a new reference and re-renders.
+   * `idList` is added here rather than inside the merge, because it is about the selection as a
+   * whole and not about a single property: it holds the ids of everything selected, so the drop
+   * list can leave the selected lists out of its own "connected lists" options. It used to sit on
+   * the merge base, where the loop below deleted it again on the first iteration: the loop walks
+   * the merge object's keys and drops every key the next element does not have - and no element has
+   * an `idList` (#1119).
    */
   static createCombinedProperties(elements: UIElement[],
                                   divergingPaths?: Set<string>): CombinedProperties | undefined {
     if (elements.length === 0) return undefined;
-    const combinedProperties = ElementPropertiesPanelComponent.mergeElements(elements, divergingPaths);
+    const combinedProperties =
+      copyPlainData(ElementPropertiesPanelComponent.mergeElements(elements, divergingPaths));
     combinedProperties.idList = elements.map(element => element.id);
-    combinedProperties.rows = combinedProperties.rows ?
-      [...combinedProperties.rows as LikertRowElement[]] :
-      undefined;
     return combinedProperties;
   }
 

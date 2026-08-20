@@ -251,3 +251,38 @@ Rationale:
   maintained and can silently miss the units it was written for
 - the reach of a step is not obvious from its version numbers and has been misjudged twice
 
+## 15) Values leaving the properties panel for the unit
+
+The merged view the properties panel reads must share no plain data with the selected elements, and a
+write that hands one value to a selection must give every element its own copy. Both go through
+`copyPlainData` (`projects/editor/src/app/utils/`), applied in `createCombinedProperties` and per
+element in `ElementService.updateElementsProperty`. It decides by prototype:
+
+- plain objects and arrays are copied recursively — they are what the panel edits and what a write
+  distributes,
+- anything with a prototype of its own stays as it is: element models belong to the unit, and a copy
+  would carry their IDs a second time; the `idService` on a merged element would lose its methods.
+
+- Avoid: copying single fields after the merge (`combinedProperties.rows = [...rows]`)
+- Prefer: the one copy at each of the two places above
+
+Rationale:
+- the panel edits some of what it reads in place — removing, moving and editing an option all work on
+  the array they read — so a shared view changes an element before any write path sees it
+- `UIElement.setProperty` splices the value's entries into every selected element, so one value
+  reaches them all as the same objects (#1188). The same guarantee existed until `2e9be6e9` (2022)
+  replaced `element[property] = Copy.getCopy(value)` with `element.setProperty(property, value)`; it
+  went unnoticed for years because no test held it
+
+This is about that one junction, not a general rule about copying. Three neighbours it is easy to
+confuse it with:
+
+- **Object defaults** are §14: whoever hands one out copies it, and the identity sweep in
+  `model-normalizer.spec.ts` guards that.
+- **Duplicating** an element does the opposite for models: `cloneForBlueprint` turns child models into
+  blueprints, so the copy gets IDs of its own. Keeping models by reference there was #1179.
+- **A dialog that can be cancelled** works on a copy and applies it on save (#1270). That is about
+  when a change reaches the unit, not about who owns which object.
+
+What it does not solve: models are handed on as they are, so a control that edits one has to copy
+before it mutates, the way the label dialogs do.

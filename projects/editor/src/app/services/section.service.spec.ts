@@ -243,6 +243,34 @@ describe('SectionService', () => {
     expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
   });
 
+  /* Building the section is what hands out its IDs, and it is built before the question is asked --
+     so a declined replacement left them taken for the rest of the session, with no element carrying
+     them (#1278). */
+  it('should release the IDs of a replacement the user declined', async () => {
+    const newElement = createElementMock();
+    const newSection = createSectionMock([newElement]);
+    const page = { sections: [createSectionMock([createElementMock()])], addSection: vi.fn() } as unknown as EditorPage;
+    unitServiceMock.unit.pages = [page];
+    unitServiceMock.prepareDelete.mockResolvedValue(false);
+
+    await service.replaceSection(0, 0, newSection);
+
+    expect(newElement.unregisterIDs).toHaveBeenCalled();
+  });
+
+  it('should keep the IDs of a replacement that went through', async () => {
+    const newElement = createElementMock();
+    const newSection = createSectionMock([newElement]);
+    const page = { sections: [createSectionMock([createElementMock()])], addSection: vi.fn() } as unknown as EditorPage;
+    unitServiceMock.unit.pages = [page];
+    unitServiceMock.prepareDelete.mockResolvedValue(true);
+
+    await service.replaceSection(0, 0, newSection);
+
+    expect(newElement.unregisterIDs).not.toHaveBeenCalled();
+    expect(newElement.registerIDs).toHaveBeenCalled();
+  });
+
   /* The section stays, which is what the user asked for -- but the section they picked in the insert
      dialog is gone with it, and that is not visible anywhere else (#1259). */
   it('should report a replacement the user declined', async () => {

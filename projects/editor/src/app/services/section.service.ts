@@ -110,6 +110,11 @@ export class SectionService {
     if (this.unitService.unit.pages[pageIndex].sections[sectionIndex].isEmpty()) {
       this.removeSection(pageIndex, sectionIndex);
     } else if (!await this.deleteSection(pageIndex, sectionIndex)) {
+      /* The section to insert was built before the question was asked, and building it is what hands
+         out IDs: the insert dialog offers to generate new ones for a section whose own are taken, and
+         the constructor registers them. Nothing inserts it now, so they go back -- a section that
+         brought free IDs of its own registered none, and releasing those is a no-op (#1278). */
+      newSection.getAllElements().forEach(element => element.unregisterIDs());
       /* Declining the deletion leaves the section in place, and that is the right answer -- but the
          section picked in the insert dialog goes with it, so this does not pass silently. A unit the
          host replaced under the dialog is not a declined replacement, and the message would be about

@@ -30,7 +30,7 @@ describe('ElementService', () => {
     tablePropUpdated: Subject<string>;
     updateUnitDefinition: Mock;
     prepareDelete: Mock;
-    referenceManager: { getElementsReferences: Mock };
+    referenceManager: { getElementsReferences: Mock; getTextAnchorReferences: Mock };
     // Enough of a unit for reorderElements(), which every position write goes through.
     unit: {
       pages: { sections: { elements: UIElement[]; dynamicPositioning: boolean }[] }[];
@@ -87,7 +87,10 @@ describe('ElementService', () => {
       tablePropUpdated: new Subject<string>(),
       updateUnitDefinition: vi.fn(),
       prepareDelete: vi.fn(),
-      referenceManager: { getElementsReferences: vi.fn(() => []) },
+      referenceManager: {
+        getElementsReferences: vi.fn(() => []),
+        getTextAnchorReferences: vi.fn(() => [])
+      },
       unit: {
         pages: [{ sections: [{ elements: [], dynamicPositioning: false }] }],
         deleteElements: vi.fn((elements: UIElement[]) => elements)
@@ -216,6 +219,70 @@ describe('ElementService', () => {
 
     expect(cloze.getChildElements()).toEqual([]);
     expect(selectionService.getSelectedElements()).toEqual([]);
+  });
+
+  /* The dialog answers later, and the unit was reported before it did -- with the document the
+     element still had. The confirmed change then only reached the host with some later edit, and a
+     save in between wrote the stale state (#1269). */
+  it('should report the cloze document only once the reference dialog was confirmed', () => {
+    const cloze = clozeWithChild();
+    const child = cloze.getChildElements()[0];
+    const dialogAnswer = new Subject<boolean>();
+    unitServiceMock.referenceManager.getElementsReferences.mockReturnValue([{ refs: [], element: child }]);
+    dialogServiceSpy.showDeleteReferenceDialog.mockReturnValue(dialogAnswer);
+
+    service.updateElementsProperty([cloze], 'document', clozeDocument(false));
+
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+
+    dialogAnswer.next(true);
+
+    expect(cloze.getChildElements()).toEqual([]);
+    expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalledTimes(1);
+  });
+
+  it('should report nothing when the reference deletion of a cloze document was declined', () => {
+    const cloze = clozeWithChild();
+    const child = cloze.getChildElements()[0];
+    unitServiceMock.referenceManager.getElementsReferences.mockReturnValue([{ refs: [], element: child }]);
+    dialogServiceSpy.showDeleteReferenceDialog.mockReturnValue(of(false));
+
+    service.updateElementsProperty([cloze], 'document', clozeDocument(false));
+
+    expect(cloze.getChildElements()).toEqual([child]);
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+  });
+
+  it('should report a cloze document without references exactly once', () => {
+    service.updateElementsProperty([clozeWithChild()], 'document', clozeDocument(false));
+
+    expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalledTimes(1);
+  });
+
+  /* Same detour for a text whose anchor is referenced elsewhere (#1269). */
+  it('should report a text only once the reference dialog was confirmed', () => {
+    const element = createElementMock('text', { text: '<aspect-anchor data-anchor-id="anchor_1"></aspect-anchor>' });
+    const dialogAnswer = new Subject<boolean>();
+    unitServiceMock.referenceManager.getTextAnchorReferences.mockReturnValue([{ refs: [], element }]);
+    dialogServiceSpy.showDeleteReferenceDialog.mockReturnValue(dialogAnswer);
+
+    service.updateElementsProperty([element], 'text', 'ohne Anker');
+
+    expect(element.setProperty).not.toHaveBeenCalled();
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+
+    dialogAnswer.next(true);
+
+    expect(element.setProperty).toHaveBeenCalledWith('text', 'ohne Anker');
+    expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalledTimes(1);
+  });
+
+  it('should report a text without references exactly once', () => {
+    const element = createElementMock('text', { text: 'ohne Anker' });
+
+    service.updateElementsProperty([element], 'text', 'auch ohne Anker');
+
+    expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalledTimes(1);
   });
 
   it('should set an element property and notify the unit', () => {

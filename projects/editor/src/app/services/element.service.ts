@@ -179,6 +179,7 @@ export class ElementService {
                                            property: K & OwnProperty<K>,
                                            value: UIElementValue): void {
     // console.log('updateElementsProperty ', elements, property, value);
+    let hasDirectWrite = false;
     elements.forEach(element => {
       if (element.type === 'text' && property === 'text') {
         this.handleTextElementChange(element as TextElement, value as string);
@@ -191,8 +192,19 @@ export class ElementService {
         }
         if (element.type === 'math-table') this.unitService.mathTableElementPropertyUpdated.next(element.id);
         if (element.type === 'table') this.unitService.tablePropUpdated.next(element.id);
+        hasDirectWrite = true;
       }
     });
+    if (hasDirectWrite) this.reportPropertyUpdate();
+  }
+
+  /* The report belongs where the value is written. Text and cloze documents can take a detour through
+     the reference dialog, whose answer arrives later -- a report sent while it is still open carries
+     the value the element had before, and the confirmed change then reaches the host only with some
+     later, unrelated edit; a save in between writes the stale state (#1269). Both writers report for
+     themselves, the loop reports for the properties it writes itself, and a declined dialog writes
+     nothing and reports nothing. */
+  private reportPropertyUpdate(): void {
     this.unitService.elementPropertyUpdated.next();
     this.unitService.updateUnitDefinition();
   }
@@ -213,12 +225,14 @@ export class ElementService {
           if (result) {
             ReferenceManager.deleteReferences(refs);
             element.setProperty('text', value);
+            this.reportPropertyUpdate();
           } else {
             this.messageService.showReferencePanel(refs);
           }
         });
     } else {
       element.setProperty('text', value);
+      this.reportPropertyUpdate();
     }
   }
 
@@ -249,6 +263,7 @@ export class ElementService {
   private setClozeDocument(element: ClozeElement, newValue: ClozeDocument, deletedElements: UIElement[]): void {
     element.setProperty('document', newValue);
     this.selectionService.deselectElements(deletedElements);
+    this.reportPropertyUpdate();
   }
 
   // xPosition and yPosition live in the element's position group, so they have to go through

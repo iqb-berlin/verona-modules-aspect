@@ -2,7 +2,7 @@
   <legend>{{ 'propertiesPanel.dimensions' | translate }}</legend>
   <ng-container *ngIf="unitService.unit.pages[selectionService.selectedPageIndex]
                 .sections[selectionService.selectedSectionIndex].dynamicPositioning ||
-                selectionService.isCompoundChildSelected;
+                selectionService.onlyCompoundChildrenSelected;
                 else elseBlock">
     <ng-container *ngIf="dimensions.isWidthFixed !== undefined else elseBlockWidth">
       <aspect-merged-checkbox #fixedWidth [value]="dimensions.isWidthFixed"

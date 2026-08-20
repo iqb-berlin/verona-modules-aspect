@@ -75,6 +75,11 @@ export class StaticOverlayComponent extends ElementOverlay {
      elements out of the selection itself. Unselecting here would happen while the dialog is still
      open, so a user who declines would be left with the elements still there but unselected (#1258). */
   deleteSelectedElements(): void {
+    /* The same rule the properties panel has always had for its delete button: with a child of a
+       compound element in the selection, deleting is off. Deleting what is left instead would take
+       the child's neighbours and leave the child, which is what the key did after #1262 -- and the
+       flag only became a reliable answer about the selection with #1268. */
+    if (this.selectionService.isCompoundChildSelected) return;
     this.selectionService.selectedElements
       .pipe(take(1))
       .subscribe((selectedElements: UIElement[]) => {

@@ -79,24 +79,24 @@
 
       <ng-container matColumnDef="pageIndex">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Seite</th>
-        <td mat-cell *matCellDef="let element">{{element.pageIndex + 1}}</td>
+        <td mat-cell *matCellDef="let row">{{row.pageIndex + 1}}</td>
       </ng-container>
       <ng-container matColumnDef="sectionIndex">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Abschnitt</th>
-        <td mat-cell *matCellDef="let element">{{element.sectionIndex + 1}}</td>
+        <td mat-cell *matCellDef="let row">{{row.sectionIndex + 1}}</td>
       </ng-container>
       <ng-container matColumnDef="alias">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-        <td mat-cell *matCellDef="let element">{{element.alias}}</td>
+        <td mat-cell *matCellDef="let row">{{row.element.alias}}</td>
       </ng-container>
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Elementtyp</th>
-        <td mat-cell *matCellDef="let element">{{'toolbox.' + element.type | translate }}</td>
+        <td mat-cell *matCellDef="let row">{{'toolbox.' + row.element.type | translate }}</td>
       </ng-container>
       <ng-container matColumnDef="isRelevantForPresentationComplete">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Relevant für <br/> "Presentation Complete"</th>
-        <td mat-cell *matCellDef="let element">
-          @if (element.isRelevantForPresentationComplete) {
+        <td mat-cell *matCellDef="let row">
+          @if (row.element.isRelevantForPresentationComplete) {
             <mat-icon>check</mat-icon>
           } @else {
             <mat-icon>close</mat-icon>
@@ -105,9 +105,9 @@
       </ng-container>
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Aktionen</th>
-        <td mat-cell *matCellDef="let element" >
+        <td mat-cell *matCellDef="let row" >
           <div class="action-button-cell">
-            <button (click)="$event.stopPropagation(); editAlias(element)">
+            <button (click)="$event.stopPropagation(); editAlias(row.element)">
               <mat-icon>edit</mat-icon>
               <span>
               ID ändern
@@ -117,12 +117,11 @@
                  reaches mouse and keyboard alike. It marks itself aria-disabled, but it does fire its
                  click - which is why deleteElement refuses the same rows. The colour hangs on a class
                  of our own rather than on what Material renders for the disabled state. -->
-            @let isCompoundChild = element | isCompoundChild : compoundChildren;
             <button class="delete-button" mat-icon-button disabledInteractive
-                    [class.deletable]="!isCompoundChild"
-                    [disabled]="isCompoundChild"
-                    [matTooltip]="isCompoundChild ? ('overviewDialog.compoundChildNotDeletable' | translate) : ''"
-                    (click)="$event.stopPropagation(); deleteElement(element)">
+                    [class.deletable]="!row.isCompoundChild"
+                    [disabled]="row.isCompoundChild"
+                    [matTooltip]="row.isCompoundChild ? ('overviewDialog.compoundChildNotDeletable' | translate) : ''"
+                    (click)="$event.stopPropagation(); deleteElement(row)">
               <mat-icon>delete</mat-icon>
               Löschen
             </button>

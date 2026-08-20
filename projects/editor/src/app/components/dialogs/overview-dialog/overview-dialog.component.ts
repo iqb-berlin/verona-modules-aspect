@@ -27,20 +27,16 @@ export class OverviewDialogComponent implements AfterViewInit {
   tableSelection: 'none' | 'some' | 'all' = 'none';
 
   columnsToDisplay = ['select', 'pageIndex', 'sectionIndex', 'alias', 'type', 'isRelevantForPresentationComplete', 'actions'];
-  tableData!: MatTableDataSource<GroupedUIElement>;
-  elementSelection = new SelectionModel<GroupedUIElement>(true, []);
+  tableData!: MatTableDataSource<OverviewRow>;
+
+  /* Every refresh builds new rows, so the selection is compared by the element in them. */
+  elementSelection = new SelectionModel<OverviewRow>(true, [], true, (a, b) => a.element === b.element);
 
   elementOptions: EditableProperty [] = [{
     fieldName: 'isRelevantForPresentationComplete',
     displayName: 'Presentation Complete',
     control: 'bool'
   }];
-
-  /* The children of compound elements among the rows -- a cloze gap, a table cell, a row of an option
-     table. They are listed like everything else, but deleting cannot reach them: what a section holds
-     itself is what `ElementService.deleteElements` removes (#1262), and a child goes through the edit
-     dialog of its parent. Rebuilt with the rows (#1267). */
-  compoundChildren: ReadonlySet<UIElement> = new Set<UIElement>();
 
   selectedEditableProperty?: EditableProperty;
   editablePropertyValue?: boolean = false;
@@ -51,8 +47,9 @@ export class OverviewDialogComponent implements AfterViewInit {
   };
 
   constructor(public unitService: UnitService, private elementService: ElementService, private dialog: MatDialog) {
-    this.tableData = new MatTableDataSource<GroupedUIElement>(this.getTableData());
-    this.tableData.filterPredicate = (data: GroupedUIElement, filter: string) => {
+    this.tableData = new MatTableDataSource<OverviewRow>(this.getTableData());
+    this.tableData.sortingDataAccessor = OverviewDialogComponent.getSortValue;
+    this.tableData.filterPredicate = (data: OverviewRow, filter: string) => {
       const matchesPageFilter = this.elementFilters.page.length > 0 ?
         this.elementFilters.page.includes(data.pageIndex) : true;
       const matchesSectionFilter = this.elementFilters.section.length > 0 ?
@@ -67,25 +64,39 @@ export class OverviewDialogComponent implements AfterViewInit {
     this.tableData.sort = this.sort;
   }
 
-  getTableData(): GroupedUIElement[] {
-    const groupedElements: GroupedUIElement[] = [];
-    const compoundChildren = new Set<UIElement>();
+  /* A row of its own around each element, holding where it sits in the unit. Written onto the
+     elements, as it was before, those two numbers were own properties of the model and travelled into
+     the stored unit definition with the next report -- outdated as soon as a section moved (#1273). */
+  getTableData(): OverviewRow[] {
+    const rows: OverviewRow[] = [];
     this.unitService.unit.pages.forEach((page: EditorPage, pageIndex: number) => {
       page.sections.forEach((section: Section, sectionIndex: number) => {
         const ownElements = new Set<UIElement>(section.elements);
-        section.getAllElements().forEach((el: UIElement) => {
-          el.pageIndex = pageIndex;
-          el.sectionIndex = sectionIndex;
+        section.getAllElements().forEach((element: UIElement) => {
           /* Whatever getAllElements() has beyond what the section holds itself is a child of a
-             compound element -- read off the rows rather than gathered a second time, so the two
+             compound element -- read off the same list rather than gathered a second time, so the two
              cannot drift apart if the reach of getAllElements ever changes. */
-          if (!ownElements.has(el)) compoundChildren.add(el);
-          groupedElements.push(el as GroupedUIElement);
+          rows.push({
+            element, pageIndex, sectionIndex, isCompoundChild: !ownElements.has(element)
+          });
         });
       });
     });
-    this.compoundChildren = compoundChildren;
-    return groupedElements;
+    return rows;
+  }
+
+  /* The columns are spread over the row and the element in it, so sorting has to be told where each
+     one reads from: MatTableDataSource looks at data[columnName] and would find nothing for the
+     columns of the element. */
+  private static getSortValue(row: OverviewRow, columnName: string): string | number {
+    switch (columnName) {
+      case 'pageIndex': return row.pageIndex;
+      case 'sectionIndex': return row.sectionIndex;
+      case 'alias': return row.element.alias;
+      case 'type': return row.element.type;
+      case 'isRelevantForPresentationComplete': return row.element.isRelevantForPresentationComplete ? 1 : 0;
+      default: return '';
+    }
   }
 
   updatePageFilter(): void {
@@ -117,16 +128,18 @@ export class OverviewDialogComponent implements AfterViewInit {
 
   applyValueToSelection() {
     this.elementService.updateElementsProperty(
-      this.elementSelection.selected, this.selectedEditableProperty!.fieldName, this.editablePropertyValue
+      this.elementSelection.selected.map(row => row.element),
+      this.selectedEditableProperty!.fieldName,
+      this.editablePropertyValue
     );
   }
 
   /* The button of a compound child stays clickable so that it can carry its tooltip and the keyboard
      can reach it (`disabledInteractive`), so the refusal lives here as well as in the template: what
      a section does not hold itself cannot be deleted from this dialog (#1267). */
-  async deleteElement(el: UIElement) {
-    if (this.compoundChildren.has(el)) return;
-    await this.elementService.deleteElements([el]);
+  async deleteElement(row: OverviewRow) {
+    if (row.isCompoundChild) return;
+    await this.elementService.deleteElements([row.element]);
     this.tableData.data = this.getTableData();
   }
 
@@ -146,7 +159,7 @@ export class OverviewDialogComponent implements AfterViewInit {
     this.updateTableSelection();
   }
 
-  selectRow(row: any): void {
+  selectRow(row: OverviewRow): void {
     this.elementSelection.toggle(row);
     this.updateTableSelection();
   }
@@ -162,9 +175,14 @@ export class OverviewDialogComponent implements AfterViewInit {
   }
 }
 
-interface GroupedUIElement extends UIElement {
+interface OverviewRow {
+  element: UIElement;
   pageIndex: number;
   sectionIndex: number;
+  /* A cloze gap, a table cell, a row of an option table. They are listed like everything else, but
+     deleting cannot reach them: what a section holds itself is what `ElementService.deleteElements`
+     removes (#1262), and a child goes through the edit dialog of its parent (#1267). */
+  isCompoundChild: boolean;
 }
 
 interface EditableProperty {

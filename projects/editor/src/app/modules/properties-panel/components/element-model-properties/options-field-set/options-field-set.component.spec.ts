@@ -233,6 +233,26 @@ describe('OptionsFieldSetComponent', () => {
     expect(emitted).toEqual([{ property: 'rows', value: [secondRow] }]);
   });
 
+  /* The rows in the view are the models of the unit itself -- copyPlainData copies plain data and
+     keeps models as they are (rules.md §15). Editing one therefore has to go through the write path;
+     a direct write would land in the unit with nothing reported to the host (#1286). */
+  it('should leave the edited likert row itself untouched', () => {
+    const row = createLikertRow('row1', 'Zeile 1');
+    component.combinedProperties.rows = [row];
+    dialogService.showLikertRowEditDialog.mockReturnValue(
+      of({
+        ...row, rowLabel: { text: 'geändert', imgSrc: null }, readOnly: true
+      } as unknown as LikertRowElement)
+    );
+
+    component.editLikertRow(0);
+
+    expect(row.rowLabel.text).toBe('Zeile 1');
+    expect(row.readOnly).toBe(false);
+    expect(elementService.updateElementsProperty)
+      .toHaveBeenCalledWith([row], 'rowLabel', { text: 'geändert', imgSrc: null });
+  });
+
   it('should update changed properties of an edited likert row', () => {
     const row = createLikertRow('row1', 'Zeile 1');
     component.combinedProperties.rows = [row];

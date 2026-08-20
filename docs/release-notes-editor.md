@@ -12,6 +12,9 @@ Editor
 - Tooltip (Text und Knopf)
   - Der Tooltip-Text kann jetzt formatiert werden (Fett, Kursiv, Unterstrichen, Hoch-/Tiefstellung, Schrift- und Hintergrundfarbe, Sonderzeichen); der Dialog enthält dafür den reduzierten Texteditor
   - Der Tooltip eines Knopfes wird über die neue Schaltfläche "Tooltip bearbeiten" im Eigenschaftenbereich im selben Dialog bearbeitet (Text, Position und Löschen)
+- Neue Elementgruppe "Widgets" im Werkzeugkasten
+  - Neues Element "Periodensystem": einstellbar sind die angezeigten Informationen (Ordnungszahlen, Elektronegativität, mittlere relative Atommasse), das Schließen bei Auswahl und die maximale Anzahl der Auswahlen
+  - Neues Element "Molekül-Editor": einstellbar ist die Darstellungsart (Valenzstrichformel oder Elektronenformel)
 - Optionsfelder, Kontrollkästchen
   - Neue Eigenschaft "Vertikale Knopfausrichtung": "an der ersten Zeile" (Voreinstellung, bisheriges Verhalten) oder "zentriert" (Knopf in der Mitte der gesamten Beschriftung). Die Optionstabelle hat diese Einstellung schon je Zeile
 

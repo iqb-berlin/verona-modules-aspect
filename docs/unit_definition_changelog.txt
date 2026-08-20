@@ -242,6 +242,7 @@ iqb-aspect-definition@1.0.0
   - new property: inputAssistanceCustomStyle: 'small' | 'medium' | 'large'
 
 4.12.0
+- New Elements "MoleculeEditor" (type widget-molecule-editor), "PeriodicTable" (type widget-periodic-table)
 - InputAssistancePreset:
   - new type: decimals
 - TextFieldElement, TextFieldSimpleElement, TextAreaElement:
@@ -250,11 +251,8 @@ iqb-aspect-definition@1.0.0
   - new property: headerEnabled: boolean
   - new property: headerRows: { text: string; alignment: 'left' | 'center' | 'right' }[][]
   - new property: stickyHeader: boolean
-- ButtonElement and tooltip mark in text elements:
-  - tooltipText (data-tooltip-text) may now contain HTML markup (formatted tooltip text)
 - RadioButtonGroupElement, CheckboxElement:
   - new property: verticalButtonAlignment: 'auto' | 'center' (default 'auto')
-    LikertRowElement has carried the same property since 3.2.0 and is unchanged.
 - All elements:
   - remove styling.font (#1182)
 - FrameElement, AudioElement, VideoElement:
@@ -262,7 +260,7 @@ iqb-aspect-definition@1.0.0
     styling.underline (#1187)
 - ImageElement, GeometryElement, TriggerElement, HotspotImageElement,
   MarkingPanelElement, LikertRowElement:
-  - remove the styling group; newly saved units carry "styling": {} (#1226)
+  - new empty group: "styling": {} (#1226)
 - MoleculeEditorElement, PeriodicTableElement:
   - remove styling.fontSize, styling.bold, styling.italic, styling.underline,
     styling.borderWidth, styling.borderColor, styling.borderStyle, styling.borderRadius;

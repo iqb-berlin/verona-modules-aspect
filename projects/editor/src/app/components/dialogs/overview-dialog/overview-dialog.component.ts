@@ -141,6 +141,22 @@ export class OverviewDialogComponent implements AfterViewInit {
     if (row.isCompoundChild) return;
     await this.elementService.deleteElements([row.element]);
     this.tableData.data = this.getTableData();
+    this.dropSelectionOfGoneElements();
+    this.updateTableSelection();
+  }
+
+  /* What the table no longer lists is out of the unit, and a selection of it would go on writing:
+     "Mehrfachänderung" applies the property to `elementSelection.selected` and reports the unit as
+     changed for an element that is not in it any more, while the header checkbox keeps counting it.
+     Read off the rows rather than from the deleted element, because deleting a compound element takes
+     the rows of its children with it -- and a deletion the user declined takes nothing at all, so its
+     row is still there and stays selected (#1274). Whatever else is selected stays selected: the
+     dialog deletes elements the user is not working on (#1258). */
+  private dropSelectionOfGoneElements(): void {
+    const listedElements = new Set<UIElement>(this.tableData.data.map(row => row.element));
+    this.elementSelection.selected
+      .filter(row => !listedElements.has(row.element))
+      .forEach(row => this.elementSelection.deselect(row));
   }
 
   editAlias(el: UIElement) {

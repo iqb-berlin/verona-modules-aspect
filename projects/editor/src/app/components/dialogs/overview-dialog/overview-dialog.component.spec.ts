@@ -28,6 +28,7 @@ describe('OverviewDialogComponent', () => {
   let elementService: SpyObj<ElementService>;
   let matDialog: SpyObj<MatDialog>;
   let firstSectionElements: UIElement[];
+  let secondPageElements: UIElement[];
   let gap: UIElement;
 
   const createElement = (alias: string, type: string, children: UIElement[] = []): UIElement => ({
@@ -51,6 +52,7 @@ describe('OverviewDialogComponent', () => {
   beforeEach(async () => {
     firstSectionElements = [createElement('text_1', 'text')];
     gap = createElement('gap_1', 'text-field');
+    secondPageElements = [createElement('text_2', 'text'), createElement('cloze_1', 'cloze', [gap])];
     const unitServiceMock = {
       unit: {
         pages: [
@@ -58,10 +60,7 @@ describe('OverviewDialogComponent', () => {
             createSection(firstSectionElements),
             createSection([createElement('button_1', 'button')])
           ]),
-          createPage([createSection([
-            createElement('text_2', 'text'),
-            createElement('cloze_1', 'cloze', [gap])
-          ])])
+          createPage([createSection(secondPageElements)])
         ]
       }
     } as unknown as UnitService;
@@ -253,6 +252,52 @@ describe('OverviewDialogComponent', () => {
     component.tableData.data = component.getTableData();
 
     expect(component.elementSelection.isSelected(component.tableData.data[1])).toBe(true);
+  });
+
+  /* The row is gone from the table, but the selection went on holding the element: "Mehrfachänderung"
+     then wrote to an element that is not in the unit any more and reported it as changed, while the
+     header checkbox kept counting it (#1274). */
+  it('should take a deleted row out of the selection and leave the others alone', async () => {
+    const [firstRow, secondRow] = component.tableData.data;
+    component.selectRow(firstRow);
+    component.selectRow(secondRow);
+    elementService.deleteElements.mockImplementation(() => {
+      firstSectionElements.splice(0, 1);
+      return Promise.resolve();
+    });
+
+    await component.deleteElement(firstRow);
+
+    expect(component.elementSelection.selected.map(row => row.element.alias)).toEqual(['button_1']);
+    expect(component.tableSelection).toBe('some');
+  });
+
+  /* A deletion the user declined takes nothing out of the unit, so its row is still listed and stays
+     selected. */
+  it('should keep the selection when nothing was deleted', async () => {
+    const [firstRow] = component.tableData.data;
+    component.selectRow(firstRow);
+
+    await component.deleteElement(firstRow);
+
+    expect(component.elementSelection.selected.map(row => row.element.alias)).toEqual(['text_1']);
+    expect(component.tableSelection).toBe('some');
+  });
+
+  it('should take the children of a deleted compound element out of the selection', async () => {
+    const clozeRow = component.tableData.data[3];
+    const gapRow = component.tableData.data[4];
+    component.selectRow(clozeRow);
+    component.selectRow(gapRow);
+    elementService.deleteElements.mockImplementation(() => {
+      secondPageElements.splice(1, 1);
+      return Promise.resolve();
+    });
+
+    await component.deleteElement(clozeRow);
+
+    expect(component.elementSelection.selected).toEqual([]);
+    expect(component.tableSelection).toBe('none');
   });
 
   it('should apply the new alias returned by the ID edit dialog', () => {

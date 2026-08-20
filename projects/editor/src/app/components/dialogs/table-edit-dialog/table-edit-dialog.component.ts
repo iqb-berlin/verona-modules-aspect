@@ -1,6 +1,9 @@
-import { Component, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  Component, Inject, OnDestroy, ViewChild
+} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { UIElement } from 'common/models/elements/element';
 import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
@@ -20,15 +23,53 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './table-edit-dialog.component.html',
   styleUrls: ['./table-edit-dialog.component.scss']
 })
-export class TableEditDialogComponent {
+export class TableEditDialogComponent implements OnDestroy {
   @ViewChild(TableComponent) tableComp!: TableComponent;
   newTable: TableElement;
+
+  private addedElements: UIElement[] = [];
+  private removedElements: UIElement[] = [];
+  private saved: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { table: TableElement },
               private idService: IDService,
               private dialogService: DialogService,
-              private selectionService: SelectionService) {
-    this.newTable = data.table;
+              private selectionService: SelectionService,
+              private dialogRef: MatDialogRef<TableEditDialogComponent>) {
+    this.newTable = TableEditDialogComponent.copyForEditing(data.table);
+  }
+
+  /* What the dialog edits is a copy, so that "Abbrechen" can leave the table as it was: it used to
+     work on the table itself, and a removed cell was out of the unit before anyone had confirmed
+     anything (#1270). The copy is not a duplicate -- it holds the very same cell objects, only in
+     its own array. Rebuilding them (getBlueprint(), the TableElement constructor) would hand out new
+     IDs and put other objects into the unit than the ones the selection and the references know.
+     Its own header rows are copied down to the cells, because their text and alignment are edited in
+     place. */
+  private static copyForEditing(table: TableElement): TableElement {
+    const copy = Object.create(Object.getPrototypeOf(table) as object) as TableElement;
+    return Object.assign(copy, table, {
+      elements: [...table.elements],
+      headerRows: table.headerRows.map(row => row.map(cell => ({ ...cell })))
+    });
+  }
+
+  /* Saving is where the removal reaches the unit, so the bookkeeping of a removed cell belongs here
+     and not to the click that took it out of the copy: its IDs are free only now, and only now is
+     its overlay gone -- a cell can be selected, and nothing else takes it out of the selection
+     (#1261). */
+  save(): void {
+    this.saved = true;
+    this.removedElements.forEach(element => element.unregisterIDs());
+    this.selectionService.deselectElements(this.removedElements);
+    this.dialogRef.close({ elements: this.newTable.elements, headerRows: this.newTable.headerRows });
+  }
+
+  /* Closing without saving discards the copy -- and with it the elements that were created into it.
+     Their IDs were registered when they were built, so they have to be released here, or they stay
+     taken for the rest of the session without an element carrying them. */
+  ngOnDestroy(): void {
+    if (!this.saved) this.addedElements.forEach(element => element.unregisterIDs());
   }
 
   async addElement(el: { elementType: UIElementType, row: number, col: number }): Promise<void> {
@@ -77,18 +118,22 @@ export class TableEditDialogComponent {
       delete (newEle as any).appearance;
     }
     this.newTable.elements.push(newEle);
+    this.addedElements.push(newEle);
     this.tableComp.refresh();
   }
 
   removeElement(coords: { row: number, col: number }): void {
     const index = this.newTable.elements
       .findIndex(el => el.gridRow === (coords.row + 1) && el.gridColumn === (coords.col + 1));
-    const removedElement = this.newTable.elements[index];
-    removedElement.unregisterIDs();
-    this.newTable.elements.splice(index, 1);
-    /* The dialog edits the table itself, so the cell is out of the unit at this point. A cell can be
-       selected -- a click selects it, a double click opens this dialog without changing that -- and
-       its overlay is destroyed with the cell, so nothing else takes it out of the selection (#1261). */
-    this.selectionService.deselectElements([removedElement]);
+    if (index < 0) return;
+    const [removedElement] = this.newTable.elements.splice(index, 1);
+    /* A cell the dialog created and the user removed again never reaches the unit, so it is not a
+       removal to carry to the save -- it only has to give its IDs back. */
+    if (this.addedElements.includes(removedElement)) {
+      this.addedElements = this.addedElements.filter(element => element !== removedElement);
+      removedElement.unregisterIDs();
+    } else {
+      this.removedElements.push(removedElement);
+    }
   }
 }

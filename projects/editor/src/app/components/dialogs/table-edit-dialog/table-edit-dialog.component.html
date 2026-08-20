@@ -6,7 +6,7 @@
                 (elementRemoved)="removeElement($event)"></aspect-table>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="{ elements: newTable.elements, headerRows: newTable.headerRows }">
+  <button mat-button (click)="save()">
     {{'save' | translate }}
   </button>
   <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>

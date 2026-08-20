@@ -242,7 +242,8 @@ iqb-aspect-definition@1.0.0
   - new property: inputAssistanceCustomStyle: 'small' | 'medium' | 'large'
 
 4.12.0
-- New Elements "MoleculeEditor" (type widget-molecule-editor), "PeriodicTable" (type widget-periodic-table)
+- New Element WidgetMoleculeEditorElement (type widget-molecule-editor)
+- New Element WidgetPeriodicTableElement (type widget-periodic-table)
 - InputAssistancePreset:
   - new type: decimals
 - TextFieldElement, TextFieldSimpleElement, TextAreaElement:
@@ -255,18 +256,9 @@ iqb-aspect-definition@1.0.0
   - new property: verticalButtonAlignment: 'auto' | 'center' (default 'auto')
 - All elements:
   - remove styling.font (#1182)
-- FrameElement, AudioElement, VideoElement:
-  - remove styling.fontColor, styling.fontSize, styling.bold, styling.italic,
-    styling.underline (#1187)
 - ImageElement, GeometryElement, TriggerElement, HotspotImageElement,
   MarkingPanelElement, LikertRowElement:
   - new empty group: "styling": {} (#1226)
-- MoleculeEditorElement, PeriodicTableElement:
-  - remove styling.fontSize, styling.bold, styling.italic, styling.underline,
-    styling.borderWidth, styling.borderColor, styling.borderStyle, styling.borderRadius;
-    backgroundColor and fontColor remain (#1230)
-- SpellCorrectElement:
-  - remove styling.lineHeight (#1232)
 - TextFieldSimpleElement:
   - remove clearable (#1233)
 - HotspotImageElement, LikertRowElement:
@@ -275,5 +267,3 @@ iqb-aspect-definition@1.0.0
   - remove styling.backgroundColor (#1233)
 - LikertRowElement:
   - remove firstColumnSizeRatio (#1234)
-- ImageElement:
-  - remove the player group (#1241)

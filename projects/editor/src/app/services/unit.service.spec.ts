@@ -445,6 +445,68 @@ describe('UnitService - a delete whose unit is replaced while the confirmation i
   }));
 });
 
+/* The page break moves the sections from the chosen one onwards to a new page. Which section is chosen
+   comes from the selection indices, and the button that starts it stands on every page, so the index
+   can name a section of another page (#1203). */
+describe('UnitService - page break (#1203)', () => {
+  let service: UnitService;
+  let selectionService: SelectionService;
+  let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    selectionService = new SelectionService();
+    veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
+    service = new UnitService(
+      selectionService,
+      veronaApiServiceSpy,
+      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<DialogService>(['showUnitDefErrorDialog']),
+      new IDService(),
+      translateServiceSpy
+    );
+    /* Two pages, the first with three sections: the second page's button carries index 1, which names
+       nothing on a page that holds one section. */
+    const blueprint = createUnitBlueprint('unit-with-two-pages');
+    blueprint.pages[0].sections.push({ ...blueprint.pages[0].sections[0] });
+    blueprint.pages[0].sections.push({ ...blueprint.pages[0].sections[0] });
+    blueprint.pages.push({ ...blueprint.pages[0], sections: [{ ...blueprint.pages[0].sections[0] }] });
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  });
+
+  it('moves the chosen section and the ones after it to a new page', () => {
+    service.moveSectionToNewpage(0, 1);
+
+    expect(service.unit.pages.length).toBe(3);
+    expect(service.unit.pages[0].sections.length).toBe(1);
+    expect(service.unit.pages[1].sections.length).toBe(2);
+    expect(selectionService.selectedPageIndex).toBe(1);
+    expect(selectionService.selectedSectionIndex).toBe(0);
+  });
+
+  /* The index belongs to another page, which held more sections. Nothing is moved, and the new page
+     would be one without sections -- the state the properties panel reads `sections[0]` from (#1089),
+     endlessly through #1202. */
+  it('does not build a page without sections for a section index the page does not hold', () => {
+    service.moveSectionToNewpage(1, 1);
+
+    expect(service.unit.pages.length).toBe(2);
+    expect(service.unit.pages[1].sections.length).toBe(1);
+    expect(selectionService.selectedPageIndex).toBe(0);
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+
+  /* Breaking at the first section would move every section away and leave THIS page without any. */
+  it('does not empty the page it breaks', () => {
+    service.moveSectionToNewpage(0, 0);
+
+    expect(service.unit.pages.length).toBe(2);
+    expect(service.unit.pages[0].sections.length).toBe(3);
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+});
+
 function createUnitBlueprint(marker: string, version: string = VersionManager.getCurrentVersion()): UnitProperties {
   return {
     type: 'aspect-unit-definition',

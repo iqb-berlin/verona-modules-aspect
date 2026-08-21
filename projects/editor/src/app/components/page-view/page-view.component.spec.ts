@@ -108,6 +108,28 @@ describe('PageViewComponent', () => {
     expect(unitService.moveSectionToNewpage).toHaveBeenCalledWith(0, 1);
   });
 
+  /* The button stands on every page while the selection indices name one page, so a break started from
+     another page's button would move nothing and leave a page without sections (#1203). */
+  it('should offer the page break only for a section of its own page', () => {
+    const pageBreakButton = (): HTMLButtonElement => fixture.nativeElement.querySelector('button');
+    selectionService.updateSelection(0, 1);
+    fixture.detectChanges();
+
+    expect(pageBreakButton().disabled).toBe(false);
+
+    selectionService.updateSelection(1, 1);
+    fixture.detectChanges();
+
+    expect(pageBreakButton().disabled).toBe(true);
+  });
+
+  it('should not offer the page break for the first section of its own page', () => {
+    selectionService.updateSelection(0, 0);
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement.querySelector('button') as HTMLButtonElement).disabled).toBe(true);
+  });
+
   it('should delegate removing a page break to the unit service', () => {
     component.collapsePage(2);
 

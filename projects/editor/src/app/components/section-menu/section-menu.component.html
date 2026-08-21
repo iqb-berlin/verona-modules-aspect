@@ -4,26 +4,28 @@
         (click)="updateElementList()">
   <mat-icon>list</mat-icon>
 </button>
-<mat-menu #elementListMenu="matMenu" xPosition="before">
+<!-- Closing the menu with the pointer on a row fires no `mouseleave`, so the highlight on the
+     canvas would stay behind (#1078). -->
+<mat-menu #elementListMenu="matMenu" xPosition="before" (closed)="onUnitListElLeave()">
   <mat-action-list [style.padding.px]="5">
-    <ng-container *ngIf="section.elements.length === 0">
-      Keine Elemente im Abschnitt
-    </ng-container>
-    <mat-list-item *ngFor="let element of sectionElements"
-                   [disabled]="!element.position"
-                   (mouseenter)="element.position && onUnitListElHover(element)"
-                   (mouseleave)="element.position && onUnitListElLeave()"
-                   (click)="element.position && onUnitListElClick(element)">
-      @if (!element.position) { <!-- Extra icon for cloze children; they have no position -->
-        <mat-icon matListItemIcon [style.margin-right.px]="0">subdirectory_arrow_right</mat-icon>
-      }
-      <mat-icon matListItemIcon [style.margin-right.px]="10">
-        {{ $any(element.constructor).icon }}
-      </mat-icon>
-      <div matListItemTitle>
-        {{ element.alias }}
-      </div>
-    </mat-list-item>
+    @for (entry of sectionElements; track entry.element.id) {
+      <mat-list-item [disabled]="entry.isCompoundChild"
+                     (mouseenter)="onUnitListElHover(entry)"
+                     (mouseleave)="onUnitListElLeave()"
+                     (click)="onUnitListElClick(entry)">
+        @if (entry.isCompoundChild) { <!-- Extra icon for the children of a compound element -->
+          <mat-icon matListItemIcon [style.margin-right.px]="0">subdirectory_arrow_right</mat-icon>
+        }
+        <mat-icon matListItemIcon [style.margin-right.px]="10">
+          {{ $any(entry.element.constructor).icon }}
+        </mat-icon>
+        <div matListItemTitle>
+          {{ entry.element.alias }}
+        </div>
+      </mat-list-item>
+    } @empty {
+      {{ 'section-menu.noElements' | translate }}
+    }
   </mat-action-list>
 </mat-menu>
 

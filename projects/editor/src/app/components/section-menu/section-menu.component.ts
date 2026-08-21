@@ -15,6 +15,21 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 
+/**
+ * One row of the element list.
+ *
+ * The children of a compound element -- the rows of a likert table, the cells of a table, the gaps
+ * of a cloze -- are listed so the list shows what the section holds, but they are rendered by their
+ * parent and have no overlay of their own: hovering or clicking one has nothing to highlight or
+ * select. The guard that used to read `element.position` held for a cloze gap alone, because
+ * `ClozeElement.createChildElement` deletes that group; a likert row and a table cell keep the one
+ * every `UIElement` gets from its base class, went through, and threw in `SectionComponent` (#1078).
+ */
+export interface SectionElementEntry {
+  element: UIElement;
+  isCompoundChild: boolean;
+}
+
 @Component({
   selector: 'aspect-section-menu',
   standalone: false,
@@ -33,7 +48,7 @@ export class SectionMenuComponent implements OnDestroy {
   @ViewChild('colorPicker') colorPicker!: ElementRef;
   private ngUnsubscribe = new Subject<void>();
 
-  sectionElements: UIElement[] = [];
+  sectionElements: SectionElementEntry[] = [];
 
   /** The last valid entry per count box, applied when that field is left. */
   private pendingCount: Partial<Record<'gridColumnSizes' | 'gridRowSizes', number>> = {};
@@ -53,19 +68,24 @@ export class SectionMenuComponent implements OnDestroy {
     this.sectionService.updateSectionProperty(this.section, property, value);
   }
 
-  updateElementList() {
-    this.sectionElements = this.section.getAllElements();
+  updateElementList(): void {
+    this.sectionElements = this.section.elements
+      .map(element => [
+        { element, isCompoundChild: false },
+        ...element.getChildElements().map(child => ({ element: child, isCompoundChild: true }))
+      ])
+      .flat();
   }
 
-  onUnitListElClick(element: UIElement): void {
+  onUnitListElClick(entry: SectionElementEntry): void {
+    if (entry.isCompoundChild) return;
     this.elementHoverEnd.emit();
-    this.elementSelected.emit(element.id);
+    this.elementSelected.emit(entry.element.id);
   }
 
-  onUnitListElHover(element: UIElement): void {
-    /* compound children have no position and finding the correct
-    * component to hightlight is too complicated right now. */
-    if (element.position) this.elementHovered.emit(element.id);
+  onUnitListElHover(entry: SectionElementEntry): void {
+    if (entry.isCompoundChild) return;
+    this.elementHovered.emit(entry.element.id);
   }
 
   onUnitListElLeave(): void {

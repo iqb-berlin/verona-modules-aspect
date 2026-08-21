@@ -17,8 +17,6 @@ describe('KeypadComponent', () => {
     @Input() preset!: InputAssistancePreset;
     @Input() layout!: KeyInputLayout;
     @Input() position!: 'floating' | 'right';
-    @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
-    @Input() restrictToAllowedKeys!: boolean;
     @Input() hasArrowKeys!: boolean;
     @Input() hasReturnKey!: boolean;
     @Input() arrows!: string[];

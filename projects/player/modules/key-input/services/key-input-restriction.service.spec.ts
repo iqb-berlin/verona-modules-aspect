@@ -1,23 +1,16 @@
-import { Directive } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
-import { KeyInputRestrictionDirective } from './key-input-restriction.directive';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { KeyInputRestrictionService } from './key-input-restriction.service';
 
-/* The directive is abstract, so it is tested through a minimal concrete subclass. */
-@Directive()
-class TestKeyInputRestrictionDirective extends KeyInputRestrictionDirective {}
-
-describe('KeyInputRestrictionDirective', () => {
-  let directive: TestKeyInputRestrictionDirective;
+describe('KeyInputRestrictionService', () => {
+  let service: KeyInputRestrictionService;
   let inputElement: HTMLInputElement;
 
-  const initDirective = (restrictToAllowedKeys: boolean = true): void => {
-    directive.inputElement = inputElement;
-    directive.restrictToAllowedKeys = restrictToAllowedKeys;
-    directive.hasArrowKeys = false;
-    directive.hasReturnKey = false;
-    directive.arrows = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
-    directive.allowedKeys = ['a', 'b', 'c'];
-    directive.ngAfterViewInit();
+  const attach = (overrides: { hasArrowKeys?: boolean; hasReturnKey?: boolean } = {}): void => {
+    service.attach(inputElement, {
+      allowedKeys: ['a', 'b', 'c'],
+      hasArrowKeys: overrides.hasArrowKeys ?? false,
+      hasReturnKey: overrides.hasReturnKey ?? false
+    });
   };
 
   const keyDown = (key: string): KeyboardEvent => {
@@ -27,59 +20,59 @@ describe('KeyInputRestrictionDirective', () => {
   };
 
   beforeEach(() => {
-    directive = new TestKeyInputRestrictionDirective();
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(KeyInputRestrictionService);
     inputElement = document.createElement('input');
     document.body.appendChild(inputElement);
   });
 
   afterEach(() => {
+    service.detach();
     inputElement.remove();
   });
 
-  it('should create an instance', () => {
-    expect(directive).toBeTruthy();
+  it('should be created', () => {
+    expect(service).toBeTruthy();
   });
 
   it('should allow an allowed key', () => {
-    initDirective();
+    attach();
 
     expect(keyDown('a').defaultPrevented).toBe(false);
   });
 
   it('should block a key that is not allowed', () => {
-    initDirective();
+    attach();
 
     expect(keyDown('x').defaultPrevented).toBe(true);
   });
 
   it('should block arrow keys without arrow key support', () => {
-    initDirective();
+    attach();
 
     expect(keyDown('ArrowLeft').defaultPrevented).toBe(true);
   });
 
   it('should allow arrow keys with arrow key support', () => {
-    initDirective();
-    directive.hasArrowKeys = true;
+    attach({ hasArrowKeys: true });
 
     expect(keyDown('ArrowLeft').defaultPrevented).toBe(false);
   });
 
   it('should block the return key without return key support', () => {
-    initDirective();
+    attach();
 
     expect(keyDown('Enter').defaultPrevented).toBe(true);
   });
 
   it('should allow the return key with return key support', () => {
-    initDirective();
-    directive.hasReturnKey = true;
+    attach({ hasReturnKey: true });
 
     expect(keyDown('Enter').defaultPrevented).toBe(false);
   });
 
   it('should allow deleting an allowed character', () => {
-    initDirective();
+    attach();
     inputElement.value = 'ab';
     inputElement.setSelectionRange(2, 2);
 
@@ -87,7 +80,7 @@ describe('KeyInputRestrictionDirective', () => {
   });
 
   it('should block deleting a character that is not allowed', () => {
-    initDirective();
+    attach();
     inputElement.value = 'ax';
     inputElement.setSelectionRange(2, 2);
 
@@ -95,7 +88,7 @@ describe('KeyInputRestrictionDirective', () => {
   });
 
   it('should block deleting forwards over a character that is not allowed', () => {
-    initDirective();
+    attach();
     inputElement.value = 'xa';
     inputElement.setSelectionRange(0, 0);
 
@@ -103,7 +96,7 @@ describe('KeyInputRestrictionDirective', () => {
   });
 
   it('should block overwriting a selection that contains characters that are not allowed', () => {
-    initDirective();
+    attach();
     inputElement.value = 'axb';
     inputElement.setSelectionRange(0, 3);
 
@@ -111,7 +104,7 @@ describe('KeyInputRestrictionDirective', () => {
   });
 
   it('should refocus the input on dead keys', fakeAsync(() => {
-    initDirective();
+    attach();
     const blur = vi.spyOn(inputElement, 'blur');
     const focus = vi.spyOn(inputElement, 'focus');
 
@@ -123,7 +116,7 @@ describe('KeyInputRestrictionDirective', () => {
   }));
 
   it('should prevent pasting', () => {
-    initDirective();
+    attach();
     const event = new ClipboardEvent('paste', { cancelable: true });
 
     inputElement.dispatchEvent(event);
@@ -131,34 +124,64 @@ describe('KeyInputRestrictionDirective', () => {
     expect(event.defaultPrevented).toBe(true);
   });
 
-  it('should stop restricting keys when destroyed', () => {
-    initDirective();
+  it('should stop restricting keys when detached', () => {
+    attach();
 
-    directive.ngOnDestroy();
+    service.detach();
 
     expect(keyDown('x').defaultPrevented).toBe(false);
   });
 
-  it('should stop preventing pasting when destroyed', () => {
-    initDirective();
+  it('should stop preventing pasting when detached', () => {
+    attach();
     const event = new ClipboardEvent('paste', { cancelable: true });
 
-    directive.ngOnDestroy();
+    service.detach();
     inputElement.dispatchEvent(event);
 
     expect(event.defaultPrevented).toBe(false);
   });
 
-  it('should not restrict anything without key restriction', () => {
-    initDirective(false);
+  it('should not restrict anything before being attached', () => {
+    expect(keyDown('x').defaultPrevented).toBe(false);
+  });
+
+  /* One field is focused at a time: attaching to the next one must not leave the previous one
+     restricted, otherwise a field keeps blocking keys after the focus has left it. */
+  it('should release the previous input when attached to another one', () => {
+    attach();
+    const nextInput = document.createElement('input');
+    document.body.appendChild(nextInput);
+
+    service.attach(nextInput, { allowedKeys: ['a'], hasArrowKeys: false, hasReturnKey: false });
+
+    expect(keyDown('x').defaultPrevented).toBe(false);
+    nextInput.remove();
+  });
+
+  it('should release the field it is attached to', () => {
+    attach();
+
+    service.detachFrom(inputElement);
 
     expect(keyDown('x').defaultPrevented).toBe(false);
   });
 
-  it('should allow editing for element types without selection', () => {
-    initDirective();
-    directive.inputElement = document.createElement('div');
+  /* A component being torn down must not cancel the restriction of the field that has meanwhile
+     taken the focus. */
+  it('should keep the restriction when released with another field', () => {
+    attach();
 
-    expect(directive.canEdit(null)).toBe(true);
+    service.detachFrom(document.createElement('input'));
+
+    expect(keyDown('x').defaultPrevented).toBe(true);
+  });
+
+  it('should allow editing for element types without selection', () => {
+    service.attach(document.createElement('div'), {
+      allowedKeys: ['a'], hasArrowKeys: false, hasReturnKey: false
+    });
+
+    expect(service.canEdit(null)).toBe(true);
   });
 });

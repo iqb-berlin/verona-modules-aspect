@@ -11,6 +11,9 @@ import { MathFieldElement } from 'common/models/elements/text-input-group-elemen
 import { InputElement } from 'common/models/elements/element';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
+import {
+  KeyInputRestrictionService
+} from 'player/modules/key-input/services/key-input-restriction.service';
 import { DeviceService } from '../../../services/device.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -42,7 +45,8 @@ export class TextInputGroupElementComponent
     public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
     public veronaSubscriptionService: VeronaSubscriptionService,
     public validationService: ValidationService,
-    public deviceService: DeviceService
+    public deviceService: DeviceService,
+    public keyInputRestrictionService: KeyInputRestrictionService
   ) {
     super();
   }

@@ -50,7 +50,6 @@ describe('KeypadLayoutComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KeypadLayoutComponent);
     component = fixture.componentInstance;
-    component.inputElement = document.createElement('input');
     component.layout = mockLayout;
     fixture.detectChanges();
   });
@@ -59,19 +58,14 @@ describe('KeypadLayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize rows and allowedKeys in ngOnInit', () => {
+  it('should initialize rows in ngOnInit', () => {
     component.ngOnInit();
     expect(component.rows).toEqual(mockLayout.default);
     expect(component.additionalRows).toEqual(mockLayout.additional);
-    // 'Shift' should be filtered out because length is > 1
-    expect(component.allowedKeys).toEqual(['a', 'b', 'c', '1', '2']);
   });
 
-  it('should add newline to allowedKeys if hasReturnKey is true', () => {
-    component.hasReturnKey = true;
-    component.ngOnInit();
-    expect(component.allowedKeys).toContain('\n');
-  });
+  /* Which keys may be typed is not the layout's business any more: the restriction hangs on the
+     focused field, see KeyInputRestrictionService and KeyLayout.getAllowedKeys (#1143). */
 
   it('should emit keyClicked event when a normal key is clicked', () => {
     vi.spyOn(component.keyClicked, 'emit');

@@ -7,12 +7,10 @@
         *ngIf="keypadService.isOpen && keypadService.position === 'right'"
         @keypadSlideInOut
         [@.disabled] = "isKeypadAnimationDisabled"
-        [inputElement]="keypadService.inputElement"
         [position]="keypadService.position"
         [preset]="keypadService.preset"
         [customStyle]="keypadService.elementComponent.elementModel.inputAssistanceCustomStyle | inputAssistanceCustomStyle"
         [customKeys]="keypadService.elementComponent.elementModel.inputAssistanceCustomKeys | inputAssistanceCustomKeys"
-        [restrictToAllowedKeys]="!!keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
         [hasArrowKeys]="!!keypadService.elementComponent.elementModel.hasArrowKeys"
         [keyStyle]="keypadService.elementComponent.elementModel.keyStyle === 'round' ? 'round' : 'square'"
         [hasBackspaceKey]="!!keypadService.elementComponent.elementModel.hasBackspaceKey"

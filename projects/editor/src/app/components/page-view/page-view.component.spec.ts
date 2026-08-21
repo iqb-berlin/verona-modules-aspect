@@ -136,6 +136,39 @@ describe('PageViewComponent', () => {
     expect(unitService.collapsePage).toHaveBeenCalledWith(2);
   });
 
+  /* Removing the break hands the sections to the page before this one, which the first regular page
+     must not do while the page before it is the permanently visible one (#1298). */
+  it('should not offer removing the page break in front of the permanently visible page', () => {
+    const collapseButton = (): HTMLButtonElement => fixture.nativeElement.querySelectorAll('button')[1];
+    component.pageIndex = 1;
+    unitService.unit.pages = [new EditorPage(), page];
+    fixture.detectChanges();
+
+    expect(collapseButton().disabled).toBe(false);
+
+    unitService.unit.pages[0].alwaysVisible = true;
+    fixture.detectChanges();
+
+    expect(collapseButton().disabled).toBe(true);
+  });
+
+  /* The editor keeps the permanently visible page at index 0 -- switching the flag on moves the page to
+     the front -- but a definition loaded from elsewhere can carry it anywhere, and the player finds it
+     wherever it is. The button asks about the page before this one, as the service does. */
+  it('should not offer removing the page break behind a permanently visible page at any index', () => {
+    const alwaysVisible = new EditorPage();
+    alwaysVisible.alwaysVisible = true;
+    component.pageIndex = 2;
+    unitService.unit.pages = [new EditorPage(), alwaysVisible, page];
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement.querySelectorAll('button')[1] as HTMLButtonElement).disabled).toBe(true);
+  });
+
+  it('should not offer removing the page break on the first page', () => {
+    expect((fixture.nativeElement.querySelectorAll('button')[1] as HTMLButtonElement).disabled).toBe(true);
+  });
+
   it('should survive a section count update without rendered section components', () => {
     expect(() => sectionCountUpdated.next()).not.toThrow();
   });

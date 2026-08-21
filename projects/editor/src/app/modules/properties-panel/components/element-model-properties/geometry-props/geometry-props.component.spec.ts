@@ -165,6 +165,15 @@ describe('GeometryPropsComponent', () => {
     ]);
   });
 
+  /* Cancelling answers with nothing at all; reading a field of that answer threw (#1296). */
+  it('should emit nothing when the geogebra dialog is cancelled', async () => {
+    dialogService.showGeogebraAppDefinitionDialog.mockReturnValue(of(undefined));
+
+    await component.showGeogebraAppDefDialog();
+
+    expect(emitted).toEqual([]);
+  });
+
   /* Both variable lists are arrays, and the merge answers a disagreeing array with null the same way
      it answers any other value. The characterization net cannot pin this: it diverges booleans,
      numbers and strings, but leaves arrays as they are - so the marking is held here (#1138). */

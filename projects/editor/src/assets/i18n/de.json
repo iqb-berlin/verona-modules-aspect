@@ -21,6 +21,7 @@
   "idContainsInvalidCharacters": "ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)",
   "invalidVariableAliases": "Folgende Variablen-IDs entsprechen nicht dem erlaubten Muster (a-z, A-Z, 0-9, _, -) und werden nicht an den Host gemeldet: {{aliases}}",
   "inputInvalid": "Eingabe ungültig",
+  "elementNotAddedFileFailed": "Die Datei konnte nicht geladen werden. Es wurde kein Element angelegt.",
   "outdatedUnit": "Unit Definition aktualisiert",
   "sectionNotReplaced": "Der Abschnitt wurde nicht ersetzt. Der einzufügende Abschnitt wurde verworfen.",
   "save": "Speichern",

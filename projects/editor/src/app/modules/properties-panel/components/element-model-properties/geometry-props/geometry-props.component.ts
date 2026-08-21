@@ -97,7 +97,8 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
 
   async showGeogebraAppDefDialog() {
     const geogebraInfo = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
-    if (geogebraInfo.content) {
+    // Nothing at all when the dialog is cancelled, so the answer is asked before its content (#1296).
+    if (geogebraInfo?.content) {
       this.updateModel.emit({ property: 'appDefinition', value: geogebraInfo.content });
       this.updateModel.emit({ property: 'fileName', value: geogebraInfo.name });
     }

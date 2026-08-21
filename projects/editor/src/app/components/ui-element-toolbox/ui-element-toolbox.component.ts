@@ -48,6 +48,10 @@ export class UiElementToolboxComponent {
               private elementService: ElementService,
               protected dragNDropService: DragNDropService) { }
 
+  /* Stays on the indices, although a new element has no element to follow: after a load the
+     selection is whatever overlay rendered last -- the last section of the last page -- while the
+     frame drawn as selected is the one the indices name. Following the selection would drop the
+     element somewhere the user is not looking (#1204). */
   addUIElement(elementType: UIElementType): void {
     this.elementService.addElementToSection(
       elementType,

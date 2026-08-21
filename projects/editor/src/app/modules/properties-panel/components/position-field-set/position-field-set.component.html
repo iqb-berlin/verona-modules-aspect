@@ -1,10 +1,10 @@
 <fieldset>
   <legend>{{ 'propertiesPanel.position' | translate }}</legend>
-  <div *ngIf="!unitService.unit
-                .pages[selectionService.selectedPageIndex]
-                .sections[selectionService.selectedSectionIndex]
-                .dynamicPositioning;
-                else elseBlock"
+  <!-- What lays the selection out decides which fields apply, not the section the selection indices
+       name: those can point elsewhere, and the panel then offers grid fields for a statically placed
+       element or the other way round (#1204). A compound child counts as dynamically positioned --
+       it is laid out inline and has margins but no coordinates (#1268). -->
+  <div *ngIf="!selectionService.isSelectionDynamicallyPositioned; else elseBlock"
        class="flex-row">
     <mat-form-field *ngIf="positionProperties.xPosition !== undefined"
                     appearance="outline">

@@ -152,6 +152,22 @@ describe('SectionComponent', () => {
     expect(component.sectionCounter).toBeUndefined();
   });
 
+  /* The static section used to set the section index only. In the list view all pages are visible at
+     once, so a click in a static section on another page left the page index behind, and the write
+     paths that read it then acted on a section of the page before (#1204). */
+  it('should set both indices when an element in a static section is selected', () => {
+    component.section.dynamicPositioning = false;
+    component.pageIndex = 1;
+    selectionService.selectedPageIndex = 0;
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('aspect-editor-static-section')
+      .dispatchEvent(new Event('click'));
+
+    expect(selectionService.selectedPageIndex).toBe(1);
+    expect(selectionService.selectedSectionIndex).toBe(component.sectionIndex);
+  });
+
   it('should move elements between sections and follow the selection to the target', () => {
     const elements: UIElement[] = [createPositionedElement('text_1', 0, 0)];
 

@@ -262,6 +262,9 @@ describe('properties panel characterization', () => {
       selectedElements: selectedElements.asObservable(),
       selectedElementComponents: [geometryOverlayStub],
       isCompoundChildSelected: false,
+      /* Named rather than left out: the baseline hangs on which set of position and size fields the
+         panel offers, and an absent flag would decide it by being undefined (#1204). */
+      isSelectionDynamicallyPositioned: false,
       selectedPageIndex: 0,
       selectedSectionIndex: 0,
       getSelectedElements: () => selectedElements.value

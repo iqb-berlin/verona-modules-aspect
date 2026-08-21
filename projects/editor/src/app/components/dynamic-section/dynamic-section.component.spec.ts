@@ -35,6 +35,7 @@ class MockMeasurePipe implements PipeTransform {
   template: ''
 })
 class MockDynamicOverlayComponent {
+  @Input() section!: Section;
   @Input() element!: PositionedUIElement;
   @Output() elementSelected = new EventEmitter();
 }

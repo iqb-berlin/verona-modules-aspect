@@ -16,6 +16,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
   template: ''
 })
 class MockStaticOverlayComponent {
+  @Input() section!: Section;
   @Input() element!: PositionedUIElement;
   @Output() elementSelected = new EventEmitter<unknown>();
 }

@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit.service';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
@@ -23,5 +22,5 @@ export class PositionFieldSetComponent {
       isInputValid?: boolean | null
     }>();
 
-  constructor(public unitService: UnitService, public selectionService: SelectionService) {}
+  constructor(public selectionService: SelectionService) {}
 }

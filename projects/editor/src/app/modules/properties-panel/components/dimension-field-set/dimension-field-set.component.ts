@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -25,8 +24,7 @@ export class DimensionFieldSetComponent {
    */
   @Input() divergingProperties: DivergingProperties | undefined;
 
-  constructor(public unitService: UnitService,
-              public elementService: ElementService,
+  constructor(public elementService: ElementService,
               public selectionService: SelectionService,
               private messageService: MessageService,
               private translateService: TranslateService) { }

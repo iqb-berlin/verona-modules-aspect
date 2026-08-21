@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
+import { Section } from 'common/models/section';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import {
   ClozeChildOverlayComponent
@@ -29,12 +30,26 @@ export class SelectionService {
    */
   isCompoundChildSelected: boolean = false;
   /**
-   * Whether the selection is nothing but such children. The dimension field set asks this rather than
-   * the one above: the controls it decides on describe how an element is laid out, and a child is laid
-   * out inline like an element in a dynamically positioned section. An element the section places
-   * itself is not, so a selection holding both keeps what the section says (#1268).
+   * Whether the selection is nothing but such children. Read by `isSelectionDynamicallyPositioned`
+   * below, which the properties panel asks: the controls it decides on describe how an element is
+   * laid out, and a child is laid out inline like an element in a dynamically positioned section. An
+   * element the section places itself is not, so a selection holding both keeps what the section
+   * says (#1268).
    */
   onlyCompoundChildrenSelected: boolean = false;
+  /**
+   * Whether the selection is laid out by a grid, which is what decides between the two sets of
+   * position and size controls in the properties panel.
+   *
+   * A selection spanning two sections has an answer as long as both position the same way, and a
+   * compound child is laid out inline, i.e. like an element in a dynamically positioned section
+   * (#1268). Where they disagree the answer is no: the panel then offers the coordinate fields, and
+   * a grid element keeps its margins from its own section. Offering the inline controls instead
+   * would write a grid row and a size limit onto an element the section places itself, where both
+   * land in the stored definition and are ignored -- which is the case the rule from #1268 was
+   * written to exclude.
+   */
+  isSelectionDynamicallyPositioned: boolean = false;
 
   constructor() {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
@@ -85,6 +100,13 @@ export class SelectionService {
     this.isCompoundChildSelected = compoundChildren.length > 0;
     this.onlyCompoundChildrenSelected = compoundChildren.length > 0 &&
       compoundChildren.length === this.selectedElementComponents.length;
+    /* Asked of the overlay by its section, not by its class: a compound child overlay has none, and
+       keying on the class would tie this service to the overlay implementation. */
+    const knownSections = this.selectedElementComponents
+      .map(overlayComponent => ('section' in overlayComponent ? overlayComponent.section : undefined))
+      .filter((section): section is Section => !!section);
+    this.isSelectionDynamicallyPositioned = this.onlyCompoundChildrenSelected ||
+      (knownSections.length > 0 && knownSections.every(section => section.dynamicPositioning));
     this._selectedElements.next(this.selectedElementComponents.map(overlayComponent => overlayComponent.element));
   }
 

@@ -287,8 +287,19 @@ export class UnitService {
     this.expertMode = checked;
   }
 
+  /* Only a section this page holds, and not its first one, can start a new page. Both ends leave a page
+     without sections, by different routes: an index the page does not hold splices out an empty list,
+     `deleteSection(0)` takes the new page's own default section away, and the selection below lands on
+     the empty new page; index 0 moves every section, so the page this breaks stays behind with none.
+     Either way the properties panel reads `sections[0]` and throws (#1089), which #1202 turns into an
+     endless row of dialogs.
+
+     This guards the structure, not the page: an index that exists here passes, whether or not it is the
+     one the user chose. That the chosen section is one of THIS page's is what the button decides, which
+     is disabled for a selection on another page (#1203). */
   moveSectionToNewpage(pageIndex: number, sectionIndex: number): void {
     const sectionsLength = this.unit.pages[pageIndex].sections.length;
+    if (sectionIndex <= 0 || sectionIndex >= sectionsLength) return;
     const sectionsToMove = this.unit.pages[pageIndex].sections
       .splice(sectionIndex, sectionsLength - sectionIndex);
 

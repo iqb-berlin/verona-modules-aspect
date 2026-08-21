@@ -13,11 +13,13 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { EditorSection } from 'editor/src/app/models/editor-section';
+import { FileService } from 'common/services/file.service';
 
-/* Methods that need file imports or a fully built unit (addElementToSection,
-   handleTextElementChange, ...) are not covered here; they depend on
-   FileService dialogs and the real EditorUnit and are exercised via the unit service and
-   component specs. */
+/* Methods that need file imports or a fully built unit (handleTextElementChange, ...) are not covered
+   here; they depend on FileService dialogs and the real EditorUnit and are exercised via the unit
+   service and component specs. `addElementToSection` is covered for the element types it adds without
+   a dialog. */
 describe('ElementService', () => {
   let service: ElementService;
   let dialogServiceSpy: SpyObj<DialogService>;
@@ -114,6 +116,12 @@ describe('ElementService', () => {
       idService,
       { bypassSecurityTrustHtml: (value: string) => value } as unknown as DomSanitizer
     );
+  });
+
+  /* One test replaces a FileService static to make the import fail; the spy would otherwise stay
+     installed and let every later audio import fail for a reason invisible at its own site. */
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   /* Deleting elements takes exactly the selected ones, and no overlay is left to re-select and take
@@ -403,6 +411,62 @@ describe('ElementService', () => {
     expect(first.dimensions.width).toBe(240);
     expect(second.dimensions.width).toBe(240);
     expect(Object.keys(first)).not.toContain('width');
+  });
+
+  /* The margins are the only object-valued members of the position group, so a write that hands one
+     value to a selection is the one place where several elements can end up sharing an object -- the
+     same class of bug as #1184 (defaults table) and #1188 (label lists) (#1193). */
+  it('should give every element its own margin object', () => {
+    const first = createPositionedElement('frame_margin_a', 0, 0);
+    const second = createPositionedElement('frame_margin_b', 0, 0);
+    const value = { value: 12, unit: 'px' };
+
+    service.updateElementsPositionProperty([first, second], 'marginTop', value);
+
+    expect(first.position.marginTop).toEqual({ value: 12, unit: 'px' });
+    expect(second.position.marginTop).toEqual({ value: 12, unit: 'px' });
+    expect(first.position.marginTop).not.toBe(second.position.marginTop);
+    expect(first.position.marginTop).not.toBe(value);
+  });
+
+  /* A new element brings the margin its own type declares -- text 10, and 0 for a type whose entry
+     names none. This held before #1193 as well, because the prepared position was spread over the
+     generated group; it is held here so that the group's origin stays visible. */
+  it('should add an element with the margin of its own type', async () => {
+    const section = new EditorSection(undefined, idService);
+
+    await service.addElementToSection('text', section);
+    await service.addElementToSection('button', section);
+
+    const [text, button] = section.elements as PositionedUIElement[];
+    expect(text.position.marginBottom).toEqual({ value: 10, unit: 'px' });
+    expect(button.position.marginBottom).toEqual({ value: 0, unit: 'px' });
+  });
+
+  /* That the element is created at all after a failed import is a gap of its own (#1296) -- what is
+     asserted here is the margin: this is the one path where the position prepared beforehand is
+     missing, so it is the path where completing it with a generator was not dead code but wrote four
+     zero margins over the element's own (#1193). */
+  it('should keep the type margin when the file import fails', async () => {
+    const section = new EditorSection(undefined, idService);
+    vi.spyOn(FileService, 'loadAudio').mockRejectedValue(new Error('read failed'));
+
+    await service.addElementToSection('audio', section);
+
+    const element = section.elements[0] as PositionedUIElement;
+    expect(element.type).toBe('audio');
+    expect(element.position.marginBottom).toEqual({ value: 15, unit: 'px' });
+  });
+
+  it('should add an element into the grid cell it was dropped on', async () => {
+    const section = new EditorSection(undefined, idService);
+
+    await service.addElementToSection('text', section, { x: 3, y: 2 });
+
+    const element = section.elements[0] as PositionedUIElement;
+    expect(element.position.gridRow).toBe(3);
+    expect(element.position.gridColumn).toBe(2);
+    expect(element.position.marginBottom).toEqual({ value: 10, unit: 'px' });
   });
 
   it('should not leave the aligned coordinate on the element itself', () => {

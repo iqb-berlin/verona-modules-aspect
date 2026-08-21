@@ -291,6 +291,15 @@ export class TemplateService {
     });
   }
 
+  /* A template lays out its own section, margins included: `coords` is completed HERE, so every margin
+     the template does not name is 0 and not the one its element type declares (text and marking panel
+     10, image and media 15, table 30, cloze and likert 35). That is the point -- the spacing of a
+     template is tuned as a whole, and the margins the builders write out are tuned against the 22 call
+     sites that name none and contribute nothing. Handing `coords` on as the partial it is would let the
+     normalizer fill those gaps from the type and move all 22 by 10px (#1193).
+
+     The factory takes a partial group since #1193, so this call is a decision and no longer something
+     the type demands. A template that wants the type's margin names it itself. */
   static createElement(elType: UIElementType, coords: Partial<PositionProperties>,
                        params: Partial<UIElement>, idService: IDService): PositionedUIElement {
     return ElementFactory.createElement({

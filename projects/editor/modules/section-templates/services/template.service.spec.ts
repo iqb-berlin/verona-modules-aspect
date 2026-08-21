@@ -170,4 +170,29 @@ describe('TemplateService', () => {
     expect(element.position.gridColumn).toBe(3);
     expect((element as TextElement).text).toBe('Hallo');
   });
+
+  /* A margin a template does not name is 0, not the one the element type declares -- the spacing of a
+     template section is tuned as a whole: the margins the builders write out are tuned against the 22
+     neighbours that name none and contribute nothing. Letting the type fill those 22 gaps moves them by
+     10px each, which is why the position group is completed in `createElement` and not left to the
+     normalizer (#1193). */
+  it('should give a template element no margin of its own type', () => {
+    const idService = TestBed.inject(IDService);
+
+    const text = TemplateService.createElement('text', { gridRow: 1, gridColumn: 1 }, { text: 'T' }, idService);
+    const image = TemplateService.createElement('image', { gridRow: 2, gridColumn: 1 }, {}, idService);
+
+    expect(text.position.marginBottom).toEqual({ value: 0, unit: 'px' });
+    expect(image.position.marginBottom).toEqual({ value: 0, unit: 'px' });
+  });
+
+  it('should keep a margin the template names itself', () => {
+    const idService = TestBed.inject(IDService);
+
+    const element = TemplateService.createElement(
+      'text', { gridRow: 1, gridColumn: 1, marginBottom: { value: 40, unit: 'px' } }, { text: 'T' }, idService
+    );
+
+    expect(element.position.marginBottom).toEqual({ value: 40, unit: 'px' });
+  });
 });

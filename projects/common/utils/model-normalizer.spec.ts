@@ -390,8 +390,8 @@ describe('ModelNormalizer', () => {
      object-valued default, or a new generator that forwards one, is caught without editing them.
 
      What they do NOT cover, so the heading is not read as more than it is: sharing that does not
-     originate in the tables. The base constructor merges the INCOMING properties object shallowly, and
-     the editor's position write path hands one Measurement to every selected element (#1193).
+     originate in the tables. The base constructor merges the INCOMING properties object shallowly. The
+     editor's position write path was the other case of that kind and copies per element since #1193.
 
      PAYLOAD gives the compound types real children -- a bare `{ type }` leaves rows/elements/document
      empty, so the recursion would never run.

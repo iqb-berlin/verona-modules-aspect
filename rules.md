@@ -256,7 +256,9 @@ Rationale:
 The merged view the properties panel reads must share no plain data with the selected elements, and a
 write that hands one value to a selection must give every element its own copy. Both go through
 `copyPlainData` (`projects/editor/src/app/utils/`), applied in `createCombinedProperties` and per
-element in `ElementService.updateElementsProperty`. It decides by prototype:
+element in the write paths that distribute one value: `ElementService.updateElementsProperty` for the
+element's own properties, `updateElementsPositionProperty` for the position group, whose four margins
+are the only object-valued members of any group (#1193). It decides by prototype:
 
 - plain objects and arrays are copied recursively — they are what the panel edits and what a write
   distributes,
@@ -264,7 +266,7 @@ element in `ElementService.updateElementsProperty`. It decides by prototype:
   would carry their IDs a second time; the `idService` on a merged element would lose its methods.
 
 - Avoid: copying single fields after the merge (`combinedProperties.rows = [...rows]`)
-- Prefer: the one copy at each of the two places above
+- Prefer: the one copy at each of the places above
 
 Rationale:
 - the panel edits some of what it reads in place — removing, moving and editing an option all work on

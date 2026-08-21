@@ -178,11 +178,10 @@ export class KeyLayout {
     }
   };
 
-  /* Which keys a hardware keyboard may produce for a preset. Only the single character entries of
-     the default and the additional rows count: multi character entries ('Shift', 'Backspace') are
-     commands, not characters. The shift rows are left out on purpose -- the restriction has always
-     been keyed on the unshifted layout, and widening it here would change which characters existing
-     tasks accept. */
+  /* Which keys a preset may produce. Every layer counts, the shift layer included: the keypad offers
+     its uppercase characters, so they have to be as typeable and as deletable as the lowercase ones
+     -- otherwise one of them lands in the field and no backspace gets it out again (#1291). Only the
+     multi character entries drop out ('Shift', 'Backspace'): those are commands, not characters. */
   static getAllowedKeys = (
     preset: InputAssistancePreset | 'keyboard',
     customKeys: string = '',
@@ -190,10 +189,9 @@ export class KeyLayout {
     hasReturnKey: boolean = false
   ): string[] => {
     const layout = KeyLayout.get(preset, customKeys, hasBackspaceKey);
-    const keys = [
-      ...layout.default.flat().filter(key => key.length === 1),
-      ...layout.additional.flat().filter(key => key.length === 1)
-    ];
-    return hasReturnKey ? [...keys, '\n'] : keys;
+    const keys = [...layout.default, ...layout.shift, ...layout.additional]
+      .flat()
+      .filter(key => key.length === 1);
+    return [...new Set(hasReturnKey ? [...keys, '\n'] : keys)];
   };
 }

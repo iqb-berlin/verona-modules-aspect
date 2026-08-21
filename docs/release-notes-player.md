@@ -40,6 +40,7 @@ Player
   - **Folge für vorhandene Antworten:** In solchen Aufgaben verschieben sich Textmarkierungen, die vor dieser Version gesetzt wurden, sofern sie hinter einer Formel liegen — die Markierungen sind als Zeichenpositionen gespeichert, und die Formel hat jetzt eine andere Länge. Neu gesetzte Markierungen sind davon nicht betroffen
 - Eingabefeld, Eingabebereich mit der Einstellung "nur Zeichen der Eingabehilfe zulassen"
   - Die Zeichenbeschränkung gilt ab dem Hineinklicken in das Feld. Bisher wurde sie erst wirksam, sobald die Eingabehilfe sichtbar war — rund eine Zehntelsekunde später. Wer in dieser Zeit tippte, konnte gesperrte Zeichen in das Feld schreiben, und sie ließen sich anschließend nicht mehr löschen, weil der Schutz der Vorbelegung auch sie festhielt
+  - Bei der Eingabehilfe "französisch" zählen die Großbuchstaben der Shift-Ebene zu den erlaubten Zeichen. Bisher setzte die Eingabehilfe sie zwar ins Feld, die Beschränkung kannte sie aber nicht — ein so gesetztes "Â" ließ sich nicht mehr entfernen, und mit ihm blieben auch die Zeichen davor stehen
 
 ## 2.12.6
 ### Fehlerbehebungen

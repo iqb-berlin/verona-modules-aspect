@@ -17,10 +17,16 @@ describe('KeyLayout', () => {
         .toEqual(['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '+', '-', '·', ':', '=']);
     });
 
-    /* The shift rows are deliberately not included: the restriction has always been keyed on the
-       unshifted layout, so 'Â' stays blocked although the keypad offers it via Shift. */
-    it('should not include the shift rows', () => {
-      expect(KeyLayout.getAllowedKeys('french')).not.toContain('Â');
+    /* The keypad offers the uppercase characters of the french preset through its Shift key, so a
+       restricted field has to accept and release them like the lowercase ones (#1291). */
+    it('should include the shift rows', () => {
+      expect(KeyLayout.getAllowedKeys('french')).toContain('Â');
+    });
+
+    it('should list a key that appears in several layers once', () => {
+      const allowedKeys = KeyLayout.getAllowedKeys('french');
+
+      expect(allowedKeys.filter(key => key === 'ò')).toEqual(['ò']);
     });
 
     it('should use the custom keys of the custom preset', () => {

@@ -216,7 +216,10 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showGeogebraAppDefinitionDialog(): Observable<FileInformation> {
+  /* Undefined when the dialog is closed without a result -- the cancel button, ESC, a click on the
+     backdrop. Declared, because both callers read a field of it and would throw instead of taking the
+     cancellation for what it is (#1296). */
+  showGeogebraAppDefinitionDialog(): Observable<FileInformation | undefined> {
     const dialogRef = this.dialog.open(GeogebraAppDefinitionDialogComponent, {
       data: { },
       autoFocus: false

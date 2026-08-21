@@ -12,6 +12,7 @@ import { ElementOverlay } from 'editor/src/app/directives/element-overlay.direct
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import { TranslateService } from '@ngx-translate/core';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 import { FileService } from 'common/services/file.service';
@@ -23,6 +24,7 @@ import { FileService } from 'common/services/file.service';
 describe('ElementService', () => {
   let service: ElementService;
   let dialogServiceSpy: SpyObj<DialogService>;
+  let messageServiceSpy: SpyObj<MessageService>;
   let selectionService: SelectionService;
   let idService: IDService;
   let unitServiceMock: {
@@ -105,15 +107,21 @@ describe('ElementService', () => {
           .find(section => section.elements.includes(element))
       }
     };
-    dialogServiceSpy = createSpyObj<DialogService>(['showTextEditDialog', 'showDeleteReferenceDialog']);
+    dialogServiceSpy = createSpyObj<DialogService>([
+      'showTextEditDialog', 'showDeleteReferenceDialog', 'showGeogebraAppDefinitionDialog'
+    ]);
     selectionService = new SelectionService();
     idService = new IDService();
+    messageServiceSpy = createSpyObj<MessageService>(['showReferencePanel', 'showError']);
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     service = new ElementService(
       unitServiceMock as unknown as UnitService,
       selectionService,
       dialogServiceSpy,
-      createSpyObj<MessageService>(['showReferencePanel']),
+      messageServiceSpy,
       idService,
+      translateServiceSpy,
       { bypassSecurityTrustHtml: (value: string) => value } as unknown as DomSanitizer
     );
   });
@@ -443,19 +451,33 @@ describe('ElementService', () => {
     expect(button.position.marginBottom).toEqual({ value: 0, unit: 'px' });
   });
 
-  /* That the element is created at all after a failed import is a gap of its own (#1296) -- what is
-     asserted here is the margin: this is the one path where the position prepared beforehand is
-     missing, so it is the path where completing it with a generator was not dead code but wrote four
-     zero margins over the element's own (#1193). */
-  it('should keep the type margin when the file import fails', async () => {
+  /* Until #1296 the element was added even when the import had failed -- without src or fileName, and
+     without a word. It also carried four zero margins, which is what #1193 held here; that assertion
+     went with the element it was about, and the margins a new element brings are held above. */
+  it('should not add an element when the file import fails', async () => {
     const section = new EditorSection(undefined, idService);
     vi.spyOn(FileService, 'loadAudio').mockRejectedValue(new Error('read failed'));
 
     await service.addElementToSection('audio', section);
 
-    const element = section.elements[0] as PositionedUIElement;
-    expect(element.type).toBe('audio');
-    expect(element.position.marginBottom).toEqual({ value: 15, unit: 'px' });
+    expect(section.elements.length).toBe(0);
+    expect(messageServiceSpy.showError).toHaveBeenCalledWith('elementNotAddedFileFailed');
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+  });
+
+  /* A cancelled dialog is the user's own decision and needs no message -- it is told apart from a
+     failure by the value it rejects with. Cancelling answers with nothing at all, which is what the
+     dialog really hands back: `afterClosed()` of a dialog closed by its cancel button, ESC or the
+     backdrop. */
+  it('should add nothing and say nothing when the dialog is cancelled', async () => {
+    const section = new EditorSection(undefined, idService);
+    dialogServiceSpy.showGeogebraAppDefinitionDialog.mockReturnValue(of(undefined));
+
+    await service.addElementToSection('geometry', section);
+
+    expect(section.elements.length).toBe(0);
+    expect(messageServiceSpy.showError).not.toHaveBeenCalled();
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
   });
 
   it('should add an element into the grid cell it was dropped on', async () => {

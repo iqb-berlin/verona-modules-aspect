@@ -28,6 +28,8 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
+import { DialogCanceledError } from 'editor/src/app/classes/dialog-canceled-error';
 import { TableElement, TableHeaderCell } from 'common/models/elements/compound-group-elements/table/table';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
@@ -54,16 +56,25 @@ export class ElementService {
               private dialogService: DialogService,
               private messageService: MessageService,
               private idService: IDService,
+              private translateService: TranslateService,
               private sanitizer: DomSanitizer) { }
 
   async addElementToSection(elementType: UIElementType, sectionParam?: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
     const section = sectionParam || this.unitService.getSelectedSection();
-    let newElementProperties: PreparedElementProps = {};
+    let newElementProperties: PreparedElementProps;
     try {
       newElementProperties = await this.prepareElementProps(elementType, section, coordinates);
     } catch (e) {
-      if (e === 'dialogCanceled') return;
+      /* Nothing is added when the preparation did not finish. A cancelled dialog is the user's own
+         decision and says so by itself; a file that could not be read has to be reported, or the
+         element the user asked for is simply absent. Before #1296 the element was added either way,
+         with neither `src` nor `fileName` -- silently, and to be deleted before the import could be
+         tried again. */
+      if (!(e instanceof DialogCanceledError)) {
+        this.messageService.showError(this.translateService.instant('elementNotAddedFileFailed'));
+      }
+      return;
     }
     /* The position prepared above is handed on as the partial it is: the factory normalizes, and the
        normalizer builds the group from the element's own defaults plus the members named there -- a
@@ -81,16 +92,16 @@ export class ElementService {
     const newElementProperties: PreparedElementProps = {};
 
     switch (elementType) {
-      case 'geometry':
-        await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog())
-          .then(geogebraInfo => {
-            (newElementProperties as GeometryProperties).appDefinition = geogebraInfo.content;
-            (newElementProperties as GeometryProperties).fileName = geogebraInfo.name;
-          });
-        if (!(newElementProperties as GeometryProperties).appDefinition) {
-          return Promise.reject('dialogCanceled');
-        }
+      case 'geometry': {
+        const geogebraInfo = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
+        /* Asked of the dialog's answer, not of the property it would have filled: a cancelled dialog
+           answers with nothing at all, and reading a field of it threw a TypeError -- which the caller
+           now reports as a failed file import (#1296). */
+        if (!geogebraInfo?.content) return Promise.reject(new DialogCanceledError());
+        (newElementProperties as GeometryProperties).appDefinition = geogebraInfo.content;
+        (newElementProperties as GeometryProperties).fileName = geogebraInfo.name;
         break;
+      }
       case 'audio':
         await FileService.loadAudio().then(audio => {
           (newElementProperties as AudioProperties).src = audio.content;
@@ -109,7 +120,7 @@ export class ElementService {
         const base64 = await FileService.readFileAsText(file, true);
         if (FileService.isResizable(file.type)) {
           const options = await firstValueFrom(this.dialogService.showImageResizeDialog(base64, {}));
-          if (!options) return Promise.reject('dialogCanceled');
+          if (!options) return Promise.reject(new DialogCanceledError());
           (newElementProperties as ImageProperties).src = await FileService.scaleImage(base64, options);
         } else {
           (newElementProperties as ImageProperties).src = base64;

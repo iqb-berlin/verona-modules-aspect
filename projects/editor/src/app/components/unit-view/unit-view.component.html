@@ -77,14 +77,21 @@
             </ng-template>
             <ng-template matTabContent>
               <div *ngIf="pagesLoaded" cdkDropListGroup >
-                <aspect-editor-page-view *ngFor="let page of
-                  (unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.slice(1) : unitService.unit.pages);
-                  let pageIndex = index"
-                                         [page]="page"
-                                         [pageIndex]="pageIndex + (unitService.unit.pages[0].alwaysVisible ? 1 : 0)"
-                                         [isLastPage]="pageIndex == unitService.unit.pages.length - 1"
-                                         (alwaysVisiblePageModified)="refreshTabs()">
-                </aspect-editor-page-view>
+                <!-- `$last` rather than a comparison: this loops over the list without the permanently
+                     visible page, so its own last entry is the last page, and the offset `pageIndex`
+                     below needs does not have to be got right a second time. Comparing the sliced index
+                     with the length of the full list was never true while a permanently visible page
+                     existed, so the preview of the unit's next button appeared on no page at all
+                     (#1299). The player binds its own `isLastPage` from `last` the same way. -->
+                @for (page of (unitService.unit.pages[0].alwaysVisible ?
+                        unitService.unit.pages.slice(1) : unitService.unit.pages);
+                      track page; let pageIndex = $index, last = $last) {
+                  <aspect-editor-page-view [page]="page"
+                                           [pageIndex]="pageIndex + (unitService.unit.pages[0].alwaysVisible ? 1 : 0)"
+                                           [isLastPage]="last"
+                                           (alwaysVisiblePageModified)="refreshTabs()">
+                  </aspect-editor-page-view>
+                }
               </div>
               <button mat-fab extended class="add-page-button" [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">
                 <mat-icon>add</mat-icon>Neue Seite

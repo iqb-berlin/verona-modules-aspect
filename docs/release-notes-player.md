@@ -38,6 +38,8 @@ Player
 - Formeln in Texten, Beschriftungen und Optionen
   - Formeln aus Aufgaben, die vor Editor 2.12.4 geschrieben wurden, wurden in Chrome-basierten Browsern (auch im Safe Exam Browser) und auf iPads falsch dargestellt: der Überstrich lag nur über dem ersten Zeichen, Brüche waren zu klein, Wurzeln verzerrt. In Firefox sah dieselbe Aufgabe korrekt aus. Ursache war das in der Aufgabe mitgespeicherte HTML der Formel, das der jeweilige Browser selbst setzen musste. Die Darstellung wird jetzt aus dem ebenfalls gespeicherten LaTeX aufgebaut und sieht damit in allen Browsern gleich aus
   - **Folge für vorhandene Antworten:** In solchen Aufgaben verschieben sich Textmarkierungen, die vor dieser Version gesetzt wurden, sofern sie hinter einer Formel liegen — die Markierungen sind als Zeichenpositionen gespeichert, und die Formel hat jetzt eine andere Länge. Neu gesetzte Markierungen sind davon nicht betroffen
+- Eingabefeld, Eingabebereich mit der Einstellung "nur Zeichen der Eingabehilfe zulassen"
+  - Die Zeichenbeschränkung gilt ab dem Hineinklicken in das Feld. Bisher wurde sie erst wirksam, sobald die Eingabehilfe sichtbar war — rund eine Zehntelsekunde später. Wer in dieser Zeit tippte, konnte gesperrte Zeichen in das Feld schreiben, und sie ließen sich anschließend nicht mehr löschen, weil der Schutz der Vorbelegung auch sie festhielt
 
 ## 2.12.6
 ### Fehlerbehebungen

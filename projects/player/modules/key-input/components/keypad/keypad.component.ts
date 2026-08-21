@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
-import { KeyInputLayout, KeyLayout } from 'player/modules/key-input/configs/key-layout';
+import { ARROW_KEYS, KeyInputLayout, KeyLayout } from 'player/modules/key-input/configs/key-layout';
 import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/models/input-element-interfaces';
 
 @Component({
@@ -15,8 +15,6 @@ export class KeypadComponent implements OnInit {
   @Input() customStyle!: InputAssistanceCustomStyle;
   @Input() customKeys!: string;
   @Input() position!: 'floating' | 'right';
-  @Input() inputElement!: HTMLElement;
-  @Input() restrictToAllowedKeys!: boolean;
   @Input() hasArrowKeys!: boolean;
   @Input() hasReturnKey!: boolean;
   @Input() hasBackspaceKey!: boolean;
@@ -26,7 +24,7 @@ export class KeypadComponent implements OnInit {
   @Output() keyClicked = new EventEmitter<string>();
   @Output() select = new EventEmitter<string>();
 
-  arrows: string[] = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+  arrows: string[] = ARROW_KEYS;
   layout: KeyInputLayout = { default: [], shift: [], additional: [] };
 
   ngOnInit(): void {

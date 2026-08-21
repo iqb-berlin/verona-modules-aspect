@@ -1,5 +1,9 @@
 import { InputAssistancePreset } from 'common/models/input-element-interfaces';
 
+/* The arrow keys the keypad offers and the restriction lets through -- one list, so a key the
+   keypad renders cannot be one the restriction blocks. */
+export const ARROW_KEYS: string[] = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+
 export interface KeyInputLayout {
   default: string[][],
   shift: string[][],
@@ -172,5 +176,24 @@ export class KeyLayout {
         };
       }
     }
+  };
+
+  /* Which keys a hardware keyboard may produce for a preset. Only the single character entries of
+     the default and the additional rows count: multi character entries ('Shift', 'Backspace') are
+     commands, not characters. The shift rows are left out on purpose -- the restriction has always
+     been keyed on the unshifted layout, and widening it here would change which characters existing
+     tasks accept. */
+  static getAllowedKeys = (
+    preset: InputAssistancePreset | 'keyboard',
+    customKeys: string = '',
+    hasBackspaceKey: boolean = false,
+    hasReturnKey: boolean = false
+  ): string[] => {
+    const layout = KeyLayout.get(preset, customKeys, hasBackspaceKey);
+    const keys = [
+      ...layout.default.flat().filter(key => key.length === 1),
+      ...layout.additional.flat().filter(key => key.length === 1)
+    ];
+    return hasReturnKey ? [...keys, '\n'] : keys;
   };
 }

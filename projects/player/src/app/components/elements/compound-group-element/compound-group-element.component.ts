@@ -41,6 +41,9 @@ import {
 } from 'player/src/app/components/elements/text-group-element/text-group-element.component';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
+import {
+  KeyInputRestrictionService
+} from 'player/modules/key-input/services/key-input-restriction.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -90,7 +93,8 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     public mediaPlayerService: MediaPlayerService,
     private renderer: Renderer2,
     private applicationRef: ApplicationRef,
-    private markingPanelService: MarkingPanelService
+    private markingPanelService: MarkingPanelService,
+    public keyInputRestrictionService: KeyInputRestrictionService
   ) {
     super();
   }

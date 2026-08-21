@@ -1,6 +1,6 @@
 import { Directive, OnDestroy } from '@angular/core';
 import { ElementFormGroupDirective } from 'player/src/app/directives/element-form-group.directive';
-import { InputElement, UIElement } from 'common/models/elements/element';
+import { InputElement, TextInputElement, UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,11 @@ import { TextInputComponentType } from 'player/src/app/models/text-input-compone
 import { RangeSelectionService } from 'common/services/range-selection.service';
 import { MathfieldElement } from '@iqb/mathlive';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
+import {
+  KeyInputRestrictionService
+} from 'player/modules/key-input/services/key-input-restriction.service';
+import { KeyLayout } from 'player/modules/key-input/configs/key-layout';
+import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { MathFieldComponent } from 'common/components/text-input-group-elements/math-field/math-field.component';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,6 +23,8 @@ import { takeUntil } from 'rxjs/operators';
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
   isKeypadOpen: boolean = false;
   inputElement!: HTMLTextAreaElement | HTMLInputElement | HTMLElement;
+  /* The field this component put under key restriction, kept to release exactly that one again. */
+  private restrictedInputElement?: HTMLElement;
 
   keypadEnterKeySubscription!: Subscription;
   keypadDeleteCharactersSubscription!: Subscription;
@@ -29,6 +36,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   abstract keypadService: KeypadService;
   abstract keyboardService: KeyboardService;
   abstract mathKeyboardService: MathKeyboardService;
+  abstract keyInputRestrictionService: KeyInputRestrictionService;
 
   // eslint-disable-next-line class-methods-use-this
   onPaste(event: ClipboardEvent, elementModel: UIElement): void {
@@ -65,6 +73,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
         .toggle(focusedTextInput as { inputElement: MathfieldElement; focused: boolean }, elementComponent);
       this.forceCloseKeyboard();
     } else if (!(elementComponent instanceof MathFieldComponent)) {
+      this.updateKeyInputRestriction(focusedTextInput, elementComponent.elementModel);
       if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
         promises.push(this.keyboardService
           .toggleAsync(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard));
@@ -92,6 +101,36 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
             }
           });
       }
+    }
+  }
+
+  /* Bound to the focus, not to the keypad: the keypad opens 100 ms later (KeypadService.toggleAsync,
+     debouncing its animation) and used to register the keydown listener only once its view existed.
+     Everything typed in between reached the field unchecked, so typing fast enough put forbidden
+     characters into a restricted field (#1143). The condition is the one the keypad had: the
+     restriction exists where the input assistance would. */
+  private updateKeyInputRestriction(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
+                                    elementModel: TextInputElement): void {
+    if (focusedTextInput.focused &&
+      elementModel.restrictedToInputAssistanceChars &&
+      this.shallOpenKeypad(elementModel)) {
+      /* The same rule the keypad uses to decide whether it offers a Return key, so it cannot offer
+         one the restriction blocks. */
+      const hasReturnKey = new HasReturnKeyPipe().transform(elementModel);
+      this.restrictedInputElement = focusedTextInput.inputElement;
+      this.keyInputRestrictionService.attach(focusedTextInput.inputElement, {
+        allowedKeys: KeyLayout.getAllowedKeys(
+          elementModel.inputAssistancePreset,
+          elementModel.inputAssistanceCustomKeys,
+          elementModel.hasBackspaceKey,
+          hasReturnKey
+        ),
+        hasArrowKeys: elementModel.hasArrowKeys,
+        hasReturnKey
+      });
+    } else {
+      this.keyInputRestrictionService.detachFrom(this.restrictedInputElement);
+      this.restrictedInputElement = undefined;
     }
   }
 
@@ -403,6 +442,9 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   ngOnDestroy(): void {
+    /* A programmatic teardown -- a page navigation or a new unit -- gives no blur, so the field
+       would stay restricted and the singleton would hold on to a detached input. */
+    this.keyInputRestrictionService.detachFrom(this.restrictedInputElement);
     this.unsubscribeFromKeypadEvents();
     this.unsubscribeFromKeyboardEvents();
     super.ngOnDestroy();

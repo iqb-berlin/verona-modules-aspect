@@ -1,7 +1,6 @@
 <ng-content></ng-content>
 @if (pages.length && (!playerConfig.printMode || playerConfig.printMode === 'off')) {
-  <aspect-player-layout *ngIf="pages?.length"
-                        aspectUnitState
+  <aspect-player-layout aspectUnitState
                         [presentationProgressStatus]="presentationProgressStatus"
                         aspectPlayerState
                         [isVisibleIndexPages]="pagesLayout.isVisibleIndexPages"

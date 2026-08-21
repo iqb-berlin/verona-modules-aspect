@@ -313,7 +313,13 @@ export class UnitService {
     this.updateUnitDefinition();
   }
 
+  /* There has to be a regular page before this one to hand the sections to: page 0 has none at all, and
+     a permanently visible page is not a page they may land on -- they would be shown alongside every
+     other page from then on, and this page, which held them, is deleted below. The button is locked for
+     both cases (#1298); this guards it where the pages are actually written, as `moveSectionToNewpage`
+     does next door (#1203). */
   collapsePage(pageIndex: number): void {
+    if (pageIndex <= 0 || this.unit.pages[pageIndex - 1].alwaysVisible) return;
     const sectionsToMove = this.unit.pages[pageIndex].sections;
     sectionsToMove.forEach(section => this.unit.pages[pageIndex - 1].addSection(section));
     this.selectionService.selectedPageIndex = pageIndex - 1;

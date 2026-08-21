@@ -507,6 +507,68 @@ describe('UnitService - page break (#1203)', () => {
   });
 });
 
+/* Removing a page break hands a page's sections to the page before it and deletes the page. The page
+   before it may be the permanently visible one, which is not a page they may land on (#1298). */
+describe('UnitService - removing a page break (#1298)', () => {
+  let service: UnitService;
+  let selectionService: SelectionService;
+  let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
+
+  const loadPages = (alwaysVisibleFirst: boolean): void => {
+    const blueprint = createUnitBlueprint('unit-with-two-pages');
+    blueprint.pages[0].alwaysVisible = alwaysVisibleFirst;
+    blueprint.pages.push({ ...blueprint.pages[0], alwaysVisible: false });
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  };
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    selectionService = new SelectionService();
+    veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
+    service = new UnitService(
+      selectionService,
+      veronaApiServiceSpy,
+      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<DialogService>(['showUnitDefErrorDialog']),
+      new IDService(),
+      translateServiceSpy
+    );
+  });
+
+  it('hands the sections to the page before it and takes the page away', () => {
+    loadPages(false);
+
+    service.collapsePage(1);
+
+    expect(service.unit.pages.length).toBe(1);
+    expect(service.unit.pages[0].sections.length).toBe(2);
+    expect(selectionService.selectedPageIndex).toBe(0);
+    expect(selectionService.selectedSectionIndex).toBe(1);
+  });
+
+  /* The sections would be shown alongside every other page from then on, and the unit would be left
+     with nothing but its permanently visible page -- the state the page menu's delete button locks. */
+  it('does not hand them to the permanently visible page', () => {
+    loadPages(true);
+
+    service.collapsePage(1);
+
+    expect(service.unit.pages.length).toBe(2);
+    expect(service.unit.pages[0].sections.length).toBe(1);
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+
+  it('does not collapse the first page, which has none before it', () => {
+    loadPages(false);
+
+    service.collapsePage(0);
+
+    expect(service.unit.pages.length).toBe(2);
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+});
+
 function createUnitBlueprint(marker: string, version: string = VersionManager.getCurrentVersion()): UnitProperties {
   return {
     type: 'aspect-unit-definition',

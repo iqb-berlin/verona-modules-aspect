@@ -16,7 +16,16 @@
               (click)="moveSectionToNewpage(pageIndex)">
         <mat-icon>expand</mat-icon>
       </button>
-      <button mat-icon-button [disabled]="pageIndex === 0"
+      <!-- Removing the break hands this page's sections to the page before it and deletes this one, so a
+           permanently visible page before it would take them over - they would be shown in its own
+           container beside every page from then on, and with two pages nothing but that page would be
+           left. The page menu locks moving a page in front of it and deleting the last regular page for
+           the same reason (#1298). Asked of the page before this one, not of index 1: the editor keeps
+           the permanently visible page at index 0, but a definition loaded from elsewhere need not, and
+           this is the same rule `collapsePage` applies. -->
+      <button mat-icon-button
+              [disabled]="pageIndex === 0 ||
+                          unitService.unit.pages[pageIndex - 1].alwaysVisible"
               [matTooltip]="'Seitenumbruch entfernen'"
               [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
               (click)="collapsePage(pageIndex)">

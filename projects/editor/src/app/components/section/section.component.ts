@@ -51,23 +51,31 @@ export class SectionComponent {
 
   selectElement(elementID: string): void {
     const elementComponent = this.getElementOverlay(elementID);
-    this.selectionService.selectElement({ elementComponent: elementComponent, multiSelect: false });
+    if (elementComponent) {
+      this.selectionService.selectElement({ elementComponent: elementComponent, multiSelect: false });
+    }
   }
 
-  highlightElement(elementID: string) {
+  highlightElement(elementID: string): void {
     const elementComponent = this.getElementOverlay(elementID);
     this.highlightedElementComponent = elementComponent;
-    elementComponent.highlight();
+    elementComponent?.highlight();
   }
 
   removeHighlight(): void {
     this.highlightedElementComponent?.removeHighlight();
   }
 
-  private getElementOverlay(elementID: string): ElementOverlay {
+  /**
+   * Only the elements positioned in this section have an overlay, so an ID this section does not
+   * render itself -- the child of a compound element, an element already removed -- has none, and
+   * both callers have to live with that. Hovering a likert row in the element list called
+   * `highlight()` on the missing one and threw (#1078).
+   */
+  private getElementOverlay(elementID: string): ElementOverlay | undefined {
     return this.sectionComponents.toArray()
-      .map(sectionComp => sectionComp.childElementComponents.toArray())[0]
-      .filter(elComp => elComp.element.id === elementID)[0];
+      .flatMap(sectionComp => sectionComp.childElementComponents.toArray())
+      .find(elComp => elComp.element.id === elementID);
   }
 
   elementDropped(event: CdkDragDrop<{ pageIndex: number, sectionIndex: number; gridCoordinates?: number[]; }>): void {

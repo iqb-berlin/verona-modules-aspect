@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, Output, QueryList
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { UIElement } from 'common/models/elements/element';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { SectionCounter } from 'common/utils/section-counter';
+import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { SectionComponent } from 'editor/src/app/components/section/section.component';
 import { EditorPage } from 'editor/src/app/models/editor-page';
@@ -43,6 +44,7 @@ class MockDynamicSectionComponent {
   @Input() isSelected!: boolean;
   @Output() elementSelected = new EventEmitter();
   @Output() transferElement = new EventEmitter<unknown>();
+  childElementComponents = new QueryList<ElementOverlay>();
 }
 
 type DropContainerData = { pageIndex: number, sectionIndex: number; gridCoordinates?: number[]; };
@@ -195,5 +197,52 @@ describe('SectionComponent', () => {
 
   it('should sum up the section heights of the selected page', () => {
     expect(component.getPageHeight()).toBe(300);
+  });
+
+  describe('the overlay of an element', () => {
+    let overlay: ElementOverlay;
+
+    const createOverlay = (id: string): ElementOverlay => ({
+      element: { id },
+      highlight: vi.fn(),
+      removeHighlight: vi.fn(),
+      setSelected: vi.fn()
+    } as unknown as ElementOverlay);
+
+    beforeEach(() => {
+      overlay = createOverlay('text_1');
+      (component.sectionComponents.first as unknown as MockDynamicSectionComponent)
+        .childElementComponents.reset([overlay]);
+    });
+
+    it('should highlight and unhighlight the element of the given ID', () => {
+      component.highlightElement('text_1');
+      expect(overlay.highlight).toHaveBeenCalled();
+
+      component.removeHighlight();
+      expect(overlay.removeHighlight).toHaveBeenCalled();
+    });
+
+    it('should select the element of the given ID', () => {
+      const selectElement = vi.spyOn(selectionService, 'selectElement');
+
+      component.selectElement('text_1');
+
+      expect(selectElement).toHaveBeenCalledWith({ elementComponent: overlay, multiSelect: false });
+    });
+
+    /* The children of a compound element are listed in the element list but rendered by their
+       parent, so they have no overlay of their own (#1078). */
+    it('should ignore an ID this section does not render', () => {
+      const selectElement = vi.spyOn(selectionService, 'selectElement');
+
+      expect(() => component.highlightElement('likert-row_1')).not.toThrow();
+      expect(component.highlightedElementComponent).toBeUndefined();
+
+      component.selectElement('likert-row_1');
+      expect(selectElement).not.toHaveBeenCalled();
+
+      expect(() => component.removeHighlight()).not.toThrow();
+    });
   });
 });

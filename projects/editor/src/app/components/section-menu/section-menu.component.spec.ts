@@ -16,8 +16,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { UIElement } from 'common/models/elements/element';
-import { Measurement } from 'common/models/ui-element-interfaces';
+import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
+import {
+  LikertRowElement
+} from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { Measurement, PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   NumberFieldBadInputDirective
@@ -301,16 +305,33 @@ describe('SectionMenuComponent', () => {
     expect(unitServiceMock.savedSectionCode).toBe(JSON.stringify(component.section));
   });
 
-  it('should collect the section elements for the element list', () => {
-    const element = { id: 'text_1', position: {} } as unknown as UIElement;
-    vi.spyOn(component.section, 'getAllElements').mockReturnValue([element]);
+  /* Real models, not object literals: a likert row carries the position group of its base class,
+     so a literal without one describes a child that only a cloze has (#1078). */
+  const createLikertElement = (): LikertElement => {
+    const likert = new LikertElement({ type: 'likert', id: 'likert_1', alias: 'likert_1' });
+    likert.rows = [
+      new LikertRowElement({ type: 'likert-row', id: 'likert-row_1', alias: 'likert-row_1' }),
+      new LikertRowElement({ type: 'likert-row', id: 'likert-row_2', alias: 'likert-row_2' })
+    ];
+    return likert;
+  };
+
+  it('should mark the children of a compound element in the element list', () => {
+    const likert = createLikertElement();
+    const text = new TextElement({ type: 'text', id: 'text_1', alias: 'text_1' });
+    component.section.elements = [likert, text] as unknown as PositionedUIElement[];
 
     component.updateElementList();
 
-    expect(component.sectionElements).toEqual([element]);
+    expect(component.sectionElements).toEqual([
+      { element: likert, isCompoundChild: false },
+      { element: likert.rows[0], isCompoundChild: true },
+      { element: likert.rows[1], isCompoundChild: true },
+      { element: text, isCompoundChild: false }
+    ]);
   });
 
-  it('should announce clicks and hovers of positioned elements only', () => {
+  it('should announce clicks and hovers of the section elements only', () => {
     const hovered: string[] = [];
     const selected: string[] = [];
     let hoverEndCount = 0;
@@ -319,13 +340,15 @@ describe('SectionMenuComponent', () => {
     component.elementHoverEnd.subscribe(() => {
       hoverEndCount += 1;
     });
+    const likert = createLikertElement();
 
-    component.onUnitListElHover({ id: 'text_1', position: {} } as unknown as UIElement);
-    component.onUnitListElHover({ id: 'cloze_child' } as unknown as UIElement);
-    component.onUnitListElClick({ id: 'text_1' } as unknown as UIElement);
+    component.onUnitListElHover({ element: likert, isCompoundChild: false });
+    component.onUnitListElHover({ element: likert.rows[0], isCompoundChild: true });
+    component.onUnitListElClick({ element: likert, isCompoundChild: false });
+    component.onUnitListElClick({ element: likert.rows[0], isCompoundChild: true });
 
-    expect(hovered).toEqual(['text_1']);
-    expect(selected).toEqual(['text_1']);
+    expect(hovered).toEqual(['likert_1']);
+    expect(selected).toEqual(['likert_1']);
     expect(hoverEndCount).toBe(1);
   });
 

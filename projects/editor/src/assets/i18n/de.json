@@ -432,6 +432,7 @@
     "widget-periodic-table": "Periodensystem"
   },
   "section-menu": {
+    "noElements": "Keine Elemente im Abschnitt",
     "height": "Höhe",
     "dynamic-positioning": "dynamisches Layout",
     "columns": "Spalten",

@@ -30,7 +30,7 @@ import { TriggerElement } from 'common/models/elements/action-group-elements/tri
 import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
 import { MarkingPanelElement } from 'common/models/elements/interactive-group-elements/marking-panel';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import { UIElementDraft, UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
 import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { ModelRegistry } from 'common/utils/model-registry';
@@ -78,7 +78,7 @@ export abstract class ElementFactory {
     return this.elementClasses;
   }
 
-  static createElement(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService)
+  static createElement(element: UIElementDraft, idService?: AbstractIDService)
     : UIElement {
     const normalizedElement = ModelNormalizer.normalizeElement(element as Record<string, unknown>);
     if (!normalizedElement.id) {

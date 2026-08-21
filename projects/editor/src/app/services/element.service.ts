@@ -19,7 +19,6 @@ import {
   OwnProperty,
   PlayerProperties,
   PositionProperties,
-  PropertyGroupGenerators,
   Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
@@ -33,7 +32,7 @@ import { TableElement, TableHeaderCell } from 'common/models/elements/compound-g
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
   PositionedUIElement,
-  UIElementProperties,
+  UIElementDraft,
   UIElementType,
   UIElementValue
 } from 'common/models/ui-element-interfaces';
@@ -41,6 +40,10 @@ import { DropListElement } from 'common/models/elements/input-group-elements/dro
 import {
   LikertRowElement, LikertRowProperties
 } from 'common/models/elements/compound-group-elements/likert/likert-row';
+
+/* What is collected for an element that is about to be created, without the type the caller already
+   knows: the groups stay partial, because the factory completes them from the element's defaults. */
+type PreparedElementProps = Omit<UIElementDraft, 'type'>;
 
 @Injectable({
   providedIn: 'root'
@@ -56,15 +59,17 @@ export class ElementService {
   async addElementToSection(elementType: UIElementType, sectionParam?: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
     const section = sectionParam || this.unitService.getSelectedSection();
-    let newElementProperties: Partial<UIElementProperties> = {};
+    let newElementProperties: PreparedElementProps = {};
     try {
       newElementProperties = await this.prepareElementProps(elementType, section, coordinates);
     } catch (e) {
       if (e === 'dialogCanceled') return;
     }
+    /* The position prepared above is handed on as the partial it is: the factory normalizes, and the
+       normalizer builds the group from the element's own defaults plus the members named there -- a
+       grid cell, absolute coordinates, the frame's zIndex (#1193). */
     section.addElement(ElementFactory.createElement({
       type: elementType,
-      position: PropertyGroupGenerators.generatePositionProps(newElementProperties.position),
       ...newElementProperties
     }, this.idService) as PositionedUIElement);
     this.unitService.updateUnitDefinition();
@@ -72,8 +77,8 @@ export class ElementService {
 
   private async prepareElementProps(elementType: UIElementType,
                                     section: Section,
-                                    coordinates?: { x: number, y: number }): Promise<Partial<UIElementProperties>> {
-    const newElementProperties: Partial<UIElementProperties> = {};
+                                    coordinates?: { x: number, y: number }): Promise<PreparedElementProps> {
+    const newElementProperties: PreparedElementProps = {};
 
     switch (elementType) {
       case 'geometry':
@@ -116,7 +121,7 @@ export class ElementService {
         newElementProperties.position = {
           zIndex: -1,
           ...newElementProperties.position
-        } as PositionProperties;
+        };
         break;
       // no default
     }
@@ -129,13 +134,13 @@ export class ElementService {
         gridRow: coordinates ? coordinates.x : section.getLastRowIndex() + 1,
         gridColumn: coordinates ? coordinates.y : 1,
         ...newElementProperties.position
-      } as PositionProperties;
+      };
     } else {
       newElementProperties.position = {
         xPosition: coordinates ? coordinates.x : 0,
         yPosition: coordinates ? coordinates.y : 0,
         ...newElementProperties.position
-      } as PositionProperties;
+      };
     }
     return newElementProperties;
   }
@@ -450,7 +455,12 @@ export class ElementService {
                                  property: keyof PositionProperties,
                                  value: UIElementValue): void {
     elements.forEach(element => {
-      element.setPositionProperty(property, value);
+      /* Its own copy for every element, as in updateElementsProperty: the four margins are the only
+         object-valued members of the group, and one value handed to a selection would leave them all
+         holding the same Measurement. The first writer that changes such an object in place -- rather
+         than replacing it, which is what every writer does today -- would move the margin of every
+         element that happened to be selected with it (#1193). */
+      element.setPositionProperty(property, copyPlainData(value));
     });
     this.reorderSectionsOfElements(elements);
     this.unitService.elementPropertyUpdated.next();

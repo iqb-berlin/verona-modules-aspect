@@ -154,6 +154,26 @@ export interface UIElementProperties {
   player?: PlayerProperties;
 }
 
+/**
+ * What `ElementFactory.createElement` takes for an element that does not exist yet: the property
+ * groups may be partial, because the factory normalizes first and the normalizer completes each group
+ * from the element's own defaults. A caller that knows one member -- the grid cell an element is
+ * dropped into, the absolute coordinates it is dropped at, the frame's `zIndex` -- names that one and
+ * leaves the rest to the element. Not to be confused with what `UIElement.getBlueprint()` returns, the
+ * complete snapshot of an element that does exist.
+ *
+ * The groups are singled out because completing them is not free: `generatePositionProps` fills every
+ * margin the caller does not name with 0, which puts the margin the element type declares out of
+ * reach. A caller that wants that -- `TemplateService`, whose templates lay out their own spacing --
+ * says so by calling the generator itself; before #1193 the type left no other choice, and where the
+ * defaults were meant to apply they silently did not.
+ */
+export type UIElementDraft = { type: UIElementType } &
+Omit<Partial<UIElementProperties>, 'position' | 'dimensions'> & {
+  position?: Partial<PositionProperties>;
+  dimensions?: Partial<DimensionProperties>;
+};
+
 export interface PositionedUIElement extends UIElement {
   position: PositionProperties;
   dimensions: DimensionProperties;

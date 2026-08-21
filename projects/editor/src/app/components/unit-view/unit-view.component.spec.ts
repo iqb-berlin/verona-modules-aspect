@@ -27,6 +27,7 @@ import { EditorPage } from 'editor/src/app/models/editor-page';
 import { PageService } from 'editor/src/app/services/page.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { By } from '@angular/platform-browser';
 
 @Component({ selector: 'aspect-ui-element-toolbox', standalone: false, template: '' })
 class MockUiElementToolboxComponent {}
@@ -53,8 +54,9 @@ class MockPageMenuComponent {
 
 const createCheckboxChange = (checked: boolean): MatCheckboxChange => ({ checked } as unknown as MatCheckboxChange);
 
-/* Only the component's own logic is covered. The template wires up drawers, tab groups
-   and menus of Angular Material, whose rendering is not part of this component's contract. */
+/* Mostly the component's own logic: the template wires up drawers, tab groups and menus of Angular
+   Material, whose rendering is not part of this component's contract. The exception is what the
+   template computes for the page views it renders -- `isLastPage` lives nowhere else (#1299). */
 describe('UnitViewComponent', () => {
   let component: UnitViewComponent;
   let fixture: ComponentFixture<UnitViewComponent>;
@@ -193,6 +195,29 @@ describe('UnitViewComponent', () => {
       height: '70%',
       autoFocus: false
     });
+  });
+
+  /* `isLastPage` decides whether the page shows the preview of the unit's next button. The list view
+     loops over the pages without the permanently visible one, so its own last entry is the last page;
+     comparing that index with the length of the full list was never true while such a page existed,
+     and the preview appeared nowhere at all (#1299). */
+  const renderedPageViews = (): MockPageViewComponent[] => fixture.debugElement
+    .queryAll(By.directive(MockPageViewComponent))
+    .map(pageView => pageView.componentInstance as MockPageViewComponent);
+
+  it('should mark the last page of the list as the last one', () => {
+    expect(renderedPageViews().map(pageView => pageView.isLastPage)).toEqual([false, true]);
+  });
+
+  it('should mark it as the last one with a permanently visible page in front', () => {
+    const alwaysVisiblePage = new EditorPage();
+    alwaysVisiblePage.alwaysVisible = true;
+    unitService.unit.pages = [alwaysVisiblePage, ...pages];
+    fixture.detectChanges();
+
+    const rendered = renderedPageViews();
+    expect(rendered.map(pageView => pageView.pageIndex)).toEqual([1, 2]);
+    expect(rendered.map(pageView => pageView.isLastPage)).toEqual([false, true]);
   });
 
   it('should stop refreshing the tabs after destroy', () => {

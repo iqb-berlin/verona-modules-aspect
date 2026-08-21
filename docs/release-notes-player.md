@@ -41,6 +41,8 @@ Player
 - Eingabefeld, Eingabebereich mit der Einstellung "nur Zeichen der Eingabehilfe zulassen"
   - Die Zeichenbeschränkung gilt ab dem Hineinklicken in das Feld. Bisher wurde sie erst wirksam, sobald die Eingabehilfe sichtbar war — rund eine Zehntelsekunde später. Wer in dieser Zeit tippte, konnte gesperrte Zeichen in das Feld schreiben, und sie ließen sich anschließend nicht mehr löschen, weil der Schutz der Vorbelegung auch sie festhielt
   - Bei der Eingabehilfe "französisch" zählen die Großbuchstaben der Shift-Ebene zu den erlaubten Zeichen. Bisher setzte die Eingabehilfe sie zwar ins Feld, die Beschränkung kannte sie aber nicht — ein so gesetztes "Â" ließ sich nicht mehr entfernen, und mit ihm blieben auch die Zeichen davor stehen
+- Blättern zwischen Seiten
+  - Eine neue Seite beginnt wieder oben. Bisher behielt der Player die Scrollposition der vorigen Seite bei: wer unten auf einer langen Seite weiterblätterte, landete auf der neuen Seite mitten im Text. War die neue Seite kürzer, korrigierte der Browser das von selbst — deshalb trat es nur bei manchen Aufgaben auf. Betrifft die Modi mit getrennten Seiten und mit Blätterknöpfen; die Scroll-Modi bringen die neue Seite ohnehin selbst in den Blick
 
 ## 2.12.6
 ### Fehlerbehebungen

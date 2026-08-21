@@ -58,6 +58,24 @@ describe('PageScrollButtonComponent', () => {
     fixture.detectChanges();
   });
 
+  /* The host has to be scrollable for real: without a height, an overflow and content that
+     exceeds it, assigning scrollTop is a no-op and the assertion would hold for an empty method. */
+  it('should put the container back to the top', () => {
+    const host: HTMLElement = fixture.nativeElement;
+    host.style.height = '100px';
+    host.style.overflow = 'auto';
+    const content = document.createElement('div');
+    content.style.height = '1000px';
+    host.appendChild(content);
+
+    host.scrollTop = 40;
+    expect(host.scrollTop).toBe(40);
+
+    component.scrollToTop();
+
+    expect(host.scrollTop).toBe(0);
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });

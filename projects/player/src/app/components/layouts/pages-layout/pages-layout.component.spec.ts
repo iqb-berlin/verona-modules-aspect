@@ -8,6 +8,9 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
+import {
+  PageScrollButtonComponent
+} from 'player/src/app/components/page-scroll-button/page-scroll-button.component';
 import { PagesLayoutComponent } from './pages-layout.component';
 
 /*
@@ -94,6 +97,40 @@ describe('PagesLayoutComponent', () => {
     pageIndex.next(2);
 
     expect(component.selectedIndex).toBe(0);
+  });
+
+  /* Turning a page starts by undoing the scrolled state: the scroll container is one for all
+     pages, so without this the next page opens at the height the last one was left at (#1081). */
+  it('should put the scroll container back to the top before selecting the page', () => {
+    const scrollToTop = vi.fn();
+    initComponent({ scrollPageMode: 'separate' });
+    component.scrollPagesContainer = { scrollToTop } as unknown as PageScrollButtonComponent;
+
+    component.selectIndex.next(1);
+
+    expect(scrollToTop).toHaveBeenCalled();
+    expect(component.selectedIndex).toBe(1);
+  });
+
+  it('should put the scroll container back to the top in the buttons mode', () => {
+    const scrollToTop = vi.fn();
+    initComponent({ scrollPageMode: 'buttons' });
+    component.scrollPagesContainer = { scrollToTop } as unknown as PageScrollButtonComponent;
+
+    component.selectIndex.next(1);
+
+    expect(scrollToTop).toHaveBeenCalled();
+  });
+
+  /* The concat modes scroll the new page into view themselves, see ScrollToIndexDirective. */
+  it('should leave the scroll position alone in the concat modes', () => {
+    const scrollToTop = vi.fn();
+    initComponent({ scrollPageMode: 'concat-scroll' });
+    component.scrollPagesContainer = { scrollToTop } as unknown as PageScrollButtonComponent;
+
+    component.selectIndex.next(1);
+
+    expect(scrollToTop).not.toHaveBeenCalled();
   });
 
   it('should align the layout in a row for a left or right always visible page', () => {

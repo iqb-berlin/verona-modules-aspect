@@ -47,7 +47,8 @@
 
 <ng-template #scrollPagesView>
   <ng-container *ngIf="hasScrollPages">
-    <aspect-page-scroll-button class="page-container"
+    <aspect-page-scroll-button #scrollPagesContainer
+                               class="page-container"
                                cdkScrollable
                                [isVisibleIndexPages]="isVisibleIndexPages"
                                [isSnapMode]="scrollPageMode === 'concat-scroll-snap'"

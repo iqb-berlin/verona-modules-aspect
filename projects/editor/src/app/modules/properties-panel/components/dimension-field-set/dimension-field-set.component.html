@@ -1,9 +1,8 @@
 <fieldset>
   <legend>{{ 'propertiesPanel.dimensions' | translate }}</legend>
-  <ng-container *ngIf="unitService.unit.pages[selectionService.selectedPageIndex]
-                .sections[selectionService.selectedSectionIndex].dynamicPositioning ||
-                selectionService.onlyCompoundChildrenSelected;
-                else elseBlock">
+  <!-- See position-field-set: what lays the selection out decides, not the indexed section (#1204).
+       The flag covers compound children, which this set used to ask about separately. -->
+  <ng-container *ngIf="selectionService.isSelectionDynamicallyPositioned; else elseBlock">
     <ng-container *ngIf="dimensions.isWidthFixed !== undefined else elseBlockWidth">
       <aspect-merged-checkbox #fixedWidth [value]="dimensions.isWidthFixed"
                               (valueChange)="updateDimensionProperty('isWidthFixed', $event)">

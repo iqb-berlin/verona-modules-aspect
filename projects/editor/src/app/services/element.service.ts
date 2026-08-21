@@ -414,12 +414,13 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
+  /* Each copy goes into the section that holds its original, looked up in the unit rather than read
+     from selectedPageIndex/selectedSectionIndex: those can name another section, and the copy then
+     lands there without anything going wrong visibly (#1204). */
   duplicateSelectedElements(): void {
-    const selectedSection =
-      this.unitService.unit.pages[this.selectionService.selectedPageIndex]
-        .sections[this.selectionService.selectedSectionIndex];
     this.selectionService.getSelectedElements().forEach((element: UIElement) => {
-      selectedSection.elements.push(this.duplicateElement(element, true) as PositionedUIElement);
+      const section = this.unitService.unit.getSectionOfElement(element);
+      section?.elements.push(this.duplicateElement(element, true) as PositionedUIElement);
     });
     this.unitService.updateUnitDefinition();
   }
@@ -451,7 +452,7 @@ export class ElementService {
     elements.forEach(element => {
       element.setPositionProperty(property, value);
     });
-    this.reorderElements();
+    this.reorderSectionsOfElements(elements);
     this.unitService.elementPropertyUpdated.next();
     this.unitService.updateUnitDefinition();
   }
@@ -469,12 +470,21 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
+  /* Sorts the sections the written elements are in, looked up in the unit rather than taken from the
+     selection: a cross-section drag moves the element and writes its position in the same
+     synchronous block, before the overlays are rebuilt, so the selection still describes the section
+     it came from -- and the target would keep a stale tab order (#1204). */
+  private reorderSectionsOfElements(elements: UIElement[]): void {
+    const sections = elements
+      .map(element => this.unitService.unit.getSectionOfElement(element))
+      .filter((section): section is Section => !!section);
+    new Set(sections).forEach(section => ElementService.reorderElements(section));
+  }
+
   /* Reorder elements by their position properties, so the tab order is correct */
-  reorderElements() {
-    const sectionElementList = this.unitService.unit.pages[this.selectionService.selectedPageIndex]
-      .sections[this.selectionService.selectedSectionIndex].elements;
-    const isDynamicPositioning = this.unitService.unit.pages[this.selectionService.selectedPageIndex]
-      .sections[this.selectionService.selectedSectionIndex].dynamicPositioning;
+  private static reorderElements(section: Section) {
+    const sectionElementList = section.elements;
+    const isDynamicPositioning = section.dynamicPositioning;
     const sortDynamicPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
       const rowSort =
         (a.position.gridRow !== null ? a.position.gridRow : Infinity) -

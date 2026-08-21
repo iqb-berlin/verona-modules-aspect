@@ -13,7 +13,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   PositionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/position-field-set/position-field-set.component';
@@ -40,17 +39,15 @@ describe('PositionFieldSetComponent', () => {
   let component: PositionFieldSetComponent;
   let fixture: ComponentFixture<PositionFieldSetComponent>;
 
-  // Rebuilt per test: one test switches the section to dynamic positioning.
-  let unitServiceMock: UnitService;
   const selectionServiceMock = {
     selectedPageIndex: 0,
     selectedSectionIndex: 0
   } as unknown as SelectionService;
 
   beforeEach(async () => {
-    unitServiceMock = {
-      unit: { pages: [{ sections: [{ dynamicPositioning: false }] }] }
-    } as unknown as UnitService;
+    /* Set per test: the mock outlives a single test, so a test that switches to the inline layout
+       would otherwise decide the next one. Coordinates are this spec's default. */
+    selectionServiceMock.isSelectionDynamicallyPositioned = false;
 
     await TestBed.configureTestingModule({
       declarations: [PositionFieldSetComponent, MockSizeInputPanelComponent, NumberFieldDirective,
@@ -66,7 +63,6 @@ describe('PositionFieldSetComponent', () => {
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: UnitService, useValue: unitServiceMock },
         { provide: SelectionService, useValue: selectionServiceMock }
       ]
     }).compileComponents();
@@ -164,7 +160,7 @@ describe('PositionFieldSetComponent', () => {
      `grid-row: N / (N + range)`, so a stored 0 collapses to `auto` and the layout would show a
      span of 1 while the unit definition claimed 0. */
   it('should refuse an emptied grid row range', async () => {
-    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    selectionServiceMock.isSelectionDynamicallyPositioned = true;
     const emitted: { property: string; value: unknown }[] = [];
     component.positionProperties = {
       gridRow: 1, gridRowRange: 2, gridColumn: 1, gridColumnRange: 2
@@ -192,7 +188,7 @@ describe('PositionFieldSetComponent', () => {
      layout cannot show: `grid-row: N / N` collapses to `auto`, one row, over a definition claiming
      none. */
   it('should refuse a grid row range of zero', async () => {
-    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    selectionServiceMock.isSelectionDynamicallyPositioned = true;
     const emitted: { property: string; value: unknown }[] = [];
     component.positionProperties = {
       gridRow: 1, gridRowRange: 2, gridColumn: 1, gridColumnRange: 2
@@ -260,7 +256,7 @@ describe('PositionFieldSetComponent', () => {
    */
   it('should pass a divergent margin on as null', () => {
     // The margin fields belong to the dynamic-positioning branch of the template.
-    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    selectionServiceMock.isSelectionDynamicallyPositioned = true;
     component.positionProperties = {
       ...component.positionProperties, marginTop: { value: null, unit: 'px' }
     } as typeof component.positionProperties;
@@ -292,7 +288,7 @@ describe('PositionFieldSetComponent', () => {
       .querySelectorAll('aspect-merged-marker mat-icon');
 
     beforeEach(() => {
-      unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+      selectionServiceMock.isSelectionDynamicallyPositioned = true;
     });
 
     it('should mark a row range the selection disagrees about', async () => {

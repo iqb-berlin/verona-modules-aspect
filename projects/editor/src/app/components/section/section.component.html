@@ -18,11 +18,13 @@
                          class="section" id="section-{{sectionIndex}}"
                          [section]="section"
                          [isSelected]="isOnSelectedPage && selectionService.selectedSectionIndex === sectionIndex"
-                         (elementSelected)="selectionService.selectedSectionIndex = sectionIndex"
+                         (elementSelected)="selectionService.selectedPageIndex = pageIndex;
+                                            selectionService.selectedSectionIndex = sectionIndex"
                          cdkDropList cdkDropListSortingDisabled
                          [cdkDropListData]="{ pageIndex: pageIndex, sectionIndex: sectionIndex }"
                          (cdkDropListDropped)="elementDropped($event)"
-                         (click)="selectionService.selectedSectionIndex = sectionIndex">
+                         (click)="selectionService.selectedPageIndex = pageIndex;
+                                  selectionService.selectedSectionIndex = sectionIndex">
   </aspect-editor-static-section>
   <aspect-editor-dynamic-section *ngIf="section.dynamicPositioning"
                           #sectionComponent

@@ -1,4 +1,6 @@
 import { Page, PageProperties } from 'common/models/page';
+import { Section } from 'common/models/section';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { StateVariable } from 'common/models/state-variable';
@@ -51,6 +53,27 @@ export class Unit implements UnitProperties {
 
   getAllElements(elementType?: string): UIElement[] {
     return this.pages.map(page => page.getAllElements(elementType)).flat();
+  }
+
+  /**
+   * The section that holds an element, asked of the unit rather than of the editor's selection
+   * indices: those are written in several places and can name another section than the one the
+   * element is in (#1204).
+   *
+   * The element itself is the truth here, not the selection: a cross-section drag moves the element
+   * and then writes its position in the same synchronous block, before the overlays are rebuilt, so
+   * the selection still describes where the element came from.
+   *
+   * Compound children resolve to the section of their parent, and an element that is not in the unit
+   * at all resolves to undefined.
+   */
+  getSectionOfElement(element: UIElement): Section | undefined {
+    const sections = this.pages.map(page => page.sections).flat();
+    /* The section's own list first: that is the answer for every element the section places, and it
+       costs a lookup instead of building the list of children as well. Only a compound child falls
+       through to the second pass, which reaches it. */
+    return sections.find(section => section.elements.includes(element as PositionedUIElement)) ||
+      sections.find(section => section.getAllElements().includes(element));
   }
 
   getVariableInfos(): VariableInfo[] {

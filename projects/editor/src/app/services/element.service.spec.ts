@@ -15,7 +15,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
 
 /* Methods that need file imports or a fully built unit (addElementToSection,
-   handleTextElementChange, reorderElements, ...) are not covered here; they depend on
+   handleTextElementChange, ...) are not covered here; they depend on
    FileService dialogs and the real EditorUnit and are exercised via the unit service and
    component specs. */
 describe('ElementService', () => {
@@ -31,10 +31,11 @@ describe('ElementService', () => {
     updateUnitDefinition: Mock;
     prepareDelete: Mock;
     referenceManager: { getElementsReferences: Mock; getTextAnchorReferences: Mock };
-    // Enough of a unit for reorderElements(), which every position write goes through.
+    // One page with one section, which the tests about deleting and about position writes extend.
     unit: {
       pages: { sections: { elements: UIElement[]; dynamicPositioning: boolean }[] }[];
       deleteElements: Mock;
+      getSectionOfElement: (element: UIElement) => { elements: UIElement[]; dynamicPositioning: boolean } | undefined;
     };
   };
 
@@ -93,7 +94,13 @@ describe('ElementService', () => {
       },
       unit: {
         pages: [{ sections: [{ elements: [], dynamicPositioning: false }] }],
-        deleteElements: vi.fn((elements: UIElement[]) => elements)
+        deleteElements: vi.fn((elements: UIElement[]) => elements),
+        /* Like the real one: the section is looked up by the element, which is what the write paths
+           ask now instead of reading the selection indices (#1204). */
+        getSectionOfElement: (element: UIElement) => unitServiceMock.unit.pages
+          .map(page => page.sections)
+          .flat()
+          .find(section => section.elements.includes(element))
       }
     };
     dialogServiceSpy = createSpyObj<DialogService>(['showTextEditDialog', 'showDeleteReferenceDialog']);
@@ -415,6 +422,49 @@ describe('ElementService', () => {
 
     expect(dialogServiceSpy.showTextEditDialog).toHaveBeenCalledWith('Alte Beschriftung');
     expect(element.setProperty).toHaveBeenCalledWith('label', 'Neue Beschriftung');
+  });
+
+  /* Position writes reorder for the tab order. Read from the indices, that sorted the wrong section
+     and left the tab order of both of them wrong (#1204). */
+  it('should reorder the section holding the element, not the indexed one', () => {
+    const section = { elements: [] as UIElement[], dynamicPositioning: false };
+    unitServiceMock.unit.pages[0].sections.push(section);
+    const lower = ElementFactory.createElement({
+      type: 'frame', id: 'frame_low', alias: 'frame_low', position: { xPosition: 0, yPosition: 200 }
+    } as unknown as UIElementProperties) as PositionedUIElement;
+    const upper = ElementFactory.createElement({
+      type: 'frame', id: 'frame_up', alias: 'frame_up', position: { xPosition: 0, yPosition: 10 }
+    } as unknown as UIElementProperties) as PositionedUIElement;
+    section.elements.push(lower, upper);
+    selectionService.selectElement({
+      elementComponent: { element: upper, section, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    service.updateElementsPositionProperty([upper], 'yPosition', 10);
+
+    expect(section.elements.map(element => element.id)).toEqual(['frame_up', 'frame_low']);
+  });
+
+  /* The selection indices and the selected element can point at different sections: they are set in
+     several places, and after a load every overlay selects itself while the indices stand at 0/0.
+     A write path that reads the indices then places the copy in the wrong section, silently (#1204). */
+  it('should duplicate into the section holding the element, not the indexed one', () => {
+    const section = { elements: [] as UIElement[], dynamicPositioning: false };
+    unitServiceMock.unit.pages[0].sections.push(section);
+    const element = ElementFactory.createElement({
+      type: 'frame', id: 'frame_1', alias: 'frame_1', position: { xPosition: 20, yPosition: 40 }
+    } as unknown as UIElementProperties) as PositionedUIElement;
+    section.elements.push(element);
+    selectionService.selectElement({
+      elementComponent: { element, section, setSelected: () => {} } as unknown as ElementOverlay,
+      multiSelect: false
+    });
+
+    service.duplicateSelectedElements();
+
+    expect(section.elements.length).toBe(2);
+    expect(unitServiceMock.unit.pages[0].sections[0].elements.length).toBe(0);
   });
 
   it('should duplicate an element with an adjusted position', () => {

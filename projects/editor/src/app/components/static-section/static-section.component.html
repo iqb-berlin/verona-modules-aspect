@@ -7,6 +7,7 @@
   <aspect-editor-static-overlay #elementComponent
                                 *ngFor="let element of section.elements"
                                 [element]="$any(element)"
+                                [section]="section"
                                 (elementSelected)="elementSelected.emit($event)">
   </aspect-editor-static-overlay>
 </div>

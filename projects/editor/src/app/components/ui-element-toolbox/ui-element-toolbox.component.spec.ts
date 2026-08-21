@@ -74,6 +74,8 @@ describe('UiElementToolboxComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /* By the indices, deliberately: a new element has no element to follow, and after a load the
+     element selection is whatever overlay rendered last (#1204). */
   it('should add a new element to the currently selected section', () => {
     selectionService.selectedPageIndex = 1;
     selectionService.selectedSectionIndex = 1;

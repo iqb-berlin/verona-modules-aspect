@@ -10,6 +10,7 @@ import {
 import {
   TableChildOverlay
 } from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
+import { Section } from 'common/models/section';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 
@@ -20,16 +21,71 @@ describe('SelectionService', () => {
     service = TestBed.inject(SelectionService);
   });
 
+  /* Which set of position and size controls the panel offers hangs on this, and it has an answer
+     where `selectedSection` has none: across two sections, and for a compound child. */
+  it('should call a selection in a dynamically positioned section dynamic', () => {
+    const section = new Section();
+    section.dynamicPositioning = true;
+
+    selectAnElement(false, section);
+
+    expect(service.isSelectionDynamicallyPositioned).toBe(true);
+  });
+
+  it('should call a selection in a statically positioned section static', () => {
+    const section = new Section();
+    section.dynamicPositioning = false;
+
+    selectAnElement(false, section);
+
+    expect(service.isSelectionDynamicallyPositioned).toBe(false);
+  });
+
+  /* A compound child is laid out inline: it has margins but no coordinates, so it needs the same
+     controls as an element in a dynamically positioned section (#1268). */
+  it('should call a selected compound child dynamic', () => {
+    selectAChild();
+
+    expect(service.isSelectionDynamicallyPositioned).toBe(true);
+  });
+
+  /* A compound child mixed with an element the section places itself is not laid out inline: the
+     limits would be written to that element and ignored (#1268). */
+  it('should not call a mix of a compound child and a statically placed element dynamic', () => {
+    const section = new Section();
+    section.dynamicPositioning = false;
+    selectAnElement(false, section);
+
+    selectAChild(true);
+
+    expect(service.isSelectionDynamicallyPositioned).toBe(false);
+  });
+
+  /* Where the sections disagree the answer is no: the inline controls would write a grid row and a
+     size limit onto the element its section places itself, where both are ignored (#1268). */
+  it('should not call a selection whose sections disagree dynamic', () => {
+    const dynamic = new Section();
+    dynamic.dynamicPositioning = true;
+    const staticSection = new Section();
+    staticSection.dynamicPositioning = false;
+    selectAnElement(false, staticSection);
+
+    selectAnElement(true, dynamic);
+
+    expect(service.isSelectionDynamicallyPositioned).toBe(false);
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
   const setSelected = vi.fn();
 
-  const selectAnElement = (multiSelect: boolean = false): void => {
+  const selectAnElement = (multiSelect: boolean = false, section: Section = new Section()): void => {
     service.selectElement({
       elementComponent: {
         element: new TextElement({ type: 'text', id: 'text_1', alias: 'text_1' }),
+        section,
         setSelected
       } as unknown as ElementOverlay,
       multiSelect

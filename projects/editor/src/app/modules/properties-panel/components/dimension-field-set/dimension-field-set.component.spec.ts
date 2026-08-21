@@ -16,7 +16,6 @@ import {
 import { ElementService } from 'editor/src/app/services/element.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   DimensionFieldSetComponent
 } from 'editor/src/app/modules/properties-panel/components/dimension-field-set/dimension-field-set.component';
@@ -38,9 +37,6 @@ describe('DimensionFieldSetComponent', () => {
   let messageService: SpyObj<MessageService>;
 
   const selectedElements = [{ id: 'el1' } as UIElement];
-  const unitServiceMock = {
-    unit: { pages: [{ sections: [{ dynamicPositioning: true }] }] }
-  } as unknown as UnitService;
   const selectionServiceMock = {
     selectedPageIndex: 0,
     selectedSectionIndex: 0,
@@ -54,6 +50,9 @@ describe('DimensionFieldSetComponent', () => {
   ).some(checkbox => checkbox.textContent?.includes('propertiesPanel.isWidthFixed'));
 
   beforeEach(async () => {
+    /* Set per test: the mock outlives a single test, so a test that switches the layout would
+       otherwise decide the next one. The inline layout is this spec's default. */
+    selectionServiceMock.isSelectionDynamicallyPositioned = true;
     elementService = createSpyObj<ElementService>(['updateElementsDimensionsProperty']);
     messageService = createSpyObj<MessageService>(['showWarning']);
 
@@ -72,7 +71,6 @@ describe('DimensionFieldSetComponent', () => {
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: UnitService, useValue: unitServiceMock },
         { provide: SelectionService, useValue: selectionServiceMock },
         { provide: ElementService, useValue: elementService },
         { provide: MessageService, useValue: messageService }
@@ -97,7 +95,7 @@ describe('DimensionFieldSetComponent', () => {
 
   /* The two mocks are shared by the whole file, so a test that moves them puts them back. */
   afterEach(() => {
-    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = true;
+    selectionServiceMock.isSelectionDynamicallyPositioned = true;
     selectionServiceMock.isCompoundChildSelected = false;
     selectionServiceMock.onlyCompoundChildrenSelected = false;
   });
@@ -110,21 +108,8 @@ describe('DimensionFieldSetComponent', () => {
     expect(hasFixedWidthCheckbox()).toBe(true);
   });
 
-  /* Children of compound elements are laid out inline, so they get the same controls as elements in a
-     dynamically positioned section -- but only while they are all the selection holds: an element the
-     section places itself is not laid out that way, and the limits below would be written to it and
-     ignored (#1268). */
-  it('should show the fixed width checkbox for a selection of compound children only', () => {
-    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = false;
-    selectionServiceMock.onlyCompoundChildrenSelected = true;
-
-    fixture.detectChanges();
-
-    expect(hasFixedWidthCheckbox()).toBe(true);
-  });
-
   it('should not show it for a selection that mixes a compound child with another element', () => {
-    unitServiceMock.unit.pages[0].sections[0].dynamicPositioning = false;
+    selectionServiceMock.isSelectionDynamicallyPositioned = false;
     selectionServiceMock.isCompoundChildSelected = true;
 
     fixture.detectChanges();

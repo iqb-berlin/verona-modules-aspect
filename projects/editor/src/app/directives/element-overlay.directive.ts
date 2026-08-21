@@ -20,6 +20,7 @@ import {
 } from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
+import { Section } from 'common/models/section';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -27,6 +28,10 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 @Directive()
 export abstract class ElementOverlay implements OnInit, OnDestroy {
   @Input() element!: PositionedUIElement;
+  /* The section this overlay lives in. Handed in rather than looked up, so that the selection can
+     say which section holds it without going through selectedPageIndex/selectedSectionIndex — those
+     are written in several places and can name another section (#1204). */
+  @Input() section!: Section;
   @Output() elementSelected = new EventEmitter();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;

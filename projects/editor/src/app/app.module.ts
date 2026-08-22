@@ -257,9 +257,13 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
       provide: APIService,
       useExisting: VeronaAPIService
     },
+    /* An alias, not a class: `ErrorService` is `providedIn: 'root'`, so `useClass` built Angular its
+       own second instance. The service holds what keeps the dialog flood of #1202 closed -- the open
+       flag and the errors already reported -- and that state lives on the instance, so a caller
+       injecting `ErrorService` would have gated nothing (#1206). */
     {
       provide: ErrorHandler,
-      useClass: ErrorService
+      useExisting: ErrorService
     },
     {
       provide: MAT_TOOLTIP_DEFAULT_OPTIONS,

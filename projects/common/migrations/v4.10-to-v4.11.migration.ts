@@ -40,9 +40,11 @@ export class Migration4m10To4m11 extends UnitTraversalMigration {
         showHint: player['showHint'] ?? true,
         hintLabel: player['hintLabel'] ?? 'Bitte starten',
         /* The old name too, because this rebuild is what would otherwise lose it: the rename
-           `hintLabelDelay -> hintDelay` is a 4.10 change, so a unit below that carries the old one --
-           and `PropertyGroupGenerators.sanitizeHintDelay`, which exists to rescue exactly this value,
-           only looks when `hintDelay` is undefined. By then this line has set it to 5000 (#1191). */
+           `hintLabelDelay -> hintDelay` is a 4.10 change, so a unit below that carries the old one, and
+           this line used to write the default over it. The rescue that sat at the other end, in
+           `generatePlayerProps`, could not run once that had happened -- it looked only when `hintDelay`
+           was undefined -- so it went with the fix and the value is read here, where the old name
+           arrives (#1191). */
         hintDelay: player['hintDelay'] ?? player['hintLabelDelay'] ?? 5000,
         activeAfterID: player['activeAfterID'] ?? '',
         minRuns: player['minRuns'] ?? 1,

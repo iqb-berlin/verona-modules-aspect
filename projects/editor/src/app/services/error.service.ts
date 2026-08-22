@@ -52,10 +52,10 @@ export class ErrorService implements ErrorHandler {
     private translateService: TranslateService,
     private messageService: MessageService,
     veronaApiService: VeronaAPIService) {
-    // Subscribed here rather than called from outside, because the ErrorHandler registration mints
-    // its own instance (#1206) and a caller would clear the wrong one - silently. It also puts the
-    // clearing ahead of the load: Angular builds the ErrorHandler at bootstrap, so this subscriber
-    // is registered before the one in AppComponent that loads the definition.
+    // Subscribed here rather than called from outside, because it puts the clearing ahead of the
+    // load: Angular builds the ErrorHandler at bootstrap, so this subscriber is registered before
+    // the one in AppComponent that loads the definition. Calling it from outside is at least sound
+    // again since #1206 -- the registration is an alias now, so an injected service is this one.
     veronaApiService.startCommand.subscribe(() => {
       this.loggedSignatures.clear();
       this.promptedSignatures.clear();

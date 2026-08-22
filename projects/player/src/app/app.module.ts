@@ -152,7 +152,10 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     // whatever surrounds it (#986).
     { provide: OVERLAY_DEFAULT_CONFIG, useValue: { usePopover: false } },
     { provide: APIService, useExisting: MetaDataService },
-    { provide: ErrorHandler, useClass: ErrorService }
+    /* An alias, not a class, as in the editor: `ErrorService` is `providedIn: 'root'`, and `useClass`
+       would build Angular a second instance of it. This one holds no state yet, so the two were
+       indistinguishable -- the first field on it would end that quietly (#1206). */
+    { provide: ErrorHandler, useExisting: ErrorService }
   ]
 })
 

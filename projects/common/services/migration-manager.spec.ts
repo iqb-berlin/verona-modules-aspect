@@ -171,9 +171,11 @@ describe('MigrationManager', () => {
   });
 
   it('should update the version to targetVersion even if no steps are applicable', () => {
+    /* At the current version, so that no step is applicable -- 4.11 stopped being that when the step to
+       4.12 was added (#1306). */
     const unit = {
       type: 'aspect-unit-definition',
-      version: '4.11.0',
+      version: '4.12.0',
       pages: []
     };
 

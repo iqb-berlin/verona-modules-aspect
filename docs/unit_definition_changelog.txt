@@ -267,3 +267,6 @@ iqb-aspect-definition@1.0.0
   - remove styling.backgroundColor (#1233)
 - LikertRowElement:
   - remove firstColumnSizeRatio (#1234)
+- Section, Page, all elements:
+  - number properties stored as strings become numbers, including the values of grid sizes and
+    margins (#1306)

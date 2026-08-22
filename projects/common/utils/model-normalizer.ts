@@ -57,11 +57,10 @@ export class ModelNormalizer {
      children -- table cells, likert rows, the child models of a cloze document -- and handing it those
      as well would normalize each of them twice (#1196). */
   /* What the casts on the numbers claim, and what they do not: this fills what is missing, it does not
-     convert what is there. Ten stored units carry `height: "400"` as a string, and after this the
-     member is reachable as a `number` without a cast at the seam, so arithmetic on it compiles --
-     `SectionComponent.getPageHeight` adds section heights and answers `"0400"` for such a unit. No
-     symptom is known and a conversion here would run on every load of every unit forever, which
-     rules.md 14 asks to weigh; it is filed separately rather than smuggled in here (#1306). */
+     convert what is there. Stored units carry `height: "400"` as a string, and the member is reachable
+     as a `number` here, so arithmetic on it compiles. Converting is the job of
+     `Migration4m11To4m12`, which repairs those values once for every unit below 4.12 instead of asking
+     the question on every load of every unit forever (#1306, and rules.md 14 for the weighing). */
   static normalizeSection(section: Record<string, unknown>): SectionProperties {
     return {
       ...section,

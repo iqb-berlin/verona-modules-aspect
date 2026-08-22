@@ -1,5 +1,6 @@
 import { MigrationLegacy } from '../migrations/legacy-migration';
 import { Migration4m10To4m11 } from '../migrations/v4.10-to-v4.11.migration';
+import { Migration4m11To4m12 } from '../migrations/v4.11-to-v4.12.migration';
 import { MigrationStep } from '../migrations/migration-step.interface';
 import { NormalizationMigration } from '../migrations/normalization';
 import { UnitProperties } from '../models/unit';
@@ -14,8 +15,9 @@ import { UnitProperties } from '../models/unit';
  *   every migration, whatever the version, and `ModelNormalizer` fills every missing own property of
  *   an element from `ELEMENT_DEFAULTS`, plus its position and dimensions. A new member of the
  *   `styling` group needs nothing here either, but it is the element's own class that fills it -- see
- *   rules.md 14 and `PropertyGroupGenerators.mergeStyling` (#1187). That is why 4.12 has no step of
- *   its own: everything it added has a default.
+ *   rules.md 14 and `PropertyGroupGenerators.mergeStyling` (#1187). Nothing 4.12 *added* is in
+ *   {@link Migration4m11To4m12} for that reason -- what is in there is a repair of values, not a new
+ *   property (#1306).
  * - **Existing values have to be transformed** - a rename, a changed unit, a restructured group: that
  *   is a step, together with a bumped `unit_definition_version` and an entry in
  *   `docs/unit_definition_changelog.txt`. See {@link MigrationLegacy}, which converts the pre-4.0
@@ -65,7 +67,8 @@ import { UnitProperties } from '../models/unit';
 export class MigrationManager {
   private static steps: MigrationStep[] = [
     new MigrationLegacy(),
-    new Migration4m10To4m11()
+    new Migration4m10To4m11(),
+    new Migration4m11To4m12()
   ];
 
   /* Loose in, typed out: what comes back is a `UnitProperties` and can be handed to `new Unit(...)`

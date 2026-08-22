@@ -25,11 +25,11 @@ const registryOwned = (source: unknown, acc: Set<unknown> = new Set()): Set<unkn
 
 const OWNED_BY_REGISTRY = registryOwned({ ELEMENT_DEFAULTS, GLOBAL_DEFAULTS });
 
-/* The idService skip is taken from element-blueprint.spec.ts's walker; `visited` is NOT -- that one
-   bounds recursion with `depth > 6`, which is why it never reaches a cloze child (#1194). A visited set
-   does the same job without a cutoff, and it is needed here because a constructed element holds
-   services that reference each other. It costs reported paths, not findings: a registry object
-   reachable twice is named once, at whichever path the walk hit first. */
+/* The idService skip is taken from the walker in element-blueprint.spec.ts; the `visited` set is this
+   walker's own. It walks ONE tree and asks each object whether the registry owns it, so remembering the
+   object alone is enough -- the walker over there compares two trees and has to remember the pair
+   (#1194). It costs reported paths, not findings: a registry object reachable twice is named once, at
+   whichever path the walk hit first. */
 const registryObjectsIn = (node: unknown, path: string, visited: WeakSet<object> = new WeakSet()): string[] => {
   if (node === null || typeof node !== 'object' || visited.has(node)) return [];
   visited.add(node);

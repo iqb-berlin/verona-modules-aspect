@@ -78,6 +78,10 @@ export const GLOBAL_DEFAULTS = {
     muteControl: true,
     interactiveMuteControl: false,
     hintLabel: 'Bitte starten',
+    /* Was the one member of the group the generator answered for with a literal of its own, because a
+       fallback for the pre-4.10 name `hintLabelDelay` sat in its place. That rescue moved to
+       Migration4m10To4m11, where the old name arrives (#1191); the value is unchanged. */
+    hintDelay: 5000,
     minRuns: 1,
     maxRuns: 1,
     showRestRuns: false,

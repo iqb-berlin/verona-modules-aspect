@@ -58,11 +58,13 @@ import { UnitProperties } from '../models/unit';
  *   defect. {@link Migration4m10To4m11} repairs a 4.10 mistake and reaches every unit below 4.11
  *   (#1191).
  * - One `toVersion` cannot describe a step that bundles changes from two versions.
- *   {@link Migration4m10To4m11} carries a 4.10 rename and a 4.11 margin correction; the rename half is
- *   why a pre-4.10 `hintLabelDelay` is lost (#1191).
- * - A step that only fills `?? default` is doing the normalizer's work. Where the two disagree, the
- *   step wins and the normalizer's fallback never runs - which is the mechanism behind the lost
- *   `hintLabelDelay` (#1191).
+ *   {@link Migration4m10To4m11} carries a 4.10 rename and a 4.11 margin correction, and answers for
+ *   both from one declaration.
+ * - A step that only fills `?? default` is doing the normalizer's work, and where the two disagree the
+ *   step wins and the normalizer's fallback never runs. That is how a stored `hintLabelDelay` used to
+ *   be lost: the step set `hintDelay` to its default before `sanitizeHintDelay` could look for the old
+ *   name. The step reads it itself since #1191; the two `?? default` halves it still carries are
+ *   filed there as well.
  */
 export class MigrationManager {
   private static steps: MigrationStep[] = [

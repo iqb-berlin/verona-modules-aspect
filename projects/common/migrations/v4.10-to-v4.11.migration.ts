@@ -14,14 +14,11 @@ export class Migration4m10To4m11 extends UnitTraversalMigration {
     if (element['type'] === 'audio' && newElement['position']) {
       const position = { ...(newElement['position'] as Record<string, unknown>) };
       if (position['marginTop'] && (position['marginTop'] as Record<string, unknown>)['unit'] === 'px') {
-        const marginTop = { ...(position['marginTop'] as Record<string, unknown>) };
-        marginTop['value'] = (marginTop['value'] as number) - 4;
-        position['marginTop'] = marginTop;
+        position['marginTop'] = Migration4m10To4m11.reduceMargin(position['marginTop'] as Record<string, unknown>);
       }
       if (position['marginBottom'] && (position['marginBottom'] as Record<string, unknown>)['unit'] === 'px') {
-        const marginBottom = { ...(position['marginBottom'] as Record<string, unknown>) };
-        marginBottom['value'] = (marginBottom['value'] as number) - 4;
-        position['marginBottom'] = marginBottom;
+        position['marginBottom'] = Migration4m10To4m11
+          .reduceMargin(position['marginBottom'] as Record<string, unknown>);
       }
       newElement['position'] = position;
     }
@@ -42,7 +39,11 @@ export class Migration4m10To4m11 extends UnitTraversalMigration {
         interactiveMuteControl: player['interactiveMuteControl'] ?? false,
         showHint: player['showHint'] ?? true,
         hintLabel: player['hintLabel'] ?? 'Bitte starten',
-        hintDelay: player['hintDelay'] ?? 5000,
+        /* The old name too, because this rebuild is what would otherwise lose it: the rename
+           `hintLabelDelay -> hintDelay` is a 4.10 change, so a unit below that carries the old one --
+           and `PropertyGroupGenerators.sanitizeHintDelay`, which exists to rescue exactly this value,
+           only looks when `hintDelay` is undefined. By then this line has set it to 5000 (#1191). */
+        hintDelay: player['hintDelay'] ?? player['hintLabelDelay'] ?? 5000,
         activeAfterID: player['activeAfterID'] ?? '',
         minRuns: player['minRuns'] ?? 1,
         maxRuns: player['maxRuns'] ?? 1,
@@ -62,5 +63,14 @@ export class Migration4m10To4m11 extends UnitTraversalMigration {
     }
 
     return newElement;
+  }
+
+  /* The four pixels the audio element gained in 4.11 are taken off what a unit stored -- but never
+     below zero: a margin of 0 came out as -4px, which no version of the element ever meant (#1191).
+     A value that is not a number is left alone rather than turned into `NaN`, which would reach the
+     player as `NaNpx`; a numeric string still counts, and the step to 4.12 makes a number of it. */
+  private static reduceMargin(margin: Record<string, unknown>): Record<string, unknown> {
+    const reduced = Number(margin['value']) - 4;
+    return Number.isFinite(reduced) ? { ...margin, value: Math.max(0, reduced) } : margin;
   }
 }

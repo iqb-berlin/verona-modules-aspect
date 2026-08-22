@@ -8,6 +8,9 @@ import {
   RadioButtonGroupElement
 } from 'common/models/elements/input-group-elements/radio-button-group';
 import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import {
+  ClozeElement, CustomDocumentNode
+} from 'common/models/elements/compound-group-elements/cloze/cloze';
 
 /**
  * What a duplicate may share with its original: nothing.
@@ -104,18 +107,31 @@ describe('UIElement.getBlueprint', () => {
     }
   };
 
-  /** Paths at which `a` and `b` hold the very same object. */
-  const sharedPaths = (a: unknown, b: unknown, path: string, depth: number = 1): string[] => {
-    if (depth > 6) return [];
+  /* Paths at which `a` and `b` hold the very same object.
+     What it replaced was a limit of six levels, one short of the child model of a cloze document -- so
+     for those the sweep below reported green whatever the code did (#1194).
+
+     Keyed on the PAIR, not on `a`: the same object can sit at two places in the original, and the
+     second comparison then runs against a different counterpart. Skipping it because `a` had been seen
+     would be the same kind of blindness the depth limit was. What this guards is walking one pair
+     twice; nothing in a constructed element leads it in a circle today -- an object that is identical
+     in both trees is reported at `a === b` before the descent, and the idService is filtered out -- so
+     it is defensive. */
+  const sharedPaths = (a: unknown, b: unknown, path: string,
+                       visited: WeakMap<object, WeakSet<object>> = new WeakMap()): string[] => {
     if (a === null || typeof a !== 'object' || b === null || typeof b !== 'object') return [];
     if (a === b) return [path];
+    const partners = visited.get(a) ?? new WeakSet<object>();
+    if (partners.has(b)) return [];
+    partners.add(b);
+    visited.set(a, partners);
     return Object.keys(a as Record<string, unknown>)
       .filter(key => key !== 'idService')
       .flatMap(key => sharedPaths(
         (a as Record<string, unknown>)[key],
         (b as Record<string, unknown>)[key],
         `${path}.${key}`,
-        depth + 1
+        visited
       ));
   };
 
@@ -140,6 +156,40 @@ describe('UIElement.getBlueprint', () => {
     });
 
     expect(findings).toEqual([]);
+  });
+
+  /* A test for the test. The walker used to stop at `depth > 6`, and a cloze child model sits at seven:
+     `document.content[0].content[0].attrs.model`. The sweep above therefore reported green for cloze
+     children whatever the code did (#1194). Sharing is planted here on purpose -- the child models of a
+     cloze are made by its own constructor, so nothing else would produce it -- and what is asserted is
+     that the walker names the path. */
+  it('should reach the child model of a cloze document', () => {
+    const original = ElementFactory.createElement(
+      { type: 'cloze', ...FILLING.cloze } as { type: UIElementType }, idService
+    ) as ClozeElement;
+    const copy = duplicate(original) as ClozeElement;
+    const nodeOf = (element: ClozeElement): CustomDocumentNode => (
+      element.document.content[0].content[0] as CustomDocumentNode
+    );
+    nodeOf(copy).attrs.model = nodeOf(original).attrs.model;
+
+    const findings = sharedPaths(original.document, copy.document, 'cloze.document');
+
+    expect(findings).toEqual(['cloze.document.content.0.content.0.attrs.model']);
+  });
+
+  /* The second test for the test. An object at two places in the original is compared against two
+     different counterparts, and a walker that remembers only where it has been would skip the second
+     -- reporting green for a leak at exactly the place the first comparison came out clean. */
+  it('should compare an object that sits at two places in the original at both of them', () => {
+    const twice = { inner: { deep: true } };
+    const original = { p1: twice, p2: twice };
+    /* Copied properly at the first place, leaking the inner object at the second. A walker that
+       remembers only that it has seen `twice` stops at the second place -- against a counterpart it
+       never looked at. */
+    const copy = { p1: { inner: { deep: true } }, p2: { inner: twice.inner } };
+
+    expect(sharedPaths(original, copy, 'root')).toEqual(['root.p2.inner']);
   });
 
   it('should not put the id service into the blueprint', () => {

@@ -1,3 +1,4 @@
+import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { NormalizationMigration } from './normalization';
 
 describe('NormalizationMigration', () => {
@@ -14,6 +15,37 @@ describe('NormalizationMigration', () => {
     };
     const result = migration.execute(unit);
     expect(result.version).toBe('4.5.0');
+  });
+
+  /* The normalizer walks an element's children itself, so this step must not take the traversal's tree
+     as well -- a child would be normalized twice, a likert row three times. Nothing goes wrong today
+     because normalizing twice changes nothing; the count is held so that a repair case added to the
+     normalizer cannot quietly run twice on a child (#1196). */
+  it('should hand every element to the normalizer once', () => {
+    const normalizeElement = vi.spyOn(ModelNormalizer, 'normalizeElement');
+    migration.execute({
+      version: '4.5.0',
+      pages: [{
+        sections: [{
+          elements: [{
+            type: 'likert',
+            id: 'likert_1',
+            rows: [{ type: 'likert-row', id: 'row_1' }],
+            elements: [{ type: 'radio', id: 'cell_1' }]
+          }]
+        }]
+      }]
+    });
+
+    const idsSeen = normalizeElement.mock.calls
+      .map(([element]) => (element as Record<string, unknown>).id);
+    expect(idsSeen.filter(id => id === 'likert_1').length).toBe(1);
+    expect(idsSeen.filter(id => id === 'cell_1').length).toBe(1);
+    /* Twice, and not because of the traversal: `normalizeElement` walks a likert's rows in two places
+       of its own -- once to stamp the row type, once with the other compound children. Older than
+       this change and harmless while normalizing twice changes nothing. */
+    expect(idsSeen.filter(id => id === 'row_1').length).toBe(2);
+    vi.restoreAllMocks();
   });
 
   it('should normalize elements within pages and sections', () => {

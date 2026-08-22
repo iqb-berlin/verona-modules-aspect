@@ -1,5 +1,5 @@
-import { UnitTraversalMigration } from './unit-traversal-migration';
 import { ModelNormalizer } from 'common/utils/model-normalizer';
+import { UnitTraversalMigration } from './unit-traversal-migration';
 
 export class NormalizationMigration extends UnitTraversalMigration {
   fromVersion = '0.0.0';
@@ -35,5 +35,14 @@ export class NormalizationMigration extends UnitTraversalMigration {
   // eslint-disable-next-line class-methods-use-this
   protected override migrateElement(element: Record<string, unknown>): Record<string, unknown> {
     return ModelNormalizer.normalizeElement(element);
+  }
+
+  /* No descent from here: `normalizeElement` walks an element's children itself. Taking the base
+     class's tree as well would hand every child to it a second time -- and a likert row, which its
+     element and its row list both name, a third. It survives that, because normalizing an already
+     normalized element changes nothing, but nothing says it has to stay that way: a repair case in
+     the normalizer would run twice on a child and once on an element of a section (#1196). */
+  protected override migrateElementTree(element: Record<string, unknown>): Record<string, unknown> {
+    return this.migrateElement(element);
   }
 }

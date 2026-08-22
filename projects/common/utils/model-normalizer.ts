@@ -66,7 +66,7 @@ export class ModelNormalizer {
     return {
       ...section,
       elements: ((section.elements || []) as Record<string, unknown>[])
-        .map(element => ModelNormalizer.normalizeElement(element)) as unknown as UIElementProperties[],
+        .map(element => ModelNormalizer.normalizeElement(element)),
       height: section.height !== undefined ? section.height as number : 400,
       backgroundColor: (section.backgroundColor as string) || '#ffffff',
       dynamicPositioning: section.dynamicPositioning !== undefined ? section.dynamicPositioning as boolean : true,
@@ -85,7 +85,17 @@ export class ModelNormalizer {
     };
   }
 
-  static normalizeElement(element: Record<string, unknown>): Record<string, unknown> {
+  /* Loose in, typed out, for the element level as well -- with what `SectionProperties.elements`
+     actually asks for, `UIElementProperties`, and not a union over thirty element types: nothing at
+     this seam needs to tell one type from another, and the element's own class checks its own members
+     when it is constructed (#1308).
+
+     `id` is the one member taken on trust: it is claimed as a string without being looked at. An element
+     a section holds carries one. A blueprint on its way to `ElementFactory.createElement` need not, and
+     that is where one is minted, right after this; the same goes for every child normalized recursively
+     below -- a table cell, a likert row, a cloze child model -- whose id its constructor mints. What
+     reaches an element is therefore always a string; what this function returns need not be. */
+  static normalizeElement(element: Record<string, unknown>): UIElementProperties {
     const type = element.type as UIElementType;
     const defaults = ELEMENT_DEFAULTS[type] as ElementDefaultsEntry | undefined ?? {};
     const normalized: Record<string, unknown> = { ...element };
@@ -183,7 +193,14 @@ export class ModelNormalizer {
       normalized.rows = normalized.rows.map(el => this.normalizeElement(el as Record<string, unknown>));
     }
 
-    return normalized;
+    /* Built rather than handed over, as in the three functions above: the members the interface demands
+       are named, so the compiler sees them, and the stored keys travel on through the spread. */
+    return {
+      ...normalized,
+      type,
+      id: normalized.id as string,
+      isRelevantForPresentationComplete: normalized.isRelevantForPresentationComplete as boolean
+    };
   }
 
   private static normalizeClozeDocument(document: Record<string, unknown>): void {

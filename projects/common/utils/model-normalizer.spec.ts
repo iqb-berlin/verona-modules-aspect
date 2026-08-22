@@ -1,5 +1,5 @@
 import { ELEMENT_DEFAULTS, GLOBAL_DEFAULTS, GROUP_SECTIONS } from 'common/models/elements/element-registry';
-import { UIElementType } from 'common/models/ui-element-interfaces';
+import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
 import {
   TextFieldSimpleElement
@@ -39,6 +39,13 @@ const registryObjectsIn = (node: unknown, path: string, visited: WeakSet<object>
       .flatMap(([key, value]) => registryObjectsIn(value, `${path}.${key}`, visited))
   );
 };
+
+/* What the normalizer answers with is a `UIElementProperties` since #1308, and these assertions look at
+   members of a concrete element type -- a slider's `barStyle`, a likert row's retired `rowID` -- which
+   that interface does not name. Read through here, so the one cast sits where it is explained instead
+   of once per assertion. */
+const ownProperties = (element: UIElementProperties): Record<string, unknown> => element as unknown as
+  Record<string, unknown>;
 
 describe('ModelNormalizer', () => {
   describe('normalizeUnit', () => {
@@ -184,6 +191,37 @@ describe('ModelNormalizer', () => {
       });
     });
 
+    /* Typed does not mean pruned, on this level either: what an element carries and no model knows
+       travels on, exactly as before, and is dropped a step later by the element's own class -- which is
+       what the constructors have always done (#1308, #1198). */
+    it('should carry a key no element model knows through the normalization', () => {
+      const normalized = ModelNormalizer.normalizeElement({
+        type: 'text', id: 'el1', keyTheModelNeverKnew: 'still here'
+      });
+
+      expect(ownProperties(normalized).keyTheModelNeverKnew).toBe('still here');
+    });
+
+    /* The two members the typed answer claims without looking at them (#1308). Neither is filled or
+       checked here: an element without an id gets one from `ElementFactory`, and what
+       `isRelevantForPresentationComplete` should be is the element constructor's business. Held so that
+       the open half of the promise is written down rather than assumed. */
+    describe('what the typed answer takes on trust', () => {
+      it('should leave an element without an id without one', () => {
+        const normalized = ModelNormalizer.normalizeElement({ type: 'text' });
+
+        expect(normalized.id).toBeUndefined();
+      });
+
+      it('should pass a stored isRelevantForPresentationComplete through as it is', () => {
+        const normalized = ModelNormalizer.normalizeElement({
+          type: 'text', id: 'el1', isRelevantForPresentationComplete: 'yes'
+        });
+
+        expect(normalized.isRelevantForPresentationComplete as unknown).toBe('yes');
+      });
+    });
+
     it('should handle math-table specifically', () => {
       const partialMathTable = {
         type: 'math-table',
@@ -191,7 +229,7 @@ describe('ModelNormalizer', () => {
         variableLayoutOptions: { allowArithmeticChars: true }
       };
       const normalized = ModelNormalizer.normalizeElement(partialMathTable as Record<string, unknown>);
-      const variableLayoutOptions = normalized.variableLayoutOptions as Record<string, unknown>;
+      const variableLayoutOptions = ownProperties(normalized).variableLayoutOptions as Record<string, unknown>;
       expect(variableLayoutOptions.allowArithmeticChars).toBe(true);
       expect(variableLayoutOptions.isFirstLineUnderlined).toBe(true); // Default backfilled
     });
@@ -202,7 +240,7 @@ describe('ModelNormalizer', () => {
     describe('defaults changed with the typed registry (#1177)', () => {
       it('no longer backfills the retired rowID key into likert rows', () => {
         const normalized = ModelNormalizer.normalizeElement({ type: 'likert-row', id: 'lr1' });
-        expect(normalized.rowID).toBeUndefined();
+        expect(ownProperties(normalized).rowID).toBeUndefined();
       });
     });
 
@@ -213,7 +251,7 @@ describe('ModelNormalizer', () => {
         elements: [{ type: 'button', id: 'b1' }]
       };
       const normalized = ModelNormalizer.normalizeElement(partialLikert as Record<string, unknown>);
-      const nestedElements = normalized.elements as Record<string, unknown>[];
+      const nestedElements = ownProperties(normalized).elements as Record<string, unknown>[];
       expect(nestedElements[0].isRelevantForPresentationComplete).toBe(true);
     });
 
@@ -226,8 +264,8 @@ describe('ModelNormalizer', () => {
       it('should backfill missing properties as false', () => {
         const normalized = ModelNormalizer.normalizeElement({ type: 'slider', id: 's1' });
 
-        expect(normalized.barStyle).toBe(false);
-        expect(normalized.thumbLabel).toBe(false);
+        expect(ownProperties(normalized).barStyle).toBe(false);
+        expect(ownProperties(normalized).thumbLabel).toBe(false);
       });
 
       it('should have boolean defaults in the registry', () => {
@@ -257,17 +295,17 @@ describe('ModelNormalizer', () => {
       it.each(KEYBOARD_ON)('should create %s with its keyboard on', type => {
         const normalized = ModelNormalizer.normalizeElement({ type, id: `${type}_1` });
 
-        expect(normalized.showSoftwareKeyboard).toBe(true);
-        expect(normalized.addInputAssistanceToKeyboard).toBe(true);
-        expect(normalized.hideNativeKeyboard).toBe(true);
+        expect(ownProperties(normalized).showSoftwareKeyboard).toBe(true);
+        expect(ownProperties(normalized).addInputAssistanceToKeyboard).toBe(true);
+        expect(ownProperties(normalized).hideNativeKeyboard).toBe(true);
       });
 
       it('should leave the math table without a keyboard', () => {
         const normalized = ModelNormalizer.normalizeElement({ type: 'math-table', id: 'mt1' });
 
-        expect(normalized.showSoftwareKeyboard).toBe(false);
-        expect(normalized.addInputAssistanceToKeyboard).toBe(false);
-        expect(normalized.hideNativeKeyboard).toBe(false);
+        expect(ownProperties(normalized).showSoftwareKeyboard).toBe(false);
+        expect(ownProperties(normalized).addInputAssistanceToKeyboard).toBe(false);
+        expect(ownProperties(normalized).hideNativeKeyboard).toBe(false);
       });
 
       /* That every keyboard element's entry carries all of these is no longer a spec but a compile
@@ -340,18 +378,18 @@ describe('ModelNormalizer', () => {
       const partialInputElement = { type: 'dropdown', id: 'dd1' };
       const normalized = ModelNormalizer.normalizeElement(partialInputElement);
 
-      expect(normalized.required).toBe(false);
-      expect(normalized.requiredWarnMessage).toBe('Eingabe erforderlich');
-      expect(normalized.readOnly).toBe(false);
+      expect(ownProperties(normalized).required).toBe(false);
+      expect(ownProperties(normalized).requiredWarnMessage).toBe('Eingabe erforderlich');
+      expect(ownProperties(normalized).readOnly).toBe(false);
     });
 
     it('should not add required properties for non-input elements', () => {
       const partialNonInputElement = { type: 'button', id: 'btn1' };
       const normalized = ModelNormalizer.normalizeElement(partialNonInputElement);
 
-      expect(normalized.required).toBeUndefined();
-      expect(normalized.requiredWarnMessage).toBeUndefined();
-      expect(normalized.readOnly).toBeUndefined();
+      expect(ownProperties(normalized).required).toBeUndefined();
+      expect(ownProperties(normalized).requiredWarnMessage).toBeUndefined();
+      expect(ownProperties(normalized).readOnly).toBeUndefined();
     });
 
     /* #960: the option control's vertical alignment. 'auto' is the behaviour every stored unit has
@@ -367,7 +405,7 @@ describe('ModelNormalizer', () => {
       );
 
       it('should fill it into a unit stored without it', () => {
-        expect(ModelNormalizer.normalizeElement({ type: 'radio', id: 'r1' }).verticalButtonAlignment)
+        expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'radio', id: 'r1' })).verticalButtonAlignment)
           .toBe('auto');
       });
 
@@ -375,7 +413,7 @@ describe('ModelNormalizer', () => {
         const normalized = ModelNormalizer
           .normalizeElement({ type: 'checkbox', id: 'cb1', verticalButtonAlignment: 'center' });
 
-        expect(normalized.verticalButtonAlignment).toBe('center');
+        expect(ownProperties(normalized).verticalButtonAlignment).toBe('center');
       });
 
       /* The option table has carried the property since 3.2.0 and centres its rows -- unchanged by

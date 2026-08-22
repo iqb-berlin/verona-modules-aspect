@@ -30,7 +30,7 @@ import { TriggerElement } from 'common/models/elements/action-group-elements/tri
 import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
 import { MarkingPanelElement } from 'common/models/elements/interactive-group-elements/marking-panel';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { UIElementDraft, UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import { UIElementDraft } from 'common/models/ui-element-interfaces';
 import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
 import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { ModelRegistry } from 'common/utils/model-registry';
@@ -80,11 +80,13 @@ export abstract class ElementFactory {
 
   static createElement(element: UIElementDraft, idService?: AbstractIDService)
     : UIElement {
-    const normalizedElement = ModelNormalizer.normalizeElement(element as Record<string, unknown>);
+    /* The id the normalizer takes on trust is minted here: a draft on its way in need not carry one,
+       and everything past this point does (#1308). */
+    const normalizedElement = ModelNormalizer.normalizeElement(element);
     if (!normalizedElement.id) {
       if (idService) {
-        normalizedElement.id = idService.getAndRegisterNewID(normalizedElement.type as UIElementType);
-        normalizedElement.alias = idService.getAndRegisterNewID(normalizedElement.type as UIElementType, true);
+        normalizedElement.id = idService.getAndRegisterNewID(normalizedElement.type);
+        normalizedElement.alias = idService.getAndRegisterNewID(normalizedElement.type, true);
       } else {
         // Fallback for tests or simple instantiation where no idService is available
         const randomId = Math.random().toString(36).substring(2, 9);
@@ -92,9 +94,7 @@ export abstract class ElementFactory {
         normalizedElement.alias = `${normalizedElement.type}_alias_${randomId}`;
       }
     }
-    return new ElementFactory.ELEMENT_CLASSES[element.type](
-      normalizedElement as unknown as UIElementProperties, idService
-    );
+    return new ElementFactory.ELEMENT_CLASSES[element.type](normalizedElement, idService);
   }
 }
 

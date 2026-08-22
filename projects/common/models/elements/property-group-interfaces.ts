@@ -315,9 +315,8 @@ export abstract class PropertyGroupGenerators {
         .sanitizeShowHint(properties),
       hintLabel: properties.hintLabel !== undefined ?
         properties.hintLabel as string : GLOBAL_DEFAULTS.player.hintLabel as string,
-      /* The old name `hintLabelDelay` is read where it arrives -- in Migration4m10To4m11, which
-         rebuilds the group for every unit below 4.11 and used to overwrite it here (#1191). A fallback
-         at this end could not run any more once the step had set the value. */
+      /* The old name `hintLabelDelay` is read where it arrives, in Migration4m10To4m11: it renames the
+         key for every unit below 4.11, so nothing under the old name reaches this point (#1191). */
       hintDelay: properties.hintDelay !== undefined ?
         properties.hintDelay as number : GLOBAL_DEFAULTS.player.hintDelay,
       activeAfterID: properties.activeAfterID !== undefined ? properties.activeAfterID as string : '',

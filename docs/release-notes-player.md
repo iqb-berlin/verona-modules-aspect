@@ -20,6 +20,8 @@ Player
   - Bindet den Status von GeoGebra-Variablen an das übergeordnete Element: Variablen werden mit dem Status des GeoGebra-Elements initialisiert und die Statusänderung "DISPLAYED" wird an sie weitergegeben
 
 ### Fehlerbehebungen
+- Bei einer Aufgabe vor 4.11, in der ein Zahlenfeld der Medien-Einstellungen leer gespeichert wurde (z. B. "Maximale Anzahl Wiedergaben"), gilt weiterhin der Vorgabewert. Solche leeren Felder entstanden mit Editor-Versionen bis 2023
+- Bei einer Aufgabe im Format vor 4.10, in der die Beschriftung des Starthinweises geleert wurde, bleibt der Hinweis ausgeschaltet (Audio, Video). Beim Laden wurde er bisher wieder eingeschaltet: die leere Beschriftung war in diesen Aufgaben die Art, ihn abzuschalten, und genau dafür gibt es seit 4.10 eine eigene Einstellung
 - Beim Laden einer Aufgabe im Format vor 4.11 bleibt die eingestellte Verzögerung des Starthinweises erhalten (Audio, Video). Sie wurde bisher durch den Vorgabewert von 5 Sekunden ersetzt, wenn die Aufgabe sie noch unter ihrem alten Namen gespeichert hatte
 - Ebenfalls beim Laden solcher Aufgaben: die 4-Pixel-Korrektur der Ränder eines Audio-Elements rutscht nicht mehr unter 0. Aus einem gespeicherten Rand von 0 wurde bisher -4 Pixel
 - Bei einer Aufgabe im Format vor 4.0 werden jetzt auch die Elemente innerhalb von Tabellen, Optionentabellen und Lückentexten umgewandelt. Sichtbar wird das bei den Lücken eines Lückentexts: sie behalten ihre gespeicherte Mindestbreite, statt in der Standardbreite ihres Typs dargestellt zu werden (eine Lücke mit gespeicherten 150 Pixeln wurde 180 Pixel breit). Die Größe einer Tabellenzelle bestimmt weiterhin die Tabelle selbst

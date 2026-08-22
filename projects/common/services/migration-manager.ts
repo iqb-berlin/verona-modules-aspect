@@ -61,11 +61,11 @@ import { UnitProperties } from '../models/unit';
  *   {@link Migration4m10To4m11} carries a 4.10 rename and a 4.11 margin correction, and answers for
  *   both from one declaration.
  * - A step that only fills `?? default` is doing the normalizer's work, and where the two disagree the
- *   step wins and the normalizer's fallback never runs. That is how a stored `hintLabelDelay` used to
- *   be lost: {@link Migration4m10To4m11} wrote the default over it before the fallback in
- *   `generatePlayerProps` could look for the old name. The step reads that name itself since #1191, and
- *   the fallback went with the fix; the two `?? default` halves the step still carries are filed there
- *   as well.
+ *   step wins and the normalizer's fallback never runs. {@link Migration4m10To4m11} filled 22 player
+ *   members and two keyboard properties that way, which cost a stored `hintLabelDelay` (#1191) and kept
+ *   `showHint` from being derived from the hint label (#1315). What is left of it are the two things
+ *   only a step can do: rename a key, and read a `null` where a number belongs as the emptied field it
+ *   was.
  */
 export class MigrationManager {
   private static steps: MigrationStep[] = [

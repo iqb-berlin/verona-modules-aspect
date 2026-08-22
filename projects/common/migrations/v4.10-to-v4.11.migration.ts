@@ -23,48 +23,39 @@ export class Migration4m10To4m11 extends UnitTraversalMigration {
       newElement['position'] = position;
     }
 
-    // 2. Restore/Complete player properties for Player's 'strictInstantiation: true'
-    if (['video', 'audio'].includes(element['type'] as string)) {
-      const player = { ...(newElement['player'] as Record<string, unknown>) };
-      newElement['player'] = {
-        loop: player['loop'] ?? false,
-        startControl: player['startControl'] ?? true,
-        pauseControl: player['pauseControl'] ?? false,
-        progressBar: player['progressBar'] ?? true,
-        interactiveProgressbar: player['interactiveProgressbar'] ?? false,
-        volumeControl: player['volumeControl'] ?? true,
-        defaultVolume: player['defaultVolume'] ?? 0.8,
-        minVolume: player['minVolume'] ?? 0.2,
-        muteControl: player['muteControl'] ?? true,
-        interactiveMuteControl: player['interactiveMuteControl'] ?? false,
-        showHint: player['showHint'] ?? true,
-        hintLabel: player['hintLabel'] ?? 'Bitte starten',
-        /* The old name too, because this rebuild is what would otherwise lose it: the rename
-           `hintLabelDelay -> hintDelay` is a 4.10 change, so a unit below that carries the old one, and
-           this line used to write the default over it. The rescue that sat at the other end, in
-           `generatePlayerProps`, could not run once that had happened -- it looked only when `hintDelay`
-           was undefined -- so it went with the fix and the value is read here, where the old name
-           arrives (#1191). */
-        hintDelay: player['hintDelay'] ?? player['hintLabelDelay'] ?? 5000,
-        activeAfterID: player['activeAfterID'] ?? '',
-        minRuns: player['minRuns'] ?? 1,
-        maxRuns: player['maxRuns'] ?? 1,
-        showRestRuns: player['showRestRuns'] ?? false,
-        showRestTime: player['showRestTime'] ?? true,
-        playbackTime: player['playbackTime'] ?? 0,
-        fileName: player['fileName'] ?? '',
-        imgSrc: player['imgSrc'] ?? null,
-        imgFileName: player['imgFileName'] ?? ''
-      };
-    }
-
-    // 3. Element specific properties (4.11 additions)
-    if (['text-field', 'text-area', 'spell-correct', 'text-field-simple'].includes(element['type'] as string)) {
-      newElement['keyStyle'] = element['keyStyle'] ?? 'round';
-      newElement['inputAssistanceCustomStyle'] = element['inputAssistanceCustomStyle'] ?? 'medium';
+    /* Two repairs of the stored group, and nothing else. What stood here rebuilt all 22 of its members
+       from a list of `?? default` lines -- work the normalizer does anyway, and does better: it derives
+       `showHint` from the hint label instead of defaulting it to true, which is what 4.10 introduced the
+       property for. A unit whose label had been emptied to switch the hint off got it switched back on
+       here (#1315). */
+    if (['video', 'audio'].includes(element['type'] as string) && newElement['player']) {
+      newElement['player'] = Migration4m10To4m11.repairPlayer(newElement['player'] as Record<string, unknown>);
     }
 
     return newElement;
+  }
+
+  /* What a step is for, twice over.
+
+     The rename of 4.10: `hintLabelDelay` became `hintDelay`, and a value stored under the old name
+     would otherwise be read under a name nothing knows.
+
+     And `null` where a number belongs. Until 2023 the player dialog wrote `null` into the model when a
+     number field was cleared, so units carry it. The list of `?? default` lines this replaced caught
+     that in passing -- `?? 1` turned a `maxRuns: null` into one run. The normalizer does not: it asks
+     `!== undefined`, so the `null` would stay, and the control bar reads it as "no limit" -- a unit that
+     could be played once could suddenly be played forever. An emptied field is not a value, so the key
+     goes and the normalizer fills it (#1315). */
+  private static repairPlayer(player: Record<string, unknown>): Record<string, unknown> {
+    const repaired = { ...player };
+    if (repaired['hintLabelDelay'] !== undefined) {
+      if (repaired['hintDelay'] === undefined) repaired['hintDelay'] = repaired['hintLabelDelay'];
+      delete repaired['hintLabelDelay'];
+    }
+    Object.keys(repaired).forEach(key => {
+      if (repaired[key] === null && key !== 'imgSrc') delete repaired[key];
+    });
+    return repaired;
   }
 
   /* The four pixels the audio element gained in 4.11 are taken off what a unit stored -- but never

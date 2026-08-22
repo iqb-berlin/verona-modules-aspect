@@ -5,7 +5,7 @@ import { TextComponent } from 'common/components/text-group-elements/text/text.c
 import { APIService } from 'common/shared.module';
 import { Pipe, PipeTransform, SimpleChange } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import * as text_130 from '../../../../../../test-data/element-models/text_130.json';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { FloatingMarkingBarComponent } from './floating-marking-bar.component';
 
 describe('FloatingMarkingBarComponent', () => {
@@ -66,7 +66,9 @@ describe('FloatingMarkingBarComponent', () => {
   beforeEach(() => {
     textComponentFixture = TestBed.createComponent(TextComponent);
     textComponent = textComponentFixture.componentInstance;
-    textComponent.elementModel = JSON.parse(JSON.stringify(text_130));
+    /* What this spec drives is the highlighting, through setHighlightableColors below -- the element
+       itself needs nothing beyond what it brings (#1171). */
+    textComponent.elementModel = new TextElement({ id: 'text_1' });
 
     fixture = TestBed.createComponent(FloatingMarkingBarComponent);
     component = fixture.componentInstance;

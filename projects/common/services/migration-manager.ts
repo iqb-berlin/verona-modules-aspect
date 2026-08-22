@@ -62,9 +62,10 @@ import { UnitProperties } from '../models/unit';
  *   both from one declaration.
  * - A step that only fills `?? default` is doing the normalizer's work, and where the two disagree the
  *   step wins and the normalizer's fallback never runs. That is how a stored `hintLabelDelay` used to
- *   be lost: the step set `hintDelay` to its default before `sanitizeHintDelay` could look for the old
- *   name. The step reads it itself since #1191; the two `?? default` halves it still carries are
- *   filed there as well.
+ *   be lost: {@link Migration4m10To4m11} wrote the default over it before the fallback in
+ *   `generatePlayerProps` could look for the old name. The step reads that name itself since #1191, and
+ *   the fallback went with the fix; the two `?? default` halves the step still carries are filed there
+ *   as well.
  */
 export class MigrationManager {
   private static steps: MigrationStep[] = [

@@ -32,8 +32,8 @@ describe('Migration4m10To4m11', () => {
   });
 
   /* The rename `hintLabelDelay -> hintDelay` is a 4.10 change, so a unit below that carries the old
-     name. The rebuild below used to set `hintDelay` to its default before anything could look for it,
-     and `sanitizeHintDelay`, which exists for exactly this value, only looks when it is undefined. */
+     name. The rebuild in this step used to write the default over it, which is why the rescue that sat
+     in `generatePlayerProps` -- it looked only when `hintDelay` was undefined -- never ran (#1191). */
   it('should keep the delay a unit stored under the old name', () => {
     const result = audioOf(migration.execute(audioUnit({ player: { hintLabelDelay: 2000 } })));
 

@@ -7,7 +7,7 @@ import { LikertProperties } from 'common/models/elements/compound-group-elements
 import { LikertRowProperties } from 'common/models/elements/compound-group-elements/likert/likert-row';
 import { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
 import { ElementFactory } from 'common/utils/element-factory';
-import { UIElementProperties } from 'common/models/ui-element-interfaces';
+import { Measurement, UIElementProperties } from 'common/models/ui-element-interfaces';
 
 describe('MigrationManager', () => {
   it('should normalize legacy elements during migration', () => {
@@ -50,7 +50,7 @@ describe('MigrationManager', () => {
       ]
     };
 
-    const migratedUnit = MigrationManager.migrate(legacyUnit, '4.11.0') as unknown as UnitProperties;
+    const migratedUnit = MigrationManager.migrate(legacyUnit, '4.11.0');
     expect(migratedUnit.version).toBe('4.11.0');
     const element = migratedUnit.pages[0].sections[0].elements[0] as unknown as TextProperties;
 
@@ -94,7 +94,7 @@ describe('MigrationManager', () => {
         }]
       };
 
-      const migratedUnit = MigrationManager.migrate(legacyUnit, '4.11.0') as unknown as UnitProperties;
+      const migratedUnit = MigrationManager.migrate(legacyUnit, '4.11.0');
       const cloze = migratedUnit.pages[0].sections[0].elements[0] as unknown as ClozeProperties;
       const textField = (cloze.document.content[0].content[0] as CustomDocumentNode)
         .attrs.model as unknown as TextFieldProperties;
@@ -133,13 +133,41 @@ describe('MigrationManager', () => {
         }]
       };
 
-      const migratedUnit = MigrationManager.migrate(legacyUnit, '4.11.0') as unknown as UnitProperties;
+      const migratedUnit = MigrationManager.migrate(legacyUnit, '4.11.0');
       const table = migratedUnit.pages[0].sections[0].elements[0] as unknown as TableProperties;
       const textField = table.elements[0] as unknown as TextFieldProperties;
 
       expect(textField.required).toBe(false);
       expect(textField.dimensions?.width).toBe(180);
     });
+  });
+
+  /* What the seam gets is a `UnitProperties`, not a bag of unknowns: the annotation below is the whole
+     assertion and it is checked when the specs are compiled, not when they run. Loosening the return
+     type of `migrate` breaks it, and with it the three double casts would come back (#1198). */
+  it('should answer with a typed unit', () => {
+    const migrated: UnitProperties = MigrationManager.migrate({
+      type: 'aspect-unit-definition', version: '4.12.0', pages: []
+    }, '4.12.0');
+
+    expect(migrated.pages).toEqual([]);
+    expect(migrated.sectionNumberingPosition).toBe('left');
+  });
+
+  /* Typed does not mean pruned. What the normalizer builds carries the keys of the stored unit along,
+     known or not -- dropping them would be a change to fifty thousand stored units, and the model
+     classes discard what they do not declare a step later anyway (#1198). */
+  it('should carry a key the model does not know through the migration', () => {
+    const migrated = MigrationManager.migrate({
+      type: 'aspect-unit-definition',
+      version: '4.12.0',
+      keyTheModelNeverKnew: 'still here',
+      pages: [{ sections: [{ elements: [], sectionKeyTheModelNeverKnew: 'also here' }] }]
+    }, '4.12.0');
+
+    expect((migrated as unknown as Record<string, unknown>).keyTheModelNeverKnew).toBe('still here');
+    expect((migrated.pages[0].sections[0] as unknown as Record<string, unknown>).sectionKeyTheModelNeverKnew)
+      .toBe('also here');
   });
 
   it('should update the version to targetVersion even if no steps are applicable', () => {
@@ -172,12 +200,9 @@ describe('MigrationManager', () => {
       }]
     });
 
-    const marginTopOf = (unit: Record<string, unknown>): number => {
-      const pages = unit.pages as Record<string, unknown>[];
-      const sections = pages[0].sections as Record<string, unknown>[];
-      const elements = sections[0].elements as Record<string, unknown>[];
-      const position = elements[0].position as Record<string, unknown>;
-      return (position.marginTop as Record<string, unknown>).value as number;
+    const marginTopOf = (unit: UnitProperties): number => {
+      const element = unit.pages[0].sections[0].elements[0];
+      return (element.position?.marginTop as Measurement).value;
     };
 
     it('should run a step for a unit older than its target version', () => {
@@ -232,7 +257,7 @@ describe('MigrationManager', () => {
     });
 
     const migrate4x = (): UnitProperties => MigrationManager
-      .migrate(unit4x(), '4.12.0') as unknown as UnitProperties;
+      .migrate(unit4x(), '4.12.0');
 
     it('should keep the stored dimensions instead of falling back to the element defaults', () => {
       const element = migrate4x().pages[0].sections[0].elements[0] as unknown as TextProperties;
@@ -320,7 +345,7 @@ describe('MigrationManager', () => {
       }]
     };
 
-    const migrated = MigrationManager.migrate(legacyUnit, '4.12.0') as unknown as UnitProperties;
+    const migrated = MigrationManager.migrate(legacyUnit, '4.12.0');
     const elements = migrated.pages[0].sections[0].elements;
     const cloze = elements[0] as unknown as ClozeProperties;
     const clozeChild = (cloze.document.content[0].content[0] as CustomDocumentNode)
@@ -350,7 +375,7 @@ describe('MigrationManager', () => {
       }]
     };
 
-    const migrated = MigrationManager.migrate(legacyUnit, '4.12.0') as unknown as UnitProperties;
+    const migrated = MigrationManager.migrate(legacyUnit, '4.12.0');
     const section = migrated.pages[0].sections[0];
     const element = section.elements[0] as unknown as TextProperties;
 

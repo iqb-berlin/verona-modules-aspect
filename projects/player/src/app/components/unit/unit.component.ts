@@ -7,7 +7,7 @@ import {
   VopPlayerConfigChangedNotification,
   VopStartCommand
 } from 'player/modules/verona/models/verona';
-import { Unit, UnitProperties } from 'common/models/unit';
+import { Unit } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
 import { Page } from 'common/models/page';
@@ -109,7 +109,7 @@ export class UnitComponent implements OnInit, OnDestroy {
             }
           }
           const migratedDefinition = MigrationManager.migrate(unitDefinition, VersionManager.getCurrentVersion());
-          const unit: Unit = new Unit(migratedDefinition as unknown as UnitProperties);
+          const unit: Unit = new Unit(migratedDefinition);
           this.pages = unit.pages;
           this.showUnitNavNext = unit.showUnitNavNext;
           this.updateSectionNumbering(unit);

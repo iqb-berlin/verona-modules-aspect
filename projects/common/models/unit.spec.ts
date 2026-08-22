@@ -1,14 +1,13 @@
 import * as twoSections from 'test-data/unit-definitions/reference-testing/section-deletion.json';
 import { MigrationManager } from 'common/services/migration-manager';
 import { VersionManager } from 'common/services/version-manager';
-import { Unit, UnitProperties } from 'common/models/unit';
+import { Unit } from 'common/models/unit';
 
-/* Built from a stored definition the way the app builds one -- migrated, then constructed. A stored
-   definition is not UnitProperties, which is the reason the load seam exists (#1198). */
+/* Built from a stored definition the way the app builds one -- migrated, then constructed. The stored
+   definition is loose and what the migration answers with is not: since #1198 it is a `UnitProperties`,
+   and no cast stands between the two. */
 const loadUnit = (): Unit => new Unit(
-  MigrationManager.migrate(
-    JSON.parse(JSON.stringify(twoSections)), VersionManager.getCurrentVersion()
-  ) as unknown as UnitProperties
+  MigrationManager.migrate(JSON.parse(JSON.stringify(twoSections)), VersionManager.getCurrentVersion())
 );
 
 describe('Unit', () => {

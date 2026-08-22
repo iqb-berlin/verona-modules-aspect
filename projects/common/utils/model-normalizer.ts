@@ -1,68 +1,88 @@
 import { ELEMENT_DEFAULTS, ElementDefaultsEntry, GROUP_SECTIONS } from 'common/models/elements/element-registry';
 import { PlayerProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
-import { UIElementType } from 'common/models/ui-element-interfaces';
+import { Measurement, UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
+import { UnitProperties } from 'common/models/unit';
+import { PageProperties } from 'common/models/page';
+import { SectionProperties } from 'common/models/section';
+import { VisibilityRule } from 'common/models/visibility-rule';
 
 export class ModelNormalizer {
-  static normalizeUnit(unit: Record<string, unknown>): Record<string, unknown> {
-    const normalized = { ...unit };
-    normalized.type = normalized.type || 'aspect-unit-definition';
-    normalized.stateVariables = ((normalized.stateVariables || []) as Record<string, unknown>[])
-      .map(v => ({
-        ...v,
-        alias: v.alias !== undefined ? v.alias : v.id
-      }));
-    normalized.pages = normalized.pages || [];
-    normalized.enableSectionNumbering = normalized.enableSectionNumbering !== undefined ?
-      normalized.enableSectionNumbering : false;
-    normalized.sectionNumberingPosition = normalized.sectionNumberingPosition || 'left';
-    normalized.showUnitNavNext = normalized.showUnitNavNext !== undefined ?
-      normalized.showUnitNavNext : false;
-    return normalized;
+  static normalizeUnit(unit: Record<string, unknown>): UnitProperties {
+    return {
+      ...unit,
+      type: (unit.type as string) || 'aspect-unit-definition',
+      version: unit.version as string,
+      /* `value` is filled like any other missing member: a variable stored without one came out of
+         here without the key at all, and `StateVariableProperties` declares a string (#1198). */
+      stateVariables: ((unit.stateVariables || []) as Record<string, unknown>[])
+        .map(v => ({
+          ...v,
+          id: v.id as string,
+          alias: (v.alias !== undefined ? v.alias : v.id) as string,
+          value: (v.value !== undefined ? v.value : '') as string
+        })),
+      pages: ((unit.pages || []) as Record<string, unknown>[])
+        .map(page => ModelNormalizer.normalizePage(page)),
+      enableSectionNumbering: unit.enableSectionNumbering !== undefined ?
+        unit.enableSectionNumbering as boolean : false,
+      sectionNumberingPosition: (unit.sectionNumberingPosition as 'left' | 'above') || 'left',
+      showUnitNavNext: unit.showUnitNavNext !== undefined ?
+        unit.showUnitNavNext as boolean : false
+    };
   }
 
-  static normalizePage(page: Record<string, unknown>): Record<string, unknown> {
-    const normalized = { ...page };
-    normalized.sections = normalized.sections || [];
-    normalized.hasMaxWidth = normalized.hasMaxWidth !== undefined ?
-      normalized.hasMaxWidth : true;
-    normalized.maxWidth = normalized.maxWidth !== undefined ?
-      normalized.maxWidth : 750;
-    normalized.margin = normalized.margin !== undefined ?
-      normalized.margin : 30;
-    normalized.backgroundColor = normalized.backgroundColor || '#ffffff';
-    normalized.alwaysVisible = normalized.alwaysVisible !== undefined ?
-      normalized.alwaysVisible : false;
-    normalized.alwaysVisiblePagePosition = normalized.alwaysVisiblePagePosition || 'left';
-    normalized.alwaysVisibleAspectRatio = normalized.alwaysVisibleAspectRatio !== undefined ?
-      normalized.alwaysVisibleAspectRatio : 50;
-    return normalized;
+  static normalizePage(page: Record<string, unknown>): PageProperties {
+    return {
+      ...page,
+      sections: ((page.sections || []) as Record<string, unknown>[])
+        .map(section => ModelNormalizer.normalizeSection(section)),
+      hasMaxWidth: page.hasMaxWidth !== undefined ? page.hasMaxWidth as boolean : true,
+      maxWidth: page.maxWidth !== undefined ? page.maxWidth as number : 750,
+      margin: page.margin !== undefined ? page.margin as number : 30,
+      backgroundColor: (page.backgroundColor as string) || '#ffffff',
+      alwaysVisible: page.alwaysVisible !== undefined ? page.alwaysVisible as boolean : false,
+      alwaysVisiblePagePosition:
+        (page.alwaysVisiblePagePosition as PageProperties['alwaysVisiblePagePosition']) || 'left',
+      alwaysVisibleAspectRatio: page.alwaysVisibleAspectRatio !== undefined ?
+        page.alwaysVisibleAspectRatio as number : 50
+    };
   }
 
-  static normalizeSection(section: Record<string, unknown>): Record<string, unknown> {
-    const normalized = { ...section };
-    normalized.elements = normalized.elements || [];
-    normalized.height = normalized.height !== undefined ?
-      normalized.height : 400;
-    normalized.backgroundColor = normalized.backgroundColor || '#ffffff';
-    normalized.dynamicPositioning = normalized.dynamicPositioning !== undefined ?
-      normalized.dynamicPositioning : true;
-    normalized.autoColumnSize = normalized.autoColumnSize !== undefined ?
-      normalized.autoColumnSize : true;
-    normalized.autoRowSize = normalized.autoRowSize !== undefined ?
-      normalized.autoRowSize : true;
-    normalized.gridColumnSizes = normalized.gridColumnSizes || [{ value: 1, unit: 'fr' }];
-    normalized.gridRowSizes = normalized.gridRowSizes || [{ value: 1, unit: 'fr' }];
-    normalized.visibilityDelay = normalized.visibilityDelay !== undefined ?
-      normalized.visibilityDelay : 0;
-    normalized.animatedVisibility = normalized.animatedVisibility !== undefined ?
-      normalized.animatedVisibility : false;
-    normalized.enableReHide = normalized.enableReHide !== undefined ?
-      normalized.enableReHide : false;
-    normalized.logicalConnectiveOfRules = normalized.logicalConnectiveOfRules || 'disjunction';
-    normalized.visibilityRules = normalized.visibilityRules || [];
-    normalized.ignoreNumbering = normalized.ignoreNumbering !== undefined ?
-      normalized.ignoreNumbering : false;
-    return normalized;
+  /* `elements` is the one member of the three groups this cannot vouch for: `normalizeElement` still
+     answers loosely, and typing it means a union over thirty element types (#1198). The cast names that
+     gap in one place, instead of three at the seam where the unit is built. Pages and sections are
+     normalized above, so nothing else reaches a typed member unnormalized.
+
+     The elements a section holds directly, and no deeper: `normalizeElement` walks an element's own
+     children -- table cells, likert rows, the child models of a cloze document -- and handing it those
+     as well would normalize each of them twice (#1196). */
+  /* What the casts on the numbers claim, and what they do not: this fills what is missing, it does not
+     convert what is there. Ten stored units carry `height: "400"` as a string, and after this the
+     member is reachable as a `number` without a cast at the seam, so arithmetic on it compiles --
+     `SectionComponent.getPageHeight` adds section heights and answers `"0400"` for such a unit. No
+     symptom is known and a conversion here would run on every load of every unit forever, which
+     rules.md 14 asks to weigh; it is filed separately rather than smuggled in here (#1306). */
+  static normalizeSection(section: Record<string, unknown>): SectionProperties {
+    return {
+      ...section,
+      elements: ((section.elements || []) as Record<string, unknown>[])
+        .map(element => ModelNormalizer.normalizeElement(element)) as unknown as UIElementProperties[],
+      height: section.height !== undefined ? section.height as number : 400,
+      backgroundColor: (section.backgroundColor as string) || '#ffffff',
+      dynamicPositioning: section.dynamicPositioning !== undefined ? section.dynamicPositioning as boolean : true,
+      autoColumnSize: section.autoColumnSize !== undefined ? section.autoColumnSize as boolean : true,
+      autoRowSize: section.autoRowSize !== undefined ? section.autoRowSize as boolean : true,
+      gridColumnSizes: (section.gridColumnSizes as SectionProperties['gridColumnSizes']) ||
+        [{ value: 1, unit: 'fr' }],
+      gridRowSizes: (section.gridRowSizes as Measurement[]) || [{ value: 1, unit: 'fr' }],
+      visibilityDelay: section.visibilityDelay !== undefined ? section.visibilityDelay as number : 0,
+      animatedVisibility: section.animatedVisibility !== undefined ? section.animatedVisibility as boolean : false,
+      enableReHide: section.enableReHide !== undefined ? section.enableReHide as boolean : false,
+      logicalConnectiveOfRules:
+        (section.logicalConnectiveOfRules as SectionProperties['logicalConnectiveOfRules']) || 'disjunction',
+      visibilityRules: (section.visibilityRules as VisibilityRule[]) || [],
+      ignoreNumbering: section.ignoreNumbering !== undefined ? section.ignoreNumbering as boolean : false
+    };
   }
 
   static normalizeElement(element: Record<string, unknown>): Record<string, unknown> {

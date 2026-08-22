@@ -105,10 +105,10 @@ export class UnitService {
     }
   }
 
-  private loadUnit(parsedUnitDefinition?: string): void {
+  private loadUnit(migratedUnitDefinition?: UnitProperties): void {
     this.idService.reset();
     this.selectionService.reset();
-    this.unit = new EditorUnit(parsedUnitDefinition as unknown as UnitProperties, this.idService);
+    this.unit = new EditorUnit(migratedUnitDefinition, this.idService);
     this.reRegisterAll();
     this.referenceManager = new ReferenceManager(this.unit);
     /* As early as the unit and its reference manager are in place: everything below can throw into the
@@ -122,7 +122,7 @@ export class UnitService {
       this.updateUnitDefinition();
     }
     // The unit constructor updated the version. Therefore the unit has changed and notifies the  host.
-    if ((parsedUnitDefinition as unknown as UnitProperties).version !== VersionManager.getCurrentVersion()) {
+    if (migratedUnitDefinition?.version !== VersionManager.getCurrentVersion()) {
       this.updateUnitDefinition();
     }
     this.updateSectionCounter();

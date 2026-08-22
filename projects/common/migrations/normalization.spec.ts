@@ -17,6 +17,30 @@ describe('NormalizationMigration', () => {
     expect(result.version).toBe('4.5.0');
   });
 
+  /* A stored unit need not carry the keys that hold its children -- `MigrationLegacy` produces a
+     section without `elements` for one that had none, and a unit without pages is what an empty
+     definition looks like. The traversal used to live in `UnitTraversalMigration`, whose spec held
+     this; it moved with the traversal (#1198). */
+  describe('a unit that does not carry its children', () => {
+    it('should normalize a unit without pages', () => {
+      expect(migration.execute({ version: '4.5.0' }).pages).toEqual([]);
+    });
+
+    it('should normalize a page without sections', () => {
+      const result = migration.execute({ version: '4.5.0', pages: [{}] });
+
+      expect(result.pages[0].sections).toEqual([]);
+      expect(result.pages[0].maxWidth).toBe(750);
+    });
+
+    it('should normalize a section without elements', () => {
+      const result = migration.execute({ version: '4.5.0', pages: [{ sections: [{}] }] });
+
+      expect(result.pages[0].sections[0].elements).toEqual([]);
+      expect(result.pages[0].sections[0].height).toBe(400);
+    });
+  });
+
   /* The normalizer walks an element's children itself, so this step must not take the traversal's tree
      as well -- a child would be normalized twice, a likert row three times. Nothing goes wrong today
      because normalizing twice changes nothing; the count is held so that a repair case added to the
@@ -62,9 +86,7 @@ describe('NormalizationMigration', () => {
     };
 
     const result = migration.execute(unit);
-    const pages = result.pages as Record<string, unknown>[];
-    const sections = pages[0].sections as Record<string, unknown>[];
-    const elements = sections[0].elements as Record<string, unknown>[];
+    const elements = result.pages[0].sections[0].elements as unknown as Record<string, unknown>[];
     const element = elements[0];
     const dimensions = element.dimensions as Record<string, unknown>;
 
@@ -110,9 +132,7 @@ describe('NormalizationMigration', () => {
     };
 
     const result = migration.execute(unit);
-    const pages = result.pages as Record<string, unknown>[];
-    const sections = pages[0].sections as Record<string, unknown>[];
-    const elements = sections[0].elements as Record<string, unknown>[];
+    const elements = result.pages[0].sections[0].elements as unknown as Record<string, unknown>[];
     const cloze = elements[0] as Record<string, unknown>;
     const document = cloze.document as Record<string, unknown>;
     const docContent = document.content as Record<string, unknown>[];

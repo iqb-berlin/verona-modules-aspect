@@ -1,19 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import * as dropList_130 from 'test-data/element-models/drop-list_130.json';
-import * as textField_130 from 'test-data/element-models/text-field_130.json';
-import * as textFieldSimple_131 from 'test-data/element-models/text-field-simple_131.json';
-import * as image_130 from 'test-data/element-models/image_130.json';
-import * as audio_130 from 'test-data/element-models/audio_130.json';
-import * as text_130 from 'test-data/element-models/text_130.json';
-import * as likertRow_130 from 'test-data/element-models/likert-row_130.json';
-import * as radio_130 from 'test-data/element-models/radio_130.json';
-import * as radioGroupImages_130 from 'test-data/element-models/radio-group-images_130.json';
-import * as toggleButton_130 from 'test-data/element-models/toggle-button_130.json';
-import * as textArea_130 from 'test-data/element-models/text-area_130.json';
-import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.json';
-import * as hotspotImage_135 from 'test-data/element-models/hotspot-image_135.json';
-import * as dragNDropValues_01_130 from 'test-data/values/dragNDropValues_01_130.json';
-import * as dragNDropValues_02_130 from 'test-data/values/dragNDropValues_02_130.json';
 import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
 import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
@@ -36,6 +21,27 @@ import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-
 import { ElementFactory } from 'common/utils/element-factory';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 
+/* Element models are built here, not read from JSON files under `test-data/`: what a test is about
+   should be visible in the test. The files this replaced carried the 1.3.0 shape with sixty keys per
+   element, of which each test used one or two -- and the ones with images carried them as base64
+   (#1171). Whatever a test does not name, the element brings itself. */
+const withProperties = <T>(element: T, properties: Partial<T>): T => {
+  Object.assign(element as object, properties);
+  return element;
+};
+
+/* Three values as a drop list holds them, the third without an image. The images were 200 KB of base64
+   in the file this replaced; no assertion looks at them, they are only carried through. */
+const dragNDropValues = (): DragNDropValueObject[] => ([
+  {
+    stringValue: 'a', imgSrcValue: 'img-a', id: 'value_1', alias: 'alias_1'
+  },
+  {
+    stringValue: 'b', imgSrcValue: 'img-b', id: 'value_2', alias: 'alias_2'
+  },
+  { stringValue: 'c', id: 'value_3', alias: 'alias_3' }
+] as unknown as DragNDropValueObject[]);
+
 describe('ElementModelElementCodeMappingService', () => {
   let service: ElementModelElementCodeMappingService;
   beforeEach(() => {
@@ -50,14 +56,12 @@ describe('ElementModelElementCodeMappingService', () => {
   // mapToElementCodeValue
 
   it('should map the value of a drop-list elementModel to its elementCode value', () => {
-    const dragNDropValueObjects: DragNDropValueObject[] = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
+    const dragNDropValueObjects: DragNDropValueObject[] = dragNDropValues();
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(dragNDropValueObjects, 'drop-list'))
       .toEqual(['alias_1', 'alias_2', 'alias_3']);
   });
 
   it('should map the value of a text elementModel to its elementCode value', () => {
-    const textElement: TextElement = JSON.parse(JSON.stringify(text_130));
-    textElement.markingMode = 'selection';
     const textValue =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(textValue, 'text', { markingMode: 'selection' }))
@@ -65,8 +69,6 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should map the value of a text elementModel to its elementCode value - empty Array', () => {
-    const textElement: TextElement = JSON.parse(JSON.stringify(text_130));
-    textElement.markingMode = 'selection';
     const textValue = 'Lorem dolor sit amet';
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(textValue, 'text', { markingMode: 'selection' }))
       .toEqual([]);
@@ -306,7 +308,7 @@ describe('ElementModelElementCodeMappingService', () => {
         originListIndex: 0
       }
     ];
-    const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
+    const elementModel: DropListElement = new DropListElement({ id: 'drop-list_1' });
     const expectedValue: DragNDropValueObject[] = [
       {
         text: 'e',
@@ -388,7 +390,7 @@ describe('ElementModelElementCodeMappingService', () => {
         originListIndex: 4
       }
     ];
-    const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
+    const elementModel: DropListElement = new DropListElement({ id: 'drop-list_1' });
     const expectedValue: DragNDropValueObject[] = [
       {
         text: 'e',
@@ -408,22 +410,23 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should map an elementCode value to drop-list elementModel value with imageSrc', () => {
-    service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
-    const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
-    const expectedValue = JSON.parse(JSON.stringify(dragNDropValues_02_130)).default;
+    service.dragNDropValueObjects = dragNDropValues();
+    const elementModel: DropListElement = new DropListElement({ id: 'drop-list_1' });
+    const expectedValue = dragNDropValues().slice(0, 2);
     expect(service.mapToElementModelValue(['alias_1', 'alias_2'], elementModel))
       .toEqual(expectedValue);
   });
 
   it('should map an elementCode value to drop-list-simple elementModel value - an empty array', () => {
-    service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
-    const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
+    service.dragNDropValueObjects = dragNDropValues();
+    const elementModel: DropListElement = new DropListElement({ id: 'drop-list_1' });
     expect(service.mapToElementModelValue([], elementModel))
       .toEqual([]);
   });
 
   it('should map an elementCode value to text elementModel value (text)', () => {
-    const elementModel: TextElement = JSON.parse(JSON.stringify(text_130));
+    const elementModel: TextElement =
+      withProperties(new TextElement({ id: 'text_1' }), { text: 'Lorem ipsum dolor sit amet' });
     const expectedValue =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     expect(service.mapToElementModelValue(['6-11-#f9f871'], elementModel))
@@ -431,139 +434,157 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should not map but return the text elementModel value (text)', () => {
-    const elementModel: TextElement = JSON.parse(JSON.stringify(text_130));
+    const elementModel: TextElement =
+      withProperties(new TextElement({ id: 'text_1' }), { text: 'Lorem ipsum dolor sit amet' });
     expect(service.mapToElementModelValue([], elementModel))
       .toEqual(elementModel.text);
   });
 
   it('should not map but return the text elementModel value (text)', () => {
-    const elementModel: TextElement = JSON.parse(JSON.stringify(text_130));
+    const elementModel: TextElement =
+      withProperties(new TextElement({ id: 'text_1' }), { text: 'Lorem ipsum dolor sit amet' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(elementModel.text);
   });
 
   it('should map an elementCode value to audio elementModel value', () => {
-    const elementModel: AudioElement = JSON.parse(JSON.stringify(audio_130));
+    const elementModel: AudioElement = new AudioElement({ id: 'audio_1' });
     expect(service.mapToElementModelValue(2, elementModel))
       .toEqual(2);
   });
 
   it('should not map but return the audio elementModel value (player.playbackTime)', () => {
-    const elementModel: AudioElement = JSON.parse(JSON.stringify(audio_130));
+    const elementModel: AudioElement = new AudioElement({ id: 'audio_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(0);
   });
 
   it('should map an elementCode value to image elementModel value', () => {
-    const elementModel: ImageElement = JSON.parse(JSON.stringify(image_130));
+    const elementModel: ImageElement = new ImageElement({ id: 'image_1' });
     expect(service.mapToElementModelValue(true, elementModel))
       .toEqual(true);
   });
 
   it('should not map but return the image elementModel value (magnifierUsed)', () => {
-    const elementModel: ImageElement = JSON.parse(JSON.stringify(image_130));
+    const elementModel: ImageElement = new ImageElement({ id: 'image_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(false);
   });
 
   it('should map an elementCode value to text-field elementModel value', () => {
-    const elementModel: TextFieldElement = JSON.parse(JSON.stringify(textField_130));
+    const elementModel: TextFieldElement = new TextFieldElement({ id: 'text-field_1' });
     expect(service.mapToElementModelValue('TEST', elementModel))
       .toEqual('TEST');
   });
 
   it('should not map but return the text-field elementModel value', () => {
-    const elementModel: TextFieldElement = JSON.parse(JSON.stringify(textField_130));
+    const elementModel: TextFieldElement = new TextFieldElement({ id: 'text-field_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to text-field-simple elementModel value', () => {
-    const elementModel: TextFieldSimpleElement = JSON.parse(JSON.stringify(textFieldSimple_131));
+    const elementModel: TextFieldSimpleElement = new TextFieldSimpleElement({ id: 'text-field-simple_1' });
     expect(service.mapToElementModelValue('TEST', elementModel))
       .toEqual('TEST');
   });
 
   it('should not map but return the text-field-simple elementModel value', () => {
-    const elementModel: TextFieldSimpleElement = JSON.parse(JSON.stringify(textFieldSimple_131));
+    const elementModel: TextFieldSimpleElement = new TextFieldSimpleElement({ id: 'text-field-simple_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to text-area elementModel value', () => {
-    const elementModel: TextAreaElement = JSON.parse(JSON.stringify(textArea_130));
+    const elementModel: TextAreaElement = new TextAreaElement({ id: 'text-area_1' });
     expect(service.mapToElementModelValue('TEST', elementModel))
       .toEqual('TEST');
   });
 
   it('should not map but return the text-area elementModel value', () => {
-    const elementModel: TextAreaElement = JSON.parse(JSON.stringify(textArea_130));
+    const elementModel: TextAreaElement = new TextAreaElement({ id: 'text-area_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to spell-correct elementModel value', () => {
-    const elementModel: SpellCorrectElement = JSON.parse(JSON.stringify(spellCorrect_130));
+    const elementModel: SpellCorrectElement = new SpellCorrectElement({ id: 'spell-correct_1' });
     expect(service.mapToElementModelValue('TEST', elementModel))
       .toEqual('TEST');
   });
 
   it('should not map but return the spell-correct elementModel value', () => {
-    const elementModel: SpellCorrectElement = JSON.parse(JSON.stringify(spellCorrect_130));
+    const elementModel: SpellCorrectElement = new SpellCorrectElement({ id: 'spell-correct_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to radio elementModel value', () => {
-    const elementModel: RadioButtonGroupElement = JSON.parse(JSON.stringify(radio_130));
+    const elementModel: RadioButtonGroupElement = new RadioButtonGroupElement({ id: 'radio_1' });
     expect(service.mapToElementModelValue(1, elementModel))
       .toEqual(0);
   });
 
   it('should not map but return the radio elementModel value', () => {
-    const elementModel: RadioButtonGroupElement = JSON.parse(JSON.stringify(radio_130));
+    const elementModel: RadioButtonGroupElement = new RadioButtonGroupElement({ id: 'radio_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to radio-group-images elementModel value', () => {
-    const elementModel: RadioButtonGroupComplexElement = JSON.parse(JSON.stringify(radioGroupImages_130));
+    const elementModel: RadioButtonGroupComplexElement =
+      new RadioButtonGroupComplexElement({ id: 'radio-group-images_1' });
     expect(service.mapToElementModelValue(2, elementModel))
       .toEqual(1);
   });
 
   it('should not map but return the radio-group-images elementModel value', () => {
-    const elementModel: RadioButtonGroupComplexElement = JSON.parse(JSON.stringify(radioGroupImages_130));
+    const elementModel: RadioButtonGroupComplexElement =
+      new RadioButtonGroupComplexElement({ id: 'radio-group-images_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to likert-row elementModel value', () => {
-    const elementModel: LikertRowElement = JSON.parse(JSON.stringify(likertRow_130));
+    const elementModel: LikertRowElement = new LikertRowElement({ id: 'likert-row_1' });
     expect(service.mapToElementModelValue(3, elementModel))
       .toEqual(2);
   });
 
   it('should not map but return the likert-row elementModel value', () => {
-    const elementModel: LikertRowElement = JSON.parse(JSON.stringify(likertRow_130));
+    const elementModel: LikertRowElement = new LikertRowElement({ id: 'likert-row_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to toggle-button elementModel value', () => {
-    const elementModel: ToggleButtonElement = JSON.parse(JSON.stringify(toggleButton_130));
+    const elementModel: ToggleButtonElement = new ToggleButtonElement({ id: 'toggle-button_1' });
     expect(service.mapToElementModelValue(1, elementModel))
       .toEqual(0);
   });
 
   it('should not map but return the toggle-button elementModel value', () => {
-    const elementModel: ToggleButtonElement = JSON.parse(JSON.stringify(toggleButton_130));
+    const elementModel: ToggleButtonElement = new ToggleButtonElement({ id: 'toggle-button_1' });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to hotspot-image elementModel value', () => {
-    const elementModel: HotspotImageElement = JSON.parse(JSON.stringify(hotspotImage_135));
+    const elementModel: HotspotImageElement = withProperties(new HotspotImageElement({ id: 'hotspot-image_1' }), {
+      value: [{
+        top: 10,
+        left: 10,
+        width: 20,
+        height: 20,
+        shape: 'rectangle',
+        borderWidth: 1,
+        borderColor: '#000000',
+        backgroundColor: '#000000',
+        rotation: 0,
+        readOnly: false,
+        value: true
+      }]
+    });
     expect(service.mapToElementModelValue([true], elementModel))
       .toEqual([
         {
@@ -583,7 +604,21 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should map an elementCode value to hotspot-image elementModel value', () => {
-    const elementModel: HotspotImageElement = JSON.parse(JSON.stringify(hotspotImage_135));
+    const elementModel: HotspotImageElement = withProperties(new HotspotImageElement({ id: 'hotspot-image_1' }), {
+      value: [{
+        top: 10,
+        left: 10,
+        width: 20,
+        height: 20,
+        shape: 'rectangle',
+        borderWidth: 1,
+        borderColor: '#000000',
+        backgroundColor: '#000000',
+        rotation: 0,
+        readOnly: false,
+        value: true
+      }]
+    });
     expect(service.mapToElementModelValue([false], elementModel))
       .toEqual([
         {

@@ -315,8 +315,11 @@ export abstract class PropertyGroupGenerators {
         .sanitizeShowHint(properties),
       hintLabel: properties.hintLabel !== undefined ?
         properties.hintLabel as string : GLOBAL_DEFAULTS.player.hintLabel as string,
+      /* The old name `hintLabelDelay` is read where it arrives -- in Migration4m10To4m11, which
+         rebuilds the group for every unit below 4.11 and used to overwrite it here (#1191). A fallback
+         at this end could not run any more once the step had set the value. */
       hintDelay: properties.hintDelay !== undefined ?
-        properties.hintDelay as number : PropertyGroupGenerators.sanitizeHintDelay(properties),
+        properties.hintDelay as number : GLOBAL_DEFAULTS.player.hintDelay,
       activeAfterID: properties.activeAfterID !== undefined ? properties.activeAfterID as string : '',
       minRuns: properties.minRuns !== undefined ? properties.minRuns as number : GLOBAL_DEFAULTS.player.minRuns,
       maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : GLOBAL_DEFAULTS.player.maxRuns,
@@ -335,17 +338,6 @@ export abstract class PropertyGroupGenerators {
   private static sanitizeShowHint(properties: Partial<PlayerProperties>): boolean {
     if (properties.hintLabel === undefined) return true;
     return properties.hintLabel !== '';
-  }
-
-  /**
-   * Fallback for units written before 4.11.0, where this property was called `hintLabelDelay` (see
-   * `docs/unit_definition_changelog.txt`). The old name is not part of PlayerProperties, so it is
-   * read through a local type rather than through an index signature, which used to hide the fact
-   * that this reads a name the interface does not have.
-   */
-  private static sanitizeHintDelay(properties: Partial<PlayerProperties>): number {
-    const legacyDelay = (properties as { hintLabelDelay?: number }).hintLabelDelay;
-    return legacyDelay !== undefined ? legacyDelay : 5000;
   }
 
   static generateKeyInputProps(properties: Partial<KeyInputElementProperties> = {}): KeyInputElementProperties {

@@ -12,6 +12,74 @@ describe('Migration4m10To4m11', () => {
     expect(migration.toVersion).toBe('4.11.0');
   });
 
+  const audioUnit = (element: Record<string, unknown>): Record<string, unknown> => ({
+    version: '4.10',
+    pages: [{ sections: [{ elements: [{ type: 'audio', ...element }] }] }]
+  });
+  const audioOf = (result: Record<string, unknown>): Record<string, unknown> => ((
+    (result.pages as Record<string, unknown>[])[0].sections as Record<string, unknown>[]
+  )[0].elements as Record<string, unknown>[])[0];
+
+  /* A margin of 0 came out as -4px, which no version of the element ever meant (#1191). */
+  it('should not subtract a margin below zero', () => {
+    const result = audioOf(migration.execute(audioUnit({
+      position: { marginTop: { value: 0, unit: 'px' }, marginBottom: { value: 2, unit: 'px' } }
+    })));
+    const position = result.position as Record<string, unknown>;
+
+    expect((position.marginTop as Record<string, unknown>).value).toBe(0);
+    expect((position.marginBottom as Record<string, unknown>).value).toBe(0);
+  });
+
+  /* The rename `hintLabelDelay -> hintDelay` is a 4.10 change, so a unit below that carries the old
+     name. The rebuild below used to set `hintDelay` to its default before anything could look for it,
+     and `sanitizeHintDelay`, which exists for exactly this value, only looks when it is undefined. */
+  it('should keep the delay a unit stored under the old name', () => {
+    const result = audioOf(migration.execute(audioUnit({ player: { hintLabelDelay: 2000 } })));
+
+    expect((result.player as Record<string, unknown>).hintDelay).toBe(2000);
+  });
+
+  it('should prefer the current name over the old one', () => {
+    const result = audioOf(migration.execute(audioUnit({ player: { hintDelay: 1000, hintLabelDelay: 2000 } })));
+
+    expect((result.player as Record<string, unknown>).hintDelay).toBe(1000);
+  });
+
+  it('should fall back to the default when a unit stored neither', () => {
+    const result = audioOf(migration.execute(audioUnit({ player: {} })));
+
+    expect((result.player as Record<string, unknown>).hintDelay).toBe(5000);
+  });
+
+  /* Zero is a delay a unit can have stored, and it is what tells `??` from `||`: with the latter both
+     of these would come out as the default. */
+  it('should keep a delay of zero under either name', () => {
+    expect((audioOf(migration.execute(audioUnit({ player: { hintDelay: 0 } }))).player as Record<string, unknown>)
+      .hintDelay).toBe(0);
+    expect((audioOf(migration.execute(audioUnit({ player: { hintLabelDelay: 0 } }))).player as Record<string, unknown>)
+      .hintDelay).toBe(0);
+  });
+
+  /* The player group is rebuilt for video as well, and the rescue has to hold there too. */
+  it('should keep the delay a video stored under the old name', () => {
+    const unit = {
+      version: '4.10',
+      pages: [{ sections: [{ elements: [{ type: 'video', player: { hintLabelDelay: 1500 } }] }] }]
+    };
+
+    expect((audioOf(migration.execute(unit)).player as Record<string, unknown>).hintDelay).toBe(1500);
+  });
+
+  /* A margin whose value is not a number stays as it is: `NaN` would reach the player as `NaNpx`. */
+  it('should leave a margin it cannot subtract from alone', () => {
+    const result = audioOf(migration.execute(audioUnit({
+      position: { marginTop: { value: 'auto', unit: 'px' } }
+    })));
+
+    expect((result.position as Record<string, unknown>).marginTop).toEqual({ value: 'auto', unit: 'px' });
+  });
+
   it('should migrate audio margins by subtracting 4px', () => {
     const unit = {
       version: '4.10',

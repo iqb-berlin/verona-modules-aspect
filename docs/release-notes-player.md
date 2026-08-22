@@ -20,6 +20,8 @@ Player
   - Bindet den Status von GeoGebra-Variablen an das übergeordnete Element: Variablen werden mit dem Status des GeoGebra-Elements initialisiert und die Statusänderung "DISPLAYED" wird an sie weitergegeben
 
 ### Fehlerbehebungen
+- Bei einer Aufgabe im Format vor 4.0 werden jetzt auch die Elemente innerhalb von Tabellen, Optionentabellen und Lückentexten umgewandelt. Sichtbar wird das bei den Lücken eines Lückentexts: sie behalten ihre gespeicherte Mindestbreite, statt in der Standardbreite ihres Typs dargestellt zu werden (eine Lücke mit gespeicherten 150 Pixeln wurde 180 Pixel breit). Die Größe einer Tabellenzelle bestimmt weiterhin die Tabelle selbst
+- Aus demselben Grund erreicht die Randkorrektur für Audio-Elemente (4 Pixel, gilt für Aufgaben im Format 4.0 bis 4.10) jetzt auch Audio-Elemente innerhalb einer Tabelle
 - Optionsfelder, Kontrollkästchen
   - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält. Bei einer Option, die aus einem Bruch besteht, stand er neben dem Zähler, weil die Ausrichtung mit einer festen Zeilenhöhe von 20 Pixeln rechnete; jetzt wird die Zeile gemessen. Bei einer Option, die nur eine Formel enthält, steht der Knopf damit in ihrer Mitte, bei mehrzeiligen Beschriftungen unverändert an der ersten Zeile. Aus demselben Grund saß der Knopf auch bei anderen Schriftgrößen als 20 Pixeln nicht mittig
 - Ablegelisten, Optionentabelle, Bildoptionen

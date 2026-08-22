@@ -42,6 +42,11 @@ import { NormalizationMigration } from '../migrations/normalization';
  * is therefore out of reach of a step for that version - repairing it needs a *newer* version to
  * migrate to, or the normalizer. Both directions of this are pinned in the spec.
  *
+ * **A step reaches an element wherever it sits.** `UnitTraversalMigration` descends into table cells,
+ * likert rows and the child models of a cloze document, so a transformation stated on `UIElement`
+ * applies to all of them - which is what the 4.0.0 entries are. Before #1196 traversal stopped at
+ * `section.elements` and the children kept the old shape.
+ *
  * **Where this model does not reach today** - each of these is filed, and worth knowing before adding
  * a step:
  *
@@ -52,10 +57,6 @@ import { NormalizationMigration } from '../migrations/normalization';
  * - One `toVersion` cannot describe a step that bundles changes from two versions.
  *   {@link Migration4m10To4m11} carries a 4.10 rename and a 4.11 margin correction; the rename half is
  *   why a pre-4.10 `hintLabelDelay` is lost (#1191).
- * - **Steps do not reach compound children.** `UnitTraversalMigration` stops at
- *   `section.elements`, so table cells, likert rows and cloze children never see a transformation -
- *   even though the 4.0.0 changelog states its changes on `UIElement`, which is what they are.
- *   `ModelNormalizer` does descend; the knowledge exists and is simply not shared (#1196).
  * - A step that only fills `?? default` is doing the normalizer's work. Where the two disagree, the
  *   step wins and the normalizer's fallback never runs - which is the mechanism behind the lost
  *   `hintLabelDelay` (#1191).

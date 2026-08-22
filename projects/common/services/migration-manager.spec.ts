@@ -3,6 +3,8 @@ import { UnitProperties } from 'common/models/unit';
 import { TextProperties } from 'common/models/elements/text-group-elements/text';
 import { ClozeProperties, CustomDocumentNode } from 'common/models/elements/compound-group-elements/cloze/cloze';
 import { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
+import { LikertRowProperties } from 'common/models/elements/compound-group-elements/likert/likert-row';
 import { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
 import { ElementFactory } from 'common/utils/element-factory';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
@@ -269,6 +271,66 @@ describe('MigrationManager', () => {
       expect(ElementFactory.createElement(element as unknown as UIElementProperties).styling?.lineHeight)
         .toBe(135);
     });
+  });
+
+  /* The measurements the ticket took: a 3.10 unit whose children carry the flat width and height of
+     that shape. A step used to stop at what a section holds, so the children were handed to the
+     normalizer with no `dimensions` group, and it filled the type's defaults over them -- 150x44
+     arrived as 180x120, 333x111 as 180x98 (#1196). */
+  it('should convert the stored measurements of compound children of a 3.10 unit', () => {
+    const legacyUnit = {
+      type: 'aspect-unit-definition',
+      version: '3.10.0',
+      pages: [{
+        sections: [{
+          elements: [
+            {
+              type: 'cloze',
+              id: 'cloze_1',
+              document: {
+                type: 'doc',
+                content: [{
+                  type: 'paragraph',
+                  content: [{
+                    type: 'TextField',
+                    attrs: {
+                      model: {
+                        type: 'text-field', id: 'child_1', width: 150, height: 44
+                      }
+                    }
+                  }]
+                }]
+              }
+            },
+            {
+              type: 'table',
+              id: 'table_1',
+              elements: [{
+                type: 'text-field', id: 'cell_1', width: 333, height: 111
+              }]
+            },
+            {
+              type: 'likert',
+              id: 'likert_1',
+              rows: [{ type: 'likert-row', id: 'row_1', height: 77 }],
+              elements: []
+            }
+          ]
+        }]
+      }]
+    };
+
+    const migrated = MigrationManager.migrate(legacyUnit, '4.12.0') as unknown as UnitProperties;
+    const elements = migrated.pages[0].sections[0].elements;
+    const cloze = elements[0] as unknown as ClozeProperties;
+    const clozeChild = (cloze.document.content[0].content[0] as CustomDocumentNode)
+      .attrs.model as unknown as TextFieldProperties;
+    const cell = (elements[1] as unknown as TableProperties).elements[0] as unknown as TextFieldProperties;
+    const row = (elements[2] as unknown as LikertProperties).rows[0] as unknown as LikertRowProperties;
+
+    expect(clozeChild.dimensions).toEqual(expect.objectContaining({ width: 150, height: 44 }));
+    expect(cell.dimensions).toEqual(expect.objectContaining({ width: 333, height: 111 }));
+    expect(row.dimensions).toEqual(expect.objectContaining({ height: 77 }));
   });
 
   /* The counter-check: a genuine 3.10 unit must still be converted, or the fix above would have been

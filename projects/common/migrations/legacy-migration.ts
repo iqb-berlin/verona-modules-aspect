@@ -24,7 +24,7 @@ export class MigrationLegacy extends UnitTraversalMigration {
         MigrationLegacy.migrateSectionGridSizes(section)
       ),
       elements: (section['elements'] as Record<string, unknown>[] ?? [])
-        .map((element: Record<string, unknown>) => this.migrateElement(element))
+        .map((element: Record<string, unknown>) => this.migrateElementTree(element))
     };
   }
 

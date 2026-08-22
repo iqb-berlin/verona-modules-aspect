@@ -3,7 +3,7 @@ import { Section } from 'common/models/section';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
-import { StateVariable } from 'common/models/state-variable';
+import { StateVariable, StateVariableProperties } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
 import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
@@ -115,7 +115,7 @@ function isValid(blueprint?: UnitProperties): boolean {
 export interface UnitProperties {
   type: string;
   version: string;
-  stateVariables: StateVariable[];
+  stateVariables: StateVariableProperties[];
   pages: PageProperties[];
   enableSectionNumbering: boolean;
   sectionNumberingPosition: 'left' | 'above';

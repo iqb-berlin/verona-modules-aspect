@@ -2,6 +2,7 @@ import { MigrationLegacy } from '../migrations/legacy-migration';
 import { Migration4m10To4m11 } from '../migrations/v4.10-to-v4.11.migration';
 import { MigrationStep } from '../migrations/migration-step.interface';
 import { NormalizationMigration } from '../migrations/normalization';
+import { UnitProperties } from '../models/unit';
 
 /**
  * Brings a stored unit definition up to the current model, on every load in editor and player.
@@ -67,7 +68,10 @@ export class MigrationManager {
     new Migration4m10To4m11()
   ];
 
-  static migrate(unitDefinition: Record<string, unknown>, targetVersion: string): Record<string, unknown> {
+  /* Loose in, typed out: what comes back is a `UnitProperties` and can be handed to `new Unit(...)`
+     without a cast. The steps in between keep working on `Record<string, unknown>` -- a unit of an
+     older version is not a `UnitProperties`, which is what it is being migrated for (#1198). */
+  static migrate(unitDefinition: Record<string, unknown>, targetVersion: string): UnitProperties {
     const currentDefinition = { ...unitDefinition };
     const currentVersion = currentDefinition.version as string;
 

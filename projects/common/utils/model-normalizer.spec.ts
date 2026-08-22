@@ -55,9 +55,12 @@ describe('ModelNormalizer', () => {
         stateVariables: [{ id: 'var1' }, { id: 'var2', alias: 'myVar' }]
       };
       const normalized = ModelNormalizer.normalizeUnit(unit as Record<string, unknown>);
-      const stateVariables = normalized.stateVariables as Record<string, unknown>[];
+      const stateVariables = normalized.stateVariables;
       expect(stateVariables[0].alias).toBe('var1');
       expect(stateVariables[1].alias).toBe('myVar');
+      /* Filled like any other missing member since #1198; the shape declares a string, and a variable
+         stored without a value used to come out of here without the key. */
+      expect(stateVariables[0].value).toBe('');
     });
   });
 

@@ -192,11 +192,83 @@ describe('DragOperatorService', () => {
 
     service.setTargetList('source');
     expect(service.dragOperation?.sortingPlaceholderIndex).toBe(0);
-    expect(service.isListHovered).toBe(true);
+    expect(service.hoveredListID).toBe('source');
 
     service.unSetTargetList();
     expect(service.dragOperation?.targetComponent).toBeUndefined();
     expect(service.dragOperation?.sortingPlaceholderIndex).toBeUndefined();
-    expect(service.isListHovered).toBe(false);
+    expect(service.hoveredListID).toBeUndefined();
+  });
+
+  /* Which list the pointer is on decides whether checkHoveredListOrElement runs dragEnter, and with
+     it setTargetList. A plain "something is hovered" flag started out true and survived a drag, so
+     the first move of the next one could be taken for one that had already entered a list (#1322).
+     A drag begins on its source list, and that is what is recorded. */
+  it('should start every drag on its source list', () => {
+    const item = createValue('item-1', 'source');
+    const source = createDropList('source', { connectedTo: ['target'] }, [item]);
+    const target = createDropList('target');
+    [source, target].forEach(register);
+
+    startDrag(source, item);
+    expect(service.hoveredListID).toBe('source');
+
+    service.setTargetList('target');
+    expect(service.hoveredListID).toBe('target');
+
+    startDrag(source, item);
+    expect(service.hoveredListID).toBe('source');
+  });
+
+  /* A touch can cross from one list straight into the next without ever sampling a pixel between
+     them, so the list being left has to be told; the pixel in between is what used to do it. */
+  it('should leave one list before entering the next on a direct crossing', () => {
+    const item = createValue('item-1', 'source');
+    const source = createDropList('source', { connectedTo: ['first', 'second'] }, [item]);
+    const first = createDropList('first');
+    const second = createDropList('second');
+    [source, first, second].forEach(register);
+    [first, second].forEach(list => {
+      // eslint-disable-next-line no-param-reassign
+      list.dragEnter = vi.fn(() => service.setTargetList(list.elementModel.id));
+    });
+    startDrag(source, item);
+
+    const listElement = (id: string): HTMLElement => {
+      const element = document.createElement('div');
+      element.className = 'drop-list';
+      element.id = id;
+      return element;
+    };
+    const fromPoint = vi.spyOn(document, 'elementFromPoint');
+
+    fromPoint.mockReturnValue(listElement('first'));
+    service.checkHoveredListOrElement(0, 0);
+    expect(first.dragEnter).toHaveBeenCalledTimes(1);
+
+    fromPoint.mockReturnValue(listElement('second'));
+    service.checkHoveredListOrElement(1, 1);
+    expect(first.dragLeave).toHaveBeenCalledTimes(1);
+    expect(second.dragEnter).toHaveBeenCalledTimes(1);
+    expect(service.hoveredListID).toBe('second');
+
+    fromPoint.mockRestore();
+  });
+
+  /* The state #1322 produced: a target list that is still the source list, because no dragEnter ran,
+     and no placeholder index because the source list does not sort. `splice(undefined, 1)` reads
+     that index as 0, which took the first item out of the list the drag came from. */
+  it('should refuse to position a sort placeholder while the source list is the target', () => {
+    const first = createValue('item-1', 'source');
+    const second = createValue('item-2', 'source');
+    const source = createDropList('source', { connectedTo: ['target'] }, [first, second]);
+    const target = createDropList('target', { isSortList: true });
+    [source, target].forEach(register);
+    startDrag(source, first);
+
+    expect(service.dragOperation?.targetComponent).toBe(source as unknown as DropListComponent);
+    expect(service.dragOperation?.sortingPlaceholderIndex).toBeUndefined();
+    expect(() => service.positionSortPlaceholder(1)).toThrow('sortingPlaceholderIndex undefined');
+    expect(source.viewModel.map(value => value.id)).toEqual(['item-1', 'item-2']);
   });
 });

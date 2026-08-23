@@ -21,6 +21,13 @@ export class DragOperatorService {
     this.dragOperation =
       new DragOperation(sourceElement, sourceListComponent, sourceIndex, item, dragType, this.dropLists);
     this.isDragActive = true;
+    /* The pointer is on the source list when a drag begins. Recorded as the list it is, not as a
+       plain "something is hovered": that flag carried over from the previous drag - true on the very
+       first one - so `checkHoveredListOrElement` took the first move over a different list for one
+       that had already entered it, skipped `dragEnter`, and left the source list as the target
+       (#1322). Keeping the source list here also keeps what the flag did for the mouse path: a
+       stray mouseenter on the list the drag started in is still ignored (e3dbfe27). */
+    this.hoveredListID = sourceListComponent.elementModel.id;
 
     this.initDrag();
   }
@@ -67,7 +74,7 @@ export class DragOperatorService {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     const targetListComp = this.dropLists[listId];
     this.dragOperation.targetComponent = targetListComp;
-    this.isListHovered = true;
+    this.hoveredListID = listId;
     if (targetListComp.elementModel.isSortList) {
       if (this.dragOperation.sourceComponent !== targetListComp) {
         this.addSortPlaceholder();
@@ -93,20 +100,21 @@ export class DragOperatorService {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     this.dragOperation.targetComponent = undefined;
     this.dragOperation.sortingPlaceholderIndex = undefined;
-    this.isListHovered = false;
+    this.hoveredListID = undefined;
   }
 
   positionSortPlaceholder(targetIndex: number): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
-    /* setTargetList is what sets both, and the mouse path runs through it. The touch path reaches
-       this through checkHoveredListItem, which does not guarantee it on its own. The assertions are
-       older than this comment and are left as they are: an undefined sortingPlaceholderIndex does
-       not throw here - splice reads it as 0 - so removing them would need a decision about that
-       case, not a type change. */
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const list = this.dragOperation.targetComponent!.viewModel;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const sourceIndex = this.dragOperation.sortingPlaceholderIndex!;
+    if (!this.dragOperation.targetComponent) throw new Error('targetComponent undefined');
+    /* Every caller reaching here has just had setTargetList run for a sort list, which is what sets
+       both. Said out loud rather than left to the type: an undefined index does not throw on its own
+       here - splice reads it as 0 - which is how a touch drag ended up sorting the list it came
+       from (#1322). */
+    if (this.dragOperation.sortingPlaceholderIndex === undefined) {
+      throw new Error('sortingPlaceholderIndex undefined');
+    }
+    const list = this.dragOperation.targetComponent.viewModel;
+    const sourceIndex = this.dragOperation.sortingPlaceholderIndex;
     const item = list.splice(sourceIndex, 1)[0];
     list.splice(targetIndex, 0, item);
     this.dragOperation.sortingPlaceholderIndex = targetIndex;
@@ -178,7 +186,7 @@ export class DragOperatorService {
     targetList.elementFormControl.value.splice(targetIndex, 0, item);
   }
 
-  isListHovered = true;
+  hoveredListID: string | undefined;
 
   checkHoveredListOrElement(x: number, y: number): void {
     const el = document.elementFromPoint(x, y);
@@ -186,16 +194,20 @@ export class DragOperatorService {
 
     if (hoveredListID &&
         this.dragOperation?.eligibleTargetListsIDs.includes(this.dropLists[hoveredListID].elementModel.id)) {
-      if (!this.isListHovered) {
+      if (this.hoveredListID !== hoveredListID) {
+        /* Leaving comes first. A touch can cross from one list straight into the next without ever
+           sampling a pixel between them - adjacent lists, or two of them inline in a cloze - and the
+           list being left keeps its placeholder and its hover state if nobody tells it (#1322). */
+        this.dragOperation?.targetComponent?.dragLeave();
         this.dropLists[hoveredListID].dragEnter();
       }
-      this.isListHovered = true;
+      this.hoveredListID = hoveredListID;
       if (this.dropLists[hoveredListID].elementModel.isSortList) this.checkHoveredListItem(el);
     } else {
-      if (this.isListHovered) {
+      if (this.hoveredListID) {
         this.dragOperation?.targetComponent?.dragLeave();
       }
-      this.isListHovered = false;
+      this.hoveredListID = undefined;
     }
   }
 

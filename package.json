@@ -173,6 +173,7 @@
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
     "cypress": "^15.10.0",
+    "eslint": "^8.42.0",
     "iqb-dev-components": "^1.4.1",
     "playwright": "^1.61.1",
     "typescript": "~5.9.3",

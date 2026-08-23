@@ -4,9 +4,12 @@ import {
 import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { PageChangeService } from 'common/services/page-change.service';
 import { ExternalResourceService } from 'common/services/external-resource.service';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
+import {
+  GeoGebraApi, GeoGebraApplet, GeoGebraAppletConstructor, GeoGebraAppletParameters
+} from 'common/models/geogebra-interfaces';
 import { GeometryComponent } from './geometry.component';
 
 describe('GeometryComponent', () => {
@@ -14,7 +17,12 @@ describe('GeometryComponent', () => {
   let fixture: ComponentFixture<GeometryComponent>;
   let mockPageChangeService: Partial<PageChangeService>;
   let mockExternalResourceService: Partial<ExternalResourceService>;
-  let mockGeoGebraAPI: any;
+  let mockGeoGebraAPI: GeoGebraApi;
+
+  /* The subject is private; the tests drive it directly to stand in for a GeoGebra event. */
+  const geometryUpdated = (): Subject<void> => (
+    component as unknown as { geometryUpdated: Subject<void> }
+  ).geometryUpdated;
 
   beforeEach(async () => {
     mockPageChangeService = {
@@ -40,15 +48,15 @@ describe('GeometryComponent', () => {
     };
 
     // Global Mock for GGBApplet with named function to satisfy ESLint and constructor requirements
-    (window as any).GGBApplet = vi.fn()
-      .mockImplementation(function GGBAppletMock(this: any, params: any) {
+    (window as Window & { GGBApplet?: GeoGebraAppletConstructor }).GGBApplet = vi.fn()
+      .mockImplementation(function GGBAppletMock(this: GeoGebraApplet, params: GeoGebraAppletParameters) {
         this.setHTML5Codebase = vi.fn();
         this.inject = vi.fn().mockImplementation(() => {
           if (params.appletOnLoad) {
             params.appletOnLoad(mockGeoGebraAPI);
           }
         });
-      });
+      }) as unknown as GeoGebraAppletConstructor;
 
     await TestBed.configureTestingModule({
       declarations: [GeometryComponent],
@@ -82,7 +90,7 @@ describe('GeometryComponent', () => {
     vi.spyOn(component.elementValueChanged, 'emit');
 
     // Simulate GeoGebra update without user interaction
-    (component as any).geometryUpdated.next();
+    geometryUpdated().next();
     tick(200);
 
     expect(component.elementValueChanged.emit).not.toHaveBeenCalled();
@@ -98,7 +106,7 @@ describe('GeometryComponent', () => {
     component.geoGebraAPI = mockGeoGebraAPI;
 
     // Simulate GeoGebra update
-    (component as any).geometryUpdated.next();
+    geometryUpdated().next();
     tick(200);
 
     expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({

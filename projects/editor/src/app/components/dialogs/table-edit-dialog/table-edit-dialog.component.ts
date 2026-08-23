@@ -2,11 +2,13 @@ import {
   Component, Inject, OnDestroy, ViewChild
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { TableElement, TableHeaderCell } from 'common/models/elements/compound-group-elements/table/table';
 import { UIElement } from 'common/models/elements/element';
 import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
 import { ElementFactory } from 'common/utils/element-factory';
-import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
+import {
+  DimensionProperties, PositionProperties, PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
 import { FileService } from 'common/services/file.service';
 import { AudioProperties } from 'common/models/elements/media-player-group-elements/audio';
 import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
@@ -16,6 +18,11 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { firstValueFrom } from 'rxjs';
+
+export interface TableEditResult {
+  elements: UIElement[];
+  headerRows: TableHeaderCell[][];
+}
 
 @Component({
   selector: 'aspect-editor-table-edit-dialog',
@@ -35,7 +42,7 @@ export class TableEditDialogComponent implements OnDestroy {
               private idService: IDService,
               private dialogService: DialogService,
               private selectionService: SelectionService,
-              private dialogRef: MatDialogRef<TableEditDialogComponent>) {
+              private dialogRef: MatDialogRef<TableEditDialogComponent, TableEditResult>) {
     this.newTable = TableEditDialogComponent.copyForEditing(data.table);
   }
 
@@ -110,12 +117,12 @@ export class TableEditDialogComponent implements OnDestroy {
       type: el.elementType,
       ...extraProps
     }, this.idService);
-    delete (newEle as any).position;
-    delete (newEle as any).dimensions;
+    delete (newEle as { position?: PositionProperties }).position;
+    delete (newEle as { dimensions?: DimensionProperties }).dimensions;
     newEle.gridRow = el.row + 1;
     newEle.gridColumn = el.col + 1;
     if (newEle.type === 'text-field' || newEle.type === 'text-area') {
-      delete (newEle as any).appearance;
+      delete (newEle as { appearance?: 'fill' | 'outline' }).appearance;
     }
     this.newTable.elements.push(newEle);
     this.addedElements.push(newEle);

@@ -638,17 +638,17 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should map an elementCode value to widget-periodic-table elementModel value', () => {
-    const elementModel = ElementFactory.createElement({
+    const elementModel = new WidgetPeriodicTableElement({
       id: 'id1', alias: 'alias1', type: 'widget-periodic-table', state: 'initial_state'
-    } as any) as WidgetPeriodicTableElement;
+    });
     expect(service.mapToElementModelValue('new_state', elementModel))
       .toEqual('new_state');
   });
 
   it('should not map but return the widget-periodic-table elementModel value', () => {
-    const elementModel = ElementFactory.createElement({
+    const elementModel = new WidgetPeriodicTableElement({
       id: 'id1', alias: 'alias1', type: 'widget-periodic-table', state: 'initial_state'
-    } as any) as WidgetPeriodicTableElement;
+    });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual('initial_state');
   });

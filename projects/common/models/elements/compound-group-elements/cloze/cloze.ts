@@ -146,8 +146,16 @@ export interface ClozeDocumentWrapperNode {
 export interface ClozeDocumentContentNode {
   type: string;
   text?: string;
-  marks?: Record<string, unknown>[];
+  marks?: ClozeMark[];
   attrs?: Record<string, string | number | boolean | UIElement>;
+}
+
+export interface ClozeMark {
+  type: string;
+  attrs?: {
+    fontSize?: string;
+    color?: string;
+  };
 }
 
 export interface ClozeMarks {

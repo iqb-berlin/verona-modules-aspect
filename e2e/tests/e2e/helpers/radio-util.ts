@@ -7,4 +7,3 @@ export function addRadioElement(): void {
 export function addRadioComplexElement(): void {
   addElementHover('Optionsfelder', 'mit Bild', 'Auswahl');
 }
-

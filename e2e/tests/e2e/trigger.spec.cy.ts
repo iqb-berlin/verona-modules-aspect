@@ -22,8 +22,8 @@ describe('Trigger element', { testIsolation: false }, () => {
     });
 
     it('creates a trigger', () => {
-      cy.contains('span', '1 Seiten').click({force: true});
-      addTextElement('Auslöser Markierung')
+      cy.contains('span', '1 Seiten').click({ force: true });
+      addTextElement('Auslöser Markierung');
       cy.contains('Sonstige').click();
       cy.contains('button', 'Auslöser').click();
     });
@@ -37,7 +37,7 @@ describe('Trigger element', { testIsolation: false }, () => {
 
     it('creates a trigger with "remove highlights" action', () => {
       addNewPage();
-      addTextElement('Auslöser Entfernen')
+      addTextElement('Auslöser Entfernen');
       cy.contains('Sonstige').click();
       cy.contains('button', 'Auslöser').click({ force: true });
       selectFromDropdown('Aktion', 'Hervorhebungen ausblenden');
@@ -100,10 +100,10 @@ describe('Trigger element', { testIsolation: false }, () => {
       cy.get('aspect-unit-menu').find('button').click();
       cy.contains('button', 'Seite 3').click();
       cy.get('@postMessage').should('be.calledWithMatch',
-        Cypress.sinon.match.has('unitState',
-          Cypress.sinon.match.has('dataParts',
-            Cypress.sinon.match.has('stateVariableCodes',
-              Cypress.sinon.match("2")))));
+                                    Cypress.sinon.match.has('unitState',
+                                                            Cypress.sinon.match.has('dataParts',
+                                                                                    Cypress.sinon.match.has('stateVariableCodes',
+                                                                                                            Cypress.sinon.match('2')))));
     });
   });
 });

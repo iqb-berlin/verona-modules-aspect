@@ -1,6 +1,8 @@
 export { };
 
 declare global {
+  // Cypress declares Chainable inside a namespace, so augmenting it needs one too.
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       loadUnit(value: string): Chainable<JQuery<HTMLElement>>;

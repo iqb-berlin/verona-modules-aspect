@@ -1,5 +1,5 @@
 import { createCloze } from './helpers/cloze-util';
-import { connectLists, dragTo } from "./helpers/droplist-util";
+import { connectLists, dragTo } from './helpers/droplist-util';
 import { setID, setCheckbox, addOption } from '../util';
 
 describe('Cloze element', { testIsolation: false }, () => {
@@ -9,7 +9,7 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('creates a default cloze with Lorem Ipsum text', () => {
-      createCloze('Lückentext', 'normaler Lückentext',);
+      createCloze('Lückentext', 'normaler Lückentext');
     });
 
     it('creates a cloze and inserts a text-field inside it', () => {
@@ -114,7 +114,6 @@ describe('Cloze element', { testIsolation: false }, () => {
         .find('aspect-toggle-button').should('have.length', 1);
       cy.get('mat-button-toggle').find('button:contains("Option A")').click();
     });
-
 
     it('fifth cloze contains a button', () => {
       cy.get('aspect-cloze').eq(4)

@@ -17,7 +17,7 @@
     "test:player-modules": "ng test playerModules --watch=false",
     "test:editor": "ng test editor --watch=false",
     "test:player": "ng test player --watch=false",
-    "lint": "eslint projects",
+    "lint": "eslint .",
     "e2e": "npx cypress open",
     "e2e-headless": "npx cypress run",
     "generate-migration": "node scripts/generate-migration.js",
@@ -29,22 +29,15 @@
   "eslintConfig": {
     "extends": "@iqb/eslint-config",
     "parserOptions": {
-      "ignores": [
-        "**/dist/*.*",
-        "**/scripts/*.*",
-        "**/test-data/*.*",
-        "./dist/*",
-        "./node_modules"
-      ],
       "project": "./tsconfig.json"
     },
     "ignorePatterns": [
       "**/assets/**",
-      "**/dist/*.*",
-      "**/scripts/*.*",
-      "**/test-data/*.*",
-      "./dist/**/*",
-      "./node_modules/**/*"
+      "**/coverage/**",
+      "**/dist/**",
+      "**/scripts/**",
+      "**/test-data/**",
+      "**/node_modules/**"
     ],
     "rules": {
       "function-call-argument-newline": "OFF",
@@ -88,7 +81,7 @@
     "overrides": [
       {
         "files": [
-          "e2e-tests/**/*.ts"
+          "e2e/**/*.ts"
         ],
         "rules": {
           "@typescript-eslint/no-unused-expressions": [

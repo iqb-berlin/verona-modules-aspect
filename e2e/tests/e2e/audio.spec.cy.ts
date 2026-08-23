@@ -1,6 +1,6 @@
 import {
   addMediaElement,
-  addNewPage, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField,
+  addNewPage, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField
 } from '../util';
 
 describe('Audio element', { testIsolation: false }, () => {
@@ -11,7 +11,7 @@ describe('Audio element', { testIsolation: false }, () => {
 
     // ── Page 1: audio with default player options ─────────────────────────
     it('creates an audio element with default player options (Page 1)', () => {
-      addMediaElement('Audio', 'Normales Audio','bird-sound.mp3','audio_default');
+      addMediaElement('Audio', 'Normales Audio', 'bird-sound.mp3', 'audio_default');
     });
 
     it('shows the uploaded filename in the properties panel (Page 1)', () => {
@@ -23,7 +23,7 @@ describe('Audio element', { testIsolation: false }, () => {
     // ── Page 2: audio with pause control enabled ──────────────────────────
     it('creates an audio element with pause control enabled (Page 2)', () => {
       addNewPage();
-      addMediaElement('Audio', 'Audio mit Pause','bird-sound.mp3','audio_pause');
+      addMediaElement('Audio', 'Audio mit Pause', 'bird-sound.mp3', 'audio_pause');
       editElementConfigDialog();
       setDialogCheckbox('Pausieren erlauben', true);
       clickButtonDialog('Speichern');
@@ -32,7 +32,7 @@ describe('Audio element', { testIsolation: false }, () => {
     // ── Page 3: audio with maxRuns = 2 and remaining-runs counter ─────────
     it('creates an audio element with maxRuns = 2 and visible run counter (Page 3)', () => {
       addNewPage();
-      addMediaElement('Audio', 'Audio mit 2 Mal Durchläufe', 'bird-sound.mp3','audio_runs');
+      addMediaElement('Audio', 'Audio mit 2 Mal Durchläufe', 'bird-sound.mp3', 'audio_runs');
       editElementConfigDialog();
       cy.get('mat-dialog-container').contains('.mat-mdc-tab', 'Verhalten').click();
       cy.wait(500); // Wait for tab animation to finish
@@ -45,7 +45,7 @@ describe('Audio element', { testIsolation: false }, () => {
     // ── Page 4: audio with progress bar, volume control, and mute control disabled ──
     it('creates an audio element with disabled controls (Page 4)', () => {
       addNewPage();
-      addMediaElement('Audio', 'Audio ohne Kontrollen', 'bird-sound.mp3','audio_no_controls');
+      addMediaElement('Audio', 'Audio ohne Kontrollen', 'bird-sound.mp3', 'audio_no_controls');
       editElementConfigDialog();
       setDialogCheckbox('Fortschrittsbalken anzeigen', false);
       setDialogCheckbox('Lautstärkeregelung anzeigen', false);
@@ -146,8 +146,6 @@ describe('Audio element', { testIsolation: false }, () => {
         .first()
         .should('not.have.class', 'active-control', { timeout: 15000 });
     });
-
-
 
     it('checks that the audio can not be play again (Page 3)', () => {
       // Wait for the second run to finish

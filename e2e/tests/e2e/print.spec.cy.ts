@@ -1,4 +1,6 @@
-import { addElement, addTextElement, setID, setPreferencesElement } from '../util';
+import {
+  addElement, addTextElement, setID, setPreferencesElement
+} from '../util';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Print module – E2E tests
@@ -10,7 +12,6 @@ import { addElement, addTextElement, setID, setPreferencesElement } from '../uti
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe('Print module', { testIsolation: false }, () => {
-
   // ── Editor ──────────────────────────────────────────────────────────────────
   context('editor', () => {
     before('opens the editor', () => {

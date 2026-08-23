@@ -1,6 +1,5 @@
-import {  setExpertMode } from '../util';
-import { addTriggerElement, configureSectionVisibilityRule, createSectionWithText} from "./helpers/visibility-util";
-
+import { setExpertMode } from '../util';
+import { addTriggerElement, configureSectionVisibilityRule, createSectionWithText } from './helpers/visibility-util';
 
 describe('Section Visibility Handling', { testIsolation: false }, () => {
   context('editor', () => {
@@ -87,7 +86,7 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
 
       // Patch the directive to prevent the player bug from hiding the section
       cy.window().then((win: any) => {
-        cy.get('aspect-section').eq(2).then(($el) => {
+        cy.get('aspect-section').eq(2).then($el => {
           if (win.ng && win.ng.getDirectives) {
             const directives = win.ng.getDirectives($el[0]);
             const dir = directives.find((d: any) => d.constructor.name === 'SectionVisibilityHandlingDirective');

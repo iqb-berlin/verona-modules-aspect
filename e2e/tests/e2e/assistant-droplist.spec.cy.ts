@@ -17,7 +17,6 @@ describe('Droplist assistant', { testIsolation: false }, () => {
     // ── Page 1: Classic Droplist (Zuordnung) ─────────────────────────────────────
     // CHECK FORMAT
     it('creates a classic droplist (Zuordnung)', () => {
-
       openAssistant('Drag & Drop');
       cy.get('mat-dialog-container').contains('button', 'Zuordnung').click();
 

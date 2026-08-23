@@ -1,7 +1,9 @@
-import { addTextElement, selectFromDropdown, setCheckbox, setID, selectParagraphElement } from '../../util';
+import {
+  addTextElement, selectFromDropdown, setCheckbox, setID, selectParagraphElement
+} from '../../util';
 
 export function addText(numParagraphs: number, numSentences: number, numColumns: number,
-  modus: string, settings?: Record<string, boolean>, id?: string) {
+                        modus: string, settings?: Record<string, boolean>, id?: string) {
   addTextElement(generateRandomText(numParagraphs, numSentences));
 
   // Optional element ID
@@ -140,7 +142,6 @@ export function modifyText(
   // TipTap requires real pointer events to update its internal selection state;
   // the Selection/Range API alone is not enough.
   cy.get('tiptap-editor p').eq(paragraphIndex).then(selectParagraphElement);
-
 
   // if (settings.bold) {
   //   cy.contains('mat-icon', 'format_bold').click();

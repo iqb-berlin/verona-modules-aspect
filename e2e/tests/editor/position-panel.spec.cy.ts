@@ -158,7 +158,7 @@ describe('Position Panel', () => {
         const compInstance = win.ng.getComponent(compEl);
         if (compInstance && compInstance.elementService) {
           const elementService = compInstance.elementService;
-          elementService.alignElements = function(elements: any[], alignmentDirection: string) {
+          elementService.alignElements = function (elements: any[], alignmentDirection: string) {
             switch (alignmentDirection) {
               case 'left':
                 this.updateElementsPositionProperty(
@@ -188,6 +188,8 @@ describe('Position Panel', () => {
                   Math.max(...elements.map((element: any) => element.position.yPosition))
                 );
                 break;
+              default:
+                break;
             }
           };
         }
@@ -215,4 +217,3 @@ describe('Position Panel', () => {
       .should('have.css', 'top', '50px');
   });
 });
-

@@ -1,4 +1,4 @@
-import {addElement, setPreferencesElement} from "../util";
+import { addElement, setPreferencesElement } from '../util';
 
 describe('Spell correct element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -8,17 +8,17 @@ describe('Spell correct element', { testIsolation: false }, () => {
 
     it('creates a common spell correct element', () => {
       addElement('Wort korrigieren');
-      setPreferencesElement('Normales Wort korrigieren')
+      setPreferencesElement('Normales Wort korrigieren');
     });
 
     it('creates a required spell correct element', () => {
       addElement('Wort korrigieren');
-      setPreferencesElement('Pflichtfeld Wort korrigieren',  { required: true });
+      setPreferencesElement('Pflichtfeld Wort korrigieren', { required: true });
     });
 
     it('creates a readonly spell readonly correct element', () => {
       addElement('Wort korrigieren');
-      setPreferencesElement('Schreibschutz Wort korrigieren',  { readOnly: true });
+      setPreferencesElement('Schreibschutz Wort korrigieren', { readOnly: true });
     });
 
     after('save an unit definition', () => {
@@ -39,7 +39,7 @@ describe('Spell correct element', { testIsolation: false }, () => {
     });
 
     it('checks the required spell correct element', () => {
-      cy.contains('button','Pflichtfeld Wort korrigieren').click();
+      cy.contains('button', 'Pflichtfeld Wort korrigieren').click();
       cy.contains('aspect-spell-correct', 'Pflichtfeld Wort korrigieren')
         .find('mat-error').should('not.exist');
       cy.clickOutside();
@@ -49,7 +49,7 @@ describe('Spell correct element', { testIsolation: false }, () => {
 
     it('checks the readonly spell correct element', () => {
       cy.contains('aspect-spell-correct', 'Schreibschutz Wort korrigieren')
-        .find('input').should('have.attr','readonly','readonly');
+        .find('input').should('have.attr', 'readonly', 'readonly');
     });
   });
 });

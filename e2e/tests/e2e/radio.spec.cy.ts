@@ -1,4 +1,3 @@
-
 import {
   addOption,
   selectFromDropdown,
@@ -6,7 +5,7 @@ import {
   setPreferencesElement,
   uploadFile
 } from '../util';
-import {addRadioElement, addRadioComplexElement} from "./helpers/radio-util";
+import { addRadioElement, addRadioComplexElement } from './helpers/radio-util';
 
 describe('Radio element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -112,7 +111,6 @@ describe('Radio element', { testIsolation: false }, () => {
     it('renders the image radio group', () => {
       cy.get('aspect-radio-group-images').should('have.length', 1);
     });
-
 
     it('selects an option in the common radio group', () => {
       cy.contains('aspect-radio-button-group', 'Optionsfelder')

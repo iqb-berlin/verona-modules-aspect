@@ -8,8 +8,7 @@ import {
   selectRadioButtonInDialog
 
 } from './helpers/assistant-util';
-import {generateRandomText} from "./helpers/text-util";
-
+import { generateRandomText } from './helpers/text-util';
 
 describe('Marking panel assistant', { testIsolation: false }, () => {
   context('editor', () => {

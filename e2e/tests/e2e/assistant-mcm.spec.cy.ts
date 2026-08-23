@@ -6,7 +6,7 @@ import {
   openAssistant,
   typeInRichTextEditor,
   addGenericOption
-} from "./helpers/assistant-util";
+} from './helpers/assistant-util';
 
 describe('MCM assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -24,11 +24,11 @@ describe('MCM assistant', { testIsolation: false }, () => {
       cy.contains('h3', 'Satzanfang').next('mat-form-field').find('textarea').type('Start of sentence{enter}');
 
       // Add Options (Columns)
-      addGenericOption('Col A','Neue Option');
-      addGenericOption('Col B','Neue Option');
+      addGenericOption('Col A', 'Neue Option');
+      addGenericOption('Col B', 'Neue Option');
       // Add Rows
-      addGenericOption('Row 1','Neue Zeile');
-      addGenericOption('Row 2','Neue Zeile');
+      addGenericOption('Row 1', 'Neue Zeile');
+      addGenericOption('Row 2', 'Neue Zeile');
 
       clickButtonDialog('Bestätigen');
     });

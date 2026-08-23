@@ -20,7 +20,7 @@ function dismissErrorDialogIfVisible() {
 }
 
 function interceptDeployGGB() {
-  cy.intercept('**/deployggb.js', (req) => {
+  cy.intercept('**/deployggb.js', req => {
     req.reply({
       statusCode: 200,
       headers: { 'content-type': 'application/javascript' },
@@ -63,10 +63,10 @@ function addGeometryElement(title: string, filename: string, id: string): void {
   addElement('Geometrie', 'Sonstige');
   cy.get('mat-dialog-container').contains('button', 'GGB-Datei hochladen').click();
   uploadGGBFile(filename);
-  
+
   // Handle the error dialog by clicking "Verwerfen" if it shows up
   dismissErrorDialogIfVisible();
-  
+
   cy.get('.cdk-overlay-backdrop').should('not.exist');
   cy.get('aspect-ui-element-properties').should('be.visible');
   setID(id);
@@ -128,9 +128,9 @@ describe('Geometry element', { testIsolation: false }, () => {
         .find('aspect-spinner mat-spinner', { timeout: 25000 })
         .should('not.exist');
 
-      cy.get('aspect-geometry:visible').first().then(($el) => {
+      cy.get('aspect-geometry:visible').first().then($el => {
         expect($el.find('button.reset-button').length).to.be.at.least(1);
-        expect($el.find('button.reset-button').prop('disabled')).to.be.false;
+        expect($el.find('button.reset-button').prop('disabled')).to.equal(false);
       });
     });
 
@@ -142,7 +142,7 @@ describe('Geometry element', { testIsolation: false }, () => {
         .find('aspect-spinner mat-spinner', { timeout: 25000 })
         .should('not.exist');
 
-      cy.get('aspect-geometry:visible').first().then(($el) => {
+      cy.get('aspect-geometry:visible').first().then($el => {
         expect($el.find('button.reset-button').length).to.equal(0);
       });
     });

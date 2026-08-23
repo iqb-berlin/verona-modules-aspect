@@ -14,7 +14,7 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
     it('creates a text stimulus with marking panel (Page 1)', () => {
       openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'Text').click();
-      cy.contains('mat-checkbox','Markieren zur Texterschließung erlauben').click();
+      cy.contains('mat-checkbox', 'Markieren zur Texterschließung erlauben').click();
       clickButtonDialog('Bestätigen');
     });
 
@@ -22,7 +22,7 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
       openAssistant('Stimulus');
       cy.get('mat-dialog-container').contains('button', 'Text').click();
 
-      editText("Meine Überschrift{enter}Mein Autor{enter}Mein Text{enter}Meine Fußnote");
+      editText('Meine Überschrift{enter}Mein Autor{enter}Mein Text{enter}Meine Fußnote');
 
       cy.get('aspect-editor-page-view').contains('Meine Überschrift').click({ force: true });
       cy.get('aspect-text-props')
@@ -48,10 +48,10 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
     });
 
     it('modifies the last Source (Page 2)', () => {
-      cy.get('aspect-text:contains("Platzhalter Quelle")').eq(-1).click({force:true});
+      cy.get('aspect-text:contains("Platzhalter Quelle")').eq(-1).click({ force: true });
       cy.get('aspect-text-props').find('button:contains("edit")').click();
 
-      cy.get('tiptap-editor').type(`{selectall}{backspace}Neue 2 Quelle`);
+      cy.get('tiptap-editor').type('{selectall}{backspace}Neue 2 Quelle');
       clickButtonDialog('Speichern');
 
       cy.get('aspect-editor-page-view:contains("Neue 2 Quelle")').should('exist');
@@ -73,10 +73,10 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
     });
 
     it('modifies the last Source (Page 3)', () => {
-      cy.get('aspect-text:contains("Platzhalter Quelle")').eq(-1).click({force:true});
+      cy.get('aspect-text:contains("Platzhalter Quelle")').eq(-1).click({ force: true });
       cy.get('aspect-text-props').find('button:contains("edit")').click();
 
-      cy.get('tiptap-editor').type(`{selectall}{backspace}Neue 3 Quelle`);
+      cy.get('tiptap-editor').type('{selectall}{backspace}Neue 3 Quelle');
       clickButtonDialog('Speichern');
 
       cy.get('aspect-editor-page-view:contains("Neue 3 Quelle")').should('exist');

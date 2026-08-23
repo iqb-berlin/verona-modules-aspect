@@ -4,7 +4,7 @@ import {
 import {
   openAssistant,
   typeInRichTextEditor
-} from "./helpers/assistant-util";
+} from './helpers/assistant-util';
 
 describe('Input assistant', { testIsolation: false }, () => {
   context('editor', () => {

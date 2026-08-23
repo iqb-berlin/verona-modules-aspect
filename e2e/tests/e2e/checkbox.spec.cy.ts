@@ -63,7 +63,7 @@ describe('Checkbox element', { testIsolation: false }, () => {
     it('checks that the readonly checkbox can not be checked', () => {
       cy.contains('aspect-checkbox', 'Kontrollkästchen mit Schreibschutz')
         .find('input')
-        .click({force:true})
+        .click({ force: true })
         .should('not.be.checked');
     });
 

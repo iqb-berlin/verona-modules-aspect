@@ -32,10 +32,12 @@ default:
 # next to the two ng serve builds of test-e2e on the shared runner is the startup timeout the
 # comment above describes. The price is the second npm ci on the critical path; the jobs have no
 # shared npm cache, so --prefer-offline saves little.
-# The scope is `eslint projects` (see package.json). e2e/ and the root configs are NOT linted -
-# a Cypress spec with lint errors passes this gate.
-# No --max-warnings: since #1117 projects/ lints clean of errors, and the warnings that remain
-# are meant to stay visible without failing the pipeline (#1320).
+# The scope is `eslint .` (see package.json): everything ignorePatterns does not exclude, so
+# projects/, e2e/ and the root configs, without any assets/ tree, dist/, coverage/, scripts/
+# and test-data/. Those last three do not exist in a fresh checkout, which is what this job
+# gets - they are here so a local run lints the same set as the pipeline.
+# No --max-warnings: the repository lints clean of errors, and the warnings that remain are
+# meant to stay visible without failing the pipeline (#1320, #1324).
 lint:
   stage: lint
   before_script:

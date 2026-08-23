@@ -1,5 +1,5 @@
 export const CONSTANTS = {
-  mathtableText:  String.raw`<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 10px; margin-top: 0"
+  mathtableText: String.raw`<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 10px; margin-top: 0"
  indent="0" indentsize="20">Rechne schriftlich.</p><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 10px;
  margin-top: 0" indent="0" indentsize="20"><strong>Tipp:</strong></p><p style="padding-left: 0px; text-indent: 0px;
  margin-bottom: 10px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 30px">

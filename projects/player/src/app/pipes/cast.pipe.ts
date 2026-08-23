@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'cast',
-    standalone: false
+  name: 'cast',
+  standalone: false
 })
 export class CastPipe implements PipeTransform {
   // eslint-disable-next-line class-methods-use-this

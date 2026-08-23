@@ -14,7 +14,7 @@ import { ElementGroupDirective } from '../../../directives/element-group.directi
 })
 export class BaseGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponentContainer',
-    { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
+             { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
 
   baseElementComponent!: ElementComponent;
 

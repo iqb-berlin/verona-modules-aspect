@@ -3,10 +3,10 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'aspect-keyboard-key',
-    templateUrl: './keyboard-key.component.html',
-    styleUrls: ['./keyboard-key.component.scss'],
-    standalone: false
+  selector: 'aspect-keyboard-key',
+  templateUrl: './keyboard-key.component.html',
+  styleUrls: ['./keyboard-key.component.scss'],
+  standalone: false
 })
 export class KeyboardKeyComponent {
   @Input() alternativeKey!: string | null;

@@ -15,16 +15,12 @@ export const OrderedListExtension = OrderedList.extend({
       listStyle: {
         default: 'upper-roman',
         parseHTML: element => element.style.listStyleType,
-        renderHTML: attributes => {
-          return { style: `list-style: ${attributes.listStyle}` };
-        }
+        renderHTML: attributes => ({ style: `list-style: ${attributes.listStyle}` })
       },
       fontSize: {
         default: '20px',
         parseHTML: element => element.style.fontSize,
-        renderHTML: attributes => {
-          return { style: `font-size: ${attributes.fontSize}` };
-        }
+        renderHTML: attributes => ({ style: `font-size: ${attributes.fontSize}` })
       }
     };
   },

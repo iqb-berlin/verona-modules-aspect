@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   ChatStimulusComponent
 } from 'editor/modules/section-templates/components/stimulus/chat-stimulus/chat-stimulus.component';
@@ -39,7 +40,8 @@ describe('ChatStimulusComponent', () => {
         MatCheckboxModule,
         MatFormFieldModule,
         MatInputModule,
-        MatRadioModule
+        MatRadioModule,
+        TranslateModule.forRoot()
       ]
     }).compileComponents();
 

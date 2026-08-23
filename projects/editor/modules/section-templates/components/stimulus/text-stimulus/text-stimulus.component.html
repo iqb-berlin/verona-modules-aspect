@@ -1,12 +1,12 @@
-<h3>Text</h3>
+<h3>{{ 'text' | translate }}</h3>
 <aspect-rich-text-editor class="input1" [style.min-height.px]="400" [style.max-height.px]="700"
                          [(content)]="options.text1" [controlPanelFolded]="false" [showWordCounter]="true">
 </aspect-rich-text-editor>
 
-<h3>Markieren</h3>
-<mat-checkbox [(ngModel)]="options.allowMarking">Markieren zur Texterschließung erlauben</mat-checkbox>
+<h3>{{ 'sectionTemplates.marking' | translate }}</h3>
+<mat-checkbox [(ngModel)]="options.allowMarking">{{ 'sectionTemplates.allowMarking' | translate }}</mat-checkbox>
 
-<h3>Quelle</h3>
+<h3>{{ 'sectionTemplates.source' | translate }}</h3>
 <aspect-rich-text-editor class="text2" [(content)]="options.text2" [showReducedControls]="true"
-                         [placeholder]="'Hier steht die Quelle.'">
+                         [placeholder]="'sectionTemplates.sourcePlaceholder' | translate">
 </aspect-rich-text-editor>

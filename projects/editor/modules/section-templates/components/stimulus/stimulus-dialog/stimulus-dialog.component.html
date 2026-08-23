@@ -1,14 +1,24 @@
-<h2 mat-dialog-title>Assistent: Stimulus</h2>
+<h2 mat-dialog-title>{{ 'sectionTemplates.stimulusTitle' | translate }}</h2>
 <div mat-dialog-content>
   @if (templateVariant == undefined) {
     <mat-action-list>
-      <h3>Lesestimulus</h3>
-      <button mat-list-item (click)="templateVariant = 'text'; isValid = true;">Text</button>
-      <button mat-list-item (click)="templateVariant = 'email'; isValid = true;">E-Mail</button>
-      <button mat-list-item (click)="templateVariant = 'message'; isValid = true;">Mobiltelefon</button>
-      <h3>Audiostimulus</h3>
-      <button mat-list-item (click)="templateVariant = 'audio1'">Instruktion und Hörtext in einem Audio</button>
-      <button mat-list-item (click)="templateVariant = 'audio2'">Instruktion und Hörtext getrennt</button>
+      <h3>{{ 'sectionTemplates.readingStimulus' | translate }}</h3>
+      <button mat-list-item (click)="templateVariant = 'text'; isValid = true;">
+        {{ 'text' | translate }}
+      </button>
+      <button mat-list-item (click)="templateVariant = 'email'; isValid = true;">
+        {{ 'sectionTemplates.email' | translate }}
+      </button>
+      <button mat-list-item (click)="templateVariant = 'message'; isValid = true;">
+        {{ 'sectionTemplates.mobilePhone' | translate }}
+      </button>
+      <h3>{{ 'sectionTemplates.audioStimulus' | translate }}</h3>
+      <button mat-list-item (click)="templateVariant = 'audio1'">
+        {{ 'sectionTemplates.audioCombined' | translate }}
+      </button>
+      <button mat-list-item (click)="templateVariant = 'audio2'">
+        {{ 'sectionTemplates.audioSeparate' | translate }}
+      </button>
     </mat-action-list>
   }
   @if (templateVariant == 'text') {

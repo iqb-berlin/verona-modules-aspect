@@ -1,9 +1,11 @@
-<h2 mat-dialog-title>Assistent: MC</h2>
+<h2 mat-dialog-title>{{ 'sectionTemplates.radioTitle' | translate }}</h2>
 <div mat-dialog-content>
   @if (templateVariant == undefined) {
     <mat-action-list>
-      <button mat-list-item (click)="templateVariant = 'text'">Text</button>
-      <button mat-list-item (click)="templateVariant = 'image'">Bilder</button>
+      <button mat-list-item (click)="templateVariant = 'text'">{{ 'text' | translate }}</button>
+      <button mat-list-item (click)="templateVariant = 'image'">
+        {{ 'sectionTemplates.images' | translate }}
+      </button>
     </mat-action-list>
   }
   @if (templateVariant == 'text') {

@@ -1,11 +1,14 @@
-<h2 mat-dialog-title>Assistent: Kontrollkästchen</h2>
+<h2 mat-dialog-title>{{ 'sectionTemplates.checkboxTitle' | translate }}</h2>
 <div mat-dialog-content>
-  <h3>Frage</h3>
-  <aspect-rich-text-editor [(content)]="text1" [placeholder]="'Hier steht die Fragestellung.'">
+  <h3>{{ 'sectionTemplates.question' | translate }}</h3>
+  <aspect-rich-text-editor [(content)]="text1"
+                           [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
   </aspect-rich-text-editor>
 
-  <h3>Optionen</h3>
-  <mat-checkbox [style.margin-bottom.px]="10" [(ngModel)]="useImages">Bildoptionen verwenden</mat-checkbox>
+  <h3>{{ 'sectionTemplates.options' | translate }}</h3>
+  <mat-checkbox [style.margin-bottom.px]="10" [(ngModel)]="useImages">
+    {{ 'sectionTemplates.useImageOptions' | translate }}
+  </mat-checkbox>
 
   @if (!useImages) {
     <mat-form-field appearance="outline">
@@ -20,7 +23,9 @@
       </button>
     </mat-form-field>
   } @else {
-    <button mat-stroked-button (click)="imageUpload.click();">Bild hochladen</button>
+    <button mat-stroked-button (click)="imageUpload.click();">
+      {{ 'sectionTemplates.uploadImage' | translate }}
+    </button>
     <input type="file" hidden accept="image/*" #imageUpload id="button-image-upload"
            (change)="loadImage(options, imageUpload)">
   }

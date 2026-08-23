@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MAT_SNACK_BAR_DATA, MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
@@ -27,7 +28,9 @@ describe('FixedReferencesSnackbarComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [FixedReferencesSnackbarComponent],
-      imports: [CommonModule, MatButtonModule, MatIconModule, MatListModule, MatSnackBarModule],
+      imports: [
+        CommonModule, MatButtonModule, MatIconModule, MatListModule, MatSnackBarModule, TranslateModule.forRoot()
+      ],
       providers: [
         { provide: MatSnackBarRef, useValue: snackBarRef },
         { provide: MAT_SNACK_BAR_DATA, useValue: injectedData }
@@ -47,12 +50,14 @@ describe('FixedReferencesSnackbarComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('mat-list-item').length).toBe(4);
   });
 
+  // Without a loader the translate pipe renders the key, so the assertion holds the type-to-key
+  // mapping - the labels themselves live in assets/i18n/de.json (#1116).
   it('should label the known element types with their id', () => {
     const text: string = fixture.nativeElement.textContent;
 
-    expect(text).toContain('Ablegeliste: drop_list_1');
-    expect(text).toContain('Knopf: button_1');
-    expect(text).toContain('Audio: audio_1');
+    expect(text).toContain('toolbox.drop-list: drop_list_1');
+    expect(text).toContain('toolbox.button: button_1');
+    expect(text).toContain('toolbox.audio: audio_1');
   });
 
   it('should not label element types it does not know about', () => {

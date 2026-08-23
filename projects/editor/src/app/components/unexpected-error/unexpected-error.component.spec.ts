@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
   UnexpectedErrorComponent
@@ -30,7 +31,8 @@ describe('UnexpectedErrorComponent', () => {
         MatDialogModule,
         MatFormFieldModule,
         MatIconModule,
-        MatSelectModule
+        MatSelectModule,
+        TranslateModule.forRoot()
       ],
       providers: [
         { provide: Clipboard, useValue: clipboard },

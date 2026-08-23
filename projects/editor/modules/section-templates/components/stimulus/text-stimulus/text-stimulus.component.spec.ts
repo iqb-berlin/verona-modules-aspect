@@ -5,6 +5,7 @@ import {
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TranslateModule } from '@ngx-translate/core';
 import { CONSTANTS } from 'editor/modules/section-templates/constants';
 import {
   TextStimulusComponent
@@ -36,7 +37,8 @@ describe('TextStimulusComponent', () => {
       ],
       imports: [
         FormsModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        TranslateModule.forRoot()
       ]
     }).compileComponents();
 

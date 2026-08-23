@@ -89,6 +89,17 @@ describe('GeometryWizardDialogComponent', () => {
     expect(component.geometryFileName).toBe('figure.ggb');
   }));
 
+  // The field's value is the one binding whose expression decides between two keys, so a swapped
+  // ternary would show the wrong label without any other test noticing (#1116).
+  it('should name the two app definition states through their own keys', () => {
+    const definitionField = fixture.nativeElement.querySelector('input[matInput]') as HTMLInputElement;
+    expect(definitionField.value).toBe('sectionTemplates.noDefinitionAvailable');
+
+    component.geometryAppDefinition = 'ggb-content';
+    fixture.detectChanges();
+    expect(definitionField.value).toBe('sectionTemplates.definitionAvailable');
+  });
+
   it('should disable the confirm button until an app definition is set', () => {
     const confirmButton = fixture.nativeElement.querySelector('div[mat-dialog-actions] button') as HTMLButtonElement;
     expect(confirmButton.disabled).toBe(true);

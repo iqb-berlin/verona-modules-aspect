@@ -1,29 +1,29 @@
-<h3>Frage</h3>
+<h3>{{ 'sectionTemplates.question' | translate }}</h3>
 <aspect-rich-text-editor class="input1" [(content)]="options.label1"
-                         [placeholder]="'Hier steht die Fragestellung.'">
+                         [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
 </aspect-rich-text-editor>
 
-<h3>Satzanfang (optional)</h3>
+<h3>{{ 'sectionTemplates.sentenceStart' | translate }}</h3>
 <mat-form-field appearance="fill" [style.width.%]="60">
-  <textarea matInput type="text" [style.margin-left]="'unset'"
-            [(ngModel)]="options.label2" placeholder="Hier kann ein Satzanfang stehen.">
+  <textarea matInput type="text" [style.margin-left]="'unset'" [(ngModel)]="options.label2"
+            [placeholder]="'sectionTemplates.sentenceStartPlaceholder' | translate">
   </textarea>
 </mat-form-field>
 
-<h3>Optionen</h3>
+<h3>{{ 'sectionTemplates.options' | translate }}</h3>
 <aspect-option-list-panel class="options" [textFieldLabel]="'newOption'"
                           [itemList]="options.options"
                           [localMode]="true"
                           (itemListUpdated)="checkValidity()">
 </aspect-option-list-panel>
 
-<h3>Begründung</h3>
+<h3>{{ 'sectionTemplates.justification' | translate }}</h3>
 <mat-checkbox [(ngModel)]="options.addExtraInput">
-  Begründungsfeld anfügen
+  {{ 'sectionTemplates.addJustificationField' | translate }}
 </mat-checkbox>
 <aspect-rich-text-editor class="input1" [disabled]="!options.addExtraInput"
                          [(content)]="options.text1" [controlPanelFolded]="true">
 </aspect-rich-text-editor>
 <mat-checkbox [(ngModel)]="options.extraInputMathfield" [disabled]="!options.addExtraInput">
-  Formeleingabefeld verwenden
+  {{ 'sectionTemplates.useMathField' | translate }}
 </mat-checkbox>

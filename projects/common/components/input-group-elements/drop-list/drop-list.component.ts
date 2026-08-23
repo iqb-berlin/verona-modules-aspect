@@ -59,7 +59,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
 
   dragEnter(): void {
     // Workaround for the mouseenter event after reordering, thus triggering a source index reset.
-    if (this.dragOpService.isListHovered) return;
+    if (this.dragOpService.hoveredListID === this.elementModel.id) return;
     if (!this.dragOpService.isListEligible(this.elementModel.id)) return;
     this.isHovered = true;
     this.dragOpService.setTargetList(this.elementModel.id);

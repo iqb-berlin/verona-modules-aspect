@@ -91,3 +91,38 @@ export function dragToByTouch(list: string, item: string, targetList: string): v
         });
     });
 }
+
+/* Like dragToByTouch, but the pointer goes straight onto an item of the target list: no move over
+   the source and none over the gap between the lists. That is the sequence #1322 is about. */
+export function dragToByTouchOntoItem(list: string, item: string,
+                                      targetList: string, targetItem: string): void {
+  cy.getByAlias(targetList).contains('.drop-list-item', targetItem)
+    .then($targetEl => {
+      const targetRect = $targetEl[0].getBoundingClientRect();
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+
+      cy.getByAlias(list).contains('.drop-list-item', item)
+        .then($startEl => {
+          const startRect = $startEl[0].getBoundingClientRect();
+
+          cy.wrap($startEl).trigger('touchstart', {
+            touches: [{
+              clientX: startRect.left + startRect.width / 2,
+              clientY: startRect.top + startRect.height / 2
+            }]
+          });
+
+          cy.wrap($startEl).trigger('touchmove', {
+            force: true,
+            touches: [{ clientX: targetX, clientY: targetY }]
+          });
+
+          cy.wrap($startEl).trigger('touchend', {
+            force: true,
+            touches: [],
+            changedTouches: [{ clientX: targetX, clientY: targetY }]
+          });
+        });
+    });
+}

@@ -33,7 +33,7 @@ class MockErrorTransformPipe implements PipeTransform {
 
 interface DragOperatorServiceMock {
   isDragActive: boolean;
-  isListHovered: boolean;
+  hoveredListID: string | undefined;
   dragOperation: undefined;
   registerComponent: ReturnType<typeof vi.fn>;
   startDrag: ReturnType<typeof vi.fn>;
@@ -67,7 +67,7 @@ describe('DropListComponent', () => {
   beforeEach(async () => {
     dragOpServiceMock = {
       isDragActive: false,
-      isListHovered: false,
+      hoveredListID: undefined,
       dragOperation: undefined,
       registerComponent: vi.fn(),
       startDrag: vi.fn(),
@@ -187,6 +187,17 @@ describe('DropListComponent', () => {
     component.dragEnter();
     expect(component.isHovered).toBe(true);
     expect(dragOpServiceMock.setTargetList).toHaveBeenCalledWith('test-id');
+  });
+
+  /* Windows 10 + Firefox sends a second mouseenter after a reorder, and taking it would reset the
+     sorting index to where the drag started (e3dbfe27). The list the pointer is already on is the
+     one to ignore - which is also what tells this case apart from entering a different list, the
+     distinction a plain hovered/not-hovered flag could not make (#1322). */
+  it('should ignore dragEnter for the list the pointer is already on', () => {
+    dragOpServiceMock.hoveredListID = 'test-id';
+    component.dragEnter();
+    expect(dragOpServiceMock.setTargetList).not.toHaveBeenCalled();
+    expect(component.isHovered).toBe(false);
   });
 
   it('should refresh the viewModel from the form control value', () => {

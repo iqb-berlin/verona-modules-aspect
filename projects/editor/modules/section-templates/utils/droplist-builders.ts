@@ -236,7 +236,9 @@ export function createSortlistSection(options: SortTemplateOptions, idService: I
   return section;
 }
 
-export function createTwopageSection(options: TwoPageTemplateOptions, idService: IDService): [EditorSection, EditorSection] {
+export function createTwopageSection(
+  options: TwoPageTemplateOptions, idService: IDService
+): [EditorSection, EditorSection] {
   const section1Elements: PositionedUIElement[] = [
     TemplateService.createElement('text', { gridRow: 1, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
                                   { text: options.text1 }, idService),
@@ -263,12 +265,18 @@ export function createTwopageSection(options: TwoPageTemplateOptions, idService:
   const section2Elements: PositionedUIElement[] = [
     TemplateService.createElement('text',
                                   {
-                                    gridRow: 1, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 30, unit: 'px' }
+                                    gridRow: 1,
+                                    gridColumn: 1,
+                                    gridColumnRange: 2 + (options.targetUseImages ? 1 : 0),
+                                    marginBottom: { value: 30, unit: 'px' }
                                   },
                                   { text: options.text2 }, idService),
     TemplateService.createElement('text',
                                   {
-                                    gridRow: 2, gridColumn: 1, gridColumnRange: 2 + (options.targetUseImages ? 1 : 0), marginBottom: { value: 20, unit: 'px' }
+                                    gridRow: 2,
+                                    gridColumn: 1,
+                                    gridColumnRange: 2 + (options.targetUseImages ? 1 : 0),
+                                    marginBottom: { value: 20, unit: 'px' }
                                   },
                                   { text: options.headingTargetLists, styling: { bold: true } }, idService)
   ];

@@ -29,6 +29,9 @@ export class VeronaAPIService {
     return this.resourceURL || 'assets';
   }
 
+  // Static would read better here, but it would only move the rule one level up: sendReady holds
+  // no state of its own either and passes solely because it calls this.send.
+  // eslint-disable-next-line class-methods-use-this
   private send(message: Record<string, string | VariableInfo[]>): void {
     // prevent posts in local (dev) mode
     const isStandalone = window === window.parent;

@@ -38,7 +38,9 @@ export class Page {
       if (page?.margin !== undefined) this.margin = page.margin;
       if (page?.backgroundColor !== undefined) this.backgroundColor = page.backgroundColor;
       if (page?.alwaysVisible !== undefined) this.alwaysVisible = page.alwaysVisible;
-      if (page?.alwaysVisiblePagePosition !== undefined) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
+      if (page?.alwaysVisiblePagePosition !== undefined) {
+        this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
+      }
       if (page?.alwaysVisibleAspectRatio !== undefined) this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
     }
     this.sections = this.createSections(page, idService);

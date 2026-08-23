@@ -511,14 +511,15 @@ export class ElementService {
         (a.position.gridRow !== null ? a.position.gridRow : Infinity) -
         (b.position.gridRow !== null ? b.position.gridRow : Infinity);
       if (rowSort === 0) {
-        return a.position.gridColumn! - b.position.gridColumn!;
+        // gridColumn is nullable, and the subtraction coerced a null to 0 - kept as it was.
+        return (a.position.gridColumn ?? 0) - (b.position.gridColumn ?? 0);
       }
       return rowSort;
     };
     const sortStaticPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
-      const ySort = a.position.yPosition! - b.position.yPosition!;
+      const ySort = a.position.yPosition - b.position.yPosition;
       if (ySort === 0) {
-        return a.position.xPosition! - b.position.xPosition!;
+        return a.position.xPosition - b.position.xPosition;
       }
       return ySort;
     };

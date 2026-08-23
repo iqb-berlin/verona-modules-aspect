@@ -55,17 +55,20 @@ export function createText3Section(text1: string, text2: string, text3: string, 
   section.addElement(TemplateService.createElement('text', { gridRow: 3, gridColumn: 1 }, { text: text1 }, idService));
 
   section.addElement(TemplateService.createElement('text', { gridRow: 4, gridColumn: 1 },
-                                                   { text: 'Skizze der Aufgabe:', styling: { bold: true } }, idService));
+                                                   { text: 'Skizze der Aufgabe:', styling: { bold: true } },
+                                                   idService));
   section.addElement(TemplateService.createElement('text', { gridRow: 5, gridColumn: 1 }, { text: text2 }, idService));
 
   section.addElement(TemplateService.createElement('text', { gridRow: 6, gridColumn: 1 },
-                                                   { text: 'Lösung der Aufgabe:', styling: { bold: true } }, idService));
+                                                   { text: 'Lösung der Aufgabe:', styling: { bold: true } },
+                                                   idService));
   section.addElement(TemplateService.createElement('text', { gridRow: 7, gridColumn: 1 }, { text: text3 }, idService));
   section.addElement(TemplateService.createElement('text', { gridRow: 8, gridColumn: 1 },
                                                    { text: 'Aufgabenvorlage:', styling: { bold: true } }, idService));
   section.addElement(TemplateService.createElement('text', { gridRow: 9, gridColumn: 1 }, { text: text4 }, idService));
   section.addElement(TemplateService.createElement('text', { gridRow: 10, gridColumn: 1 },
-                                                   { text: 'Benötigte Ressourcen:', styling: { bold: true } }, idService));
+                                                   { text: 'Benötigte Ressourcen:', styling: { bold: true } },
+                                                   idService));
   section.addElement(TemplateService.createElement('text', { gridRow: 11, gridColumn: 1 }, { text: text5 }, idService));
   return section;
 }

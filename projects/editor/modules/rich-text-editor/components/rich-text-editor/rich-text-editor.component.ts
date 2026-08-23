@@ -37,7 +37,8 @@ import { FontSize } from 'editor/modules/rich-text-editor/extensions/font-size';
 import { BulletListExtension } from 'editor/modules/rich-text-editor/extensions/bullet-list';
 import { OrderedListExtension } from 'editor/modules/rich-text-editor/extensions/ordered-list';
 import { HorizontalRuleExtension } from 'editor/modules/rich-text-editor/extensions/horizontal-rule';
-import ToggleButtonComponentExtension from 'editor/modules/rich-text-editor/extensions/toggle-button-component-extension';
+import ToggleButtonComponentExtension
+  from 'editor/modules/rich-text-editor/extensions/toggle-button-component-extension';
 import DropListComponentExtension from 'editor/modules/rich-text-editor/extensions/drop-list-component-extension';
 import TextFieldComponentExtension from 'editor/modules/rich-text-editor/extensions/text-field-component-extension';
 import CheckboxComponentExtension from 'editor/modules/rich-text-editor/extensions/checkbox-component-extension';

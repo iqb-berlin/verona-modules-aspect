@@ -26,7 +26,10 @@ export class OverviewDialogComponent implements AfterViewInit {
   availableSections: number[] = [];
   tableSelection: 'none' | 'some' | 'all' = 'none';
 
-  columnsToDisplay = ['select', 'pageIndex', 'sectionIndex', 'alias', 'type', 'isRelevantForPresentationComplete', 'actions'];
+  columnsToDisplay = [
+    'select', 'pageIndex', 'sectionIndex', 'alias', 'type', 'isRelevantForPresentationComplete', 'actions'
+  ];
+
   tableData!: MatTableDataSource<OverviewRow>;
 
   /* Every refresh builds new rows, so the selection is compared by the element in them. */
@@ -49,6 +52,9 @@ export class OverviewDialogComponent implements AfterViewInit {
   constructor(public unitService: UnitService, private elementService: ElementService, private dialog: MatDialog) {
     this.tableData = new MatTableDataSource<OverviewRow>(this.getTableData());
     this.tableData.sortingDataAccessor = OverviewDialogComponent.getSortValue;
+    // The predicate decides from elementFilters, not from the table's own filter string, which is
+    // why the second parameter MatTableDataSource passes stays unread.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.tableData.filterPredicate = (data: OverviewRow, filter: string) => {
       const matchesPageFilter = this.elementFilters.page.length > 0 ?
         this.elementFilters.page.includes(data.pageIndex) : true;
@@ -121,7 +127,8 @@ export class OverviewDialogComponent implements AfterViewInit {
       this.unitService.unit.pages.filter((_, index) => this.pageFilter.includes(index)) :
       this.unitService.unit.pages;
     const mostSectionsOnPage = selectedPages
-      .reduce((prev: EditorPage, current: EditorPage) => (current.sections.length > prev.sections.length ? current : prev))
+      .reduce((prev: EditorPage, current: EditorPage) => (
+        current.sections.length > prev.sections.length ? current : prev))
       .sections.length;
     this.availableSections = Array.from({ length: mostSectionsOnPage });
   }
@@ -129,6 +136,8 @@ export class OverviewDialogComponent implements AfterViewInit {
   applyValueToSelection() {
     this.elementService.updateElementsProperty(
       this.elementSelection.selected.map(row => row.element),
+      // The button carries [disabled]="!selectedEditableProperty", so this runs only with one picked.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.selectedEditableProperty!.fieldName,
       this.editablePropertyValue
     );

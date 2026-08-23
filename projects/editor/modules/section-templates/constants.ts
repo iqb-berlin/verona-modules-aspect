@@ -313,5 +313,7 @@ w4f7TbfRmI6/JUCB18WYiuKU9fQy3/OVjS4aMJqmMW3aNHbu3Ek0Gs0hvktiCZ3Rw4oYWpyHx22VB1LS
 ZQRREU+7wpKUKaJu2n/Kz540p+9dyP+eKi+1i0aNF5S9Vwzl9IP7MRiUR46qmnePTRR1mwYAHz589n5MiR1i4oi93qOi0tLezbt4/169ezd+9eHnroIRYs
 WEBVVdV5dyVxsf7cm2EYbN26leeff56VK1cyfvx4pkyZQkFBAYFAgD179rBjx45U5nnvvfeYOXPmebUSRzq8uEPXdXny5En5yCOPSFVVpaqqsrCwMNV6E
 ELIhQsXykAgcEHvS1wqfyCwvb2d1157jdbWVkpLS6murqa0tJTi4mIqKipSpcSFGv8LfyImffebTbQAAAAASUVORK5CYII=`,
+  // The value is one serialized text element; wrapping it would change the stored HTML.
+  // eslint-disable-next-line max-len
   textStimulus: '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 24px"><strong>Hier steht die Überschrift.</strong></span></p><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 20px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">Hier steht der/die Autor*in.</span></p><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">Hier steht der Text.</span></p><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"></p><hr style="width: 20%; margin-left: 0;" short="true"><p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" indentsize="20"><span style="font-size: 18px">Platzhalter Fußnote</span></p>'
 };

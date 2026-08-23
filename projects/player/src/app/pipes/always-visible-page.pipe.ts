@@ -7,10 +7,10 @@ import { Page } from 'common/models/page';
 })
 export class AlwaysVisiblePagePipe implements PipeTransform {
   transform(pages: Page[]): Page | null {
-    return this.getAlwaysVisiblePage(pages);
+    return AlwaysVisiblePagePipe.getAlwaysVisiblePage(pages);
   }
 
-  private getAlwaysVisiblePage(pages: Page[]): Page | null {
+  private static getAlwaysVisiblePage(pages: Page[]): Page | null {
     return pages.find((page: Page): boolean => page.alwaysVisible) || null;
   }
 }

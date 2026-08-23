@@ -6,7 +6,9 @@ import { MatInputModule } from '@angular/material/input';
 import { StateVariable } from 'common/models/state-variable';
 import { IDService } from 'editor/src/app/services/id.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
-import { StateVariableEditorComponent } from 'editor/src/app/components/state-variable-editor/state-variable-editor.component';
+import {
+  StateVariableEditorComponent
+} from 'editor/src/app/components/state-variable-editor/state-variable-editor.component';
 
 describe('StateVariableEditorComponent', () => {
   let component: StateVariableEditorComponent;

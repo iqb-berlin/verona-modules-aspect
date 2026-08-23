@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 
 @Pipe({
-    name: 'hasPreviousPage',
-    standalone: false
+  name: 'hasPreviousPage',
+  standalone: false
 })
 export class HasPreviousPagePipe implements PipeTransform {
   transform(index: number, isVisibleIndexPages: IsVisibleIndex[]): boolean {

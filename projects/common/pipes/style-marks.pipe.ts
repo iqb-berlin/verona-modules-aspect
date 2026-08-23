@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ClozeMarks } from 'common/models/elements/compound-group-elements/cloze/cloze';
 
 @Pipe({
-    name: 'styleMarks',
-    standalone: false
+  name: 'styleMarks',
+  standalone: false
 })
 /* This extracts marks from a text item and puts them in an object to be consumed by ngStyle.
   Only used in cloze component */

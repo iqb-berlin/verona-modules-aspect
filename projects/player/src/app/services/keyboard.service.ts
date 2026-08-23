@@ -19,7 +19,7 @@ export class KeyboardService extends ScrollToInputService {
     return new Promise(resolve => {
       setTimeout(() => resolve(
         this.toggle(focusedTextInput, elementComponent, isMobileWithoutHardwareKeyboard)),
-      100
+                 100
       );
     });
   }

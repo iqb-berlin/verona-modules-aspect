@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-    selector: '[aspectInputBackgroundColor]',
-    standalone: false
+  selector: '[aspectInputBackgroundColor]',
+  standalone: false
 })
 export class InputBackgroundColorDirective implements OnChanges {
   @Input() backgroundColor!: string;

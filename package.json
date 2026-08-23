@@ -39,6 +39,7 @@
       "project": "./tsconfig.json"
     },
     "ignorePatterns": [
+      "**/assets/**",
       "**/dist/*.*",
       "**/scripts/*.*",
       "**/test-data/*.*",

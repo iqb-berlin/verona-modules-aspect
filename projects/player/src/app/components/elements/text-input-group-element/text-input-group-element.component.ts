@@ -22,10 +22,10 @@ import { UnitStateService } from '../../../services/unit-state.service';
 import { KeypadService } from '../../../services/keypad.service';
 
 @Component({
-    selector: 'aspect-text-input-group-element',
-    templateUrl: './text-input-group-element.component.html',
-    styleUrls: ['./text-input-group-element.component.scss'],
-    standalone: false
+  selector: 'aspect-text-input-group-element',
+  templateUrl: './text-input-group-element.component.html',
+  styleUrls: ['./text-input-group-element.component.scss'],
+  standalone: false
 })
 
 export class TextInputGroupElementComponent

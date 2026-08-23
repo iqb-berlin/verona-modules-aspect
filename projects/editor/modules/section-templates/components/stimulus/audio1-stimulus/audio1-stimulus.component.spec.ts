@@ -6,6 +6,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import {
   Audio1StimulusComponent
@@ -45,7 +46,8 @@ describe('Audio1StimulusComponent', () => {
         Audio1StimulusComponent,
         MockRichTextEditorComponent,
         MockWizardAudioComponent
-      ]
+      ],
+      imports: [TranslateModule.forRoot()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(Audio1StimulusComponent);

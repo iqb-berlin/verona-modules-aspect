@@ -1,26 +1,24 @@
-<h2 mat-dialog-title>Aufgabenidee</h2>
+<h2 mat-dialog-title>{{ 'sectionTemplates.taskIdeaTitle' | translate }}</h2>
 <div mat-dialog-content>
-  <h3>Beschreibung der Aufgabenidee:</h3>
+  <h3>{{ 'sectionTemplates.taskIdeaDescription' | translate }}</h3>
   <aspect-rich-text-editor class="input1" [(content)]="text1"
-                           [placeholder]="'Beschreibung der Aufgabenidee (möglichst detailliert, falls' +
-                            ' keine Skizze oder Vorlage dazu vorhanden)'">
+                           [placeholder]="'sectionTemplates.taskIdeaDescriptionPlaceholder' | translate">
   </aspect-rich-text-editor>
-  <h3>Skizze der Aufgabe</h3>
+  <h3>{{ 'sectionTemplates.taskIdeaSketch' | translate }}</h3>
   <aspect-rich-text-editor class="input1" [(content)]="text2"
-                           [placeholder]="'Skizze der Aufgabe'">
+                           [placeholder]="'sectionTemplates.taskIdeaSketch' | translate">
   </aspect-rich-text-editor>
-  <h3>Lösung der Aufgabe</h3>
+  <h3>{{ 'sectionTemplates.taskIdeaSolution' | translate }}</h3>
   <aspect-rich-text-editor class="input1" [(content)]="text3"
-                           [placeholder]="'Lösung der Aufgabe'">
+                           [placeholder]="'sectionTemplates.taskIdeaSolution' | translate">
   </aspect-rich-text-editor>
-  <h3>Aufgabenvorlage</h3>
+  <h3>{{ 'sectionTemplates.taskIdeaTemplate' | translate }}</h3>
   <aspect-rich-text-editor class="input1" [(content)]="text4"
-                           [placeholder]="'Verlinkungen'">
+                           [placeholder]="'sectionTemplates.taskIdeaLinks' | translate">
   </aspect-rich-text-editor>
-  <h3>Benötigte Ressourcen</h3>
+  <h3>{{ 'sectionTemplates.taskIdeaResources' | translate }}</h3>
   <aspect-rich-text-editor class="input1" [(content)]="text5"
-                           [placeholder]="'Links zu benötigten Ressourcen (zum Beispiel Textauszüge, Audios,' +
-                            ' Videos, Homepages, ...)'">
+                           [placeholder]="'sectionTemplates.taskIdeaResourcesPlaceholder' | translate">
   </aspect-rich-text-editor>
 </div>
 <div mat-dialog-actions>

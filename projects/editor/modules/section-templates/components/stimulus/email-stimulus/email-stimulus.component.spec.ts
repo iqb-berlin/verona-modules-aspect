@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   EmailStimulusComponent
 } from 'editor/modules/section-templates/components/stimulus/email-stimulus/email-stimulus.component';
@@ -14,7 +15,8 @@ describe('EmailStimulusComponent', () => {
       declarations: [EmailStimulusComponent],
       imports: [
         FormsModule,
-        MatRadioModule
+        MatRadioModule,
+        TranslateModule.forRoot()
       ]
     }).compileComponents();
 

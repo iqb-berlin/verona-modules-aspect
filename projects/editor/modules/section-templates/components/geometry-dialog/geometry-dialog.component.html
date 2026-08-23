@@ -1,23 +1,25 @@
-<h2 mat-dialog-title>Assistent: GeoGebra</h2>
+<h2 mat-dialog-title>{{ 'sectionTemplates.geometryTitle' | translate }}</h2>
 <div mat-dialog-content>
-  <h3>Text</h3>
-  <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'">
+  <h3>{{ 'text' | translate }}</h3>
+  <aspect-rich-text-editor [(content)]="text"
+                           [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
   </aspect-rich-text-editor>
 
-  <h3>GeoGebra-Datei</h3>
+  <h3>{{ 'sectionTemplates.geometryFile' | translate }}</h3>
   <mat-form-field matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
                   appearance="fill" [style.align-self]="'flex-start'" [style.width.%]="40">
     <mat-label>{{ 'propertiesPanel.appDefinition' | translate }}</mat-label>
     <input matInput disabled
-           [value]="geometryAppDefinition ? 'Definition vorhanden' : 'keine Definition vorhanden'">
+           [value]="(geometryAppDefinition ? 'sectionTemplates.definitionAvailable' :
+                                             'sectionTemplates.noDefinitionAvailable') | translate">
     <button mat-icon-button matSuffix (click)="changeSrc()">
       <mat-icon>edit</mat-icon>
     </button>
   </mat-form-field>
 
-  <h3>Hilfe</h3>
+  <h3>{{ 'sectionTemplates.help' | translate }}</h3>
   <mat-checkbox [(ngModel)]="showHelper">
-    Bild mit Hilfstext für Zeichenaufgaben anfügen
+    {{ 'sectionTemplates.addGeometryHelperImage' | translate }}
   </mat-checkbox>
 
 </div>

@@ -2,7 +2,7 @@
   <aspect-reference-list matSnackBarLabel [refs]="refs || data"></aspect-reference-list>
   <span matSnackBarActions>
     <button mat-stroked-button matSnackBarAction (click)="snackBarRef.dismiss()">
-      Schließen
+      {{ 'close' | translate }}
     </button>
   </span>
 </div>

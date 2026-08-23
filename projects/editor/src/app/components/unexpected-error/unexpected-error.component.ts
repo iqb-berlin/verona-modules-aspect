@@ -36,6 +36,8 @@ export class UnexpectedErrorComponent {
     this.clipboard.copy(JSON.stringify(this.data.message + this.data.stack));
   }
 
+  // Title and body are not UI text: they prefill the German issue template
+  // .github/ISSUE_TEMPLATE/fehlermeldung.md of this repository, whose headings the maintainers read.
   // eslint-disable-next-line class-methods-use-this
   reportTemplate = (version: string, userAgent: string) => `**Fehlerbeschreibung**
   Klare und kurze Beschreibung des Problems

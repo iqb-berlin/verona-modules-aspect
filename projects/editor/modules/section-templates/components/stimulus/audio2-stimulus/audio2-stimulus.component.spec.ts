@@ -8,6 +8,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import {
   Audio2StimulusComponent
@@ -51,7 +52,8 @@ describe('Audio2StimulusComponent', () => {
       imports: [
         FormsModule,
         MatRadioModule,
-        MatTooltipModule
+        MatTooltipModule,
+        TranslateModule.forRoot()
       ]
     }).compileComponents();
 

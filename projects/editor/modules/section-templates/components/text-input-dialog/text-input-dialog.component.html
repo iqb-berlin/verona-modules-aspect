@@ -1,10 +1,11 @@
-<h2 mat-dialog-title>Assistent: Antwortfeld(er)</h2>
+<h2 mat-dialog-title>{{ 'sectionTemplates.inputTitle' | translate }}</h2>
 <div mat-dialog-content>
-  <h3>Frage</h3>
-  <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'">
+  <h3>{{ 'sectionTemplates.question' | translate }}</h3>
+  <aspect-rich-text-editor [(content)]="text"
+                           [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
   </aspect-rich-text-editor>
 
-  <h3>Anzahl Antwortfelder</h3>
+  <h3>{{ 'sectionTemplates.answerCount' | translate }}</h3>
   <mat-form-field class="align-start">
     <input matInput type="number" min="1" max="9" required aspectNumberField
            [ngModel]="answerCount"
@@ -13,58 +14,57 @@
            (keydown.enter)="applyAnswerCount()">
   </mat-form-field>
 
-  <h3>Nummerierung</h3>
+  <h3>{{ 'sectionTemplates.numbering' | translate }}</h3>
   <mat-form-field class="align-start">
     <mat-select [disabled]="!numberingAvailable" [(ngModel)]="numbering">
       <mat-option [value]="'latin'">a), b), ...</mat-option>
       <mat-option [value]="'decimal'">1), 2), ...</mat-option>
       <mat-option [value]="'bullets'">&#x2022;, &#x2022;, ...</mat-option>
-      <mat-option [value]="'none'">keine</mat-option>
+      <mat-option [value]="'none'">{{ 'sectionTemplates.numberingNone' | translate }}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-checkbox [style.margin-bottom.px]="15" [(ngModel)]="numberingWithText" (change)="updateSubQuestions()">
-    Nummerierung mit Text erweitern
+    {{ 'sectionTemplates.numberingWithText' | translate }}
   </mat-checkbox>
 
   @for (text of subQuestions; track $index) {
     <mat-form-field appearance="outline" class="sub-questions">
-      <mat-label>Text {{$index + 1}}</mat-label>
+      <mat-label>{{ 'text' | translate }} {{$index + 1}}</mat-label>
       <textarea matInput type="text" [(ngModel)]="subQuestions[$index]"></textarea>
     </mat-form-field>
   }
 
-  <h3>Antwortfeldgröße</h3>
+  <h3>{{ 'sectionTemplates.answerFieldSize' | translate }}</h3>
   <div class="row">
     <mat-radio-group [(ngModel)]="multilineInputs">
-      <mat-radio-button [value]="false">Einzeilig</mat-radio-button>
-      <mat-radio-button [value]="true">Mehrzeilig</mat-radio-button>
+      <mat-radio-button [value]="false">{{ 'sectionTemplates.singleLine' | translate }}</mat-radio-button>
+      <mat-radio-button [value]="true">{{ 'sectionTemplates.multiLine' | translate }}</mat-radio-button>
     </mat-radio-group>
 
-    <ng-container *ngIf="!multilineInputs">
+    @if (!multilineInputs) {
       <mat-form-field [style]="'width: 270px;'">
-        <mat-label>Länge der Antworten</mat-label>
+        <mat-label>{{ 'sectionTemplates.answerLength' | translate }}</mat-label>
         <mat-select [(ngModel)]="fieldLength" [disabled]="multilineInputs">
-          <mat-option [value]="'large'">lang (<12 Wörter)</mat-option>
-          <mat-option [value]="'medium'">mittel (<7 Wörter)</mat-option>
-          <mat-option [value]="'small'">kurz (<3 Wörter)</mat-option>
-          <mat-option [value]="'very-small'">sehr kurz (< vierstellige Zahl)</mat-option>
+          <mat-option [value]="'large'">{{ 'sectionTemplates.answerLengthLarge' | translate }}</mat-option>
+          <mat-option [value]="'medium'">{{ 'sectionTemplates.answerLengthMedium' | translate }}</mat-option>
+          <mat-option [value]="'small'">{{ 'sectionTemplates.answerLengthSmall' | translate }}</mat-option>
+          <mat-option [value]="'very-small'">{{ 'sectionTemplates.answerLengthVerySmall' | translate }}</mat-option>
         </mat-select>
       </mat-form-field>
-    </ng-container>
-    <ng-container *ngIf="multilineInputs">
+    } @else {
       <mat-form-field [style]="'width: 270px;'">
-        <mat-label>Erwartete Zeichenanzahl</mat-label>
+        <mat-label>{{ 'sectionTemplates.expectedCharsCount' | translate }}</mat-label>
         <input matInput type="number" min="1" required aspectNumberField
                [ngModel]="expectedCharsCount" [disabled]="!multilineInputs"
                (numberChange)="commitExpectedCharsCount($event)">
       </mat-form-field>
-    </ng-container>
+    }
   </div>
 
-  <h3>Formeleingabe</h3>
+  <h3>{{ 'sectionTemplates.formulaInput' | translate }}</h3>
   <mat-checkbox [(ngModel)]="useMathFields">
-    Formeleingabefelder verwenden
+    {{ 'sectionTemplates.useMathFields' | translate }}
   </mat-checkbox>
 </div>
 <div mat-dialog-actions>

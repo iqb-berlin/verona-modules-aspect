@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_SNACK_BAR_DATA, MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ReferenceList } from 'editor/src/app/classes/reference-manager';
@@ -36,7 +37,7 @@ describe('ReferenceListSnackbarComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [ReferenceListSnackbarComponent, MockReferenceListComponent],
-      imports: [MatButtonModule, MatSnackBarModule],
+      imports: [MatButtonModule, MatSnackBarModule, TranslateModule.forRoot()],
       providers: [
         { provide: MatSnackBarRef, useValue: snackBarRef },
         { provide: MAT_SNACK_BAR_DATA, useValue: injectedData }

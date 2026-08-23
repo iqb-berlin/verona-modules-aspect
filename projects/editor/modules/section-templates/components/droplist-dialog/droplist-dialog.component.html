@@ -1,10 +1,16 @@
-<h2 mat-dialog-title>Assistent: Drag & Drop</h2>
+<h2 mat-dialog-title>{{ 'sectionTemplates.dropListTitle' | translate }}</h2>
 <div mat-dialog-content>
   @if (templateVariant == undefined) {
     <mat-action-list class="variant-choice">
-      <button mat-list-item (click)="templateVariant = 'classic'">Zuordnung</button>
-      <button mat-list-item (click)="templateVariant = '2pages'">Zuordnung (2-seitig)</button>
-      <button mat-list-item (click)="templateVariant = 'sort'">Sortieren</button>
+      <button mat-list-item (click)="templateVariant = 'classic'">
+        {{ 'sectionTemplates.dropListClassic' | translate }}
+      </button>
+      <button mat-list-item (click)="templateVariant = '2pages'">
+        {{ 'sectionTemplates.dropListTwoPages' | translate }}
+      </button>
+      <button mat-list-item (click)="templateVariant = 'sort'">
+        {{ 'sectionTemplates.dropListSort' | translate }}
+      </button>
     </mat-action-list>
   }
 
@@ -13,35 +19,35 @@
 
     <ng-container *ngTemplateOutlet="startList"></ng-container>
     <mat-form-field [style.width.px]="300">
-      <mat-label>ungefähre Länge der Elemente</mat-label>
+      <mat-label>{{ 'sectionTemplates.optionLength' | translate }}</mat-label>
       <mat-select [(ngModel)]="options.optionWidth">
-        <mat-option *ngIf="options.targetLabelAlignment === 'column'"
-                    [value]="'long'">lang (< 8 Wörter)
-        </mat-option>
-        <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
-        <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
-        <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
+        @if (options.targetLabelAlignment === 'column') {
+          <mat-option [value]="'long'">{{ 'sectionTemplates.lengthLong' | translate }}</mat-option>
+        }
+        <mat-option [value]="'medium'">{{ 'sectionTemplates.lengthMedium' | translate }}</mat-option>
+        <mat-option [value]="'short'">{{ 'sectionTemplates.lengthShort' | translate }}</mat-option>
+        <mat-option [value]="'very-short'">{{ 'sectionTemplates.lengthVeryShort' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <ng-container *ngTemplateOutlet="targetList"></ng-container>
     <mat-form-field [style.width.px]="350">
-      <mat-label>ungefähre Länge der Zielbeschriftungen</mat-label>
+      <mat-label>{{ 'sectionTemplates.targetLength' | translate }}</mat-label>
       <mat-select [(ngModel)]="options.targetWidth">
-        <mat-option *ngIf="options.targetLabelAlignment === 'column'"
-                    [value]="'long'">lang (< 8 Wörter)
-        </mat-option>
-        <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
-        <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
-        <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
+        @if (options.targetLabelAlignment === 'column') {
+          <mat-option [value]="'long'">{{ 'sectionTemplates.lengthLong' | translate }}</mat-option>
+        }
+        <mat-option [value]="'medium'">{{ 'sectionTemplates.lengthMedium' | translate }}</mat-option>
+        <mat-option [value]="'short'">{{ 'sectionTemplates.lengthShort' | translate }}</mat-option>
+        <mat-option [value]="'very-short'">{{ 'sectionTemplates.lengthVeryShort' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <h3>Ausrichtung</h3>
+    <h3>{{ 'sectionTemplates.alignment' | translate }}</h3>
     <mat-radio-group [(ngModel)]="options.targetLabelAlignment">
-      <mat-radio-button [value]="'column'">Elementliste über Ziellisten</mat-radio-button>
+      <mat-radio-button [value]="'column'">{{ 'sectionTemplates.alignmentColumn' | translate }}</mat-radio-button>
       <mat-radio-button [value]="'row'">
-        Elementliste neben Ziellisten (nur für kurze Elemente oder einseitige Aufgaben)
+        {{ 'sectionTemplates.alignmentRow' | translate }}
       </mat-radio-button>
     </mat-radio-group>
   } @else if (templateVariant == 'sort') {
@@ -49,68 +55,72 @@
 
     <ng-container *ngTemplateOutlet="startList"></ng-container>
     <mat-form-field [style.width.px]="300">
-      <mat-label>ungefähre Länge der Elemente</mat-label>
+      <mat-label>{{ 'sectionTemplates.optionLength' | translate }}</mat-label>
       <mat-select [(ngModel)]="options.optionWidth">
-        <mat-option [value]="'medium'">mittel (< 5 Wörter)</mat-option>
-        <mat-option [value]="'short'">kurz (< 3 Wörter)</mat-option>
-        <mat-option [value]="'very-short'">sehr kurz (1 Wort/Zahl)</mat-option>
+        <mat-option [value]="'medium'">{{ 'sectionTemplates.lengthMedium' | translate }}</mat-option>
+        <mat-option [value]="'short'">{{ 'sectionTemplates.lengthShort' | translate }}</mat-option>
+        <mat-option [value]="'very-short'">{{ 'sectionTemplates.lengthVeryShort' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <h3>Nummerierung</h3>
+    <h3>{{ 'sectionTemplates.numbering' | translate }}</h3>
     <mat-checkbox [(ngModel)]="options.numbering">
-      Nummerierung aktivieren
+      {{ 'sectionTemplates.enableNumbering' | translate }}
     </mat-checkbox>
   } @else if (templateVariant == '2pages') {
     <ng-container *ngTemplateOutlet="introText"></ng-container>
 
     <ng-container *ngTemplateOutlet="startList"></ng-container>
 
-    <h3>Situierung</h3>
-    <aspect-rich-text-editor [(content)]="options.text2" [placeholder]="'Hier steht die Situierung.'">
+    <h3>{{ 'sectionTemplates.situation' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.text2"
+                             [placeholder]="'sectionTemplates.situationPlaceholder' | translate">
     </aspect-rich-text-editor>
 
     <ng-container *ngTemplateOutlet="targetList"></ng-container>
 
     @if (!options.targetUseImages && !options.srcUseImages) {
-      <h4>Ausrichtung</h4>
+      <h4>{{ 'sectionTemplates.alignment' | translate }}</h4>
       <mat-radio-group [(ngModel)]="options.labelsBelow">
-        <mat-radio-button [value]="false">Zielbeschriftung oben</mat-radio-button>
-        <mat-radio-button [value]="true">Zielbeschriftung unten</mat-radio-button>
+        <mat-radio-button [value]="false">{{ 'sectionTemplates.targetLabelsAbove' | translate }}</mat-radio-button>
+        <mat-radio-button [value]="true">{{ 'sectionTemplates.targetLabelsBelow' | translate }}</mat-radio-button>
       </mat-radio-group>
     }
     @if (!options.targetUseImages && options.srcUseImages) {
-      <h4>Ausrichtung</h4>
+      <h4>{{ 'sectionTemplates.alignment' | translate }}</h4>
       <mat-radio-group [(ngModel)]="options.targetListAlignment">
-        <mat-radio-button [value]="'row'">zeilenweise</mat-radio-button>
-        <mat-radio-button [value]="'grid'">Raster (2er-Reihen)</mat-radio-button>
+        <mat-radio-button [value]="'row'">{{ 'sectionTemplates.targetListRow' | translate }}</mat-radio-button>
+        <mat-radio-button [value]="'grid'">{{ 'sectionTemplates.targetListGrid' | translate }}</mat-radio-button>
       </mat-radio-group>
     }
 
-    <h3>Quelle</h3>
-    <aspect-rich-text-editor [(content)]="options.text3" [placeholder]="'Quelle'">
+    <h3>{{ 'sectionTemplates.source' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.text3"
+                             [placeholder]="'sectionTemplates.source' | translate">
     </aspect-rich-text-editor>
   }
 
   <ng-template #introText>
-    <h3>Frage/Instruktion</h3>
-    <aspect-rich-text-editor [(content)]="options.text1" [placeholder]="'Hier steht die Fragestellung.'">
+    <h3>{{ 'sectionTemplates.questionOrInstruction' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.text1"
+                             [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
     </aspect-rich-text-editor>
   </ng-template>
   <ng-template #startList>
-    <h3>Elementliste</h3>
-    <aspect-rich-text-editor [(content)]="options.headingSourceList" [placeholder]="'Überschrift'"
+    <h3>{{ 'sectionTemplates.sourceList' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.headingSourceList"
+                             [placeholder]="'sectionTemplates.heading' | translate"
                              [showReducedControls]="true">
     </aspect-rich-text-editor>
-    <h4>Elemente</h4>
+    <h4>{{ 'elements' | translate }}</h4>
     @if (templateVariant === '2pages') {
       <mat-checkbox [(ngModel)]="options.srcUseImages" class="image-checkbox">
-        Bilder verwenden
+        {{ 'sectionTemplates.useImages' | translate }}
       </mat-checkbox>
     }
     @if (templateVariant === '2pages' && options.srcUseImages) {
       <mat-radio-group [(ngModel)]="options.imageSize">
-        <mat-label>Bildgröße</mat-label>
+        <mat-label>{{ 'sectionTemplates.imageSize' | translate }}</mat-label>
         <mat-radio-button [value]="'small'">150px x 150px</mat-radio-button>
         <mat-radio-button [value]="'medium'">200px x 200px</mat-radio-button>
       </mat-radio-group>
@@ -120,13 +130,16 @@
     </ng-container>
   </ng-template>
   <ng-template #targetList>
-    <h3>Ziel-Ablagen</h3>
-    <aspect-rich-text-editor [(content)]="options.headingTargetLists" [placeholder]="'Überschrift'"
+    <h3>{{ 'sectionTemplates.targetLists' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.headingTargetLists"
+                             [placeholder]="'sectionTemplates.heading' | translate"
                              [showReducedControls]="true">
     </aspect-rich-text-editor>
-    <h4>Zielbeschriftungen</h4>
+    <h4>{{ 'sectionTemplates.targetLabels' | translate }}</h4>
     @if (templateVariant === '2pages' && options.srcUseImages) {
-      <mat-checkbox class="image-checkbox" [(ngModel)]="options.targetUseImages">Bilder</mat-checkbox>
+      <mat-checkbox class="image-checkbox" [(ngModel)]="options.targetUseImages">
+        {{ 'sectionTemplates.images' | translate }}
+      </mat-checkbox>
     }
     <ng-container
       *ngTemplateOutlet="elementInputs; context: { list: options.targetLabels,
@@ -148,7 +161,7 @@
       </mat-form-field>
     } @else {
       <button mat-stroked-button [style.margin-top.px]="10" [style.margin-bottom.px]="10"
-              (click)="imageUpload.click();">Bild hochladen</button>
+              (click)="imageUpload.click();">{{ 'sectionTemplates.uploadImage' | translate }}</button>
       <input type="file" hidden accept="image/*" #imageUpload id="button-image-upload"
              (change)="loadImage(list, imageUpload)">
     }

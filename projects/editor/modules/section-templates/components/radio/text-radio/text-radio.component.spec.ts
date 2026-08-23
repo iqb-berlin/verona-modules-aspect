@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 import { Label } from 'common/models/label-interfaces';
 import {
   TextRadioComponent
@@ -53,7 +54,8 @@ describe('TextRadioComponent', () => {
         FormsModule,
         MatCheckboxModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        TranslateModule.forRoot()
       ]
     }).compileComponents();
 

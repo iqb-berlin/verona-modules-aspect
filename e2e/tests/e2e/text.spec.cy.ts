@@ -1,3 +1,4 @@
+import { DocumentWithCaretRange, selectAllInRichTextEditor } from '../../support/app-runtime';
 import {
   addNewPage, setID, addTextElement, selectParagraphElement, addElement, setCheckbox, selectFromDropdown
 } from '../util';
@@ -61,7 +62,10 @@ describe('Text element', { testIsolation: false }, () => {
         .contains('edit').click();
 
       cy.get('.ProseMirror').click().type('{selectall}{backspace}');
-      cy.get('.ProseMirror').type('Einruecken{enter}Haengende Einrueckung{enter}Text 18px{enter}Text 24px{enter}Aufzaehlung disc{enter}Aufzaehlung decimal{enter}Trennlinie');
+      cy.get('.ProseMirror').type(
+        'Einruecken{enter}Haengende Einrueckung{enter}Text 18px{enter}Text 24px{enter}' +
+        'Aufzaehlung disc{enter}Aufzaehlung decimal{enter}Trennlinie'
+      );
 
       // 1. Indent paragraph 0
       cy.get('.ProseMirror p').eq(0).then(selectParagraphElement);
@@ -119,11 +123,7 @@ describe('Text element', { testIsolation: false }, () => {
       cy.wait(500);
 
       // Select the entire text programmatically using TipTap API
-      cy.get('aspect-rich-text-editor').then($el => {
-        const win = $el[0].ownerDocument.defaultView as any;
-        const component = win.ng.getComponent($el[0]);
-        component.editor.commands.selectAll();
-      });
+      cy.get('aspect-rich-text-editor').then($el => selectAllInRichTextEditor($el[0]));
       cy.wait(200);
 
       // Click on the tooltip (announcement) format icon button
@@ -176,11 +176,7 @@ describe('Text element', { testIsolation: false }, () => {
       cy.wait(500);
 
       // Select the text programmatically using TipTap API
-      cy.get('aspect-rich-text-editor').then($el => {
-        const win = $el[0].ownerDocument.defaultView as any;
-        const component = win.ng.getComponent($el[0]);
-        component.editor.commands.selectAll();
-      });
+      cy.get('aspect-rich-text-editor').then($el => selectAllInRichTextEditor($el[0]));
       cy.wait(200);
 
       // Click on the tooltip format icon button
@@ -347,8 +343,8 @@ describe('Text element', { testIsolation: false }, () => {
 
         cy.wrap($el).trigger('pointerdown', 40, 130, { button: 0, force: true });
 
-        const legacyRange = (doc as any).caretRangeFromPoint?.(startAbsX, startAbsY);
-        const endRange = (doc as any).caretRangeFromPoint?.(endAbsX, endAbsY);
+        const legacyRange = (doc as DocumentWithCaretRange).caretRangeFromPoint?.(startAbsX, startAbsY);
+        const endRange = (doc as DocumentWithCaretRange).caretRangeFromPoint?.(endAbsX, endAbsY);
 
         if (legacyRange && endRange) {
           const range = doc.createRange();
@@ -382,7 +378,7 @@ describe('Text element', { testIsolation: false }, () => {
 
         cy.wrap($el).trigger('pointerdown', 40, 130, { button: 0, force: true });
 
-        const startCaret = (doc as any).caretRangeFromPoint?.(startAbsX, startAbsY);
+        const startCaret = (doc as DocumentWithCaretRange).caretRangeFromPoint?.(startAbsX, startAbsY);
         const outsideElement = doc.querySelector('aspect-player');
 
         if (startCaret && outsideElement) {

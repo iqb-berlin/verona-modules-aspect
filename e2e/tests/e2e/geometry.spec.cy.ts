@@ -33,7 +33,8 @@ function interceptDeployGGB() {
               container.style.width = '100%';
               container.style.height = '100%';
               container.style.minHeight = '100px';
-              container.innerHTML = '<div style="width: 100%; height: 100%; min-height: 100px; background: #eee;">Mock GeoGebra Applet</div>';
+              const mockStyle = 'width: 100%; height: 100%; min-height: 100px; background: #eee;';
+              container.innerHTML = '<div style="' + mockStyle + '">Mock GeoGebra Applet</div>';
             }
             if (params && typeof params.appletOnLoad === 'function') {
               const mockGeoGebraApi = {

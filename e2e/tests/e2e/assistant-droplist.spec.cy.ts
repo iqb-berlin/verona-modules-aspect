@@ -1,5 +1,5 @@
 import {
-  clickButtonDialog, addNewPage, setDialogCheckbox
+  clickButtonDialog, addNewPage, setDialogCheckbox, requireAttr
 } from '../util';
 import {
   openAssistant,
@@ -137,14 +137,18 @@ describe('Droplist assistant', { testIsolation: false }, () => {
         cy.get('.drop-list:visible').eq(3).invoke('attr', 'data-list-alias').then(targetXAlias => {
           cy.get('.drop-list:visible').eq(4).invoke('attr', 'data-list-alias').then(targetYAlias => {
             // Drag Item A to Target X
-            dragTo(sourceAlias!, 'Item A', targetXAlias!);
-            cy.get('.drop-list:visible').eq(3).contains('.drop-list-item:not(.cc-placeholder)', 'Item A').should('be.visible');
-            cy.get('.drop-list:visible').eq(2).contains('.drop-list-item:not(.cc-placeholder)', 'Item A').should('not.exist');
+            dragTo(requireAttr(sourceAlias), 'Item A', requireAttr(targetXAlias));
+            cy.get('.drop-list:visible').eq(3).contains('.drop-list-item:not(.cc-placeholder)', 'Item A')
+              .should('be.visible');
+            cy.get('.drop-list:visible').eq(2).contains('.drop-list-item:not(.cc-placeholder)', 'Item A')
+              .should('not.exist');
 
             // Drag Item B to Target Y
-            dragTo(sourceAlias!, 'Item B', targetYAlias!);
-            cy.get('.drop-list:visible').eq(4).contains('.drop-list-item:not(.cc-placeholder)', 'Item B').should('be.visible');
-            cy.get('.drop-list:visible').eq(2).contains('.drop-list-item:not(.cc-placeholder)', 'Item B').should('not.exist');
+            dragTo(requireAttr(sourceAlias), 'Item B', requireAttr(targetYAlias));
+            cy.get('.drop-list:visible').eq(4).contains('.drop-list-item:not(.cc-placeholder)', 'Item B')
+              .should('be.visible');
+            cy.get('.drop-list:visible').eq(2).contains('.drop-list-item:not(.cc-placeholder)', 'Item B')
+              .should('not.exist');
           });
         });
       });
@@ -165,8 +169,9 @@ describe('Droplist assistant', { testIsolation: false }, () => {
 
     it('reorders elements in the sort droplist (Page 2)', () => {
       cy.contains('.drop-list:visible', 'First').invoke('attr', 'data-list-alias').then(alias => {
-        cy.getByAlias(alias!).contains('.drop-list-item', 'First').trigger('mousedown', { button: 0 });
-        cy.getByAlias(alias!).contains('.drop-list-item', 'Second').trigger('mouseenter', { bubbles: false, force: true, button: 0 });
+        cy.getByAlias(requireAttr(alias)).contains('.drop-list-item', 'First').trigger('mousedown', { button: 0 });
+        cy.getByAlias(requireAttr(alias)).contains('.drop-list-item', 'Second')
+          .trigger('mouseenter', { bubbles: false, force: true, button: 0 });
         cy.get('.drag-preview').trigger('mouseup', { force: true });
       });
 
@@ -197,14 +202,18 @@ describe('Droplist assistant', { testIsolation: false }, () => {
         cy.get('.drop-list:visible').eq(0).invoke('attr', 'data-list-alias').then(targetXAlias => {
           cy.get('.drop-list:visible').eq(1).invoke('attr', 'data-list-alias').then(targetYAlias => {
             // Drag Text Option A to Target X
-            dragTo(sourceAlias!, 'Text Option A', targetXAlias!);
-            cy.get('.drop-list:visible').eq(0).contains('.drop-list-item:not(.cc-placeholder)', 'Text Option A').should('be.visible');
-            cy.get('.drop-list:visible').eq(2).contains('.drop-list-item:not(.cc-placeholder)', 'Text Option A').should('not.exist');
+            dragTo(requireAttr(sourceAlias), 'Text Option A', requireAttr(targetXAlias));
+            cy.get('.drop-list:visible').eq(0).contains('.drop-list-item:not(.cc-placeholder)', 'Text Option A')
+              .should('be.visible');
+            cy.get('.drop-list:visible').eq(2).contains('.drop-list-item:not(.cc-placeholder)', 'Text Option A')
+              .should('not.exist');
 
             // Drag Text Option B to Target Y
-            dragTo(sourceAlias!, 'Text Option B', targetYAlias!);
-            cy.get('.drop-list:visible').eq(1).contains('.drop-list-item:not(.cc-placeholder)', 'Text Option B').should('be.visible');
-            cy.get('.drop-list:visible').eq(2).contains('.drop-list-item:not(.cc-placeholder)', 'Text Option B').should('not.exist');
+            dragTo(requireAttr(sourceAlias), 'Text Option B', requireAttr(targetYAlias));
+            cy.get('.drop-list:visible').eq(1).contains('.drop-list-item:not(.cc-placeholder)', 'Text Option B')
+              .should('be.visible');
+            cy.get('.drop-list:visible').eq(2).contains('.drop-list-item:not(.cc-placeholder)', 'Text Option B')
+              .should('not.exist');
           });
         });
       });

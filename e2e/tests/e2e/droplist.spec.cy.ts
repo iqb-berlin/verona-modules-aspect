@@ -27,7 +27,8 @@ describe('Droplist element', { testIsolation: false }, () => {
       cy.get('aspect-drop-list-option-edit-dialog .ProseMirror').first()
         .clear()
         .type('Modified AAA');
-      cy.get('aspect-drop-list-option-edit-dialog').contains('mat-form-field', 'ID').find('input').clear().type('modified_aaa');
+      cy.get('aspect-drop-list-option-edit-dialog').contains('mat-form-field', 'ID').find('input').clear()
+        .type('modified_aaa');
       cy.get('aspect-drop-list-option-edit-dialog').contains('button', 'Speichern').click();
       cy.get('aspect-drop-list-option-edit-dialog').should('not.exist');
     });
@@ -58,7 +59,10 @@ describe('Droplist element', { testIsolation: false }, () => {
       addNewPage();
       addList('Liste ohne Nummerierung', ['AAA', 'BBB'], {}, 'Liste');
       addList('Liste mit Nummerierung', ['CCC', 'DDD'], { showNumbering: true }, 'ListeNummerierung');
-      addList('Liste mit Nummerierung bei 0 beginnen', ['EEE', 'FFF'], { showNumbering: true, startNumberingAtZero: true }, 'ListeZero');
+      addList(
+        'Liste mit Nummerierung bei 0 beginnen', ['EEE', 'FFF'],
+        { showNumbering: true, startNumberingAtZero: true }, 'ListeZero'
+      );
     });
 
     // ── Page 4: orientation ──────────────────────────────────────────────────
@@ -88,10 +92,22 @@ describe('Droplist element', { testIsolation: false }, () => {
     // ── Page 6: replace ──────────────────────────────────────────────────────
     it('creates several droplists with only-one and replacement (Page 6)', () => {
       addNewPage();
-      addList('Startliste 1', ['AAA'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste1');
-      addList('Startliste 2', ['BBB'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste2');
-      addList('Startliste 3', ['CCC'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste3');
-      addList('Zielliste', [], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Zielliste_P6');
+      addList(
+        'Startliste 1', ['AAA'],
+        { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste1'
+      );
+      addList(
+        'Startliste 2', ['BBB'],
+        { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste2'
+      );
+      addList(
+        'Startliste 3', ['CCC'],
+        { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste3'
+      );
+      addList(
+        'Zielliste', [],
+        { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Zielliste_P6'
+      );
 
       connectLists('Startliste1', 'Zielliste_P6');
       connectLists('Startliste2', 'Startliste3');
@@ -114,7 +130,10 @@ describe('Droplist element', { testIsolation: false }, () => {
     it('creates droplists variants of connected lists and highlighting (Page 8)', () => {
       addNewPage();
       addList('normale Liste', ['AAA', 'BBB'], { highlightReceivingDropList: true }, 'normaleListe');
-      addList('Sortierliste mit Hervorhebung', ['DDD'], { highlightReceivingDropList: true, sortList: true }, 'Sortierliste1');
+      addList(
+        'Sortierliste mit Hervorhebung', ['DDD'],
+        { highlightReceivingDropList: true, sortList: true }, 'Sortierliste1'
+      );
       addList('Sortierliste ohne Hervorhebung', ['EEE', 'FFF', 'GGG'], { sortList: true }, 'Sortierliste2');
 
       connectLists('Sortierliste1', 'normaleListe');
@@ -293,7 +312,8 @@ describe('Droplist element', { testIsolation: false }, () => {
 
     it('reorders sort items (Page 8)', () => {
       cy.getByAlias('Sortierliste2').contains('.drop-list-item', 'EEE').trigger('mousedown', { button: 0 });
-      cy.getByAlias('Sortierliste2').contains('.drop-list-item', 'FFF').trigger('mouseenter', { bubbles: false, force: true, button: 0 });
+      cy.getByAlias('Sortierliste2').contains('.drop-list-item', 'FFF')
+        .trigger('mouseenter', { bubbles: false, force: true, button: 0 });
       cy.get('.drag-preview').trigger('mouseup', { force: true });
       cy.getByAlias('Sortierliste2').find('.drop-list-item').eq(0).contains('FFF');
       cy.getByAlias('Sortierliste2').find('.drop-list-item').eq(1).contains('EEE');

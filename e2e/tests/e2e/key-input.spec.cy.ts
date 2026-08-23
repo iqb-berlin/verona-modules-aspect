@@ -1,3 +1,4 @@
+import { WindowWithTouchStart } from '../../support/app-runtime';
 import { addNewPage, addTextField, setCheckbox } from '../util';
 import { setInputAssistance, setKeyStyle } from './helpers/text-field-util';
 
@@ -115,7 +116,7 @@ describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: fa
       cy.visit('http://localhost:4202/', {
         onBeforeLoad: win => {
           Object.defineProperty(win.navigator, 'maxTouchPoints', { value: 2 });
-          (win as any).ontouchstart = () => {};
+          (win as WindowWithTouchStart).ontouchstart = () => {};
         }
       });
       cy.loadUnit('../downloads/key-input.json');

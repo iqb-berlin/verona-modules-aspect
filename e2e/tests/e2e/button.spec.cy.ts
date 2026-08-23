@@ -1,3 +1,4 @@
+import { selectAllInRichTextEditor } from '../../support/app-runtime';
 import {
   addElement,
   addPage,
@@ -69,11 +70,8 @@ describe('Button element', { testIsolation: false }, () => {
       .type('Das ist ein Button-Tooltip');
 
     // Select the entire text programmatically using TipTap API and format it bold
-    cy.get('aspect-tooltip-properties-dialog aspect-rich-text-editor').then($el => {
-      const win = $el[0].ownerDocument.defaultView as any;
-      const component = win.ng.getComponent($el[0]);
-      component.editor.commands.selectAll();
-    });
+    cy.get('aspect-tooltip-properties-dialog aspect-rich-text-editor')
+      .then($el => selectAllInRichTextEditor($el[0]));
     cy.get('aspect-tooltip-properties-dialog')
       .find('mat-icon:contains("format_bold")')
       .parent()

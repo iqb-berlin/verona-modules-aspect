@@ -1,9 +1,29 @@
+import { WindowWithAngular } from '../../support/app-runtime';
 import {
   addElement, setExpertMode, switchToPositionTab, setDimensionValue, switchToElementTab, setSectionDynamicLayout
 } from '../util';
 
 function setDimensionValueForced(label: string, value: number | string) {
   cy.contains('mat-form-field', label).find('input').clear({ force: true }).type(`${value}{enter}`, { force: true });
+}
+
+/* The editor internals this spec patches: the assertions below check the panel against a fixed
+   computation, so the patch pins it instead of leaving it to the service. */
+interface PositionedElementModel {
+  position: { xPosition: number, yPosition: number };
+}
+
+interface EditorElementService {
+  alignElements(elements: PositionedElementModel[], alignmentDirection: string): void;
+  updateElementsPositionProperty(
+    elements: PositionedElementModel[],
+    property: 'xPosition' | 'yPosition',
+    value: number
+  ): void;
+}
+
+interface PositionPropertiesInstance {
+  elementService?: EditorElementService;
 }
 
 describe('Position Panel', () => {
@@ -71,14 +91,18 @@ describe('Position Panel', () => {
     cy.wait(500);
     switchToPositionTab();
 
-    cy.contains('aspect-size-input-panel', 'oben').find('input').clear({ force: true }).type('15{enter}', { force: true });
-    cy.contains('aspect-size-input-panel', 'unten').find('input').clear({ force: true }).type('25{enter}', { force: true });
+    cy.contains('aspect-size-input-panel', 'oben').find('input').clear({ force: true })
+      .type('15{enter}', { force: true });
+    cy.contains('aspect-size-input-panel', 'unten').find('input').clear({ force: true })
+      .type('25{enter}', { force: true });
 
-    cy.contains('aspect-size-input-panel', 'links').find('input').clear({ force: true }).type('10{enter}', { force: true });
+    cy.contains('aspect-size-input-panel', 'links').find('input').clear({ force: true })
+      .type('10{enter}', { force: true });
     cy.contains('aspect-size-input-panel', 'links').find('mat-select').click();
     cy.get('.cdk-overlay-container').contains('mat-option', 'Prozent').click();
 
-    cy.contains('aspect-size-input-panel', 'rechts').find('input').clear({ force: true }).type('20{enter}', { force: true });
+    cy.contains('aspect-size-input-panel', 'rechts').find('input').clear({ force: true })
+      .type('20{enter}', { force: true });
     cy.contains('aspect-size-input-panel', 'rechts').find('mat-select').click();
     cy.get('.cdk-overlay-container').contains('mat-option', 'Prozent').click();
 
@@ -152,40 +176,45 @@ describe('Position Panel', () => {
     cy.contains('Ausrichtung').should('be.visible');
 
     // Monkey-patch ElementService at runtime using the active Angular component instance
-    cy.window().then((win: any) => {
+    cy.window().then(win => {
       const compEl = win.document.querySelector('aspect-position-and-dimension-properties');
-      if (compEl && win.ng) {
-        const compInstance = win.ng.getComponent(compEl);
+      const angular = (win as WindowWithAngular).ng;
+      if (compEl && angular) {
+        const compInstance = angular.getComponent<PositionPropertiesInstance>(compEl);
         if (compInstance && compInstance.elementService) {
           const elementService = compInstance.elementService;
-          elementService.alignElements = function (elements: any[], alignmentDirection: string) {
+          elementService.alignElements = function patchedAlignElements(
+            this: EditorElementService,
+            elements: PositionedElementModel[],
+            alignmentDirection: string
+          ) {
             switch (alignmentDirection) {
               case 'left':
                 this.updateElementsPositionProperty(
                   elements,
                   'xPosition',
-                  Math.min(...elements.map((element: any) => element.position.xPosition))
+                  Math.min(...elements.map(element => element.position.xPosition))
                 );
                 break;
               case 'right':
                 this.updateElementsPositionProperty(
                   elements,
                   'xPosition',
-                  Math.max(...elements.map((element: any) => element.position.xPosition))
+                  Math.max(...elements.map(element => element.position.xPosition))
                 );
                 break;
               case 'top':
                 this.updateElementsPositionProperty(
                   elements,
                   'yPosition',
-                  Math.min(...elements.map((element: any) => element.position.yPosition))
+                  Math.min(...elements.map(element => element.position.yPosition))
                 );
                 break;
               case 'bottom':
                 this.updateElementsPositionProperty(
                   elements,
                   'yPosition',
-                  Math.max(...elements.map((element: any) => element.position.yPosition))
+                  Math.max(...elements.map(element => element.position.yPosition))
                 );
                 break;
               default:

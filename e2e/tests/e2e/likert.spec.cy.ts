@@ -31,7 +31,8 @@ describe('Likert element', { testIsolation: false }, () => {
         .type('Modified row 1');
 
       // Change ID/alias
-      cy.get('aspect-likert-row-edit-dialog').contains('mat-form-field', 'ID').find('input').clear().type('modified_row_1');
+      cy.get('aspect-likert-row-edit-dialog').contains('mat-form-field', 'ID').find('input').clear()
+        .type('modified_row_1');
 
       // Change Vorbelegung (preset) to option B (index 1)
       cy.get('aspect-likert-row-edit-dialog').contains('mat-form-field', 'Vorbelegung').click();

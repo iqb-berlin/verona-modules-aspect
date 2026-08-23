@@ -5,7 +5,9 @@ import { addElement, setCheckbox } from '../../util';
  * @param colors Object containing color flags (yellow, turquoise, orange)
  * @param id Optional ID for the element
  */
-export function addMarkingPanel(colors: { yellow?: boolean, turquoise?: boolean, orange?: boolean }, id?: string): void {
+export function addMarkingPanel(
+  colors: { yellow?: boolean, turquoise?: boolean, orange?: boolean }, id?: string
+): void {
   addElement('Textmarkierung', 'Sonstige', id);
 
   if (colors.yellow !== undefined) {

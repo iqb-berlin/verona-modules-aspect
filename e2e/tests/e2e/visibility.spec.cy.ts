@@ -1,3 +1,4 @@
+import { SectionVisibilityDirective, WindowWithAngular } from '../../support/app-runtime';
 import { setExpertMode } from '../util';
 import { addTriggerElement, configureSectionVisibilityRule, createSectionWithText } from './helpers/visibility-util';
 
@@ -72,7 +73,8 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
 
     it('toggles Section 3 visibility with a delay via text input trigger, and asserts re-hide is disabled', () => {
       // Type 'show' in the text field and blur it to commit changes in player
-      cy.get('aspect-text-field').find('input').clear({ force: true }).type('show{enter}', { force: true }).blur({ force: true });
+      cy.get('aspect-text-field').find('input').clear({ force: true }).type('show{enter}', { force: true })
+        .blur({ force: true });
 
       // Since there is a visibility delay of 1000ms, Section 3 should still be hidden immediately
       cy.get('aspect-section').eq(2).should('not.be.visible');
@@ -85,11 +87,12 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
       cy.get('aspect-section').eq(2).contains('Hello Section 3').should('exist');
 
       // Patch the directive to prevent the player bug from hiding the section
-      cy.window().then((win: any) => {
+      cy.window().then(win => {
         cy.get('aspect-section').eq(2).then($el => {
-          if (win.ng && win.ng.getDirectives) {
-            const directives = win.ng.getDirectives($el[0]);
-            const dir = directives.find((d: any) => d.constructor.name === 'SectionVisibilityHandlingDirective');
+          const angular = (win as WindowWithAngular).ng;
+          if (angular && angular.getDirectives) {
+            const directives = angular.getDirectives<Partial<SectionVisibilityDirective>>($el[0]);
+            const dir = directives.find(d => d.constructor.name === 'SectionVisibilityHandlingDirective');
             if (dir) {
               dir.areVisibilityRulesFulfilled = () => true;
             }
@@ -98,7 +101,8 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
       });
 
       // Change text field value to 'hide' (condition no longer met) and blur it
-      cy.get('aspect-text-field').find('input').clear({ force: true }).type('hide{enter}', { force: true }).blur({ force: true });
+      cy.get('aspect-text-field').find('input').clear({ force: true }).type('hide{enter}', { force: true })
+        .blur({ force: true });
 
       // Should REMAIN visible since enableReHide is false for Section 3
       cy.get('aspect-section').eq(2).should('be.visible');

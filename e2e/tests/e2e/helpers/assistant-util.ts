@@ -1,4 +1,4 @@
-import { setDialogCheckbox, clickTabAssistant } from '../../util';
+import { clickTabAssistant } from '../../util';
 
 export function addMCOption(optionName: string): void {
   cy.get('mat-dialog-container')

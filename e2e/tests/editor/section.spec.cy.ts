@@ -37,7 +37,8 @@ describe('Section and Layout Handling', { testIsolation: false }, () => {
       cy.get('.cdk-overlay-container').should('be.visible');
 
       // Uncheck "dynamisches Layout" checkbox to turn off dynamic positioning (it is on by default)
-      cy.get('.cdk-overlay-container').contains('mat-checkbox', 'dynamisches Layout').find('input').click({ force: true });
+      cy.get('.cdk-overlay-container').contains('mat-checkbox', 'dynamisches Layout').find('input')
+        .click({ force: true });
       cy.wait(300);
 
       // Set static height
@@ -46,7 +47,8 @@ describe('Section and Layout Handling', { testIsolation: false }, () => {
       cy.get('.cdk-overlay-backdrop').should('not.exist');
 
       // Set section background color
-      cy.get('aspect-section-menu').first().find('input[type="color"]').invoke('val', '#ff0000').trigger('change', { force: true });
+      cy.get('aspect-section-menu').first().find('input[type="color"]').invoke('val', '#ff0000')
+        .trigger('change', { force: true });
       cy.wait(300);
 
       // Verify layout state in editor
@@ -87,7 +89,8 @@ describe('Section and Layout Handling', { testIsolation: false }, () => {
         .clear().type('200');
 
       // Change row count to 2 rows
-      cy.get('.cdk-overlay-container').contains('fieldset', 'Zeilen').contains('mat-form-field', 'Anzahl der Zeilen').find('input')
+      cy.get('.cdk-overlay-container').contains('fieldset', 'Zeilen').contains('mat-form-field', 'Anzahl der Zeilen')
+        .find('input')
         .clear().type('2{enter}');
 
       cy.get('body').type('{esc}');
@@ -124,7 +127,8 @@ describe('Section and Layout Handling', { testIsolation: false }, () => {
       cy.get('aspect-section-menu').eq(2).should('not.have.class', 'hidden');
 
       // Set Section 3 background color to blue (#0000ff)
-      cy.get('aspect-section-menu').eq(2).find('input[type="color"]').invoke('val', '#0000ff').trigger('change', { force: true });
+      cy.get('aspect-section-menu').eq(2).find('input[type="color"]').invoke('val', '#0000ff')
+        .trigger('change', { force: true });
       cy.wait(300);
 
       // Verify Section 3 is blue
@@ -140,7 +144,8 @@ describe('Section and Layout Handling', { testIsolation: false }, () => {
       cy.get('aspect-section-menu').eq(3).should('not.have.class', 'hidden');
 
       // Set Section 4 background color to green (#00ff00)
-      cy.get('aspect-section-menu').eq(3).find('input[type="color"]').invoke('val', '#00ff00').trigger('change', { force: true });
+      cy.get('aspect-section-menu').eq(3).find('input[type="color"]').invoke('val', '#00ff00')
+        .trigger('change', { force: true });
       cy.wait(300);
 
       // Verify colors before move: index 2 is blue, index 3 is green

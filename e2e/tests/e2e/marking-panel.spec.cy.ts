@@ -90,7 +90,8 @@ describe('Marking Panel element', { testIsolation: false }, () => {
     it('checks MP_ALL buttons', () => {
       cy.get('aspect-unit-menu').find('button').click();
       cy.contains('button', 'Seite 2').click();
-      cy.getElementByAlias('MP_ALL').find('button.marking-button').should('have.length', 4); // Yellow, Turquoise, Orange, Delete
+      cy.getElementByAlias('MP_ALL').find('button.marking-button')
+        .should('have.length', 4); // Yellow, Turquoise, Orange, Delete
     });
 
     it('checks MP_MIN buttons', () => {

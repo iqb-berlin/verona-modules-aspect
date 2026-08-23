@@ -35,7 +35,8 @@ describe('UnitTraversalMigration', () => {
 
     const result = migration.execute(unit);
     expect(result.version).toBe('1.1.0');
-    expect((result.pages as any[])[0].sections[0].elements[0].migrated).toBe(true);
+    const pages = result.pages as { sections: { elements: Record<string, unknown>[] }[] }[];
+    expect(pages[0].sections[0].elements[0].migrated).toBe(true);
   });
 
   /* A table cell, a likert row and the child model in a cloze document are elements like any other, and

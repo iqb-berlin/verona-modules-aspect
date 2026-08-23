@@ -36,7 +36,7 @@ import {
 } from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
 import { UIElement } from 'common/models/elements/element';
 import {
-  TableEditDialogComponent
+  TableEditDialogComponent, TableEditResult
 } from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
 import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
 import { FileService, FileInformation } from 'common/services/file.service';
@@ -172,7 +172,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<string> {
+  showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<ClozeDocument | undefined> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
       data: {
         content: document,
@@ -227,7 +227,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showTableEditDialog(table: TableElement): Observable<any> {
+  showTableEditDialog(table: TableElement): Observable<TableEditResult | undefined> {
     const dialogRef = this.dialog.open(TableEditDialogComponent, {
       data: { table },
       autoFocus: false

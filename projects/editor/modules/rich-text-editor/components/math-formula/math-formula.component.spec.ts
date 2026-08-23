@@ -2,6 +2,7 @@ import {
   ComponentFixture, TestBed, fakeAsync, tick
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { ElementRef } from '@angular/core';
 import {
   MathFormulaNodeviewComponent
 } from 'editor/modules/rich-text-editor/components/math-formula/math-formula.component';
@@ -24,7 +25,7 @@ describe('MathFormulaNodeviewComponent', () => {
       attrs: {
         formula: '\\frac{1}{2}'
       }
-    } as any;
+    } as unknown as MathFormulaNodeviewComponent['node'];
     component.updateAttributes = vi.fn();
 
     fixture.detectChanges();
@@ -45,7 +46,7 @@ describe('MathFormulaNodeviewComponent', () => {
     // Mock the ViewChild because detectChanges() won't update it immediately in this test setup
     component.editField = {
       nativeElement: { focus: vi.fn() }
-    } as any;
+    } as unknown as ElementRef<HTMLSpanElement>;
 
     component.toggleEditMode();
     expect(component.editMode).toBe(true);

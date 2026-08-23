@@ -24,13 +24,15 @@ import {
 import { ElementFactory } from 'common/utils/element-factory';
 import { ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import {
+  TableEditResult
+} from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
-import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogCanceledError } from 'editor/src/app/classes/dialog-canceled-error';
-import { TableElement, TableHeaderCell } from 'common/models/elements/compound-group-elements/table/table';
+import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
   PositionedUIElement,
@@ -56,8 +58,7 @@ export class ElementService {
               private dialogService: DialogService,
               private messageService: MessageService,
               private idService: IDService,
-              private translateService: TranslateService,
-              private sanitizer: DomSanitizer) { }
+              private translateService: TranslateService) { }
 
   async addElementToSection(elementType: UIElementType, sectionParam?: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
@@ -346,11 +347,7 @@ export class ElementService {
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
-            this.updateElementsProperty(
-              [element],
-              'text',
-              (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
-            );
+            this.updateElementsProperty([element], 'text', result);
           }
         });
         break;
@@ -358,14 +355,10 @@ export class ElementService {
         this.dialogService.showClozeTextEditDialog(
           (element as ClozeElement).document,
           (element as ClozeElement).styling.fontSize
-        ).subscribe((result: string) => {
+        ).subscribe((result: ClozeDocument | undefined) => {
           if (result) {
             // TODO add proper sanitization
-            this.updateElementsProperty(
-              [element],
-              'document',
-              (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
-            );
+            this.updateElementsProperty([element], 'document', result);
           }
         });
         break;
@@ -400,7 +393,7 @@ export class ElementService {
         break;
       case 'table':
         this.dialogService.showTableEditDialog(element as TableElement)
-          .subscribe((result: { elements: UIElement[], headerRows: TableHeaderCell[][] }) => {
+          .subscribe((result: TableEditResult | undefined) => {
             if (result) {
               this.updateElementsProperty([element], 'elements', result.elements);
               this.updateElementsProperty([element], 'headerRows', result.headerRows);

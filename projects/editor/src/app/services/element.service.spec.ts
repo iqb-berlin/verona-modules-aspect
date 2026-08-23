@@ -1,4 +1,3 @@
-import { DomSanitizer } from '@angular/platform-browser';
 import { Subject, of } from 'rxjs';
 import { Mock } from 'vitest';
 import { UIElement } from 'common/models/elements/element';
@@ -108,7 +107,8 @@ describe('ElementService', () => {
       }
     };
     dialogServiceSpy = createSpyObj<DialogService>([
-      'showTextEditDialog', 'showDeleteReferenceDialog', 'showGeogebraAppDefinitionDialog'
+      'showTextEditDialog', 'showDeleteReferenceDialog', 'showGeogebraAppDefinitionDialog',
+      'showRichTextEditDialog', 'showClozeTextEditDialog'
     ]);
     selectionService = new SelectionService();
     idService = new IDService();
@@ -121,8 +121,7 @@ describe('ElementService', () => {
       dialogServiceSpy,
       messageServiceSpy,
       idService,
-      translateServiceSpy,
-      { bypassSecurityTrustHtml: (value: string) => value } as unknown as DomSanitizer
+      translateServiceSpy
     );
   });
 
@@ -508,6 +507,29 @@ describe('ElementService', () => {
 
     expect(dialogServiceSpy.showTextEditDialog).toHaveBeenCalledWith('Alte Beschriftung');
     expect(element.setProperty).toHaveBeenCalledWith('label', 'Neue Beschriftung');
+  });
+
+  /* What the two rich text dialogs return reaches the element unchanged. It went through
+     `bypassSecurityTrustHtml` and straight back out of the returned wrapper before -- the same value,
+     and for the cloze document not even a string (#1320). */
+  it('should write the text the rich text dialog returns', () => {
+    const element = createElementMock('text', { text: '<p>Alt</p>', styling: { fontSize: 20 } });
+    dialogServiceSpy.showRichTextEditDialog.mockReturnValue(of('<p>Neu</p>'));
+
+    service.showDefaultEditDialog(element);
+
+    expect(dialogServiceSpy.showRichTextEditDialog).toHaveBeenCalledWith('<p>Alt</p>', 20);
+    expect(element.setProperty).toHaveBeenCalledWith('text', '<p>Neu</p>');
+  });
+
+  it('should write the document the cloze dialog returns', () => {
+    const cloze = clozeWithChild();
+    const newDocument = clozeDocument(true);
+    dialogServiceSpy.showClozeTextEditDialog.mockReturnValue(of(newDocument));
+
+    service.showDefaultEditDialog(cloze);
+
+    expect(cloze.document).toBe(newDocument);
   });
 
   /* Position writes reorder for the tab order. Read from the indices, that sorted the wrong section

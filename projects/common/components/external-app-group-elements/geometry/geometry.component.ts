@@ -10,9 +10,12 @@ import { GeometryElement } from 'common/models/elements/external-app-group-eleme
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { PageChangeService } from 'common/services/page-change.service';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
+import {
+  GeoGebraApi, GeoGebraAppletConstructor, GeoGebraAppletParameters
+} from 'common/models/geogebra-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 
-declare const GGBApplet: any;
+declare const GGBApplet: GeoGebraAppletConstructor;
 
 @Component({
   selector: 'aspect-geometry',
@@ -27,7 +30,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
 
   isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isGeoGebraLoaded: boolean = false;
-  geoGebraAPI!: any;
+  geoGebraAPI!: GeoGebraApi;
 
   private ngUnsubscribe = new Subject<void>();
   private geometryUpdated = new Subject<void>(); // local subscription to be able to debounce
@@ -108,7 +111,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   private initApplet(): void {
-    const params = {
+    const params: GeoGebraAppletParameters = {
       id: this.elementModel.id,
       // must be smaller than the container, otherwise scroll bars will be displayed
       width: (this.elementModel.dimensions?.width || 180) - 4,
@@ -130,7 +133,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       showLogging: false,
       useBrowserForJS: false,
       ggbBase64: this.appDefinition || this.elementModel.appDefinition,
-      appletOnLoad: (geoGebraApi: any) => {
+      appletOnLoad: (geoGebraApi: GeoGebraApi) => {
         this.geoGebraAPI = geoGebraApi;
         this.isLoaded.next(true);
         this.geoGebraAPI.registerAddListener(() => {

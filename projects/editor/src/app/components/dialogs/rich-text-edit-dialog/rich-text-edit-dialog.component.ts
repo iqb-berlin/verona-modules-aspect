@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
 
 @Component({
   selector: 'aspect-rich-text-edit-dialog',
@@ -9,7 +10,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class RichTextEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {
-    content: string | Record<string, any>,
+    content: string | ClozeDocument,
     defaultFontSize: number,
     clozeMode: boolean }) { }
 }

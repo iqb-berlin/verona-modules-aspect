@@ -63,17 +63,17 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
           this.selectedElements = selectedElements;
           this.refreshCombinedProperties();
 
-          this.interactionEnabled = this.selectionService.selectedElementComponents
-            .filter(elementOverlay => elementOverlay instanceof ElementOverlay)
-            .reduce((accumulator: boolean, elementOverlay: any) => elementOverlay.isInteractionEnabled(), false);
+          const elementOverlays = this.selectionService.selectedElementComponents
+            .filter((component): component is ElementOverlay => component instanceof ElementOverlay);
+
+          this.interactionEnabled = elementOverlays
+            .reduce((accumulator: boolean, elementOverlay) => elementOverlay.isInteractionEnabled(), false);
 
           this.interactionIndeterminate = (this.selectionService.selectedElementComponents.length > 1) &&
-            this.selectionService.selectedElementComponents
-              .filter(elementOverlay => elementOverlay instanceof ElementOverlay)
-              .reduce((accumulator: any, elementOverlay: any) => {
-                if (!accumulator) return elementOverlay.isInteractionEnabled();
-                return accumulator !== elementOverlay.isInteractionEnabled();
-              }, undefined);
+            (elementOverlays.reduce<boolean | undefined>((accumulator, elementOverlay) => {
+              if (!accumulator) return elementOverlay.isInteractionEnabled();
+              return accumulator !== elementOverlay.isInteractionEnabled();
+            }, undefined) ?? false);
         }
       );
   }

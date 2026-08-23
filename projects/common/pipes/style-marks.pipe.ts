@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ClozeMarks } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { ClozeMark, ClozeMarks } from 'common/models/elements/compound-group-elements/cloze/cloze';
 
 @Pipe({
   name: 'styleMarks',
@@ -8,7 +8,7 @@ import { ClozeMarks } from 'common/models/elements/compound-group-elements/cloze
 /* This extracts marks from a text item and puts them in an object to be consumed by ngStyle.
   Only used in cloze component */
 export class StyleMarksPipe implements PipeTransform {
-  transform(items: any[] | undefined): ClozeMarks {
+  transform(items: ClozeMark[] | undefined): ClozeMarks {
     if (!items) {
       return {};
     }

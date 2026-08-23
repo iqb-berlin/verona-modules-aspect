@@ -9,7 +9,7 @@ import { ElementComponent } from './element-component.directive';
 export abstract class CompoundElementComponent extends ElementComponent implements AfterViewInit {
   @Output() childrenAdded = new EventEmitter<ElementComponent[]>();
   @Input() parentForm!: UntypedFormGroup;
-  abstract compoundChildren: QueryList<any>;
+  abstract compoundChildren: QueryList<unknown>;
 
   ngAfterViewInit(): void {
     this.childrenAdded.emit(this.getFormElementChildrenComponents());

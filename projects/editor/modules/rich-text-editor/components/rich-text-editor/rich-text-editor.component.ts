@@ -44,6 +44,7 @@ import TextFieldComponentExtension from 'editor/modules/rich-text-editor/extensi
 import CheckboxComponentExtension from 'editor/modules/rich-text-editor/extensions/checkbox-component-extension';
 import DropdownComponentExtension from 'editor/modules/rich-text-editor/extensions/dropdown-component-extension';
 import MathFormulaExtension from 'editor/modules/rich-text-editor/extensions/math-formula-extension';
+import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -52,7 +53,7 @@ import MathFormulaExtension from 'editor/modules/rich-text-editor/extensions/mat
   styleUrls: ['./rich-text-editor.component.scss']
 })
 export class RichTextEditorComponent implements OnInit, AfterViewInit {
-  @Input() content!: string | Record<string, any>;
+  @Input() content!: string | ClozeDocument;
   @Input() defaultFontSize!: number;
   @Input() clozeMode: boolean = false;
   @Input() showReducedControls: boolean = false;
@@ -61,7 +62,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() disabled: boolean = false;
   @Input() controlPanelFolded: boolean = true;
   @Input() showWordCounter: boolean = false;
-  @Output() contentChange = new EventEmitter<string | Record<string, any>>();
+  @Output() contentChange = new EventEmitter<string | ClozeDocument>();
   @ViewChild('imageUpload') imageUpload!: ElementRef;
 
   selectedFontColor = 'black';

@@ -16,6 +16,7 @@ describe('ComponentRegistry', () => {
 
   it('should throw an error if the component type is not found', () => {
     expect(() => ComponentRegistry.getComponent('non-existent' as UIElementType))
-      .toThrowError('Component for type non-existent not found in ComponentRegistry. Make sure it is registered (e.g., in SharedModule constructor).');
+      .toThrowError('Component for type non-existent not found in ComponentRegistry. ' +
+        'Make sure it is registered (e.g., in SharedModule constructor).');
   });
 });

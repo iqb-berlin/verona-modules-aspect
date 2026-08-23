@@ -51,7 +51,8 @@ export class UnexpectedErrorComponent {
 
   **Screenshots, Links**
   - Bei Links auf Aufgaben im Studio bitte darauf achten, dass diese für uns sichtbar sind.
-  - Außerdem wäre es gut, wenn die Aufgaben sich auf das Darstellen des Problems beschränken und nicht voll mit anderen Dingen sind und wir erst die Stelle suchen müssen, die Probleme macht.
+  - Außerdem wäre es gut, wenn die Aufgaben sich auf das Darstellen des Problems beschränken und ` +
+    `nicht voll mit anderen Dingen sind und wir erst die Stelle suchen müssen, die Probleme macht.
 
   **Versionen (automatisch generiert)**
   - Editorversion: ${version}

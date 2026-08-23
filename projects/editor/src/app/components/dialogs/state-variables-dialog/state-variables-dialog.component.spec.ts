@@ -10,7 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import {
   StateVariableEditorComponent
 } from 'editor/src/app/components/state-variable-editor/state-variable-editor.component';
-import { StateVariablesDialogComponent } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
+import {
+  StateVariablesDialogComponent
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
 
 describe('StateVariablesDialogComponent', () => {
   let component: StateVariablesDialogComponent;

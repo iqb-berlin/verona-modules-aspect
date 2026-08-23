@@ -70,7 +70,17 @@
           "exceptMethods": [
             "getElementComponent",
             "getNewOptionLabel",
+            "getTranslation",
             "transform"
+          ]
+        }
+      ],
+      "no-console": [
+        "error",
+        {
+          "allow": [
+            "warn",
+            "error"
           ]
         }
       ]

@@ -11,7 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { HasTextContentPipe } from 'common/pipes/has-text-content.pipe';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { TooltipPropertiesDialogComponent } from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
+import {
+  TooltipPropertiesDialogComponent
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
 
 @Component({
   selector: 'aspect-rich-text-editor',

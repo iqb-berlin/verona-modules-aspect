@@ -10,5 +10,6 @@ import { UIElement } from 'common/models/elements/element';
   standalone: false
 })
 export class DeleteConfirmationDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string, elementList?: UIElement[], refs?: ReferenceList[] }) { }
+  constructor(@Inject(MAT_DIALOG_DATA)
+  public data: { text: string, elementList?: UIElement[], refs?: ReferenceList[] }) { }
 }

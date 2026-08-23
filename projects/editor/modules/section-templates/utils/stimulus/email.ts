@@ -1,3 +1,5 @@
+/* eslint-disable max-len -- The unit definition below is JSON that gets parsed at runtime;
+   a wrapped line would put a newline inside a JSON string and break it. */
 import { EmailStimulusOptions } from 'editor/modules/section-templates/models/stimulus-interfaces';
 
 export function getEmailTemplateString(

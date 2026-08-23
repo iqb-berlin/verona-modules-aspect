@@ -20,7 +20,8 @@ export abstract class ComponentRegistry {
   static getComponent(type: UIElementType): Type<ElementComponent> {
     const component = ComponentRegistry.components[type];
     if (!component) {
-      throw new Error(`Component for type ${type} not found in ComponentRegistry. Make sure it is registered (e.g., in SharedModule constructor).`);
+      throw new Error(`Component for type ${type} not found in ComponentRegistry. ` +
+      'Make sure it is registered (e.g., in SharedModule constructor).');
     }
     return component;
   }

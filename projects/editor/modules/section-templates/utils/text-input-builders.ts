@@ -80,7 +80,9 @@ export function createInputSection(config: { text: string, answerCount: number, 
 
   const section = new EditorSection({
     ...(useNumbering && !config.numberingWithText) && { autoColumnSize: false },
-    ...(useNumbering && !config.numberingWithText) && { gridColumnSizes: [{ value: 25, unit: 'px' }, { value: 1, unit: 'fr' }] }
+    ...(useNumbering && !config.numberingWithText) && {
+      gridColumnSizes: [{ value: 25, unit: 'px' }, { value: 1, unit: 'fr' }]
+    }
   } as SectionProperties, idService);
   sectionElements.forEach(el => section.addElement(el));
   return section;

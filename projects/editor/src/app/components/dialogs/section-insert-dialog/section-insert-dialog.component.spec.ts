@@ -7,7 +7,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
+import {
+  SectionInsertDialogComponent
+} from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
 
 describe('SectionInsertDialogComponent', () => {
   let component: SectionInsertDialogComponent;

@@ -90,7 +90,8 @@ export class DropLogic {
   /* Don't allow moving item into copy or CC list that does not originate from there. */
   private static checkAddForeignItemToCopyOrCCList(draggedItem: DragNDropValueObject | undefined,
                                                    targetList: DropListMock): boolean {
-    return !((targetList.copyOnDrop || targetList.permanentPlaceholders) && draggedItem?.originListID !== targetList.id);
+    return !((targetList.copyOnDrop || targetList.permanentPlaceholders) &&
+      draggedItem?.originListID !== targetList.id);
   }
 }
 

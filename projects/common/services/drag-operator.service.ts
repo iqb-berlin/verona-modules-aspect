@@ -98,7 +98,14 @@ export class DragOperatorService {
 
   positionSortPlaceholder(targetIndex: number): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
+    /* setTargetList is what sets both, and the mouse path runs through it. The touch path reaches
+       this through checkHoveredListItem, which does not guarantee it on its own. The assertions are
+       older than this comment and are left as they are: an undefined sortingPlaceholderIndex does
+       not throw here - splice reads it as 0 - so removing them would need a decision about that
+       case, not a type change. */
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const list = this.dragOperation.targetComponent!.viewModel;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const sourceIndex = this.dragOperation.sortingPlaceholderIndex!;
     const item = list.splice(sourceIndex, 1)[0];
     list.splice(targetIndex, 0, item);
@@ -120,8 +127,8 @@ export class DragOperatorService {
       if (this.dragOperation.sourceComponent === this.dragOperation.targetComponent) {
         if (!this.dragOperation.targetComponent.elementModel.isSortList) return;
         const item =
-          this.dragOperation.targetComponent!.elementFormControl.value.splice(this.dragOperation.sourceIndex, 1)[0];
-        this.dragOperation.targetComponent!.elementFormControl.value
+          this.dragOperation.targetComponent.elementFormControl.value.splice(this.dragOperation.sourceIndex, 1)[0];
+        this.dragOperation.targetComponent.elementFormControl.value
           .splice(this.dragOperation.sortingPlaceholderIndex, 0, item);
       } else {
         this.moveItem(this.dragOperation.draggedItem,
@@ -154,7 +161,9 @@ export class DragOperatorService {
     if (DropLogic.isPutBack(item, DropLogic.createDropListMock(targetList))) {
       return;
     }
-    if (DropLogic.isReplace(item, DropLogic.createDropListMock(targetList), DropLogic.createDropListMocks(this.dropLists))) {
+    if (DropLogic.isReplace(
+      item, DropLogic.createDropListMock(targetList), DropLogic.createDropListMocks(this.dropLists)
+    )) {
       const originList = this.dropLists[targetList.elementFormControl.value[0].originListID];
       this.moveItem(targetList.elementFormControl.value[0], targetList, 0, originList);
       originList.updateFormvalue();

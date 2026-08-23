@@ -5,7 +5,9 @@ import {
 import { Section } from 'common/models/section';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
-import { DynamicSectionHelperGridComponent } from 'editor/src/app/components/dynamic-section-helper-grid/dynamic-section-helper-grid.component';
+import {
+  DynamicSectionHelperGridComponent
+} from 'editor/src/app/components/dynamic-section-helper-grid/dynamic-section-helper-grid.component';
 
 @Component({
   selector: 'aspect-editor-dynamic-section',

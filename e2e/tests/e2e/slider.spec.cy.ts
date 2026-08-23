@@ -38,7 +38,7 @@ describe('Slider element', { testIsolation: false }, () => {
       cy.get('aspect-slider:contains("Schieberegler")')
         .eq(0)
         .find('input[type="range"]')
-        .invoke('val',70)
+        .invoke('val', 70)
         .trigger('input');
       cy.get('aspect-slider:contains("Schieberegler")')
         .eq(0)
@@ -49,7 +49,7 @@ describe('Slider element', { testIsolation: false }, () => {
       cy.get('aspect-slider:contains("Schieberegler")')
         .eq(0)
         .find('input[type="range"]')
-        .invoke('val',10)
+        .invoke('val', 10)
         .trigger('input');
       cy.get('aspect-slider:contains("Schieberegler")')
         .eq(0)

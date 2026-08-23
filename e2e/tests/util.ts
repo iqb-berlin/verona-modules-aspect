@@ -108,12 +108,11 @@ export function assertValueChanged(id: string, value: any): void {
 
   cy.get('@postMessage')
     .should('be.calledWithMatch',
-      Cypress.sinon.match.has('unitState',
-        Cypress.sinon.match.has(
-          'dataParts', Cypress.sinon.match.has('elementCodes',
-            Cypress.sinon.match(regex))
-        )));
-
+            Cypress.sinon.match.has('unitState',
+                                    Cypress.sinon.match.has(
+                                      'dataParts', Cypress.sinon.match.has('elementCodes',
+                                                                           Cypress.sinon.match(regex))
+                                    )));
 }
 // alternative without 'has'
 // -------------------------
@@ -166,19 +165,18 @@ export function setPageConfig(pageNumber: number, settings?: Record<string, bool
     cy.contains('label', 'Seite dauerhaft sichtbar').click();
   }
 
-  if (settings?.appareancePartial)
-    cy.contains('mat-checkbox', 'Seitenbreite begrenzen').click({ force: true });
+  if (settings?.appareancePartial) cy.contains('mat-checkbox', 'Seitenbreite begrenzen').click({ force: true });
 }
 
-export function clickTabAssistant(){
+export function clickTabAssistant() {
   cy.contains('mat-icon', 'bookmarks').click();
 }
 
-export function submitDialog(){
+export function submitDialog() {
   cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
 }
 
-export function clickButtonDialog(buttonName: string){
+export function clickButtonDialog(buttonName: string) {
   cy.get('mat-dialog-container').contains('button', buttonName).click();
   cy.get('mat-dialog-container').should('not.exist');
 }
@@ -249,7 +247,7 @@ export function selectElement(text: string) {
   cy.get('aspect-editor-page-view').contains(text).click({ force: true });
 }
 
-export function uploadFile(fileName: string){
+export function uploadFile(fileName: string) {
   // Use .last() because each stubFileInput call and click might append a new input to the body
   cy.get('input[type=file]', { timeout: 5000 }).last()
     .selectFile(`example_data/media/${fileName}`, {
@@ -268,8 +266,8 @@ export function addMediaElement(type: 'Audio' | 'Video', title: string, filename
   setID(id);
 }
 
-export function selectPageEditor(page: string){
-  cy.get('mat-tab-group').contains("Seite " + page).click({ force: true });
+export function selectPageEditor(page: string) {
+  cy.get('mat-tab-group').contains(`Seite ${page}`).click({ force: true });
 }
 
 export function selectParagraphElement($p: JQuery<HTMLElement>): void {
@@ -284,8 +282,12 @@ export function selectParagraphElement($p: JQuery<HTMLElement>): void {
   const endY = rect.top + rect.height / 2;
 
   const eventOpts = (x: number, y: number) => ({
-    bubbles: true, cancelable: true, view: win,
-    clientX: x, clientY: y, buttons: 1,
+    bubbles: true,
+    cancelable: true,
+    view: win,
+    clientX: x,
+    clientY: y,
+    buttons: 1
   });
 
   el.dispatchEvent(new PointerEvent('pointerdown', eventOpts(startX, startY)));
@@ -322,7 +324,7 @@ export function setDialogField(label: string, value: number): void {
 export function setDialogCheckbox(label: string, checked?: boolean): void {
   cy.get('mat-dialog-container')
     .contains('mat-checkbox', label)
-    .then(($matCheckbox) => {
+    .then($matCheckbox => {
       const isChecked = $matCheckbox.hasClass('mat-mdc-checkbox-checked') ||
                         $matCheckbox.hasClass('mat-checkbox-checked') ||
                         $matCheckbox.find('input').is(':checked');

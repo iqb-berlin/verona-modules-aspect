@@ -5,7 +5,7 @@ import {
   openAssistant,
   typeInRichTextEditor,
   addGenericOption
-} from "./helpers/assistant-util";
+} from './helpers/assistant-util';
 
 describe('MC assistant', { testIsolation: false }, () => {
   context('editor', () => {
@@ -20,9 +20,9 @@ describe('MC assistant', { testIsolation: false }, () => {
 
       typeInRichTextEditor('Was ist die Antwort?');
 
-      addGenericOption('Option A','Neue Option');
-      addGenericOption('Option B','Neue Option');
-      addGenericOption('Option C','Neue Option');
+      addGenericOption('Option A', 'Neue Option');
+      addGenericOption('Option B', 'Neue Option');
+      addGenericOption('Option C', 'Neue Option');
 
       clickButtonDialog('Bestätigen');
     });
@@ -45,7 +45,6 @@ describe('MC assistant', { testIsolation: false }, () => {
 
       clickButtonDialog('Bestätigen');
     });
-
 
     after('saves an unit definition', () => {
       cy.saveUnit('e2e/downloads/assistant-mc.json');
@@ -70,7 +69,7 @@ describe('MC assistant', { testIsolation: false }, () => {
       cy.contains('mat-radio-button', 'Option A')
         .should('not.have.class', 'mat-mdc-radio-checked');
       cy.contains('mat-radio-button', 'Option A')
-        .find('input').click({ multiple: true});
+        .find('input').click({ multiple: true });
       cy.contains('mat-radio-button', 'Option A')
         .should('have.class', 'mat-mdc-radio-checked');
     });
@@ -79,11 +78,10 @@ describe('MC assistant', { testIsolation: false }, () => {
       cy.contains('mat-radio-button', 'Deswegen')
         .should('not.have.class', 'mat-mdc-radio-checked');
       cy.contains('mat-radio-button', 'Deswegen')
-        .find('input').click({ multiple: true});
+        .find('input').click({ multiple: true });
       cy.contains('mat-radio-button', 'Deswegen')
         .should('have.class', 'mat-mdc-radio-checked');
     });
-
 
     it('verifies the text MC with reasoning (Page 1)', () => {
       cy.contains('Warum ist das so?').should('exist');

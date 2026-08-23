@@ -30,7 +30,7 @@ export function addHotspot(config: HotspotConfig): void {
     cy.contains('mat-form-field', 'Rahmenbreite').find('input').clear().type(config.borderWidth.toString());
   }
   if (config.isActive !== undefined) {
-    cy.contains('mat-checkbox', 'Aktivierter Bereich').then(($matCheckbox) => {
+    cy.contains('mat-checkbox', 'Aktivierter Bereich').then($matCheckbox => {
       const isChecked = $matCheckbox.hasClass('mat-mdc-checkbox-checked') ||
                         $matCheckbox.hasClass('mat-checkbox-checked') ||
                         $matCheckbox.find('input').is(':checked');
@@ -40,7 +40,7 @@ export function addHotspot(config: HotspotConfig): void {
     });
   }
   if (config.isReadOnly !== undefined) {
-    cy.contains('mat-checkbox', 'Schreibgeschützt').then(($matCheckbox) => {
+    cy.contains('mat-checkbox', 'Schreibgeschützt').then($matCheckbox => {
       const isChecked = $matCheckbox.hasClass('mat-mdc-checkbox-checked') ||
                         $matCheckbox.hasClass('mat-checkbox-checked') ||
                         $matCheckbox.find('input').is(':checked');

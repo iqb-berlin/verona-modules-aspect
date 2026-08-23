@@ -1,4 +1,6 @@
-import { addElement, setCheckbox, uploadFile, clickButtonDialog } from '../util';
+import {
+  addElement, setCheckbox, uploadFile, clickButtonDialog
+} from '../util';
 
 describe('Image element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -44,11 +46,11 @@ describe('Image element', { testIsolation: false }, () => {
     });
 
     it('renders the image elements', () => {
-      cy.get( 'aspect-image').should('have.length', 3);
+      cy.get('aspect-image').should('have.length', 3);
     });
 
     it('checks the first image (default settings / original size)', () => {
-      cy.get('aspect-image img').eq(0).should(($img) => {
+      cy.get('aspect-image img').eq(0).should($img => {
         const img = $img[0] as HTMLImageElement;
         expect(img.naturalWidth).to.equal(300);
         expect(img.naturalHeight).to.equal(300);
@@ -56,7 +58,7 @@ describe('Image element', { testIsolation: false }, () => {
     });
 
     it('checks the second image (resized to 50%)', () => {
-      cy.get('aspect-image img').eq(1).should(($img) => {
+      cy.get('aspect-image img').eq(1).should($img => {
         const img = $img[0] as HTMLImageElement;
         expect(img.naturalWidth).to.equal(150);
         expect(img.naturalHeight).to.equal(150);
@@ -64,7 +66,7 @@ describe('Image element', { testIsolation: false }, () => {
     });
 
     it('checks the third image (quality of 10%)', () => {
-      cy.get('aspect-image img').eq(2).should(($img) => {
+      cy.get('aspect-image img').eq(2).should($img => {
         const img = $img[0] as HTMLImageElement;
         expect(img.naturalWidth).to.equal(299);
         expect(img.naturalHeight).to.equal(299);
@@ -72,11 +74,11 @@ describe('Image element', { testIsolation: false }, () => {
 
       // The compressed image should have a significantly smaller base64 src length than the default one
       let defaultSrcLen = 0;
-      cy.get('aspect-image img').eq(0).should(($img) => {
+      cy.get('aspect-image img').eq(0).should($img => {
         defaultSrcLen = $img.attr('src')?.length || 0;
       });
 
-      cy.get('aspect-image img').eq(2).should(($img) => {
+      cy.get('aspect-image img').eq(2).should($img => {
         const quality10SrcLen = $img.attr('src')?.length || 0;
         expect(quality10SrcLen).to.be.lessThan(defaultSrcLen * 0.5);
       });
@@ -99,6 +101,5 @@ describe('Image element', { testIsolation: false }, () => {
       cy.get('.image-container').first().trigger('mouseleave');
       cy.get('aspect-image-magnifier').should('not.exist');
     });
-
   });
 });

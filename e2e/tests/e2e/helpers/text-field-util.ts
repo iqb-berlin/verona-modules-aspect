@@ -1,4 +1,6 @@
-import {addElement, selectFromDropdown, setCheckbox, setPreferencesElement} from '../../util';
+import {
+  addElement, selectFromDropdown, setCheckbox, setPreferencesElement
+} from '../../util';
 
 export function setPreferences({
   minLength, maxLength, defaultText, settings, appearance
@@ -87,5 +89,3 @@ export function validateTextField(fieldName: string, input: string, error?: stri
 export function setKeyStyle(style: 'rund' | 'eckig'): void {
   selectFromDropdown('Tastaturstil', style);
 }
-
-

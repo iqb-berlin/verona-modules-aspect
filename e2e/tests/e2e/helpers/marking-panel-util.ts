@@ -6,12 +6,12 @@ import { addElement, setCheckbox } from '../../util';
  * @param id Optional ID for the element
  */
 export function addMarkingPanel(colors: { yellow?: boolean, turquoise?: boolean, orange?: boolean }, id?: string): void {
-    addElement('Textmarkierung', 'Sonstige', id);
+  addElement('Textmarkierung', 'Sonstige', id);
 
-    if (colors.yellow !== undefined) {
-        // Yellow is true by default, so we only toggle if explicitly false
-        if (!colors.yellow) setCheckbox('Gelb');
-    }
-    if (colors.turquoise) setCheckbox('Türkis');
-    if (colors.orange) setCheckbox('Orange');
+  if (colors.yellow !== undefined) {
+    // Yellow is true by default, so we only toggle if explicitly false
+    if (!colors.yellow) setCheckbox('Gelb');
+  }
+  if (colors.turquoise) setCheckbox('Türkis');
+  if (colors.orange) setCheckbox('Orange');
 }

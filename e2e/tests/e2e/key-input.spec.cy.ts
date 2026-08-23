@@ -1,9 +1,7 @@
-import {addNewPage, addTextField, setCheckbox} from '../util';
-import {setInputAssistance, setKeyStyle} from './helpers/text-field-util';
-
+import { addNewPage, addTextField, setCheckbox } from '../util';
+import { setInputAssistance, setKeyStyle } from './helpers/text-field-util';
 
 describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: false }, () => {
-
   // ══════════════════════════════════════════════════════════════════════════
   // EDITOR
   // ══════════════════════════════════════════════════════════════════════════
@@ -115,7 +113,7 @@ describe('Key-input: keyboards, keypads, configs & layouts', { testIsolation: fa
        the application's touch-detection logic will successfully evaluate this check as true.
        */
       cy.visit('http://localhost:4202/', {
-        onBeforeLoad: (win) => {
+        onBeforeLoad: win => {
           Object.defineProperty(win.navigator, 'maxTouchPoints', { value: 2 });
           (win as any).ontouchstart = () => {};
         }

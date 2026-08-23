@@ -24,19 +24,19 @@ describe('Likert element', { testIsolation: false }, () => {
         .find('mat-icon').contains('build')
         .click();
       cy.get('aspect-likert-row-edit-dialog').should('exist');
-      
+
       // Clear editor and type row label
       cy.get('aspect-likert-row-edit-dialog .ProseMirror').first()
         .clear()
         .type('Modified row 1');
-      
+
       // Change ID/alias
       cy.get('aspect-likert-row-edit-dialog').contains('mat-form-field', 'ID').find('input').clear().type('modified_row_1');
-      
+
       // Change Vorbelegung (preset) to option B (index 1)
       cy.get('aspect-likert-row-edit-dialog').contains('mat-form-field', 'Vorbelegung').click();
       cy.get('.cdk-overlay-container').contains('mat-option', 'option B').click();
-      
+
       // Save changes
       cy.get('aspect-likert-row-edit-dialog').contains('button', 'Speichern').click();
       cy.get('aspect-likert-row-edit-dialog').should('not.exist');

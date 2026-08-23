@@ -6,7 +6,7 @@ import {
 function enableSectionNumbering() {
   cy.get('mat-icon').contains('settings').click({ force: true });
   cy.get('.cdk-overlay-container').should('be.visible');
-  cy.contains('mat-checkbox', 'Nummerierung aktivieren').then(($checkbox) => {
+  cy.contains('mat-checkbox', 'Nummerierung aktivieren').then($checkbox => {
     const isChecked = $checkbox.hasClass('mat-mdc-checkbox-checked') ||
                       $checkbox.hasClass('mat-checkbox-checked') ||
                       $checkbox.find('input').is(':checked');
@@ -69,7 +69,7 @@ describe('Section and Layout Handling', { testIsolation: false }, () => {
       cy.get('.cdk-overlay-container').should('be.visible');
 
       // Verify dynamic layout is enabled (it is on by default for new sections)
-      cy.get('.cdk-overlay-container').contains('mat-checkbox', 'dynamisches Layout').then(($checkbox) => {
+      cy.get('.cdk-overlay-container').contains('mat-checkbox', 'dynamisches Layout').then($checkbox => {
         const isChecked = $checkbox.hasClass('mat-mdc-checkbox-checked') ||
                       $checkbox.hasClass('mat-checkbox-checked') ||
                       $checkbox.find('input').is(':checked');

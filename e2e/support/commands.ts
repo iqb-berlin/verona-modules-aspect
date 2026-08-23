@@ -175,4 +175,3 @@ Cypress.Commands.add('loadUnitWithOptions', (filename: string, playerConfig: any
     });
   });
 });
-

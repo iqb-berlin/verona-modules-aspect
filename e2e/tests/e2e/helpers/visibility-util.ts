@@ -1,4 +1,4 @@
-import {addElement, addNewSection, setID} from "../../util";
+import { addElement, addNewSection, setID } from '../../util';
 
 export function addTriggerElement(elementType: string, elementId: string): void {
   addElement(elementType);

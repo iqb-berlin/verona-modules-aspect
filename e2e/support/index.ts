@@ -1,5 +1,13 @@
 export { };
 
+/* The player options the suite passes to a vopStartCommand. e2e holds no imports from projects/,
+   so the ones it sets are named here. */
+export interface PlayerConfigOptions {
+  pagingMode?: 'separate' | 'buttons' | 'concat-scroll' | 'concat-scroll-snap';
+  printMode?: 'off' | 'on' | 'on-with-ids';
+  logPolicy?: 'lean' | 'rich' | 'debug' | 'disabled';
+}
+
 declare global {
   // Cypress declares Chainable inside a namespace, so augmenting it needs one too.
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -17,7 +25,7 @@ declare global {
       goToPlayerPage(pageIndex: number): Chainable<JQuery<HTMLElement>>;
       stubFileInput(): Chainable<void>;
       loadUnitWithPrintMode(filename: string, printMode: 'off' | 'on' | 'on-with-ids'): Chainable<void>;
-      loadUnitWithOptions(filename: string, playerConfig: any): Chainable<void>;
+      loadUnitWithOptions(filename: string, playerConfig: PlayerConfigOptions): Chainable<void>;
     }
   }
 }

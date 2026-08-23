@@ -99,11 +99,10 @@ describe('Trigger element', { testIsolation: false }, () => {
       addPostMessageStub();
       cy.get('aspect-unit-menu').find('button').click();
       cy.contains('button', 'Seite 3').click();
+      const stateVariableCodes = Cypress.sinon.match.has('stateVariableCodes', Cypress.sinon.match('2'));
+      const dataParts = Cypress.sinon.match.has('dataParts', stateVariableCodes);
       cy.get('@postMessage').should('be.calledWithMatch',
-                                    Cypress.sinon.match.has('unitState',
-                                                            Cypress.sinon.match.has('dataParts',
-                                                                                    Cypress.sinon.match.has('stateVariableCodes',
-                                                                                                            Cypress.sinon.match('2')))));
+                                    Cypress.sinon.match.has('unitState', dataParts));
     });
   });
 });

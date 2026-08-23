@@ -101,7 +101,9 @@ export function addPostMessageStub() {
   });
 }
 
-export function assertValueChanged(id: string, value: any): void {
+/* The value goes into a RegExp source as it is written here, which matches how numbers and booleans
+   appear in the payload; a string would need its quotes and its escaping. */
+export function assertValueChanged(id: string, value: number | boolean): void {
   const regex = new RegExp(
     `\\{"id":"${id}","status":"VALUE_CHANGED","value":${value}\\}`
   );
@@ -127,7 +129,9 @@ export function assertValueChanged(id: string, value: any): void {
 //       })
 //     }));
 
-export function setPreferencesElement(label: string, settings?: { readOnly?: boolean, required?: boolean, id?: string }): void {
+export function setPreferencesElement(
+  label: string, settings?: { readOnly?: boolean, required?: boolean, id?: string }
+): void {
   cy.contains('mat-form-field', 'Beschriftung')
     .find('textarea')
     .clear()
@@ -147,7 +151,8 @@ export function addElementHover(element: string, option: string, expansionPanel?
   }
   cy.get('aspect-ui-element-toolbox').within(() => {
     cy.get('button').then($buttons => {
-      const optionButton = $buttons.filter((i, btn) => btn.innerText.trim() === option && (btn as HTMLElement).offsetParent !== null);
+      const optionButton = $buttons
+        .filter((i, btn) => btn.innerText.trim() === option && (btn as HTMLElement).offsetParent !== null);
       if (optionButton.length > 0) {
         cy.wrap(optionButton).click();
       } else {
@@ -270,10 +275,19 @@ export function selectPageEditor(page: string) {
   cy.get('mat-tab-group').contains(`Seite ${page}`).click({ force: true });
 }
 
+/* `invoke('attr', ...)` is typed `string | undefined`, and every caller here needs the value. A list
+   without its alias is a spec looking at the wrong element, so it says so instead of handing
+   `undefined` on to a drag helper. */
+export function requireAttr(value: string | undefined): string {
+  if (value === undefined) throw new Error('Das erwartete Attribut fehlt am Element');
+  return value;
+}
+
 export function selectParagraphElement($p: JQuery<HTMLElement>): void {
   const el = $p[0];
   const doc = el.ownerDocument;
-  const win = doc.defaultView!;
+  const win = doc.defaultView;
+  if (!win) throw new Error('Das Element gehört zu keinem Fenster');
   const rect = el.getBoundingClientRect();
 
   const startX = rect.left + 1;

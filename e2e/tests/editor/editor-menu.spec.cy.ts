@@ -185,7 +185,7 @@ describe('Editor menu tests', { testIsolation: false }, () => {
 
       cy.get('.paste-area').trigger('paste', {
         clipboardData: {
-          getData: type => (type === 'Text' ? 'invalid-json' : '')
+          getData: (type: string) => (type === 'Text' ? 'invalid-json' : '')
         }
       });
       cy.get('.message-area').should('have.css', 'color', 'rgb(255, 0, 0)')
@@ -217,14 +217,15 @@ describe('Editor menu tests', { testIsolation: false }, () => {
 
       cy.get('.paste-area').trigger('paste', {
         clipboardData: {
-          getData: type => (type === 'Text' ? JSON.stringify(validSectionWithDuplicates) : '')
+          getData: (type: string) => (type === 'Text' ? JSON.stringify(validSectionWithDuplicates) : '')
         }
       });
 
       cy.get('.message-area').should('have.css', 'color', 'rgb(255, 165, 0)')
         .and('contain.text', 'Doppelte IDs festgestellt');
 
-      cy.get('mat-dialog-container').contains('mat-checkbox', 'Bestehenden Abschnitt ersetzen').find('input').uncheck({ force: true });
+      cy.get('mat-dialog-container').contains('mat-checkbox', 'Bestehenden Abschnitt ersetzen').find('input')
+        .uncheck({ force: true });
       cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
       cy.get('mat-dialog-container').should('not.exist');
     });

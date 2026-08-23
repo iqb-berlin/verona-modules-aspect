@@ -42,7 +42,8 @@ export function configureSectionVisibilityRule(options: {
 
   // Ensure section menu is not hidden and click the visibility rules dialog button
   cy.get('aspect-section-menu').eq(options.sectionIndex).should('not.have.class', 'hidden');
-  cy.get('aspect-section-menu').eq(options.sectionIndex).find('mat-icon').contains('disabled_visible').click({ force: true });
+  cy.get('aspect-section-menu').eq(options.sectionIndex).find('mat-icon').contains('disabled_visible')
+    .click({ force: true });
   cy.get('mat-dialog-container').should('be.visible');
 
   // Click the add button to add a rule

@@ -154,9 +154,12 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
 
     it('colours the word Überschrift of the text stimulus with marking panel (Page 1)', () => {
       cy.goToPlayerPage(1);
-      cy.contains('aspect-text-group-element', 'Hier steht die Überschrift.').find('aspect-text-marking-button').eq(1).click();
-      cy.contains('aspect-text-group-element', 'Hier steht die Überschrift.').contains('aspect-markable-word', 'die').click();
-      cy.contains('aspect-text-group-element', 'Hier steht die Überschrift.').contains('aspect-markable-word', 'Überschrift').click();
+      cy.contains('aspect-text-group-element', 'Hier steht die Überschrift.').find('aspect-text-marking-button').eq(1)
+        .click();
+      cy.contains('aspect-text-group-element', 'Hier steht die Überschrift.').contains('aspect-markable-word', 'die')
+        .click();
+      cy.contains('aspect-text-group-element', 'Hier steht die Überschrift.')
+        .contains('aspect-markable-word', 'Überschrift').click();
     });
 
     it('verifies the personalized text stimulus (Page 1)', () => {
@@ -165,7 +168,8 @@ describe('Stimulus assistant', { testIsolation: false }, () => {
       cy.contains('Mein Autor').should('exist');
       cy.contains('Mein Text').should('exist');
       cy.contains('Meine Fußnote').should('exist');
-      cy.contains('Meine Überschrift').parents('aspect-text').find('.text-container').should('have.css', 'column-count', '2');
+      cy.contains('Meine Überschrift').parents('aspect-text').find('.text-container')
+        .should('have.css', 'column-count', '2');
     });
 
     // ── Page 2: Email stimulus ─────────────────────────────────────────────────────

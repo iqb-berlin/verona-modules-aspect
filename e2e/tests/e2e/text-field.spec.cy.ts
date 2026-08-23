@@ -1,3 +1,4 @@
+import { WindowWithTouchStart } from '../../support/app-runtime';
 import {
   addElement, setPreferencesElement, addNewPage, setCheckbox
 } from '../util';
@@ -83,7 +84,7 @@ describe('Text field element', { testIsolation: false }, () => {
       cy.visit('http://localhost:4202/', {
         onBeforeLoad: win => {
           Object.defineProperty(win.navigator, 'maxTouchPoints', { value: 2 });
-          (win as any).ontouchstart = () => {};
+          (win as WindowWithTouchStart).ontouchstart = () => {};
         }
       });
       cy.loadUnit('../downloads/text-field.json');

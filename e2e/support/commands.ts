@@ -35,6 +35,8 @@
 //   }
 // }
 
+import type { PlayerConfigOptions } from './index';
+
 Cypress.Commands.add('openPlayer', () => {
   cy.visit('http://localhost:4202/');
 });
@@ -137,12 +139,12 @@ Cypress.Commands.add('stubFileInput', () => {
   // appended to the DOM. Intercept createElement to attach it to <body> so Cypress can find it.
   cy.window().then(win => {
     const originalCreateElement = win.document.createElement.bind(win.document);
-    cy.stub(win.document, 'createElement').callsFake((tagName: string, ...args: any[]) => {
-      const el = originalCreateElement(tagName, ...args);
+    cy.stub(win.document, 'createElement').callsFake((tagName: string, options?: ElementCreationOptions) => {
+      const el = originalCreateElement(tagName, options);
       if (tagName.toLowerCase() === 'input') {
         const originalClick = el.click.bind(el);
         el.click = () => {
-          if (el.type === 'file') {
+          if ((el as HTMLInputElement).type === 'file') {
             win.document.body.appendChild(el);
           }
           originalClick();
@@ -153,7 +155,7 @@ Cypress.Commands.add('stubFileInput', () => {
   });
 });
 
-Cypress.Commands.add('loadUnitWithOptions', (filename: string, playerConfig: any) => {
+Cypress.Commands.add('loadUnitWithOptions', (filename: string, playerConfig: PlayerConfigOptions) => {
   cy.fixture(filename).then(unit => {
     cy.get('aspect-unit', { timeout: 10000 }).should('exist');
     cy.window().then(window => {

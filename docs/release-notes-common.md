@@ -3,6 +3,7 @@ Allgemein
 ## editor/3.0.1+player/3.0.1
 ### Fehlerbehebungen
 - Eingabehilfe „Reaktionsgleichung Chemie“: Die hoch- und tiefgestellten Ziffern, die Vorzeichen und die Pfeile werden einheitlich dargestellt. Bisher suchte der Browser sich jedes Zeichen einzeln aus einer Ersatzschrift, sodass eine Tastenreihe aus bis zu vier verschiedenen Schriften bestand. Betrifft auch die Antwort der Schüler:innen und den Fließtext im Editor, wo dieselben Zeichen vorkommen können ([#1108](https://github.com/iqb-berlin/verona-modules-aspect/issues/1108))
+- Optionen mit Bild — in Ablegelisten, Bildoptionen und Likert-Zeilen: Wurde der Text einer Option gelöscht und ein Bild hochgeladen, blieb der Platz der gelöschten Textzeile stehen. Die Option ist jetzt so hoch wie eine, die von vornherein ohne Text angelegt wurde ([#965](https://github.com/iqb-berlin/verona-modules-aspect/issues/965))
 
 ## editor/3.0.0+player/3.0.0
 ### Neue Funktionen

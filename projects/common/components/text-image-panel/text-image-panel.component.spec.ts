@@ -4,6 +4,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interf
 import { AudioPlayerService } from 'common/services/audio-player.service';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { SafeResourceUrlPipe } from 'common/pipes/safe-resource-url.pipe';
+import { HasRenderableContentPipe } from 'common/pipes/has-renderable-content.pipe';
 import { TextImagePanelComponent } from './text-image-panel.component';
 
 describe('TextImagePanelComponent', () => {
@@ -22,7 +23,8 @@ describe('TextImagePanelComponent', () => {
       declarations: [
         TextImagePanelComponent,
         SafeResourceHTMLPipe,
-        SafeResourceUrlPipe
+        SafeResourceUrlPipe,
+        HasRenderableContentPipe
       ],
       imports: [MatIconModule]
     }).compileComponents();
@@ -100,6 +102,25 @@ describe('TextImagePanelComponent', () => {
     component.label = { ...textImageLabel, text: '' };
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.text')).toBeNull();
+  });
+
+  /* A rich text editor that has been emptied does not leave '' behind but an empty paragraph, and that
+     paragraph took a line's height under the image (#965). */
+  it.each(['<p></p>', '<p><br></p>', '<p>   </p>'])(
+    'should not render a text element for the emptied rich text %s', text => {
+      component.label = { ...textImageLabel, text };
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.text')).toBeNull();
+    }
+  );
+
+  /* A label can be a picture and nothing else -- no text, and yet everything to draw. */
+  it('should render a label text that holds an image and no text', () => {
+    component.label = { ...textImageLabel, text: '<p><img src="data:image/png;base64,abc"></p>' };
+    fixture.detectChanges();
+    const textElement: HTMLElement = fixture.nativeElement.querySelector('.text');
+    expect(textElement).toBeTruthy();
+    expect(textElement.querySelector('img')).toBeTruthy();
   });
 
   it('should render an image and apply the position class', () => {

@@ -16,10 +16,6 @@ Allgemein
 - Die Modul-Metadaten entsprechen der Spezifikation verona-module-metadata 3.1 und nennen zusätzlich das Format der Aufgabendefinition samt der Versionen, die das Modul lesen kann
 - Interne Qualitätssicherung: Die Unit-Tests laufen jetzt unter Vitest statt Karma/Jasmine, und die Lint-Prüfung deckt alle Projekte samt der End-to-End-Tests ab
 
-### Fehlerbehebungen
-- Behebt ein Speicherleck bei Eingabebereichen mit dynamischer Zeilenzahl; Player und Editor bleiben über lange Sitzungen flüssig
-- Ein Bild in der Vollbildansicht lässt sich wieder scrollen; bei Bildern, die größer als der Bildschirm sind, war der untere Teil nicht mehr erreichbar
-
 ## editor/2.12.5+player/2.12.5
 ### Fehlerbehebungen
 - Behebt Fehler beim Einbetten der Math-Live fonts im produktiven Modus

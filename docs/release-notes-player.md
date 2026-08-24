@@ -52,6 +52,7 @@ Player
   - Bei der Eingabehilfe "französisch" zählen die Großbuchstaben der Shift-Ebene zu den erlaubten Zeichen. Ein so gesetztes "Â" ließ sich bisher nicht mehr entfernen, und mit ihm blieben auch die Zeichen davor stehen
   - Auf einem Touch-Gerät mit angeschlossener Tastatur, auf dem gar keine Eingabehilfe erscheint, bleibt die Eingabe frei — bisher wurde sie mit jedem Klick in das Feld stärker eingeschränkt. Und bei Zeichen aus zwei Tastendrücken (z. B. "^" und "e" zu "ê") springt der Cursor nicht mehr aus dem Feld
 - Ein Bild mit Lupe innerhalb einer Tabelle, Optionentabelle oder eines Lückentexts meldete zu Beginn keinen Wert, statt "Lupe nicht benutzt" zu melden. Sobald die Lupe benutzt wurde, war die Meldung immer richtig
+- Ist "Vollbild erlauben" eingeschaltet, lässt sich ein Bild in der Vollbildansicht wieder scrollen; bei Bildern, die größer als der Bildschirm sind, war der untere Teil nicht erreichbar
 - Blättern zwischen Seiten
   - Eine neue Seite beginnt wieder oben. Bisher behielt der Player die Scrollposition der vorigen Seite bei: Wer unten auf einer langen Seite weiterblätterte, landete auf der neuen Seite mitten im Text. Betrifft die Modi mit getrennten Seiten und mit Blätterknöpfen
 

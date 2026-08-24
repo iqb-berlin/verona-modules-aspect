@@ -17,10 +17,8 @@ Allgemein
 - Interne Qualitätssicherung: Die Unit-Tests laufen jetzt unter Vitest statt Karma/Jasmine, und die Lint-Prüfung deckt alle Projekte samt der End-to-End-Tests ab
 
 ### Fehlerbehebungen
-- Eingabebereich
-  - Ein verlassener Eingabebereich gibt die Überwachung seiner Breite wieder frei, mit der er die Zeilenzahl berechnet
-- Bild in der Vollbildansicht
-  - Ein Bild, das größer als der Bildschirm ist, lässt sich wieder scrollen. Seit dem Angular-Update auf Version 19 wuchs der Vollbild-Dialog über den sichtbaren Bereich hinaus, sodass der untere Teil großer Bilder nicht mehr erreichbar war
+- Behebt ein Speicherleck bei Eingabebereichen mit dynamischer Zeilenzahl; Player und Editor bleiben über lange Sitzungen flüssig
+- Ein Bild in der Vollbildansicht lässt sich wieder scrollen; bei Bildern, die größer als der Bildschirm sind, war der untere Teil nicht mehr erreichbar
 
 ## editor/2.12.5+player/2.12.5
 ### Fehlerbehebungen

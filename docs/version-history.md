@@ -27,14 +27,5 @@ Ein Bereich (z. B. `2.12.0–2.12.6`) heißt: alle Veröffentlichungen dazwische
 | 1.29.0        | 3.3.0    | 1.23.0        |
 
 Anmerkungen:
-
-- 3.0.0 ist noch nicht veröffentlicht; die Zeile steht hier, weil die Auslieferung vorbereitet ist.
 - 4.5.0 hat keine eigene Zeile: Diese Definitionsversion war zu keiner Veröffentlichung die aktuelle.
   2.4.x schrieb 4.4.0, die nächste Veröffentlichung (2.5.0) schon 4.6.0.
-- In der 2.4er-Reihe liefen Editor und Player auseinander (der Player bekam eigene Korrekturen),
-  ebenso in 2.0–2.2 und bei 2.11.4, das es nur für den Player gab. Die Definitionsversion war dabei
-  immer dieselbe.
-- Die 2.11er-Reihe wurde neben 2.12.x weitergepflegt: 2.11.5 und 2.11.6 sind jünger als 2.12.0 und
-  bleiben bei 4.10.0.
-- Die Zeilen ab 2.0.0 sind aus den Release-Tags und dem `config`-Block der `package.json` gewonnen,
-  die Zeilen der 1er-Reihe stehen unverändert so, wie sie hier eingetragen wurden.

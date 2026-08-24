@@ -1,5 +1,15 @@
+/* The width a gap is set to is put on the flex box around the child; the child has to take it. As a
+   flex item it may shrink below its own width but never grow beyond it, so a text field stopped at
+   the width an <input> gives itself and left the rest of the box empty (#968).
+   Where no width is set the box is as wide as its content and has no free space to hand out, so
+   nothing moves -- except with a minimum width, which does widen the box: there the child now fills
+   it too, which is the same rule and what the setting asks for.
+   Two of the six children lack a width of their own and are therefore moved by this: the text field
+   and the checkbox, whose coloured band now spans the width it was set to instead of hugging its
+   label. The other four already carry `width: 100%`, so for them the rule changes nothing. */
 :host div > * {
   display: block;
+  flex-grow: 1;
 }
 
 :host ::ng-deep mat-checkbox .mdc-form-field {

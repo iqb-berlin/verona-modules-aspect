@@ -1,5 +1,9 @@
 Player
 ======
+## 3.0.1
+### Fehlerbehebungen
+- Eingabebereich mit automatischer Höhe: Auf jeder Seite außer der zuerst gezeigten war das Feld auf eine Zeile zusammengeschrumpft, und in Firefox war beim Hineinklicken kein Textcursor zu sehen — er erschien erst mit dem ersten Zeichen ([#1335](https://github.com/iqb-berlin/verona-modules-aspect/issues/1335))
+
 ## 3.0.0
 ### Neue Funktionen
 - Abwärtskompatibilität

@@ -1,5 +1,9 @@
 Editor
 ======
+## 3.0.1
+### Fehlerbehebungen
+- Absatzabstand: Der Abstand lässt sich wieder einstellen. Bisher erschien stattdessen eine Fehlermeldung und der Abstand blieb, wie er war — bei einem Absatz, in dem der Cursor steht, ebenso wie bei einer Auswahl über mehrere ([#909](https://github.com/iqb-berlin/verona-modules-aspect/issues/909))
+
 ## 3.0.0
 ### Neue Funktionen
 - Neuer Dialog zum Upload von Bildern

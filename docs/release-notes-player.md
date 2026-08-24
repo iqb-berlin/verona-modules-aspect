@@ -17,30 +17,30 @@ Player
 - Widgets (Periodensystem, Molekül-Editor)
   - Das Element zeigt einen runden Knopf in den im Editor eingestellten Farben; ein Klick darauf lässt die Testumgebung das Widget öffnen. Was dort ausgewählt oder gezeichnet wurde, kommt zurück und wird als Antwort gespeichert
   - Beim Periodensystem stehen die ausgewählten Elementsymbole neben dem Knopf, sodass die Auswahl ohne erneutes Öffnen sichtbar ist
-  - Aufruf und Rückgabe tragen eine gemeinsame Kennung, sodass die Antwort auch bei mehreren Widgets in einer Aufgabe beim aufrufenden Element landet
+  - Stehen mehrere Widgets in einer Aufgabe, landet jede Antwort bei dem Element, von dem aus das Widget geöffnet wurde
 
 ### Änderungen
 - Eingabehilfe/Tastatur
   - Ergänzt die Voreinstellung "Ziffern mit Komma & Minus" um eine Minustaste (für negative Dezimalzahlen)
 - GeoGebra
-  - Bindet den Status von GeoGebra-Variablen an das übergeordnete Element: Variablen werden mit dem Status des GeoGebra-Elements initialisiert und die Statusänderung "DISPLAYED" wird an sie weitergegeben
-  - Ein Geometrie-Element meldet eine Antwort erst, wenn tatsächlich mit ihm gearbeitet wurde (Klick, Tastendruck, Scrollen im Applet oder der Knopf "Zurücksetzen"). Bisher meldete schon das Aufbauen des Applets eine Wertänderung, sodass eine unbearbeitete Aufgabe als bearbeitet gelten konnte
+  - Die Variablen eines Geometrie-Elements übernehmen den Status des Elements: Sie gelten als angezeigt, sobald das Element angezeigt wurde
+  - Ein Geometrie-Element meldet eine Antwort erst, wenn tatsächlich mit ihm gearbeitet wurde (Klick, Tastendruck, Scrollen im Applet oder der Knopf "Zurücksetzen"). Bisher genügte dafür das Laden der Aufgabe, sodass eine unbearbeitete Aufgabe als bearbeitet gelten konnte
 
 ### Fehlerbehebungen
-- Aufgaben aus älteren Editor-Versionen werden vollständiger dargestellt: Die Lücken eines Lückentexts behalten ihre gespeicherte Mindestbreite, und die Einstellungen der Medien-Elemente samt ihren Rändern bleiben erhalten — auch bei Elementen innerhalb einer Tabelle
+- Aufgaben aus älteren Editor-Versionen werden vollständiger dargestellt: Die Lücken eines Lückentexts sind wieder so breit wie im Editor eingestellt, und die Einstellungen der Medien-Elemente samt ihren Abständen bleiben erhalten — auch innerhalb einer Tabelle
 - Optionsfelder, Kontrollkästchen
-  - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält. Bei einer Option, die aus einem Bruch besteht, stand er neben dem Zähler; bei einer Option, die nur aus einer Formel besteht, steht er jetzt in deren Mitte. Aus demselben Grund saß er auch bei anderen Schriftgrößen als 20 Pixeln nicht mittig
+  - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält. Bei einer Option, die aus einem Bruch besteht, stand er neben dem Zähler; bei einer Option, die nur aus einer Formel besteht, steht er jetzt in deren Mitte. Auch bei anderen Schriftgrößen saß er bisher nicht mittig
 - Ablegelisten, Optionentabelle, Bildoptionen
   - Eine Beschriftung, die aus mehreren Teilen eine Zeile bildet, bleibt in einer Zeile: Text mit einer Formel, mit einer Formatierung wie fett, kursiv, hoch- oder tiefgestellt, oder mit einem Bild. Bisher stand jeder Teil in einer eigenen Zeile — aus "15 cm²" wurden zwei Zeilen, obwohl das Feld breit genug war
 - Ablegelisten
   - In der Ausrichtung "horizontal linksbündig" steht die Beschriftung eines gestreckten Ziehelements in seiner Mitte statt an seinem oberen Rand. Das gezogene Element und Ablegelisten in Lückentexten stellen sie genauso dar
   - Ein Zug mit dem Finger legt das Element in der Liste ab, über der er endet. Bisher konnte er stattdessen die Ausgangsliste umsortieren, wenn die erste Bewegung sofort ein Element der Zielliste traf. Betraf Tablets und andere Touch-Geräte
 - Textmarkierung
-  - Verlassene Aufgaben mit Wort- oder Bereichsmarkierung geben ihre Ressourcen wieder frei; der Player bleibt über lange Sitzungen flüssig
+  - Der Player bleibt auch nach vielen Aufgaben mit Wort- oder Bereichsmarkierung flüssig; bisher wurde er im Verlauf einer langen Sitzung langsamer
   - Eine Formel in einem Text wird als Ganzes markiert. Bisher wurde jedes Zeichen einer Formel zu einem eigenen markierbaren Wort, sodass sich nur Teile einer Formel markieren ließen
   - **Folge für vorhandene Antworten:** In Texten mit Formeln verschieben sich Markierungen, die vor dieser Version gesetzt wurden und hinter einer Formel liegen — sie sind als Wortnummern gespeichert, und eine Formel zählt jetzt als ein Wort. Neu gesetzte Markierungen sind nicht betroffen
 - Wiederholte Aufgaben-Starts im selben Player (z. B. beim Replay in der Kodierbox)
-  - Eine ersetzte Aufgabe wird jetzt vollständig freigegeben. Bisher blieb sie bei jedem weiteren Start im Speicher, was den Player mit der Zeit langsamer machte. Ein Start-Kommando, das von einem neueren überholt wird, baut seine Aufgabe außerdem nicht mehr auf
+  - Der Player bleibt über viele Wechsel hinweg flüssig; bisher wurde jede vorherige Aufgabe mitgeschleppt und er dadurch mit der Zeit langsamer. Wird schnell mehrfach gewechselt, baut er nur noch die letzte Aufgabe auf
 - Formelfeld, Formelbereich
   - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
   - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen im Feld, im Formelbereich brechen Text und Formel-Segmente um
@@ -50,8 +50,8 @@ Player
 - Eingabefeld, Eingabebereich mit der Einstellung "nur Zeichen der Eingabehilfe zulassen"
   - Die Zeichenbeschränkung gilt ab dem Hineinklicken in das Feld. Bisher wurde sie erst wirksam, sobald die Eingabehilfe sichtbar war — wer in dieser kurzen Zeit tippte, konnte gesperrte Zeichen in das Feld schreiben und danach nicht mehr löschen
   - Bei der Eingabehilfe "französisch" zählen die Großbuchstaben der Shift-Ebene zu den erlaubten Zeichen. Ein so gesetztes "Â" ließ sich bisher nicht mehr entfernen, und mit ihm blieben auch die Zeichen davor stehen
-  - Auf einem Touch-Gerät mit angeschlossener Tastatur schränken keine Reste früherer Bearbeitungen die Eingabe mehr ein, und bei Zeichen aus zwei Tastendrücken (z. B. "^" und "e" zu "ê") springt der Cursor nicht mehr aus dem Feld
-- Ein Bild mit Lupe innerhalb einer Tabelle, Optionentabelle oder eines Lückentexts meldete zu Beginn keinen Wert, statt "Lupe nicht benutzt" zu melden. Benutzte Lupen wurden immer korrekt gemeldet
+  - Auf einem Touch-Gerät mit angeschlossener Tastatur, auf dem gar keine Eingabehilfe erscheint, bleibt die Eingabe frei — bisher wurde sie mit jedem Klick in das Feld stärker eingeschränkt. Und bei Zeichen aus zwei Tastendrücken (z. B. "^" und "e" zu "ê") springt der Cursor nicht mehr aus dem Feld
+- Ein Bild mit Lupe innerhalb einer Tabelle, Optionentabelle oder eines Lückentexts meldete zu Beginn keinen Wert, statt "Lupe nicht benutzt" zu melden. Sobald die Lupe benutzt wurde, war die Meldung immer richtig
 - Blättern zwischen Seiten
   - Eine neue Seite beginnt wieder oben. Bisher behielt der Player die Scrollposition der vorigen Seite bei: Wer unten auf einer langen Seite weiterblätterte, landete auf der neuen Seite mitten im Text. Betrifft die Modi mit getrennten Seiten und mit Blätterknöpfen
 

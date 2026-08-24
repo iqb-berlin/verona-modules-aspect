@@ -4,20 +4,28 @@ Player
 ### Neue Funktionen
 - Abwärtskompatibilität
   - Es können nun auch Aufgaben, die mit deutlich älteren Editor-Versionen erstellt wurden, im aktuellen Layout geladen und dargestellt werden
+  - Der Player rechnet die Aufgabendefinition beim Laden selbst auf den aktuellen Stand um (ab Definitionsversion 4.0). Noch ältere Aufgaben lehnt er wie bisher ab; der Hinweis nennt jetzt die Editor-Versionen 1.38/1.39, mit denen sie zuerst aktualisiert werden müssen
 - Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
   - Die im Editor eingestellte Textausrichtung (linksbündig, zentriert, rechtsbündig) wird bei der Eingabe dargestellt
+- Lückentext
+  - Stellt Klapplisten als Lücke dar (neuer Lückentyp)
 - Tabelle
   - Stellt die im Editor konfigurierte Kopfzeile (auch mehrzeilig) dar; optional bleibt sie beim Scrollen am oberen Rand des sichtbaren Bereichs fixiert
 - Tooltip (Text und Knopf)
   - Stellt die im Editor eingestellte Formatierung des Tooltip-Textes dar
 - Optionsfelder, Kontrollkästchen
   - Stellt die im Editor eingestellte vertikale Knopfausrichtung dar ("an der ersten Zeile" oder "zentriert")
+- Widgets (Periodensystem, Molekül-Editor)
+  - Das Element zeigt einen runden Knopf in den im Editor eingestellten Farben; ein Klick darauf lässt die Testumgebung das Widget öffnen. Was dort ausgewählt oder gezeichnet wurde, kommt zurück und wird als Antwort gespeichert
+  - Beim Periodensystem stehen die ausgewählten Elementsymbole neben dem Knopf, sodass die Auswahl ohne erneutes Öffnen sichtbar ist
+  - Aufruf und Rückgabe tragen eine gemeinsame Kennung, sodass die Antwort auch bei mehreren Widgets in einer Aufgabe beim aufrufenden Element landet
 
 ### Änderungen
 - Eingabehilfe/Tastatur
   - Ergänzt die Voreinstellung "Ziffern mit Komma & Minus" um eine Minustaste (für negative Dezimalzahlen)
 - GeoGebra
   - Bindet den Status von GeoGebra-Variablen an das übergeordnete Element: Variablen werden mit dem Status des GeoGebra-Elements initialisiert und die Statusänderung "DISPLAYED" wird an sie weitergegeben
+  - Ein Geometrie-Element meldet eine Antwort erst, wenn tatsächlich mit ihm gearbeitet wurde (Klick, Tastendruck, Scrollen im Applet oder der Knopf "Zurücksetzen"). Bisher meldete schon das Aufbauen des Applets eine Wertänderung, sodass eine unbearbeitete Aufgabe als bearbeitet gelten konnte
 
 ### Fehlerbehebungen
 - Bei einer Aufgabe vor 4.11, in der ein Zahlenfeld der Medien-Einstellungen leer gespeichert wurde (z. B. "Maximale Anzahl Wiedergaben"), gilt weiterhin der Vorgabewert. Solche leeren Felder entstanden mit Editor-Versionen bis 2023
@@ -32,6 +40,7 @@ Player
   - Eine Beschriftung, die aus mehreren Teilen eine Zeile bildet, bleibt in einer Zeile: Text mit einer Formel, aber auch Text mit einer Formatierung wie fett, kursiv, hoch- oder tiefgestellt, oder mit einem Bild im Beschriftungstext. Bisher stand jeder Teil in einer eigenen Zeile — aus "15 cm²" wurden zwei Zeilen, obwohl das Feld breit genug war. Betraf Ziehelemente in Ablegelisten, Zeilen- und Spaltenbeschriftungen der Optionentabelle und die Beschriftungen der Bildoptionen
 - Ablegelisten
   - In der Ausrichtung "horizontal linksbündig" sind die Ziehelemente einer Zeile gleich hoch; ihre Beschriftung steht jetzt in der Mitte des Elements statt an seinem oberen Rand. Ein Ziehelement mit einem Bruch klebte dort oben, während darunter Platz frei blieb. Das gezogene Element und Ablegelisten in Lückentexten stellen die Beschriftung auf dieselbe Weise dar
+  - Ein Zug mit dem Finger legt das Element in der Liste ab, über der er endet. Bisher konnte er stattdessen die Ausgangsliste umsortieren: Traf die erste Bewegung sofort ein Element der Zielliste, ohne den Zwischenraum zu berühren, blieb die Ablage aus und die beiden Elemente der Quellliste tauschten die Plätze. Betraf Ablege- und Sortierlisten auf Tablets und anderen Touch-Geräten
 - Textmarkierung
   - Verlassene Aufgaben mit Wort- oder Bereichsmarkierung geben ihre Ressourcen wieder frei; der Player bleibt über lange Sitzungen flüssig
   - Eine Formel in einem Text wird in der Wort- und der Bereichsmarkierung als Ganzes markiert. Bisher wurde jedes Zeichen einer Formel zu einem eigenen markierbaren Wort, sodass sich nur einzelne Teile einer Formel markieren ließen
@@ -47,6 +56,9 @@ Player
 - Eingabefeld, Eingabebereich mit der Einstellung "nur Zeichen der Eingabehilfe zulassen"
   - Die Zeichenbeschränkung gilt ab dem Hineinklicken in das Feld. Bisher wurde sie erst wirksam, sobald die Eingabehilfe sichtbar war — rund eine Zehntelsekunde später. Wer in dieser Zeit tippte, konnte gesperrte Zeichen in das Feld schreiben, und sie ließen sich anschließend nicht mehr löschen, weil der Schutz der Vorbelegung auch sie festhielt
   - Bei der Eingabehilfe "französisch" zählen die Großbuchstaben der Shift-Ebene zu den erlaubten Zeichen. Bisher setzte die Eingabehilfe sie zwar ins Feld, die Beschränkung kannte sie aber nicht — ein so gesetztes "Â" ließ sich nicht mehr entfernen, und mit ihm blieben auch die Zeichen davor stehen
+  - Verlässt man ein Feld und klickt wieder hinein, bleibt von der vorherigen Bearbeitung keine zweite Zeichenprüfung zurück. Bisher blieb bei jedem Fokuswechsel eine weitere liegen; auf einem Touch-Gerät mit angeschlossener Tastatur schränkten diese Reste die Eingabe weiter ein, obwohl die Eingabehilfe gar nicht mehr geöffnet wird, und bei Zeichen, die aus zwei Tastendrücken entstehen (z. B. "^" und "e" zu "ê"), sprang der Cursor mehrfach aus dem Feld und wieder hinein
+- Bild mit Lupe innerhalb einer Tabelle, Optionentabelle oder eines Lückentexts
+  - Der zu Beginn gemeldete Wert des Bildes ("Lupe nicht benutzt") fehlte in der Antwort ganz, statt leer gemeldet zu werden — betroffen war nur die erste Meldung, benutzte Lupen wurden immer korrekt gemeldet. Der Fehler steckt seit der 2er-Reihe im Verbundelement-Pfad; einzelne Bilder außerhalb eines Verbundelements waren nie betroffen
 - Blättern zwischen Seiten
   - Eine neue Seite beginnt wieder oben. Bisher behielt der Player die Scrollposition der vorigen Seite bei: wer unten auf einer langen Seite weiterblätterte, landete auf der neuen Seite mitten im Text. War die neue Seite kürzer, korrigierte der Browser das von selbst — deshalb trat es nur bei manchen Aufgaben auf. Betrifft die Modi mit getrennten Seiten und mit Blätterknöpfen; die Scroll-Modi bringen die neue Seite ohnehin selbst in den Blick
 

@@ -8,14 +8,19 @@ Allgemein
   - Unterstützung für Dropdown-Elemente als Kind-Elemente.
 - Neue Elementgruppe "Widgets" 
   - Moleküleditor und Periodensystem
+  - Die Widgets selbst stellt die Testumgebung bereit: Das Element zeigt nur den Knopf, der sie öffnet, fordert sie über die Verona-Schnittstelle an und speichert das Ergebnis als Antwort. Eine Umgebung, die den Aufruf nicht unterstützt, zeigt das Element ohne Wirkung
 
 ### Änderungen
 - Update auf Angular 21.2.x und zugehörige Systemabhängigkeiten
 - Vereinheitlichung der internen Dateistruktur zur Verbesserung der Wartbarkeit
+- Modul-Metadaten auf `verona-module-metadata@3.1` gebracht: Der Modultyp steht jetzt in Großschreibung ("PLAYER", "EDITOR"), und das neue Feld "model" nennt das Format der Aufgabendefinition samt unterstütztem Versionsbereich (`aspect-unit-definition@…`). Damit kann die Testumgebung erkennen, welche Aufgaben ein Modul lesen kann
+- Interne Qualitätssicherung: Die Unit-Tests laufen jetzt unter Vitest statt Karma/Jasmine, und die Lint-Prüfung deckt alle Projekte samt der End-to-End-Tests ab
 
 ### Fehlerbehebungen
 - Eingabebereich
   - Ein verlassener Eingabebereich gibt die Überwachung seiner Breite wieder frei, mit der er die Zeilenzahl berechnet
+- Bild in der Vollbildansicht
+  - Ein Bild, das größer als der Bildschirm ist, lässt sich wieder scrollen. Seit dem Angular-Update auf Version 19 wuchs der Vollbild-Dialog über den sichtbaren Bereich hinaus, sodass der untere Teil großer Bilder nicht mehr erreichbar war
 
 ## editor/2.12.5+player/2.12.5
 ### Fehlerbehebungen

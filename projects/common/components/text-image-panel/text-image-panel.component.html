@@ -11,5 +11,7 @@
                                  'hide-content': hideContent}">
   <img *ngIf="label.imgSrc"
       [src]="label.imgSrc | safeResourceUrl" alt="Image Placeholder">
-  <div *ngIf="label.text !== ''" class="text" [innerHTML]="label.text | safeResourceHTML"></div>
+  <!-- Not `text !== ''`: a rich text editor that has been emptied leaves an empty paragraph behind,
+       and that paragraph took a line's height under the image (#965). -->
+  <div *ngIf="label.text | hasRenderableContent" class="text" [innerHTML]="label.text | safeResourceHTML"></div>
 </div>

@@ -133,6 +133,7 @@ import { MeasurePipe } from './pipes/measure.pipe';
 import { TableGridRowsPipe } from './pipes/table-grid-rows.pipe';
 import { MarkingPanelComponent } from './components/interactive-group-elements/marking-panel/marking-panel.component';
 import { HasTextContentPipe } from './pipes/has-text-content.pipe';
+import { HasRenderableContentPipe } from './pipes/has-renderable-content.pipe';
 import { FirstLineAlignedControlDirective } from './directives/first-line-aligned-control.directive';
 
 @NgModule({
@@ -203,6 +204,7 @@ import { FirstLineAlignedControlDirective } from './directives/first-line-aligne
     MeasurePipe,
     TableGridRowsPipe,
     HasTextContentPipe,
+    HasRenderableContentPipe,
     DraggableDirective,
     FirstLineAlignedControlDirective,
     ImageFullscreenDirective,
@@ -229,6 +231,7 @@ import { FirstLineAlignedControlDirective } from './directives/first-line-aligne
     SafeResourceHTMLPipe,
     MathFormulaPipe,
     HasTextContentPipe,
+    HasRenderableContentPipe,
     ScrollPagesPipe,
     TextMarkingBarComponent,
     ToggleButtonComponent,

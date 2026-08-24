@@ -1,6 +1,4 @@
-import {
-  AfterViewInit, Component, ElementRef, Input
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { InputElement } from 'common/models/elements/element';
 import { UntypedFormControl } from '@angular/forms';
 
@@ -14,16 +12,7 @@ import { UntypedFormControl } from '@angular/forms';
   },
   standalone: false
 })
-export class ClozeChildErrorMessageComponent implements AfterViewInit {
+export class ClozeChildErrorMessageComponent {
   @Input() elementModel!: InputElement;
   @Input() elementFormControl!: UntypedFormControl;
-
-  elementHeight: number = 0;
-
-  constructor(public elementRef: ElementRef<HTMLElement>) {}
-
-  ngAfterViewInit() {
-    const rect = this.elementRef.nativeElement.getBoundingClientRect();
-    this.elementHeight = rect.height;
-  }
 }

@@ -20,8 +20,6 @@ Player
   - Stehen mehrere Widgets in einer Aufgabe, landet jede Antwort bei dem Element, von dem aus das Widget geöffnet wurde
 
 ### Änderungen
-- Eingabehilfe/Tastatur
-  - Ergänzt die Voreinstellung "Ziffern mit Komma & Minus" um eine Minustaste (für negative Dezimalzahlen)
 - GeoGebra
   - Die Variablen eines Geometrie-Elements übernehmen den Status des Elements: Sie gelten als angezeigt, sobald das Element angezeigt wurde
   - Ein Geometrie-Element meldet eine Antwort erst, wenn tatsächlich mit ihm gearbeitet wurde (Klick, Tastendruck, Scrollen im Applet oder der Knopf "Zurücksetzen"). Bisher genügte dafür das Laden der Aufgabe, sodass eine unbearbeitete Aufgabe als bearbeitet gelten konnte

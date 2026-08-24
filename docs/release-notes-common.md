@@ -3,18 +3,15 @@ Allgemein
 ## editor/3.0.0+player/3.0.0
 ### Neue Funktionen
 - Eingabehilfe
-  - Neue Voreinstellung "Ziffern mit Komma & Minus" (inkl. Minustaste für negative Dezimalzahlen)
+  - Neue Voreinstellung "Ziffern mit Komma & Minus", mit Minustaste für negative Dezimalzahlen
 - Lückentext
-  - Unterstützung für Dropdown-Elemente als Kind-Elemente.
-- Neue Elementgruppe "Widgets" 
-  - Moleküleditor und Periodensystem
-  - Die Widgets selbst stellt die Testumgebung bereit: Das Element zeigt nur den Knopf, der sie öffnet, und speichert das Ergebnis als Antwort. In einer Umgebung, die Widgets nicht unterstützt, bleibt der Knopf ohne Wirkung
+  - Als Lücke kann jetzt auch eine Klappliste eingesetzt werden
+- Neue Elementgruppe "Widgets": Periodensystem und Molekül-Editor
+  - Die Widgets selbst stellt die Testumgebung bereit. Das Element zeigt nur den Knopf, der sie öffnet, und speichert das Ergebnis als Antwort; in einer Umgebung, die Widgets nicht unterstützt, bleibt der Knopf ohne Wirkung
 
 ### Änderungen
-- Update auf Angular 21.2.x und zugehörige Systemabhängigkeiten
-- Vereinheitlichung der internen Dateistruktur zur Verbesserung der Wartbarkeit
 - Die Modul-Metadaten entsprechen der Spezifikation verona-module-metadata 3.1 und nennen zusätzlich das Format der Aufgabendefinition samt der Versionen, die das Modul lesen kann
-- Interne Qualitätssicherung: Die Unit-Tests laufen jetzt unter Vitest statt Karma/Jasmine, und die Lint-Prüfung deckt alle Projekte samt der End-to-End-Tests ab
+- Ohne Auswirkung auf die Bedienung: Update auf Angular 21.2.x samt Systemabhängigkeiten, vereinheitlichte interne Dateistruktur, Unit-Tests unter Vitest statt Karma/Jasmine und eine Lint-Prüfung über alle Projekte samt der End-to-End-Tests
 
 ## editor/2.12.5+player/2.12.5
 ### Fehlerbehebungen

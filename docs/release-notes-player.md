@@ -17,7 +17,6 @@ Player
 - Widgets (Periodensystem, Molekül-Editor)
   - Das Element zeigt einen runden Knopf in den im Editor eingestellten Farben; ein Klick darauf lässt die Testumgebung das Widget öffnen. Was dort ausgewählt oder gezeichnet wurde, kommt zurück und wird als Antwort gespeichert
   - Beim Periodensystem stehen die ausgewählten Elementsymbole neben dem Knopf, sodass die Auswahl ohne erneutes Öffnen sichtbar ist
-  - Stehen mehrere Widgets in einer Aufgabe, landet jede Antwort bei dem Element, von dem aus das Widget geöffnet wurde
 
 ### Änderungen
 - GeoGebra
@@ -27,20 +26,18 @@ Player
 ### Fehlerbehebungen
 - Aufgaben aus älteren Editor-Versionen werden vollständiger dargestellt: Die Lücken eines Lückentexts sind wieder so breit wie im Editor eingestellt, und die Einstellungen der Medien-Elemente samt ihren Abständen bleiben erhalten — auch innerhalb einer Tabelle
 - Optionsfelder, Kontrollkästchen
-  - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält. Bei einer Option, die aus einem Bruch besteht, stand er neben dem Zähler; bei einer Option, die nur aus einer Formel besteht, steht er jetzt in deren Mitte. Auch bei anderen Schriftgrößen saß er bisher nicht mittig
+  - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält; bei einem Bruch stand er bisher neben dem Zähler. Besteht die Option nur aus einer Formel, steht er in deren Mitte. Auch bei einer anderen Schriftgröße saß er bisher nicht auf der ersten Zeile
 - Ablegelisten, Optionentabelle, Bildoptionen
   - Eine Beschriftung, die aus mehreren Teilen eine Zeile bildet, bleibt in einer Zeile: Text mit einer Formel, mit einer Formatierung wie fett, kursiv, hoch- oder tiefgestellt, oder mit einem Bild. Bisher stand jeder Teil in einer eigenen Zeile — aus "15 cm²" wurden zwei Zeilen, obwohl das Feld breit genug war
 - Ablegelisten
   - In der Ausrichtung "horizontal linksbündig" steht die Beschriftung eines gestreckten Ziehelements in seiner Mitte statt an seinem oberen Rand. Das gezogene Element und Ablegelisten in Lückentexten stellen sie genauso dar
   - Ein Zug mit dem Finger legt das Element in der Liste ab, über der er endet. Bisher konnte er stattdessen die Ausgangsliste umsortieren, wenn die erste Bewegung sofort ein Element der Zielliste traf. Betraf Tablets und andere Touch-Geräte
+- Lange Sitzungen und wiederholte Aufgaben-Starts (z. B. beim Replay in der Kodierbox): Der Player bleibt flüssig. Bisher blieb jede verlassene Aufgabe im Speicher — besonders solche mit Wort- oder Bereichsmarkierung —, und er wurde mit der Zeit langsamer. Wird schnell mehrfach gewechselt, baut er nur noch die letzte Aufgabe auf
 - Textmarkierung
-  - Der Player bleibt auch nach vielen Aufgaben mit Wort- oder Bereichsmarkierung flüssig; bisher wurde er im Verlauf einer langen Sitzung langsamer
   - Eine Formel in einem Text wird als Ganzes markiert. Bisher wurde jedes Zeichen einer Formel zu einem eigenen markierbaren Wort, sodass sich nur Teile einer Formel markieren ließen
   - **Folge für vorhandene Antworten:** In Texten mit Formeln verschieben sich Markierungen, die vor dieser Version gesetzt wurden und hinter einer Formel liegen — sie sind als Wortnummern gespeichert, und eine Formel zählt jetzt als ein Wort. Neu gesetzte Markierungen sind nicht betroffen
-- Wiederholte Aufgaben-Starts im selben Player (z. B. beim Replay in der Kodierbox)
-  - Der Player bleibt über viele Wechsel hinweg flüssig; bisher wurde jede vorherige Aufgabe mitgeschleppt und er dadurch mit der Zeit langsamer. Wird schnell mehrfach gewechselt, baut er nur noch die letzte Aufgabe auf
 - Formelfeld, Formelbereich
-  - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
+  - Schreibschutz und Pflichtfeld wirken jetzt zuverlässig: Ein geschütztes Feld nimmt keine Eingabe an, und ein leeres Pflichtfeld zeigt den im Editor hinterlegten Hinweis
   - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen im Feld, im Formelbereich brechen Text und Formel-Segmente um
 - Formeln in Texten, Beschriftungen und Optionen
   - Formeln aus älteren Aufgaben wurden in Chrome-basierten Browsern (auch im Safe Exam Browser) und auf iPads falsch dargestellt: Der Überstrich lag nur über dem ersten Zeichen, Brüche waren zu klein, Wurzeln verzerrt, während dieselbe Aufgabe in Firefox korrekt aussah. Die Darstellung sieht jetzt in allen Browsern gleich aus
@@ -48,8 +45,8 @@ Player
 - Eingabefeld, Eingabebereich mit der Einstellung "nur Zeichen der Eingabehilfe zulassen"
   - Die Zeichenbeschränkung gilt ab dem Hineinklicken in das Feld. Bisher wurde sie erst wirksam, sobald die Eingabehilfe sichtbar war — wer in dieser kurzen Zeit tippte, konnte gesperrte Zeichen in das Feld schreiben und danach nicht mehr löschen
   - Bei der Eingabehilfe "französisch" zählen die Großbuchstaben der Shift-Ebene zu den erlaubten Zeichen. Ein so gesetztes "Â" ließ sich bisher nicht mehr entfernen, und mit ihm blieben auch die Zeichen davor stehen
-  - Auf einem Touch-Gerät mit angeschlossener Tastatur, auf dem gar keine Eingabehilfe erscheint, bleibt die Eingabe frei — bisher wurde sie mit jedem Klick in das Feld stärker eingeschränkt. Und bei Zeichen aus zwei Tastendrücken (z. B. "^" und "e" zu "ê") springt der Cursor nicht mehr aus dem Feld
-- Ein Bild mit Lupe innerhalb einer Tabelle, Optionentabelle oder eines Lückentexts meldete zu Beginn keinen Wert, statt "Lupe nicht benutzt" zu melden. Sobald die Lupe benutzt wurde, war die Meldung immer richtig
+  - Auf einem Touch-Gerät mit angeschlossener Tastatur, für das keine Eingabehilfe eingeblendet wird, bleibt die Eingabe frei; bisher blieb sie nach dem ersten Hineinklicken eingeschränkt, obwohl keine Eingabehilfe zu sehen war. Bei Zeichen aus zwei Tastendrücken (z. B. "^" und "e" zu "ê") springt der Cursor nicht mehr aus dem Feld
+- In den Antwortdaten fehlte der Startwert eines Bildes mit Lupe, das in einer Tabelle, Optionentabelle oder einem Lückentext steckt: Statt "Lupe nicht benutzt" stand dort nichts. Sobald die Lupe benutzt wurde, war der Wert immer richtig
 - Ist "Vollbild erlauben" eingeschaltet, lässt sich ein Bild in der Vollbildansicht wieder scrollen; bei Bildern, die größer als der Bildschirm sind, war der untere Teil nicht erreichbar
 - Blättern zwischen Seiten
   - Eine neue Seite beginnt wieder oben. Bisher behielt der Player die Scrollposition der vorigen Seite bei: Wer unten auf einer langen Seite weiterblätterte, landete auf der neuen Seite mitten im Text. Betrifft die Modi mit getrennten Seiten und mit Blätterknöpfen

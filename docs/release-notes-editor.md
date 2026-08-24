@@ -70,7 +70,7 @@ Editor
   - Einstellungen, die nicht zu allen markierten Elementen passen, werden nicht mehr angeboten: die Vorbelegung bei unterschiedlichen Optionslisten und "Medienquelle ändern" bei unterschiedlichen Typen, wo ein Klick zuvor Bild und Dateiname löschte. Behoben ist auch, dass der Eigenschaftenbereich nach einer solchen Markierung die Werte der zuvor markierten Elemente zeigte und beim Bearbeiten auf die neuen schrieb
 - Fehlerdialog "Unerwarteter Fehler": Ein Fehler, der beim Aufbau der Arbeitsfläche immer wieder auftritt, öffnete den Dialog endlos neu — der Editor war nicht mehr bedienbar und die Aufgabe nicht mehr zu speichern. Jeder Fehler wird jetzt höchstens einmal je geladener Aufgabe gemeldet
 - Duplizieren, Verschieben und die Positionsfelder treffen den Abschnitt, in dem das ausgewählte Element liegt. Bisher konnten sie einen anderen treffen: Ein Duplikat landete im falschen Abschnitt, und der Eigenschaftenbereich zeigte Rasterfelder für ein Element in einem statisch positionierten Abschnitt
-- Wird ein Text oder ein Lückentext so geändert, dass Referenzen ungültig werden, wird die Aufgabe mit dem Wert gespeichert, der nach der Rückfrage wirklich geschrieben wurde. Bisher konnte der alte Stand gewinnen
+- Entfernt man in einem Text oder Lückentext etwas, worauf andere Elemente verweisen, fragt der Editor nach — nach dem Bestätigen wird die Änderung jetzt auch gespeichert. Bisher konnte sie beim nächsten Speichern wieder verschwinden
 - Verbessert das Ladeverhalten der Erweiterungen für den Texteditor und die Stabilität beim Erzeugen von Elementen aus unvollständigen Vorlagen
 
 ## 2.12.4

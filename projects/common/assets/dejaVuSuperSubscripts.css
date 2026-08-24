@@ -1,0 +1,25 @@
+/* Extends the NunitoSans family for characters it does not contain: the superscript and subscript
+   digits and signs, and the three arrows of the chemical equation input assistance. Without this the
+   browser looks for a substitute per character, which drew one row of that keypad from four different
+   fonts and the two digit rows from three (#1108).
+
+   Declared AFTER nunitosans.css on purpose. NunitoSans does have U+00B2, U+00B3, U+00B9 and U+2074
+   -- superscript two, three, one and four -- and for those four the later face has to win. Leaving
+   them to NunitoSans would keep exactly them apart from their neighbours, which is what made the
+   superscript one stand out in the first place.
+
+   That reach is wider than the keypad: a superscript two in the running text of a task now comes from
+   here as well. It is the price of the rule above, and it is the smaller half of it -- the four
+   characters change their drawing, the other twenty-nine stop being drawn at random.
+
+   The ranges are the complete runs, not the eight digits the keypad offers. A partial range is what
+   this defect is made of. '+', '(' and ')' are deliberately outside: they are ordinary characters
+   that appear in every text.
+
+   DejaVu Sans, subset to these 33 characters. Bitstream Vera license (permissive); the copyright and
+   license notice it requires travels inside the font file, in its name records. */
+@font-face {
+  font-family: 'NunitoSans';
+  src: url(fonts/dejavu-sans-super-subscripts.woff2) format('woff2');
+  unicode-range: U+00B2-00B3, U+00B9, U+2070, U+2074-207E, U+2080-208E, U+2192, U+2194, U+21CC;
+}

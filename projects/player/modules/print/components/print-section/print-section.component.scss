@@ -4,7 +4,10 @@
 
 .section-wrapper.row-align {
   flex-direction: row;
-  align-items: baseline;
+  /* Not `baseline`: an element without a text baseline -- an image, a video -- has one synthesized
+     from its bottom margin edge, which put the section number next to the bottom of a picture in the
+     first row instead of next to its top (#1021). The editor aligns the number the same way. */
+  align-items: flex-start;
 }
 
 .section-wrapper.column-align {

@@ -3,6 +3,7 @@ Player
 ## 3.0.1
 ### Fehlerbehebungen
 - Eingabebereich mit automatischer Höhe: Auf jeder Seite außer der zuerst gezeigten war das Feld auf eine Zeile zusammengeschrumpft, und in Firefox war beim Hineinklicken kein Textcursor zu sehen — er erschien erst mit dem ersten Zeichen ([#1335](https://github.com/iqb-berlin/verona-modules-aspect/issues/1335))
+- Automatische Abschnittsnummerierung links: Steht ein Bild oder Video in der ersten Zeile eines Abschnitts, steht die Nummer wieder oben neben dem Element statt an dessen Unterkante — in der Vorschau wie im Druck ([#1021](https://github.com/iqb-berlin/verona-modules-aspect/issues/1021))
 
 ## 3.0.0
 ### Neue Funktionen

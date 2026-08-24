@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IDTypes } from 'common/interfaces';
-import { IdRegistry } from 'editor/src/app/services/id-registry';
+import { IDTypes } from 'common/models/id-interfaces';
+import { IdRegistry } from 'editor/src/app/classes/id-registry';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +34,8 @@ export class IDService {
   }
 
   register(id: string, useIDRegistry: boolean, useAliasRegistry: boolean) {
-    if (useIDRegistry) this.idRegistry.registerID(id);
-    if (useAliasRegistry) this.aliasRegistry.registerID(id);
+    if (useIDRegistry && this.isIDAvailable(id)) this.idRegistry.registerID(id);
+    if (useAliasRegistry && this.isAliasAvailable(id)) this.aliasRegistry.registerID(id);
   }
 
   unregister(id: string, useIDRegistry: boolean, useAliasRegistry: boolean): void {

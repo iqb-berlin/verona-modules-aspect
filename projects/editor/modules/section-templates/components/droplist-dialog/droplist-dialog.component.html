@@ -1,0 +1,193 @@
+<h2 mat-dialog-title>{{ 'sectionTemplates.dropListTitle' | translate }}</h2>
+<div mat-dialog-content>
+  @if (templateVariant == undefined) {
+    <mat-action-list class="variant-choice">
+      <button mat-list-item (click)="templateVariant = 'classic'">
+        {{ 'sectionTemplates.dropListClassic' | translate }}
+      </button>
+      <button mat-list-item (click)="templateVariant = '2pages'">
+        {{ 'sectionTemplates.dropListTwoPages' | translate }}
+      </button>
+      <button mat-list-item (click)="templateVariant = 'sort'">
+        {{ 'sectionTemplates.dropListSort' | translate }}
+      </button>
+    </mat-action-list>
+  }
+
+  @if (templateVariant === 'classic') {
+    <ng-container *ngTemplateOutlet="introText"></ng-container>
+
+    <ng-container *ngTemplateOutlet="startList"></ng-container>
+    <mat-form-field [style.width.px]="300">
+      <mat-label>{{ 'sectionTemplates.optionLength' | translate }}</mat-label>
+      <mat-select [(ngModel)]="options.optionWidth">
+        @if (options.targetLabelAlignment === 'column') {
+          <mat-option [value]="'long'">{{ 'sectionTemplates.lengthLong' | translate }}</mat-option>
+        }
+        <mat-option [value]="'medium'">{{ 'sectionTemplates.lengthMedium' | translate }}</mat-option>
+        <mat-option [value]="'short'">{{ 'sectionTemplates.lengthShort' | translate }}</mat-option>
+        <mat-option [value]="'very-short'">{{ 'sectionTemplates.lengthVeryShort' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <ng-container *ngTemplateOutlet="targetList"></ng-container>
+    <mat-form-field [style.width.px]="350">
+      <mat-label>{{ 'sectionTemplates.targetLength' | translate }}</mat-label>
+      <mat-select [(ngModel)]="options.targetWidth">
+        @if (options.targetLabelAlignment === 'column') {
+          <mat-option [value]="'long'">{{ 'sectionTemplates.lengthLong' | translate }}</mat-option>
+        }
+        <mat-option [value]="'medium'">{{ 'sectionTemplates.lengthMedium' | translate }}</mat-option>
+        <mat-option [value]="'short'">{{ 'sectionTemplates.lengthShort' | translate }}</mat-option>
+        <mat-option [value]="'very-short'">{{ 'sectionTemplates.lengthVeryShort' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h3>{{ 'sectionTemplates.alignment' | translate }}</h3>
+    <mat-radio-group [(ngModel)]="options.targetLabelAlignment">
+      <mat-radio-button [value]="'column'">{{ 'sectionTemplates.alignmentColumn' | translate }}</mat-radio-button>
+      <mat-radio-button [value]="'row'">
+        {{ 'sectionTemplates.alignmentRow' | translate }}
+      </mat-radio-button>
+    </mat-radio-group>
+  } @else if (templateVariant == 'sort') {
+    <ng-container *ngTemplateOutlet="introText"></ng-container>
+
+    <ng-container *ngTemplateOutlet="startList"></ng-container>
+    <mat-form-field [style.width.px]="300">
+      <mat-label>{{ 'sectionTemplates.optionLength' | translate }}</mat-label>
+      <mat-select [(ngModel)]="options.optionWidth">
+        <mat-option [value]="'medium'">{{ 'sectionTemplates.lengthMedium' | translate }}</mat-option>
+        <mat-option [value]="'short'">{{ 'sectionTemplates.lengthShort' | translate }}</mat-option>
+        <mat-option [value]="'very-short'">{{ 'sectionTemplates.lengthVeryShort' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h3>{{ 'sectionTemplates.numbering' | translate }}</h3>
+    <mat-checkbox [(ngModel)]="options.numbering">
+      {{ 'sectionTemplates.enableNumbering' | translate }}
+    </mat-checkbox>
+  } @else if (templateVariant == '2pages') {
+    <ng-container *ngTemplateOutlet="introText"></ng-container>
+
+    <ng-container *ngTemplateOutlet="startList"></ng-container>
+
+    <h3>{{ 'sectionTemplates.situation' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.text2"
+                             [placeholder]="'sectionTemplates.situationPlaceholder' | translate">
+    </aspect-rich-text-editor>
+
+    <ng-container *ngTemplateOutlet="targetList"></ng-container>
+
+    @if (!options.targetUseImages && !options.srcUseImages) {
+      <h4>{{ 'sectionTemplates.alignment' | translate }}</h4>
+      <mat-radio-group [(ngModel)]="options.labelsBelow">
+        <mat-radio-button [value]="false">{{ 'sectionTemplates.targetLabelsAbove' | translate }}</mat-radio-button>
+        <mat-radio-button [value]="true">{{ 'sectionTemplates.targetLabelsBelow' | translate }}</mat-radio-button>
+      </mat-radio-group>
+    }
+    @if (!options.targetUseImages && options.srcUseImages) {
+      <h4>{{ 'sectionTemplates.alignment' | translate }}</h4>
+      <mat-radio-group [(ngModel)]="options.targetListAlignment">
+        <mat-radio-button [value]="'row'">{{ 'sectionTemplates.targetListRow' | translate }}</mat-radio-button>
+        <mat-radio-button [value]="'grid'">{{ 'sectionTemplates.targetListGrid' | translate }}</mat-radio-button>
+      </mat-radio-group>
+    }
+
+    <h3>{{ 'sectionTemplates.source' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.text3"
+                             [placeholder]="'sectionTemplates.source' | translate">
+    </aspect-rich-text-editor>
+  }
+
+  <ng-template #introText>
+    <h3>{{ 'sectionTemplates.questionOrInstruction' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.text1"
+                             [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
+    </aspect-rich-text-editor>
+  </ng-template>
+  <ng-template #startList>
+    <h3>{{ 'sectionTemplates.sourceList' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.headingSourceList"
+                             [placeholder]="'sectionTemplates.heading' | translate"
+                             [showReducedControls]="true">
+    </aspect-rich-text-editor>
+    <h4>{{ 'elements' | translate }}</h4>
+    @if (templateVariant === '2pages') {
+      <mat-checkbox [(ngModel)]="options.srcUseImages" class="image-checkbox">
+        {{ 'sectionTemplates.useImages' | translate }}
+      </mat-checkbox>
+    }
+    @if (templateVariant === '2pages' && options.srcUseImages) {
+      <mat-radio-group [(ngModel)]="options.imageSize">
+        <mat-label>{{ 'sectionTemplates.imageSize' | translate }}</mat-label>
+        <mat-radio-button [value]="'small'">150px x 150px</mat-radio-button>
+        <mat-radio-button [value]="'medium'">200px x 200px</mat-radio-button>
+      </mat-radio-group>
+    }
+    <ng-container
+      *ngTemplateOutlet="elementInputs; context: { list: options.options, useImages: options.srcUseImages }">
+    </ng-container>
+  </ng-template>
+  <ng-template #targetList>
+    <h3>{{ 'sectionTemplates.targetLists' | translate }}</h3>
+    <aspect-rich-text-editor [(content)]="options.headingTargetLists"
+                             [placeholder]="'sectionTemplates.heading' | translate"
+                             [showReducedControls]="true">
+    </aspect-rich-text-editor>
+    <h4>{{ 'sectionTemplates.targetLabels' | translate }}</h4>
+    @if (templateVariant === '2pages' && options.srcUseImages) {
+      <mat-checkbox class="image-checkbox" [(ngModel)]="options.targetUseImages">
+        {{ 'sectionTemplates.images' | translate }}
+      </mat-checkbox>
+    }
+    <ng-container
+      *ngTemplateOutlet="elementInputs; context: { list: options.targetLabels,
+                                                   useImages: options.srcUseImages && options.targetUseImages }">
+    </ng-container>
+  </ng-template>
+
+  <ng-template #elementInputs let-list="list" let-useImages="useImages">
+    @if (templateVariant !== '2pages' || !useImages) {
+      <mat-form-field appearance="outline">
+        <textarea #newItem matInput cdkTextareaAutosize type="text"
+                  (keydown.enter)="$event.stopPropagation(); $event.preventDefault();"
+                  (keyup.enter)="list.push(newItem.value); newItem.select()"></textarea>
+        <button mat-icon-button matSuffix color="primary"
+                [disabled]="newItem.value === ''"
+                (click)="list.push(newItem.value); newItem.select()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-form-field>
+    } @else {
+      <button mat-stroked-button [style.margin-top.px]="10" [style.margin-bottom.px]="10"
+              (click)="imageUpload.click();">{{ 'sectionTemplates.uploadImage' | translate }}</button>
+      <input type="file" hidden accept="image/*" #imageUpload id="button-image-upload"
+             (change)="loadImage(list, imageUpload)">
+    }
+    <div class="drop-list" cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let item of list; let i = index" cdkDrag cdkDragLockAxis="y" class="drop-list-option">
+        @if (useImages) {
+          <img [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
+        } @else {
+          {{ item }}
+        }
+        <button mat-icon-button color="primary" (click)="editItem(list, i)">
+          <mat-icon>build</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="removeListItem(list, i)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<div mat-dialog-actions>
+  <button mat-button
+          [disabled]="(templateVariant == 'classic' && (!options.optionWidth || !options.targetWidth)) ||
+                      (templateVariant == 'sort' && !options.optionWidth)"
+          [mat-dialog-close]="{ variant: templateVariant, options }">
+    {{ 'confirm' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
+</div>

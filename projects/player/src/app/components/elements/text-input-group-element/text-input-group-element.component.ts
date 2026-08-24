@@ -3,14 +3,17 @@ import {
 } from '@angular/core';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
-import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
-import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
-import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
-import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
+import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
+import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
+import { TextAreaMathElement } from 'common/models/elements/text-input-group-elements/text-area-math';
+import { MathFieldElement } from 'common/models/elements/text-input-group-elements/math-field';
 import { InputElement } from 'common/models/elements/element';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
+import {
+  KeyInputRestrictionService
+} from 'player/modules/key-input/services/key-input-restriction.service';
 import { DeviceService } from '../../../services/device.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -19,10 +22,10 @@ import { UnitStateService } from '../../../services/unit-state.service';
 import { KeypadService } from '../../../services/keypad.service';
 
 @Component({
-    selector: 'aspect-text-input-group-element',
-    templateUrl: './text-input-group-element.component.html',
-    styleUrls: ['./text-input-group-element.component.scss'],
-    standalone: false
+  selector: 'aspect-text-input-group-element',
+  templateUrl: './text-input-group-element.component.html',
+  styleUrls: ['./text-input-group-element.component.scss'],
+  standalone: false
 })
 
 export class TextInputGroupElementComponent
@@ -42,7 +45,8 @@ export class TextInputGroupElementComponent
     public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
     public veronaSubscriptionService: VeronaSubscriptionService,
     public validationService: ValidationService,
-    public deviceService: DeviceService
+    public deviceService: DeviceService,
+    public keyInputRestrictionService: KeyInputRestrictionService
   ) {
     super();
   }

@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>{{ 'sectionTemplates.inputTitle' | translate }}</h2>
+<div mat-dialog-content>
+  <h3>{{ 'sectionTemplates.question' | translate }}</h3>
+  <aspect-rich-text-editor [(content)]="text"
+                           [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
+  </aspect-rich-text-editor>
+
+  <h3>{{ 'sectionTemplates.answerCount' | translate }}</h3>
+  <mat-form-field class="align-start">
+    <input matInput type="number" min="1" max="9" required aspectNumberField
+           [ngModel]="answerCount"
+           (numberChange)="commitAnswerCount($event)"
+           (blur)="applyAnswerCount()"
+           (keydown.enter)="applyAnswerCount()">
+  </mat-form-field>
+
+  <h3>{{ 'sectionTemplates.numbering' | translate }}</h3>
+  <mat-form-field class="align-start">
+    <mat-select [disabled]="!numberingAvailable" [(ngModel)]="numbering">
+      <mat-option [value]="'latin'">a), b), ...</mat-option>
+      <mat-option [value]="'decimal'">1), 2), ...</mat-option>
+      <mat-option [value]="'bullets'">&#x2022;, &#x2022;, ...</mat-option>
+      <mat-option [value]="'none'">{{ 'sectionTemplates.numberingNone' | translate }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-checkbox [style.margin-bottom.px]="15" [(ngModel)]="numberingWithText" (change)="updateSubQuestions()">
+    {{ 'sectionTemplates.numberingWithText' | translate }}
+  </mat-checkbox>
+
+  @for (text of subQuestions; track $index) {
+    <mat-form-field appearance="outline" class="sub-questions">
+      <mat-label>{{ 'text' | translate }} {{$index + 1}}</mat-label>
+      <textarea matInput type="text" [(ngModel)]="subQuestions[$index]"></textarea>
+    </mat-form-field>
+  }
+
+  <h3>{{ 'sectionTemplates.answerFieldSize' | translate }}</h3>
+  <div class="row">
+    <mat-radio-group [(ngModel)]="multilineInputs">
+      <mat-radio-button [value]="false">{{ 'sectionTemplates.singleLine' | translate }}</mat-radio-button>
+      <mat-radio-button [value]="true">{{ 'sectionTemplates.multiLine' | translate }}</mat-radio-button>
+    </mat-radio-group>
+
+    @if (!multilineInputs) {
+      <mat-form-field [style]="'width: 270px;'">
+        <mat-label>{{ 'sectionTemplates.answerLength' | translate }}</mat-label>
+        <mat-select [(ngModel)]="fieldLength" [disabled]="multilineInputs">
+          <mat-option [value]="'large'">{{ 'sectionTemplates.answerLengthLarge' | translate }}</mat-option>
+          <mat-option [value]="'medium'">{{ 'sectionTemplates.answerLengthMedium' | translate }}</mat-option>
+          <mat-option [value]="'small'">{{ 'sectionTemplates.answerLengthSmall' | translate }}</mat-option>
+          <mat-option [value]="'very-small'">{{ 'sectionTemplates.answerLengthVerySmall' | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    } @else {
+      <mat-form-field [style]="'width: 270px;'">
+        <mat-label>{{ 'sectionTemplates.expectedCharsCount' | translate }}</mat-label>
+        <input matInput type="number" min="1" required aspectNumberField
+               [ngModel]="expectedCharsCount" [disabled]="!multilineInputs"
+               (numberChange)="commitExpectedCharsCount($event)">
+      </mat-form-field>
+    }
+  </div>
+
+  <h3>{{ 'sectionTemplates.formulaInput' | translate }}</h3>
+  <mat-checkbox [(ngModel)]="useMathFields">
+    {{ 'sectionTemplates.useMathFields' | translate }}
+  </mat-checkbox>
+</div>
+<div mat-dialog-actions>
+  <button mat-button
+          [mat-dialog-close]="{ text, answerCount, multilineInputs:multilineInputs, numbering, fieldLength,
+                                expectedCharsCount, useMathFields, numberingWithText, subQuestions }">
+    {{ 'confirm' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
+</div>

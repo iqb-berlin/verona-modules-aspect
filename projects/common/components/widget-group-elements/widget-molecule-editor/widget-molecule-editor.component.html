@@ -1,0 +1,15 @@
+<div class="widget-container">
+  <button mat-mini-fab
+          type='button'
+          [matTooltip]="'openWidget' | translate: { widget: ('moleculeEditor' | translate) }"
+          [style.background-color]="elementModel.styling.backgroundColor"
+          [style.color]="elementModel.styling.fontColor"
+          (click)="emitWidgetCall()">
+    <mat-icon>{{ WidgetMoleculeEditorElement.icon }}</mat-icon>
+  </button>
+
+  <div class="state-container" *ngIf="elementModel.state">
+    <img *ngIf="(elementModel.state | imageSrc) as src" [src]="src" alt="Molekül" class="molecule-image"/>
+    <div class="state-value" *ngIf="!(elementModel.state | imageSrc)">{{ elementModel.state }}</div>
+  </div>
+</div>

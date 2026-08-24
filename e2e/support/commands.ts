@@ -32,9 +32,10 @@
 //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
 //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
 //       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
 //   }
 // }
+
+import type { PlayerConfigOptions } from './index';
 
 Cypress.Commands.add('openPlayer', () => {
   cy.visit('http://localhost:4202/');
@@ -51,50 +52,128 @@ Cypress.Commands.add('switchToTabbedViewMode', () => {
 });
 
 Cypress.Commands.add('loadUnit', (filename: string) => {
-  cy.fixture(filename).as('unit').then(unit => {
+  cy.fixture(filename).then(unit => {
+    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
     cy.window().then(window => {
       const postMessage = {
         type: 'vopStartCommand',
         unitDefinition: JSON.stringify(unit)
       };
       window.postMessage(postMessage, '*');
+      // Retry once to avoid race conditions while the player message subscription initializes.
+      return Cypress.Promise.delay(150).then(() => {
+        window.postMessage(postMessage, '*');
+      });
+    });
+    cy.get('body', { timeout: 10000 }).then($body => {
+      const errorDialog = $body.find('mat-dialog-container');
+      if (errorDialog.length > 0) {
+        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
+      }
+    });
+  });
+});
+
+Cypress.Commands.add('loadUnitWithPrintMode', (filename: string, printMode: 'off' | 'on' | 'on-with-ids') => {
+  cy.fixture(filename).then(unit => {
+    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
+    cy.window().then(window => {
+      const postMessage = {
+        type: 'vopStartCommand',
+        unitDefinition: JSON.stringify(unit),
+        playerConfig: { printMode }
+      };
+      window.postMessage(postMessage, '*');
+      return Cypress.Promise.delay(150).then(() => {
+        window.postMessage(postMessage, '*');
+      });
+    });
+    cy.get('body', { timeout: 10000 }).then($body => {
+      const errorDialog = $body.find('mat-dialog-container');
+      if (errorDialog.length > 0) {
+        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
+      }
     });
   });
 });
 
 Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json') => {
-  cy.contains('Unit speichern').click();
+  cy.get('body').type('{esc}', { force: true });
+  cy.get('body').then($body => {
+    if ($body.find('.cdk-overlay-backdrop').length > 0) {
+      cy.get('body').click(0, 0, { force: true });
+    }
+  });
+  cy.contains('Unit speichern').click({ force: true });
   cy.get('a[download]')
-    .then(anchor => (
-      new Cypress.Promise((resolve, reject) => {
-        // Use XHR to get the blob that corresponds to the object URL.
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', anchor.prop('href'), true);
-        xhr.responseType = 'blob';
+    .should('have.length.at.least', 1)
+    .last()
+    .invoke('prop', 'href')
+    .then((url: string) => cy.window().then(win => win.fetch(url).then(response => response.text())))
+    .then(content => cy.task('writeTextFile', { filepath, content }, { log: false }));
+});
 
-        // Once loaded, use FileReader to get the string back from the blob.
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            const blob = xhr.response;
-            const reader = new FileReader();
-            reader.onload = () => {
-              // Once we have a string, resolve the promise to let
-              // the Cypress chain continue, e.g. to assert on the result.
-              resolve(reader.result);
-              cy.writeFile(filepath, reader.result as string);
-            };
-            reader.readAsText(blob);
+Cypress.Commands.add('getByAlias', (alias: string) => cy.get(`[data-list-alias="${alias}"]`));
+
+Cypress.Commands.add('getElementByAlias', (alias: string) => cy.get(`[data-element-alias="${alias}"]`));
+
+Cypress.Commands.add('goToPlayerPage', (pageIndex: number) => {
+  cy.get('aspect-unit-menu').find('button').click();
+  cy.contains('button', `Seite ${pageIndex}`).click();
+});
+
+Cypress.Commands.add('clickOutside', (): void => {
+  cy.get('body').click(0, 0);
+});
+
+Cypress.Commands.add('getElement', (elementType: string, label?: string) => {
+  if (label) {
+    return cy.contains(elementType, label);
+  }
+
+  return cy.get(elementType);
+});
+
+Cypress.Commands.add('stubFileInput', () => {
+  // The app creates a hidden <input type=file> via document.createElement that is never
+  // appended to the DOM. Intercept createElement to attach it to <body> so Cypress can find it.
+  cy.window().then(win => {
+    const originalCreateElement = win.document.createElement.bind(win.document);
+    cy.stub(win.document, 'createElement').callsFake((tagName: string, options?: ElementCreationOptions) => {
+      const el = originalCreateElement(tagName, options);
+      if (tagName.toLowerCase() === 'input') {
+        const originalClick = el.click.bind(el);
+        el.click = () => {
+          if ((el as HTMLInputElement).type === 'file') {
+            win.document.body.appendChild(el);
           }
+          originalClick();
         };
-        xhr.send();
-      })
-    ));
+      }
+      return el;
+    });
+  });
 });
 
-Cypress.Commands.add('getByAlias', (alias: string) => {
-  return cy.get(`[data-list-alias="${alias}"]`);
-});
-
-Cypress.Commands.add('clickOutside', ():void => {
-  cy.get('body').click(0,0);
+Cypress.Commands.add('loadUnitWithOptions', (filename: string, playerConfig: PlayerConfigOptions) => {
+  cy.fixture(filename).then(unit => {
+    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
+    cy.window().then(window => {
+      const postMessage = {
+        type: 'vopStartCommand',
+        unitDefinition: JSON.stringify(unit),
+        playerConfig
+      };
+      window.postMessage(postMessage, '*');
+      return Cypress.Promise.delay(150).then(() => {
+        window.postMessage(postMessage, '*');
+      });
+    });
+    cy.get('body', { timeout: 10000 }).then($body => {
+      const errorDialog = $body.find('mat-dialog-container');
+      if (errorDialog.length > 0) {
+        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
+      }
+    });
+  });
 });

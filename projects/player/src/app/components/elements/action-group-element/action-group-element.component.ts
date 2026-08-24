@@ -2,13 +2,13 @@ import {
   AfterViewInit, Component, OnDestroy, ViewChild
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements/button/button';
-import { TriggerActionEvent, TriggerElement } from 'common/models/elements/trigger/trigger';
+import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements/action-group-elements/button';
+import { TriggerActionEvent, TriggerElement } from 'common/models/elements/action-group-elements/trigger';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { Subject } from 'rxjs';
-import { ValueChangeElement } from 'common/interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';

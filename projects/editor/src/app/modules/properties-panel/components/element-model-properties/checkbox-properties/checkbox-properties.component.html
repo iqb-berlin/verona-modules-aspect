@@ -1,0 +1,23 @@
+@if (combinedProperties.imgSrc !== undefined) {
+  <button class="media-src-button" [style.align-self]="'center'"
+          mat-fab color="primary"
+          [matTooltip]="'propertiesPanel.imageInsteadOfLabel' | translate" [matTooltipPosition]="'right'"
+          (click)="changeImgSrc()">
+    <mat-icon>image</mat-icon>
+  </button>
+}
+
+{{'preset' | translate }}
+<mat-button-toggle-group [style.align-self]="'flex-start'"
+                         [value]="combinedProperties.value"
+                         (change)="updateModel.emit({ property: 'value', value: $event.value })">
+  <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>
+  <mat-button-toggle [value]="false">{{'propertiesPanel.false' | translate }}</mat-button-toggle>
+</mat-button-toggle-group>
+
+@if (unitService.expertMode && combinedProperties.crossOutChecked !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.crossOutChecked"
+                          (valueChange)="updateModel.emit({ property: 'crossOutChecked', value: $event })">
+    {{'propertiesPanel.crossOutChecked' | translate }}
+  </aspect-merged-checkbox>
+}

@@ -1,0 +1,64 @@
+:host {
+  align-self: center;
+  justify-content: inherit;
+  display: flex;
+  max-height: 100%;
+}
+.image-wrapper {
+  display: flex;
+  justify-content: inherit;
+  max-height: 100%;
+}
+.image-wrapper img {
+  object-fit: scale-down;
+  width: 100%;
+  height: 100%;
+}
+.column {flex-direction: column;}
+.column-reverse {flex-direction: column-reverse;}
+.row {flex-direction: row;}
+.row-reverse {flex-direction: row-reverse;}
+/* A block, not a flex container: the label is stored rich text, whose paragraphs stack on their own,
+   while text and a formula that belong to one line have to stay on it (#970). */
+.text {
+  display: block;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  text-decoration: inherit;
+  background-color: inherit;
+  margin: 10px;
+}
+/* The two rules below keep the label centred the way the flex column kept it, now that this box no
+   longer centres anything itself.
+
+   With an image above or below the text, the image decides how wide the wrapper is, and the text box
+   would be stretched to that width with its content at the left edge. `align-self` makes the box as wide
+   as its own content again, centred across the image. With the image beside the text, the wrapper's cross
+   axis is vertical, and the box was never stretched horizontally -- hence only the two column cases. */
+.column > .text, .column-reverse > .text {
+  align-self: center;
+}
+/* Inside the box, each block of the label is as wide as its own content and centred -- which is what the
+   flex column did to its items, and what keeps a short paragraph next to a long one in the middle. An
+   inline child is untouched by both declarations, and a stored image keeps its size, which it carries as
+   an inline style. `::ng-deep` is what makes the rule apply at all: the label arrives through
+   `[innerHTML]`, so its elements carry no encapsulation attribute. */
+:host ::ng-deep .text > * {
+  width: fit-content;
+  margin-inline: auto;
+}
+.audio-button {
+  cursor: pointer;
+  align-self: center;
+  padding: 0 5px;
+  display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
+}
+.audio-button:hover {
+  color: #006064;
+}
+.hide-content .text, .hide-content img {
+  visibility: hidden;
+}

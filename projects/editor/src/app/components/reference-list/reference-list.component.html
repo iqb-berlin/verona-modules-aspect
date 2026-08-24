@@ -1,0 +1,6 @@
+<ng-container *ngFor="let refGroup of refs ? refs : data">
+  <span>
+    <b>{{ refGroup.element.alias }}</b> wird referenziert von:
+  </span>
+  <aspect-element-list [elements]="refGroup.refs"></aspect-element-list>
+</ng-container>

@@ -1,0 +1,23 @@
+@if (type === 'math') {
+  <aspect-math-input #inputComponent
+                     [fullWidth]="false"
+                     [value]="value"
+                     [readonly]="readonly"
+                     [mathKeyboardPresets]="mathKeyboardPresets"
+                     (focusIn)="onFocusIn($event)"
+                     (focusOut)="focusOut.emit($event)"
+                     (valueChange)="valueChanged.emit({ index: index, value: $event})">
+  </aspect-math-input>
+} @else {
+  <aspect-area-input #inputComponent
+                     [showSoftwareKeyboard]="showSoftwareKeyboard"
+                     [hideNativeKeyboard]="hideNativeKeyboard"
+                     [value]="value"
+                     [readonly]="readonly"
+                     (focusIn)="onFocusIn($event)"
+                     (focusOut)="onFocusOut($event)"
+                     (onKeyDown)="onKeyDown.emit($event)"
+                     (valueChanged)="valueChanged.emit({ index: index, value: $event})"
+                     (remove)="onRemove($event)">
+  </aspect-area-input>
+}

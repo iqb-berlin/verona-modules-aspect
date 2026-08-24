@@ -1,22 +1,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { TooltipPosition } from 'common/interfaces';
+import { TooltipPosition } from 'common/models/ui-element-interfaces';
 
 @Component({
-    selector: 'aspect-tooltip',
-    template: `
-    <div #tooltip
-         class="tooltip"
-         [style.left.px]="left"
-         [style.top.px]="top"
-         [style.max-width]="maxWidth">
-      <div #tooltipInner
-           class="tooltip-text">
-        {{tooltipText}}
-      </div>
-    </div>
-  `,
-    styleUrls: ['./tooltip.component.scss'],
-    standalone: false
+  selector: 'aspect-tooltip',
+  templateUrl: './tooltip.component.html',
+  styleUrls: ['./tooltip.component.scss'],
+  standalone: false
 })
 export class TooltipComponent {
   tooltipText: string = '';

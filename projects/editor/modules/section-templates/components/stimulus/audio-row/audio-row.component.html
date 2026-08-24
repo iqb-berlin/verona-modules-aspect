@@ -1,0 +1,12 @@
+<audio controls [src]=src [style.opacity]="src ? 1 : 0.5"></audio>
+<button mat-fab color="primary"
+        [matTooltip]="'sectionTemplates.changeMediaSource' | translate" [matTooltipPosition]="'right'"
+        (click)="changeMediaSrc.emit()">
+  <mat-icon>upload_file</mat-icon>
+</button>
+<mat-form-field appearance="outline">
+  <mat-label>{{ 'sectionTemplates.maxRuns' | translate }}</mat-label>
+  <input matInput type="number" min="1" required aspectNumberField
+         [ngModel]="maxRuns"
+         (numberChange)="commitMaxRuns($event)">
+</mat-form-field>

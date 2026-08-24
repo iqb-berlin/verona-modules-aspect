@@ -1,35 +1,48 @@
 import {
-  Component, EventEmitter, Input, OnDestroy, OnInit, Output
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild
 } from '@angular/core';
-import { TextElement } from 'common/models/elements/text/text';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MarkingRange } from 'common/models/marking-data';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
-import { first, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector: 'aspect-markable-word',
-    imports: [],
-    templateUrl: './markable-word.component.html',
-    styleUrl: './markable-word.component.scss'
+  selector: 'aspect-markable-word',
+  standalone: false,
+  templateUrl: './markable-word.component.html',
+  styleUrl: './markable-word.component.scss'
 })
-export class MarkableWordComponent implements OnInit, OnDestroy {
+export class MarkableWordComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() id!: number;
   @Input() text!: string;
+  @Input() contentNode: Node | null = null;
   @Input() markingRange!: BehaviorSubject<MarkingRange | null> | null;
   @Input() color!: string | null;
   @Input() markColor!: string | undefined;
   @Output() colorChange = new EventEmitter<string | null>();
 
-  private ngUnsubscribe = new Subject<void>();
+  @ViewChild('wordRef') wordRef!: ElementRef<HTMLSpanElement>;
 
-  constructor(private nativeEventService: NativeEventService) {}
+  private ngUnsubscribe = new Subject<void>();
+  private cleanMarkingTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  constructor(private nativeEventService: NativeEventService, private renderer: Renderer2) {}
 
   ngOnInit(): void {
     if (this.markingRange) {
       this.markingRange
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => this.applyRangeColor());
+    }
+  }
+
+  /* A markable that stands for existing markup -- a formula -- is handed the node itself instead of
+   * text: it is moved into this span, so it keeps its own markup and gets the marking colour, the
+   * click target and the range behaviour of a word around it. */
+  ngAfterViewInit(): void {
+    if (this.contentNode) {
+      this.renderer.appendChild(this.wordRef.nativeElement, this.contentNode);
     }
   }
 
@@ -80,12 +93,12 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
 
   private subscribeForMouseUp(): void {
     this.nativeEventService.mouseUp
-      .pipe(takeUntil(this.ngUnsubscribe), first())
+      .pipe(takeUntil(this.ngUnsubscribe), take(1))
       .subscribe(() => this.cleanMarking());
   }
 
   private cleanMarking(): void {
-    setTimeout(() => {
+    this.cleanMarkingTimeout = setTimeout(() => {
       if (this.markingRange?.value) {
         this.markingRange.next(null);
       }
@@ -118,7 +131,13 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
     this.colorChange.emit(this.color);
   }
 
+  /* The deferred end of a range selection has to be cancelled explicitly, otherwise it writes
+   * into the marking range of a text this component no longer belongs to. */
   ngOnDestroy(): void {
+    if (this.cleanMarkingTimeout !== null) {
+      clearTimeout(this.cleanMarkingTimeout);
+      this.cleanMarkingTimeout = null;
+    }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

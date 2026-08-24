@@ -5,12 +5,13 @@ import { UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { PrintMode } from 'player/modules/verona/models/verona';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
+import { ComponentRegistry } from 'common/utils/component-registry';
 
 @Component({
-    selector: 'aspect-print-element',
-    templateUrl: './print-element.component.html',
-    styleUrls: ['./print-element.component.scss'],
-    standalone: false
+  selector: 'aspect-print-element',
+  templateUrl: './print-element.component.html',
+  styleUrls: ['./print-element.component.scss'],
+  standalone: false
 })
 export class PrintElementComponent implements OnInit {
   @Input() printMode!: PrintMode;
@@ -25,8 +26,9 @@ export class PrintElementComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.elementModel) {
+      const componentType = ComponentRegistry.getComponent(this.elementModel.type);
       this.printElementComponent =
-        this.elementComponentContainer.createComponent(this.elementModel.getElementComponent()).instance;
+        this.elementComponentContainer.createComponent(componentType).instance;
       this.printElementComponent.elementModel = this.elementModel;
 
       if (this.printMode === 'on-with-ids') {

@@ -1,0 +1,177 @@
+<fieldset>
+  <legend>{{ 'propertiesPanel.dimensions' | translate }}</legend>
+  <!-- See position-field-set: what lays the selection out decides, not the indexed section (#1204).
+       The flag covers compound children, which this set used to ask about separately. -->
+  <ng-container *ngIf="selectionService.isSelectionDynamicallyPositioned; else elseBlock">
+    <ng-container *ngIf="dimensions.isWidthFixed !== undefined else elseBlockWidth">
+      <aspect-merged-checkbox #fixedWidth [value]="dimensions.isWidthFixed"
+                              (valueChange)="updateDimensionProperty('isWidthFixed', $event)">
+        {{'propertiesPanel.isWidthFixed' | translate }}
+      </aspect-merged-checkbox>
+      <mat-form-field appearance="fill">
+        <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
+        <input matInput type="number" min="0" aspectNumberField required
+               [disabled]="!fixedWidth.checked"
+               [ngModel]="dimensions.width"
+               (numberChange)="commitDimension('width', $event)">
+        @if (dimensions.width === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    </ng-container>
+    <ng-template #elseBlockWidth>
+      <mat-form-field appearance="fill">
+        <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
+        <input matInput type="number" min="0" aspectNumberField required
+               [ngModel]="dimensions.width"
+               (numberChange)="commitDimension('width', $event)">
+        @if (dimensions.width === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    </ng-template>
+
+    <ng-container *ngIf="dimensions.isHeightFixed !== undefined else elseBlockHeight">
+      <aspect-merged-checkbox #fixedHeight [value]="dimensions.isHeightFixed"
+                              (valueChange)="updateDimensionProperty('isHeightFixed', $event)">
+        {{'propertiesPanel.isHeightFixed' | translate }}
+      </aspect-merged-checkbox>
+      <mat-form-field>
+        <mat-label>
+          {{'propertiesPanel.height' | translate }}
+        </mat-label>
+        <input matInput type="number" min="0" aspectNumberField required
+               [ngModel]="dimensions.height"
+               (numberChange)="commitDimension('height', $event)">
+        @if (dimensions.height === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    </ng-container>
+    <ng-template #elseBlockHeight>
+      <mat-form-field>
+        <mat-label>
+          {{'propertiesPanel.height' | translate }}
+        </mat-label>
+        <input matInput type="number" min="0" aspectNumberField required
+               [ngModel]="dimensions.height"
+               (numberChange)="commitDimension('height', $event)">
+        @if (dimensions.height === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    </ng-template>
+
+    <!-- The four limit pairs read their box through `limitEnabledState` and their marker through
+         `propertyDiverges` instead of testing the value: `null` is a value of its own here ("no
+         limit"), so the box used to say "no limit anywhere" about a selection whose elements each
+         have one, and the disabled field hid that there was anything to see (#1167). A box left
+         indeterminate keeps its field editable - typing a number is how the author resolves it. -->
+    @if (dimensions.minWidth !== undefined) {
+      <aspect-merged-checkbox
+        #minWidthEnabled
+        [value]="divergingProperties | limitEnabledState : 'dimensions.minWidth' : dimensions.minWidth"
+        (valueChange)="toggleProperty('minWidth', $event)">
+        {{'propertiesPanel.minWidthEnabled' | translate }}
+      </aspect-merged-checkbox>
+      <mat-form-field>
+        <mat-label>
+          {{'propertiesPanel.minWidth' | translate }}
+        </mat-label>
+        <input matInput type="number" min="0" aspectNumberField
+               [disabled]="!minWidthEnabled.checked && !minWidthEnabled.indeterminate"
+               [ngModel]="dimensions.minWidth"
+               (numberChange)="commitDimension('minWidth', $event)">
+        @if (divergingProperties | propertyDiverges : 'dimensions.minWidth') {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    }
+
+    @if (dimensions.maxWidth !== undefined) {
+      <aspect-merged-checkbox
+        #maxWidthEnabled
+        [value]="divergingProperties | limitEnabledState : 'dimensions.maxWidth' : dimensions.maxWidth"
+        (valueChange)="toggleProperty('maxWidth', $event)">
+        {{'propertiesPanel.maxWidthEnabled' | translate }}
+      </aspect-merged-checkbox>
+      <mat-form-field>
+        <mat-label>
+          {{'propertiesPanel.maxWidth' | translate }}
+        </mat-label>
+        <input matInput type="number" min="0" aspectNumberField
+               [disabled]="!maxWidthEnabled.checked && !maxWidthEnabled.indeterminate"
+               [ngModel]="dimensions.maxWidth"
+               (numberChange)="commitDimension('maxWidth', $event)">
+        @if (divergingProperties | propertyDiverges : 'dimensions.maxWidth') {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    }
+
+    @if (dimensions.minHeight !== undefined) {
+      <aspect-merged-checkbox
+        #minHeightEnabled
+        [value]="divergingProperties | limitEnabledState : 'dimensions.minHeight' : dimensions.minHeight"
+        (valueChange)="toggleProperty('minHeight', $event)">
+        {{'propertiesPanel.minHeightEnabled' | translate }}
+      </aspect-merged-checkbox>
+      <mat-form-field>
+        <mat-label>
+          {{'propertiesPanel.minHeight' | translate }}
+        </mat-label>
+        <input matInput type="number" min="0" aspectNumberField
+               [disabled]="!minHeightEnabled.checked && !minHeightEnabled.indeterminate"
+               [ngModel]="dimensions.minHeight"
+               (numberChange)="commitDimension('minHeight', $event)">
+        @if (divergingProperties | propertyDiverges : 'dimensions.minHeight') {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    }
+
+    @if (dimensions.maxHeight !== undefined) {
+      <aspect-merged-checkbox
+        #maxHeightEnabled
+        [value]="divergingProperties | limitEnabledState : 'dimensions.maxHeight' : dimensions.maxHeight"
+        (valueChange)="toggleProperty('maxHeight', $event)">
+        {{'propertiesPanel.maxHeightEnabled' | translate }}
+      </aspect-merged-checkbox>
+      <mat-form-field>
+        <mat-label>
+          {{'propertiesPanel.maxHeight' | translate }}
+        </mat-label>
+        <input matInput type="number" min="0" aspectNumberField
+               [disabled]="!maxHeightEnabled.checked && !maxHeightEnabled.indeterminate"
+               [ngModel]="dimensions.maxHeight"
+               (numberChange)="commitDimension('maxHeight', $event)">
+        @if (divergingProperties | propertyDiverges : 'dimensions.maxHeight') {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    }
+  </ng-container>
+
+  <ng-template #elseBlock>
+    <mat-form-field appearance="fill">
+      <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
+      <input matInput type="number" min="0" aspectNumberField required
+             [ngModel]="dimensions.width"
+             (numberChange)="commitDimension('width', $event)">
+      @if (dimensions.width === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        {{'propertiesPanel.height' | translate }}
+      </mat-label>
+      <input matInput type="number" min="0" aspectNumberField required
+             [ngModel]="dimensions.height"
+             (numberChange)="commitDimension('height', $event)">
+      @if (dimensions.height === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  </ng-template>
+</fieldset>

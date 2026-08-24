@@ -1,0 +1,32 @@
+<fieldset>
+  <legend>{{'toolbox.widget-periodic-table' | translate}}</legend>
+  <div class="fx-column-start-stretch">
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoOrder"
+                            (valueChange)="updateModel.emit({ property: 'showInfoOrder', value: $event })">
+      {{ 'propertiesPanel.showInfoOrder' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoENeg"
+                            (valueChange)="updateModel.emit({ property: 'showInfoENeg', value: $event })">
+      {{ 'propertiesPanel.showInfoENeg' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoAMass"
+                            (valueChange)="updateModel.emit({ property: 'showInfoAMass', value: $event })">
+      {{ 'propertiesPanel.showInfoAMass' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.closeOnSelection"
+                            (valueChange)="updateModel.emit({ property: 'closeOnSelection', value: $event })">
+      {{ 'propertiesPanel.closeOnSelection' | translate }}
+    </aspect-merged-checkbox>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{'propertiesPanel.maxNumberOfSelections' | translate }}</mat-label>
+      <input matInput type="number" min="0" required aspectNumberField
+             [ngModel]="combinedProperties.maxNumberOfSelections"
+             (numberChange)="updateModel.emit(
+                    { property: 'maxNumberOfSelections', value: $event.value, isInputValid: $event.isInputValid })">
+      @if (combinedProperties.maxNumberOfSelections === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  </div>
+</fieldset>

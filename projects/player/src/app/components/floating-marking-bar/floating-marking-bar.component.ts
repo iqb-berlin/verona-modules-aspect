@@ -2,13 +2,13 @@ import {
   Component, EventEmitter, Input, OnChanges, Output, SimpleChanges
 } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { TextComponent } from 'common/components/text/text.component';
+import { TextComponent } from 'common/components/text-group-elements/text/text.component';
 
 @Component({
-    selector: 'aspect-floating-marking-bar',
-    templateUrl: './floating-marking-bar.component.html',
-    styleUrls: ['./floating-marking-bar.component.scss'],
-    standalone: false
+  selector: 'aspect-floating-marking-bar',
+  templateUrl: './floating-marking-bar.component.html',
+  styleUrls: ['./floating-marking-bar.component.scss'],
+  standalone: false
 })
 export class FloatingMarkingBarComponent implements OnChanges {
   @Input() elementComponent!: TextComponent;
@@ -32,7 +32,6 @@ export class FloatingMarkingBarComponent implements OnChanges {
     offsetX: 0,
     offsetY: 0
   }];
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isMarkingBarOpen && this.isMarkingBarOpen) {
@@ -59,7 +58,7 @@ export class FloatingMarkingBarComponent implements OnChanges {
   }
 
   private getViewConstraint(): { top: number, left: number } {
-    return  {
+    return {
       top: window.innerHeight - this.textComponentRect.top > this.textComponentRect.height ?
         this.textComponentRect.height :
         window.innerHeight - this.textComponentRect.top,

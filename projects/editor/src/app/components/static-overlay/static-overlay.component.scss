@@ -1,0 +1,17 @@
+.draggable-element {position: absolute}
+
+.draggable-element:active {cursor: grabbing}
+
+.resizeHandle {position: absolute; cursor: nwse-resize}
+
+.resize-droplist {position: absolute}
+
+.temporaryHighlight {z-index: 100}
+
+:host ::ng-deep .prevent-interaction * {pointer-events: none !important;}
+
+:host ::ng-deep .prevent-interaction math-field {pointer-events: none !important;}
+
+:host ::ng-deep .prevent-interaction math-field::part(container) {pointer-events: none !important;}
+
+:host ::ng-deep .prevent-interaction math-field::part(mathfield) {pointer-events: none !important;}

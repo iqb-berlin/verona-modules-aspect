@@ -3,9 +3,9 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AudioElement } from 'common/models/elements/media-elements/audio';
-import { VideoElement } from 'common/models/elements/media-elements/video';
-import { ValueChangeElement } from 'common/interfaces';
+import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
+import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { ElementComponent } from './element-component.directive';
 
 @Directive()

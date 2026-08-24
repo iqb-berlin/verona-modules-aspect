@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ 'sectionTemplates.likertTitle' | translate }}</h2>
+<div mat-dialog-content>
+  <h3>{{ 'text' | translate }}</h3>
+  <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
+                           [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
+  </aspect-rich-text-editor>
+
+  <h3>{{ 'sectionTemplates.sentenceStart' | translate }}</h3>
+  <mat-form-field appearance="fill" [style.width.px]="400">
+    <textarea matInput type="text" [(ngModel)]="text2"
+              [placeholder]="'sectionTemplates.sentenceStartPlaceholder' | translate"></textarea>
+  </mat-form-field>
+
+  <h3>{{ 'sectionTemplates.options' | translate }}</h3>
+  <aspect-option-list-panel class="options" [textFieldLabel]="'newOption'"
+                            [itemList]="options"
+                            [showImageButton]="true"
+                            [localMode]="true">
+  </aspect-option-list-panel>
+
+  <h3>{{ 'rows' | translate }}</h3>
+  <aspect-option-list-panel class="options" [textFieldLabel]="'newRow'"
+                            [itemList]="rows"
+                            [showImageButton]="true"
+                            [localMode]="true">
+  </aspect-option-list-panel>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [disabled]="options.length < 1 || rows.length < 1"
+          [mat-dialog-close]="{ text1, text2, options, rows }">{{'confirm' | translate }}</button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</div>

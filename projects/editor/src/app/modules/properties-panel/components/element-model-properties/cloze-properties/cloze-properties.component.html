@@ -1,0 +1,7 @@
+@if (combinedProperties.document) {
+  <button class="edit-document-button" mat-raised-button
+          [style.align-self]="'center'"
+          (click)="elementService.showDefaultEditDialog()">
+    {{ 'propertiesPanel.editTextAndElements' | translate }}
+  </button>
+}

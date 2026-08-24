@@ -2,9 +2,9 @@ import { Section, SectionProperties } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { AbstractIDService } from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 
 export class Page {
   [index: string]: unknown;
@@ -38,7 +38,9 @@ export class Page {
       if (page?.margin !== undefined) this.margin = page.margin;
       if (page?.backgroundColor !== undefined) this.backgroundColor = page.backgroundColor;
       if (page?.alwaysVisible !== undefined) this.alwaysVisible = page.alwaysVisible;
-      if (page?.alwaysVisiblePagePosition !== undefined) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
+      if (page?.alwaysVisiblePagePosition !== undefined) {
+        this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
+      }
       if (page?.alwaysVisibleAspectRatio !== undefined) this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
     }
     this.sections = this.createSections(page, idService);
@@ -59,8 +61,6 @@ export class Page {
   getVariableInfos(dropLists: DropListElement[]): VariableInfo[] {
     return this.sections.map(section => section.getVariableInfos(dropLists)).flat();
   }
-
-
 }
 
 export interface PageProperties {

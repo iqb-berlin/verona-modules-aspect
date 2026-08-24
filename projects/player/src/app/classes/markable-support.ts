@@ -1,5 +1,7 @@
-import { ApplicationRef, createComponent, Renderer2 } from '@angular/core';
-import { TextComponent } from 'common/components/text/text.component';
+import {
+  ApplicationRef, ComponentRef, createComponent, Renderer2
+} from '@angular/core';
+import { TextComponent } from 'common/components/text-group-elements/text/text.component';
 import { Markable, MarkablesContainer } from 'player/src/app/models/markable.interface';
 import {
   MarkablesContainerComponent
@@ -8,12 +10,14 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MarkingRange } from 'common/models/marking-data';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
+import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 
 export class MarkableSupport {
   private renderer: Renderer2;
   private applicationRef: ApplicationRef;
   private markingPanelService: MarkingPanelService;
   private ngUnsubscribe = new Subject<void>();
+  private componentRefs: ComponentRef<MarkablesContainerComponent>[] = [];
 
   // eslint-disable-next-line max-len
   private static markables: RegExp = /[^\p{L}\d\-']*[\p{L}\d\-']+[^\p{L}\d\-']*|[^\p{L}\d\-']+[\p{L}\d\-']*[^\p{L}\d\-']*|[^\p{L}\d\-']*[\p{L}\d\-']*[^\p{L}\d\-']+/gu;
@@ -99,6 +103,7 @@ export class MarkableSupport {
         );
       });
     this.applicationRef.attachView(componentRef.hostView);
+    this.componentRefs.push(componentRef);
   }
 
   private static getMarkablesContainers(nodes: Node[], savedMarks: string[]): MarkablesContainer[] {
@@ -113,7 +118,26 @@ export class MarkableSupport {
   private static getMarkablesContainer(node: Node, offset: number, savedMarks: string[]): MarkablesContainer {
     return {
       node: node,
-      markables: MarkableSupport.getMarkables(node.textContent || '', offset, savedMarks)
+      markables: MarkableSupport.isFormula(node) ?
+        [MarkableSupport.getFormulaMarkable(node, offset, savedMarks)] :
+        MarkableSupport.getMarkables(node.textContent || '', offset, savedMarks)
+    };
+  }
+
+  /* A formula is one markable, marked as a whole. Splitting it the way a text is split made its
+   * glyphs markables of their own, which left a formula markable in fragments only -- and tied the
+   * ids of stored answers to its markup: how many text nodes a formula contributes is up to the
+   * renderer that wrote it, KaTeX MathML carried its LaTeX annotation as text where MathLive markup
+   * carries none, so a changed formula rendering moved the marks of stored answers (#1244). */
+  private static getFormulaMarkable(node: Node, id: number, savedMarks: string[]): Markable {
+    return {
+      id: id,
+      prefix: '',
+      word: '',
+      suffix: '',
+      isActive: true,
+      color: MarkableSupport.getColorValueById(id, savedMarks),
+      contentNode: node
     };
   }
 
@@ -131,7 +155,8 @@ export class MarkableSupport {
         word: word ? word[0] : '',
         suffix: suffix ? suffix[0] : '',
         isActive: !!(word && word[0].length),
-        color: color
+        color: color,
+        contentNode: null
       };
     }) || [];
   }
@@ -142,7 +167,11 @@ export class MarkableSupport {
         nodes.push(node);
       }
       if (node.nodeType === Node.ELEMENT_NODE) {
-        if (node.childNodes.length) {
+        /* A formula the author left empty renders nothing. Like an empty text node it stays out, so
+         * it does not spend an id on a markable no reader can see or click. */
+        if (MarkableSupport.isFormula(node)) {
+          if (node.textContent) nodes.push(node);
+        } else if (node.childNodes.length) {
           nodes.push(...MarkableSupport.getNodes(node.childNodes));
         }
       }
@@ -150,12 +179,24 @@ export class MarkableSupport {
     }, []);
   }
 
+  private static isFormula(node: Node): boolean {
+    return node.nodeName.toLowerCase() === MathFormulaMarkup.NODE_TAG;
+  }
+
   private static getColorValueById(id: number, savedMarks: string[]): string | null {
     return savedMarks.map(savedMark => savedMark.split('-'))
       .find(mark => mark[0] === id.toString())?.[2] || null;
   }
 
-  reset(): void {
+  /* The containers are created outside of any template, so nothing destroys them implicitly:
+   * their views stay registered at the ApplicationRef and are checked on every tick until they
+   * are destroyed here. ViewRef.destroy() detaches the view from the ApplicationRef by itself.
+   *
+   * An instance is spent afterwards: the text nodes it replaced with the containers are gone
+   * with them, and a completed ngUnsubscribe no longer guards new subscriptions. */
+  destroy(): void {
+    this.componentRefs.forEach(componentRef => componentRef.destroy());
+    this.componentRefs = [];
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

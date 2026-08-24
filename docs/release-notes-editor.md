@@ -1,10 +1,80 @@
 Editor
 ======
+## 3.0.0
+### Neue Funktionen
+- Neuer Dialog zum Upload von Bildern
+  - Ein Bild kann beim Hochladen automatisch verkleinert werden, um die Dateigröße zu senken
+  - Breite und Höhe sind fest gekoppelt: Die eine Angabe rechnet die andere mit, das Seitenverhältnis bleibt immer erhalten. Beide Felder zeigen von Anfang an die Größe, mit der das Bild eingefügt wird
+  - Das Bild wird auch dann nach WebP umgewandelt, wenn die Maße unverändert bleiben — allein das Format spart Dateigröße
+- Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
+  - Neue Eigenschaft "Textausrichtung" (linksbündig, zentriert, rechtsbündig) für den eingegebenen Text
+- Tabelle
+  - Neue optionale Kopfzeile: je Spalte ein Text mit einstellbarer Ausrichtung (linksbündig, zentriert, rechtsbündig); Bearbeitung im Dialog "Elemente anpassen", dort können auch weitere Kopfzeilen hinzugefügt und entfernt werden
+  - Neue Eigenschaft "Haftende Kopfzeile" (fixiert die Kopfzeile beim Scrollen)
+- Lückentext
+  - Der neue Knopf "Klappliste" im Texteditor fügt eine Klappliste als Lücke ein — neben den bisherigen Lückentypen Eingabefeld, Ablegeliste, Optionsfeld, Kontrollkästchen und Knopf. Ihre Optionen und die Vorbelegung werden wie bei einer freistehenden Klappliste im Eigenschaftenbereich eingestellt
+- Tooltip (Text und Knopf)
+  - Der Tooltip-Text kann jetzt formatiert werden (Fett, Kursiv, Unterstrichen, Hoch-/Tiefstellung, Schrift- und Hintergrundfarbe, Sonderzeichen); der Dialog enthält dafür den reduzierten Texteditor
+  - Der Tooltip eines Knopfes wird über die neue Schaltfläche "Tooltip bearbeiten" im Eigenschaftenbereich im selben Dialog bearbeitet (Text, Position und Löschen)
+- Neue Elementgruppe "Widgets" im Werkzeugkasten
+  - Neues Element "Periodensystem": einstellbar sind die angezeigten Informationen (Ordnungszahlen, Elektronegativität, mittlere relative Atommasse), das Schließen bei Auswahl und die maximale Anzahl der Auswahlen
+  - Neues Element "Molekül-Editor": einstellbar ist die Darstellungsart (Valenzstrichformel oder Elektronenformel)
+- Optionsfelder, Kontrollkästchen
+  - Neue Eigenschaft "Vertikale Knopfausrichtung": "an der ersten Zeile" (Voreinstellung, bisheriges Verhalten) oder "zentriert" (Knopf in der Mitte der gesamten Beschriftung). Die Optionentabelle hat diese Einstellung schon je Zeile
+
+### Änderungen
+- Element-IDs dürfen jetzt beliebig lang sein; die Begrenzung auf 20 Zeichen ist entfallen. Die übrigen Regeln (Buchstaben, Ziffern, Unterstrich und Bindestrich, keine Leerzeichen) gelten unverändert
+- Diese Regeln werden jetzt überall geprüft, wo eine ID oder ein Alias eingegeben wird — auch bei Zustandsvariablen, den Ziehelementen einer Ablegeliste, den Zeilen der Optionentabelle und den verfolgten Variablen eines Geometrie-Elements. Eine unerlaubte Eingabe wird nicht übernommen, und der Editor nennt die erlaubten Zeichen. Bringt eine geladene Aufgabe unerlaubte Namen mit, nennt ein Hinweis sie: Für die Kodierung stehen diese Variablen nicht zur Verfügung
+- Drei Einstellungen sind aus dem Eigenschaftenbereich entfernt, weil sie nie eine Wirkung hatten: "Beschriftung" bei Bildbereichen (der eingegebene Text erschien nirgends), die Hintergrundfarbe bei "Optionsfelder mit Bild" (dort wirken nur die Schrift-Einstellungen) und im Expertenmodus "Knopf zum Leeren anzeigen" beim Eingabefeld im Lückentext (einen solchen Knopf hat es nie gezeigt). An vorhandenen Aufgaben ändert sich dadurch nichts
+- Sind Elemente unterschiedlichen Typs gemeinsam markiert, bietet der Eigenschaftenbereich nur noch Einstellungen an, die alle von ihnen haben. Bisher konnte eine Einstellung erscheinen, die nur zu einem der markierten Elemente gehörte — und nur dort wirkte. Bei Knopf und Auslöser gemeinsam gibt es deshalb keine Aktionsauswahl mehr: Die beiden haben verschiedene Aktionen
+- Assistent "Geometrie": Der erzeugte Quellenhinweis nennt nur noch GeoGebra samt Lizenzbedingungen, der IQB-Teil entfällt
+- Formelfeld
+  - Die Vorbelegung lässt sich als Formel oder als LaTeX-Quelltext eingeben; ein Knopf schaltet zwischen beiden Ansichten um
+- Texteditor
+  - Beim Einfügen und Ablegen (Drag & Drop) von Text wird keine Formatierung mehr übernommen; mehrzeilige Inhalte werden in einzelne Absätze aufgeteilt
+
+### Fehlerbehebungen
+- IDs und Aliase: Behebt Fehler bei der Vergabe, insbesondere beim Duplizieren und beim Einfügen von Abschnitten. Die ID eines gelöschten Elements lässt sich wieder vergeben — auch die von Elementen in einem Lückentext, einer Tabelle oder einer Optionentabelle und die eines Abschnitts, dessen Einfügen man abgelehnt hat; bisher galt sie bis zum Neuladen als belegt. Zustandsvariablen können nicht mehr die ID oder den Alias eines Elements bekommen
+- Aufgabenwechsel im Studio: Beim schnellen Wechsel zwischen Aufgaben erscheint keine Fehlermeldung über doppelte IDs mehr. Ein Hinweis oder eine Rückfrage, die beim Wechsel noch offen steht, wird mit der alten Aufgabe verworfen und kann die neue nicht mehr verändern. Und verwirft man eine Aufgabe, die noch nie einen Inhalt hatte, erscheint kein Fehlerdialog mehr
+- Auswahl: Gelöschte Elemente sind nicht mehr ausgewählt, auch nicht die eines gelöschten Lückentexts oder einer Tabelle. Bisher bot der Eigenschaftenbereich weiter deren Einstellungen an: Wer dort etwas änderte, änderte nichts mehr, die Aufgabe galt aber als bearbeitet
+- Löschen: Die Entf-Taste löscht kein ausgewähltes Element innerhalb eines Lückentexts oder einer Tabelle mehr — solche Elemente werden weiterhin im Bearbeitungsdialog des Lückentexts bzw. der Tabelle entfernt. Ist eines davon mitmarkiert, ist Löschen gesperrt, unabhängig von der Reihenfolge der Klicks; im Übersichtsdialog ist die Schaltfläche in diesen Zeilen ebenfalls gesperrt und ein Hinweis sagt, warum
+- Abschnitt einfügen: Der eingefügte Abschnitt ist ausgewählt, auch beim Ersetzen. Ist der bestehende Abschnitt leer, wird nicht mehr nachgefragt; lehnt man die Rückfrage ab, sagt ein Hinweis, dass der einzufügende Abschnitt verworfen wurde
+- Übersichtsdialog: Löscht man eine angekreuzte Zeile, ist sie auch aus der Auswahl heraus. Eine anschließende "Mehrfachänderung" wirkte bisher noch auf das gelöschte Element
+- Elementliste: Das Überfahren der Zeile einer Optionentabelle oder einer Tabellenzelle löst keinen Fehler mehr aus; solche Zeilen sind jetzt sichtbar gesperrt und eingerückt. Eine Hervorhebung auf der Arbeitsfläche bleibt nicht mehr stehen, wenn die Liste geschlossen wird
+- Ausrichtung: Die vier Knöpfe richten mehrere markierte Elemente jetzt tatsächlich aneinander aus (links, rechts, oben, unten). Bisher bewirkte ein Klick nichts
+- Elementinteraktion: Der Schalter wirkt jetzt auch innerhalb von Lückentext und Tabelle — ein Klick dorthin wählt das Element aus, statt in das Eingabefeld zu springen. In statisch positionierten Abschnitten ist die Auswahl am gestrichelten Rahmen zu erkennen
+- Seiten: "Seitenumbruch entfernen" ist auf der ersten regulären Seite gesperrt, solange es eine dauerhaft sichtbare Seite gibt — bisher verschwand die Seite dabei in der dauerhaft sichtbaren, und ihre Abschnitte standen von da an neben jeder Seite. "Seitenumbruch ab gewähltem Abschnitt" ist nur bedienbar, wenn der gewählte Abschnitt auf dieser Seite liegt; der Knopf einer anderen Seite legte bisher eine Seite ohne Abschnitte an. Die Seitenliste zeigt die Vorschau des Navigationsknopfes zur nächsten Unit auch dann auf der letzten Seite, wenn es eine dauerhaft sichtbare Seite gibt
+- Datei-Import: Schlägt das Laden der Datei fehl (Bild, Audio, Video, Bildbereiche, Geometrie), wird kein Element angelegt und eine Meldung gezeigt. Bisher entstand ein Element ohne Datei, das erst gelöscht werden musste
+- Duplizieren: Kopie und Original sind jetzt vollständig voneinander unabhängig. Bearbeitete man in der Kopie z. B. die Optionsliste einer Klappliste, änderte sich bisher unbemerkt auch das Original — und rückgängig machen ließ sich das nicht. Die Ziehelemente einer duplizierten Ablegeliste bekommen wieder eigene IDs
+- Ältere Aufgaben werden beim Laden vollständiger übernommen: Die Größen von Elementen in Tabellen, Optionentabellen und Lückentexten bleiben erhalten, ebenso die Einstellungen der Medien-Elemente und ihre Abstände
+- Beschriftungen (Ablegeliste, Optionentabelle, Bildoptionen): Was zusammen eine Zeile bildet — Text mit einer Formel, mit Hoch- oder Tiefstellung, mit einem Bild —, bleibt in einer Zeile; bisher stand jeder Teil in einer eigenen ("15 cm²" wurde zweizeilig). Die Beschriftung eines gestreckten Ziehelements steht in der Mitte statt an seinem oberen Rand
+- Tabelle
+  - Der Fokusrahmen von Texteingaben bleibt innerhalb der Zelle
+  - Kontrollkästchen zeigen auf der Arbeitsfläche die im Eigenschaftenbereich eingestellte Vorbelegung
+  - Der Dialog "Elemente anpassen" arbeitet auf einer Kopie: "Abbrechen" nimmt jetzt zurück, was darin geändert wurde — eine entfernte Zelle war bisher sofort weg, eine hinzugefügte blieb stehen
+- Assistenten
+  - Nach dem Einfügen einer zweiseitigen Abschnittsvorlage ist ein Element der eingefügten Vorlage ausgewählt, nicht eines aus dem Abschnitt darunter
+  - In der Variante "Sortieren" wird die eingegebene Überschrift der Elementliste jetzt angelegt
+  - Im französischen Stimulus "E-Mail" steht vor den Doppelpunkten ein schmales geschütztes Leerzeichen
+- Formelfeld, Formelbereich: Lange Eingaben ohne Leerzeichen vergrößern das Element auf der Arbeitsfläche nicht mehr über den Abschnittsrand hinaus
+- Zahlenfelder: Eine unerlaubte oder geleerte Eingabe wird nicht mehr gespeichert — das Feld zeigt beim Verlassen wieder den gespeicherten Wert, dazu erscheint der Hinweis "Eingabe ungültig". Das gilt im Eigenschaftenbereich, im Seiten- und Abschnittsmenü, in den Dialogen und in den Assistenten, und beim Bestätigen mit Enter genauso wie beim Verlassen des Feldes; bisher gingen dabei Zeilen, Spalten oder Antwortfelder samt ihrem Inhalt verloren. Wo ein leeres Feld etwas bedeutet (Ober- und Untergrenzen), bleibt es erlaubt. "Zeilenspanne" und "Spaltenspanne" nehmen keine 0 mehr an, und "Stärke" im Bereich "Rahmen" setzt nicht mehr den Radius zurück
+- Voreinstellungen neuer Elemente: Werte, die gegenüber der Version 2.12.5 verlorengegangen waren, sind wiederhergestellt — unter anderem die Bildschirmtastatur der Eingabefelder, die Maße von Optionsfeldern, Audio-Element und Lückentext-Feldern, der untere Abstand einer neuen Tabelle sowie die Zeilenhöhe des Schiebereglers, deren Beschriftungen sich überlappten. Bereits gespeicherte Aufgaben behalten ihre Werte. Beim Schieberegler sind "Balken-Darstellung" und "Werteanzeige am Griff" wieder ausgeschaltet; in den 3.0.0-Betas waren sie versehentlich an
+- Mehrfachauswahl
+  - Unterschiedliche Werte sind jetzt erkennbar: Betroffene Felder tragen den Hinweis "Werte unterschiedlich" statt leer zu erscheinen — Zahlen-, Text-, Farb- und Auswahlfelder, die Maßangaben samt Einheit und die Vorbelegung
+  - Sechs Felder verschwanden bei unterschiedlichen Werten ganz und ließen sich damit nicht gemeinsam bearbeiten (u. a. "Anzahl der Spalten", "Ausrichtung", "Verbundene Ablagelisten"); sie lassen sich jetzt für die ganze Auswahl setzen
+  - Bei Grenzen (Mindest- und Maximalbreite, Mindest- und Maximalhöhe, "Elemente je Zeile begrenzen", Vorbelegung des Schiebereglers) ist zu erkennen, ob es keine Grenze gibt oder verschiedene. Das Feld ist sofort bedienbar; bisher musste man erst das Kästchen anhaken, was die vorhandenen Werte mit einem Standardwert überschrieb
+  - Medienelemente mit unterschiedlichen Dateien lassen sich wieder gemeinsam austauschen
+  - Am Größengriff wächst oder schrumpft jedes Element um denselben Betrag, statt die Größe des gezogenen Elements zu übernehmen — ein Bild wurde so schon auf die Größe eines kleinen Rahmens gestaucht, und der Editor kennt kein Rückgängig
+  - Bei unterschiedlichen Optionslisten wird die Vorbelegung nicht mehr angeboten, und "Medienquelle ändern" nicht bei Elementen unterschiedlichen Typs — ein Klick darauf löschte dort Bild und Dateiname bei allen markierten Elementen. Behoben ist auch, dass der Eigenschaftenbereich nach einer solchen Markierung die Werte der zuvor markierten Elemente zeigte und beim Bearbeiten auf die neuen schrieb
+- Fehlerdialog "Unerwarteter Fehler": Ein Fehler, der beim Aufbau der Arbeitsfläche immer wieder auftritt, öffnete den Dialog endlos neu — der Editor war nicht mehr bedienbar und die Aufgabe nicht mehr zu speichern. Jeder Fehler wird jetzt höchstens einmal je geladener Aufgabe gemeldet
+- Duplizieren, Verschieben und die Positionsfelder wirken auf den Abschnitt, in dem das ausgewählte Element liegt. Bisher konnten sie einen anderen treffen: Ein Duplikat landete im falschen Abschnitt, und der Eigenschaftenbereich zeigte Rasterfelder für ein Element, das gar nicht in einem Raster liegt
+- Entfernt man in einem Text oder Lückentext etwas, worauf andere Elemente verweisen, fragt der Editor nach — nach dem Bestätigen wird die Änderung jetzt auch gespeichert. Bisher konnte sie beim nächsten Speichern wieder verschwinden
+- Ein Element, das ein Assistent oder eine Abschnittsvorlage anlegt, behält die Voreinstellungen, die die Vorlage nicht selbst festlegt — Größe und Position eingeschlossen
+
 ## 2.12.4
 ### Fehlerbehebungen 
-- Verhindert die Übernahme von eingestellten Mustern zum Validieren von weiteren Eingabefeldern
-- Behebt Fehler bei der Darstellung von Formeln innerhalb von Textelementen in Chromium basierten Browsern
-
+- Eingabefeld
+  - Unterbindet, dass konfigurierte Muster zur Validierung anderer Eingabefelder übernommen werden
 ## 2.12.1
 ### Fehlerbehebungen
 - Dialog: Elementliste

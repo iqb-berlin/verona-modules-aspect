@@ -14,7 +14,16 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
+import '@cypress/code-coverage/support';
+
+Cypress.on('uncaught:exception', err => {
+  // Only false tells Cypress to swallow the error; undefined lets it fail the test as usual.
+  if (err.message.includes('ResizeObserver loop')) {
+    return false;
+  }
+  return undefined;
+});
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

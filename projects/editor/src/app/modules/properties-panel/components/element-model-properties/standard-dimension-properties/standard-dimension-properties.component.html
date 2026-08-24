@@ -1,0 +1,69 @@
+<mat-divider [style.margin.px]="15"></mat-divider>
+
+@if (show.geometrySize) {
+  <mat-form-field appearance="fill">
+    <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
+    <input matInput type="number" min="0" aspectNumberField required
+           [ngModel]="combinedProperties.dimensions?.width"
+           (numberChange)="commitDimension('width', $event)">
+    @if (combinedProperties.dimensions?.width === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>
+      {{'propertiesPanel.height' | translate }}
+    </mat-label>
+    <input matInput type="number" min="0" aspectNumberField required
+           [ngModel]="combinedProperties.dimensions?.height"
+           (numberChange)="commitDimension('height', $event)">
+    @if (combinedProperties.dimensions?.height === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+}
+
+@if (combinedProperties.dimensions) {
+  @if (show.fixedWidth) {
+    <aspect-merged-checkbox #fixedWidth [value]="combinedProperties.dimensions.isWidthFixed"
+                            (valueChange)="updateDimensionProperty('isWidthFixed', $event)">
+      {{'propertiesPanel.isWidthFixed' | translate }}
+    </aspect-merged-checkbox>
+    <mat-form-field appearance="fill">
+      <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
+      <input matInput type="number" min="0" aspectNumberField required
+             [disabled]="!fixedWidth.checked"
+             [ngModel]="combinedProperties.dimensions.width"
+             (numberChange)="commitDimension('width', $event)">
+      @if (combinedProperties.dimensions.width === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  }
+
+  <!-- No section of its own: every element type has dimensions, and `maxWidth` defaults to null
+       rather than being absent, so this pair is offered to all of them. -->
+  <!-- `limitEnabledState` rather than `maxWidth !== null`: that expression is a boolean and can
+       therefore never reach the box's indeterminate state, so a selection of elements with
+       *different* maximum widths looked like one that has none (#1167). -->
+  @if (combinedProperties.dimensions.maxWidth !== undefined) {
+    <aspect-merged-checkbox
+      #maxWidthEnabled
+      [value]="divergingProperties | limitEnabledState : 'dimensions.maxWidth' : combinedProperties.dimensions.maxWidth"
+      (valueChange)="toggleProperty('maxWidth', $event)">
+      {{'propertiesPanel.maxWidthEnabled' | translate }}
+    </aspect-merged-checkbox>
+    <mat-form-field>
+      <mat-label>
+        {{'propertiesPanel.maxWidth' | translate }}
+      </mat-label>
+      <input matInput type="number" min="0" aspectNumberField
+             [disabled]="!maxWidthEnabled.checked && !maxWidthEnabled.indeterminate"
+             [ngModel]="combinedProperties.dimensions.maxWidth"
+             (numberChange)="commitDimension('maxWidth', $event)">
+      @if (divergingProperties | propertyDiverges : 'dimensions.maxWidth') {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  }
+}

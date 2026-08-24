@@ -1,5 +1,5 @@
 import {
-  ChangeDetectorRef, Component, Input, OnInit
+  ChangeDetectorRef, Component, Input, OnDestroy, OnInit
 } from '@angular/core';
 import {
   PlayerConfig,
@@ -21,16 +21,18 @@ import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { VersionManager } from 'common/services/version-manager';
 import { MatDialog } from '@angular/material/dialog';
-import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
+import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
+import { MigrationManager } from 'common/services/migration-manager';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { TranslateService } from '@ngx-translate/core';
-import { SectionCounter } from 'common/util/section-counter';
+import { SectionCounter } from 'common/utils/section-counter';
 import { NavigationService } from 'player/src/app/services/navigation.service';
-import { BehaviorSubject } from 'rxjs';
-import { DragNDropValueObject } from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
 import { Response } from '@iqb/responses';
 
 @Component({
@@ -39,7 +41,7 @@ import { Response } from '@iqb/responses';
   styleUrls: ['./unit.component.scss'],
   standalone: false
 })
-export class UnitComponent implements OnInit {
+export class UnitComponent implements OnInit, OnDestroy {
   @Input() isStandalone!: boolean;
   pages: Page[] = [];
   playerConfig: PlayerConfig = {};
@@ -50,6 +52,10 @@ export class UnitComponent implements OnInit {
   };
 
   presentationProgressStatus: BehaviorSubject<Progress> = new BehaviorSubject<Progress>('none');
+
+  private ngUnsubscribe = new Subject<void>();
+  private unitBuildTimeout?: ReturnType<typeof setTimeout>;
+  private startPageTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(public unitStateService: UnitStateService,
               public stateVariableStateService: StateVariableStateService,
@@ -67,8 +73,10 @@ export class UnitComponent implements OnInit {
 
   ngOnInit(): void {
     this.veronaSubscriptionService.vopStartCommand
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopStartCommand) => this.configureUnit(message));
     this.veronaSubscriptionService.vopPlayerConfigChangedNotification
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopPlayerConfigChangedNotification) => this.onVopPlayerConfigChangedNotification(message));
   }
 
@@ -87,13 +95,21 @@ export class UnitComponent implements OnInit {
 
   private configureUnit(message: VopStartCommand): void {
     this.reset();
-    setTimeout(() => {
+    this.unitBuildTimeout = setTimeout(() => {
       if (message.unitDefinition) {
         try {
           LogService.debug('player: unitDefinition', message.unitDefinition);
           const unitDefinition = JSON.parse(message.unitDefinition as string);
-          this.checkUnitDefinitionVersion(unitDefinition);
-          const unit: Unit = new Unit(unitDefinition);
+          if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
+            if (VersionManager.isNewer(unitDefinition)) {
+              throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
+            }
+            if (!VersionManager.needsMigration(unitDefinition)) {
+              throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
+            }
+          }
+          const migratedDefinition = MigrationManager.migrate(unitDefinition, VersionManager.getCurrentVersion());
+          const unit: Unit = new Unit(migratedDefinition);
           this.pages = unit.pages;
           this.showUnitNavNext = unit.showUnitNavNext;
           this.updateSectionNumbering(unit);
@@ -135,16 +151,7 @@ export class UnitComponent implements OnInit {
     if (this.playerConfig.startPage !== undefined) {
       const startPage = +this.playerConfig.startPage || 0;
       // delay is needed for scroll and snap scroll pages to work
-      setTimeout(() => this.navigationService.setPage(startPage), 10);
-    }
-  }
-
-  private checkUnitDefinitionVersion(unitDefinition: Record<string, unknown>): void {
-    if (unitDefinition.version !== VersionManager.getCurrentVersion()) {
-      if (!VersionManager.hasCompatibleVersion(unitDefinition) && VersionManager.isNewer(unitDefinition)) {
-        throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
-      }
-      throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
+      this.startPageTimeout = setTimeout(() => this.navigationService.setPage(startPage), 10);
     }
   }
 
@@ -183,10 +190,25 @@ export class UnitComponent implements OnInit {
   }
 
   private reset(): void {
+    this.cancelPendingUnitBuild();
     this.presentationProgressStatus.next('none');
     this.pages = [];
     this.playerConfig = {};
     this.anchorService.reset();
     this.changeDetectorRef.detectChanges();
+  }
+
+  /* A start command that arrives while the previous unit is still being built makes that build
+     obsolete: it would render a unit the host has already replaced, and cost the time of a full
+     rebuild for a state nobody sees (#1144). */
+  private cancelPendingUnitBuild(): void {
+    clearTimeout(this.unitBuildTimeout);
+    clearTimeout(this.startPageTimeout);
+  }
+
+  ngOnDestroy(): void {
+    this.cancelPendingUnitBuild();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

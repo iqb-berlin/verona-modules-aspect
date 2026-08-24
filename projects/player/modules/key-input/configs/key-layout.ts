@@ -1,4 +1,8 @@
-import { InputAssistancePreset } from 'common/interfaces';
+import { InputAssistancePreset } from 'common/models/input-element-interfaces';
+
+/* The arrow keys the keypad offers and the restriction lets through -- one list, so a key the
+   keypad renders cannot be one the restriction blocks. */
+export const ARROW_KEYS: string[] = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
 
 export interface KeyInputLayout {
   default: string[][],
@@ -99,6 +103,19 @@ export class KeyLayout {
           additional: [[]]
         };
       }
+      case 'decimals': {
+        return {
+          default: [
+            ['7', '8', '9'],
+            ['4', '5', '6'],
+            ['1', '2', '3'],
+            ['-', '0', ','],
+            ['Backspace']
+          ],
+          shift: [[]],
+          additional: [[]]
+        };
+      }
       case 'numbers': {
         return {
           default: [
@@ -159,5 +176,22 @@ export class KeyLayout {
         };
       }
     }
+  };
+
+  /* Which keys a preset may produce. Every layer counts, the shift layer included: the keypad offers
+     its uppercase characters, so they have to be as typeable and as deletable as the lowercase ones
+     -- otherwise one of them lands in the field and no backspace gets it out again (#1291). Only the
+     multi character entries drop out ('Shift', 'Backspace'): those are commands, not characters. */
+  static getAllowedKeys = (
+    preset: InputAssistancePreset | 'keyboard',
+    customKeys: string = '',
+    hasBackspaceKey: boolean = false,
+    hasReturnKey: boolean = false
+  ): string[] => {
+    const layout = KeyLayout.get(preset, customKeys, hasBackspaceKey);
+    const keys = [...layout.default, ...layout.shift, ...layout.additional]
+      .flat()
+      .filter(key => key.length === 1);
+    return [...new Set(hasReturnKey ? [...keys, '\n'] : keys)];
   };
 }

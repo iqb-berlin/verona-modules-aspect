@@ -1,0 +1,17 @@
+/* A flex box like the item it was picked up from -- the preview keeps that item's size, so a label
+   centred there must not jump to the top edge the moment it is grabbed (#970). */
+.drag-preview {
+  position: fixed;
+  display: flex;
+  box-sizing: border-box;
+  border-radius: 5px;
+  pointer-events: none;
+  box-shadow: 2px 2px 5px black;
+}
+.drag-preview.cloze-context {
+  padding: 0 5px;
+  justify-content: center;
+}
+.image-item {
+  padding: 0;
+}

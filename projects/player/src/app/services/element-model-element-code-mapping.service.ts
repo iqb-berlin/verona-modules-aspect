@@ -4,14 +4,18 @@ import {
   InputElement,
   UIElement
 } from 'common/models/elements/element';
-import { AudioElement } from 'common/models/elements/media-elements/audio';
-import { TextElement } from 'common/models/elements/text/text';
-import { VideoElement } from 'common/models/elements/media-elements/video';
-import { ImageElement } from 'common/models/elements/media-elements/image';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
-import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
-import { DragNDropValueObject, InputElementValue, UIElementType } from 'common/interfaces';
+import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
+import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
+import { Hotspot, HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
+import { InputElementValue } from 'common/models/input-element-interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 import { Markable } from 'player/src/app/models/markable.interface';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';
@@ -27,6 +31,20 @@ export class ElementModelElementCodeMappingService {
     return text.replace(regEx, '<aspect-anchor class="" ');
   }
 
+  /**
+   * The text a marking answer is measured against. Selection marks are stored as CHARACTER OFFSETS
+   * taken from what the browser rendered (`TextMarkingUtils.applyMarkingDataToText` emits
+   * `element.innerHTML`), and they are restored into the text this returns -- so the two have to be
+   * the same string, character for character. `modifyAnchors` exists for exactly that reason, and
+   * since #1105 the formulas do too: the display rebuilds them from their LaTeX, so a base that still
+   * carried the stored markup would be up to 1600 characters longer per formula and every offset
+   * behind it would land inside the markup.
+   */
+  static markingBase(elementModel: TextElement): string {
+    return ElementModelElementCodeMappingService
+      .modifyAnchors(MathFormulaMarkup.refreshInStoredHtml(elementModel.text));
+  }
+
   mapToElementModelValue(elementCodeValue: ResponseValueType | undefined, elementModel: UIElement): InputElementValue {
     switch (elementModel.type) {
       case 'text-area-math':
@@ -34,10 +52,14 @@ export class ElementModelElementCodeMappingService {
         return (elementCodeValue !== undefined) ?
           JSON.parse(elementCodeValue as string) :
           [];
+      case 'widget-periodic-table':
+        return (elementCodeValue !== undefined) ?
+          elementCodeValue as string :
+          (elementModel as WidgetPeriodicTableElement).state;
       case 'drop-list':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectByAlias(id)) as DragNDropValueObject[] :
-          [...(elementModel as any).value];
+          [...(elementModel as unknown as { value: DragNDropValueObject[] }).value];
       case 'hotspot-image':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as boolean[])
@@ -48,8 +70,8 @@ export class ElementModelElementCodeMappingService {
           TextMarkingUtils
             .restoreMarkedTextIndices(
               elementCodeValue as string[],
-              ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
-          ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
+              ElementModelElementCodeMappingService.markingBase(elementModel as TextElement)) :
+          ElementModelElementCodeMappingService.markingBase(elementModel as TextElement);
       case 'audio':
         return elementCodeValue !== undefined ?
           elementCodeValue as number :
@@ -87,6 +109,7 @@ export class ElementModelElementCodeMappingService {
         return elementModelValue as number;
       case 'geometry':
       case 'geometry-variable':
+      case 'widget-periodic-table':
         return elementModelValue as string;
       case 'image':
         return elementModelValue as boolean;

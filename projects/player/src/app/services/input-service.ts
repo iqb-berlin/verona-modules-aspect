@@ -1,9 +1,11 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
-import { MathTableComponent } from 'common/components/input-elements/math-table.component';
-import { InputAssistancePreset } from 'common/interfaces';
-import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
-import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
+import { MathTableComponent } from 'common/components/interactive-group-elements/math-table/math-table.component';
+import { InputAssistancePreset } from 'common/models/input-element-interfaces';
+import {
+  TextAreaMathComponent
+} from 'common/components/text-input-group-elements/text-area-math/text-area-math.component';
+import { MathFieldComponent } from 'common/components/text-input-group-elements/math-field/math-field.component';
 
 @Injectable({
   providedIn: 'root'

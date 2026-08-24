@@ -6,12 +6,14 @@ import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import {
   ElementModelElementCodeMappingService
 } from 'player/src/app/services/element-model-element-code-mapping.service';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
-import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/interfaces';
+import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
+import { GeometryComponent } from 'common/components/external-app-group-elements/geometry/geometry.component';
+import { GeometryValue, GeometryVariable } from 'common/models/geometry-interfaces';
+import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Response, ResponseStatusType } from '@iqb/responses';
 
 @Component({
   selector: 'aspect-external-app-group-element',
@@ -36,6 +38,30 @@ export class ExternalAppGroupElementComponent
     this.appDefinition = this.elementModelElementCodeMappingService.mapToElementModelValue(
       this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
     ) as string;
+
+    this.subscribeToParentStateChanges();
+  }
+
+  private subscribeToParentStateChanges(): void {
+    this.unitStateService.elementCodeChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(elementCode => {
+        this.propagateDisplayedStatus(elementCode);
+      });
+  }
+
+  private propagateDisplayedStatus(elementCode: Response & { alias: string }): void {
+    if (elementCode.id === this.elementModel.id && elementCode.status === 'DISPLAYED') {
+      (this.elementModel as GeometryElement).getAllCleanedTrackedVariables().forEach(variable => {
+        const varId = (this.elementModel as GeometryElement).getGeometryVariableId(variable.id);
+        if (this.geometryVariableStateService.isElementCodeRegistered(varId)) {
+          const variableCode = this.geometryVariableStateService.getElementCodeById(varId);
+          if (variableCode && variableCode.status === 'NOT_REACHED') {
+            this.geometryVariableStateService.setElementCodeStatus(varId, 'DISPLAYED');
+          }
+        }
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -52,24 +78,28 @@ export class ExternalAppGroupElementComponent
   }
 
   private registerGeometryVariables(): void {
+    const parentStatus = this.unitStateService.getElementCodeById(this.elementModel.id)?.status ?? 'NOT_REACHED';
     (this.elementModel as GeometryElement).getAllCleanedTrackedVariables()
-      .forEach(variable => this.registerGeometryVariable(variable));
+      .forEach(variable => this.registerGeometryVariable(variable, parentStatus));
   }
 
-  private registerGeometryVariable(variable: GeometryVariable): void {
+  private registerGeometryVariable(variable: GeometryVariable, status: ResponseStatusType): void {
     this.geometryVariableStateService.registerElementCode(
       (this.elementModel as GeometryElement).getGeometryVariableId(variable.id),
       (this.elementModel as GeometryElement).getGeometryVariableAlias(variable.id),
-      variable.value
+      variable.value,
+      status
     );
   }
 
   private changeGeometryVariableValue(variable: GeometryVariable): void {
-    if (!this.geometryVariableStateService.isElementCodeRegistered(variable.id)) {
-      this.registerGeometryVariable(variable);
+    const varId = (this.elementModel as GeometryElement).getGeometryVariableId(variable.id);
+    if (!this.geometryVariableStateService.isElementCodeRegistered(varId)) {
+      const parentStatus = this.unitStateService.getElementCodeById(this.elementModel.id)?.status ?? 'NOT_REACHED';
+      this.registerGeometryVariable(variable, parentStatus);
     }
     this.geometryVariableStateService.changeElementCodeValue({
-      id: (this.elementModel as GeometryElement).getGeometryVariableId(variable.id),
+      id: varId,
       value: ElementModelElementCodeMappingService
         .mapToElementCodeValue(variable.value, 'geometry-variable')
     });

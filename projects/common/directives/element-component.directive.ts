@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 
-import { AspectError } from 'common/errors';
+import { AspectError } from 'common/classes/aspect-error';
 
 @Directive()
 export abstract class ElementComponent implements AfterContentChecked {

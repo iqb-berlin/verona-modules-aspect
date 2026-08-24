@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
-import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
-import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog.component';
+import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import {
+  SectionInsertDialogComponent
+} from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
+import {
+  LabelEditDialogComponent
+} from 'editor/src/app/components/dialogs/label-edit-dialog/label-edit-dialog.component';
 import {
   GeogebraAppDefinitionDialogComponent
-} from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog.component';
-import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
+} from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog/geogebra-app-definition-dialog.component';
+import {
+  HotspotEditDialogComponent
+} from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
 import {
   StateVariablesDialogComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
@@ -19,28 +26,50 @@ import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { StateVariable } from 'common/models/state-variable';
-import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
-import { ReferenceList } from 'editor/src/app/services/reference-manager';
-import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/sanitization-dialog.component';
+import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
+import { ReferenceList } from 'editor/src/app/classes/reference-manager';
+import {
+  SanitizationDialogComponent
+} from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
 import {
   TooltipPropertiesDialogComponent
-} from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
 import { UIElement } from 'common/models/elements/element';
-import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog.component';
-import { TableElement } from 'common/models/elements/compound-elements/table/table';
-import { FileInformation } from 'common/services/file.service';
 import {
-  DragNDropValueObject, Label, TextImageLabel, TooltipPosition
-} from 'common/interfaces';
-import { DeleteConfirmationDialogComponent } from '../components/dialogs/delete-confirmation-dialog.component';
-import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
-import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
-import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edit-dialog.component';
-import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
-import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
-import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
-import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
-import { EditorSection } from '../models/editor-unit';
+  TableEditDialogComponent, TableEditResult
+} from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
+import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { FileService, FileInformation } from 'common/services/file.service';
+import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/label-interfaces';
+import { TooltipPosition } from 'common/models/ui-element-interfaces';
+import { ImageOptions } from 'common/models/image-interfaces';
+
+import {
+  ImageResizeDialogComponent
+} from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import {
+  DeleteConfirmationDialogComponent
+} from 'editor/src/app/components/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { TextEditDialogComponent } from 'editor/src/app/components/dialogs/text-edit-dialog/text-edit-dialog.component';
+import {
+  TextEditMultilineDialogComponent
+} from 'editor/src/app/components/dialogs/text-edit-multiline-dialog/text-edit-multiline-dialog.component';
+import {
+  RichTextEditDialogComponent
+} from 'editor/src/app/components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
+import {
+  PlayerEditDialogComponent
+} from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
+import {
+  LikertRowEditDialogComponent
+} from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
+import {
+  DropListOptionEditDialogComponent
+} from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
+import {
+  DeleteReferenceDialogComponent
+} from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
+import { EditorSection } from 'editor/src/app/models/editor-section';
 
 @Injectable({
   providedIn: 'root'
@@ -56,10 +85,19 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showDeleteConfirmDialog(text: string, elementList?: UIElement[], refs?: ReferenceList[]): Observable<boolean> {
+  /* The confirmation belongs to the unit the caller asked about, and the dialog outlives that unit as
+     soon as the host loads another one -- so a replaced unit takes the dialog with it. Narrowing the
+     result the way showSanitizationDialog does is left to the caller here: a cancelled delete still has
+     its references to report, so this one has to tell that apart from a superseded delete rather than
+     drop both. UnitService.prepareDelete does, on the unit it asked about (#1253). */
+  showDeleteConfirmDialog(text: string, supersededBy: Observable<void>,
+                          elementList?: UIElement[], refs?: ReferenceList[]): Observable<boolean> {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       data: { text, elementList, refs }
     });
+    supersededBy
+      .pipe(takeUntil(dialogRef.afterClosed()))
+      .subscribe(() => dialogRef.close(false));
     return dialogRef.afterClosed();
   }
 
@@ -78,10 +116,24 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showSanitizationDialog(): Observable<boolean> {
-    const dialogRef = this.dialog.open(SanitizationDialogComponent,
-      { disableClose: true });
-    return dialogRef.afterClosed();
+  /* The dialog carries no close option and stays up until the user confirms it, so the load that
+     opened it can be superseded while it is still on screen. It then describes a unit that is no
+     longer loaded, and a second outdated unit would stack another dialog on top of it -- therefore a
+     superseding load closes it. What the caller may act on is a confirmation of the load it asked
+     about, and the returned stream is narrowed to exactly that. Ending it with the superseding load
+     covers the click that still reaches the closing dialog; the value check covers every close that
+     comes from somewhere other than the dialog's own button, which is the only one reporting true --
+     the superseding close, and the result-less close MatDialog performs on its own dialogs when it is
+     torn down (#1247). */
+  showSanitizationDialog(supersededBy: Observable<void>): Observable<boolean> {
+    const dialogRef = this.dialog.open<SanitizationDialogComponent, undefined, boolean>(
+      SanitizationDialogComponent, { disableClose: true }
+    );
+    supersededBy
+      .pipe(takeUntil(dialogRef.afterClosed()))
+      .subscribe(() => dialogRef.close(false));
+    return dialogRef.afterClosed()
+      .pipe(takeUntil(supersededBy), filter(confirmed => confirmed === true));
   }
 
   showTextEditDialog(text: string): Observable<string> {
@@ -120,7 +172,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<string> {
+  showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<ClozeDocument | undefined> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
       data: {
         content: document,
@@ -156,14 +208,18 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showSectionInsertDialog(isSelectedSectionEmpty: boolean): Observable<{ newSection: EditorSection, replaceSection: boolean }> {
+  showSectionInsertDialog(isSelectedSectionEmpty: boolean):
+  Observable<{ newSection: EditorSection, replaceSection: boolean }> {
     const dialogRef = this.dialog.open(SectionInsertDialogComponent, {
       data: { isSelectedSectionEmpty }
     });
     return dialogRef.afterClosed();
   }
 
-  showGeogebraAppDefinitionDialog(): Observable<FileInformation> {
+  /* Undefined when the dialog is closed without a result -- the cancel button, ESC, a click on the
+     backdrop. Declared, because both callers read a field of it and would throw instead of taking the
+     cancellation for what it is (#1296). */
+  showGeogebraAppDefinitionDialog(): Observable<FileInformation | undefined> {
     const dialogRef = this.dialog.open(GeogebraAppDefinitionDialogComponent, {
       data: { },
       autoFocus: false
@@ -171,7 +227,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showTableEditDialog(table: TableElement): Observable<any> {
+  showTableEditDialog(table: TableElement): Observable<TableEditResult | undefined> {
     const dialogRef = this.dialog.open(TableEditDialogComponent, {
       data: { table },
       autoFocus: false
@@ -220,9 +276,33 @@ export class DialogService {
   ): Observable<{ tooltipText: string, tooltipPosition: TooltipPosition, action: 'save' | 'delete' }> {
     const dialogRef = this.dialog.open(TooltipPropertiesDialogComponent, {
       data: { tooltipText, tooltipPosition },
+      width: '750px',
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showImageResizeDialog(base64: string, options: ImageOptions): Observable<ImageOptions> {
+    const dialogRef = this.dialog.open(ImageResizeDialogComponent, {
+      data: { base64, options: { ...options } },
       width: '500px',
       autoFocus: false
     });
     return dialogRef.afterClosed();
+  }
+
+  async importImage(): Promise<FileInformation | null> {
+    const file = await FileService.getRawFile('image/*');
+    const base64 = await FileService.readFileAsText(file, true);
+    let content = base64;
+    if (FileService.isResizable(file.type)) {
+      const options = await firstValueFrom(this.showImageResizeDialog(base64, {}));
+      if (options) {
+        content = await FileService.scaleImage(base64, options);
+      } else {
+        return null;
+      }
+    }
+    return { name: file.name, content };
   }
 }

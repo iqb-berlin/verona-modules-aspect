@@ -1,0 +1,80 @@
+<!--`!== undefined` rather than plain truthiness: the merge answers null for "the selected elements
+    disagree", and asking for truthiness made the field disappear for that instead of offering it
+    empty and marked. `undefined` still means the property is not part of this selection (#1138).-->
+@if (combinedProperties.alignment !== undefined) {
+  <mat-form-field class="wide-form-field" appearance="fill">
+    <mat-label>{{ 'propertiesPanel.alignment' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.alignment"
+                (selectionChange)="updateModel.emit({ property: 'alignment', value: $event.value })">
+      @for (option of ['column', 'row']; track option) {
+        <mat-option [value]="option">{{ 'propertiesPanel.' + option | translate }}</mat-option>
+      }
+    </mat-select>
+    @if (combinedProperties.alignment === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+}
+@if (unitService.expertMode && combinedProperties.strikeOtherOptions !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.strikeOtherOptions"
+                          (valueChange)="updateModel.emit({ property: 'strikeOtherOptions', value: $event })">
+    {{'propertiesPanel.strikeOtherOptions' | translate }}
+  </aspect-merged-checkbox>
+}
+@if (combinedProperties.strikeSelectedOption !== undefined) {
+  <!--The tooltip hangs on a wrapper: aspect-merged-checkbox is `display: contents` and has no
+      bounding rect of its own, and MatTooltip positions its overlay from that rect - on the tag
+      itself the explanation would appear in the top left corner of the viewport.
+
+      A `div`, not a `span`: the checkbox is a block, and a block inside an inline element splits its
+      inline box - the span's own rect then covered an empty 17px fragment next to the checkbox
+      instead of the checkbox, which both misplaced the tooltip and made hovering the box do nothing.
+      The spec pins the anchor's rect around the checkbox.-->
+  <div [matTooltip]="'propertiesPanel.strikeSelectedOptionTooltip' | translate">
+    <aspect-merged-checkbox
+        [value]="combinedProperties.strikeSelectedOption"
+        (valueChange)="updateModel.emit({ property: 'strikeSelectedOption', value: $event })">
+      {{'propertiesPanel.strikeSelectedOption' | translate }}
+    </aspect-merged-checkbox>
+  </div>
+}
+@if (combinedProperties.allowUnset !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.allowUnset"
+                          (valueChange)="updateModel.emit({ property: 'allowUnset', value: $event })">
+    {{'propertiesPanel.allowUnset' | translate }}
+  </aspect-merged-checkbox>
+}
+
+@if (combinedProperties.itemsPerRow !== undefined) {
+  <!-- `itemsPerRow` is a number whose `null` means "no limit", so neither the box nor the field may
+       read the merged value alone: two elements limited to different counts merge to `null` and used
+       to be shown as "not limited", with the field disabled on top (#1167). -->
+  <aspect-merged-checkbox
+    #itemsPerRowEnabled
+    [value]="divergingProperties | limitEnabledState : 'itemsPerRow' : combinedProperties.itemsPerRow"
+    (valueChange)="setItemsPerRow($event)">
+    {{'limitItemPerRow' | translate}}
+  </aspect-merged-checkbox>
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{'itemsPerRow' | translate }}</mat-label>
+    <input matInput type="number" [min]="1" [pattern]="'[1-9]'" #itemsPerRow="ngModel" required aspectNumberField
+           [disabled]="!itemsPerRowEnabled.checked && !itemsPerRowEnabled.indeterminate"
+           [ngModel]="combinedProperties.itemsPerRow"
+           (numberChange)="updateModel.emit(
+                  { property: 'itemsPerRow', value: $event.value, isInputValid: $event.isInputValid })">
+    @if (itemsPerRow.errors?.['pattern']) {
+      <mat-error>{{'numberGreater0' | translate}}</mat-error>
+    }
+    @if (divergingProperties | propertyDiverges : 'itemsPerRow') {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+}
+
+@if (combinedProperties.verticalOrientation !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.verticalOrientation"
+                          (valueChange)="updateModel.emit({ property: 'verticalOrientation', value: $event })">
+    {{ 'propertiesPanel.verticalOrientation' | translate }}
+  </aspect-merged-checkbox>
+}

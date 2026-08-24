@@ -1,0 +1,53 @@
+import {
+  DimensionProperties, PositionProperties, PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import {
+  MediaSourceProperties, PlayerElementBlueprint, ScalableProperties, UIElementType
+} from 'common/models/ui-element-interfaces';
+import { PlayerElement } from 'common/models/elements/element';
+import { InstantiationEror } from 'common/classes/instantiation-error';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
+export class VideoElement extends PlayerElement implements VideoProperties {
+  type: UIElementType = 'video';
+  src: string | null = ELEMENT_DEFAULTS.video.src;
+  fileName: string = ELEMENT_DEFAULTS.video.fileName;
+  scale: boolean = ELEMENT_DEFAULTS.video.scale;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(ELEMENT_DEFAULTS.video.position);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.video.dimensions);
+  styling: { backgroundColor: string } = {
+    backgroundColor: ELEMENT_DEFAULTS.video.styling.backgroundColor
+  };
+
+  static title: string = 'Video';
+  static icon: string = 'ondemand_video';
+
+  constructor(element?: Partial<VideoProperties>, idService?: AbstractIDService) {
+    super({ type: 'video', ...element }, idService);
+    if (isVideoProperties(element)) {
+      this.src = element.src;
+      this.fileName = element.fileName;
+      this.scale = element.scale;
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at Video instantiation', element);
+    }
+  }
+}
+
+export interface VideoProperties extends PlayerElementBlueprint, MediaSourceProperties, ScalableProperties {
+  position: PositionProperties;
+  dimensions: DimensionProperties;
+  styling: { backgroundColor: string };
+}
+
+function isVideoProperties(blueprint?: Partial<VideoProperties>): blueprint is VideoProperties {
+  if (!blueprint) return false;
+  return blueprint.src !== undefined &&
+    blueprint.type === 'video';
+}

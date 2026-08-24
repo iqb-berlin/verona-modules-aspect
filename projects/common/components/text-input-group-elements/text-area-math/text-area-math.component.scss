@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  // Die intrinsische Breite der nicht umbrechbaren Formel-Segmente darf die
+  // Grid-Spalten der Section nicht aufweiten (#1076).
+  contain: inline-size;
+}
+
+.label {
+  font-size: 20px;
+  line-height: 135%;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.alignment-fix {
+  padding: 14px 0;
+  display: inline-block;
+  width: 0;
+}
+
+.text-area {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 10px 5px;
+  // Buchstabenketten ohne Leerzeichen in Text-Segmenten umbrechen (#1076)
+  overflow-wrap: anywhere;
+}
+
+.insert-formula-button {
+  font-size: large;
+  width: 160px;
+  background-color: #ddd;
+  padding: 15px 10px;
+  height: 55px;
+}

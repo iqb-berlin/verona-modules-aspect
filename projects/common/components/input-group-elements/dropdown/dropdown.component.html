@@ -1,0 +1,33 @@
+<aspect-cloze-child-error-message *ngIf="clozeContext && elementFormControl.errors && elementFormControl.touched"
+                                  [elementModel]="elementModel"
+                                  [elementFormControl]="elementFormControl">
+</aspect-cloze-child-error-message>
+<mat-form-field appearance="fill"
+                [class.cloze-child]="clozeContext"
+                [style.--wrapper-bg-color]="elementModel.styling.backgroundColor">
+  <mat-label *ngIf="!clozeContext"
+             [style.color]="elementModel.styling.fontColor"
+             [style.font-size.px]="elementModel.styling.fontSize"
+             [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+    {{ elementModel.label }}
+  </mat-label>
+  <mat-select [formControl]="elementFormControl" [value]="elementModel.value">
+    <mat-select-trigger [innerHTML]="elementFormControl.value !== null && elementFormControl.value !== undefined ?
+                                     (elementModel.options[elementFormControl.value].text | safeResourceHTML) :
+                                     ''">
+    </mat-select-trigger>
+    <mat-option *ngIf="elementModel.allowUnset" [value]="null"
+                [class.read-only]="elementModel.readOnly"
+                (click)="$event.preventDefault()">
+    </mat-option>
+    <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i"
+                [class.read-only]="elementModel.readOnly"
+                [innerHTML]="option.text | safeResourceHTML">
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="!clozeContext && elementFormControl.errors">
+    {{elementFormControl.errors | errorTransform: elementModel}}
+  </mat-error>
+</mat-form-field>

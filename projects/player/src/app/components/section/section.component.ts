@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Section } from 'common/models/section';
-import { SectionCounter } from 'common/util/section-counter';
+import { SectionCounter } from 'common/utils/section-counter';
 
 @Component({
-    selector: 'aspect-section',
-    templateUrl: './section.component.html',
-    styleUrls: ['./section.component.scss'],
-    standalone: false
+  selector: 'aspect-section',
+  templateUrl: './section.component.html',
+  styleUrls: ['./section.component.scss'],
+  standalone: false
 })
 export class SectionComponent implements OnInit {
   @Input() section!: Section;

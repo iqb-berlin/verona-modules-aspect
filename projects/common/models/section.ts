@@ -4,17 +4,17 @@ import {
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { VisibilityRule } from 'common/models/visibility-rule';
-import { ElementFactory } from 'common/util/element.factory';
+import { ElementFactory } from 'common/utils/element-factory';
 import { environment } from 'common/environment';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { AbstractIDService } from 'common/models/id-interfaces';
 import {
-  AbstractIDService,
   Measurement,
   PositionedUIElement,
   UIElementProperties,
   UIElementValue
-} from 'common/interfaces';
-import { InstantiationEror } from 'common/errors';
+} from 'common/models/ui-element-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
 
 export class Section {
   [index: string]: unknown;
@@ -43,8 +43,8 @@ export class Section {
       this.dynamicPositioning = section.dynamicPositioning;
       this.autoColumnSize = section.autoColumnSize;
       this.autoRowSize = section.autoRowSize;
-      this.gridColumnSizes = [...section.gridColumnSizes];
-      this.gridRowSizes = [...section.gridRowSizes];
+      this.gridColumnSizes = section.gridColumnSizes.map(size => ({ ...size }));
+      this.gridRowSizes = section.gridRowSizes.map(size => ({ ...size }));
       this.visibilityDelay = section.visibilityDelay;
       this.animatedVisibility = section.animatedVisibility;
       this.enableReHide = section.enableReHide;
@@ -60,14 +60,24 @@ export class Section {
       if (section?.dynamicPositioning !== undefined) this.dynamicPositioning = section.dynamicPositioning;
       if (section?.autoColumnSize !== undefined) this.autoColumnSize = section.autoColumnSize;
       if (section?.autoRowSize !== undefined) this.autoRowSize = section.autoRowSize;
-      if (section?.gridColumnSizes !== undefined) this.gridColumnSizes = [...section.gridColumnSizes];
-      if (section?.gridRowSizes !== undefined) this.gridRowSizes = [...section.gridRowSizes];
+      if (section?.gridColumnSizes !== undefined) {
+        this.gridColumnSizes = section.gridColumnSizes.map(size => ({ ...size }));
+      }
+      if (section?.gridRowSizes !== undefined) {
+        this.gridRowSizes = section.gridRowSizes.map(size => ({ ...size }));
+      }
       if (section?.visibilityDelay !== undefined) this.visibilityDelay = section.visibilityDelay;
       if (section?.animatedVisibility !== undefined) this.animatedVisibility = section.animatedVisibility;
       if (section?.enableReHide !== undefined) this.enableReHide = section.enableReHide;
-      if (section?.logicalConnectiveOfRules !== undefined) this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
-      if (section?.visibilityRules !== undefined) this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
-      if (section?.ignoreNumbering !== undefined) this.ignoreNumbering = section.ignoreNumbering;
+      if (section?.logicalConnectiveOfRules !== undefined) {
+        this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
+      }
+      if (section?.visibilityRules !== undefined) {
+        this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
+      }
+      if (section?.ignoreNumbering !== undefined) {
+        this.ignoreNumbering = section.ignoreNumbering;
+      }
     }
     this.elements = this.createElements(section, idService);
   }
@@ -116,8 +126,6 @@ export class Section {
   isEmpty(): boolean {
     return this.elements.length === 0;
   }
-
-
 }
 
 export interface SectionProperties {

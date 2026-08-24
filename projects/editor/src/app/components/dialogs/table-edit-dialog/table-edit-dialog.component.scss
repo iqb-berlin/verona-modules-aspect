@@ -1,0 +1,8 @@
+:host ::ng-deep aspect-table .grid-container {
+  grid-template-columns: unset !important;
+  grid-auto-columns: 300px !important;
+}
+:host ::ng-deep aspect-table .header-cell {
+  display: flex;
+  align-items: center;
+}

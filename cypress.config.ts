@@ -1,9 +1,19 @@
 import { defineConfig } from 'cypress';
+import { writeFileSync } from 'fs';
+import coverageTask from '@cypress/code-coverage/task';
 
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      coverageTask(on, config);
+      on('task', {
+        writeTextFile({ filepath, content }: { filepath: string; content: string }) {
+          writeFileSync(filepath, content, 'utf8');
+          return null;
+        }
+      });
+
+      return config;
     },
     fixturesFolder: 'e2e/fixtures',
     supportFile: 'e2e/support/e2e.ts',

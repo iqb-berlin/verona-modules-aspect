@@ -1,0 +1,44 @@
+/* `:host` has to be a flex column: the button carries `align-self: center`, which is inert without
+   it, so the button would sit flush left. It was centred while it lived in the panel's own flex
+   column and lost that context when it moved here. Same reason cloze-properties and table-properties
+   carry the rule. */
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Both rules are carried over from element-model-properties.component.scss, where this markup used
+   to live. They are view-encapsulated, so they stop applying once it moves here. The button is
+   targeted by its own class rather than the Material one it matched before (.mat-mdc-fab). */
+.file-name {
+  color: #999;
+  padding: 5px 20px 10px 20px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+
+  .file-name-label {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 5px;
+  }
+
+  /* This readout is a plain text line, not a form field, so the marker has no suffix slot to sit
+     in. The row is made a flex line of its own to put it where a form field would - at the right
+     edge, not at the left where the file name starts - and the suffix padding comes off so it ends
+     on the same inset as the label above it. */
+  .file-name-marker {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 24px;
+
+    ::ng-deep .merged-marker {
+      padding: 0;
+    }
+  }
+}
+
+.media-src-button {
+  margin-bottom: 10px;
+}

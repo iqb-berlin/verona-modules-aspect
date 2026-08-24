@@ -1,8 +1,10 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
-import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/interfaces';
-import { KeyInputRestrictionDirective } from '../../directives/key-input-restriction.directive';
+import { InputAssistanceCustomStyle, InputAssistancePreset } from 'common/models/input-element-interfaces';
+import {
+  KeyInputRestrictionService
+} from 'player/modules/key-input/services/key-input-restriction.service';
 import { KeyInputLayout } from '../../configs/key-layout';
 
 @Component({
@@ -11,12 +13,15 @@ import { KeyInputLayout } from '../../configs/key-layout';
   styleUrls: ['./keypad-layout.component.scss'],
   standalone: false
 })
-export class KeypadLayoutComponent extends KeyInputRestrictionDirective implements OnInit {
+export class KeypadLayoutComponent implements OnInit {
   @Input() preset!: InputAssistancePreset;
   @Input() layout!: KeyInputLayout;
   @Input() position!: 'floating' | 'right';
   @Input() keyStyle!: 'round' | 'square';
   @Input() customStyle!: InputAssistanceCustomStyle;
+  @Input() hasArrowKeys!: boolean;
+  @Input() hasReturnKey!: boolean;
+  @Input() arrows!: string[];
 
   @Output() keyClicked = new EventEmitter<string>();
 
@@ -24,14 +29,13 @@ export class KeypadLayoutComponent extends KeyInputRestrictionDirective implemen
   additionalRows: string[][] = [];
   shift: boolean = false;
 
+  /* The keys of the keypad are subject to the same protection of the preset value as the hardware
+     keyboard; which characters may be typed is decided by the service on the focused field. */
+  constructor(public keyInputRestrictionService: KeyInputRestrictionService) {}
+
   ngOnInit(): void {
     this.rows = this.layout.default;
     this.additionalRows = this.layout.additional;
-    this.allowedKeys = [
-      ...this.rows.flat().filter(key => key.length === 1),
-      ...this.additionalRows.flat().filter(key => key.length === 1)
-    ];
-    if (this.hasReturnKey) this.allowedKeys.push('\n');
   }
 
   evaluateClickedKeyValue(key: string) {

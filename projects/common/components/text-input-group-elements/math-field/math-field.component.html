@@ -1,0 +1,24 @@
+<div [style.line-height.%]="elementModel.styling.lineHeight"
+     [style.color]="elementModel.styling.fontColor"
+     [style.font-size.px]="elementModel.styling.fontSize"
+     [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+     [style.background-color]="elementModel.styling.backgroundColor">
+  @if (elementModel.label) {
+    <label class="math-label">{{elementModel.label}}</label>
+  }
+  <aspect-math-input [value]="elementModel.value | getValue: elementFormControl.value : parentForm"
+                     [readonly]="elementModel.readOnly"
+                     [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
+                     [enableModeSwitch]="elementModel.enableModeSwitch"
+                     (valueChange)="elementFormControl.setValue($event)"
+                     (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
+                     (focusOut)="elementFormControl.markAsTouched();
+                                 focusChanged.emit({ inputElement: $event, focused: false })">
+  </aspect-math-input>
+  <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+             class="error-message">
+    {{elementFormControl.errors | errorTransform: elementModel}}
+  </mat-error>
+</div>

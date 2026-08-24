@@ -1,0 +1,45 @@
+<div class="wrapper"
+     [class.drop-list-padding]="element.type === 'drop-list'"
+     [style.border]="isSelected ? 'purple solid 1px' : ''"
+     (click)="elementSelected.emit(this); $event.stopPropagation();">
+  <aspect-text *ngIf="element.type === 'text'" #childComponent
+               [elementModel]="$any(element)"
+               [style.pointer-events]="editorMode ? 'none' : 'auto'"
+               [savedText]="savedTexts ? savedTexts[element.id] : ''">
+  </aspect-text>
+  <aspect-text-field *ngIf="element.type === 'text-field'" #childComponent
+                     [elementModel]="$any(element)"
+                     [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                     [parentForm]="parentForm"
+                     [tableMode]="true">
+  </aspect-text-field>
+  <aspect-text-area *ngIf="element.type === 'text-area'" #childComponent
+                    [elementModel]="$any(element)"
+                    [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                    [parentForm]="parentForm"
+                    [tableMode]="true">
+  </aspect-text-area>
+  <aspect-checkbox *ngIf="element.type === 'checkbox'" #childComponent
+                   [elementModel]="$any(element)"
+                   [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                   [parentForm]="parentForm"
+                   [tableMode]="true">
+  </aspect-checkbox>
+  <aspect-drop-list *ngIf="element.type === 'drop-list'" #childComponent
+                    [elementModel]="$any(element)"
+                    [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                    [parentForm]="parentForm"
+                    [clozeContext]="true">
+  </aspect-drop-list>
+  <aspect-image *ngIf="element.type === 'image'" #childComponent
+                [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                [elementModel]="$any(element)">
+  </aspect-image>
+  <aspect-audio *ngIf="element.type === 'audio'" #childComponent
+                [elementModel]="$any(element)"
+                [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                [savedPlaybackTime]="savedPlaybackTimes ? savedPlaybackTimes[element.id] : 0"
+                [actualPlayingId]="actualPlayingId"
+                [mediaStatusChanged]="mediaStatusChanged">
+  </aspect-audio>
+</div>

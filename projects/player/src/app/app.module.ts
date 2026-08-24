@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayModule, OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { SharedModule, APIService } from 'common/shared.module';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
@@ -15,15 +15,20 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { PageNavButtonComponent } from 'player/src/app/components/page-nav-button/page-nav-button.component';
 import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
-import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import {
   MarkablesContainerComponent
 } from 'player/src/app/components/markables-container/markables-container.component';
+import {
+  MarkableWordComponent
+} from 'player/src/app/components/markable-word/markable-word.component';
+import {
+  MarkableDelimiterComponent
+} from 'player/src/app/components/markable-delimiter/markable-delimiter.component';
 import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
-import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
+import {
+  MarkingPanelComponent
+} from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
 import { ErrorService } from 'player/src/app/services/error.service';
-import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
 import {
   MathKeyboardContainerComponent
 } from 'player/src/app/components/math-keyboard-container/math-keyboard-container.component';
@@ -32,12 +37,16 @@ import {
   ActionGroupElementComponent
 } from 'player/src/app/components/elements/action-group-element/action-group-element.component';
 import { InputAssistanceCustomStylePipe } from 'player/src/app/pipes/input-assistance-custom-style.pipe';
+import {
+  WidgetGroupElementComponent
+} from 'player/src/app/components/elements/widget-group-element/widget-group-element.component';
+import { ComponentRegistry } from 'common/utils/component-registry';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { PagesLayoutComponent } from './components/layouts/pages-layout/pages-layout.component';
-import { PageLabelDirective } from './directives/page-label.directive';
+import { PageLabelModule } from './directives/page-label.module';
 import { ScrollToIndexDirective } from './directives/scroll-to-index.directive';
 import { InViewDetectionDirective } from './directives/in-view-detection.directive';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
@@ -81,7 +90,6 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     PageComponent,
     SectionComponent,
     PagesLayoutComponent,
-    PageLabelDirective,
     ScrollToIndexDirective,
     InViewDetectionDirective,
     FloatingMarkingBarComponent,
@@ -97,6 +105,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     BaseGroupElementComponent,
     InteractiveGroupElementComponent,
     ActionGroupElementComponent,
+    WidgetGroupElementComponent,
     PlayerLayoutComponent,
     UnitStateDirective,
     AlwaysVisiblePagePipe,
@@ -111,10 +120,16 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     PageNavButtonComponent,
     HasPreviousPagePipe,
     HasNextPagePipe,
-    IsValidPagePipe
+    IsValidPagePipe,
+    MarkablesContainerComponent,
+    MarkableWordComponent,
+    MarkableDelimiterComponent,
+    MathKeyboardContainerComponent,
+    IsEnabledNavigationTargetPipe
   ],
   imports: [
     BrowserModule,
+    PageLabelModule,
     BrowserAnimationsModule,
     CommonModule,
     SharedModule,
@@ -128,23 +143,27 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     OverlayModule,
     ScrollingModule,
     UnitMenuModule,
-    MeasurePipe,
-    PrintModule,
-    TableComponent,
-    MarkablesContainerComponent,
-    IsEnabledNavigationTargetPipe,
-    MarkingPanelComponent,
-    UnitNavNextComponent,
-    MathKeyboardContainerComponent
+    PrintModule
   ],
   providers: [
+    // Keeps overlays in the global container. Since CDK 21 they render through the native
+    // popover API next to their trigger instead, which puts a select panel or a tooltip
+    // inside the component tree, where it inherits font, colour and line height from
+    // whatever surrounds it (#986).
+    { provide: OVERLAY_DEFAULT_CONFIG, useValue: { usePopover: false } },
     { provide: APIService, useExisting: MetaDataService },
-    { provide: ErrorHandler, useClass: ErrorService }
+    /* An alias, not a class, as in the editor: `ErrorService` is `providedIn: 'root'`, and `useClass`
+       would build Angular a second instance of it. This one holds no state yet, so the two were
+       indistinguishable -- the first field on it would end that quietly (#1206). */
+    { provide: ErrorHandler, useExisting: ErrorService }
   ]
 })
 
 export class AppModule implements DoBootstrap {
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) {
+    ComponentRegistry.registerComponent('marking-panel', MarkingPanelComponent);
+  }
+
   ngDoBootstrap(): void {
     const playerElement = createCustomElement(AppComponent, { injector: this.injector });
     customElements.define('aspect-player', playerElement);

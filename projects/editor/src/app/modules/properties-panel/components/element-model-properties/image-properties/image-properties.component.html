@@ -1,0 +1,56 @@
+<div class="fx-column-start-stretch" [style.gap.px]="5">
+  <!--The parent only renders this component in expert mode, so no check for it here.-->
+  @if (combinedProperties.alt !== undefined) {
+    <mat-form-field>
+      <mat-label>{{ 'propertiesPanel.alt' | translate }}</mat-label>
+      <input #altField matInput type="text" [value]="combinedProperties.alt"
+             (input)="updateModel.emit({ property: 'alt', value: altField.value })">
+      @if (combinedProperties.alt === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  }
+
+  <aspect-merged-checkbox *ngIf="combinedProperties.scale !== undefined"
+                          [value]="combinedProperties.scale"
+                          (valueChange)="updateModel.emit({ property: 'scale', value: $event })">
+    {{'propertiesPanel.scale' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="combinedProperties.magnifier !== undefined"
+                          [value]="combinedProperties.magnifier"
+                          (valueChange)="updateModel.emit({ property: 'magnifier', value: $event })">
+    {{'propertiesPanel.magnifier' | translate }}
+  </aspect-merged-checkbox>
+
+  <aspect-merged-checkbox *ngIf="combinedProperties.allowFullscreen !== undefined"
+                          [value]="combinedProperties.allowFullscreen"
+                          (valueChange)="updateModel.emit({ property: 'allowFullscreen', value: $event })">
+    {{'propertiesPanel.allowFullscreen' | translate }}
+  </aspect-merged-checkbox>
+
+  <mat-form-field appearance="fill" *ngIf="combinedProperties.magnifierSize !== undefined">
+    <mat-label>{{'propertiesPanel.magnifierSize' | translate }} in px</mat-label>
+    <input matInput type="number" min="0" aspectNumberField required
+           [disabled]="!combinedProperties.magnifier"
+           [ngModel]="combinedProperties.magnifierSize"
+           (numberChange)="updateModel.emit(
+                { property: 'magnifierSize', value: $event.value, isInputValid: $event.isInputValid })">
+    @if (combinedProperties.magnifierSize === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+
+  <div *ngIf="combinedProperties.magnifierZoom !== undefined"
+       [class.disabled-label]="!combinedProperties.magnifier">
+    {{'propertiesPanel.magnifierZoom' | translate }}
+  </div>
+  <mat-slider *ngIf="combinedProperties.magnifierZoom !== undefined"
+              [min]="1.0" [max]="3.0" [step]="0.1" [disabled]="!combinedProperties.magnifier">
+    <input matSliderThumb [ngModel]="combinedProperties.magnifierZoom"
+           (valueChange)="updateModel.emit({ property: 'magnifierZoom', value: $event })">
+  </mat-slider>
+  <div *ngIf="combinedProperties.magnifier">
+    {{combinedProperties.magnifierZoom}}
+  </div>
+</div>

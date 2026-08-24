@@ -1,0 +1,16 @@
+<div class="widget-container">
+  <button mat-mini-fab
+          type='button'
+          [matTooltip]="'openWidget' | translate: { widget: ('periodicTable' | translate) }"
+          [style.background-color]="elementModel.styling.backgroundColor"
+          [style.color]="elementModel.styling.fontColor"
+          (click)="emitWidgetCall()">
+    <mat-icon>{{ WidgetPeriodicTableElement.icon }}</mat-icon>
+  </button>
+
+  <div class="elements-container" *ngIf="elementModel.state">
+    @for (element of (elementModel.state | split); track element) {
+      <div class="element-square">{{ element }}</div>
+    }
+  </div>
+</div>

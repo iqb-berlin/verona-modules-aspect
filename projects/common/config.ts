@@ -1,0 +1,2 @@
+export const IMAGE_MAX_WIDTH = 750;
+export const IMAGE_COMPRESSION_QUALITY = 0.8;

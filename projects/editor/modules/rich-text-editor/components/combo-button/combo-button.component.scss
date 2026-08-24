@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+}
+.apply-button {
+  min-width: unset;
+}
+.apply-button .mat-icon {
+  margin-right: 0;
+}
+mat-select {
+  display: flex;
+}
+mat-select:hover {
+  background-color: WhiteSmoke;
+}

@@ -1,9 +1,10 @@
 {
   "name": "verona-modules-aspect",
   "config": {
-    "player_version": "2.12.6",
-    "editor_version": "2.12.6",
-    "unit_definition_version": "4.11.0"
+    "player_version": "3.0.0",
+    "editor_version": "3.0.0",
+    "unit_definition_version": "4.12.0",
+    "unit_definition_min_version": "4.0.0"
   },
   "scripts": {
     "ng": "ng",
@@ -11,29 +12,32 @@
     "start-player-local": "ng serve player --port 4202",
     "build-editor": "scripts/build.sh editor $npm_package_config_editor_version",
     "build-player": "scripts/build.sh player $npm_package_config_player_version",
-    "test": "ng test",
+    "test": "npm run test:common && npm run test:player-modules && npm run test:editor && npm run test:editor-modules && npm run test:player",
+    "test:common": "ng test common --watch=false",
+    "test:player-modules": "ng test playerModules --watch=false",
+    "test:editor": "ng test editor --watch=false",
+    "test:player": "ng test player --watch=false",
+    "lint": "eslint .",
     "e2e": "npx cypress open",
-    "e2e-headless": "npx cypress run"
+    "e2e-headless": "npx cypress run",
+    "generate-migration": "node scripts/generate-migration.js",
+    "serve-editor-coverage": "ng run editor:serve-coverage",
+    "serve-player-coverage": "ng run player:serve-coverage",
+    "test:editor-modules": "ng test editorModules --watch=false"
   },
   "private": true,
   "eslintConfig": {
     "extends": "@iqb/eslint-config",
     "parserOptions": {
-      "ignores": [
-        "**/dist/*.*",
-        "**/scripts/*.*",
-        "**/test-data/*.*",
-        "./dist/*",
-        "./node_modules"
-      ],
       "project": "./tsconfig.json"
     },
     "ignorePatterns": [
-      "**/dist/*.*",
-      "**/scripts/*.*",
-      "**/test-data/*.*",
-      "./dist/**/*",
-      "./node_modules/**/*"
+      "**/assets/**",
+      "**/coverage/**",
+      "**/dist/**",
+      "**/scripts/**",
+      "**/test-data/**",
+      "**/node_modules/**"
     ],
     "rules": {
       "function-call-argument-newline": "OFF",
@@ -59,7 +63,17 @@
           "exceptMethods": [
             "getElementComponent",
             "getNewOptionLabel",
+            "getTranslation",
             "transform"
+          ]
+        }
+      ],
+      "no-console": [
+        "error",
+        {
+          "allow": [
+            "warn",
+            "error"
           ]
         }
       ]
@@ -67,7 +81,7 @@
     "overrides": [
       {
         "files": [
-          "e2e-tests/**/*.ts"
+          "e2e/**/*.ts"
         ],
         "rules": {
           "@typescript-eslint/no-unused-expressions": [
@@ -84,17 +98,17 @@
     ]
   },
   "dependencies": {
-    "@angular/animations": "^20.3.4",
-    "@angular/cdk": "^20.2.8",
-    "@angular/common": "^20.3.4",
-    "@angular/compiler": "^20.3.4",
-    "@angular/core": "^20.3.4",
-    "@angular/elements": "^20.3.4",
-    "@angular/forms": "^20.3.4",
-    "@angular/material": "^20.2.8",
-    "@angular/platform-browser": "^20.3.4",
-    "@angular/platform-browser-dynamic": "^20.3.4",
-    "@angular/router": "^20.3.4",
+    "@angular/animations": "^21.2.9",
+    "@angular/cdk": "^21.2.14",
+    "@angular/common": "^21.2.9",
+    "@angular/compiler": "^21.2.9",
+    "@angular/core": "^21.2.9",
+    "@angular/elements": "^21.2.9",
+    "@angular/forms": "^21.2.9",
+    "@angular/material": "^21.2.14",
+    "@angular/platform-browser": "^21.2.9",
+    "@angular/platform-browser-dynamic": "^21.2.9",
+    "@angular/router": "^21.2.9",
     "@iqb/mathlive": "^0.4.1",
     "@iqb/responses": "^3.3.2",
     "@ngx-translate/core": "^15.0.0",
@@ -129,6 +143,7 @@
     "katex": "^0.16.11",
     "ngx-tiptap": "^11.1.0",
     "ngx-translate-testing": "^7.0.0",
+    "prosemirror-model": "^1.25.4",
     "prosemirror-state": "^1.4.3",
     "prosemirror-view": "^1.41.3",
     "rxjs": "^7.8.1",
@@ -136,22 +151,25 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^20.3.5",
-    "@angular/cli": "^20.3.5",
-    "@angular/compiler-cli": "^20.3.4",
+    "@angular-builders/custom-webpack": "^21.1.0",
+    "@angular-devkit/build-angular": "^21.2.9",
+    "@angular/build": "^21.2.21",
+    "@angular/cli": "^21.2.9",
+    "@angular/compiler-cli": "^21.2.9",
+    "@cypress/code-coverage": "^4.0.3",
     "@iqb/eslint-config": "^2.1.1",
-    "@types/jasmine": "~5.1.4",
+    "@istanbuljs/nyc-config-typescript": "^1.0.0",
+    "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
     "@types/katex": "^0.16.7",
-    "@types/node": "^20.12.12",
-    "cypress": "^13.17.0",
+    "@types/node": "^22.20.1",
+    "@vitest/browser": "^4.1.10",
+    "@vitest/browser-playwright": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.10",
+    "cypress": "^15.10.0",
+    "eslint": "^8.42.0",
     "iqb-dev-components": "^1.4.1",
-    "jasmine-core": "^5.1.2",
-    "karma": "~6.4.3",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.1",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "^2.1.0",
-    "karma-spec-reporter": "^0.0.36",
-    "typescript": "~5.8.3"
+    "playwright": "^1.61.1",
+    "typescript": "~5.9.3",
+    "vitest": "^4.1.10"
   }
 }

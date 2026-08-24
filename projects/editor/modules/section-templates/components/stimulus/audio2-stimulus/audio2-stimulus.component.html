@@ -1,0 +1,26 @@
+<h3>{{ 'sectionTemplates.instructionAudio' | translate }}</h3>
+<aspect-editor-wizard-audio [src]="options.src1" [(maxRuns)]="options.maxRuns1"
+                            (changeMediaSrc)="changeMediaSrc('src1')">
+</aspect-editor-wizard-audio>
+
+<h3>{{ 'sectionTemplates.stimulusAudio' | translate }}</h3>
+<aspect-editor-wizard-audio [src]="options.src2" [(maxRuns)]="options.maxRuns2"
+                            (changeMediaSrc)="changeMediaSrc('src2')">
+</aspect-editor-wizard-audio>
+
+<h3>{{ 'sectionTemplates.source' | translate }}</h3>
+<aspect-rich-text-editor class="text2" [(content)]="options.text" [showReducedControls]="true"
+                         [placeholder]="'sectionTemplates.sourcePlaceholder' | translate">
+</aspect-rich-text-editor>
+
+<h3>{{ 'sectionTemplates.language' | translate }}</h3>
+<mat-radio-group [(ngModel)]="options.lang"
+                 [matTooltip]="'sectionTemplates.languageTooltip' | translate">
+  <mat-radio-button [value]="'german'">{{ 'sectionTemplates.german' | translate }}</mat-radio-button>
+  <mat-radio-button [value]="'english'">{{ 'sectionTemplates.english' | translate }}</mat-radio-button>
+  <mat-radio-button [value]="'french'">{{ 'sectionTemplates.french' | translate }}</mat-radio-button>
+</mat-radio-group>
+
+<h3>{{ 'sectionTemplates.audioContext' | translate }}</h3>
+<aspect-rich-text-editor [(content)]="options.text2" [showReducedControls]="true">
+</aspect-rich-text-editor>

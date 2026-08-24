@@ -7,22 +7,23 @@ import {
   Input,
   NgZone,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
 
 @Directive({
-    selector: '[dynamicRows]',
-    standalone: false
+  selector: '[dynamicRows]',
+  standalone: false
 })
-export class DynamicRowsDirective implements OnInit, AfterViewInit, OnChanges {
+export class DynamicRowsDirective implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() fontSize!: number;
   @Input() expectedCharactersCount!: number;
   @Output() dynamicRowsChange: EventEmitter<number> = new EventEmitter<number>();
 
   width = 0;
-  observer!: ResizeObserver;
+  observer?: ResizeObserver;
 
   constructor(
     private elementRef: ElementRef,
@@ -61,5 +62,9 @@ export class DynamicRowsDirective implements OnInit, AfterViewInit, OnChanges {
     if (changes.fontSize || changes.expectedCharactersCount) {
       this.calculateDynamicRows();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
   }
 }

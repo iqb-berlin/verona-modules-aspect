@@ -1,0 +1,6 @@
+<mat-checkbox [checked]="checked"
+              [indeterminate]="indeterminate"
+              [disabled]="disabled"
+              (change)="toggle($event.checked)">
+  <ng-content></ng-content>
+</mat-checkbox>

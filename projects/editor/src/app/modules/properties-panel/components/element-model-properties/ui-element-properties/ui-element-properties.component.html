@@ -1,0 +1,156 @@
+<div class='fx-column-start-stretch'>
+  <mat-form-field appearance="fill">
+    <mat-label>{{'propertiesPanel.id' | translate }}</mat-label>
+    @if (selectedElements.length === 1) {
+      <input #aliasField matInput type="text" [value]="combinedProperties.alias"
+             (input)="emitOwn('alias', aliasField.value)"
+             (keydown.space)="$event.preventDefault();">
+    }
+    @if (selectedElements.length > 1) {
+      <input matInput type="text" disabled [value]="'propertiesPanel.mustBeUnique' | translate">
+    }
+  </mat-form-field>
+
+  @if (show.mediaSource) {
+    <aspect-media-source-properties [combinedProperties]="combinedProperties"
+                                    (updateModel)="updateModel.emit($event)">
+    </aspect-media-source-properties>
+  }
+
+  @if (show.inputElement) {
+    <aspect-input-element-properties [combinedProperties]="combinedProperties"
+                                     (updateModel)="updateModel.emit($event)">
+    </aspect-input-element-properties>
+  }
+
+  @if (show.presetValue) {
+    <aspect-preset-value-properties [combinedProperties]="combinedProperties"
+                                    [divergingProperties]="divergingProperties"
+                                    (updateModel)="updateModel.emit($event)">
+    </aspect-preset-value-properties>
+  }
+
+  @if (show.options) {
+    <aspect-options-field-set [combinedProperties]="combinedProperties"
+                              (updateModel)="updateModel.emit($event)">
+    </aspect-options-field-set>
+  }
+
+  @if (show.checkbox) {
+    <aspect-checkbox-properties [combinedProperties]="combinedProperties"
+                                (updateModel)="updateModel.emit($event)">
+    </aspect-checkbox-properties>
+  }
+
+  <aspect-ele-specific-props [combinedProperties]="combinedProperties"
+                             [divergingProperties]="divergingProperties"
+                             [show]="show"
+                             (updateModel)="updateModel.emit($event)">
+  </aspect-ele-specific-props>
+
+  @if (show.cloze) {
+    <aspect-cloze-properties [combinedProperties]="$any(combinedProperties)">
+    </aspect-cloze-properties>
+  }
+
+  @if (unitService.expertMode && combinedProperties.player) {
+    <button [style.align-self]="'center'"
+            mat-raised-button
+            (click)="elementService.showDefaultEditDialog(selectedElements[0])">
+      {{ 'propertiesPanel.editPlayerOptions' | translate }}
+    </button>
+  }
+
+  <!-- $any() only for the children this component shares no property name with: TypeScript's
+       weak type detection rejects an assignment to an all-optional type when nothing is in common,
+       and having nothing in common is exactly what extracting them achieved. The other children are
+       bound directly - the merged object this component receives carries every property, and its
+       own narrow type is assignable wherever a single name overlaps. -->
+  @if (show.select) {
+    <aspect-select-properties [combinedProperties]="$any(combinedProperties)"
+                              [divergingProperties]="divergingProperties"
+                              (updateModel)="updateModel.emit($event)">
+    </aspect-select-properties>
+  }
+
+  @if (show.buttonAlignment) {
+    <aspect-button-alignment-properties [combinedProperties]="$any(combinedProperties)"
+                                       (updateModel)="updateModel.emit($event)">
+    </aspect-button-alignment-properties>
+  }
+
+  @if (show.multiLineText) {
+    <aspect-multi-line-text-properties [combinedProperties]="$any(combinedProperties)"
+                                       (updateModel)="updateModel.emit($event)">
+    </aspect-multi-line-text-properties>
+  }
+
+  @if (show.mathKeyboard) {
+    <aspect-math-keyboard-properties [combinedProperties]="$any(combinedProperties)"
+                                     (updateModel)="updateModel.emit($event)">
+    </aspect-math-keyboard-properties>
+  }
+
+  <!--`type != null` as well: the two element types with an action have different vocabularies, and a
+      mixed selection merges `type` to null. The ternary below would then fall to the trigger's
+      actions and write one of them to the button, which does not accept it (#1147).-->
+  @if (show.action && unitService.expertMode &&
+       combinedProperties.action !== undefined &&
+       combinedProperties.type != null) {
+    <aspect-action-properties
+        [actions]="combinedProperties.type === 'button' ? BUTTON_ACTIONS : TRIGGER_ACTIONS"
+        [combinedProperties]="combinedProperties"
+        (updateModel)="updateModel.emit($event)">
+    </aspect-action-properties>
+  }
+
+  @if (show.textFieldElement) {
+    <aspect-text-field-element-properties [combinedProperties]="combinedProperties"
+                                          (updateModel)="updateModel.emit($event)">
+    </aspect-text-field-element-properties>
+  }
+
+  @if (show.inputAssistance && unitService.expertMode) {
+    <aspect-input-assistance-properties [combinedProperties]="combinedProperties"
+                                        (updateModel)="updateModel.emit($event)">
+    </aspect-input-assistance-properties>
+  }
+
+  @if (show.stickyHeader) {
+    <aspect-sticky-header-properties [combinedProperties]="combinedProperties"
+                                     (updateModel)="updateModel.emit($event)">
+    </aspect-sticky-header-properties>
+  }
+
+  @if (show.firstColumnRatio) {
+    <aspect-first-column-ratio-properties [combinedProperties]="$any(combinedProperties)"
+                                          (updateModel)="updateModel.emit($event)">
+    </aspect-first-column-ratio-properties>
+  }
+
+  @if (show.image && unitService.expertMode) {
+    <aspect-image-properties [combinedProperties]="combinedProperties"
+                             (updateModel)="updateModel.emit($event)">
+    </aspect-image-properties>
+  }
+
+  <!-- `$any` for the same reason as the block above: this component stopped reading `dimensions`
+       when the size fields moved out, so nothing is left in common with the child's type. -->
+  @if (!unitService.expertMode) {
+    <aspect-standard-dimension-properties [combinedProperties]="$any(combinedProperties)"
+                                          [divergingProperties]="divergingProperties"
+                                          [show]="show">
+    </aspect-standard-dimension-properties>
+  }
+
+  <!-- The margin sits on a wrapper: aspect-merged-checkbox uses display: contents and has no box
+       of its own to carry it. -->
+  @if (unitService.expertMode) {
+    <div [style.margin-top.px]="20">
+      <aspect-merged-checkbox [value]="combinedProperties.isRelevantForPresentationComplete"
+                              (valueChange)="emitOwn('isRelevantForPresentationComplete', $event)">
+        {{'propertiesPanel.isRelevantForPresentationComplete' | translate }}
+      </aspect-merged-checkbox>
+    </div>
+  }
+</div>

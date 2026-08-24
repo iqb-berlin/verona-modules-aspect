@@ -1,0 +1,71 @@
+import {
+  TextInputElement
+} from 'common/models/elements/element';
+import { VariableInfo } from '@iqb/responses';
+import {
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { TextInputElementProperties } from 'common/models/input-element-interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
+
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
+export class SpellCorrectElement extends TextInputElement implements SpellCorrectProperties {
+  type: UIElementType = 'spell-correct';
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps();
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS['spell-correct'].dimensions);
+
+  /* No lineHeight, unlike the eleven other elements that have one: this is a single-line input with a
+     button under it, and the component applies no line height anywhere. Added to the model in 2021
+     (51204206), lost again in the 2.x styling rework -- the released master has none for this element
+     -- and reintroduced by #1177; no component ever rendered it (#1232).
+     #1177 gave it a default so a stored value would survive the load, which was consistent while the
+     property was declared, and is what made its uselessness visible. */
+  styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
+
+  static title: string = 'Wort korrigieren';
+  static icon: string = 'format_strikethrough';
+
+  constructor(element?: Partial<SpellCorrectProperties>, idService?: AbstractIDService) {
+    super({ type: 'spell-correct', ...element }, idService);
+    if (isSpellCorrectProperties(element)) {
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at SpellCorrect instantiation', element);
+    }
+  }
+
+  getVariableInfos(): VariableInfo[] {
+    return [{
+      id: this.id,
+      alias: this.alias,
+      type: 'string',
+      format: '',
+      multiple: false,
+      nullable: true,
+      values: [],
+      valuePositionLabels: [],
+      page: '',
+      valuesComplete: false
+    }];
+  }
+}
+
+export interface SpellCorrectProperties extends TextInputElementProperties {
+  position: PositionProperties;
+  dimensions: DimensionProperties;
+  styling: BasicStyles;
+}
+
+function isSpellCorrectProperties(blueprint?: Partial<SpellCorrectProperties>): blueprint is SpellCorrectProperties {
+  if (!blueprint) return false;
+  return blueprint.type === 'spell-correct';
+}

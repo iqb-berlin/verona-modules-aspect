@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ 'sectionTemplates.taskIdeaTitle' | translate }}</h2>
+<div mat-dialog-content>
+  <h3>{{ 'sectionTemplates.taskIdeaDescription' | translate }}</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text1"
+                           [placeholder]="'sectionTemplates.taskIdeaDescriptionPlaceholder' | translate">
+  </aspect-rich-text-editor>
+  <h3>{{ 'sectionTemplates.taskIdeaSketch' | translate }}</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text2"
+                           [placeholder]="'sectionTemplates.taskIdeaSketch' | translate">
+  </aspect-rich-text-editor>
+  <h3>{{ 'sectionTemplates.taskIdeaSolution' | translate }}</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text3"
+                           [placeholder]="'sectionTemplates.taskIdeaSolution' | translate">
+  </aspect-rich-text-editor>
+  <h3>{{ 'sectionTemplates.taskIdeaTemplate' | translate }}</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text4"
+                           [placeholder]="'sectionTemplates.taskIdeaLinks' | translate">
+  </aspect-rich-text-editor>
+  <h3>{{ 'sectionTemplates.taskIdeaResources' | translate }}</h3>
+  <aspect-rich-text-editor class="input1" [(content)]="text5"
+                           [placeholder]="'sectionTemplates.taskIdeaResourcesPlaceholder' | translate">
+  </aspect-rich-text-editor>
+</div>
+<div mat-dialog-actions>
+  <button mat-button
+          [mat-dialog-close]="{ text1, text2, text3, text4, text5 }">
+    {{'confirm' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</div>

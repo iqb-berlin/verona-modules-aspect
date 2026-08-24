@@ -1,0 +1,311 @@
+import { inject, Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  RadioWizardDialogComponent
+} from 'editor/modules/section-templates/components/radio/radio-dialog/radio-dialog.component';
+import { ElementFactory } from 'common/utils/element-factory';
+import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { IDService } from 'editor/src/app/services/id.service';
+import { UIElement } from 'common/models/elements/element';
+import {
+  LikertWizardDialogComponent
+} from 'editor/modules/section-templates/components/likert-dialog/likert-dialog.component';
+import {
+  InputWizardDialogComponent
+} from 'editor/modules/section-templates/components/text-input-dialog/text-input-dialog.component';
+import {
+  MarkingPanelDialogComponent
+} from 'editor/modules/section-templates/components/marking-panel-dialog/marking-panel-dialog.component';
+import {
+  GeometryWizardDialogComponent
+} from 'editor/modules/section-templates/components/geometry-dialog/geometry-dialog.component';
+import {
+  DroplistWizardDialogComponent
+} from 'editor/modules/section-templates/components/droplist-dialog/droplist-dialog.component';
+import {
+  MathTableWizardDialogComponent
+} from 'editor/modules/section-templates/components/mathtable-dialog/mathtable-dialog.component';
+import {
+  Text3WizardDialogComponent
+} from 'editor/modules/section-templates/components/text3-dialog/text3-dialog.component';
+import {
+  CheckboxWizardDialogComponent
+} from 'editor/modules/section-templates/components/checkbox-dialog/checkbox-dialog.component';
+import { SelectionService } from 'editor/src/app/services/selection.service';
+import { PositionedUIElement, UIElementType } from 'common/models/ui-element-interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
+import { PageProperties } from 'common/models/page';
+import * as TextBuilders from 'editor/modules/section-templates/utils/text-builders';
+import * as TextInputBuilders from 'editor/modules/section-templates/utils/text-input-builders';
+import * as RadioBuilders from 'editor/modules/section-templates/utils/radio-builders';
+import * as CheckboxBuilders from 'editor/modules/section-templates/utils/checkbox-builders';
+import * as DroplistBuilders from 'editor/modules/section-templates/utils/droplist-builders';
+import * as GeometryBuilders from 'editor/modules/section-templates/utils/geometry-builders';
+import * as MathtableBuilders from 'editor/modules/section-templates/utils/mathtable-builders';
+import * as StimulusBuilders from 'editor/modules/section-templates/utils/stimulus/stimulus-builders';
+import {
+  ClassicTemplateOptions, SortTemplateOptions, TwoPageTemplateOptions
+} from 'editor/modules/section-templates/models/droplist-interfaces';
+import {
+  StimulusWizardDialogComponent
+} from 'editor/modules/section-templates/components/stimulus/stimulus-dialog/stimulus-dialog.component';
+import {
+  Audio1StimulusOptions, Audio2StimulusOptions,
+  EmailStimulusOptions,
+  MessageStimulusOptions,
+  TextStimulusOptions
+} from 'editor/modules/section-templates/models/stimulus-interfaces';
+import { ImageRadioOptions, TextRadioOptions } from 'editor/modules/section-templates/models/radio-interfaces';
+import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { EditorPage } from 'editor/src/app/models/editor-page';
+import { EditorSection } from 'editor/src/app/models/editor-section';
+import { CONSTANTS } from 'editor/modules/section-templates/constants';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TemplateService {
+  readonly dialog = inject(MatDialog);
+
+  constructor(private unitService: UnitService,
+              private selectionService: SelectionService,
+              private idService: IDService,
+              private translateService: TranslateService) { }
+
+  static helpTooltipImageSrc = CONSTANTS.lightbulb;
+
+  async applyTemplate(templateName: string) {
+    const templateSections: EditorSection | [EditorSection, EditorSection] = await this
+      .createTemplateSections(templateName);
+
+    const selectedPage = this.unitService.getSelectedPage();
+    const selectedSectionIndex = this.selectionService.selectedSectionIndex;
+    let targetPage: EditorPage;
+    let targetSectionIndex: number;
+    if (!Array.isArray(templateSections)) {
+      targetPage = selectedPage;
+      targetSectionIndex = TemplateService.addSectionToPage(templateSections, targetPage, selectedSectionIndex);
+    } else {
+      targetPage = selectedPage.alwaysVisible ? this.unitService.unit.pages[1] : selectedPage;
+      if (!this.unitService.unit.pages[0].alwaysVisible) {
+        this.createAlwaysVisiblePage();
+      }
+      TemplateService.addSectionToPage(templateSections[1], this.unitService.unit.pages[0], 0);
+      targetSectionIndex = TemplateService.addSectionToPage(templateSections[0], targetPage, selectedSectionIndex);
+    }
+    /* Adding the always visible page shifts all page indices, so the selection has to be updated.
+       Otherwise it can point at a section which does not exist on the newly selected page. */
+    this.selectionService.updateSelection(this.unitService.unit.pages.indexOf(targetPage), targetSectionIndex);
+    this.unitService.updateSectionCounter();
+    this.unitService.updateUnitDefinition();
+  }
+
+  private createAlwaysVisiblePage(): void {
+    this.unitService.unit.pages.push(new EditorPage({ alwaysVisible: true } as PageProperties));
+    this.unitService.unit.movePageToFront(this.unitService.unit.pages.length - 1);
+    this.unitService.pageOrderChanged.next();
+  }
+
+  /* Returns the index the section was put at. */
+  private static addSectionToPage(section: EditorSection, page: EditorPage, selectedSectionIndex: number): number {
+    if (page.sections[selectedSectionIndex]?.isEmpty()) {
+      page.replaceSection(selectedSectionIndex, section);
+      return selectedSectionIndex;
+    }
+    page.addSection(section);
+    return page.sections.length - 1;
+  }
+
+  private createTemplateSections(templateName: string): Promise<EditorSection | [EditorSection, EditorSection]> {
+    return new Promise(resolve => {
+      switch (templateName) {
+        case 'stimulus':
+          this.dialog.open(StimulusWizardDialogComponent, { autoFocus: 'dialog' })
+            .afterClosed().subscribe(
+              (result: {
+                variant: 'text' | 'email' | 'message' | 'audio1' | 'audio2',
+                options: TextStimulusOptions | EmailStimulusOptions | MessageStimulusOptions |
+                Audio1StimulusOptions | Audio2StimulusOptions
+              }) => {
+                if (!result) return;
+                switch (result.variant) {
+                  case 'text':
+                    resolve(StimulusBuilders.createTextSection(result.options as TextStimulusOptions, this.idService));
+                    break;
+                  case 'email':
+                    resolve(StimulusBuilders.createEmailSection(result.options as EmailStimulusOptions,
+                                                                this.idService));
+                    break;
+                  case 'message':
+                    resolve(StimulusBuilders.createMessageSection(result.options as MessageStimulusOptions,
+                                                                  this.idService));
+                    break;
+                  case 'audio1':
+                    resolve(StimulusBuilders.createAudio1Section(result.options as Audio1StimulusOptions,
+                                                                 this.idService));
+                    break;
+                  case 'audio2':
+                    resolve(StimulusBuilders.createAudio2Section(result.options as Audio2StimulusOptions,
+                                                                 this.idService));
+                    break;
+                  // no default
+                }
+              });
+          break;
+        case 'text2': {
+          const availableTextElements = this.unitService.unit.getAllElements('text') as TextElement[];
+          this.dialog.open(MarkingPanelDialogComponent,
+                           { data: { availableTextIDs: availableTextElements.map(text => text.alias) } })
+            .afterClosed()
+            .subscribe((result: {
+              text1: string, showHelper: boolean, markingMode: 'word' | 'range', connectedText: string | undefined
+            }) => {
+              if (result) {
+                const createdSection =
+                  TextBuilders.createText2Section(result.text1, result.showHelper, result.markingMode, this.idService);
+                // This connects an existing text element to the created marking panel
+                if (result.connectedText) {
+                  const createdMarkingPanelID = createdSection.getAllElements('marking-panel')[0].id;
+                  const chosenTextElement = availableTextElements
+                    .filter((el: UIElement) => el.alias === result.connectedText)[0];
+                  chosenTextElement.markingPanels.push(createdMarkingPanelID);
+                  chosenTextElement.markingMode = result.markingMode;
+                }
+                resolve(createdSection);
+              }
+            });
+          break;
+        }
+        case 'text3':
+          this.dialog.open(Text3WizardDialogComponent, {})
+            .afterClosed().subscribe(
+              (result: { text1: string, text2: string, text3: string, text4: string, text5: string }) => {
+                if (result) {
+                  resolve(TextBuilders.createText3Section(result.text1, result.text2, result.text3,
+                                                          result.text4, result.text5, this.idService));
+                }
+              });
+          break;
+        case 'input':
+          this.dialog.open(InputWizardDialogComponent, {})
+            .afterClosed().subscribe((result: {
+              text: string,
+              answerCount: number,
+              multilineInputs: boolean,
+              numbering: 'latin' | 'decimal' | 'bullets' | 'none',
+              fieldLength: 'very-small' | 'small' | 'medium' | 'large',
+              expectedCharsCount: number,
+              useMathFields: boolean,
+              numberingWithText: boolean,
+              subQuestions: string[]
+            }) => {
+              if (result) resolve(TextInputBuilders.createInputSection(result, this.idService));
+            });
+          break;
+        case 'radio':
+          this.dialog.open(RadioWizardDialogComponent, { autoFocus: 'dialog' })
+            .afterClosed().subscribe((result: {
+              variant: 'text' | 'image',
+              options: TextRadioOptions | ImageRadioOptions
+            }) => {
+              if (!result) return;
+              switch (result.variant) {
+                case 'text':
+                  resolve(RadioBuilders.createTextRadioSection(result.options as TextRadioOptions, this.idService));
+                  break;
+                case 'image':
+                  resolve(RadioBuilders.createImageRadioSection(result.options as ImageRadioOptions, this.idService));
+                // no default
+              }
+            });
+          break;
+        case 'likert':
+          this.dialog.open(LikertWizardDialogComponent, {})
+            .afterClosed().subscribe((result: {
+              text1: string, text2: string, options: TextImageLabel[], rows: TextImageLabel[] }) => {
+              if (result) {
+                resolve(RadioBuilders.createLikertSection(result.text1, result.text2, result.options, result.rows,
+                                                          this.idService));
+              }
+            });
+          break;
+        case 'checkbox':
+          this.dialog.open(CheckboxWizardDialogComponent, {})
+            .afterClosed().subscribe((result: { text1: string, options: string[], useImages: boolean }) => {
+              if (result) {
+                resolve(CheckboxBuilders
+                  .createCheckboxSection(result.text1, result.options, result.useImages, this.idService));
+              }
+            });
+          break;
+        case 'geometry':
+          this.dialog.open(GeometryWizardDialogComponent, {})
+            .afterClosed().subscribe((result: { text: string, geometryAppDefinition: string, geometryFileName: string,
+              showHelper: boolean }) => {
+              if (result) {
+                resolve(GeometryBuilders.createGeometrySection(result.text, result.geometryAppDefinition,
+                                                               result.geometryFileName, result.showHelper,
+                                                               this.translateService
+                                                                 .instant('sectionTemplates.geometrySource'),
+                                                               this.idService));
+              }
+            });
+          break;
+        case 'mathtable':
+          this.dialog.open(MathTableWizardDialogComponent, {})
+            .afterClosed().subscribe((result: {
+              operation: 'addition' | 'subtraction' | 'multiplication', terms: string[] }) => {
+              if (result) {
+                resolve(MathtableBuilders.createMathTableSection(result.operation, result.terms, this.idService));
+              }
+            });
+          break;
+        case 'droplist':
+          this.dialog.open(DroplistWizardDialogComponent, { autoFocus: false })
+            .afterClosed().subscribe((result: {
+              variant: 'classic' | '2pages' | 'sort',
+              options: ClassicTemplateOptions | SortTemplateOptions | TwoPageTemplateOptions
+            }) => {
+              if (!result) return;
+              switch (result.variant) {
+                case 'classic':
+                  resolve(DroplistBuilders
+                    .createDroplistSection(result.options as ClassicTemplateOptions, this.idService));
+                  break;
+                case 'sort':
+                  resolve(DroplistBuilders
+                    .createSortlistSection(result.options as SortTemplateOptions, this.idService));
+                  break;
+                case '2pages':
+                  resolve(DroplistBuilders
+                    .createTwopageSection(result.options as TwoPageTemplateOptions, this.idService));
+                // no default
+              }
+            });
+          break;
+        default:
+          throw Error(`Template name not found: ${templateName}`);
+      }
+    });
+  }
+
+  /* A template lays out its own section, margins included: `coords` is completed HERE, so every margin
+     the template does not name is 0 and not the one its element type declares (text and marking panel
+     10, image and media 15, table 30, cloze and likert 35). That is the point -- the spacing of a
+     template is tuned as a whole, and the margins the builders write out are tuned against the 22 call
+     sites that name none and contribute nothing. Handing `coords` on as the partial it is would let the
+     normalizer fill those gaps from the type and move all 22 by 10px (#1193).
+
+     The factory takes a partial group since #1193, so this call is a decision and no longer something
+     the type demands. A template that wants the type's margin names it itself. */
+  static createElement(elType: UIElementType, coords: Partial<PositionProperties>,
+                       params: Partial<UIElement>, idService: IDService): PositionedUIElement {
+    return ElementFactory.createElement({
+      type: elType,
+      position: PropertyGroupGenerators.generatePositionProps(coords),
+      ...params
+    }, idService) as PositionedUIElement;
+  }
+}

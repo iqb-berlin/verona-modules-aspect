@@ -1,18 +1,13 @@
 import {
   Component, EventEmitter, Input
 } from '@angular/core';
-import { MarkableWordComponent } from 'player/src/app/components/markable-word/markable-word.component';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { BehaviorSubject } from 'rxjs';
 import { MarkingRange } from 'common/models/marking-data';
-import { MarkableDelimiterComponent } from 'player/src/app/components/markable-delimiter/markable-delimiter.component';
 
 @Component({
   selector: 'aspect-markables-container',
-  imports: [
-    MarkableWordComponent,
-    MarkableDelimiterComponent
-  ],
+  standalone: false,
   templateUrl: './markables-container.component.html',
   styleUrl: './markables-container.component.scss'
 })

@@ -1,0 +1,12 @@
+<div class="hide-cursor">
+  <div class="magnifier-glass"
+       [style.backgroundImage]="'url(' + image.src + ')'"
+       [style.backgroundPosition]="backgroundPosition"
+       [style.left.px]="left"
+       [style.top.px]="top"
+       [style.width.px]="size"
+       [style.height.px]="size"
+       [style.backgroundSize]="(image.width * zoom) + 'px ' + (image.height * zoom) + 'px'"
+       [style.backgroundRepeat]="'no-repeat'">
+  </div>
+</div>

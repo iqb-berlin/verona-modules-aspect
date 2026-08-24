@@ -1,0 +1,69 @@
+<ng-container *ngIf="!tableMode">
+  <mat-form-field [class.small-input]="elementModel.label === ''"
+                  [style.width.%]="100"
+                  [style.height.%]="100"
+                  [style.line-height.%]="elementModel.styling.lineHeight"
+                  [style.color]="elementModel.styling.fontColor"
+                  [style.font-size.px]="elementModel.styling.fontSize"
+                  [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                  [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                  [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+                  [style.--backgroundColor]="elementModel.styling.backgroundColor"
+                  [appearance]="$any(elementModel.appearance)">
+    <mat-label>{{elementModel.label}}</mat-label>
+    <input matInput #input
+           autocomplete="off"
+           autocapitalize="none"
+           autocorrect="off"
+           spellcheck="false"
+           value="{{elementModel.value}}"
+           [style.text-align]="elementModel.textAlign"
+           [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
+           [formControl]="elementFormControl"
+           [readonly]="elementModel.readOnly"
+           (paste)="onPaste.emit($event)"
+           (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
+           (focus)="focusChanged.emit({ inputElement: input, focused: true })"
+           (blur)="focusChanged.emit({ inputElement: input, focused: false })">
+    <div matSuffix
+         class="fx-row-center-baseline">
+      <!--        TODO nicht zu sehen-->
+      <button *ngIf="elementModel.clearable"
+              type="button"
+              mat-icon-button aria-label="Clear"
+              (click)="elementFormControl.setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-error *ngIf="elementFormControl.errors">
+      {{elementFormControl.errors | errorTransform: elementModel}}
+    </mat-error>
+  </mat-form-field>
+</ng-container>
+
+<ng-container *ngIf="tableMode">
+  <aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
+                                    [elementModel]="elementModel"
+                                    [elementFormControl]="elementFormControl">
+  </aspect-cloze-child-error-message>
+  <input #input
+         class="table-child"
+         autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false"
+         [class.errors]="elementFormControl.errors && elementFormControl.touched"
+         [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
+         [style.text-align]="elementModel.textAlign"
+         [style.line-height.%]="elementModel.styling.lineHeight"
+         [style.color]="elementModel.styling.fontColor"
+         [style.font-size.px]="elementModel.styling.fontSize"
+         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+         [style.background-color]="elementModel.styling.backgroundColor"
+         [readonly]="elementModel.readOnly"
+         [formControl]="elementFormControl"
+         [value]="elementModel.value"
+         (paste)="onPaste.emit($event)"
+         (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
+         (focus)="focusChanged.emit({ inputElement: input, focused: true })"
+         (blur)="focusChanged.emit({ inputElement: input, focused: false })">
+</ng-container>

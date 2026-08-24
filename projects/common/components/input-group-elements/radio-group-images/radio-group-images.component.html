@@ -1,0 +1,27 @@
+<label [id]="elementModel.id+'-radio-group-label'"
+       [style.font-size.px]="elementModel.styling.fontSize"
+       [innerHTML]="elementModel.label | safeResourceHTML">
+</label>
+<mat-radio-group [attr.aria-labelledby]="elementModel.id+'-radio-group-label'"
+                 [style.grid-template-columns]="elementModel.itemsPerRow !== null ?
+                                                'repeat(' + elementModel.itemsPerRow + ', 1fr)' :
+                                                'repeat(' + elementModel.options.length + ', 1fr)'"
+                 [formControl]="elementFormControl"
+                 [value]="elementModel.value">
+  <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
+                    [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
+                    [value]="i">
+    <aspect-text-image-panel class="radio-button-label"
+                             [label]="option"
+                             [style.color]="elementModel.styling.fontColor"
+                             [style.font-size.px]="elementModel.styling.fontSize"
+                             [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+    </aspect-text-image-panel>
+  </mat-radio-button>
+</mat-radio-group>
+<mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+           class="error-message">
+  {{elementFormControl.errors | errorTransform: elementModel}}
+</mat-error>

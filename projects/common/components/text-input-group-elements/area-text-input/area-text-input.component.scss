@@ -1,0 +1,8 @@
+.input {
+  padding: 0 14px;
+  outline: none;
+  // pre-wrap statt pre: Leerzeichen bleiben (contenteditable) erhalten,
+  // aber Text-Segmente dürfen umbrechen (#1076)
+  white-space: pre-wrap;
+  vertical-align: text-bottom;
+}

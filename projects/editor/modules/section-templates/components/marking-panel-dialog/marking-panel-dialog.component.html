@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ 'sectionTemplates.markingTitle' | translate }}</h2>
+<div mat-dialog-content>
+  <h3>{{ 'text' | translate }}</h3>
+  <aspect-rich-text-editor [(content)]="text1"
+                           [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
+  </aspect-rich-text-editor>
+
+  <h3>{{ 'sectionTemplates.connectedStimulusText' | translate }}</h3>
+  <mat-form-field>
+    <mat-label>{{ 'sectionTemplates.availableTextElements' | translate }}</mat-label>
+    <mat-select [(ngModel)]="connectedText">
+      @for (textID of data.availableTextIDs; track textID) {
+        <mat-option [value]="textID">{{textID}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <h3>{{ 'sectionTemplates.markingMode' | translate }}</h3>
+  <mat-radio-group [(ngModel)]="markingMode">
+    <mat-radio-button [value]="'word'">{{ 'sectionTemplates.markingModeWord' | translate }}</mat-radio-button>
+    <mat-radio-button [value]="'range'">{{ 'sectionTemplates.markingModeRange' | translate }}</mat-radio-button>
+  </mat-radio-group>
+
+  <h3>{{ 'sectionTemplates.help' | translate }}</h3>
+  <mat-checkbox [(ngModel)]="showHelper">{{ 'sectionTemplates.addHelperImage' | translate }}</mat-checkbox>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="{ text1, showHelper, markingMode, connectedText }">
+    {{'confirm' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</div>

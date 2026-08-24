@@ -20,10 +20,13 @@
       <input matInput
              type="number"
              step="1000"
+             min="0"
+             required
+             aspectNumberField
              [disabled]="enableReHide"
              [placeholder]="'section.visibilityDelay' | translate"
-             [(ngModel)]="visibilityDelay"
-             (change)="visibilityDelay = visibilityDelay || 0">
+             [ngModel]="visibilityDelay"
+             (numberChange)="commitDelay($event)">
     </mat-form-field>
   </div>
 

@@ -1,0 +1,35 @@
+<mat-form-field [style.width.%]="40">
+  <mat-label>{{label}}</mat-label>
+  <input matInput type="number" required aspectNumberField
+         [disabled]="disabled"
+         [min]="min"
+         [ngModel]="value"
+         (numberChange)="commitValue($event)"
+         (blur)="applyValue()"
+         (keydown.enter)="applyValue()">
+  <!-- A measurement's number is not nullable in the model, so a null here can only be the merge's
+       "the selected elements disagree" - the same state the panel marks at every other number
+       field (#1138). -->
+  @if (value === null) {
+    <aspect-merged-marker matSuffix></aspect-merged-marker>
+  }
+</mat-form-field>
+<mat-form-field [style.width.%]="60">
+  <mat-label>{{'section-menu.unit' | translate }}</mat-label>
+  <mat-select [disabled]="disabled"
+              [(ngModel)]="unit"
+              (selectionChange)="applyUnit()">
+    <mat-option *ngIf="allowedUnits.includes('fr')"
+                value="fr">{{'section-menu.fraction' | translate }}</mat-option>
+    <mat-option *ngIf="allowedUnits.includes('px')"
+                value="px">{{'section-menu.pixel' | translate }}</mat-option>
+    <mat-option *ngIf="allowedUnits.includes('%')"
+                value="%">{{'section-menu.percent' | translate }}</mat-option>
+  </mat-select>
+  <!-- The merge splits a measurement into its two halves, so a selection that disagrees empties this
+       box just like the number beside it. Marking only the number said the unit was settled when it
+       was not, and an entry made on that belief was dropped without a word (#1138). -->
+  @if (unit === null) {
+    <aspect-merged-marker matSuffix></aspect-merged-marker>
+  }
+</mat-form-field>

@@ -1,0 +1,10 @@
+<div #tooltip
+     class="tooltip"
+     [style.left.px]="left"
+     [style.top.px]="top"
+     [style.max-width]="maxWidth">
+  <div #tooltipInner
+       class="tooltip-text"
+       [innerHTML]="tooltipText | safeResourceHTML">
+  </div>
+</div>

@@ -1,15 +1,15 @@
-// eslint-disable-next-line max-classes-per-file
 import {
-  Component, Directive, HostListener, inject, Input
+  Directive, HostListener, inject, Input
 } from '@angular/core';
-import {
-  MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import {
+  ImageFullscreenDialog
+} from 'common/components/image-fullscreen-dialog/image-fullscreen-dialog.component';
 
 @Directive({
   selector: '[imageFullscreen]',
-  standalone: true
+  standalone: false
 })
 export class ImageFullscreenDirective {
   @Input() imgSrc!: SafeResourceUrl;
@@ -28,18 +28,4 @@ export class ImageFullscreenDirective {
       panelClass: 'image-fullscreen-dialog'
     });
   }
-}
-
-@Component({
-    imports: [MatDialogModule],
-    template: `
-    <mat-dialog-content (click)="dialogRef.close()">
-      <img [style.padding.px]="5" [src]="data.src" [alt]="data.alt">
-    </mat-dialog-content>
-  `
-})
-export class ImageFullscreenDialog {
-  readonly data = inject<{ src: string, alt: string }>(MAT_DIALOG_DATA);
-
-  constructor(public dialogRef: MatDialogRef<ImageFullscreenDialog>) { }
 }

@@ -1,0 +1,96 @@
+<div [style.display]="'flex'" [style.flex-direction]="'column'">
+  <mat-form-field *ngIf="unitService.expertMode">
+    <mat-label>{{ 'propertiesPanel.operation' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.operation"
+                (selectionChange)="updateModel.emit({ property: 'operation', value: $event.value })">
+      <mat-option *ngFor="let operation of ['addition', 'subtraction', 'multiplication', 'variable']"
+                  [value]="operation">
+        {{ operation | translate }}
+      </mat-option>
+    </mat-select>
+    @if (combinedProperties.operation === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+
+  {{ 'termRows' | translate }}
+  <div *ngFor="let term of combinedProperties.terms; let i = index; trackBy: trackTerm"
+       class="term-list">
+    <ng-container *ngIf="combinedProperties.operation !== 'multiplication' || i < 2">
+      <mat-form-field [style.flex-grow]="1">
+        <mat-label>{{ 'propertiesPanel.term' | translate }}</mat-label>
+        <input matInput [value]="term" #termInput (input)="changeTerm(termInput.value, i)">
+      </mat-form-field>
+      <button mat-icon-button
+              (click)="removeTerm(i)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </ng-container>
+  </div>
+
+  <button mat-button class="add-button"
+          [disabled]="combinedProperties.operation === 'multiplication' &&
+                      (combinedProperties.terms ?? []).length >= 2"
+          (click)="addTerm()">
+    <mat-icon>add</mat-icon>
+    {{ 'addTermRow' | translate }}
+  </button>
+
+  <mat-form-field>
+    <mat-label>{{ 'resultHelperRow' | translate }}</mat-label>
+    <input matInput #resultHelperRowField
+           [disabled]="combinedProperties.operation === 'variable' &&
+                       !combinedProperties.variableLayoutOptions?.showResultRow"
+           [value]="combinedProperties.resultHelperRow"
+           (input)="updateModel.emit({ property: 'resultHelperRow', value: resultHelperRowField.value })">
+    @if (combinedProperties.resultHelperRow === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'resultRow' | translate }}</mat-label>
+    <input matInput #resultField
+           [disabled]="combinedProperties.operation === 'variable' &&
+                       !combinedProperties.variableLayoutOptions?.showResultRow"
+           [value]="combinedProperties.result"
+           (input)="updateModel.emit({ property: 'result', value: resultField.value })">
+    @if (combinedProperties.result === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+
+
+  <button *ngIf="unitService.expertMode" mat-raised-button color="primary"
+          [disabled]="combinedProperties.operation !== 'variable'"
+          [matMenuTriggerFor]="variableLayoutOptions">
+    {{ 'propertiesPanel.editVariableLayout' | translate }}
+  </button>
+  <mat-menu #variableLayoutOptions="matMenu">
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.allowArithmeticChars"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'allowArithmeticChars', value: $event })">
+      {{ 'propertiesPanel.allowArithmeticChars' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.isFirstLineUnderlined"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'isFirstLineUnderlined', value: $event })">
+      {{ 'propertiesPanel.isFirstLineUnderlined' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.showResultRow"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'showResultRow', value: $event })">
+      {{ 'propertiesPanel.showResultRowWithHelperRow' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.showTopHelperRows"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'showTopHelperRows', value: $event })">
+      {{ 'propertiesPanel.showTopHelperRows' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.variableLayoutOptions?.allowFirstLineCrossOut"
+                            (click)="$event.stopPropagation()"
+                            (valueChange)="updateModel.emit({ property: 'allowFirstLineCrossOut', value: $event })">
+      {{ 'propertiesPanel.allowFirstLineCrossOut' | translate }}
+    </aspect-merged-checkbox>
+  </mat-menu>
+</div>

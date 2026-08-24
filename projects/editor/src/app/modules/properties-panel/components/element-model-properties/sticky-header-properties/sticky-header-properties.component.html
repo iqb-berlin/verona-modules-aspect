@@ -1,0 +1,8 @@
+@if (combinedProperties.stickyHeader !== undefined &&
+     (combinedProperties.type !== 'likert' || unitService.expertMode)) {
+  <aspect-merged-checkbox [value]="combinedProperties.stickyHeader"
+                          [disabled]="combinedProperties.type === 'table' && !combinedProperties.headerEnabled"
+                          (valueChange)="updateModel.emit({ property: 'stickyHeader', value: $event })">
+    {{'propertiesPanel.stickyHeader' | translate }}
+  </aspect-merged-checkbox>
+}

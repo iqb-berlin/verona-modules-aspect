@@ -1,0 +1,50 @@
+@if (unitService.expertMode && combinedProperties.resizeEnabled !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.resizeEnabled"
+                          (valueChange)="updateModel.emit({ property: 'resizeEnabled', value: $event })">
+    {{ 'propertiesPanel.resizeEnabled' | translate }}
+  </aspect-merged-checkbox>
+}
+
+@if (unitService.expertMode && combinedProperties.hasAutoHeight !== undefined) {
+  <aspect-merged-checkbox [disabled]="!!combinedProperties.hasDynamicRowCount"
+                          [value]="combinedProperties.hasAutoHeight"
+                          (valueChange)="updateModel.emit({ property: 'hasAutoHeight', value: $event })">
+    {{'propertiesPanel.hasAutoHeight' | translate }}
+  </aspect-merged-checkbox>
+}
+
+@if (combinedProperties.hasDynamicRowCount !== undefined) {
+  <aspect-merged-checkbox [disabled]="!!combinedProperties.hasAutoHeight"
+                          [value]="combinedProperties.hasDynamicRowCount"
+                          (valueChange)="updateModel.emit({ property: 'hasDynamicRowCount', value: $event })">
+    {{'propertiesPanel.hasDynamicRowCount' | translate }}
+  </aspect-merged-checkbox>
+}
+
+@if ((combinedProperties.rowCount !== undefined && combinedProperties.hasDynamicRowCount === false) ||
+     (combinedProperties.rowCount !== undefined && combinedProperties.hasDynamicRowCount === undefined)) {
+  <mat-form-field class="wide-form-field" appearance="fill">
+    <mat-label>{{'rows' | translate }}</mat-label>
+    <input matInput type="number" min="1" required aspectNumberField
+           [ngModel]="combinedProperties.rowCount"
+           (numberChange)="updateModel.emit(
+                  { property: 'rowCount', value: $event.value, isInputValid: $event.isInputValid })">
+    @if (combinedProperties.rowCount === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+}
+
+@if (combinedProperties.expectedCharactersCount !== undefined && combinedProperties.hasDynamicRowCount) {
+  <mat-form-field class="wide-form-field" appearance="fill">
+    <mat-label>{{'propertiesPanel.expectedCharactersCount' | translate }}</mat-label>
+    <input matInput type="number" min="1" required aspectNumberField
+           [disabled]="!!combinedProperties.hasAutoHeight"
+           [ngModel]="combinedProperties.expectedCharactersCount"
+           (numberChange)="updateModel.emit(
+                  { property: 'expectedCharactersCount', value: $event.value, isInputValid: $event.isInputValid })">
+    @if (combinedProperties.expectedCharactersCount === null) {
+      <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+  </mat-form-field>
+}

@@ -1,0 +1,38 @@
+@if (combinedProperties.fileName !== undefined) {
+  <div class="file-name">
+    <div class="file-name-label">{{ 'originalFileName' | translate }}</div>
+    <!--`fileName` is a plain string in the model, so a null can only be the merge's "they disagree".
+        It used to fall into the `||` below and read "unknown", which is what an element without a
+        file says - the one state it is not. Empty plus the marker, rather than a sentence of its
+        own: that is what every field in the panel says for this, and this readout should not speak
+        a second language for it (#1138).-->
+    @if (combinedProperties.fileName === null) {
+      <aspect-merged-marker class="file-name-marker"></aspect-merged-marker>
+    } @else {
+      {{ combinedProperties.fileName || ('unknown' | translate) }}
+    }
+  </div>
+}
+
+<!--Three separate questions, and each of them has bitten once:
+
+    `type != null` - which file dialog to open follows from the element type, so a selection of
+    mixed types, whose type merges to null, has no dialog to offer (#1152).
+
+    `src !== undefined` - geometry names a file but keeps no src, so it gets the readout above
+    without this button.
+
+    The last one used to be a plain truthiness check on `src`, which swallowed the case this ticket
+    is about: `src` is nullable in the model, so a null there is either "no file yet" or "the
+    selected elements hold different ones", and both lost the button - leaving no way to give the
+    selection one new file. `fileName` tells the two apart, because it is not nullable: '' for no
+    file, null only ever from the merge (#1138).-->
+@if (combinedProperties.type != null && combinedProperties.src !== undefined &&
+     (combinedProperties.src !== null || combinedProperties.fileName === null)) {
+  <button class="media-src-button" [style.align-self]="'center'"
+          mat-fab color="primary"
+          [matTooltip]="'propertiesPanel.changeMediaSource' | translate" [matTooltipPosition]="'right'"
+          (click)="changeMediaSrc(combinedProperties.type)">
+    <mat-icon>upload_file</mat-icon>
+  </button>
+}

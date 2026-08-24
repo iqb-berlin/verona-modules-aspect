@@ -19,109 +19,140 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { APIService, SharedModule } from 'common/shared.module';
-import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
+import {
+  SectionInsertDialogComponent
+} from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { MatRadioModule } from '@angular/material/radio';
-import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
-import { MathEditorModule } from 'common/math-editor/math-editor.module';
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import {
+  HotspotEditDialogComponent
+} from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
+import { MathEditorModule } from 'common/modules/math-editor/math-editor.module';
+import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
+import { SectionTemplatesModule } from 'editor/modules/section-templates/section-templates.module';
+import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
+import {
+  PropertiesPanelModule
+} from 'editor/src/app/modules/properties-panel/properties-panel.module';
+import { CdkConnectedOverlay, CdkOverlayOrigin, OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
-import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatChipsModule } from '@angular/material/chips';
+import {
+  MarkingPanelComponent
+} from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
+import { ComponentRegistry } from 'common/utils/component-registry';
 import {
   StateVariablesDialogComponent
-} from './components/dialogs/state-variables-dialog/state-variables-dialog.component';
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
 import {
   VisibilityRuleEditorComponent
-} from './components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
+} from 'editor/src/app/components/dialogs/visibility-rule-editor/visibility-rule-editor.component';
 import {
   ShowStateVariablesButtonComponent
-} from './components/new-ui-element-panel/show-state-variables-button.component';
-import {
-  TextFieldElementPropertiesComponent
-} from './components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';
-import {
-  ScaleAndZoomPropertiesComponent
-} from './components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
+} from 'editor/src/app/components/show-state-variables-button/show-state-variables-button.component';
 import {
   StateVariableEditorComponent
-} from './components/dialogs/state-variables-dialog/state-variable-editor.component';
-import { ActionParamStateVariableComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/action-param-state-variable.component';
+} from 'editor/src/app/components/state-variable-editor/state-variable-editor.component';
 import {
   VisibilityRulesDialogComponent
-} from './components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 
-import { InputAssistancePropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/input-assistance-properties.component';
 import {
   TooltipPropertiesDialogComponent
-} from './components/dialogs/tooltip-properties-dialog.component';
-import {
-  ActionPropertiesComponent, GetStateVariablePipe, ScrollPageIndexPipe
-} from './components/properties-panel/model-properties-tab/input-groups/action-properties.component';
-import { AppComponent } from './app.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
+import { AppComponent } from 'editor/src/app/app.component';
+import { ToolbarComponent } from 'editor/src/app/components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
-  './components/new-ui-element-panel/ui-element-toolbox.component';
-import { UnitViewComponent } from './components/unit-view/unit-view.component';
-import { PageViewComponent } from './components/unit-view/page/page-view.component';
-import { EditorTranslateLoader } from './editor-translate-loader';
-import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
-import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-confirmation-dialog.component';
-import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
-import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
+  'editor/src/app/components/ui-element-toolbox/ui-element-toolbox.component';
+import { UnitViewComponent } from 'editor/src/app/components/unit-view/unit-view.component';
+import { PageViewComponent } from 'editor/src/app/components/page-view/page-view.component';
+import { EditorTranslateLoader } from 'editor/src/app/classes/editor-translate-loader';
 import {
-  GetValidAudioVideoAliasAndIDsPipe,
+  DeleteConfirmationDialogComponent
+} from 'editor/src/app/components/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { TextEditDialogComponent } from 'editor/src/app/components/dialogs/text-edit-dialog/text-edit-dialog.component';
+import {
+  TextEditMultilineDialogComponent
+} from 'editor/src/app/components/dialogs/text-edit-multiline-dialog/text-edit-multiline-dialog.component';
+import {
   PlayerEditDialogComponent
-} from './components/dialogs/player-edit-dialog.component';
-import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
-import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
-import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
-import { ToggleButtonNodeviewComponent } from './text-editor/angular-node-views/toggle-button-nodeview.component';
-import { TextFieldNodeviewComponent } from './text-editor/angular-node-views/text-field-nodeview.component';
-import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop-list-nodeview.component';
-import { ButtonNodeviewComponent } from './text-editor/angular-node-views/button-nodeview.component';
-import { PositionFieldSetComponent } from
-  './components/properties-panel/position-properties-tab/input-groups/position-field-set.component';
-import { DimensionFieldSetComponent } from
-  './components/properties-panel/position-properties-tab/input-groups/dimension-field-set.component';
-import { ElementPropertiesPanelComponent }
-  from './components/properties-panel/element-properties-panel.component';
-import { ElementPositionPropertiesComponent } from
-  './components/properties-panel/position-properties-tab/element-position-properties.component';
-import { ElementStylePropertiesComponent } from
-  './components/properties-panel/style-properties-tab/element-style-properties.component';
-import { ElementModelPropertiesComponent, IsInputElementPipe } from
-  './components/properties-panel/model-properties-tab/element-model-properties.component';
-import { OptionsFieldSetComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
-import { SelectPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/select-properties.component';
-import { InputElementPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
-import { PresetValuePropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/preset-value-properties.component';
-import { LikertRowLabelPipe } from './components/properties-panel/likert-row-label.pipe';
-import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
-import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
-import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
-import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
-import { SanitizationDialogComponent } from './components/dialogs/sanitization-dialog.component';
-import { CheckboxNodeviewComponent } from './text-editor/angular-node-views/checkbox-nodeview.component';
-import { OptionListPanelComponent } from './components/properties-panel/option-list-panel.component';
+} from 'editor/src/app/components/dialogs/player-edit-dialog/player-edit-dialog.component';
+import { GetValidAudioVideoAliasAndIDsPipe } from 'editor/src/app/pipes/get-valid-audio-video-alias-and-ids.pipe';
 import {
-  EleSpecificPropsComponent
-} from './components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
-import { PageMenu } from './components/unit-view/page/page-menu.component';
+  LikertRowEditDialogComponent
+} from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
+import {
+  RichTextEditDialogComponent
+} from 'editor/src/app/components/dialogs/rich-text-edit-dialog/rich-text-edit-dialog.component';
+import {
+  DropListOptionEditDialogComponent
+} from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
+import {
+  LabelEditDialogComponent
+} from 'editor/src/app/components/dialogs/label-edit-dialog/label-edit-dialog.component';
+import {
+  GeogebraAppDefinitionDialogComponent
+} from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog/geogebra-app-definition-dialog.component';
+import {
+  DeleteReferenceDialogComponent
+} from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
+import {
+  SanitizationDialogComponent
+} from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
+import { PageMenu } from 'editor/src/app/components/page-menu/page-menu.component';
+import {
+  ImageResizeDialogComponent
+} from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
+import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
 
-import { ReferenceListComponent } from './components/reference-list.component';
-import { ElementListComponent } from './components/element-list.component';
+import { ReferenceListComponent } from 'editor/src/app/components/reference-list/reference-list.component';
+import { ElementListComponent } from 'editor/src/app/components/element-list/element-list.component';
 
-import { SectionComponent } from './components/unit-view/section/section.component';
-import { ErrorService } from './services/error.service';
+import { SectionComponent } from 'editor/src/app/components/section/section.component';
+import { ErrorService } from 'editor/src/app/services/error.service';
+import {
+  IDEditDialogComponent
+} from 'editor/src/app/components/dialogs/id-edit-dialog/id-edit-dialog.component';
+import {
+  OverviewDialogComponent
+} from 'editor/src/app/components/dialogs/overview-dialog/overview-dialog.component';
+import {
+  TableEditDialogComponent
+} from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
+import {
+  DynamicOverlayComponent
+} from 'editor/src/app/components/dynamic-overlay/dynamic-overlay.component';
+import {
+  DynamicSectionComponent
+} from 'editor/src/app/components/dynamic-section/dynamic-section.component';
+import {
+  DynamicSectionHelperGridComponent
+} from 'editor/src/app/components/dynamic-section-helper-grid/dynamic-section-helper-grid.component';
+import {
+  FixedReferencesSnackbarComponent
+} from 'editor/src/app/components/fixed-references-snackbar/fixed-references-snackbar.component';
+import {
+  ReferenceListSnackbarComponent
+} from 'editor/src/app/components/reference-list-snackbar/reference-list-snackbar.component';
+import { SectionMenuComponent } from 'editor/src/app/components/section-menu/section-menu.component';
+import {
+  StaticOverlayComponent
+} from 'editor/src/app/components/static-overlay/static-overlay.component';
+import {
+  StaticSectionComponent
+} from 'editor/src/app/components/static-section/static-section.component';
+import {
+  UnexpectedErrorComponent
+} from 'editor/src/app/components/unexpected-error/unexpected-error.component';
+import {
+  ElementGridChangeListenerDirective
+} from 'editor/src/app/directives/element-grid-change-listener.directive';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -138,14 +169,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     UiElementToolboxComponent,
     UnitViewComponent,
     PageViewComponent,
-    ElementPropertiesPanelComponent,
-    ToggleButtonNodeviewComponent,
-    TextFieldNodeviewComponent,
-    CheckboxNodeviewComponent,
-    DropListNodeviewComponent,
-    ButtonNodeviewComponent,
-    ElementStylePropertiesComponent,
-    ElementPositionPropertiesComponent,
     DeleteConfirmationDialogComponent,
     TextEditDialogComponent,
     TextEditMultilineDialogComponent,
@@ -153,34 +176,39 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     LikertRowEditDialogComponent,
     RichTextEditDialogComponent,
     HotspotEditDialogComponent,
-    ElementModelPropertiesComponent,
     DropListOptionEditDialogComponent,
-    PositionFieldSetComponent,
-    DimensionFieldSetComponent,
-    OptionsFieldSetComponent,
-    ActionPropertiesComponent,
-    TextFieldElementPropertiesComponent,
-    ScaleAndZoomPropertiesComponent,
     SectionInsertDialogComponent,
-    SelectPropertiesComponent,
-    InputElementPropertiesComponent,
-    PresetValuePropertiesComponent,
-    LikertRowLabelPipe,
     LabelEditDialogComponent,
     GeogebraAppDefinitionDialogComponent,
-    GetStateVariablePipe,
-    ScrollPageIndexPipe,
     DeleteReferenceDialogComponent,
     VisibilityRuleEditorComponent,
     StateVariablesDialogComponent,
     ShowStateVariablesButtonComponent,
     StateVariableEditorComponent,
-    ActionParamStateVariableComponent,
     VisibilityRulesDialogComponent,
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoAliasAndIDsPipe,
-    InputAssistancePropertiesComponent
+    ImageResizeDialogComponent,
+    BytesPipe,
+    SupportsQualityPipe,
+    IDEditDialogComponent,
+    OverviewDialogComponent,
+    TableEditDialogComponent,
+    DynamicOverlayComponent,
+    DynamicSectionComponent,
+    DynamicSectionHelperGridComponent,
+    ElementListComponent,
+    FixedReferencesSnackbarComponent,
+    PageMenu,
+    ReferenceListComponent,
+    ReferenceListSnackbarComponent,
+    SectionComponent,
+    SectionMenuComponent,
+    StaticOverlayComponent,
+    StaticSectionComponent,
+    UnexpectedErrorComponent,
+    ElementGridChangeListenerDirective
   ],
   imports: [
     BrowserModule,
@@ -208,30 +236,47 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     MatListModule,
     MatRadioModule,
     MathEditorModule,
+    RichTextEditorModule,
+    SectionTemplatesModule,
+    EditorSharedModule,
+    PropertiesPanelModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     MatBadgeModule,
-    IsInputElementPipe,
-    OptionListPanelComponent,
-    EleSpecificPropsComponent,
-    PageMenu,
-    ReferenceListComponent,
-    ElementListComponent,
-    SizeInputPanelComponent,
-    MeasurePipe,
-    SectionComponent,
-    RichTextEditorComponent,
-    UnitNavNextComponent
+    MatTableModule,
+    MatSortModule,
+    MatSlideToggleModule,
+    MatChipsModule
   ],
   providers: [
-    { provide: APIService, useExisting: VeronaAPIService },
-    { provide: ErrorHandler, useClass: ErrorService },
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }
+    // Keeps overlays in the global container. Since CDK 21 they render through the native
+    // popover API next to their trigger instead, which the e2e suite addresses through
+    // '.cdk-overlay-container' throughout (#986).
+    { provide: OVERLAY_DEFAULT_CONFIG, useValue: { usePopover: false } },
+    {
+      provide: APIService,
+      useExisting: VeronaAPIService
+    },
+    /* An alias, not a class: `ErrorService` is `providedIn: 'root'`, so `useClass` built Angular its
+       own second instance. The service holds what keeps the dialog flood of #1202 closed -- the open
+       flag and the errors already reported -- and that state lives on the instance, so a caller
+       injecting `ErrorService` would have gated nothing (#1206). */
+    {
+      provide: ErrorHandler,
+      useExisting: ErrorService
+    },
+    {
+      provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+      useValue: myCustomTooltipDefaults
+    }
   ]
 })
 
 export class AppModule implements DoBootstrap {
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) {
+    ComponentRegistry.registerComponent('marking-panel', MarkingPanelComponent);
+  }
+
   ngDoBootstrap(): void {
     const editorElement = createCustomElement(AppComponent, { injector: this.injector });
     customElements.define('aspect-editor', editorElement);

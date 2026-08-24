@@ -1,0 +1,45 @@
+<aspect-section-menu [class.hidden]="!isOnSelectedPage || selectionService.selectedSectionIndex !== sectionIndex"
+                     class="section-menu fx-column-start-stretch"
+                     [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
+                     [section]="section" [sectionIndex]="sectionIndex" [pageIndex]="pageIndex"
+                     [lastSectionIndex]="lastSectionIndex"
+                     (elementSelected)="selectElement($event)"
+                     (elementHovered)="highlightElement($event)"
+                     (elementHoverEnd)="removeHighlight()">
+</aspect-section-menu>
+
+<div class="section-wrapper"
+     [ngClass]="unitService.unit.sectionNumberingPosition === 'left' ? 'row-align' : 'column-align'">
+  <div *ngIf="unitService.unit.enableSectionNumbering" class="numbering-box">
+    <b *ngIf="sectionCounter">{{sectionCounter}}.</b>
+  </div>
+  <aspect-editor-static-section *ngIf="!section.dynamicPositioning"
+                         #sectionComponent
+                         class="section" id="section-{{sectionIndex}}"
+                         [section]="section"
+                         [isSelected]="isOnSelectedPage && selectionService.selectedSectionIndex === sectionIndex"
+                         (elementSelected)="selectionService.selectedPageIndex = pageIndex;
+                                            selectionService.selectedSectionIndex = sectionIndex"
+                         cdkDropList cdkDropListSortingDisabled
+                         [cdkDropListData]="{ pageIndex: pageIndex, sectionIndex: sectionIndex }"
+                         (cdkDropListDropped)="elementDropped($event)"
+                         (click)="selectionService.selectedPageIndex = pageIndex;
+                                  selectionService.selectedSectionIndex = sectionIndex">
+  </aspect-editor-static-section>
+  <aspect-editor-dynamic-section *ngIf="section.dynamicPositioning"
+                          #sectionComponent
+                          class="section"
+                          [section]="section" [sectionIndex]="sectionIndex" [pageIndex]="pageIndex"
+                          [isSelected]="isOnSelectedPage &&
+                                        selectionService.selectedSectionIndex === sectionIndex"
+                          (elementSelected)="selectionService.selectedPageIndex = pageIndex;
+                                             selectionService.selectedSectionIndex = sectionIndex"
+                          (transferElement)="moveElementsBetweenSections(selectionService.getSelectedElements(),
+                                                             $event.sourcePageIndex,
+                                                             $event.sourceSectionIndex,
+                                                             $event.targetPageIndex,
+                                                             $event.targetSectionIndex)"
+                          (click)="selectionService.selectedSectionIndex = sectionIndex;
+                                   sectionSelected.emit(sectionIndex)">
+  </aspect-editor-dynamic-section>
+</div>

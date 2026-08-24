@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { UIElementType } from 'common/interfaces';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementGroupInterface, ElementGroupName } from '../../../models/element-group.interface';
 
 @Component({
@@ -27,7 +27,8 @@ export class ElementGroupSelectionComponent implements OnInit {
     { name: 'textGroup', types: ['text'] },
     { name: 'interactiveGroup', types: ['image', 'math-table', 'marking-panel'] },
     { name: 'actionGroup', types: ['button', 'trigger'] },
-    { name: 'externalAppGroup', types: ['geometry'] }
+    { name: 'externalAppGroup', types: ['geometry'] },
+    { name: 'widgetGroup', types: ['widget-periodic-table', 'widget-molecule-editor'] }
   ];
 
   selectedGroup!: ElementGroupName | undefined;

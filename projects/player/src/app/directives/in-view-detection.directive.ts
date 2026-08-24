@@ -7,8 +7,8 @@ import { Subject } from 'rxjs';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Directive({
-    selector: '[aspectInViewDetection]',
-    standalone: false
+  selector: '[aspectInViewDetection]',
+  standalone: false
 })
 export class InViewDetectionDirective implements AfterViewInit, OnDestroy {
   @Input() detectionType!: 'top' | 'bottom';
@@ -36,6 +36,6 @@ export class InViewDetectionDirective implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    if (this.intersectionDetector) this.intersectionDetector.disconnect(this.elementRef.nativeElement);
+    if (this.intersectionDetector) this.intersectionDetector.destroy();
   }
 }

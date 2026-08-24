@@ -1,0 +1,8 @@
+<div [style.padding.px]="16">
+  <aspect-reference-list matSnackBarLabel [refs]="refs || data"></aspect-reference-list>
+  <span matSnackBarActions>
+    <button mat-stroked-button matSnackBarAction (click)="snackBarRef.dismiss()">
+      {{ 'close' | translate }}
+    </button>
+  </span>
+</div>

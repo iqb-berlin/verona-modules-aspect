@@ -240,3 +240,33 @@ iqb-aspect-definition@1.0.0
 - TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement:
   - new property: keyStyle: 'round' | 'square'
   - new property: inputAssistanceCustomStyle: 'small' | 'medium' | 'large'
+
+4.12.0
+- New Element WidgetMoleculeEditorElement (type widget-molecule-editor)
+- New Element WidgetPeriodicTableElement (type widget-periodic-table)
+- InputAssistancePreset:
+  - new type: decimals
+- TextFieldElement, TextFieldSimpleElement, TextAreaElement:
+  - new property: textAlign: 'left' | 'center' | 'right'
+- TableElement:
+  - new property: headerEnabled: boolean
+  - new property: headerRows: { text: string; alignment: 'left' | 'center' | 'right' }[][]
+  - new property: stickyHeader: boolean
+- RadioButtonGroupElement, CheckboxElement:
+  - new property: verticalButtonAlignment: 'auto' | 'center' (default 'auto')
+- All elements:
+  - remove styling.font (#1182)
+- ImageElement, GeometryElement, TriggerElement, HotspotImageElement,
+  MarkingPanelElement, LikertRowElement:
+  - new empty group: "styling": {} (#1226)
+- TextFieldSimpleElement:
+  - remove clearable (#1233)
+- HotspotImageElement, LikertRowElement:
+  - remove label (inherited from InputElement) (#1233)
+- RadioButtonGroupComplexElement:
+  - remove styling.backgroundColor (#1233)
+- LikertRowElement:
+  - remove firstColumnSizeRatio (#1234)
+- Section, Page, all elements:
+  - number properties stored as strings become numbers, including the values of grid sizes and
+    margins (#1306)

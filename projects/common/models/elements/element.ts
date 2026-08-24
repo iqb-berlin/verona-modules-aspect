@@ -1,64 +1,95 @@
 // eslint-disable-next-line max-classes-per-file
-import { Type } from '@angular/core';
 import { VariableInfo } from '@iqb/responses';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
+  DimensionProperties, PlayerProperties, PositionProperties,
+  PropertyGroupGenerators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
+import { AbstractIDService } from 'common/models/id-interfaces';
 import {
-  AbstractIDService,
-  InputAssistancePreset, InputElementProperties, InputElementValue,
-  KeyInputElementProperties, PlayerElementBlueprint, TextInputElementProperties,
-  UIElementProperties, UIElementType, UIElementValue
-} from 'common/interfaces';
-import { IDError, InstantiationEror } from 'common/errors';
+  InputAssistancePreset,
+  InputElementProperties,
+  InputElementValue,
+  TextInputElementProperties
+} from 'common/models/input-element-interfaces';
+import {
+  PlayerElementBlueprint,
+  UIElementProperties,
+  UIElementType,
+  UIElementValue
+} from 'common/models/ui-element-interfaces';
+import { IDError } from 'common/classes/id-error';
+import { InstantiationEror } from 'common/classes/instantiation-error';
+import { GLOBAL_DEFAULTS } from 'common/models/elements/element-registry';
+import { VariableAlias } from 'common/utils/variable-alias';
 
-function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
-  return blueprint.id !== undefined &&
-    blueprint.isRelevantForPresentationComplete !== undefined;
+type RevisionAwareIDService = AbstractIDService & { getResetRevision?: () => number };
+
+function getResetRevision(idService?: AbstractIDService): number | null {
+  const revisionReader = (idService as RevisionAwareIDService | undefined)?.getResetRevision;
+  return typeof revisionReader === 'function' ? revisionReader.call(idService) : null;
+}
+
+export function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
-  id: string;
-  alias: string;
+  id!: string;
+  alias!: string;
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
-  position?: PositionProperties;
-  dimensions?: DimensionProperties;
-  styling?: Stylings;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS.position);
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS.dimensions);
+  styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS.styling);
+  /* Filled by PlayerElement and by nothing else: the group belongs to the types whose interface
+     declares it, so a stored group on any other element is dropped at construction -- the same rule
+     `mergeStyling` applies to an undeclared styling key (#1187). An image carried one for months,
+     which gave it an inspector button that did nothing (#1241). */
   player?: PlayerProperties;
   idService?: AbstractIDService;
 
   constructor(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService) {
     this.idService = idService;
+
     if (isUIElementProperties(element)) {
-      this.id = element.id;
-      this.alias = element.alias || element.id;
-      if (idService) {
-        // Only register after the child constructior has run. ID-registration needs the type and possibly values.
-        setTimeout(() => this.registerIDs());
+      this.id = element.id ??
+        idService?.getAndRegisterNewID(element.type) ??
+        (() => { throw new Error(`No ID or IDService given: ${element.type}`); })();
+      this.alias = element.alias ??
+        (element.id ? element.id : idService?.getAndRegisterNewID(element.type, true)) ??
+        (() => { throw new Error(`No Alias or IDService given: ${element.type}`); })();
+
+      if (idService && !element.id) {
+        const loadRevision = getResetRevision(idService);
+        setTimeout(() => {
+          const currentRevision = getResetRevision(this.idService);
+          if (loadRevision !== null && currentRevision !== loadRevision) {
+            return;
+          }
+          this.registerIDs();
+        });
       }
-      this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      if (element.dimensions) this.dimensions = { ...element.dimensions };
-      if (element.position) this.position = { ...element.position };
-      if (element.styling) this.styling = { ...element.styling };
+      if (element.isRelevantForPresentationComplete !== undefined) {
+        this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
+      }
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.position = { ...this.position, ...element.position };
+      /* Every element type declares its own styling group today, so this merge is never the last
+         word: it runs before the subclass field initializer replaces the group, and the subclass
+         merges again with its own keys. It is kept because the basic group above is what this class
+         promises for a type that declares nothing -- and because an element built through a failing
+         guard never reaches its subclass merge. */
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
     } else {
-      if (environment.strictInstantiation) {
+      if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
         throw new InstantiationEror('Error at UIElement instantiation', element);
       }
       this.id = element.id ??
-        idService?.getAndRegisterNewID(element.type) ??
-        (() => { throw new Error(`No ID or IDService given: ${this.type}`); })();
+        idService?.getAndRegisterNewID(element.type) ?? 'id_placeholder';
       this.alias = element.alias ??
-        idService?.getAndRegisterNewID(element.type, true) ??
-        (() => { throw new Error(`No Alias or IDService given: ${this.type}`); })();
-      if (element?.isRelevantForPresentationComplete !== undefined) {
-        this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      }
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
+        (element.id ? element.id : idService?.getAndRegisterNewID(element.type, true)) ?? 'alias_placeholder';
     }
   }
 
@@ -73,11 +104,11 @@ export abstract class UIElement implements UIElementProperties {
       if (!this.idService.isAliasAvailable(value as string)) {
         throw new IDError('ID ist bereits vergeben');
       }
-      if ((value as string).length > 20) {
-        throw new IDError('ID länger als 20 Zeichen');
-      }
       if ((value as string).includes(' ')) {
         throw new IDError('ID enthält unerlaubtes Leerzeichen');
+      }
+      if (!VariableAlias.isValid(value as string)) {
+        throw new IDError('ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)');
       }
       this.idService.unregister(this.alias, false, true);
       this.idService.register(value as string, false, true);
@@ -85,20 +116,29 @@ export abstract class UIElement implements UIElementProperties {
     this[property] = value;
   }
 
-  setStyleProperty(property: string, value: UIElementValue): void {
-    (this.styling as Stylings)[property] = value;
+  setStyleProperty(property: keyof Stylings, value: UIElementValue): void {
+    Object.assign(this.styling, { [property]: value });
   }
 
-  setPositionProperty(property: string, value: UIElementValue): void {
-    (this.position as PositionProperties)[property] = value;
+  /*
+   * The property name is checked against the interface, the value is not. Narrowing the value per
+   * property would mean a generic threaded through the whole panel relay chain, where values arrive
+   * as UIElementValue from the templates; Object.assign is what lets the name stay checked without
+   * it. The name is the half that matters: a rename in the model now breaks every call site
+   * (#1137).
+   */
+  setPositionProperty(property: keyof PositionProperties, value: UIElementValue): void {
+    Object.assign(this.position, { [property]: value });
   }
 
-  setDimensionsProperty(property: string, value: number | null): void {
-    (this.dimensions as DimensionProperties)[property] = value;
+  // boolean is in here for isWidthFixed / isHeightFixed, which DimensionProperties declares as
+  // booleans; the panel has always written them through this method.
+  setDimensionsProperty(property: keyof DimensionProperties, value: number | boolean | null): void {
+    Object.assign(this.dimensions, { [property]: value });
   }
 
-  setPlayerProperty(property: string, value: UIElementValue): void {
-    (this.player as PlayerProperties)[property] = value;
+  setPlayerProperty(property: keyof PlayerProperties, value: UIElementValue): void {
+    Object.assign(this.player as PlayerProperties, { [property]: value });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -126,8 +166,6 @@ export abstract class UIElement implements UIElementProperties {
     return [{ id: this.id, alias: this.alias }];
   }
 
-  abstract getElementComponent(): Type<ElementComponent>;
-
   static createOptionLabel(optionText: string, addImg: boolean = false) {
     return {
       text: optionText,
@@ -136,9 +174,27 @@ export abstract class UIElement implements UIElementProperties {
     };
   }
 
-  /* ID and alias are removed, so they can be re-assigned by the element constructor. */
+  /**
+   * The element as plain data, for creating another one from it - duplicating an element, duplicating
+   * a section, inserting a copy.
+   *
+   * ID and alias are removed, so the constructor can assign new ones. Everything else is **deep
+   * copied**: this used to be `{ ...this }`, and a shallow copy left original and duplicate on the
+   * same nested values. Editing the copy's option list then changed the original's, because
+   * `setProperty` splices into arrays in place - measured for every element type in #1179, and the
+   * same for `EditorSection.getDuplicate()`, which builds on this method.
+   *
+   * `idService` is left out: the constructor takes it as its own argument and never reads it off the
+   * blueprint. It also has no place in plain data - `copySectionToClipboard` strips it again on the
+   * way out.
+   */
   getBlueprint(): UIElementProperties {
-    return { ...this, id: undefined, alias: undefined };
+    const blueprint: Record<string, unknown> = {};
+    Object.entries(this as unknown as Record<string, unknown>).forEach(([key, value]) => {
+      if (key === 'idService') return;
+      blueprint[key] = cloneForBlueprint(value);
+    });
+    return { ...blueprint, id: undefined, alias: undefined } as unknown as UIElementProperties;
   }
 
   registerIDs(): void {
@@ -154,12 +210,9 @@ export abstract class UIElement implements UIElementProperties {
   }
 }
 
-function isInputElementProperties(blueprint: Partial<InputElementProperties>): blueprint is InputElementProperties {
-  if (!blueprint) return false;
-  return blueprint?.value !== undefined &&
-    blueprint?.required !== undefined &&
-    blueprint?.requiredWarnMessage !== undefined &&
-    blueprint?.readOnly !== undefined;
+export function isInputElementProperties(blueprint: Partial<InputElementProperties>)
+  : blueprint is InputElementProperties {
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class InputElement extends UIElement implements InputElementProperties {
@@ -169,23 +222,19 @@ export abstract class InputElement extends UIElement implements InputElementProp
   requiredWarnMessage: string = 'Eingabe erforderlich';
   readOnly: boolean = false;
 
-  protected constructor(element: { type: string } & Partial<InputElementProperties>, idService?: AbstractIDService) {
+  protected constructor(
+    element: { type: string } & Partial<InputElementProperties>,
+    idService?: AbstractIDService
+  ) {
     super(element, idService);
     if (isInputElementProperties(element)) {
       if (element.label !== undefined) this.label = element.label;
-      this.value = element.value;
-      this.required = element.required;
-      this.requiredWarnMessage = element.requiredWarnMessage;
-      this.readOnly = element.readOnly;
-    } else {
-      if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at InputElement instantiation', element);
-      }
-      if (element?.label !== undefined) this.label = element.label;
-      if (element?.value !== undefined) this.value = element.value;
-      if (element?.required !== undefined) this.required = element.required;
-      if (element?.requiredWarnMessage !== undefined) this.requiredWarnMessage = element.requiredWarnMessage;
-      if (element?.readOnly !== undefined) this.readOnly = element.readOnly;
+      if (element.value !== undefined) this.value = element.value;
+      if (element.required !== undefined) this.required = element.required;
+      if (element.requiredWarnMessage !== undefined) this.requiredWarnMessage = element.requiredWarnMessage;
+      if (element.readOnly !== undefined) this.readOnly = element.readOnly;
+    } else if (environment.strictInstantiation && element.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at InputElement instantiation', element);
     }
   }
 
@@ -203,24 +252,9 @@ export function isInputElement(el: UIElement): el is InputElement {
     el.readOnly !== undefined;
 }
 
-function isValidKeyInputProperties(blueprint: Partial<KeyInputElementProperties>): boolean {
-  return blueprint.inputAssistancePreset !== undefined &&
-    blueprint.inputAssistancePosition !== undefined &&
-    blueprint.inputAssistanceFloatingStartPosition !== undefined &&
-    blueprint.showSoftwareKeyboard !== undefined &&
-    blueprint.addInputAssistanceToKeyboard !== undefined &&
-    blueprint.hideNativeKeyboard !== undefined &&
-    blueprint.hasArrowKeys !== undefined &&
-    blueprint.keyStyle !== undefined;
-}
-
-function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>)
-  : blueprint is TextInputElementProperties {
-  return blueprint.restrictedToInputAssistanceChars !== undefined &&
-    blueprint.inputAssistanceCustomKeys !== undefined &&
-    blueprint.inputAssistanceCustomStyle !== undefined &&
-    blueprint.hasBackspaceKey !== undefined &&
-    isValidKeyInputProperties(blueprint);
+function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>):
+  blueprint is TextInputElementProperties {
+  return blueprint !== undefined && blueprint !== null;
 }
 
 export abstract class TextInputElement extends InputElement implements TextInputElementProperties {
@@ -237,37 +271,36 @@ export abstract class TextInputElement extends InputElement implements TextInput
   hideNativeKeyboard: boolean = true;
   keyStyle: 'round' | 'square' = 'round';
 
-  protected constructor(element: { type: string } & Partial<TextInputElementProperties>, idService?: AbstractIDService) {
+  protected constructor(
+    element: { type: string } & Partial<TextInputElementProperties>,
+    idService?: AbstractIDService
+  ) {
     super(element, idService);
     if (isTextInputElementProperties(element)) {
-      this.inputAssistancePreset = element.inputAssistancePreset;
-      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
-      this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
-      this.inputAssistancePosition = element.inputAssistancePosition;
-      this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
-      this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
-      this.hasArrowKeys = element.hasArrowKeys;
-      this.hasBackspaceKey = element.hasBackspaceKey;
-      this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      this.hideNativeKeyboard = element.hideNativeKeyboard;
-      this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
-      this.keyStyle = element.keyStyle;
-    } else {
-      if (environment.strictInstantiation) {
-        throw Error('Error at TextInputElement instantiation');
+      if (element.inputAssistancePreset !== undefined) this.inputAssistancePreset = element.inputAssistancePreset;
+      if (element.inputAssistanceCustomKeys !== undefined) {
+        this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
       }
-      if (element?.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
-      if (element?.inputAssistanceCustomKeys) this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
-      if (element?.inputAssistanceCustomStyle) this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
-      if (element?.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
-      if (element?.inputAssistanceFloatingStartPosition) this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
-      if (element?.restrictedToInputAssistanceChars) this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
-      if (element?.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
-      if (element?.hasBackspaceKey) this.hasBackspaceKey = element.hasBackspaceKey;
-      if (element?.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      if (element?.addInputAssistanceToKeyboard) this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
-      if (element?.hideNativeKeyboard) this.hideNativeKeyboard = element.hideNativeKeyboard;
-      if (element?.keyStyle) this.keyStyle = element.keyStyle;
+      if (element.inputAssistanceCustomStyle !== undefined) {
+        this.inputAssistanceCustomStyle = element.inputAssistanceCustomStyle;
+      }
+      if (element.inputAssistancePosition !== undefined) this.inputAssistancePosition = element.inputAssistancePosition;
+      if (element.inputAssistanceFloatingStartPosition !== undefined) {
+        this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+      }
+      if (element.restrictedToInputAssistanceChars !== undefined) {
+        this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+      }
+      if (element.hasArrowKeys !== undefined) this.hasArrowKeys = element.hasArrowKeys;
+      if (element.hasBackspaceKey !== undefined) this.hasBackspaceKey = element.hasBackspaceKey;
+      if (element.showSoftwareKeyboard !== undefined) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+      if (element.hideNativeKeyboard !== undefined) this.hideNativeKeyboard = element.hideNativeKeyboard;
+      if (element.addInputAssistanceToKeyboard !== undefined) {
+        this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
+      }
+      if (element.keyStyle !== undefined) this.keyStyle = element.keyStyle;
+    } else if (environment.strictInstantiation) {
+      throw Error('Error at TextInputElement instantiation');
     }
   }
 }
@@ -275,7 +308,10 @@ export abstract class TextInputElement extends InputElement implements TextInput
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
 
-  abstract getBlueprint(): UIElementProperties;
+  /* `getBlueprint()` used to be abstract here, so that every compound element had to turn its
+     children into blueprints itself. Since #1179 the base class does that for any nested element it
+     finds, so the requirement only invited copies that also had to remember the deep copy. Subclasses
+     still override it where the return type matters or where ids inside values have to go. */
 }
 
 function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): blueprint is PlayerElementBlueprint {
@@ -305,7 +341,7 @@ function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): b
 }
 
 export abstract class PlayerElement extends UIElement implements PlayerElementBlueprint {
-  player: PlayerProperties;
+  player!: PlayerProperties;
 
   protected constructor(element: { type: string } & Partial<PlayerElementBlueprint>, idService?: AbstractIDService) {
     super(element, idService);
@@ -315,7 +351,7 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at PlayerElement instantiation', element);
       }
-      this.player = PropertyGroupGenerators.generatePlayerProps(element?.player);
+      this.player = PropertyGroupGenerators.generatePlayerProps(element.player);
     }
   }
 
@@ -333,4 +369,26 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
       valuesComplete: false
     }];
   }
+}
+
+/**
+ * Deep copy for {@link UIElement.getBlueprint}.
+ *
+ * Child elements are turned into blueprints of their own rather than cloned as objects: they are
+ * class instances, a blueprint is plain data, and their own `getBlueprint()` knows what else has to
+ * be dropped - the drop list clears the ids of its values, the cloze those of its child models.
+ *
+ * `idService` is skipped wherever it appears, including on child elements: it is a service, not data,
+ * and `structuredClone` would refuse it depending on how its methods are declared.
+ */
+function cloneForBlueprint<T>(value: T): T {
+  if (Array.isArray(value)) return value.map(entry => cloneForBlueprint(entry)) as unknown as T;
+  if (value === null || typeof value !== 'object') return value;
+  if (value instanceof UIElement) return value.getBlueprint() as unknown as T;
+  const clone: Record<string, unknown> = {};
+  Object.entries(value as Record<string, unknown>).forEach(([key, entry]) => {
+    if (key === 'idService') return;
+    clone[key] = cloneForBlueprint(entry);
+  });
+  return clone as T;
 }

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
-import { MathTableComponent } from 'common/components/input-elements/math-table.component';
-import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
+import { MathTableComponent } from 'common/components/interactive-group-elements/math-table/math-table.component';
+import {
+  TextAreaMathComponent
+} from 'common/components/text-input-group-elements/text-area-math/text-area-math.component';
 import { InputService } from './input-service';
 
 @Injectable({

@@ -115,9 +115,13 @@ blockquote p {
   z-index: 100 !important;
 }
 
+/* '!important' is needed because Material injects its structural styles ('.cdk-overlay-pane'
+   with 'max-width'/'max-height: 100%') at runtime after this stylesheet. Without a definite
+   (viewport-relative) max-height on the pane, the inherited percentage max-heights of the
+   dialog containers cannot resolve and the dialog grows beyond the viewport without scrolling. */
 .image-fullscreen-dialog {
   max-width: 95vw !important;
-  max-height: 95vh;
+  max-height: 95vh !important;
 }
 
 .image-fullscreen-dialog mat-dialog-content {

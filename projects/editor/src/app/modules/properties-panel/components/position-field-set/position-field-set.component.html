@@ -1,0 +1,133 @@
+<fieldset>
+  <legend>{{ 'propertiesPanel.position' | translate }}</legend>
+  <!-- What lays the selection out decides which fields apply, not the section the selection indices
+       name: those can point elsewhere, and the panel then offers grid fields for a statically placed
+       element or the other way round (#1204). A compound child counts as dynamically positioned --
+       it is laid out inline and has margins but no coordinates (#1268). -->
+  <div *ngIf="!selectionService.isSelectionDynamicallyPositioned; else elseBlock"
+       class="flex-row">
+    <mat-form-field *ngIf="positionProperties.xPosition !== undefined"
+                    appearance="outline">
+      <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
+      <input matInput type="number" min="0" aspectNumberField required
+             [ngModel]="positionProperties.xPosition"
+             (numberChange)="updateModel.emit(
+                    { property: 'xPosition', value: $event.value, isInputValid: $event.isInputValid })">
+      @if (positionProperties.xPosition === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+    <mat-form-field *ngIf="positionProperties.yPosition !== undefined"
+                    appearance="outline">
+      <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
+      <input matInput type="number" min="0" aspectNumberField required
+             [ngModel]="positionProperties.yPosition"
+             (numberChange)="updateModel.emit(
+                    { property: 'yPosition', value: $event.value, isInputValid: $event.isInputValid })">
+      @if (positionProperties.yPosition === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  </div>
+
+  <ng-template #elseBlock>
+    {{'propertiesPanel.grid' | translate }}
+    <div class="flex-row">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'row' | translate }}</mat-label>
+        <input matInput type="number" aspectNumberField
+               [ngModel]="positionProperties.gridRow"
+               (numberChange)="updateModel.emit(
+                    { property: 'gridRow', value: $event.value, isInputValid: $event.isInputValid })">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
+        <input matInput type="number" min="1" aspectNumberField required
+               [ngModel]="positionProperties.gridRowRange"
+               (numberChange)="updateModel.emit(
+                    { property: 'gridRowRange', value: $event.value, isInputValid: $event.isInputValid })">
+        @if (positionProperties.gridRowRange === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    </div>
+    <div class="flex-row">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'column' | translate }}</mat-label>
+        <input matInput type="number" aspectNumberField
+               [ngModel]="positionProperties.gridColumn"
+               (numberChange)="updateModel.emit(
+                    { property: 'gridColumn', value: $event.value, isInputValid: $event.isInputValid })">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
+        <input matInput type="number" min="1" aspectNumberField required
+               [ngModel]="positionProperties.gridColumnRange"
+               (numberChange)="updateModel.emit(
+                    { property: 'gridColumnRange', value: $event.value, isInputValid: $event.isInputValid })">
+        @if (positionProperties.gridColumnRange === null) {
+          <aspect-merged-marker matSuffix></aspect-merged-marker>
+        }
+      </mat-form-field>
+    </div>
+
+    {{'propertiesPanel.margin' | translate }}
+    <div>
+      <aspect-size-input-panel [label]="('propertiesPanel.top' | translate)"
+                               [value]="positionProperties.marginTop?.value"
+                               [unit]="positionProperties.marginTop?.unit"
+                               [allowedUnits]="['px', '%']"
+                               (valueUpdated)="updateModel.emit(
+                                                 {
+                                                   property: 'marginTop',
+                                                   value: $event
+                                                 })">
+      </aspect-size-input-panel>
+      <aspect-size-input-panel [label]="('propertiesPanel.bottom' | translate)"
+                               [value]="positionProperties.marginBottom?.value"
+                               [unit]="positionProperties.marginBottom?.unit"
+                               [allowedUnits]="['px', '%']"
+                               (valueUpdated)="updateModel.emit(
+                                                 {
+                                                   property: 'marginBottom',
+                                                   value: $event
+                                                 })">
+      </aspect-size-input-panel>
+      <aspect-size-input-panel [label]="('propertiesPanel.left' | translate)"
+                               [value]="positionProperties.marginLeft?.value"
+                               [unit]="positionProperties.marginLeft?.unit"
+                               [allowedUnits]="['px', '%']"
+                               (valueUpdated)="updateModel.emit(
+                                                 {
+                                                   property: 'marginLeft',
+                                                   value: $event
+                                                 })">
+      </aspect-size-input-panel>
+      <aspect-size-input-panel [label]="('propertiesPanel.right' | translate)"
+                               [value]="positionProperties.marginRight?.value"
+                               [unit]="positionProperties.marginRight?.unit"
+                               [allowedUnits]="['px', '%']"
+                               (valueUpdated)="updateModel.emit(
+                                                 {
+                                                   property: 'marginRight',
+                                                   value: $event
+                                                 })">
+      </aspect-size-input-panel>
+    </div>
+  </ng-template>
+
+  <ng-container *ngIf="!isZIndexDisabled">
+    {{ 'propertiesPanel.stacking' | translate }}<br>
+    <mat-form-field appearance="fill">
+      <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
+      <input matInput type="number" aspectNumberField required
+             [ngModel]="positionProperties.zIndex"
+             (numberChange)="updateModel.emit(
+                    { property: 'zIndex', value: $event.value, isInputValid: $event.isInputValid })"
+             matTooltip="{{ 'propertiesPanel.zIndexTooltip' | translate }}">
+      @if (positionProperties.zIndex === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+    </mat-form-field>
+  </ng-container>
+</fieldset>

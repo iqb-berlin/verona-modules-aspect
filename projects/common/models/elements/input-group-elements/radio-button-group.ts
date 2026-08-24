@@ -1,0 +1,101 @@
+import { InputElement, UIElement } from 'common/models/elements/element';
+import { VariableInfo, VariableValue } from '@iqb/responses';
+import {
+  BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import { InputElementProperties } from 'common/models/input-element-interfaces';
+import {
+  OptionElement, StrikeOtherOptionsProperties, UIElementType, VerticalButtonAlignmentProperties
+} from 'common/models/ui-element-interfaces';
+import { TextLabel } from 'common/models/label-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+
+export class RadioButtonGroupElement extends InputElement implements OptionElement, RadioButtonGroupProperties {
+  type: UIElementType = 'radio';
+  label: string = ELEMENT_DEFAULTS.radio.label;
+  options: TextLabel[] = ELEMENT_DEFAULTS.radio.options;
+  alignment: 'column' | 'row' = ELEMENT_DEFAULTS.radio.alignment;
+  strikeOtherOptions: boolean = ELEMENT_DEFAULTS.radio.strikeOtherOptions;
+
+  verticalButtonAlignment: 'auto' | 'center' = ELEMENT_DEFAULTS.radio.verticalButtonAlignment;
+  position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
+
+  dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(ELEMENT_DEFAULTS.radio.dimensions);
+
+  styling: BasicStyles & {
+    lineHeight: number;
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.radio.styling),
+      lineHeight: ELEMENT_DEFAULTS.radio.styling.lineHeight
+    };
+
+  static title: string = 'Optionsfelder';
+  static icon: string = 'radio_button_checked';
+
+  constructor(element?: Partial<RadioButtonGroupProperties>, idService?: AbstractIDService) {
+    super({ type: 'radio', ...element }, idService);
+    if (isRadioButtonGroupProperties(element)) {
+      if (element.label !== undefined) this.label = element.label;
+      if (element.options !== undefined) this.options = [...element.options];
+      if (element.alignment !== undefined) this.alignment = element.alignment;
+      if (element.strikeOtherOptions !== undefined) this.strikeOtherOptions = element.strikeOtherOptions;
+      if (element.verticalButtonAlignment !== undefined) {
+        this.verticalButtonAlignment = element.verticalButtonAlignment;
+      }
+      this.position = { ...this.position, ...element.position };
+      this.dimensions = { ...this.dimensions, ...element.dimensions };
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
+    } else if (environment.strictInstantiation) {
+      throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
+    }
+  }
+
+  getVariableInfos(): VariableInfo[] {
+    return [{
+      id: this.id,
+      alias: this.alias,
+      type: 'integer',
+      format: '',
+      multiple: false,
+      nullable: false,
+      values: this.getVariableInfoValues(),
+      valuePositionLabels: [],
+      page: '',
+      valuesComplete: true
+    }];
+  }
+
+  private getVariableInfoValues(): VariableValue[] {
+    return this.options
+      .map((option, index) => ({
+        value: (index + 1).toString(),
+        label: InputElement.stripHTML(option.text)
+      }));
+  }
+
+  getNewOptionLabel(optionText: string): TextLabel {
+    return UIElement.createOptionLabel(optionText) as TextLabel;
+  }
+}
+
+export interface RadioButtonGroupProperties extends
+  InputElementProperties, StrikeOtherOptionsProperties, VerticalButtonAlignmentProperties {
+  label: string;
+  options: TextLabel[];
+  alignment: 'column' | 'row';
+  position: PositionProperties;
+  dimensions: DimensionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
+}
+
+function isRadioButtonGroupProperties(blueprint?: Partial<RadioButtonGroupProperties>)
+  : blueprint is RadioButtonGroupProperties {
+  if (!blueprint) return false;
+  return blueprint.options !== undefined &&
+    blueprint.type === 'radio';
+}

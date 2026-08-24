@@ -7,15 +7,17 @@ import { PageChangeService } from 'common/services/page-change.service';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 
 @Component({
-    selector: 'aspect-page-scroll-button',
-    templateUrl: './page-scroll-button.component.html',
-    styleUrls: ['./page-scroll-button.component.scss'],
-    standalone: false
+  selector: 'aspect-page-scroll-button',
+  templateUrl: './page-scroll-button.component.html',
+  styleUrls: ['./page-scroll-button.component.scss'],
+  standalone: false
 })
 export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
   @HostListener('scroll', ['$event.target'])
-  onScroll(element: HTMLElement) {
-    this.checkScrollPosition(element);
+  onScroll(target: EventTarget | null) {
+    if (target instanceof HTMLElement) {
+      this.checkScrollPosition(target);
+    }
   }
 
   @HostListener('scrollend')
@@ -67,9 +69,17 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
     this.isVisible.next(element.scrollHeight - element.offsetHeight > element.scrollTop + 10);
   }
 
+  /* Puts the container back to the top of the page it currently shows. Hard, without behaviour:
+     the caller does this before a page change, while the layout still stands still, so there is
+     nothing to animate against -- and a smooth scroll would still be under way when the new page
+     arrives. */
+  scrollToTop(): void {
+    this.elementRef.nativeElement.scrollTop = 0;
+  }
+
   toggleScrolling(scrolling: boolean): void {
     if (scrolling && !this.isBlocked) {
-      this.scrollIntervalId = setInterval(() => {
+      this.scrollIntervalId = window.setInterval(() => {
         this.scrollDown();
       });
     } else {

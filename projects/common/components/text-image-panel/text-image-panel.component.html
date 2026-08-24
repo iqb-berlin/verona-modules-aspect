@@ -1,0 +1,15 @@
+<div *ngIf="$any(label).audioSrc"
+     class="audio-button"
+     (touchstart)="audioPlayerService.play($any(label).audioSrc)"
+     (mousedown)="audioPlayerService.play($any(label).audioSrc)">
+  <mat-icon data-draggable-audio="true">play_arrow</mat-icon>
+</div>
+<div class="image-wrapper" [ngClass]="{'column': label.imgPosition === 'above',
+                                 'column-reverse': label.imgPosition === 'below',
+                                 'row': label.imgPosition === 'left',
+                                 'row-reverse': label.imgPosition === 'right',
+                                 'hide-content': hideContent}">
+  <img *ngIf="label.imgSrc"
+      [src]="label.imgSrc | safeResourceUrl" alt="Image Placeholder">
+  <div *ngIf="label.text !== ''" class="text" [innerHTML]="label.text | safeResourceHTML"></div>
+</div>

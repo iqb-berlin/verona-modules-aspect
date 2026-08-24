@@ -1,0 +1,52 @@
+<div [style.width.%]="100"
+     [style.height.%]="100"
+     [style.background-color]="elementModel.styling.backgroundColor">
+  <div *ngIf="elementModel.label"
+       [style.color]="elementModel.styling.fontColor"
+       [style.font-size.px]="elementModel.styling.fontSize"
+       [style.line-height.%]="elementModel.styling.lineHeight"
+       [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+       [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+       [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+      {{elementModel.label}}
+  </div>
+  <div class="container">
+    <div *ngIf="elementModel.showValues"
+         class="min-value"
+         [style.color]="elementModel.styling.fontColor"
+         [style.font-size.px]="elementModel.styling.fontSize"
+         [style.line-height.%]="elementModel.styling.lineHeight"
+         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+      {{elementModel.minValue | number:'':'de'}}
+    </div>
+    <div *ngIf="elementModel.showValues"
+         class="max-value"
+         [style.color]="elementModel.styling.fontColor"
+         [style.font-size.px]="elementModel.styling.fontSize"
+         [style.line-height.%]="elementModel.styling.lineHeight"
+         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+      {{elementModel.maxValue | number:'':'de'}}
+    </div>
+    <div *ngIf="elementModel.barStyle" class="arrow-line"></div>
+    <div *ngIf="elementModel.barStyle" class="arrow-head"></div>
+    <div *ngIf="elementModel.barStyle" class="value-marker min-value-marker"></div>
+    <div *ngIf="elementModel.barStyle" class="value-marker max-value-marker"></div>
+    <mat-slider [class]="elementModel.barStyle ? 'slider-bar-style slider-color' : 'slider slider-color'"
+                [discrete]="elementModel.thumbLabel"
+                [style.width.%]="100"
+                [max]="elementModel.maxValue"
+                [min]="elementModel.minValue">
+      <input matSliderThumb
+             [isDisabled]="elementModel.readOnly"
+             [formControl]="elementFormControl"
+      />
+    </mat-slider>
+  </div>
+  <mat-error *ngIf="elementFormControl.touched && elementFormControl.errors">
+    {{elementModel.requiredWarnMessage}}
+  </mat-error>
+</div>

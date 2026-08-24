@@ -13,6 +13,9 @@ export abstract class FormElementComponent extends ElementComponent implements O
       new UntypedFormControl(this.elementModel.value);
   }
 
+  // The second parameter belongs to the signature subclasses override - TextAreaMathComponent
+  // reads it - so the base keeps it and ignores it.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setElementValue(value: unknown, option?: unknown): void {
     this.elementFormControl.setValue(value);
   }

@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit
+  AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -11,13 +11,16 @@ import { PageChangeService } from 'common/services/page-change.service';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 import { HasNextPagePipe } from 'player/src/app/pipes/has-next-page.pipe';
 import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe';
+import {
+  PageScrollButtonComponent
+} from 'player/src/app/components/page-scroll-button/page-scroll-button.component';
 import { NativeEventService } from '../../../services/native-event.service';
 
 @Component({
-    selector: 'aspect-pages-layout',
-    templateUrl: './pages-layout.component.html',
-    styleUrls: ['./pages-layout.component.scss'],
-    standalone: false
+  selector: 'aspect-pages-layout',
+  templateUrl: './pages-layout.component.html',
+  styleUrls: ['./pages-layout.component.scss'],
+  standalone: false
 })
 
 export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -31,6 +34,8 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() isPresentedPagesComplete!: boolean;
   @Input() showUnitNavNext!: boolean;
   @Input() sectionNumbering!: { enableSectionNumbering: boolean, sectionNumberingPosition: 'left' | 'above' };
+
+  @ViewChild('scrollPagesContainer') scrollPagesContainer?: PageScrollButtonComponent;
 
   selectedIndex: number = 0;
   selectIndex: Subject<number> = new Subject();
@@ -68,7 +73,10 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.selectIndex
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((selectedIndex: number): void => this.setSelectedIndex(selectedIndex));
+      .subscribe((selectedIndex: number): void => {
+        this.resetScrollPosition(selectedIndex);
+        this.setSelectedIndex(selectedIndex);
+      });
     this.navigationService.pageIndex
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((pageIndex: number): void => this.selectIndex.next(pageIndex));
@@ -80,6 +88,26 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.calculateCenterPositionInRowLayout();
+  }
+
+  /* Turning a page starts by undoing the scrolled state (#1081). The scroll container is one for
+     all pages -- it holds the whole tab group -- so its scrollTop survives the tab switch, and the
+     next page used to open at the height the last one was left at.
+     Resetting before the index changes keeps this out of the transition: both land in the same
+     rendered frame, so the container already reads 0 when the incoming page starts to animate. A
+     reset triggered later would have to hold against the animation, which moves the layout height
+     for 300 ms in the buttons mode.
+     The concat modes are not touched: there ScrollToIndexDirective brings the new page into view.
+     Only an actual page turn resets: a unit's action button and the host may name the page that is
+     already shown (`navigationService.setPage`, `vopPageNavigationCommand`), and pulling the reader
+     back to the top without a page turn would be worse than the bug. A target that is not a page
+     index at all reaches `Number(message.target)` as NaN. */
+  private resetScrollPosition(selectedIndex: number): void {
+    if ((this.scrollPageMode === 'separate' || this.scrollPageMode === 'buttons') &&
+      Number.isInteger(selectedIndex) &&
+      selectedIndex !== this.selectedIndex) {
+      this.scrollPagesContainer?.scrollToTop();
+    }
   }
 
   setSelectedIndex(selectedIndex: number): void {

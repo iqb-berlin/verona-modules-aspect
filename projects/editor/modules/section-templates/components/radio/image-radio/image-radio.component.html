@@ -1,0 +1,30 @@
+<h3>{{ 'sectionTemplates.question' | translate }}</h3>
+<aspect-rich-text-editor [(content)]="options.label1"
+                         [placeholder]="'sectionTemplates.questionPlaceholder' | translate">
+</aspect-rich-text-editor>
+
+<h3>{{ 'sectionTemplates.options' | translate }}</h3>
+<aspect-option-list-panel class="options" [textFieldLabel]="'newOption'"
+                          [itemList]="options.options" [showImageButton]="true" [localMode]="true"
+                          (itemListUpdated)="checkValidity()">
+</aspect-option-list-panel>
+
+<h3>{{ 'sectionTemplates.imagesPerRow' | translate }}</h3>
+<mat-form-field [style.align-self]="'flex-start'">
+  <input matInput type="number" min="1" max="9" required aspectNumberField
+         [style.margin-left]="'unset'"
+         [ngModel]="options.itemsPerRow"
+         (numberChange)="commitItemsPerRow($event)">
+</mat-form-field>
+<p>{{ 'sectionTemplates.imagesPerRowHint4' | translate }}<br>
+  {{ 'sectionTemplates.imagesPerRowHint2' | translate }}</p>
+
+<h3>{{ 'sectionTemplates.justification' | translate }}</h3>
+<mat-checkbox [(ngModel)]="options.addExtraInput">
+  {{ 'sectionTemplates.addJustificationField' | translate }}
+</mat-checkbox>
+<aspect-rich-text-editor [disabled]="!options.addExtraInput" [(content)]="options.text1">
+</aspect-rich-text-editor>
+<mat-checkbox [(ngModel)]="options.extraInputMathfield" [disabled]="!options.addExtraInput">
+  {{ 'sectionTemplates.useMathField' | translate }}
+</mat-checkbox>

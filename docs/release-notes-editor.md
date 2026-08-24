@@ -3,7 +3,7 @@ Editor
 ## 3.0.0
 ### Neue Funktionen
 - Neuer Dialog zum Upload von Bildern
-  - Option zur automatischen Größenanpassung beim Hochladen von Bildern zur Optimierung der Dateigröße.
+  - Ein Bild kann beim Hochladen automatisch verkleinert werden, um die Dateigröße zu senken
   - Breite und Höhe sind fest gekoppelt: Die eine Angabe rechnet die andere mit, das Seitenverhältnis bleibt immer erhalten. Beide Felder zeigen von Anfang an die Größe, mit der das Bild eingefügt wird
   - Das Bild wird auch dann nach WebP umgewandelt, wenn die Maße unverändert bleiben — allein das Format spart Dateigröße
 - Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
@@ -24,7 +24,7 @@ Editor
 
 ### Änderungen
 - Element-IDs dürfen jetzt beliebig lang sein; die Begrenzung auf 20 Zeichen ist entfallen. Die übrigen Regeln (Buchstaben, Ziffern, Unterstrich und Bindestrich, keine Leerzeichen) gelten unverändert
-- Diese Regeln werden jetzt überall geprüft, wo eine ID oder ein Alias eingegeben wird — auch bei Zustandsvariablen, Ziehelementen, Zeilen der Optionentabelle und verfolgten Variablen eines Geometrie-Elements. Eine unerlaubte Eingabe wird nicht übernommen, und der Editor nennt die erlaubten Zeichen. Bringt eine geladene Aufgabe unerlaubte Namen mit, nennt ein Hinweis sie: Für die Kodierung stehen diese Variablen nicht zur Verfügung
+- Diese Regeln werden jetzt überall geprüft, wo eine ID oder ein Alias eingegeben wird — auch bei Zustandsvariablen, den Ziehelementen einer Ablegeliste, den Zeilen der Optionentabelle und den verfolgten Variablen eines Geometrie-Elements. Eine unerlaubte Eingabe wird nicht übernommen, und der Editor nennt die erlaubten Zeichen. Bringt eine geladene Aufgabe unerlaubte Namen mit, nennt ein Hinweis sie: Für die Kodierung stehen diese Variablen nicht zur Verfügung
 - Drei Einstellungen sind aus dem Eigenschaftenbereich entfernt, weil sie nie eine Wirkung hatten: "Beschriftung" bei Bildbereichen (der eingegebene Text erschien nirgends), die Hintergrundfarbe bei "Optionsfelder mit Bild" (dort wirken nur die Schrift-Einstellungen) und im Expertenmodus "Knopf zum Leeren anzeigen" beim Eingabefeld im Lückentext (einen solchen Knopf hat es nie gezeigt). An vorhandenen Aufgaben ändert sich dadurch nichts
 - Sind Elemente unterschiedlichen Typs gemeinsam markiert, bietet der Eigenschaftenbereich nur noch Einstellungen an, die alle von ihnen haben. Bisher konnte eine Einstellung erscheinen, die nur zu einem der markierten Elemente gehörte — und nur dort wirkte. Bei Knopf und Auslöser gemeinsam gibt es deshalb keine Aktionsauswahl mehr: Die beiden haben verschiedene Aktionen
 - Assistent "Geometrie": Der erzeugte Quellenhinweis nennt nur noch GeoGebra samt Lizenzbedingungen, der IQB-Teil entfällt
@@ -49,29 +49,27 @@ Editor
 - Ältere Aufgaben werden beim Laden vollständiger übernommen: Die Größen von Elementen in Tabellen, Optionentabellen und Lückentexten bleiben erhalten, ebenso die Einstellungen der Medien-Elemente und ihre Abstände
 - Beschriftungen (Ablegeliste, Optionentabelle, Bildoptionen): Was zusammen eine Zeile bildet — Text mit einer Formel, mit Hoch- oder Tiefstellung, mit einem Bild —, bleibt in einer Zeile; bisher stand jeder Teil in einer eigenen ("15 cm²" wurde zweizeilig). Die Beschriftung eines gestreckten Ziehelements steht in der Mitte statt an seinem oberen Rand
 - Tabelle
-  - Neu angelegte Tabellen erhalten ihren voreingestellten unteren Abstand (30px)
   - Der Fokusrahmen von Texteingaben bleibt innerhalb der Zelle
-  - Kontrollkästchen zeigen die im Eigenschaftenbereich eingestellte Vorbelegung
-  - Die Schaltflächen für Zeilen und Spalten stehen nur noch im Dialog "Elemente anpassen"
+  - Kontrollkästchen zeigen auf der Arbeitsfläche die im Eigenschaftenbereich eingestellte Vorbelegung
   - Der Dialog "Elemente anpassen" arbeitet auf einer Kopie: "Abbrechen" nimmt jetzt zurück, was darin geändert wurde — eine entfernte Zelle war bisher sofort weg, eine hinzugefügte blieb stehen
 - Assistenten
-  - Nach dem Einfügen einer zweiseitigen Abschnittsvorlage ist das erwartete Element ausgewählt
+  - Nach dem Einfügen einer zweiseitigen Abschnittsvorlage ist ein Element der eingefügten Vorlage ausgewählt, nicht eines aus dem Abschnitt darunter
   - In der Variante "Sortieren" wird die eingegebene Überschrift der Elementliste jetzt angelegt
   - Im französischen Stimulus "E-Mail" steht vor den Doppelpunkten ein schmales geschütztes Leerzeichen
 - Formelfeld, Formelbereich: Lange Eingaben ohne Leerzeichen vergrößern das Element auf der Arbeitsfläche nicht mehr über den Abschnittsrand hinaus
 - Zahlenfelder: Eine unerlaubte oder geleerte Eingabe wird nicht mehr gespeichert — das Feld zeigt beim Verlassen wieder den gespeicherten Wert, dazu erscheint der Hinweis "Eingabe ungültig". Das gilt im Eigenschaftenbereich, im Seiten- und Abschnittsmenü, in den Dialogen und in den Assistenten, und beim Bestätigen mit Enter genauso wie beim Verlassen des Feldes; bisher gingen dabei Zeilen, Spalten oder Antwortfelder samt ihrem Inhalt verloren. Wo ein leeres Feld etwas bedeutet (Ober- und Untergrenzen), bleibt es erlaubt. "Zeilenspanne" und "Spaltenspanne" nehmen keine 0 mehr an, und "Stärke" im Bereich "Rahmen" setzt nicht mehr den Radius zurück
-- Voreinstellungen neuer Elemente: Werte, die gegenüber der Version 2.12.5 verlorengegangen waren, sind wiederhergestellt — unter anderem die Bildschirmtastatur der Eingabefelder, die Maße von Optionsfeldern, Audio-Element und Lückentext-Feldern sowie die Zeilenhöhe des Schiebereglers, deren Beschriftungen sich überlappten. Bereits gespeicherte Aufgaben behalten ihre Werte. Beim Schieberegler sind "Balken-Darstellung" und "Werteanzeige am Griff" wieder ausgeschaltet; in den 3.0.0-Betas waren sie versehentlich an
+- Voreinstellungen neuer Elemente: Werte, die gegenüber der Version 2.12.5 verlorengegangen waren, sind wiederhergestellt — unter anderem die Bildschirmtastatur der Eingabefelder, die Maße von Optionsfeldern, Audio-Element und Lückentext-Feldern, der untere Abstand einer neuen Tabelle sowie die Zeilenhöhe des Schiebereglers, deren Beschriftungen sich überlappten. Bereits gespeicherte Aufgaben behalten ihre Werte. Beim Schieberegler sind "Balken-Darstellung" und "Werteanzeige am Griff" wieder ausgeschaltet; in den 3.0.0-Betas waren sie versehentlich an
 - Mehrfachauswahl
   - Unterschiedliche Werte sind jetzt erkennbar: Betroffene Felder tragen den Hinweis "Werte unterschiedlich" statt leer zu erscheinen — Zahlen-, Text-, Farb- und Auswahlfelder, die Maßangaben samt Einheit und die Vorbelegung
   - Sechs Felder verschwanden bei unterschiedlichen Werten ganz und ließen sich damit nicht gemeinsam bearbeiten (u. a. "Anzahl der Spalten", "Ausrichtung", "Verbundene Ablagelisten"); sie lassen sich jetzt für die ganze Auswahl setzen
   - Bei Grenzen (Mindest- und Maximalbreite, Mindest- und Maximalhöhe, "Elemente je Zeile begrenzen", Vorbelegung des Schiebereglers) ist zu erkennen, ob es keine Grenze gibt oder verschiedene. Das Feld ist sofort bedienbar; bisher musste man erst das Kästchen anhaken, was die vorhandenen Werte mit einem Standardwert überschrieb
   - Medienelemente mit unterschiedlichen Dateien lassen sich wieder gemeinsam austauschen
   - Am Größengriff wächst oder schrumpft jedes Element um denselben Betrag, statt die Größe des gezogenen Elements zu übernehmen — ein Bild wurde so schon auf die Größe eines kleinen Rahmens gestaucht, und der Editor kennt kein Rückgängig
-  - Einstellungen, die nicht zu allen markierten Elementen passen, werden nicht mehr angeboten: die Vorbelegung bei unterschiedlichen Optionslisten und "Medienquelle ändern" bei unterschiedlichen Typen, wo ein Klick zuvor Bild und Dateiname löschte. Behoben ist auch, dass der Eigenschaftenbereich nach einer solchen Markierung die Werte der zuvor markierten Elemente zeigte und beim Bearbeiten auf die neuen schrieb
+  - Bei unterschiedlichen Optionslisten wird die Vorbelegung nicht mehr angeboten, und "Medienquelle ändern" nicht bei Elementen unterschiedlichen Typs — ein Klick darauf löschte dort Bild und Dateiname bei allen markierten Elementen. Behoben ist auch, dass der Eigenschaftenbereich nach einer solchen Markierung die Werte der zuvor markierten Elemente zeigte und beim Bearbeiten auf die neuen schrieb
 - Fehlerdialog "Unerwarteter Fehler": Ein Fehler, der beim Aufbau der Arbeitsfläche immer wieder auftritt, öffnete den Dialog endlos neu — der Editor war nicht mehr bedienbar und die Aufgabe nicht mehr zu speichern. Jeder Fehler wird jetzt höchstens einmal je geladener Aufgabe gemeldet
 - Duplizieren, Verschieben und die Positionsfelder wirken auf den Abschnitt, in dem das ausgewählte Element liegt. Bisher konnten sie einen anderen treffen: Ein Duplikat landete im falschen Abschnitt, und der Eigenschaftenbereich zeigte Rasterfelder für ein Element, das gar nicht in einem Raster liegt
 - Entfernt man in einem Text oder Lückentext etwas, worauf andere Elemente verweisen, fragt der Editor nach — nach dem Bestätigen wird die Änderung jetzt auch gespeichert. Bisher konnte sie beim nächsten Speichern wieder verschwinden
-- Der Texteditor des Lückentexts öffnet ohne Fehlermeldung, und ein Element aus einer Abschnittsvorlage behält seine Voreinstellungen, seine Position und seine Größe
+- Ein Element, das ein Assistent oder eine Abschnittsvorlage anlegt, behält die Voreinstellungen, die die Vorlage nicht selbst festlegt — Größe und Position eingeschlossen
 
 ## 2.12.4
 ### Fehlerbehebungen 

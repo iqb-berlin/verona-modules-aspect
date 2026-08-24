@@ -6,49 +6,50 @@ Player
   - Es können nun auch Aufgaben, die mit deutlich älteren Editor-Versionen erstellt wurden, im aktuellen Layout geladen und dargestellt werden
 - Eingabefeld, Eingabebereich (auch in Tabellen und im Lückentext)
   - Die im Editor eingestellte Textausrichtung (linksbündig, zentriert, rechtsbündig) wird bei der Eingabe dargestellt
+- Lückentext
+  - Stellt Klapplisten als Lücke dar (neuer Lückentyp)
 - Tabelle
   - Stellt die im Editor konfigurierte Kopfzeile (auch mehrzeilig) dar; optional bleibt sie beim Scrollen am oberen Rand des sichtbaren Bereichs fixiert
 - Tooltip (Text und Knopf)
   - Stellt die im Editor eingestellte Formatierung des Tooltip-Textes dar
 - Optionsfelder, Kontrollkästchen
   - Stellt die im Editor eingestellte vertikale Knopfausrichtung dar ("an der ersten Zeile" oder "zentriert")
+- Widgets (Periodensystem, Molekül-Editor)
+  - Das Element zeigt einen runden Knopf in den im Editor eingestellten Farben; ein Klick darauf lässt die Testumgebung das Widget öffnen. Was dort ausgewählt oder gezeichnet wurde, kommt zurück und wird als Antwort gespeichert
+  - Beim Periodensystem stehen die ausgewählten Elementsymbole neben dem Knopf, sodass die Auswahl ohne erneutes Öffnen sichtbar ist
 
 ### Änderungen
-- Eingabehilfe/Tastatur
-  - Ergänzt die Voreinstellung "Ziffern mit Komma & Minus" um eine Minustaste (für negative Dezimalzahlen)
 - GeoGebra
-  - Bindet den Status von GeoGebra-Variablen an das übergeordnete Element: Variablen werden mit dem Status des GeoGebra-Elements initialisiert und die Statusänderung "DISPLAYED" wird an sie weitergegeben
+  - Die Variablen eines Geometrie-Elements übernehmen den Status des Elements: Sie gelten als angezeigt, sobald das Element angezeigt wurde
+  - Ein Geometrie-Element meldet eine Antwort erst, wenn tatsächlich mit ihm gearbeitet wurde (Klick, Tastendruck, Scrollen im Applet oder der Knopf "Zurücksetzen"). Bisher genügte dafür das Laden der Aufgabe, sodass eine unbearbeitete Aufgabe als bearbeitet gelten konnte
 
 ### Fehlerbehebungen
-- Bei einer Aufgabe vor 4.11, in der ein Zahlenfeld der Medien-Einstellungen leer gespeichert wurde (z. B. "Maximale Anzahl Wiedergaben"), gilt weiterhin der Vorgabewert. Solche leeren Felder entstanden mit Editor-Versionen bis 2023
-- Bei einer Aufgabe im Format vor 4.10, in der die Beschriftung des Starthinweises geleert wurde, bleibt der Hinweis ausgeschaltet (Audio, Video). Beim Laden wurde er bisher wieder eingeschaltet: die leere Beschriftung war in diesen Aufgaben die Art, ihn abzuschalten, und genau dafür gibt es seit 4.10 eine eigene Einstellung
-- Beim Laden einer Aufgabe im Format vor 4.11 bleibt die eingestellte Verzögerung des Starthinweises erhalten (Audio, Video). Sie wurde bisher durch den Vorgabewert von 5 Sekunden ersetzt, wenn die Aufgabe sie noch unter ihrem alten Namen gespeichert hatte
-- Ebenfalls beim Laden solcher Aufgaben: die 4-Pixel-Korrektur der Ränder eines Audio-Elements rutscht nicht mehr unter 0. Aus einem gespeicherten Rand von 0 wurde bisher -4 Pixel
-- Bei einer Aufgabe im Format vor 4.0 werden jetzt auch die Elemente innerhalb von Tabellen, Optionentabellen und Lückentexten umgewandelt. Sichtbar wird das bei den Lücken eines Lückentexts: sie behalten ihre gespeicherte Mindestbreite, statt in der Standardbreite ihres Typs dargestellt zu werden (eine Lücke mit gespeicherten 150 Pixeln wurde 180 Pixel breit). Die Größe einer Tabellenzelle bestimmt weiterhin die Tabelle selbst
-- Aus demselben Grund erreicht die Randkorrektur für Audio-Elemente (4 Pixel, gilt für Aufgaben im Format 4.0 bis 4.10) jetzt auch Audio-Elemente innerhalb einer Tabelle
+- Aufgaben aus älteren Editor-Versionen werden vollständiger dargestellt: Die Lücken eines Lückentexts sind wieder so breit wie im Editor eingestellt, und die Einstellungen der Medien-Elemente samt ihren Abständen bleiben erhalten — auch innerhalb einer Tabelle
 - Optionsfelder, Kontrollkästchen
-  - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält. Bei einer Option, die aus einem Bruch besteht, stand er neben dem Zähler, weil die Ausrichtung mit einer festen Zeilenhöhe von 20 Pixeln rechnete; jetzt wird die Zeile gemessen. Bei einer Option, die nur eine Formel enthält, steht der Knopf damit in ihrer Mitte, bei mehrzeiligen Beschriftungen unverändert an der ersten Zeile. Aus demselben Grund saß der Knopf auch bei anderen Schriftgrößen als 20 Pixeln nicht mittig
+  - Der Knopf steht wieder auf der Höhe der ersten Zeile, auch wenn diese eine Formel enthält; bei einem Bruch stand er bisher neben dem Zähler. Besteht die Option nur aus einer Formel, steht er in deren Mitte. Auch bei einer anderen Schriftgröße saß er bisher nicht auf der ersten Zeile
 - Ablegelisten, Optionentabelle, Bildoptionen
-  - Eine Beschriftung, die aus mehreren Teilen eine Zeile bildet, bleibt in einer Zeile: Text mit einer Formel, aber auch Text mit einer Formatierung wie fett, kursiv, hoch- oder tiefgestellt, oder mit einem Bild im Beschriftungstext. Bisher stand jeder Teil in einer eigenen Zeile — aus "15 cm²" wurden zwei Zeilen, obwohl das Feld breit genug war. Betraf Ziehelemente in Ablegelisten, Zeilen- und Spaltenbeschriftungen der Optionentabelle und die Beschriftungen der Bildoptionen
+  - Eine Beschriftung, die aus mehreren Teilen eine Zeile bildet, bleibt in einer Zeile: Text mit einer Formel, mit einer Formatierung wie fett, kursiv, hoch- oder tiefgestellt, oder mit einem Bild. Bisher stand jeder Teil in einer eigenen Zeile — aus "15 cm²" wurden zwei Zeilen, obwohl das Feld breit genug war
 - Ablegelisten
-  - In der Ausrichtung "horizontal linksbündig" sind die Ziehelemente einer Zeile gleich hoch; ihre Beschriftung steht jetzt in der Mitte des Elements statt an seinem oberen Rand. Ein Ziehelement mit einem Bruch klebte dort oben, während darunter Platz frei blieb. Das gezogene Element und Ablegelisten in Lückentexten stellen die Beschriftung auf dieselbe Weise dar
+  - In der Ausrichtung "horizontal linksbündig" steht die Beschriftung eines gestreckten Ziehelements in seiner Mitte statt an seinem oberen Rand. Das gezogene Element und Ablegelisten in Lückentexten stellen sie genauso dar
+  - Ein Zug mit dem Finger legt das Element in der Liste ab, über der er endet. Bisher konnte er stattdessen die Ausgangsliste umsortieren, wenn die erste Bewegung sofort ein Element der Zielliste traf. Betraf Tablets und andere Touch-Geräte
+- Lange Sitzungen und wiederholte Aufgaben-Starts (z. B. beim Replay in der Kodierbox): Der Player bleibt flüssig. Bisher blieb jede verlassene Aufgabe im Speicher — besonders solche mit Wort- oder Bereichsmarkierung —, und er wurde mit der Zeit langsamer. Wird schnell mehrfach gewechselt, baut er nur noch die letzte Aufgabe auf
 - Textmarkierung
-  - Verlassene Aufgaben mit Wort- oder Bereichsmarkierung geben ihre Ressourcen wieder frei; der Player bleibt über lange Sitzungen flüssig
-  - Eine Formel in einem Text wird in der Wort- und der Bereichsmarkierung als Ganzes markiert. Bisher wurde jedes Zeichen einer Formel zu einem eigenen markierbaren Wort, sodass sich nur einzelne Teile einer Formel markieren ließen
-  - **Folge für vorhandene Antworten:** In Texten mit Formeln verschieben sich Wort- und Bereichsmarkierungen, die vor dieser Version gesetzt wurden, sofern sie hinter einer Formel liegen — die Markierungen sind als Wortnummern gespeichert, und eine Formel zählt jetzt als ein Wort. Neu gesetzte Markierungen sind davon nicht betroffen
-- Wiederholte Aufgaben-Starts im selben Player (z. B. beim Replay in der Kodierbox)
-  - Eine ersetzte Aufgabe wird jetzt vollständig freigegeben. Bisher blieb sie bei jedem weiteren Start im Speicher — nach 20 Wechseln lagen rund 200.000 Elemente und 170 MB unnötig im Browser, was den Hauptthread zunehmend belastete. Ein Start-Kommando, das von einem neueren überholt wird, baut seine Aufgabe außerdem nicht mehr auf
+  - Eine Formel in einem Text wird als Ganzes markiert. Bisher wurde jedes Zeichen einer Formel zu einem eigenen markierbaren Wort, sodass sich nur Teile einer Formel markieren ließen
+  - **Folge für vorhandene Antworten:** In Texten mit Formeln verschieben sich Markierungen, die vor dieser Version gesetzt wurden und hinter einer Formel liegen — sie sind als Wortnummern gespeichert, und eine Formel zählt jetzt als ein Wort. Neu gesetzte Markierungen sind nicht betroffen
 - Formelfeld, Formelbereich
-  - Behebung von Fehlern bei der Handhabung von Schreibschutz und Pflichtfeld-Markierungen
-  - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen innerhalb des Feldes, im Formelbereich brechen Text und Formel-Segmente in die nächste Zeile um
+  - Schreibschutz und Pflichtfeld wirken jetzt zuverlässig: Ein geschütztes Feld nimmt keine Eingabe an, und ein leeres Pflichtfeld zeigt den im Editor hinterlegten Hinweis
+  - Lange Eingaben ohne Leerzeichen vergrößern das Feld bzw. den Bereich nicht mehr über den Bildschirmrand hinaus; überlange Formeln scrollen im Feld, im Formelbereich brechen Text und Formel-Segmente um
 - Formeln in Texten, Beschriftungen und Optionen
-  - Formeln aus Aufgaben, die vor Editor 2.12.4 geschrieben wurden, wurden in Chrome-basierten Browsern (auch im Safe Exam Browser) und auf iPads falsch dargestellt: der Überstrich lag nur über dem ersten Zeichen, Brüche waren zu klein, Wurzeln verzerrt. In Firefox sah dieselbe Aufgabe korrekt aus. Ursache war das in der Aufgabe mitgespeicherte HTML der Formel, das der jeweilige Browser selbst setzen musste. Die Darstellung wird jetzt aus dem ebenfalls gespeicherten LaTeX aufgebaut und sieht damit in allen Browsern gleich aus
-  - **Folge für vorhandene Antworten:** In solchen Aufgaben verschieben sich Textmarkierungen, die vor dieser Version gesetzt wurden, sofern sie hinter einer Formel liegen — die Markierungen sind als Zeichenpositionen gespeichert, und die Formel hat jetzt eine andere Länge. Neu gesetzte Markierungen sind davon nicht betroffen
+  - Formeln aus älteren Aufgaben wurden in Chrome-basierten Browsern (auch im Safe Exam Browser) und auf iPads falsch dargestellt: Der Überstrich lag nur über dem ersten Zeichen, Brüche waren zu klein, Wurzeln verzerrt, während dieselbe Aufgabe in Firefox korrekt aussah. Die Darstellung sieht jetzt in allen Browsern gleich aus
+  - **Folge für vorhandene Antworten:** In diesen Aufgaben verschieben sich Textmarkierungen, die vor dieser Version gesetzt wurden und hinter einer Formel liegen. Neu gesetzte Markierungen sind nicht betroffen
 - Eingabefeld, Eingabebereich mit der Einstellung "nur Zeichen der Eingabehilfe zulassen"
-  - Die Zeichenbeschränkung gilt ab dem Hineinklicken in das Feld. Bisher wurde sie erst wirksam, sobald die Eingabehilfe sichtbar war — rund eine Zehntelsekunde später. Wer in dieser Zeit tippte, konnte gesperrte Zeichen in das Feld schreiben, und sie ließen sich anschließend nicht mehr löschen, weil der Schutz der Vorbelegung auch sie festhielt
-  - Bei der Eingabehilfe "französisch" zählen die Großbuchstaben der Shift-Ebene zu den erlaubten Zeichen. Bisher setzte die Eingabehilfe sie zwar ins Feld, die Beschränkung kannte sie aber nicht — ein so gesetztes "Â" ließ sich nicht mehr entfernen, und mit ihm blieben auch die Zeichen davor stehen
+  - Die Zeichenbeschränkung gilt ab dem Hineinklicken in das Feld. Bisher wurde sie erst wirksam, sobald die Eingabehilfe sichtbar war — wer in dieser kurzen Zeit tippte, konnte gesperrte Zeichen in das Feld schreiben und danach nicht mehr löschen
+  - Bei der Eingabehilfe "französisch" zählen die Großbuchstaben der Shift-Ebene zu den erlaubten Zeichen. Ein so gesetztes "Â" ließ sich bisher nicht mehr entfernen, und mit ihm blieben auch die Zeichen davor stehen
+  - Auf einem Touch-Gerät mit angeschlossener Tastatur, für das keine Eingabehilfe eingeblendet wird, bleibt die Eingabe frei; bisher blieb sie nach dem ersten Hineinklicken eingeschränkt, obwohl keine Eingabehilfe zu sehen war. Bei Zeichen aus zwei Tastendrücken (z. B. "^" und "e" zu "ê") springt der Cursor nicht mehr aus dem Feld
+- In den Antwortdaten fehlte der Startwert eines Bildes mit Lupe, das in einer Tabelle, Optionentabelle oder einem Lückentext steckt: Statt "Lupe nicht benutzt" stand dort nichts. Sobald die Lupe benutzt wurde, war der Wert immer richtig
+- Ist "Vollbild erlauben" eingeschaltet, lässt sich ein Bild in der Vollbildansicht wieder scrollen; bei Bildern, die größer als der Bildschirm sind, war der untere Teil nicht erreichbar
 - Blättern zwischen Seiten
-  - Eine neue Seite beginnt wieder oben. Bisher behielt der Player die Scrollposition der vorigen Seite bei: wer unten auf einer langen Seite weiterblätterte, landete auf der neuen Seite mitten im Text. War die neue Seite kürzer, korrigierte der Browser das von selbst — deshalb trat es nur bei manchen Aufgaben auf. Betrifft die Modi mit getrennten Seiten und mit Blätterknöpfen; die Scroll-Modi bringen die neue Seite ohnehin selbst in den Blick
+  - Eine neue Seite beginnt wieder oben. Bisher behielt der Player die Scrollposition der vorigen Seite bei: Wer unten auf einer langen Seite weiterblätterte, landete auf der neuen Seite mitten im Text. Betrifft die Modi mit getrennten Seiten und mit Blätterknöpfen
 
 ## 2.12.6
 ### Fehlerbehebungen

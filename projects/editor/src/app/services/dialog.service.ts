@@ -148,7 +148,14 @@ export class DialogService {
     const dialogRef = this.dialog.open(DropListOptionEditDialogComponent, {
       data: { value },
       height: '700px',
-      width: '600px'
+      // The rich text editor gives its text area a minimum width of 700px. Opened any narrower,
+      // the dialog has a horizontal scrollbar even while empty and the right half of the toolbar
+      // sits outside the visible area (#1347). 700px plus the content padding of 48px is already
+      // 748, so 750 would leave two pixels and no room for the vertical scrollbar this dialog
+      // always has. Material's default `maxWidth` of 80vw would take the 800 back below a 1000px
+      // window, which is where the scrollbar came from in the first place.
+      width: '800px',
+      maxWidth: '95vw'
     });
     return dialogRef.afterClosed();
   }

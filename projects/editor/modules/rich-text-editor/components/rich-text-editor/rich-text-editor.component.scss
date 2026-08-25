@@ -9,6 +9,17 @@ tiptap-editor {
   overflow: auto;
   min-height: 80px;
   min-width: 700px;
+  // The text area is what grows with the content, and left to itself it takes the host with it
+  // until the editor fills the dialog frame and the fields below are out of reach (#1347). The
+  // limit belongs here and not on the host: a host limit would either raise the floor for every
+  // editor -- the ones in the assistant dialogs stand at 118px with a folded toolbar and have no
+  // business claiming more -- or squeeze the host below what its unfolded toolbar needs, which
+  // then paints over what follows. It has to be `max-height` and not `height`, or every empty
+  // editor would start out 200px tall.
+  //
+  // A host that reserves a box of its own lifts the limit again, so `flex-grow` can fill it:
+  // `rich-text-edit-dialog`, `text-stimulus` and `likert-dialog` do that.
+  max-height: 200px;
 }
 
 :host ::ng-deep div.ProseMirror {

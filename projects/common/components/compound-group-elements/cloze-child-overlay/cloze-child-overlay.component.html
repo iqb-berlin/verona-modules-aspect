@@ -31,6 +31,7 @@
                  [elementModel]="$any(element)">
   </aspect-button>
   <aspect-checkbox *ngIf="element.type === 'checkbox'" #childComponent
+                   [clozeContext]="true"
                    [style.pointer-events]="editorMode ? 'none' : 'auto'"
                    [parentForm]="parentForm"
                    [elementModel]="$any(element)">

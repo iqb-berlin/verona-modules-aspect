@@ -11,4 +11,5 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
 export class CheckboxComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: CheckboxElement;
   @Input() tableMode: boolean = false;
+  @Input() clozeContext: boolean = false;
 }

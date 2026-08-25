@@ -1,2 +1,6 @@
 *:not(h3) {margin-left: 30px;}
 h3:not(:first-child) {margin-top: 40px;}
+// The host reserves a box of its own here, so the text area has to be allowed to fill it --
+// the editor's own limit would leave the lower part empty (#1347). `::ng-deep` is needed because
+// `tiptap-editor` lives in the editor's template and carries its attribute, not this one's.
+.input1 ::ng-deep tiptap-editor {max-height: none;}

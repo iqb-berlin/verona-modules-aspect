@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ClozeElement, ClozeProperties } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { ClozeElement, ClozeProperties } from 'common/models/elements/cloze';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { StyleMarksPipe } from 'common/pipes/style-marks.pipe';
 import { MarkListPipe } from 'common/pipes/mark-list.pipe';

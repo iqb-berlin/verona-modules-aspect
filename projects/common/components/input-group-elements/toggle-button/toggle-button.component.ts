@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
-import { ToggleButtonElement } from 'common/models/elements/input-group-elements/toggle-button';
+import { ToggleButtonElement } from 'common/models/elements/toggle-button';
 
 @Component({
   selector: 'aspect-toggle-button',

@@ -4,7 +4,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'common/environment';
 import { SplitPipe } from 'common/pipes/split.pipe';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
 import { WidgetPeriodicTableComponent } from './widget-periodic-table.component';
 
 describe('WidgetPeriodicTableComponent', () => {

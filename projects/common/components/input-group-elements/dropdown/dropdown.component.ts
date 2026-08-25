@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { DropdownElement } from 'common/models/elements/input-group-elements/dropdown';
+import { DropdownElement } from 'common/models/elements/dropdown';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 
 @Component({

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import {
   RadioButtonGroupComplexElement, RadioButtonGroupComplexProperties
-} from 'common/models/elements/input-group-elements/radio-button-group-complex';
+} from 'common/models/elements/radio-button-group-complex';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { RadioGroupImagesComponent } from './radio-group-images.component';

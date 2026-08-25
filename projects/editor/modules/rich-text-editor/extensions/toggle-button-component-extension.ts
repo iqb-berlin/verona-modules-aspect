@@ -3,7 +3,7 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import {
   ToggleButtonProperties
-} from 'common/models/elements/input-group-elements/toggle-button';
+} from 'common/models/elements/toggle-button';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {

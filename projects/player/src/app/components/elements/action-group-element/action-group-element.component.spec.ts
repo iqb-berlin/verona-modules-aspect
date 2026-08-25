@@ -8,8 +8,8 @@ import {
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ButtonElement, ButtonEvent } from 'common/models/elements/action-group-elements/button';
-import { TriggerActionEvent, TriggerElement } from 'common/models/elements/action-group-elements/trigger';
+import { ButtonElement, ButtonEvent } from 'common/models/elements/button';
+import { TriggerActionEvent, TriggerElement } from 'common/models/elements/trigger';
 import { UIElement } from 'common/models/elements/element';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';

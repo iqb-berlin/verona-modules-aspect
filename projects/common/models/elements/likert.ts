@@ -3,7 +3,7 @@ import {
 } from 'common/models/elements/element';
 import {
   LikertRowElement, LikertRowProperties
-} from 'common/models/elements/compound-group-elements/likert/likert-row';
+} from 'common/models/elements/likert-row';
 import {
   BasicStyles,
   DimensionProperties,

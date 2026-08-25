@@ -6,7 +6,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { SliderElement, SliderProperties } from 'common/models/elements/input-group-elements/slider';
+import { SliderElement, SliderProperties } from 'common/models/elements/slider';
 import { IsDisabledDirective } from 'common/directives/is-disabled.directive';
 import { SliderComponent } from './slider.component';
 

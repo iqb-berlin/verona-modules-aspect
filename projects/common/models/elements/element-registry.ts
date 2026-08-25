@@ -2,42 +2,42 @@
 // import ELEMENT_DEFAULTS from this file, so value imports in the other
 // direction would be circular at runtime. Type-only imports are erased by the
 // compiler and cannot cycle.
-import type { ButtonProperties } from 'common/models/elements/action-group-elements/button';
-import type { TriggerProperties } from 'common/models/elements/action-group-elements/trigger';
-import type { FrameProperties } from 'common/models/elements/base-group-elements/frame';
-import type { ClozeProperties } from 'common/models/elements/compound-group-elements/cloze/cloze';
-import type { LikertRowProperties } from 'common/models/elements/compound-group-elements/likert/likert-row';
-import type { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
-import type { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
-import type { GeometryProperties } from 'common/models/elements/external-app-group-elements/geometry';
-import type { CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
-import type { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
-import type { DropdownProperties } from 'common/models/elements/input-group-elements/dropdown';
-import type { HotspotImageProperties } from 'common/models/elements/input-group-elements/hotspot-image';
+import type { ButtonProperties } from 'common/models/elements/button';
+import type { TriggerProperties } from 'common/models/elements/trigger';
+import type { FrameProperties } from 'common/models/elements/frame';
+import type { ClozeProperties } from 'common/models/elements/cloze';
+import type { LikertRowProperties } from 'common/models/elements/likert-row';
+import type { LikertProperties } from 'common/models/elements/likert';
+import type { TableProperties } from 'common/models/elements/table';
+import type { GeometryProperties } from 'common/models/elements/geometry';
+import type { CheckboxProperties } from 'common/models/elements/checkbox';
+import type { DropListProperties } from 'common/models/elements/drop-list';
+import type { DropdownProperties } from 'common/models/elements/dropdown';
+import type { HotspotImageProperties } from 'common/models/elements/hotspot-image';
 import type {
   RadioButtonGroupComplexProperties
-} from 'common/models/elements/input-group-elements/radio-button-group-complex';
-import type { RadioButtonGroupProperties } from 'common/models/elements/input-group-elements/radio-button-group';
-import type { SliderProperties } from 'common/models/elements/input-group-elements/slider';
-import type { ToggleButtonProperties } from 'common/models/elements/input-group-elements/toggle-button';
-import type { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
-import type { MarkingPanelProperties } from 'common/models/elements/interactive-group-elements/marking-panel';
-import type { MathTableProperties } from 'common/models/elements/interactive-group-elements/math-table';
-import type { AudioProperties } from 'common/models/elements/media-player-group-elements/audio';
-import type { VideoProperties } from 'common/models/elements/media-player-group-elements/video';
-import type { TextProperties } from 'common/models/elements/text-group-elements/text';
-import type { MathFieldProperties } from 'common/models/elements/text-input-group-elements/math-field';
-import type { SpellCorrectProperties } from 'common/models/elements/text-input-group-elements/spell-correct';
-import type { TextAreaMathProperties } from 'common/models/elements/text-input-group-elements/text-area-math';
-import type { TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
-import type { TextFieldSimpleProperties } from 'common/models/elements/text-input-group-elements/text-field-simple';
-import type { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
+} from 'common/models/elements/radio-button-group-complex';
+import type { RadioButtonGroupProperties } from 'common/models/elements/radio-button-group';
+import type { SliderProperties } from 'common/models/elements/slider';
+import type { ToggleButtonProperties } from 'common/models/elements/toggle-button';
+import type { ImageProperties } from 'common/models/elements/image';
+import type { MarkingPanelProperties } from 'common/models/elements/marking-panel';
+import type { MathTableProperties } from 'common/models/elements/math-table';
+import type { AudioProperties } from 'common/models/elements/audio';
+import type { VideoProperties } from 'common/models/elements/video';
+import type { TextProperties } from 'common/models/elements/text';
+import type { MathFieldProperties } from 'common/models/elements/math-field';
+import type { SpellCorrectProperties } from 'common/models/elements/spell-correct';
+import type { TextAreaMathProperties } from 'common/models/elements/text-area-math';
+import type { TextAreaProperties } from 'common/models/elements/text-area';
+import type { TextFieldSimpleProperties } from 'common/models/elements/text-field-simple';
+import type { TextFieldProperties } from 'common/models/elements/text-field';
 import type {
   WidgetMoleculeEditorProperties
-} from 'common/models/elements/widget-group-elements/widget-molecule-editor';
+} from 'common/models/elements/widget-molecule-editor';
 import type {
   WidgetPeriodicTableProperties
-} from 'common/models/elements/widget-group-elements/widget-periodic-table';
+} from 'common/models/elements/widget-periodic-table';
 import type {
   AssertNever, BasicStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
 } from 'common/models/elements/property-group-interfaces';

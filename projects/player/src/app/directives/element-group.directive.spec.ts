@@ -1,6 +1,6 @@
 import { Directive } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextFieldElement } from 'common/models/elements/text-field';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { ElementGroupDirective } from './element-group.directive';

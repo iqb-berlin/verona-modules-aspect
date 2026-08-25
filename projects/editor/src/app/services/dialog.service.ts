@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { ClozeDocument } from 'common/models/elements/cloze';
+import { LikertRowElement } from 'common/models/elements/likert-row';
 import {
   SectionInsertDialogComponent
 } from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
@@ -17,7 +17,7 @@ import {
   HotspotEditDialogComponent
 } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
+import { Hotspot } from 'common/models/elements/hotspot-image';
 import {
   StateVariablesDialogComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
@@ -38,7 +38,7 @@ import { UIElement } from 'common/models/elements/element';
 import {
   TableEditDialogComponent, TableEditResult
 } from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
-import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { TableElement } from 'common/models/elements/table';
 import { FileService, FileInformation } from 'common/services/file.service';
 import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/label-interfaces';
 import { TooltipPosition } from 'common/models/ui-element-interfaces';

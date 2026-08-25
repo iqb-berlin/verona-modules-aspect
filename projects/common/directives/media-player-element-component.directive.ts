@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
-import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
+import { AudioElement } from 'common/models/elements/audio';
+import { VideoElement } from 'common/models/elements/video';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { ElementComponent } from './element-component.directive';
 

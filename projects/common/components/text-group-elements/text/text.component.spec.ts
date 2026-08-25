@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { TextElement, TextProperties } from 'common/models/elements/text-group-elements/text';
+import { TextElement, TextProperties } from 'common/models/elements/text';
 import { MarkingData } from 'common/models/marking-data';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';

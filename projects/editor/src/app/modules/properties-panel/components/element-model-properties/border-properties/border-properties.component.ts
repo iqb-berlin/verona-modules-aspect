@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { FrameProperties } from 'common/models/elements/base-group-elements/frame';
+import { FrameProperties } from 'common/models/elements/frame';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({

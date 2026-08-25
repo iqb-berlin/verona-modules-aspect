@@ -5,7 +5,7 @@ import {
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { MarkingData, MarkingPanelMarkingData } from 'common/models/marking-data';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';

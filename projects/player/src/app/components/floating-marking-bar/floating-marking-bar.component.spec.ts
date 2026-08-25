@@ -5,7 +5,7 @@ import { TextComponent } from 'common/components/text-group-elements/text/text.c
 import { APIService } from 'common/shared.module';
 import { Pipe, PipeTransform, SimpleChange } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { FloatingMarkingBarComponent } from './floating-marking-bar.component';
 
 describe('FloatingMarkingBarComponent', () => {

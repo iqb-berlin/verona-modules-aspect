@@ -1,7 +1,7 @@
 import {
   Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild
 } from '@angular/core';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MarkingRange, MarkingData } from 'common/models/marking-data';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';

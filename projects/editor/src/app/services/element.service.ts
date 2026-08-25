@@ -8,12 +8,12 @@ import {
   UIElement
 } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { GeometryProperties } from 'common/models/elements/external-app-group-elements/geometry';
+import { GeometryProperties } from 'common/models/elements/geometry';
 import { firstValueFrom } from 'rxjs';
 import { FileService } from 'common/services/file.service';
-import { AudioProperties } from 'common/models/elements/media-player-group-elements/audio';
-import { VideoProperties } from 'common/models/elements/media-player-group-elements/video';
-import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
+import { AudioProperties } from 'common/models/elements/audio';
+import { VideoProperties } from 'common/models/elements/video';
+import { ImageProperties } from 'common/models/elements/image';
 import {
   DimensionProperties,
   OwnProperty,
@@ -28,11 +28,11 @@ import {
   TableEditResult
 } from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
 import { MessageService } from 'editor/src/app/services/message.service';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { TextElement } from 'common/models/elements/text';
+import { ClozeDocument, ClozeElement } from 'common/models/elements/cloze';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogCanceledError } from 'editor/src/app/classes/dialog-canceled-error';
-import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { TableElement } from 'common/models/elements/table';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
   PositionedUIElement,
@@ -40,10 +40,10 @@ import {
   UIElementType,
   UIElementValue
 } from 'common/models/ui-element-interfaces';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListElement } from 'common/models/elements/drop-list';
 import {
   LikertRowElement, LikertRowProperties
-} from 'common/models/elements/compound-group-elements/likert/likert-row';
+} from 'common/models/elements/likert-row';
 
 /* What is collected for an element that is about to be created, without the type the caller already
    knows: the groups stay partial, because the factory completes them from the element's defaults. */

@@ -1,5 +1,5 @@
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
-import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { TableElement } from 'common/models/elements/table';
 import {
   AfterViewChecked, ChangeDetectorRef,
   Component, ElementRef, HostListener, OnInit,

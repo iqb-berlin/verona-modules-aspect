@@ -1,7 +1,7 @@
 import { SectionProperties } from 'common/models/section';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { DropdownElement } from 'common/models/elements/input-group-elements/dropdown';
+import { DropdownElement } from 'common/models/elements/dropdown';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 
 /**

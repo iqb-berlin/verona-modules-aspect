@@ -6,7 +6,7 @@ import { PageChangeService } from 'common/services/page-change.service';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { of, Subject } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
-import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
+import { GeometryElement } from 'common/models/elements/geometry';
 import {
   GeoGebraApi, GeoGebraApplet, GeoGebraAppletConstructor, GeoGebraAppletParameters
 } from 'common/models/geogebra-interfaces';

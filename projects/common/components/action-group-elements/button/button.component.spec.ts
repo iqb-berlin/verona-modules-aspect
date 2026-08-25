@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Directive, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { ButtonElement, ButtonProperties } from 'common/models/elements/action-group-elements/button';
+import { ButtonElement, ButtonProperties } from 'common/models/elements/button';
 import { TooltipPosition } from 'common/models/ui-element-interfaces';
 import { ButtonComponent } from './button.component';
 

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {
   ToggleButtonElement, ToggleButtonProperties
-} from 'common/models/elements/input-group-elements/toggle-button';
+} from 'common/models/elements/toggle-button';
 import { InputElement } from 'common/models/elements/element';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { IsDisabledDirective } from 'common/directives/is-disabled.directive';

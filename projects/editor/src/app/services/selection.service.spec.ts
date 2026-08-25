@@ -1,9 +1,9 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/text-input-group-elements/text-field-simple';
+} from 'common/models/elements/text-field-simple';
 import {
   ClozeChildOverlayComponent
 } from 'common/components/compound-group-elements/cloze-child-overlay/cloze-child-overlay.component';

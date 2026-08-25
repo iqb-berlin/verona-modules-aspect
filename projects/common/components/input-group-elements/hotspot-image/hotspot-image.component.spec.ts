@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Pipe, PipeTransform } from '@angular/core';
 import {
   Hotspot, HotspotImageElement, HotspotImageProperties
-} from 'common/models/elements/input-group-elements/hotspot-image';
+} from 'common/models/elements/hotspot-image';
 import { SafeResourceUrlPipe } from 'common/pipes/safe-resource-url.pipe';
 import { MathAtanPipe } from 'common/pipes/math-atan.pipe';
 import { MathDegreesPipe } from 'common/pipes/math-degrees.pipe';

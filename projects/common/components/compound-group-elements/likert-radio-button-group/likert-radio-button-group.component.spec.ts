@@ -4,7 +4,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { Component, Input } from '@angular/core';
 import {
   LikertRowElement, LikertRowProperties
-} from 'common/models/elements/compound-group-elements/likert/likert-row';
+} from 'common/models/elements/likert-row';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
 

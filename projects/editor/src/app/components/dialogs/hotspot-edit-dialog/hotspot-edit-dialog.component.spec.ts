@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
-import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
+import { Hotspot } from 'common/models/elements/hotspot-image';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { MessageService } from 'editor/src/app/services/message.service';
 import {

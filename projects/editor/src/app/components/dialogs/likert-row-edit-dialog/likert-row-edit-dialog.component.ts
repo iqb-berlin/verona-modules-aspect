@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { LikertRowElement } from 'common/models/elements/likert-row';
 import { TextLabel } from 'common/models/label-interfaces';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 

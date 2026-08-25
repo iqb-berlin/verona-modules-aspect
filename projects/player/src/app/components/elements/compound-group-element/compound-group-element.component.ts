@@ -7,8 +7,8 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
 import {
   TextFieldSimpleComponent
 } from 'common/components/text-input-group-elements/text-field-simple/text-field-simple.component';
-import { ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
-import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
+import { ClozeElement } from 'common/models/elements/cloze';
+import { LikertElement } from 'common/models/elements/likert';
 import {
   CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
@@ -16,22 +16,22 @@ import { ButtonComponent } from 'common/components/action-group-elements/button/
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
-import { UnitNavParam } from 'common/models/elements/action-group-elements/button';
+import { UnitNavParam } from 'common/models/elements/button';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { Subscription, take } from 'rxjs';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { ResponseValueType } from '@iqb/responses';
-import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
-import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
+import { TableElement } from 'common/models/elements/table';
+import { ImageElement } from 'common/models/elements/image';
 import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
 import { ImageComponent } from 'common/components/interactive-group-elements/image/image.component';
 import { AudioComponent } from 'common/components/media-player-group-elements/audio/audio.component';
-import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
+import { AudioElement } from 'common/models/elements/audio';
 import { MediaPlayerService } from 'player/src/app/services/media-player.service';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { TextComponent } from 'common/components/text-group-elements/text/text.component';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
 import { NavigationTarget } from 'player/modules/verona/models/verona';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';

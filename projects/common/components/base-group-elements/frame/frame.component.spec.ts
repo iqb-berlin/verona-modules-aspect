@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FrameElement, FrameProperties } from 'common/models/elements/base-group-elements/frame';
+import { FrameElement, FrameProperties } from 'common/models/elements/frame';
 import { FrameComponent } from './frame.component';
 
 describe('FrameComponent', () => {

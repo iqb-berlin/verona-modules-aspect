@@ -9,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { LikertRowElement } from 'common/models/elements/likert-row';
 import { Label, TextImageLabel } from 'common/models/label-interfaces';
 import { OptionElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';

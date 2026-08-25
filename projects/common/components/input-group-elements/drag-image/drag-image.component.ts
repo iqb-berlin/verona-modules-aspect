@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
-import { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListProperties } from 'common/models/elements/drop-list';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 
 @Component({

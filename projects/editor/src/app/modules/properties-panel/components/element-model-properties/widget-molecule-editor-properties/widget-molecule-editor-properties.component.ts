@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { UIElementValue } from 'common/models/ui-element-interfaces';
-import { WidgetMoleculeEditorProperties } from 'common/models/elements/widget-group-elements/widget-molecule-editor';
+import { WidgetMoleculeEditorProperties } from 'common/models/elements/widget-molecule-editor';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({

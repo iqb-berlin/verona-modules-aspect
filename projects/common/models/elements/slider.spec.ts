@@ -1,4 +1,4 @@
-import { SliderElement, SliderProperties } from 'common/models/elements/input-group-elements/slider';
+import { SliderElement, SliderProperties } from 'common/models/elements/slider';
 
 /* Two properties of this element were declared boolean while their defaults were the strings
    'default' and 'always' (#1139). Both are truthy and the player only ever tests truthiness, so

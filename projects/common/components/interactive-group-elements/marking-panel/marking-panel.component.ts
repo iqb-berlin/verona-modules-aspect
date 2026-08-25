@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { MarkingPanelElement } from 'common/models/elements/interactive-group-elements/marking-panel';
+import { MarkingPanelElement } from 'common/models/elements/marking-panel';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';
 
 @Component({

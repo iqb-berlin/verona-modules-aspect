@@ -1,7 +1,7 @@
 import {
   CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
-import { ButtonElement } from 'common/models/elements/action-group-elements/button';
+import { ButtonElement } from 'common/models/elements/button';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';

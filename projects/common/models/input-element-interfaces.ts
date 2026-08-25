@@ -1,6 +1,6 @@
-import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
-import { MathTableRow } from 'common/models/elements/interactive-group-elements/math-table';
-import { TextAreaMath } from 'common/models/elements/text-input-group-elements/text-area-math';
+import { Hotspot } from 'common/models/elements/hotspot-image';
+import { MathTableRow } from 'common/models/elements/math-table';
+import { TextAreaMath } from 'common/models/elements/text-area-math';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { TextLabel } from 'common/models/label-interfaces';
 import { GeometryValue } from 'common/models/geometry-interfaces';

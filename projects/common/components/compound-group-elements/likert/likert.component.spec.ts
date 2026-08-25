@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { Component, Input } from '@angular/core';
-import { LikertElement, LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
+import { LikertElement, LikertProperties } from 'common/models/elements/likert';
 import {
   LikertRowElement, LikertRowProperties
-} from 'common/models/elements/compound-group-elements/likert/likert-row';
+} from 'common/models/elements/likert-row';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 import { LikertRowBackgroundColorPipe } from 'common/pipes/likert-row-background-color.pipe';

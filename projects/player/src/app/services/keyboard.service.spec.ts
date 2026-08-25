@@ -10,12 +10,12 @@ import {
   SpellCorrectComponent
 } from 'common/components/text-input-group-elements/spell-correct/spell-correct.component';
 
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextFieldElement } from 'common/models/elements/text-field';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/text-input-group-elements/text-field-simple';
-import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
-import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
+} from 'common/models/elements/text-field-simple';
+import { TextAreaElement } from 'common/models/elements/text-area';
+import { SpellCorrectElement } from 'common/models/elements/spell-correct';
 import { APIService } from 'common/shared.module';
 import { KeyboardService } from './keyboard.service';
 

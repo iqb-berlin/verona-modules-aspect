@@ -4,8 +4,8 @@ import {
 } from '@angular/core';
 import {
   MarkingPanelElement, MarkingPanelProperties
-} from 'common/models/elements/interactive-group-elements/marking-panel';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+} from 'common/models/elements/marking-panel';
+import { TextElement } from 'common/models/elements/text';
 import { MarkingData } from 'common/models/marking-data';
 import { MarkingPanelComponent } from './marking-panel.component';
 

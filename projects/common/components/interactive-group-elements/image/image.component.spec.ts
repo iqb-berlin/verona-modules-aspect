@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Directive, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { ImageElement, ImageProperties } from 'common/models/elements/interactive-group-elements/image';
+import { ImageElement, ImageProperties } from 'common/models/elements/image';
 import { SafeResourceUrlPipe } from 'common/pipes/safe-resource-url.pipe';
 import { ImageMagnifierComponent } from '../image-magnifier/image-magnifier.component';
 import { ImageComponent } from './image.component';

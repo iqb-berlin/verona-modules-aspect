@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Pipe, PipeTransform } from '@angular/core';
 import {
   SpellCorrectElement, SpellCorrectProperties
-} from 'common/models/elements/text-input-group-elements/spell-correct';
+} from 'common/models/elements/spell-correct';
 import { SpellCorrectComponent } from './spell-correct.component';
 
 @Pipe({ name: 'errorTransform', standalone: false })

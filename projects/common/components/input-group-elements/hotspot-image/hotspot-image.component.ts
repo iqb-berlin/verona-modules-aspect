@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
+import { HotspotImageElement } from 'common/models/elements/hotspot-image';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 
 @Component({

@@ -6,8 +6,8 @@ import {
 import { By } from '@angular/platform-browser';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
-import { TextFieldSimpleElement } from 'common/models/elements/text-input-group-elements/text-field-simple';
+import { TextFieldElement } from 'common/models/elements/text-field';
+import { TextFieldSimpleElement } from 'common/models/elements/text-field-simple';
 import { ComponentRegistry } from 'common/utils/component-registry';
 import { PrintElementComponent } from './print-element.component';
 

@@ -16,11 +16,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
+import { LikertElement } from 'common/models/elements/likert';
 import {
   LikertRowElement
-} from 'common/models/elements/compound-group-elements/likert/likert-row';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+} from 'common/models/elements/likert-row';
+import { TextElement } from 'common/models/elements/text';
 import { Measurement, PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {

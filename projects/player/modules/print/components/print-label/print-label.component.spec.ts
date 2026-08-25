@@ -2,7 +2,7 @@ import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextFieldElement } from 'common/models/elements/text-field';
 import { PrintLabelComponent } from './print-label.component';
 
 describe('PrintLabelComponent', () => {

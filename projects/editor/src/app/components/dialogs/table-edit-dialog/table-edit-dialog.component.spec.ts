@@ -9,11 +9,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
 import { UIElement } from 'common/models/elements/element';
-import { TableElement, TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import { TableElement, TableProperties } from 'common/models/elements/table';
 import {
   TableChildOverlay
 } from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListElement } from 'common/models/elements/drop-list';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';

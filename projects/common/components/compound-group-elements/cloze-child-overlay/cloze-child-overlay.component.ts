@@ -4,12 +4,12 @@ import {
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ToggleButtonElement } from 'common/models/elements/input-group-elements/toggle-button';
+import { ToggleButtonElement } from 'common/models/elements/toggle-button';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/text-input-group-elements/text-field-simple';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
-import { DropdownElement } from 'common/models/elements/input-group-elements/dropdown';
+} from 'common/models/elements/text-field-simple';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { DropdownElement } from 'common/models/elements/dropdown';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 
 @Component({

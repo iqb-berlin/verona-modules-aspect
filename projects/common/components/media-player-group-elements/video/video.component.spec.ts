@@ -4,7 +4,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { VideoElement, VideoProperties } from 'common/models/elements/media-player-group-elements/video';
+import { VideoElement, VideoProperties } from 'common/models/elements/video';
 import { PlayerProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { VideoComponent } from './video.component';

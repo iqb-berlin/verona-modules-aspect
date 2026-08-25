@@ -4,9 +4,9 @@ import { Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { UntypedFormGroup } from '@angular/forms';
 import { UIElement } from 'common/models/elements/element';
-import { TextElement, TextProperties } from 'common/models/elements/text-group-elements/text';
-import { CheckboxElement, CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
-import { DropListElement, DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
+import { TextElement, TextProperties } from 'common/models/elements/text';
+import { CheckboxElement, CheckboxProperties } from 'common/models/elements/checkbox';
+import { DropListElement, DropListProperties } from 'common/models/elements/drop-list';
 import { TableChildOverlay } from './table-child-overlay.component';
 
 @Component({

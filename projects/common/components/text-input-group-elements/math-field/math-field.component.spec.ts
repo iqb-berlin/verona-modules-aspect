@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MathFieldElement } from 'common/models/elements/text-input-group-elements/math-field';
+import { MathFieldElement } from 'common/models/elements/math-field';
 import { UntypedFormControl, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import {

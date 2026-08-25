@@ -4,7 +4,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { AudioElement, AudioProperties } from 'common/models/elements/media-player-group-elements/audio';
+import { AudioElement, AudioProperties } from 'common/models/elements/audio';
 import { PlayerProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { AudioComponent } from './audio.component';

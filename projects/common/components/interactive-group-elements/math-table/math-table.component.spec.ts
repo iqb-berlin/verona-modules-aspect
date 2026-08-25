@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   MathTableElement, MathTableProperties
-} from 'common/models/elements/interactive-group-elements/math-table';
+} from 'common/models/elements/math-table';
 import { MathTableComponent } from './math-table.component';
 
 describe('MathTableComponent', () => {

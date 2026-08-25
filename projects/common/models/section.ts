@@ -6,7 +6,7 @@ import { VariableInfo } from '@iqb/responses';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/utils/element-factory';
 import { environment } from 'common/environment';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListElement } from 'common/models/elements/drop-list';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import {
   Measurement,

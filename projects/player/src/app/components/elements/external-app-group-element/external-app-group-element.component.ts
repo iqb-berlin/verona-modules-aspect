@@ -6,7 +6,7 @@ import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import {
   ElementModelElementCodeMappingService
 } from 'player/src/app/services/element-model-element-code-mapping.service';
-import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
+import { GeometryElement } from 'common/models/elements/geometry';
 import { GeometryComponent } from 'common/components/external-app-group-elements/geometry/geometry.component';
 import { GeometryValue, GeometryVariable } from 'common/models/geometry-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';

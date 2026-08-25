@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
-import { TextElement, TextProperties } from 'common/models/elements/text-group-elements/text';
+import { TextElement, TextProperties } from 'common/models/elements/text';
 import { TextMarkingBarComponent } from './text-marking-bar.component';
 
 @Component({

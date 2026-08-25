@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   Component, Input, Pipe, PipeTransform
 } from '@angular/core';
-import { CheckboxElement, CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
+import { CheckboxElement, CheckboxProperties } from 'common/models/elements/checkbox';
 import { InputElement } from 'common/models/elements/element';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import {

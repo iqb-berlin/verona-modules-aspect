@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { Pipe, PipeTransform } from '@angular/core';
 import {
   RadioButtonGroupElement, RadioButtonGroupProperties
-} from 'common/models/elements/input-group-elements/radio-button-group';
+} from 'common/models/elements/radio-button-group';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import {
   FirstLineAlignedControlDirective

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
+import { LikertElement } from 'common/models/elements/likert';
 import {
   LikertRadioButtonGroupComponent
 } from 'common/components/compound-group-elements/likert-radio-button-group/likert-radio-button-group.component';

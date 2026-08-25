@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {
   Component, Input, Pipe, PipeTransform
 } from '@angular/core';
-import { TextFieldElement, TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextFieldElement, TextFieldProperties } from 'common/models/elements/text-field';
 import { InputElement } from 'common/models/elements/element';
 import { TextFieldComponent } from './text-field.component';
 

@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   Component, Input, Pipe, PipeTransform
 } from '@angular/core';
-import { DropListElement, DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListElement, DropListProperties } from 'common/models/elements/drop-list';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 import { DragOperatorService } from 'common/services/drag-operator.service';
 import { DragImageComponent } from 'common/components/input-group-elements/drag-image/drag-image.component';

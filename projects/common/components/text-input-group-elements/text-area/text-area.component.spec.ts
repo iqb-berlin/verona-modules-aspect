@@ -7,7 +7,7 @@ import {
   Component, Directive, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { TextAreaElement, TextAreaProperties } from 'common/models/elements/text-input-group-elements/text-area';
+import { TextAreaElement, TextAreaProperties } from 'common/models/elements/text-area';
 import { InputElement } from 'common/models/elements/element';
 import { TextAreaComponent } from './text-area.component';
 

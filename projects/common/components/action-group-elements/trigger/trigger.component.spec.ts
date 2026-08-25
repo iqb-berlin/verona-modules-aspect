@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TriggerElement, TriggerProperties } from 'common/models/elements/action-group-elements/trigger';
+import { TriggerElement, TriggerProperties } from 'common/models/elements/trigger';
 import { TriggerComponent } from './trigger.component';
 
 describe('TriggerComponent', () => {

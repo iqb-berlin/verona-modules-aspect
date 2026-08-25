@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
+import { VideoElement } from 'common/models/elements/video';
 import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 
 @Component({

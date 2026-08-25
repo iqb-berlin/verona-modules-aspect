@@ -1,6 +1,6 @@
 import { ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
+import { AudioElement } from 'common/models/elements/audio';
 import { MediaPlayerElementComponent } from './media-player-element-component.directive';
 
 /* The base class of the audio and video components. It carries the two pieces of cross-element state

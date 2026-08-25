@@ -2,7 +2,7 @@
 import {
   ComponentFixture, TestBed, fakeAsync, tick
 } from '@angular/core/testing';
-import { TextAreaMathElement } from 'common/models/elements/text-input-group-elements/text-area-math';
+import { TextAreaMathElement } from 'common/models/elements/text-area-math';
 import { UntypedFormControl, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';

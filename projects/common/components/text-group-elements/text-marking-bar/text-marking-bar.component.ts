@@ -1,8 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { MarkingPanelElement } from 'common/models/elements/interactive-group-elements/marking-panel';
+import { TextElement } from 'common/models/elements/text';
+import { MarkingPanelElement } from 'common/models/elements/marking-panel';
 import { MarkingData } from 'common/models/marking-data';
 
 @Component({

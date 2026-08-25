@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RadioButtonGroupComplexElement } from 'common/models/elements/input-group-elements/radio-button-group-complex';
+import { RadioButtonGroupComplexElement } from 'common/models/elements/radio-button-group-complex';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 
 @Component({

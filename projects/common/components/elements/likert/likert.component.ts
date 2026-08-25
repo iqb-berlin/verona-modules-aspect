@@ -6,7 +6,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { LikertElement } from 'common/models/elements/likert';
 import {
   LikertRadioButtonGroupComponent
-} from 'common/components/compound-group-elements/likert-radio-button-group/likert-radio-button-group.component';
+} from 'common/components/likert-radio-button-group/likert-radio-button-group.component';
 
 @Component({
   selector: 'aspect-likert',

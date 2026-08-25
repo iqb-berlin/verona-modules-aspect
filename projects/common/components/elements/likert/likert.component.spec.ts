@@ -11,7 +11,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interf
 import { LikertRowBackgroundColorPipe } from 'common/pipes/likert-row-background-color.pipe';
 import {
   LikertRadioButtonGroupComponent
-} from 'common/components/compound-group-elements/likert-radio-button-group/likert-radio-button-group.component';
+} from 'common/components/likert-radio-button-group/likert-radio-button-group.component';
 import { LikertComponent } from './likert.component';
 
 @Component({

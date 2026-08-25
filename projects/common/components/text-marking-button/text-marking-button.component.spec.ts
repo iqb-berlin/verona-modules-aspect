@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { By } from '@angular/platform-browser';
 import {
   TextMarkingButtonSvgComponent
-} from 'common/components/text-group-elements/text-marking-button-svg/text-marking-button-svg.component';
+} from 'common/components/text-marking-button-svg/text-marking-button-svg.component';
 import { TextMarkingButtonComponent } from './text-marking-button.component';
 
 describe('TextMarkingButtonComponent', () => {

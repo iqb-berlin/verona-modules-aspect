@@ -11,10 +11,10 @@ import {
 
 import { UntypedFormGroup } from '@angular/forms';
 import { UIElement } from 'common/models/elements/element';
-import { ClozeComponent } from './cloze.component';
 import {
   ClozeChildOverlayComponent
-} from '../cloze-child-overlay/cloze-child-overlay.component';
+} from 'common/components/cloze-child-overlay/cloze-child-overlay.component';
+import { ClozeComponent } from './cloze.component';
 
 @Component({
   selector: 'aspect-compound-child-overlay',

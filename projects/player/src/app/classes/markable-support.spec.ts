@@ -1,7 +1,7 @@
 import { ApplicationRef, EventEmitter, RendererFactory2 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { TextComponent } from 'common/components/text-group-elements/text/text.component';
+import { TextComponent } from 'common/components/elements/text/text.component';
 import { MarkingRange } from 'common/models/marking-data';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { Markable } from 'player/src/app/models/markable.interface';

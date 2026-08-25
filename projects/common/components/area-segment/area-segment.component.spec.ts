@@ -6,7 +6,7 @@ import {
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 import {
   AreaTextInputComponent
-} from 'common/components/text-input-group-elements/area-text-input/area-text-input.component';
+} from 'common/components/area-text-input/area-text-input.component';
 import { AreaSegmentComponent } from './area-segment.component';
 
 @Component({

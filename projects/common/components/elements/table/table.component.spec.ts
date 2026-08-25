@@ -11,7 +11,7 @@ import { TableGridRowsPipe } from 'common/pipes/table-grid-rows.pipe';
 import { TableElement, TableProperties } from 'common/models/elements/table';
 import {
   TableChildOverlay
-} from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
+} from 'common/components/table-child-overlay/table-child-overlay.component';
 import { TableComponent } from './table.component';
 
 describe('TableComponent', () => {

@@ -4,7 +4,7 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TableElement, TableHeaderCell } from 'common/models/elements/table';
 import { UIElement } from 'common/models/elements/element';
-import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
+import { TableComponent } from 'common/components/elements/table/table.component';
 import { ElementFactory } from 'common/utils/element-factory';
 import {
   DimensionProperties, PositionProperties, PropertyGroupGenerators

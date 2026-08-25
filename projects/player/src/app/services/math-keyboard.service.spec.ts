@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MathfieldElement } from '@iqb/mathlive';
-import { MathFieldComponent } from 'common/components/text-input-group-elements/math-field/math-field.component';
+import { MathFieldComponent } from 'common/components/elements/math-field/math-field.component';
 import { MathKeyboardService } from './math-keyboard.service';
 
 describe('MathKeyboardService', () => {

@@ -10,7 +10,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { UIElement } from 'common/models/elements/element';
 import {
   TableChildOverlay
-} from 'common/components/compound-group-elements/table-child-overlay/table-child-overlay.component';
+} from 'common/components/table-child-overlay/table-child-overlay.component';
 import { Subject } from 'rxjs';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 

@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
-import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
+import { TextFieldComponent } from 'common/components/elements/text-field/text-field.component';
 import {
   TextFieldSimpleComponent
-} from 'common/components/text-input-group-elements/text-field-simple/text-field-simple.component';
-import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
+} from 'common/components/elements/text-field-simple/text-field-simple.component';
+import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
 import {
   SpellCorrectComponent
-} from 'common/components/text-input-group-elements/spell-correct/spell-correct.component';
+} from 'common/components/elements/spell-correct/spell-correct.component';
 
 import { TextFieldElement } from 'common/models/elements/text-field';
 import {

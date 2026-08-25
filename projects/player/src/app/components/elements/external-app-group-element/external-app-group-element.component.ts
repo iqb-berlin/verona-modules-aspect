@@ -7,7 +7,7 @@ import {
   ElementModelElementCodeMappingService
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { GeometryElement } from 'common/models/elements/geometry';
-import { GeometryComponent } from 'common/components/external-app-group-elements/geometry/geometry.component';
+import { GeometryComponent } from 'common/components/elements/geometry/geometry.component';
 import { GeometryValue, GeometryVariable } from 'common/models/geometry-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';

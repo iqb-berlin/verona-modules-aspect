@@ -9,7 +9,7 @@ import {
 import { DropListElement, DropListProperties } from 'common/models/elements/drop-list';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 import { DragOperatorService } from 'common/services/drag-operator.service';
-import { DragImageComponent } from 'common/components/input-group-elements/drag-image/drag-image.component';
+import { DragImageComponent } from 'common/components/drag-image/drag-image.component';
 import { DragStartEvent } from 'common/directives/draggable.directive';
 import { DropListComponent } from './drop-list.component';
 

@@ -10,7 +10,7 @@ import { DropListElement } from 'common/models/elements/drop-list';
 import { DragEvent, DragStartEvent } from 'common/directives/draggable.directive';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
-import { DragImageComponent } from 'common/components/input-group-elements/drag-image/drag-image.component';
+import { DragImageComponent } from 'common/components/drag-image/drag-image.component';
 import { DragOperatorService } from 'common/services/drag-operator.service';
 
 @Component({

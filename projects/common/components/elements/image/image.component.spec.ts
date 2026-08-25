@@ -3,7 +3,7 @@ import { Directive, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { ImageElement, ImageProperties } from 'common/models/elements/image';
 import { SafeResourceUrlPipe } from 'common/pipes/safe-resource-url.pipe';
-import { ImageMagnifierComponent } from '../image-magnifier/image-magnifier.component';
+import { ImageMagnifierComponent } from 'common/components/image-magnifier/image-magnifier.component';
 import { ImageComponent } from './image.component';
 
 @Directive({

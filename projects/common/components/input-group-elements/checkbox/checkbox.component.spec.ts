@@ -69,6 +69,44 @@ describe('CheckboxComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /* In a gap the message belongs to the gap, and only the shared one carries a border and a background
+     of its own; `mat-error` would print red letters onto the running text (#1052). */
+  describe('required message', () => {
+    const failValidation = (): void => {
+      component.elementModel.required = true;
+      component.elementFormControl.setValidators(() => ({ required: true }));
+      component.elementFormControl.updateValueAndValidity();
+      component.elementFormControl.markAsTouched();
+      fixture.detectChanges();
+    };
+
+    it('should use the shared message in a cloze gap', () => {
+      component.clozeContext = true;
+      failValidation();
+
+      expect(fixture.nativeElement.querySelector('aspect-cloze-child-error-message')).not.toBeNull();
+      expect(fixture.nativeElement.querySelector('mat-error')).toBeNull();
+    });
+
+    it('should use its own mat-error outside a cloze gap', () => {
+      failValidation();
+
+      expect(fixture.nativeElement.querySelector('mat-error')).not.toBeNull();
+      expect(fixture.nativeElement.querySelector('aspect-cloze-child-error-message')).toBeNull();
+    });
+
+    it('should show no message while the control is untouched', () => {
+      component.clozeContext = true;
+      component.elementModel.required = true;
+      component.elementFormControl.setValidators(() => ({ required: true }));
+      component.elementFormControl.updateValueAndValidity();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('aspect-cloze-child-error-message')).toBeNull();
+      expect(fixture.nativeElement.querySelector('mat-error')).toBeNull();
+    });
+  });
+
   it('should render a mat-checkbox with the label if not in tableMode', () => {
     component.elementModel.label = 'Check me';
     fixture.detectChanges();

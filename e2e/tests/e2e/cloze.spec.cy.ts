@@ -150,7 +150,10 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('9th cloze displays error message for required text-field inside cloze when touched', () => {
-      // THE ERROR MESSAGE REQUIRED IS ALWAYS PLACED IN A SECOND LINE OF THE SECTION PLACE: SEE THIS EXAMPLE
+      // The message belongs under its own gap. It used to be placed against the section instead, which
+      // put every message of a section on the same line whatever line its gap was in (#1052) -- and the
+      // assertion here pinned that: it asked for the `top: 35px` the old placement computed. Comparing
+      // the two boxes says what is meant and does not have to be rewritten when a gap changes size.
       // Initially, error should not exist
       cy.get('aspect-cloze-child-error-message').should('not.exist');
 
@@ -169,8 +172,18 @@ describe('Cloze element', { testIsolation: false }, () => {
 
       cy.get('aspect-cloze-child-error-message')
         .should('be.visible')
-        .and('contain.text', 'Eingabe erforderlich')
-        .and('have.css', 'top', '35px');
+        .and('contain.text', 'Eingabe erforderlich');
+
+      cy.get('aspect-cloze').eq(8)
+        .find('aspect-compound-child-overlay')
+        .then($gap => {
+          const gap = $gap[0].getBoundingClientRect();
+          cy.get('aspect-cloze-child-error-message').should($message => {
+            const message = $message[0].getBoundingClientRect();
+            expect(message.top).to.be.closeTo(gap.bottom, 1);
+            expect(message.left).to.be.closeTo(gap.left, 1);
+          });
+        });
     });
   });
 });

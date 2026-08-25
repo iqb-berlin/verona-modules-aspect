@@ -24,10 +24,16 @@
         <div [innerHTML]="elementModel.label | safeResourceHTML"></div>
       }
     </mat-checkbox>
-    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+    <!-- In a gap the message belongs to the gap, and the shared one is the one that carries a border
+         and a background of its own; `mat-error` would print red letters onto the running text (#1052). -->
+    <mat-error *ngIf="!clozeContext && elementFormControl.errors && elementFormControl.touched"
                class="error-message">
       {{elementFormControl.errors | errorTransform: elementModel}}
     </mat-error>
+    <aspect-cloze-child-error-message *ngIf="clozeContext && elementFormControl.errors && elementFormControl.touched"
+                                      [elementModel]="elementModel"
+                                      [elementFormControl]="elementFormControl">
+    </aspect-cloze-child-error-message>
   </div>
 </ng-container>
 <ng-container *ngIf="tableMode">

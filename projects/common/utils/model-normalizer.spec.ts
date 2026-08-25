@@ -3,11 +3,11 @@ import { UIElementProperties, UIElementType } from 'common/models/ui-element-int
 import { ElementFactory } from 'common/utils/element-factory';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/text-input-group-elements/text-field-simple';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
-import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
-import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
-import { TextAreaMathElement } from 'common/models/elements/text-input-group-elements/text-area-math';
+} from 'common/models/elements/text-field-simple';
+import { TextFieldElement } from 'common/models/elements/text-field';
+import { TextAreaElement } from 'common/models/elements/text-area';
+import { SpellCorrectElement } from 'common/models/elements/spell-correct';
+import { TextAreaMathElement } from 'common/models/elements/text-area-math';
 import { TextInputElement } from 'common/models/elements/element';
 import { ModelNormalizer } from './model-normalizer';
 

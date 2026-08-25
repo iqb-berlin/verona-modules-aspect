@@ -4,17 +4,17 @@ import {
   InputElement,
   UIElement
 } from 'common/models/elements/element';
-import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
-import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
-import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
-import { Hotspot, HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
+import { AudioElement } from 'common/models/elements/audio';
+import { TextElement } from 'common/models/elements/text';
+import { VideoElement } from 'common/models/elements/video';
+import { ImageElement } from 'common/models/elements/image';
+import { GeometryElement } from 'common/models/elements/geometry';
+import { Hotspot, HotspotImageElement } from 'common/models/elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { InputElementValue } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { Markable } from 'player/src/app/models/markable.interface';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
 import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { ClozeDocument } from 'common/models/elements/cloze';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { ClozePropertiesComponent } from './cloze-properties.component';

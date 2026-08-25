@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextFieldProperties } from 'common/models/elements/text-field';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({

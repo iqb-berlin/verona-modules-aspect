@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { WidgetPeriodicTableProperties } from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import { WidgetPeriodicTableProperties } from 'common/models/elements/widget-periodic-table';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({

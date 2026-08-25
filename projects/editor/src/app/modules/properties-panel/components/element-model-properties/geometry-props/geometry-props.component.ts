@@ -7,10 +7,10 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
   BehaviorSubject, firstValueFrom, of, Subject, switchMap
 } from 'rxjs';
-import { GeometryComponent } from 'common/components/external-app-group-elements/geometry/geometry.component';
+import { GeometryComponent } from 'common/components/elements/geometry/geometry.component';
 import { takeUntil } from 'rxjs/operators';
 import { UIElement } from 'common/models/elements/element';
-import { GeometryProperties } from 'common/models/elements/external-app-group-elements/geometry';
+import { GeometryProperties } from 'common/models/elements/geometry';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';

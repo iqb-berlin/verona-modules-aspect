@@ -1,14 +1,14 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ButtonAction, UnitNavParam } from 'common/models/elements/action-group-elements/button';
-import { TriggerAction } from 'common/models/elements/action-group-elements/trigger';
+import { ButtonAction, UnitNavParam } from 'common/models/elements/button';
+import { TriggerAction } from 'common/models/elements/trigger';
 import { StateVariable } from 'common/models/state-variable';
 import { ActionProperties } from 'common/models/ui-element-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 
 /**
  * The panel's view of an element with an action.

@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
+import { CheckboxProperties } from 'common/models/elements/checkbox';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';

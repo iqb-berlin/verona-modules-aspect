@@ -1,6 +1,6 @@
 import { Directive } from '@angular/core';
 import { Subject } from 'rxjs';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextFieldElement } from 'common/models/elements/text-field';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';

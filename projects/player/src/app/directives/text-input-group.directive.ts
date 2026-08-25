@@ -16,7 +16,7 @@ import {
 } from 'player/modules/key-input/services/key-input-restriction.service';
 import { KeyLayout } from 'player/modules/key-input/configs/key-layout';
 import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
-import { MathFieldComponent } from 'common/components/text-input-group-elements/math-field/math-field.component';
+import { MathFieldComponent } from 'common/components/elements/math-field/math-field.component';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive()

@@ -22,7 +22,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { HotspotImageComponent } from 'common/components/input-group-elements/hotspot-image/hotspot-image.component';
+import { HotspotImageComponent } from 'common/components/elements/hotspot-image/hotspot-image.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
@@ -33,105 +33,105 @@ import { TooltipComponent } from 'common/components/tooltip/tooltip.component';
 import { PointerEventTooltipDirective } from 'common/directives/pointer-event-tooltip.directive';
 import {
   ClozeChildErrorMessageComponent
-} from 'common/components/compound-group-elements/cloze-child-error-message/cloze-child-error-message.component';
-import { TriggerComponent } from 'common/components/action-group-elements/trigger/trigger.component';
+} from 'common/components/cloze-child-error-message/cloze-child-error-message.component';
+import { TriggerComponent } from 'common/components/elements/trigger/trigger.component';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import {
   ImageFullscreenDialog
 } from 'common/components/image-fullscreen-dialog/image-fullscreen-dialog.component';
 import {
   AreaTextInputComponent
-} from 'common/components/text-input-group-elements/area-text-input/area-text-input.component';
+} from 'common/components/area-text-input/area-text-input.component';
 import { UnitNavNextComponent } from 'common/components/unit-nav-next/unit-nav-next.component';
 import {
   TextMarkingButtonSvgComponent
-} from 'common/components/text-group-elements/text-marking-button-svg/text-marking-button-svg.component';
+} from 'common/components/text-marking-button-svg/text-marking-button-svg.component';
 import {
   WidgetPeriodicTableComponent
-} from 'common/components/widget-group-elements/widget-periodic-table/widget-periodic-table.component';
+} from 'common/components/elements/widget-periodic-table/widget-periodic-table.component';
 import {
   WidgetMoleculeEditorComponent
-} from 'common/components/widget-group-elements/widget-molecule-editor/widget-molecule-editor.component';
-import { AreaSegmentComponent } from './components/text-input-group-elements/area-segment/area-segment.component';
-import { TextComponent } from './components/text-group-elements/text/text.component';
-import { ButtonComponent } from './components/action-group-elements/button/button.component';
-import { TextFieldComponent } from './components/text-input-group-elements/text-field/text-field.component';
+} from 'common/components/elements/widget-molecule-editor/widget-molecule-editor.component';
+import { AreaSegmentComponent } from './components/area-segment/area-segment.component';
+import { TextComponent } from './components/elements/text/text.component';
+import { ButtonComponent } from './components/elements/button/button.component';
+import { TextFieldComponent } from './components/elements/text-field/text-field.component';
 import {
   TextFieldSimpleComponent
-} from './components/text-input-group-elements/text-field-simple/text-field-simple.component';
-import { TextAreaComponent } from './components/text-input-group-elements/text-area/text-area.component';
+} from './components/elements/text-field-simple/text-field-simple.component';
+import { TextAreaComponent } from './components/elements/text-area/text-area.component';
 import { AutoHeightDirective } from './directives/auto-height.directive';
-import { CheckboxComponent } from './components/input-group-elements/checkbox/checkbox.component';
-import { DropdownComponent } from './components/input-group-elements/dropdown/dropdown.component';
+import { CheckboxComponent } from './components/elements/checkbox/checkbox.component';
+import { DropdownComponent } from './components/elements/dropdown/dropdown.component';
 import {
   RadioButtonGroupComponent
-} from './components/input-group-elements/radio-button-group/radio-button-group.component';
-import { ImageComponent } from './components/interactive-group-elements/image/image.component';
-import { VideoComponent } from './components/media-player-group-elements/video/video.component';
-import { AudioComponent } from './components/media-player-group-elements/audio/audio.component';
+} from './components/elements/radio-button-group/radio-button-group.component';
+import { ImageComponent } from './components/elements/image/image.component';
+import { VideoComponent } from './components/elements/video/video.component';
+import { AudioComponent } from './components/elements/audio/audio.component';
 import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
 import { InputBackgroundColorDirective } from './directives/input-background-color.directive';
 import { ErrorTransformPipe } from './pipes/error-transform.pipe';
 import { SafeResourceHTMLPipe } from './pipes/safe-resource-html.pipe';
 import { MathFormulaPipe } from './pipes/math-formula.pipe';
 import { MediaPlayerControlBarComponent }
-  from './components/media-player-group-elements/media-player-control-bar/media-player-control-bar.component';
+  from './components/media-player-control-bar/media-player-control-bar.component';
 import {
   MediaPlayerTimeFormatPipe
 } from './pipes/media-player-time-format.pipe';
-import { LikertComponent } from './components/compound-group-elements/likert/likert.component';
+import { LikertComponent } from './components/elements/likert/likert.component';
 import { LikertRowBackgroundColorPipe } from './pipes/likert-row-background-color.pipe';
 import {
   LikertRadioButtonGroupComponent
-} from './components/compound-group-elements/likert-radio-button-group/likert-radio-button-group.component';
+} from './components/likert-radio-button-group/likert-radio-button-group.component';
 import {
   ImageMagnifierComponent
-} from './components/interactive-group-elements/image-magnifier/image-magnifier.component';
+} from './components/image-magnifier/image-magnifier.component';
 import {
   RadioGroupImagesComponent
-} from './components/input-group-elements/radio-group-images/radio-group-images.component';
-import { DropListComponent } from './components/input-group-elements/drop-list/drop-list.component';
-import { ClozeComponent } from './components/compound-group-elements/cloze/cloze.component';
-import { SliderComponent } from './components/input-group-elements/slider/slider.component';
-import { SpellCorrectComponent } from './components/text-input-group-elements/spell-correct/spell-correct.component';
-import { FrameComponent } from './components/base-group-elements/frame/frame.component';
+} from './components/elements/radio-group-images/radio-group-images.component';
+import { DropListComponent } from './components/elements/drop-list/drop-list.component';
+import { ClozeComponent } from './components/elements/cloze/cloze.component';
+import { SliderComponent } from './components/elements/slider/slider.component';
+import { SpellCorrectComponent } from './components/elements/spell-correct/spell-correct.component';
+import { FrameComponent } from './components/elements/frame/frame.component';
 import {
   ToggleButtonComponent
-} from './components/input-group-elements/toggle-button/toggle-button.component';
-import { TextMarkingBarComponent } from './components/text-group-elements/text-marking-bar/text-marking-bar.component';
+} from './components/elements/toggle-button/toggle-button.component';
+import { TextMarkingBarComponent } from './components/text-marking-bar/text-marking-bar.component';
 import { StyleMarksPipe } from './pipes/style-marks.pipe';
 import {
   TextMarkingButtonComponent
-} from './components/text-group-elements/text-marking-button/text-marking-button.component';
+} from './components/text-marking-button/text-marking-button.component';
 import {
   ClozeChildOverlayComponent
-} from './components/compound-group-elements/cloze-child-overlay/cloze-child-overlay.component';
+} from './components/cloze-child-overlay/cloze-child-overlay.component';
 import { MarkListPipe } from './pipes/mark-list.pipe';
 import { IsDisabledDirective } from './directives/is-disabled.directive';
-import { GeometryComponent } from './components/external-app-group-elements/geometry/geometry.component';
+import { GeometryComponent } from './components/elements/geometry/geometry.component';
 import { MathAtanPipe } from './pipes/math-atan.pipe';
 import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe } from './pipes/get-value.pipe';
 import { AreaRowHeightPipe } from './pipes/area-row-height.pipe';
-import { MathFieldComponent } from './components/text-input-group-elements/math-field/math-field.component';
+import { MathFieldComponent } from './components/elements/math-field/math-field.component';
 import { SplitPipe } from './pipes/split.pipe';
 import { TextImagePanelComponent } from './components/text-image-panel/text-image-panel.component';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog/unit-def-error-dialog.component';
-import { MathTableComponent } from './components/interactive-group-elements/math-table/math-table.component';
+import { MathTableComponent } from './components/elements/math-table/math-table.component';
 
-import { TextAreaMathComponent } from './components/text-input-group-elements/text-area-math/text-area-math.component';
-import { DragImageComponent } from './components/input-group-elements/drag-image/drag-image.component';
+import { TextAreaMathComponent } from './components/elements/text-area-math/text-area-math.component';
+import { DragImageComponent } from './components/drag-image/drag-image.component';
 import { DraggableDirective } from './directives/draggable.directive';
 import { ImageSrcPipe } from './pipes/image-src.pipe';
-import { TableComponent } from './components/compound-group-elements/table/table.component';
+import { TableComponent } from './components/elements/table/table.component';
 import {
   TableChildOverlay
-} from './components/compound-group-elements/table-child-overlay/table-child-overlay.component';
+} from './components/table-child-overlay/table-child-overlay.component';
 import { MeasurePipe } from './pipes/measure.pipe';
 import { TableGridRowsPipe } from './pipes/table-grid-rows.pipe';
-import { MarkingPanelComponent } from './components/interactive-group-elements/marking-panel/marking-panel.component';
+import { MarkingPanelComponent } from './components/elements/marking-panel/marking-panel.component';
 import { HasTextContentPipe } from './pipes/has-text-content.pipe';
 import { HasRenderableContentPipe } from './pipes/has-renderable-content.pipe';
 import { FirstLineAlignedControlDirective } from './directives/first-line-aligned-control.directive';

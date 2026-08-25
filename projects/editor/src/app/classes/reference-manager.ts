@@ -1,12 +1,12 @@
 import { Unit } from 'common/models/unit';
-import { ButtonElement } from 'common/models/elements/action-group-elements/button';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { ButtonElement } from 'common/models/elements/button';
+import { DropListElement } from 'common/models/elements/drop-list';
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
-import { ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
+import { AudioElement } from 'common/models/elements/audio';
+import { ClozeElement } from 'common/models/elements/cloze';
+import { TextElement } from 'common/models/elements/text';
+import { VideoElement } from 'common/models/elements/video';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 
 export class ReferenceManager {

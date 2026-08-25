@@ -44,7 +44,7 @@ import TextFieldComponentExtension from 'editor/modules/rich-text-editor/extensi
 import CheckboxComponentExtension from 'editor/modules/rich-text-editor/extensions/checkbox-component-extension';
 import DropdownComponentExtension from 'editor/modules/rich-text-editor/extensions/dropdown-component-extension';
 import MathFormulaExtension from 'editor/modules/rich-text-editor/extensions/math-formula-extension';
-import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { ClozeDocument } from 'common/models/elements/cloze';
 
 @Component({
   selector: 'aspect-rich-text-editor',

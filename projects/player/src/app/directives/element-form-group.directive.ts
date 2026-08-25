@@ -9,7 +9,7 @@ import { VopNavigationDeniedNotification } from 'player/modules/verona/models/ve
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
-import { SliderElement } from 'common/models/elements/input-group-elements/slider';
+import { SliderElement } from 'common/models/elements/slider';
 import { hotspotImageRequiredValidator } from 'player/src/app/validators/hotspot-image-required.validator';
 import { textAreaMathRequiredValidator } from 'player/src/app/validators/text-area-math-required.validator';
 import { ValidationService } from '../services/validation.service';

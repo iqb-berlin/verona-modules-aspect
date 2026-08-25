@@ -1,5 +1,5 @@
 import { Mock } from 'vitest';
-import { DropListComponent } from 'common/components/input-group-elements/drop-list/drop-list.component';
+import { DropListComponent } from 'common/components/elements/drop-list/drop-list.component';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { DragOperatorService } from './drag-operator.service';
 

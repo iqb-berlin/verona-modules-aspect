@@ -1,8 +1,8 @@
 import { Directive } from '@angular/core';
 import { Subject } from 'rxjs';
 import { InputElement } from 'common/models/elements/element';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
-import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
+import { TextFieldElement } from 'common/models/elements/text-field';
+import { CheckboxElement } from 'common/models/elements/checkbox';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';

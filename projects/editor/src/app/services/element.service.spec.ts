@@ -12,7 +12,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { ClozeDocument, ClozeElement } from 'common/models/elements/cloze';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 import { FileService } from 'common/services/file.service';
 

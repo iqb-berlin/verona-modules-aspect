@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
+import { Hotspot } from 'common/models/elements/hotspot-image';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {

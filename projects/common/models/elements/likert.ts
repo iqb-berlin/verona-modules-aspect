@@ -1,0 +1,143 @@
+import {
+  CompoundElement, UIElement
+} from 'common/models/elements/element';
+import {
+  LikertRowElement, LikertRowProperties
+} from 'common/models/elements/likert-row';
+import {
+  BasicStyles,
+  DimensionProperties,
+  PositionProperties,
+  PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { VariableInfo } from '@iqb/responses';
+import { AbstractIDService } from 'common/models/id-interfaces';
+import {
+  OptionElement, UIElementProperties, UIElementType, UIElementValue,
+  StickyHeaderProperties, FirstColumnRatioProperties
+} from 'common/models/ui-element-interfaces';
+import { TextImageLabel } from 'common/models/label-interfaces';
+import { InstantiationEror } from 'common/classes/instantiation-error';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+import { ModelNormalizer } from 'common/utils/model-normalizer';
+
+export class LikertElement extends CompoundElement implements OptionElement, LikertProperties {
+  type: UIElementType = 'likert';
+  rows: LikertRowElement[] = [...ELEMENT_DEFAULTS.likert.rows];
+  options: TextImageLabel[] = [...ELEMENT_DEFAULTS.likert.options];
+  firstColumnSizeRatio: number = ELEMENT_DEFAULTS.likert.firstColumnSizeRatio;
+  label: string = ELEMENT_DEFAULTS.likert.label;
+  label2: string = ELEMENT_DEFAULTS.likert.label2;
+  stickyHeader: boolean = ELEMENT_DEFAULTS.likert.stickyHeader;
+
+  position: PositionProperties = PropertyGroupGenerators
+    .generatePositionProps(ELEMENT_DEFAULTS.likert.position);
+
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS.likert.dimensions);
+
+  styling: BasicStyles & {
+    lineHeight: number;
+    lineColoring: boolean;
+    lineColoringColor: string;
+    firstLineColoring: boolean;
+    firstLineColoringColor: string;
+  } = {
+      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.likert.styling),
+      lineHeight: ELEMENT_DEFAULTS.likert.styling.lineHeight,
+      lineColoring: ELEMENT_DEFAULTS.likert.styling.lineColoring,
+      lineColoringColor: ELEMENT_DEFAULTS.likert.styling.lineColoringColor,
+      firstLineColoring: ELEMENT_DEFAULTS.likert.styling.firstLineColoring,
+      firstLineColoringColor: ELEMENT_DEFAULTS.likert.styling.firstLineColoringColor
+    };
+
+  static title: string = 'Optionentabelle';
+  static icon: string = 'margin';
+
+  constructor(element?: Partial<LikertProperties>, idService?: AbstractIDService) {
+    super({ type: 'likert', ...element }, idService);
+    if (isLikertProperties(element)) {
+      this.options = [...element.options];
+      this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+      this.rows = element.rows.map(row => new LikertRowElement(
+        ModelNormalizer.normalizeElement(row as Record<string, unknown>) as Partial<LikertRowProperties>,
+        idService
+      ));
+      this.label = element.label;
+      this.label2 = element.label2;
+      this.stickyHeader = element.stickyHeader;
+      this.position = PropertyGroupGenerators.generatePositionProps(element.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element.dimensions);
+      this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
+    } else if (environment.strictInstantiation && element?.isRelevantForPresentationComplete !== undefined) {
+      throw new InstantiationEror('Error at Likert instantiation', element);
+    }
+  }
+
+  getNewOptionLabel(optionText: string): TextImageLabel {
+    return UIElement.createOptionLabel(optionText, true) as TextImageLabel;
+  }
+
+  setProperty(property: string, value: UIElementValue): void {
+    super.setProperty(property, value);
+    if (property === 'rows') {
+      this.rows = value as LikertRowElement[];
+      if (this.rows.length) {
+        this.rows[this.rows.length - 1]
+          .setProperty('isRelevantForPresentationComplete', this.isRelevantForPresentationComplete);
+      }
+    }
+    if (property === 'options') {
+      this.getChildElements()
+        .forEach(childElement => childElement
+          .setProperty('columnCount', this.options.length));
+    }
+    if (property === 'readOnly') {
+      this.getChildElements()
+        .forEach(childElement => childElement
+          .setProperty('readOnly', value));
+    }
+    if (property === 'isRelevantForPresentationComplete') {
+      this.getChildElements()
+        .forEach(childElement => childElement
+          .setProperty('isRelevantForPresentationComplete', value));
+    }
+  }
+
+  getChildElements(): UIElement[] {
+    return this.rows;
+  }
+
+  /* Only for the return type - see TableElement.getBlueprint (#1179). */
+  getBlueprint(): LikertElement {
+    return super.getBlueprint() as unknown as LikertElement;
+  }
+
+  getVariableInfos(): VariableInfo[] {
+    return [...super.getVariableInfos(), ...this.rows.map(row => row.getVariableInfoOfRow(this.options))];
+  }
+}
+
+export interface LikertProperties extends UIElementProperties, StickyHeaderProperties, FirstColumnRatioProperties {
+  rows: LikertRowElement[];
+  options: TextImageLabel[];
+  label: string;
+  label2: string;
+  position: PositionProperties;
+  dimensions: DimensionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+    lineColoring: boolean;
+    lineColoringColor: string;
+    firstLineColoring: boolean;
+    firstLineColoringColor: string;
+  };
+}
+
+function isLikertProperties(blueprint?: Partial<LikertProperties>): blueprint is LikertProperties {
+  if (!blueprint) return false;
+  return blueprint.rows !== undefined &&
+    blueprint.options !== undefined &&
+    blueprint.type === 'likert';
+}

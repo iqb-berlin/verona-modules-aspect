@@ -2,18 +2,18 @@ import {
   AfterViewInit, Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { MarkingPanelElement } from 'common/models/elements/interactive-group-elements/marking-panel';
-import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
+import { MarkingPanelElement } from 'common/models/elements/marking-panel';
+import { ImageElement } from 'common/models/elements/image';
 import { UIElement } from 'common/models/elements/element';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import {
   MathTableCell, MathTableElement, MathTableRow
-} from 'common/models/elements/interactive-group-elements/math-table';
+} from 'common/models/elements/math-table';
 import { KeypadService } from 'player/src/app/services/keypad.service';
 import { KeyboardService } from 'player/src/app/services/keyboard.service';
 import { DeviceService } from 'player/src/app/services/device.service';
 import { Subject, Subscription } from 'rxjs';
-import { MathTableComponent } from 'common/components/interactive-group-elements/math-table/math-table.component';
+import { MathTableComponent } from 'common/components/elements/math-table/math-table.component';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { takeUntil } from 'rxjs/operators';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';

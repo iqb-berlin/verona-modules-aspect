@@ -1,11 +1,11 @@
 import { MigrationManager } from 'common/services/migration-manager';
 import { UnitProperties } from 'common/models/unit';
-import { TextProperties } from 'common/models/elements/text-group-elements/text';
-import { ClozeProperties, CustomDocumentNode } from 'common/models/elements/compound-group-elements/cloze/cloze';
-import { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
-import { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
-import { LikertRowProperties } from 'common/models/elements/compound-group-elements/likert/likert-row';
-import { TextFieldProperties } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextProperties } from 'common/models/elements/text';
+import { ClozeProperties, CustomDocumentNode } from 'common/models/elements/cloze';
+import { TableProperties } from 'common/models/elements/table';
+import { LikertProperties } from 'common/models/elements/likert';
+import { LikertRowProperties } from 'common/models/elements/likert-row';
+import { TextFieldProperties } from 'common/models/elements/text-field';
 import { ElementFactory } from 'common/utils/element-factory';
 import { Measurement, UIElementProperties } from 'common/models/ui-element-interfaces';
 

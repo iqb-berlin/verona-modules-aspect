@@ -1,8 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { DropdownProperties } from 'common/models/elements/input-group-elements/dropdown';
-import { MathFieldProperties } from 'common/models/elements/text-input-group-elements/math-field';
+import { DropdownProperties } from 'common/models/elements/dropdown';
+import { MathFieldProperties } from 'common/models/elements/math-field';
 import { InputElementProperties, MathKeyboardProperties } from 'common/models/input-element-interfaces';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {

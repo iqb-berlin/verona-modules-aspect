@@ -14,8 +14,8 @@ import { Label, TextImageLabel } from 'common/models/label-interfaces';
 import { OptionElement } from 'common/models/ui-element-interfaces';
 import {
   LikertRowElement, LikertRowProperties
-} from 'common/models/elements/compound-group-elements/likert/likert-row';
-import { LikertProperties } from 'common/models/elements/compound-group-elements/likert/likert';
+} from 'common/models/elements/likert-row';
+import { LikertProperties } from 'common/models/elements/likert';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({

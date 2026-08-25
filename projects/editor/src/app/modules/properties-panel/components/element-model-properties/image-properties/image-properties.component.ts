@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
+import { ImageProperties } from 'common/models/elements/image';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({

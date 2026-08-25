@@ -58,7 +58,7 @@ import {
   TextStimulusOptions
 } from 'editor/modules/section-templates/models/stimulus-interfaces';
 import { ImageRadioOptions, TextRadioOptions } from 'editor/modules/section-templates/models/radio-interfaces';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 import { CONSTANTS } from 'editor/modules/section-templates/constants';

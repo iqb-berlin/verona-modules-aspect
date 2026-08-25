@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListElement } from 'common/models/elements/drop-list';
 
 export class EditorSection extends Section {
   /* Reports what it took out, and that is what the caller releases the IDs for: a child of a compound

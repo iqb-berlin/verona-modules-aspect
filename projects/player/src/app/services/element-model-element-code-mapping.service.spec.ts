@@ -1,23 +1,23 @@
 import { TestBed } from '@angular/core/testing';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { TextElement } from 'common/models/elements/text';
 import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
-import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
-import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { AudioElement } from 'common/models/elements/audio';
+import { ImageElement } from 'common/models/elements/image';
+import { TextFieldElement } from 'common/models/elements/text-field';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/text-input-group-elements/text-field-simple';
-import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
-import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
-import { RadioButtonGroupElement } from 'common/models/elements/input-group-elements/radio-button-group';
-import { RadioButtonGroupComplexElement } from 'common/models/elements/input-group-elements/radio-button-group-complex';
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
-import { ToggleButtonElement } from 'common/models/elements/input-group-elements/toggle-button';
-import { Hotspot, HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
+} from 'common/models/elements/text-field-simple';
+import { TextAreaElement } from 'common/models/elements/text-area';
+import { SpellCorrectElement } from 'common/models/elements/spell-correct';
+import { RadioButtonGroupElement } from 'common/models/elements/radio-button-group';
+import { RadioButtonGroupComplexElement } from 'common/models/elements/radio-button-group-complex';
+import { LikertRowElement } from 'common/models/elements/likert-row';
+import { ToggleButtonElement } from 'common/models/elements/toggle-button';
+import { Hotspot, HotspotImageElement } from 'common/models/elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
 import { ElementFactory } from 'common/utils/element-factory';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 

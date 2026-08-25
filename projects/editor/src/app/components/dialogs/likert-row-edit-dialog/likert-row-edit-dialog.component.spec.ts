@@ -15,7 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import {
   LikertRowElement, LikertRowProperties
-} from 'common/models/elements/compound-group-elements/likert/likert-row';
+} from 'common/models/elements/likert-row';
 import { DragNDropValueObject, TextImageLabel, TextLabel } from 'common/models/label-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';

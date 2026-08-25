@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { LikertRowElement } from 'common/models/elements/likert-row';
 
 import { TextImageLabel } from 'common/models/label-interfaces';
 

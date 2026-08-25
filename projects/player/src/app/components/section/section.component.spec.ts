@@ -6,7 +6,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { UIElement } from 'common/models/elements/element';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextFieldElement } from 'common/models/elements/text-field';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/utils/section-counter';

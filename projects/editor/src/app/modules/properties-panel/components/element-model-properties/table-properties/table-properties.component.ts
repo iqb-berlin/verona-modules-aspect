@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
-import { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import { TableProperties } from 'common/models/elements/table';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({

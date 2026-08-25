@@ -2,7 +2,7 @@ import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { ModelRegistry } from 'common/utils/model-registry';
-import { ButtonProperties } from 'common/models/elements/action-group-elements/button';
+import { ButtonProperties } from 'common/models/elements/button';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {
   ButtonNodeviewComponent

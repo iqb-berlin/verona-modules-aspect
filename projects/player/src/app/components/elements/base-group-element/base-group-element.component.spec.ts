@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { FrameElement } from 'common/models/elements/base-group-elements/frame';
+import { FrameElement } from 'common/models/elements/frame';
 import { APIService } from 'common/shared.module';
 import { ComponentRegistry } from 'common/utils/component-registry';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';

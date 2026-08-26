@@ -7,23 +7,18 @@ import { Progress } from 'player/modules/verona/models/verona';
 })
 export class ValidationService {
   private formControls: UntypedFormControl[] = [];
-  private progress: Progress = 'none';
 
+  /* Answered from the controls on every read, so a response that is taken back -- a cleared field, a
+     deselected hotspot -- lowers the progress again. A remembered `complete` never came down (#1354),
+     which also kept the host from denying navigation, and it is that denial the player waits for
+     before it shows any "input required" message.
+
+     A unit whose elements need no validation has no controls here and counts as complete: there is
+     nothing left to answer. */
   get responseProgress(): Progress {
-    if (this.progress !== 'complete') {
-      this.setProgress();
-    }
-    return this.progress;
-  }
-
-  private setProgress(): void {
-    const validFormControls = this.formControls
-      .filter(control => control.valid);
-    if (validFormControls.length === this.formControls.length) {
-      this.progress = 'complete';
-    } else {
-      this.progress = validFormControls.some(control => control.valid) ? 'some' : 'none';
-    }
+    const validControls = this.formControls.filter(control => control.valid);
+    if (validControls.length === this.formControls.length) return 'complete';
+    return validControls.length ? 'some' : 'none';
   }
 
   registerFormControl(control: UntypedFormControl): void {
@@ -32,6 +27,5 @@ export class ValidationService {
 
   reset(): void {
     this.formControls = [];
-    this.progress = 'none';
   }
 }

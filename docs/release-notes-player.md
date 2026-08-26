@@ -2,6 +2,7 @@ Player
 ======
 ## 3.0.1
 ### Fehlerbehebungen
+- Pflichtfelder: Wird eine Antwort wieder gelöscht oder abgewählt, meldet der Player der Testumgebung wieder eine unvollständige Aufgabe. Bisher blieb sie ab dem ersten vollständigen Stand als vollständig gemeldet — die Testumgebung ließ das Blättern zu, und die Meldung „Eingabe erforderlich" blieb aus, weil der Player sie erst nach einer verweigerten Navigation zeigt ([#1354](https://github.com/iqb-berlin/verona-modules-aspect/issues/1354))
 - Bildbereiche: Der im Editor gesetzte Schreibschutz sperrt jetzt alle Bereiche des Elements. Bisher blieben sie anklickbar; es wirkte nur der Schreibschutz, der für einen einzelnen Bereich gesetzt war ([#1051](https://github.com/iqb-berlin/verona-modules-aspect/issues/1051))
 - Hervorgehobene Textstellen: Wird dieselbe Stelle ein zweites Mal hervorgehoben, läuft ihre Minute wieder von vorn. Bisher blieb der erste Zeitgeber stehen, blendete die Markierung früher aus als erwartet und meldete danach einen Fehler in der Konsole ([#1346](https://github.com/iqb-berlin/verona-modules-aspect/issues/1346))
 - Lückentext, Pflichtfelder: Die Meldung „Eingabe erforderlich" steht jetzt direkt unter ihrer Lücke. Bisher lagen alle Meldungen eines Abschnitts auf derselben Höhe, unabhängig davon, in welcher Zeile ihre Lücke stand. Beim Kontrollkästchen erscheint sie außerdem in derselben Form wie bei den übrigen Lücken, mit Rahmen und deckendem Hintergrund ([#1052](https://github.com/iqb-berlin/verona-modules-aspect/issues/1052))

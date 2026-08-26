@@ -67,6 +67,8 @@
          limit"), so the box used to say "no limit anywhere" about a selection whose elements each
          have one, and the disabled field hid that there was anything to see (#1167). A box left
          indeterminate keeps its field editable - typing a number is how the author resolves it. -->
+    <!-- `subscriptSizing="dynamic"` for the four hints below: the reserved subscript is one line
+         high, and in this narrow panel the hint wraps into two - over the next checkbox. -->
     @if (dimensions.minWidth !== undefined) {
       <aspect-merged-checkbox
         #minWidthEnabled
@@ -74,7 +76,7 @@
         (valueChange)="toggleProperty('minWidth', $event)">
         {{'propertiesPanel.minWidthEnabled' | translate }}
       </aspect-merged-checkbox>
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>
           {{'propertiesPanel.minWidth' | translate }}
         </mat-label>
@@ -85,6 +87,7 @@
         @if (divergingProperties | propertyDiverges : 'dimensions.minWidth') {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
+        <mat-hint>{{'propertiesPanel.dimensionNoLimitHint' | translate }}</mat-hint>
       </mat-form-field>
     }
 
@@ -95,7 +98,7 @@
         (valueChange)="toggleProperty('maxWidth', $event)">
         {{'propertiesPanel.maxWidthEnabled' | translate }}
       </aspect-merged-checkbox>
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>
           {{'propertiesPanel.maxWidth' | translate }}
         </mat-label>
@@ -106,6 +109,7 @@
         @if (divergingProperties | propertyDiverges : 'dimensions.maxWidth') {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
+        <mat-hint>{{'propertiesPanel.dimensionNoLimitHint' | translate }}</mat-hint>
       </mat-form-field>
     }
 
@@ -116,7 +120,7 @@
         (valueChange)="toggleProperty('minHeight', $event)">
         {{'propertiesPanel.minHeightEnabled' | translate }}
       </aspect-merged-checkbox>
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>
           {{'propertiesPanel.minHeight' | translate }}
         </mat-label>
@@ -127,6 +131,7 @@
         @if (divergingProperties | propertyDiverges : 'dimensions.minHeight') {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
+        <mat-hint>{{'propertiesPanel.dimensionNoLimitHint' | translate }}</mat-hint>
       </mat-form-field>
     }
 
@@ -137,7 +142,7 @@
         (valueChange)="toggleProperty('maxHeight', $event)">
         {{'propertiesPanel.maxHeightEnabled' | translate }}
       </aspect-merged-checkbox>
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>
           {{'propertiesPanel.maxHeight' | translate }}
         </mat-label>
@@ -148,6 +153,7 @@
         @if (divergingProperties | propertyDiverges : 'dimensions.maxHeight') {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
+        <mat-hint>{{'propertiesPanel.dimensionNoLimitHint' | translate }}</mat-hint>
       </mat-form-field>
     }
   </ng-container>

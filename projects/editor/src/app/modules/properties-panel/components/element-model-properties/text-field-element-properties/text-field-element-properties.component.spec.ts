@@ -162,4 +162,15 @@ describe('TextFieldElementPropertiesComponent', () => {
     expect(fixture.nativeElement.textContent).not.toContain('propertiesPanel.pattern');
     expect(fixture.nativeElement.textContent).toContain('propertiesPanel.textAlign');
   });
+
+  /* A 0 in either box means the same as leaving it empty - "no limit" - and the effect is invisible
+     at the box itself, so the hint under it is the only place that says so (#1350). */
+  it('should say what a zero length means', () => {
+    const hints = Array.from(
+      fixture.nativeElement.querySelectorAll('mat-hint') as NodeListOf<HTMLElement>
+    ).map(hint => hint.textContent?.trim());
+
+    expect(hints).toContain('propertiesPanel.minLengthHint');
+    expect(hints).toContain('propertiesPanel.maxLengthHint');
+  });
 });

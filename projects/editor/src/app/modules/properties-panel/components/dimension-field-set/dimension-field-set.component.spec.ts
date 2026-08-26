@@ -360,4 +360,14 @@ describe('DimensionFieldSetComponent', () => {
         .querySelector('aspect-merged-marker')).not.toBeNull();
     });
   });
+
+  /* All four limits treat a typed 0 as "no limit", the same as the box the checkbox empties, so
+     each of them carries the hint (#1350). */
+  it('should say what a zero limit means at each of the four limits', () => {
+    const hints = Array.from(
+      fixture.nativeElement.querySelectorAll('mat-hint') as NodeListOf<HTMLElement>
+    ).map(hint => hint.textContent?.trim());
+
+    expect(hints).toEqual(Array(4).fill('propertiesPanel.dimensionNoLimitHint'));
+  });
 });

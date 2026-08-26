@@ -1,82 +1,93 @@
-<div *ngIf="elementModel.src"
-     [style.width.%]="100"
-     [style.height.%]="100"
-     class="image-container">
-  <img [src]="elementModel.src | safeResourceUrl"
-       [alt]="'imageNotFound' | translate"
-       tabindex="0"
-       (focusout)="elementFormControl.markAsTouched()">
-  <div *ngFor="let item of elementModel.value; let index = index">
-    <div *ngIf="item.shape === 'triangle'"
-         class="triangle-container"
-         [style.top.px]="item.top"
-         [style.left.px]="item.left"
-         [style.width.px]="item.width"
-         [style.height.px]="item.height"
-         [style.transform]="'rotate(' + item.rotation + 'deg)'">
-      <div class="triangle-half">
-        <div class="triangle-half-inner hotspot"
-             [style.transform]="'rotate(' + ((item.height | mathAtan:item.width/2) | mathDegrees) + 'deg)'"
-             [class.active-hotspot]="!item.readOnly"
-             [class.border-left]="item.borderWidth > 0"
-             [style.border-width.px]="item.borderWidth"
-             [style.border-color]="item.borderColor"
-             [style.background-color]="(parentForm && elementFormControl.value[index].value) ||
-                                       (!parentForm && item.value) ?
-                                       item.backgroundColor :
-                                       'transparent'"
-             (click)="(!item.readOnly && parentForm) && setHotspotValue(index)">
-        </div>
-        <div *ngIf="item.borderWidth > 0"
-             class="triangle-half-bottom-border hotspot"
-             [style.left.px]="item.width > item.height ? item.borderWidth * 2 : item.borderWidth"
-             [style.border-width.px]="item.borderWidth"
-             [style.border-color]="item.borderColor">
-        </div>
+@if (elementModel.src) {
+  <div [style.width.%]="100"
+       [style.height.%]="100"
+       class="image-container">
+    <img [src]="elementModel.src | safeResourceUrl"
+         [alt]="'imageNotFound' | translate"
+         tabindex="0"
+         (focusout)="elementFormControl.markAsTouched()">
+    @for (item of elementModel.value; track $index) {
+      <!-- Two read-only flags reach a hotspot: the element-wide one from the inspector and the
+           hotspot's own one from the hotspot dialog. Either of them locks it (#1051). -->
+      @let hotspotEditable = !elementModel.readOnly && !item.readOnly;
+      <div>
+        @if (item.shape === 'triangle') {
+          <div class="triangle-container"
+               [style.top.px]="item.top"
+               [style.left.px]="item.left"
+               [style.width.px]="item.width"
+               [style.height.px]="item.height"
+               [style.transform]="'rotate(' + item.rotation + 'deg)'">
+            <div class="triangle-half">
+              <div class="triangle-half-inner hotspot"
+                   [style.transform]="'rotate(' + ((item.height | mathAtan:item.width/2) | mathDegrees) + 'deg)'"
+                   [class.active-hotspot]="hotspotEditable"
+                   [class.border-left]="item.borderWidth > 0"
+                   [style.border-width.px]="item.borderWidth"
+                   [style.border-color]="item.borderColor"
+                   [style.background-color]="(parentForm && elementFormControl.value[$index].value) ||
+                                             (!parentForm && item.value) ?
+                                             item.backgroundColor :
+                                             'transparent'"
+                   (click)="(hotspotEditable && parentForm) && setHotspotValue($index)">
+              </div>
+              @if (item.borderWidth > 0) {
+                <div class="triangle-half-bottom-border hotspot"
+                     [style.left.px]="item.width > item.height ? item.borderWidth * 2 : item.borderWidth"
+                     [style.border-width.px]="item.borderWidth"
+                     [style.border-color]="item.borderColor">
+                </div>
+              }
+            </div>
+            <div class="triangle-half"
+                 [style.left.%]="50"
+                 [style.transform]="'scaleX(-1)'">
+              <div class="triangle-half-inner hotspot"
+                   [style.transform]="'rotate(' + ((item.height | mathAtan:item.width/2) | mathDegrees) + 'deg)'"
+                   [class.active-hotspot]="hotspotEditable"
+                   [class.border-left]="item.borderWidth > 0"
+                   [style.border-width.px]="item.borderWidth"
+                   [style.border-color]="item.borderColor"
+                   [style.background-color]="(parentForm && elementFormControl.value[$index].value) ||
+                                             (!parentForm && item.value) ?
+                                             item.backgroundColor :
+                                             'transparent'"
+                   (click)="(hotspotEditable && parentForm) && setHotspotValue($index)">
+              </div>
+              @if (item.borderWidth > 0) {
+                <div class="triangle-half-bottom-border hotspot"
+                     [style.left.px]="item.width > item.height ? item.borderWidth * 2 : item.borderWidth"
+                     [style.border-width.px]="item.borderWidth"
+                     [style.border-color]="item.borderColor">
+                </div>
+              }
+            </div>
+          </div>
+        } @else {
+          <div class="hotspot"
+               [class.active-hotspot]="hotspotEditable"
+               [class.circle]="item.shape === 'ellipse'"
+               [class.border]="item.borderWidth > 0"
+               [style.border-width.px]="item.borderWidth"
+               [style.border-color]="item.borderColor"
+               [style.background-color]="(parentForm && elementFormControl.value[$index].value) ||
+                                         (!parentForm && item.value) ?
+                                         item.backgroundColor :
+                                         'transparent'"
+               [style.top.px]="item.top"
+               [style.left.px]="item.left"
+               [style.width.px]="item.width"
+               [style.height.px]="item.height"
+               [style.transform]="'rotate(' + item.rotation + 'deg)'"
+               (click)="(hotspotEditable && parentForm) && setHotspotValue($index)">
+          </div>
+        }
       </div>
-      <div class="triangle-half"
-           [style.left.%]="50"
-           [style.transform]="'scaleX(-1)'">
-        <div class="triangle-half-inner hotspot"
-             [style.transform]="'rotate(' + ((item.height | mathAtan:item.width/2) | mathDegrees) + 'deg)'"
-             [class.active-hotspot]="!item.readOnly"
-             [class.border-left]="item.borderWidth > 0"
-             [style.border-width.px]="item.borderWidth"
-             [style.border-color]="item.borderColor"
-             [style.background-color]="(parentForm && elementFormControl.value[index].value) ||
-                                       (!parentForm && item.value) ?
-                                       item.backgroundColor :
-                                       'transparent'"
-             (click)="(!item.readOnly && parentForm) && setHotspotValue(index)">
-        </div>
-        <div *ngIf="item.borderWidth > 0"
-             class="triangle-half-bottom-border hotspot"
-             [style.left.px]="item.width > item.height ? item.borderWidth * 2 : item.borderWidth"
-             [style.border-width.px]="item.borderWidth"
-             [style.border-color]="item.borderColor">
-        </div>
-      </div>
-    </div>
-    <div *ngIf="item.shape !== 'triangle'"
-         class="hotspot"
-         [class.active-hotspot]="!item.readOnly"
-         [class.circle]="item.shape === 'ellipse'"
-         [class.border]="item.borderWidth > 0"
-         [style.border-width.px]="item.borderWidth"
-         [style.border-color]="item.borderColor"
-         [style.background-color]="(parentForm && elementFormControl.value[index].value) ||
-                                   (!parentForm && item.value) ?
-                                   item.backgroundColor :
-                                   'transparent'"
-         [style.top.px]="item.top"
-         [style.left.px]="item.left"
-         [style.width.px]="item.width"
-         [style.height.px]="item.height"
-         [style.transform]="'rotate(' + item.rotation + 'deg)'"
-         (click)="(!item.readOnly && parentForm) && setHotspotValue(index)">
-    </div>
+    }
+    @if (elementFormControl.errors && elementFormControl.touched) {
+      <mat-error>
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
+    }
   </div>
-  <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched">
-    {{elementFormControl.errors | errorTransform: elementModel}}
-  </mat-error>
-</div>
+}

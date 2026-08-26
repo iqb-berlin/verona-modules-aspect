@@ -103,4 +103,26 @@ describe('HotspotImageComponent', () => {
     expect(component.elementFormControl.value[0].value).toBe(false);
     expect(ellipseHotspot.classList).not.toContain('active-hotspot');
   });
+
+  it('should toggle the value of a triangle hotspot on click', () => {
+    const triangleHalves: NodeListOf<HTMLElement> =
+      fixture.nativeElement.querySelectorAll('.triangle-half-inner');
+    triangleHalves[0].click();
+    expect(component.elementFormControl.value[1].value).toBe(true);
+    triangleHalves.forEach(half => expect(half.classList).toContain('active-hotspot'));
+  });
+
+  it('should NOT toggle any hotspot on click when the element itself is readOnly', () => {
+    component.elementModel.readOnly = true;
+    fixture.detectChanges();
+    const ellipseHotspot = fixture.nativeElement.querySelector('.hotspot.circle');
+    const triangleHalves: NodeListOf<HTMLElement> =
+      fixture.nativeElement.querySelectorAll('.triangle-half-inner');
+    ellipseHotspot.click();
+    triangleHalves.forEach(half => half.click());
+    expect(component.elementFormControl.value[0].value).toBe(false);
+    expect(component.elementFormControl.value[1].value).toBe(false);
+    expect(ellipseHotspot.classList).not.toContain('active-hotspot');
+    triangleHalves.forEach(half => expect(half.classList).not.toContain('active-hotspot'));
+  });
 });

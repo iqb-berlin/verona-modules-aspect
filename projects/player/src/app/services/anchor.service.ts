@@ -22,6 +22,13 @@ export class AnchorService {
   }
 
   private addAnchor(anchorId: string): void {
+    // Highlighting a passage that is already highlighted restarts its minute, so the subscription
+    // that was there has to be unsubscribed rather than overwritten. Left running it hides the
+    // passage when ITS minute is up -- earlier than the one just asked for. And once the passage
+    // has been hidden regularly in between, that orphan fires against an entry that is gone, which
+    // is the `TypeError` in #1346. The trigger action `highlightText` reaches `showAnchor`
+    // unguarded, so a second call is a normal thing to happen, not a mistake.
+    this.activeAnchors[anchorId]?.unsubscribe();
     this.activeAnchors[anchorId] = of(true)
       .pipe(
         delay(this.duration))
@@ -32,7 +39,10 @@ export class AnchorService {
   }
 
   private removeAnchor(anchorId: string): void {
-    this.activeAnchors[anchorId].unsubscribe();
+    // Written so that a missing entry costs nothing: unsubscribing is optional, deleting an absent
+    // key is a no-op, and hiding is idempotent. That leaves no branch that only a state the code
+    // can no longer reach would take -- and no `TypeError` if it ever reaches it again (#1346).
+    this.activeAnchors[anchorId]?.unsubscribe();
     delete this.activeAnchors[anchorId];
     AnchorService.toggleAnchorRendering(anchorId, false);
   }
@@ -50,7 +60,9 @@ export class AnchorService {
       } else {
         anchor.style.backgroundColor = anchor.dataset.anchorColor as string;
       }
-      anchor.classList.toggle('active-anchor');
+      // With the state passed in, rendering the same anchor twice keeps it shown instead of
+      // flipping it off -- which is what a repeated `highlightText` does (#1346).
+      anchor.classList.toggle('active-anchor', showAnchor);
     });
     nestedAnchors.forEach(anchor => {
       if (showAnchor) {
@@ -58,7 +70,7 @@ export class AnchorService {
       } else {
         anchor.style.backgroundColor = anchor.dataset.anchorColor as string;
       }
-      anchor.classList.toggle('active-nested-anchor');
+      anchor.classList.toggle('active-nested-anchor', showAnchor);
     });
     if (anchors.length && showAnchor) {
       anchors[0].scrollIntoView({ behavior: 'smooth', block: 'start' });

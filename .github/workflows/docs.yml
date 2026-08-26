@@ -1,0 +1,45 @@
+# Publishes the Compodoc documentation of `develop` to GitHub Pages.
+#
+# Deliberately a GitHub Actions workflow and not a GitLab job: the GitLab pipeline
+# suppresses push pipelines on branches and competes for a single runner.
+# The 51 MB of output is deployed as a Pages artifact, not committed to a /docs folder,
+# so it never enters the repository history.
+name: Documentation
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  # Let a running deployment finish: cancelling `deploy-pages` mid-flight can leave the
+  # Pages deployment abandoned, and two pushes to `develop` within minutes are common here.
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      # Compodoc reads the sources, so no build step and no browser binaries are needed.
+      - run: npm ci --ignore-scripts
+      - run: npm run docs
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist/docs
+      - id: deployment
+        uses: actions/deploy-pages@v5

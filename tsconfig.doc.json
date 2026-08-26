@@ -1,0 +1,12 @@
+/* Entry point for Compodoc: one pass over all three projects. See `npm run docs`. */
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "projects/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/test-*.ts",
+    "node_modules"
+  ]
+}

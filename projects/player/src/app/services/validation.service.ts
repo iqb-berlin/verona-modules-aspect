@@ -8,7 +8,7 @@ import { Progress } from 'player/modules/verona/models/verona';
 export class ValidationService {
   private formControls: UntypedFormControl[] = [];
 
-  /* Answered from the controls on every read, so a response that is taken back -- a cleared field, a
+  /** Answered from the controls on every read, so a response that is taken back -- a cleared field, a
      deselected hotspot -- lowers the progress again. A remembered `complete` never came down (#1354),
      which also kept the host from denying navigation, and it is that denial the player waits for
      before it shows any "input required" message.

@@ -69,7 +69,7 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
     this.isVisible.next(element.scrollHeight - element.offsetHeight > element.scrollTop + 10);
   }
 
-  /* Puts the container back to the top of the page it currently shows. Hard, without behaviour:
+  /** Puts the container back to the top of the page it currently shows. Hard, without behaviour:
      the caller does this before a page change, while the layout still stands still, so there is
      nothing to animate against -- and a smooth scroll would still be under way when the new page
      arrives. */

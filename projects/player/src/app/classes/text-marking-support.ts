@@ -120,7 +120,7 @@ export class TextMarkingSupport {
     this.isMarkingBarOpen = false;
   }
 
-  /* The delayed opening of the marking bar has to be cancelled explicitly: a completed
+  /** The delayed opening of the marking bar has to be cancelled explicitly: a completed
    * ngUnsubscribe does not stop takeUntil from passing on a subscription that is created
    * afterwards, so a timeout that survives would leave a pointer subscription behind. */
   destroy(): void {

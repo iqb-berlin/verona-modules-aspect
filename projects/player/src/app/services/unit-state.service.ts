@@ -71,7 +71,7 @@ export class UnitStateService extends ElementCodeService {
     this.intersectionDetector = this.createIntersectionDetector();
   }
 
-  /* One subscription per detector, not one per element: the detector reports which element
+  /** One subscription per detector, not one per element: the detector reports which element
      intersected, so a single handler can look that element up. */
   private createIntersectionDetector(): IntersectionDetector {
     const intersectionDetector = new IntersectionDetector(this.document, '0px 0px 0px 0px');

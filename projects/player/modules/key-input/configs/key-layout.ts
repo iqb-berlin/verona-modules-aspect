@@ -1,6 +1,6 @@
 import { InputAssistancePreset } from 'common/models/input-element-interfaces';
 
-/* The arrow keys the keypad offers and the restriction lets through -- one list, so a key the
+/** The arrow keys the keypad offers and the restriction lets through -- one list, so a key the
    keypad renders cannot be one the restriction blocks. */
 export const ARROW_KEYS: string[] = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
 
@@ -178,7 +178,7 @@ export class KeyLayout {
     }
   };
 
-  /* Which keys a preset may produce. Every layer counts, the shift layer included: the keypad offers
+  /** Which keys a preset may produce. Every layer counts, the shift layer included: the keypad offers
      its uppercase characters, so they have to be as typeable and as deletable as the lowercase ones
      -- otherwise one of them lands in the field and no backspace gets it out again (#1291). Only the
      multi character entries drop out ('Shift', 'Backspace'): those are commands, not characters. */

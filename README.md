@@ -14,7 +14,7 @@ that file is what a host system embeds.
 
 | Where | What |
 | --- | --- |
-| [iqb-berlin.github.io/verona-modules-aspect](https://iqb-berlin.github.io/verona-modules-aspect/) | API documentation of all three projects, rebuilt from `develop` on every merge |
+| [iqb-berlin.github.io/verona-modules-aspect](https://iqb-berlin.github.io/verona-modules-aspect/) | API documentation of everything under `projects/`, rebuilt from `develop` on every merge |
 | [`rules.md`](rules.md) | Binding conventions for this repository. Read before the first change |
 | [`docs/unit_definition_changelog.txt`](docs/unit_definition_changelog.txt) | How the stored unit definition changed, per version |
 | [`docs/version-history.md`](docs/version-history.md) | Which unit definition version a released editor or player writes |
@@ -22,9 +22,9 @@ that file is what a host system embeds.
 
 ## Requirements
 
-- **Node 24** and **npm 11** — the versions this repository is developed and released with.
-  npm 9 and 10 install from the lock file as well; every lock file change is validated
-  against all three (see below).
+- **Node 22 or 24.** The pipeline image (`scripts/Dockerfile`) runs Node 22, the
+  documentation workflow Node 24, and development happens on either. The repository declares
+  neither an `engines` field nor an `.nvmrc`, so nothing enforces this.
 - **Chromium for Playwright**, because the unit tests run in browser mode:
   `npx playwright install chromium`.
 
@@ -34,15 +34,16 @@ Install with the lock file, which reproduces the exact dependency set:
 npm ci
 ```
 
-Use `npm install` only when you intend to change dependencies — it rewrites
-`package-lock.json`. After changing dependencies, validate the lock file against every npm
-generation the pipeline may use:
+To change a dependency, edit `package.json` and apply the delta on top of the existing lock
+file with npm 10 rather than regenerating it — different npm generations resolve and
+deduplicate differently, and a lock file written by one has been rejected by `npm ci` in the
+pipeline before:
 
 ```bash
-npx npm@9 ci --dry-run && npx npm@10 ci --dry-run && npm ci --dry-run
+npx npm@10 install
+npx npm@9 ci --dry-run && npx npm@10 ci --dry-run && npm ci --dry-run   # all three must pass
+npm ci                                                                  # --dry-run empties node_modules
 ```
-
-`npm ci --dry-run` empties `node_modules`, so run `npm ci` afterwards.
 
 ## npm commands
 
@@ -71,8 +72,8 @@ the module through the Verona API.
 | `npm run e2e-headless` | Runs the same specs headless, as the pipeline does |
 
 **The end-to-end tests do not run as part of `npm test`.** They need both dev servers up:
-start `start-editor-local` and `start-player-local`, wait until both answer, then run
-`e2e-headless`.
+start `start-editor-local` and `start-player-local`, wait until both answer — the pipeline
+uses `scripts/wait-for-dev-server.sh` for that — then run `e2e-headless`.
 
 ### Build
 
@@ -113,6 +114,8 @@ projects/player     player application (src) and its feature modules (modules)
 e2e/tests           Cypress end-to-end specs
 scripts             build, deploy and generator scripts
 docs                changelogs, release notes, version history
+example_data        unit definitions the e2e tests load, and useful by hand
+test-data           fixtures the unit tests load
 ```
 
 `rules.md` §12 and §13 describe how a new component, pipe or directive is laid out and why
@@ -132,10 +135,13 @@ issue → branch → pull request → green pipeline → review → merge into d
    column the team works from. Referencing is fine, keywords are not.
 3. **Open a pull request against `develop`.** A branch without an open pull request gets no
    pipeline at all — that is deliberate, see the comment in `.gitlab-ci.yml`.
-4. **The pipeline runs on GitLab**, mirrored from GitHub, in stages `lint`, `test` and
-   `build`: `lint` (type-aware ESLint), `test-unit` (`npm test`) and `test-e2e` (both dev
-   servers plus headless Cypress). The single GitHub Actions workflow in this repository
-   builds the documentation and nothing else, which is why the Actions tab looks empty.
+4. **The pipeline runs on GitLab**, mirrored from GitHub, with three jobs in two stages:
+   `lint` (type-aware ESLint), `test-unit` (`npm test`) and `test-e2e` (both dev servers plus
+   headless Cypress). **The module build is not part of it** — the `build` stage holds no job
+   and the `deploy` job is commented out, so a change that breaks `build-editor` or
+   `build-player` passes green and only shows up at release time. The single GitHub Actions
+   workflow builds the documentation and nothing else, which is why the Actions tab looks
+   almost empty.
 5. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
    something else is merged, rebase onto `origin/develop` and force-push with
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after
@@ -147,7 +153,8 @@ issue → branch → pull request → green pipeline → review → merge into d
 Tickets live on [project board 13](https://github.com/orgs/iqb-berlin/projects/13). A card
 moves to *In Bearbeitung* when work starts and to *zu testen* once the fix is merged into
 `develop`; a change that ships with its own end-to-end test goes to *Zu Veröffentlichen*
-instead. *In review* means released, not code-reviewed, and a ticket stays open until then.
+instead. *Review* means released and awaiting validation, not code-reviewed — a ticket stays
+open until then and is closed in *Done & closed*.
 
 ## Supported browsers
 

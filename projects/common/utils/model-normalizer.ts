@@ -12,12 +12,20 @@ import { VisibilityRule } from 'common/models/visibility-rule';
  * sections. Object defaults are cloned, because the table is module state and an element holding
  * the table's object would move the default for every element of its type (#1184).
  *
- * {@link NormalizationMigration} calls it at the end of every migration, so in the player -- which
- * migrates unconditionally -- it runs on every load whatever the version. The editor migrates only
- * when `VersionManager.needsMigration` says so, so a unit it saved itself is loaded WITHOUT
- * normalization: a property that only the defaults table carries is therefore filled in the player
- * for certain and in the editor only after a version change. `ElementFactory` and the likert rows
- * call {@link ModelNormalizer.normalizeElement} directly for an element built at runtime.
+ * {@link NormalizationMigration} calls it at the end of every migration, and the player migrates
+ * unconditionally, so there it runs on every load whatever the version. The editor migrates only
+ * when `VersionManager.needsMigration` says so, so a unit it saved itself never reaches this class
+ * at all -- what fills the defaults there is the fallback branch of the models themselves, from the
+ * same table, with the same result: an element built from an un-normalized current-version unit
+ * carries the values a normalized one carries, measured key by key.
+ *
+ * Why it is unconditional in the player nevertheless: `strictInstantiation` in `common/environment`
+ * makes a model REJECT a blueprint it considers incomplete, and the editor build replaces that file
+ * with its own, where the flag is false. So the same un-normalized unit is completed quietly in the
+ * editor and throws in the player.
+ *
+ * `ElementFactory` and the likert rows call {@link ModelNormalizer.normalizeElement} directly for an
+ * element built at runtime.
  *
  * The `styling` group is the one group NOT built here -- which keys an element has is decided by the
  * class that declares them. Whether a change to the model belongs here at all, or in a migration

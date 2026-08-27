@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { delay, of, Subscription } from 'rxjs';
 
+/**
+ * Highlights the passages a trigger points at, each for one minute, and takes the highlight off again
+ * when the minute is up. What is highlighted lives in the DOM, not in a model: the service finds the
+ * `aspect-anchor` elements by their anchor id and sets their colour.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -8,6 +13,10 @@ export class AnchorService {
   private activeAnchors: { [id: string]: Subscription } = {};
   private duration = 60000;
 
+  /**
+   * Switches one passage on or off. Switching one on hides every other highlighted passage first, so
+   * exactly one anchor is visible afterwards -- unlike `showAnchor`, which leaves the others alone.
+   */
   toggleAnchor(anchorId: string): void {
     if (this.activeAnchors[anchorId]) {
       this.removeAnchor(anchorId);
@@ -17,6 +26,11 @@ export class AnchorService {
     }
   }
 
+  /**
+   * Highlights a passage and scrolls the first of its elements into view, next to whatever is already
+   * highlighted. Called again for the same passage, it restarts that passage's minute -- the trigger
+   * action `highlightText` arrives here unguarded, so that is a normal case (#1346).
+   */
   showAnchor(anchorId: string): void {
     this.addAnchor(anchorId);
   }
@@ -77,10 +91,12 @@ export class AnchorService {
     }
   }
 
+  /** Takes the highlight off every passage; the name a trigger action uses for `reset`. */
   hideAllAnchors(): void {
     this.reset();
   }
 
+  /** Ends every running minute and clears the highlights -- also what a task change calls. */
   reset(): void {
     Object.keys(this.activeAnchors).forEach(anchorId => this.removeAnchor(anchorId));
   }

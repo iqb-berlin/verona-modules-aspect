@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { VariableInfo } from '@iqb/responses';
 
+/**
+ * The editor's half of the Verona editor API: it listens on `window` for the host's messages and posts
+ * its own back to the parent frame.
+ *
+ * Running standalone -- opened directly rather than in a host -- nothing is posted at all, which is
+ * what keeps the development server from talking to itself.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +32,8 @@ export class VeronaAPIService {
     }
   }
 
+  /** Where to load a unit's files from: what the host named in its start command, or the editor's own
+      `assets` folder. This is the editor's answer to `APIService`. */
   getResourceURL(): string {
     return this.resourceURL || 'assets';
   }
@@ -40,6 +49,8 @@ export class VeronaAPIService {
     }
   }
 
+  /** Tells the host that the editor is there, together with the module metadata from the HTML file.
+      Without a metadata block an empty object is sent rather than nothing. */
   sendReady(): void {
     const metadata: string | null | undefined = document.getElementById('verona-metadata')?.textContent;
     this.send({
@@ -48,6 +59,10 @@ export class VeronaAPIService {
     });
   }
 
+  /**
+   * Hands the host the current unit and the variables it declares -- what the studio saves. Sent on
+   * every change the editor considers worth saving, not on request.
+   */
   sendChanged(unitDefinition: string, unitDefinitionType: string, variableInfos: VariableInfo[]): void {
     this.send({
       type: 'voeDefinitionChangedNotification',

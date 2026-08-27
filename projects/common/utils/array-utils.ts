@@ -1,5 +1,12 @@
 export abstract class ArrayUtils {
-  /** Silently ignores nonsense reorders! */
+  /**
+   * Moves an item one position towards the front (`up`) or the back (`down`), in the array itself --
+   * the caller's array is reordered, nothing is returned.
+   *
+   * Silently ignores nonsense reorders! Those are: an item the array does not contain, the first item
+   * moving up, the last item moving down, and an array of one. The array is then left as it is, and
+   * the caller cannot tell the two cases apart.
+   */
   static moveArrayItem(item: unknown, array: unknown[], direction: 'up' | 'down'): void {
     const oldIndex = array.indexOf(item);
     if (oldIndex === -1) return;

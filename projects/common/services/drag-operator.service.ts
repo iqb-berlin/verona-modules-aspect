@@ -4,18 +4,41 @@ import { DragOperation } from 'common/classes/drag-operation';
 import { DropLogic } from 'common/utils/drop-logic';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 
+/**
+ * Runs a drag from one drop list to another: it knows every list of the unit, holds the one drag that
+ * is under way, and moves the item when it is dropped.
+ *
+ * The player draws the drag itself rather than leaving it to the CDK, so the steps are explicit --
+ * `startDrag`, a target list entering and leaving as the pointer travels, `handleDrop`, `endDrag`.
+ * Whether a drop is allowed at all is not decided here but in `DropLogic`.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class DragOperatorService {
   dropLists: { [id: string]: DropListComponent } = {};
+  /**
+   * The drag under way -- and, once one has ended, the last one: nothing ever sets this back to
+   * `undefined`. The `if (!this.dragOperation) throw` guards below therefore only cover the state before
+   * the first drag.
+   */
   dragOperation: DragOperation | undefined;
+  /** What actually says whether a drag is running; the drop lists guard their handlers on it. */
   isDragActive = false;
 
+  /**
+   * Adds a list to the board every drag is judged against. A list registers itself when it is created;
+   * there is no way back out, so the lists of a task already left stay here until the page is reloaded
+   * (#1384).
+   */
   registerComponent(comp: DropListComponent): void {
     this.dropLists[comp.elementModel.id] = comp;
   }
 
+  /**
+   * Opens a drag: builds the `DragOperation` -- which works out on the spot which lists could receive
+   * this item -- and marks the source list as the one under the pointer.
+   */
   startDrag(sourceElement: HTMLElement, sourceListComponent: DropListComponent, sourceIndex: number,
             item: DragNDropValueObject, dragType: 'mouse' | 'touch') {
     this.dragOperation =
@@ -32,6 +55,11 @@ export class DragOperatorService {
     this.initDrag();
   }
 
+  /**
+   * Puts the drag on screen: the item left behind is shown as a placeholder -- unless the list copies
+   * on drop, where the original stays and therefore keeps looking normal -- and, if the source list
+   * asks for it, every list that could receive the item is highlighted.
+   */
   initDrag(): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     // placeholder signals that item will be removed on drop. When item is copied it looks
@@ -51,6 +79,8 @@ export class DragOperatorService {
     }
   }
 
+  /** Takes the drag off the screen -- placeholders, highlights, hover states. The drop itself has
+      happened before this, in `handleDrop`; this only tidies up what `initDrag` set. */
   endDrag(): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     this.isDragActive = false;
@@ -70,6 +100,11 @@ export class DragOperatorService {
       });
   }
 
+  /**
+   * Names the list the item would be dropped into now. A sort list also gets a place for it: dragging
+   * within the same list keeps the item's own index, dragging in from elsewhere appends a placeholder
+   * the pointer can then move around.
+   */
   setTargetList(listId: string): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     const targetListComp = this.dropLists[listId];
@@ -84,6 +119,8 @@ export class DragOperatorService {
     }
   }
 
+  /** Appends the dragged item to the target sort list as a placeholder, so the reader sees where it
+      would land and can move it from there. */
   addSortPlaceholder(): void {
     if (!this.dragOperation?.targetComponent) throw new Error('dragOP undefined');
     this.dragOperation.isForeignPlaceholderActive = true;
@@ -96,6 +133,8 @@ export class DragOperatorService {
     this.dragOperation.placeholderElement.classList.add('show-as-placeholder');
   }
 
+  /** Forgets the target list when the pointer leaves it. A drop from here on does nothing, since
+      `handleDrop` needs a target. */
   unSetTargetList(): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     this.dragOperation.targetComponent = undefined;
@@ -103,6 +142,8 @@ export class DragOperatorService {
     this.hoveredListID = undefined;
   }
 
+  /** Moves the placeholder to another position in the sort list -- the reordering the reader sees while
+      dragging. Works on the view model only; the answer changes at the drop. */
   positionSortPlaceholder(targetIndex: number): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     if (!this.dragOperation.targetComponent) throw new Error('targetComponent undefined');
@@ -120,11 +161,20 @@ export class DragOperatorService {
     this.dragOperation.sortingPlaceholderIndex = targetIndex;
   }
 
+  /** Whether this list was found able to receive the item when the drag began. The set is worked out
+      once, at `startDrag`, and does not change while the drag runs. */
   isListEligible(listID: string): boolean {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     return this.dragOperation.eligibleTargetListsIDs.includes(listID);
   }
 
+  /**
+   * Carries out the drop, if `DropLogic` allows it -- otherwise nothing happens at all and the item
+   * stays where it was.
+   *
+   * Dropping into the source list is a reorder, and only a sort list has one; for any other list it is
+   * a no-op. Both lists then rebuild their form value and their view.
+   */
   handleDrop(): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     if (this.dragOperation.sourceComponent && this.dragOperation.targetComponent &&
@@ -151,6 +201,8 @@ export class DragOperatorService {
     }
   }
 
+  /** Moves one item between two lists: out of the source -- unless it copies -- and into the target.
+      Neither list's form value is rebuilt here; the caller does that. */
   moveItem(item: DragNDropValueObject | undefined,
            sourceList: DropListComponent,
            sourceListIndex: number,
@@ -159,12 +211,19 @@ export class DragOperatorService {
     this.addItem(item as DragNDropValueObject, targetList);
   }
 
+  /** Takes the item out of the list, or -- for a list that copies on drop -- reads it without taking
+      it out, which is what leaves the original in place. */
   static removeItem(list: DropListComponent, index: number): DragNDropValueObject {
     return list.elementModel.copyOnDrop ?
       list.elementFormControl.value[index] :
       list.elementFormControl.value.splice(index, 1)[0];
   }
 
+  /**
+   * Puts the item into the target list, at the sorting placeholder if there is one and at the end
+   * otherwise. Two cases end differently: an item returning to the copy list it came from is not added
+   * at all, and a one-item list that allows replacement first sends its current item home.
+   */
   addItem(item: DragNDropValueObject, targetList: DropListComponent): void {
     if (DropLogic.isPutBack(item, DropLogic.createDropListMock(targetList))) {
       return;
@@ -188,6 +247,11 @@ export class DragOperatorService {
 
   hoveredListID: string | undefined;
 
+  /**
+   * Works out from a pointer position which list is under it, and tells the lists that they are being
+   * entered or left. The touch path needs this because a finger, unlike a mouse, raises no enter and
+   * leave events of its own.
+   */
   checkHoveredListOrElement(x: number, y: number): void {
     const el = document.elementFromPoint(x, y);
     const hoveredListID = (el as HTMLElement).closest('.drop-list')?.id;

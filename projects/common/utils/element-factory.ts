@@ -78,6 +78,16 @@ export abstract class ElementFactory {
     return this.elementClasses;
   }
 
+  /**
+   * Builds the model for a draft: normalized, carrying an id and an alias, and of the class that
+   * belongs to its `type`.
+   *
+   * The draft may name as little as its type -- what it leaves out, `ModelNormalizer` fills from the
+   * defaults. An id it already carries is kept; without one, the `idService` mints id and alias and
+   * registers them, and where no service is passed (tests, a throwaway instance) a random pair stands
+   * in that no registry knows about. A type with no class in the table is not an element this
+   * application can build, and the call fails at the `new`.
+   */
   static createElement(element: UIElementDraft, idService?: AbstractIDService)
     : UIElement {
     /* The id the normalizer takes on trust is minted here: a draft on its way in need not carry one,

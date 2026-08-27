@@ -8,6 +8,11 @@ import { StateVariable } from 'common/models/state-variable';
   name: 'isEnabledNavigationTarget'
 })
 export class IsEnabledNavigationTargetPipe implements PipeTransform {
+  /**
+   * Whether a button's action may be offered. Only unit navigation can be forbidden, and only by the
+   * host: while it has said nothing -- `enabledNavigationTargets` still `undefined` -- everything is
+   * allowed, so a player running without a host keeps all its buttons.
+   */
   transform(action: string | null,
             param: UnitNavParam | number | string | StateVariable | null,
             enabledNavigationTargets: NavigationTarget[] | undefined): boolean {

@@ -29,6 +29,8 @@ export abstract class MathFormulaMarkup {
   /** A selection mark, as `TextMarkingUtils` writes it into the text a reader has marked. */
   private static readonly MARKING_TAG = 'aspect-marked';
 
+  /** The markup MathLive lays out for a piece of LaTeX, to be rendered with the KaTeX web fonts the
+      applications embed. */
   static fromLatex(latex: string): string {
     return convertLatexToMarkup(latex);
   }

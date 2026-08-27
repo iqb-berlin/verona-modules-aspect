@@ -47,6 +47,17 @@ import {
   WidgetPeriodicTableComponent
 } from 'common/components/elements/widget-periodic-table/widget-periodic-table.component';
 
+/**
+ * Registers the component that draws each element type, which is what lets a renderer go from a stored
+ * `type` to a component without knowing any of them.
+ *
+ * Called from the `SharedModule` constructor, so both applications get it by importing that module; the
+ * unit tests call it from their `vitest-providers.ts` because they build components without it.
+ * Registering twice is harmless: each type is simply written again.
+ *
+ * Not quite every type: `marking-panel` is missing here and is registered by the two `AppModule`s
+ * themselves, which is why a test bed that only calls this function has no component for it.
+ */
 export function registerComponents(): void {
   ComponentRegistry.registerComponents({
     text: TextComponent,

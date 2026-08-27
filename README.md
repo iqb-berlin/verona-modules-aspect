@@ -24,11 +24,10 @@ that file is what a host system embeds.
 
 ## Requirements
 
-- **Node 24**, as named in `.nvmrc`. The `engines` field accepts
-  `^22.12.0 || >=24.0.0`, which is the range every package in the tree with a Node lower
-  bound asks for — the pipeline image (`scripts/Dockerfile`) still runs Node 22, the
-  documentation workflow Node 24. Without `engine-strict` the field is an advisory, not a
-  gate.
+- **Node 24**, as named in `.nvmrc`, and the version the pipeline image
+  (`scripts/Dockerfile`) and the documentation workflow run as well. The `engines` field
+  accepts `^22.12.0 || >=24.0.0`, which is the range every package in the tree with a Node
+  lower bound asks for; without `engine-strict` it is an advisory, not a gate.
 - **Chromium for Playwright**, because the unit tests run in browser mode:
   `npx playwright install chromium`.
 
@@ -39,14 +38,15 @@ npm ci
 ```
 
 To change a dependency, edit `package.json` and apply the delta on top of the existing lock
-file with npm 10 rather than regenerating it — different npm generations resolve and
-deduplicate differently, and a lock file written by one has been rejected by `npm ci` in the
-pipeline before:
+file rather than regenerating it — different npm generations resolve and deduplicate
+differently, and a lock file written by one has been rejected by `npm ci` in the pipeline
+before. The pipeline now runs the same npm as development, so that is the one to write with;
+npm 10 stays in the check because `engines` still allows it:
 
 ```bash
-npx npm@10 install
-npx npm@9 ci --dry-run && npx npm@10 ci --dry-run && npm ci --dry-run   # all three must pass
-npm ci                                                                  # --dry-run empties node_modules
+npm install
+npx npm@10 ci --dry-run && npm ci --dry-run   # both must pass
+npm ci                                        # --dry-run empties node_modules
 ```
 
 ## npm commands

@@ -26,7 +26,7 @@ export const ParagraphExtension = Paragraph.extend({
   addCommands() {
     const { name } = this;
 
-    /** Only the paragraphs. `nodesBetween` walks into everything the range covers, the text nodes
+    /* Only the paragraphs. `nodesBetween` walks into everything the range covers, the text nodes
        included, and `setNodeMarkup` on one of those throws "NodeType.create can't construct text
        nodes" -- which took the whole command with it: no spacing, an error dialog instead. A cursor
        is enough for that, it descends into the text node it sits in; every paragraph that holds text

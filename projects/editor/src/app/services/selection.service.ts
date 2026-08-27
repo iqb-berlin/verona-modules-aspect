@@ -114,7 +114,7 @@ export class SelectionService {
     this.isCompoundChildSelected = compoundChildren.length > 0;
     this.onlyCompoundChildrenSelected = compoundChildren.length > 0 &&
       compoundChildren.length === this.selectedElementComponents.length;
-    /** Asked of the overlay by its section, not by its class: a compound child overlay has none, and
+    /* Asked of the overlay by its section, not by its class: a compound child overlay has none, and
        keying on the class would tie this service to the overlay implementation. */
     const knownSections = this.selectedElementComponents
       .map(overlayComponent => ('section' in overlayComponent ? overlayComponent.section : undefined))

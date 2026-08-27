@@ -141,7 +141,7 @@ export class ModelNormalizer {
       normalized.isRelevantForPresentationComplete !== undefined ?
         normalized.isRelevantForPresentationComplete : true;
 
-    /** 2. Property groups, each from its own section of the entry: the stored group wins over the
+    /* 2. Property groups, each from its own section of the entry: the stored group wins over the
        element's default, which wins over GLOBAL_DEFAULTS inside the generator. */
     const currentDimensions = (normalized.dimensions as Record<string, unknown>) || {};
     const filteredDimensions = Object.fromEntries(

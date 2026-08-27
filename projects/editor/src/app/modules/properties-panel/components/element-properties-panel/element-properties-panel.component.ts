@@ -124,7 +124,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
    */
   private refreshCombinedProperties(): void {
     try {
-      /** A new set rather than a cleared one: the panel hands it to pure pipes, which re-run on a
+      /* A new set rather than a cleared one: the panel hands it to pure pipes, which re-run on a
          changed reference and would otherwise keep showing the previous selection's answer. */
       const divergingPaths = new Set<string>();
       this.combinedProperties =

@@ -112,7 +112,7 @@ export class FirstLineAlignedControlDirective implements AfterViewInit, OnChange
     const offset = (line.top + line.bottom) / 2 - (box.top + box.height / 2);
     if (Math.abs(offset) < FirstLineAlignedControlDirective.THRESHOLD_PX) return;
 
-    /** Added to what is already set, so repeated measurements converge instead of oscillating. */
+    /* Added to what is already set, so repeated measurements converge instead of oscillating. */
     const current = parseFloat(control.style.marginTop) || 0;
     this.renderer.setStyle(control, 'margin-top', `${Math.round((current + offset) * 10) / 10}px`);
   }

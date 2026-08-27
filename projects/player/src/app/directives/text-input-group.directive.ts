@@ -114,7 +114,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     if (focusedTextInput.focused &&
       elementModel.restrictedToInputAssistanceChars &&
       this.shallOpenKeypad(elementModel)) {
-      /** The same rule the keypad uses to decide whether it offers a Return key, so it cannot offer
+      /* The same rule the keypad uses to decide whether it offers a Return key, so it cannot offer
          one the restriction blocks. */
       const hasReturnKey = new HasReturnKeyPipe().transform(elementModel);
       this.restrictedInputElement = focusedTextInput.inputElement;

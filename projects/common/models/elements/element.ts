@@ -34,6 +34,18 @@ export function isUIElementProperties(blueprint: Partial<UIElementProperties>): 
   return blueprint !== undefined && blueprint !== null;
 }
 
+/**
+ * What every element has, whatever its type: an id and an alias, the position, dimensions and
+ * styling groups, and the property setters the editor writes through.
+ *
+ * The groups are built here from `GLOBAL_DEFAULTS`, so an element has them before its own class fills
+ * in what it declares. `position` is one of them and stays: the only element that takes it away again
+ * is a cloze child, which is laid out inline by the text around it (see `ClozeElement`).
+ *
+ * The index signature is what lets the properties panel address a property by name -- and what makes
+ * {@link UIElement.setProperty} accept a name no element has, writing it onto the root where nothing
+ * reads it. That is why the editor has a write path per group; see `ElementService`.
+ */
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
   id!: string;

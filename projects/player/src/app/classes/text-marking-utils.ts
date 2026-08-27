@@ -3,6 +3,15 @@ import { Injectable } from '@angular/core';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { RangeSelectionService } from 'common/services/range-selection.service';
 
+/**
+ * Computes the marking ranges of a text element for the `selection` marking mode: it colours what
+ * the reader selected, clears it again, and converts between the rendered markup and the indices a
+ * unit stores.
+ *
+ * This is the free-selection half of text marking. Where the element restricts marking to words or
+ * ranges, {@link MarkableSupport} builds a component per markable instead -- the two are told apart
+ * by `markingMode`, which `ElementModelElementCodeMappingService` reads when it maps the value.
+ */
 @Injectable({
   providedIn: 'root'
 })

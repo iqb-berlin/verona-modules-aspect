@@ -199,6 +199,17 @@ export abstract class PropertyGroupValidators {
   }
 }
 
+/**
+ * Builds the property groups of an element -- position, dimensions, styling, player -- each generator
+ * from its own section of an `ELEMENT_DEFAULTS` entry or from what a stored unit carries.
+ *
+ * Three values can meet for one key, and they win in this order: what the unit stored, then the
+ * element's own default, then `GLOBAL_DEFAULTS` inside the generator.
+ *
+ * {@link PropertyGroupGenerators.mergeStyling} is the exception to all of it: which styling keys an
+ * element has is decided by the class that declares them, and the stored group is merged into that
+ * one. See rules.md 14 for why the normalizer does not build this group.
+ */
 export abstract class PropertyGroupGenerators {
   /** Each generator takes ITS OWN group: the section of an ELEMENT_DEFAULTS entry from a class field,
    * or `element.position` etc. from a constructor. Before #1224 the table was flat, so the parameter

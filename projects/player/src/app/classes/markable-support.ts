@@ -12,6 +12,15 @@ import { MarkingRange } from 'common/models/marking-data';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 
+/**
+ * Computes the markable ranges of a text element for the `word` and `range` marking modes: it splits
+ * the rendered text into markables and creates a component for each, which then carries the marking
+ * colour and the click target.
+ *
+ * This is the restricted half of text marking; the free selection goes through
+ * {@link TextMarkingUtils}, and `markingMode` decides which of the two applies. The components are
+ * created outside any template, which is why {@link MarkableSupport.destroy} exists.
+ */
 export class MarkableSupport {
   private renderer: Renderer2;
   private applicationRef: ApplicationRef;

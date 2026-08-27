@@ -24,9 +24,11 @@ that file is what a host system embeds.
 
 ## Requirements
 
-- **Node 22 or 24.** The pipeline image (`scripts/Dockerfile`) runs Node 22, the
-  documentation workflow Node 24, and development happens on either. The repository declares
-  neither an `engines` field nor an `.nvmrc`, so nothing enforces this.
+- **Node 24**, as named in `.nvmrc`. The `engines` field accepts
+  `^22.12.0 || >=24.0.0`, which is the range every package in the tree with a Node lower
+  bound asks for — the pipeline image (`scripts/Dockerfile`) still runs Node 22, the
+  documentation workflow Node 24. Without `engine-strict` the field is an advisory, not a
+  gate.
 - **Chromium for Playwright**, because the unit tests run in browser mode:
   `npx playwright install chromium`.
 

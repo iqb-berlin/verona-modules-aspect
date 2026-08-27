@@ -27,6 +27,10 @@
     "test:editor-modules": "ng test editorModules --watch=false"
   },
   "private": true,
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0",
+    "npm": ">=10.0.0"
+  },
   "eslintConfig": {
     "extends": "@iqb/eslint-config",
     "parserOptions": {

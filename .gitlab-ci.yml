@@ -1,9 +1,27 @@
 stages:
-  - install
+  - build-image
   - lint
   - test
   - build
   - deploy
+
+variables:
+  # The image every other job runs in, built from scripts/Dockerfile by the job below and kept in
+  # this project's own registry. Before #1364 it was `iqbberlin/aspect-test:latest` on Docker Hub,
+  # built and pushed by hand - five times since 2022, each time by the one person holding the
+  # organisation account, and nothing recorded which Node a pipeline had actually run on. The
+  # pattern here is the one studio-lite uses (.gitlab-ci/CICD.Dockerfile there).
+  #
+  # The tag carries the hash of scripts/Dockerfile, NOT a moving name. Two pipelines that run at
+  # the same time then cannot pull each other's image: a different recipe is a different tag, and
+  # a commit names the image it needs. `build-test-image` compares tag and hash and fails if they
+  # drift apart, so the tag cannot be forgotten when the recipe changes.
+  TEST_IMAGE: ${CI_REGISTRY_IMAGE}/aspect-test:node24-fe6e7d845137
+  # Docker Hub images come through the group's dependency proxy: the shared runner IP shares one
+  # anonymous pull quota with every other project on it, and an exhausted quota kills a job as
+  # runner_system_failure before a line of our code has run.
+  DOCKER_HUB_PROXY: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/"
+  BASE_IMAGE: node:24-bookworm
 
 # A push and the pull request GitLab mirrors from GitHub each start a pipeline for the same
 # commit. Both report to the same GitHub status context (ci/gitlab/scm.cms.hu-berlin.de), so
@@ -22,10 +40,79 @@ workflow:
     - when: always
 
 default:
-  image: iqbberlin/aspect-test:latest
+  image: ${TEST_IMAGE}
   # Lets a pipeline for a newer commit cancel this one instead of both queueing for the
   # same runner. Effective through workflow:auto_cancel above.
   interruptible: true
+  # Every job now pulls its image from a registry, and the dependency proxy in front of Docker Hub
+  # answers a pull with a 404 now and then - studio-lite lost four pipelines to it on two days in
+  # August 2026. Retried are only the classes that are infrastructure by definition: a red test or
+  # lint job is script_failure and is never retried. test-e2e keeps its own, wider retry.
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - api_failure
+
+# Builds the image the other jobs run in and pushes it to this project's registry. Credentials
+# come from GitLab itself (CI_REGISTRY_*), so this needs no account anyone has to hold.
+#
+# It runs only when the recipe changes, so a normal pipeline is no longer than before: every other
+# run pulls the image an earlier build left in the registry, and the tag tells it which one. Tag
+# pipelines never build - a release must not depend on Docker Hub or on a base image that moved.
+#
+# The docker-in-docker settings are taken from studio-lite, where they were arrived at on this same
+# runner network: the MTU, without which the build hangs on the first network access inside the
+# container, and the health check port, which has to be the plain one because DOCKER_TLS_CERTDIR
+# is empty.
+build-test-image:
+  stage: build-image
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - changes:
+        - scripts/Dockerfile
+        - .gitlab-ci.yml
+  needs: []
+  image: ${DOCKER_HUB_PROXY}docker:28
+  services:
+    - name: ${DOCKER_HUB_PROXY}docker:28-dind
+      alias: docker
+      variables:
+        HEALTHCHECK_TCP_PORT: "2375"
+      entrypoint: [ "sh", "-c", "dockerd-entrypoint.sh --mtu=${DOCKER_MTU}" ]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ''
+    DOCKER_MTU: 1392
+  before_script:
+    # Bounded: a daemon that never comes up should fail the job in half a minute rather than hold
+    # the shared runner until the job timeout.
+    - for i in $(seq 30); do docker info > /dev/null 2>&1 && break; echo "waiting for the docker daemon"; sleep 1; done
+    - docker info > /dev/null 2>&1 || { echo "the docker daemon did not come up"; exit 1; }
+    - docker login -u "${CI_DEPENDENCY_PROXY_USER}" -p "${CI_DEPENDENCY_PROXY_PASSWORD}" "${CI_DEPENDENCY_PROXY_SERVER}"
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+  script:
+    # The tag has to name the recipe it was built from, or the guarantee above is worthless.
+    - expected="node24-$(sha256sum scripts/Dockerfile | cut -c1-12)"
+    - test "${TEST_IMAGE##*:}" = "${expected}" ||
+        { echo "TEST_IMAGE says ${TEST_IMAGE##*:}, scripts/Dockerfile hashes to ${expected}"; exit 1; }
+    # --pull so a rebuild also picks up security updates of the base image, --cache-from plus
+    # inline cache so an unchanged apt layer is not fetched again. The context is scripts/ and
+    # stays small because the recipe copies nothing out of the repository.
+    - docker build
+        --progress plain
+        --pull
+        --build-arg BASE_IMAGE="${DOCKER_HUB_PROXY}${BASE_IMAGE}"
+        --build-arg BUILDKIT_INLINE_CACHE=1
+        --cache-from "${TEST_IMAGE}"
+        --file scripts/Dockerfile
+        --tag "${TEST_IMAGE}"
+        scripts/
+    - docker push -q "${TEST_IMAGE}"
+  after_script:
+    - docker logout "${CI_REGISTRY}"
+    - docker logout "${CI_DEPENDENCY_PROXY_SERVER}"
 
 # A stage of its own, ahead of test, because this job is not cheap: type-aware linting builds
 # the whole TypeScript program in one process - measured 26 s and 2.3 GB peak RSS. Running that

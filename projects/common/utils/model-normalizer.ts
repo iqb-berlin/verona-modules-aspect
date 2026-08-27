@@ -6,6 +6,20 @@ import { PageProperties } from 'common/models/page';
 import { SectionProperties } from 'common/models/section';
 import { VisibilityRule } from 'common/models/visibility-rule';
 
+/**
+ * Fills in what a stored unit does not carry: every own property of an element from its
+ * `ELEMENT_DEFAULTS` entry, and the position, dimensions and player groups from that entry's
+ * sections. Object defaults are cloned, because the table is module state and an element holding
+ * the table's object would move the default for every element of its type (#1184).
+ *
+ * This runs on every load, over every unit, whatever its version: {@link NormalizationMigration}
+ * calls it at the end of every migration. `ElementFactory` and the likert rows call
+ * {@link ModelNormalizer.normalizeElement} directly for an element built at runtime.
+ *
+ * The `styling` group is the one group NOT built here -- which keys an element has is decided by the
+ * class that declares them. Whether a change to the model belongs here at all, or in a migration
+ * step, is answered in {@link MigrationManager} and in rules.md 14.
+ */
 export class ModelNormalizer {
   static normalizeUnit(unit: Record<string, unknown>): UnitProperties {
     return {

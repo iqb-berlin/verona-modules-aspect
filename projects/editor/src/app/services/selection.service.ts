@@ -10,6 +10,18 @@ import {
   TableChildOverlay
 } from 'common/components/table-child-overlay/table-child-overlay.component';
 
+/**
+ * What the editor has selected: the page, the section, the element models, and the overlay
+ * components that render them.
+ *
+ * The three flags below are DERIVED from the selection and never written from outside. They used to
+ * be set by whoever had just clicked, which left them describing an earlier selection -- a
+ * shift-click on a second element cleared a flag while the first was still selected (#1268). What
+ * they decide is which controls the properties panel offers.
+ *
+ * {@link reset} is the seam at a unit change: whatever is left here afterwards describes elements
+ * the incoming unit does not contain (#1089).
+ */
 @Injectable({
   providedIn: 'root'
 })

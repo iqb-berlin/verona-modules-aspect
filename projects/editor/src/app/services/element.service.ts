@@ -49,6 +49,26 @@ import {
    knows: the groups stay partial, because the factory completes them from the element's defaults. */
 type PreparedElementProps = Omit<UIElementDraft, 'type'>;
 
+/**
+ * Every change the editor makes to an element goes through here: creating, deleting, duplicating,
+ * and the write paths that hand one value to a whole selection.
+ *
+ * Which path a property takes is decided by the group it lives in, and taking the wrong one fails
+ * silently. `updateElementsProperty` ends in `UIElement.setProperty`, which the index signature lets
+ * write any name onto the element root, where nothing reads it: `xPosition` went that way and
+ * alignment did nothing at all, `width` went that way and a dragged selection kept its size (#1142).
+ * Hence a path per group -- `updateElementsPositionProperty`, `updateElementsDimensionsProperty`,
+ * `updateSelectedElementsStyleProperty`, `updateElementsPlayerProperty` -- and `OwnProperty` on the
+ * first one, which rejects a name belonging to any of them at compile time.
+ *
+ * The two paths that carry object values give every element its own copy through `copyPlainData`:
+ * `setProperty` splices the value's entries into each element, so one value would leave a whole
+ * selection holding the same objects, and editing a label on one would change it on the others
+ * (#1188, rules.md 15). The style and player paths write primitives.
+ *
+ * Deleting goes through {@link deleteElements} rather than through the models, so references, the
+ * order inside the section and the selection are brought along.
+ */
 @Injectable({
   providedIn: 'root'
 })

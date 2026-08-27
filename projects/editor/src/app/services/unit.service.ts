@@ -20,6 +20,18 @@ import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 
+/**
+ * Holds the unit the editor is working on, and is the only place it is replaced.
+ *
+ * The public subjects are how the rest of the editor learns that something changed; they carry no
+ * state, so a subscriber reads the unit itself afterwards. `updateUnitDefinition` is what reports a
+ * changed unit to the host.
+ *
+ * Two private signals separate the two moments a load has, because dialogs need different ones: a
+ * dialog that belongs to a LOAD is superseded when the next load starts, while a dialog that belongs
+ * to the UNIT -- a delete waiting for confirmation -- has to know when the unit under it is actually
+ * gone, which a load ending in an error or in the sanitization dialog never does (#1247, #1253).
+ */
 @Injectable({
   providedIn: 'root'
 })

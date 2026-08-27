@@ -2,8 +2,10 @@ import { Directive, HostListener } from '@angular/core';
 import { BaseTooltipDirective } from 'common/directives/base-tooltip.directive';
 import { TooltipPosition } from 'common/models/ui-element-interfaces';
 
-// The rich text editor's tooltip extension builds this detail from two data attributes,
-// each of which is absent whenever its value is empty (see extensions/tooltip.ts).
+/**
+ * The rich text editor's tooltip extension builds this detail from two data attributes,
+ * each of which is absent whenever its value is empty (see extensions/tooltip.ts).
+ */
 interface TooltipEventDetail {
   tooltipText: string | null;
   tooltipPosition: TooltipPosition | null;

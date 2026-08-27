@@ -35,7 +35,7 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
   @Output() elementSelected = new EventEmitter();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;
-  // Make children not clickable. This way there is no interference with drag-and-drop via overlay.
+  /** Make children not clickable. This way there is no interference with drag-and-drop via overlay. */
   preventInteraction = true;
   childComponent!: ComponentRef<ElementComponent | CompoundElementComponent>;
   private ngUnsubscribe = new Subject<void>();

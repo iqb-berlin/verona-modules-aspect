@@ -24,7 +24,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   @Input() clozeContext: boolean = false;
   @ViewChildren('listItem') droplistItems: QueryList<ElementRef> | undefined;
 
-  // Needed for sortlists, where the displayed items are (temporarily) not the same as the actual form value
+  /** Needed for sortlists, where the displayed items are (temporarily) not the same as the actual form value */
   viewModel!: DragNDropValueObject[];
   dragImageRef: ComponentRef<DragImageComponent> | undefined;
   isHovered = false;

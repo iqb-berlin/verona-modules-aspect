@@ -24,9 +24,11 @@ export class KeyInputRestrictionService {
   private inputElement?: HTMLElement;
   private restriction?: KeyInputRestriction;
 
-  // Bound once: `bind` returns a new function every call, so the reference passed to
-  // removeEventListener would never be the one that had been registered and the keydown listener
-  // would stay on the input for its lifetime (#1123).
+  /**
+   * Bound once: `bind` returns a new function every call, so the reference passed to
+   * removeEventListener would never be the one that had been registered and the keydown listener
+   * would stay on the input for its lifetime (#1123).
+   */
   private readonly restrictKeys = this.restrict.bind(this);
 
   attach(inputElement: HTMLElement, restriction: KeyInputRestriction): void {

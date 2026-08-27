@@ -62,8 +62,10 @@ export class DropListPropertiesComponent {
     });
   }
 
-  // Only ever called for the option list, so the name can be narrowed instead of indexing the
-  // typed properties with an arbitrary string.
+  /**
+   * Only ever called for the option list, so the name can be narrowed instead of indexing the
+   * typed properties with an arbitrary string.
+   */
   moveOption(property: 'value', indices: { previousIndex: number, currentIndex: number }): void {
     const options = this.combinedProperties[property] as unknown as TextImageLabel[];
     moveItemInArray(options, indices.previousIndex, indices.currentIndex);

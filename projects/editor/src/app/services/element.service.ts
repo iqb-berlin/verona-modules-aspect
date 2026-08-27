@@ -287,10 +287,12 @@ export class ElementService {
     this.reportPropertyUpdate();
   }
 
-  // xPosition and yPosition live in the element's position group, so they have to go through
-  // updateElementsPositionProperty. updateElementsProperty would end up in UIElement.setProperty,
-  // which writes this[property] - allowed by the index signature, but it puts a stray xPosition on
-  // the element itself and leaves position.xPosition alone, so alignment did nothing at all.
+  /**
+   * xPosition and yPosition live in the element's position group, so they have to go through
+   * updateElementsPositionProperty. updateElementsProperty would end up in UIElement.setProperty,
+   * which writes this[property] - allowed by the index signature, but it puts a stray xPosition on
+   * the element itself and leaves position.xPosition alone, so alignment did nothing at all.
+   */
   alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     switch (alignmentDirection) {
       case 'left':

@@ -90,7 +90,7 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
   });
 
   /* An emptied box used to write a 0 on the keystroke that emptied it - so clearing the field to
-     retype set "no selection allowed" in passing. It is refused on leaving now. */
+     retype set "unlimited selections" in passing. It is refused on leaving now. */
   it('should refuse an emptied maximum number of selections', async () => {
     const numberInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
     numberInput.value = '';
@@ -104,5 +104,17 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
 
     expect(emitted).toEqual([{ property: 'maxNumberOfSelections', value: null, isInputValid: false }]);
     expect(numberInput.value).toBe('3');
+  });
+
+  /* The value travels into the widget call unchanged, so what a 0 does is decided in the widget:
+     `maxSelectCount < 1` skips its limit check, which makes the selection unlimited rather than
+     impossible (`ps-select.service.ts` in iqb-berlin/verona-widgets-chemistry). The field is the
+     only place an author can learn that (#1350). */
+  it('should say what a zero number of selections means', () => {
+    const hints = Array.from(
+      fixture.nativeElement.querySelectorAll('mat-hint') as NodeListOf<HTMLElement>
+    ).map(hint => hint.textContent?.trim());
+
+    expect(hints).toEqual(['propertiesPanel.maxNumberOfSelectionsHint']);
   });
 });

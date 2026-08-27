@@ -46,7 +46,7 @@ export class TableEditDialogComponent implements OnDestroy {
     this.newTable = TableEditDialogComponent.copyForEditing(data.table);
   }
 
-  /* What the dialog edits is a copy, so that "Abbrechen" can leave the table as it was: it used to
+  /** What the dialog edits is a copy, so that "Abbrechen" can leave the table as it was: it used to
      work on the table itself, and a removed cell was out of the unit before anyone had confirmed
      anything (#1270). The copy is not a duplicate -- it holds the very same cell objects, only in
      its own array. Rebuilding them (getBlueprint(), the TableElement constructor) would hand out new
@@ -61,7 +61,7 @@ export class TableEditDialogComponent implements OnDestroy {
     });
   }
 
-  /* Saving is where the removal reaches the unit, so the bookkeeping of a removed cell belongs here
+  /** Saving is where the removal reaches the unit, so the bookkeeping of a removed cell belongs here
      and not to the click that took it out of the copy: its IDs are free only now, and only now is
      its overlay gone -- a cell can be selected, and nothing else takes it out of the selection
      (#1261). */
@@ -72,7 +72,7 @@ export class TableEditDialogComponent implements OnDestroy {
     this.dialogRef.close({ elements: this.newTable.elements, headerRows: this.newTable.headerRows });
   }
 
-  /* Closing without saving discards the copy -- and with it the elements that were created into it.
+  /** Closing without saving discards the copy -- and with it the elements that were created into it.
      Their IDs were registered when they were built, so they have to be released here, or they stay
      taken for the rest of the session without an element carrying them. */
   ngOnDestroy(): void {

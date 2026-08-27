@@ -46,7 +46,7 @@ import type {
 } from 'common/models/input-element-interfaces';
 import type { UIElementType } from 'common/models/ui-element-interfaces';
 
-/* What a group member falls back to when neither the element's entry nor the stored unit names it.
+/** What a group member falls back to when neither the element's entry nor the stored unit names it.
  * Grouped like the entries below and like the model, so each generator reads its own section. */
 export const GLOBAL_DEFAULTS = {
   position: {
@@ -95,12 +95,12 @@ export const GLOBAL_DEFAULTS = {
   player: Partial<PlayerProperties>;
 };
 
-/* An element's styling type, whether the interface declares `styling` as required or leaves it
+/** An element's styling type, whether the interface declares `styling` as required or leaves it
  * optional -- six elements declare the optional form (`styling?: Record<never, never>`, #1226), and a
  * predicate matching only the required form is blind to exactly those (#1185 review). */
 type StylingOf<P> = P extends { styling?: infer S } ? NonNullable<S> : never;
 
-/* Named keys only. An index signature on a styling type would make the Partial<> below accept any
+/** Named keys only. An index signature on a styling type would make the Partial<> below accept any
  * key of the right value type, which switches off the excess-property check this table exists for:
  * giving one element's styling an `& Record<string, unknown>` makes three TS2353 errors disappear on
  * the spot -- a junk key in an ELEMENT_DEFAULTS entry and two invented arguments to the property
@@ -110,7 +110,7 @@ type NamedKeysOnly<T> = {
   [K in keyof T as string extends K ? never : (number extends K ? never : K)]: T[K]
 };
 
-/* An element whose declared styling holds no keys -- image, geometry, trigger, hotspot-image,
+/** An element whose declared styling holds no keys -- image, geometry, trigger, hotspot-image,
  * marking-panel, likert-row since #1226 -- can carry no styling default either: the value would reach
  * neither the root (the normalizer leaves group members to the generators) nor the group, so it would
  * evaporate silently. This turns it into a compile error instead, and the same held before #1226, when
@@ -123,7 +123,7 @@ type NamedKeysOnly<T> = {
  * nothing is pinned by a spec, not by a type. */
 type DeclaredStylingOf<P> = Stylings extends StylingOf<P> ? Record<never, never> : StylingOf<P>;
 
-/* An entry is shaped like the element: its own defaults sit on the entry, the four nested groups in
+/** An entry is shaped like the element: its own defaults sit on the entry, the four nested groups in
  * sections of the same name. Nothing about a key has to be inferred from its NAME -- each generator
  * is handed its own section, and ModelNormalizer fills the entry's own keys onto the element root.
  *
@@ -149,7 +149,7 @@ type GroupedDefaults<P> =
       'this element does not declare a player group';
   };
 
-/* The runtime twin of `GroupSection`, for the one caller that has to tell a section from an own
+/** The runtime twin of `GroupSection`, for the one caller that has to tell a section from an own
  * property per key: `ModelNormalizer` fills the own ones onto the element root. Checked in both
  * directions -- `satisfies` rejects a name that is no section, and the assertion names a section this
  * array is missing. Four names, and the same four for every element; the flat table needed a list of
@@ -159,7 +159,7 @@ readonly GroupSection[];
 type UnlistedSection = Exclude<GroupSection, typeof GROUP_SECTIONS[number]>;
 export type GroupSectionsAreListed = AssertNever<UnlistedSection>;
 
-/* What all entries have in common, for the one consumer that looks an entry up by a type known only at
+/** What all entries have in common, for the one consumer that looks an entry up by a type known only at
  * runtime and therefore cannot have that entry's own type. Deliberately not the union of the 30 entry
  * types: a section is absent from most of them, so every read would need a per-member narrowing. */
 export type ElementDefaultsEntry = {
@@ -202,13 +202,13 @@ interface ElementPropertiesMap {
   'widget-periodic-table': WidgetPeriodicTableProperties;
 }
 
-/* Mapped over UIElementType, so the table and the union cannot drift: a new
+/** Mapped over UIElementType, so the table and the union cannot drift: a new
  * element type without a defaults entry (or a stale key after a rename) is a
  * compile error HERE, not a stray index error in whichever consumer happens to
  * look the type up first. */
 type ElementDefaultsMap = { [K in UIElementType]: GroupedDefaults<ElementPropertiesMap[K]> };
 
-/* Which styling keys an element keeps needs no catalogue here: the element's class
+/** Which styling keys an element keeps needs no catalogue here: the element's class
  * builds its own styling group and the compiler checks that group against the
  * declared type, in the same file (see PropertyGroupGenerators.mergeStyling).
  *
@@ -793,7 +793,7 @@ export const ELEMENT_DEFAULTS = {
   }
 } satisfies ElementDefaultsMap;
 
-/* Whether an element gets the input properties, and whether it gets the keyboard properties, was
+/** Whether an element gets the input properties, and whether it gets the keyboard properties, was
  * decided by two lists of TYPE NAMES in ModelNormalizer until #1228: correct at the time, held to the
  * model by nothing. A new input element missing from the list loaded without `required` and `readOnly`,
  * and since the inspector goes by presence, without their controls -- at a green compiler. The values
@@ -815,7 +815,7 @@ type InputTypeMissingADefault = {
 }[UIElementType];
 export type InputDefaultsAreComplete = AssertNever<InputTypeMissingADefault>;
 
-/* The keyboard half of TextInputElementProperties: it extends InputElementProperties as well, and
+/** The keyboard half of TextInputElementProperties: it extends InputElementProperties as well, and
  * `value`, `label` and the base keys of an element are no business of this check. */
 type TextKeyboardProperties = Omit<TextInputElementProperties, keyof InputElementProperties>;
 

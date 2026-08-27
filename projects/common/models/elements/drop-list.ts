@@ -152,7 +152,7 @@ export class DropListElement extends InputElement implements DropListProperties 
     return (!this.connectedTo.length && (this.value as DragNDropValueObject[]).length > 1);
   }
 
-  /* The values carry ids of their own, which a copy must not inherit - `registerValueIDs()` assigns
+  /** The values carry ids of their own, which a copy must not inherit - `registerValueIDs()` assigns
      new ones. The deep copy itself is the base class's business since #1179. */
   getBlueprint(): DropListProperties {
     return {

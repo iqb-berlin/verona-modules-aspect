@@ -10,6 +10,18 @@ import {
   TableChildOverlay
 } from 'common/components/table-child-overlay/table-child-overlay.component';
 
+/**
+ * What the editor has selected: the page, the section, the element models, and the overlay
+ * components that render them.
+ *
+ * The three flags below are DERIVED from the selection and never written from outside. They used to
+ * be set by whoever had just clicked, which left them describing an earlier selection -- a
+ * shift-click on a second element cleared a flag while the first was still selected (#1268). What
+ * they decide is which controls the properties panel offers.
+ *
+ * {@link reset} is the seam at a unit change: whatever is left here afterwards describes elements
+ * the incoming unit does not contain (#1089).
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -93,7 +105,7 @@ export class SelectionService {
     this.publishSelection();
   }
 
-  /* The one way out of here: every change of `selectedElementComponents` ends in this, so the flag and
+  /** The one way out of here: every change of `selectedElementComponents` ends in this, so the flag and
      the subject cannot describe different selections (#1268). */
   private publishSelection(): void {
     const compoundChildren = this.selectedElementComponents
@@ -112,7 +124,7 @@ export class SelectionService {
     this._selectedElements.next(this.selectedElementComponents.map(overlayComponent => overlayComponent.element));
   }
 
-  /* Takes the named elements out of the selection and leaves the rest of it alone -- a delete has no
+  /** Takes the named elements out of the selection and leaves the rest of it alone -- a delete has no
      reason to unselect what it did not touch, and nothing would re-select it: the overlays that stay
      are not rebuilt. Compound children are named too, because getAllElements reaches them (#1258). */
   deselectElements(elements: UIElement[]): void {

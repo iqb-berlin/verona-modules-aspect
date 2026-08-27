@@ -28,7 +28,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 @Directive()
 export abstract class ElementOverlay implements OnInit, OnDestroy {
   @Input() element!: PositionedUIElement;
-  /* The section this overlay lives in. Handed in rather than looked up, so that the selection can
+  /** The section this overlay lives in. Handed in rather than looked up, so that the selection can
      say which section holds it without going through selectedPageIndex/selectedSectionIndex — those
      are written in several places and can name another section (#1204). */
   @Input() section!: Section;

@@ -1,4 +1,4 @@
-/* The GeoGebra applet ships without type declarations. Declared here are exactly the members
+/** The GeoGebra applet ships without type declarations. Declared here are exactly the members
    the geometry component uses; anything else the library offers is deliberately absent. */
 
 export interface GeoGebraApi {

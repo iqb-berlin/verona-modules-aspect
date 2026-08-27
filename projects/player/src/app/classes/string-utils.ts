@@ -1,3 +1,7 @@
+/**
+ * Converts a string between the four notations the interfaces around the player use: camelCase,
+ * UPPER_SNAKE_CASE, kebab-case and PascalCase, in every direction.
+ */
 export class StringUtils {
   // camelCase conversions
   static camelCaseToUpperSnakeCase(str: string): string {

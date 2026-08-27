@@ -5,7 +5,7 @@ import { UnitTraversalMigration } from './unit-traversal-migration';
 
 export class MigrationLegacy extends UnitTraversalMigration {
   fromVersion = '3.10.0';
-  /* 4.0.0, not 4.10.0: these transformations ARE the 4.0.0 changelog entries -- flat width/height to
+  /** 4.0.0, not 4.10.0: these transformations ARE the 4.0.0 changelog entries -- flat width/height to
    * dimensions, activeAfterId to visibilityRules, margins and grid sizes to objects. The step filter
    * reads this declaration (see {@link MigrationManager}, "the trap"), so a later target ran them over
    * 4.0-4.9 units too, where the source keys no longer exist. Three of the five transformations have

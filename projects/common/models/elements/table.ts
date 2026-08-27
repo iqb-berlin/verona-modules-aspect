@@ -111,7 +111,7 @@ export class TableElement extends CompoundElement implements TableProperties {
     return this.elements;
   }
 
-  /* Only for the return type: the deep copy, including turning the child elements into blueprints of
+  /** Only for the return type: the deep copy, including turning the child elements into blueprints of
      their own, is the base class's since #1179. */
   getBlueprint(): TableElement {
     return super.getBlueprint() as unknown as TableElement;

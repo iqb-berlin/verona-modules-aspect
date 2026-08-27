@@ -21,7 +21,7 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['spell-correct'].dimensions);
 
-  /* No lineHeight, unlike the eleven other elements that have one: this is a single-line input with a
+  /** No lineHeight, unlike the eleven other elements that have one: this is a single-line input with a
      button under it, and the component applies no line height anywhere. Added to the model in 2021
      (51204206), lost again in the 2.x styling rework -- the released master has none for this element
      -- and reintroduced by #1177; no component ever rendered it (#1232).

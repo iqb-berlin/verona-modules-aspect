@@ -74,7 +74,7 @@ export class MigrationManager {
     new Migration4m11To4m12()
   ];
 
-  /* Loose in, typed out: what comes back is a `UnitProperties` and can be handed to `new Unit(...)`
+  /** Loose in, typed out: what comes back is a `UnitProperties` and can be handed to `new Unit(...)`
      without a cast. The steps in between keep working on `Record<string, unknown>` -- a unit of an
      older version is not a `UnitProperties`, which is what it is being migrated for (#1198). */
   static migrate(unitDefinition: Record<string, unknown>, targetVersion: string): UnitProperties {

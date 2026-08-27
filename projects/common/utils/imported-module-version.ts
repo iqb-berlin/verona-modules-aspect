@@ -11,7 +11,7 @@ export class ImportedModuleVersion {
     }
   }
 
-  /*
+  /**
   Checks for existence of parts before and after the @ sign. The first part has to be
   'iqb-aspect-definition', which indicates a known and supported version.
   The second part has to have exactly 3 numbers, split at the . (dot) sign.

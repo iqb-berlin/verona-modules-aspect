@@ -10,7 +10,7 @@ import { VideoElement } from 'common/models/elements/video';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 
 export class ReferenceManager {
-  /* Element types that may have references */
+  /** Element types that may have references */
   static REFERENCE_ELEMENT_TYPES = ['drop-list', 'audio', 'button'];
   unit: Unit;
 

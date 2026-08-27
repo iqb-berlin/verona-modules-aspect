@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
   isKeypadOpen: boolean = false;
   inputElement!: HTMLTextAreaElement | HTMLInputElement | HTMLElement;
-  /* The field this component put under key restriction, kept to release exactly that one again. */
+  /** The field this component put under key restriction, kept to release exactly that one again. */
   private restrictedInputElement?: HTMLElement;
 
   keypadEnterKeySubscription!: Subscription;
@@ -104,7 +104,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     }
   }
 
-  /* Bound to the focus, not to the keypad: the keypad opens 100 ms later (KeypadService.toggleAsync,
+  /** Bound to the focus, not to the keypad: the keypad opens 100 ms later (KeypadService.toggleAsync,
      debouncing its animation) and used to register the keydown listener only once its view existed.
      Everything typed in between reached the field unchecked, so typing fast enough put forbidden
      characters into a restricted field (#1143). The condition is the one the keypad had: the

@@ -41,7 +41,7 @@ export type BasicStyles = FontStyles & { backgroundColor: string };
  */
 export type AssertNever<T extends never> = T;
 
-/*
+/**
  * An index signature on a styling type degenerates `keyof` to `string | number`, and everything keyed
  * on a styling type then accepts any name at all: `setStyleProperty(property: keyof Stylings)` loses
  * the check that #1137 exists for, and `NestedGroupProperty` below -- the basis of `OwnProperty`, the
@@ -199,8 +199,19 @@ export abstract class PropertyGroupValidators {
   }
 }
 
+/**
+ * Builds the property groups of an element -- position, dimensions, styling, player -- each generator
+ * from its own section of an `ELEMENT_DEFAULTS` entry or from what a stored unit carries.
+ *
+ * Three values can meet for one key, and they win in this order: what the unit stored, then the
+ * element's own default, then `GLOBAL_DEFAULTS` inside the generator.
+ *
+ * {@link PropertyGroupGenerators.mergeStyling} is the exception to all of it: which styling keys an
+ * element has is decided by the class that declares them, and the stored group is merged into that
+ * one. See rules.md 14 for why the normalizer does not build this group.
+ */
 export abstract class PropertyGroupGenerators {
-  /* Each generator takes ITS OWN group: the section of an ELEMENT_DEFAULTS entry from a class field,
+  /** Each generator takes ITS OWN group: the section of an ELEMENT_DEFAULTS entry from a class field,
    * or `element.position` etc. from a constructor. Before #1224 the table was flat, so the parameter
    * had to accept a whole entry as well and read it through a cast -- which is what let a value be
    * picked up by the group whose name it happened to match. */
@@ -238,7 +249,7 @@ export abstract class PropertyGroupGenerators {
     };
   }
 
-  /* Takes the element's whole styling section, not just the keys it returns: a section that holds only
+  /** Takes the element's whole styling section, not just the keys it returns: a section that holds only
    * `lineHeight` shares no key with BasicStyles, and a narrower parameter rejects it as a weak type --
    * which would make the call sites differ by which keys an element happens to declare. */
   static generateBasicStyleProps(defaults: Partial<Stylings> = {}): BasicStyles {

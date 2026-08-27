@@ -12,6 +12,15 @@ import { MarkingRange } from 'common/models/marking-data';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 
+/**
+ * Computes the markable ranges of a text element for the `word` and `range` marking modes: it splits
+ * the rendered text into markables and creates a component for each, which then carries the marking
+ * colour and the click target.
+ *
+ * This is the restricted half of text marking; the free selection goes through
+ * {@link TextMarkingUtils}, and `markingMode` decides which of the two applies. The components are
+ * created outside any template, which is why {@link MarkableSupport.destroy} exists.
+ */
 export class MarkableSupport {
   private renderer: Renderer2;
   private applicationRef: ApplicationRef;
@@ -124,7 +133,7 @@ export class MarkableSupport {
     };
   }
 
-  /* A formula is one markable, marked as a whole. Splitting it the way a text is split made its
+  /** A formula is one markable, marked as a whole. Splitting it the way a text is split made its
    * glyphs markables of their own, which left a formula markable in fragments only -- and tied the
    * ids of stored answers to its markup: how many text nodes a formula contributes is up to the
    * renderer that wrote it, KaTeX MathML carried its LaTeX annotation as text where MathLive markup
@@ -188,7 +197,7 @@ export class MarkableSupport {
       .find(mark => mark[0] === id.toString())?.[2] || null;
   }
 
-  /* The containers are created outside of any template, so nothing destroys them implicitly:
+  /** The containers are created outside of any template, so nothing destroys them implicitly:
    * their views stay registered at the ApplicationRef and are checked on every tick until they
    * are destroyed here. ViewRef.destroy() detaches the view from the ApplicationRef by itself.
    *

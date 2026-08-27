@@ -46,7 +46,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
     this.selectionService.selectedSectionIndex = 0;
   }
 
-  /* This is a hack. The tab element gets bugged when changing the underlying array.
+  /** This is a hack. The tab element gets bugged when changing the underlying array.
      With this we can temporarily remove it from the DOM and then add it again, re-initializing it. */
   refreshTabs(): void {
     this.pagesLoaded = false;

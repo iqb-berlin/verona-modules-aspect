@@ -10,7 +10,7 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
   type: UIElementType = 'widget-molecule-editor';
   bondingType: 'VALENCE' | 'ELECTRONS' = ELEMENT_DEFAULTS['widget-molecule-editor'].bondingType;
 
-  /* The button that opens the widget takes its two colours from here, and nothing else in this
+  /** The button that opens the widget takes its two colours from here, and nothing else in this
      element renders a styling value -- what it shows besides the button is the stored molecule, as an
      image or as text. So the declaration says two keys, not eleven: font size, weight, slant,
      underline and the four border members offered controls that did nothing (#1230). */

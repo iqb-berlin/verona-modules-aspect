@@ -145,7 +145,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     };
   }
 
-  /* '1digit' also means no crossing out. '2digit' the opposite. */
+  /** '1digit' also means no crossing out. '2digit' the opposite. */
   private static createHelperRow(width: number, is2DigitHelperRow: boolean, term?: string): MathTableRow {
     return {
       rowType: 'helper',
@@ -159,7 +159,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     };
   }
 
-  /* Empty cells have to have an extra map to ensure new object refs. */
+  /** Empty cells have to have an extra map to ensure new object refs. */
   private static createNormalRow(width: number, term: string, operatorChar?: string,
                                  isStrikable: boolean = false): MathTableRow {
     return {

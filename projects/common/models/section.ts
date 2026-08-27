@@ -97,7 +97,7 @@ export class Section {
     this.elements.push(element);
   }
 
-  /* Includes children of children, i.e. compound children. */
+  /** Includes children of children, i.e. compound children. */
   getAllElements(elementType?: string): UIElement[] {
     let allElements: UIElement[] =
       this.elements.map(element => [element, ...(element as CompoundElement).getChildElements() || []])

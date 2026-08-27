@@ -8,7 +8,7 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 export class WidgetPeriodicTableElement extends UIElement implements WidgetPeriodicTableProperties {
   type: UIElementType = 'widget-periodic-table';
-  /* The button that opens the widget takes its two colours from here, and nothing else in this
+  /** The button that opens the widget takes its two colours from here, and nothing else in this
      element renders a styling value -- the squares in the periodic table draw their border from the
      stylesheet, not from the model. So the declaration says two keys, not eleven: font size, weight,
      slant, underline and the four border members offered controls that did nothing (#1230). */

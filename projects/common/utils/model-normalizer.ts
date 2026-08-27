@@ -6,6 +6,31 @@ import { PageProperties } from 'common/models/page';
 import { SectionProperties } from 'common/models/section';
 import { VisibilityRule } from 'common/models/visibility-rule';
 
+/**
+ * Fills in what a stored unit does not carry: every own property of an element from its
+ * `ELEMENT_DEFAULTS` entry, and the position, dimensions and player groups from that entry's
+ * sections. Object defaults are cloned, because the table is module state and an element holding
+ * the table's object would move the default for every element of its type (#1184).
+ *
+ * {@link NormalizationMigration} calls it at the end of every migration, and the player migrates
+ * unconditionally, so there it runs on every load whatever the version. The editor migrates only
+ * when `VersionManager.needsMigration` says so, so a unit it saved itself never reaches this class
+ * at all -- what fills the defaults there is the fallback branch of the models themselves, from the
+ * same table, with the same result: an element built from an un-normalized current-version unit
+ * carries the values a normalized one carries, measured key by key.
+ *
+ * Why it is unconditional in the player nevertheless: `strictInstantiation` in `common/environment`
+ * makes a model REJECT a blueprint it considers incomplete, and the editor build replaces that file
+ * with its own, where the flag is false. So the same un-normalized unit is completed quietly in the
+ * editor and throws in the player.
+ *
+ * `ElementFactory` and the likert rows call {@link ModelNormalizer.normalizeElement} directly for an
+ * element built at runtime.
+ *
+ * The `styling` group is the one group NOT built here -- which keys an element has is decided by the
+ * class that declares them. Whether a change to the model belongs here at all, or in a migration
+ * step, is answered in {@link MigrationManager} and in rules.md 14.
+ */
 export class ModelNormalizer {
   static normalizeUnit(unit: Record<string, unknown>): UnitProperties {
     return {
@@ -56,7 +81,7 @@ export class ModelNormalizer {
      The elements a section holds directly, and no deeper: `normalizeElement` walks an element's own
      children -- table cells, likert rows, the child models of a cloze document -- and handing it those
      as well would normalize each of them twice (#1196). */
-  /* What the casts on the numbers claim, and what they do not: this fills what is missing, it does not
+  /** What the casts on the numbers claim, and what they do not: this fills what is missing, it does not
      convert what is there. Stored units carry `height: "400"` as a string, and the member is reachable
      as a `number` here, so arithmetic on it compiles. Converting is the job of
      `Migration4m11To4m12`, which repairs those values once for every unit below 4.12 instead of asking
@@ -84,7 +109,7 @@ export class ModelNormalizer {
     };
   }
 
-  /* Loose in, typed out, for the element level as well -- with what `SectionProperties.elements`
+  /** Loose in, typed out, for the element level as well -- with what `SectionProperties.elements`
      actually asks for, `UIElementProperties`, and not a union over thirty element types: nothing at
      this seam needs to tell one type from another, and the element's own class checks its own members
      when it is constructed (#1308).

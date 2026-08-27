@@ -37,10 +37,10 @@ export class TableComponent extends CompoundElementComponent implements OnInit, 
   @Input() actualPlayingId!: Subject<string | null>;
   @Input() mediaStatusChanged!: Subject<string>;
   @Input() editorMode: boolean = false;
-  /* Show add/remove buttons and element titles for managing cell elements.
+  /** Show add/remove buttons and element titles for managing cell elements.
      Only enabled in the table edit dialog, where the corresponding events are handled. */
   @Input() allowElementEditing: boolean = false;
-  /* Fixed height for content rows, overriding the configured row sizes.
+  /** Fixed height for content rows, overriding the configured row sizes.
      Used by the table edit dialog to provide roomy cells while header rows stay compact. */
   @Input() contentRowHeight: string | null = null;
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
@@ -64,7 +64,7 @@ export class TableComponent extends CompoundElementComponent implements OnInit, 
     this.updateStickyHeaderOffsets();
   }
 
-  /* Sticky header rows below the first one need their top offset set to the summed
+  /** Sticky header rows below the first one need their top offset set to the summed
      height of the rows above them, so they stack instead of overlapping.
      Skipped in the edit dialog, where sticky headers would cover the content rows. */
   @HostListener('window:resize')

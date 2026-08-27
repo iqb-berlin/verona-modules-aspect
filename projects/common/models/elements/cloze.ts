@@ -65,7 +65,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
     }
   }
 
-  /* Since #1179 the base class deep copies and turns child elements into blueprints of their own, so
+  /** Since #1179 the base class deep copies and turns child elements into blueprints of their own, so
      the child models in the document arrive without id and alias, and a child drop list has already
      cleared its values' ids. What is left here is the cast: the document is typed, the generic
      blueprint is not. */

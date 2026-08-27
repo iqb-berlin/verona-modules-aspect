@@ -12,9 +12,12 @@ import { VisibilityRule } from 'common/models/visibility-rule';
  * sections. Object defaults are cloned, because the table is module state and an element holding
  * the table's object would move the default for every element of its type (#1184).
  *
- * This runs on every load, over every unit, whatever its version: {@link NormalizationMigration}
- * calls it at the end of every migration. `ElementFactory` and the likert rows call
- * {@link ModelNormalizer.normalizeElement} directly for an element built at runtime.
+ * {@link NormalizationMigration} calls it at the end of every migration, so in the player -- which
+ * migrates unconditionally -- it runs on every load whatever the version. The editor migrates only
+ * when `VersionManager.needsMigration` says so, so a unit it saved itself is loaded WITHOUT
+ * normalization: a property that only the defaults table carries is therefore filled in the player
+ * for certain and in the editor only after a version change. `ElementFactory` and the likert rows
+ * call {@link ModelNormalizer.normalizeElement} directly for an element built at runtime.
  *
  * The `styling` group is the one group NOT built here -- which keys an element has is decided by the
  * class that declares them. Whether a change to the model belongs here at all, or in a migration

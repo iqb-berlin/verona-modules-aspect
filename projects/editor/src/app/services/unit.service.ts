@@ -23,9 +23,10 @@ import { IDService } from 'editor/src/app/services/id.service';
 /**
  * Holds the unit the editor is working on, and is the only place it is replaced.
  *
- * The public subjects are how the rest of the editor learns that something changed; they carry no
- * state, so a subscriber reads the unit itself afterwards. `updateUnitDefinition` is what reports a
- * changed unit to the host.
+ * The public subjects are how the rest of the editor learns that something changed. Three of them
+ * carry the id of the element they concern, and their subscribers act on that id rather than reading
+ * the unit again; the others carry nothing. `updateUnitDefinition` is what reports a changed unit to
+ * the host.
  *
  * Two private signals separate the two moments a load has, because dialogs need different ones: a
  * dialog that belongs to a LOAD is superseded when the next load starts, while a dialog that belongs

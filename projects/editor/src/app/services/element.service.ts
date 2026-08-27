@@ -56,10 +56,14 @@ type PreparedElementProps = Omit<UIElementDraft, 'type'>;
  * Which path a property takes is decided by the group it lives in, and taking the wrong one fails
  * silently. `updateElementsProperty` ends in `UIElement.setProperty`, which the index signature lets
  * write any name onto the element root, where nothing reads it: `xPosition` went that way and
- * alignment did nothing at all, `width` went that way and a dragged selection kept its size (#1142).
+ * alignment did nothing at all, and `width` went that way, where the dragged element still resized
+ * itself through its live preview while every other selected element silently kept its size (#1142).
  * Hence a path per group -- `updateElementsPositionProperty`, `updateElementsDimensionsProperty`,
- * `updateSelectedElementsStyleProperty`, `updateElementsPlayerProperty` -- and `OwnProperty` on the
- * first one, which rejects a name belonging to any of them at compile time.
+ * `updateSelectedElementsStyleProperty`, `updateElementsPlayerProperty`.
+ *
+ * `OwnProperty` on this method rejects a name from the position, dimensions or styling group at
+ * compile time. It does NOT cover the player group: `updateElementsProperty(elements, 'loop', true)`
+ * compiles and lands on the element root.
  *
  * The two paths that carry object values give every element its own copy through `copyPlainData`:
  * `setProperty` splices the value's entries into each element, so one value would leave a whole

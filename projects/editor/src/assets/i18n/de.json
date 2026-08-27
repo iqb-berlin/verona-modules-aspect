@@ -341,6 +341,7 @@
     "showInfoAMass": "Mittlere relative Atommasse",
     "closeOnSelection": "Schließen bei Auswahl",
     "maxNumberOfSelections": "Max. Anzahl Auswahlen",
+    "maxNumberOfSelectionsHint": "0 = unbegrenzt viele Auswahlen",
     "bondingType": "Darstellungsart",
     "moleculeBondingTypeValence": "Valenzstrichformel",
     "moleculeBondingTypeElectrons": "Elektronenformel",

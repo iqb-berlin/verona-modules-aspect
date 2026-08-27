@@ -13,6 +13,15 @@ import { ElementCodeService } from 'player/src/app/classes/element-code-service'
 import { Response, ResponseStatusType, ResponseValueType } from '@iqb/responses';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
+/**
+ * The answers of the elements, plus what the host is told about presentation: which pages have been
+ * seen in full.
+ *
+ * A page counts as presented once every element on it has been displayed, and an element counts as
+ * displayed once it has been scrolled into view -- which is what the intersection detector here
+ * watches. Elements that are registered without a page index, the ones inside another element, do not
+ * count towards a page.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -35,6 +44,13 @@ export class UnitStateService extends ElementCodeService {
     return this._pagePresented.asObservable();
   }
 
+  /**
+   * How much of the unit has been seen, in the host's wording: `none` while no page is complete,
+   * `complete` once every page with elements is, `some` in between.
+   *
+   * A unit whose elements carry no page index at all -- and one with no elements -- is `complete`:
+   * there is nothing that could still be unseen.
+   */
   get presentedPagesProgress(): Progress {
     if (this.elementPageIndices.length && !this.presentedPages.length) {
       return 'none';
@@ -42,6 +58,14 @@ export class UnitStateService extends ElementCodeService {
     return (this.elementPageIndices.length === this.presentedPages.length) ? 'complete' : 'some';
   }
 
+  /**
+   * Announces an element with its starting value, and -- given a DOM element -- has it watched, so that
+   * scrolling it into view marks it as displayed.
+   *
+   * The page index decides whether the element counts towards its page being presented. `null` keeps it
+   * out of that count, which is how an element that is not relevant for presentation completeness is
+   * registered (`ElementGroupDirective`), and how children inside another element are.
+   */
   registerElementCode(elementId: string,
                       elementAlias: string,
                       elementValue: ResponseValueType,
@@ -55,11 +79,13 @@ export class UnitStateService extends ElementCodeService {
     this.addElementCode(elementId, elementAlias, elementValue, domElement);
   }
 
+  /** Sets a status by id, logging it -- the way an element reports that it has been displayed. */
   changeElementCodeStatus(elementStatus: StatusChangeElement): void {
     LogService.debug(`player: changeElementStatus ${elementStatus.id}: ${elementStatus.status}`);
     this.setElementCodeStatus(elementStatus.id, elementStatus.status);
   }
 
+  /** Clears everything for the next task: answers, page bookkeeping and the watching of the old DOM. */
   reset(): void {
     super.reset();
     this.presentedPages = [];
@@ -100,6 +126,14 @@ export class UnitStateService extends ElementCodeService {
     }, []);
   }
 
+  /**
+   * Sets the status of an element's answer, with two rules the base class does not have.
+   *
+   * `VALUE_CHANGED` is final: an element that has been answered cannot fall back to `DISPLAYED`, and it
+   * stops being watched, because being seen no longer says anything about it. The announcement goes out
+   * either way, even when the status was left as it was. A status that ranks higher than the one before
+   * can complete the element's page, which is checked here.
+   */
   override setElementCodeStatus(id: string, status: ResponseStatusType): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {

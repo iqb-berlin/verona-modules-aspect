@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Progress } from 'player/modules/verona/models/verona';
 
+/**
+ * How far the required answers of a task are given, which is what the host uses to allow or refuse
+ * navigating on. Every validated element registers its form control here; the service knows the
+ * controls, not the elements.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -21,10 +26,14 @@ export class ValidationService {
     return validControls.length ? 'some' : 'none';
   }
 
+  /** Adds a control to the count. Controls without a validator are always valid and thus never hold the
+      progress back -- an optional answer costs nothing here. */
   registerFormControl(control: UntypedFormControl): void {
     this.formControls.push(control);
   }
 
+  /** Forgets every control, for the next task. Without this the controls of the task just left would go
+      on deciding the progress of the next one. */
   reset(): void {
     this.formControls = [];
   }

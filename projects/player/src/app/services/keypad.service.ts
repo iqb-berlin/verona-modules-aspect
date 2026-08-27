@@ -12,6 +12,14 @@ import { InputService } from './input-service';
 export class KeypadService extends InputService {
   position: 'floating' | 'right' = 'floating';
 
+  /**
+   * Opens the keypad for a field that has just taken the focus, or closes it, and resolves with the
+   * state that was reached. Unlike the on-screen keyboard this does not depend on the device: the
+   * keypad offers characters a physical keyboard does not have either.
+   *
+   * The 100 ms are the same deliberate pause as in `KeyboardService.toggleAsync` (`63add4cd`), and
+   * they must not be shortened to make a rule take effect sooner (#1143).
+   */
   async toggleAsync(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                     elementComponent: TextInputComponentType | MathTableComponent | TextAreaMathComponent
   ): Promise<boolean> {
@@ -31,6 +39,8 @@ export class KeypadService extends InputService {
     return this.isOpen;
   }
 
+  /** Shows the keypad for this field, with the key set and the position -- floating or at the right
+      edge -- the element's model asks for. */
   open(inputElement: HTMLElement,
        elementComponent: TextInputComponentType | MathTableComponent | TextAreaMathComponent):
     void {

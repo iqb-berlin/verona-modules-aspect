@@ -85,7 +85,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  /* The confirmation belongs to the unit the caller asked about, and the dialog outlives that unit as
+  /** The confirmation belongs to the unit the caller asked about, and the dialog outlives that unit as
      soon as the host loads another one -- so a replaced unit takes the dialog with it. Narrowing the
      result the way showSanitizationDialog does is left to the caller here: a cancelled delete still has
      its references to report, so this one has to tell that apart from a superseded delete rather than
@@ -116,7 +116,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  /* The dialog carries no close option and stays up until the user confirms it, so the load that
+  /** The dialog carries no close option and stays up until the user confirms it, so the load that
      opened it can be superseded while it is still on screen. It then describes a unit that is no
      longer loaded, and a second outdated unit would stack another dialog on top of it -- therefore a
      superseding load closes it. What the caller may act on is a confirmation of the load it asked
@@ -223,7 +223,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  /* Undefined when the dialog is closed without a result -- the cancel button, ESC, a click on the
+  /** Undefined when the dialog is closed without a result -- the cancel button, ESC, a click on the
      backdrop. Declared, because both callers read a field of it and would throw instead of taking the
      cancellation for what it is (#1296). */
   showGeogebraAppDefinitionDialog(): Observable<FileInformation | undefined> {

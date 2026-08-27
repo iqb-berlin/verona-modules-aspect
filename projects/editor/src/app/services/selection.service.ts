@@ -93,7 +93,7 @@ export class SelectionService {
     this.publishSelection();
   }
 
-  /* The one way out of here: every change of `selectedElementComponents` ends in this, so the flag and
+  /** The one way out of here: every change of `selectedElementComponents` ends in this, so the flag and
      the subject cannot describe different selections (#1268). */
   private publishSelection(): void {
     const compoundChildren = this.selectedElementComponents
@@ -102,7 +102,7 @@ export class SelectionService {
     this.isCompoundChildSelected = compoundChildren.length > 0;
     this.onlyCompoundChildrenSelected = compoundChildren.length > 0 &&
       compoundChildren.length === this.selectedElementComponents.length;
-    /* Asked of the overlay by its section, not by its class: a compound child overlay has none, and
+    /** Asked of the overlay by its section, not by its class: a compound child overlay has none, and
        keying on the class would tie this service to the overlay implementation. */
     const knownSections = this.selectedElementComponents
       .map(overlayComponent => ('section' in overlayComponent ? overlayComponent.section : undefined))
@@ -112,7 +112,7 @@ export class SelectionService {
     this._selectedElements.next(this.selectedElementComponents.map(overlayComponent => overlayComponent.element));
   }
 
-  /* Takes the named elements out of the selection and leaves the rest of it alone -- a delete has no
+  /** Takes the named elements out of the selection and leaves the rest of it alone -- a delete has no
      reason to unselect what it did not touch, and nothing would re-select it: the overlays that stay
      are not rebuilt. Compound children are named too, because getAllElements reaches them (#1258). */
   deselectElements(elements: UIElement[]): void {

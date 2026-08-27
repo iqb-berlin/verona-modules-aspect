@@ -103,7 +103,7 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
     this.modifySizeArray(property, pending);
   }
 
-  /* Add or remove elements to size array. Default value 1fr. */
+  /** Add or remove elements to size array. Default value 1fr. */
   modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {
     const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?
       (this.combinedProperties.gridColumnSizes as { value: number; unit: string }[]) :

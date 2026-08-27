@@ -149,7 +149,7 @@ export class SectionMenuComponent implements OnDestroy {
     this.modifySizeArray(property, pending);
   }
 
-  /* Add or remove elements to size array. Default value 1fr. */
+  /** Add or remove elements to size array. Default value 1fr. */
   modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {
     const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?
       this.section.gridColumnSizes : this.section.gridRowSizes;

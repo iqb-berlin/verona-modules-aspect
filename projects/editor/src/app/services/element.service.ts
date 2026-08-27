@@ -45,7 +45,7 @@ import {
   LikertRowElement, LikertRowProperties
 } from 'common/models/elements/likert-row';
 
-/* What is collected for an element that is about to be created, without the type the caller already
+/** What is collected for an element that is about to be created, without the type the caller already
    knows: the groups stay partial, because the factory completes them from the element's defaults. */
 type PreparedElementProps = Omit<UIElementDraft, 'type'>;
 
@@ -161,7 +161,7 @@ export class ElementService {
     return ElementFactory.createElement(props, this.idService) as LikertRowElement;
   }
 
-  /* Only what a section holds itself can be deleted here. A child of a compound element -- a cloze
+  /** Only what a section holds itself can be deleted here. A child of a compound element -- a cloze
      gap, a table cell -- lives in the list of its parent and goes through the parent's edit dialog;
      the unit cannot take it out, and releasing its ID all the same handed the same ID to the next
      element that asked for one (#1262). Asking about it first is no better: the confirmation would
@@ -187,7 +187,7 @@ export class ElementService {
     }
   }
 
-  /*
+  /**
    * `OwnProperty` rejects a named property that belongs to the position, dimensions or styling
    * group: those have their own update methods, and going through this one puts the value on the
    * element root instead, where nothing reads it. Names arriving as a plain string from the panel's
@@ -219,7 +219,7 @@ export class ElementService {
     if (hasDirectWrite) this.reportPropertyUpdate();
   }
 
-  /* The report belongs where the value is written. Text and cloze documents can take a detour through
+  /** The report belongs where the value is written. Text and cloze documents can take a detour through
      the reference dialog, whose answer arrives later -- a report sent while it is still open carries
      the value the element had before, and the confirmed change then reaches the host only with some
      later, unrelated edit; a save in between writes the stale state (#1269). Both writers report for
@@ -275,7 +275,7 @@ export class ElementService {
     }
   }
 
-  /* A gap the user removed in the rich text editor leaves the unit with the document: the model
+  /** A gap the user removed in the rich text editor leaves the unit with the document: the model
      drops it and releases its IDs. Its overlay goes with the node it sat in, and no overlay is
      rebuilt, so nothing takes it out of the selection -- the properties panel would go on offering
      the controls of a child that is not in the unit any more (#1261, the symptom of #1258 reached
@@ -425,7 +425,7 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* Each copy goes into the section that holds its original, looked up in the unit rather than read
+  /** Each copy goes into the section that holds its original, looked up in the unit rather than read
      from selectedPageIndex/selectedSectionIndex: those can name another section, and the copy then
      lands there without anything going wrong visibly (#1204). */
   duplicateSelectedElements(): void {
@@ -436,7 +436,7 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* - Also changes position of the element to not cover copied element. */
+  /** - Also changes position of the element to not cover copied element. */
   duplicateElement(element: UIElement, adjustPosition: boolean = false): UIElement {
     const newElement = ElementFactory.createElement({ ...element.getBlueprint() }, this.idService);
     if (newElement.position && adjustPosition) {
@@ -486,7 +486,7 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* Sorts the sections the written elements are in, looked up in the unit rather than taken from the
+  /** Sorts the sections the written elements are in, looked up in the unit rather than taken from the
      selection: a cross-section drag moves the element and writes its position in the same
      synchronous block, before the overlays are rebuilt, so the selection still describes the section
      it came from -- and the target would keep a stale tab order (#1204). */
@@ -497,7 +497,7 @@ export class ElementService {
     new Set(sections).forEach(section => ElementService.reorderElements(section));
   }
 
-  /* Reorder elements by their position properties, so the tab order is correct */
+  /** Reorder elements by their position properties, so the tab order is correct */
   private static reorderElements(section: Section) {
     const sectionElementList = section.elements;
     const isDynamicPositioning = section.dynamicPositioning;

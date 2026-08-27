@@ -27,7 +27,7 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* Where the section lands is up to the page the caller passes, and a selection needs the page as much
+  /** Where the section lands is up to the page the caller passes, and a selection needs the page as much
      as the index -- so the callers set it: insertSection and replaceSection to the section they put in,
      PageViewComponent to the one it appended (#1255). */
   addSection(page: EditorPage, section?: EditorSection, sectionIndex?: number): void {
@@ -37,7 +37,7 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* Reports whether the section is gone, which is what replaceSection hangs its insertion on. */
+  /** Reports whether the section is gone, which is what replaceSection hangs its insertion on. */
   async deleteSection(pageIndex: number, sectionIndex: number): Promise<boolean> {
     const sectionToDelete = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
     if (!await this.unitService.prepareDelete('section', sectionToDelete)) return false;
@@ -45,7 +45,7 @@ export class SectionService {
     return true;
   }
 
-  /* The removal itself; whether a question comes first is up to the caller (#1259). */
+  /** The removal itself; whether a question comes first is up to the caller (#1259). */
   private removeSection(pageIndex: number, sectionIndex: number): void {
     const sectionToDelete = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
     sectionToDelete.getAllElements().forEach(el => el.unregisterIDs());
@@ -78,7 +78,7 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* Move section (up and down) from one page to another */
+  /** Move section (up and down) from one page to another */
   transferSection(pageIndex: number, sectionIndex: number, direction: 'up' | 'down'): void {
     const section = this.unitService.unit.pages[pageIndex].deleteSection(sectionIndex);
     if (direction === 'up') {
@@ -96,7 +96,7 @@ export class SectionService {
     }
   }
 
-  /* Replacing is the deletion plus the insertion, so the insertion waits for the deletion to happen:
+  /** Replacing is the deletion plus the insertion, so the insertion waits for the deletion to happen:
      the page is read afterwards, and a delete the user declined -- or one whose unit the host replaced
      while the dialog was open -- leaves the section it was about in place and inserts nothing (#1253).
      An empty section is replaced without the question. What the question is about is what its dialog
@@ -134,7 +134,7 @@ export class SectionService {
     this.selectionService.updateSelection(pageIndex, sectionIndex);
   }
 
-  /* Move element between sections */
+  /** Move element between sections */
   transferElements(elements: UIElement[], previousSection: EditorSection, newSection: EditorSection): void {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
     elements.forEach(element => {

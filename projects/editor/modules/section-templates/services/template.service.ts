@@ -108,7 +108,7 @@ export class TemplateService {
     this.unitService.pageOrderChanged.next();
   }
 
-  /* Returns the index the section was put at. */
+  /** Returns the index the section was put at. */
   private static addSectionToPage(section: EditorSection, page: EditorPage, selectedSectionIndex: number): number {
     if (page.sections[selectedSectionIndex]?.isEmpty()) {
       page.replaceSection(selectedSectionIndex, section);
@@ -291,7 +291,7 @@ export class TemplateService {
     });
   }
 
-  /* A template lays out its own section, margins included: `coords` is completed HERE, so every margin
+  /** A template lays out its own section, margins included: `coords` is completed HERE, so every margin
      the template does not name is 0 and not the one its element type declares (text and marking panel
      10, image and media 15, table 30, cloze and likert 35). That is the point -- the spacing of a
      template is tuned as a whole, and the margins the builders write out are tuned against the 22 call

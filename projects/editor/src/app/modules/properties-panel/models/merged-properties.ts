@@ -20,7 +20,7 @@
  * every binding in the panel needed a `$any()` cast; with a concrete `T` the compiler checks the
  * property names again.
  */
-/*
+/**
  * `NonNullable` in both conditions, not `T[K]` directly: the four groups the merge recurses into are
  * all declared optional (`dimensions?: DimensionProperties`), and `DimensionProperties | undefined
  * extends object` is false. Without it every one of them fell through to `T[K] | null`, leaving its

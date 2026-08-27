@@ -56,7 +56,7 @@ export class PageViewComponent implements OnInit, OnDestroy {
     this.unitService.moveSectionToNewpage(pageIndex, this.selectionService.selectedSectionIndex);
   }
 
-  /* Move page section to page above and delete page. */
+  /** Move page section to page above and delete page. */
   collapsePage(pageIndex: number): void {
     this.unitService.collapsePage(pageIndex);
   }

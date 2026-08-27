@@ -27,7 +27,7 @@ export class DragImageComponent {
 
   constructor(public cdr: ChangeDetectorRef) { }
 
-  /* - dragImageOffset is used so that the item is held where it is grabbed (relatively) and not the top left corner.
+  /** - dragImageOffset is used so that the item is held where it is grabbed (relatively) and not the top left corner.
      - e.touches[0].clientX, e.touches[0].clientY: absolute coordinates of the touch/click
      - elementRect.left and top: absolute margin of dragged item to viewport */
   initDragPreview(item: DragNDropValueObject, sourceElement: Element, x: number, y: number): void {

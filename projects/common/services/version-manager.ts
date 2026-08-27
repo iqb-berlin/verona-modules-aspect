@@ -1,6 +1,6 @@
 import packageJSON from '../../../package.json';
 
-/* General version strategy:
+/** General version strategy:
   Player + Editor:
   - isNewer -> abgelehnt
   - isOlder -> wunderbar
@@ -56,7 +56,7 @@ export class VersionManager {
     return result;
   }
 
-  /* -1 for older */
+  /** -1 for older */
   private static compareVersionDigit(a: number, b: number): number {
     if (a === b) return 0;
     return a < b ? -1 : 1;

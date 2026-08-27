@@ -56,7 +56,7 @@ export class ModelNormalizer {
      The elements a section holds directly, and no deeper: `normalizeElement` walks an element's own
      children -- table cells, likert rows, the child models of a cloze document -- and handing it those
      as well would normalize each of them twice (#1196). */
-  /* What the casts on the numbers claim, and what they do not: this fills what is missing, it does not
+  /** What the casts on the numbers claim, and what they do not: this fills what is missing, it does not
      convert what is there. Stored units carry `height: "400"` as a string, and the member is reachable
      as a `number` here, so arithmetic on it compiles. Converting is the job of
      `Migration4m11To4m12`, which repairs those values once for every unit below 4.12 instead of asking
@@ -84,7 +84,7 @@ export class ModelNormalizer {
     };
   }
 
-  /* Loose in, typed out, for the element level as well -- with what `SectionProperties.elements`
+  /** Loose in, typed out, for the element level as well -- with what `SectionProperties.elements`
      actually asks for, `UIElementProperties`, and not a union over thirty element types: nothing at
      this seam needs to tell one type from another, and the element's own class checks its own members
      when it is constructed (#1308).
@@ -127,7 +127,7 @@ export class ModelNormalizer {
       normalized.isRelevantForPresentationComplete !== undefined ?
         normalized.isRelevantForPresentationComplete : true;
 
-    /* 2. Property groups, each from its own section of the entry: the stored group wins over the
+    /** 2. Property groups, each from its own section of the entry: the stored group wins over the
        element's default, which wins over GLOBAL_DEFAULTS inside the generator. */
     const currentDimensions = (normalized.dimensions as Record<string, unknown>) || {};
     const filteredDimensions = Object.fromEntries(

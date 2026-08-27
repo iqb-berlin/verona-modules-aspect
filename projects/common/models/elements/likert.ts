@@ -109,7 +109,7 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     return this.rows;
   }
 
-  /* Only for the return type - see TableElement.getBlueprint (#1179). */
+  /** Only for the return type - see TableElement.getBlueprint (#1179). */
   getBlueprint(): LikertElement {
     return super.getBlueprint() as unknown as LikertElement;
   }

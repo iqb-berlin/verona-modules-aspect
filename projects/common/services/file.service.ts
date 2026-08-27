@@ -20,7 +20,7 @@ export class FileService {
     anchor.click();
   }
 
-  /* DEPRECATED: Use static upload-inputs instead! */
+  /** DEPRECATED: Use static upload-inputs instead! */
   static async loadFile(fileTypes: string[] = [], asBase64: boolean = false): Promise<FileInformation> {
     return new Promise<FileInformation>((resolve, reject) => {
       const fileUploadElement = document.createElement('input');
@@ -117,12 +117,12 @@ export class FileService {
     });
   }
 
-  /* DEPRECATED: Use static upload-inputs instead! */
+  /** DEPRECATED: Use static upload-inputs instead! */
   static loadAudio(): Promise<FileInformation> {
     return FileService.loadFile(['audio/*'], true);
   }
 
-  /* DEPRECATED: Use static upload-inputs instead! */
+  /** DEPRECATED: Use static upload-inputs instead! */
   static loadVideo(): Promise<FileInformation> {
     return FileService.loadFile(['video/*'], true);
   }

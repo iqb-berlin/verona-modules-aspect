@@ -80,7 +80,7 @@ export abstract class ElementFactory {
 
   static createElement(element: UIElementDraft, idService?: AbstractIDService)
     : UIElement {
-    /* The id the normalizer takes on trust is minted here: a draft on its way in need not carry one,
+    /** The id the normalizer takes on trust is minted here: a draft on its way in need not carry one,
        and everything past this point does (#1308). */
     const normalizedElement = ModelNormalizer.normalizeElement(element);
     if (!normalizedElement.id) {

@@ -19,7 +19,7 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   position: PositionProperties = PropertyGroupGenerators
     .generatePositionProps(ELEMENT_DEFAULTS['marking-panel'].position);
 
-  /* No styling at all: not one of this element's templates reads a styling value, and the group it
+  /** No styling at all: not one of this element's templates reads a styling value, and the group it
      used to get came from the base class rather than from any declaration (#1226). Declared here so
      the merge in the constructor keeps nothing and the inspector offers nothing.
 

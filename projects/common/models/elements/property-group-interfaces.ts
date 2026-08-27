@@ -41,7 +41,7 @@ export type BasicStyles = FontStyles & { backgroundColor: string };
  */
 export type AssertNever<T extends never> = T;
 
-/*
+/**
  * An index signature on a styling type degenerates `keyof` to `string | number`, and everything keyed
  * on a styling type then accepts any name at all: `setStyleProperty(property: keyof Stylings)` loses
  * the check that #1137 exists for, and `NestedGroupProperty` below -- the basis of `OwnProperty`, the
@@ -200,7 +200,7 @@ export abstract class PropertyGroupValidators {
 }
 
 export abstract class PropertyGroupGenerators {
-  /* Each generator takes ITS OWN group: the section of an ELEMENT_DEFAULTS entry from a class field,
+  /** Each generator takes ITS OWN group: the section of an ELEMENT_DEFAULTS entry from a class field,
    * or `element.position` etc. from a constructor. Before #1224 the table was flat, so the parameter
    * had to accept a whole entry as well and read it through a cast -- which is what let a value be
    * picked up by the group whose name it happened to match. */
@@ -238,7 +238,7 @@ export abstract class PropertyGroupGenerators {
     };
   }
 
-  /* Takes the element's whole styling section, not just the keys it returns: a section that holds only
+  /** Takes the element's whole styling section, not just the keys it returns: a section that holds only
    * `lineHeight` shares no key with BasicStyles, and a narrower parameter rejects it as a weak type --
    * which would make the call sites differ by which keys an element happens to declare. */
   static generateBasicStyleProps(defaults: Partial<Stylings> = {}): BasicStyles {

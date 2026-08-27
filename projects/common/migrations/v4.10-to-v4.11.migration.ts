@@ -35,7 +35,7 @@ export class Migration4m10To4m11 extends UnitTraversalMigration {
     return newElement;
   }
 
-  /* What a step is for, twice over.
+  /** What a step is for, twice over.
 
      The rename of 4.10: `hintLabelDelay` became `hintDelay`, and a value stored under the old name
      would otherwise be read under a name nothing knows.
@@ -58,7 +58,7 @@ export class Migration4m10To4m11 extends UnitTraversalMigration {
     return repaired;
   }
 
-  /* The four pixels the audio element gained in 4.11 are taken off what a unit stored -- but never
+  /** The four pixels the audio element gained in 4.11 are taken off what a unit stored -- but never
      below zero: a margin of 0 came out as -4px, which no version of the element ever meant (#1191).
      A value that is not a number is left alone rather than turned into `NaN`, which would reach the
      player as `NaNpx`; a numeric string still counts, and the step to 4.12 makes a number of it. */

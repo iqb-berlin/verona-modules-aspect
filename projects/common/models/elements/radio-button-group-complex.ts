@@ -26,7 +26,7 @@ export class RadioButtonGroupComplexElement extends InputElement
   dimensions: DimensionProperties = PropertyGroupGenerators
     .generateDimensionProps(ELEMENT_DEFAULTS['radio-group-images'].dimensions);
 
-  /* Font styling only: the component applies fontColor, fontSize, bold, italic and underline, and
+  /** Font styling only: the component applies fontColor, fontSize, bold, italic and underline, and
      never a background -- the inspector offered a colour field that changed nothing, in the
      released 2.x line as well (#1233). */
   styling: FontStyles = PropertyGroupGenerators

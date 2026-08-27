@@ -1,5 +1,5 @@
 export abstract class ArrayUtils {
-  /* Silently ignores nonsense reorders! */
+  /** Silently ignores nonsense reorders! */
   static moveArrayItem(item: unknown, array: unknown[], direction: 'up' | 'down'): void {
     const oldIndex = array.indexOf(item);
     if (oldIndex === -1) return;

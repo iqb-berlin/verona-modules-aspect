@@ -37,13 +37,13 @@ export class DropLogic {
       DropLogic.checkAddForeignItemToCopyOrCCList(draggedItem, targetList);
   }
 
-  /* Only allow drops in other lists, except for sortlists. */
+  /** Only allow drops in other lists, except for sortlists. */
   private static checkIsSourceList(sourceList: DropListMock, targetList: DropListMock): boolean {
     return (sourceList.id === targetList.id && sourceList.isSortList) ||
     sourceList.id !== targetList.id;
   }
 
-  /* Check list connection, sortlist is an exception since source and target can be the same. */
+  /** Check list connection, sortlist is an exception since source and target can be the same. */
   private static checkConnected(sourceList: DropListMock,
                                 targetList: DropListMock, ignoreConnection: boolean = false): boolean {
     return ignoreConnection ||
@@ -53,7 +53,7 @@ export class DropLogic {
 
   // ### Only One Item ###
 
-  /* Return false, when drop is not allowed */
+  /** Return false, when drop is not allowed */
   private static checkOnlyOneItem(draggedItem: DragNDropValueObject, targetList: DropListMock,
                                   allLists: { [id: string]: DropListMock }): boolean {
     return !(targetList.onlyOneItem &&
@@ -87,7 +87,7 @@ export class DropLogic {
     return targetList.copyOnDrop && draggedItem.originListID === targetList.id;
   }
 
-  /* Don't allow moving item into copy or CC list that does not originate from there. */
+  /** Don't allow moving item into copy or CC list that does not originate from there. */
   private static checkAddForeignItemToCopyOrCCList(draggedItem: DragNDropValueObject | undefined,
                                                    targetList: DropListMock): boolean {
     return !((targetList.copyOnDrop || targetList.permanentPlaceholders) &&

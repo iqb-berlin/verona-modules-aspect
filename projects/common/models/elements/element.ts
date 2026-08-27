@@ -43,7 +43,7 @@ export abstract class UIElement implements UIElementProperties {
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS.position);
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS.dimensions);
   styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS.styling);
-  /* Filled by PlayerElement and by nothing else: the group belongs to the types whose interface
+  /** Filled by PlayerElement and by nothing else: the group belongs to the types whose interface
      declares it, so a stored group on any other element is dropped at construction -- the same rule
      `mergeStyling` applies to an undeclared styling key (#1187). An image carried one for months,
      which gave it an inspector button that did nothing (#1241). */
@@ -120,7 +120,7 @@ export abstract class UIElement implements UIElementProperties {
     Object.assign(this.styling, { [property]: value });
   }
 
-  /*
+  /**
    * The property name is checked against the interface, the value is not. Narrowing the value per
    * property would mean a generic threaded through the whole panel relay chain, where values arrive
    * as UIElementValue from the templates; Object.assign is what lets the name stay checked without

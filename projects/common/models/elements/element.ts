@@ -131,8 +131,10 @@ export abstract class UIElement implements UIElementProperties {
     Object.assign(this.position, { [property]: value });
   }
 
-  // boolean is in here for isWidthFixed / isHeightFixed, which DimensionProperties declares as
-  // booleans; the panel has always written them through this method.
+  /**
+   * boolean is in here for isWidthFixed / isHeightFixed, which DimensionProperties declares as
+   * booleans; the panel has always written them through this method.
+   */
   setDimensionsProperty(property: keyof DimensionProperties, value: number | boolean | null): void {
     Object.assign(this.dimensions, { [property]: value });
   }

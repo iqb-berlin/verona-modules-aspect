@@ -93,6 +93,21 @@ describe('FirstLineAlignedControlDirective', () => {
     expect(centre(control())).toBeLessThan(labelRect.top + labelRect.height / 2 - 5);
   });
 
+  /* #1366: with a line height below the font's own box the fragments of line 1 and line 2 overlap, and
+     a first line ending in a space is the shorter of the two -- exactly the shape of a reported option.
+     Picking the widest fragment among ALL overlapping ones then landed on line 2, one line too low. */
+  it('should stay on the first line when the second one is wider', () => {
+    render(`Ab ${'x'.repeat(40)}`);
+
+    const range = document.createRange();
+    range.selectNodeContents(label().querySelector('span')?.firstChild as Node);
+    const [firstLine, secondLine] = Array.from(range.getClientRects());
+    expect(secondLine.width).toBeGreaterThan(firstLine.width); // die Form, um die es geht
+    expect(secondLine.top).toBeLessThan(firstLine.bottom); // die Boxen überlappen wirklich
+
+    expect(Math.abs(centre(control()) - (firstLine.top + firstLine.height / 2))).toBeLessThan(1);
+  });
+
   it('should ignore a formula that sits on a later line', () => {
     render(`Erste Zeile<br>${TALL}`);
     expect(centre(control())).toBeLessThan(formula().getBoundingClientRect().top);
@@ -122,6 +137,44 @@ describe('FirstLineAlignedControlDirective', () => {
     const runningText = range.getClientRects()[0];
 
     expect(Math.abs(centre(control()) - (runningText.top + runningText.height / 2))).toBeLessThan(1);
+  });
+
+  /* The review of #1366 found this one. A superscript is the TOPMOST fragment of its line, so whatever
+     separates line 1 from line 2 has to reach from the superscript down to the running text. Nesting
+     raises it far enough that the superscript's own middle no longer does -- the line would then be the
+     superscript alone and the control would sit above the text it belongs to, the misalignment #960 is
+     about. Measured against the running text, as in the single-superscript case above. */
+  it('should sit on the running text under a superscript raised out of the line', () => {
+    render('Fläche von 5<sup><sup>2</sup></sup> Zentimetern');
+
+    const range = document.createRange();
+    range.selectNodeContents(label().querySelector('span')?.firstChild as Node);
+    const runningText = range.getClientRects()[0];
+
+    /* The shape this case is about: the raised fragment's middle has left the running text's box, so a
+       rule anchored on that middle no longer sees the text. Measured on the fragment, not on the
+       wrapping element, because that is what the directive collects. */
+    const raised = document.createRange();
+    raised.selectNodeContents(label().querySelector('sup sup')?.firstChild as Node);
+    const raisedRect = raised.getClientRects()[0];
+    expect(raisedRect.top + raisedRect.height / 2).toBeLessThan(runningText.top);
+
+    expect(Math.abs(centre(control()) - (runningText.top + runningText.height / 2))).toBeLessThan(1);
+  });
+
+  /* Also from that review: with a line height well below the font's box the overlap of line 1 and line 2
+     grows, and a rule that measures halves instead of the advance falls back into #1366. */
+  it('should stay on the first line when the line height is far below the font size', () => {
+    label().style.lineHeight = '10px';
+    render(`Ab ${'x'.repeat(40)}`);
+
+    const range = document.createRange();
+    range.selectNodeContents(label().querySelector('span')?.firstChild as Node);
+    const [firstLine, secondLine] = Array.from(range.getClientRects());
+    expect(secondLine.width).toBeGreaterThan(firstLine.width);
+
+    expect(Math.abs(centre(control()) - (firstLine.top + firstLine.height / 2))).toBeLessThan(1);
+    label().style.lineHeight = '';
   });
 
   it('should measure a formula that kept its stored MathML', () => {

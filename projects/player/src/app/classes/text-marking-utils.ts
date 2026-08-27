@@ -18,6 +18,16 @@ import { RangeSelectionService } from 'common/services/range-selection.service';
 export class TextMarkingUtils {
   private static readonly MARKING_TAG = 'ASPECT-MARKED';
 
+  /**
+   * Colours what the reader has selected in the browser, or takes the colour off it again, and hands
+   * the changed markup to the component as its new value.
+   *
+   * Works on `window.getSelection()`, not on an argument: it is the live selection at the moment of
+   * the click. Nothing happens -- and nothing is logged -- when there is no selection or the selection
+   * is empty; a selection reaching outside the text container is refused with a log entry, because the
+   * indices a unit stores only make sense within one text. Any selection that got this far is cleared
+   * afterwards, the refused one included.
+   */
   static applyMarkingDataToText(
     mode: 'mark' | 'delete',
     color: string,
@@ -41,8 +51,17 @@ export class TextMarkingUtils {
     } // nothing to do!
   }
 
+  /** Whether the selection covers any text at all -- a caret without extent is not one. */
   static isSelectionValid = (selection: Selection): boolean => selection.toString().length > 0;
 
+  /**
+   * The stored form of the marks in a marked text: one `start-end-#rrggbb` entry per mark, in the order
+   * they appear.
+   *
+   * The two indices count characters of the text **without** the marking tags, which is what makes them
+   * survive a re-render -- `6-11` on `Lorem ipsum dolor` is `ipsum`. A mark whose tag carries no
+   * `rgb(...)` colour is stored as `none`.
+   */
   static getMarkedTextIndices = (htmlText: string): string[] => {
     const markingStartPattern =
       new RegExp(`<${TextMarkingUtils.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
@@ -69,6 +88,15 @@ export class TextMarkingUtils {
     return markCollection;
   };
 
+  /**
+   * Puts the marks back into a text, the counterpart of `getMarkedTextIndices`.
+   *
+   * Expects the same text the indices were taken from -- they are character positions, so a text that
+   * has changed since gets its marks in the wrong places rather than an error. The list is walked from
+   * the back and each mark's closing tag is inserted before its opening one, so that the positions of
+   * the marks still to come are not shifted by the tags already inserted. An entry that does not read
+   * as `start-end-colour` is skipped.
+   */
   static restoreMarkedTextIndices(markings: string[], htmlText: string): string {
     let newHtmlText = htmlText;
     if (markings.length) {
@@ -266,6 +294,7 @@ export class TextMarkingUtils {
     return nodes;
   }
 
+  /** `[249, 248, 113]` as `#f9f871`, the form a mark is stored in. Values outside 0-255 are not checked. */
   static rgbToHex = (rgb: number[]): string => `#${rgb.map(x => {
     const hex = x.toString(16);
     return hex.length === 1 ? `0${hex}` : hex;

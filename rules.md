@@ -288,3 +288,25 @@ confuse it with:
 
 What it does not solve: models are handed on as they are, so a control that edits one has to copy
 before it mutates, the way the label dialogs do.
+
+## 16) Explanations at a declaration are written as `/** */`
+
+An explanation that belongs to a class, method, property, type or constant is written as a JSDoc
+block, with two asterisks. The documentation at
+[iqb-berlin.github.io/verona-modules-aspect](https://iqb-berlin.github.io/verona-modules-aspect/) is
+built from those; `//` and a `/* */` block with one asterisk are dropped.
+
+- Prefer: `/** Why this property is held rather than rebuilt. */` above the declaration
+- Avoid: the same sentence as `//` or `/* */` above the same declaration
+
+Inside a body nothing changes: a comment that explains a statement, a branch or an order stays `//`
+or `/* */`, and belongs to the line it stands over, not to the symbol above it. Directives
+(`// eslint-disable-next-line`) stay line comments and stay directly above what they apply to — a
+JSDoc block above them is fine.
+
+Rationale:
+- until #1359 there were 142 declarations carrying a block comment with one asterisk and 12 with a
+  line comment: 565 lines of finished explanation that the documentation did not show. Making them
+  visible raised the coverage Compodoc reports from 7.8% to 11.9% without a word being written
+- the number is not the point and there is no coverage gate (§14 and the ticket say why): an
+  explanation nobody can find is the same as one that was never written

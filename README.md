@@ -1,5 +1,7 @@
 # Verona Modules Aspect
 
+**API documentation: [iqb-berlin.github.io/verona-modules-aspect](https://iqb-berlin.github.io/verona-modules-aspect/)**
+
 Editor and player for Aspect units. Both applications share one code base and are built and
 run separately. They are meant to be used in
 [IQB-Studio](https://github.com/iqb-berlin/studio-lite) and
@@ -91,7 +93,7 @@ build if either substitution did not land.
 
 | Command | What it does |
 | --- | --- |
-| `npm run docs` | Builds the Compodoc documentation into `dist/docs` (~9 s) |
+| `npm run docs` | Builds the Compodoc documentation into `dist/docs` (~9 s). Open `dist/docs/index.html` to read the state of your working tree; the published state of `develop` is at the link at the top |
 | `npm run serve-editor-coverage` | Serves the editor instrumented for coverage collection |
 | `npm run serve-player-coverage` | Serves the player instrumented for coverage collection |
 

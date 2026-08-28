@@ -30,4 +30,10 @@ export class LikertRowEditDialogComponent {
       this.newLikertRow.rowLabel.imgFileName = file.name;
     }
   }
+
+  /** Sends the image that is already in the label through the compression dialog (#1378). */
+  async compressImage(): Promise<void> {
+    const compressed = await this.dialogService.compressEmbeddedImage(this.newLikertRow.rowLabel.imgSrc as string);
+    if (compressed) this.newLikertRow.rowLabel.imgSrc = compressed;
+  }
 }

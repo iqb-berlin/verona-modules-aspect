@@ -7,6 +7,19 @@
   </button>
 }
 
+<!--Only once an image is there: without one there is nothing to compress (#1378).-->
+@if (combinedProperties.imgSrc) {
+  <button class="compress-image-button" [style.align-self]="'center'"
+          mat-fab color="primary" disabledInteractive
+          [disabled]="!(combinedProperties.imgSrc | isCompressibleImage)"
+          [matTooltip]="((combinedProperties.imgSrc | isCompressibleImage) ?
+                          'compressImage' : 'compressImageUnavailable') | translate"
+          [matTooltipPosition]="'right'"
+          (click)="compressImgSrc()">
+    <mat-icon>compress</mat-icon>
+  </button>
+}
+
 {{'preset' | translate }}
 <mat-button-toggle-group [style.align-self]="'flex-start'"
                          [value]="combinedProperties.value"

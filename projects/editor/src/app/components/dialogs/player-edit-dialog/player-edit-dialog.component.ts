@@ -57,4 +57,13 @@ export class PlayerEditDialogComponent {
     this.newPlayerConfig.imgSrc = null;
     this.newPlayerConfig.imgFileName = '';
   }
+
+  /**
+   * Sends the start image that is already set through the compression dialog (#1378). The file name
+   * stays as it is: the image is still the same picture, only smaller.
+   */
+  async compressImage(): Promise<void> {
+    const compressed = await this.dialogService.compressEmbeddedImage(this.newPlayerConfig.imgSrc as string);
+    if (compressed) this.newPlayerConfig.imgSrc = compressed;
+  }
 }

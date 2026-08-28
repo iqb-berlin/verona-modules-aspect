@@ -48,6 +48,22 @@ describe('Hotspot image element', { testIsolation: false }, () => {
       });
     });
 
+    /* Bildbereiche get the compress button too, but their hotspots are pinned to the image's pixels:
+       the dialog warns as soon as the chosen size would shrink the picture, and says nothing while
+       only the quality changes (#1399). */
+    it('warns about the hotspots only when the image would actually shrink', () => {
+      cy.get('aspect-media-source-properties').find('.compress-image-button').click();
+      cy.get('aspect-image-resize-dialog').should('exist');
+
+      cy.get('aspect-image-resize-dialog').find('.fixed-overlays-warning').should('not.exist');
+
+      cy.get('aspect-image-resize-dialog').contains('mat-form-field', 'Maximale Breite')
+        .find('input').clear().type('200');
+      cy.get('aspect-image-resize-dialog').find('.fixed-overlays-warning').should('be.visible');
+
+      clickButtonDialog('Abbrechen');
+    });
+
     after('saves unit definition', () => {
       cy.saveUnit('e2e/downloads/hotspot-image.json');
     });

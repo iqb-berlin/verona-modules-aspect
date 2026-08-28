@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
@@ -17,6 +18,9 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
   LabelEditDialogComponent
 } from 'editor/src/app/components/dialogs/label-edit-dialog/label-edit-dialog.component';
+import {
+  IsCompressibleImagePipe
+} from 'editor/modules/editor-shared/pipes/is-compressible-image.pipe';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -45,12 +49,13 @@ describe('LabelEditDialogComponent', () => {
   let dialogRefMock: { close: Mock };
 
   const configureTestBed = async (label: TextImageLabel): Promise<void> => {
-    dialogService = createSpyObj<DialogService>(['importImage']);
+    dialogService = createSpyObj<DialogService>(['importImage', 'compressEmbeddedImage']);
     dialogRefMock = { close: vi.fn() };
 
     await TestBed.configureTestingModule({
       declarations: [
         LabelEditDialogComponent,
+        IsCompressibleImagePipe,
         MockRichTextEditorComponent,
         MockTextImagePanelComponent
       ],
@@ -61,6 +66,7 @@ describe('LabelEditDialogComponent', () => {
         MatButtonModule,
         MatFormFieldModule,
         MatSelectModule,
+        MatTooltipModule,
         TranslateModule.forRoot()
       ],
       providers: [
@@ -121,6 +127,28 @@ describe('LabelEditDialogComponent', () => {
 
       expect(component.newLabel.imgSrc).toBeNull();
       expect(component.newLabel.imgFileName).toBe('');
+    });
+
+    /* Compressing an image that is already there: the dialog is the way in, `compressEmbeddedImage`
+       does the work, and only the result reaches the copy under edit (#1378). */
+    it('should apply the compressed image to the copy', async () => {
+      component.newLabel.imgSrc = 'data:image/png;base64,gross';
+      dialogService.compressEmbeddedImage.mockResolvedValue('data:image/webp;base64,klein');
+
+      await component.compressImage();
+
+      expect(dialogService.compressEmbeddedImage).toHaveBeenCalledWith('data:image/png;base64,gross');
+      expect(component.newLabel.imgSrc).toBe('data:image/webp;base64,klein');
+    });
+
+    // A cancelled dialog answers null, and the image has to stay exactly as it was.
+    it('should keep the image untouched when the compression is cancelled', async () => {
+      component.newLabel.imgSrc = 'data:image/png;base64,gross';
+      dialogService.compressEmbeddedImage.mockResolvedValue(null);
+
+      await component.compressImage();
+
+      expect(component.newLabel.imgSrc).toBe('data:image/png;base64,gross');
     });
 
     it('should close with the edited copy', () => {

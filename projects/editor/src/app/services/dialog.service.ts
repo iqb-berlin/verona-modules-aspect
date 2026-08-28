@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { ClozeDocument } from 'common/models/elements/cloze';
 import { LikertRowElement } from 'common/models/elements/likert-row';
 import {
@@ -28,6 +29,7 @@ import {
 import { StateVariable } from 'common/models/state-variable';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { ReferenceList } from 'editor/src/app/classes/reference-manager';
+import { MessageService } from 'editor/src/app/services/message.service';
 import {
   SanitizationDialogComponent
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
@@ -75,7 +77,9 @@ import { EditorSection } from 'editor/src/app/models/editor-section';
   providedIn: 'root'
 })
 export class DialogService {
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,
+              private messageService: MessageService,
+              private translateService: TranslateService) { }
 
   showLabelEditDialog(label: Label): Observable<Label> {
     const dialogRef = this.dialog.open(LabelEditDialogComponent, {
@@ -289,13 +293,47 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showImageResizeDialog(base64: string, options: ImageOptions): Observable<ImageOptions> {
+  showImageResizeDialog(base64: string, options: ImageOptions, isEmbedded: boolean = false,
+                        hasFixedOverlays: boolean = false): Observable<ImageOptions> {
     const dialogRef = this.dialog.open(ImageResizeDialogComponent, {
-      data: { base64, options: { ...options } },
+      data: {
+        base64, options: { ...options }, isEmbedded, hasFixedOverlays
+      },
       width: '500px',
       autoFocus: false
     });
     return dialogRef.afterClosed();
+  }
+
+  /**
+   * Puts an image that is already in the unit through the compression dialog and returns the new
+   * base64 -- or `null` if there is nothing to do, so a caller can leave its property alone.
+   *
+   * The counterpart to `importImage`, which does the same for a file picked from disk. Both end in
+   * `FileService.scaleImage`; only the way in differs (#1378).
+   *
+   * Three ways out with `null`, and each of them needs the caller to write nothing: the buttons are
+   * `disabledInteractive`, so a click still arrives for a format that cannot be scaled; the dialog
+   * was cancelled; or the stored base64 no longer decodes, which is the one case the author has to
+   * hear about, because the button offered itself on the `data:` prefix alone.
+   *
+   * `recompress` is on from the start here: an image that is already in the unit is opened in order
+   * to make it smaller, so the quality has to decide something even when the dimensions stay as they
+   * are -- which for a Bildbereiche element is the only way that leaves its hotspots in place
+   * (#1398, #1399).
+   */
+  async compressEmbeddedImage(base64: string, hasFixedOverlays: boolean = false): Promise<string | null> {
+    if (!FileService.isResizableBase64(base64)) return null;
+    const options = await firstValueFrom(
+      this.showImageResizeDialog(base64, { recompress: true }, true, hasFixedOverlays)
+    );
+    if (!options) return null;
+    try {
+      return await FileService.scaleImage(base64, options);
+    } catch {
+      this.messageService.showError(this.translateService.instant('imageCompressionFailed'));
+      return null;
+    }
   }
 
   async importImage(): Promise<FileInformation | null> {

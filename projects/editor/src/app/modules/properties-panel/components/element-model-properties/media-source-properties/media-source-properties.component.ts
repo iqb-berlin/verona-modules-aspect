@@ -28,6 +28,7 @@ type PanelMediaSourceProperties = MediaSourceProperties & Pick<UIElementProperti
 })
 export class MediaSourcePropertiesComponent {
   @Input() combinedProperties!: Merged<PanelMediaSourceProperties>;
+
   @Output() updateModel =
     new EventEmitter<{ property: keyof MediaSourceProperties; value: string }>();
 
@@ -41,7 +42,11 @@ export class MediaSourcePropertiesComponent {
         const file = await FileService.getRawFile('image/*');
         const base64 = await FileService.readFileAsText(file, true);
         if (FileService.isResizable(file.type)) {
-          const options = await firstValueFrom(this.dialogService.showImageResizeDialog(base64, {}));
+          /* A replacement file leaves the hotspots at their old coordinates just as compressing
+             would, so it gets the same warning as soon as the dialog would scale it down (#1399). */
+          const options = await firstValueFrom(this.dialogService.showImageResizeDialog(
+            base64, {}, false, elementType === 'hotspot-image'
+          ));
           if (!options) return;
           media.content = await FileService.scaleImage(base64, options);
         } else {
@@ -64,5 +69,20 @@ export class MediaSourcePropertiesComponent {
     if (!media.name) return;
     this.updateModel.emit({ property: 'src', value: media.content });
     this.updateModel.emit({ property: 'fileName', value: media.name });
+  }
+
+  /**
+   * Sends the image that is already in the element through the compression dialog, without a new
+   * upload (#1378). The file name stays: the readout beside it names the file the image came from,
+   * and that is still the same file.
+   *
+   * A Bildbereiche element says so, because its hotspots are pinned to the image's pixels and the
+   * dialog warns about a size change on its own (#1399).
+   */
+  async compressImage(): Promise<void> {
+    const compressed = await this.dialogService
+      .compressEmbeddedImage(this.combinedProperties.src as string,
+                             this.combinedProperties.type === 'hotspot-image');
+    if (compressed) this.updateModel.emit({ property: 'src', value: compressed });
   }
 }

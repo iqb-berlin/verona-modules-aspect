@@ -1,7 +1,11 @@
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
 import { Mock } from 'vitest';
 import { Label } from 'common/models/label-interfaces';
+import { FileService } from 'common/services/file.service';
+import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
@@ -19,10 +23,14 @@ import {
 import {
   SanitizationDialogComponent
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
+import {
+  ImageResizeDialogComponent
+} from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
 
 describe('DialogService', () => {
   let service: DialogService;
   let dialogMock: { open: Mock };
+  let messageService: SpyObj<MessageService>;
 
   const mockDialogResult = (result: unknown): void => {
     dialogMock.open.mockReturnValue({ afterClosed: () => of(result) });
@@ -30,7 +38,9 @@ describe('DialogService', () => {
 
   beforeEach(() => {
     dialogMock = { open: vi.fn() };
-    service = new DialogService(dialogMock as unknown as MatDialog);
+    messageService = createSpyObj<MessageService>(['showError']);
+    const translateService = { instant: (key: string) => key } as unknown as TranslateService;
+    service = new DialogService(dialogMock as unknown as MatDialog, messageService, translateService);
   });
 
   it('should open the label edit dialog and pass through its result', () => {
@@ -209,6 +219,116 @@ describe('DialogService', () => {
       RichTextEditDialogComponent,
       {
         data: { content: '<p>Alt</p>', defaultFontSize: 20, clozeMode: false },
+        autoFocus: false
+      }
+    );
+  });
+
+  /* The way in for an image that is already in the unit: the same dialog the upload path opens, and
+     the same `scaleImage` behind it - only the file picker in front of it is missing (#1378). */
+  describe('compressEmbeddedImage', () => {
+    const image = 'data:image/png;base64,abc';
+
+    it('should tell the dialog that the image is already embedded', async () => {
+      mockDialogResult({ maxWidth: 100 });
+      vi.spyOn(FileService, 'scaleImage').mockResolvedValue('data:image/png;base64,klein');
+
+      await service.compressEmbeddedImage(image);
+
+      expect(dialogMock.open).toHaveBeenCalledWith(
+        ImageResizeDialogComponent,
+        {
+          data: {
+            base64: image, options: { recompress: true }, isEmbedded: true, hasFixedOverlays: false
+          },
+          width: '500px',
+          autoFocus: false
+        }
+      );
+    });
+
+    /* Only this element type has anything pinned to the image's pixels, and the dialog can only warn
+       about it if the caller says so (#1399). */
+    it('should pass on that the image carries hotspots', async () => {
+      mockDialogResult({ maxWidth: 100 });
+      vi.spyOn(FileService, 'scaleImage').mockResolvedValue('data:image/png;base64,klein');
+
+      await service.compressEmbeddedImage(image, true);
+
+      expect(dialogMock.open).toHaveBeenCalledWith(
+        ImageResizeDialogComponent,
+        {
+          data: {
+            base64: image, options: { recompress: true }, isEmbedded: true, hasFixedOverlays: true
+          },
+          width: '500px',
+          autoFocus: false
+        }
+      );
+    });
+
+    it('should return the image scaled with the chosen options', async () => {
+      mockDialogResult({ maxWidth: 100, targetMimeType: 'image/webp' });
+      const scaleImage = vi.spyOn(FileService, 'scaleImage')
+        .mockResolvedValue('data:image/webp;base64,klein');
+
+      const result = await service.compressEmbeddedImage(image);
+
+      expect(scaleImage).toHaveBeenCalledWith(image, { maxWidth: 100, targetMimeType: 'image/webp' });
+      expect(result).toBe('data:image/webp;base64,klein');
+    });
+
+    /* The buttons are `disabledInteractive` so their tooltip can name the reason, and such a button
+       still fires its click - so the refusal has to sit here rather than in the markup alone. */
+    it('should refuse a format that cannot be scaled without opening the dialog', async () => {
+      const result = await service.compressEmbeddedImage('data:image/svg+xml;base64,abc');
+
+      expect(result).toBeNull();
+      expect(dialogMock.open).not.toHaveBeenCalled();
+    });
+
+    /* The button offers itself on the `data:` prefix alone, so an image whose payload no longer
+       decodes gets this far. Saying so beats the unexpected-error dialog that an escaping rejection
+       would raise, and the caller still writes nothing. */
+    it('should report an image that cannot be read instead of throwing', async () => {
+      mockDialogResult({ maxWidth: 100 });
+      vi.spyOn(FileService, 'scaleImage').mockRejectedValue(new Error('broken'));
+
+      const result = await service.compressEmbeddedImage(image);
+
+      expect(result).toBeNull();
+      expect(messageService.showError).toHaveBeenCalledWith('imageCompressionFailed');
+    });
+
+    /* Null rather than the unchanged image, so a caller can leave its property alone instead of
+       writing the same value back into every selected element. */
+    it('should return null when the dialog is cancelled', async () => {
+      mockDialogResult(undefined);
+      // The spy outlives the tests above, which did scale - so it starts counting here.
+      const scaleImage = vi.spyOn(FileService, 'scaleImage').mockClear();
+
+      const result = await service.compressEmbeddedImage(image);
+
+      expect(result).toBeNull();
+      expect(scaleImage).not.toHaveBeenCalled();
+    });
+  });
+
+  /* The upload path shares the dialog, and nothing there is embedded - the hint about a second loss
+     of quality would be wrong on the way in, where there is nothing to lose yet. `recompress` stays
+     off with it, so an upload the author only confirms travels through unaltered (#1398). */
+  it('should open the image resize dialog without the embedded flag for an upload', () => {
+    mockDialogResult({ maxWidth: 100 });
+
+    service.showImageResizeDialog('data:image/png;base64,abc', {}).subscribe();
+
+    expect(dialogMock.open).toHaveBeenCalledWith(
+      ImageResizeDialogComponent,
+      {
+        data: {
+          base64: 'data:image/png;base64,abc', options: {}, isEmbedded: false, hasFixedOverlays: false
+        },
+        width: '500px',
         autoFocus: false
       }
     );

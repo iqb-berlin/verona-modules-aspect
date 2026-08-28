@@ -53,3 +53,49 @@
   color: #2e7d32; /* Material Green 800 */
   margin-top: 4px;
 }
+
+/* The same line when the result would be bigger than what is there now - green would read as a
+   saving, which is the one thing it is not then (#1398). */
+.estimated-size-larger {
+  color: #c62828; /* Material Red 800 */
+}
+
+.recompression-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background-color: #fff8e1; /* Material Amber 50 */
+  color: #6d4c41;            /* Material Brown 600 */
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+
+.hint-icon {
+  flex: none;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #a1670a;
+}
+
+.fixed-overlays-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background-color: #fdecea; /* Material Red 50 */
+  color: #8b2c22;            /* darkened Material Red 900 */
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+
+.warning-icon {
+  flex: none;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #c62828; /* Material Red 800 */
+}

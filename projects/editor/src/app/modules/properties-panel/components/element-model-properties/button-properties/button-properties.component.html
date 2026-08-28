@@ -45,6 +45,14 @@
                   (click)="removeImage()">
             {{ 'removeImage' | translate }}
           </button>
+          <!--Compresses the image that is already there, without needing the file again (#1378).-->
+          <button class="compress-image-button" mat-raised-button disabledInteractive
+                  [disabled]="combinedProperties.asLink || !(combinedProperties.imageSrc | isCompressibleImage)"
+                  [matTooltip]="(combinedProperties.imageSrc | isCompressibleImage) ?
+                                 '' : ('compressImageUnavailable' | translate)"
+                  (click)="compressImage()">
+            {{ 'compressImage' | translate }}
+          </button>
         </div>
         <img class="image-preview"
              [src]="combinedProperties.imageSrc">

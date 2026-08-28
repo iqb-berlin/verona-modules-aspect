@@ -6,6 +6,9 @@ import {
   LikertRowElement, LikertRowProperties
 } from 'common/models/elements/likert-row';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
+import {
+  FirstLineAlignedControlDirective
+} from 'common/directives/first-line-aligned-control.directive';
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
 
 @Component({
@@ -25,7 +28,8 @@ describe('LikertRadioButtonGroupComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         LikertRadioButtonGroupComponent,
-        MockTextImagePanelComponent
+        MockTextImagePanelComponent,
+        FirstLineAlignedControlDirective
       ],
       imports: [
         ReactiveFormsModule,

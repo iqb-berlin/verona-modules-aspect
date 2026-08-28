@@ -12,6 +12,9 @@ import { LikertRowBackgroundColorPipe } from 'common/pipes/likert-row-background
 import {
   LikertRadioButtonGroupComponent
 } from 'common/components/likert-radio-button-group/likert-radio-button-group.component';
+import {
+  FirstLineAlignedControlDirective
+} from 'common/directives/first-line-aligned-control.directive';
 import { LikertComponent } from './likert.component';
 
 @Component({
@@ -68,7 +71,8 @@ describe('LikertComponent', () => {
         LikertComponent,
         LikertRadioButtonGroupComponent,
         LikertRowBackgroundColorPipe,
-        MockTextImagePanelComponent
+        MockTextImagePanelComponent,
+        FirstLineAlignedControlDirective
       ],
       imports: [
         ReactiveFormsModule,

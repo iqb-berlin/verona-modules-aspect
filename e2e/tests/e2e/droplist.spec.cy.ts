@@ -33,6 +33,38 @@ describe('Droplist element', { testIsolation: false }, () => {
       cy.get('aspect-drop-list-option-edit-dialog').should('not.exist');
     });
 
+    /* The id field carries a `pattern` attribute, and HTML compiles that with the `v` flag: a bare
+       hyphen in the character class made the browser discard the pattern, so it reported no
+       patternMismatch at all and the field was only checked by Angular (#1391). */
+    it('rejects an invalid option id natively as well (Page 1)', () => {
+      cy.get('aspect-editor-dynamic-overlay:has([data-list-alias="Startliste"])').click();
+      cy.get('.option-draggable').contains('Modified AAA')
+        .closest('.option-draggable')
+        .find('mat-icon').contains('build')
+        .click();
+      cy.get('aspect-drop-list-option-edit-dialog').should('exist');
+
+      cy.get('aspect-drop-list-option-edit-dialog').contains('mat-form-field', 'ID').find('input')
+        .clear()
+        .type('ungueltige id!')
+        .should($input => {
+          const field = $input[0] as HTMLInputElement;
+          expect(field.validity.patternMismatch, 'der Browser prüft das Muster').to.equal(true);
+        });
+      cy.get('aspect-drop-list-option-edit-dialog').contains('button', 'Speichern')
+        .should('be.disabled');
+
+      // A valid id is accepted again, and the dialog is left as it was found
+      cy.get('aspect-drop-list-option-edit-dialog').contains('mat-form-field', 'ID').find('input')
+        .clear()
+        .type('modified_aaa')
+        .should($input => {
+          expect(($input[0] as HTMLInputElement).validity.patternMismatch).to.equal(false);
+        });
+      cy.get('aspect-drop-list-option-edit-dialog').contains('button', 'Abbrechen').click();
+      cy.get('aspect-drop-list-option-edit-dialog').should('not.exist');
+    });
+
     // The rich text editor must not grow into the whole dialog frame, or the fields below it (ID,
     // image, audio, preview) are only reachable by scrolling the dialog and the toolbar is pushed
     // out of sight (#1347). Deliberately no pixel numbers: the editor has to stay shorter than the

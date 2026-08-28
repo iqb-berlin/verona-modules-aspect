@@ -62,7 +62,31 @@ describe('Table element', { testIsolation: false }, () => {
       // Add a checkbox in cell row=2, col=1
       addTableCellElement('Kontrollkästchen', 2, 1);
 
+      // Add a text-area in cell row=2, col=2, for the background colour below (#1361)
+      addTableCellElement('Eingabebereich', 2, 2);
+
       saveTableEditDialog();
+    });
+
+    it('sets a background colour on the table text-area', () => {
+      // Select the text-area child element on the canvas and switch to the styling tab
+      cy.get('aspect-table aspect-text-area').closest('.wrapper').click();
+      cy.get('aspect-element-properties .mat-mdc-tab').contains('mat-icon', 'palette')
+        .click({ force: true });
+
+      cy.get('aspect-element-style-properties')
+        .contains('mat-form-field', 'Hintergrundfarbe')
+        .find('input')
+        .clear()
+        .type('#ffd700{enter}');
+
+      // The canvas renders the same component in tableMode, so the colour has to arrive here too
+      cy.get('aspect-table aspect-text-area textarea')
+        .should('have.css', 'background-color', 'rgb(255, 215, 0)');
+
+      // Switch the properties panel back to the model tab for the following tests
+      cy.get('aspect-element-properties .mat-mdc-tab').contains('mat-icon', 'build')
+        .click({ force: true });
     });
 
     it('updates the canvas checkbox display when toggling its preset value', () => {
@@ -156,6 +180,14 @@ describe('Table element', { testIsolation: false }, () => {
         .should('have.css', 'outline-style', 'none')
       // indigo-pink theme primary, like the focused mat-form-field
         .and('have.css', 'border-color', 'rgb(63, 81, 181)');
+    });
+
+    it('paints the background colour of the table text-area', () => {
+      // In a table cell the text-area is a bare textarea, without the form field whose wrapper
+      // carries the colour outside a table -- it was set as a CSS variable nobody read (#1361)
+      cy.get('aspect-table').eq(1)
+        .find('aspect-text-area textarea')
+        .should('have.css', 'background-color', 'rgb(255, 215, 0)');
     });
 
     it('second table contains a checkbox and allows checking', () => {

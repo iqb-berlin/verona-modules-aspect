@@ -111,6 +111,23 @@ describe('TextAreaComponent', () => {
     expect(fixture.nativeElement.querySelector('mat-form-field')).toBeNull();
   });
 
+  it('should paint the background colour on the textarea in tableMode', () => {
+    // In a table cell there is no form field whose wrapper the --backgroundColor variable could
+    // reach, so the colour has to sit on the textarea itself (#1361)
+    component.tableMode = true;
+    component.elementModel.styling.backgroundColor = 'rgb(255, 0, 0)';
+    fixture.detectChanges();
+    const textarea = fixture.nativeElement.querySelector('textarea.table-child');
+    expect(textarea.style.backgroundColor).toBe('rgb(255, 0, 0)');
+  });
+
+  it('should hand the background colour to the form field outside tableMode', () => {
+    component.elementModel.styling.backgroundColor = 'rgb(0, 255, 0)';
+    fixture.detectChanges();
+    const formField = fixture.nativeElement.querySelector('mat-form-field');
+    expect(formField.style.getPropertyValue('--backgroundColor')).toBe('rgb(0, 255, 0)');
+  });
+
   it('should emit focusChanged on focus and blur', () => {
     vi.spyOn(component.focusChanged, 'emit');
     const textarea = fixture.nativeElement.querySelector('textarea');

@@ -86,12 +86,9 @@ export class DropLogic {
    * only if the list allows replacement, holds exactly one item that is not at home in it, and that
    * item may go back where it came from.
    *
-   * **Changes `targetList.value`**: the check swaps the dragged item in and reads the displaced one out,
-   * and it does not swap back. The snapshot therefore reflects the drop from here on, whether or not the
-   * drop happens. What keeps that harmless is that snapshots are built per check and thrown away
-   * afterwards -- `DragOperation` even rebuilds them inside its `filter` callback. Hoisting them to one
-   * set per drag, which the performance TODO there invites, would carry the mutated list into every
-   * later check of that drag.
+   * Leaves every list it is given as it found it, so the same board can be judged again and answers the
+   * same -- which is what `DragOperation` would need to build its board once per drag rather than once
+   * per candidate.
    */
   static isReplace(draggedItem: DragNDropValueObject, targetList: DropListMock,
                    allLists: { [id: string]: DropListMock }): boolean {
@@ -103,14 +100,24 @@ export class DropLogic {
       return false;
     }
 
+    /* The swap is what ends the recursion, not a shortcut: two lists holding each other's items would
+       otherwise ask each other the same question forever -- `doesnt enter endless loop when replacing
+       items` in the spec is that case. While the question below is being answered, this list therefore
+       holds the dragged item, and the displaced one is out of the way. Putting it back afterwards is
+       what keeps the answer from changing the board it was asked about (#1381). */
     const rest = targetList.value.splice(0, 1, draggedItem)[0];
-    return DropLogic.isDropAllowed(
-      rest,
-      targetList.id,
-      allLists[rest.originListID].id,
-      allLists,
-      true
-    );
+    try {
+      return DropLogic.isDropAllowed(
+        rest,
+        targetList.id,
+        allLists[rest.originListID].id,
+        allLists,
+        true
+      );
+    } finally {
+      // in a finally, because the lookup above throws for an item whose origin list is not on the board
+      targetList.value.splice(0, 1, rest);
+    }
   }
 
   // ### Copy List ###

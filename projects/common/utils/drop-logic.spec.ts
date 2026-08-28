@@ -178,6 +178,81 @@ describe('DropLogic', () => {
     expect(DropLogic.isDropAllowed(dragItem, 'droplist_3', 'droplist_2', allLists)).toBe(false);
   });
 
+  /*
+   * The check swaps the dragged item into the target list to end the recursion of the case above, and
+   * has to put the displaced one back. Two lists holding each other's items make the swap reach every
+   * list on the board (#1381).
+   */
+  it('leaves the lists it was given as it found them', () => {
+    const dragItem = { ...dragItemPreset, id: 'testID3', originListID: 'droplist_3' };
+    const inList1 = { ...dragItemPreset, id: 'testID2', originListID: 'droplist_2' };
+    const inList2 = { ...dragItemPreset, id: 'testID1', originListID: 'droplist_1' };
+    const oneItemList = (id: string, connectedTo: string[], value: DragNDropValueObject[]): DropListMock => ({
+      id,
+      connectedTo,
+      value,
+      onlyOneItem: true,
+      allowReplacement: true,
+      isSortList: false,
+      copyOnDrop: false,
+      permanentPlaceholders: false
+    });
+    const allLists: { [id: string]: DropListMock } = {
+      droplist_1: oneItemList('droplist_1', ['droplist_2', 'droplist_3'], [inList1]),
+      droplist_2: oneItemList('droplist_2', ['droplist_1', 'droplist_3'], [inList2]),
+      droplist_3: oneItemList('droplist_3', ['droplist_1', 'droplist_2'], [dragItem])
+    };
+
+    DropLogic.isDropAllowed(dragItem, 'droplist_3', 'droplist_1', allLists);
+
+    expect(allLists.droplist_1.value).toEqual([inList1]);
+    expect(allLists.droplist_2.value).toEqual([inList2]);
+    expect(allLists.droplist_3.value).toEqual([dragItem]);
+  });
+
+  /*
+   * Which is what lets one board answer for a whole drag instead of one per candidate -- the state
+   * `DragOperation` builds inside its filter callback today, with a performance TODO next to it.
+   */
+  it('judges a candidate on a used board as it would on a fresh one', () => {
+    const dragItem = { ...dragItemPreset, id: 'testID3', originListID: 'droplist_3' };
+    const oneItemList = (id: string, connectedTo: string[], value: DragNDropValueObject[]): DropListMock => ({
+      id,
+      connectedTo,
+      value,
+      onlyOneItem: true,
+      allowReplacement: true,
+      isSortList: false,
+      copyOnDrop: false,
+      permanentPlaceholders: false
+    });
+    // droplist_3 is the plain source the item is dragged out of; 1 and 2 hold each other's items.
+    const buildBoard = (): { [id: string]: DropListMock } => ({
+      droplist_1: oneItemList('droplist_1', ['droplist_2', 'droplist_3'],
+                              [{ ...dragItemPreset, id: 'testID2', originListID: 'droplist_2' }]),
+      droplist_2: oneItemList('droplist_2', ['droplist_1', 'droplist_3'],
+                              [{ ...dragItemPreset, id: 'testID1', originListID: 'droplist_1' }]),
+      droplist_3: {
+        id: 'droplist_3',
+        connectedTo: ['droplist_1', 'droplist_2'],
+        value: [dragItem],
+        onlyOneItem: false,
+        allowReplacement: false,
+        isSortList: false,
+        copyOnDrop: false,
+        permanentPlaceholders: false
+      }
+    });
+
+    const onFreshBoard = DropLogic.isDropAllowed(dragItem, 'droplist_3', 'droplist_2', buildBoard());
+
+    const usedBoard = buildBoard();
+    DropLogic.isDropAllowed(dragItem, 'droplist_3', 'droplist_1', usedBoard);
+    const onUsedBoard = DropLogic.isDropAllowed(dragItem, 'droplist_3', 'droplist_2', usedBoard);
+
+    expect(onUsedBoard).toBe(onFreshBoard);
+  });
+
   it('fail if moving a foreign item to a CC list', () => {
     const allLists = { ...allListsPreset };
     allLists.droplist_2.permanentPlaceholders = true;

@@ -64,17 +64,16 @@ export class TimerManager {
   }
 
   /**
-   * Stops the timer, drops it, and ends the subscriptions for good: the unsubscribe subject is
-   * completed, not just signalled.
+   * Stops the timer, drops it, and detaches the two subscriptions `initTimer` made for it.
    *
-   * Only the first reset is complete. `takeUntil` on a completed subject never fires, so the
-   * subscriptions of a timer built afterwards can no longer be torn down -- and building one afterwards
-   * does happen: `SectionVisibilityHandlingDirective` resets on becoming visible and re-enters
-   * `initTimer` on the next rule event, because `reset` left `timerStateVariable` at `null` (#1382).
+   * The manager stays usable afterwards, and its callers rely on that:
+   * `SectionVisibilityHandlingDirective` resets once its section is visible for good, and builds the
+   * next timer on the following rule event -- `checkVisibility` reads the `null` this leaves behind as
+   * "no timer yet". Every timer built this way has to be detachable in turn, which is why the signal is
+   * only sent here and the subject is not closed (#1382).
    */
   reset(): void {
     this.stopTimer();
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

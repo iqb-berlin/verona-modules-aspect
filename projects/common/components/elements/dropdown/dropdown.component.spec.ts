@@ -62,4 +62,17 @@ describe('DropdownComponent', () => {
     const labelElement = fixture.nativeElement.querySelector('mat-label');
     expect(labelElement).toBeNull();
   });
+
+  /* The colour reaches Material's generated wrapper through a CSS variable, and the rule that reads it
+     used to sit inside the cloze block -- so a standalone dropdown kept the theme background (#1388).
+     Measured on the rendered wrapper, not on the variable: the variable was set correctly all along. */
+  [true, false].forEach(clozeContext => {
+    it(`should paint the background colour on the wrapper, clozeContext=${clozeContext}`, () => {
+      component.clozeContext = clozeContext;
+      component.elementModel.styling.backgroundColor = 'rgb(255, 215, 0)';
+      fixture.detectChanges();
+      const wrapper = fixture.nativeElement.querySelector('.mat-mdc-text-field-wrapper');
+      expect(window.getComputedStyle(wrapper).backgroundColor).toBe('rgb(255, 215, 0)');
+    });
+  });
 });

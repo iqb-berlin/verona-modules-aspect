@@ -15,6 +15,13 @@
   }
 
   ::ng-deep {
+    /* The colour goes on the wrapper Material generates, which the template cannot address -- hence
+       the variable. It used to be read inside the `.cloze-child` block below, so a dropdown standing
+       on its own kept Material's theme background whatever was set (#1388). */
+    .mat-mdc-text-field-wrapper {
+      background-color: var(--wrapper-bg-color) !important;
+    }
+
     .cloze-child.mat-mdc-form-field {
       .mat-mdc-text-field-wrapper {
         padding: 0 5px !important;
@@ -23,7 +30,6 @@
         max-height: 100% !important;
         border: 1px solid #ccc !important;
         border-radius: 4px;
-        background-color: var(--wrapper-bg-color) !important;
         overflow: hidden;
         box-sizing: border-box;
         display: flex;

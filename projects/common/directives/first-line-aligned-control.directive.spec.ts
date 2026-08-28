@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -231,5 +232,90 @@ describe('FirstLineAlignedControlDirective', () => {
     }
 
     expect(centre(control())).toBeLessThan(formula().getBoundingClientRect().top);
+  });
+});
+
+/**
+ * The likert row's layout: control and label are cells of one grid, so neither can be found from the
+ * other. The label is handed to the directive as an element instead (#1371).
+ */
+@Component({
+  template: `
+    <div class="row">
+      <div class="row-label" #labelCell><span [innerHTML]="content"></span></div>
+      <div class="button-cell" firstLineAlignedControl>
+        <div class="mdc-radio"></div>
+      </div>
+    </div>`,
+  styles: [`
+    .row { display: grid; grid-template-columns: 200px 60px; width: 320px; font: 20px/20px monospace; }
+    .row-label { place-self: start; }
+    .button-cell { place-self: start; }
+    .mdc-radio { width: 40px; height: 40px; }
+    .tall { display: inline-block; width: 30px; height: 42px; }
+  `],
+  encapsulation: ViewEncapsulation.None,
+  standalone: false
+})
+class GridHostComponent {
+  content: string = '';
+}
+
+describe('FirstLineAlignedControlDirective with the label handed in', () => {
+  let fixture: ComponentFixture<GridHostComponent>;
+  let directive: FirstLineAlignedControlDirective;
+
+  const control = (): HTMLElement => fixture.nativeElement.querySelector('.mdc-radio');
+  const labelCell = (): HTMLElement => fixture.nativeElement.querySelector('.row-label');
+  const formula = (): HTMLElement => labelCell().querySelector('.tall') as HTMLElement;
+  const centre = (element: Element): number => {
+    const rect = element.getBoundingClientRect();
+    return rect.top + rect.height / 2;
+  };
+
+  const marginTop = (): number => parseFloat(control().style.marginTop || '0');
+
+  const render = (content: string): void => {
+    fixture.componentInstance.content = content;
+    fixture.detectChanges();
+    directive.firstLineAlignedControlLabel = labelCell();
+    directive.ngOnChanges();
+  };
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [GridHostComponent, FirstLineAlignedControlDirective]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(GridHostComponent);
+    fixture.detectChanges();
+    directive = fixture.debugElement.query(By.directive(FirstLineAlignedControlDirective))
+      .injector.get(FirstLineAlignedControlDirective);
+  });
+
+  it('should measure the label of another grid cell', () => {
+    render(`Anteil ${TALL} der Fläche`);
+    /* The line the formula extends is 42px high, the control 40px and at the top of its own cell:
+       without the handed-in label nothing would be measured and the margin would stay empty. */
+    expect(Math.abs(centre(control()) - centre(formula()))).toBeLessThan(1);
+    expect(control().style.marginTop).not.toBe('');
+  });
+
+  it('should centre the control on a row label that is nothing but a formula', () => {
+    render(TALL);
+    expect(Math.abs(centre(control()) - centre(formula()))).toBeLessThan(1);
+    expect(control().style.marginTop).not.toBe('');
+  });
+
+  it('should pull the control up onto the first line of a wrapped row label', () => {
+    render('Eine lange Zeilenbeschriftung, die über mehrere Zeilen läuft und deshalb umbricht');
+    const labelRect = labelCell().getBoundingClientRect();
+    expect(labelRect.height).toBeGreaterThan(40); // wirklich umgebrochen
+
+    /* The first line is 20px high and the control is 40px: its middle has to move UP by 10px to meet
+       the line's middle, which a control merely parked at the top of its cell never does. */
+    const [firstLine] = Array.from(labelCell().querySelector('span')?.getClientRects() ?? []);
+    expect(Math.abs(centre(control()) - (firstLine.top + firstLine.height / 2))).toBeLessThan(1);
+    expect(marginTop()).toBeLessThan(-5);
   });
 });

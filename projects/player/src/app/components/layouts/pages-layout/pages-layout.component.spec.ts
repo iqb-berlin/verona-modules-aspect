@@ -294,6 +294,38 @@ describe('PagesLayoutComponent', () => {
     expect(component.selectedIndex).toBe(1);
   }));
 
+  /*
+   * The order is the one the pages actually report in: a page whose section carries a visibility
+   * rule reports one tick earlier than a page without one, so page 2 arrives first (#1383).
+   */
+  it('should scroll to the nearest next page when the pages arrived out of order', fakeAsync(() => {
+    initComponent();
+    component.isVisibleIndexPages.next([
+      { index: 2, isVisible: true },
+      { index: 0, isVisible: true },
+      { index: 1, isVisible: true }
+    ]);
+
+    component.scrollToNextPage();
+    tick(200);
+
+    expect(component.selectedIndex).toBe(1);
+  }));
+
+  it('should select the nearest previous page when the pages arrived out of order', () => {
+    initComponent();
+    component.isVisibleIndexPages.next([
+      { index: 1, isVisible: true },
+      { index: 0, isVisible: true },
+      { index: 2, isVisible: true }
+    ]);
+    component.setSelectedIndex(2);
+
+    component.setPreviousSelectedIndex();
+
+    expect(component.selectedIndex).toBe(1);
+  });
+
   it('should unblock the snap mode shortly after the scrolling ended', fakeAsync(() => {
     initComponent();
     component.isSnapBlocked = true;

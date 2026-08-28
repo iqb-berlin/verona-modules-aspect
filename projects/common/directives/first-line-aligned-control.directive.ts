@@ -25,6 +25,12 @@ interface TextFragment {
  * Layout is left as the stylesheet builds it; only the control is nudged, by the difference between
  * where it sits and where the line's middle is. For a plain text line that difference is under half a
  * pixel, which is why nothing textual moves.
+ *
+ * Control and label do not have to sit together. Where they do -- an option field, a checkbox -- both
+ * are found below the host. Where they do not, the label is handed in as an element
+ * (`firstLineAlignedControlLabel`): a likert row keeps its row label and its radio buttons in separate
+ * cells of one grid, and only the caller knows which cell belongs to which (#1371). The measurement
+ * itself does not care, since it compares two rectangles of the viewport.
  */
 @Directive({
   selector: '[firstLineAlignedControl]',
@@ -33,6 +39,13 @@ interface TextFragment {
 export class FirstLineAlignedControlDirective implements AfterViewInit, OnChanges, OnDestroy {
   /** Off when the option is centred on its whole label instead (`verticalButtonAlignment`). */
   @Input({ transform: booleanAttribute }) firstLineAlignedControl: boolean = true;
+
+  /**
+   * Where the label is, for the case that it is not inside the host: the likert row puts control and
+   * row label in separate grid cells, so nothing can be found by looking down from either of them.
+   * Given an element, that element IS the label -- there is no `.mdc-label` to search for in it.
+   */
+  @Input() firstLineAlignedControlLabel?: HTMLElement;
 
   private static readonly CONTROL_SELECTOR = '.mdc-radio, .mdc-checkbox';
   private static readonly LABEL_SELECTOR = '.mdc-label';
@@ -122,7 +135,8 @@ export class FirstLineAlignedControlDirective implements AfterViewInit, OnChange
   }
 
   private get label(): HTMLElement | null {
-    return this.elementRef.nativeElement.querySelector(FirstLineAlignedControlDirective.LABEL_SELECTOR);
+    return this.firstLineAlignedControlLabel ??
+      this.elementRef.nativeElement.querySelector(FirstLineAlignedControlDirective.LABEL_SELECTOR);
   }
 
   /**

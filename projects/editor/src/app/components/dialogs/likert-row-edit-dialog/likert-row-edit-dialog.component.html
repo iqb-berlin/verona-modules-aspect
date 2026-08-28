@@ -6,7 +6,7 @@
     <mat-form-field [style.margin-top.px]="15">
       <mat-label>{{'id' | translate }}</mat-label>
       <input matInput type="text" [(ngModel)]="newLikertRow.alias" #aliasModel="ngModel"
-             required pattern="[0-9a-zA-Z_-]+">
+             required [pattern]="aliasPattern">
       <mat-error>{{'idContainsInvalidCharacters' | translate }}</mat-error>
     </mat-form-field>
 

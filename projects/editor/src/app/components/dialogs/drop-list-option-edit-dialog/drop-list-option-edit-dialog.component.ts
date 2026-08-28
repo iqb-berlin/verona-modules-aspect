@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { VariableAlias } from 'common/utils/variable-alias';
 
 @Component({
   selector: 'aspect-drop-list-option-edit-dialog',
@@ -12,6 +13,8 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 })
 export class DropListOptionEditDialogComponent {
   newLabel = { ...this.data.value };
+  /** The one place the rule for ids and aliases is written down. */
+  readonly aliasPattern = VariableAlias.PATTERN_SOURCE;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { value: DragNDropValueObject },
               private dialogService: DialogService) { }

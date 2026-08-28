@@ -18,6 +18,16 @@ describe('TextImagePanelComponent', () => {
     imgPosition: 'above'
   };
 
+  const dragNDropValue: DragNDropValueObject = {
+    ...textImageLabel,
+    id: 'value-1',
+    alias: 'value-1',
+    originListID: 'list-1',
+    originListIndex: 0,
+    audioSrc: 'data:audio/mpeg;base64,abc',
+    audioFileName: 'test.mp3'
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -142,20 +152,20 @@ describe('TextImagePanelComponent', () => {
   it('should play audio on mousedown on the audio button', () => {
     const audioPlayerService = TestBed.inject(AudioPlayerService);
     const playSpy = vi.spyOn(audioPlayerService, 'play').mockImplementation(() => {});
-    const dragNDropValue: DragNDropValueObject = {
-      ...textImageLabel,
-      id: 'value-1',
-      alias: 'value-1',
-      originListID: 'list-1',
-      originListIndex: 0,
-      audioSrc: 'data:audio/mpeg;base64,abc',
-      audioFileName: 'test.mp3'
-    };
     component.label = dragNDropValue;
     fixture.detectChanges();
     const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
     expect(audioButton).toBeTruthy();
     audioButton.dispatchEvent(new MouseEvent('mousedown'));
     expect(playSpy).toHaveBeenCalledWith('data:audio/mpeg;base64,abc');
+  });
+
+  /* The marker DraggableDirective looks for belongs on the button, not on the icon inside it: the button
+     has padding of its own, and a touch landing there is still meant for the audio (#1397). */
+  it('should mark the whole audio button as no drag handle', () => {
+    component.label = dragNDropValue;
+    fixture.detectChanges();
+    const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
+    expect(audioButton.getAttribute('data-draggable-audio')).toBe('true');
   });
 });

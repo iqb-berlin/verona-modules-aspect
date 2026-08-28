@@ -18,6 +18,13 @@ export class DraggableDirective {
 
   activeTouchId: number | null = null;
 
+  /**
+   * Whether a drag was reported and therefore still has to be ended. A touch that never became one --
+   * on the audio button of an item, or with a second finger already down -- reaches `touchend` with no
+   * matching `activeTouchId` and would otherwise report the end of a drag nobody started (#1397).
+   */
+  private isDragging = false;
+
   private unlistenMouseMove: (() => void) | undefined;
   private unlistenMouseUp: (() => void) | undefined;
 
@@ -29,7 +36,10 @@ export class DraggableDirective {
     event.preventDefault();
     if (!isTouchEvent(event) && event.button !== 0) return; // no right-click
 
-    if ((event.target as HTMLElement).getAttribute('data-draggable-audio')) return;
+    /* `closest`, not the attribute of the target itself: the marker sits on the audio button, and what
+       is touched is usually the icon inside it. With the marker on that icon instead, a touch on the
+       button's own padding started a drag while the audio played (#1397). */
+    if ((event.target as HTMLElement).closest('[data-draggable-audio]')) return;
 
     const sourceItem: HTMLElement | null = (event.target as HTMLElement).closest('.drop-list-item');
     if (!sourceItem) return;
@@ -43,6 +53,7 @@ export class DraggableDirective {
       this.activeTouchId = event.touches?.[0].identifier;
     }
 
+    this.isDragging = true;
     this.dragStart.emit({
       sourceElement: sourceItem,
       x: isTouchEvent(event) ? event.touches?.[0].clientX : event.clientX,
@@ -61,6 +72,7 @@ export class DraggableDirective {
         });
         this.unlistenMouseUp = this.renderer2.listen('document', 'mouseup', (e: MouseEvent) => {
           e.preventDefault();
+          this.isDragging = false;
           this.dragEnd.emit();
           this.unlistenMouseMove?.();
           this.unlistenMouseUp?.();
@@ -88,6 +100,7 @@ export class DraggableDirective {
       this.onTouchCancel();
     } else {
       this.activeTouchId = null;
+      this.isDragging = false;
       this.dragEnd.emit();
     }
   }
@@ -95,6 +108,8 @@ export class DraggableDirective {
   @HostListener('touchcancel')
   onTouchCancel() {
     this.activeTouchId = null;
+    if (!this.isDragging) return;
+    this.isDragging = false;
     this.dragCancel.emit();
   }
 }

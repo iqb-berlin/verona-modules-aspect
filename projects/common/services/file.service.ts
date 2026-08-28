@@ -64,6 +64,24 @@ export class FileService {
     return resizableMimeTypes.includes(mimeType);
   }
 
+  /**
+   * The same question for an image that is already stored, whose type is only known from the `data:`
+   * prefix of its base64. Answers `false` for anything that is not a data URL at all -- an SVG, an
+   * empty property, a URL -- which is what the compress buttons disable themselves on (#1378).
+   */
+  static isResizableBase64(base64: string | null | undefined): boolean {
+    if (!base64) return false;
+    return FileService.isResizable(base64.match(/^data:([^;]+);/)?.[1] || '');
+  }
+
+  /**
+   * Whether `toDataURL` lets a quality decide anything for this type. PNG and GIF come back encoded
+   * losslessly whatever quality is asked for, so re-encoding them buys nothing.
+   */
+  static supportsQuality(mimeType: string): boolean {
+    return ['image/jpeg', 'image/jpg', 'image/webp'].includes(mimeType);
+  }
+
   static scaleImage(base64Image: string, options: ImageOptions = {}): Promise<string> {
     return new Promise((resolve, reject) => {
       const mimeType = base64Image.match(/data:([^;]+);/)?.[1] || '';
@@ -83,10 +101,14 @@ export class FileService {
 
         let { width, height } = img;
 
+        const outputMimeType = options.targetMimeType || mimeType;
         const needsResize = width > maxWidth || height > maxHeight;
         const needsConversion = options.targetMimeType !== undefined && options.targetMimeType !== mimeType;
+        /* Asking for the same size in the same format is a no-op unless the caller wants the image
+           re-encoded, and only a type whose quality means something can act on that (#1398). */
+        const needsRecompression = options.recompress === true && FileService.supportsQuality(outputMimeType);
 
-        if (!needsResize && !needsConversion) {
+        if (!needsResize && !needsConversion && !needsRecompression) {
           resolve(base64Image);
         } else {
           const ratio = needsResize ? Math.min(maxWidth / width, maxHeight / height) : 1;
@@ -100,7 +122,6 @@ export class FileService {
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
-            const outputMimeType = options.targetMimeType || mimeType;
             if (outputMimeType === 'image/png' || outputMimeType === 'image/gif') {
               resolve(canvas.toDataURL('image/png'));
             } else if (outputMimeType === 'image/webp') {

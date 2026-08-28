@@ -8,6 +8,7 @@ Player
 - Lückentext, Pflichtfelder: Die Meldung „Eingabe erforderlich" steht jetzt direkt unter ihrer Lücke. Bisher lagen alle Meldungen eines Abschnitts auf derselben Höhe, unabhängig davon, in welcher Zeile ihre Lücke stand. Beim Kontrollkästchen erscheint sie außerdem in derselben Form wie bei den übrigen Lücken, mit Rahmen und deckendem Hintergrund ([#1052](https://github.com/iqb-berlin/verona-modules-aspect/issues/1052))
 - Eingabebereich mit automatischer Höhe: Auf jeder Seite außer der zuerst gezeigten war das Feld auf eine Zeile zusammengeschrumpft, und in Firefox war beim Hineinklicken kein Textcursor zu sehen — er erschien erst mit dem ersten Zeichen ([#1335](https://github.com/iqb-berlin/verona-modules-aspect/issues/1335))
 - Automatische Abschnittsnummerierung links: Steht ein Bild oder Video in der ersten Zeile eines Abschnitts, steht die Nummer wieder oben neben dem Element statt an dessen Unterkante — in der Vorschau wie im Druck ([#1021](https://github.com/iqb-berlin/verona-modules-aspect/issues/1021))
+- Scroll-Knopf beim einrastenden Blättern: Hat die Testumgebung diesen Blättermodus eingestellt, führt der gedrückt gehaltene Scroll-Knopf am Fuß einer Seite auf die unmittelbar folgende. Bisher konnte er eine Seite überspringen, sobald eine weiter hinten liegende Seite einen Abschnitt mit Einblendregel enthielt ([#1383](https://github.com/iqb-berlin/verona-modules-aspect/issues/1383))
 
 ## 3.0.0
 ### Neue Funktionen

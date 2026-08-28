@@ -112,6 +112,21 @@ describe('DragOperatorService', () => {
     expect(service.dropLists['list-1']).toBe(rebuilt as unknown as DropListComponent);
   });
 
+  /*
+   * The other order, which the editor produces: the rich text dialog renders a second copy of a cloze
+   * child, so it registers last and is destroyed first while the canvas list lives on.
+   */
+  it('should hand the id back when the newer of two live lists is destroyed', () => {
+    const onCanvas = createDropList('list-1');
+    const inDialog = createDropList('list-1');
+    register(onCanvas);
+    register(inDialog);
+
+    service.unregisterComponent(inDialog as unknown as DropListComponent);
+
+    expect(service.dropLists['list-1']).toBe(onCanvas as unknown as DropListComponent);
+  });
+
   it('should mark the drag as active and collect the eligible connected target lists', () => {
     const item = createValue('item-1', 'source');
     const source = createDropList('source', { connectedTo: ['target'] }, [item]);
@@ -171,10 +186,13 @@ describe('DragOperatorService', () => {
     const target = createDropList('target');
     [source, target].forEach(register);
     startDrag(source, item);
+    service.setTargetList('target');
     [source, target].forEach(list => service.unregisterComponent(list as unknown as DropListComponent));
 
-    expect(() => service.endDrag()).not.toThrow();
+    // the order DropListComponent.dragEnd() uses
+    expect(() => { service.handleDrop(); service.endDrag(); }).not.toThrow();
     expect(service.isDragActive).toBe(false);
+    expect(target.elementFormControl.value).toEqual([]);
   });
 
   it('should reset the drag state and list effects on endDrag', () => {

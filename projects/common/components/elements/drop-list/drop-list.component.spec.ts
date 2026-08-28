@@ -133,6 +133,20 @@ describe('DropListComponent', () => {
     expect(dragOpServiceMock.unregisterComponent).toHaveBeenCalledWith(component);
   });
 
+  /*
+   * The drag image sits in the CDK overlay container, outside this component's view, so it stays in
+   * the document unless the component takes it down itself (#1403). Counted relative to what is
+   * there, not against zero: an overlay of another test would be counted too.
+   */
+  it('should dispose its drag image overlay when it is destroyed', () => {
+    const panesBefore = document.querySelectorAll('.cdk-overlay-pane').length;
+
+    fixture.destroy();
+
+    expect(document.querySelectorAll('.cdk-overlay-pane').length).toBe(panesBefore - 1);
+    expect(component.dragImageRef).toBeUndefined();
+  });
+
   it('should fill the viewModel from the form control value', () => {
     expect(component.viewModel.length).toBe(2);
     expect(component.viewModel[0].text).toBe('Item 1');

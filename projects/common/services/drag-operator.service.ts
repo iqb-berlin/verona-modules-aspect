@@ -26,13 +26,25 @@ export class DragOperatorService {
   /** What actually says whether a drag is running; the drop lists guard their handlers on it. */
   isDragActive = false;
 
-  /**
-   * Adds a list to the board every drag is judged against. A list registers itself when it is created;
-   * there is no way back out, so the lists of a task already left stay here until the page is reloaded
-   * (#1384).
-   */
+  /** Adds a list to the board every drag is judged against. A list registers itself when it is created
+      and gives itself back when it is destroyed. */
   registerComponent(comp: DropListComponent): void {
     this.dropLists[comp.elementModel.id] = comp;
+  }
+
+  /**
+   * Takes a destroyed list off the board. Guarded on identity rather than on the id alone: the service
+   * outlives the task, so a list of the task being built may already hold the id of one being torn
+   * down, and dropping that entry would leave a live list out of every drag.
+   *
+   * Without this the service kept every list ever created, and with it the whole form of each task
+   * left behind -- around 3.150 DOM nodes per task, and a drag that grew quadratically because
+   * `createDropListMocks` runs once per candidate list (#1384).
+   */
+  unregisterComponent(comp: DropListComponent): void {
+    if (this.dropLists[comp.elementModel.id] === comp) {
+      delete this.dropLists[comp.elementModel.id];
+    }
   }
 
   /**
@@ -94,9 +106,16 @@ export class DragOperatorService {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     [...this.dragOperation.eligibleTargetListsIDs, this.dragOperation.sourceComponent.elementModel.id]
       .forEach(listID => {
-        this.dropLists[listID].isHovered = false;
-        this.dropLists[listID].isHighlighted = false;
-        this.dropLists[listID].cdr.detectChanges();
+        /* The ids are the ones that were registered when the drag began, and since `unregisterComponent`
+           a list can be gone by the time it ends: the mouse handler lives on the document, so a drag
+           outlives its lists when the host starts a new task while the button is held. Reaching through
+           a missing entry would throw here and leave `dragging-active` on the body -- a cursor stuck as
+           a grabbing hand. */
+        const dropList = this.dropLists[listID];
+        if (!dropList) return;
+        dropList.isHovered = false;
+        dropList.isHighlighted = false;
+        dropList.cdr.detectChanges();
       });
   }
 

@@ -36,6 +36,7 @@ interface DragOperatorServiceMock {
   hoveredListID: string | undefined;
   dragOperation: undefined;
   registerComponent: ReturnType<typeof vi.fn>;
+  unregisterComponent: ReturnType<typeof vi.fn>;
   startDrag: ReturnType<typeof vi.fn>;
   endDrag: ReturnType<typeof vi.fn>;
   handleDrop: ReturnType<typeof vi.fn>;
@@ -70,6 +71,7 @@ describe('DropListComponent', () => {
       hoveredListID: undefined,
       dragOperation: undefined,
       registerComponent: vi.fn(),
+      unregisterComponent: vi.fn(),
       startDrag: vi.fn(),
       endDrag: vi.fn(),
       handleDrop: vi.fn(),
@@ -123,6 +125,12 @@ describe('DropListComponent', () => {
 
   it('should register itself at the DragOperatorService', () => {
     expect(dragOpServiceMock.registerComponent).toHaveBeenCalledWith(component);
+  });
+
+  it('should give itself back at the DragOperatorService when it is destroyed', () => {
+    fixture.destroy();
+
+    expect(dragOpServiceMock.unregisterComponent).toHaveBeenCalledWith(component);
   });
 
   it('should fill the viewModel from the form control value', () => {

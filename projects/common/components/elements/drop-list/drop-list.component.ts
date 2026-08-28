@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnInit,
+  Component, Input, OnDestroy, OnInit,
   ComponentRef, ElementRef,
   ChangeDetectorRef,
   ViewChildren, QueryList
@@ -19,7 +19,7 @@ import { DragOperatorService } from 'common/services/drag-operator.service';
   styleUrls: ['./drop-list.component.scss'],
   standalone: false
 })
-export class DropListComponent extends FormElementComponent implements OnInit {
+export class DropListComponent extends FormElementComponent implements OnInit, OnDestroy {
   @Input() elementModel!: DropListElement;
   @Input() clozeContext: boolean = false;
   @ViewChildren('listItem') droplistItems: QueryList<ElementRef> | undefined;
@@ -105,5 +105,9 @@ export class DropListComponent extends FormElementComponent implements OnInit {
 
   updateFormvalue(): void {
     this.elementFormControl.setValue(this.elementFormControl.value);
+  }
+
+  ngOnDestroy(): void {
+    this.dragOpService.unregisterComponent(this);
   }
 }

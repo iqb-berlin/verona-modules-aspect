@@ -1,8 +1,9 @@
-@if ($any(label).audioSrc) {
+@if ('audioSrc' in label && label.audioSrc) {
   <div class="audio-button"
        data-draggable-audio="true"
-       (touchstart)="audioPlayerService.play($any(label).audioSrc)"
-       (mousedown)="audioPlayerService.play($any(label).audioSrc)">
+       [class.is-playing]="audioPlayerService.playingId === label.id"
+       (touchstart)="playAudio(label)"
+       (mousedown)="playAudio(label)">
     <mat-icon>play_arrow</mat-icon>
   </div>
 }

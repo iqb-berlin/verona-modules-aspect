@@ -15,4 +15,10 @@ export class TextImagePanelComponent {
   @Input() hideContent: boolean = false;
 
   constructor(public audioPlayerService: AudioPlayerService) {}
+
+  playAudio(label: DragNDropValueObject): void {
+    if (label.audioSrc) {
+      this.audioPlayerService.play(label.audioSrc, label.id);
+    }
+  }
 }

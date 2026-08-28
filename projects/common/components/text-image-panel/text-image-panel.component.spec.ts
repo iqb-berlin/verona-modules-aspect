@@ -42,6 +42,7 @@ describe('TextImagePanelComponent', () => {
     fixture = TestBed.createComponent(TextImagePanelComponent);
     component = fixture.componentInstance;
     component.label = { ...textImageLabel };
+    TestBed.inject(AudioPlayerService).playingId = null;
     fixture.detectChanges();
   });
 
@@ -157,7 +158,39 @@ describe('TextImagePanelComponent', () => {
     const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
     expect(audioButton).toBeTruthy();
     audioButton.dispatchEvent(new MouseEvent('mousedown'));
-    expect(playSpy).toHaveBeenCalledWith('data:audio/mpeg;base64,abc');
+    expect(playSpy).toHaveBeenCalledWith('data:audio/mpeg;base64,abc', 'value-1');
+  });
+
+  it('should add is-playing only when this label id is playing', () => {
+    const audioPlayerService = TestBed.inject(AudioPlayerService);
+    component.label = dragNDropValue;
+    audioPlayerService.playingId = 'value-1';
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.audio-button').classList).toContain('is-playing');
+
+    audioPlayerService.playingId = 'value-2';
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.audio-button').classList).not.toContain('is-playing');
+  });
+
+  it('should enlarge the audio button while this label audio is playing', () => {
+    const audioPlayerService = TestBed.inject(AudioPlayerService);
+    component.label = dragNDropValue;
+    fixture.detectChanges();
+    const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
+    const idleSize = audioButton.getBoundingClientRect();
+
+    audioPlayerService.playingId = 'value-1';
+    fixture.detectChanges();
+    const playingSize = audioButton.getBoundingClientRect();
+
+    expect(getComputedStyle(audioButton).transform).toBe('matrix(1.5, 0, 0, 1.5, 0, 0)');
+    expect(playingSize.width).toBeGreaterThan(idleSize.width);
+    expect(playingSize.height).toBeGreaterThan(idleSize.height);
+
+    audioPlayerService.playingId = null;
+    fixture.detectChanges();
+    expect(getComputedStyle(audioButton).transform).toBe('none');
   });
 
   /* The marker DraggableDirective looks for belongs on the button, not on the icon inside it: the button

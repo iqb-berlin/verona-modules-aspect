@@ -65,9 +65,14 @@
   flex: 1;
   display: flex;
   border-radius: 5px;
+  border: 2px solid transparent;
+  box-sizing: border-box;
   cursor: grab;
   transition: all .3s linear;
   max-height: 100%;
+}
+.drop-list-item.is-playing {
+  border-color: #006064;
 }
 
 .drop-list-item.cc-placeholder {

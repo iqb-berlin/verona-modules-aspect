@@ -9,6 +9,7 @@ import {
 import { DropListElement, DropListProperties } from 'common/models/elements/drop-list';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 import { DragOperatorService } from 'common/services/drag-operator.service';
+import { AudioPlayerService } from 'common/services/audio-player.service';
 import { DragImageComponent } from 'common/components/drag-image/drag-image.component';
 import { DragStartEvent } from 'common/directives/draggable.directive';
 import { DropListComponent } from './drop-list.component';
@@ -117,6 +118,7 @@ describe('DropListComponent', () => {
 
   afterEach(() => {
     document.body.classList.remove('dragging-active');
+    TestBed.inject(AudioPlayerService).playingId = null;
   });
 
   it('should create', () => {
@@ -227,5 +229,34 @@ describe('DropListComponent', () => {
     component.refreshViewModel();
     expect(component.viewModel.length).toBe(1);
     expect(component.viewModel[0].text).toBe('Item 3');
+  });
+
+  it('should add is-playing only to the list item whose id is playing', () => {
+    const audioPlayerService = TestBed.inject(AudioPlayerService);
+    const sharedAudioSrc = 'data:audio/mpeg;base64,abc';
+    component.viewModel[0].audioSrc = sharedAudioSrc;
+    component.viewModel[1].audioSrc = sharedAudioSrc;
+    audioPlayerService.playingId = component.viewModel[0].id;
+    fixture.detectChanges();
+    const listItems: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.drop-list-item'));
+    expect(listItems[0].classList).toContain('is-playing');
+    expect(listItems[1].classList).not.toContain('is-playing');
+  });
+
+  it('should show a border on the list item while its audio is playing', () => {
+    const audioPlayerService = TestBed.inject(AudioPlayerService);
+    const listItems: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.drop-list-item'));
+    listItems.forEach(item => {
+      item.style.transition = 'none';
+    });
+    audioPlayerService.playingId = component.viewModel[0].id;
+    fixture.detectChanges();
+
+    expect(getComputedStyle(listItems[0]).borderColor).toBe('rgb(0, 96, 100)');
+    expect(getComputedStyle(listItems[1]).borderColor).not.toBe('rgb(0, 96, 100)');
+
+    audioPlayerService.playingId = null;
+    fixture.detectChanges();
+    expect(getComputedStyle(listItems[0]).borderColor).not.toBe('rgb(0, 96, 100)');
   });
 });

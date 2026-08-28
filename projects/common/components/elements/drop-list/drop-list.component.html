@@ -38,6 +38,7 @@
     </div>
     <div *ngIf="!elementModel.permanentPlaceholders || elementFormControl.value.includes(item)"
          class="drop-list-item" [class.image-item]="item.imgSrc"
+         [class.is-playing]="audioPlayerService.playingId === item.id"
          #listItem
          aspect-draggable data-aspect-draggable="true"
          (dragStart)="dragStart($event, item, elementFormControl.value.indexOf(item), this)"

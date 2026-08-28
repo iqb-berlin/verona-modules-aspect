@@ -1,10 +1,10 @@
 import {
-  Component, Input, OnInit,
+  Component, Input, OnDestroy, OnInit,
   ComponentRef, ElementRef,
   ChangeDetectorRef,
   ViewChildren, QueryList
 } from '@angular/core';
-import { Overlay } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DropListElement } from 'common/models/elements/drop-list';
 import { DragEvent, DragStartEvent } from 'common/directives/draggable.directive';
@@ -19,7 +19,7 @@ import { DragOperatorService } from 'common/services/drag-operator.service';
   styleUrls: ['./drop-list.component.scss'],
   standalone: false
 })
-export class DropListComponent extends FormElementComponent implements OnInit {
+export class DropListComponent extends FormElementComponent implements OnInit, OnDestroy {
   @Input() elementModel!: DropListElement;
   @Input() clozeContext: boolean = false;
   @ViewChildren('listItem') droplistItems: QueryList<ElementRef> | undefined;
@@ -27,6 +27,11 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   /** Needed for sortlists, where the displayed items are (temporarily) not the same as the actual form value */
   viewModel!: DragNDropValueObject[];
   dragImageRef: ComponentRef<DragImageComponent> | undefined;
+  /** Held so that `ngOnDestroy` can dispose it. The overlay lives in the CDK container next to the
+      application, not inside this component's view, so it outlives the list unless it is taken down
+      here -- and the CDK attaches its portal through `ApplicationRef`, so an abandoned one is also
+      change-detected on every tick (#1403). */
+  private dragImageOverlayRef: OverlayRef | undefined;
   isHovered = false;
   isHighlighted = false;
 
@@ -92,9 +97,9 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   }
 
   initDragImageOverlay() {
-    const overlayRef = this.overlay.create();
+    this.dragImageOverlayRef = this.overlay.create();
     const componentPortal = new ComponentPortal(DragImageComponent);
-    this.dragImageRef = overlayRef.attach(componentPortal);
+    this.dragImageRef = this.dragImageOverlayRef.attach(componentPortal);
     this.dragImageRef.instance.clozeContext = this.clozeContext;
     this.dragImageRef.instance.styling = this.elementModel.styling;
   }
@@ -105,5 +110,13 @@ export class DropListComponent extends FormElementComponent implements OnInit {
 
   updateFormvalue(): void {
     this.elementFormControl.setValue(this.elementFormControl.value);
+  }
+
+  ngOnDestroy(): void {
+    this.dragOpService.unregisterComponent(this);
+    this.dragImageOverlayRef?.dispose();
+    /* Cleared along with the overlay: every use site guards with `?.`, which a reference to a disposed
+       view passes, and the drag image would then run change detection on it. */
+    this.dragImageRef = undefined;
   }
 }

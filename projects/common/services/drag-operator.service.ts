@@ -16,7 +16,17 @@ import { DragNDropValueObject } from 'common/models/label-interfaces';
   providedIn: 'root'
 })
 export class DragOperatorService {
+  /** The list that answers for each id -- the most recently registered one that is still alive. */
   dropLists: { [id: string]: DropListComponent } = {};
+
+  /**
+   * Every live list per id, in the order they registered. An id can be held by two components at once:
+   * the editor renders a cloze child on the canvas and, while the rich text dialog is open, the same
+   * model again in the dialog. Which of the two is destroyed first is not fixed -- the dialog's copy
+   * registers last and dies first -- so `dropLists` is derived from this rather than written directly
+   * (#1384).
+   */
+  private registrations: { [id: string]: DropListComponent[] } = {};
   /**
    * The drag under way -- and, once one has ended, the last one: nothing ever sets this back to
    * `undefined`. The `if (!this.dragOperation) throw` guards below therefore only cover the state before
@@ -26,13 +36,34 @@ export class DragOperatorService {
   /** What actually says whether a drag is running; the drop lists guard their handlers on it. */
   isDragActive = false;
 
-  /**
-   * Adds a list to the board every drag is judged against. A list registers itself when it is created;
-   * there is no way back out, so the lists of a task already left stay here until the page is reloaded
-   * (#1384).
-   */
+  /** Adds a list to the board every drag is judged against. A list registers itself when it is created
+      and gives itself back when it is destroyed. The newest registration answers for the id. */
   registerComponent(comp: DropListComponent): void {
-    this.dropLists[comp.elementModel.id] = comp;
+    const id = comp.elementModel.id;
+    this.registrations[id] = [...(this.registrations[id] ?? []), comp];
+    this.dropLists[id] = comp;
+  }
+
+  /**
+   * Takes a destroyed list off the board, and hands the id back to another list that still holds it --
+   * which is why this goes through `registrations` and not through the id alone. Both orders occur: a
+   * list of the task being built can already have taken the id of one being torn down, and in the
+   * editor the dialog's copy of a cloze child registers after the canvas one and is destroyed first.
+   *
+   * Without this the service kept every list ever created, and with it the whole form of each task
+   * left behind -- around 3.150 DOM nodes per task, and a drag that grew quadratically because
+   * `createDropListMocks` runs once per candidate list (#1384).
+   */
+  unregisterComponent(comp: DropListComponent): void {
+    const id = comp.elementModel.id;
+    const remaining = (this.registrations[id] ?? []).filter(registered => registered !== comp);
+    if (remaining.length) {
+      this.registrations[id] = remaining;
+      this.dropLists[id] = remaining[remaining.length - 1];
+    } else {
+      delete this.registrations[id];
+      delete this.dropLists[id];
+    }
   }
 
   /**
@@ -94,9 +125,16 @@ export class DragOperatorService {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     [...this.dragOperation.eligibleTargetListsIDs, this.dragOperation.sourceComponent.elementModel.id]
       .forEach(listID => {
-        this.dropLists[listID].isHovered = false;
-        this.dropLists[listID].isHighlighted = false;
-        this.dropLists[listID].cdr.detectChanges();
+        /* The ids are the ones that were registered when the drag began, and since `unregisterComponent`
+           a list can be gone by the time it ends: the mouse handler lives on the document, so a drag
+           outlives its lists when the host starts a new task while the button is held. Reaching through
+           a missing entry would throw here and leave `dragging-active` on the body -- a cursor stuck as
+           a grabbing hand. */
+        const dropList = this.dropLists[listID];
+        if (!dropList) return;
+        dropList.isHovered = false;
+        dropList.isHighlighted = false;
+        dropList.cdr.detectChanges();
       });
   }
 
@@ -178,6 +216,7 @@ export class DragOperatorService {
   handleDrop(): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     if (this.dragOperation.sourceComponent && this.dragOperation.targetComponent &&
+      this.areBothStillRegistered(this.dragOperation.sourceComponent, this.dragOperation.targetComponent) &&
       DropLogic.isDropAllowed(this.dragOperation.draggedItem,
                               this.dragOperation.sourceComponent.elementModel.id,
                               this.dragOperation.targetComponent.elementModel.id,
@@ -199,6 +238,17 @@ export class DragOperatorService {
       this.dragOperation.sourceComponent?.refreshViewModel();
       this.dragOperation.targetComponent?.refreshViewModel();
     }
+  }
+
+  /**
+   * Whether both ends of the drag are still on the board. `DropLogic` looks its lists up by id and says
+   * so itself: a missing entry is not caught there, `checkIsSourceList` reaches straight through. Since
+   * a destroyed list is unregistered, a drag can arrive here with one end gone -- the mouse handler
+   * lives on the document, so it outlives its lists when a new task arrives while the button is held.
+   */
+  private areBothStillRegistered(source: DropListComponent, target: DropListComponent): boolean {
+    return this.dropLists[source.elementModel.id] === source &&
+      this.dropLists[target.elementModel.id] === target;
   }
 
   /** Moves one item between two lists: out of the source -- unless it copies -- and into the target.

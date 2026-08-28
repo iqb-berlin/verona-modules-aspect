@@ -36,6 +36,7 @@ interface DragOperatorServiceMock {
   hoveredListID: string | undefined;
   dragOperation: undefined;
   registerComponent: ReturnType<typeof vi.fn>;
+  unregisterComponent: ReturnType<typeof vi.fn>;
   startDrag: ReturnType<typeof vi.fn>;
   endDrag: ReturnType<typeof vi.fn>;
   handleDrop: ReturnType<typeof vi.fn>;
@@ -70,6 +71,7 @@ describe('DropListComponent', () => {
       hoveredListID: undefined,
       dragOperation: undefined,
       registerComponent: vi.fn(),
+      unregisterComponent: vi.fn(),
       startDrag: vi.fn(),
       endDrag: vi.fn(),
       handleDrop: vi.fn(),
@@ -123,6 +125,26 @@ describe('DropListComponent', () => {
 
   it('should register itself at the DragOperatorService', () => {
     expect(dragOpServiceMock.registerComponent).toHaveBeenCalledWith(component);
+  });
+
+  it('should give itself back at the DragOperatorService when it is destroyed', () => {
+    fixture.destroy();
+
+    expect(dragOpServiceMock.unregisterComponent).toHaveBeenCalledWith(component);
+  });
+
+  /*
+   * The drag image sits in the CDK overlay container, outside this component's view, so it stays in
+   * the document unless the component takes it down itself (#1403). Counted relative to what is
+   * there, not against zero: an overlay of another test would be counted too.
+   */
+  it('should dispose its drag image overlay when it is destroyed', () => {
+    const panesBefore = document.querySelectorAll('.cdk-overlay-pane').length;
+
+    fixture.destroy();
+
+    expect(document.querySelectorAll('.cdk-overlay-pane').length).toBe(panesBefore - 1);
+    expect(component.dragImageRef).toBeUndefined();
   });
 
   it('should fill the viewModel from the form control value', () => {

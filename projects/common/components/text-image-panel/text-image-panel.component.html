@@ -1,17 +1,22 @@
-<div *ngIf="$any(label).audioSrc"
-     class="audio-button"
-     (touchstart)="audioPlayerService.play($any(label).audioSrc)"
-     (mousedown)="audioPlayerService.play($any(label).audioSrc)">
-  <mat-icon data-draggable-audio="true">play_arrow</mat-icon>
-</div>
+@if ($any(label).audioSrc) {
+  <div class="audio-button"
+       data-draggable-audio="true"
+       (touchstart)="audioPlayerService.play($any(label).audioSrc)"
+       (mousedown)="audioPlayerService.play($any(label).audioSrc)">
+    <mat-icon>play_arrow</mat-icon>
+  </div>
+}
 <div class="image-wrapper" [ngClass]="{'column': label.imgPosition === 'above',
                                  'column-reverse': label.imgPosition === 'below',
                                  'row': label.imgPosition === 'left',
                                  'row-reverse': label.imgPosition === 'right',
                                  'hide-content': hideContent}">
-  <img *ngIf="label.imgSrc"
-      [src]="label.imgSrc | safeResourceUrl" alt="Image Placeholder">
+  @if (label.imgSrc) {
+    <img [src]="label.imgSrc | safeResourceUrl" alt="Image Placeholder">
+  }
   <!-- Not `text !== ''`: a rich text editor that has been emptied leaves an empty paragraph behind,
        and that paragraph took a line's height under the image (#965). -->
-  <div *ngIf="label.text | hasRenderableContent" class="text" [innerHTML]="label.text | safeResourceHTML"></div>
+  @if (label.text | hasRenderableContent) {
+    <div class="text" [innerHTML]="label.text | safeResourceHTML"></div>
+  }
 </div>

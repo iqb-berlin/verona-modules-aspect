@@ -20,8 +20,23 @@ describe('DraggableDirective', () => {
     return new TouchEvent(type, {
       touches: type === 'touchend' ? [] : [touch],
       changedTouches: [touch],
-      cancelable: true
+      cancelable: true,
+      bubbles: true // as a real touch event does: the directive sits above what is actually touched
     });
+  };
+
+  /** The audio button of a list item, built the way TextImagePanel builds it: the marker on the button,
+      the icon inside it. Its listeners sit on the button, since the directive itself sits further up. */
+  const createAudioButton = (): { button: HTMLElement, icon: HTMLElement } => {
+    const button = document.createElement('div');
+    button.setAttribute('data-draggable-audio', 'true');
+    const icon = document.createElement('mat-icon');
+    button.appendChild(icon);
+    item.appendChild(button);
+    button.addEventListener('mousedown', (event: MouseEvent) => directive.onEvent(event));
+    button.addEventListener('touchstart', (event: TouchEvent) => directive.onEvent(event));
+    button.addEventListener('touchend', (event: TouchEvent) => directive.onTouchEnd(event));
+    return { button, icon };
   };
 
   beforeEach(() => {
@@ -129,5 +144,43 @@ describe('DraggableDirective', () => {
     handle.dispatchEvent(createTouchEvent('touchstart', 2));
     expect(dragStartEvents.length).toBe(1);
     expect(dragCancelCount).toBe(1);
+  });
+
+  /* A touch on the audio button starts no drag -- and must not report the end of one either, since the
+     drop list takes that for the end of the drag before it and the player threw over it (#1397). */
+  it('should report no drag when a touch on the audio button ends', () => {
+    const { icon } = createAudioButton();
+    icon.dispatchEvent(createTouchEvent('touchstart', 1));
+    expect(dragStartEvents.length).toBe(0);
+    expect(directive.activeTouchId).toBeNull();
+
+    icon.dispatchEvent(createTouchEvent('touchend', 1));
+    expect(dragEndCount).toBe(0);
+    expect(dragCancelCount).toBe(0);
+  });
+
+  /* What is pressed is the icon; the marker sits on the button around it. Read off the target alone,
+     the marker would be missed and the item dragged instead. */
+  it('should not start a drag from inside the audio button', () => {
+    const { icon } = createAudioButton();
+    icon.dispatchEvent(new MouseEvent('mousedown', { cancelable: true, button: 0, bubbles: true }));
+    expect(dragStartEvents.length).toBe(0);
+    expect(documentListeners.has('mouseup')).toBe(false);
+  });
+
+  /* The item a second finger lands on holds no drag of its own; ending that touch would otherwise cancel
+     the drag the first finger is running elsewhere. */
+  it('should report no drag when a second finger touches an item that holds none', () => {
+    const touches = [
+      new Touch({ identifier: 1, target: handle }),
+      new Touch({ identifier: 2, target: handle })
+    ];
+    handle.dispatchEvent(new TouchEvent('touchstart', {
+      touches, changedTouches: [touches[1]], cancelable: true
+    }));
+    expect(dragStartEvents.length).toBe(0);
+
+    handle.dispatchEvent(createTouchEvent('touchend', 2));
+    expect(dragCancelCount).toBe(0);
   });
 });

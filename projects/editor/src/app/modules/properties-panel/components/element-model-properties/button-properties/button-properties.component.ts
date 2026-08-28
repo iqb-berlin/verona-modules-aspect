@@ -38,6 +38,21 @@ export class ButtonPropertiesComponent implements OnDestroy {
     this.updateModel.emit({ property: 'imageSrc', value: null });
   }
 
+  /**
+   * Sends the image that is already on the button through the compression dialog (#1378).
+   *
+   * A button rendered as a link has no image to compress, and `disabledInteractive` -- which is what
+   * lets the disabled button keep its tooltip -- still delivers the click. The markup grays the
+   * button out for it; without this line a unit that carries both `asLink` and an `imageSrc` would
+   * open the dialog anyway and write a new image into an element that shows none.
+   */
+  async compressImage(): Promise<void> {
+    if (this.combinedProperties.asLink) return;
+    const compressed = await this.dialogService
+      .compressEmbeddedImage(this.combinedProperties.imageSrc as string);
+    if (compressed) this.updateModel.emit({ property: 'imageSrc', value: compressed });
+  }
+
   editTooltip(): void {
     this.dialogService.showTooltipDialog(
       (this.combinedProperties.tooltipText as string) || undefined,

@@ -108,7 +108,7 @@ checkbox "propertiesPanel.sub" = false
 button "propertiesPanel.editTooltip"
 [propertiesPanel.action]
 select "propertiesPanel.action" = <null>
-select "propertiesPanel.actionParam" = <null>
+select "propertiesPanel.actionParam" = <null> (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
@@ -153,7 +153,7 @@ checkbox "propertiesPanel.sub" = false
 button "propertiesPanel.editTooltip"
 [propertiesPanel.action]
 select "propertiesPanel.action" = <null>
-select "propertiesPanel.actionParam" = <null>
+select "propertiesPanel.actionParam" = <null> (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
@@ -875,6 +875,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = hotspot-image
 text "originalFileName" = unknown
 button "upload_file"
+button "compress" (disabled, interactive)
 [propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
 checkbox "propertiesPanel.requiredField" = false
@@ -951,6 +952,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = hotspot-image
 text "originalFileName" = unknown
 button "upload_file"
+button "compress" (disabled, interactive)
 [propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = false
 [propertiesPanel.hotspots]
@@ -967,6 +969,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = image
 text "originalFileName" = unknown
 button "upload_file"
+button "compress" (disabled, interactive)
 input[text] "propertiesPanel.alt" = Bild nicht gefunden
 checkbox "propertiesPanel.scale" = false
 checkbox "propertiesPanel.magnifier" = false
@@ -1039,6 +1042,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = image
 text "originalFileName" = unknown
 button "upload_file"
+button "compress" (disabled, interactive)
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -2705,8 +2709,8 @@ input[number] "propertiesPanel.columnCount" = 1
 checkbox "propertiesPanel.highlightableYellow" = false
 checkbox "propertiesPanel.highlightableTurquoise" = false
 checkbox "propertiesPanel.highlightableOrange" = false
-select "propertiesPanel.markingPanels" = []
-select "propertiesPanel.markingMode" = selection
+select "propertiesPanel.markingPanels" = [] (disabled)
+select "propertiesPanel.markingMode" = selection (disabled)
 checkbox "propertiesPanel.hasSelectionPopup" = false (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
@@ -2743,8 +2747,8 @@ input[number] "propertiesPanel.columnCount" =  [merged]
 checkbox "propertiesPanel.highlightableYellow" = indeterminate
 checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
 checkbox "propertiesPanel.highlightableOrange" = indeterminate
-select "propertiesPanel.markingPanels" = []
-select "propertiesPanel.markingMode" = <null> [merged]
+select "propertiesPanel.markingPanels" = [] (disabled)
+select "propertiesPanel.markingMode" = <null> (disabled) [merged]
 checkbox "propertiesPanel.hasSelectionPopup" = indeterminate (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -2785,8 +2789,8 @@ input[number] "propertiesPanel.columnCount" =  [merged]
 checkbox "propertiesPanel.highlightableYellow" = indeterminate
 checkbox "propertiesPanel.highlightableTurquoise" = indeterminate
 checkbox "propertiesPanel.highlightableOrange" = indeterminate
-select "propertiesPanel.markingPanels" = []
-select "propertiesPanel.markingMode" = <null> [merged]
+select "propertiesPanel.markingPanels" = [] (disabled)
+select "propertiesPanel.markingMode" = <null> (disabled) [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -2803,8 +2807,8 @@ input[number] "propertiesPanel.columnCount" = 1
 checkbox "propertiesPanel.highlightableYellow" = false
 checkbox "propertiesPanel.highlightableTurquoise" = false
 checkbox "propertiesPanel.highlightableOrange" = false
-select "propertiesPanel.markingPanels" = []
-select "propertiesPanel.markingMode" = selection
+select "propertiesPanel.markingPanels" = [] (disabled)
+select "propertiesPanel.markingMode" = selection (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -2951,7 +2955,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = trigger
 [propertiesPanel.action]
 select "propertiesPanel.action" = <null>
-select "propertiesPanel.actionParam" = <null>
+select "propertiesPanel.actionParam" = <null> (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
@@ -2970,7 +2974,7 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.action]
 select "propertiesPanel.action" = <null>
-select "propertiesPanel.actionParam" = <null>
+select "propertiesPanel.actionParam" = <null> (disabled)
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---

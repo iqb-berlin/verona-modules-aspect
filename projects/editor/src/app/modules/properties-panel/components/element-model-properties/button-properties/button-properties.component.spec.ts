@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import {
+  IsCompressibleImagePipe
+} from 'editor/modules/editor-shared/pipes/is-compressible-image.pipe';
 import {
   ButtonPropertiesComponent
 } from './button-properties.component';
@@ -18,16 +22,17 @@ describe('ButtonPropertiesComponent', () => {
   let dialogService: SpyObj<DialogService>;
 
   beforeEach(async () => {
-    dialogService = createSpyObj<DialogService>(['showTooltipDialog']);
+    dialogService = createSpyObj<DialogService>(['showTooltipDialog', 'compressEmbeddedImage']);
 
     await TestBed.configureTestingModule({
-      declarations: [ButtonPropertiesComponent],
+      declarations: [IsCompressibleImagePipe, ButtonPropertiesComponent],
       imports: [
         CommonModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatInputModule,
+        MatTooltipModule,
         TranslateModule.forRoot()
       ],
       providers: [
@@ -124,5 +129,73 @@ describe('ButtonPropertiesComponent', () => {
     component.editTooltip();
 
     expect(dialogService.showTooltipDialog).toHaveBeenCalledWith(undefined, 'below');
+  });
+
+  /* The image on a button gets the same second way in as every other image in the editor: compress
+     what is already there, without the file (#1378). */
+  describe('the compress button', () => {
+    const compressButton = (): HTMLButtonElement | null => {
+      const host = fixture.nativeElement as HTMLElement;
+      return host.querySelector('.compress-image-button');
+    };
+
+    // The image controls belong to the "image" mode of the button; a text button has no image at all.
+    it('should stay away while the button carries no image', () => {
+      expect(compressButton()).toBeNull();
+    });
+
+    it('should be offered for an image that can be scaled', () => {
+      component.combinedProperties = { asLink: false, imageSrc: 'data:image/png;base64,abc' };
+      fixture.detectChanges();
+
+      expect(compressButton()).not.toBeNull();
+      expect(compressButton()?.getAttribute('aria-disabled')).not.toBe('true');
+    });
+
+    it('should stay but be disabled for an image no scaler can shrink', () => {
+      component.combinedProperties = { asLink: false, imageSrc: 'data:image/svg+xml;base64,abc' };
+      fixture.detectChanges();
+
+      expect(compressButton()?.getAttribute('aria-disabled')).toBe('true');
+    });
+  });
+
+  it('should emit the compressed image', async () => {
+    component.combinedProperties = { asLink: false, imageSrc: 'data:image/png;base64,gross' };
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+    dialogService.compressEmbeddedImage.mockResolvedValue('data:image/webp;base64,klein');
+
+    await component.compressImage();
+
+    expect(dialogService.compressEmbeddedImage).toHaveBeenCalledWith('data:image/png;base64,gross');
+    expect(emitted).toEqual([{ property: 'imageSrc', value: 'data:image/webp;base64,klein' }]);
+  });
+
+  /* The markup grays the button out for a button rendered as a link, but `disabledInteractive` still
+     delivers the click - so the handler has to refuse it a second time. A unit that carries both an
+     `imageSrc` and `asLink` is not reachable through the toolbar, only through hand-written or
+     migrated data. */
+  it('should refuse to compress a button that is rendered as a link', async () => {
+    component.combinedProperties = { asLink: true, imageSrc: 'data:image/png;base64,gross' };
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+    dialogService.compressEmbeddedImage.mockResolvedValue('data:image/webp;base64,klein');
+
+    await component.compressImage();
+
+    expect(dialogService.compressEmbeddedImage).not.toHaveBeenCalled();
+    expect(emitted).toEqual([]);
+  });
+
+  it('should emit nothing when the compression is cancelled', async () => {
+    component.combinedProperties = { asLink: false, imageSrc: 'data:image/png;base64,gross' };
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+    dialogService.compressEmbeddedImage.mockResolvedValue(null);
+
+    await component.compressImage();
+
+    expect(emitted).toEqual([]);
   });
 });

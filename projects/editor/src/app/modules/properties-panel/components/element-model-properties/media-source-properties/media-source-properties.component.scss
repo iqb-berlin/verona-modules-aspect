@@ -42,3 +42,8 @@
 .media-src-button {
   margin-bottom: 10px;
 }
+
+/* Sits under the upload button in the same column and needs the same gap below it (#1378). */
+.compress-image-button {
+  margin-bottom: 10px;
+}

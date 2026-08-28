@@ -15,6 +15,14 @@
                       (click)="removeImage()">
                 {{ 'removeImage' | translate }}
               </button>
+              <!--Compresses the start image that is already set, without needing the file (#1378).-->
+              <button class="compress-image-button" mat-raised-button disabledInteractive
+                      [disabled]="!(newPlayerConfig.imgSrc | isCompressibleImage)"
+                      [matTooltip]="newPlayerConfig.imgSrc && !(newPlayerConfig.imgSrc | isCompressibleImage) ?
+                                     ('compressImageUnavailable' | translate) : ''"
+                      (click)="compressImage()">
+                {{ 'compressImage' | translate }}
+              </button>
             </div>
             @if (newPlayerConfig.imgSrc){
               <img class="image-preview"

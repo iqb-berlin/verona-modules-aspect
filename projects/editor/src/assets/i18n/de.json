@@ -32,6 +32,9 @@
   "updateImage": "Bild ändern",
   "loadImage": "Bild laden",
   "removeImage": "Bild entfernen",
+  "compressImage": "Bild verkleinern",
+  "compressImageUnavailable": "Dieses Bildformat lässt sich nicht verkleinern",
+  "imageCompressionFailed": "Dieses Bild ließ sich nicht verkleinern — seine Daten lassen sich nicht lesen",
   "loadAudio": "Audio laden",
   "changeAudio": "Audio ändern",
   "removeAudio": "Audio entfernen",
@@ -609,6 +612,9 @@
     "aspectRatioLocked": "Das Seitenverhältnis bleibt immer erhalten",
     "quality": "Qualität",
     "convertToWebP": "In WebP konvertieren (spart Speicherplatz)",
-    "newSize": "Voraussichtliche neue Größe"
+    "newSize": "Voraussichtliche neue Größe",
+    "newSizeLarger": "— größer als bisher",
+    "recompressionHint": "Dieses Bild steckt schon in der Aufgabe. Beim Verkleinern wird es neu berechnet: Ein JPEG und ein WebP verlieren dabei ein zweites Mal an Qualität, ein GIF seine Animation.",
+    "fixedOverlaysWarning": "Achtung: Die Bildbereiche dieses Elements liegen an festen Positionen im Bild. Wird das Bild kleiner, wandern sie nicht mit und müssen danach neu gesetzt werden. Nur die Dateigröße zu senken, ohne die Maße zu ändern, lässt sie unberührt."
   }
 }

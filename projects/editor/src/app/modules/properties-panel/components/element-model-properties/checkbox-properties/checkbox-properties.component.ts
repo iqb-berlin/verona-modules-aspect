@@ -35,4 +35,10 @@ export class CheckboxPropertiesComponent {
       this.updateModel.emit({ property: 'imgSrc', value: file.content });
     }
   }
+
+  /** Sends the image that is already there through the compression dialog (#1378). */
+  async compressImgSrc(): Promise<void> {
+    const compressed = await this.dialogService.compressEmbeddedImage(this.combinedProperties.imgSrc as string);
+    if (compressed) this.updateModel.emit({ property: 'imgSrc', value: compressed });
+  }
 }

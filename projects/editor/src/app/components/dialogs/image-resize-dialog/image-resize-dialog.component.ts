@@ -18,6 +18,14 @@ export class ImageResizeDialogComponent implements OnInit {
   originalSize: number = 0;
   estimatedSize: number = 0;
 
+  /**
+   * Whether the chosen options would give back a smaller picture, rather than only fewer bytes.
+   *
+   * Held rather than worked out in the template: the warning that goes with `hasFixedOverlays` binds
+   * to it, and a binding that calls back into the class runs on every change detection (#1378).
+   */
+  willResize: boolean = false;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: ImageResizeDialogData,
               private messageService: MessageService,
               private translateService: TranslateService) {
@@ -44,6 +52,13 @@ export class ImageResizeDialogComponent implements OnInit {
   }
 
   async updateEstimatedSize(): Promise<void> {
+    /* Both axes, because `scaleImage` decides on both. The height box writes the width back through
+       the aspect ratio, and for an image far taller than it is wide that rounding can land on the
+       original width again -- the image then shrinks while a width-only comparison says it does
+       not. */
+    this.willResize = !this.data.options.uncompressed && this.originalWidth > 0 &&
+      ((this.data.options.maxWidth as number) < this.originalWidth ||
+       (this.data.options.maxHeight as number) < this.originalHeight);
     const res = await FileService.scaleImage(this.data.base64, this.data.options);
     this.estimatedSize = Math.round((res.length * 3) / 4);
   }
@@ -95,7 +110,12 @@ export class ImageResizeDialogComponent implements OnInit {
     this.updateEstimatedSize();
   }
 
+  /**
+   * Moving the slider is the moment a quality becomes a decision rather than a default, and only a
+   * decision may re-encode an image the author did not ask to resize (#1398).
+   */
   onQualityChange(): void {
+    this.data.options.recompress = true;
     this.updateEstimatedSize();
   }
 

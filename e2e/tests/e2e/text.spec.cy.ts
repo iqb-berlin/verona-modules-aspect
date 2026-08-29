@@ -69,11 +69,11 @@ describe('Text element', { testIsolation: false }, () => {
 
       // 1. Indent paragraph 0
       cy.get('.ProseMirror p').eq(0).then(selectParagraphElement);
-      cy.get('button[matTooltip="Einrücken"]').click();
+      cy.get('aspect-rich-text-editor').find('mat-icon').contains('format_indent_increase').click();
 
       // 2. Hang indent paragraph 1
       cy.get('.ProseMirror p').eq(1).then(selectParagraphElement);
-      cy.get('button[matTooltip="Hängende Einrückung"]').click();
+      cy.get('aspect-rich-text-editor').find('mat-icon').contains('segment').click();
 
       // 3. Set font-size to 18px on paragraph 2
       cy.get('.ProseMirror p').eq(2).then(selectParagraphElement);

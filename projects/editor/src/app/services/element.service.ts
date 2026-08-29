@@ -220,7 +220,6 @@ export class ElementService {
   updateElementsProperty<K extends string>(elements: UIElement[],
                                            property: K & OwnProperty<K>,
                                            value: UIElementValue): void {
-    // console.log('updateElementsProperty ', elements, property, value);
     let hasDirectWrite = false;
     elements.forEach(element => {
       if (element.type === 'text' && property === 'text') {

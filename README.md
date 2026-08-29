@@ -133,34 +133,28 @@ issue → branch → pull request → green pipeline → review → merge into d
 
 ### Branches
 
+This repository follows the
+[Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model, the same one
+the studio uses.
+
 ```
-develop      all development; the default branch, and what feature and bugfix branches target
-master       the state of the most recent release, and where the release tags sit
-feature/…    branched off develop for a new capability
-bugfix/…     branched off develop for a fix that can wait for the next release
-release/…    branched off develop to prepare a release
-hotfix/…     branched off master for a fix that cannot wait for one
+develop      all active development; the default branch and what pull requests target
+master       the state of the most recent release; the release tags sit here
+feature/…    branched off develop, merged back into develop after review
+hotfix/…     branched off master for a fix that cannot wait for a release,
+             merged into master and into develop
 ```
 
-A branch name carries the issue it belongs to: `bugfix/1357-topic`.
+A branch name carries the issue it belongs to: `feature/1357-topic`.
 
-**A release** is prepared on `release/<version>`, which carries the two version numbers in
-`package.json` (`config.player_version`, `config.editor_version` — the version stands nowhere
-else) and the entries in `docs/release-notes-*.md`. It is merged into `develop` first and
-`develop` into `master` second, both as pull requests; the tag then goes on the merge commit on
-`master`, one tag for both modules — `editor/3.0.0+player/3.0.0`.
+**A release** is `develop` merged into `master` and tagged there, one tag for both modules —
+`editor/3.0.0+player/3.0.0`. What the release needs goes into `develop` before that merge: the two
+version numbers in `package.json` (`config.player_version` and `config.editor_version` — the
+version stands nowhere else) and the entries in `docs/release-notes-*.md`.
 
-**A hotfix** goes to `master` first, carrying its own version bump, and reaches `develop` by
-being **merged, not cherry-picked** — over a branch of its own, `merge/<version>-into-develop`.
-
-Both of those last steps exist for the same reason: `master` has to stay an ancestor of
-`develop`. A cherry-pick would let the two lines diverge, and the next hotfix would meet a
-history that no longer contains the previous one and would have to resolve the same conflicts
-again. The release breaks the property in passing — after `develop` is merged into `master`,
-`master` is one merge commit ahead and no longer an ancestor — so it is restored with a
-fast-forward push, `git push origin <master-sha>:refs/heads/develop`, which adds no commit of
-its own. `git merge-base --is-ancestor origin/master origin/develop` checks it afterwards: it
-prints nothing and answers through its exit status, `0` for yes.
+**A hotfix** is branched off `master`, merged into `master` once it is verified, and merged into
+`develop` as well — merged, not cherry-picked, so the fix stays one commit in the history instead
+of two that later have to be told apart.
 
 ### From issue to merge
 
@@ -182,7 +176,7 @@ prints nothing and answers through its exit status, `0` for yes.
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after
    a rebase the previous green run no longer counts.
 6. **Merge as a merge commit** once the required status check is green.
-7. **Release** on a `release/…` branch, as described above.
+7. **Release** by merging `develop` into `master`, as described above.
 
 Tickets live on [project board 13](https://github.com/orgs/iqb-berlin/projects/13). A card
 moves to *In Bearbeitung* when work starts and to *zu testen* once the fix is merged into

@@ -1,0 +1,2765 @@
+{
+  "version": "4.12.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_all-elements_p0c0",
+              "alias": "text_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 1,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "text": "Ein Absatz Fließtext, lang genug für einen Umbruch in der Messseite."
+            },
+            {
+              "type": "button",
+              "id": "button_all-elements_p0c0",
+              "alias": "button_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 2,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Knopf"
+            },
+            {
+              "type": "text-field",
+              "id": "text-field_all-elements_p0c0",
+              "alias": "text-field_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 3,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-field-simple",
+              "id": "text-field-simple_all-elements_p0c0",
+              "alias": "text-field-simple_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 4,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-area",
+              "id": "text-area_all-elements_p0c0",
+              "alias": "text-area_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 5,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "checkbox",
+              "id": "checkbox_all-elements_p0c0",
+              "alias": "checkbox_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 6,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Kontrollkästchen"
+            },
+            {
+              "type": "dropdown",
+              "id": "dropdown_all-elements_p0c0",
+              "alias": "dropdown_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 7,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "radio",
+              "id": "radio_all-elements_p0c0",
+              "alias": "radio_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 8,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "image",
+              "id": "image_all-elements_p0c0",
+              "alias": "image_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 9,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+            },
+            {
+              "type": "audio",
+              "id": "audio_all-elements_p0c0",
+              "alias": "audio_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 10,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQAAAAA=",
+              "fileName": "ton.wav"
+            },
+            {
+              "type": "video",
+              "id": "video_all-elements_p0c0",
+              "alias": "video_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 11,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQ==",
+              "fileName": "film.mp4"
+            },
+            {
+              "type": "likert",
+              "id": "likert_all-elements_p0c0",
+              "alias": "likert_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 12,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rows": [
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p0c0_row1",
+                  "alias": "likert_all-elements_p0c0_row1",
+                  "rowLabel": {
+                    "text": "Erste Zeile"
+                  },
+                  "columnCount": 3
+                },
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p0c0_row2",
+                  "alias": "likert_all-elements_p0c0_row2",
+                  "rowLabel": {
+                    "text": "Zweite Zeile"
+                  },
+                  "columnCount": 3
+                }
+              ],
+              "columns": [
+                {
+                  "text": "stimmt"
+                },
+                {
+                  "text": "teils"
+                },
+                {
+                  "text": "stimmt nicht"
+                }
+              ]
+            },
+            {
+              "type": "likert-row",
+              "id": "likert-row_all-elements_p0c0",
+              "alias": "likert-row_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 13,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rowLabel": {
+                "text": "Einzelne Zeile"
+              },
+              "columnCount": 3
+            },
+            {
+              "type": "radio-group-images",
+              "id": "radio-group-images_all-elements_p0c0",
+              "alias": "radio-group-images_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 14,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "columns": [
+                {
+                  "text": "A",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                },
+                {
+                  "text": "B",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                }
+              ]
+            },
+            {
+              "type": "hotspot-image",
+              "id": "hotspot-image_all-elements_p0c0",
+              "alias": "hotspot-image_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 15,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=",
+              "value": [
+                {
+                  "id": "hotspot-image_all-elements_p0c0_spot",
+                  "left": 10,
+                  "top": 10,
+                  "width": 40,
+                  "height": 40,
+                  "shape": "rectangle",
+                  "borderColor": "#000000",
+                  "backgroundColor": "#ffffff",
+                  "rotation": 0,
+                  "readOnly": false
+                }
+              ]
+            },
+            {
+              "type": "drop-list",
+              "id": "drop-list_all-elements_p0c0",
+              "alias": "drop-list_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 16,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "value": [
+                {
+                  "text": "Ablegeteil 1",
+                  "id": "drop-list_all-elements_p0c0_value1",
+                  "alias": "drop-list_all-elements_p0c0_value1",
+                  "originListID": "drop-list_all-elements_p0c0",
+                  "originListIndex": 0
+                },
+                {
+                  "text": "Ablegeteil 2",
+                  "id": "drop-list_all-elements_p0c0_value2",
+                  "alias": "drop-list_all-elements_p0c0_value2",
+                  "originListID": "drop-list_all-elements_p0c0",
+                  "originListIndex": 1
+                },
+                {
+                  "text": "Ablegeteil 3",
+                  "id": "drop-list_all-elements_p0c0_value3",
+                  "alias": "drop-list_all-elements_p0c0_value3",
+                  "originListID": "drop-list_all-elements_p0c0",
+                  "originListIndex": 2
+                }
+              ]
+            },
+            {
+              "type": "cloze",
+              "id": "cloze_all-elements_p0c0",
+              "alias": "cloze_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 17,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "spell-correct",
+              "id": "spell-correct_all-elements_p0c0",
+              "alias": "spell-correct_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 18,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "slider",
+              "id": "slider_all-elements_p0c0",
+              "alias": "slider_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 19,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "frame_all-elements_p0c0",
+              "alias": "frame_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 20,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "toggle-button",
+              "id": "toggle-button_all-elements_p0c0",
+              "alias": "toggle-button_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 21,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "geometry",
+              "id": "geometry_all-elements_p0c0",
+              "alias": "geometry_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 22,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "math-field",
+              "id": "math-field_all-elements_p0c0",
+              "alias": "math-field_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 23,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "math-table",
+              "id": "math-table_all-elements_p0c0",
+              "alias": "math-table_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 24,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "text-area-math",
+              "id": "text-area-math_all-elements_p0c0",
+              "alias": "text-area-math_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 25,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "trigger",
+              "id": "trigger_all-elements_p0c0",
+              "alias": "trigger_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 26,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "table",
+              "id": "table_all-elements_p0c0",
+              "alias": "table_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 27,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "gridColumnSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ],
+              "gridRowSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ]
+            },
+            {
+              "type": "marking-panel",
+              "id": "marking-panel_all-elements_p0c0",
+              "alias": "marking-panel_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 28,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-periodic-table",
+              "id": "widget-periodic-table_all-elements_p0c0",
+              "alias": "widget-periodic-table_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 29,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-molecule-editor",
+              "id": "widget-molecule-editor_all-elements_p0c0",
+              "alias": "widget-molecule-editor_all-elements_p0c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 30,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            }
+          ],
+          "dynamicPositioning": true
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_all-elements_p1c0",
+              "alias": "text_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 1,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "text": "Ein Absatz Fließtext, lang genug für einen Umbruch in der Messseite."
+            },
+            {
+              "type": "button",
+              "id": "button_all-elements_p1c0",
+              "alias": "button_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 2,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Knopf"
+            },
+            {
+              "type": "text-field",
+              "id": "text-field_all-elements_p1c0",
+              "alias": "text-field_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 3,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-field-simple",
+              "id": "text-field-simple_all-elements_p1c0",
+              "alias": "text-field-simple_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 4,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-area",
+              "id": "text-area_all-elements_p1c0",
+              "alias": "text-area_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 5,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "checkbox",
+              "id": "checkbox_all-elements_p1c0",
+              "alias": "checkbox_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 6,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Kontrollkästchen"
+            },
+            {
+              "type": "dropdown",
+              "id": "dropdown_all-elements_p1c0",
+              "alias": "dropdown_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 7,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "radio",
+              "id": "radio_all-elements_p1c0",
+              "alias": "radio_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 8,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "image",
+              "id": "image_all-elements_p1c0",
+              "alias": "image_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 9,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+            },
+            {
+              "type": "audio",
+              "id": "audio_all-elements_p1c0",
+              "alias": "audio_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 10,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQAAAAA=",
+              "fileName": "ton.wav"
+            },
+            {
+              "type": "video",
+              "id": "video_all-elements_p1c0",
+              "alias": "video_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 11,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQ==",
+              "fileName": "film.mp4"
+            },
+            {
+              "type": "likert",
+              "id": "likert_all-elements_p1c0",
+              "alias": "likert_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 12,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rows": [
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p1c0_row1",
+                  "alias": "likert_all-elements_p1c0_row1",
+                  "rowLabel": {
+                    "text": "Erste Zeile"
+                  },
+                  "columnCount": 3
+                },
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p1c0_row2",
+                  "alias": "likert_all-elements_p1c0_row2",
+                  "rowLabel": {
+                    "text": "Zweite Zeile"
+                  },
+                  "columnCount": 3
+                }
+              ],
+              "columns": [
+                {
+                  "text": "stimmt"
+                },
+                {
+                  "text": "teils"
+                },
+                {
+                  "text": "stimmt nicht"
+                }
+              ]
+            },
+            {
+              "type": "likert-row",
+              "id": "likert-row_all-elements_p1c0",
+              "alias": "likert-row_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 13,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rowLabel": {
+                "text": "Einzelne Zeile"
+              },
+              "columnCount": 3
+            },
+            {
+              "type": "radio-group-images",
+              "id": "radio-group-images_all-elements_p1c0",
+              "alias": "radio-group-images_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 14,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "columns": [
+                {
+                  "text": "A",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                },
+                {
+                  "text": "B",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                }
+              ]
+            },
+            {
+              "type": "hotspot-image",
+              "id": "hotspot-image_all-elements_p1c0",
+              "alias": "hotspot-image_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 15,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=",
+              "value": [
+                {
+                  "id": "hotspot-image_all-elements_p1c0_spot",
+                  "left": 10,
+                  "top": 10,
+                  "width": 40,
+                  "height": 40,
+                  "shape": "rectangle",
+                  "borderColor": "#000000",
+                  "backgroundColor": "#ffffff",
+                  "rotation": 0,
+                  "readOnly": false
+                }
+              ]
+            },
+            {
+              "type": "drop-list",
+              "id": "drop-list_all-elements_p1c0",
+              "alias": "drop-list_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 16,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "value": [
+                {
+                  "text": "Ablegeteil 1",
+                  "id": "drop-list_all-elements_p1c0_value1",
+                  "alias": "drop-list_all-elements_p1c0_value1",
+                  "originListID": "drop-list_all-elements_p1c0",
+                  "originListIndex": 0
+                },
+                {
+                  "text": "Ablegeteil 2",
+                  "id": "drop-list_all-elements_p1c0_value2",
+                  "alias": "drop-list_all-elements_p1c0_value2",
+                  "originListID": "drop-list_all-elements_p1c0",
+                  "originListIndex": 1
+                },
+                {
+                  "text": "Ablegeteil 3",
+                  "id": "drop-list_all-elements_p1c0_value3",
+                  "alias": "drop-list_all-elements_p1c0_value3",
+                  "originListID": "drop-list_all-elements_p1c0",
+                  "originListIndex": 2
+                }
+              ]
+            },
+            {
+              "type": "cloze",
+              "id": "cloze_all-elements_p1c0",
+              "alias": "cloze_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 17,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "spell-correct",
+              "id": "spell-correct_all-elements_p1c0",
+              "alias": "spell-correct_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 18,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "slider",
+              "id": "slider_all-elements_p1c0",
+              "alias": "slider_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 19,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "frame_all-elements_p1c0",
+              "alias": "frame_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 20,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "toggle-button",
+              "id": "toggle-button_all-elements_p1c0",
+              "alias": "toggle-button_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 21,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "geometry",
+              "id": "geometry_all-elements_p1c0",
+              "alias": "geometry_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 22,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "math-field",
+              "id": "math-field_all-elements_p1c0",
+              "alias": "math-field_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 23,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "math-table",
+              "id": "math-table_all-elements_p1c0",
+              "alias": "math-table_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 24,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "text-area-math",
+              "id": "text-area-math_all-elements_p1c0",
+              "alias": "text-area-math_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 25,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "trigger",
+              "id": "trigger_all-elements_p1c0",
+              "alias": "trigger_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 26,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "table",
+              "id": "table_all-elements_p1c0",
+              "alias": "table_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 27,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "gridColumnSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ],
+              "gridRowSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ]
+            },
+            {
+              "type": "marking-panel",
+              "id": "marking-panel_all-elements_p1c0",
+              "alias": "marking-panel_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 28,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-periodic-table",
+              "id": "widget-periodic-table_all-elements_p1c0",
+              "alias": "widget-periodic-table_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 29,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-molecule-editor",
+              "id": "widget-molecule-editor_all-elements_p1c0",
+              "alias": "widget-molecule-editor_all-elements_p1c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 30,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            }
+          ],
+          "dynamicPositioning": true
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_all-elements_p2c0",
+              "alias": "text_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 1,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "text": "Ein Absatz Fließtext, lang genug für einen Umbruch in der Messseite."
+            },
+            {
+              "type": "button",
+              "id": "button_all-elements_p2c0",
+              "alias": "button_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 2,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Knopf"
+            },
+            {
+              "type": "text-field",
+              "id": "text-field_all-elements_p2c0",
+              "alias": "text-field_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 3,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-field-simple",
+              "id": "text-field-simple_all-elements_p2c0",
+              "alias": "text-field-simple_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 4,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-area",
+              "id": "text-area_all-elements_p2c0",
+              "alias": "text-area_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 5,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "checkbox",
+              "id": "checkbox_all-elements_p2c0",
+              "alias": "checkbox_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 6,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Kontrollkästchen"
+            },
+            {
+              "type": "dropdown",
+              "id": "dropdown_all-elements_p2c0",
+              "alias": "dropdown_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 7,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "radio",
+              "id": "radio_all-elements_p2c0",
+              "alias": "radio_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 8,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "image",
+              "id": "image_all-elements_p2c0",
+              "alias": "image_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 9,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+            },
+            {
+              "type": "audio",
+              "id": "audio_all-elements_p2c0",
+              "alias": "audio_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 10,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQAAAAA=",
+              "fileName": "ton.wav"
+            },
+            {
+              "type": "video",
+              "id": "video_all-elements_p2c0",
+              "alias": "video_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 11,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQ==",
+              "fileName": "film.mp4"
+            },
+            {
+              "type": "likert",
+              "id": "likert_all-elements_p2c0",
+              "alias": "likert_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 12,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rows": [
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p2c0_row1",
+                  "alias": "likert_all-elements_p2c0_row1",
+                  "rowLabel": {
+                    "text": "Erste Zeile"
+                  },
+                  "columnCount": 3
+                },
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p2c0_row2",
+                  "alias": "likert_all-elements_p2c0_row2",
+                  "rowLabel": {
+                    "text": "Zweite Zeile"
+                  },
+                  "columnCount": 3
+                }
+              ],
+              "columns": [
+                {
+                  "text": "stimmt"
+                },
+                {
+                  "text": "teils"
+                },
+                {
+                  "text": "stimmt nicht"
+                }
+              ]
+            },
+            {
+              "type": "likert-row",
+              "id": "likert-row_all-elements_p2c0",
+              "alias": "likert-row_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 13,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rowLabel": {
+                "text": "Einzelne Zeile"
+              },
+              "columnCount": 3
+            },
+            {
+              "type": "radio-group-images",
+              "id": "radio-group-images_all-elements_p2c0",
+              "alias": "radio-group-images_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 14,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "columns": [
+                {
+                  "text": "A",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                },
+                {
+                  "text": "B",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                }
+              ]
+            },
+            {
+              "type": "hotspot-image",
+              "id": "hotspot-image_all-elements_p2c0",
+              "alias": "hotspot-image_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 15,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=",
+              "value": [
+                {
+                  "id": "hotspot-image_all-elements_p2c0_spot",
+                  "left": 10,
+                  "top": 10,
+                  "width": 40,
+                  "height": 40,
+                  "shape": "rectangle",
+                  "borderColor": "#000000",
+                  "backgroundColor": "#ffffff",
+                  "rotation": 0,
+                  "readOnly": false
+                }
+              ]
+            },
+            {
+              "type": "drop-list",
+              "id": "drop-list_all-elements_p2c0",
+              "alias": "drop-list_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 16,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "value": [
+                {
+                  "text": "Ablegeteil 1",
+                  "id": "drop-list_all-elements_p2c0_value1",
+                  "alias": "drop-list_all-elements_p2c0_value1",
+                  "originListID": "drop-list_all-elements_p2c0",
+                  "originListIndex": 0
+                },
+                {
+                  "text": "Ablegeteil 2",
+                  "id": "drop-list_all-elements_p2c0_value2",
+                  "alias": "drop-list_all-elements_p2c0_value2",
+                  "originListID": "drop-list_all-elements_p2c0",
+                  "originListIndex": 1
+                },
+                {
+                  "text": "Ablegeteil 3",
+                  "id": "drop-list_all-elements_p2c0_value3",
+                  "alias": "drop-list_all-elements_p2c0_value3",
+                  "originListID": "drop-list_all-elements_p2c0",
+                  "originListIndex": 2
+                }
+              ]
+            },
+            {
+              "type": "cloze",
+              "id": "cloze_all-elements_p2c0",
+              "alias": "cloze_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 17,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "spell-correct",
+              "id": "spell-correct_all-elements_p2c0",
+              "alias": "spell-correct_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 18,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "slider",
+              "id": "slider_all-elements_p2c0",
+              "alias": "slider_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 19,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "frame_all-elements_p2c0",
+              "alias": "frame_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 20,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "toggle-button",
+              "id": "toggle-button_all-elements_p2c0",
+              "alias": "toggle-button_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 21,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "geometry",
+              "id": "geometry_all-elements_p2c0",
+              "alias": "geometry_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 22,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "math-field",
+              "id": "math-field_all-elements_p2c0",
+              "alias": "math-field_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 23,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "math-table",
+              "id": "math-table_all-elements_p2c0",
+              "alias": "math-table_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 24,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "text-area-math",
+              "id": "text-area-math_all-elements_p2c0",
+              "alias": "text-area-math_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 25,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "trigger",
+              "id": "trigger_all-elements_p2c0",
+              "alias": "trigger_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 26,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "table",
+              "id": "table_all-elements_p2c0",
+              "alias": "table_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 27,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "gridColumnSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ],
+              "gridRowSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ]
+            },
+            {
+              "type": "marking-panel",
+              "id": "marking-panel_all-elements_p2c0",
+              "alias": "marking-panel_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 28,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-periodic-table",
+              "id": "widget-periodic-table_all-elements_p2c0",
+              "alias": "widget-periodic-table_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 29,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-molecule-editor",
+              "id": "widget-molecule-editor_all-elements_p2c0",
+              "alias": "widget-molecule-editor_all-elements_p2c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 30,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            }
+          ],
+          "dynamicPositioning": true
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_all-elements_p3c0",
+              "alias": "text_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 1,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "text": "Ein Absatz Fließtext, lang genug für einen Umbruch in der Messseite."
+            },
+            {
+              "type": "button",
+              "id": "button_all-elements_p3c0",
+              "alias": "button_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 2,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Knopf"
+            },
+            {
+              "type": "text-field",
+              "id": "text-field_all-elements_p3c0",
+              "alias": "text-field_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 3,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-field-simple",
+              "id": "text-field-simple_all-elements_p3c0",
+              "alias": "text-field-simple_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 4,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-area",
+              "id": "text-area_all-elements_p3c0",
+              "alias": "text-area_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 5,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "checkbox",
+              "id": "checkbox_all-elements_p3c0",
+              "alias": "checkbox_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 6,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Kontrollkästchen"
+            },
+            {
+              "type": "dropdown",
+              "id": "dropdown_all-elements_p3c0",
+              "alias": "dropdown_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 7,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "radio",
+              "id": "radio_all-elements_p3c0",
+              "alias": "radio_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 8,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "image",
+              "id": "image_all-elements_p3c0",
+              "alias": "image_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 9,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+            },
+            {
+              "type": "audio",
+              "id": "audio_all-elements_p3c0",
+              "alias": "audio_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 10,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQAAAAA=",
+              "fileName": "ton.wav"
+            },
+            {
+              "type": "video",
+              "id": "video_all-elements_p3c0",
+              "alias": "video_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 11,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQ==",
+              "fileName": "film.mp4"
+            },
+            {
+              "type": "likert",
+              "id": "likert_all-elements_p3c0",
+              "alias": "likert_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 12,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rows": [
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p3c0_row1",
+                  "alias": "likert_all-elements_p3c0_row1",
+                  "rowLabel": {
+                    "text": "Erste Zeile"
+                  },
+                  "columnCount": 3
+                },
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p3c0_row2",
+                  "alias": "likert_all-elements_p3c0_row2",
+                  "rowLabel": {
+                    "text": "Zweite Zeile"
+                  },
+                  "columnCount": 3
+                }
+              ],
+              "columns": [
+                {
+                  "text": "stimmt"
+                },
+                {
+                  "text": "teils"
+                },
+                {
+                  "text": "stimmt nicht"
+                }
+              ]
+            },
+            {
+              "type": "likert-row",
+              "id": "likert-row_all-elements_p3c0",
+              "alias": "likert-row_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 13,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rowLabel": {
+                "text": "Einzelne Zeile"
+              },
+              "columnCount": 3
+            },
+            {
+              "type": "radio-group-images",
+              "id": "radio-group-images_all-elements_p3c0",
+              "alias": "radio-group-images_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 14,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "columns": [
+                {
+                  "text": "A",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                },
+                {
+                  "text": "B",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                }
+              ]
+            },
+            {
+              "type": "hotspot-image",
+              "id": "hotspot-image_all-elements_p3c0",
+              "alias": "hotspot-image_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 15,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=",
+              "value": [
+                {
+                  "id": "hotspot-image_all-elements_p3c0_spot",
+                  "left": 10,
+                  "top": 10,
+                  "width": 40,
+                  "height": 40,
+                  "shape": "rectangle",
+                  "borderColor": "#000000",
+                  "backgroundColor": "#ffffff",
+                  "rotation": 0,
+                  "readOnly": false
+                }
+              ]
+            },
+            {
+              "type": "drop-list",
+              "id": "drop-list_all-elements_p3c0",
+              "alias": "drop-list_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 16,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "value": [
+                {
+                  "text": "Ablegeteil 1",
+                  "id": "drop-list_all-elements_p3c0_value1",
+                  "alias": "drop-list_all-elements_p3c0_value1",
+                  "originListID": "drop-list_all-elements_p3c0",
+                  "originListIndex": 0
+                },
+                {
+                  "text": "Ablegeteil 2",
+                  "id": "drop-list_all-elements_p3c0_value2",
+                  "alias": "drop-list_all-elements_p3c0_value2",
+                  "originListID": "drop-list_all-elements_p3c0",
+                  "originListIndex": 1
+                },
+                {
+                  "text": "Ablegeteil 3",
+                  "id": "drop-list_all-elements_p3c0_value3",
+                  "alias": "drop-list_all-elements_p3c0_value3",
+                  "originListID": "drop-list_all-elements_p3c0",
+                  "originListIndex": 2
+                }
+              ]
+            },
+            {
+              "type": "cloze",
+              "id": "cloze_all-elements_p3c0",
+              "alias": "cloze_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 17,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "spell-correct",
+              "id": "spell-correct_all-elements_p3c0",
+              "alias": "spell-correct_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 18,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "slider",
+              "id": "slider_all-elements_p3c0",
+              "alias": "slider_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 19,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "frame_all-elements_p3c0",
+              "alias": "frame_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 20,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "toggle-button",
+              "id": "toggle-button_all-elements_p3c0",
+              "alias": "toggle-button_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 21,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "geometry",
+              "id": "geometry_all-elements_p3c0",
+              "alias": "geometry_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 22,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "math-field",
+              "id": "math-field_all-elements_p3c0",
+              "alias": "math-field_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 23,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "math-table",
+              "id": "math-table_all-elements_p3c0",
+              "alias": "math-table_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 24,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "text-area-math",
+              "id": "text-area-math_all-elements_p3c0",
+              "alias": "text-area-math_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 25,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "trigger",
+              "id": "trigger_all-elements_p3c0",
+              "alias": "trigger_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 26,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "table",
+              "id": "table_all-elements_p3c0",
+              "alias": "table_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 27,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "gridColumnSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ],
+              "gridRowSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ]
+            },
+            {
+              "type": "marking-panel",
+              "id": "marking-panel_all-elements_p3c0",
+              "alias": "marking-panel_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 28,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-periodic-table",
+              "id": "widget-periodic-table_all-elements_p3c0",
+              "alias": "widget-periodic-table_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 29,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-molecule-editor",
+              "id": "widget-molecule-editor_all-elements_p3c0",
+              "alias": "widget-molecule-editor_all-elements_p3c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 30,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            }
+          ],
+          "dynamicPositioning": true
+        }
+      ]
+    },
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_all-elements_p4c0",
+              "alias": "text_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 1,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "text": "Ein Absatz Fließtext, lang genug für einen Umbruch in der Messseite."
+            },
+            {
+              "type": "button",
+              "id": "button_all-elements_p4c0",
+              "alias": "button_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 2,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Knopf"
+            },
+            {
+              "type": "text-field",
+              "id": "text-field_all-elements_p4c0",
+              "alias": "text-field_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 3,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-field-simple",
+              "id": "text-field-simple_all-elements_p4c0",
+              "alias": "text-field-simple_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 4,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "text-area",
+              "id": "text-area_all-elements_p4c0",
+              "alias": "text-area_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 5,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "checkbox",
+              "id": "checkbox_all-elements_p4c0",
+              "alias": "checkbox_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 6,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Kontrollkästchen"
+            },
+            {
+              "type": "dropdown",
+              "id": "dropdown_all-elements_p4c0",
+              "alias": "dropdown_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 7,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "radio",
+              "id": "radio_all-elements_p4c0",
+              "alias": "radio_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 8,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "image",
+              "id": "image_all-elements_p4c0",
+              "alias": "image_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 9,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+            },
+            {
+              "type": "audio",
+              "id": "audio_all-elements_p4c0",
+              "alias": "audio_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 10,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQAAAAA=",
+              "fileName": "ton.wav"
+            },
+            {
+              "type": "video",
+              "id": "video_all-elements_p4c0",
+              "alias": "video_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 11,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQ==",
+              "fileName": "film.mp4"
+            },
+            {
+              "type": "likert",
+              "id": "likert_all-elements_p4c0",
+              "alias": "likert_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 12,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rows": [
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p4c0_row1",
+                  "alias": "likert_all-elements_p4c0_row1",
+                  "rowLabel": {
+                    "text": "Erste Zeile"
+                  },
+                  "columnCount": 3
+                },
+                {
+                  "type": "likert-row",
+                  "id": "likert_all-elements_p4c0_row2",
+                  "alias": "likert_all-elements_p4c0_row2",
+                  "rowLabel": {
+                    "text": "Zweite Zeile"
+                  },
+                  "columnCount": 3
+                }
+              ],
+              "columns": [
+                {
+                  "text": "stimmt"
+                },
+                {
+                  "text": "teils"
+                },
+                {
+                  "text": "stimmt nicht"
+                }
+              ]
+            },
+            {
+              "type": "likert-row",
+              "id": "likert-row_all-elements_p4c0",
+              "alias": "likert-row_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 13,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "rowLabel": {
+                "text": "Einzelne Zeile"
+              },
+              "columnCount": 3
+            },
+            {
+              "type": "radio-group-images",
+              "id": "radio-group-images_all-elements_p4c0",
+              "alias": "radio-group-images_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 14,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "columns": [
+                {
+                  "text": "A",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                },
+                {
+                  "text": "B",
+                  "imgSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                }
+              ]
+            },
+            {
+              "type": "hotspot-image",
+              "id": "hotspot-image_all-elements_p4c0",
+              "alias": "hotspot-image_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 15,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=",
+              "value": [
+                {
+                  "id": "hotspot-image_all-elements_p4c0_spot",
+                  "left": 10,
+                  "top": 10,
+                  "width": 40,
+                  "height": 40,
+                  "shape": "rectangle",
+                  "borderColor": "#000000",
+                  "backgroundColor": "#ffffff",
+                  "rotation": 0,
+                  "readOnly": false
+                }
+              ]
+            },
+            {
+              "type": "drop-list",
+              "id": "drop-list_all-elements_p4c0",
+              "alias": "drop-list_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 16,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "value": [
+                {
+                  "text": "Ablegeteil 1",
+                  "id": "drop-list_all-elements_p4c0_value1",
+                  "alias": "drop-list_all-elements_p4c0_value1",
+                  "originListID": "drop-list_all-elements_p4c0",
+                  "originListIndex": 0
+                },
+                {
+                  "text": "Ablegeteil 2",
+                  "id": "drop-list_all-elements_p4c0_value2",
+                  "alias": "drop-list_all-elements_p4c0_value2",
+                  "originListID": "drop-list_all-elements_p4c0",
+                  "originListIndex": 1
+                },
+                {
+                  "text": "Ablegeteil 3",
+                  "id": "drop-list_all-elements_p4c0_value3",
+                  "alias": "drop-list_all-elements_p4c0_value3",
+                  "originListID": "drop-list_all-elements_p4c0",
+                  "originListIndex": 2
+                }
+              ]
+            },
+            {
+              "type": "cloze",
+              "id": "cloze_all-elements_p4c0",
+              "alias": "cloze_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 17,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "spell-correct",
+              "id": "spell-correct_all-elements_p4c0",
+              "alias": "spell-correct_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 18,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "slider",
+              "id": "slider_all-elements_p4c0",
+              "alias": "slider_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 19,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "frame_all-elements_p4c0",
+              "alias": "frame_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 20,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "toggle-button",
+              "id": "toggle-button_all-elements_p4c0",
+              "alias": "toggle-button_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 21,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung",
+              "options": [
+                {
+                  "text": "Erste"
+                },
+                {
+                  "text": "Zweite"
+                },
+                {
+                  "text": "Dritte"
+                }
+              ]
+            },
+            {
+              "type": "geometry",
+              "id": "geometry_all-elements_p4c0",
+              "alias": "geometry_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 22,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "math-field",
+              "id": "math-field_all-elements_p4c0",
+              "alias": "math-field_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 23,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "math-table",
+              "id": "math-table_all-elements_p4c0",
+              "alias": "math-table_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 24,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "text-area-math",
+              "id": "text-area-math_all-elements_p4c0",
+              "alias": "text-area-math_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 25,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "label": "Beschriftung"
+            },
+            {
+              "type": "trigger",
+              "id": "trigger_all-elements_p4c0",
+              "alias": "trigger_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 26,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "table",
+              "id": "table_all-elements_p4c0",
+              "alias": "table_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 27,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              },
+              "gridColumnSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ],
+              "gridRowSizes": [
+                {
+                  "value": 1,
+                  "unit": "fr"
+                },
+                {
+                  "value": 1,
+                  "unit": "fr"
+                }
+              ]
+            },
+            {
+              "type": "marking-panel",
+              "id": "marking-panel_all-elements_p4c0",
+              "alias": "marking-panel_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 28,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-periodic-table",
+              "id": "widget-periodic-table_all-elements_p4c0",
+              "alias": "widget-periodic-table_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 29,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            {
+              "type": "widget-molecule-editor",
+              "id": "widget-molecule-editor_all-elements_p4c0",
+              "alias": "widget-molecule-editor_all-elements_p4c0",
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 30,
+                "marginLeft": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            }
+          ],
+          "dynamicPositioning": true
+        }
+      ]
+    }
+  ]
+}

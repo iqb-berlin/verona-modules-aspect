@@ -133,6 +133,10 @@ issue → branch → pull request → green pipeline → review → merge into d
 
 ### Branches
 
+This is the [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model,
+with two departures from it that the sections below spell out: a `bugfix/…` class of its own, and
+a release that reaches `master` through `develop` rather than being merged into both.
+
 ```
 develop      all development; the default branch, and what feature and bugfix branches target
 master       the state of the most recent release, and where the release tags sit
@@ -142,13 +146,17 @@ release/…    branched off develop to prepare a release
 hotfix/…     branched off master for a fix that cannot wait for one
 ```
 
-A branch name carries the issue it belongs to: `bugfix/1357-topic`.
+A branch name carries the issue it belongs to: `bugfix/1357-topic`. Git Flow knows only feature,
+release and hotfix branches; `bugfix/…` is this repository's own, and it differs from `feature/…`
+in nothing but what the branch is for.
 
 **A release** is prepared on `release/<version>`, which carries the two version numbers in
 `package.json` (`config.player_version`, `config.editor_version` — the version stands nowhere
 else) and the entries in `docs/release-notes-*.md`. It is merged into `develop` first and
 `develop` into `master` second, both as pull requests; the tag then goes on the merge commit on
-`master`, one tag for both modules — `editor/3.0.0+player/3.0.0`.
+`master`, one tag for both modules — `editor/3.0.0+player/3.0.0`. Git Flow would merge the release
+branch into `master` and back into `develop` separately; both routes leave the two lines apart,
+which is what the paragraph after the next one is about.
 
 **A hotfix** goes to `master` first, carrying its own version bump, and reaches `develop` by
 being **merged, not cherry-picked** — over a branch of its own, `merge/<version>-into-develop`.

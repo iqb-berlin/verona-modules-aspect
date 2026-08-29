@@ -12,6 +12,7 @@ Editor
 ### Fehlerbehebungen
 - Texteingabe in Dialogen: Der Editor wächst nicht mehr mit jeder Zeile über den Dialog hinaus. Der Textbereich hält jetzt seine Höhe und scrollt, sodass Werkzeugleiste und die Felder darunter erreichbar bleiben. Der Dialog "Ablegelistenoption anpassen" öffnet außerdem breit genug, dass die Werkzeugleiste vollständig sichtbar ist ([#1347](https://github.com/iqb-berlin/verona-modules-aspect/issues/1347))
 - Absatzabstand: Der Abstand lässt sich wieder einstellen. Bisher erschien stattdessen eine Fehlermeldung und der Abstand blieb, wie er war — bei einem Absatz, in dem der Cursor steht, ebenso wie bei einer Auswahl über mehrere ([#909](https://github.com/iqb-berlin/verona-modules-aspect/issues/909))
+- Die Quellenangabe, die der Assistent für einen GeoGebra-Abschnitt einfügt, endet jetzt mit einem Punkt: "Erstellt mit GeoGebra, https://www.geogebra.org/ (es gelten die GeoGebra-Lizenzbedingungen)." ([#1365](https://github.com/iqb-berlin/verona-modules-aspect/issues/1365))
 
 ## 3.0.0
 ### Neue Funktionen

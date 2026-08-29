@@ -5,7 +5,7 @@ import { ButtonElement } from 'common/models/elements/button';
 import { createGeometrySection } from 'editor/modules/section-templates/utils/geometry-builders';
 
 describe('createGeometrySection', () => {
-  const sourceText = 'Erstellt mit GeoGebra, https://www.geogebra.org (es gelten die GeoGebra-Lizenzbedingungen)';
+  const sourceText = 'Erstellt mit GeoGebra, https://www.geogebra.org/ (es gelten die GeoGebra-Lizenzbedingungen).';
   let idService: IDService;
 
   beforeEach(() => {

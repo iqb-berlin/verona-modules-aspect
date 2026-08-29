@@ -608,7 +608,7 @@
     "taskIdeaLinks": "Verlinkungen",
     "taskIdeaResources": "Benötigte Ressourcen",
     "taskIdeaResourcesPlaceholder": "Links zu benötigten Ressourcen (zum Beispiel Textauszüge, Audios, Videos, Homepages, ...)",
-    "geometrySource": "Erstellt mit GeoGebra, https://www.geogebra.org (es gelten die GeoGebra-Lizenzbedingungen)"
+    "geometrySource": "Erstellt mit GeoGebra, https://www.geogebra.org/ (es gelten die GeoGebra-Lizenzbedingungen)."
   },
   "overviewDialog": {
     "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."

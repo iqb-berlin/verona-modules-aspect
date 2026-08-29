@@ -3,14 +3,14 @@
                       pageIndex == 0 ||
                       (pageIndex == 1 && unitService.unit.pages[0].alwaysVisible)"
           [style]="'justify-content: center'"
-          [matTooltip]="'Seite nach vorn verschieben'"
+          [matTooltip]="'pageMenu.movePageForward' | translate"
           mat-menu-item (click)="movePage('left')">
     <mat-icon>west</mat-icon>
   </button>
   <button [disabled]="page.alwaysVisible ||
                       pageIndex == unitService.unit.pages.length - 1"
           [style]="'justify-content: center;'"
-          [matTooltip]="'Seite nach hinten verschieben'"
+          [matTooltip]="'pageMenu.movePageBackward' | translate"
           mat-menu-item (click)="movePage('right')">
     <mat-icon>east</mat-icon>
   </button>
@@ -19,7 +19,7 @@
 <button mat-menu-item class="delete-button"
         [disabled]="(unitService.unit.pages.length < 2) ||
                     (unitService.unit.pages.length == 2 && unitService.unit.pages[0].alwaysVisible)"
-        [matTooltip]="'Seite löschen'"
+        [matTooltip]="'pageMenu.deletePage' | translate"
         (click)="deletePage()">
   <mat-icon>delete</mat-icon>
 </button>
@@ -29,7 +29,7 @@
 <fieldset *ngIf="unitService.expertMode" class="fx-column-start-stretch">
   <legend>Seitenbreite</legend>
   <mat-checkbox class="menuItem"
-                [matTooltip]="'Abgewählt wird die verfügbare Bildschirmbreite voll ausgenutzt.'"
+                [matTooltip]="'pageMenu.limitPageWidthHint' | translate"
                 [checked]="page.hasMaxWidth"
                 (click)="$event.stopPropagation()"
                 (change)="updateModel(page, 'hasMaxWidth', $event.source.checked)">

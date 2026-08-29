@@ -11,32 +11,32 @@
   <div class="editor-control-panel" [class.disabled]="disabled">
   <fieldset class="input-group">
     <legend>Schriftauszeichnung</legend>
-    <button mat-icon-button matTooltip="Fett" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.bold' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('bold')"
             (click)="toggleBold()">
       <mat-icon>format_bold</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Kursiv" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.italic' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('italic')"
             (click)="toggleItalic()">
       <mat-icon>format_italic</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Unterstrichen" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.underline' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('underline')"
             (click)="toggleUnderline()" style="text-decoration: underline">
       <mat-icon>format_underlined</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Hochgestellt" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.superscript' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('superscript')"
             (click)="toggleSuperscript()">
       <mat-icon>superscript</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Tiefgestellt" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.subscript' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('subscript')"
             (click)="toggleSubscript()">
       <mat-icon>subscript</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Durchgestrichen" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.strikethrough' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('strike')"
             (click)="toggleStrike()">
       <mat-icon>strikethrough_s</mat-icon>
@@ -95,7 +95,7 @@
     <mat-form-field appearance="outline" class="dropdown" [style.width.px]="80">
       <mat-label>Abstand</mat-label>
       <mat-select panelClass="select-overlay"
-                  matTooltip="Absatzabstand (gilt nur für neue Absätze)" [matTooltipShowDelay]="300"
+                  [matTooltip]="'richTextEditor.paragraphSpacing' | translate" [matTooltipShowDelay]="300"
                   [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"
                   (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
         <mat-option value="0">0px</mat-option>
@@ -128,22 +128,22 @@
 
   <fieldset *ngIf="!showReducedControls" class="input-group">
     <legend>Textausrichtung</legend>
-    <button mat-icon-button matTooltip="Linksbündig" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.alignLeft' | translate" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'left' })"
             (click)="alignText('left')">
       <mat-icon>format_align_left</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Rechtsbündig" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.alignRight' | translate" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'right' })"
             (click)="alignText('right')">
       <mat-icon>format_align_right</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Zentriert" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.alignCenter' | translate" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'center' })"
             (click)="alignText('center')">
       <mat-icon>format_align_center</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Blocksatz" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.alignJustify' | translate" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'justify' })"
             (click)="alignText('justify')">
       <mat-icon>format_align_justify</mat-icon>
@@ -152,19 +152,19 @@
 
   <fieldset *ngIf="!showReducedControls" class="input-group">
     <legend>Einrückung</legend>
-    <button mat-icon-button matTooltip="Einrücken" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.indent' | translate" [matTooltipShowDelay]="300"
             (click)="indent()">
       <mat-icon>format_indent_increase</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Einrückung verringern" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.outdent' | translate" [matTooltipShowDelay]="300"
             (click)="outdent()">
       <mat-icon>format_indent_decrease</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Hängende Einrückung" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.hangingIndent' | translate" [matTooltipShowDelay]="300"
             (click)="hangIndent()">
       <mat-icon>segment</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Hängende Einrückung entfernen" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.removeHangingIndent' | translate" [matTooltipShowDelay]="300"
             (click)="unhangIndent()">
       <mat-icon>view_headline</mat-icon>
     </button>
@@ -176,19 +176,19 @@
 
   <fieldset *ngIf="!showReducedControls" class="input-group">
     <legend>Bild</legend>
-    <button mat-icon-button matTooltip="Bild in Zeile einfügen" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.imageInline' | translate" [matTooltipShowDelay]="300"
             (click)="insertImage()">
       <mat-icon style="transform: scale(1.1);">burst_mode</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Bild in eigenem Absatz einfügen" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.imageParagraph' | translate" [matTooltipShowDelay]="300"
             (click)="insertBlockImage('none')">
       <mat-icon style="transform: scale(0.9);">image</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Bild rechts einfügen" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.imageRight' | translate" [matTooltipShowDelay]="300"
             (click)="insertBlockImage('right')">
       <mat-icon style="transform: scale(-1.5, 1.5);">art_track</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Bild links einfügen" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.imageLeft' | translate" [matTooltipShowDelay]="300"
             (click)="insertBlockImage('left')">
       <mat-icon style="transform: scale(1.5);">art_track</mat-icon>
     </button>
@@ -196,42 +196,42 @@
 
   <fieldset class="input-group">
     <legend>Sonderelemente</legend>
-    <button mat-icon-button class="special-chars-button" matTooltip="Sonderzeichen" [matTooltipShowDelay]="300"
+    <button mat-icon-button class="special-chars-button" [matTooltip]="'richTextEditor.specialCharacters' | translate" [matTooltipShowDelay]="300"
             [matMenuTriggerFor]="specialCharsMenu">
       <mat-icon>emoji_symbols</mat-icon>
     </button>
     <mat-menu #specialCharsMenu="matMenu" yPosition="above">
       <button mat-button (click)="insertSpecialChar('&nbsp;')"
-              [matTooltip]="'Nicht umbrechendes Leerzeichen'">&blank;</button>
+              [matTooltip]="'richTextEditor.nonBreakingSpace' | translate">&blank;</button>
       <button mat-button (click)="insertSpecialChar('&#8239;')"
-              [matTooltip]="'Schmales nicht umbrechendes Leerzeichen'">&blank;<sub>2</sub></button>
+              [matTooltip]="'richTextEditor.narrowNonBreakingSpace' | translate">&blank;<sub>2</sub></button>
       <button mat-button (click)="insertSpecialChar('&ndash;')"
-              [matTooltip]="'Halbgeviertstrich'">&ndash;</button>
+              [matTooltip]="'richTextEditor.enDash' | translate">&ndash;</button>
       <button mat-button (click)="insertSpecialChar('&#8209;')"
-              [matTooltip]="'Nicht umbrechender Viertelgeviertstrich'">—</button>
+              [matTooltip]="'richTextEditor.nonBreakingHyphen' | translate">—</button>
       <br>
       <button mat-button (click)="insertSpecialChar('&lsquo;')"
-              [matTooltip]="'Einfaches Anführungszeichen links'">&lsquo;</button>
+              [matTooltip]="'richTextEditor.singleQuoteLeft' | translate">&lsquo;</button>
       <button mat-button (click)="insertSpecialChar('&rsquo;')"
-              [matTooltip]="'Einfaches Anführungszeichen rechts'">&rsquo;</button>
+              [matTooltip]="'richTextEditor.singleQuoteRight' | translate">&rsquo;</button>
       <button mat-button (click)="insertSpecialChar('&sbquo;')"
-              [matTooltip]="'Niedriges Komma-Anführungszeichen'">&sbquo;</button>
+              [matTooltip]="'richTextEditor.singleQuoteLow' | translate">&sbquo;</button>
       <br>
       <button mat-button (click)="insertSpecialChar('&bdquo;')"
-              [matTooltip]="'Doppeltes Anführungszeichen unten'">&bdquo;</button>
+              [matTooltip]="'richTextEditor.doubleQuoteLow' | translate">&bdquo;</button>
       <button mat-button (click)="insertSpecialChar('&ldquo;')"
-              [matTooltip]="'Doppeltes Anführungszeichen oben'">&ldquo;</button>
+              [matTooltip]="'richTextEditor.doubleQuoteHigh' | translate">&ldquo;</button>
       <button mat-button (click)="insertSpecialChar('&rdquo;')"
-              [matTooltip]="'Rechtes doppeltes Anführungszeichen'">&rdquo;</button>
+              [matTooltip]="'richTextEditor.doubleQuoteRight' | translate">&rdquo;</button>
       <br>
       <button mat-button (click)="insertSpecialChar('&lsaquo;')"
-              [matTooltip]="'Einfaches spitzes Anführungszeichen links'">&lsaquo;</button>
+              [matTooltip]="'richTextEditor.singleAngleQuoteLeft' | translate">&lsaquo;</button>
       <button mat-button (click)="insertSpecialChar('&rsaquo;')"
-              [matTooltip]="'Einfaches spitzes Anführungszeichen rechts'">&rsaquo;</button>
+              [matTooltip]="'richTextEditor.singleAngleQuoteRight' | translate">&rsaquo;</button>
       <button mat-button (click)="insertSpecialChar('&laquo;')"
-              [matTooltip]="'Doppeltes spitzes Anführungszeichen links'">&laquo;</button>
+              [matTooltip]="'richTextEditor.doubleAngleQuoteLeft' | translate">&laquo;</button>
       <button mat-button (click)="insertSpecialChar('&raquo;')"
-              [matTooltip]="'Doppeltes spitzes Anführungszeichen rechts'">&raquo;</button>
+              [matTooltip]="'richTextEditor.doubleAngleQuoteRight' | translate">&raquo;</button>
       <br>
       <button mat-button (click)="insertSpecialChar('&micro;')">&micro;</button>
       <button mat-button (click)="insertSpecialChar('&ccedil;')">&ccedil;</button>
@@ -263,7 +263,7 @@
       <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
       <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
     </mat-menu>
-    <button mat-icon-button matTooltip="Formel" [matTooltipShowDelay]="300"
+    <button mat-icon-button [matTooltip]="'richTextEditor.formula' | translate" [matTooltipShowDelay]="300"
             (click)="insertFormula()">
       <mat-icon>functions</mat-icon>
     </button>
@@ -274,13 +274,13 @@
                          (applySelection)="insertLine()"
                          (selectionChanged)="insertLine(true)">
     </aspect-combo-button>
-    <button *ngIf="!showReducedControls" mat-icon-button matTooltip="Zitat" [matTooltipShowDelay]="300"
+    <button *ngIf="!showReducedControls" mat-icon-button [matTooltip]="'richTextEditor.quote' | translate" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('blockquote')"
             (click)="toggleBlockquote()">
       <mat-icon>format_quote</mat-icon>
     </button>
     <button *ngIf="!showReducedControls" mat-icon-button
-            matTooltip="Tooltip" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+            [matTooltip]="'richTextEditor.tooltip' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('tooltip')"
             (click)="showTooltipPropertiesDialog()">
       <mat-icon>announcement</mat-icon>
@@ -296,32 +296,32 @@
 }
 
 <div *ngIf="clozeMode" class="fx-row-space-around-center" >
-    <button mat-button matTooltip="Eingabefeld" [matTooltipShowDelay]="300"
+    <button mat-button [matTooltip]="'richTextEditor.textField' | translate" [matTooltipShowDelay]="300"
             (click)="insertTextField()">
       <mat-icon>edit</mat-icon>
       Eingabefeld
     </button>
-    <button mat-button matTooltip="Ablegeliste" [matTooltipShowDelay]="300"
+    <button mat-button [matTooltip]="'richTextEditor.dropList' | translate" [matTooltipShowDelay]="300"
             (click)="insertDropList()">
       <mat-icon>drag_indicator</mat-icon>
       Ablegeliste
     </button>
-    <button mat-button matTooltip="Optionsfeld" [matTooltipShowDelay]="300"
+    <button mat-button [matTooltip]="'richTextEditor.radio' | translate" [matTooltipShowDelay]="300"
             (click)="insertToggleButton()">
       <mat-icon>radio_button_checked</mat-icon>
       Optionsfeld
     </button>
-    <button mat-button matTooltip="Knopf" [matTooltipShowDelay]="300"
+    <button mat-button [matTooltip]="'richTextEditor.button' | translate" [matTooltipShowDelay]="300"
             (click)="insertButton()">
       <mat-icon>smart_button</mat-icon>
       Knopf
     </button>
-    <button mat-button matTooltip="Kontrollkästchen" [matTooltipShowDelay]="300"
+    <button mat-button [matTooltip]="'richTextEditor.checkbox' | translate" [matTooltipShowDelay]="300"
             (click)="insertCheckbox()">
       <mat-icon>check_box</mat-icon>
       Kontrollkästchen
     </button>
-    <button mat-button matTooltip="Klappliste" [matTooltipShowDelay]="300"
+    <button mat-button [matTooltip]="'richTextEditor.dropdown' | translate" [matTooltipShowDelay]="300"
             (click)="insertDropdown()">
       <mat-icon>menu_open</mat-icon>
       Klappliste

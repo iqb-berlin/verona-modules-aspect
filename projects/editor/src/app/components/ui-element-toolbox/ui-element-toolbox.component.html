@@ -2,7 +2,7 @@
   <mat-tab-group class="fx-flex" mat-stretch-tabs>
     <mat-tab *ngIf="unitService.expertMode">
       <ng-template mat-tab-label>
-        <mat-icon [matTooltip]="'Elemente'">bookmark</mat-icon>
+        <mat-icon [matTooltip]="'elements' | translate">bookmark</mat-icon>
       </ng-template>
     <div class="fx-flex element-list">
       <mat-accordion multi>
@@ -236,7 +236,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon [matTooltip]="'Assistenten'">bookmarks</mat-icon>
+        <mat-icon [matTooltip]="'assistants' | translate">bookmarks</mat-icon>
       </ng-template>
 
       <mat-accordion multi>

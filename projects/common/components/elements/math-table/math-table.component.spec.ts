@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   MathTableElement, MathTableProperties
 } from 'common/models/elements/math-table';
@@ -15,7 +16,8 @@ describe('MathTableComponent', () => {
       declarations: [MathTableComponent],
       imports: [
         MatIconModule,
-        MatTooltipModule
+        MatTooltipModule,
+        TranslateModule.forRoot()
       ]
     }).compileComponents();
   });

@@ -11,7 +11,7 @@
       <button mat-icon-button
               [disabled]="selectionService.selectedPageIndex !== pageIndex ||
                           selectionService.selectedSectionIndex === 0"
-              [matTooltip]="'Seitenumbruch ab gewähltem Abschnitt'"
+              [matTooltip]="'pageView.addPageBreak' | translate"
               [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
               (click)="moveSectionToNewpage(pageIndex)">
         <mat-icon>expand</mat-icon>
@@ -26,7 +26,7 @@
       <button mat-icon-button
               [disabled]="pageIndex === 0 ||
                           unitService.unit.pages[pageIndex - 1].alwaysVisible"
-              [matTooltip]="'Seitenumbruch entfernen'"
+              [matTooltip]="'pageView.removePageBreak' | translate"
               [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
               (click)="collapsePage(pageIndex)">
         <mat-icon>compress</mat-icon>
@@ -34,7 +34,7 @@
     </ng-container>
     <div *ngIf="page.alwaysVisible" class="page-label"><i>dauerhaft sichtbare Seite</i></div>
     <button mat-icon-button [matMenuTriggerFor]="pageMenu"
-            [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
+            [matTooltip]="'pageSettings' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
             (click)="selectionService.selectPage(pageIndex)">
       <mat-icon>more_vert</mat-icon>
     </button>

@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { PageViewComponent } from 'editor/src/app/components/page-view/page-view.component';
@@ -68,7 +69,10 @@ describe('PageViewComponent', () => {
         MockSectionComponent,
         MockUnitNavNextComponent
       ],
-      imports: [CommonModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule],
+      imports: [
+        CommonModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule,
+        TranslateModule.forRoot()
+      ],
       providers: [
         { provide: SelectionService, useValue: selectionService },
         { provide: UnitService, useValue: unitService },

@@ -443,6 +443,16 @@
     "widget-periodic-table": "Periodensystem"
   },
   "section-menu": {
+    "elementList": "Elementliste",
+    "insertSection": "Abschnitt einfügen",
+    "copySection": "Abschnitt kopieren",
+    "duplicate": "Duplizieren",
+    "moveUp": "Nach oben verschieben",
+    "moveDown": "Nach unten verschieben",
+    "backgroundColor": "Hintergrundfarbe",
+    "layout": "Layout",
+    "visibility": "Sichtbarkeit",
+    "excludeFromNumbering": "Von der Nummerierung ausnehmen",
     "noElements": "Keine Elemente im Abschnitt",
     "height": "Höhe",
     "dynamic-positioning": "dynamisches Layout",
@@ -602,6 +612,71 @@
   },
   "overviewDialog": {
     "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."
+  },
+  "assistants": "Assistenten",
+  "pageSettings": "Seiteneinstellungen",
+  "deleteReferenceDialog": {
+    "cleanUpHint": "Referenzen werden automatisch entfernt. Elemente mit Referenzen werden möglicherweise unbrauchbar."
+  },
+  "unitView": {
+    "alwaysVisiblePage": "Dauerhaft sichtbare Seite",
+    "addPage": "Weitere Seite anlegen",
+    "unitNavNextHint": "Wird am Ende der letzten Seite angezeigt"
+  },
+  "pageView": {
+    "addPageBreak": "Seitenumbruch ab gewähltem Abschnitt",
+    "removePageBreak": "Seitenumbruch entfernen"
+  },
+  "pageMenu": {
+    "movePageForward": "Seite nach vorn verschieben",
+    "movePageBackward": "Seite nach hinten verschieben",
+    "deletePage": "Seite löschen",
+    "limitPageWidthHint": "Abgewählt wird die verfügbare Bildschirmbreite voll ausgenutzt."
+  },
+  "richTextEditor": {
+    "bold": "Fett",
+    "italic": "Kursiv",
+    "underline": "Unterstrichen",
+    "superscript": "Hochgestellt",
+    "subscript": "Tiefgestellt",
+    "strikethrough": "Durchgestrichen",
+    "paragraphSpacing": "Absatzabstand (gilt nur für neue Absätze)",
+    "alignLeft": "Linksbündig",
+    "alignRight": "Rechtsbündig",
+    "alignCenter": "Zentriert",
+    "alignJustify": "Blocksatz",
+    "indent": "Einrücken",
+    "outdent": "Einrückung verringern",
+    "hangingIndent": "Hängende Einrückung",
+    "removeHangingIndent": "Hängende Einrückung entfernen",
+    "imageInline": "Bild in Zeile einfügen",
+    "imageParagraph": "Bild in eigenem Absatz einfügen",
+    "imageRight": "Bild rechts einfügen",
+    "imageLeft": "Bild links einfügen",
+    "specialCharacters": "Sonderzeichen",
+    "nonBreakingSpace": "Nicht umbrechendes Leerzeichen",
+    "narrowNonBreakingSpace": "Schmales nicht umbrechendes Leerzeichen",
+    "enDash": "Halbgeviertstrich",
+    "nonBreakingHyphen": "Nicht umbrechender Viertelgeviertstrich",
+    "singleQuoteLeft": "Einfaches Anführungszeichen links",
+    "singleQuoteRight": "Einfaches Anführungszeichen rechts",
+    "singleQuoteLow": "Niedriges Komma-Anführungszeichen",
+    "doubleQuoteLow": "Doppeltes Anführungszeichen unten",
+    "doubleQuoteHigh": "Doppeltes Anführungszeichen oben",
+    "doubleQuoteRight": "Rechtes doppeltes Anführungszeichen",
+    "singleAngleQuoteLeft": "Einfaches spitzes Anführungszeichen links",
+    "singleAngleQuoteRight": "Einfaches spitzes Anführungszeichen rechts",
+    "doubleAngleQuoteLeft": "Doppeltes spitzes Anführungszeichen links",
+    "doubleAngleQuoteRight": "Doppeltes spitzes Anführungszeichen rechts",
+    "formula": "Formel",
+    "quote": "Zitat",
+    "tooltip": "Tooltip",
+    "textField": "Eingabefeld",
+    "dropList": "Ablegeliste",
+    "radio": "Optionsfeld",
+    "button": "Knopf",
+    "checkbox": "Kontrollkästchen",
+    "dropdown": "Klappliste"
   },
   "imageResizeDialog": {
     "title": "Bild komprimieren",

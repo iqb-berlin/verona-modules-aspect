@@ -7,8 +7,7 @@
     Abbrechen
   </button>
   <button mat-button [matTooltipPosition]="'above'"
-                     [matTooltip]="'Referenzen werden automatisch entfernt.' +
-                                   ' Elemente mit Referenzen werden möglicherweise unbrauchbar.'"
+                     [matTooltip]="'deleteReferenceDialog.cleanUpHint' | translate"
           [mat-dialog-close]="true">
     Bereinigen und Löschen
   </button>

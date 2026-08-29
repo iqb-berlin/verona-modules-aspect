@@ -29,7 +29,7 @@
   </mat-action-list>
 </mat-menu>
 
-<button *ngIf="unitService.expertMode" mat-mini-fab [matTooltip]="'Hintergrundfarbe'" [matTooltipPosition]="'left'"
+<button *ngIf="unitService.expertMode" mat-mini-fab [matTooltip]="'section-menu.backgroundColor' | translate" [matTooltipPosition]="'left'"
         (click)="openColorPicker()">
   <mat-icon>palette</mat-icon>
 </button>
@@ -39,7 +39,7 @@
 
 <button mat-mini-fab [color]="section.ignoreNumbering ? 'primary' : 'accent'"
         (click)="ignoreNumbering()"
-        [matTooltip]="'Von der Nummerierung ausnehmen'" [matTooltipPosition]="'left'">
+        [matTooltip]="'section-menu.excludeFromNumbering' | translate" [matTooltipPosition]="'left'">
   <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
     <path d="m576-80-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56
              56-104-104L576-80ZM120-320v-80h280v80H120Zm0-160v-80h440v80H120Zm0-160v-80h440v80H120Z"/>
@@ -48,12 +48,12 @@
 
 <button *ngIf="unitService.expertMode" mat-mini-fab
         (click)="showVisibilityRulesDialog()"
-        [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
+        [matTooltip]="'section-menu.visibility' | translate" [matTooltipPosition]="'left'">
   <mat-icon>disabled_visible</mat-icon>
 </button>
 
 <button *ngIf="unitService.expertMode" mat-mini-fab [matMenuTriggerFor]="layoutMenu"
-        [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
+        [matTooltip]="'section-menu.layout' | translate" [matTooltipPosition]="'left'">
   <mat-icon>space_dashboard</mat-icon>
 </button>
 <mat-menu #layoutMenu="matMenu" xPosition="before">
@@ -142,33 +142,33 @@
 </mat-menu>
 
 <button *ngIf="unitService.expertMode" mat-mini-fab
-        [matTooltip]="'Abschnitt kopieren'" [matTooltipPosition]="'left'"
+        [matTooltip]="'section-menu.copySection' | translate" [matTooltipPosition]="'left'"
         (click)="copySection()">
   <mat-icon>content_copy</mat-icon>
 </button>
 <button *ngIf="unitService.expertMode" mat-mini-fab
-        [matTooltip]="'Abschnitt einfügen'" [matTooltipPosition]="'left'"
+        [matTooltip]="'section-menu.insertSection' | translate" [matTooltipPosition]="'left'"
         (click)="showSectionInsertDialog()">
   <mat-icon>content_paste</mat-icon>
 </button>
 <button *ngIf="sectionIndex !== 0 || pageIndex > 0" mat-mini-fab
-        [matTooltip]="'Nach oben verschieben'" [matTooltipPosition]="'left'"
+        [matTooltip]="'section-menu.moveUp' | translate" [matTooltipPosition]="'left'"
         (click)="this.moveSection('up')">
   <mat-icon>north</mat-icon>
 </button>
 <button *ngIf="((sectionIndex < lastSectionIndex) ||
                (pageIndex < unitService.unit.pages.length - 1)) &&
                !(sectionIndex === lastSectionIndex && unitService.unit.pages[pageIndex].alwaysVisible)"
-        mat-mini-fab [matTooltip]="'Nach unten verschieben'" [matTooltipPosition]="'left'"
+        mat-mini-fab [matTooltip]="'section-menu.moveDown' | translate" [matTooltipPosition]="'left'"
         (click)="this.moveSection('down')">
   <mat-icon>south</mat-icon>
 </button>
-<button *ngIf="unitService.expertMode" mat-mini-fab [matTooltip]="'Duplizieren'" [matTooltipPosition]="'left'"
+<button *ngIf="unitService.expertMode" mat-mini-fab [matTooltip]="'section-menu.duplicate' | translate" [matTooltipPosition]="'left'"
         (click)="duplicateSection()">
   <mat-icon>control_point_duplicate</mat-icon>
 </button>
 <button *ngIf="lastSectionIndex > 0" mat-mini-fab
-        [matTooltip]="'Löschen'" [matTooltipPosition]="'left'"
+        [matTooltip]="'delete' | translate" [matTooltipPosition]="'left'"
         (click)="deleteSection()">
   <mat-icon>clear</mat-icon>
 </button>

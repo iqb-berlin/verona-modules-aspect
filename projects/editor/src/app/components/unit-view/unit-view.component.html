@@ -36,7 +36,7 @@
 
               <button *ngIf="selectionService.selectedPageIndex == i"
                       mat-icon-button class="menu-button" [matMenuTriggerFor]="pageMenu"
-                      [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
+                      [matTooltip]="'pageSettings' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #pageMenu="matMenu">

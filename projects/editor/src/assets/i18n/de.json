@@ -444,6 +444,15 @@
   },
   "section-menu": {
     "elementList": "Elementliste",
+    "insertSection": "Abschnitt einfügen",
+    "copySection": "Abschnitt kopieren",
+    "duplicate": "Duplizieren",
+    "moveUp": "Nach oben verschieben",
+    "moveDown": "Nach unten verschieben",
+    "backgroundColor": "Hintergrundfarbe",
+    "layout": "Layout",
+    "visibility": "Sichtbarkeit",
+    "excludeFromNumbering": "Von der Nummerierung ausnehmen",
     "noElements": "Keine Elemente im Abschnitt",
     "height": "Höhe",
     "dynamic-positioning": "dynamisches Layout",
@@ -603,6 +612,11 @@
   },
   "overviewDialog": {
     "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."
+  },
+  "assistants": "Assistenten",
+  "pageSettings": "Seiteneinstellungen",
+  "deleteReferenceDialog": {
+    "cleanUpHint": "Referenzen werden automatisch entfernt. Elemente mit Referenzen werden möglicherweise unbrauchbar."
   },
   "unitView": {
     "alwaysVisiblePage": "Dauerhaft sichtbare Seite",

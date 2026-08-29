@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Mock } from 'vitest';
+import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import {
@@ -46,7 +47,8 @@ describe('DeleteReferenceDialogComponent', () => {
       imports: [
         MatDialogModule,
         MatButtonModule,
-        MatTooltipModule
+        MatTooltipModule,
+        TranslateModule.forRoot()
       ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { refs } },

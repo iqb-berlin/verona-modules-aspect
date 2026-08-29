@@ -15,9 +15,6 @@ export class MigrationLegacy extends UnitTraversalMigration {
    * it, and runs regardless of the filter. */
   toVersion = '4.0.0';
 
-  // The original migration did NOT touch page properties.
-  // We remove the migratePage override as requested.
-
   protected override migrateSection(section: Record<string, unknown>): Record<string, unknown> {
     return {
       ...MigrationLegacy.migrateSectionVisibility(

@@ -17,7 +17,7 @@ that file is what a host system embeds.
 | Where | What |
 | --- | --- |
 | [iqb-berlin.github.io/verona-modules-aspect](https://iqb-berlin.github.io/verona-modules-aspect/) | API documentation of everything under `projects/`, rebuilt from `develop` on every merge |
-| [`…/coverage/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/) | What the unit tests reach, over all five test projects at once, down to the single line; the five on their own under `coverage/by-project/<project>/`, e.g. [`…/by-project/common/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/common/). Locally: `npm run test:coverage` |
+| [`…/coverage/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/) | What the tests reach, over the five unit test projects and the e2e suite at once, down to the single line; each on its own under `coverage/by-project/<name>/`, e.g. [`…/by-project/common/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/common/). Locally: `npm run test:coverage` for the unit part, `npm run e2e-coverage` for the e2e part before it |
 | [`rules.md`](rules.md) | Binding conventions for this repository. Read before the first change |
 | [`docs/unit_definition_changelog.txt`](docs/unit_definition_changelog.txt) | How the stored unit definition changed, per version |
 | [`docs/version-history.md`](docs/version-history.md) | Which unit definition version a released editor or player writes |

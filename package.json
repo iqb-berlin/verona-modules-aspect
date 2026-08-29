@@ -21,6 +21,7 @@
     "lint": "eslint .",
     "e2e": "npx cypress open",
     "e2e-headless": "npx cypress run",
+    "e2e-coverage": "scripts/e2e-coverage.sh",
     "docs": "compodoc -p tsconfig.doc.json -n \"Verona Module Aspect\" -d dist/docs",
     "generate-migration": "node scripts/generate-migration.js",
     "serve-editor-coverage": "ng run editor:serve-coverage",

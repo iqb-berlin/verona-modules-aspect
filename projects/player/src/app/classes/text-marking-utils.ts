@@ -300,11 +300,6 @@ export class TextMarkingUtils {
     return hex.length === 1 ? `0${hex}` : hex;
   }).join('')}`;
 
-  static hexToRgbString(hex: string): string {
-    const rgb = TextMarkingUtils.hexToRgb(hex);
-    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-  }
-
   private static hexToRgb(hex: string): number[] {
     const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
     if (normal) return normal.slice(1).map(e => parseInt(e, 16));

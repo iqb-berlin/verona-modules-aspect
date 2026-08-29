@@ -45,7 +45,7 @@
     </table>
     <button *ngIf="elementModel.operation === 'multiplication'"
             class="row-button"
-            [matTooltip]="'weitere Zeile einfügen'"
+            [matTooltip]="'mathTableAddRow' | translate"
             [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
             [style.width.px]="elementModel.styling.fontSize * 2.5"
             [style.height.px]="elementModel.styling.fontSize * 2.5"
@@ -54,7 +54,7 @@
     </button>
     <button *ngIf="elementModel.operation === 'multiplication'"
             class="row-button"
-            [matTooltip]="'letzte Zeile entfernen'"
+            [matTooltip]="'mathTableRemoveRow' | translate"
             [disabled]="tableModel.length == 4"
             [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
             [style.width.px]="elementModel.styling.fontSize * 2.5"

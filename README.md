@@ -128,12 +128,43 @@ everything here is `standalone: false`.
 ## How work flows through this repository
 
 ```
-issue → branch → pull request → green pipeline → review → merge into develop → release from master
+issue → branch → pull request → green pipeline → review → merge into develop → release to master
 ```
 
-1. **Branch off `develop`.** Name it `feature/<issue>-<topic>` or `bugfix/<issue>-<topic>`.
-   `develop` is the integration branch and the default branch; `master` only ever receives
-   releases.
+### Branches
+
+```
+develop      all development; the default branch, and what feature and bugfix branches target
+master       the state of the most recent release, and where the release tags sit
+feature/…    branched off develop for a new capability
+bugfix/…     branched off develop for a fix that can wait for the next release
+release/…    branched off develop to prepare a release
+hotfix/…     branched off master for a fix that cannot wait for one
+```
+
+A branch name carries the issue it belongs to: `bugfix/1357-topic`.
+
+**A release** is prepared on `release/<version>`, which carries the two version numbers in
+`package.json` (`config.player_version`, `config.editor_version` — the version stands nowhere
+else) and the entries in `docs/release-notes-*.md`. It is merged into `develop` first and
+`develop` into `master` second, both as pull requests; the tag then goes on the merge commit on
+`master`, one tag for both modules — `editor/3.0.0+player/3.0.0`.
+
+**A hotfix** goes to `master` first, carrying its own version bump, and reaches `develop` by
+being **merged, not cherry-picked** — over a branch of its own, `merge/<version>-into-develop`.
+
+Both of those last steps exist for the same reason: `master` has to stay an ancestor of
+`develop`. A cherry-pick would let the two lines diverge, and the next hotfix would meet a
+history that no longer contains the previous one and would have to resolve the same conflicts
+again. The release breaks the property in passing — after `develop` is merged into `master`,
+`master` is one merge commit ahead and no longer an ancestor — so it is restored with a
+fast-forward push, `git push origin <master-sha>:refs/heads/develop`, which adds no commit of
+its own. `git merge-base --is-ancestor origin/master origin/develop` checks it afterwards: it
+prints nothing and answers through its exit status, `0` for yes.
+
+### From issue to merge
+
+1. **Branch off `develop`**, named as above.
 2. **Reference the issue in the commit subject**, e.g. `(#1357)`. Do **not** write
    `Closes #1357` in the pull request: it closes the ticket on merge and skips the board
    column the team works from. Referencing is fine, keywords are not.
@@ -151,8 +182,7 @@ issue → branch → pull request → green pipeline → review → merge into d
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after
    a rebase the previous green run no longer counts.
 6. **Merge as a merge commit** once the required status check is green.
-7. **Release from `master`**, with the version numbers in `package.json` and the release
-   notes under `docs/`.
+7. **Release** on a `release/…` branch, as described above.
 
 Tickets live on [project board 13](https://github.com/orgs/iqb-berlin/projects/13). A card
 moves to *In Bearbeitung* when work starts and to *zu testen* once the fix is merged into

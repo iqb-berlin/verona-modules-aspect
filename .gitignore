@@ -37,6 +37,9 @@ chrome-profiler-events*.json
 /coverage
 /.nyc_output
 /libpeerconnection.log
+# The dev server output of an e2e run, written by scripts/e2e-coverage.sh and by the pipeline job
+/editor.log
+/player.log
 npm-debug.log
 yarn-error.log
 testem.log

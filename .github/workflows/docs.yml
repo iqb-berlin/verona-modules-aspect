@@ -1,9 +1,16 @@
-# Publishes the Compodoc documentation of `develop` to GitHub Pages.
+# Publishes the Compodoc documentation of `develop` to GitHub Pages, together with the
+# coverage report of the unit tests.
 #
 # Deliberately a GitHub Actions workflow and not a GitLab job: the GitLab pipeline
 # suppresses push pipelines on branches and competes for a single runner.
-# The 51 MB of output is deployed as a Pages artifact, not committed to a /docs folder,
-# so it never enters the repository history.
+# The output -- 51 MB of documentation and 42 MB of coverage report -- is deployed as a
+# Pages artifact, not committed to a /docs folder, so it never enters the repository history.
+#
+# It runs after the merge, so nothing here is on the waiting time of a pull request: the
+# pipeline that gates a merge is the GitLab one, and it stays as it is. For the same reason
+# the tests here are not a gate -- a red one must not keep the documentation from being
+# published. The site then shows no coverage until the next green run, which is honest: a
+# report from a failed run would be worse than none.
 name: Documentation
 
 on:
@@ -34,9 +41,35 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      # Compodoc reads the sources, so no build step and no browser binaries are needed.
+      # Compodoc reads the sources, so no build step is needed; the two test suites bring their
+      # own browsers, which --ignore-scripts leaves to the two explicit installs below.
       - run: npm ci --ignore-scripts
+      - run: npx playwright install chromium
+      - run: npx cypress install
       - run: npm run docs
+      # The e2e run comes first: it produces the report the merge at the end of the unit run picks
+      # up. Against the instrumented builds, which is what `serve-coverage` is for -- the ordinary
+      # dev servers carry no counters, and Cypress then reports an empty run.
+      # The suite is the flakiest thing in this repository, so a failure here must not cost the
+      # documentation, nor the coverage of the unit tests: it is allowed to fail, and the merge
+      # then runs without it.
+      - name: Collect coverage from the e2e suite
+        continue-on-error: true
+        # continue-on-error catches a failing run, not a hanging one, and the concurrency group
+        # above deliberately lets a running deployment finish -- without a limit here a stuck dev
+        # server would hold up every later publication until GitHub's six hour default. The limit
+        # is twice what the suite takes: measured 30:38 against the instrumented builds, where it
+        # needs about twice as long as against the ordinary ones.
+        timeout-minutes: 60
+        run: npm run e2e-coverage
+      - id: coverage
+        continue-on-error: true
+        run: npm run test:coverage
+      - name: Put the coverage report next to the documentation
+        if: steps.coverage.outcome == 'success'
+        run: |
+          mkdir -p dist/docs/coverage
+          cp -r coverage/. dist/docs/coverage/
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

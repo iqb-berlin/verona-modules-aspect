@@ -134,8 +134,7 @@ issue → branch → pull request → green pipeline → review → merge into d
 ### Branches
 
 This repository follows the
-[Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model, the same one
-the studio uses.
+[Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model.
 
 ```
 develop      all active development; the default branch and what pull requests target

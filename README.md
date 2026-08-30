@@ -17,11 +17,37 @@ that file is what a host system embeds.
 | Where | What |
 | --- | --- |
 | [iqb-berlin.github.io/verona-modules-aspect](https://iqb-berlin.github.io/verona-modules-aspect/) | API documentation of everything under `projects/`, rebuilt from `develop` on every merge |
-| [`…/coverage/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/) | What the tests reach, over the five unit test projects and the e2e suite at once, down to the single line; each on its own under `coverage/by-project/<name>/`, e.g. [`…/by-project/common/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/common/). Locally: `npm run test:coverage` for the unit part, `npm run e2e-coverage` for the e2e part before it |
 | [`rules.md`](rules.md) | Binding conventions for this repository. Read before the first change |
 | [`docs/unit_definition_changelog.txt`](docs/unit_definition_changelog.txt) | How the stored unit definition changed, per version |
 | [`docs/version-history.md`](docs/version-history.md) | Which unit definition version a released editor or player writes |
 | [`docs/release-notes-*.md`](docs/) | Release notes for common, editor and player |
+
+### Test coverage
+
+Published alongside the API documentation and rebuilt from `develop` on every merge. One page per
+suite, and one over all of them — down to the single line of every file. The e2e part is the one
+that can lag: its run is allowed to fail, and a merged page then carries the e2e report of an
+earlier run, or none at all.
+
+| Page | Whose coverage |
+| --- | --- |
+| [`coverage/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/) | **All suites at once**, unit tests and the e2e run together |
+| [`coverage/by-project/common/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/common/) | The unit tests of `projects/common` |
+| [`coverage/by-project/editor/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/editor/) | The unit tests of the editor application |
+| [`coverage/by-project/player/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/player/) | The unit tests of the player application |
+| [`coverage/by-project/editorModules/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/editorModules/) | The unit tests of `projects/editor/modules` |
+| [`coverage/by-project/playerModules/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/playerModules/) | The unit tests of `projects/player/modules` |
+| [`coverage/by-project/e2e/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/e2e/) | The Cypress suite |
+
+**Why the parts are kept.** The merged page counts a line as covered as soon as any run reached it,
+and it cannot say which one — that is what makes it the number for `projects/common`, which every
+project uses and no single suite covers on its own. But reached is not the same as tested: a unit
+test makes a claim about the code it covers, while an e2e run walks past a great deal of code
+without claiming anything about it. Whoever reads a number to decide whether something still needs a
+test should read the part, not the sum.
+
+Locally, `npm run test:coverage` writes the five unit reports and merges them; `npm run e2e-coverage`
+writes the e2e report first, and a merge run after it takes that in as well.
 
 ## Requirements
 
@@ -50,6 +76,41 @@ npx npm@10 ci --dry-run && npm ci --dry-run   # both must pass
 npm ci                                        # --dry-run empties node_modules
 ```
 
+## Getting started
+
+With the dependencies installed, the shortest way to something on screen:
+
+```bash
+npm run start-editor-local   # http://localhost:4211
+npm run start-player-local   # http://localhost:4212
+```
+
+Opened directly in a browser, both run **standalone** — they recognise that by
+`window === window.parent` — and bring a control of their own, because no host system is there to
+hand them a unit through the Verona API:
+
+- **Editor:** a toolbar with *Unit laden* and *Unit speichern*, both working on a file on your disk.
+- **Player:** a menu behind the three-dot button, with a field for the start page and one load entry
+  per paging mode — *Blätter*, *Buttons*, *Scroll*, *Snap* — next to *Druck* and *Druck mit Ids*.
+
+**The paging mode is chosen when the unit is loaded.** That is the setting to reach for when
+reproducing something a mode carries: #1383 was a bug that showed in the snap mode and nowhere else.
+Once a unit is loaded, the same menu switches the mode at runtime, releases the navigation targets,
+reloads the unit including the state it holds, and jumps to a page.
+
+The standalone mode is not a convenience at the edge. `saveUnit` in `e2e/support/commands.ts` clicks
+the editor's *Unit speichern*, and 47 of the 51 spec files build their unit that way; 44 of them go
+on to hand that file to the player with `loadUnit`, which posts it in through the Verona API. The
+four that use neither never leave the editor.
+
+Where to reach when you want to change something:
+
+- `projects/common` — element models, migration, and the components both applications render
+- `projects/editor`, `projects/player` — what only one of them has, application and feature modules
+
+And before the first commit: [`rules.md`](rules.md). It is binding here, and its §12 to §14 answer
+most of what a first change runs into.
+
 ## npm commands
 
 ### Develop
@@ -61,8 +122,8 @@ npm ci                                        # --dry-run empties node_modules
 | `npm run start-editor-e2e` | The same on http://localhost:4201, the address Cypress drives |
 | `npm run start-player-e2e` | The same on http://localhost:4202, the address Cypress drives |
 
-Both serve a development harness around the module, not a host system. A unit is loaded into
-the module through the Verona API.
+Both serve a development harness around the module, not a host system — how a unit gets in there is
+what [Getting started](#getting-started) describes.
 
 Why two pairs: Cypress carries 4201 and 4202 in its commands, and so do the instrumented builds
 of `npm run e2e-coverage`. With the local pair on ports of its own, a server you started by hand
@@ -79,7 +140,7 @@ and a test run cannot take the port from each other (#1423).
 | `npm run test:editor-modules` | `projects/editor/modules` |
 | `npm run test:player` | `projects/player/src` — player application |
 | `npm run lint` | ESLint over `projects/`, `e2e/` and the root configs |
-| `npm run e2e` | Opens the Cypress UI for the 48 end-to-end specs in `e2e/tests/` |
+| `npm run e2e` | Opens the Cypress UI for the 51 end-to-end specs in `e2e/tests/` |
 | `npm run e2e-headless` | Runs the same specs headless, as the pipeline does |
 
 **The end-to-end tests do not run as part of `npm test`.** They need both dev servers up on the

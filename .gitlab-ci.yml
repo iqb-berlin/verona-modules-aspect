@@ -153,10 +153,13 @@ test-e2e:
   before_script:
     - npm ci --cache .npm --prefer-offline
   script:
+    # The e2e pair, not the local one: Cypress carries the addresses of 4201 and 4202 in its
+    # commands, and only these two scripts serve there. What a developer starts by hand sits on
+    # 4211/4212, so their server and an e2e run cannot take the port from each other (#1423).
     # The server output goes to a log artifact: without it a dev server that dies or stops
     # answering leaves no trace, and the run only shows Cypress' ESOCKETTIMEDOUT.
-    - nohup npm run start-editor-local > editor.log 2>&1 &
-    - nohup npm run start-player-local > player.log 2>&1 &
+    - nohup npm run start-editor-e2e > editor.log 2>&1 &
+    - nohup npm run start-player-e2e > player.log 2>&1 &
     - ./scripts/wait-for-dev-server.sh http://localhost:4201 Editor
     - ./scripts/wait-for-dev-server.sh http://localhost:4202 Player
     - npm run e2e-headless

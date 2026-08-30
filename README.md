@@ -56,11 +56,17 @@ npm ci                                        # --dry-run empties node_modules
 
 | Command | What it does |
 | --- | --- |
-| `npm run start-editor-local` | Serves the editor on http://localhost:4201 with rebuild on change |
-| `npm run start-player-local` | Serves the player on http://localhost:4202 with rebuild on change |
+| `npm run start-editor-local` | Serves the editor on http://localhost:4211 with rebuild on change |
+| `npm run start-player-local` | Serves the player on http://localhost:4212 with rebuild on change |
+| `npm run start-editor-e2e` | The same on http://localhost:4201, the address Cypress drives |
+| `npm run start-player-e2e` | The same on http://localhost:4202, the address Cypress drives |
 
 Both serve a development harness around the module, not a host system. A unit is loaded into
 the module through the Verona API.
+
+Why two pairs: Cypress carries 4201 and 4202 in its commands, and so do the instrumented builds
+of `npm run e2e-coverage`. With the local pair on ports of its own, a server you started by hand
+and a test run cannot take the port from each other (#1423).
 
 ### Test
 
@@ -76,9 +82,10 @@ the module through the Verona API.
 | `npm run e2e` | Opens the Cypress UI for the 48 end-to-end specs in `e2e/tests/` |
 | `npm run e2e-headless` | Runs the same specs headless, as the pipeline does |
 
-**The end-to-end tests do not run as part of `npm test`.** They need both dev servers up:
-start `start-editor-local` and `start-player-local`, wait until both answer — the pipeline
-uses `scripts/wait-for-dev-server.sh` for that — then run `e2e-headless`.
+**The end-to-end tests do not run as part of `npm test`.** They need both dev servers up on the
+addresses Cypress drives: start `start-editor-e2e` and `start-player-e2e`, wait until both answer
+— the pipeline uses `scripts/wait-for-dev-server.sh` for that — then run `e2e-headless`. For the
+coverage of that run, `npm run e2e-coverage` does all of it against the instrumented builds.
 
 ### Build
 

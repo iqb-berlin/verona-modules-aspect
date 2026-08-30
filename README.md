@@ -17,11 +17,37 @@ that file is what a host system embeds.
 | Where | What |
 | --- | --- |
 | [iqb-berlin.github.io/verona-modules-aspect](https://iqb-berlin.github.io/verona-modules-aspect/) | API documentation of everything under `projects/`, rebuilt from `develop` on every merge |
-| [`…/coverage/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/) | What the tests reach, over the five unit test projects and the e2e suite at once, down to the single line; each on its own under `coverage/by-project/<name>/`, e.g. [`…/by-project/common/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/common/). Locally: `npm run test:coverage` for the unit part, `npm run e2e-coverage` for the e2e part before it |
 | [`rules.md`](rules.md) | Binding conventions for this repository. Read before the first change |
 | [`docs/unit_definition_changelog.txt`](docs/unit_definition_changelog.txt) | How the stored unit definition changed, per version |
 | [`docs/version-history.md`](docs/version-history.md) | Which unit definition version a released editor or player writes |
 | [`docs/release-notes-*.md`](docs/) | Release notes for common, editor and player |
+
+### Test coverage
+
+Published alongside the API documentation and rebuilt from `develop` on every merge. One page per
+suite, and one over all of them — down to the single line of every file. The e2e part is the one
+that can lag: its run is allowed to fail, and a merged page then carries the e2e report of an
+earlier run, or none at all.
+
+| Page | Whose coverage |
+| --- | --- |
+| [`coverage/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/) | **All suites at once**, unit tests and the e2e run together |
+| [`coverage/by-project/common/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/common/) | The unit tests of `projects/common` |
+| [`coverage/by-project/editor/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/editor/) | The unit tests of the editor application |
+| [`coverage/by-project/player/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/player/) | The unit tests of the player application |
+| [`coverage/by-project/editorModules/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/editorModules/) | The unit tests of `projects/editor/modules` |
+| [`coverage/by-project/playerModules/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/playerModules/) | The unit tests of `projects/player/modules` |
+| [`coverage/by-project/e2e/`](https://iqb-berlin.github.io/verona-modules-aspect/coverage/by-project/e2e/) | The Cypress suite |
+
+**Why the parts are kept.** The merged page counts a line as covered as soon as any run reached it,
+and it cannot say which one — that is what makes it the number for `projects/common`, which every
+project uses and no single suite covers on its own. But reached is not the same as tested: a unit
+test makes a claim about the code it covers, while an e2e run walks past a great deal of code
+without claiming anything about it. Whoever reads a number to decide whether something still needs a
+test should read the part, not the sum.
+
+Locally, `npm run test:coverage` writes the five unit reports and merges them; `npm run e2e-coverage`
+writes the e2e report first, and a merge run after it takes that in as well.
 
 ## Requirements
 

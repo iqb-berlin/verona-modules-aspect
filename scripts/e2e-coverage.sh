@@ -2,7 +2,7 @@
 
 # Runs the e2e suite against the instrumented builds, so that it leaves a coverage report behind.
 #
-# The ordinary dev servers (`npm run start-editor-local`) carry no counters: `@cypress/code-coverage`
+# The ordinary dev servers (`npm run start-editor-e2e`) carry no counters: `@cypress/code-coverage`
 # then finds no `window.__coverage__`, warns that the application was not instrumented and writes an
 # empty report. The `serve-coverage` targets add the counters through webpack.coverage.config.js;
 # their build is slower and unoptimised, which is why they are not what the pipeline's e2e job uses.

@@ -18,9 +18,7 @@ that file is what a host system embeds.
 | --- | --- |
 | [iqb-berlin.github.io/verona-modules-aspect](https://iqb-berlin.github.io/verona-modules-aspect/) | API documentation of everything under `projects/`, rebuilt from `develop` on every merge |
 | [`rules.md`](rules.md) | Binding conventions for this repository. Read before the first change |
-| [`docs/unit_definition_changelog.txt`](docs/unit_definition_changelog.txt) | How the stored unit definition changed, per version |
 | [`docs/version-history.md`](docs/version-history.md) | Which unit definition version a released editor or player writes |
-| [`docs/release-notes-*.md`](docs/) | Release notes for common, editor and player |
 
 ### Test coverage
 

@@ -26,6 +26,37 @@ describe('Table element', { testIsolation: false }, () => {
       cy.get('.mat-mdc-tab').contains('mat-icon', 'build').click({ force: true });
     });
 
+    /* The arrows the browser draws on the count field step the value without any typing, and in
+       Firefox without even taking the focus - a count that was applied on leaving the field never
+       arrived there at all (#1433). Cypress cannot click the arrows themselves, so what they send
+       is sent: the stepped value and the `change` that goes with it, and no blur. */
+    it('grows the table when the row count is stepped rather than typed', () => {
+      cy.get('aspect-table-properties')
+        .contains('mat-form-field', 'Anzahl der Zeilen')
+        .find('input')
+        .should('have.value', '2')
+        .invoke('val', '3')
+        .trigger('input')
+        .trigger('change');
+
+      cy.get('aspect-table .grid-container')
+        .should($grid => {
+          expect(getComputedStyle($grid[0]).gridTemplateRows.split(' ')).to.have.length(3);
+        });
+
+      // and back to the two rows the following tests expect
+      cy.get('aspect-table-properties')
+        .contains('mat-form-field', 'Anzahl der Zeilen')
+        .find('input')
+        .invoke('val', '2')
+        .trigger('input')
+        .trigger('change');
+      cy.get('aspect-table .grid-container')
+        .should($grid => {
+          expect(getComputedStyle($grid[0]).gridTemplateRows.split(' ')).to.have.length(2);
+        });
+    });
+
     it('does not show add/remove buttons on the canvas', () => {
       // Add/remove buttons must only appear in the "Elemente anpassen" dialog,
       // where their events are handled (#1053, #1060)

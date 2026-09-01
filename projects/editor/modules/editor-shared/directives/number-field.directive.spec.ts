@@ -19,12 +19,14 @@ import { NumberFieldModule } from './number-field.module';
   template: `
     <input type="number" min="0" required aspectNumberField
            [ngModel]="value"
-           (numberChange)="emitted.push($event)">
+           (numberChange)="emitted.push($event)"
+           (numberCommit)="commits = commits + 1">
   `
 })
 class HostComponent {
   value: number | null = 10;
   emitted: { value: number | null; isInputValid: boolean }[] = [];
+  commits: number = 0;
 }
 
 /* A second host without `min`, for the fields that legitimately take negative values - the z-index
@@ -348,6 +350,92 @@ describe('NumberFieldDirective', () => {
       await leave();
 
       expect(host.emitted).toEqual([]);
+    });
+  });
+
+  /* The fields that hold an entry back until the edit is over ask for `numberCommit` to tell them
+     when that is. The arrows on the field are the case that was missing: Firefox does not move the
+     focus into the box when they are clicked, so nothing that waits for a blur ever happens (#1433). */
+  describe('committing an entry', () => {
+    /** What the browser sends for a click on the field's own arrows: no focus, no blur. */
+    const step = (value: string): void => {
+      field().value = value;
+      field().dispatchEvent(new Event('input'));
+      field().dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+    };
+
+    /* Real time rather than `tick`, and deliberately: zone.js hands a DOM event to the zone its
+       listener was REGISTERED in, which for a field built in `beforeEach` is not the fake one -- the
+       waiting is then scheduled in real time and `tick` never reaches it. The two waits below are the
+       shortest that clear the 300 ms. */
+    const afterTheWait = (): Promise<void> => new Promise(resolve => { setTimeout(resolve, 400); });
+    const shorterThanTheWait = (): Promise<void> => new Promise(resolve => { setTimeout(resolve, 100); });
+
+    it('should commit a value stepped with the arrows, without a blur', async () => {
+      step('11');
+      await afterTheWait();
+
+      expect(host.emitted).toEqual([{ value: 11, isInputValid: true }]);
+      expect(host.commits).toBe(1);
+    });
+
+    /* Four clicks from 2 to 6 are one edit. Committing each step on the way would apply every
+       number in between, and where the number is a count that means the sizes below it are cut and
+       refilled with defaults on the way back up (#1164). */
+    it('should treat a run of steps as a single edit', async () => {
+      step('11');
+      await shorterThanTheWait();
+      step('12');
+      await shorterThanTheWait();
+      step('13');
+      await afterTheWait();
+
+      expect(host.commits).toBe(1);
+    });
+
+    it('should commit an entry that is confirmed by leaving the field', async () => {
+      type('42');
+      await leave();
+
+      expect(host.commits).toBe(1);
+    });
+
+    it('should commit an entry confirmed with Enter', async () => {
+      type('42');
+      await confirm();
+
+      expect(host.commits).toBe(1);
+    });
+
+    // A refused entry has been put back; there is nothing for the caller to write.
+    it('should not commit an entry that is refused', async () => {
+      type('-5');
+      await leave();
+
+      expect(host.emitted).toEqual([{ value: -5, isInputValid: false }]);
+      expect(host.commits).toBe(0);
+    });
+
+    /* The browser says `change` when a box that was typed in is left, empty or not. An empty one is
+       answered for in `settle`, on the blur right after, and must not be committed before that. */
+    it('should not commit an emptied box', async () => {
+      type('');
+      field().dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      await afterTheWait();
+
+      expect(host.commits).toBe(0);
+
+      await leave();
+
+      expect(host.commits).toBe(0);
+    });
+
+    it('should stay silent for a box that was only tabbed through', async () => {
+      await leave();
+
+      expect(host.commits).toBe(0);
     });
   });
 

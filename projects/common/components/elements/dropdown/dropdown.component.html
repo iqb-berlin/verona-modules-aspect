@@ -13,17 +13,33 @@
              [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
     {{ elementModel.label }}
   </mat-label>
-  <mat-select [formControl]="elementFormControl" [value]="elementModel.value">
+  <!--The chosen option and the list of them are styled here rather than left to inherit: Material
+      sizes and colours both from tokens of its own, so a font size set on the element reached the
+      label above and nothing else -- in a cloze, where there is no label, nothing at all (#1435).
+      The options are written a second time because they are rendered into an overlay at the end of
+      the document, where nothing of this component reaches them.-->
+  <mat-select [formControl]="elementFormControl" [value]="elementModel.value"
+              [style.color]="elementModel.styling.fontColor"
+              [style.font-size.px]="elementModel.styling.fontSize"
+              [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+              [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+              [style.--value-text-decoration]="elementModel.styling.underline ? 'underline' : 'none'">
     <mat-select-trigger [innerHTML]="elementFormControl.value !== null && elementFormControl.value !== undefined ?
                                      (elementModel.options[elementFormControl.value].text | safeResourceHTML) :
                                      ''">
     </mat-select-trigger>
     <mat-option *ngIf="elementModel.allowUnset" [value]="null"
                 [class.read-only]="elementModel.readOnly"
+                [style.font-size.px]="elementModel.styling.fontSize"
                 (click)="$event.preventDefault()">
     </mat-option>
     <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i"
                 [class.read-only]="elementModel.readOnly"
+                [style.color]="elementModel.styling.fontColor"
+                [style.font-size.px]="elementModel.styling.fontSize"
+                [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                 [innerHTML]="option.text | safeResourceHTML">
     </mat-option>
   </mat-select>

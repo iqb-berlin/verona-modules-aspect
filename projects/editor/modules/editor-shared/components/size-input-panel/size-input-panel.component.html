@@ -5,8 +5,7 @@
          [min]="min"
          [ngModel]="value"
          (numberChange)="commitValue($event)"
-         (blur)="applyValue()"
-         (keydown.enter)="applyValue()">
+         (numberCommit)="applyValue()">
   <!-- A measurement's number is not nullable in the model, so a null here can only be the merge's
        "the selected elements disagree" - the same state the panel marks at every other number
        field (#1138). -->

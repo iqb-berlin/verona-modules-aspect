@@ -22,6 +22,19 @@
       background-color: var(--wrapper-bg-color) !important;
     }
 
+    /* Two more that the font on the select cannot reach on its own (#1435):
+
+       The line height is pinned by a theme token (24px), while the glyphs grow with the font size --
+       above roughly that size the box clipped the tops and tails of the chosen option, because
+       Material hides what overflows it. `normal` lets the line follow the font instead.
+
+       And the underline: Material's trigger is an `inline-flex` box, and a text decoration does not
+       cross into one, so it reached the open list and not the closed field. Set where the text is. */
+    .mat-mdc-select-value {
+      line-height: normal;
+      text-decoration: var(--value-text-decoration, none);
+    }
+
     .cloze-child.mat-mdc-form-field {
       .mat-mdc-text-field-wrapper {
         padding: 0 5px !important;

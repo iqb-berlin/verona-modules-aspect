@@ -95,8 +95,7 @@
                    [ngModel]="section.gridRowSizes.length"
                    (click)="$any($event).stopPropagation()"
                    (numberChange)="commitCount('gridRowSizes', $event)"
-                   (blur)="applyCount('gridRowSizes')"
-                   (keydown.enter)="applyCount('gridRowSizes')">
+                   (numberCommit)="applyCount('gridRowSizes')">
           </mat-form-field>
           <ng-container *ngFor="let size of section.gridRowSizes ; let i = index">
             <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
@@ -123,8 +122,7 @@
                    [ngModel]="section.gridColumnSizes.length"
                    (click)="$any($event).stopPropagation()"
                    (numberChange)="commitCount('gridColumnSizes', $event)"
-                   (blur)="applyCount('gridColumnSizes')"
-                   (keydown.enter)="applyCount('gridColumnSizes')">
+                   (numberCommit)="applyCount('gridColumnSizes')">
           </mat-form-field>
           <ng-container *ngFor="let size of section.gridColumnSizes; let i = index">
             <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"

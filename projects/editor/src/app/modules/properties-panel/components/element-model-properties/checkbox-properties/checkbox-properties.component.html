@@ -1,24 +1,29 @@
-@if (combinedProperties.imgSrc !== undefined) {
-  <button class="media-src-button" [style.align-self]="'center'"
-          mat-fab color="primary"
-          [matTooltip]="'propertiesPanel.imageInsteadOfLabel' | translate" [matTooltipPosition]="'right'"
-          (click)="changeImgSrc()">
-    <mat-icon>image</mat-icon>
-  </button>
-}
+<!--The two round buttons share a row: stacked, the second one cost the panel a button's height plus
+    its gap without showing anything a row does not (#1436). The row centres them, so a checkbox
+    without an image -- which has the first button and not the second -- looks as it did.-->
+<div class="media-buttons">
+  @if (combinedProperties.imgSrc !== undefined) {
+    <button class="media-src-button"
+            mat-fab color="primary"
+            [matTooltip]="'propertiesPanel.imageInsteadOfLabel' | translate" [matTooltipPosition]="'right'"
+            (click)="changeImgSrc()">
+      <mat-icon>image</mat-icon>
+    </button>
+  }
 
-<!--Only once an image is there: without one there is nothing to compress (#1378).-->
-@if (combinedProperties.imgSrc) {
-  <button class="compress-image-button" [style.align-self]="'center'"
-          mat-fab color="primary" disabledInteractive
-          [disabled]="!(combinedProperties.imgSrc | isCompressibleImage)"
-          [matTooltip]="((combinedProperties.imgSrc | isCompressibleImage) ?
-                          'compressImage' : 'compressImageUnavailable') | translate"
-          [matTooltipPosition]="'right'"
-          (click)="compressImgSrc()">
-    <mat-icon>compress</mat-icon>
-  </button>
-}
+  <!--Only once an image is there: without one there is nothing to compress (#1378).-->
+  @if (combinedProperties.imgSrc) {
+    <button class="compress-image-button"
+            mat-fab color="primary" disabledInteractive
+            [disabled]="!(combinedProperties.imgSrc | isCompressibleImage)"
+            [matTooltip]="((combinedProperties.imgSrc | isCompressibleImage) ?
+                            'compressImage' : 'compressImageUnavailable') | translate"
+            [matTooltipPosition]="'right'"
+            (click)="compressImgSrc()">
+      <mat-icon>compress</mat-icon>
+    </button>
+  }
+</div>
 
 {{'preset' | translate }}
 <mat-button-toggle-group [style.align-self]="'flex-start'"

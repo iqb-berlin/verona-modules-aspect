@@ -2459,7 +2459,7 @@ input[number] "propertiesPanel.width" = 150
 input[number] "propertiesPanel.height" = 30
 
 --- tab "styling" ---
-input[text] "propertiesPanel.backgroundColor" = #f1f1f1
+input[text] "propertiesPanel.backgroundColor" = transparent
 input[text] "propertiesPanel.fontColor" = #000000
 input[number] "propertiesPanel.fontSize" = 20
 input[number] "propertiesPanel.lineHeight" = 100

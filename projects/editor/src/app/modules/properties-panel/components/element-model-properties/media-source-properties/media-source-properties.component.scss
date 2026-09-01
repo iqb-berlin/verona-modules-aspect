@@ -1,7 +1,6 @@
-/* `:host` has to be a flex column: the button carries `align-self: center`, which is inert without
-   it, so the button would sit flush left. It was centred while it lived in the panel's own flex
-   column and lost that context when it moved here. Same reason cloze-properties and table-properties
-   carry the rule. */
+/* A flex column like the sibling sub-components that hold no `align-self` either
+   (button-alignment-properties, standard-dimension-properties): the readout and the button row are
+   stacked blocks of the panel's full width. */
 :host {
   display: flex;
   flex-direction: column;
@@ -39,11 +38,16 @@
   }
 }
 
-.media-src-button {
+/* The gap below stays on the buttons rather than on the row: both `@if`s can be false at once -- a
+   geometry element names a file but has no `src` -- and a row carrying the margin would leave an
+   empty 10px band behind. */
+.media-src-button,
+.compress-image-button {
   margin-bottom: 10px;
 }
 
-/* Sits under the upload button in the same column and needs the same gap below it (#1378). */
-.compress-image-button {
-  margin-bottom: 10px;
+.media-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }

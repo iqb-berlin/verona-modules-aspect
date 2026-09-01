@@ -8,8 +8,11 @@
         <!--Green reads as a saving, and since an image that is already in the unit is re-encoded
             from the start, "open, change nothing, save" can just as well end up bigger: a JPEG kept
             at quality 0.3 comes back at 0.8. The line has to be able to say that (#1398).-->
-        @if (estimatedSize !== originalSize) {
-          <div class="estimated-size" [class.estimated-size-larger]="estimatedSize > originalSize">
+        <!--Not before there is an estimate: the first one is a scaling like any other and arrives
+            once the dialog has come to rest, and a 0 would read as a saving of everything (#1434).-->
+        @if (estimatedSize > 0 && estimatedSize !== originalSize) {
+          <div class="estimated-size" [class.estimated-size-larger]="estimatedSize > originalSize"
+               [class.estimated-size-pending]="estimatePending">
             {{ 'imageResizeDialog.newSize' | translate }}: <strong>{{ estimatedSize | bytes }}</strong>
             @if (estimatedSize > originalSize) {
               <span>{{ 'imageResizeDialog.newSizeLarger' | translate }}</span>
@@ -26,6 +29,16 @@
       <div class="recompression-hint">
         <mat-icon class="hint-icon">info</mat-icon>
         <span>{{ 'imageResizeDialog.recompressionHint' | translate }}</span>
+      </div>
+    }
+
+    <!--Said where the browser cannot read the whole picture while making it smaller: fine lines and
+        small text then lose more than they have to. Only while the picture would actually shrink --
+        compressing at the same size passes every pixel through unchanged (#1434).-->
+    @if (coarseResampling && willResize) {
+      <div class="resampling-hint">
+        <mat-icon class="hint-icon">info</mat-icon>
+        <span>{{ 'imageResizeDialog.coarseResamplingHint' | translate }}</span>
       </div>
     }
 

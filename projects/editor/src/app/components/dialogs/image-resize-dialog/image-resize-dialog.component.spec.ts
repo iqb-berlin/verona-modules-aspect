@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, TestBed, fakeAsync, tick
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { ImageResizeDialogData } from 'common/models/image-interfaces';
+import { FileService } from 'common/services/file.service';
 import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
 import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
 import {
@@ -254,7 +257,7 @@ describe('ImageResizeDialogComponent', () => {
       component.data.options.maxWidth = options.maxWidth;
       component.data.options.maxHeight = options.maxHeight ?? 200;
       component.data.options.uncompressed = options.uncompressed;
-      component.updateEstimatedSize().catch(() => {});
+      component.updateEstimatedSize();
       return component.willResize;
     };
 
@@ -301,6 +304,88 @@ describe('ImageResizeDialogComponent', () => {
 
       expect(readout().classList).not.toContain('estimated-size-larger');
       expect(readout().textContent).not.toContain('newSizeLarger');
+    });
+  });
+
+  /* Scaling the image is what the estimate costs, and where the browser reads the whole picture that
+     is around 90 ms of the main thread. Typing a width is a burst of those, and only the last one is
+     ever read (#1434). */
+  describe('the estimate', () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    /* The widths are taken down as the calls come in rather than read off the recorded arguments
+       afterwards: those hold the options object itself, which the dialog keeps editing in place. */
+    it('should scale once for a burst of edits, with the last of them', fakeAsync(() => {
+      const scaled: (number | undefined)[] = [];
+      vi.spyOn(FileService, 'scaleImage').mockImplementation((base64, options) => {
+        scaled.push(options?.maxWidth);
+        return Promise.resolve('data:image/png;base64,abcd');
+      });
+      component.originalWidth = 800;
+      component.originalHeight = 400;
+
+      [500, 400, 300].forEach(width => {
+        component.data.options.maxWidth = width;
+        component.updateEstimatedSize();
+      });
+      tick(300);
+
+      expect(scaled).toEqual([300]);
+    }));
+
+    it('should mark the figure as stale until the scaling has answered', fakeAsync(() => {
+      vi.spyOn(FileService, 'scaleImage').mockResolvedValue('data:image/png;base64,abcd');
+
+      component.updateEstimatedSize();
+      expect(component.estimatePending).toBe(true);
+
+      tick(300);
+      expect(component.estimatePending).toBe(false);
+    }));
+
+    it('should not scale before the typing has come to rest', fakeAsync(() => {
+      const scaling = vi.spyOn(FileService, 'scaleImage')
+        .mockResolvedValue('data:image/png;base64,abcd');
+
+      component.updateEstimatedSize();
+      tick(299);
+      expect(scaling).not.toHaveBeenCalled();
+
+      tick(1);
+      expect(scaling).toHaveBeenCalledTimes(1);
+    }));
+  });
+
+  /* There is nothing to set here: the browser either reads the whole picture while shrinking it or
+     it does not, and where it does not, saying so is all the dialog can do (#1434). */
+  describe('the notice about a coarse browser', () => {
+    const notice = () => fixture.nativeElement.querySelector('.resampling-hint');
+
+    it('should say nothing while the browser reads the whole picture', () => {
+      component.coarseResampling = false;
+      component.willResize = true;
+      fixture.detectChanges();
+
+      expect(notice()).toBeNull();
+    });
+
+    it('should say so once a coarse browser would actually shrink the image', () => {
+      component.coarseResampling = true;
+      component.willResize = true;
+      fixture.detectChanges();
+
+      expect(notice()).not.toBeNull();
+    });
+
+    // Compressing at the same size hands every pixel through, coarse browser or not.
+    it('should stay away while only the quality changes', () => {
+      component.coarseResampling = true;
+      component.willResize = false;
+      fixture.detectChanges();
+
+      expect(notice()).toBeNull();
     });
   });
 

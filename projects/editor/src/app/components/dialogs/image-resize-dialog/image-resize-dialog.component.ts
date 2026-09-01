@@ -1,10 +1,20 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component, Inject, OnDestroy, OnInit
+} from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  EMPTY, Subject, catchError, debounceTime, from, switchMap, takeUntil
+} from 'rxjs';
 import { FileService } from 'common/services/file.service';
 import { ImageResizeDialogData } from 'common/models/image-interfaces';
 import { IMAGE_COMPRESSION_QUALITY, IMAGE_MAX_WIDTH } from 'common/config';
 import { MessageService } from 'editor/src/app/services/message.service';
+
+/* How long the dialog waits before it scales the image again. The estimate is a full scaling, and
+   with the finer filter of #1434 that is about 90 ms of the main thread for a photo -- once per
+   keystroke, and once per pointer move while the quality slider is dragged. */
+const ESTIMATE_DELAY = 300;
 
 @Component({
   selector: 'aspect-image-resize-dialog',
@@ -12,11 +22,28 @@ import { MessageService } from 'editor/src/app/services/message.service';
   styleUrls: ['./image-resize-dialog.component.scss'],
   standalone: false
 })
-export class ImageResizeDialogComponent implements OnInit {
+export class ImageResizeDialogComponent implements OnInit, OnDestroy {
   originalWidth: number = 0;
   originalHeight: number = 0;
   originalSize: number = 0;
   estimatedSize: number = 0;
+
+  /**
+   * Whether this browser reads the whole picture when it makes it smaller. Where it does not, the
+   * same image comes out coarser here than in one that does, and the dialog says so -- there is
+   * nothing to set, only somewhere else to do it (#1434).
+   */
+  coarseResampling: boolean = false;
+
+  /**
+   * Whether the figure on screen is still the one for the settings above it. Between an edit and the
+   * scaling that answers it the old figure stays, dimmed rather than removed: taking the line away
+   * would move everything below it on every keystroke.
+   */
+  estimatePending: boolean = false;
+
+  private estimateRequested = new Subject<void>();
+  private ngUnsubscribe = new Subject<void>();
 
   /**
    * Whether the chosen options would give back a smaller picture, rather than only fewer bytes.
@@ -39,6 +66,22 @@ export class ImageResizeDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /* Only the last of a burst is worth scaling: the boxes report per keystroke and the slider per
+       pointer move, and none of the estimates in between is ever read. */
+    this.estimateRequested
+      .pipe(
+        debounceTime(ESTIMATE_DELAY),
+        switchMap(() => from(FileService.scaleImage(this.data.base64, this.data.options))
+          .pipe(catchError(() => EMPTY))),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(scaled => {
+        this.estimatedSize = Math.round((scaled.length * 3) / 4);
+        this.estimatePending = false;
+      });
+    FileService.resamplingSupport()
+      .then(support => { this.coarseResampling = !support.readsWholeArea; });
+
     this.originalSize = Math.round((this.data.base64.length * 3) / 4);
     const img = new Image();
     img.src = this.data.base64;
@@ -51,7 +94,12 @@ export class ImageResizeDialogComponent implements OnInit {
     };
   }
 
-  async updateEstimatedSize(): Promise<void> {
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  updateEstimatedSize(): void {
     /* Both axes, because `scaleImage` decides on both. The height box writes the width back through
        the aspect ratio, and for an image far taller than it is wide that rounding can land on the
        original width again -- the image then shrinks while a width-only comparison says it does
@@ -59,8 +107,8 @@ export class ImageResizeDialogComponent implements OnInit {
     this.willResize = !this.data.options.uncompressed && this.originalWidth > 0 &&
       ((this.data.options.maxWidth as number) < this.originalWidth ||
        (this.data.options.maxHeight as number) < this.originalHeight);
-    const res = await FileService.scaleImage(this.data.base64, this.data.options);
-    this.estimatedSize = Math.round((res.length * 3) / 4);
+    this.estimatePending = true;
+    this.estimateRequested.next();
   }
 
   /**
@@ -70,9 +118,9 @@ export class ImageResizeDialogComponent implements OnInit {
    * number or an emptied box went straight into the scaling options, and from there into
    * `FileService.scaleImage` (#1164).
    *
-   * The estimate is still recalculated per keystroke, and those calls are neither awaited nor
-   * sequenced - whichever scaling finishes last wins, so a fast typist can be left with the
-   * estimate for an earlier width. That was so before and is not touched here.
+   * Every keystroke asks for a new estimate, but only the last of them is scaled, and the answer to
+   * an edit that has been overtaken is dropped rather than raced against the current one -- see the
+   * stream in `ngOnInit` (#1434).
    *
    * The other dimension follows from the aspect ratio, which is why the write is not a plain
    * assignment: refusing one box has to leave both alone.

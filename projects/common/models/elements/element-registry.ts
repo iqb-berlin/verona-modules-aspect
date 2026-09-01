@@ -319,7 +319,6 @@ export const ELEMENT_DEFAULTS = {
       isWidthFixed: true
     },
     styling: {
-      backgroundColor: '#f1f1f1',
       lineHeight: 100
     }
   },

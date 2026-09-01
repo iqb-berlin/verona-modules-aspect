@@ -91,6 +91,16 @@ describe('Cloze element', { testIsolation: false }, () => {
         .find('aspect-text-field-simple').should('have.length', 1);
     });
 
+    it('leaves a text-field-simple without its own colour transparent', () => {
+      // The gap is built in the editor above and nobody sets a colour on it, so this is the default
+      // reaching the page. Before #1429 it was #f1f1f1, which covered the section behind it; the
+      // border keeps the gap visible either way. Asserted on the rendered input because the guards
+      // in the unit tests read the model, not the paint.
+      cy.get('aspect-cloze').eq(1)
+        .find('aspect-text-field-simple input')
+        .should('have.css', 'background-color', 'rgba(0, 0, 0, 0)');
+    });
+
     it('types into the text-field-simple inside the cloze', () => {
       cy.get('aspect-cloze').eq(1)
         .find('aspect-text-field-simple')

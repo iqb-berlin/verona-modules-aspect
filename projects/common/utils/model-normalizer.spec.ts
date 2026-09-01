@@ -337,7 +337,13 @@ describe('ModelNormalizer', () => {
       /* What the element carried in the 2.12 release and lost when the defaults moved into the flat
          table. Each replacement had a source and none of them was a choice: a generic fallback for
          audio's width, `undefined || 100` in the radio model, and for slider a 5 that arrived in the
-         same commit as the string booleans of #1139 and renders as `line-height: 5%`. */
+         same commit as the string booleans of #1139 and renders as `line-height: 5%`.
+
+         The background colour of the cloze field is the one that WAS a choice -- `b496db38` ("Fix
+         styles of cloze children") wrote it, and this spec asserted it among the KEPT ones for that
+         reason. #1429 reported the grey gap from the editor, and the choice was taken back: the gap
+         carries `border: 1px solid #ccc` either way, so the fill showed nothing the border did not
+         already show, and it covered whatever the section behind it was coloured with. */
       const RESTORED: [UIElementType, string, unknown][] = [
         ['slider', 'styling.lineHeight', 135],
         ['radio', 'styling.lineHeight', 135],
@@ -346,16 +352,15 @@ describe('ModelNormalizer', () => {
         ['drop-list', 'permanentPlaceholdersCC', true],
         ['text-field-simple', 'styling.lineHeight', 100],
         ['text-field-simple', 'dimensions.width', 150],
-        ['text-field-simple', 'dimensions.isWidthFixed', true]
+        ['text-field-simple', 'dimensions.isWidthFixed', true],
+        ['text-field-simple', 'styling.backgroundColor', 'transparent']
       ];
 
-      /* Values that moved too and are deliberately NOT the 2.12 ones. Only the first was picked in
-         a commit of its own (b496db38 "Fix styles of cloze children"); the other two come from the
-         same transcription as the rows above, where 2.12 had no element value at all but the
-         generic 180 - and a wider radio group and a taller image group are what 3.0 wants. They are
+      /* Values that moved too and are deliberately NOT the 2.12 ones. Both come from the same
+         transcription as the rows above, where 2.12 had no element value at all but the generic
+         180 - and a wider radio group and a taller image group are what 3.0 wants. They are
          asserted so that the next comparison against 2.12 does not "restore" them by mistake. */
       const KEPT: [UIElementType, string, unknown][] = [
-        ['text-field-simple', 'styling.backgroundColor', '#f1f1f1'],
         ['radio', 'dimensions.width', 215],
         ['radio-group-images', 'dimensions.height', 200]
       ];

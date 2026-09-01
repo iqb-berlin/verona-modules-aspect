@@ -63,6 +63,71 @@ describe('DropdownComponent', () => {
     expect(labelElement).toBeNull();
   });
 
+  /* Material sizes and colours the chosen option and the list from tokens of its own, so nothing of
+     what the element says about its font reached them: the size set in the panel moved the label and
+     nothing else, and inside a cloze, where there is no label, it did nothing at all (#1435). The
+     list is a second place because it is rendered into an overlay outside the component. */
+  describe('the font of the chosen option and the list', () => {
+    /* Measured where the text is drawn rather than on the element the style is written to: Material
+       puts its own tokens on the box in between, and an underline does not even cross into it. */
+    const chosenOption = (): HTMLElement => fixture.nativeElement
+      .querySelector('.mat-mdc-select-value') as HTMLElement;
+
+    const openList = async (): Promise<HTMLElement> => {
+      (fixture.nativeElement.querySelector('.mat-mdc-select-trigger') as HTMLElement).click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      return document.querySelector('.mat-mdc-option') as HTMLElement;
+    };
+
+    [true, false].forEach(clozeContext => {
+      it(`should size the chosen option with the element's font size, clozeContext=${clozeContext}`, () => {
+        component.clozeContext = clozeContext;
+        component.elementModel.styling.fontSize = 28;
+        fixture.detectChanges();
+
+        expect(window.getComputedStyle(chosenOption()).fontSize).toBe('28px');
+      });
+    });
+
+    it('should size the list with the same font size', async () => {
+      component.elementModel.styling.fontSize = 28;
+      fixture.detectChanges();
+
+      const option = await openList();
+
+      expect(window.getComputedStyle(option).fontSize).toBe('28px');
+    });
+
+    it('should carry the rest of the font settings as well', () => {
+      component.elementModel.styling = {
+        ...component.elementModel.styling,
+        fontColor: 'rgb(0, 96, 100)',
+        bold: true,
+        italic: true,
+        underline: true
+      };
+      fixture.detectChanges();
+
+      const style = window.getComputedStyle(chosenOption());
+      expect(style.color).toBe('rgb(0, 96, 100)');
+      expect(style.fontWeight).toBe('700');
+      expect(style.fontStyle).toBe('italic');
+      expect(style.textDecorationLine).toBe('underline');
+    });
+
+    /* The theme pins the line of the chosen option to 24px while the glyphs grow with the size, and
+       Material hides what overflows -- so a larger font lost the tops and tails of its letters. */
+    it('should give a large font room to be read', () => {
+      component.elementModel.styling.fontSize = 40;
+      fixture.detectChanges();
+
+      expect(chosenOption().scrollHeight).toBeLessThanOrEqual(chosenOption().clientHeight);
+      expect(window.getComputedStyle(chosenOption()).lineHeight).toBe('normal');
+    });
+  });
+
   /* The colour reaches Material's generated wrapper through a CSS variable, and the rule that reads it
      used to sit inside the cloze block -- so a standalone dropdown kept the theme background (#1388).
      Measured on the rendered wrapper, not on the variable: the variable was set correctly all along. */

@@ -45,6 +45,25 @@ describe('Dropdown element', { testIsolation: false }, () => {
       .should('have.css', 'background-color', 'rgb(255, 215, 0)');
   });
 
+  /* The font settings reached the label above the field and nothing else, so the dropdown showed its
+     content in Material's 16px whatever was set -- and in a cloze, which has no label, the setting
+     did nothing at all (#1435). The panel is still on the second dropdown from the test above. */
+  it('gives the second dropdown a font size of its own', () => {
+    cy.get('aspect-element-properties .mat-mdc-tab').contains('mat-icon', 'palette')
+      .click({ force: true });
+    cy.get('aspect-element-style-properties')
+      .contains('mat-form-field', 'Schriftgröße')
+      .find('input')
+      .clear()
+      .type('28{enter}');
+    cy.get('aspect-element-properties .mat-mdc-tab').contains('mat-icon', 'build')
+      .click({ force: true });
+
+    cy.contains('aspect-dropdown', 'Klappliste-deselection')
+      .find('.mat-mdc-select-value')
+      .should('have.css', 'font-size', '28px');
+  });
+
   it('saves unit definition', () => {
     cy.saveUnit('e2e/downloads/dropdown.json');
   });
@@ -63,6 +82,31 @@ describe('Dropdown element', { testIsolation: false }, () => {
     cy.contains('aspect-dropdown', 'Klappliste-deselection')
       .find('.mat-mdc-text-field-wrapper')
       .should('have.css', 'background-color', 'rgb(255, 215, 0)');
+  });
+
+  /* Both halves of what an author sets: the chosen option in the closed field, and the list that
+     opens -- the latter rendered into an overlay at the end of the document (#1435). */
+  it('shows the chosen option and the list in the font size that was set', () => {
+    /* On the rendered value rather than on the select: Material's own tokens sit in between, and the
+       theme pins the line of that box to 24px -- a larger font was cut off at both ends (#1435). */
+    cy.contains('aspect-dropdown', 'Klappliste-deselection')
+      .find('.mat-mdc-select-value')
+      .should('have.css', 'font-size', '28px')
+      .should($value => {
+        expect($value[0].scrollHeight).to.be.at.most($value[0].clientHeight);
+      });
+
+    cy.contains('aspect-dropdown', 'Klappliste-deselection').find('mat-select').click();
+    cy.contains('.cdk-overlay-container .mat-mdc-option', 'AAA')
+      .should('have.css', 'font-size', '28px');
+    cy.get('body').type('{esc}');
+  });
+
+  // And a dropdown nobody styled keeps the 20px every element starts with, not Material's 16px.
+  it('shows an unstyled dropdown in the default font size', () => {
+    cy.contains('aspect-dropdown', 'Klappliste mit Optionen')
+      .find('.mat-mdc-select-value')
+      .should('have.css', 'font-size', '20px');
   });
 
   it('leaves a dropdown without its own colour transparent', () => {

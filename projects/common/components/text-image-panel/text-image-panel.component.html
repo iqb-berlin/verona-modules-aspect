@@ -1,8 +1,8 @@
 @if ('audioSrc' in label && label.audioSrc) {
   <div class="audio-button"
        data-draggable-audio="true"
-       (touchstart)="audioPlayerService.play(label.audioSrc, self)"
-       (mousedown)="audioPlayerService.play(label.audioSrc, self)">
+       (touchstart)="audioPlayerService.play(label.audioSrc, this)"
+       (mousedown)="audioPlayerService.play(label.audioSrc, this)">
     <mat-icon>play_arrow</mat-icon>
   </div>
 }

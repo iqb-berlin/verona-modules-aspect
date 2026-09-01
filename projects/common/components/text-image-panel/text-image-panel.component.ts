@@ -9,15 +9,13 @@ import { AudioPlayerService } from 'common/services/audio-player.service';
   templateUrl: './text-image-panel.component.html',
   styleUrls: ['./text-image-panel.component.scss'],
   host: {
-    '[class.is-playing]': 'audioPlayerService.playingPanel === self'
+    '[class.is-playing]': 'audioPlayerService.playingPanel === this'
   },
   standalone: false
 })
 export class TextImagePanelComponent {
   @Input() label!: TextImageLabel | DragNDropValueObject;
   @Input() hideContent: boolean = false;
-  /** A host-binding expression has no `this`, so the comparison binds against this field instead. */
-  readonly self = this;
 
   constructor(public audioPlayerService: AudioPlayerService) {}
 }

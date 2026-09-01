@@ -14,8 +14,7 @@
              [ngModel]="combinedProperties.gridRowSizes.length"
              (click)="$event.stopPropagation()"
              (numberChange)="commitCount('gridRowSizes', $event)"
-             (blur)="applyCount('gridRowSizes')"
-             (keydown.enter)="applyCount('gridRowSizes')">
+             (numberCommit)="applyCount('gridRowSizes')">
     </mat-form-field>
     @for (size of combinedProperties.gridRowSizes; track $index) {
       <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + ($index + 1)"
@@ -37,8 +36,7 @@
              [ngModel]="combinedProperties.gridColumnSizes.length"
              (click)="$event.stopPropagation()"
              (numberChange)="commitCount('gridColumnSizes', $event)"
-             (blur)="applyCount('gridColumnSizes')"
-             (keydown.enter)="applyCount('gridColumnSizes')">
+             (numberCommit)="applyCount('gridColumnSizes')">
     </mat-form-field>
     @for (size of combinedProperties.gridColumnSizes; track $index) {
       <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + ($index + 1)"

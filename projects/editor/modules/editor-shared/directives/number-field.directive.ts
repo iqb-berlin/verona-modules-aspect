@@ -3,8 +3,14 @@ import {
 } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { NumberFieldErrorStateMatcher } from './number-field-error-state.matcher';
+
+/* How long a step waits for the next one. Clicking an arrow four times is one edit from 2 to 6, and
+   applying each step on its way there is what the waiting is for: a count that is applied slices the
+   sizes below it, so stepping down and back up would refill the row that was cut with a default
+   height. Long enough for a rhythm of clicks, short enough that a single one looks immediate. */
+const STEP_COMMIT_DELAY = 300;
 
 /**
  * What a number field in the editor has to do beyond binding a value, in one place.
@@ -61,7 +67,25 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
    */
   @Output() numberChange = new EventEmitter<{ value: number | null; isInputValid: boolean }>();
 
+  /**
+   * The edit is over and the box holds a number: leaving the field, Enter, or a step on the field's
+   * own arrows.
+   *
+   * For the fields that hold their entry back until the edit ends -- a count, a size -- because
+   * applying every keystroke would cut a table down to the first digit of a two-digit number
+   * (#1164). They used to hang that on `(blur)` and `(keydown.enter)` themselves, which left the
+   * arrows out: Firefox does not focus the box when they are clicked, so no blur ever follows and
+   * the new count was never applied; in Chrome it waited for the field to be left (#1433).
+   *
+   * It says nothing about the value, which has already come through `numberChange`, and it does not
+   * fire for an entry that was refused there.
+   */
+  @Output() numberCommit = new EventEmitter<void>();
+
   private ngUnsubscribe = new Subject<void>();
+
+  /** Steps on the field's own arrows, waiting to see whether another one follows. */
+  private stepped = new Subject<void>();
 
   /**
    * Set when the call site binds two-way, which leaves the directive unable to do its job. See
@@ -107,6 +131,10 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
       this.isMisused = true;
       return;
     }
+
+    this.stepped
+      .pipe(debounceTime(STEP_COMMIT_DELAY), takeUntil(this.ngUnsubscribe))
+      .subscribe(() => this.numberCommit.emit());
 
     this.ngModel.update
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -165,6 +193,28 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
   }
 
   /**
+   * And the third: the arrows the browser draws on the field, which step the value by themselves.
+   *
+   * A step is a finished edit -- there is no half-typed state to wait out -- and waiting for a blur
+   * does not work anyway: Firefox leaves the focus where it was when the arrows are clicked, so a
+   * field that is only committed on leaving it would never be committed at all (#1433).
+   *
+   * `change` is the event that says so and nothing else does: on a number field it fires for a step,
+   * and otherwise only where the edit was going to end anyway -- on leaving the field or on Enter,
+   * never per keystroke. A box that was emptied is not committed here: it arrives as null and is
+   * refused a moment later, in `settle`, on the blur that follows.
+   *
+   * A step waits for the next one, see `STEP_COMMIT_DELAY`, because four clicks from 2 to 6 are one
+   * edit and not four; leaving the field or pressing Enter still commits at once.
+   */
+  @HostListener('change')
+  onStep(): void {
+    if (this.isMisused) return;
+    const control = this.ngModel.control;
+    if (control.valid && control.value !== null) this.stepped.next();
+  }
+
+  /**
    * Answer for what is in the box, which is where an empty one is refused.
    *
    * Guarded by `dirty`, which is what tells an edit from tabbing through, and it has to be put back
@@ -196,6 +246,12 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
          straight. */
       this.writeBack(null);
       this.numberChange.emit({ value: null, isInputValid: true });
+    } else {
+      /* An entry that stands: the fields that held it back until now may write it. Where the edit
+         ended by leaving the field or by Enter the browser has usually said `change` a moment
+         earlier, and the callers act on the same pending value twice, which is why they are written
+         to take it once. */
+      this.numberCommit.emit();
     }
 
     control.markAsPristine();

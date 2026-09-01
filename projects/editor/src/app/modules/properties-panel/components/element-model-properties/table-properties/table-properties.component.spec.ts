@@ -171,6 +171,25 @@ describe('TablePropertiesComponent', () => {
       await fixture.whenStable();
     };
 
+    /* The arrows on the box step the count by themselves, and in Firefox they do not even take the
+       focus -- a count that waits for the field to be left was never applied there, and in Chrome
+       only once something else was clicked (#1433). */
+    it('should take a count stepped with the arrows, without waiting for a blur', async () => {
+      rowCount().value = '3';
+      rowCount().dispatchEvent(new Event('input'));
+      rowCount().dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      /* A step waits 300 ms for the next one before it counts as a finished edit, and it waits in
+         real time: zone.js hands the event to the zone its listener was registered in, which is not
+         the fake one. See the directive's spec for the same wait. */
+      await new Promise(resolve => { setTimeout(resolve, 400); });
+
+      expect(emitted).toEqual([{
+        property: 'gridRowSizes',
+        value: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }]
+      }]);
+    });
+
     it('should take a count that clears the elements in the table', async () => {
       await edit(rowCount(), '3');
 

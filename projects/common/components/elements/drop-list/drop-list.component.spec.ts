@@ -10,7 +10,6 @@ import { By } from '@angular/platform-browser';
 import { DropListElement, DropListProperties } from 'common/models/elements/drop-list';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';
 import { DragOperatorService } from 'common/services/drag-operator.service';
-import { AudioPlayerService } from 'common/services/audio-player.service';
 import { DragImageComponent } from 'common/components/drag-image/drag-image.component';
 import { DragStartEvent } from 'common/directives/draggable.directive';
 import { DropListComponent } from './drop-list.component';
@@ -21,17 +20,11 @@ import { DropListComponent } from './drop-list.component';
   /* A height of its own, so that the layout tests can tell stretched from centred -- a label that fills
      its box measures the same either way -- and the `align-self` the real panel asks its parent for. */
   styles: [':host { display: block; height: 20px; align-self: center; }'],
-  host: {
-    '[class.is-playing]': 'audioPlayerService.playingPanel === self'
-  },
   standalone: false
 })
 class MockTextImagePanelComponent {
   @Input() label!: TextImageLabel | DragNDropValueObject;
   @Input() hideContent: boolean = false;
-  readonly self = this;
-
-  constructor(public audioPlayerService: AudioPlayerService) {}
 }
 
 @Pipe({ name: 'errorTransform', standalone: false })
@@ -125,7 +118,6 @@ describe('DropListComponent', () => {
 
   afterEach(() => {
     document.body.classList.remove('dragging-active');
-    TestBed.inject(AudioPlayerService).playingPanel = null;
   });
 
   it('should create', () => {
@@ -238,24 +230,26 @@ describe('DropListComponent', () => {
     expect(component.viewModel[0].text).toBe('Item 3');
   });
 
-  it('should highlight only the clicked panel when several items share an id in one list', () => {
-    const audioPlayerService = TestBed.inject(AudioPlayerService);
+  /* The list highlight is `:has(.is-playing)` on the item. The panel's own class is covered in
+     text-image-panel.component.spec.ts, so these cases put the class on the mock host and check
+     that the shadow lands on that item only. */
+  it('should highlight only the clicked item when several items share an id in one list', () => {
     const shared = createValueObject('Shared', 'value_1');
     shared.audioSrc = 'data:audio/mpeg;base64,abc';
     component.viewModel = [shared, shared];
     fixture.detectChanges();
     const panels = fixture.debugElement.queryAll(By.css('aspect-text-image-panel'));
-    expect(panels.length).toBe(2);
-    audioPlayerService.playingPanel = panels[0].componentInstance;
-    fixture.detectChanges();
+    const listItems: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.drop-list-item'));
+    listItems.forEach(item => {
+      item.style.transition = 'none';
+    });
+    panels[0].nativeElement.classList.add('is-playing');
 
-    expect(fixture.nativeElement.querySelectorAll('.is-playing').length).toBe(1);
-    expect(panels[0].nativeElement.classList).toContain('is-playing');
-    expect(panels[1].nativeElement.classList).not.toContain('is-playing');
+    expect(getComputedStyle(listItems[0]).boxShadow).toContain('rgb(0, 96, 100)');
+    expect(getComputedStyle(listItems[1]).boxShadow).toBe('none');
   });
 
-  it('should highlight only the clicked panel when the same id is in two lists', () => {
-    const audioPlayerService = TestBed.inject(AudioPlayerService);
+  it('should highlight only the clicked item when the same id is in two lists', () => {
     const shared = createValueObject('Shared', 'value_1');
     shared.audioSrc = 'data:audio/mpeg;base64,abc';
     component.viewModel = [shared];
@@ -272,36 +266,34 @@ describe('DropListComponent', () => {
       'test-id-2': new UntypedFormControl([shared])
     });
     secondFixture.detectChanges();
+    /* A second `createComponent` removes the first fixture's root from the document, and
+       `getComputedStyle` then has nothing to compute. */
+    document.body.appendChild(fixture.nativeElement.closest('[id^="root"]') as HTMLElement);
 
     const firstPanel = fixture.debugElement.query(By.css('aspect-text-image-panel'));
-    audioPlayerService.playingPanel = firstPanel.componentInstance;
-    fixture.detectChanges();
-    secondFixture.detectChanges();
+    const firstItem: HTMLElement = fixture.nativeElement.querySelector('.drop-list-item');
+    const secondItem: HTMLElement = secondFixture.nativeElement.querySelector('.drop-list-item');
+    firstItem.style.transition = 'none';
+    secondItem.style.transition = 'none';
+    firstPanel.nativeElement.classList.add('is-playing');
 
-    const playing = [
-      ...fixture.nativeElement.querySelectorAll('.is-playing'),
-      ...secondFixture.nativeElement.querySelectorAll('.is-playing')
-    ];
-    expect(playing.length).toBe(1);
-    expect(firstPanel.nativeElement.classList).toContain('is-playing');
+    expect(getComputedStyle(firstItem).boxShadow).toContain('rgb(0, 96, 100)');
+    expect(getComputedStyle(secondItem).boxShadow).toBe('none');
     secondFixture.destroy();
   });
 
   it('should show an inset teal shadow on the list item while its panel is playing', () => {
-    const audioPlayerService = TestBed.inject(AudioPlayerService);
     const listItems: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.drop-list-item'));
     listItems.forEach(item => {
       item.style.transition = 'none';
     });
     const panel = fixture.debugElement.query(By.css('aspect-text-image-panel'));
-    audioPlayerService.playingPanel = panel.componentInstance;
-    fixture.detectChanges();
+    panel.nativeElement.classList.add('is-playing');
 
     expect(getComputedStyle(listItems[0]).boxShadow).toContain('rgb(0, 96, 100)');
     expect(getComputedStyle(listItems[1]).boxShadow).toBe('none');
 
-    audioPlayerService.playingPanel = null;
-    fixture.detectChanges();
+    panel.nativeElement.classList.remove('is-playing');
     expect(getComputedStyle(listItems[0]).boxShadow).toBe('none');
   });
 });

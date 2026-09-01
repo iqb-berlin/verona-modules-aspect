@@ -16,6 +16,7 @@ import { AudioPlayerService } from 'common/services/audio-player.service';
 export class TextImagePanelComponent {
   @Input() label!: TextImageLabel | DragNDropValueObject;
   @Input() hideContent: boolean = false;
+  /** A host-binding expression has no `this`, so the comparison binds against this field instead. */
   readonly self = this;
 
   constructor(public audioPlayerService: AudioPlayerService) {}

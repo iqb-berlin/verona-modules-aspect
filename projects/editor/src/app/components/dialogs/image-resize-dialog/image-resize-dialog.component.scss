@@ -60,7 +60,14 @@
   color: #c62828; /* Material Red 800 */
 }
 
-.recompression-hint {
+/* And while the figure belongs to an earlier setting: still readable, visibly not the answer to what
+   is in the boxes right now (#1434). */
+.estimated-size-pending {
+  opacity: 0.45;
+}
+
+.recompression-hint,
+.resampling-hint {
   display: flex;
   align-items: flex-start;
   gap: 8px;

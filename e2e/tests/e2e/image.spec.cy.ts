@@ -71,6 +71,17 @@ describe('Image element', { testIsolation: false }, () => {
       clickButtonDialog('Speichern');
     });
 
+    /* A width whose height does not come out whole: 540 * 101/960 is 56.8125. The canvas truncates
+       what it is given, so the picture used to end up 56 pixels high while being drawn 56.8 high --
+       the last row cut off and every row half a pixel out of place (#1434). */
+    it('creates an image whose scaled height is not a whole number', () => {
+      cy.stubFileInput();
+      addElement('Bild', 'Medium');
+      uploadFile('test2.jpg');
+      cy.contains('mat-form-field', 'Maximale Breite').find('input').clear().type('101');
+      clickButtonDialog('Speichern');
+    });
+
     after('saves unit definition', () => {
       cy.saveUnit('e2e/downloads/image.json');
     });
@@ -83,7 +94,7 @@ describe('Image element', { testIsolation: false }, () => {
     });
 
     it('renders the image elements', () => {
-      cy.get('aspect-image').should('have.length', 5);
+      cy.get('aspect-image').should('have.length', 6);
     });
 
     it('checks the first image (default settings / original size)', () => {
@@ -147,6 +158,16 @@ describe('Image element', { testIsolation: false }, () => {
 
       cy.get('aspect-image img').eq(4).should($img => {
         expect($img.attr('src')?.length || 0).to.be.lessThan(defaultSrcLen * 0.5);
+      });
+    });
+
+    /* 540 * 101/960 = 56.8125, and a picture is only ever a whole number of pixels high: 57 is the
+       height it was drawn at, 56 the one it used to be stored at, missing its last row (#1434). */
+    it('checks the sixth image (a scaled height that is not a whole number)', () => {
+      cy.get('aspect-image img').eq(5).should($img => {
+        const img = $img[0] as HTMLImageElement;
+        expect(img.naturalWidth).to.equal(101);
+        expect(img.naturalHeight).to.equal(57);
       });
     });
 

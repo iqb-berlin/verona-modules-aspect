@@ -57,10 +57,10 @@
   display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
 }
 .audio-button:hover,
-.audio-button.is-playing {
+:host.is-playing .audio-button {
   color: #006064;
 }
-.audio-button.is-playing {
+:host.is-playing .audio-button {
   transform: scale(1.50);
 }
 .hide-content .text, .hide-content img {

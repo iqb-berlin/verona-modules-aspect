@@ -10,17 +10,14 @@ import { Injectable } from '@angular/core';
 })
 export class AudioPlayerService {
   audio!: HTMLAudioElement;
-  playingId: string | null = null;
+  /** The panel that started the current playback; null when nothing is playing. */
+  playingPanel: object | null = null;
 
   /** Creates the one audio object, whose source is cleared again whenever it pauses. */
   init(src: string): void {
     this.audio = new Audio(src);
     this.audio.onpause = () => {
-      // pause also fires when we switch to another audio. Skip if an audio is already playing.
-      if (!this.audio.paused) {
-        return;
-      }
-      this.playingId = null;
+      this.playingPanel = null;
       this.setSrc('');
     };
   }
@@ -30,13 +27,13 @@ export class AudioPlayerService {
   }
 
   /** Plays a sound, creating the audio object on first use. Anything still playing is cut off. */
-  play(src: string, id: string): void {
+  play(src: string, panel: object): void {
     if (!this.audio) {
       this.init(src);
     } else {
       this.setSrc(src);
     }
-    this.playingId = id;
+    this.playingPanel = panel;
     this.audio.play();
   }
 }

@@ -42,7 +42,7 @@ describe('TextImagePanelComponent', () => {
     fixture = TestBed.createComponent(TextImagePanelComponent);
     component = fixture.componentInstance;
     component.label = { ...textImageLabel };
-    TestBed.inject(AudioPlayerService).playingId = null;
+    TestBed.inject(AudioPlayerService).playingPanel = null;
     fixture.detectChanges();
   });
 
@@ -158,29 +158,29 @@ describe('TextImagePanelComponent', () => {
     const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
     expect(audioButton).toBeTruthy();
     audioButton.dispatchEvent(new MouseEvent('mousedown'));
-    expect(playSpy).toHaveBeenCalledWith('data:audio/mpeg;base64,abc', 'value-1');
+    expect(playSpy).toHaveBeenCalledWith('data:audio/mpeg;base64,abc', component);
   });
 
-  it('should add is-playing only when this label id is playing', () => {
+  it('should add is-playing only on the panel instance that is playing', () => {
     const audioPlayerService = TestBed.inject(AudioPlayerService);
     component.label = dragNDropValue;
-    audioPlayerService.playingId = 'value-1';
+    audioPlayerService.playingPanel = component;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.audio-button').classList).toContain('is-playing');
+    expect(fixture.nativeElement.classList).toContain('is-playing');
 
-    audioPlayerService.playingId = 'value-2';
+    audioPlayerService.playingPanel = {};
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.audio-button').classList).not.toContain('is-playing');
+    expect(fixture.nativeElement.classList).not.toContain('is-playing');
   });
 
-  it('should enlarge the audio button while this label audio is playing', () => {
+  it('should enlarge the audio button while this panel is playing', () => {
     const audioPlayerService = TestBed.inject(AudioPlayerService);
     component.label = dragNDropValue;
     fixture.detectChanges();
     const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
     const idleSize = audioButton.getBoundingClientRect();
 
-    audioPlayerService.playingId = 'value-1';
+    audioPlayerService.playingPanel = component;
     fixture.detectChanges();
     const playingSize = audioButton.getBoundingClientRect();
 
@@ -188,7 +188,7 @@ describe('TextImagePanelComponent', () => {
     expect(playingSize.width).toBeGreaterThan(idleSize.width);
     expect(playingSize.height).toBeGreaterThan(idleSize.height);
 
-    audioPlayerService.playingId = null;
+    audioPlayerService.playingPanel = null;
     fixture.detectChanges();
     expect(getComputedStyle(audioButton).transform).toBe('none');
   });

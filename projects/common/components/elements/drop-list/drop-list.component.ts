@@ -12,7 +12,6 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { DragImageComponent } from 'common/components/drag-image/drag-image.component';
 import { DragOperatorService } from 'common/services/drag-operator.service';
-import { AudioPlayerService } from 'common/services/audio-player.service';
 
 @Component({
   selector: 'aspect-drop-list',
@@ -37,8 +36,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, O
   isHighlighted = false;
 
   constructor(public dragOpService: DragOperatorService, public elementRef: ElementRef,
-              public cdr: ChangeDetectorRef, private overlay: Overlay,
-              public audioPlayerService: AudioPlayerService) {
+              public cdr: ChangeDetectorRef, private overlay: Overlay) {
     super(elementRef);
   }
 

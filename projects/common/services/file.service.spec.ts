@@ -1,4 +1,5 @@
 import { FileService } from './file.service';
+import { ImageResampler } from '../utils/image-resampler';
 
 describe('FileService', () => {
   const createImage = (width: number, height: number, mimeType: string = 'image/png'): string => {
@@ -111,114 +112,45 @@ describe('FileService', () => {
     });
   });
 
-  /* The complaint behind #1434: a picture scaled here came out coarser than in a picture editor,
-     because the engine's own filter reads a 2x2 block of source pixels whatever the factor is. The
-     pattern below is white but for the two by two pixels in its middle -- read as a whole it is a
-     pale 239, read through that block it is the black middle. */
-  describe('resampling', () => {
-    const probePattern = (): string => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 8;
-      canvas.height = 8;
-      const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, 8, 8);
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(3, 3, 2, 2);
-      return canvas.toDataURL('image/png');
-    };
-
-    const readFirstPixel = (base64: string): Promise<number> => new Promise(resolve => {
-      const img = new Image();
-      img.src = base64;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D;
-        ctx.drawImage(img, 0, 0);
-        resolve(ctx.getImageData(0, 0, 1, 1).data[0]);
-      };
-    });
-
+  /* What ties `scaleImage` to `ImageResampler`, whose own promises are tested in
+     `utils/image-resampler.spec.ts`. Both directions matter: a picture that shrinks has to go
+     through the kernel, and one that only gets re-encoded must not -- a kernel run at factor one
+     reproduces the image at the cost of the whole pass (#1398, #1434). Nothing weaker would do,
+     because the headless browser this suite runs in resamples well enough by itself that the two
+     cases are not to be told apart from the picture that comes out. */
+  describe('scaleImage and the resampler', () => {
     afterEach(() => {
       vi.restoreAllMocks();
     });
 
-    /* PNG all the way, so what comes back is the scaling and nothing else. The engine's own drawing
-       is the yardstick: the picture that leaves here is never coarser than the one the engine would
-       have drawn by itself, whichever way the probe decides. */
-    it('should not read less of the picture than the engine would on its own', async () => {
-      const source = probePattern();
-      const img = new Image();
-      img.src = source;
-      await img.decode();
-      const drawn = document.createElement('canvas');
-      drawn.width = 1;
-      drawn.height = 1;
-      const drawnCtx = drawn.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D;
-      drawnCtx.drawImage(img, 0, 0, 1, 1);
-      const drawnValue = drawnCtx.getImageData(0, 0, 1, 1).data[0];
+    it('should resample a picture it makes smaller', async () => {
+      const resampling = vi.spyOn(ImageResampler, 'scaleDown');
 
-      const scaled = await readFirstPixel(await FileService.scaleImage(source, { maxWidth: 1 }));
+      await FileService.scaleImage(createImage(20, 10), { maxWidth: 8 });
 
-      expect(scaled).toBeGreaterThanOrEqual(drawnValue);
+      expect(resampling).toHaveBeenCalledTimes(1);
+      expect(resampling.mock.calls[0][1]).toBe(8);
+      expect(resampling.mock.calls[0][2]).toBe(4);
     });
 
-    /* Which way is taken is the engine's answer, so the two ways are tested by giving the answer.
-       The engine these tests run in draws well enough by itself to say no. */
-    it('should let the engine make the smaller picture where that reads more of it', async () => {
-      vi.spyOn(FileService, 'resamplingSupport')
-        .mockResolvedValue({ viaBitmap: true, readsWholeArea: true });
-      const resizing = vi.spyOn(window, 'createImageBitmap');
+    it('should leave the resampler alone when only the format changes', async () => {
+      const resampling = vi.spyOn(ImageResampler, 'scaleDown');
 
-      const scaled = await readFirstPixel(await FileService.scaleImage(probePattern(), { maxWidth: 1 }));
+      await FileService.scaleImage(createImage(20, 10), { maxWidth: 20, targetMimeType: 'image/webp' });
 
-      expect(resizing).toHaveBeenCalledWith(
-        expect.anything(),
-        { resizeWidth: 1, resizeHeight: 1, resizeQuality: 'high' }
-      );
-      expect(scaled).toBeGreaterThan(200);
+      expect(resampling).not.toHaveBeenCalled();
     });
 
-    it('should draw the image itself where that is the better of the two', async () => {
-      vi.spyOn(FileService, 'resamplingSupport')
-        .mockResolvedValue({ viaBitmap: false, readsWholeArea: true });
-      const resizing = vi.spyOn(window, 'createImageBitmap');
+    /* Where the resampler gives up -- no canvas context, or a buffer the device will not hand out --
+       the engine's own drawing stands in. All of this runs in an `onload` outside the executor of
+       the promise, so a throw there would leave it neither resolved nor rejected: the dialog would
+       wait for a size estimate that never comes, and `compressEmbeddedImage` would never return. */
+    it('should still hand back a picture when the resampler gives up', async () => {
+      vi.spyOn(ImageResampler, 'scaleDown').mockReturnValue(null);
 
-      const result = await FileService.scaleImage(probePattern(), { maxWidth: 4 });
+      const result = await FileService.scaleImage(createImage(20, 10), { maxWidth: 8 });
 
-      expect(resizing).not.toHaveBeenCalled();
-      expect(await getImageDimensions(result)).toEqual({ width: 4, height: 4 });
-    });
-
-    // An engine that says yes and then cannot deliver still has to come back with a picture.
-    it('should fall back to its own drawing when the bitmap cannot be made', async () => {
-      vi.spyOn(FileService, 'resamplingSupport')
-        .mockResolvedValue({ viaBitmap: true, readsWholeArea: true });
-      vi.spyOn(window, 'createImageBitmap').mockRejectedValue(new Error('no bitmap here'));
-
-      const result = await FileService.scaleImage(probePattern(), { maxWidth: 4 });
-
-      expect(await getImageDimensions(result)).toEqual({ width: 4, height: 4 });
-    });
-
-    /* Whether the better way is any good is a question of its own: an engine that draws from its own
-       smaller copies needs no bitmap and is fine, and one that ignores the request is coarse with
-       and without it. The dialog says so, so the two answers must not be read off each other. */
-    it('should answer for the way taken, not for the way that won', async () => {
-      const support = await FileService.resamplingSupport();
-      const source = probePattern();
-      const scaled = await readFirstPixel(await FileService.scaleImage(source, { maxWidth: 1 }));
-
-      expect(support.readsWholeArea).toBe(Math.abs(scaled - 239) <= 60);
-    });
-
-    // The answer belongs to the engine, and the dialog asks for it on every keystroke.
-    it('should ask the engine only once', async () => {
-      const first = FileService.resamplingSupport();
-      expect(FileService.resamplingSupport()).toBe(first);
-      expect(typeof (await first).viaBitmap).toBe('boolean');
+      expect(await getImageDimensions(result)).toEqual({ width: 8, height: 4 });
     });
   });
 

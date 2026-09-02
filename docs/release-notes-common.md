@@ -1,6 +1,9 @@
 Allgemein
 =========
 ## editor/3.0.1+player/3.0.1
+### Neue Funktionen
+- Ablegeliste: Während ein Element seinen Ton abspielt, ist es umrandet und sein Abspielknopf vergrößert. Liegt dasselbe Element mehrfach auf der Seite — etwa in einer Liste, die beim Ablegen kopiert —, wird nur die angetippte Darstellung hervorgehoben ([#1107](https://github.com/iqb-berlin/verona-modules-aspect/issues/1107))
+
 ### Fehlerbehebungen
 - Klappliste: Die eingestellte Schriftgröße — und ebenso Farbe, fett, kursiv und unterstrichen — gilt jetzt auch für die gewählte Option und für die aufgeklappte Liste. Bisher erreichte sie allein die Beschriftung über dem Feld; im Lückentext, wo es diese Beschriftung nicht gibt, wirkte die Einstellung gar nicht. Die Klappliste zeigte ihren Inhalt deshalb in 16 px, während der Text ringsum in der eingestellten Größe steht — mit der Vorbelegung von 20 px passen sie jetzt zusammen ([#1435](https://github.com/iqb-berlin/verona-modules-aspect/issues/1435))
 - Eingabehilfe „Reaktionsgleichung Chemie“: Die hoch- und tiefgestellten Ziffern, die Vorzeichen und die Pfeile werden einheitlich dargestellt. Bisher suchte der Browser sich jedes Zeichen einzeln aus einer Ersatzschrift, sodass eine Tastenreihe aus bis zu vier verschiedenen Schriften bestand. Betrifft auch die Antwort der Schüler:innen und den Fließtext im Editor, wo dieselben Zeichen vorkommen können ([#1108](https://github.com/iqb-berlin/verona-modules-aspect/issues/1108))

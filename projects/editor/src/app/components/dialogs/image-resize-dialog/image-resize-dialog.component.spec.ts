@@ -358,37 +358,6 @@ describe('ImageResizeDialogComponent', () => {
     }));
   });
 
-  /* There is nothing to set here: the browser either reads the whole picture while shrinking it or
-     it does not, and where it does not, saying so is all the dialog can do (#1434). */
-  describe('the notice about a coarse browser', () => {
-    const notice = () => fixture.nativeElement.querySelector('.resampling-hint');
-
-    it('should say nothing while the browser reads the whole picture', () => {
-      component.coarseResampling = false;
-      component.willResize = true;
-      fixture.detectChanges();
-
-      expect(notice()).toBeNull();
-    });
-
-    it('should say so once a coarse browser would actually shrink the image', () => {
-      component.coarseResampling = true;
-      component.willResize = true;
-      fixture.detectChanges();
-
-      expect(notice()).not.toBeNull();
-    });
-
-    // Compressing at the same size hands every pixel through, coarse browser or not.
-    it('should stay away while only the quality changes', () => {
-      component.coarseResampling = true;
-      component.willResize = false;
-      fixture.detectChanges();
-
-      expect(notice()).toBeNull();
-    });
-  });
-
   /* Until the slider is moved, the quality is the dialog's own default rather than a decision, and
      re-encoding on it would put every confirmed upload through the canvas (#1398). */
   it('should not ask for a re-encode before the quality slider is touched', () => {

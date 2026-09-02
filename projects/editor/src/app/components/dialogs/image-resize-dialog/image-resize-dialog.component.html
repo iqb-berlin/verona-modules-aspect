@@ -32,16 +32,6 @@
       </div>
     }
 
-    <!--Said where the browser cannot read the whole picture while making it smaller: fine lines and
-        small text then lose more than they have to. Only while the picture would actually shrink --
-        compressing at the same size passes every pixel through unchanged (#1434).-->
-    @if (coarseResampling && willResize) {
-      <div class="resampling-hint">
-        <mat-icon class="hint-icon">info</mat-icon>
-        <span>{{ 'imageResizeDialog.coarseResamplingHint' | translate }}</span>
-      </div>
-    }
-
     <!--Hotspots are absolute pixel boxes over an image that renders at its natural size, so a
         smaller picture leaves them where they were. Shown at the moment the chosen size would
         actually shrink it: compressing without resizing moves nothing (#1399).-->

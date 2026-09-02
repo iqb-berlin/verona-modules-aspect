@@ -12,8 +12,8 @@ import { IMAGE_COMPRESSION_QUALITY, IMAGE_MAX_WIDTH } from 'common/config';
 import { MessageService } from 'editor/src/app/services/message.service';
 
 /* How long the dialog waits before it scales the image again. The estimate is a full scaling, and
-   with the finer filter of #1434 that is about 90 ms of the main thread for a photo -- once per
-   keystroke, and once per pointer move while the quality slider is dragged. */
+   with the resampling of #1434 that is 150-210 ms of the main thread for a twelve megapixel photo
+   -- once per keystroke, and once per pointer move while the quality slider is dragged. */
 const ESTIMATE_DELAY = 300;
 
 @Component({
@@ -27,13 +27,6 @@ export class ImageResizeDialogComponent implements OnInit, OnDestroy {
   originalHeight: number = 0;
   originalSize: number = 0;
   estimatedSize: number = 0;
-
-  /**
-   * Whether this browser reads the whole picture when it makes it smaller. Where it does not, the
-   * same image comes out coarser here than in one that does, and the dialog says so -- there is
-   * nothing to set, only somewhere else to do it (#1434).
-   */
-  coarseResampling: boolean = false;
 
   /**
    * Whether the figure on screen is still the one for the settings above it. Between an edit and the
@@ -79,9 +72,6 @@ export class ImageResizeDialogComponent implements OnInit, OnDestroy {
         this.estimatedSize = Math.round((scaled.length * 3) / 4);
         this.estimatePending = false;
       });
-    FileService.resamplingSupport()
-      .then(support => { this.coarseResampling = !support.readsWholeArea; });
-
     this.originalSize = Math.round((this.data.base64.length * 3) / 4);
     const img = new Image();
     img.src = this.data.base64;

@@ -27,7 +27,7 @@ import {
 import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
 import {
   MarkingPanelComponent
-} from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
+} from 'common/components/elements/marking-panel/marking-panel.component';
 import { ErrorService } from 'player/src/app/services/error.service';
 import {
   MathKeyboardContainerComponent

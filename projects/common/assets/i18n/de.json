@@ -15,5 +15,7 @@
   "tableHeaderAlignCenter": "Zentriert",
   "tableHeaderAlignRight": "Rechtsbündig",
   "tableHeaderAddRow": "Weitere Kopfzeile hinzufügen",
-  "tableHeaderRemoveRow": "Kopfzeile entfernen"
+  "tableHeaderRemoveRow": "Kopfzeile entfernen",
+  "mathTableAddRow": "weitere Zeile einfügen",
+  "mathTableRemoveRow": "letzte Zeile entfernen"
 }

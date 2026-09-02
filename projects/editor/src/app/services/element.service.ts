@@ -8,12 +8,12 @@ import {
   UIElement
 } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { GeometryProperties } from 'common/models/elements/external-app-group-elements/geometry';
+import { GeometryProperties } from 'common/models/elements/geometry';
 import { firstValueFrom } from 'rxjs';
 import { FileService } from 'common/services/file.service';
-import { AudioProperties } from 'common/models/elements/media-player-group-elements/audio';
-import { VideoProperties } from 'common/models/elements/media-player-group-elements/video';
-import { ImageProperties } from 'common/models/elements/interactive-group-elements/image';
+import { AudioProperties } from 'common/models/elements/audio';
+import { VideoProperties } from 'common/models/elements/video';
+import { ImageProperties } from 'common/models/elements/image';
 import {
   DimensionProperties,
   OwnProperty,
@@ -28,11 +28,11 @@ import {
   TableEditResult
 } from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
 import { MessageService } from 'editor/src/app/services/message.service';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { TextElement } from 'common/models/elements/text';
+import { ClozeDocument, ClozeElement } from 'common/models/elements/cloze';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogCanceledError } from 'editor/src/app/classes/dialog-canceled-error';
-import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { TableElement } from 'common/models/elements/table';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
   PositionedUIElement,
@@ -40,15 +40,39 @@ import {
   UIElementType,
   UIElementValue
 } from 'common/models/ui-element-interfaces';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListElement } from 'common/models/elements/drop-list';
 import {
   LikertRowElement, LikertRowProperties
-} from 'common/models/elements/compound-group-elements/likert/likert-row';
+} from 'common/models/elements/likert-row';
 
-/* What is collected for an element that is about to be created, without the type the caller already
+/** What is collected for an element that is about to be created, without the type the caller already
    knows: the groups stay partial, because the factory completes them from the element's defaults. */
 type PreparedElementProps = Omit<UIElementDraft, 'type'>;
 
+/**
+ * Every change the editor makes to an element goes through here: creating, deleting, duplicating,
+ * and the write paths that hand one value to a whole selection.
+ *
+ * Which path a property takes is decided by the group it lives in, and taking the wrong one fails
+ * silently. `updateElementsProperty` ends in `UIElement.setProperty`, which the index signature lets
+ * write any name onto the element root, where nothing reads it: `xPosition` went that way and
+ * alignment did nothing at all, and `width` went that way, where the dragged element still resized
+ * itself through its live preview while every other selected element silently kept its size (#1142).
+ * Hence a path per group -- `updateElementsPositionProperty`, `updateElementsDimensionsProperty`,
+ * `updateSelectedElementsStyleProperty`, `updateElementsPlayerProperty`.
+ *
+ * `OwnProperty` on this method rejects a name from the position, dimensions or styling group at
+ * compile time. It does NOT cover the player group: `updateElementsProperty(elements, 'loop', true)`
+ * compiles and lands on the element root.
+ *
+ * The two paths that carry object values give every element its own copy through `copyPlainData`:
+ * `setProperty` splices the value's entries into each element, so one value would leave a whole
+ * selection holding the same objects, and editing a label on one would change it on the others
+ * (#1188, rules.md 15). The style and player paths write primitives.
+ *
+ * Deleting goes through {@link deleteElements} rather than through the models, so references, the
+ * order inside the section and the selection are brought along.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -161,7 +185,7 @@ export class ElementService {
     return ElementFactory.createElement(props, this.idService) as LikertRowElement;
   }
 
-  /* Only what a section holds itself can be deleted here. A child of a compound element -- a cloze
+  /** Only what a section holds itself can be deleted here. A child of a compound element -- a cloze
      gap, a table cell -- lives in the list of its parent and goes through the parent's edit dialog;
      the unit cannot take it out, and releasing its ID all the same handed the same ID to the next
      element that asked for one (#1262). Asking about it first is no better: the confirmation would
@@ -187,7 +211,7 @@ export class ElementService {
     }
   }
 
-  /*
+  /**
    * `OwnProperty` rejects a named property that belongs to the position, dimensions or styling
    * group: those have their own update methods, and going through this one puts the value on the
    * element root instead, where nothing reads it. Names arriving as a plain string from the panel's
@@ -196,7 +220,6 @@ export class ElementService {
   updateElementsProperty<K extends string>(elements: UIElement[],
                                            property: K & OwnProperty<K>,
                                            value: UIElementValue): void {
-    // console.log('updateElementsProperty ', elements, property, value);
     let hasDirectWrite = false;
     elements.forEach(element => {
       if (element.type === 'text' && property === 'text') {
@@ -219,7 +242,7 @@ export class ElementService {
     if (hasDirectWrite) this.reportPropertyUpdate();
   }
 
-  /* The report belongs where the value is written. Text and cloze documents can take a detour through
+  /** The report belongs where the value is written. Text and cloze documents can take a detour through
      the reference dialog, whose answer arrives later -- a report sent while it is still open carries
      the value the element had before, and the confirmed change then reaches the host only with some
      later, unrelated edit; a save in between writes the stale state (#1269). Both writers report for
@@ -275,7 +298,7 @@ export class ElementService {
     }
   }
 
-  /* A gap the user removed in the rich text editor leaves the unit with the document: the model
+  /** A gap the user removed in the rich text editor leaves the unit with the document: the model
      drops it and releases its IDs. Its overlay goes with the node it sat in, and no overlay is
      rebuilt, so nothing takes it out of the selection -- the properties panel would go on offering
      the controls of a child that is not in the unit any more (#1261, the symptom of #1258 reached
@@ -287,10 +310,12 @@ export class ElementService {
     this.reportPropertyUpdate();
   }
 
-  // xPosition and yPosition live in the element's position group, so they have to go through
-  // updateElementsPositionProperty. updateElementsProperty would end up in UIElement.setProperty,
-  // which writes this[property] - allowed by the index signature, but it puts a stray xPosition on
-  // the element itself and leaves position.xPosition alone, so alignment did nothing at all.
+  /**
+   * xPosition and yPosition live in the element's position group, so they have to go through
+   * updateElementsPositionProperty. updateElementsProperty would end up in UIElement.setProperty,
+   * which writes this[property] - allowed by the index signature, but it puts a stray xPosition on
+   * the element itself and leaves position.xPosition alone, so alignment did nothing at all.
+   */
   alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     switch (alignmentDirection) {
       case 'left':
@@ -423,7 +448,7 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* Each copy goes into the section that holds its original, looked up in the unit rather than read
+  /** Each copy goes into the section that holds its original, looked up in the unit rather than read
      from selectedPageIndex/selectedSectionIndex: those can name another section, and the copy then
      lands there without anything going wrong visibly (#1204). */
   duplicateSelectedElements(): void {
@@ -434,7 +459,7 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* - Also changes position of the element to not cover copied element. */
+  /** - Also changes position of the element to not cover copied element. */
   duplicateElement(element: UIElement, adjustPosition: boolean = false): UIElement {
     const newElement = ElementFactory.createElement({ ...element.getBlueprint() }, this.idService);
     if (newElement.position && adjustPosition) {
@@ -484,7 +509,7 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* Sorts the sections the written elements are in, looked up in the unit rather than taken from the
+  /** Sorts the sections the written elements are in, looked up in the unit rather than taken from the
      selection: a cross-section drag moves the element and writes its position in the same
      synchronous block, before the overlays are rebuilt, so the selection still describes the section
      it came from -- and the target would keep a stale tab order (#1204). */
@@ -495,7 +520,7 @@ export class ElementService {
     new Set(sections).forEach(section => ElementService.reorderElements(section));
   }
 
-  /* Reorder elements by their position properties, so the tab order is correct */
+  /** Reorder elements by their position properties, so the tab order is correct */
   private static reorderElements(section: Section) {
     const sectionElementList = section.elements;
     const isDynamicPositioning = section.dynamicPositioning;

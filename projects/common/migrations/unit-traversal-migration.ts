@@ -49,7 +49,7 @@ export abstract class UnitTraversalMigration implements MigrationStep {
     return element;
   }
 
-  /* Decided by type, and by the same three cases `ModelNormalizer` uses to descend: what the two see
+  /** Decided by type, and by the same three cases `ModelNormalizer` uses to descend: what the two see
      as an element's children has to be the same set, or a step would transform something the
      normalizer never completes -- or leave one behind that it does. */
   private migrateChildElements(element: Record<string, unknown>): Record<string, unknown> {
@@ -69,7 +69,7 @@ export abstract class UnitTraversalMigration implements MigrationStep {
     return migrated;
   }
 
-  /* The child models sit in the tiptap tree the cloze document is, one per node that carries an
+  /** The child models sit in the tiptap tree the cloze document is, one per node that carries an
      `attrs.model` -- the same place the normalizer looks. Copied rather than written into, because a
      step hands back new objects at every level. How such a model becomes an element is the cloze's own
      business and stays untouched. */
@@ -90,7 +90,7 @@ export abstract class UnitTraversalMigration implements MigrationStep {
     return migrated;
   }
 
-  /* A document or node of a shape this does not know is left alone rather than spread into a copy of
+  /** A document or node of a shape this does not know is left alone rather than spread into a copy of
      itself -- a string would come back as an object of numbered characters. The normalizer answers a
      document it cannot walk the same way (#1196). */
   private static isNode(value: unknown): boolean {

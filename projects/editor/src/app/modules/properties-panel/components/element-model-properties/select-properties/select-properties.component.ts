@@ -3,12 +3,12 @@ import {
 } from '@angular/core';
 import {
   RadioButtonGroupComplexProperties
-} from 'common/models/elements/input-group-elements/radio-button-group-complex';
-import { DropdownProperties } from 'common/models/elements/input-group-elements/dropdown';
+} from 'common/models/elements/radio-button-group-complex';
+import { DropdownProperties } from 'common/models/elements/dropdown';
 import {
   RadioButtonGroupProperties
-} from 'common/models/elements/input-group-elements/radio-button-group';
-import { ToggleButtonProperties } from 'common/models/elements/input-group-elements/toggle-button';
+} from 'common/models/elements/radio-button-group';
+import { ToggleButtonProperties } from 'common/models/elements/toggle-button';
 import { StrikeOtherOptionsProperties } from 'common/models/ui-element-interfaces';
 import {
   DivergingProperties, Merged

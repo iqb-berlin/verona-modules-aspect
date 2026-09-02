@@ -6,6 +6,8 @@ import { Page } from 'common/models/page';
   standalone: false
 })
 export class PageIndexPipe implements PipeTransform {
+  /** Where a page sits in the list, compared by identity rather than by content, and `-1` for no page
+      or one that is not in the list. */
   transform(pages: Page[], pageToFind: Page | null): number {
     return pageToFind ? PageIndexPipe.getPageIndex(pages, pageToFind) : -1;
   }

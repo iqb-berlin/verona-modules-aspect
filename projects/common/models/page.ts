@@ -2,7 +2,7 @@ import { Section, SectionProperties } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListElement } from 'common/models/elements/drop-list';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 

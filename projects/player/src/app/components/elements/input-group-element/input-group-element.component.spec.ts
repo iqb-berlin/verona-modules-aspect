@@ -7,15 +7,15 @@ import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { InputElement } from 'common/models/elements/element';
-import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
-import { DropdownElement } from 'common/models/elements/input-group-elements/dropdown';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
-import { HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
-import { RadioButtonGroupElement } from 'common/models/elements/input-group-elements/radio-button-group';
+import { CheckboxElement } from 'common/models/elements/checkbox';
+import { DropdownElement } from 'common/models/elements/dropdown';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { HotspotImageElement } from 'common/models/elements/hotspot-image';
+import { RadioButtonGroupElement } from 'common/models/elements/radio-button-group';
 import {
   RadioButtonGroupComplexElement
-} from 'common/models/elements/input-group-elements/radio-button-group-complex';
-import { SliderElement } from 'common/models/elements/input-group-elements/slider';
+} from 'common/models/elements/radio-button-group-complex';
+import { SliderElement } from 'common/models/elements/slider';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';

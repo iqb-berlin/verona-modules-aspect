@@ -33,7 +33,6 @@ import { TextRadioComponent } from './components/radio/text-radio/text-radio.com
 import { Audio1StimulusComponent } from './components/stimulus/audio1-stimulus/audio1-stimulus.component';
 import { Audio2StimulusComponent } from './components/stimulus/audio2-stimulus/audio2-stimulus.component';
 import { AudioRowComponent } from './components/stimulus/audio-row/audio-row.component';
-import { ChatStimulusComponent } from './components/stimulus/chat-stimulus/chat-stimulus.component';
 import { EmailStimulusComponent } from './components/stimulus/email-stimulus/email-stimulus.component';
 import { MessageStimulusComponent } from './components/stimulus/message-stimulus/message-stimulus.component';
 import { StimulusWizardDialogComponent } from './components/stimulus/stimulus-dialog/stimulus-dialog.component';
@@ -55,7 +54,6 @@ import { InputWizardDialogComponent } from './components/text-input-dialog/text-
     Audio1StimulusComponent,
     Audio2StimulusComponent,
     AudioRowComponent,
-    ChatStimulusComponent,
     EmailStimulusComponent,
     MessageStimulusComponent,
     StimulusWizardDialogComponent,

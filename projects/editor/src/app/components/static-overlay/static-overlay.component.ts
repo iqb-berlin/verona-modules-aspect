@@ -45,7 +45,7 @@ export class StaticOverlayComponent extends ElementOverlay {
     this.element.dimensions.height = Math.max(start.height + event.distance.y, 0);
   }
 
-  /*
+  /**
    * Every selected element grows by the distance dragged, from its own starting size - what
    * `SectionComponent.elementDropped()` does for a move, and therefore per element rather than one
    * value for the whole selection (#1156). It used to give them all the absolute size of the dragged
@@ -71,7 +71,7 @@ export class StaticOverlayComponent extends ElementOverlay {
     });
   }
 
-  /* deleteElements is not awaited -- it hangs on its confirmation dialog -- and it takes the deleted
+  /** deleteElements is not awaited -- it hangs on its confirmation dialog -- and it takes the deleted
      elements out of the selection itself. Unselecting here would happen while the dialog is still
      open, so a user who declines would be left with the elements still there but unselected (#1258). */
   deleteSelectedElements(): void {

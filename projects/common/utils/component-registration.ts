@@ -1,52 +1,63 @@
 import { ComponentRegistry } from 'common/utils/component-registry';
-import { TextComponent } from 'common/components/text-group-elements/text/text.component';
-import { ButtonComponent } from 'common/components/action-group-elements/button/button.component';
-import { TextFieldComponent } from 'common/components/text-input-group-elements/text-field/text-field.component';
+import { TextComponent } from 'common/components/elements/text/text.component';
+import { ButtonComponent } from 'common/components/elements/button/button.component';
+import { TextFieldComponent } from 'common/components/elements/text-field/text-field.component';
 import {
   TextFieldSimpleComponent
-} from 'common/components/text-input-group-elements/text-field-simple/text-field-simple.component';
-import { TextAreaComponent } from 'common/components/text-input-group-elements/text-area/text-area.component';
-import { CheckboxComponent } from 'common/components/input-group-elements/checkbox/checkbox.component';
-import { DropdownComponent } from 'common/components/input-group-elements/dropdown/dropdown.component';
+} from 'common/components/elements/text-field-simple/text-field-simple.component';
+import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
+import { CheckboxComponent } from 'common/components/elements/checkbox/checkbox.component';
+import { DropdownComponent } from 'common/components/elements/dropdown/dropdown.component';
 import {
   RadioButtonGroupComponent
-} from 'common/components/input-group-elements/radio-button-group/radio-button-group.component';
-import { ImageComponent } from 'common/components/interactive-group-elements/image/image.component';
-import { AudioComponent } from 'common/components/media-player-group-elements/audio/audio.component';
-import { VideoComponent } from 'common/components/media-player-group-elements/video/video.component';
-import { LikertComponent } from 'common/components/compound-group-elements/likert/likert.component';
+} from 'common/components/elements/radio-button-group/radio-button-group.component';
+import { ImageComponent } from 'common/components/elements/image/image.component';
+import { AudioComponent } from 'common/components/elements/audio/audio.component';
+import { VideoComponent } from 'common/components/elements/video/video.component';
+import { LikertComponent } from 'common/components/elements/likert/likert.component';
 import {
   LikertRadioButtonGroupComponent
-} from 'common/components/compound-group-elements/likert-radio-button-group/likert-radio-button-group.component';
+} from 'common/components/likert-radio-button-group/likert-radio-button-group.component';
 import {
   RadioGroupImagesComponent
-} from 'common/components/input-group-elements/radio-group-images/radio-group-images.component';
-import { DropListComponent } from 'common/components/input-group-elements/drop-list/drop-list.component';
-import { ClozeComponent } from 'common/components/compound-group-elements/cloze/cloze.component';
-import { TableComponent } from 'common/components/compound-group-elements/table/table.component';
-import { HotspotImageComponent } from 'common/components/input-group-elements/hotspot-image/hotspot-image.component';
-import { SliderComponent } from 'common/components/input-group-elements/slider/slider.component';
+} from 'common/components/elements/radio-group-images/radio-group-images.component';
+import { DropListComponent } from 'common/components/elements/drop-list/drop-list.component';
+import { ClozeComponent } from 'common/components/elements/cloze/cloze.component';
+import { TableComponent } from 'common/components/elements/table/table.component';
+import { HotspotImageComponent } from 'common/components/elements/hotspot-image/hotspot-image.component';
+import { SliderComponent } from 'common/components/elements/slider/slider.component';
 import {
   SpellCorrectComponent
-} from 'common/components/text-input-group-elements/spell-correct/spell-correct.component';
-import { FrameComponent } from 'common/components/base-group-elements/frame/frame.component';
+} from 'common/components/elements/spell-correct/spell-correct.component';
+import { FrameComponent } from 'common/components/elements/frame/frame.component';
 import {
   ToggleButtonComponent
-} from 'common/components/input-group-elements/toggle-button/toggle-button.component';
-import { GeometryComponent } from 'common/components/external-app-group-elements/geometry/geometry.component';
-import { MathFieldComponent } from 'common/components/text-input-group-elements/math-field/math-field.component';
-import { MathTableComponent } from 'common/components/interactive-group-elements/math-table/math-table.component';
+} from 'common/components/elements/toggle-button/toggle-button.component';
+import { GeometryComponent } from 'common/components/elements/geometry/geometry.component';
+import { MathFieldComponent } from 'common/components/elements/math-field/math-field.component';
+import { MathTableComponent } from 'common/components/elements/math-table/math-table.component';
 import {
   TextAreaMathComponent
-} from 'common/components/text-input-group-elements/text-area-math/text-area-math.component';
-import { TriggerComponent } from 'common/components/action-group-elements/trigger/trigger.component';
+} from 'common/components/elements/text-area-math/text-area-math.component';
+import { TriggerComponent } from 'common/components/elements/trigger/trigger.component';
 import {
   WidgetMoleculeEditorComponent
-} from 'common/components/widget-group-elements/widget-molecule-editor/widget-molecule-editor.component';
+} from 'common/components/elements/widget-molecule-editor/widget-molecule-editor.component';
 import {
   WidgetPeriodicTableComponent
-} from 'common/components/widget-group-elements/widget-periodic-table/widget-periodic-table.component';
+} from 'common/components/elements/widget-periodic-table/widget-periodic-table.component';
 
+/**
+ * Registers the component that draws each element type, which is what lets a renderer go from a stored
+ * `type` to a component without knowing any of them.
+ *
+ * Called from the `SharedModule` constructor, so both applications get it by importing that module; the
+ * unit tests call it from their `vitest-providers.ts` because they build components without it.
+ * Registering twice is harmless: each type is simply written again.
+ *
+ * Not quite every type: `marking-panel` is missing here and is registered by the two `AppModule`s
+ * themselves, which is why a test bed that only calls this function has no component for it.
+ */
 export function registerComponents(): void {
   ComponentRegistry.registerComponents({
     text: TextComponent,

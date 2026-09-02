@@ -5,13 +5,42 @@
       <img [src]="data.base64" class="preview-image">
       <div class="image-info">
         <div>{{ 'imageResizeDialog.originalSize' | translate }}: {{ originalWidth }} x {{ originalHeight }} px ({{ originalSize | bytes }})</div>
-        @if (estimatedSize !== originalSize) {
-          <div class="estimated-size">
+        <!--Green reads as a saving, and since an image that is already in the unit is re-encoded
+            from the start, "open, change nothing, save" can just as well end up bigger: a JPEG kept
+            at quality 0.3 comes back at 0.8. The line has to be able to say that (#1398).-->
+        <!--Not before there is an estimate: the first one is a scaling like any other and arrives
+            once the dialog has come to rest, and a 0 would read as a saving of everything (#1434).-->
+        @if (estimatedSize > 0 && estimatedSize !== originalSize) {
+          <div class="estimated-size" [class.estimated-size-larger]="estimatedSize > originalSize"
+               [class.estimated-size-pending]="estimatePending">
             {{ 'imageResizeDialog.newSize' | translate }}: <strong>{{ estimatedSize | bytes }}</strong>
+            @if (estimatedSize > originalSize) {
+              <span>{{ 'imageResizeDialog.newSizeLarger' | translate }}</span>
+            }
           </div>
         }
       </div>
     </div>
+
+    <!--What a second pass costs: `scaleImage` redraws the image onto a canvas, so a JPEG and a WebP
+        come back re-encoded at the chosen quality and a GIF comes back as a still PNG. Said only for
+        an image that is already in the unit -- on the way in there is nothing to lose yet (#1378).-->
+    @if (data.isEmbedded) {
+      <div class="recompression-hint">
+        <mat-icon class="hint-icon">info</mat-icon>
+        <span>{{ 'imageResizeDialog.recompressionHint' | translate }}</span>
+      </div>
+    }
+
+    <!--Hotspots are absolute pixel boxes over an image that renders at its natural size, so a
+        smaller picture leaves them where they were. Shown at the moment the chosen size would
+        actually shrink it: compressing without resizing moves nothing (#1399).-->
+    @if (data.hasFixedOverlays && willResize) {
+      <div class="fixed-overlays-warning">
+        <mat-icon class="warning-icon">warning</mat-icon>
+        <span>{{ 'imageResizeDialog.fixedOverlaysWarning' | translate }}</span>
+      </div>
+    }
 
     <mat-checkbox [(ngModel)]="data.options.uncompressed" (ngModelChange)="onUncompressedChange()">
       {{ 'imageResizeDialog.useOriginalFile' | translate }}

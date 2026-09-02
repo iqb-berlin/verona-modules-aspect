@@ -55,7 +55,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     }); // Disable context menu
   }
 
-  /* Static and held, so the keyboard registers it exactly once no matter how many math inputs a unit
+  /** Static and held, so the keyboard registers it exactly once no matter how many math inputs a unit
      has: mathlive keeps its listeners in a Set, and the fresh arrow this used to pass grew that Set by
      one entry per component, each firing resetShift again on every layer change. No component leaked
      with it -- the arrow calls a static and captures no `this` -- which is why this half of #1123 is

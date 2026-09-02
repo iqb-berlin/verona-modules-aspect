@@ -13,6 +13,7 @@ import { MergedMarkerComponent } from './components/merged-marker/merged-marker.
 import { OptionListPanelComponent } from './components/option-list-panel/option-list-panel.component';
 import { SizeInputPanelComponent } from './components/size-input-panel/size-input-panel.component';
 import { NumberFieldModule } from './directives/number-field.module';
+import { IsCompressibleImagePipe } from './pipes/is-compressible-image.pipe';
 
 /**
  * Leaf controls of the editor that more than one feature area needs.
@@ -30,7 +31,8 @@ import { NumberFieldModule } from './directives/number-field.module';
   declarations: [
     MergedMarkerComponent,
     OptionListPanelComponent,
-    SizeInputPanelComponent
+    SizeInputPanelComponent,
+    IsCompressibleImagePipe
   ],
   imports: [
     CommonModule,
@@ -49,6 +51,7 @@ import { NumberFieldModule } from './directives/number-field.module';
     MergedMarkerComponent,
     OptionListPanelComponent,
     SizeInputPanelComponent,
+    IsCompressibleImagePipe,
     NumberFieldModule
   ]
 })

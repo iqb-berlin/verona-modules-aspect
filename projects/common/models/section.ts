@@ -6,7 +6,7 @@ import { VariableInfo } from '@iqb/responses';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/utils/element-factory';
 import { environment } from 'common/environment';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListElement } from 'common/models/elements/drop-list';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import {
   Measurement,
@@ -97,7 +97,7 @@ export class Section {
     this.elements.push(element);
   }
 
-  /* Includes children of children, i.e. compound children. */
+  /** Includes children of children, i.e. compound children. */
   getAllElements(elementType?: string): UIElement[] {
     let allElements: UIElement[] =
       this.elements.map(element => [element, ...(element as CompoundElement).getChildElements() || []])

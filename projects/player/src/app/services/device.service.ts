@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * Whether the device needs the player's own input assistance -- the on-screen keyboard is only shown
+ * where the operating system offers none of its own.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceService {
+  /**
+   * Not detectable up front, so it is set from outside: a key event on an input element that asked for
+   * the on-screen keyboard proves a physical one is there, and closes the on-screen one.
+   */
   hasHardwareKeyboard: boolean = false;
   private readonly isTouch!: boolean;
 

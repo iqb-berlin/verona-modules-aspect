@@ -3,7 +3,7 @@ import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { Subject } from 'rxjs';
-import { TextComponent } from 'common/components/text-group-elements/text/text.component';
+import { TextComponent } from 'common/components/elements/text/text.component';
 import { MarkingData } from 'common/models/marking-data';
 import { RangeSelectionService } from 'common/services/range-selection.service';
 
@@ -120,7 +120,7 @@ export class TextMarkingSupport {
     this.isMarkingBarOpen = false;
   }
 
-  /* The delayed opening of the marking bar has to be cancelled explicitly: a completed
+  /** The delayed opening of the marking bar has to be cancelled explicitly: a completed
    * ngUnsubscribe does not stop takeUntil from passing on a subscription that is created
    * afterwards, so a timeout that survives would leave a pointer subscription behind. */
   destroy(): void {

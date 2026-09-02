@@ -26,13 +26,45 @@
     is about: `src` is nullable in the model, so a null there is either "no file yet" or "the
     selected elements hold different ones", and both lost the button - leaving no way to give the
     selection one new file. `fileName` tells the two apart, because it is not nullable: '' for no
-    file, null only ever from the merge (#1138).-->
-@if (combinedProperties.type != null && combinedProperties.src !== undefined &&
-     (combinedProperties.src !== null || combinedProperties.fileName === null)) {
-  <button class="media-src-button" [style.align-self]="'center'"
-          mat-fab color="primary"
-          [matTooltip]="'propertiesPanel.changeMediaSource' | translate" [matTooltipPosition]="'right'"
-          (click)="changeMediaSrc(combinedProperties.type)">
-    <mat-icon>upload_file</mat-icon>
-  </button>
-}
+    file, null only ever from the merge (#1138).
+
+    The two round buttons share a row rather than a column of their own each: stacked, the second one
+    cost the panel a button's height plus its gap without showing anything a row does not (#1436).
+    The row centres them, so the elements that only ever have the first one -- audio, video -- look
+    exactly as they did.-->
+<div class="media-buttons">
+  @if (combinedProperties.type != null && combinedProperties.src !== undefined &&
+       (combinedProperties.src !== null || combinedProperties.fileName === null)) {
+    <button class="media-src-button"
+            mat-fab color="primary"
+            [matTooltip]="'propertiesPanel.changeMediaSource' | translate" [matTooltipPosition]="'right'"
+            (click)="changeMediaSrc(combinedProperties.type)">
+      <mat-icon>upload_file</mat-icon>
+    </button>
+  }
+
+  <!--Compressing what is already in the unit, without having the file at hand again (#1378). Audio
+      and video carry their file in the same property, and that one is not scaled.
+
+      Bildbereiche get it too, but the dialog is told they carry hotspots: those are absolute pixel
+      boxes over an image that renders at its natural size, so a smaller picture leaves them where
+      they were. It warns as soon as the chosen size would shrink the image, and lowering the quality
+      alone -- which is what the button is usually for here -- moves nothing (#1399).
+
+      Disabled rather than hidden for an image that cannot be scaled at all, so the button does not
+      appear and vanish between elements. `disabledInteractive` is what lets the tooltip say why: a
+      plainly disabled button receives no mouse events and would stay silent. It does still fire its
+      click, which `compressEmbeddedImage` refuses.-->
+  @if ((combinedProperties.type === 'image' || combinedProperties.type === 'hotspot-image') &&
+       combinedProperties.src) {
+    <button class="compress-image-button"
+            mat-fab color="primary" disabledInteractive
+            [disabled]="!(combinedProperties.src | isCompressibleImage)"
+            [matTooltip]="((combinedProperties.src | isCompressibleImage) ?
+                            'compressImage' : 'compressImageUnavailable') | translate"
+            [matTooltipPosition]="'right'"
+            (click)="compressImage()">
+      <mat-icon>compress</mat-icon>
+    </button>
+  }
+</div>

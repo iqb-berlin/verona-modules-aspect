@@ -26,4 +26,18 @@ describe('VariableAlias', () => {
   it('should reject empty names', () => {
     expect(VariableAlias.isValid('')).toBe(false);
   });
+
+  /* HTML compiles a `pattern` attribute with the `v` flag. A pattern that does not survive that is
+     silently discarded by the browser, and the field it belongs to is no longer checked natively at
+     all -- which is what happened while the hyphen stood bare (#1391). */
+  it('should be a pattern an HTML pattern attribute can use', () => {
+    expect(() => new RegExp(VariableAlias.PATTERN_SOURCE, 'v')).not.toThrow();
+  });
+
+  it('should mean the same under the v flag as it does in code', () => {
+    const asHtmlWould = new RegExp(`^${VariableAlias.PATTERN_SOURCE}$`, 'v');
+    ['var1', 'drop-list_2', '-', 'März', 'a b', ''].forEach(name => {
+      expect(asHtmlWould.test(name)).toBe(VariableAlias.isValid(name));
+    });
+  });
 });

@@ -1,6 +1,6 @@
 import { UIElement } from 'common/models/elements/element';
-import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextAreaElement } from 'common/models/elements/text-area';
+import { TextFieldElement } from 'common/models/elements/text-field';
 import { HasReturnKeyPipe } from './has-return-key.pipe';
 
 describe('HasReturnKeyPipe', () => {

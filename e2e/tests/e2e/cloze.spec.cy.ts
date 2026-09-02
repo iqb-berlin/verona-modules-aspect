@@ -91,6 +91,16 @@ describe('Cloze element', { testIsolation: false }, () => {
         .find('aspect-text-field-simple').should('have.length', 1);
     });
 
+    it('leaves a text-field-simple without its own colour transparent', () => {
+      // The gap is built in the editor above and nobody sets a colour on it, so this is the default
+      // reaching the page. Before #1429 it was #f1f1f1, which covered the section behind it; the
+      // border keeps the gap visible either way. Asserted on the rendered input because the guards
+      // in the unit tests read the model, not the paint.
+      cy.get('aspect-cloze').eq(1)
+        .find('aspect-text-field-simple input')
+        .should('have.css', 'background-color', 'rgba(0, 0, 0, 0)');
+    });
+
     it('types into the text-field-simple inside the cloze', () => {
       cy.get('aspect-cloze').eq(1)
         .find('aspect-text-field-simple')
@@ -138,6 +148,17 @@ describe('Cloze element', { testIsolation: false }, () => {
         .find('aspect-dropdown').should('have.length', 1);
     });
 
+    it('hangs the dropdown in the line by its text, not by its box', () => {
+      // The gap wears the font of the element since #1435, so its text has to meet the text beside
+      // it. `middle` centres the box in the line instead, which left the glyphs 1.6px low at the
+      // 20px default and the box 1.6px below the box of a text-field gap in the same line. Asserted
+      // on the computed value because the binding in the cloze template is not the only way to lose
+      // it -- a rule in any stylesheet reaching this overlay would do.
+      cy.get('aspect-cloze').eq(7)
+        .find('aspect-compound-child-overlay')
+        .should('have.css', 'vertical-align', 'baseline');
+    });
+
     it('selects an option from dropdown inside cloze', () => {
       cy.get('aspect-cloze').eq(7)
         .find('aspect-dropdown mat-select')
@@ -150,7 +171,10 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('9th cloze displays error message for required text-field inside cloze when touched', () => {
-      // THE ERROR MESSAGE REQUIRED IS ALWAYS PLACED IN A SECOND LINE OF THE SECTION PLACE: SEE THIS EXAMPLE
+      // The message belongs under its own gap. It used to be placed against the section instead, which
+      // put every message of a section on the same line whatever line its gap was in (#1052) -- and the
+      // assertion here pinned that: it asked for the `top: 35px` the old placement computed. Comparing
+      // the two boxes says what is meant and does not have to be rewritten when a gap changes size.
       // Initially, error should not exist
       cy.get('aspect-cloze-child-error-message').should('not.exist');
 
@@ -169,8 +193,18 @@ describe('Cloze element', { testIsolation: false }, () => {
 
       cy.get('aspect-cloze-child-error-message')
         .should('be.visible')
-        .and('contain.text', 'Eingabe erforderlich')
-        .and('have.css', 'top', '35px');
+        .and('contain.text', 'Eingabe erforderlich');
+
+      cy.get('aspect-cloze').eq(8)
+        .find('aspect-compound-child-overlay')
+        .then($gap => {
+          const gap = $gap[0].getBoundingClientRect();
+          cy.get('aspect-cloze-child-error-message').should($message => {
+            const message = $message[0].getBoundingClientRect();
+            expect(message.top).to.be.closeTo(gap.bottom, 1);
+            expect(message.left).to.be.closeTo(gap.left, 1);
+          });
+        });
     });
   });
 });

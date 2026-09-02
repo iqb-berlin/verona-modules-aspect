@@ -1,6 +1,6 @@
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Command } from '@tiptap/core';
-import { Transaction } from 'prosemirror-state';
+import { Node as ProseMirrorNode } from 'prosemirror-model';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -24,23 +24,22 @@ export const ParagraphExtension = Paragraph.extend({
   },
 
   addCommands() {
-    const setNodeIndentMarkup = (tr: Transaction, pos: number, newMargin: number): Transaction => {
-      const node = tr?.doc?.nodeAt(pos);
-      if (node) {
-        const nodeAttrs = { ...node.attrs, margin: newMargin };
-        return tr.setNodeMarkup(pos, node.type, nodeAttrs, node.marks);
-      }
-      return tr;
-    };
+    const { name } = this;
 
+    /* Only the paragraphs. `nodesBetween` walks into everything the range covers, the text nodes
+       included, and `setNodeMarkup` on one of those throws "NodeType.create can't construct text
+       nodes" -- which took the whole command with it: no spacing, an error dialog instead. A cursor
+       is enough for that, it descends into the text node it sits in; every paragraph that holds text
+       was affected (#909). The margin lives on this node type anyway; nothing else in the document
+       has the attribute. */
     const applyMargin: (newMargin: number) => () => Command =
       newMargin => () => ({ tr, state, dispatch }) => {
         const { selection } = state;
-        let transaction;
-        tr.doc.nodesBetween(selection.from, selection.to, (node, pos) => {
-          transaction = setNodeIndentMarkup(tr, pos, newMargin);
+        tr.doc.nodesBetween(selection.from, selection.to, (node: ProseMirrorNode, pos: number) => {
+          if (node.type.name !== name) return;
+          tr.setNodeMarkup(pos, node.type, { ...node.attrs, margin: newMargin }, node.marks);
         });
-        dispatch?.(transaction);
+        dispatch?.(tr);
         return true;
       };
 

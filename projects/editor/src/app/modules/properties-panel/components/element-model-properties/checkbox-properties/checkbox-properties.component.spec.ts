@@ -2,12 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import {
+  IsCompressibleImagePipe
+} from 'editor/modules/editor-shared/pipes/is-compressible-image.pipe';
 import {
   CheckboxPropertiesComponent
 } from './checkbox-properties.component';
@@ -35,12 +39,14 @@ describe('CheckboxPropertiesComponent', () => {
   const crossOutBox = () => fixture.debugElement.query(By.directive(MockMergedCheckboxComponent));
 
   beforeEach(async () => {
-    dialogService = createSpyObj<DialogService>(['importImage']);
+    dialogService = createSpyObj<DialogService>(['importImage', 'compressEmbeddedImage']);
 
     await TestBed.configureTestingModule({
-      declarations: [CheckboxPropertiesComponent, MockMergedCheckboxComponent],
+      declarations: [CheckboxPropertiesComponent,
+        IsCompressibleImagePipe, MockMergedCheckboxComponent],
       imports: [
         MatButtonToggleModule,
+        MatButtonModule,
         MatIconModule,
         MatTooltipModule,
         TranslateModule.forRoot()
@@ -146,5 +152,55 @@ describe('CheckboxPropertiesComponent', () => {
     fixture.detectChanges();
 
     expect(imageButton()).not.toBeNull();
+  });
+
+  /* The checkbox carries its own image, and it gets the same second way in as every other image in
+     the editor: compress what is already there, without the file (#1378). */
+  describe('the compress button', () => {
+    const compressButton = () => fixture.debugElement.query(By.css('.compress-image-button'));
+
+    // Without an image there is nothing to compress, so the button is not there either.
+    it('should stay away while the checkbox has no image', () => {
+      expect(compressButton()).toBeNull();
+    });
+
+    it('should be offered for an image that can be scaled', () => {
+      component.combinedProperties = { type: 'checkbox', imgSrc: 'data:image/png;base64,abc' };
+      fixture.detectChanges();
+
+      expect(compressButton()).not.toBeNull();
+      expect(compressButton().nativeElement.getAttribute('aria-disabled')).not.toBe('true');
+    });
+
+    it('should stay but be disabled for an image no scaler can shrink', () => {
+      component.combinedProperties = { type: 'checkbox', imgSrc: 'data:image/svg+xml;base64,abc' };
+      fixture.detectChanges();
+
+      expect(compressButton()).not.toBeNull();
+      expect(compressButton().nativeElement.getAttribute('aria-disabled')).toBe('true');
+    });
+  });
+
+  it('should emit the compressed image', async () => {
+    component.combinedProperties = { type: 'checkbox', imgSrc: 'data:image/png;base64,gross' };
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+    dialogService.compressEmbeddedImage.mockResolvedValue('data:image/webp;base64,klein');
+
+    await component.compressImgSrc();
+
+    expect(dialogService.compressEmbeddedImage).toHaveBeenCalledWith('data:image/png;base64,gross');
+    expect(emitted).toEqual([{ property: 'imgSrc', value: 'data:image/webp;base64,klein' }]);
+  });
+
+  it('should emit nothing when the compression is cancelled', async () => {
+    component.combinedProperties = { type: 'checkbox', imgSrc: 'data:image/png;base64,gross' };
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+    dialogService.compressEmbeddedImage.mockResolvedValue(null);
+
+    await component.compressImgSrc();
+
+    expect(emitted).toEqual([]);
   });
 });

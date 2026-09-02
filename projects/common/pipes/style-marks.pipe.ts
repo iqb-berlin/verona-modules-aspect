@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ClozeMark, ClozeMarks } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { ClozeMark, ClozeMarks } from 'common/models/elements/cloze';
 
 @Pipe({
   name: 'styleMarks',
@@ -8,6 +8,15 @@ import { ClozeMark, ClozeMarks } from 'common/models/elements/compound-group-ele
 /* This extracts marks from a text item and puts them in an object to be consumed by ngStyle.
   Only used in cloze component */
 export class StyleMarksPipe implements PipeTransform {
+  /**
+   * The styles a run of cloze text carries, as the object a style binding takes: bold, italic and
+   * underline as their own marks, font size and colour out of the `textStyle` mark, background out of
+   * the `highlight` mark.
+   *
+   * Of a mark type that appears more than once only the first is read. A mark that is absent leaves its
+   * key in the object without a value -- empty string for the three switches, `undefined` for the three
+   * taken from attributes -- so the binding falls back to what the run inherits.
+   */
   transform(items: ClozeMark[] | undefined): ClozeMarks {
     if (!items) {
       return {};

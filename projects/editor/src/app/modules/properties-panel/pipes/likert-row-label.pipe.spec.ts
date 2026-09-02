@@ -1,4 +1,4 @@
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { LikertRowElement } from 'common/models/elements/likert-row';
 import { LikertRowLabelPipe } from 'editor/src/app/modules/properties-panel/pipes/likert-row-label.pipe';
 
 describe('LikertRowLabelPipe', () => {

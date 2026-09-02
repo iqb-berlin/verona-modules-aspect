@@ -26,15 +26,15 @@ describe('AudioPlayerService', () => {
   });
 
   it('should initialize the audio element and start playback on first play', () => {
-    service.play('test.mp3');
+    service.play('test.mp3', {});
     expect(service.audio.getAttribute('src')).toBe('test.mp3');
     expect(service.audio.play).toHaveBeenCalledTimes(1);
   });
 
   it('should reuse the existing audio element on subsequent plays', () => {
-    service.play('first.mp3');
+    service.play('first.mp3', {});
     const firstAudio = service.audio;
-    service.play('second.mp3');
+    service.play('second.mp3', {});
     expect(service.audio).toBe(firstAudio);
     expect(service.audio.getAttribute('src')).toBe('second.mp3');
     expect(service.audio.play).toHaveBeenCalledTimes(2);
@@ -44,5 +44,17 @@ describe('AudioPlayerService', () => {
     service.init('test.mp3');
     service.audio.dispatchEvent(new Event('pause'));
     expect(service.audio.getAttribute('src')).toBe('');
+  });
+
+  it('should set playingPanel when play is called', () => {
+    const panel = {};
+    service.play('test.mp3', panel);
+    expect(service.playingPanel).toBe(panel);
+  });
+
+  it('should clear playingPanel when the audio is paused', () => {
+    service.play('test.mp3', {});
+    service.audio.dispatchEvent(new Event('pause'));
+    expect(service.playingPanel).toBeNull();
   });
 });

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ClozeProperties } from 'common/models/elements/compound-group-elements/cloze/cloze';
+import { ClozeProperties } from 'common/models/elements/cloze';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { ElementService } from 'editor/src/app/services/element.service';
 

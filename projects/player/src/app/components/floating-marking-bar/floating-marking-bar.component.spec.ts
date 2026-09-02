@@ -1,11 +1,11 @@
 // eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { TextComponent } from 'common/components/text-group-elements/text/text.component';
+import { TextComponent } from 'common/components/elements/text/text.component';
 import { APIService } from 'common/shared.module';
 import { Pipe, PipeTransform, SimpleChange } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { FloatingMarkingBarComponent } from './floating-marking-bar.component';
 
 describe('FloatingMarkingBarComponent', () => {

@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
+import { Hotspot } from 'common/models/elements/hotspot-image';
 import { MessageService } from 'editor/src/app/services/message.service';
 
 @Component({

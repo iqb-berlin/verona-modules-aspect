@@ -32,7 +32,7 @@ export class OverviewDialogComponent implements AfterViewInit {
 
   tableData!: MatTableDataSource<OverviewRow>;
 
-  /* Every refresh builds new rows, so the selection is compared by the element in them. */
+  /** Every refresh builds new rows, so the selection is compared by the element in them. */
   elementSelection = new SelectionModel<OverviewRow>(true, [], true, (a, b) => a.element === b.element);
 
   elementOptions: EditableProperty [] = [{
@@ -70,7 +70,7 @@ export class OverviewDialogComponent implements AfterViewInit {
     this.tableData.sort = this.sort;
   }
 
-  /* A row of its own around each element, holding where it sits in the unit. Written onto the
+  /** A row of its own around each element, holding where it sits in the unit. Written onto the
      elements, as it was before, those two numbers were own properties of the model and travelled into
      the stored unit definition with the next report -- outdated as soon as a section moved (#1273). */
   getTableData(): OverviewRow[] {
@@ -91,7 +91,7 @@ export class OverviewDialogComponent implements AfterViewInit {
     return rows;
   }
 
-  /* The columns are spread over the row and the element in it, so sorting has to be told where each
+  /** The columns are spread over the row and the element in it, so sorting has to be told where each
      one reads from: MatTableDataSource looks at data[columnName] and would find nothing for the
      columns of the element. */
   private static getSortValue(row: OverviewRow, columnName: string): string | number {
@@ -143,7 +143,7 @@ export class OverviewDialogComponent implements AfterViewInit {
     );
   }
 
-  /* The button of a compound child stays clickable so that it can carry its tooltip and the keyboard
+  /** The button of a compound child stays clickable so that it can carry its tooltip and the keyboard
      can reach it (`disabledInteractive`), so the refusal lives here as well as in the template: what
      a section does not hold itself cannot be deleted from this dialog (#1267). */
   async deleteElement(row: OverviewRow) {
@@ -154,7 +154,7 @@ export class OverviewDialogComponent implements AfterViewInit {
     this.updateTableSelection();
   }
 
-  /* What the table no longer lists is out of the unit, and a selection of it would go on writing:
+  /** What the table no longer lists is out of the unit, and a selection of it would go on writing:
      "Mehrfachänderung" applies the property to `elementSelection.selected` and reports the unit as
      changed for an element that is not in it any more, while the header checkbox keeps counting it.
      Read off the rows rather than from the deleted element, because deleting a compound element takes
@@ -204,7 +204,7 @@ interface OverviewRow {
   element: UIElement;
   pageIndex: number;
   sectionIndex: number;
-  /* A cloze gap, a table cell, a row of an option table. They are listed like everything else, but
+  /** A cloze gap, a table cell, a row of an option table. They are listed like everything else, but
      deleting cannot reach them: what a section holds itself is what `ElementService.deleteElements`
      removes (#1262), and a child goes through the edit dialog of its parent (#1267). */
   isCompoundChild: boolean;

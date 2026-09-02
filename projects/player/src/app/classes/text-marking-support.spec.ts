@@ -1,6 +1,6 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { config, Subject } from 'rxjs';
-import { TextComponent } from 'common/components/text-group-elements/text/text.component';
+import { TextComponent } from 'common/components/elements/text/text.component';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingSupport } from './text-marking-support';

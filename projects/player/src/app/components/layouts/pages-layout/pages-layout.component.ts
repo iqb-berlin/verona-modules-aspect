@@ -90,7 +90,7 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.calculateCenterPositionInRowLayout();
   }
 
-  /* Turning a page starts by undoing the scrolled state (#1081). The scroll container is one for
+  /** Turning a page starts by undoing the scrolled state (#1081). The scroll container is one for
      all pages -- it holds the whole tab group -- so its scrollTop survives the tab switch, and the
      next page used to open at the height the last one was left at.
      Resetting before the index changes keeps this out of the transition: both land in the same

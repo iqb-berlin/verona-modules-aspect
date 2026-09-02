@@ -1,5 +1,5 @@
 import { Mock } from 'vitest';
-import { DropListComponent } from 'common/components/input-group-elements/drop-list/drop-list.component';
+import { DropListComponent } from 'common/components/elements/drop-list/drop-list.component';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { DragOperatorService } from './drag-operator.service';
 
@@ -88,6 +88,45 @@ describe('DragOperatorService', () => {
     expect(service.dropLists['list-1']).toBe(dropList as unknown as DropListComponent);
   });
 
+  it('should give a destroyed drop list back', () => {
+    const dropList = createDropList('list-1');
+    register(dropList);
+
+    service.unregisterComponent(dropList as unknown as DropListComponent);
+
+    expect(service.dropLists['list-1']).toBeUndefined();
+  });
+
+  /*
+   * The service outlives the task, so a list of the task being built can hold the id before the old
+   * one is torn down. Unregistering by id alone would drop the live list (#1384).
+   */
+  it('should keep a list that has taken over the id of the one being destroyed', () => {
+    const destroyed = createDropList('list-1');
+    const rebuilt = createDropList('list-1');
+    register(destroyed);
+    register(rebuilt);
+
+    service.unregisterComponent(destroyed as unknown as DropListComponent);
+
+    expect(service.dropLists['list-1']).toBe(rebuilt as unknown as DropListComponent);
+  });
+
+  /*
+   * The other order, which the editor produces: the rich text dialog renders a second copy of a cloze
+   * child, so it registers last and is destroyed first while the canvas list lives on.
+   */
+  it('should hand the id back when the newer of two live lists is destroyed', () => {
+    const onCanvas = createDropList('list-1');
+    const inDialog = createDropList('list-1');
+    register(onCanvas);
+    register(inDialog);
+
+    service.unregisterComponent(inDialog as unknown as DropListComponent);
+
+    expect(service.dropLists['list-1']).toBe(onCanvas as unknown as DropListComponent);
+  });
+
   it('should mark the drag as active and collect the eligible connected target lists', () => {
     const item = createValue('item-1', 'source');
     const source = createDropList('source', { connectedTo: ['target'] }, [item]);
@@ -135,6 +174,25 @@ describe('DragOperatorService', () => {
 
     expect(target.isHighlighted).toBe(true);
     expect(target.cdr.detectChanges).toHaveBeenCalled();
+  });
+
+  /*
+   * The mouse handler lives on the document, so a drag can outlive its lists -- a new task arriving
+   * while the button is held. Before the lists were unregistered at all this was a harmless no-op.
+   */
+  it('should end a drag whose lists have been destroyed in the meantime', () => {
+    const item = createValue('item-1', 'source');
+    const source = createDropList('source', { connectedTo: ['target'], highlightReceivingDropList: true }, [item]);
+    const target = createDropList('target');
+    [source, target].forEach(register);
+    startDrag(source, item);
+    service.setTargetList('target');
+    [source, target].forEach(list => service.unregisterComponent(list as unknown as DropListComponent));
+
+    // the order DropListComponent.dragEnd() uses
+    expect(() => { service.handleDrop(); service.endDrag(); }).not.toThrow();
+    expect(service.isDragActive).toBe(false);
+    expect(target.elementFormControl.value).toEqual([]);
   });
 
   it('should reset the drag state and list effects on endDrag', () => {

@@ -41,14 +41,27 @@ describe('HasPreviousPagePipe', () => {
     expect(HasPreviousPagePipe.getPreviousPageIndex(0, pages)).toBeNull();
   });
 
-  it('should find the preceding page in an unsorted page list', () => {
+  it('should find the nearest preceding page in an unsorted page list', () => {
     const unsortedPages: IsVisibleIndex[] = [
-      { index: 2, isVisible: true },
+      { index: 1, isVisible: true },
       { index: 0, isVisible: true },
-      { index: 1, isVisible: true }
+      { index: 2, isVisible: true }
     ];
 
     expect(HasPreviousPagePipe.getPreviousPageIndex(2, unsortedPages)).toBe(1);
+    expect(pipe.transform(2, unsortedPages)).toBe(true);
+  });
+
+  it('should leave the page list it is given untouched', () => {
+    const unsortedPages: IsVisibleIndex[] = [
+      { index: 1, isVisible: true },
+      { index: 0, isVisible: true },
+      { index: 2, isVisible: true }
+    ];
+
+    pipe.transform(2, unsortedPages);
+
+    expect(unsortedPages.map(page => page.index)).toEqual([1, 0, 2]);
   });
 
   it('should report no preceding page without a page list', () => {

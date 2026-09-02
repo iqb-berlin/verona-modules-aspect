@@ -3,14 +3,14 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import { ElementFactory } from 'common/utils/element-factory';
 import { UIElement } from 'common/models/elements/element';
 import { AbstractIDService } from 'common/models/id-interfaces';
-import { DropdownElement } from 'common/models/elements/input-group-elements/dropdown';
+import { DropdownElement } from 'common/models/elements/dropdown';
 import {
   RadioButtonGroupElement
-} from 'common/models/elements/input-group-elements/radio-button-group';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+} from 'common/models/elements/radio-button-group';
+import { DropListElement } from 'common/models/elements/drop-list';
 import {
   ClozeElement, CustomDocumentNode
-} from 'common/models/elements/compound-group-elements/cloze/cloze';
+} from 'common/models/elements/cloze';
 
 /**
  * What a duplicate may share with its original: nothing.

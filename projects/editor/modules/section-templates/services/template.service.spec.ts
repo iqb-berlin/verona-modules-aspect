@@ -8,7 +8,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { EditorPage } from 'editor/src/app/models/editor-page';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { TwoPageTemplateOptions } from 'editor/modules/section-templates/models/droplist-interfaces';
 import {
   Text3WizardDialogComponent

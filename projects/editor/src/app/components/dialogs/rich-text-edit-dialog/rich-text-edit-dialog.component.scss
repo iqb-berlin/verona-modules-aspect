@@ -1,2 +1,6 @@
 .mat-mdc-dialog-content {display: flex; flex-direction: column;}
 aspect-rich-text-editor {min-height: 450px;}
+// The host reserves a box of its own here, so the text area has to be allowed to fill it --
+// the editor's own limit would leave the lower part empty (#1347). `::ng-deep` is needed because
+// `tiptap-editor` lives in the editor's template and carries its attribute, not this one's.
+aspect-rich-text-editor ::ng-deep tiptap-editor {max-height: none;}

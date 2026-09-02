@@ -44,7 +44,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import {
   MarkingPanelComponent
-} from 'common/components/interactive-group-elements/marking-panel/marking-panel.component';
+} from 'common/components/elements/marking-panel/marking-panel.component';
 import { ComponentRegistry } from 'common/utils/component-registry';
 import {
   StateVariablesDialogComponent

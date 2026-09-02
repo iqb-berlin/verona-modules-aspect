@@ -107,9 +107,16 @@ function shorten(value: string): string {
 }
 
 function flags(control: Element): string {
+  /* `disabledInteractive` marks a Material button aria-disabled and leaves the native attribute off,
+     so without the second line such a button would read as usable in the baseline. The two are told
+     apart because they are not the same promise: a plainly disabled control cannot be clicked, an
+     interactive one still delivers its click and needs whatever it calls to refuse (#1378). */
   const disabled = control.hasAttribute('disabled') ||
+    control.getAttribute('aria-disabled') === 'true' ||
     (control as HTMLInputElement).disabled === true;
-  return disabled ? ' (disabled)' : '';
+  if (!disabled) return '';
+  return control.classList.contains('mat-mdc-button-disabled-interactive') ?
+    ' (disabled, interactive)' : ' (disabled)';
 }
 
 /**

@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import { PlayerProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
@@ -24,6 +25,9 @@ import {
 import {
   NumberFieldDirective
 } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
+  IsCompressibleImagePipe
+} from 'editor/modules/editor-shared/pipes/is-compressible-image.pipe';
 
 describe('PlayerEditDialogComponent', () => {
   let component: PlayerEditDialogComponent;
@@ -39,7 +43,7 @@ describe('PlayerEditDialogComponent', () => {
       imgFileName: 'alt.png',
       minRuns: 2
     });
-    dialogService = createSpyObj<DialogService>(['importImage']);
+    dialogService = createSpyObj<DialogService>(['importImage', 'compressEmbeddedImage']);
     messageService = createSpyObj<MessageService>(['showWarning']);
     dialogRefMock = { close: vi.fn() };
     const unitServiceMock = {
@@ -48,6 +52,7 @@ describe('PlayerEditDialogComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [PlayerEditDialogComponent,
+        IsCompressibleImagePipe,
         GetValidAudioVideoAliasAndIDsPipe, NumberFieldDirective],
       imports: [
         CommonModule,
@@ -59,6 +64,7 @@ describe('PlayerEditDialogComponent', () => {
         MatInputModule,
         MatSelectModule,
         MatTabsModule,
+        MatTooltipModule,
         TranslateModule.forRoot()
       ],
       providers: [
@@ -167,5 +173,27 @@ describe('PlayerEditDialogComponent', () => {
 
       expect(messageService.showWarning).not.toHaveBeenCalled();
     });
+  });
+
+  /* Compressing an image that is already there: the dialog is the way in, `compressEmbeddedImage`
+     does the work, and only the result reaches the copy under edit (#1378). */
+  it('should apply the compressed image to the copy', async () => {
+    component.newPlayerConfig.imgSrc = 'data:image/png;base64,gross';
+    dialogService.compressEmbeddedImage.mockResolvedValue('data:image/webp;base64,klein');
+
+    await component.compressImage();
+
+    expect(dialogService.compressEmbeddedImage).toHaveBeenCalledWith('data:image/png;base64,gross');
+    expect(component.newPlayerConfig.imgSrc).toBe('data:image/webp;base64,klein');
+  });
+
+  // A cancelled dialog answers null, and the image has to stay exactly as it was.
+  it('should keep the image untouched when the compression is cancelled', async () => {
+    component.newPlayerConfig.imgSrc = 'data:image/png;base64,gross';
+    dialogService.compressEmbeddedImage.mockResolvedValue(null);
+
+    await component.compressImage();
+
+    expect(component.newPlayerConfig.imgSrc).toBe('data:image/png;base64,gross');
   });
 });

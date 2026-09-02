@@ -1,7 +1,7 @@
 import {
   AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, ViewChild
 } from '@angular/core';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MarkingRange } from 'common/models/marking-data';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
@@ -37,7 +37,7 @@ export class MarkableWordComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /* A markable that stands for existing markup -- a formula -- is handed the node itself instead of
+  /** A markable that stands for existing markup -- a formula -- is handed the node itself instead of
    * text: it is moved into this span, so it keeps its own markup and gets the marking colour, the
    * click target and the range behaviour of a word around it. */
   ngAfterViewInit(): void {
@@ -131,7 +131,7 @@ export class MarkableWordComponent implements OnInit, AfterViewInit, OnDestroy {
     this.colorChange.emit(this.color);
   }
 
-  /* The deferred end of a range selection has to be cancelled explicitly, otherwise it writes
+  /** The deferred end of a range selection has to be cancelled explicitly, otherwise it writes
    * into the marking range of a text this component no longer belongs to. */
   ngOnDestroy(): void {
     if (this.cleanMarkingTimeout !== null) {

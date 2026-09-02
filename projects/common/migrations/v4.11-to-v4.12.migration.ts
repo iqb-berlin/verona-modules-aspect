@@ -23,7 +23,7 @@ type MeasurementListMembers<T> = {
   [K in keyof T]-?: NonNullable<T[K]> extends { value: number; unit: string }[] ? K : never
 }[keyof T] & string;
 
-/* The lists have to name every one of them, and both directions are checked: `satisfies` rejects a name
+/** The lists have to name every one of them, and both directions are checked: `satisfies` rejects a name
    the interface does not declare as such a member, and the assertions below name a member the list
    forgot. A hand-kept list is what this repo has been bitten by (#1177, #1187); here a forgotten name
    would leave one member unrepaired, silently. */
@@ -95,7 +95,7 @@ export class Migration4m11To4m12 extends UnitTraversalMigration {
     return Migration4m11To4m12.convert(super.migratePage(page), PAGE_NUMBERS);
   }
 
-  /* The grid sizes are a list of Measurements, and their `value` is a number the model asks for and the
+  /** The grid sizes are a list of Measurements, and their `value` is a number the model asks for and the
      stored unit rarely holds: `MigrationLegacy` builds them from `"1fr 178px"` by slicing the string,
      so it hands on `{ value: '1', unit: 'fr' }`. It runs before this step, which is what lets this one
      repair its output in the same pass. */
@@ -109,7 +109,7 @@ export class Migration4m11To4m12 extends UnitTraversalMigration {
     return migrated;
   }
 
-  /* Which own properties of an element are numbers is decided by the type of their default, so this
+  /** Which own properties of an element are numbers is decided by the type of their default, so this
      needs no list of property names. Two limits come with that, and neither is silent:
 
      - a property whose default is `null` is not answered for by its default -- `maxLength`,
@@ -160,7 +160,7 @@ export class Migration4m11To4m12 extends UnitTraversalMigration {
     return Migration4m11To4m12.convert(group as Record<string, unknown>, keys);
   }
 
-  /* A numeric string and nothing else: `''`, `'auto'` and `'12px'` stay, and so does a value that is
+  /** A numeric string and nothing else: `''`, `'auto'` and `'12px'` stay, and so does a value that is
      already a number. `Number('')` is 0, which is why the emptiness is asked about separately. */
   private static convert(record: Record<string, unknown>, keys: readonly string[]): Record<string, unknown> {
     const converted = { ...record };

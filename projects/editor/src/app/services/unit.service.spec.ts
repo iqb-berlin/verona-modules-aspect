@@ -8,7 +8,7 @@ import { StateVariable } from 'common/models/state-variable';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { VariableInfo } from '@iqb/responses';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
+import { TextElement } from 'common/models/elements/text';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -236,7 +236,8 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
       new SelectionService(),
       veronaApiServiceSpy,
       createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
-      new DialogService({ open: dialogOpen } as unknown as MatDialog),
+      new DialogService({ open: dialogOpen } as unknown as MatDialog,
+                        createSpyObj<MessageService>(['showError']), translateServiceSpy),
       new IDService(),
       translateServiceSpy
     );
@@ -335,7 +336,7 @@ describe('UnitService - a delete whose unit is replaced while the confirmation i
       messageServiceSpy,
       new DialogService({
         open: vi.fn().mockReturnValue({ afterClosed: () => afterClosed, close })
-      } as unknown as MatDialog),
+      } as unknown as MatDialog, createSpyObj<MessageService>(['showError']), translateServiceSpy),
       new IDService(),
       translateServiceSpy
     );

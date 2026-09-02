@@ -1,0 +1,37 @@
+<mat-radio-group [style.display]="'grid'"
+                 [style.justify-items]="'center'"
+                 [formControl]="elementFormControl"
+                 [value]="elementModel.value"
+                 [style.grid-template-columns]="firstColumnSizeRatio + 'fr ' +
+                                                '1fr '.repeat(elementModel.columnCount)">
+  <div #rowLabelCell class="row-label-cell"
+       [style.grid-column-start]="1"
+       [style.grid-column-end]="2"
+       [style.grid-row-start]="1"
+       [style.grid-row-end]="2"
+       [style.place-self]="'start'"
+       [style.align-self]="'center'"
+       [style.align-items]="'center'"
+       [class.fx-row-start-stretch]="elementModel.rowLabel.imgPosition === 'left' ||
+                                     elementModel.rowLabel.imgPosition === 'right'"
+       [class.fx-column-start-stretch]="elementModel.rowLabel.imgPosition === 'above' ||
+                                        elementModel.rowLabel.imgPosition === 'below'">
+    <aspect-text-image-panel [label]="elementModel.rowLabel"
+                             [style.justify-content]="'center'"></aspect-text-image-panel>
+  </div>
+
+  <!--The label lives in another cell, so the alignment directive is told where to measure (#1371).
+      Only the vertical axis is written here: place-self would also set justify-self and take the
+      button out of the centre of its column, which `justify-items` sets for all of them.-->
+  <mat-radio-button *ngFor="let column of [].constructor(elementModel.columnCount); let j = index"
+                    [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
+                    [firstLineAlignedControl]="elementModel.verticalButtonAlignment !== 'center'"
+                    [firstLineAlignedControlLabel]="rowLabelCell"
+                    [style.align-self]="elementModel.verticalButtonAlignment === 'center' ? 'center' : 'start'"
+                    [value]="j"
+                    [style.grid-column-start]="2 + j"
+                    [style.grid-column-end]="3 + j"
+                    [style.grid-row-start]="1"
+                    [style.grid-row-end]="2">
+  </mat-radio-button>
+</mat-radio-group>

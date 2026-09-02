@@ -34,6 +34,18 @@ export function isUIElementProperties(blueprint: Partial<UIElementProperties>): 
   return blueprint !== undefined && blueprint !== null;
 }
 
+/**
+ * What every element has, whatever its type: an id and an alias, the position, dimensions and
+ * styling groups, and the property setters the editor writes through.
+ *
+ * The groups are built here from `GLOBAL_DEFAULTS`, so an element has them before its own class fills
+ * in what it declares. `position` is one of them and stays: the only element that takes it away again
+ * is a cloze child, which is laid out inline by the text around it (see `ClozeElement`).
+ *
+ * The index signature is what lets the properties panel address a property by name -- and what makes
+ * {@link UIElement.setProperty} accept a name no element has, writing it onto the root where nothing
+ * reads it. That is why the editor has a write path per group; see `ElementService`.
+ */
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
   id!: string;
@@ -43,7 +55,7 @@ export abstract class UIElement implements UIElementProperties {
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps(GLOBAL_DEFAULTS.position);
   dimensions: DimensionProperties = PropertyGroupGenerators.generateDimensionProps(GLOBAL_DEFAULTS.dimensions);
   styling: Stylings = PropertyGroupGenerators.generateBasicStyleProps(GLOBAL_DEFAULTS.styling);
-  /* Filled by PlayerElement and by nothing else: the group belongs to the types whose interface
+  /** Filled by PlayerElement and by nothing else: the group belongs to the types whose interface
      declares it, so a stored group on any other element is dropped at construction -- the same rule
      `mergeStyling` applies to an undeclared styling key (#1187). An image carried one for months,
      which gave it an inspector button that did nothing (#1241). */
@@ -120,7 +132,7 @@ export abstract class UIElement implements UIElementProperties {
     Object.assign(this.styling, { [property]: value });
   }
 
-  /*
+  /**
    * The property name is checked against the interface, the value is not. Narrowing the value per
    * property would mean a generic threaded through the whole panel relay chain, where values arrive
    * as UIElementValue from the templates; Object.assign is what lets the name stay checked without
@@ -131,8 +143,10 @@ export abstract class UIElement implements UIElementProperties {
     Object.assign(this.position, { [property]: value });
   }
 
-  // boolean is in here for isWidthFixed / isHeightFixed, which DimensionProperties declares as
-  // booleans; the panel has always written them through this method.
+  /**
+   * boolean is in here for isWidthFixed / isHeightFixed, which DimensionProperties declares as
+   * booleans; the panel has always written them through this method.
+   */
   setDimensionsProperty(property: keyof DimensionProperties, value: number | boolean | null): void {
     Object.assign(this.dimensions, { [property]: value });
   }

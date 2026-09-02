@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
+import { CheckboxProperties } from 'common/models/elements/checkbox';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -34,5 +34,11 @@ export class CheckboxPropertiesComponent {
     if (file) {
       this.updateModel.emit({ property: 'imgSrc', value: file.content });
     }
+  }
+
+  /** Sends the image that is already there through the compression dialog (#1378). */
+  async compressImgSrc(): Promise<void> {
+    const compressed = await this.dialogService.compressEmbeddedImage(this.combinedProperties.imgSrc as string);
+    if (compressed) this.updateModel.emit({ property: 'imgSrc', value: compressed });
   }
 }

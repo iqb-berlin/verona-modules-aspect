@@ -59,6 +59,10 @@
 .audio-button:hover {
   color: #006064;
 }
+:host.is-playing .audio-button {
+  color: #006064;
+  transform: scale(1.50);
+}
 .hide-content .text, .hide-content img {
   visibility: hidden;
 }

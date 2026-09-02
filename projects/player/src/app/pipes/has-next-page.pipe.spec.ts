@@ -36,15 +36,27 @@ describe('HasNextPagePipe', () => {
     expect(pipe.transform(0, [{ index: 0, isVisible: true }, { index: 1, isVisible: false }])).toBe(false);
   });
 
-  it('should find the following page in an unsorted page list', () => {
+  it('should find the nearest following page in an unsorted page list', () => {
     const unsortedPages: IsVisibleIndex[] = [
       { index: 2, isVisible: true },
       { index: 0, isVisible: true },
       { index: 1, isVisible: true }
     ];
 
-    expect(pipe.transform(0, unsortedPages)).toBe(true);
     expect(HasNextPagePipe.getNextPageIndex(0, unsortedPages)).toBe(1);
+    expect(pipe.transform(0, unsortedPages)).toBe(true);
+  });
+
+  it('should leave the page list it is given untouched', () => {
+    const unsortedPages: IsVisibleIndex[] = [
+      { index: 2, isVisible: true },
+      { index: 0, isVisible: true },
+      { index: 1, isVisible: true }
+    ];
+
+    pipe.transform(0, unsortedPages);
+
+    expect(unsortedPages.map(page => page.index)).toEqual([2, 0, 1]);
   });
 
   it('should report no following page without a page list', () => {

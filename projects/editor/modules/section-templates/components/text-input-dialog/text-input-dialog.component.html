@@ -10,8 +10,7 @@
     <input matInput type="number" min="1" max="9" required aspectNumberField
            [ngModel]="answerCount"
            (numberChange)="commitAnswerCount($event)"
-           (blur)="applyAnswerCount()"
-           (keydown.enter)="applyAnswerCount()">
+           (numberCommit)="applyAnswerCount()">
   </mat-form-field>
 
   <h3>{{ 'sectionTemplates.numbering' | translate }}</h3>

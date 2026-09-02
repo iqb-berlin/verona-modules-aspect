@@ -37,7 +37,7 @@ export class InputBackgroundColorDirective implements OnChanges {
     }
   }
 
-  /* Clear styling of old appearance before switching */
+  /** Clear styling of old appearance before switching */
   private clearFilledBackgroundColor(): void {
     const targetElement: HTMLElement = this.elementRef.nativeElement.querySelector('div.mat-form-field-flex');
     targetElement?.style.removeProperty('background-color');

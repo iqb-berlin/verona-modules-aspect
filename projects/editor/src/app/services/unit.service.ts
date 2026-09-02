@@ -20,6 +20,19 @@ import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 
+/**
+ * Holds the unit the editor is working on, and is the only place it is replaced.
+ *
+ * The public subjects are how the rest of the editor learns that something changed. Three of them
+ * carry the id of the element they concern, and their subscribers act on that id rather than reading
+ * the unit again; the others carry nothing. `updateUnitDefinition` is what reports a changed unit to
+ * the host.
+ *
+ * Two private signals separate the two moments a load has, because dialogs need different ones: a
+ * dialog that belongs to a LOAD is superseded when the next load starts, while a dialog that belongs
+ * to the UNIT -- a delete waiting for confirmation -- has to know when the unit under it is actually
+ * gone, which a load ending in an error or in the sanitization dialog never does (#1247, #1253).
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -35,12 +48,12 @@ export class UnitService {
   savedSectionCode: string | undefined;
   allowExpertMode: boolean = true;
   expertMode: boolean = true;
-  /* A pending sanitization dialog holds the definition of the load that opened it. Every further load
+  /** A pending sanitization dialog holds the definition of the load that opened it. Every further load
      supersedes it: confirming it later would replace the unit that is loaded by then and report the
      older one to the host under the newer session. Announcing the newer load is all this side has to
      do -- the dialog is then closed and its result no longer reaches the callback below (#1247). */
   private loadSuperseded = new Subject<void>();
-  /* Fires once `unit` has actually been swapped. The load above announces its own start, which is what
+  /** Fires once `unit` has actually been swapped. The load above announces its own start, which is what
      a dialog belonging to that load needs; a dialog belonging to the unit -- a delete waiting for its
      confirmation -- has to know when the unit under it is gone, which a load that ends in an error or
      in the sanitization dialog never does (#1253). */
@@ -129,7 +142,7 @@ export class UnitService {
     this.checkForInvalidVariableInfos();
   }
 
-  /* Invalid ids/aliases can come in via imported unit definitions. They are not reported
+  /** Invalid ids/aliases can come in via imported unit definitions. They are not reported
      to the host (see getValidVariableInfos), therefore the user gets notified. (#1043) */
   private checkForInvalidVariableInfos(): void {
     const invalidVariableInfos = this.unit.getVariableInfos()
@@ -172,7 +185,7 @@ export class UnitService {
     FileService.saveUnitToFile(UnitService.createUnitDefinition(this.unit));
   }
 
-  /* Used by props panel to show available dropLists to connect */
+  /** Used by props panel to show available dropLists to connect */
   getAllDropListElementIDs(): { id: string, alias: string }[] {
     const allDropLists = this.unit.getAllElements('drop-list');
     return allDropLists.map(dropList => ({ id: dropList.id, alias: dropList.alias }));
@@ -193,7 +206,7 @@ export class UnitService {
     this.unit.getAllElements().forEach(el => el.registerIDs());
   }
 
-  /* Check references and confirm */
+  /** Check references and confirm */
   prepareDelete(deletedObjectType: 'page' | 'section' | 'elements',
                 object: EditorPage | Section | UIElement[],
                 pageIndex?: number): Promise<boolean> {
@@ -287,7 +300,7 @@ export class UnitService {
     this.expertMode = checked;
   }
 
-  /* Only a section this page holds, and not its first one, can start a new page. Both ends leave a page
+  /** Only a section this page holds, and not its first one, can start a new page. Both ends leave a page
      without sections, by different routes: an index the page does not hold splices out an empty list,
      `deleteSection(0)` takes the new page's own default section away, and the selection below lands on
      the empty new page; index 0 moves every section, so the page this breaks stays behind with none.
@@ -313,7 +326,7 @@ export class UnitService {
     this.updateUnitDefinition();
   }
 
-  /* There has to be a regular page before this one to hand the sections to: page 0 has none at all, and
+  /** There has to be a regular page before this one to hand the sections to: page 0 has none at all, and
      a permanently visible page is not a page they may land on -- they would be shown alongside every
      other page from then on, and this page, which held them, is deleted below. The button is locked for
      both cases (#1298); this guards it where the pages are actually written, as `moveSectionToNewpage`

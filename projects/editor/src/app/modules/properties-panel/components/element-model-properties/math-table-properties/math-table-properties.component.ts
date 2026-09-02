@@ -10,7 +10,7 @@ import {
 import { UnitService } from 'editor/src/app/services/unit.service';
 import {
   MathTableProperties, VariableLayoutOptions
-} from 'common/models/elements/interactive-group-elements/math-table';
+} from 'common/models/elements/math-table';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 /**

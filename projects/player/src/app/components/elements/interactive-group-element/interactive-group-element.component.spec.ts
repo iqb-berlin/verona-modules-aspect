@@ -6,11 +6,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { UIElement } from 'common/models/elements/element';
-import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
+import { ImageElement } from 'common/models/elements/image';
 import {
   MathTableElement, MathTableRow
-} from 'common/models/elements/interactive-group-elements/math-table';
-import { MarkingPanelElement } from 'common/models/elements/interactive-group-elements/marking-panel';
+} from 'common/models/elements/math-table';
+import { MarkingPanelElement } from 'common/models/elements/marking-panel';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';

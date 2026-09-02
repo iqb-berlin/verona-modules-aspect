@@ -4,28 +4,34 @@ import {
   InputElement,
   UIElement
 } from 'common/models/elements/element';
-import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
-import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
-import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
-import { Hotspot, HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
+import { AudioElement } from 'common/models/elements/audio';
+import { TextElement } from 'common/models/elements/text';
+import { VideoElement } from 'common/models/elements/video';
+import { ImageElement } from 'common/models/elements/image';
+import { GeometryElement } from 'common/models/elements/geometry';
+import { Hotspot, HotspotImageElement } from 'common/models/elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { InputElementValue } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { Markable } from 'player/src/app/models/markable.interface';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
 import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';
+/**
+ * Translates between the two forms an answer has: the value an element component works with, and the
+ * value that is stored and handed to the host. Both directions are one big `switch` over the element
+ * type -- what differs is not the mechanism but what each type calls an answer.
+ */
 @Injectable({
   providedIn: 'root'
 })
-
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
 
+  /** Gives every anchor an empty `class` attribute, so the string matches what the browser renders
+      once the marking has added one. See `markingBase`. */
   static modifyAnchors(text: string): string {
     const regEx = /<aspect-anchor /g;
     return text.replace(regEx, '<aspect-anchor class="" ');
@@ -45,6 +51,16 @@ export class ElementModelElementCodeMappingService {
       .modifyAnchors(MathFormulaMarkup.refreshInStoredHtml(elementModel.text));
   }
 
+  /**
+   * The stored value as the element component needs it, which is also how an element gets its initial
+   * state: most branches fall back to the element's own value when nothing is stored. Two do not --
+   * `text-area-math` and `math-table` start from an empty list -- and the single-choice types treat a
+   * stored `null` like nothing stored, although `null` is what a cleared choice is written as.
+   *
+   * A drop list is the case that needs the service rather than a static method: it stores only the
+   * aliases of its items and gets the items themselves back from `dragNDropValueObjects`, which the
+   * unit fills as it is built.
+   */
   mapToElementModelValue(elementCodeValue: ResponseValueType | undefined, elementModel: UIElement): InputElementValue {
     switch (elementModel.type) {
       case 'text-area-math':
@@ -100,6 +116,16 @@ export class ElementModelElementCodeMappingService {
     }
   }
 
+  /**
+   * The element's value in the form that is stored and coded. Two things worth knowing before reading a
+   * stored answer:
+   *
+   * - The single-choice elements are stored **one-based**: what the component holds as index 0 is
+   *   stored as 1, and `null` stays `null`. Coding works on the numbers a task author sees.
+   * - A text element stores its markings, not its text, and in which form depends on `markingMode`:
+   *   character offsets for free selection, markable indices for word and range marking. A text
+   *   without a marking mode stores an empty list.
+   */
   static mapToElementCodeValue(elementModelValue: InputElementValue,
                                elementType: MapElementType,
                                options?: Record<string, string>): ResponseValueType {
@@ -144,6 +170,11 @@ export class ElementModelElementCodeMappingService {
     return this.dragNDropValueObjects.find(dropListValue => dropListValue.alias === alias);
   }
 
+  /**
+   * The marked markables as `start-end-colour` entries, the same shape a free selection is stored in.
+   * Neighbouring markables of one colour are joined into a single entry, so a marked passage is one
+   * entry rather than one per word; unmarked markables are left out.
+   */
   static getMarkedMarkablesInSelectionFormat(markables: Markable[]): string[] {
     return markables
       .filter((markable: Markable) => !!markable.color)

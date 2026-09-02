@@ -8,6 +8,9 @@ import { AudioPlayerService } from 'common/services/audio-player.service';
   selector: 'aspect-text-image-panel',
   templateUrl: './text-image-panel.component.html',
   styleUrls: ['./text-image-panel.component.scss'],
+  host: {
+    '[class.is-playing]': 'audioPlayerService.playingPanel === this'
+  },
   standalone: false
 })
 export class TextImagePanelComponent {

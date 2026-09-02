@@ -149,6 +149,7 @@
                   "subdir": "editor"
                 }
               ],
+              "json",
               "text-summary"
             ]
           }
@@ -336,6 +337,7 @@
                   "subdir": "player"
                 }
               ],
+              "json",
               "text-summary"
             ]
           }
@@ -416,6 +418,7 @@
                   "subdir": "common"
                 }
               ],
+              "json",
               "text-summary"
             ]
           }
@@ -456,6 +459,7 @@
                   "subdir": "playerModules"
                 }
               ],
+              "json",
               "text-summary"
             ]
           }
@@ -503,6 +507,7 @@
                   "subdir": "editorModules"
                 }
               ],
+              "json",
               "text-summary"
             ]
           }

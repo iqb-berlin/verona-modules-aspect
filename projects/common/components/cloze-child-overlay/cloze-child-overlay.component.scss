@@ -1,0 +1,59 @@
+/* Where the error message of a gap goes: the bottom left corner of the gap, whatever the gap holds.
+   The message is absolutely positioned, so it needs both halves of that.
+
+   `position` makes the gap its containing block. Without it the nearest positioned ancestor was the
+   section, and every message of a section came to lie at the same height -- the second line, whatever
+   line its own gap was in (#1052).
+
+   `top` and `left` then say where. The component asks for `top: <configured child height> + 5` and no
+   `left` at all, which leaves it at the static position: both are what the flow happens to offer, not
+   where the gap is. A checkbox is a rendered 39px tall against a configured 30, so its message sat
+   4px above its own bottom edge and began behind its label instead of at its left edge. `100%` and
+   `0` are the gap itself and cannot drift from it. The `!important` is for the inline style the
+   component sets.
+
+   All of this sits here and not on the message: the same component carries the message of a table
+   cell, and the table is a case of its own. */
+:host div {
+  position: relative;
+}
+
+:host ::ng-deep aspect-cloze-child-error-message {
+  top: 100% !important;
+  left: 0;
+  /* As wide as its text, up to a limit. Shrink-to-fit against the gap would break the message apart
+     beside a short one -- a checkbox is that short -- and running past the gap is wanted here, the
+     message may cover what is underneath. But the text is the author's (`requiredWarnMessage`), so it
+     can be a sentence: without the limit such a message beside a narrow gap at the end of a line ran
+     up to 242px past the page and was cut off with no way to scroll to it. The limit lets it wrap
+     instead, which is the better of the two bad outcomes.
+     Opaque because it lies on the next line of the text and has to be readable against it.
+     All three belong to the gap and not to the message, which also serves a table cell: there the
+     containing block is the column, wrapping inside it is right, and a message running into the
+     neighbouring cell would not be. */
+  width: max-content;
+  max-width: 40ch;
+  background-color: #fff;
+}
+
+/* The width a gap is set to is put on the flex box around the child; the child has to take it. As a
+   flex item it may shrink below its own width but never grow beyond it, so a text field stopped at
+   the width an <input> gives itself and left the rest of the box empty (#968).
+   Where no width is set the box is as wide as its content and has no free space to hand out, so
+   nothing moves -- except with a minimum width, which does widen the box: there the child now fills
+   it too, which is the same rule and what the setting asks for.
+   Two of the six children lack a width of their own and are therefore moved by this: the text field
+   and the checkbox, whose coloured band now spans the width it was set to instead of hugging its
+   label. The other four already carry `width: 100%`, so for them the rule changes nothing. */
+:host div > * {
+  display: block;
+  flex-grow: 1;
+}
+
+:host ::ng-deep mat-checkbox .mdc-form-field {
+  vertical-align: baseline;
+}
+
+:host ::ng-deep mat-checkbox .mdc-checkbox {
+  display: none;
+}

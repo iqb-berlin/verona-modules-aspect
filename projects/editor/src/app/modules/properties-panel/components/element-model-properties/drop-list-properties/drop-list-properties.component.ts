@@ -4,7 +4,7 @@ import {
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { DropListProperties } from 'common/models/elements/input-group-elements/drop-list';
+import { DropListProperties } from 'common/models/elements/drop-list';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { IDService } from 'editor/src/app/services/id.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -62,8 +62,10 @@ export class DropListPropertiesComponent {
     });
   }
 
-  // Only ever called for the option list, so the name can be narrowed instead of indexing the
-  // typed properties with an arbitrary string.
+  /**
+   * Only ever called for the option list, so the name can be narrowed instead of indexing the
+   * typed properties with an arbitrary string.
+   */
   moveOption(property: 'value', indices: { previousIndex: number, currentIndex: number }): void {
     const options = this.combinedProperties[property] as unknown as TextImageLabel[];
     moveItemInArray(options, indices.previousIndex, indices.currentIndex);

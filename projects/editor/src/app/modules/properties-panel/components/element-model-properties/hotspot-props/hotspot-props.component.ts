@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import {
   Hotspot, HotspotImageProperties
-} from 'common/models/elements/input-group-elements/hotspot-image';
+} from 'common/models/elements/hotspot-image';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';

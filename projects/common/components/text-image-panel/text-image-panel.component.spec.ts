@@ -4,6 +4,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interf
 import { AudioPlayerService } from 'common/services/audio-player.service';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { SafeResourceUrlPipe } from 'common/pipes/safe-resource-url.pipe';
+import { HasRenderableContentPipe } from 'common/pipes/has-renderable-content.pipe';
 import { TextImagePanelComponent } from './text-image-panel.component';
 
 describe('TextImagePanelComponent', () => {
@@ -17,12 +18,23 @@ describe('TextImagePanelComponent', () => {
     imgPosition: 'above'
   };
 
+  const dragNDropValue: DragNDropValueObject = {
+    ...textImageLabel,
+    id: 'value-1',
+    alias: 'value-1',
+    originListID: 'list-1',
+    originListIndex: 0,
+    audioSrc: 'data:audio/mpeg;base64,abc',
+    audioFileName: 'test.mp3'
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         TextImagePanelComponent,
         SafeResourceHTMLPipe,
-        SafeResourceUrlPipe
+        SafeResourceUrlPipe,
+        HasRenderableContentPipe
       ],
       imports: [MatIconModule]
     }).compileComponents();
@@ -30,6 +42,7 @@ describe('TextImagePanelComponent', () => {
     fixture = TestBed.createComponent(TextImagePanelComponent);
     component = fixture.componentInstance;
     component.label = { ...textImageLabel };
+    TestBed.inject(AudioPlayerService).playingPanel = null;
     fixture.detectChanges();
   });
 
@@ -102,6 +115,25 @@ describe('TextImagePanelComponent', () => {
     expect(fixture.nativeElement.querySelector('.text')).toBeNull();
   });
 
+  /* A rich text editor that has been emptied does not leave '' behind but an empty paragraph, and that
+     paragraph took a line's height under the image (#965). */
+  it.each(['<p></p>', '<p><br></p>', '<p>   </p>'])(
+    'should not render a text element for the emptied rich text %s', text => {
+      component.label = { ...textImageLabel, text };
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.text')).toBeNull();
+    }
+  );
+
+  /* A label can be a picture and nothing else -- no text, and yet everything to draw. */
+  it('should render a label text that holds an image and no text', () => {
+    component.label = { ...textImageLabel, text: '<p><img src="data:image/png;base64,abc"></p>' };
+    fixture.detectChanges();
+    const textElement: HTMLElement = fixture.nativeElement.querySelector('.text');
+    expect(textElement).toBeTruthy();
+    expect(textElement.querySelector('img')).toBeTruthy();
+  });
+
   it('should render an image and apply the position class', () => {
     component.label = {
       ...textImageLabel,
@@ -121,20 +153,52 @@ describe('TextImagePanelComponent', () => {
   it('should play audio on mousedown on the audio button', () => {
     const audioPlayerService = TestBed.inject(AudioPlayerService);
     const playSpy = vi.spyOn(audioPlayerService, 'play').mockImplementation(() => {});
-    const dragNDropValue: DragNDropValueObject = {
-      ...textImageLabel,
-      id: 'value-1',
-      alias: 'value-1',
-      originListID: 'list-1',
-      originListIndex: 0,
-      audioSrc: 'data:audio/mpeg;base64,abc',
-      audioFileName: 'test.mp3'
-    };
     component.label = dragNDropValue;
     fixture.detectChanges();
     const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
     expect(audioButton).toBeTruthy();
     audioButton.dispatchEvent(new MouseEvent('mousedown'));
-    expect(playSpy).toHaveBeenCalledWith('data:audio/mpeg;base64,abc');
+    expect(playSpy).toHaveBeenCalledWith('data:audio/mpeg;base64,abc', component);
+  });
+
+  it('should add is-playing only on the panel instance that is playing', () => {
+    const audioPlayerService = TestBed.inject(AudioPlayerService);
+    component.label = dragNDropValue;
+    audioPlayerService.playingPanel = component;
+    fixture.detectChanges();
+    expect(fixture.nativeElement.classList).toContain('is-playing');
+
+    audioPlayerService.playingPanel = {};
+    fixture.detectChanges();
+    expect(fixture.nativeElement.classList).not.toContain('is-playing');
+  });
+
+  it('should enlarge the audio button while this panel is playing', () => {
+    const audioPlayerService = TestBed.inject(AudioPlayerService);
+    component.label = dragNDropValue;
+    fixture.detectChanges();
+    const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
+    const idleSize = audioButton.getBoundingClientRect();
+
+    audioPlayerService.playingPanel = component;
+    fixture.detectChanges();
+    const playingSize = audioButton.getBoundingClientRect();
+
+    expect(getComputedStyle(audioButton).transform).toBe('matrix(1.5, 0, 0, 1.5, 0, 0)');
+    expect(playingSize.width).toBeGreaterThan(idleSize.width);
+    expect(playingSize.height).toBeGreaterThan(idleSize.height);
+
+    audioPlayerService.playingPanel = null;
+    fixture.detectChanges();
+    expect(getComputedStyle(audioButton).transform).toBe('none');
+  });
+
+  /* The marker DraggableDirective looks for belongs on the button, not on the icon inside it: the button
+     has padding of its own, and a touch landing there is still meant for the audio (#1397). */
+  it('should mark the whole audio button as no drag handle', () => {
+    component.label = dragNDropValue;
+    fixture.detectChanges();
+    const audioButton: HTMLElement = fixture.nativeElement.querySelector('.audio-button');
+    expect(audioButton.getAttribute('data-draggable-audio')).toBe('true');
   });
 });

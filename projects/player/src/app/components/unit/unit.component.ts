@@ -32,7 +32,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
-import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
+import { GeometryElement } from 'common/models/elements/geometry';
 import { Response } from '@iqb/responses';
 
 @Component({
@@ -198,7 +198,7 @@ export class UnitComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
   }
 
-  /* A start command that arrives while the previous unit is still being built makes that build
+  /** A start command that arrives while the previous unit is still being built makes that build
      obsolete: it would render a unit the host has already replaced, and cost the time of a full
      rebuild for a state nobody sees (#1144). */
   private cancelPendingUnitBuild(): void {

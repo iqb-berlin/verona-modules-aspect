@@ -1,11 +1,11 @@
 import { IDService } from 'editor/src/app/services/id.service';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
-import { ButtonElement } from 'common/models/elements/action-group-elements/button';
+import { TextElement } from 'common/models/elements/text';
+import { GeometryElement } from 'common/models/elements/geometry';
+import { ButtonElement } from 'common/models/elements/button';
 import { createGeometrySection } from 'editor/modules/section-templates/utils/geometry-builders';
 
 describe('createGeometrySection', () => {
-  const sourceText = 'Erstellt mit GeoGebra, https://www.geogebra.org (es gelten die GeoGebra-Lizenzbedingungen)';
+  const sourceText = 'Erstellt mit GeoGebra, https://www.geogebra.org/ (es gelten die GeoGebra-Lizenzbedingungen).';
   let idService: IDService;
 
   beforeEach(() => {

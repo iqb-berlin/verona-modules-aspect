@@ -1,10 +1,10 @@
 import { ElementFactory } from 'common/utils/element-factory';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
+import { TextElement } from 'common/models/elements/text';
+import { CheckboxElement } from 'common/models/elements/checkbox';
+import { DropListElement } from 'common/models/elements/drop-list';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/text-input-group-elements/text-field-simple';
+} from 'common/models/elements/text-field-simple';
 import { isInputElement } from 'common/models/elements/element';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 

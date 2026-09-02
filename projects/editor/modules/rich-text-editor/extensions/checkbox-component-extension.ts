@@ -1,7 +1,7 @@
 import { Injector } from '@angular/core';
 import { mergeAttributes, Node } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
-import { CheckboxProperties } from 'common/models/elements/input-group-elements/checkbox';
+import { CheckboxProperties } from 'common/models/elements/checkbox';
 import { ModelRegistry } from 'common/utils/model-registry';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {

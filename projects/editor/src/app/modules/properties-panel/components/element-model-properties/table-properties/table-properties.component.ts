@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
-import { TableProperties } from 'common/models/elements/compound-group-elements/table/table';
+import { TableProperties } from 'common/models/elements/table';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
 @Component({
@@ -103,7 +103,7 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
     this.modifySizeArray(property, pending);
   }
 
-  /* Add or remove elements to size array. Default value 1fr. */
+  /** Add or remove elements to size array. Default value 1fr. */
   modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {
     const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?
       (this.combinedProperties.gridColumnSizes as { value: number; unit: string }[]) :

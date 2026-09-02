@@ -1,4 +1,5 @@
 import { FileService } from './file.service';
+import { ImageResampler } from '../utils/image-resampler';
 
 describe('FileService', () => {
   const createImage = (width: number, height: number, mimeType: string = 'image/png'): string => {
@@ -56,11 +57,143 @@ describe('FileService', () => {
       expect(dimensions.height).toBe(5);
     });
 
+    /* Without `recompress` the same size in the same format means "nothing to do", so the quality
+       decided nothing at all - which is what made the dialog's slider a no-op (#1398). */
+    it('should re-encode at the given quality when asked to, although nothing else changes', async () => {
+      const source = createImage(20, 20, 'image/jpeg');
+      const result = await FileService
+        .scaleImage(source, { maxWidth: 20, quality: 0.1, recompress: true });
+      expect(result).not.toBe(source);
+      expect(result.startsWith('data:image/jpeg')).toBe(true);
+      const dimensions = await getImageDimensions(result);
+      expect(dimensions.width).toBe(20);
+    });
+
+    // A PNG comes back encoded losslessly whatever quality is asked for, so there is nothing to gain.
+    it('should leave a PNG alone even when a re-encode is asked for', async () => {
+      const source = createImage(20, 20);
+      const result = await FileService
+        .scaleImage(source, { maxWidth: 20, quality: 0.1, recompress: true });
+      expect(result).toBe(source);
+    });
+
+    // The flag is off unless someone sets it, so an image nobody asked to change travels untouched.
+    it('should leave an image alone without the flag', async () => {
+      const source = createImage(20, 20, 'image/jpeg');
+      const result = await FileService.scaleImage(source, { maxWidth: 20, quality: 0.1 });
+      expect(result).toBe(source);
+    });
+
+    /* `canvas.height` truncates what it is given while `drawImage` keeps the fractional size, so an
+       unrounded 4.76 made a canvas of 4 that the picture was drawn onto at 4.76: every row half a
+       pixel off, and the last one below the edge (#1434). */
+    it('should round the scaled dimensions rather than truncate them', async () => {
+      const source = createImage(21, 10);
+      const result = await FileService.scaleImage(source, { maxWidth: 10 });
+      const dimensions = await getImageDimensions(result);
+      expect(dimensions.width).toBe(10);
+      expect(dimensions.height).toBe(5);
+    });
+
+    // Rounding a height of 0.1 down would leave a canvas with no pixels at all to encode.
+    it('should keep at least one pixel on each axis', async () => {
+      const source = createImage(100, 10);
+      const result = await FileService.scaleImage(source, { maxWidth: 1 });
+      const dimensions = await getImageDimensions(result);
+      expect(dimensions.width).toBe(1);
+      expect(dimensions.height).toBe(1);
+    });
+
     it('should return the original image when uncompressed is set', async () => {
       const source = createImage(20, 10);
       const result = await FileService
         .scaleImage(source, { maxWidth: 10, uncompressed: true, targetMimeType: 'image/webp' });
       expect(result).toBe(source);
+    });
+  });
+
+  /* What ties `scaleImage` to `ImageResampler`, whose own promises are tested in
+     `utils/image-resampler.spec.ts`. Both directions matter: a picture that shrinks has to go
+     through the kernel, and one that only gets re-encoded must not -- a kernel run at factor one
+     reproduces the image at the cost of the whole pass (#1398, #1434). Nothing weaker would do,
+     because the headless browser this suite runs in resamples well enough by itself that the two
+     cases are not to be told apart from the picture that comes out. */
+  describe('scaleImage and the resampler', () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('should resample a picture it makes smaller', async () => {
+      const resampling = vi.spyOn(ImageResampler, 'scaleDown');
+
+      await FileService.scaleImage(createImage(20, 10), { maxWidth: 8 });
+
+      expect(resampling).toHaveBeenCalledTimes(1);
+      expect(resampling.mock.calls[0][1]).toBe(8);
+      expect(resampling.mock.calls[0][2]).toBe(4);
+    });
+
+    it('should leave the resampler alone when only the format changes', async () => {
+      const resampling = vi.spyOn(ImageResampler, 'scaleDown');
+
+      await FileService.scaleImage(createImage(20, 10), { maxWidth: 20, targetMimeType: 'image/webp' });
+
+      expect(resampling).not.toHaveBeenCalled();
+    });
+
+    /* Where the resampler gives up -- no canvas context, or a buffer the device will not hand out --
+       the engine's own drawing stands in. All of this runs in an `onload` outside the executor of
+       the promise, so a throw there would leave it neither resolved nor rejected: the dialog would
+       wait for a size estimate that never comes, and `compressEmbeddedImage` would never return. */
+    it('should still hand back a picture when the resampler gives up', async () => {
+      vi.spyOn(ImageResampler, 'scaleDown').mockReturnValue(null);
+
+      const result = await FileService.scaleImage(createImage(20, 10), { maxWidth: 8 });
+
+      expect(await getImageDimensions(result)).toEqual({ width: 8, height: 4 });
+    });
+  });
+
+  describe('supportsQuality', () => {
+    it('should name the types whose quality decides something', () => {
+      expect(FileService.supportsQuality('image/jpeg')).toBe(true);
+      expect(FileService.supportsQuality('image/jpg')).toBe(true);
+      expect(FileService.supportsQuality('image/webp')).toBe(true);
+    });
+
+    it('should reject the lossless ones and anything unknown', () => {
+      expect(FileService.supportsQuality('image/png')).toBe(false);
+      expect(FileService.supportsQuality('image/gif')).toBe(false);
+      expect(FileService.supportsQuality('')).toBe(false);
+    });
+  });
+
+  /* Which formats can be scaled is already answered for an upload, where the File carries its type.
+     An image that is only in the unit carries it in its own `data:` prefix, and the compress buttons
+     ask this one to decide whether they are usable at all (#1378). */
+  describe('isResizableBase64', () => {
+    it('should accept the raster formats scaleImage can re-encode', () => {
+      expect(FileService.isResizableBase64('data:image/png;base64,abc')).toBe(true);
+      expect(FileService.isResizableBase64('data:image/jpeg;base64,abc')).toBe(true);
+      expect(FileService.isResizableBase64('data:image/webp;base64,abc')).toBe(true);
+    });
+
+    /* An SVG has no pixels to scale away - drawing it onto a canvas would rasterize it, which is a
+       loss rather than a compression. */
+    it('should reject an SVG', () => {
+      expect(FileService.isResizableBase64('data:image/svg+xml;base64,abc')).toBe(false);
+    });
+
+    // The properties the buttons read are nullable, and an element without an image holds ''.
+    it('should reject an absent image', () => {
+      expect(FileService.isResizableBase64(null)).toBe(false);
+      expect(FileService.isResizableBase64(undefined)).toBe(false);
+      expect(FileService.isResizableBase64('')).toBe(false);
+    });
+
+    // Not everything in an image property is a data URL; a plain URL has no type to read at all.
+    it('should reject a source that is not a data URL', () => {
+      expect(FileService.isResizableBase64('https://example.org/bild.png')).toBe(false);
     });
   });
 });

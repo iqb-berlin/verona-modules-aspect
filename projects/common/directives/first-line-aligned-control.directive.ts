@@ -2,6 +2,12 @@ import {
   AfterViewInit, booleanAttribute, Directive, ElementRef, Input, NgZone, OnChanges, OnDestroy, Renderer2
 } from '@angular/core';
 
+/** A text fragment as it was measured: its box, and how far down the next line of its container starts. */
+interface TextFragment {
+  rect: DOMRect;
+  advance: number;
+}
+
 /**
  * Puts the control of an option -- the radio dot, the checkbox -- on the middle of the FIRST LINE of
  * its label, whatever that line contains.
@@ -19,6 +25,12 @@ import {
  * Layout is left as the stylesheet builds it; only the control is nudged, by the difference between
  * where it sits and where the line's middle is. For a plain text line that difference is under half a
  * pixel, which is why nothing textual moves.
+ *
+ * Control and label do not have to sit together. Where they do -- an option field, a checkbox -- both
+ * are found below the host. Where they do not, the label is handed in as an element
+ * (`firstLineAlignedControlLabel`): a likert row keeps its row label and its radio buttons in separate
+ * cells of one grid, and only the caller knows which cell belongs to which (#1371). The measurement
+ * itself does not care, since it compares two rectangles of the viewport.
  */
 @Directive({
   selector: '[firstLineAlignedControl]',
@@ -27,6 +39,13 @@ import {
 export class FirstLineAlignedControlDirective implements AfterViewInit, OnChanges, OnDestroy {
   /** Off when the option is centred on its whole label instead (`verticalButtonAlignment`). */
   @Input({ transform: booleanAttribute }) firstLineAlignedControl: boolean = true;
+
+  /**
+   * Where the label is, for the case that it is not inside the host: the likert row puts control and
+   * row label in separate grid cells, so nothing can be found by looking down from either of them.
+   * Given an element, that element IS the label -- there is no `.mdc-label` to search for in it.
+   */
+  @Input() firstLineAlignedControlLabel?: HTMLElement;
 
   private static readonly CONTROL_SELECTOR = '.mdc-radio, .mdc-checkbox';
   private static readonly LABEL_SELECTOR = '.mdc-label';
@@ -116,7 +135,8 @@ export class FirstLineAlignedControlDirective implements AfterViewInit, OnChange
   }
 
   private get label(): HTMLElement | null {
-    return this.elementRef.nativeElement.querySelector(FirstLineAlignedControlDirective.LABEL_SELECTOR);
+    return this.firstLineAlignedControlLabel ??
+      this.elementRef.nativeElement.querySelector(FirstLineAlignedControlDirective.LABEL_SELECTOR);
   }
 
   /**
@@ -137,12 +157,12 @@ export class FirstLineAlignedControlDirective implements AfterViewInit, OnChange
    * text sits below it and is left out.
    */
   private static firstLineBox(label: HTMLElement): { top: number, bottom: number } | null {
-    const textRects: DOMRect[] = [];
+    const textFragments: TextFragment[] = [];
     const boxRects: DOMRect[] = [];
-    FirstLineAlignedControlDirective.collectRects(label, textRects, boxRects);
+    FirstLineAlignedControlDirective.collectRects(label, textFragments, boxRects);
 
     const candidates = [...boxRects.filter(rect => rect.height > 0)];
-    const baseLine = FirstLineAlignedControlDirective.firstTextLine(textRects);
+    const baseLine = FirstLineAlignedControlDirective.firstTextLine(textFragments);
     if (baseLine) candidates.push(baseLine);
     if (!candidates.length) return null;
 
@@ -158,17 +178,52 @@ export class FirstLineAlignedControlDirective implements AfterViewInit, OnChange
   }
 
   /**
-   * The widest fragment among those overlapping the topmost one -- the running text of the first line,
-   * as opposed to a raised or lowered piece inside it.
+   * The widest fragment on the first line -- the running text, as opposed to a raised or lowered piece
+   * inside it.
+   *
+   * What separates the first line from the second is the LINE ADVANCE, not whether two boxes overlap.
+   * A fragment's box is the font's, and it is taller than the line it sits on whenever the line height
+   * is the smaller of the two; Material sets a line height of its own on the option label, so in a
+   * wrapped option the boxes of line 1 and line 2 overlap -- 74-101 against 94-121 at font-size 20,
+   * measured. Any-overlap admitted line 2, and since a first line ending in a space is often the
+   * shorter one ("Test 1" before an unbroken run of text), the widest fragment WAS line 2: the control
+   * sat one line too low, and `verticalButtonAlignment: 'auto'` came out looking like 'center' (#1366).
+   *
+   * Measuring the advance instead of the overlap also keeps what a raised piece needs. A superscript is
+   * the TOPMOST fragment of its line, so the rule has to reach down from it far enough to still see the
+   * running text: one advance does, whatever the raising -- while the middle of the superscript, the
+   * other candidate for a limit, sinks below the running text's top as soon as it is raised by more
+   * than a third of the font size, and then the line would be the superscript alone and the control
+   * would land above the text it belongs to.
    */
-  private static firstTextLine(textRects: DOMRect[]): DOMRect | null {
-    const rects = textRects.filter(rect => rect.height > 0);
-    if (!rects.length) return null;
+  private static firstTextLine(fragments: TextFragment[]): DOMRect | null {
+    const usable = fragments.filter(fragment => fragment.rect.height > 0);
+    if (!usable.length) return null;
 
-    const topmost = rects.reduce((highest, rect) => (rect.top < highest.top ? rect : highest));
-    return rects
-      .filter(rect => rect.top < topmost.bottom && rect.bottom > topmost.top)
+    const topmost = usable.reduce((highest, f) => (f.rect.top < highest.rect.top ? f : highest));
+    const nextLine = topmost.rect.top + topmost.advance;
+    return usable
+      .filter(fragment => fragment.rect.top < nextLine)
+      .map(fragment => fragment.rect)
       .reduce((widest, rect) => (rect.width > widest.width ? rect : widest));
+  }
+
+  /**
+   * How far down the next line starts: the line height of the fragment's BLOCK container, the box that
+   * lays the lines out. Not the line height of an inline element the fragment happens to sit in -- a
+   * superscript carries a smaller one of its own, and reaching only that far down from it would leave
+   * the running text on the other side of the limit.
+   *
+   * `line-height: normal` computes to the keyword rather than to a length; the fragment's own box is
+   * then the best available estimate of what the browser advances by.
+   */
+  private static lineAdvance(node: Node | null, rect: DOMRect): number {
+    let element = node instanceof Element ? node : node?.parentElement ?? null;
+    while (element && window.getComputedStyle(element).display === 'inline') {
+      element = element.parentElement;
+    }
+    if (!element) return rect.height;
+    return parseFloat(window.getComputedStyle(element).lineHeight) || rect.height;
   }
 
   /**
@@ -184,13 +239,17 @@ export class FirstLineAlignedControlDirective implements AfterViewInit, OnChange
    */
   private static readonly HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
 
-  private static collectRects(node: Node, textRects: DOMRect[], boxRects: DOMRect[]): void {
+  private static collectRects(node: Node, textFragments: TextFragment[], boxRects: DOMRect[]): void {
     node.childNodes.forEach(child => {
       if (child.nodeType === Node.TEXT_NODE) {
         if (!child.textContent?.trim()) return;
         const range = document.createRange();
         range.selectNodeContents(child);
-        textRects.push(...Array.from(range.getClientRects()));
+        /* The advance belongs to the element the fragment is laid out in: a superscript carries its own
+           line-height, and the label's would not describe the text inside a `<p>` of its own either. */
+        Array.from(range.getClientRects()).forEach(rect => textFragments.push({
+          rect, advance: FirstLineAlignedControlDirective.lineAdvance(child.parentElement, rect)
+        }));
         return;
       }
       if (!(child instanceof Element)) return;
@@ -201,14 +260,14 @@ export class FirstLineAlignedControlDirective implements AfterViewInit, OnChange
         return;
       }
       if (display === 'inline' && child.childNodes.length) {
-        FirstLineAlignedControlDirective.collectRects(child, textRects, boxRects);
+        FirstLineAlignedControlDirective.collectRects(child, textFragments, boxRects);
         return;
       }
       if (display.startsWith('inline')) {
         boxRects.push(child.getBoundingClientRect());
         return;
       }
-      FirstLineAlignedControlDirective.collectRects(child, textRects, boxRects);
+      FirstLineAlignedControlDirective.collectRects(child, textFragments, boxRects);
     });
   }
 }

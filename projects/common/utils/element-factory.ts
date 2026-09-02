@@ -1,41 +1,41 @@
 import { UIElement } from 'common/models/elements/element';
 import { Type } from '@angular/core';
-import { TextElement } from 'common/models/elements/text-group-elements/text';
-import { ButtonElement } from 'common/models/elements/action-group-elements/button';
-import { TextFieldElement } from 'common/models/elements/text-input-group-elements/text-field';
+import { TextElement } from 'common/models/elements/text';
+import { ButtonElement } from 'common/models/elements/button';
+import { TextFieldElement } from 'common/models/elements/text-field';
 import {
   TextFieldSimpleElement
-} from 'common/models/elements/text-input-group-elements/text-field-simple';
-import { TextAreaElement } from 'common/models/elements/text-input-group-elements/text-area';
-import { CheckboxElement } from 'common/models/elements/input-group-elements/checkbox';
-import { DropdownElement } from 'common/models/elements/input-group-elements/dropdown';
-import { RadioButtonGroupElement } from 'common/models/elements/input-group-elements/radio-button-group';
-import { ImageElement } from 'common/models/elements/interactive-group-elements/image';
-import { AudioElement } from 'common/models/elements/media-player-group-elements/audio';
-import { VideoElement } from 'common/models/elements/media-player-group-elements/video';
-import { LikertElement } from 'common/models/elements/compound-group-elements/likert/likert';
-import { RadioButtonGroupComplexElement } from 'common/models/elements/input-group-elements/radio-button-group-complex';
-import { DropListElement } from 'common/models/elements/input-group-elements/drop-list';
-import { ClozeElement } from 'common/models/elements/compound-group-elements/cloze/cloze';
-import { SliderElement } from 'common/models/elements/input-group-elements/slider';
-import { SpellCorrectElement } from 'common/models/elements/text-input-group-elements/spell-correct';
-import { FrameElement } from 'common/models/elements/base-group-elements/frame';
-import { ToggleButtonElement } from 'common/models/elements/input-group-elements/toggle-button';
-import { GeometryElement } from 'common/models/elements/external-app-group-elements/geometry';
-import { HotspotImageElement } from 'common/models/elements/input-group-elements/hotspot-image';
-import { MathFieldElement } from 'common/models/elements/text-input-group-elements/math-field';
-import { MathTableElement } from 'common/models/elements/interactive-group-elements/math-table';
-import { TextAreaMathElement } from 'common/models/elements/text-input-group-elements/text-area-math';
-import { TriggerElement } from 'common/models/elements/action-group-elements/trigger';
-import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
-import { MarkingPanelElement } from 'common/models/elements/interactive-group-elements/marking-panel';
+} from 'common/models/elements/text-field-simple';
+import { TextAreaElement } from 'common/models/elements/text-area';
+import { CheckboxElement } from 'common/models/elements/checkbox';
+import { DropdownElement } from 'common/models/elements/dropdown';
+import { RadioButtonGroupElement } from 'common/models/elements/radio-button-group';
+import { ImageElement } from 'common/models/elements/image';
+import { AudioElement } from 'common/models/elements/audio';
+import { VideoElement } from 'common/models/elements/video';
+import { LikertElement } from 'common/models/elements/likert';
+import { RadioButtonGroupComplexElement } from 'common/models/elements/radio-button-group-complex';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { ClozeElement } from 'common/models/elements/cloze';
+import { SliderElement } from 'common/models/elements/slider';
+import { SpellCorrectElement } from 'common/models/elements/spell-correct';
+import { FrameElement } from 'common/models/elements/frame';
+import { ToggleButtonElement } from 'common/models/elements/toggle-button';
+import { GeometryElement } from 'common/models/elements/geometry';
+import { HotspotImageElement } from 'common/models/elements/hotspot-image';
+import { MathFieldElement } from 'common/models/elements/math-field';
+import { MathTableElement } from 'common/models/elements/math-table';
+import { TextAreaMathElement } from 'common/models/elements/text-area-math';
+import { TriggerElement } from 'common/models/elements/trigger';
+import { TableElement } from 'common/models/elements/table';
+import { MarkingPanelElement } from 'common/models/elements/marking-panel';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { UIElementDraft } from 'common/models/ui-element-interfaces';
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { LikertRowElement } from 'common/models/elements/likert-row';
 import { ModelNormalizer } from 'common/utils/model-normalizer';
 import { ModelRegistry } from 'common/utils/model-registry';
-import { WidgetPeriodicTableElement } from 'common/models/elements/widget-group-elements/widget-periodic-table';
-import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-group-elements/widget-molecule-editor';
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
+import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor';
 
 export abstract class ElementFactory {
   private static elementClasses: Record<string, Type<UIElement>>;
@@ -78,6 +78,16 @@ export abstract class ElementFactory {
     return this.elementClasses;
   }
 
+  /**
+   * Builds the model for a draft: normalized, carrying an id and an alias, and of the class that
+   * belongs to its `type`.
+   *
+   * The draft may name as little as its type -- what it leaves out, `ModelNormalizer` fills from the
+   * defaults. An id it already carries is kept; without one, the `idService` mints id and alias and
+   * registers them, and where no service is passed (tests, a throwaway instance) a random pair stands
+   * in that no registry knows about. A type with no class in the table is not an element this
+   * application can build, and the call fails at the `new`.
+   */
   static createElement(element: UIElementDraft, idService?: AbstractIDService)
     : UIElement {
     /* The id the normalizer takes on trust is minted here: a draft on its way in need not carry one,

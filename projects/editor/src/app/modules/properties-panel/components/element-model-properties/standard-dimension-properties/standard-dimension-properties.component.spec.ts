@@ -284,4 +284,14 @@ describe('StandardDimensionPropertiesComponent', () => {
     expect(host.display).toBe('flex');
     expect(host.flexDirection).toBe('column');
   });
+
+  /* The maximum width takes a typed 0 as "no limit", the same as the box its checkbox empties
+     (#1350). */
+  it('should say what a zero maximum width means', () => {
+    const hints = Array.from(
+      fixture.nativeElement.querySelectorAll('mat-hint') as NodeListOf<HTMLElement>
+    ).map(hint => hint.textContent?.trim());
+
+    expect(hints).toEqual(['propertiesPanel.dimensionNoLimitHint']);
+  });
 });

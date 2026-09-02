@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { ClozeDocument } from 'common/models/elements/compound-group-elements/cloze/cloze';
-import { LikertRowElement } from 'common/models/elements/compound-group-elements/likert/likert-row';
+import { TranslateService } from '@ngx-translate/core';
+import { ClozeDocument } from 'common/models/elements/cloze';
+import { LikertRowElement } from 'common/models/elements/likert-row';
 import {
   SectionInsertDialogComponent
 } from 'editor/src/app/components/dialogs/section-insert-dialog/section-insert-dialog.component';
@@ -17,7 +18,7 @@ import {
   HotspotEditDialogComponent
 } from 'editor/src/app/components/dialogs/hotspot-edit-dialog/hotspot-edit-dialog.component';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { Hotspot } from 'common/models/elements/input-group-elements/hotspot-image';
+import { Hotspot } from 'common/models/elements/hotspot-image';
 import {
   StateVariablesDialogComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
@@ -28,6 +29,7 @@ import {
 import { StateVariable } from 'common/models/state-variable';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { ReferenceList } from 'editor/src/app/classes/reference-manager';
+import { MessageService } from 'editor/src/app/services/message.service';
 import {
   SanitizationDialogComponent
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
@@ -38,7 +40,7 @@ import { UIElement } from 'common/models/elements/element';
 import {
   TableEditDialogComponent, TableEditResult
 } from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
-import { TableElement } from 'common/models/elements/compound-group-elements/table/table';
+import { TableElement } from 'common/models/elements/table';
 import { FileService, FileInformation } from 'common/services/file.service';
 import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/label-interfaces';
 import { TooltipPosition } from 'common/models/ui-element-interfaces';
@@ -75,7 +77,9 @@ import { EditorSection } from 'editor/src/app/models/editor-section';
   providedIn: 'root'
 })
 export class DialogService {
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,
+              private messageService: MessageService,
+              private translateService: TranslateService) { }
 
   showLabelEditDialog(label: Label): Observable<Label> {
     const dialogRef = this.dialog.open(LabelEditDialogComponent, {
@@ -85,7 +89,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  /* The confirmation belongs to the unit the caller asked about, and the dialog outlives that unit as
+  /** The confirmation belongs to the unit the caller asked about, and the dialog outlives that unit as
      soon as the host loads another one -- so a replaced unit takes the dialog with it. Narrowing the
      result the way showSanitizationDialog does is left to the caller here: a cancelled delete still has
      its references to report, so this one has to tell that apart from a superseded delete rather than
@@ -116,7 +120,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  /* The dialog carries no close option and stays up until the user confirms it, so the load that
+  /** The dialog carries no close option and stays up until the user confirms it, so the load that
      opened it can be superseded while it is still on screen. It then describes a unit that is no
      longer loaded, and a second outdated unit would stack another dialog on top of it -- therefore a
      superseding load closes it. What the caller may act on is a confirmation of the load it asked
@@ -148,7 +152,14 @@ export class DialogService {
     const dialogRef = this.dialog.open(DropListOptionEditDialogComponent, {
       data: { value },
       height: '700px',
-      width: '600px'
+      // The rich text editor gives its text area a minimum width of 700px. Opened any narrower,
+      // the dialog has a horizontal scrollbar even while empty and the right half of the toolbar
+      // sits outside the visible area (#1347). 700px plus the content padding of 48px is already
+      // 748, so 750 would leave two pixels and no room for the vertical scrollbar this dialog
+      // always has. Material's default `maxWidth` of 80vw would take the 800 back below a 1000px
+      // window, which is where the scrollbar came from in the first place.
+      width: '800px',
+      maxWidth: '95vw'
     });
     return dialogRef.afterClosed();
   }
@@ -216,7 +227,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  /* Undefined when the dialog is closed without a result -- the cancel button, ESC, a click on the
+  /** Undefined when the dialog is closed without a result -- the cancel button, ESC, a click on the
      backdrop. Declared, because both callers read a field of it and would throw instead of taking the
      cancellation for what it is (#1296). */
   showGeogebraAppDefinitionDialog(): Observable<FileInformation | undefined> {
@@ -282,13 +293,47 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showImageResizeDialog(base64: string, options: ImageOptions): Observable<ImageOptions> {
+  showImageResizeDialog(base64: string, options: ImageOptions, isEmbedded: boolean = false,
+                        hasFixedOverlays: boolean = false): Observable<ImageOptions> {
     const dialogRef = this.dialog.open(ImageResizeDialogComponent, {
-      data: { base64, options: { ...options } },
+      data: {
+        base64, options: { ...options }, isEmbedded, hasFixedOverlays
+      },
       width: '500px',
       autoFocus: false
     });
     return dialogRef.afterClosed();
+  }
+
+  /**
+   * Puts an image that is already in the unit through the compression dialog and returns the new
+   * base64 -- or `null` if there is nothing to do, so a caller can leave its property alone.
+   *
+   * The counterpart to `importImage`, which does the same for a file picked from disk. Both end in
+   * `FileService.scaleImage`; only the way in differs (#1378).
+   *
+   * Three ways out with `null`, and each of them needs the caller to write nothing: the buttons are
+   * `disabledInteractive`, so a click still arrives for a format that cannot be scaled; the dialog
+   * was cancelled; or the stored base64 no longer decodes, which is the one case the author has to
+   * hear about, because the button offered itself on the `data:` prefix alone.
+   *
+   * `recompress` is on from the start here: an image that is already in the unit is opened in order
+   * to make it smaller, so the quality has to decide something even when the dimensions stay as they
+   * are -- which for a Bildbereiche element is the only way that leaves its hotspots in place
+   * (#1398, #1399).
+   */
+  async compressEmbeddedImage(base64: string, hasFixedOverlays: boolean = false): Promise<string | null> {
+    if (!FileService.isResizableBase64(base64)) return null;
+    const options = await firstValueFrom(
+      this.showImageResizeDialog(base64, { recompress: true }, true, hasFixedOverlays)
+    );
+    if (!options) return null;
+    try {
+      return await FileService.scaleImage(base64, options);
+    } catch {
+      this.messageService.showError(this.translateService.instant('imageCompressionFailed'));
+      return null;
+    }
   }
 
   async importImage(): Promise<FileInformation | null> {

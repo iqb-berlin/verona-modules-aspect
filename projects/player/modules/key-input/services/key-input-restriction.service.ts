@@ -7,7 +7,7 @@ export interface KeyInputRestriction {
   hasReturnKey: boolean;
 }
 
-/* Enforces `restrictedToInputAssistanceChars` on the focused field.
+/** Enforces `restrictedToInputAssistanceChars` on the focused field.
  *
  * It hangs on the field, not on the input assistance: the keypad opens 100 ms after the focus
  * (`KeypadService.toggleAsync`, debouncing its animation) and registered the keydown listener only
@@ -24,9 +24,11 @@ export class KeyInputRestrictionService {
   private inputElement?: HTMLElement;
   private restriction?: KeyInputRestriction;
 
-  // Bound once: `bind` returns a new function every call, so the reference passed to
-  // removeEventListener would never be the one that had been registered and the keydown listener
-  // would stay on the input for its lifetime (#1123).
+  /**
+   * Bound once: `bind` returns a new function every call, so the reference passed to
+   * removeEventListener would never be the one that had been registered and the keydown listener
+   * would stay on the input for its lifetime (#1123).
+   */
   private readonly restrictKeys = this.restrict.bind(this);
 
   attach(inputElement: HTMLElement, restriction: KeyInputRestriction): void {
@@ -37,7 +39,7 @@ export class KeyInputRestrictionService {
     inputElement.addEventListener('paste', KeyInputRestrictionService.preventPaste);
   }
 
-  /* Only releases the field it was attached to: a component being torn down must not cancel the
+  /** Only releases the field it was attached to: a component being torn down must not cancel the
      restriction of the field that has meanwhile taken the focus. */
   detachFrom(inputElement?: HTMLElement): void {
     if (inputElement && this.inputElement === inputElement) this.detach();
@@ -51,7 +53,7 @@ export class KeyInputRestrictionService {
     this.restriction = undefined;
   }
 
-  /* Whether the current selection may be changed at all: content that could not have been typed is
+  /** Whether the current selection may be changed at all: content that could not have been typed is
      the preset value of the field and stays protected. Also used by the keypad for its own keys. */
   canEdit(deleteKey: 'Backspace' | 'Delete' | null): boolean {
     const { restriction } = this;

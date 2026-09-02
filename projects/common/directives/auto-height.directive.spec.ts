@@ -11,6 +11,11 @@ import { AutoHeightDirective } from './auto-height.directive';
 })
 class TestHostComponent {}
 
+// the ResizeObserver delivers before paint, so two frames cover observation and callback
+const afterTwoFrames = (): Promise<void> => new Promise<void>(resolve => {
+  requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+});
+
 describe('AutoHeightDirective', () => {
   let fixture: ComponentFixture<TestHostComponent>;
   let directive: AutoHeightDirective;
@@ -56,5 +61,42 @@ describe('AutoHeightDirective', () => {
 
     const newHeight = parseInt(textArea.style.height, 10);
     expect(newHeight).toBeGreaterThan(initialHeight);
+  });
+
+  /* A page that is not the one shown first is built before its content is put into the document.
+     The height measured there is 0, and writing it left the field with no height at all (#1335). */
+  it('should keep the row height while the element is outside the document', async () => {
+    const host = fixture.nativeElement as HTMLElement;
+    const parent = host.parentElement as HTMLElement;
+    parent.removeChild(host);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(textArea.style.height).not.toBe('0px');
+  });
+
+  it('should set the height once the element enters the document', async () => {
+    const host = fixture.nativeElement as HTMLElement;
+    const parent = host.parentElement as HTMLElement;
+    parent.removeChild(host);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    parent.appendChild(host);
+    await afterTwoFrames();
+
+    expect(textArea.style.height).toMatch(/^[1-9]\d*px$/);
+  });
+
+  /* The observer that brings the measurement of a later page must not stay on the element it
+     writes to: the resize grabber and a table cell both move that height from outside. */
+  it('should leave the height alone once it has been measured', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    textArea.style.height = '500px';
+    await afterTwoFrames();
+
+    expect(textArea.style.height).toBe('500px');
   });
 });

@@ -207,16 +207,26 @@ This repository follows the
 develop      all active development; the default branch and what pull requests target
 master       the state of the most recent release; the release tags sit here
 feature/…    branched off develop, merged back into develop after review
+release/…    branched off develop to prepare one release, merged into master —
+             where it is tagged — and back into develop
 hotfix/…     branched off master for a fix that cannot wait for a release,
              merged into master and into develop
 ```
 
 A branch name carries the issue it belongs to: `feature/1357-topic`.
 
-**A release** is `develop` merged into `master` and tagged there, one tag for both modules —
-`editor/3.0.0+player/3.0.0`. What the release needs goes into `develop` before that merge: the two
-version numbers in `package.json` (`config.player_version` and `config.editor_version` — the
-version stands nowhere else) and the entries in `docs/release-notes-*.md`.
+**A release** is prepared on a `release/<version>` branch off `develop` and merged from there into
+`master` first and into `develop` afterwards — two pull requests out of the one branch. The tag sits
+on the merge commit on `master`, one tag for both modules — `editor/3.0.0+player/3.0.0`. What the
+release branch carries: the two version numbers in `package.json` (`config.player_version` and
+`config.editor_version` — the version stands nowhere else) followed by an `npm install`, and the
+entries in `docs/release-notes-*.md`.
+
+Two merges out of the branch, rather than one route through `develop`, mean `master` receives exactly
+the state the release branch froze while `develop` can move on meanwhile. They also mean `master` is
+not an ancestor of `develop` afterwards, so a hotfix merged back into `develop` can meet conflicts —
+in practice `package.json` and `docs/release-notes-player.md`, both of which carry a version number
+per line.
 
 **A hotfix** is branched off `master`, merged into `master` once it is verified, and merged into
 `develop` as well — merged, not cherry-picked, so the fix stays one commit in the history instead
@@ -242,7 +252,7 @@ of two that later have to be told apart.
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after
    a rebase the previous green run no longer counts.
 6. **Merge as a merge commit** once the required status check is green.
-7. **Release** by merging `develop` into `master`, as described above.
+7. **Release** from a `release/…` branch into `master` and `develop`, as described above.
 
 Tickets live on [project board 13](https://github.com/orgs/iqb-berlin/projects/13). A card
 moves to *In Bearbeitung* when work starts and to *zu testen* once the fix is merged into

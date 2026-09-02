@@ -1,9 +1,6 @@
 Player
 ======
 ## 3.0.1
-### Neue Funktionen
-- Ablegeliste: Während ein Element seinen Ton abspielt, ist es umrandet und sein Abspielknopf vergrößert. Liegt dasselbe Element mehrfach auf der Seite — etwa in einer Liste, die beim Ablegen kopiert —, wird nur die angetippte Darstellung hervorgehoben ([#1107](https://github.com/iqb-berlin/verona-modules-aspect/issues/1107))
-
 ### Fehlerbehebungen
 - Pflichtfelder: Wird eine Antwort wieder gelöscht oder abgewählt, meldet der Player der Testumgebung wieder eine unvollständige Aufgabe. Bisher blieb sie ab dem ersten vollständigen Stand als vollständig gemeldet — die Testumgebung ließ das Blättern zu, und die Meldung „Eingabe erforderlich" blieb aus, weil der Player sie erst nach einer verweigerten Navigation zeigt ([#1354](https://github.com/iqb-berlin/verona-modules-aspect/issues/1354))
 - Bildbereiche: Der im Editor gesetzte Schreibschutz sperrt jetzt alle Bereiche des Elements. Bisher blieben sie anklickbar; es wirkte nur der Schreibschutz, der für einen einzelnen Bereich gesetzt war ([#1051](https://github.com/iqb-berlin/verona-modules-aspect/issues/1051))

@@ -35,6 +35,23 @@
       text-decoration: var(--value-text-decoration, none);
     }
 
+    /* The arrow follows the font as well (#1443). Material takes both sizes from tokens of its own --
+       10x5px for the box, 24x24px for the drawing inside it -- and neither is tied to a font, so the
+       arrow stayed the same while the text around it grew. At Material's own 16px, 10px is exactly
+       0.625em and 24px exactly 1.5em: a dropdown in 16px looks as it did, every other size in
+       proportion. The `svg` is addressed as an element because Material generates it without a class
+       of its own; the box does not clip it, and the triangle sits in the middle of the drawing, so
+       both have to grow together. */
+    .mat-mdc-select-arrow {
+      width: 0.625em;
+      height: 0.3125em;
+
+      svg {
+        width: 1.5em;
+        height: 1.5em;
+      }
+    }
+
     .cloze-child.mat-mdc-form-field {
       .mat-mdc-text-field-wrapper {
         padding: 0 5px !important;

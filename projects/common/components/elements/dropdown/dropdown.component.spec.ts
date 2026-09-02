@@ -126,6 +126,20 @@ describe('DropdownComponent', () => {
       expect(chosenOption().scrollHeight).toBeLessThanOrEqual(chosenOption().clientHeight);
       expect(window.getComputedStyle(chosenOption()).lineHeight).toBe('normal');
     });
+
+    /* The arrow is drawn from two sizes Material takes from its own tokens -- 10x5px for the box and
+       24x24px for the drawing in it -- and neither followed the font, so it stayed put while the text
+       grew (#1443). Read at 32px, where the expected values are twice Material's own. */
+    it('should grow the arrow with the font size', () => {
+      component.elementModel.styling.fontSize = 32;
+      fixture.detectChanges();
+
+      const arrow = fixture.nativeElement.querySelector('.mat-mdc-select-arrow') as HTMLElement;
+      const drawing = arrow.querySelector('svg') as SVGSVGElement;
+      expect(window.getComputedStyle(arrow).width).toBe('20px');
+      expect(window.getComputedStyle(arrow).height).toBe('10px');
+      expect(window.getComputedStyle(drawing).width).toBe('48px');
+    });
   });
 
   /* The colour reaches Material's generated wrapper through a CSS variable, and the rule that reads it

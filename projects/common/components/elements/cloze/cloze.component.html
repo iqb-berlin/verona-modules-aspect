@@ -145,6 +145,12 @@
     <ng-container *ngIf="$any(subPart).type === 'math-formula'">
       <span [innerHTML]="subPart | mathFormula"></span>
     </ng-container>
+    <!--A child sits on the baseline of the text around it, unless what belongs in the line is its box
+        rather than its text: a drop list and an upright toggle button are boxes, and `middle` centres
+        them. A dropdown was in that list from the time Material drew its content in 16px whatever the
+        element said. Now that it wears the element's font (#1435), its text has to meet the text
+        beside it — centring the box left the glyphs 1.6px low at the 20px default and 2.2px at 28px,
+        and stretched the line by the same amount.-->
     <aspect-compound-child-overlay
       *ngIf="ClozeElement.validChildElements | arrayIncludes:subPart.type"
       [style.display]="'inline-block'"
@@ -152,8 +158,7 @@
       [element]="$any(subPart).attrs.model"
       [style.vertical-align]="(subPart.attrs.model.type === 'toggle-button' &&
                                 subPart.attrs.model.verticalOrientation === true) ||
-                                (['dropdown',
-                                'drop-list',
+                                (['drop-list',
                                 'toggle-button'] | arrayIncludes:subPart.attrs.model.type) ?
                                   'middle' : 'baseline'"
       [editorMode]="editorMode"

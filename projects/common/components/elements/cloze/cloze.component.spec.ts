@@ -102,4 +102,40 @@ describe('ClozeComponent', () => {
     expect(compiled.querySelector('.ML__latex')).toBeTruthy();
     expect(compiled.querySelector('math')).toBeNull();
   });
+
+  /* Which children hang in the line by their box and which by their text (#1435). A dropdown wears
+     the element's font since then, so its text meets the text beside it; a drop list is a box and
+     stays centred. One expression in the template decides it for every child type, and a wrong entry
+     in its list is invisible until someone looks at a cloze. */
+  it('should align a dropdown child on the baseline and a drop list in the middle', () => {
+    /* The document goes on the element that is already built: the constructor instantiates the child
+       models through the registry, which is not reachable from here. What the binding reads is the
+       type on the model, and that is all these two need to carry. */
+    component.elementModel.document = {
+      type: 'doc',
+      content: [{
+        type: 'paragraph',
+        attrs: {},
+        content: [
+          { type: 'text', text: 'Ein Dreieck hat ' },
+          {
+            type: 'Dropdown',
+            attrs: { model: { type: 'dropdown' } as UIElement }
+          },
+          { type: 'text', text: ' Ecken, und hier liegt ' },
+          {
+            type: 'DropList',
+            attrs: { model: { type: 'drop-list' } as UIElement }
+          }
+        ]
+      }]
+    };
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const kinder = compiled.querySelectorAll<HTMLElement>('aspect-compound-child-overlay');
+    expect(kinder.length).toBe(2);
+    expect(kinder[0].style.verticalAlign).toBe('baseline');
+    expect(kinder[1].style.verticalAlign).toBe('middle');
+  });
 });

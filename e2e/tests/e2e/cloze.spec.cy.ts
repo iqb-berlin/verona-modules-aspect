@@ -148,6 +148,17 @@ describe('Cloze element', { testIsolation: false }, () => {
         .find('aspect-dropdown').should('have.length', 1);
     });
 
+    it('hangs the dropdown in the line by its text, not by its box', () => {
+      // The gap wears the font of the element since #1435, so its text has to meet the text beside
+      // it. `middle` centres the box in the line instead, which left the glyphs 1.6px low at the
+      // 20px default and the box 1.6px below the box of a text-field gap in the same line. Asserted
+      // on the computed value because the binding in the cloze template is not the only way to lose
+      // it -- a rule in any stylesheet reaching this overlay would do.
+      cy.get('aspect-cloze').eq(7)
+        .find('aspect-compound-child-overlay')
+        .should('have.css', 'vertical-align', 'baseline');
+    });
+
     it('selects an option from dropdown inside cloze', () => {
       cy.get('aspect-cloze').eq(7)
         .find('aspect-dropdown mat-select')

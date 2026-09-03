@@ -317,3 +317,112 @@ Rationale:
 - the number is not the point and there is no `--coverageTest` gate: a gate would produce
   `@param element the element`, and the ticket says so at length. What the rule is for is simpler —
   an explanation nobody can find is the same as one that was never written
+
+## 17) Work that is not the class's own job gets a class of its own
+
+A service, a component, a directive does the work its name promises. A body that answers a different
+question — an algorithm, a format, a set of domain rules — becomes a class of its own beside it and
+is called by name. What stays behind is the seam: the few lines that decide when the other one is
+asked and what is done with its answer.
+
+- Avoid: `FileService` computing a resampling kernel because the file it loads happens to be a picture
+- Prefer: `ImageResampler` in `common/utils/`, asked by `FileService.drawScaled` (#1434)
+
+Three questions decide it, and any one of them is enough:
+
+- **Does the body need the class it stands in?** No `this`, no injected dependency, no field of the
+  class, no template and no host element — then it already is a separate unit, only an unnamed one.
+- **Can you say what it does without naming its host's job?** "Makes a picture smaller" says nothing
+  about loading and saving files.
+- **Do private members exist only to serve one public method?** They are that unit's insides, and
+  they are only private to the wrong class.
+
+This is not "one method per class": a helper of a few lines that reads the state around it stays
+where it is. What the rule is aimed at is the body that grew until it needs explaining.
+
+Where the new unit goes — §12 for the file layout, §11 for its spec, which it always gets:
+
+- computation without DI and without state → `utils/`, a class with static methods
+  (`ImageResampler`, `DropLogic`, `SectionCounter`)
+- needs injection, or holds state the app shares → `services/`
+- a value computed for a template → a pipe (§2)
+
+For components and directives the same cut runs one step further in. A component keeps what touches
+its template, its inputs and its outputs; a directive keeps what touches its host element. Parsing,
+validating, converting, measuring, deciding a rule — each is a class the component asks, and the
+component holds the answer for the template to read.
+
+That cut alone does not make a component small, because what is usually too big about one is its
+view, and a helper class cannot take view work. Which of the four ways applies is decided by what is
+too much, and they are meant to be used in this order:
+
+1. **Foreign work → a class of its own**, as above. Do this one first: what is left afterwards is
+   often already the component it should be, and the other three are then answering a question that
+   no longer exists.
+2. **Too much view → a child component.** The plainest case is the body of a `@for`. What a loop
+   renders per entry already is one thing with a name; its data already arrives as one value per
+   pass, which are its inputs, and its event already has to travel upwards, which is its output — so
+   the boundary is drawn before anyone looks for it. `KeyboardKeyComponent` and `KeypadKeyComponent`
+   in `player/modules/key-input/components/` are one key each, and the keypad's key then stands ten
+   times in its layout with only three of them inside a loop: the return key, the arrow block and the
+   operator grid all reach for the component the loop body became. Neither key holds any state —
+   inputs and one output are the whole class — so state is not what makes the cut worth making.
+   The other case is a template that branches over many kinds: the properties panel, one component
+   per property group under `properties-panel/components/element-model-properties/`, instead of one
+   template that knows every group.
+   What does not qualify is length alone. A loop body of one element with two bindings stays where it
+   is, and a child that holds nothing but a stretch of markup, with nothing crossing the boundary but
+   the parent's own fields, spreads one view over two places without separating anything. A child is
+   not free: §12 (four files) and §13 (declared in the owning module) apply.
+3. **Behaviour at the host element → an applied directive**, with a selector, in `directives/`:
+   `AutoHeightDirective`, `DraggableDirective`, `InViewDetectionDirective`,
+   `InputBackgroundColorDirective`. The mark is that it hangs on an element rather than on the data
+   flow, and that a second element should be able to have it by writing an attribute — without
+   touching that element's class, which is exactly what a base class would demand.
+4. **A shared role → an abstract base class**, and only for "is a", never merely to share code.
+   Inheritance ties what it shares to the hierarchy, so it earns its place where several components
+   owe the rest of the application the same contract: `ElementComponent`, `FormElementComponent`,
+   `TextInputComponent`, `ElementGroupDirective`. Everything the base holds must be something every
+   subclass needs — the moment a member is there for some of them, it belongs in a class or a
+   directive one of them uses. Angular requires a decorator on an inherited base, which is why these
+   are written `@Directive()` **without a selector** and live in `directives/` (10 of the 28 there);
+   that makes them base classes in a directive's clothing, not directives, and they get no selector.
+
+The four are not alternatives, and `player/src/app/components/elements/` is what they look like
+together. `ElementGroupSelectionComponent` holds only the frame — the element's dimensions and its
+`data-element-id` — and picks a group component from the element's type: nine named groups and a base
+group for the types no group claims. Its `groups` table is the single place where a type is assigned
+to a group. Each group component then holds what
+its own group needs of the player and nothing of what the others need: a form and the value it
+reports, a media element with its hint timer, the dynamic creation of an element component that has
+no group of its own. What all of them need lives in a base — and in three steps rather than one,
+which is that condition on inheritance doing its work: `ElementGroupDirective` (22 lines: the two
+inputs and registering at the `UnitStateService`), `ElementFormGroupDirective` above it (the form and
+its validation, 107), `TextInputGroupDirective` above that (keyboard, keypad, key restriction, 452).
+Every group component inherits exactly the step it needs — the media player and the base group the
+lowest, the input group the middle one, the text input group the top. Rolled into one base, every
+group would carry the keyboard. A base asks for its services as an abstract member
+(`abstract unitStateService: UnitStateService`) and the subclass injects them, which keeps the base
+free of a constructor and says in the base itself what it depends on.
+
+Test the seam, not just the new class. `FileService` keeps two tests that bind it to the resampler —
+`vi.spyOn(ImageResampler, 'scaleDown')`, used when the picture shrinks, untouched when it is merely
+re-encoded — because a class tested to bits still says nothing about whether its caller reaches for
+it.
+
+Rationale:
+- as long as the arithmetic sat inside `scaleImage`, the only way at it was through an image, a
+  canvas and whatever the test browser does with them. Five tests written that way stayed green
+  under the mutation "always `drawImage`", because headless Chromium happens to scale well enough
+  on its own (#1434). Moved out, the same question is numbers in, numbers out
+- the two jobs age at different speeds: the kernel was rewritten twice while nothing about loading a
+  file changed, and each rewrite re-read a service it had no business in
+- the name is the review. "The image compression in the file service" is a phrase nobody wants to
+  defend, and something that cannot be named where it stands rarely belongs there
+- the four ways are listed because the first one is the reflex and answers the rarer half of the
+  cases. A component is usually too big in its view, and a helper class leaves that untouched; the
+  order above puts the cheap, reversible move first and inheritance — the one that cannot be undone
+  in a single file — last
+- the seam is testable in the view as well: a key has a spec of its own, and the keyboard's spec is
+  then about which keys it hands out and what it does with the one that was pressed. Left inline,
+  every question about a single key has to be asked through the whole keyboard

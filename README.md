@@ -49,12 +49,11 @@ writes the e2e report first, and a merge run after it takes that in as well.
 
 ## Requirements
 
-- **Node 24.19.0**, the version `.nvmrc` names and the pipeline image (`scripts/Dockerfile`)
+- **Node 24.20.0**, the version `.nvmrc` names and the pipeline image (`scripts/Dockerfile`)
   is built on, down to the patch: it decides which npm writes and reads the lock file, and two
   npm builds do not accept each other's file. `nvm install && nvm use` in the repository is the
-  whole setup, and `engines` names the pair again — `node 24.19.0`, `npm 11.17.0` — as a warning
-  for a shell that missed it. Not the current 24.20.0: its npm 11.19.0 runs no install script
-  until it is approved, and Cypress fetches its binary in one (`scripts/Dockerfile` says more).
+  whole setup, and `engines` names the pair again — `node 24.20.0`, `npm 11.19.0` — as a warning
+  for a shell that missed it.
 - **Chromium for Playwright**, because the unit tests run in browser mode:
   `npx playwright install chromium`.
 
@@ -74,6 +73,13 @@ npm install
 npm ci --dry-run   # empties node_modules
 npm ci
 ```
+
+Both commands name six packages whose install scripts are "not yet covered by allowScripts" and run
+them anyway: npm 11.19 announces a gate it does not yet close, and `npm install-scripts ls` offers
+`approve` and `deny` without either being required. Of the six only Cypress needs its script — that
+is where its binary comes from. The other five carry a prebuilt package for this platform: after
+`npm ci --ignore-scripts`, `lmdb`, `msgpackr`, `@parcel/watcher` and `esbuild` all load and work,
+and only Cypress' binary is missing.
 
 What the pinned version is for is the one thing about a lock file that is not obvious: **which
 optional peer dependencies it materialises is an opinion, and each npm build has its own.** A

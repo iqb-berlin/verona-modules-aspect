@@ -27,11 +27,12 @@
 # committed anything - which is what it did while #1448 was open. `.nvmrc` names the same version,
 # so development writes the file CI reads.
 #
-# 24.19.0 and not the current 24.20.0, because npm 11.19.0 stops running install scripts until they
-# are approved (`npm install-scripts approve`), and Cypress fetches its binary in a postinstall:
-# `npm ci` leaves it out and `cypress verify` then says `No version of Cypress is installed`.
-# 11.17.0 here warns about the coming approval and still runs them. Moving past it is its own
-# ticket, not a Node bump.
+# The npm here announces a gate it does not yet close: `npm ci` names six packages whose install
+# scripts are "not yet covered by allowScripts" and runs them anyway, and `npm install-scripts ls`
+# offers `approve` and `deny` without either being required. Whoever bumps into an npm that closes
+# it decides which of the six may run - only Cypress needs its script, which is where its binary
+# comes from; after `npm ci --ignore-scripts` the other five load and work from their prebuilt
+# packages, and Cypress alone is missing (#1452).
 #
 # Bumping it is one commit: this line, BASE_IMAGE in .gitlab-ci.yml, `.nvmrc`, `engines` in
 # package.json, and the lock file rewritten with the npm the new version ships.
@@ -39,7 +40,7 @@
 # Passed in by the build job so the base image comes through the group's dependency proxy rather
 # than from Docker Hub directly, where the shared runner IP shares one anonymous pull quota with
 # every other project on it.
-ARG BASE_IMAGE=node:24.19.0-bookworm
+ARG BASE_IMAGE=node:24.20.0-bookworm
 
 FROM ${BASE_IMAGE}
 

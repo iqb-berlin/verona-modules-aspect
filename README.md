@@ -49,10 +49,12 @@ writes the e2e report first, and a merge run after it takes that in as well.
 
 ## Requirements
 
-- **Node 24**, as named in `.nvmrc`, and the version the pipeline image
-  (`scripts/Dockerfile`) and the documentation workflow run as well. The `engines` field
-  accepts `^22.12.0 || >=24.0.0`, which is the range every package in the tree with a Node
-  lower bound asks for; without `engine-strict` it is an advisory, not a gate.
+- **Node 24.19.0**, the version `.nvmrc` names and the pipeline image (`scripts/Dockerfile`)
+  is built on, down to the patch: it decides which npm writes and reads the lock file, and two
+  npm builds do not accept each other's file. `nvm install && nvm use` in the repository is the
+  whole setup, and `engines` names the pair again — `node 24.19.0`, `npm 11.17.0` — as a warning
+  for a shell that missed it. Not the current 24.20.0: its npm 11.19.0 runs no install script
+  until it is approved, and Cypress fetches its binary in one (`scripts/Dockerfile` says more).
 - **Chromium for Playwright**, because the unit tests run in browser mode:
   `npx playwright install chromium`.
 
@@ -63,16 +65,28 @@ npm ci
 ```
 
 To change a dependency, edit `package.json` and apply the delta on top of the existing lock
-file rather than regenerating it — different npm generations resolve and deduplicate
-differently, and a lock file written by one has been rejected by `npm ci` in the pipeline
-before. The pipeline now runs the same npm as development, so that is the one to write with;
-npm 10 stays in the check because `engines` still allows it:
+file rather than regenerating it: a regeneration re-resolves every range and has raised
+transitive versions, and with them the TypeScript errors of a build nobody had touched.
+Then it is plain npm, because the version above is the one the pipeline runs:
 
 ```bash
 npm install
-npx npm@10 ci --dry-run && npm ci --dry-run   # both must pass
-npm ci                                        # --dry-run empties node_modules
+npm ci --dry-run   # empties node_modules
+npm ci
 ```
+
+What the pinned version is for is the one thing about a lock file that is not obvious: **which
+optional peer dependencies it materialises is an opinion, and each npm build has its own.** A
+file written by another build is not merely formatted differently — `npm ci` rejects it, naming a
+package it wants and does not find. Measured on this tree (#1448): npm 11.6.2 leaves out
+`@emnapi/*`, which 11.19.0 demands; 11.19.0 nests a `readdirp` that 11.6.2 does not want; npm 10
+writes both plus seven `chokidar@5.0.0` copies, which is why its file is the one every build
+accepts and why the lock file used to be written with `npx npm@10 install`. So whoever bumps
+Node here rewrites the lock file in the same commit, and reviews what the new npm dropped. In
+the current tree `npm ls` calls nine of those slots invalid, all the optional `chokidar` peer of
+`@angular-devkit/core`, which the hoisted chokidar 3.6.0 now fills: nothing here asks that
+package for a file watcher, and a build that did would get chokidar 3 rather than the error the
+package raises when the peer is missing entirely.
 
 ## Getting started
 

@@ -16,12 +16,14 @@ variables:
   # the same time then cannot pull each other's image: a different recipe is a different tag, and
   # a commit names the image it needs. `build-test-image` compares tag and hash and fails if they
   # drift apart, so the tag cannot be forgotten when the recipe changes.
-  TEST_IMAGE: ${CI_REGISTRY_IMAGE}/aspect-test:node24-fe6e7d845137
+  TEST_IMAGE: ${CI_REGISTRY_IMAGE}/aspect-test:node24-278e602235ae
   # Docker Hub images come through the group's dependency proxy: the shared runner IP shares one
   # anonymous pull quota with every other project on it, and an exhausted quota kills a job as
   # runner_system_failure before a line of our code has run.
   DOCKER_HUB_PROXY: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/"
-  BASE_IMAGE: node:24-bookworm
+  # A patch version, not `node:24-bookworm`: the tag decides which npm the pipeline runs, and two
+  # npm builds do not accept each other's lock file. scripts/Dockerfile says what a bump entails.
+  BASE_IMAGE: node:24.19.0-bookworm
 
 # A push and the pull request GitLab mirrors from GitHub each start a pipeline for the same
 # commit. Both report to the same GitHub status context (ci/gitlab/scm.cms.hu-berlin.de), so

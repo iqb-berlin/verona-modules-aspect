@@ -19,14 +19,27 @@
 #   docker run --rm -v /tmp/probe:/app -w /app aspect-test:probe \
 #     bash -lc 'npm ci && npx playwright install chromium && npm run lint && npm test'
 #
-# Node follows what Angular asks for (^22.12.0 || >=24.0.0, see `engines` in package.json); 24 is
-# the version development runs on, and therefore the one whose npm generation the lock file is
-# maintained with.
+# The base image names a Node PATCH version, and that is what pins the npm the pipeline runs -
+# every Node 24 patch brings another one, from 11.6.1 in 24.11.0 to 11.19.0 in 24.20.0. Two npm
+# builds do not accept each other's lock file: 11.19.0 answers a file written by 11.6.2 with
+# `Missing: @emnapi/core@1.11.3 from lock file`, and 11.6.2 answers one written by 11.19.0 with
+# `Missing: readdirp@5.1.1`. A floating tag therefore turns the pipeline red on a day nobody
+# committed anything - which is what it did while #1448 was open. `.nvmrc` names the same version,
+# so development writes the file CI reads.
+#
+# 24.19.0 and not the current 24.20.0, because npm 11.19.0 stops running install scripts until they
+# are approved (`npm install-scripts approve`), and Cypress fetches its binary in a postinstall:
+# `npm ci` leaves it out and `cypress verify` then says `No version of Cypress is installed`.
+# 11.17.0 here warns about the coming approval and still runs them. Moving past it is its own
+# ticket, not a Node bump.
+#
+# Bumping it is one commit: this line, BASE_IMAGE in .gitlab-ci.yml, `.nvmrc`, `engines` in
+# package.json, and the lock file rewritten with the npm the new version ships.
 
 # Passed in by the build job so the base image comes through the group's dependency proxy rather
 # than from Docker Hub directly, where the shared runner IP shares one anonymous pull quota with
 # every other project on it.
-ARG BASE_IMAGE=node:24-bookworm
+ARG BASE_IMAGE=node:24.19.0-bookworm
 
 FROM ${BASE_IMAGE}
 

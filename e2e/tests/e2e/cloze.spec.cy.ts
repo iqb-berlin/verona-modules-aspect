@@ -1,6 +1,19 @@
-import { createCloze } from './helpers/cloze-util';
+import {
+  addClozeChildOptions,
+  applyElementFont,
+  createCloze,
+  createHeadingCloze,
+  createRichCloze,
+  expectDefaultFont,
+  expectRichClozeDefaultHeadings,
+  expectRichClozeDocument,
+  expectRichClozeIndent,
+  expectStyledFont,
+  expectStyledHeadings,
+  markLastClozeChildRequired,
+  STYLED_CLOZE_TEXT
+} from './helpers/cloze-util';
 import { connectLists, dragTo } from './helpers/droplist-util';
-import { setID, setCheckbox, addOption } from '../util';
 
 describe('Cloze element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -38,26 +51,28 @@ describe('Cloze element', { testIsolation: false }, () => {
 
     it('creates a cloze and inserts a dropdown inside it', () => {
       createCloze('Lückentext8', 'Lückentext mit Klappliste', 'Klappliste');
-
-      // Select the child dropdown overlay in the 8th Cloze in editor canvas
-      cy.get('aspect-cloze').eq(7).find('aspect-compound-child-overlay').first().click();
-
-      // Add options to it
-      addOption('AAA');
-      addOption('BBB');
+      addClozeChildOptions(7, 'AAA', 'BBB');
     });
 
     it('creates a cloze with a required text-field child', () => {
       createCloze('Lückentext9', 'Lückentext für Validierung', 'Eingabefeld');
+      markLastClozeChildRequired('cloze-child-text-field');
+    });
 
-      // Select the child simple text-field overlay in editor canvas
-      cy.get('aspect-cloze').last().find('aspect-compound-child-overlay').first().click();
+    it('creates a cloze and paints it with its own font', () => {
+      createCloze('Lückentext10', STYLED_CLOZE_TEXT);
+      applyElementFont();
+      expectStyledFont('p', STYLED_CLOZE_TEXT);
+    });
 
-      // Set its ID to cloze-child-text-field
-      setID('cloze-child-text-field');
+    it('creates a cloze whose headings wear the element font too', () => {
+      createHeadingCloze('Lückentext11');
+      applyElementFont();
+      expectStyledHeadings();
+    });
 
-      // Mark the child text-field as required (Pflichtfeld)
-      setCheckbox('Pflichtfeld');
+    it('creates a cloze that uses every document node the template knows', () => {
+      createRichCloze('Lückentext12');
     });
 
     it('connects the droplists, and add two options for the first droplist inside cloze', () => {
@@ -65,7 +80,7 @@ describe('Cloze element', { testIsolation: false }, () => {
       connectLists('droplist2', 'droplist1');
     });
 
-    after('saves unit definition and modifies columnCount', () => {
+    after('saves unit definition', () => {
       cy.saveUnit('e2e/downloads/cloze.json');
     });
   });
@@ -77,12 +92,16 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('renders all cloze elements', () => {
-      cy.get('aspect-cloze').should('have.length', 9);
+      cy.get('aspect-cloze').should('have.length', 12);
     });
 
     it('first cloze renders the default Lorem Ipsum text', () => {
       cy.get('aspect-cloze').eq(0)
         .should('contain.text', 'normaler Lückentext');
+    });
+
+    it('first cloze keeps the default font', () => {
+      expectDefaultFont('p', 'normaler Lückentext');
     });
 
     it('second cloze contains a text-field-simple', () => {
@@ -205,6 +224,26 @@ describe('Cloze element', { testIsolation: false }, () => {
             expect(message.left).to.be.closeTo(gap.left, 1);
           });
         });
+    });
+
+    it('shows the styled cloze in the font that was set', () => {
+      expectStyledFont('p', STYLED_CLOZE_TEXT);
+    });
+
+    it('shows the styled headings in the font that was set', () => {
+      expectStyledHeadings();
+    });
+
+    it('renders lists, a quote, marks, a formula and images from the document', () => {
+      expectRichClozeDocument();
+    });
+
+    it('indents a paragraph from the left and hangs the next one', () => {
+      expectRichClozeIndent();
+    });
+
+    it('keeps the rich cloze headings on the default font', () => {
+      expectRichClozeDefaultHeadings();
     });
   });
 });

@@ -23,7 +23,7 @@ function widgetCallFromStub(stub: PostMessageStub, widgetType: string): WidgetCa
     .map(call => call.args[0])
     .reverse()
     .find(arg => isWidgetCall(arg, widgetType));
-  expect(match, `vopWidgetCall for ${widgetType}`).to.exist;
+  expect(match, `vopWidgetCall for ${widgetType}`).to.not.equal(undefined);
   return match as WidgetCallMessage;
 }
 

@@ -21,12 +21,17 @@ export function createSectionWithText(sectionIndex: number, text: string): void 
   cy.get('aspect-editor-section-view').eq(sectionIndex).click({ force: true });
   addElement('Text');
 
-  // Set the text content
   cy.get('aspect-ui-element-properties')
     .contains('edit').click();
-  cy.get('.ProseMirror p').clear();
-  cy.get('.ProseMirror p').type(text);
-  cy.contains('Speichern').click();
+  cy.get('mat-dialog-container').should('be.visible');
+  cy.get('mat-dialog-container .ProseMirror')
+    .should('be.visible')
+    .click()
+    .type(`{selectall}{backspace}${text}`);
+  cy.get('mat-dialog-container .ProseMirror').should('contain.text', text);
+  cy.get('mat-dialog-container').contains('button', 'Speichern').click();
+  cy.get('mat-dialog-container').should('not.exist');
+  cy.get('aspect-editor-section-view').eq(sectionIndex).should('contain.text', text);
 }
 
 export function configureSectionVisibilityRule(options: {

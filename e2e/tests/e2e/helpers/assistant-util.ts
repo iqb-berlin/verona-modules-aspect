@@ -1,4 +1,4 @@
-import { clickTabAssistant } from '../../util';
+import { clickTabAssistant, uploadFile } from '../../util';
 
 export function addMCOption(optionName: string): void {
   cy.get('mat-dialog-container')
@@ -74,4 +74,33 @@ export function selectRadioButtonInDialog(radioLabel: string) {
 
 export function typeInDialogInput(value: string, index: number = 0) {
   cy.get('mat-dialog-container').find('input').eq(index).clear().type(value);
+}
+
+export function addImageOptionInDialog(optionName: string, fileName: string): void {
+  cy.get('mat-dialog-container')
+    .find('aspect-option-list-panel')
+    .contains('mat-icon', 'image')
+    .click();
+
+  cy.get('aspect-label-edit-dialog').should('exist');
+  cy.get('aspect-label-edit-dialog').find('aspect-rich-text-editor .ProseMirror')
+    .click()
+    .type(`{selectall}{backspace}${optionName}`);
+
+  cy.get('aspect-label-edit-dialog').contains('button', 'Bild laden').click();
+  uploadFile(fileName);
+
+  cy.get('aspect-image-resize-dialog').should('exist');
+  cy.get('aspect-image-resize-dialog').contains('button', 'Speichern').click();
+  cy.get('aspect-image-resize-dialog').should('not.exist');
+
+  cy.get('aspect-label-edit-dialog').contains('button', 'Speichern').click();
+  cy.get('aspect-label-edit-dialog').should('not.exist');
+
+  cy.get('mat-dialog-container')
+    .find('aspect-option-list-panel')
+    .contains('.option-draggable', optionName)
+    .find('img')
+    .should('have.attr', 'src')
+    .and('not.eq', '');
 }

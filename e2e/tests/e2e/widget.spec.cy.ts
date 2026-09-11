@@ -1,12 +1,30 @@
 import { addElement } from '../util';
 
 interface WidgetCallMessage {
+  type: string;
+  widgetType: string;
   callId: string;
   parameters: { key: string, value: string }[];
 }
 
 interface PostMessageStub {
-  lastCall: { args: [WidgetCallMessage] };
+  getCalls: () => { args: unknown[] }[];
+}
+
+function isWidgetCall(arg: unknown, widgetType: string): arg is WidgetCallMessage {
+  if (typeof arg !== 'object' || arg === null) return false;
+  if (!('type' in arg) || !('widgetType' in arg) || !('callId' in arg)) return false;
+  return arg.type === 'vopWidgetCall' && arg.widgetType === widgetType;
+}
+
+/** Later player messages overwrite `lastCall`, so the matching widget call is taken from the list. */
+function widgetCallFromStub(stub: PostMessageStub, widgetType: string): WidgetCallMessage {
+  const match = stub.getCalls()
+    .map(call => call.args[0])
+    .reverse()
+    .find(arg => isWidgetCall(arg, widgetType));
+  expect(match, `vopWidgetCall for ${widgetType}`).to.not.equal(undefined);
+  return match as WidgetCallMessage;
 }
 
 describe('Widget Element', { testIsolation: false }, () => {
@@ -57,7 +75,7 @@ describe('Widget Element', { testIsolation: false }, () => {
         type: 'vopWidgetCall',
         widgetType: 'PERIODIC_TABLE'
       })).then(stub => {
-        const msg = (stub as unknown as PostMessageStub).lastCall.args[0];
+        const msg = widgetCallFromStub(stub as unknown as PostMessageStub, 'PERIODIC_TABLE');
         expect(msg.callId).to.be.a('string').with.length.greaterThan(0);
         expect(msg.parameters).to.deep.include({ key: 'SHOW_INFO_ORDER', value: 'true' });
         expect(msg.parameters).to.deep.include({ key: 'SHOW_INFO_E_NEG', value: 'false' });
@@ -101,7 +119,7 @@ describe('Widget Element', { testIsolation: false }, () => {
         type: 'vopWidgetCall',
         widgetType: 'MOLECULE_EDITOR'
       })).then(stub => {
-        const msg = (stub as unknown as PostMessageStub).lastCall.args[0];
+        const msg = widgetCallFromStub(stub as unknown as PostMessageStub, 'MOLECULE_EDITOR');
         expect(msg.callId).to.be.a('string').with.length.greaterThan(0);
 
         // Post back a vopWidgetReturn message echoing the callId

@@ -47,8 +47,10 @@ Cypress.Commands.add('openEditor', () => {
 
 Cypress.Commands.add('switchToTabbedViewMode', () => {
   cy.get('[data-cy="extras-menu"]').click();
-  cy.contains('Seitenansicht untereinander').click();
-  cy.get('body').click();
+  cy.get('.cdk-overlay-container').should('be.visible');
+  cy.get('.cdk-overlay-container').contains('Seitenansicht untereinander').click();
+  cy.get('body').type('{esc}');
+  cy.get('.cdk-overlay-backdrop').should('not.exist');
 });
 
 Cypress.Commands.add('loadUnit', (filename: string) => {

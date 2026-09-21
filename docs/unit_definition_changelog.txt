@@ -272,6 +272,7 @@ iqb-aspect-definition@1.0.0
     margins (#1306)
 
 4.13.0
+- New Element TetfolioElement (type tetfolio)
 - GeometryElement:
   - new property: showAlgebraInput: boolean (default false) (#1004)
 - TextAreaElement:

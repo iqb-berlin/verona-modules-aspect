@@ -10,6 +10,8 @@
   "calculator": "Rechner",
   "moleculeEditor": "Molekül-Editor",
   "openWidget": "{{widget}} öffnen",
+  "tetfolioNoContent": "Kein Tetfolio-Inhalt vorhanden",
+  "tetfolioIframeTitle": "Tetfolio-Experiment",
   "tableHeaderText": "Kopfzeilentext",
   "tableHeaderAlignLeft": "Linksbündig",
   "tableHeaderAlignCenter": "Zentriert",

@@ -12,6 +12,7 @@ import {
   ClozeChildOverlayComponent
 } from 'common/components/cloze-child-overlay/cloze-child-overlay.component';
 import { GeometryComponent } from 'common/components/elements/geometry/geometry.component';
+import { TetfolioComponent } from 'common/components/elements/tetfolio/tetfolio.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathTableComponent } from 'common/components/elements/math-table/math-table.component';
 import { TableComponent } from 'common/components/elements/table/table.component';
@@ -110,6 +111,17 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
         (elementID: string) => {
           if (this.element.type === 'table' && this.element.id === elementID) {
             (this.childComponent.instance as TableComponent).refresh();
+          }
+        }
+      );
+
+    // same for tetfolio: rebuild the iframe when htmlContent changes
+    this.unitService.tetfolioElementPropertyUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (elementID: string) => {
+          if (this.element.type === 'tetfolio' && this.element.id === elementID) {
+            (this.childComponent.instance as TetfolioComponent).refresh();
           }
         }
       );

@@ -46,6 +46,7 @@ import {
 import {
   WidgetPeriodicTableComponent
 } from 'common/components/elements/widget-periodic-table/widget-periodic-table.component';
+import { TetfolioComponent } from 'common/components/elements/tetfolio/tetfolio.component';
 
 /**
  * Registers the component that draws each element type, which is what lets a renderer go from a stored
@@ -88,6 +89,7 @@ export function registerComponents(): void {
     'text-area-math': TextAreaMathComponent,
     trigger: TriggerComponent,
     'widget-molecule-editor': WidgetMoleculeEditorComponent,
-    'widget-periodic-table': WidgetPeriodicTableComponent
+    'widget-periodic-table': WidgetPeriodicTableComponent,
+    tetfolio: TetfolioComponent
   });
 }

@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
@@ -139,6 +140,9 @@ import {
   WidgetPeriodicTablePropertiesComponent
   // eslint-disable-next-line max-len -- deepest folder plus longest component name, three chars over
 } from './components/element-model-properties/widget-periodic-table-properties/widget-periodic-table-properties.component';
+import {
+  TetfolioPropertiesComponent
+} from './components/element-model-properties/tetfolio-properties/tetfolio-properties.component';
 
 /**
  * The element properties panel of the editor — the inspector beside the unit view.
@@ -198,6 +202,7 @@ import {
     UIElementPropertiesComponent,
     WidgetMoleculeEditorPropertiesComponent,
     WidgetPeriodicTablePropertiesComponent,
+    TetfolioPropertiesComponent,
     GetStateVariablePipe,
     GetValidDropListsPipe,
     LikertRowLabelPipe,
@@ -220,6 +225,7 @@ import {
     MatIconModule,
     MatInputModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatSliderModule,
     MatTabsModule,

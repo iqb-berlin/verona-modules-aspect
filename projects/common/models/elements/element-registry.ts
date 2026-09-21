@@ -38,6 +38,7 @@ import type {
 import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-periodic-table';
+import type { TetfolioProperties } from 'common/models/elements/tetfolio';
 import type {
   AssertNever, BasicStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
 } from 'common/models/elements/property-group-interfaces';
@@ -200,6 +201,7 @@ interface ElementPropertiesMap {
   likert: LikertProperties;
   'widget-molecule-editor': WidgetMoleculeEditorProperties;
   'widget-periodic-table': WidgetPeriodicTableProperties;
+  tetfolio: TetfolioProperties;
 }
 
 /** Mapped over UIElementType, so the table and the union cannot drift: a new
@@ -797,6 +799,14 @@ export const ELEMENT_DEFAULTS = {
     styling: {
       backgroundColor: '#f1f1f1',
       fontColor: '#006064'
+    }
+  },
+  tetfolio: {
+    htmlContent: '',
+    state: null,
+    dimensions: {
+      width: 900,
+      height: 400
     }
   }
 } satisfies ElementDefaultsMap;

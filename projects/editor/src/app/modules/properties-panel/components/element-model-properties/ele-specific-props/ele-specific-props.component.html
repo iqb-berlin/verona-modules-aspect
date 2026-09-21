@@ -64,3 +64,9 @@
                                           [combinedProperties]="combinedProperties"
                                           (updateModel)="updateModel.emit($event)">
 </aspect-widget-molecule-editor-properties>
+
+<aspect-tetfolio-properties
+  *ngIf="show.tetfolio"
+                            [combinedProperties]="combinedProperties"
+                            (updateModel)="updateModel.emit($event)">
+</aspect-tetfolio-properties>

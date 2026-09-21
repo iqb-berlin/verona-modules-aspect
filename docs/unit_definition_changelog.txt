@@ -272,6 +272,7 @@ iqb-aspect-definition@1.0.0
     margins (#1306)
 
 4.13.0
+- New Element TetfolioElement (type tetfolio)
 - WidgetPeriodicTableElement:
   - new property: showInfoName: boolean (default true) (#1420)
   - new property: showInfoSymbol: boolean (default true) (#1420)

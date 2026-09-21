@@ -236,6 +236,9 @@ export class ElementService {
         }
         if (element.type === 'math-table') this.unitService.mathTableElementPropertyUpdated.next(element.id);
         if (element.type === 'table') this.unitService.tablePropUpdated.next(element.id);
+        if (element.type === 'tetfolio' && property === 'htmlContent') {
+          this.unitService.tetfolioElementPropertyUpdated.next(element.id);
+        }
         hasDirectWrite = true;
       }
     });

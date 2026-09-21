@@ -40,6 +40,9 @@ import { InputAssistanceCustomStylePipe } from 'player/src/app/pipes/input-assis
 import {
   WidgetGroupElementComponent
 } from 'player/src/app/components/elements/widget-group-element/widget-group-element.component';
+import {
+  TetfolioGroupElementComponent
+} from 'player/src/app/components/elements/tetfolio-group-element/tetfolio-group-element.component';
 import { ComponentRegistry } from 'common/utils/component-registry';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
@@ -106,6 +109,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     InteractiveGroupElementComponent,
     ActionGroupElementComponent,
     WidgetGroupElementComponent,
+    TetfolioGroupElementComponent,
     PlayerLayoutComponent,
     UnitStateDirective,
     AlwaysVisiblePagePipe,

@@ -52,6 +52,7 @@ import {
 import {
   WidgetMoleculeEditorComponent
 } from 'common/components/elements/widget-molecule-editor/widget-molecule-editor.component';
+import { TetfolioComponent } from 'common/components/elements/tetfolio/tetfolio.component';
 import { AreaSegmentComponent } from './components/area-segment/area-segment.component';
 import { TextComponent } from './components/elements/text/text.component';
 import { ButtonComponent } from './components/elements/button/button.component';
@@ -197,6 +198,7 @@ import { FirstLineAlignedControlDirective } from './directives/first-line-aligne
     DragImageComponent,
     WidgetPeriodicTableComponent,
     WidgetMoleculeEditorComponent,
+    TetfolioComponent,
     ImageSrcPipe,
     TableComponent,
     TableChildOverlay,
@@ -262,6 +264,7 @@ import { FirstLineAlignedControlDirective } from './directives/first-line-aligne
     MathTableComponent,
     WidgetPeriodicTableComponent,
     WidgetMoleculeEditorComponent,
+    TetfolioComponent,
     ImageSrcPipe,
     TableComponent,
     TableChildOverlay,

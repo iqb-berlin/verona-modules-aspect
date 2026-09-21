@@ -1,0 +1,32 @@
+<fieldset>
+  <legend>{{'toolbox.tetfolio' | translate}}</legend>
+  <div class="fx-column-start-stretch">
+    <div class="upload-section">
+      <button mat-raised-button color="primary" class="upload-button"
+              [disabled]="isProcessing"
+              (click)="zipInput.click()">
+        <mat-icon class="button-icon">upload_file</mat-icon>
+        {{'loadTetfolioZip' | translate}}
+      </button>
+      <input #zipInput type="file" accept=".zip" class="zip-input" hidden
+             (change)="onZipSelected($event)">
+      @if (isProcessing) {
+        <mat-spinner diameter="24"></mat-spinner>
+      }
+    </div>
+    @if (processingError) {
+      <div class="error-text">{{ processingError }}</div>
+    }
+    @if (lastZipName && !processingError) {
+      <div class="info-text">{{ lastZipName }}</div>
+    }
+    @if (combinedProperties.htmlContent) {
+      <div class="success-text">
+        {{'tetfolioHtmlLoaded' | translate:
+          { kb: (combinedProperties.htmlContent.length / 1024) | number:'1.0-0' } }}
+      </div>
+    } @else if (!processingError) {
+      <div class="error-text">{{'tetfolioNoHtmlContent' | translate}}</div>
+    }
+  </div>
+</fieldset>

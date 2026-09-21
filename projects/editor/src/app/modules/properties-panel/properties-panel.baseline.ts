@@ -2171,6 +2171,78 @@ input[number] "propertiesPanel.maxWidth" =  (disabled)
 --- footer ---
 button "propertiesPanel.deleteElement"`,
 
+  'tetfolio|expert': `--- tabs --- element properties, position and size
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = tetfolio
+[toolbox.tetfolio]
+button "upload_file loadTetfolioZip"
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
+
+--- tab "position and size" ---
+[propertiesPanel.position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[propertiesPanel.dimensions]
+input[number] "propertiesPanel.width" = 900
+input[number] "propertiesPanel.height" = 400
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'tetfolio|multi-expert': `--- tabs --- element properties, position and size
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[toolbox.tetfolio]
+button "upload_file loadTetfolioZip"
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
+
+--- tab "position and size" ---
+[propertiesPanel.position]
+input[number] "propertiesPanel.xPosition" =  [merged]
+input[number] "propertiesPanel.yPosition" =  [merged]
+input[number] "propertiesPanel.zIndex" =  [merged]
+[propertiesPanel.dimensions]
+input[number] "propertiesPanel.width" =  [merged]
+input[number] "propertiesPanel.height" =  [merged]
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'tetfolio|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[toolbox.tetfolio]
+button "upload_file loadTetfolioZip"
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
+  'tetfolio|standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = tetfolio
+[toolbox.tetfolio]
+button "upload_file loadTetfolioZip"
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'text-area-math|expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---

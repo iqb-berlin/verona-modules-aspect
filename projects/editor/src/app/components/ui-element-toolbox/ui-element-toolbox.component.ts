@@ -29,6 +29,7 @@ import { WidgetPeriodicTableElement } from 'common/models/elements/widget-period
 import {
   WidgetMoleculeEditorElement
 } from 'common/models/elements/widget-molecule-editor';
+import { TetfolioElement } from 'common/models/elements/tetfolio';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
@@ -96,4 +97,5 @@ export class UiElementToolboxComponent {
   protected readonly TableElement = TableElement;
   protected readonly WidgetPeriodicTableElement = WidgetPeriodicTableElement;
   protected readonly WidgetMoleculeEditorElement = WidgetMoleculeEditorElement;
+  protected readonly TetfolioElement = TetfolioElement;
 }

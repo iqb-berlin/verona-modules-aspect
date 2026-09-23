@@ -1,6 +1,6 @@
 Allgemein
 =========
-## editor/3.0.2+player/3.0.2
+## next
 ### Fehlerbehebungen
 - Periodensystem, Molekül-Editor: Die Antwort beider Elemente steht jetzt als Variable mit Wert zur Verfügung. Bisher meldete der Editor sie als wertlos, sodass sie in der Variablenliste einer Aufgabe nicht kodiert werden konnten — obwohl der Player die Antwort speichert und ausliefert. Das Periodensystem liefert die gewählten Elementsymbole als Text, der Molekül-Editor das gezeichnete Molekül als JSON. Eine Aufgabe, die eines der Elemente schon enthält, meldet die Variable, sobald sie im Editor das nächste Mal geändert wird. Ein Molekül-Editor ohne Antwort liefert jetzt wie das Periodensystem den Wert `null`; bisher fehlte der Wert in der Antwort ganz ([#1463](https://github.com/iqb-berlin/verona-modules-aspect/issues/1463))
 

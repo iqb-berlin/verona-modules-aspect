@@ -7,6 +7,11 @@
 # text they are noise, and no release before 3.0.1 had them - so they are removed here rather than
 # in the files (decided 2026-09-02).
 #
+# Until a release is cut, nobody knows its number - it may be a patch, a minor, or different numbers
+# for editor and player. So entries are written under `## next` in all three files, and the release
+# branch renames that heading to the version before this script is run: `## editor/<v>+player/<v>`
+# in the common notes, `## <v>` in the other two (decided 2026-09-23).
+#
 #   scripts/release-notes.sh 3.0.1 > notes.md
 #   gh release create "editor/$V+player/$V" --notes-file notes.md --verify-tag dist/iqb-*-aspect-$V.html
 set -eu
@@ -42,6 +47,9 @@ for pair in "release-notes-common.md:## editor/$VERSION+player/$VERSION" \
             "release-notes-player.md:## $VERSION"; do
     if ! grep -qxF "${pair#*:}" "$ROOT/docs/${pair%%:*}"; then
         echo "ERROR: no section '${pair#*:}' in docs/${pair%%:*}" >&2
+        if grep -qxF "## next" "$ROOT/docs/${pair%%:*}"; then
+            echo "       It still has '## next' - rename that heading to '${pair#*:}' first." >&2
+        fi
         exit 1
     fi
 done

@@ -1,3 +1,4 @@
+import { VariableInfo } from '@iqb/responses';
 import { UIElement } from 'common/models/elements/element';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
@@ -40,6 +41,12 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at WidgetPeriodicTable instantiation', element);
     }
+  }
+
+  /** The answer is the widget's `state` as the player stores it: the selected element symbols,
+      separated by spaces. `@iqb/responses` has no format for such a list, hence `''`. */
+  getVariableInfos(): VariableInfo[] {
+    return [{ ...super.getVariableInfos()[0], type: 'string' }];
   }
 }
 

@@ -427,6 +427,43 @@ describe('ModelNormalizer', () => {
         expect(ELEMENT_DEFAULTS['likert-row'].verticalButtonAlignment).toBe('center');
       });
     });
+
+    /* #1420: the widget settings aspect did not send before. Each default is the value the widget
+       itself falls back to when the key is missing (ps-select.service.ts, molecule-editor-picker.service.ts
+       in verona-widgets-chemistry 1.0.0), so a unit stored before 4.13 shows the same widget after the
+       load as it did before -- which is what makes the migration step unnecessary. */
+    describe('the widget settings (#1420)', () => {
+      it('should default the periodic table to what the widget shows without them', () => {
+        expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'widget-periodic-table', id: 'p1' })))
+          .toEqual(expect.objectContaining({
+            showInfoName: true,
+            showInfoSymbol: true,
+            showInfoLabels: true,
+            highlightBlocks: false,
+            fieldTextColor: '#ffffff',
+            fieldBackgroundColor: '#6b369a'
+          }));
+      });
+
+      it('should default the molecule editor to what the widget shows without them', () => {
+        expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'widget-molecule-editor', id: 'm1' })))
+          .toEqual(expect.objectContaining({
+            showInfoName: false,
+            showInfoOrder: false,
+            highlightBlocks: false
+          }));
+      });
+
+      it('should keep a stored choice', () => {
+        const normalized = ModelNormalizer.normalizeElement({
+          type: 'widget-periodic-table', id: 'p1', highlightBlocks: true, fieldBackgroundColor: '#123456'
+        });
+
+        expect(ownProperties(normalized)).toEqual(expect.objectContaining({
+          highlightBlocks: true, fieldBackgroundColor: '#123456'
+        }));
+      });
+    });
   });
 
   /* #1184: no element may hold an object that ELEMENT_DEFAULTS or GLOBAL_DEFAULTS owns, or an in-place

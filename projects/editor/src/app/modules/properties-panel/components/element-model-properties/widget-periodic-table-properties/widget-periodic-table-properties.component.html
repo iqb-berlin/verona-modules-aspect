@@ -5,6 +5,14 @@
                             (valueChange)="updateModel.emit({ property: 'showInfoOrder', value: $event })">
       {{ 'propertiesPanel.showInfoOrder' | translate }}
     </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoName"
+                            (valueChange)="updateModel.emit({ property: 'showInfoName', value: $event })">
+      {{ 'propertiesPanel.showInfoName' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoSymbol"
+                            (valueChange)="updateModel.emit({ property: 'showInfoSymbol', value: $event })">
+      {{ 'propertiesPanel.showInfoSymbol' | translate }}
+    </aspect-merged-checkbox>
     <aspect-merged-checkbox [value]="combinedProperties.showInfoENeg"
                             (valueChange)="updateModel.emit({ property: 'showInfoENeg', value: $event })">
       {{ 'propertiesPanel.showInfoENeg' | translate }}
@@ -13,6 +21,46 @@
                             (valueChange)="updateModel.emit({ property: 'showInfoAMass', value: $event })">
       {{ 'propertiesPanel.showInfoAMass' | translate }}
     </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoLabels"
+                            (valueChange)="updateModel.emit({ property: 'showInfoLabels', value: $event })">
+      {{ 'propertiesPanel.showInfoLabels' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.highlightBlocks"
+                            (valueChange)="updateModel.emit({ property: 'highlightBlocks', value: $event })">
+      {{ 'propertiesPanel.highlightBlocks' | translate }}
+    </aspect-merged-checkbox>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{'propertiesPanel.fieldTextColor' | translate }}</mat-label>
+      <input #fieldTextColorField matInput type="text" [value]="combinedProperties.fieldTextColor"
+             (input)="updateModel.emit({ property: 'fieldTextColor', value: fieldTextColorField.value })">
+      @if (combinedProperties.fieldTextColor === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+      <button mat-icon-button matSuffix (click)="fieldTextColorInput.click()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-form-field>
+    <input matInput type="color" hidden #fieldTextColorInput
+           [value]="combinedProperties.fieldTextColor"
+           (input)="updateModel.emit({ property: 'fieldTextColor', value: fieldTextColorInput.value })">
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{'propertiesPanel.fieldBackgroundColor' | translate }}</mat-label>
+      <input #fieldBackgroundColorField matInput type="text" [value]="combinedProperties.fieldBackgroundColor"
+             (input)="updateModel.emit({ property: 'fieldBackgroundColor', value: fieldBackgroundColorField.value })">
+      @if (combinedProperties.fieldBackgroundColor === null) {
+        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      }
+      <button mat-icon-button matSuffix (click)="fieldBackgroundColorInput.click()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <mat-hint>{{'propertiesPanel.fieldBackgroundColorHint' | translate }}</mat-hint>
+    </mat-form-field>
+    <input matInput type="color" hidden #fieldBackgroundColorInput
+           [value]="combinedProperties.fieldBackgroundColor"
+           (input)="updateModel.emit({ property: 'fieldBackgroundColor', value: fieldBackgroundColorInput.value })">
+
     <aspect-merged-checkbox [value]="combinedProperties.closeOnSelection"
                             (valueChange)="updateModel.emit({ property: 'closeOnSelection', value: $event })">
       {{ 'propertiesPanel.closeOnSelection' | translate }}

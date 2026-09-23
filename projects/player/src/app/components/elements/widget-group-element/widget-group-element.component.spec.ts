@@ -6,6 +6,8 @@ import { WidgetPeriodicTableElement } from 'common/models/elements/widget-period
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
+import { WidgetPeriodicTableCall } from 'common/models/widget-interfaces';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { WidgetGroupElementComponent } from './widget-group-element.component';
 
@@ -26,6 +28,21 @@ describe('WidgetGroupElementComponent', () => {
     vopWidgetReturn = new Subject<{ state?: string, sessionId: string, callId?: string, type: 'vopWidgetReturn' }>();
   }
 
+  const periodicTableCall: WidgetPeriodicTableCall = {
+    parameters: {
+      showInfoOrder: true,
+      showInfoName: false,
+      showInfoSymbol: true,
+      showInfoENeg: false,
+      showInfoAMass: true,
+      showInfoLabels: false,
+      highlightBlocks: true,
+      closeOnSelection: true,
+      maxNumberOfSelections: 3
+    },
+    sharedParameters: { textColor: '#000000', backgroundColor: '#abcdef' }
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -33,11 +50,13 @@ describe('WidgetGroupElementComponent', () => {
         WidgetGroupElementComponent,
         CastPipe
       ],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: VeronaSubscriptionService, useClass: MockVeronaSubscriptionService }
       ]
     })
       .compileComponents();
+    TestBed.inject(TranslateService).setDefaultLang('de');
   });
 
   beforeEach(() => {
@@ -55,25 +74,41 @@ describe('WidgetGroupElementComponent', () => {
     const veronaPostService = TestBed.inject(VeronaPostService);
     vi.spyOn(veronaPostService, 'sendVopWidgetCall');
 
-    component.applyWidgetCall({
-      showInfoOrder: true,
-      showInfoENeg: false,
-      showInfoAMass: true,
-      closeOnSelection: true,
-      maxNumberOfSelections: 3
-    }, 'PERIODIC_TABLE');
+    component.applyWidgetCall(periodicTableCall, 'PERIODIC_TABLE');
 
     expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith(expect.objectContaining({
       callId: expect.any(String),
       widgetType: 'PERIODIC_TABLE',
       parameters: [
         { key: 'SHOW_INFO_ORDER', value: 'true' },
+        { key: 'SHOW_INFO_NAME', value: 'false' },
+        { key: 'SHOW_INFO_SYMBOL', value: 'true' },
         { key: 'SHOW_INFO_E_NEG', value: 'false' },
         { key: 'SHOW_INFO_A_MASS', value: 'true' },
+        { key: 'SHOW_INFO_LABELS', value: 'false' },
+        { key: 'HIGHLIGHT_BLOCKS', value: 'true' },
         { key: 'CLOSE_ON_SELECTION', value: 'true' },
-        { key: 'MAX_NUMBER_OF_SELECTIONS', value: '3' }
+        { key: 'MAX_NUMBER_OF_SELECTIONS', value: '3' },
+        { key: 'LANGUAGE', value: 'de' }
+      ],
+      sharedParameters: [
+        { key: 'TEXT_COLOR', value: '#000000' },
+        { key: 'BACKGROUND_COLOR', value: '#abcdef' }
       ]
     }));
+  });
+
+  /* The widget takes the language of the player, whatever it is, rather than one stored in the task
+     (#1420). */
+  it('should send the language the player runs in', () => {
+    const veronaPostService = TestBed.inject(VeronaPostService);
+    vi.spyOn(veronaPostService, 'sendVopWidgetCall');
+    TestBed.inject(TranslateService).use('en');
+
+    component.applyWidgetCall(periodicTableCall, 'PERIODIC_TABLE');
+
+    expect(vi.mocked(veronaPostService.sendVopWidgetCall).mock.lastCall?.[0].parameters)
+      .toContainEqual({ key: 'LANGUAGE', value: 'en' });
   });
 
   it('should update elementModel state and call changeElementCodeValue on vopWidgetReturn', () => {
@@ -82,13 +117,7 @@ describe('WidgetGroupElementComponent', () => {
     const sendVopWidgetCallSpy = vi.spyOn(veronaPostService, 'sendVopWidgetCall');
     vi.spyOn(component, 'changeElementCodeValue');
 
-    component.applyWidgetCall({
-      showInfoOrder: true,
-      showInfoENeg: false,
-      showInfoAMass: true,
-      closeOnSelection: true,
-      maxNumberOfSelections: 3
-    }, 'PERIODIC_TABLE');
+    component.applyWidgetCall(periodicTableCall, 'PERIODIC_TABLE');
 
     const lastWidgetCall = sendVopWidgetCallSpy.mock.lastCall;
     if (!lastWidgetCall) throw new Error('sendVopWidgetCall was not called');
@@ -106,13 +135,7 @@ describe('WidgetGroupElementComponent', () => {
     const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
     vi.spyOn(component, 'changeElementCodeValue');
 
-    component.applyWidgetCall({
-      showInfoOrder: true,
-      showInfoENeg: false,
-      showInfoAMass: true,
-      closeOnSelection: true,
-      maxNumberOfSelections: 3
-    }, 'PERIODIC_TABLE');
+    component.applyWidgetCall(periodicTableCall, 'PERIODIC_TABLE');
 
     const mockReturnEvent = {
       type: 'vopWidgetReturn' as const, sessionId: '1', callId: 'other-widget-call', state: 'base64FromOtherWidget'
@@ -127,13 +150,7 @@ describe('WidgetGroupElementComponent', () => {
     const returnFromWidget = (state?: string | null): void => {
       const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
       const sendVopWidgetCallSpy = vi.spyOn(TestBed.inject(VeronaPostService), 'sendVopWidgetCall');
-      component.applyWidgetCall({
-        showInfoOrder: true,
-        showInfoENeg: false,
-        showInfoAMass: true,
-        closeOnSelection: false,
-        maxNumberOfSelections: 3
-      }, 'PERIODIC_TABLE');
+      component.applyWidgetCall(periodicTableCall, 'PERIODIC_TABLE');
       const callId = sendVopWidgetCallSpy.mock.lastCall?.[0].callId;
       /* The message comes in by postMessage, so a `null` the type rules out can still arrive. */
       (veronaSubscriptionService as unknown as MockVeronaSubscriptionService).vopWidgetReturn.next({

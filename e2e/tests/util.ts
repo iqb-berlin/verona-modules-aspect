@@ -214,9 +214,13 @@ export function setExpertMode(enable: boolean) {
   cy.get('.cdk-overlay-backdrop').should('not.exist');
 }
 
-export function setSectionDynamicLayout(enable: boolean) {
-  cy.get('aspect-editor-section-view').first().scrollIntoView().click({ force: true });
-  cy.get('aspect-editor-section-view').first()
+export function setSectionDynamicLayout(enable: boolean, which: 'first' | 'last' = 'first') {
+  const sectionView = () => (which === 'last' ?
+    cy.get('aspect-editor-section-view').last() :
+    cy.get('aspect-editor-section-view').first());
+
+  sectionView().scrollIntoView().click({ force: true });
+  sectionView()
     .find('mat-icon').contains('space_dashboard')
     .click({ force: true });
 
@@ -241,7 +245,13 @@ export function switchToElementTab() {
 }
 
 export function switchToPositionTab() {
-  cy.get('.mat-mdc-tab').contains('mat-icon', 'format_shapes').click({ force: true });
+  cy.get('aspect-element-properties')
+    .contains('.mat-mdc-tab', 'format_shapes')
+    .click();
+  cy.get('aspect-element-properties')
+    .contains('.mat-mdc-tab', 'format_shapes')
+    .should('have.attr', 'aria-selected', 'true');
+  cy.get('aspect-position-and-dimension-properties').should('be.visible');
 }
 
 export function setDimensionValue(label: string, value: number | string) {

@@ -5,6 +5,7 @@ import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
+import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { Subject } from 'rxjs';
 import { WidgetGroupElementComponent } from './widget-group-element.component';
 
@@ -22,7 +23,7 @@ describe('WidgetGroupElementComponent', () => {
   }
 
   class MockVeronaSubscriptionService {
-    vopWidgetReturn = new Subject<{ state: string, sessionId: string, callId?: string, type: 'vopWidgetReturn' }>();
+    vopWidgetReturn = new Subject<{ state?: string, sessionId: string, callId?: string, type: 'vopWidgetReturn' }>();
   }
 
   beforeEach(async () => {
@@ -120,5 +121,62 @@ describe('WidgetGroupElementComponent', () => {
 
     expect((component.elementModel as WidgetPeriodicTableElement).state).toBeNull();
     expect(component.changeElementCodeValue).not.toHaveBeenCalled();
+  });
+
+  describe('a return that clears or keeps the answer (#1465)', () => {
+    const returnFromWidget = (state?: string | null): void => {
+      const veronaSubscriptionService = TestBed.inject(VeronaSubscriptionService);
+      const sendVopWidgetCallSpy = vi.spyOn(TestBed.inject(VeronaPostService), 'sendVopWidgetCall');
+      component.applyWidgetCall({
+        showInfoOrder: true,
+        showInfoENeg: false,
+        showInfoAMass: true,
+        closeOnSelection: false,
+        maxNumberOfSelections: 3
+      }, 'PERIODIC_TABLE');
+      const callId = sendVopWidgetCallSpy.mock.lastCall?.[0].callId;
+      /* The message comes in by postMessage, so a `null` the type rules out can still arrive. */
+      (veronaSubscriptionService as unknown as MockVeronaSubscriptionService).vopWidgetReturn.next({
+        type: 'vopWidgetReturn', sessionId: '1', callId, ...(state !== undefined ? { state: state as string } : {})
+      });
+    };
+
+    beforeEach(() => {
+      (component.elementModel as WidgetPeriodicTableElement).state = 'Na Cl';
+      vi.spyOn(component, 'changeElementCodeValue');
+    });
+
+    /* The periodic table sends '' once every symbol is deselected. That is the answer the unit state
+       has to report, as a changed value -- '' and not null, which is why the variable is not nullable. */
+    it('should take an empty state as the new answer', () => {
+      returnFromWidget('');
+
+      expect((component.elementModel as WidgetPeriodicTableElement).state).toBe('');
+      expect(TestBed.inject(UnitStateService).getElementCodeById('id'))
+        .toEqual(expect.objectContaining({ value: '', status: 'VALUE_CHANGED' }));
+    });
+
+    it('should leave the answer as it was when the return carries no state', () => {
+      returnFromWidget();
+
+      expect((component.elementModel as WidgetPeriodicTableElement).state).toBe('Na Cl');
+      expect(component.changeElementCodeValue).not.toHaveBeenCalled();
+    });
+
+    it('should leave the answer as it was when the return carries null', () => {
+      returnFromWidget(null);
+
+      expect((component.elementModel as WidgetPeriodicTableElement).state).toBe('Na Cl');
+      expect(component.changeElementCodeValue).not.toHaveBeenCalled();
+    });
+
+    it('should keep an unanswered widget unanswered when it is confirmed without a choice', () => {
+      (component.elementModel as WidgetPeriodicTableElement).state = null;
+
+      returnFromWidget('');
+
+      expect((component.elementModel as WidgetPeriodicTableElement).state).toBeNull();
+      expect(component.changeElementCodeValue).not.toHaveBeenCalled();
+    });
   });
 });

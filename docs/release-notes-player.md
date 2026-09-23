@@ -1,5 +1,9 @@
 Player
 ======
+## next
+### Fehlerbehebungen
+- Periodensystem: Wer alle Symbole wieder abwählt, leert jetzt auch die Antwort. Bisher blieb die vorige Auswahl als Antwort stehen. Voraussetzung ist, dass auch die Umgebung, die das Widget öffnet, den leeren Zustand weiterreicht: im Studio studio-lite #1685, im Testbed verona-player-testbed #38 ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
+
 ## 3.0.1
 ### Fehlerbehebungen
 - Pflichtfelder: Wird eine Antwort wieder gelöscht oder abgewählt, meldet der Player der Testumgebung wieder eine unvollständige Aufgabe. Bisher blieb sie ab dem ersten vollständigen Stand als vollständig gemeldet — die Testumgebung ließ das Blättern zu, und die Meldung „Eingabe erforderlich" blieb aus, weil der Player sie erst nach einer verweigerten Navigation zeigt ([#1354](https://github.com/iqb-berlin/verona-modules-aspect/issues/1354))

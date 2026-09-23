@@ -102,7 +102,14 @@ export class WidgetGroupElementComponent
   private handleWidgetReturnMessage(message: VopWidgetReturn): void {
     if (message.callId !== this.currentCallId) return;
     this.currentCallId = undefined;
-    if (message.state) {
+    /* `state` is an optional string in the Verona spec, and it arrives by postMessage unchecked. An
+       empty one is a state like any other: the periodic table sends '' once every symbol is
+       deselected. A return that brings the state it was called with changes nothing, and an unset
+       state counts as '' for that -- confirming an unanswered widget without choosing anything keeps
+       it unanswered (#1465). */
+    const previousState =
+      (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state ?? '';
+    if (typeof message.state === 'string' && message.state !== previousState) {
       (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state =
         message.state;
 

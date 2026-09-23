@@ -2,7 +2,7 @@ Player
 ======
 ## next
 ### Fehlerbehebungen
-- Periodensystem: Wer alle Symbole wieder abwählt, leert jetzt auch die Antwort. Bisher blieb die vorige Auswahl als Antwort stehen. Wirksam wird das erst, wenn auch das Widget eine leere Auswahl speichern lässt: Im Periodensystem 1.0.0 ist der Speichern-Knopf gesperrt, solange nichts ausgewählt ist. Außerdem muss die Umgebung, die das Widget öffnet, den leeren Zustand weiterreichen; das Studio tut das seit studio-lite #1685 ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
+- Periodensystem: Wer alle Symbole wieder abwählt, leert jetzt auch die Antwort. Bisher blieb die vorige Auswahl als Antwort stehen. Wirksam wird das erst, wenn auch das Widget eine leere Auswahl speichern lässt: Im Periodensystem 1.0.0 ist der Speichern-Knopf gesperrt, solange nichts ausgewählt ist ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
 
 ## 3.0.1
 ### Fehlerbehebungen

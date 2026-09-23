@@ -18,6 +18,7 @@ import { ToggleButtonElement } from 'common/models/elements/toggle-button';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
+import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor';
 import { ElementFactory } from 'common/utils/element-factory';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 
@@ -651,6 +652,24 @@ describe('ElementModelElementCodeMappingService', () => {
     });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual('initial_state');
+  });
+
+  it('should map an elementCode value to widget-molecule-editor elementModel value', () => {
+    const elementModel = new WidgetMoleculeEditorElement({
+      id: 'id1', alias: 'alias1', type: 'widget-molecule-editor', state: 'initial_state'
+    });
+    expect(service.mapToElementModelValue('new_state', elementModel))
+      .toEqual('new_state');
+  });
+
+  /* The molecule editor keeps its answer in `state`, not in `value`. Left to the default branch, an
+     element without a stored answer started from `undefined` instead of its `null` (#1463). */
+  it('should start a widget-molecule-editor without stored answer from its empty state', () => {
+    const elementModel = new WidgetMoleculeEditorElement({
+      id: 'id1', alias: 'alias1', type: 'widget-molecule-editor'
+    });
+    expect(service.mapToElementModelValue(undefined, elementModel))
+      .toBeNull();
   });
 
   /* Selection marks are stored as character offsets into the text as the browser rendered it, and they

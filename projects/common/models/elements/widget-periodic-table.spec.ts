@@ -1,0 +1,25 @@
+import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
+
+describe('WidgetPeriodicTableElement', () => {
+  /* The player stores the widget's state -- the selected symbols -- as the element's value, so the
+     variable reported to the host has to be one that carries a string. Inherited from `UIElement`, it
+     said `no-value`, and the answer was not available for coding (#1463). */
+  it('should report its answer as one string variable', () => {
+    const element = new WidgetPeriodicTableElement({
+      id: 'widget-periodic-table_1', alias: 'pse_1', type: 'widget-periodic-table'
+    });
+
+    expect(element.getVariableInfos()).toEqual([{
+      id: 'widget-periodic-table_1',
+      alias: 'pse_1',
+      type: 'string',
+      format: '',
+      multiple: false,
+      nullable: false,
+      values: [],
+      valuePositionLabels: [],
+      page: '',
+      valuesComplete: false
+    }]);
+  });
+});

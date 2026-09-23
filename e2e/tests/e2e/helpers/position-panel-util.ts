@@ -19,8 +19,18 @@ export const POSITION = {
     height: 100,
     zIndex: 5
   },
-  alignA: { alias: 'ausgerichtetA', x: 100, y: 50, label: 'BOX A' },
-  alignB: { alias: 'ausgerichtetB', x: 200, y: 150, label: 'BOX B' },
+  alignA: {
+    alias: 'ausgerichtetA',
+    x: 100,
+    y: 50,
+    label: 'BOX A'
+  },
+  alignB: {
+    alias: 'ausgerichtetB',
+    x: 200,
+    y: 150,
+    label: 'BOX B'
+  },
   grid: {
     alias: 'rasterKnopf',
     row: 2,
@@ -54,7 +64,9 @@ export function marginTopStylePattern(): RegExp {
 }
 
 export function marginSidesStylePattern(): RegExp {
-  const { top, bottom, left, right } = POSITION.margin;
+  const {
+    top, bottom, left, right
+  } = POSITION.margin;
   return new RegExp(
     `margin-left:\\s*${left}%|margin-right:\\s*${right}%` +
     `|margin:\\s*${top}%\\s+${right}%\\s+${bottom}px\\s+${left}%`

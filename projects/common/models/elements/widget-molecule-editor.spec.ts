@@ -22,4 +22,19 @@ describe('WidgetMoleculeEditorElement', () => {
       valuesComplete: false
     }]);
   });
+
+  /* The editor loads a unit without the normalizer, so what the constructor does not copy is replaced
+     by the default and written back on the next save (#1420). */
+  it('should keep every stored widget setting', () => {
+    const stored = {
+      bondingType: 'ELECTRONS' as const,
+      showInfoName: true,
+      showInfoOrder: true,
+      highlightBlocks: true
+    };
+
+    const element = new WidgetMoleculeEditorElement({ id: 'm1', type: 'widget-molecule-editor', ...stored });
+
+    expect(element).toEqual(expect.objectContaining(stored));
+  });
 });

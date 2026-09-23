@@ -33,9 +33,20 @@ describe('WidgetMoleculeEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit widget call event', () => {
+  /* The widget reads the bonding type as a shared parameter; sent as a parameter, it never reached
+     the widget (#1420). */
+  it('should emit the picker settings as parameters and the bonding type as a shared parameter', () => {
     vi.spyOn(component.widgetCallEvent, 'emit');
+    component.elementModel.bondingType = 'ELECTRONS';
+    component.elementModel.showInfoName = true;
+    component.elementModel.showInfoOrder = false;
+    component.elementModel.highlightBlocks = true;
+
     component.emitWidgetCall();
-    expect(component.widgetCallEvent.emit).toHaveBeenCalledWith({ bondingType: 'VALENCE' });
+
+    expect(component.widgetCallEvent.emit).toHaveBeenCalledWith({
+      parameters: { showInfoName: true, showInfoOrder: false, highlightBlocks: true },
+      sharedParameters: { bondingType: 'ELECTRONS' }
+    });
   });
 });

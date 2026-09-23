@@ -5,6 +5,7 @@ interface WidgetCallMessage {
   widgetType: string;
   callId: string;
   parameters: { key: string, value: string }[];
+  sharedParameters: { key: string, value: string }[];
 }
 
 interface PostMessageStub {
@@ -121,6 +122,9 @@ describe('Widget Element', { testIsolation: false }, () => {
       })).then(stub => {
         const msg = widgetCallFromStub(stub as unknown as PostMessageStub, 'MOLECULE_EDITOR');
         expect(msg.callId).to.be.a('string').with.length.greaterThan(0);
+        // The widget reads BONDING_TYPE as a shared parameter; as a parameter it never arrived (#1420)
+        expect(msg.sharedParameters).to.deep.include({ key: 'BONDING_TYPE', value: 'VALENCE' });
+        expect(msg.parameters).to.deep.include({ key: 'LANGUAGE', value: 'de' });
 
         // Post back a vopWidgetReturn message echoing the callId
         cy.window().then(window => {

@@ -7,6 +7,7 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
 import { VopWidgetReturn, WidgetType } from 'player/modules/verona/models/verona';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { WidgetPeriodicTableCall, WidgetMoleculeEditorCall } from 'common/models/widget-interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
@@ -38,7 +39,8 @@ export class WidgetGroupElementComponent
     public unitStateService: UnitStateService,
     public veronaPostService: VeronaPostService,
     private veronaSubscriptionService: VeronaSubscriptionService,
-    private elementModelElementCodeMappingService: ElementModelElementCodeMappingService
+    private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
+    private translateService: TranslateService
   ) {
     super();
   }
@@ -81,11 +83,21 @@ export class WidgetGroupElementComponent
     this.veronaPostService.sendVopWidgetCall({
       callId: this.currentCallId,
       widgetType,
-      parameters: Object.entries(event)
-        .map(([key, value]) => ({ key: StringUtils.camelCaseToUpperSnakeCase(key), value: String(value) })),
+      parameters: [
+        ...WidgetGroupElementComponent.toKeyValues(event.parameters),
+        // The widget's language is the player's, not a setting of the task (#1420).
+        { key: 'LANGUAGE', value: this.translateService.currentLang ?? this.translateService.defaultLang }
+      ],
+      // The player API has no such field in vopWidgetCall; the studio passes it on to the widget.
+      sharedParameters: WidgetGroupElementComponent.toKeyValues(event.sharedParameters),
       ...(currentState ?
         { state: currentState as string } : {})
     });
+  }
+
+  private static toKeyValues(values: object): { key: string; value: string }[] {
+    return Object.entries(values)
+      .map(([key, value]) => ({ key: StringUtils.camelCaseToUpperSnakeCase(key), value: String(value) }));
   }
 
   private subscribeToWidgetReturn(): void {

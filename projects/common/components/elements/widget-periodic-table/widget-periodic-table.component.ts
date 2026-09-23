@@ -17,13 +17,24 @@ export class WidgetPeriodicTableComponent extends ElementComponent {
   WidgetPeriodicTableElement = WidgetPeriodicTableElement;
 
   emitWidgetCall(): void {
-    const parameters: WidgetPeriodicTableCall = {
-      showInfoOrder: this.elementModel.showInfoOrder,
-      showInfoENeg: this.elementModel.showInfoENeg,
-      showInfoAMass: this.elementModel.showInfoAMass,
-      closeOnSelection: this.elementModel.closeOnSelection,
-      maxNumberOfSelections: this.elementModel.maxNumberOfSelections
+    const call: WidgetPeriodicTableCall = {
+      parameters: {
+        showInfoOrder: this.elementModel.showInfoOrder,
+        showInfoName: this.elementModel.showInfoName,
+        showInfoSymbol: this.elementModel.showInfoSymbol,
+        showInfoENeg: this.elementModel.showInfoENeg,
+        showInfoAMass: this.elementModel.showInfoAMass,
+        showInfoLabels: this.elementModel.showInfoLabels,
+        highlightBlocks: this.elementModel.highlightBlocks,
+        closeOnSelection: this.elementModel.closeOnSelection,
+        maxNumberOfSelections: this.elementModel.maxNumberOfSelections
+      },
+      sharedParameters: {
+        ...(this.elementModel.fieldTextColor ? { textColor: this.elementModel.fieldTextColor } : {}),
+        ...(this.elementModel.fieldBackgroundColor ?
+          { backgroundColor: this.elementModel.fieldBackgroundColor } : {})
+      }
     };
-    this.widgetCallEvent.emit(parameters);
+    this.widgetCallEvent.emit(call);
   }
 }

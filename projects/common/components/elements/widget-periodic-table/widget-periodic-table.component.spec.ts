@@ -34,23 +34,53 @@ describe('WidgetPeriodicTableComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit widgetCallEvent with parameters when emitWidgetCall is called', () => {
+  /* The widget reads the two colours as shared parameters and everything else as parameters; a key
+     on the wrong side is ignored by the widget (#1420). */
+  it('should emit every setting, the colours as shared parameters', () => {
     vi.spyOn(component.widgetCallEvent, 'emit');
 
-    component.elementModel.showInfoOrder = true;
-    component.elementModel.showInfoENeg = false;
-    component.elementModel.showInfoAMass = true;
-    component.elementModel.closeOnSelection = false;
-    component.elementModel.maxNumberOfSelections = 3;
+    Object.assign(component.elementModel, {
+      showInfoOrder: true,
+      showInfoName: false,
+      showInfoSymbol: true,
+      showInfoENeg: false,
+      showInfoAMass: true,
+      showInfoLabels: false,
+      highlightBlocks: true,
+      fieldTextColor: '#000000',
+      fieldBackgroundColor: '#abcdef',
+      closeOnSelection: false,
+      maxNumberOfSelections: 3
+    });
 
     component.emitWidgetCall();
 
     expect(component.widgetCallEvent.emit).toHaveBeenCalledWith({
-      showInfoOrder: true,
-      showInfoENeg: false,
-      showInfoAMass: true,
-      closeOnSelection: false,
-      maxNumberOfSelections: 3
+      parameters: {
+        showInfoOrder: true,
+        showInfoName: false,
+        showInfoSymbol: true,
+        showInfoENeg: false,
+        showInfoAMass: true,
+        showInfoLabels: false,
+        highlightBlocks: true,
+        closeOnSelection: false,
+        maxNumberOfSelections: 3
+      },
+      sharedParameters: { textColor: '#000000', backgroundColor: '#abcdef' }
     });
+  });
+
+  /* The widget falls back to its own colours only for a missing key; an empty one it takes as given
+     and draws the fields in a teal of its stylesheet (#1420). */
+  it('should leave out a colour whose field was emptied', () => {
+    vi.spyOn(component.widgetCallEvent, 'emit');
+    component.elementModel.fieldTextColor = '#000000';
+    component.elementModel.fieldBackgroundColor = '';
+
+    component.emitWidgetCall();
+
+    expect(vi.mocked(component.widgetCallEvent.emit).mock.lastCall?.[0]?.sharedParameters)
+      .toEqual({ textColor: '#000000' });
   });
 });

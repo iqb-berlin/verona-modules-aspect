@@ -184,7 +184,7 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
    * pull the field out from under what is being typed. Enter is not that - it says the edit is
    * finished. Clearing a limit does take its field away, because the checkbox above reads the model
    * and disables the box the caret is in, but that is the state the author asked for and the same one
-   * a blur produces; the checkbox leads back in, and nothing stays focused. Pinned in
+   * a blur produces; the checkbox leads back in. Pinned in
    * `dimension-field-set.component.spec.ts`.
    */
   @HostListener('keydown.enter')

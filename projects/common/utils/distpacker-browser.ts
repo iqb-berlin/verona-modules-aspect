@@ -67,6 +67,8 @@ function getMimeType(ext: string): string {
     mp3: 'audio/mpeg',
     ogg: 'audio/ogg',
     wav: 'audio/wav',
+    m4a: 'audio/mp4',
+    aac: 'audio/aac',
     mp4: 'video/mp4',
     webm: 'video/webm',
     woff: 'font/woff',
@@ -317,7 +319,11 @@ function replaceIframes(
     }
 
     logDebug(`Inlining iframe: ${src}`);
-    const packedFrame = packHtmlFile(framePath, fileMap, visited);
+    // A copy per branch: `visited` must block only true cycles (the ancestor
+    // chain), not two SIBLING iframes referencing the same file - with a
+    // shared set the second sibling kept its relative src, which cannot
+    // resolve from a blob document, and showed an empty frame.
+    const packedFrame = packHtmlFile(framePath, fileMap, new Set(visited));
     return `<iframe${before}srcdoc="${escapeHtmlAttribute(packedFrame)}"${after}>`;
   });
 }

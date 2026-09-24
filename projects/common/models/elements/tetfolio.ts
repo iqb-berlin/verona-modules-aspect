@@ -8,7 +8,8 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 
 /** An embedded Tetfolio unit: `htmlContent` holds a self-contained HTML document (packed from a
-   Tetfolio export zip in the editor), which the component renders in a sandboxed iframe. `state` is
+   Tetfolio export zip in the editor), which the component renders in a same-origin blob-URL
+   iframe (not sandboxed - see docs/tetfolio-element.md for the trust model). `state` is
    the serialized answer state the embedded app reports back over the message bridge. */
 export class TetfolioElement extends UIElement implements TetfolioProperties {
   type: UIElementType = 'tetfolio';

@@ -40,13 +40,19 @@ distpack()                    ──────►     htmlContent: one        
 ## The state model
 
 A tet.folio experiment logs its own interaction state into `sessionStorage` under
-`ibe_logger-<pageId>` keys. The bridge script captures exactly those keys (scoped per element,
-so two tetfolio elements in one tab never read each other's state), serializes them into one
-JSON string, and that string is the element's single `string` answer variable. On reload the
-bridge seeds the keys back **before** the experiment's own auto-restore reads them. The delays
-and re-seeding steps in the bridge look arbitrary but are not — the experiment replays its state
-with page-load animations that would otherwise overwrite the true state ("init pollution");
-the module docs in `tetfolio-bridge.ts` are the authority on that timing.
+`ibe_logger-<pageId>` keys. Because every blob iframe shares the player's origin, all tetfolio
+elements in a tab share ONE sessionStorage — and the pageId is identical for two copies of the
+same export. The bridge therefore namespaces physical storage per **element id**
+(`storageScopeOf()`): the experiment reads and writes its raw key names, the patched
+`setItem`/`getItem`/`removeItem` rewrite them to `tetfolio:<elementId>::ibe_logger-<pageId>`,
+so no element can clear or overwrite another's state. The reported and seeded state keeps the
+raw key names, which keeps stored answers independent of the element id (duplicating an element
+does not orphan its saved state). The captured keys are serialized into one JSON string — the
+element's single `string` answer variable. On reload the bridge seeds the keys back **before**
+the experiment's own auto-restore reads them. The delays and re-seeding steps in the bridge look
+arbitrary but are not — the experiment replays its state with page-load animations that would
+otherwise overwrite the true state ("init pollution"); the module docs in `tetfolio-bridge.ts`
+are the authority on that timing.
 
 ## Decisions a reviewer will ask about
 
@@ -59,12 +65,23 @@ the module docs in `tetfolio-bridge.ts` are the authority on that timing.
 - **The packed HTML is stored, not the zip.** The player stays free of unzip logic and asset
   serving, and a unit definition remains one self-contained JSON. The cost is a large
   `htmlContent` string (the panel shows its size after upload).
-- **`bypassSecurityTrustResourceUrl` on a blob URL.** The content is author-supplied at design
-  time — the same trust level as everything else in a unit definition; nothing user- or
-  runtime-supplied reaches the iframe. Blob URL rather than `srcdoc` at the top level so the
-  document gets its own browsing context; `srcdoc` for the *nested* experiment page inside,
-  because the outer page reaches into `iframe.contentWindow` and needs same-origin (a data: URI
-  would create an opaque origin — see `replaceIframes()` in the distpacker).
+- **`bypassSecurityTrustResourceUrl` on a blob URL — the iframe is NOT sandboxed, and cannot
+  be.** A blob URL shares the player's origin, so zip-supplied scripts run with access to the
+  player's DOM, storage and `window.parent`. That is accepted because the content is
+  author-supplied at design time — the same trust level as everything else in a unit definition;
+  nothing user- or runtime-supplied reaches the iframe. Sandboxing was evaluated and rejected
+  (2026-09): `sandbox="allow-scripts"` gives the document an opaque origin, and a *nested*
+  iframe inside it gets an opaque origin **of its own** — parent↔child `contentWindow` access
+  then throws `SecurityError` in both directions (verified empirically in Chromium; the storage
+  side would have been solvable with an in-memory shim, this is not). Tet.folio exports load the
+  experiment as a nested page and the outer page reaches into its `contentWindow`
+  (`window.iiwin`), so a sandboxed element would break every such export. Adding
+  `allow-same-origin` is no alternative: a same-origin sandboxed script can undo its own sandbox.
+  If hardening is ever needed, the workable direction is an injected Content-Security-Policy
+  (restricting network access against exfiltration), not origin isolation. Blob URL rather than
+  `srcdoc` at the top level so the document gets its own browsing context; `srcdoc` for the
+  nested experiment page inside, because of that same-origin requirement (a data: URI would
+  create an opaque origin — see `replaceIframes()` in the distpacker).
 - **Empty styling group.** No tetfolio template reads a styling value (the iframe document
   brings its own styles), so the element declares `styling: Record<never, never>` — the #1226
   convention, same as geometry and image.

@@ -1,5 +1,5 @@
 import {
-  extractTetfolioStateKeys, injectTetfolioBridge, TETFOLIO_STATE_KEY_PREFIX
+  extractTetfolioStateKeys, injectTetfolioBridge, storageScopeOf, TETFOLIO_STATE_KEY_PREFIX
 } from 'common/utils/tetfolio-bridge';
 
 describe('extractTetfolioStateKeys', () => {
@@ -29,9 +29,19 @@ describe('extractTetfolioStateKeys', () => {
   });
 });
 
+describe('storageScopeOf', () => {
+  it('should derive different namespaces for different elements', () => {
+    expect(storageScopeOf('tetfolio_1')).not.toBe(storageScopeOf('tetfolio_2'));
+  });
+
+  it('should contain the element id', () => {
+    expect(storageScopeOf('tetfolio_1')).toContain('tetfolio_1');
+  });
+});
+
 describe('injectTetfolioBridge', () => {
   it('should splice the bridge script before the closing body tag', () => {
-    const result = injectTetfolioBridge('<html><body><p>x</p></body></html>', null);
+    const result = injectTetfolioBridge('<html><body><p>x</p></body></html>', null, 'tetfolio_1');
     const scriptIndex = result.indexOf('<script>');
     const bodyCloseIndex = result.indexOf('</body>');
     expect(scriptIndex).toBeGreaterThan(-1);
@@ -39,25 +49,39 @@ describe('injectTetfolioBridge', () => {
   });
 
   it('should append the bridge script when there is no body tag', () => {
-    const result = injectTetfolioBridge('<p>x</p>', null);
+    const result = injectTetfolioBridge('<p>x</p>', null, 'tetfolio_1');
     expect(result.startsWith('<p>x</p>')).toBe(true);
     expect(result).toContain('<script>');
   });
 
   it('should scope the script to the state keys found in the HTML', () => {
     const html = '<html><body><div tetfoliopage="tf_77"></div></body></html>';
-    const result = injectTetfolioBridge(html, null);
+    const result = injectTetfolioBridge(html, null, 'tetfolio_1');
     expect(result).toContain(`"${TETFOLIO_STATE_KEY_PREFIX}77"`);
+  });
+
+  it('should namespace the storage by the element id', () => {
+    const result = injectTetfolioBridge('<html><body></body></html>', null, 'tetfolio_1');
+    expect(result).toContain(JSON.stringify(storageScopeOf('tetfolio_1')));
+  });
+
+  it('should give two elements with the same experiment different namespaces', () => {
+    const html = '<html><body><div tetfoliopage="tf_77"></div></body></html>';
+    const first = injectTetfolioBridge(html, null, 'tetfolio_1');
+    const second = injectTetfolioBridge(html, null, 'tetfolio_2');
+    expect(first).toContain(JSON.stringify(storageScopeOf('tetfolio_1')));
+    expect(second).toContain(JSON.stringify(storageScopeOf('tetfolio_2')));
+    expect(second).not.toContain(JSON.stringify(storageScopeOf('tetfolio_1')));
   });
 
   it('should embed the saved state for seeding when one is given', () => {
     const savedState = JSON.stringify({ [`${TETFOLIO_STATE_KEY_PREFIX}77`]: 'line1' });
-    const result = injectTetfolioBridge('<html><body></body></html>', savedState);
+    const result = injectTetfolioBridge('<html><body></body></html>', savedState, 'tetfolio_1');
     expect(result).toContain(JSON.stringify(savedState));
   });
 
   it('should not contain a seeding block without a saved state', () => {
-    const result = injectTetfolioBridge('<html><body></body></html>', null);
+    const result = injectTetfolioBridge('<html><body></body></html>', null, 'tetfolio_1');
     expect(result).not.toContain('seededState');
   });
 });

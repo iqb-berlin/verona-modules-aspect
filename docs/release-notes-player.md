@@ -1,13 +1,13 @@
 Player
 ======
 ## next
+### Neue Funktionen
+- Neues Element "Tetfolio": Der Player zeigt ein eingebettetes tet.folio-Experiment an und sichert dessen Bearbeitungsstand als Antwortvariable, sodass er beim Wiedereinstieg wiederhergestellt wird
+
 ### Fehlerbehebungen
 - Periodensystem: Gibt das Widget eine leere Auswahl zurück, übernimmt der Player sie jetzt als Antwort. Bisher blieb dann die vorige Auswahl stehen. Das Widget selbst (1.0.0) lässt das Speichern einer leeren Auswahl allerdings nicht zu, es ist dort nicht umgesetzt: Sein Speichern-Knopf ist gesperrt, solange nichts ausgewählt ist. Eine gegebene Antwort lässt sich deshalb weiterhin nicht löschen ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
 
 ## 3.0.1
-### Neue Funktionen
-- Neues Element "Tetfolio": Der Player zeigt ein eingebettetes tet.folio-Experiment an und sichert dessen Bearbeitungsstand als Antwortvariable, sodass er beim Wiedereinstieg wiederhergestellt wird
-
 ### Fehlerbehebungen
 - Pflichtfelder: Wird eine Antwort wieder gelöscht oder abgewählt, meldet der Player der Testumgebung wieder eine unvollständige Aufgabe. Bisher blieb sie ab dem ersten vollständigen Stand als vollständig gemeldet — die Testumgebung ließ das Blättern zu, und die Meldung „Eingabe erforderlich" blieb aus, weil der Player sie erst nach einer verweigerten Navigation zeigt ([#1354](https://github.com/iqb-berlin/verona-modules-aspect/issues/1354))
 - Bildbereiche: Der im Editor gesetzte Schreibschutz sperrt jetzt alle Bereiche des Elements. Bisher blieben sie anklickbar; es wirkte nur der Schreibschutz, der für einen einzelnen Bereich gesetzt war ([#1051](https://github.com/iqb-berlin/verona-modules-aspect/issues/1051))

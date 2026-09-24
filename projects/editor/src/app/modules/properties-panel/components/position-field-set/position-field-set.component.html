@@ -118,7 +118,7 @@
 
   <ng-container *ngIf="!isZIndexDisabled">
     {{ 'propertiesPanel.stacking' | translate }}<br>
-    <mat-form-field appearance="fill">
+    <mat-form-field class="wide-form-field" appearance="fill">
       <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
       <input matInput type="number" aspectNumberField required
              [ngModel]="positionProperties.zIndex"

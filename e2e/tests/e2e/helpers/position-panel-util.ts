@@ -127,7 +127,9 @@ export function setDimensionValueForced(label: string, value: number | string): 
 }
 
 export function tickCheckbox(label: string): void {
-  cy.contains('mat-checkbox', label).scrollIntoView().should('be.visible').click();
+  cy.contains('mat-checkbox', label).scrollIntoView().should('be.visible')
+    .contains(label)
+    .click();
 }
 
 export function setMarginValue(label: string, value: number): void {

@@ -88,6 +88,36 @@ describe('distpack', () => {
     expect(result).toContain('srcdoc="<p>inner</p>"');
   });
 
+  it('should inline the same page into every sibling iframe that references it', () => {
+    const fileMap = fileMapOf({
+      'web/1.html': '<html><body><iframe src="2.html"></iframe><iframe src="2.html"></iframe></body></html>',
+      'web/2.html': '<p>inner</p>'
+    });
+    const result = distpack(fileMap, 'web/1.html') as string;
+    expect(result.match(/srcdoc="<p>inner<\/p>"/g)).toHaveLength(2);
+    expect(result).not.toContain('src="2.html"');
+  });
+
+  it('should stop a circular iframe reference instead of recursing forever', () => {
+    const fileMap = fileMapOf({
+      'web/1.html': '<html><body><iframe src="2.html"></iframe></body></html>',
+      'web/2.html': '<p>inner</p><iframe src="1.html"></iframe>'
+    });
+    const result = distpack(fileMap, 'web/1.html') as string;
+    expect(result).toContain('inner');
+    // The cycle back to the entry stays a plain src reference.
+    expect(result).toContain('1.html');
+  });
+
+  it('should inline an m4a audio reference with the audio/mp4 MIME type', () => {
+    const fileMap = fileMapOf({
+      'web/1.html': "<html><body><script>var a = 'sounds/beep.m4a';</script></body></html>",
+      'web/sounds/beep.m4a': 'M4ADATA'
+    });
+    const result = distpack(fileMap, 'web/1.html');
+    expect(result).toContain(`'data:audio/mp4;base64,${btoa('M4ADATA')}'`);
+  });
+
   it('should leave external references untouched', () => {
     const html = '<html><body><script src="https://example.org/x.js"></script>' +
       '<img src="https://example.org/x.png"></body></html>';

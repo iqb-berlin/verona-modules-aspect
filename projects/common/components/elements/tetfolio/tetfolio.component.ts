@@ -8,8 +8,11 @@ import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { injectTetfolioBridge } from 'common/utils/tetfolio-bridge';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
-/** Renders a tetfolio element's packed HTML document in a sandboxed iframe and relays the
-   resize and state messages the embedded app posts back over the bridge. */
+/** Renders a tetfolio element's packed HTML document in a blob-URL iframe and relays the
+   resize and state messages the embedded app posts back over the bridge. The iframe is NOT
+   sandboxed - a blob URL shares the player's origin, and the bridge relies on that (storage,
+   postMessage source checks). The content is design-time author content, the same trust level
+   as the rest of the unit definition; see docs/tetfolio-element.md. */
 @Component({
   selector: 'aspect-tetfolio',
   templateUrl: './tetfolio.component.html',
@@ -51,7 +54,7 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
 
   private initIframe(): void {
     if (this.elementModel.htmlContent) {
-      const html = injectTetfolioBridge(this.elementModel.htmlContent, this.savedState);
+      const html = injectTetfolioBridge(this.elementModel.htmlContent, this.savedState, this.elementModel.id);
       const blob = new Blob([html], { type: 'text/html' });
       this.blobUrl = URL.createObjectURL(blob);
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.blobUrl);

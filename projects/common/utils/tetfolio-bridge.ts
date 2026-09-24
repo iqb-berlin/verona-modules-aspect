@@ -7,6 +7,26 @@
  * string before the iframe is created - the same string-level technique
  * the distpacker itself uses. This module owns everything about that
  * script; the component only calls injectTetfolioBridge().
+ *
+ * A blob iframe shares the parent's origin, so every tetfolio element in a
+ * tab writes into ONE sessionStorage. The bridge therefore namespaces the
+ * experiment's state keys per element: what the experiment reads and writes
+ * under `ibe_logger-<pageId>` physically lands under
+ * `<element scope>ibe_logger-<pageId>` (see storageScopeOf), rewritten
+ * transparently in the setItem/getItem/removeItem patches. Two elements -
+ * even two copies of the SAME experiment, whose pageId-derived key names are
+ * identical - can then never clear or overwrite each other's state. The
+ * reported state and the seeded state keep the RAW key names, so stored
+ * answers are independent of the element id and survive duplication.
+ *
+ * Why the iframe is not sandboxed: `sandbox="allow-scripts"` gives the
+ * document an opaque origin - and a NESTED iframe inside it gets an opaque
+ * origin OF ITS OWN (verified in Chromium 2026-09: parent-child
+ * `contentWindow` access throws SecurityError in both directions). Tet.folio
+ * exports load the experiment as a nested page and the outer page reaches
+ * into its `contentWindow` (see `replaceIframes()` in the distpacker), so a
+ * sandboxed tetfolio element would break every such export. The trust model
+ * is documented in docs/tetfolio-element.md.
  */
 
 /**
@@ -26,9 +46,19 @@ export const TETFOLIO_REPLAY_MARGIN_MS = 1500;
 export const TETFOLIO_INIT_SETTLE_MS = 4000;
 
 /**
- * Extract the element's own state keys from the packed HTML, so that
- * multiple tetfolio elements in the same tab (shared sessionStorage)
- * never capture or seed each other's experiment state.
+ * The per-element namespace prepended to every state key in the tab's shared
+ * sessionStorage. Derived from the element id, which is unique within a unit
+ * - unlike the experiment's pageId, which is identical for two copies of the
+ * same export.
+ */
+export function storageScopeOf(elementId: string): string {
+  return `tetfolio:${elementId}::`;
+}
+
+/**
+ * Extract the element's own state keys from the packed HTML. They scope the
+ * capture to experiment state (framework keys stay untouched); the
+ * cross-element isolation itself comes from the element-id namespace.
  */
 export function extractTetfolioStateKeys(htmlContent: string): string[] {
   const keys: string[] = [];
@@ -48,12 +78,14 @@ export function extractTetfolioStateKeys(htmlContent: string): string[] {
   return keys;
 }
 
-function buildBridgeScript(savedState: string | null, stateKeys: string[]): string {
+function buildBridgeScript(savedState: string | null, stateKeys: string[], elementId: string): string {
   const keys = JSON.stringify(stateKeys);
   const prefix = JSON.stringify(TETFOLIO_STATE_KEY_PREFIX);
+  const scope = JSON.stringify(storageScopeOf(elementId));
   // Seed the saved state synchronously at document parse time, so it is
   // guaranteed to be present before the experiment's own autoRestore()
-  // (which waits for inner-iframe load + tet:afterinit) reads it.
+  // (which waits for inner-iframe load + tet:afterinit) reads it. The saved
+  // state carries raw key names; they are scoped on the way in.
   const seed = savedState ? `
   try {
     var seededState = ${JSON.stringify(savedState)};
@@ -61,7 +93,7 @@ function buildBridgeScript(savedState: string | null, stateKeys: string[]): stri
     for (var seedKey in parsedState) {
       if (Object.prototype.hasOwnProperty.call(parsedState, seedKey) && matchesKey(seedKey)) {
         seededSnapshot[seedKey] = parsedState[seedKey];
-        window.sessionStorage.setItem(seedKey, parsedState[seedKey]);
+        origSetItem.call(window.sessionStorage, scoped(seedKey), parsedState[seedKey]);
       }
     }
   } catch (e) { console.warn('tetfolio-bridge: state seeding failed', e); }
@@ -70,6 +102,7 @@ function buildBridgeScript(savedState: string | null, stateKeys: string[]): stri
 (function() {
   var STATE_KEYS = ${keys};
   var STATE_KEY_PREFIX = ${prefix};
+  var SCOPE_PREFIX = ${scope};
   var RESTORE_DELAY_MS = ${TETFOLIO_RESTORE_DELAY_MS};
   var REPLAY_MARGIN_MS = ${TETFOLIO_REPLAY_MARGIN_MS};
   var INIT_SETTLE_MS = ${TETFOLIO_INIT_SETTLE_MS};
@@ -77,18 +110,31 @@ function buildBridgeScript(savedState: string | null, stateKeys: string[]): stri
     if (STATE_KEYS.length > 0) return STATE_KEYS.indexOf(String(key)) >= 0;
     return String(key).indexOf(STATE_KEY_PREFIX) === 0;
   }
+  // The experiment addresses its keys by their raw names; physically they are
+  // stored under the element's own namespace, so a second element in the same
+  // tab - even one showing the same experiment - reads and writes elsewhere.
+  // The rewrite covers the method calls the logger is known to use; an
+  // experiment that ENUMERATED sessionStorage to find its keys would not see
+  // them, but the logger derives its key from the pageId and reads it
+  // directly.
+  function scoped(key) { return SCOPE_PREFIX + key; }
   var origSetItem = Storage.prototype.setItem;
+  var origGetItem = Storage.prototype.getItem;
   var origRemoveItem = Storage.prototype.removeItem;
   var seededSnapshot = {};
   // Clear own keys BEFORE seeding: sessionStorage is per-tab and survives
   // logout/login on a shared device, so leftover state from a previous
   // user must never become this session's starting point. After this,
   // the state persisted by the Testcenter is the single source of truth.
+  // Only keys inside this element's namespace are touched.
   try {
     var staleKeys = [];
     for (var si = 0; si < window.sessionStorage.length; si++) {
       var staleKey = window.sessionStorage.key(si);
-      if (staleKey && matchesKey(staleKey)) staleKeys.push(staleKey);
+      if (staleKey && staleKey.indexOf(SCOPE_PREFIX) === 0 &&
+          matchesKey(staleKey.substring(SCOPE_PREFIX.length))) {
+        staleKeys.push(staleKey);
+      }
     }
     for (var sj = 0; sj < staleKeys.length; sj++) {
       origRemoveItem.call(window.sessionStorage, staleKeys[sj]);
@@ -101,7 +147,7 @@ ${seed}
   function reseed(snapshot) {
     for (var key in snapshot) {
       if (Object.prototype.hasOwnProperty.call(snapshot, key)) {
-        origSetItem.call(window.sessionStorage, key, snapshot[key]);
+        origSetItem.call(window.sessionStorage, scoped(key), snapshot[key]);
       }
     }
   }
@@ -111,18 +157,22 @@ ${seed}
     }
     return false;
   }
+  // Raw key names in, raw key names out - the scope stays a storage detail.
   function collectStateRaw() {
     var state = {};
+    var value;
     if (STATE_KEYS.length > 0) {
       for (var i = 0; i < STATE_KEYS.length; i++) {
-        var value = window.sessionStorage.getItem(STATE_KEYS[i]);
+        value = origGetItem.call(window.sessionStorage, scoped(STATE_KEYS[i]));
         if (value !== null) state[STATE_KEYS[i]] = value;
       }
     } else {
       for (var j = 0; j < window.sessionStorage.length; j++) {
         var key = window.sessionStorage.key(j);
-        if (key && matchesKey(key)) {
-          state[key] = window.sessionStorage.getItem(key);
+        if (key && key.indexOf(SCOPE_PREFIX) === 0 &&
+            matchesKey(key.substring(SCOPE_PREFIX.length))) {
+          state[key.substring(SCOPE_PREFIX.length)] =
+            origGetItem.call(window.sessionStorage, key);
         }
       }
     }
@@ -190,15 +240,25 @@ ${seed}
     }, 300);
   }
   Storage.prototype.setItem = function(key, value) {
-    origSetItem.apply(this, arguments);
-    if (this === window.sessionStorage && matchesKey(key) && !captureSuppressed) {
-      reportStateDebounced();
+    if (this === window.sessionStorage && matchesKey(key)) {
+      origSetItem.call(this, scoped(key), value);
+      if (!captureSuppressed) reportStateDebounced();
+    } else {
+      origSetItem.apply(this, arguments);
     }
   };
+  Storage.prototype.getItem = function(key) {
+    if (this === window.sessionStorage && matchesKey(key)) {
+      return origGetItem.call(this, scoped(key));
+    }
+    return origGetItem.apply(this, arguments);
+  };
   Storage.prototype.removeItem = function(key) {
-    origRemoveItem.apply(this, arguments);
-    if (this === window.sessionStorage && matchesKey(key) && !captureSuppressed) {
-      reportStateDebounced();
+    if (this === window.sessionStorage && matchesKey(key)) {
+      origRemoveItem.call(this, scoped(key));
+      if (!captureSuppressed) reportStateDebounced();
+    } else {
+      origRemoveItem.apply(this, arguments);
     }
   };
   function reportSize() {
@@ -217,11 +277,12 @@ ${seed}
 
 /**
  * Splice the bridge script into the packed unit HTML, scoped to the
- * element's own state keys and optionally seeding a saved state.
+ * element's own state keys and storage namespace (see module docs) and
+ * optionally seeding a saved state.
  */
-export function injectTetfolioBridge(html: string, savedState: string | null): string {
+export function injectTetfolioBridge(html: string, savedState: string | null, elementId: string): string {
   const stateKeys = extractTetfolioStateKeys(html);
-  const bridge = buildBridgeScript(savedState, stateKeys);
+  const bridge = buildBridgeScript(savedState, stateKeys, elementId);
   const idx = html.lastIndexOf('</body>');
   if (idx !== -1) {
     return html.substring(0, idx) + bridge + html.substring(idx);

@@ -71,16 +71,21 @@ describe('WidgetPeriodicTableComponent', () => {
     });
   });
 
-  /* The widget falls back to its own colours only for a missing key; an empty one it takes as given
-     and draws the fields in a teal of its stylesheet (#1420). */
-  it('should leave out a colour whose field was emptied', () => {
+  /* The host keeps a shared value until it is overwritten, so a colour left out would show the one of
+     the periodic table opened before; an empty one the widget would draw in a teal of its stylesheet.
+     An emptied field sends the widget's own fallback, which is the default (#1475). */
+  it.each([
+    ['text', { fieldTextColor: '', fieldBackgroundColor: '#abcdef' },
+      { textColor: '#ffffff', backgroundColor: '#abcdef' }],
+    ['background', { fieldTextColor: '#000000', fieldBackgroundColor: '' },
+      { textColor: '#000000', backgroundColor: '#6b369a' }]
+  ])('should send the default for an emptied %s colour', (_, colours, expected) => {
     vi.spyOn(component.widgetCallEvent, 'emit');
-    component.elementModel.fieldTextColor = '#000000';
-    component.elementModel.fieldBackgroundColor = '';
+    Object.assign(component.elementModel, colours);
 
     component.emitWidgetCall();
 
     expect(vi.mocked(component.widgetCallEvent.emit).mock.lastCall?.[0]?.sharedParameters)
-      .toEqual({ textColor: '#000000' });
+      .toEqual(expected);
   });
 });

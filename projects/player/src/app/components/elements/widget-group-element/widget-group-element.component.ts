@@ -15,6 +15,7 @@ import {
   WidgetMoleculeEditorElement
 } from 'common/models/elements/widget-molecule-editor';
 import { StringUtils } from 'player/src/app/classes/string-utils';
+import { SharedParametersService } from 'player/src/app/services/shared-parameters.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
@@ -40,7 +41,8 @@ export class WidgetGroupElementComponent
     public veronaPostService: VeronaPostService,
     private veronaSubscriptionService: VeronaSubscriptionService,
     private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private sharedParametersService: SharedParametersService
   ) {
     super();
   }
@@ -79,7 +81,11 @@ export class WidgetGroupElementComponent
   ): void {
     const currentState =
       (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state;
+    const sharedParameters = WidgetGroupElementComponent.toKeyValues(event.sharedParameters);
 
+    // The host keeps a shared value until it is overwritten, and only one widget is open at a time:
+    // shared before every call, the values of this element are the ones its widget starts with.
+    this.sharedParametersService.share(sharedParameters);
     this.veronaPostService.sendVopWidgetCall({
       callId: this.currentCallId,
       widgetType,
@@ -88,8 +94,9 @@ export class WidgetGroupElementComponent
         // The widget's language is the player's, not a setting of the task (#1420).
         { key: 'LANGUAGE', value: this.translateService.currentLang ?? this.translateService.defaultLang }
       ],
-      // The player API has no such field in vopWidgetCall; the studio passes it on to the widget.
-      sharedParameters: WidgetGroupElementComponent.toKeyValues(event.sharedParameters),
+      // Not a field of vopWidgetCall in the player API. The studio hands the widget only the shared
+      // values of the call, not the ones it collected from the player state (studio-lite#1689).
+      sharedParameters,
       ...(currentState ?
         { state: currentState as string } : {})
     });

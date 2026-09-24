@@ -4,6 +4,7 @@ import {
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
 import { WidgetPeriodicTableCall } from 'common/models/widget-interfaces';
 import { ElementComponent } from 'common/directives/element-component.directive';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 @Component({
   selector: 'aspect-widget-periodic-table',
@@ -30,9 +31,10 @@ export class WidgetPeriodicTableComponent extends ElementComponent {
         maxNumberOfSelections: this.elementModel.maxNumberOfSelections
       },
       sharedParameters: {
-        ...(this.elementModel.fieldTextColor ? { textColor: this.elementModel.fieldTextColor } : {}),
-        ...(this.elementModel.fieldBackgroundColor ?
-          { backgroundColor: this.elementModel.fieldBackgroundColor } : {})
+        textColor: this.elementModel.fieldTextColor ||
+          ELEMENT_DEFAULTS['widget-periodic-table'].fieldTextColor,
+        backgroundColor: this.elementModel.fieldBackgroundColor ||
+          ELEMENT_DEFAULTS['widget-periodic-table'].fieldBackgroundColor
       }
     };
     this.widgetCallEvent.emit(call);

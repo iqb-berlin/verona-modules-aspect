@@ -6,6 +6,7 @@ import { WidgetPeriodicTableElement } from 'common/models/elements/widget-period
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
+import { SharedParametersService } from 'player/src/app/services/shared-parameters.service';
 import { WidgetPeriodicTableCall } from 'common/models/widget-interfaces';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
@@ -109,6 +110,26 @@ describe('WidgetGroupElementComponent', () => {
 
     expect(vi.mocked(veronaPostService.sendVopWidgetCall).mock.lastCall?.[0].parameters)
       .toContainEqual({ key: 'LANGUAGE', value: 'en' });
+  });
+
+  /* The player API carries shared values in the player state. The host has to hold them before the
+     widget starts, so the share goes out ahead of the call (#1475). */
+  it('should share the shared parameters before it calls the widget', () => {
+    const sent: string[] = [];
+    vi.spyOn(TestBed.inject(SharedParametersService), 'share')
+      .mockImplementation(parameters => sent.push(`share ${JSON.stringify(parameters)}`));
+    vi.spyOn(TestBed.inject(VeronaPostService), 'sendVopWidgetCall')
+      .mockImplementation(() => sent.push('call'));
+
+    component.applyWidgetCall(periodicTableCall, 'PERIODIC_TABLE');
+
+    expect(sent).toEqual([
+      `share ${JSON.stringify([
+        { key: 'TEXT_COLOR', value: '#000000' },
+        { key: 'BACKGROUND_COLOR', value: '#abcdef' }
+      ])}`,
+      'call'
+    ]);
   });
 
   it('should update elementModel state and call changeElementCodeValue on vopWidgetReturn', () => {

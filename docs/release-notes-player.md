@@ -1,6 +1,9 @@
 Player
 ======
 ## next
+### Änderungen
+- Periodensystem, Molekül-Editor: Vor dem Öffnen des Widgets meldet der Player die Farben der Elementfelder und die Darstellungsart des Molekül-Editors in seiner Statusmeldung an die Testumgebung (`playerState.sharedParameters`). Das ist der Weg, den die Verona-Spezifikation für Werte vorsieht, die ein Modul mit anderen teilt; eine Testumgebung, die ihn unterstützt, gibt sie an das Widget weiter. Zusätzlich stehen die Werte im Aufruf des Widgets (`vopWidgetCall.sharedParameters`), einem Feld, das die Spezifikation dort nicht kennt: Das Studio gibt die gemeldeten Werte noch nicht weiter und übergibt dem Widget nur die aus dem Aufruf ([#1475](https://github.com/iqb-berlin/verona-modules-aspect/issues/1475))
+
 ### Fehlerbehebungen
 - Periodensystem: Gibt das Widget eine leere Auswahl zurück, übernimmt der Player sie jetzt als Antwort. Bisher blieb dann die vorige Auswahl stehen. Das Widget selbst (1.0.0) lässt das Speichern einer leeren Auswahl allerdings nicht zu, es ist dort nicht umgesetzt: Sein Speichern-Knopf ist gesperrt, solange nichts ausgewählt ist. Eine gegebene Antwort lässt sich deshalb weiterhin nicht löschen ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
 

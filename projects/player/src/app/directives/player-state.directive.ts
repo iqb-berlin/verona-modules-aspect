@@ -1,7 +1,7 @@
 import {
   Directive, Input, OnChanges, OnDestroy, OnInit, SimpleChanges
 } from '@angular/core';
-import { PlayerState, ValidPage } from 'player/modules/verona/models/verona';
+import { PlayerState, SharedParameter, ValidPage } from 'player/modules/verona/models/verona';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
@@ -9,6 +9,7 @@ import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { NavigationService } from 'player/src/app/services/navigation.service';
+import { SharedParametersService } from 'player/src/app/services/shared-parameters.service';
 
 @Directive({
   selector: '[aspectPlayerState]',
@@ -23,7 +24,8 @@ export class PlayerStateDirective implements OnChanges, OnInit, OnDestroy {
   constructor(
     private translateService: TranslateService,
     private veronaPostService: VeronaPostService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private sharedParametersService: SharedParametersService
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +37,15 @@ export class PlayerStateDirective implements OnChanges, OnInit, OnDestroy {
       .subscribe(isVisibleIndexPages => {
         this.validPages = this.getValidPages(isVisibleIndexPages);
         this.sendVopStateChangedNotification();
+      });
+    // Not debounced: a widget call follows right after its share, and the host has to have the values
+    // before the widget starts. The pages are taken as they are now -- the debounced list may still
+    // be pending, and a host that takes the pages of every player state would show a stale one.
+    this.sharedParametersService.shared
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(sharedParameters => {
+        this.validPages = this.getValidPages(this.isVisibleIndexPages.value);
+        this.sendVopStateChangedNotification(sharedParameters);
       });
   }
 
@@ -58,10 +69,11 @@ export class PlayerStateDirective implements OnChanges, OnInit, OnDestroy {
       );
   }
 
-  private sendVopStateChangedNotification(): void {
+  private sendVopStateChangedNotification(sharedParameters?: SharedParameter[]): void {
     const playerState: PlayerState = {
       currentPage: this.currentPageIndex.toString(10),
-      validPages: this.mapValidPagesToArray()
+      validPages: this.mapValidPagesToArray(),
+      ...(sharedParameters ? { sharedParameters } : {})
     };
     LogService.debug('player: sendVopStateChangedNotification', playerState);
     this.veronaPostService.sendVopStateChangedNotification({ playerState });

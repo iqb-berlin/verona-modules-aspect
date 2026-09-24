@@ -6,6 +6,7 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 import { NavigationService } from 'player/src/app/services/navigation.service';
+import { SharedParametersService } from 'player/src/app/services/shared-parameters.service';
 import { PlayerStateDirective } from './player-state.directive';
 
 /*
@@ -18,6 +19,7 @@ describe('PlayerStateDirective', () => {
   let isVisibleIndexPages: BehaviorSubject<IsVisibleIndex[]>;
   let veronaPostService: SpyObj<VeronaPostService>;
   let navigationService: { currentPageIndexChanged: EventEmitter<number> };
+  let sharedParametersService: SharedParametersService;
 
   const lastPlayerState = () => {
     const calls = veronaPostService.sendVopStateChangedNotification.mock.calls;
@@ -42,11 +44,13 @@ describe('PlayerStateDirective', () => {
     isVisibleIndexPages = new BehaviorSubject<IsVisibleIndex[]>([]);
     veronaPostService = createSpyObj<VeronaPostService>(['sendVopStateChangedNotification']);
     navigationService = { currentPageIndexChanged: new EventEmitter<number>() };
+    sharedParametersService = new SharedParametersService();
 
     directive = new PlayerStateDirective(
       { instant: (key: string, params: { index: number }) => `${key}-${params.index}` } as TranslateService,
       veronaPostService,
-      navigationService as NavigationService
+      navigationService as NavigationService,
+      sharedParametersService
     );
   });
 
@@ -118,4 +122,68 @@ describe('PlayerStateDirective', () => {
 
     expect(veronaPostService.sendVopStateChangedNotification).not.toHaveBeenCalled();
   }));
+
+  describe('shared parameters (#1475)', () => {
+    const shared = [{ key: 'BONDING_TYPE', value: 'VALENCE' }];
+
+    /* The testcenter takes the page list of every player state it receives: one without pages would
+       empty its navigation. */
+    it('should send them at once, together with the pages', fakeAsync(() => {
+      initDirective();
+      isVisibleIndexPages.next([
+        { index: 0, isVisible: true },
+        { index: 1, isVisible: true }
+      ]);
+      tick(50);
+      setCurrentPageIndex(1);
+      veronaPostService.sendVopStateChangedNotification.mockClear();
+
+      sharedParametersService.share(shared);
+
+      expect(veronaPostService.sendVopStateChangedNotification).toHaveBeenCalledTimes(1);
+      expect(lastPlayerState()).toEqual({
+        currentPage: '1',
+        validPages: [
+          { id: '0', label: 'pageIndication-1' },
+          { id: '1', label: 'pageIndication-2' }
+        ],
+        sharedParameters: shared
+      });
+      directive.ngOnDestroy();
+    }));
+
+    it('should send the pages as they are, not as the pending debounce last saw them', fakeAsync(() => {
+      initDirective();
+      tick(50);
+      isVisibleIndexPages.next([{ index: 0, isVisible: true }]);
+
+      sharedParametersService.share(shared);
+
+      expect(lastPlayerState()?.validPages).toEqual([{ id: '0', label: 'pageIndication-1' }]);
+      tick(50);
+      directive.ngOnDestroy();
+    }));
+
+    it('should leave them out of a page change', fakeAsync(() => {
+      initDirective();
+      tick(50);
+      sharedParametersService.share(shared);
+
+      setCurrentPageIndex(1);
+
+      expect(lastPlayerState()).not.toHaveProperty('sharedParameters');
+      directive.ngOnDestroy();
+    }));
+
+    it('should stop sending them after destruction', fakeAsync(() => {
+      initDirective();
+      tick(50);
+      veronaPostService.sendVopStateChangedNotification.mockClear();
+
+      directive.ngOnDestroy();
+      sharedParametersService.share(shared);
+
+      expect(veronaPostService.sendVopStateChangedNotification).not.toHaveBeenCalled();
+    }));
+  });
 });

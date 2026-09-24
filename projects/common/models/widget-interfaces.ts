@@ -23,13 +23,15 @@ export interface WidgetPeriodicTableParameters {
 }
 
 /**
- * The colours of the element fields; with `highlightBlocks` the background comes from the block. A
- * colour is left out when the field in the editor is empty: the widget falls back to its own default
- * only for a missing key, and an empty one leaves the fields in a colour nobody chose.
+ * The colours of the element fields; with `highlightBlocks` the background comes from the block. Both
+ * are always there, because the host keeps a shared value until it is overwritten: a colour left out
+ * would show the one of the periodic table opened before. An empty field in the editor sends the
+ * default instead, which is the widget's own fallback (#1420) -- an empty value the widget would take
+ * as given and draw the fields in a colour nobody chose (#1475).
  */
 export interface WidgetPeriodicTableSharedParameters {
-  textColor?: string;
-  backgroundColor?: string;
+  textColor: string;
+  backgroundColor: string;
 }
 
 export type WidgetPeriodicTableCall =

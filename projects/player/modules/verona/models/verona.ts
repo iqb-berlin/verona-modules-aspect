@@ -37,6 +37,7 @@ export interface UnitState {
 export interface PlayerState {
   validPages?: ValidPage[];
   currentPage?: string;
+  sharedParameters?: SharedParameter[];
 }
 
 export interface ValidPage {

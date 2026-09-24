@@ -5,7 +5,9 @@ import { AbstractIDService } from 'common/models/id-interfaces';
 import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
-import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
+import {
+  DimensionProperties, PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
 
 /** An embedded Tetfolio unit: `htmlContent` holds a self-contained HTML document (packed from a
    Tetfolio export zip in the editor), which the component renders in a same-origin blob-URL
@@ -15,11 +17,10 @@ export class TetfolioElement extends UIElement implements TetfolioProperties {
   type: UIElementType = 'tetfolio';
   htmlContent: string = ELEMENT_DEFAULTS.tetfolio.htmlContent;
   state: string | null = ELEMENT_DEFAULTS.tetfolio.state;
-  dimensions: {
-    width: number;
-    height: number;
-  } = PropertyGroupGenerators
-      .generateDimensionProps(ELEMENT_DEFAULTS.tetfolio.dimensions);
+  /** Full group, not just width/height: the component reads `isHeightFixed`, `minHeight` and
+     `maxHeight` to decide whether and how far the iframe follows its content's height. */
+  dimensions: DimensionProperties = PropertyGroupGenerators
+    .generateDimensionProps(ELEMENT_DEFAULTS.tetfolio.dimensions);
 
   /** No styling: the iframe document brings its own styles, no template reads a styling value. */
   styling: Record<never, never> = {};
@@ -59,10 +60,7 @@ export interface TetfolioProperties extends UIElementProperties {
   styling?: Record<never, never>;
   htmlContent: string;
   state: string | null;
-  dimensions: {
-    width: number;
-    height: number;
-  };
+  dimensions: DimensionProperties;
 }
 
 function isTetfolioProperties(

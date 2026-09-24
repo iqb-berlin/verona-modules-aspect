@@ -40,6 +40,7 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
   }
 
   ngOnInit(): void {
+    this.iframeHeight = this.elementModel.dimensions.height;
     this.initIframe();
     this.setupMessageListener();
   }
@@ -77,13 +78,23 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
     }
   }
 
+  // The authored dimensions govern how far the iframe follows its content:
+  // a fixed height ignores the content's size entirely (it scrolls inside),
+  // otherwise the reported height is clamped to the min/max bounds. The
+  // panel's height value is the initial height until the first report.
   private onResize(height: number): void {
     if (!height || height <= 0) return;
-    this.iframeHeight = height;
+    const { isHeightFixed, minHeight, maxHeight } = this.elementModel.dimensions;
+    if (isHeightFixed) return;
+    const boundedHeight = Math.min(
+      Math.max(height, minHeight ?? 0),
+      maxHeight ?? Number.MAX_SAFE_INTEGER
+    );
+    this.iframeHeight = boundedHeight;
     const hostEl = this.elementRef.nativeElement;
-    this.renderer.setStyle(hostEl, 'height', `${height}px`);
+    this.renderer.setStyle(hostEl, 'height', `${boundedHeight}px`);
     if (hostEl.parentElement) {
-      this.renderer.setStyle(hostEl.parentElement, 'height', `${height}px`);
+      this.renderer.setStyle(hostEl.parentElement, 'height', `${boundedHeight}px`);
     }
     this.changeDetectorRef.detectChanges();
   }

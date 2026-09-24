@@ -30,6 +30,10 @@ distpack()                    ──────►     htmlContent: one        
   `injectTetfolioBridge()` (`common/utils/tetfolio-bridge.ts`) to splice a script into that HTML,
   builds a `Blob` URL from it and shows it in an iframe. The bridge script reports the document
   height (`tetfolioResize`) and state changes (`tetfolioStateChanged`) via `postMessage`.
+  Height: the panel's height is the initial height; afterwards the iframe follows the content's
+  reported height, clamped to `minHeight`/`maxHeight` when set — and with `isHeightFixed` it
+  stays at the authored height and the content scrolls inside the iframe. Nothing is ever
+  clipped.
 - **Player**: `TetfolioGroupElementComponent` seeds the saved state into the model before the
   iframe is built and writes reported state changes into the unit state, mapped 1:1 as a string
   by `ElementModelElementCodeMappingService` (like `geometry` and `widget-periodic-table`).
@@ -52,7 +56,9 @@ element's single `string` answer variable. On reload the bridge seeds the keys b
 the experiment's own auto-restore reads them. The delays and re-seeding steps in the bridge look
 arbitrary but are not — the experiment replays its state with page-load animations that would
 otherwise overwrite the true state ("init pollution"); the module docs in `tetfolio-bridge.ts`
-are the authority on that timing.
+are the authority on that timing. One tradeoff is accepted by design: replay echoes are
+indistinguishable from user input, so input made *during* a restore's replay window is
+overwritten together with them — the bridge's runtime specs pin this behavior.
 
 ## Decisions a reviewer will ask about
 

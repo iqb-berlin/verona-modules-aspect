@@ -19,6 +19,14 @@
  * reported state and the seeded state keep the RAW key names, so stored
  * answers are independent of the element id and survive duplication.
  *
+ * Accepted tradeoff, by design: while a restore replays the seeded state,
+ * capture is suppressed and the replay window ends with `reseed(basis)` -
+ * because the replay's own storage writes ("echoes") are indistinguishable
+ * from user input, input made during that window is overwritten along with
+ * them. Without a restore, input before INIT_SETTLE_MS is kept in storage
+ * but only reported with the next change after the settle. The runtime
+ * specs pin both behaviors.
+ *
  * Why the iframe is not sandboxed: `sandbox="allow-scripts"` gives the
  * document an opaque origin - and a NESTED iframe inside it gets an opaque
  * origin OF ITS OWN (verified in Chromium 2026-09: parent-child
@@ -44,6 +52,21 @@ export const TETFOLIO_REPLAY_MARGIN_MS = 1500;
 
 /** Fallback: enable capture if no restore happens (see module docs). */
 export const TETFOLIO_INIT_SETTLE_MS = 4000;
+
+/** Debounce for reporting a state change to the host component. */
+export const TETFOLIO_REPORT_DEBOUNCE_MS = 300;
+
+/**
+ * Overrides for the bridge's timing windows. Production uses the exported
+ * constants; the runtime specs shrink the windows so the suppression, replay
+ * and settle behavior can be exercised in milliseconds instead of seconds.
+ */
+export interface TetfolioBridgeTimings {
+  restoreDelayMs?: number;
+  replayMarginMs?: number;
+  initSettleMs?: number;
+  reportDebounceMs?: number;
+}
 
 /**
  * The per-element namespace prepended to every state key in the tab's shared
@@ -78,10 +101,16 @@ export function extractTetfolioStateKeys(htmlContent: string): string[] {
   return keys;
 }
 
-function buildBridgeScript(savedState: string | null, stateKeys: string[], elementId: string): string {
+function buildBridgeScript(
+  savedState: string | null, stateKeys: string[], elementId: string, timings?: TetfolioBridgeTimings
+): string {
   const keys = JSON.stringify(stateKeys);
   const prefix = JSON.stringify(TETFOLIO_STATE_KEY_PREFIX);
   const scope = JSON.stringify(storageScopeOf(elementId));
+  const restoreDelayMs = timings?.restoreDelayMs ?? TETFOLIO_RESTORE_DELAY_MS;
+  const replayMarginMs = timings?.replayMarginMs ?? TETFOLIO_REPLAY_MARGIN_MS;
+  const initSettleMs = timings?.initSettleMs ?? TETFOLIO_INIT_SETTLE_MS;
+  const reportDebounceMs = timings?.reportDebounceMs ?? TETFOLIO_REPORT_DEBOUNCE_MS;
   // Seed the saved state synchronously at document parse time, so it is
   // guaranteed to be present before the experiment's own autoRestore()
   // (which waits for inner-iframe load + tet:afterinit) reads it. The saved
@@ -103,9 +132,9 @@ function buildBridgeScript(savedState: string | null, stateKeys: string[], eleme
   var STATE_KEYS = ${keys};
   var STATE_KEY_PREFIX = ${prefix};
   var SCOPE_PREFIX = ${scope};
-  var RESTORE_DELAY_MS = ${TETFOLIO_RESTORE_DELAY_MS};
-  var REPLAY_MARGIN_MS = ${TETFOLIO_REPLAY_MARGIN_MS};
-  var INIT_SETTLE_MS = ${TETFOLIO_INIT_SETTLE_MS};
+  var RESTORE_DELAY_MS = ${restoreDelayMs};
+  var REPLAY_MARGIN_MS = ${replayMarginMs};
+  var INIT_SETTLE_MS = ${initSettleMs};
   function matchesKey(key) {
     if (STATE_KEYS.length > 0) return STATE_KEYS.indexOf(String(key)) >= 0;
     return String(key).indexOf(STATE_KEY_PREFIX) === 0;
@@ -237,7 +266,7 @@ ${seed}
         type: 'tetfolioStateChanged',
         state: JSON.stringify(collectStateRaw())
       }, '*');
-    }, 300);
+    }, ${reportDebounceMs});
   }
   Storage.prototype.setItem = function(key, value) {
     if (this === window.sessionStorage && matchesKey(key)) {
@@ -278,11 +307,13 @@ ${seed}
 /**
  * Splice the bridge script into the packed unit HTML, scoped to the
  * element's own state keys and storage namespace (see module docs) and
- * optionally seeding a saved state.
+ * optionally seeding a saved state. `timings` is for tests only.
  */
-export function injectTetfolioBridge(html: string, savedState: string | null, elementId: string): string {
+export function injectTetfolioBridge(
+  html: string, savedState: string | null, elementId: string, timings?: TetfolioBridgeTimings
+): string {
   const stateKeys = extractTetfolioStateKeys(html);
-  const bridge = buildBridgeScript(savedState, stateKeys, elementId);
+  const bridge = buildBridgeScript(savedState, stateKeys, elementId, timings);
   const idx = html.lastIndexOf('</body>');
   if (idx !== -1) {
     return html.substring(0, idx) + bridge + html.substring(idx);

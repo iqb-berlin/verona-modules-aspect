@@ -2,13 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'common/environment';
 import { TetfolioElement } from 'common/models/elements/tetfolio';
+import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { TetfolioComponent } from './tetfolio.component';
 
 describe('TetfolioComponent', () => {
   let component: TetfolioComponent;
   let fixture: ComponentFixture<TetfolioComponent>;
 
-  const createComponent = (htmlContent: string): void => {
+  const createComponent = (htmlContent: string, dimensions: Partial<DimensionProperties> = {}): void => {
     fixture = TestBed.createComponent(TetfolioComponent);
     component = fixture.componentInstance;
     component.elementModel = new TetfolioElement({
@@ -17,7 +18,14 @@ describe('TetfolioComponent', () => {
       alias: 'tetfolio_1',
       htmlContent
     });
+    Object.assign(component.elementModel.dimensions, dimensions);
     fixture.detectChanges();
+  };
+
+  /** A resize/state message the component accepts: its source must be the own iframe's window. */
+  const dispatchIframeMessage = (data: Record<string, unknown>): void => {
+    const iframe = fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement;
+    window.dispatchEvent(new MessageEvent('message', { data, source: iframe.contentWindow }));
   };
 
   beforeEach(async () => {
@@ -76,5 +84,37 @@ describe('TetfolioComponent', () => {
       data: { type: 'tetfolioStateChanged', state: '{}' }
     }));
     expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should emit the reported state for a message from its own iframe', () => {
+    createComponent('<html><body></body></html>');
+    const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
+    dispatchIframeMessage({ type: 'tetfolioStateChanged', state: '{"key":"value"}' });
+    expect(emitSpy).toHaveBeenCalledWith({ id: 'tetfolio_1', value: '{"key":"value"}' });
+  });
+
+  it('should start with the authored height from the model', () => {
+    createComponent('<html><body></body></html>', { height: 250 });
+    expect(component.iframeHeight).toBe(250);
+  });
+
+  it('should follow the content height reported by the iframe', () => {
+    createComponent('<html><body></body></html>', { height: 250 });
+    dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+    expect(component.iframeHeight).toBe(620);
+  });
+
+  it('should clamp the content height to the authored bounds', () => {
+    createComponent('<html><body></body></html>', { height: 250, minHeight: 200, maxHeight: 500 });
+    dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+    expect(component.iframeHeight).toBe(500);
+    dispatchIframeMessage({ type: 'tetfolioResize', height: 100 });
+    expect(component.iframeHeight).toBe(200);
+  });
+
+  it('should keep a fixed height regardless of the content height', () => {
+    createComponent('<html><body></body></html>', { height: 250, isHeightFixed: true });
+    dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+    expect(component.iframeHeight).toBe(250);
   });
 });

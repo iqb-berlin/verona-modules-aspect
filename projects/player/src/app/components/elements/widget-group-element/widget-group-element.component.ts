@@ -81,8 +81,12 @@ export class WidgetGroupElementComponent
     this.veronaPostService.sendVopWidgetCall({
       callId: this.currentCallId,
       widgetType,
+      // The widget specifications (verona-interfaces.github.io, widget-docs) write yes and no as "1" and "0"
       parameters: Object.entries(event)
-        .map(([key, value]) => ({ key: StringUtils.camelCaseToUpperSnakeCase(key), value: String(value) })),
+        .map(([key, value]) => ({
+          key: StringUtils.camelCaseToUpperSnakeCase(key),
+          value: typeof value === 'boolean' ? String(Number(value)) : String(value)
+        })),
       ...(currentState ?
         { state: currentState as string } : {})
     });

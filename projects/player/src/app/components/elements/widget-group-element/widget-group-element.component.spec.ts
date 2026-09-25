@@ -67,13 +67,26 @@ describe('WidgetGroupElementComponent', () => {
       callId: expect.any(String),
       widgetType: 'PERIODIC_TABLE',
       parameters: [
-        { key: 'SHOW_INFO_ORDER', value: 'true' },
-        { key: 'SHOW_INFO_E_NEG', value: 'false' },
-        { key: 'SHOW_INFO_A_MASS', value: 'true' },
-        { key: 'CLOSE_ON_SELECTION', value: 'true' },
+        { key: 'SHOW_INFO_ORDER', value: '1' },
+        { key: 'SHOW_INFO_E_NEG', value: '0' },
+        { key: 'SHOW_INFO_A_MASS', value: '1' },
+        { key: 'CLOSE_ON_SELECTION', value: '1' },
         { key: 'MAX_NUMBER_OF_SELECTIONS', value: '3' }
       ]
     }));
+  });
+
+  it('should send the bonding type as a call parameter and nothing besides', () => {
+    const veronaPostService = TestBed.inject(VeronaPostService);
+    vi.spyOn(veronaPostService, 'sendVopWidgetCall');
+
+    component.applyWidgetCall({ bondingType: 'ELECTRONS' }, 'MOLECULE_EDITOR');
+
+    expect(veronaPostService.sendVopWidgetCall).toHaveBeenCalledWith({
+      callId: expect.any(String),
+      widgetType: 'MOLECULE_EDITOR',
+      parameters: [{ key: 'BONDING_TYPE', value: 'ELECTRONS' }]
+    });
   });
 
   it('should update elementModel state and call changeElementCodeValue on vopWidgetReturn', () => {

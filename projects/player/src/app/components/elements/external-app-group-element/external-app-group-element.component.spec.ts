@@ -139,8 +139,8 @@ describe('ExternalAppGroupElementComponent', () => {
       value: {
         appDefinition: 'new_def',
         variables: [
-          { id: 'var_c', value: '3' },
-          { id: 'var_new', value: '4' }
+          { id: 'var_c', value: '3', wasUpdated: false },
+          { id: 'var_new', value: '4', wasUpdated: false }
         ]
       }
     });
@@ -149,5 +149,46 @@ describe('ExternalAppGroupElementComponent', () => {
     const newVarCode = geometryVariableStateService.getElementCodeById(newVarId);
     expect(newVarCode).toBeTruthy();
     expect(newVarCode?.status).toBe('VALUE_CHANGED');
+  });
+
+  it('should hand on that GeoGebra recomputed a variable whose value stayed the same', () => {
+    const unitStateService = TestBed.inject(UnitStateService);
+    const geometryVariableStateService = TestBed.inject(GeometryVariableStateService);
+
+    unitStateService.reset();
+    geometryVariableStateService.reset();
+
+    const testFixture = TestBed.createComponent(ExternalAppGroupElementComponent);
+    const testComponent = testFixture.componentInstance;
+    testComponent.elementModel = new GeometryElement({
+      type: 'geometry',
+      id: 'geogebra_test4',
+      alias: 'alias_test4',
+      appDefinition: '',
+      trackedVariables: [
+        { id: 'correct', value: 'correct = false' },
+        { id: 'untouched', value: 'untouched = false' }
+      ],
+      trackedExpectedVariables: []
+    });
+    testFixture.detectChanges();
+    unitStateService.changeElementCodeStatus({ id: 'geogebra_test4', status: 'DISPLAYED' });
+
+    testComponent.changeElementCodeValue({
+      id: 'geogebra_test4',
+      value: {
+        appDefinition: 'new_def',
+        variables: [
+          { id: 'correct', value: 'correct = false', wasUpdated: true },
+          { id: 'untouched', value: 'untouched = false', wasUpdated: false }
+        ]
+      }
+    });
+
+    const statusOf = (variable: string) => geometryVariableStateService.getElementCodeById(
+      (testComponent.elementModel as GeometryElement).getGeometryVariableId(variable)
+    )?.status;
+    expect(statusOf('correct')).toBe('VALUE_CHANGED');
+    expect(statusOf('untouched')).toBe('DISPLAYED');
   });
 });

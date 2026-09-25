@@ -130,6 +130,67 @@ describe('GeometryComponent', () => {
     expect(component.elementValueChanged.emit).toHaveBeenCalled();
   }));
 
+  describe('recomputed tracked variables', () => {
+    /* The listener the component hands GeoGebra; calling it stands in for GeoGebra recomputing an object. */
+    let reportUpdate: (objectName: string) => void;
+
+    beforeEach(() => {
+      component.elementModel.trackedVariables = [{ id: 'A', value: 'A = false' }, { id: 'B', value: 'B = 1' }];
+      component.refresh();
+      expect(mockGeoGebraAPI.registerUpdateListener).toHaveBeenCalled();
+      reportUpdate = objectName => vi.mocked(mockGeoGebraAPI.registerUpdateListener)
+        .mock.lastCall?.[0](objectName);
+      vi.spyOn(component.elementValueChanged, 'emit');
+    });
+
+    const emittedVariables = (): unknown => vi.mocked(component.elementValueChanged.emit).mock.lastCall?.[0]?.value;
+
+    it('should mark the variables GeoGebra recomputed, and only those', fakeAsync(() => {
+      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+
+      reportUpdate('A');
+      tick(200);
+
+      expect(emittedVariables()).toEqual(expect.objectContaining({
+        variables: [
+          expect.objectContaining({ id: 'A', wasUpdated: true }),
+          expect.objectContaining({ id: 'B', wasUpdated: false })
+        ]
+      }));
+    }));
+
+    it('should forget a recomputation once it has been reported', fakeAsync(() => {
+      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+      reportUpdate('A');
+      tick(200);
+
+      geometryUpdated().next();
+      tick(200);
+
+      expect(emittedVariables()).toEqual(expect.objectContaining({
+        variables: [
+          expect.objectContaining({ id: 'A', wasUpdated: false }),
+          expect.objectContaining({ id: 'B', wasUpdated: false })
+        ]
+      }));
+    }));
+
+    it('should not count a recomputation from before the first interaction', fakeAsync(() => {
+      reportUpdate('A');
+      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+
+      geometryUpdated().next();
+      tick(200);
+
+      expect(emittedVariables()).toEqual(expect.objectContaining({
+        variables: [
+          expect.objectContaining({ id: 'A', wasUpdated: false }),
+          expect.objectContaining({ id: 'B', wasUpdated: false })
+        ]
+      }));
+    }));
+  });
+
   it.each([true, false])('should hand showAlgebraInput %s to GeoGebra', showAlgebraInput => {
     ggbApplet.mockClear();
     component.elementModel.showAlgebraInput = showAlgebraInput;

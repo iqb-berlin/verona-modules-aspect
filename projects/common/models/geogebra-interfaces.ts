@@ -7,7 +7,9 @@ export interface GeoGebraApi {
   getValueString(objectName: string): string;
   registerAddListener(listener: () => void): void;
   registerRemoveListener(listener: () => void): void;
-  registerUpdateListener(listener: () => void): void;
+  /** GeoGebra calls the listener once per object it recomputed, with that object's name -- also when
+   * the recomputation left the value as it was. */
+  registerUpdateListener(listener: (objectName: string) => void): void;
   registerRenameListener(listener: () => void): void;
   registerClearListener(listener: () => void): void;
   registerClientListener(listener: () => void): void;

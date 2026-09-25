@@ -9,7 +9,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { GeometryElement } from 'common/models/elements/geometry';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { PageChangeService } from 'common/services/page-change.service';
-import { GeometryVariable } from 'common/models/geometry-interfaces';
+import { GeometryVariable, ReportedGeometryVariable } from 'common/models/geometry-interfaces';
 import {
   GeoGebraApi, GeoGebraAppletConstructor, GeoGebraAppletParameters
 } from 'common/models/geogebra-interfaces';
@@ -36,6 +36,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private geometryUpdated = new Subject<void>(); // local subscription to be able to debounce
   private pageChangeSubscription: Subscription;
   private hasUserInteracted = false;
+  /** The objects GeoGebra recomputed since the last report. Collected only once the user has
+   * interacted: what GeoGebra recomputes before that, on its own, is no work of the user's. */
+  private updatedObjectNames = new Set<string>();
 
   get timeoutMsg(): string {
     // eslint-disable-next-line max-len
@@ -75,6 +78,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
             }
           });
         }
+        this.updatedObjectNames.clear();
       });
   }
 
@@ -142,7 +146,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         this.geoGebraAPI.registerRemoveListener(() => {
           this.geometryUpdated.next();
         });
-        this.geoGebraAPI.registerUpdateListener(() => {
+        this.geoGebraAPI.registerUpdateListener((objectName: string) => {
+          if (this.hasUserInteracted) this.updatedObjectNames.add(objectName);
           this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerRenameListener(() => {
@@ -166,9 +171,13 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       .map((name: string) => ({ id: name, value: this.geoGebraAPI.getValueString(name) }));
   }
 
-  private getVariablesToEmit(): GeometryVariable[] {
+  private getVariablesToEmit(): ReportedGeometryVariable[] {
     return this.elementModel.getAllCleanedTrackedVariables()
-      .map(variable => ({ id: variable.id, value: this.getVariableValue(variable.id) }));
+      .map(variable => ({
+        id: variable.id,
+        value: this.getVariableValue(variable.id),
+        wasUpdated: this.updatedObjectNames.has(variable.id)
+      }));
   }
 
   private getVariableValue(name: string): string {

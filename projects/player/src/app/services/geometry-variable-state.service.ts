@@ -36,11 +36,15 @@ export class GeometryVariableStateService extends ElementCodeService {
   /**
    * Like the base method, but a value equal to the one already held changes nothing and announces
    * nothing -- an applet reports on every interaction, including those that leave its variables where
-   * they were.
+   * they were, such as zooming. The exception is a variable GeoGebra recomputed (`wasUpdated`): it has
+   * been worked on even if the answer came out as before, and becomes `VALUE_CHANGED` once.
    */
-  override changeElementCodeValue(elementValue: { id: string, value: ResponseValueType }): void {
-    const value = this.getElementCodeById(elementValue.id)?.value;
-    if (value === elementValue.value) return;
+  override changeElementCodeValue(
+    elementValue: { id: string, value: ResponseValueType, wasUpdated?: boolean }
+  ): void {
+    const elementCode = this.getElementCodeById(elementValue.id);
+    const isWorkedOnForTheFirstTime = !!elementValue.wasUpdated && elementCode?.status !== 'VALUE_CHANGED';
+    if (elementCode?.value === elementValue.value && !isWorkedOnForTheFirstTime) return;
     LogService.debug(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
     this.setElementCodeValue(elementValue.id, elementValue.value);
     this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');

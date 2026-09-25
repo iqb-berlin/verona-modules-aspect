@@ -66,4 +66,36 @@ describe('GeometryVariableStateService', () => {
     expect(changedElementCodes.length).toBe(0);
     expect(service.getElementCodeById('geometry_1_area')?.status).toBe('NOT_REACHED');
   });
+
+  it('should set a recomputed variable to VALUE_CHANGED even if its value stayed the same', () => {
+    service.registerElementCode('geometry_1_correct', 'correct', 'correct = false', 'DISPLAYED');
+    const changedElementCodes: Response[] = [];
+    service.elementCodeChanged.subscribe(elementCode => changedElementCodes.push(elementCode));
+
+    service.changeElementCodeValue({ id: 'geometry_1_correct', value: 'correct = false', wasUpdated: true });
+
+    expect(service.getElementCodeById('geometry_1_correct')).toEqual({
+      id: 'geometry_1_correct', alias: 'correct', value: 'correct = false', status: 'VALUE_CHANGED'
+    });
+    expect(changedElementCodes.length).toBe(1);
+  });
+
+  it('should not announce a recomputed variable again once it is VALUE_CHANGED', () => {
+    service.registerElementCode('geometry_1_correct', 'correct', 'correct = false', 'DISPLAYED');
+    service.changeElementCodeValue({ id: 'geometry_1_correct', value: 'correct = false', wasUpdated: true });
+    const changedElementCodes: Response[] = [];
+    service.elementCodeChanged.subscribe(elementCode => changedElementCodes.push(elementCode));
+
+    service.changeElementCodeValue({ id: 'geometry_1_correct', value: 'correct = false', wasUpdated: true });
+
+    expect(changedElementCodes.length).toBe(0);
+  });
+
+  it('should ignore a variable that was neither changed nor recomputed', () => {
+    service.registerElementCode('geometry_1_correct', 'correct', 'correct = false', 'DISPLAYED');
+
+    service.changeElementCodeValue({ id: 'geometry_1_correct', value: 'correct = false', wasUpdated: false });
+
+    expect(service.getElementCodeById('geometry_1_correct')?.status).toBe('DISPLAYED');
+  });
 });

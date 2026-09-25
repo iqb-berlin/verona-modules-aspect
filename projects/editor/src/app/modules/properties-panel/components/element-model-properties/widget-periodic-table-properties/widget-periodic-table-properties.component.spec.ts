@@ -47,14 +47,8 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     component = fixture.componentInstance;
     component.combinedProperties = {
       showInfoOrder: true,
-      showInfoName: true,
-      showInfoSymbol: false,
       showInfoENeg: false,
       showInfoAMass: false,
-      showInfoLabels: true,
-      highlightBlocks: false,
-      fieldTextColor: '#ffffff',
-      fieldBackgroundColor: '#6b369a',
       closeOnSelection: false,
       maxNumberOfSelections: 3
     };
@@ -63,47 +57,30 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  const checkboxInputs = (): HTMLInputElement[] => Array.from(
-    fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
-  );
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should reflect the current info settings', () => {
-    expect(checkboxInputs().map(input => input.checked))
-      .toEqual([true, true, false, false, false, true, false, false]);
+    const inputs = Array.from(
+      fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
+    );
+    expect(inputs.map(input => input.checked)).toEqual([true, false, false, false]);
     expect((fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement).value).toBe('3');
   });
 
   /* One checkbox per setting, in the order they stand in the panel; each writes its own property. */
   it('should emit updateModel for the property of the checkbox that is toggled', () => {
-    checkboxInputs().forEach(input => input.click());
+    Array.from(
+      fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
+    ).forEach(input => input.click());
 
-    expect(emitted.map(update => update.property)).toEqual([
-      'showInfoOrder', 'showInfoName', 'showInfoSymbol', 'showInfoENeg', 'showInfoAMass',
-      'showInfoLabels', 'highlightBlocks', 'closeOnSelection'
+    expect(emitted).toEqual([
+      { property: 'showInfoOrder', value: false },
+      { property: 'showInfoENeg', value: true },
+      { property: 'showInfoAMass', value: true },
+      { property: 'closeOnSelection', value: true }
     ]);
-    expect(emitted.find(update => update.property === 'showInfoENeg')?.value).toBe(true);
-  });
-
-  /* The two colours are those of the element fields inside the widget, so they are properties of the
-     element, not of its styling group, which colours the button (#1420). */
-  it.each<['fieldTextColor' | 'fieldBackgroundColor', number, string]>([
-    ['fieldTextColor', 0, '#000000'],
-    ['fieldBackgroundColor', 1, '#123456']
-  ])('should show %s and emit what is picked', (property, index, picked) => {
-    const textInputs = Array.from(
-      fixture.nativeElement.querySelectorAll('input[type="text"]') as NodeListOf<HTMLInputElement>
-    );
-    expect(textInputs[index].value).toBe(component.combinedProperties[property]);
-
-    const colorInput = fixture.nativeElement.querySelectorAll('input[type="color"]')[index] as HTMLInputElement;
-    colorInput.value = picked;
-    colorInput.dispatchEvent(new Event('input'));
-
-    expect(emitted).toEqual([{ property, value: picked }]);
   });
 
   /* `maxNumberOfSelections` is declared `number`, and the box handed on `field.value` - the raw
@@ -143,6 +120,6 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
       fixture.nativeElement.querySelectorAll('mat-hint') as NodeListOf<HTMLElement>
     ).map(hint => hint.textContent?.trim());
 
-    expect(hints).toEqual(['propertiesPanel.fieldBackgroundColorHint', 'propertiesPanel.maxNumberOfSelectionsHint']);
+    expect(hints).toEqual(['propertiesPanel.maxNumberOfSelectionsHint']);
   });
 });

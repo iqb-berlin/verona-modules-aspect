@@ -10,10 +10,6 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class WidgetMoleculeEditorElement extends UIElement implements WidgetMoleculeEditorProperties {
   type: UIElementType = 'widget-molecule-editor';
   bondingType: 'VALENCE' | 'ELECTRONS' = ELEMENT_DEFAULTS['widget-molecule-editor'].bondingType;
-  // The next three set up the periodic table the widget offers for picking an atom.
-  showInfoName: boolean = ELEMENT_DEFAULTS['widget-molecule-editor'].showInfoName;
-  showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-molecule-editor'].showInfoOrder;
-  highlightBlocks: boolean = ELEMENT_DEFAULTS['widget-molecule-editor'].highlightBlocks;
 
   /** The button that opens the widget takes its two colours from here, and nothing else in this
      element renders a styling value -- what it shows besides the button is the stored molecule, as an
@@ -33,9 +29,6 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
     super({ type: 'widget-molecule-editor', ...element }, idService);
     if (isWidgetMoleculeEditorProperties(element)) {
       if (element.bondingType !== undefined) this.bondingType = element.bondingType;
-      if (element.showInfoName !== undefined) this.showInfoName = element.showInfoName;
-      if (element.showInfoOrder !== undefined) this.showInfoOrder = element.showInfoOrder;
-      if (element.highlightBlocks !== undefined) this.highlightBlocks = element.highlightBlocks;
       this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
       if (element.state !== undefined) this.state = element.state;
     } else if (environment.strictInstantiation) {
@@ -53,9 +46,6 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
 
 export interface WidgetMoleculeEditorProperties extends UIElementProperties {
   bondingType: 'VALENCE' | 'ELECTRONS';
-  showInfoName: boolean;
-  showInfoOrder: boolean;
-  highlightBlocks: boolean;
   styling: { backgroundColor: string; fontColor: string };
   state: string | null;
 }

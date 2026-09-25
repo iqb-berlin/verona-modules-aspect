@@ -24,18 +24,12 @@ describe('WidgetPeriodicTableElement', () => {
   });
 
   /* The editor loads a unit without the normalizer, so what the constructor does not copy is replaced
-     by the default and written back on the next save (#1420). */
+     by the default and written back on the next save. */
   it('should keep every stored widget setting', () => {
     const stored = {
       showInfoOrder: false,
-      showInfoName: false,
-      showInfoSymbol: false,
       showInfoENeg: true,
       showInfoAMass: false,
-      showInfoLabels: false,
-      highlightBlocks: true,
-      fieldTextColor: '#000000',
-      fieldBackgroundColor: '#123456',
       closeOnSelection: true,
       maxNumberOfSelections: 4
     };

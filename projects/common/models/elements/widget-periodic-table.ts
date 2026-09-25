@@ -19,19 +19,8 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   };
 
   showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoOrder;
-  showInfoName: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoName;
-  showInfoSymbol: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoSymbol;
   showInfoENeg: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoENeg;
   showInfoAMass: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoAMass;
-  /** The period and group numbers along the edges of the table. */
-  showInfoLabels: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoLabels;
-  /** Colours each element field by its block (s, p, d, f) instead of with the background colour. */
-  highlightBlocks: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].highlightBlocks;
-  /** The text colour of the element fields inside the widget -- the button's is in `styling`. */
-  fieldTextColor: string = ELEMENT_DEFAULTS['widget-periodic-table'].fieldTextColor;
-  /** The colour of the element fields inside the widget, unless {@link highlightBlocks} colours them by
-      block -- the button's is in `styling`. */
-  fieldBackgroundColor: string = ELEMENT_DEFAULTS['widget-periodic-table'].fieldBackgroundColor;
   closeOnSelection: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].closeOnSelection;
   maxNumberOfSelections: number = ELEMENT_DEFAULTS['widget-periodic-table'].maxNumberOfSelections;
   state: string | null = ELEMENT_DEFAULTS['widget-periodic-table'].state;
@@ -44,14 +33,8 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
     if (isWidgetPeriodicTableProperties(element)) {
       this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
       if (element.showInfoOrder !== undefined) this.showInfoOrder = element.showInfoOrder;
-      if (element.showInfoName !== undefined) this.showInfoName = element.showInfoName;
-      if (element.showInfoSymbol !== undefined) this.showInfoSymbol = element.showInfoSymbol;
       if (element.showInfoENeg !== undefined) this.showInfoENeg = element.showInfoENeg;
       if (element.showInfoAMass !== undefined) this.showInfoAMass = element.showInfoAMass;
-      if (element.showInfoLabels !== undefined) this.showInfoLabels = element.showInfoLabels;
-      if (element.highlightBlocks !== undefined) this.highlightBlocks = element.highlightBlocks;
-      if (element.fieldTextColor !== undefined) this.fieldTextColor = element.fieldTextColor;
-      if (element.fieldBackgroundColor !== undefined) this.fieldBackgroundColor = element.fieldBackgroundColor;
       if (element.closeOnSelection !== undefined) this.closeOnSelection = element.closeOnSelection;
       if (element.maxNumberOfSelections !== undefined) this.maxNumberOfSelections = element.maxNumberOfSelections;
       if (element.state !== undefined) this.state = element.state;
@@ -70,14 +53,8 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
 export interface WidgetPeriodicTableProperties extends UIElementProperties {
   styling: { backgroundColor: string; fontColor: string };
   showInfoOrder: boolean;
-  showInfoName: boolean;
-  showInfoSymbol: boolean;
   showInfoENeg: boolean;
   showInfoAMass: boolean;
-  showInfoLabels: boolean;
-  highlightBlocks: boolean;
-  fieldTextColor: string;
-  fieldBackgroundColor: string;
   closeOnSelection: boolean;
   maxNumberOfSelections: number;
   state: string | null;

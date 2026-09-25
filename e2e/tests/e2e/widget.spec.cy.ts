@@ -5,7 +5,6 @@ interface WidgetCallMessage {
   widgetType: string;
   callId: string;
   parameters: { key: string, value: string }[];
-  sharedParameters: { key: string, value: string }[];
 }
 
 interface PostMessageStub {
@@ -78,11 +77,14 @@ describe('Widget Element', { testIsolation: false }, () => {
       })).then(stub => {
         const msg = widgetCallFromStub(stub as unknown as PostMessageStub, 'PERIODIC_TABLE');
         expect(msg.callId).to.be.a('string').with.length.greaterThan(0);
-        expect(msg.parameters).to.deep.include({ key: 'SHOW_INFO_ORDER', value: 'true' });
-        expect(msg.parameters).to.deep.include({ key: 'SHOW_INFO_E_NEG', value: 'false' });
-        expect(msg.parameters).to.deep.include({ key: 'SHOW_INFO_A_MASS', value: 'true' });
-        expect(msg.parameters).to.deep.include({ key: 'CLOSE_ON_SELECTION', value: 'false' });
-        expect(msg.parameters).to.deep.include({ key: 'MAX_NUMBER_OF_SELECTIONS', value: '1' });
+        expect(msg.parameters).to.have.deep.members([
+          { key: 'SHOW_INFO_ORDER', value: '1' },
+          { key: 'SHOW_INFO_E_NEG', value: '0' },
+          { key: 'SHOW_INFO_A_MASS', value: '1' },
+          { key: 'CLOSE_ON_SELECTION', value: '0' },
+          { key: 'MAX_NUMBER_OF_SELECTIONS', value: '1' }
+        ]);
+        expect(msg).to.not.have.property('sharedParameters');
 
         // Post back a vopWidgetReturn message echoing the callId
         cy.window().then(window => {
@@ -122,9 +124,8 @@ describe('Widget Element', { testIsolation: false }, () => {
       })).then(stub => {
         const msg = widgetCallFromStub(stub as unknown as PostMessageStub, 'MOLECULE_EDITOR');
         expect(msg.callId).to.be.a('string').with.length.greaterThan(0);
-        // The widget reads BONDING_TYPE as a shared parameter; as a parameter it never arrived (#1420)
-        expect(msg.sharedParameters).to.deep.include({ key: 'BONDING_TYPE', value: 'VALENCE' });
-        expect(msg.parameters).to.deep.include({ key: 'LANGUAGE', value: 'de' });
+        expect(msg.parameters).to.deep.equal([{ key: 'BONDING_TYPE', value: 'VALENCE' }]);
+        expect(msg).to.not.have.property('sharedParameters');
 
         // Post back a vopWidgetReturn message echoing the callId
         cy.window().then(window => {

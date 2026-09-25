@@ -17,16 +17,9 @@ export class WidgetMoleculeEditorComponent extends ElementComponent {
   WidgetMoleculeEditorElement = WidgetMoleculeEditorElement;
 
   emitWidgetCall(): void {
-    const call: WidgetMoleculeEditorCall = {
-      parameters: {
-        showInfoName: this.elementModel.showInfoName,
-        showInfoOrder: this.elementModel.showInfoOrder,
-        highlightBlocks: this.elementModel.highlightBlocks
-      },
-      sharedParameters: {
-        bondingType: this.elementModel.bondingType
-      }
+    const parameters: WidgetMoleculeEditorCall = {
+      bondingType: this.elementModel.bondingType
     };
-    this.widgetCallEvent.emit(call);
+    this.widgetCallEvent.emit(parameters);
   }
 }

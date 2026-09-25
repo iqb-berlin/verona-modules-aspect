@@ -270,16 +270,3 @@ iqb-aspect-definition@1.0.0
 - Section, Page, all elements:
   - number properties stored as strings become numbers, including the values of grid sizes and
     margins (#1306)
-
-4.13.0
-- WidgetPeriodicTableElement:
-  - new property: showInfoName: boolean (default true) (#1420)
-  - new property: showInfoSymbol: boolean (default true) (#1420)
-  - new property: showInfoLabels: boolean (default true) (#1420)
-  - new property: highlightBlocks: boolean (default false) (#1420)
-  - new property: fieldTextColor: string (default '#ffffff') (#1420)
-  - new property: fieldBackgroundColor: string (default '#6b369a') (#1420)
-- WidgetMoleculeEditorElement:
-  - new property: showInfoName: boolean (default false) (#1420)
-  - new property: showInfoOrder: boolean (default false) (#1420)
-  - new property: highlightBlocks: boolean (default false) (#1420)

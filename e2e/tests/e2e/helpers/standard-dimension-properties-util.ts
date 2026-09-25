@@ -1,5 +1,24 @@
-import { addElement, setExpertMode, setID } from '../util';
-import { dismissErrorDialogIfVisible, uploadGGBFile } from '../e2e/helpers/geometry-util';
+import { addElement, setExpertMode, setID } from '../../util';
+import { dismissErrorDialogIfVisible, uploadGGBFile } from './geometry-util';
+
+/** Values typed into the standard size block and later asserted as CSS in the player. */
+export const SIZE = {
+  text: { alias: 'text_max', maxWidth: 320, invalid: -1 },
+  textA: { maxWidth: 100 },
+  textB: { maxWidth: 200 },
+  geometry: {
+    alias: 'geo_size',
+    defaultWidth: 600,
+    defaultHeight: 400,
+    width: 500,
+    height: 350,
+    invalidHeight: -5
+  },
+  geometryA: { alias: 'geo_a', width: 500, height: 350 },
+  geometryB: { alias: 'geo_b', width: 400, height: 250 },
+  dropList: { alias: 'list_fixed', defaultWidth: 240, width: 180 },
+  dropListB: { width: 240 }
+} as const;
 
 export function openEditorInExpertMode(): void {
   cy.viewport(1300, 900);
@@ -41,6 +60,22 @@ export function selectOnPage(selector: string, index: number = 0, withShift: boo
 
 export function dimensionMarker(label: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return standardDimensions().contains('mat-form-field', label).find('aspect-merged-marker');
+}
+
+const UNIT_FILE = 'e2e/downloads/standard-dimension-properties.json';
+
+export function saveStandardDimensionUnit(): void {
+  cy.saveUnit(UNIT_FILE);
+}
+
+export function openStandardDimensionPlayer(): void {
+  cy.viewport(1300, 900);
+  cy.openPlayer();
+  cy.loadUnit('../downloads/standard-dimension-properties.json');
+}
+
+export function expectPlayerPx(alias: string, property: string, pixels: number): void {
+  cy.getElementByAlias(alias).should('have.css', property, `${pixels}px`);
 }
 
 /** Adds one more Geometrie element. Use it only after addGeometryElement, which already prepared the file upload. */

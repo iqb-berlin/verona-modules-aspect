@@ -18,6 +18,7 @@ export function interceptDeployGGB() {
       headers: { 'content-type': 'application/javascript' },
       body: `
         window.GGBApplet = function(params, version) {
+          (window.ggbAppletParams = window.ggbAppletParams || []).push(params);
           this.setHTML5Codebase = function(url) {};
           this.inject = function(containerId) {
             const container = document.getElementById(containerId);
@@ -48,6 +49,19 @@ export function interceptDeployGGB() {
       `
     });
   }).as('deployggb');
+}
+
+/** The parameters the visible geometry element handed to GeoGebra, as the mock above recorded them.
+ * Retried until the applet has been built: the spinner that waitForVisibleGeometry waits out only
+ * appears once GeoGebra has loaded, so its absence does not mean the applet exists. */
+export function visibleAppletParams(): Cypress.Chainable<Record<string, unknown>> {
+  return cy.get('aspect-geometry:visible .geogebra-applet').first().invoke('attr', 'id')
+    .then(id => cy.window()
+      .its('ggbAppletParams')
+      .should((recorded: Record<string, unknown>[]) => {
+        expect(recorded.some(entry => entry.id === id), `GeoGebra parameters of ${id}`).to.equal(true);
+      })
+      .then((recorded: Record<string, unknown>[]) => [...recorded].reverse().find(entry => entry.id === id)));
 }
 
 export function dismissErrorDialogIfVisible() {

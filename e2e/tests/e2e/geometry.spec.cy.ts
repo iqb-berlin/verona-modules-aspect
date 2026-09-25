@@ -4,6 +4,7 @@ import {
 import {
   addGeometryElement,
   interceptDeployGGB,
+  visibleAppletParams,
   waitForVisibleGeometry
 } from './helpers/geometry-util';
 
@@ -42,6 +43,12 @@ describe('Geometry element', { testIsolation: false }, () => {
       setCheckbox('Bewegen und Zoom erlauben');
     });
 
+    it('creates a geometry element with the input bar shown (Page 5)', () => {
+      addNewPage();
+      addGeometryElement('Geometrie mit Eingabezeile', 'kurven2.ggb', 'geo_input_bar');
+      setCheckbox('Eingabezeile anzeigen', true);
+    });
+
     after('saves unit definition', () => {
       cy.saveUnit('e2e/downloads/geometry.json');
     });
@@ -60,6 +67,7 @@ describe('Geometry element', { testIsolation: false }, () => {
         expect($el.find('button.reset-button').length).to.be.at.least(1);
         expect($el.find('button.reset-button').prop('disabled')).to.equal(false);
       });
+      visibleAppletParams().its('showAlgebraInput').should('equal', false);
     });
 
     it('renders a geometry element without a reset button (Page 2)', () => {
@@ -83,6 +91,13 @@ describe('Geometry element', { testIsolation: false }, () => {
       cy.wait(500);
       waitForVisibleGeometry();
       cy.get('aspect-geometry:visible').first().should('be.visible');
+    });
+
+    it('hands the input bar setting to GeoGebra (Page 5)', () => {
+      cy.goToPlayerPage(5);
+      cy.wait(500);
+      waitForVisibleGeometry();
+      visibleAppletParams().its('showAlgebraInput').should('equal', true);
     });
   });
 });

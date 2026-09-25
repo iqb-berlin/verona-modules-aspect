@@ -69,13 +69,18 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     expect((fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement).value).toBe('3');
   });
 
-  it('should emit updateModel when an info checkbox is toggled', () => {
-    const eNegInput = Array.from(
+  /* One checkbox per setting, in the order they stand in the panel; each writes its own property. */
+  it('should emit updateModel for the property of the checkbox that is toggled', () => {
+    Array.from(
       fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
-    )[1];
-    eNegInput.click();
+    ).forEach(input => input.click());
 
-    expect(emitted).toEqual([{ property: 'showInfoENeg', value: true }]);
+    expect(emitted).toEqual([
+      { property: 'showInfoOrder', value: false },
+      { property: 'showInfoENeg', value: true },
+      { property: 'showInfoAMass', value: true },
+      { property: 'closeOnSelection', value: true }
+    ]);
   });
 
   /* `maxNumberOfSelections` is declared `number`, and the box handed on `field.value` - the raw

@@ -22,4 +22,14 @@ describe('WidgetMoleculeEditorElement', () => {
       valuesComplete: false
     }]);
   });
+
+  /* The editor loads a unit without the normalizer, so what the constructor does not copy is replaced
+     by the default and written back on the next save. */
+  it('should keep the stored bonding type', () => {
+    const element = new WidgetMoleculeEditorElement({
+      id: 'm1', type: 'widget-molecule-editor', bondingType: 'ELECTRONS'
+    });
+
+    expect(element.bondingType).toBe('ELECTRONS');
+  });
 });

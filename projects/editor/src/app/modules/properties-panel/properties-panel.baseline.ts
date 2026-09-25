@@ -3099,10 +3099,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = widget-molecule-editor
 [toolbox.widget-molecule-editor]
 select "propertiesPanel.bondingType" = VALENCE
-[propertiesPanel.moleculeElementPicker]
-checkbox "propertiesPanel.showInfoName" = false
-checkbox "propertiesPanel.showInfoOrder" = false
-checkbox "propertiesPanel.highlightBlocks" = false
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
 --- tab "position and size" ---
@@ -3129,10 +3125,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-molecule-editor]
 select "propertiesPanel.bondingType" = <null> [merged]
-[propertiesPanel.moleculeElementPicker]
-checkbox "propertiesPanel.showInfoName" = indeterminate
-checkbox "propertiesPanel.showInfoOrder" = indeterminate
-checkbox "propertiesPanel.highlightBlocks" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
 --- tab "position and size" ---
@@ -3163,10 +3155,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-molecule-editor]
 select "propertiesPanel.bondingType" = <null> [merged]
-[propertiesPanel.moleculeElementPicker]
-checkbox "propertiesPanel.showInfoName" = indeterminate
-checkbox "propertiesPanel.showInfoOrder" = indeterminate
-checkbox "propertiesPanel.highlightBlocks" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3179,10 +3167,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = widget-molecule-editor
 [toolbox.widget-molecule-editor]
 select "propertiesPanel.bondingType" = VALENCE
-[propertiesPanel.moleculeElementPicker]
-checkbox "propertiesPanel.showInfoName" = false
-checkbox "propertiesPanel.showInfoOrder" = false
-checkbox "propertiesPanel.highlightBlocks" = false
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -3195,14 +3179,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = widget-periodic-table
 [toolbox.widget-periodic-table]
 checkbox "propertiesPanel.showInfoOrder" = true
-checkbox "propertiesPanel.showInfoName" = true
-checkbox "propertiesPanel.showInfoSymbol" = true
 checkbox "propertiesPanel.showInfoENeg" = false
 checkbox "propertiesPanel.showInfoAMass" = true
-checkbox "propertiesPanel.showInfoLabels" = true
-checkbox "propertiesPanel.highlightBlocks" = false
-input[text] "propertiesPanel.fieldTextColor" = #ffffff
-input[text] "propertiesPanel.fieldBackgroundColor" = #6b369a
 checkbox "propertiesPanel.closeOnSelection" = false
 input[number] "propertiesPanel.maxNumberOfSelections" = 1
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -3231,14 +3209,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-periodic-table]
 checkbox "propertiesPanel.showInfoOrder" = indeterminate
-checkbox "propertiesPanel.showInfoName" = indeterminate
-checkbox "propertiesPanel.showInfoSymbol" = indeterminate
 checkbox "propertiesPanel.showInfoENeg" = indeterminate
 checkbox "propertiesPanel.showInfoAMass" = indeterminate
-checkbox "propertiesPanel.showInfoLabels" = indeterminate
-checkbox "propertiesPanel.highlightBlocks" = indeterminate
-input[text] "propertiesPanel.fieldTextColor" =  [merged]
-input[text] "propertiesPanel.fieldBackgroundColor" =  [merged]
 checkbox "propertiesPanel.closeOnSelection" = indeterminate
 input[number] "propertiesPanel.maxNumberOfSelections" =  [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -3271,14 +3243,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [toolbox.widget-periodic-table]
 checkbox "propertiesPanel.showInfoOrder" = indeterminate
-checkbox "propertiesPanel.showInfoName" = indeterminate
-checkbox "propertiesPanel.showInfoSymbol" = indeterminate
 checkbox "propertiesPanel.showInfoENeg" = indeterminate
 checkbox "propertiesPanel.showInfoAMass" = indeterminate
-checkbox "propertiesPanel.showInfoLabels" = indeterminate
-checkbox "propertiesPanel.highlightBlocks" = indeterminate
-input[text] "propertiesPanel.fieldTextColor" =  [merged]
-input[text] "propertiesPanel.fieldBackgroundColor" =  [merged]
 checkbox "propertiesPanel.closeOnSelection" = indeterminate
 input[number] "propertiesPanel.maxNumberOfSelections" =  [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -3293,14 +3259,8 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = widget-periodic-table
 [toolbox.widget-periodic-table]
 checkbox "propertiesPanel.showInfoOrder" = true
-checkbox "propertiesPanel.showInfoName" = true
-checkbox "propertiesPanel.showInfoSymbol" = true
 checkbox "propertiesPanel.showInfoENeg" = false
 checkbox "propertiesPanel.showInfoAMass" = true
-checkbox "propertiesPanel.showInfoLabels" = true
-checkbox "propertiesPanel.highlightBlocks" = false
-input[text] "propertiesPanel.fieldTextColor" = #ffffff
-input[text] "propertiesPanel.fieldBackgroundColor" = #6b369a
 checkbox "propertiesPanel.closeOnSelection" = false
 input[number] "propertiesPanel.maxNumberOfSelections" = 1
 checkbox "propertiesPanel.maxWidthEnabled" = false

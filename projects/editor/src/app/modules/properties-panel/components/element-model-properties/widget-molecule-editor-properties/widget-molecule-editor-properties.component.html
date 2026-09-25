@@ -13,21 +13,5 @@
         <aspect-merged-marker matSuffix></aspect-merged-marker>
       }
     </mat-form-field>
-
-    <fieldset class="fx-column-start-stretch">
-      <legend>{{ 'propertiesPanel.moleculeElementPicker' | translate }}</legend>
-      <aspect-merged-checkbox [value]="combinedProperties.showInfoName"
-                              (valueChange)="updateModel.emit({ property: 'showInfoName', value: $event })">
-        {{ 'propertiesPanel.showInfoName' | translate }}
-      </aspect-merged-checkbox>
-      <aspect-merged-checkbox [value]="combinedProperties.showInfoOrder"
-                              (valueChange)="updateModel.emit({ property: 'showInfoOrder', value: $event })">
-        {{ 'propertiesPanel.showInfoOrder' | translate }}
-      </aspect-merged-checkbox>
-      <aspect-merged-checkbox [value]="combinedProperties.highlightBlocks"
-                              (valueChange)="updateModel.emit({ property: 'highlightBlocks', value: $event })">
-        {{ 'propertiesPanel.highlightBlocks' | translate }}
-      </aspect-merged-checkbox>
-    </fieldset>
   </div>
 </fieldset>

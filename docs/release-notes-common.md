@@ -1,11 +1,7 @@
 Allgemein
 =========
 ## next
-### Neue Funktionen
-- Periodensystem, Molekül-Editor: Alle Einstellungen, die die beiden Widgets kennen, lassen sich jetzt im Editor setzen. Beim Periodensystem sind neu Elementnamen, Elementsymbole, Perioden- und Gruppennummern, das Einfärben der Felder nach Block (s, p, d, f) sowie Schrift- und Hintergrundfarbe der Elementfelder, beim Molekül-Editor Elementnamen, Ordnungszahlen und das Einfärben nach Block im Periodensystem zur Atomauswahl. Voreingestellt ist jeweils, was das Widget bisher von sich aus zeigte; mit diesen Einstellungen sehen bestehende Aufgaben deshalb unverändert aus. Die Sprache des Widgets folgt der Sprache des Players ([#1420](https://github.com/iqb-berlin/verona-modules-aspect/issues/1420))
-
 ### Fehlerbehebungen
-- Molekül-Editor: Die im Editor gewählte Darstellungsart (Valenzstrich- oder Elektronenformel) kommt jetzt beim Widget an. Bisher startete es immer mit der Elektronenformel, weil der Player die Einstellung an einer Stelle übergab, an der das Widget sie nicht liest. Das ändert bestehende Aufgaben: Voreingestellt ist die Valenzstrichformel, und alle Aufgaben, bei denen sie nicht umgestellt wurde, zeigen jetzt diese statt der Elektronenformel ([#1420](https://github.com/iqb-berlin/verona-modules-aspect/issues/1420))
 - Periodensystem, Molekül-Editor: Die Antwort beider Elemente steht jetzt als Variable mit Wert zur Verfügung. Bisher meldete der Editor sie als wertlos, sodass sie in der Variablenliste einer Aufgabe nicht kodiert werden konnten — obwohl der Player die Antwort speichert und ausliefert. Das Periodensystem liefert die gewählten Elementsymbole als Text, der Molekül-Editor das gezeichnete Molekül als JSON. Eine Aufgabe, die eines der Elemente schon enthält, meldet die Variable, sobald sie im Editor das nächste Mal geändert wird. Ein Molekül-Editor ohne Antwort liefert jetzt wie das Periodensystem den Wert `null`; bisher fehlte der Wert in der Antwort ganz ([#1463](https://github.com/iqb-berlin/verona-modules-aspect/issues/1463))
 
 ## editor/3.0.1+player/3.0.1

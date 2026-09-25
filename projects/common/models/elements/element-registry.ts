@@ -772,9 +772,6 @@ export const ELEMENT_DEFAULTS = {
   },
   'widget-molecule-editor': {
     bondingType: 'VALENCE',
-    showInfoName: false,
-    showInfoOrder: false,
-    highlightBlocks: false,
     state: null,
     styling: {
       backgroundColor: '#f1f1f1',
@@ -783,14 +780,8 @@ export const ELEMENT_DEFAULTS = {
   },
   'widget-periodic-table': {
     showInfoOrder: true,
-    showInfoName: true,
-    showInfoSymbol: true,
     showInfoENeg: false,
     showInfoAMass: true,
-    showInfoLabels: true,
-    highlightBlocks: false,
-    fieldTextColor: '#ffffff',
-    fieldBackgroundColor: '#6b369a',
     closeOnSelection: false,
     maxNumberOfSelections: 1,
     state: null,

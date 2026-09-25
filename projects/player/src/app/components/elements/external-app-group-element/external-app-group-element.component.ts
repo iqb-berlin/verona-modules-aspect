@@ -8,7 +8,9 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { GeometryElement } from 'common/models/elements/geometry';
 import { GeometryComponent } from 'common/components/elements/geometry/geometry.component';
-import { GeometryValue, GeometryVariable } from 'common/models/geometry-interfaces';
+import {
+  GeometryValue, GeometryVariable, ReportedGeometryVariable
+} from 'common/models/geometry-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 import { takeUntil } from 'rxjs/operators';
@@ -92,7 +94,7 @@ export class ExternalAppGroupElementComponent
     );
   }
 
-  private changeGeometryVariableValue(variable: GeometryVariable): void {
+  private changeGeometryVariableValue(variable: ReportedGeometryVariable): void {
     const varId = (this.elementModel as GeometryElement).getGeometryVariableId(variable.id);
     if (!this.geometryVariableStateService.isElementCodeRegistered(varId)) {
       const parentStatus = this.unitStateService.getElementCodeById(this.elementModel.id)?.status ?? 'NOT_REACHED';
@@ -101,11 +103,12 @@ export class ExternalAppGroupElementComponent
     this.geometryVariableStateService.changeElementCodeValue({
       id: varId,
       value: ElementModelElementCodeMappingService
-        .mapToElementCodeValue(variable.value, 'geometry-variable')
+        .mapToElementCodeValue(variable.value, 'geometry-variable'),
+      wasUpdated: variable.wasUpdated
     });
   }
 
-  private changeGeometryVariableValues(variables: GeometryVariable[]): void {
+  private changeGeometryVariableValues(variables: ReportedGeometryVariable[]): void {
     variables.forEach(variable => this.changeGeometryVariableValue(variable));
   }
 

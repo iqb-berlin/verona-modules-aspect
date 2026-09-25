@@ -11,6 +11,9 @@ export function uploadGGBFile(fileName: string) {
     });
 }
 
+/** Stands in for GeoGebra. Every applet has one object, `correct`, a truth value that stays `false`,
+ * and keeps its listeners in `window.ggbListeners[appletId]`, so that a spec can play GeoGebra
+ * reporting a recomputation (`update`, with the object's name) or any other event (`client`). */
 export function interceptDeployGGB() {
   cy.intercept('**/deployggb.js', req => {
     req.reply({
@@ -30,15 +33,18 @@ export function interceptDeployGGB() {
               container.innerHTML = '<div style="' + mockStyle + '">Mock GeoGebra Applet</div>';
             }
             if (params && typeof params.appletOnLoad === 'function') {
+              const listeners = {};
+              (window.ggbListeners = window.ggbListeners || {})[containerId] = listeners;
               const mockGeoGebraApi = {
                 registerAddListener: () => {},
                 registerRemoveListener: () => {},
-                registerUpdateListener: () => {},
+                registerUpdateListener: listener => { listeners.update = listener; },
                 registerRenameListener: () => {},
                 registerClearListener: () => {},
-                registerClientListener: () => {},
-                getAllObjectNames: () => [],
-                getValueString: () => ""
+                registerClientListener: listener => { listeners.client = listener; },
+                getBase64: () => "",
+                getAllObjectNames: () => ["correct"],
+                getValueString: name => name + " = false"
               };
               setTimeout(() => {
                 params.appletOnLoad(mockGeoGebraApi);

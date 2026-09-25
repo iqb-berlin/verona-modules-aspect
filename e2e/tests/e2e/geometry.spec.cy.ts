@@ -1,5 +1,5 @@
 import {
-  addNewPage, setCheckbox, setExpertMode
+  addNewPage, addPostMessageStub, selectFromDropdown, setCheckbox, setExpertMode
 } from '../util';
 import {
   addGeometryElement,
@@ -47,6 +47,15 @@ describe('Geometry element', { testIsolation: false }, () => {
       addNewPage();
       addGeometryElement('Geometrie mit Eingabezeile', 'kurven2.ggb', 'geo_input_bar');
       setCheckbox('Eingabezeile anzeigen', true);
+    });
+
+    it('creates a geometry element with a tracked truth value (Page 6)', () => {
+      addNewPage();
+      addGeometryElement('Geometrie mit Wahrheitswert', 'kurven2.ggb', 'geo_truth_value');
+      selectFromDropdown('Bekannte Variablen', 'correct', true);
+      cy.get('aspect-ui-element-properties')
+        .contains('mat-form-field', 'Bekannte Variablen')
+        .should('contain.text', '(1)');
     });
 
     after('saves unit definition', () => {
@@ -98,6 +107,33 @@ describe('Geometry element', { testIsolation: false }, () => {
       cy.wait(500);
       waitForVisibleGeometry();
       visibleAppletParams().its('showAlgebraInput').should('equal', true);
+    });
+
+    it('reports a recomputed truth value as changed although it stayed false (Page 6)', () => {
+      // Both parts from one notification: the element has reported an interaction, and the truth value
+      // is in the given status. Without the first part, the notification sent on entering the page
+      // would satisfy the check for DISPLAYED on its own.
+      const truthValueCode = (status: string) => Cypress.sinon.match.has('unitState', Cypress.sinon.match.has(
+        'dataParts',
+        Cypress.sinon.match.has('elementCodes', Cypress.sinon.match('{"id":"geo_truth_value","status":"VALUE_CHANGED"'))
+          .and(Cypress.sinon.match.has('geometryVariableCodes', Cypress.sinon.match(
+            `{"id":"geo_truth_value_correct","status":"${status}","value":"correct = false"}`
+          )))
+      ));
+      cy.goToPlayerPage(6);
+      cy.wait(500);
+      waitForVisibleGeometry();
+      addPostMessageStub();
+      cy.get('aspect-geometry:visible').first().trigger('pointerdown');
+      cy.get('aspect-geometry:visible .geogebra-applet').first().invoke('attr', 'id').then(id => {
+        // An event that recomputes nothing, as zooming is: the value stayed, so nothing changed.
+        cy.window().its(`ggbListeners.${id}.client`).then(listener => listener());
+        cy.get('@postMessage').should('be.calledWithMatch', truthValueCode('DISPLAYED'));
+
+        // GeoGebra recomputed the truth value, as it does when a point is set in the wrong place.
+        cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('correct'));
+        cy.get('@postMessage').should('be.calledWithMatch', truthValueCode('VALUE_CHANGED'));
+      });
     });
   });
 });

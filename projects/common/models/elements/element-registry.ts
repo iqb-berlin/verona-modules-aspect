@@ -578,6 +578,7 @@ export const ELEMENT_DEFAULTS = {
     enableShiftDragZoom: false,
     showZoomButtons: false,
     showFullscreenButton: false,
+    showAlgebraInput: false,
     customToolbar: '',
     trackedVariables: [],
     trackedExpectedVariables: [],

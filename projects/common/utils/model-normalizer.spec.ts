@@ -427,6 +427,14 @@ describe('ModelNormalizer', () => {
         expect(ELEMENT_DEFAULTS['likert-row'].verticalButtonAlignment).toBe('center');
       });
     });
+
+    /* Units stored before 4.13.0 had the input bar hidden unconditionally, so the default must keep it
+       hidden. */
+    it('should fill showAlgebraInput into a unit stored without it as hidden (#1004)', () => {
+      expect(ELEMENT_DEFAULTS.geometry.showAlgebraInput).toBe(false);
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'geometry', id: 'g1' })).showAlgebraInput)
+        .toBe(false);
+    });
   });
 
   /* #1184: no element may hold an object that ELEMENT_DEFAULTS or GLOBAL_DEFAULTS owns, or an in-place

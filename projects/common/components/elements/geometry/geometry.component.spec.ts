@@ -6,6 +6,7 @@ import { PageChangeService } from 'common/services/page-change.service';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { of, Subject } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { Mock } from 'vitest';
 import { GeometryElement } from 'common/models/elements/geometry';
 import {
   GeoGebraApi, GeoGebraApplet, GeoGebraAppletConstructor, GeoGebraAppletParameters
@@ -18,6 +19,7 @@ describe('GeometryComponent', () => {
   let mockPageChangeService: Partial<PageChangeService>;
   let mockExternalResourceService: Partial<ExternalResourceService>;
   let mockGeoGebraAPI: GeoGebraApi;
+  let ggbApplet: Mock;
 
   /* The subject is private; the tests drive it directly to stand in for a GeoGebra event. */
   const geometryUpdated = (): Subject<void> => (
@@ -48,7 +50,7 @@ describe('GeometryComponent', () => {
     };
 
     // Global Mock for GGBApplet with named function to satisfy ESLint and constructor requirements
-    (window as Window & { GGBApplet?: GeoGebraAppletConstructor }).GGBApplet = vi.fn()
+    ggbApplet = vi.fn()
       .mockImplementation(function GGBAppletMock(this: GeoGebraApplet, params: GeoGebraAppletParameters) {
         this.setHTML5Codebase = vi.fn();
         this.inject = vi.fn().mockImplementation(() => {
@@ -56,7 +58,9 @@ describe('GeometryComponent', () => {
             params.appletOnLoad(mockGeoGebraAPI);
           }
         });
-      }) as unknown as GeoGebraAppletConstructor;
+      });
+    (window as Window & { GGBApplet?: GeoGebraAppletConstructor }).GGBApplet =
+      ggbApplet as unknown as GeoGebraAppletConstructor;
 
     await TestBed.configureTestingModule({
       declarations: [GeometryComponent],
@@ -125,4 +129,13 @@ describe('GeometryComponent', () => {
 
     expect(component.elementValueChanged.emit).toHaveBeenCalled();
   }));
+
+  it.each([true, false])('should hand showAlgebraInput %s to GeoGebra', showAlgebraInput => {
+    ggbApplet.mockClear();
+    component.elementModel.showAlgebraInput = showAlgebraInput;
+
+    component.refresh();
+
+    expect(ggbApplet).toHaveBeenCalledWith(expect.objectContaining({ showAlgebraInput }), '5.0');
+  });
 });

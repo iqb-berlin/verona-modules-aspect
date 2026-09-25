@@ -17,6 +17,12 @@
                         (valueChange)="updateModel.emit({ property: 'showResetIcon', value: $event })">
   {{ 'propertiesPanel.showResetIcon' | translate }}
 </aspect-merged-checkbox>
+@if (unitService.expertMode) {
+  <aspect-merged-checkbox [value]="combinedProperties.showAlgebraInput"
+                          (valueChange)="updateModel.emit({ property: 'showAlgebraInput', value: $event })">
+    {{ 'propertiesPanel.showAlgebraInput' | translate }}
+  </aspect-merged-checkbox>
+}
 <fieldset>
   <legend>{{ 'propertiesPanel.geogebraHeader' | translate }}</legend>
   <aspect-merged-checkbox *ngIf="unitService.expertMode" [value]="combinedProperties.enableUndoRedo"

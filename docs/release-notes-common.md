@@ -1,6 +1,9 @@
 Allgemein
 =========
 ## next
+### Neue Funktionen
+- Geometrie: Die Eingabezeile von GeoGebra lässt sich pro Element einblenden, über das Kontrollkästchen „Eingabezeile anzeigen“ im Expertenmodus. Damit können Testpersonen Objekte über Befehle erzeugen, etwa den Grafen einer Funktion über ihre Gleichung. Ob die Zeile links in der Algebra-Ansicht oder unter der Zeichnung steht, legt die GeoGebra-Datei fest. Voreingestellt ist sie wie bisher ausgeblendet ([#1004](https://github.com/iqb-berlin/verona-modules-aspect/issues/1004))
+
 ### Fehlerbehebungen
 - Periodensystem, Molekül-Editor: Die Antwort beider Elemente steht jetzt als Variable mit Wert zur Verfügung. Bisher meldete der Editor sie als wertlos, sodass sie in der Variablenliste einer Aufgabe nicht kodiert werden konnten — obwohl der Player die Antwort speichert und ausliefert. Das Periodensystem liefert die gewählten Elementsymbole als Text, der Molekül-Editor das gezeichnete Molekül als JSON. Eine Aufgabe, die eines der Elemente schon enthält, meldet die Variable, sobald sie im Editor das nächste Mal geändert wird. Ein Molekül-Editor ohne Antwort liefert jetzt wie das Periodensystem den Wert `null`; bisher fehlte der Wert in der Antwort ganz ([#1463](https://github.com/iqb-berlin/verona-modules-aspect/issues/1463))
 

@@ -770,6 +770,7 @@ input[text] "propertiesPanel.id" = geometry
 text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 checkbox "propertiesPanel.showResetIcon" = true
+checkbox "propertiesPanel.showAlgebraInput" = false
 [propertiesPanel.geogebraHeader]
 checkbox "propertiesPanel.enableUndoRedo" = true
 checkbox "propertiesPanel.enableShiftDragZoom" = false
@@ -803,6 +804,7 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" =  [merged]
 input[text] "propertiesPanel.appDefinition" =  (disabled) [merged]
 checkbox "propertiesPanel.showResetIcon" = indeterminate
+checkbox "propertiesPanel.showAlgebraInput" = indeterminate
 [propertiesPanel.geogebraHeader]
 checkbox "propertiesPanel.enableUndoRedo" = indeterminate
 checkbox "propertiesPanel.enableShiftDragZoom" = indeterminate

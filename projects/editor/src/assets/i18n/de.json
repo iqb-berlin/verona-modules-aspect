@@ -293,6 +293,7 @@
     "showToolbar": "Werkzeugleiste anzeigen",
     "showZoomButtons": "Zoom-Knöpfe anzeigen",
     "showFullscreenButton": "Vollbild-Knopf anzeigen",
+    "showAlgebraInput": "Eingabezeile anzeigen",
     "enableShiftDragZoom": "Bewegen und Zoom erlauben",
     "customToolbar": "Anpassung Werkzeugleiste",
     "customToolbarHelp": "Hier kann definiert werden, welche Elemente auf der Werkzeigleiste angezeigt werden sollen. Für Details bitte die Dokumentation konsultieren.",

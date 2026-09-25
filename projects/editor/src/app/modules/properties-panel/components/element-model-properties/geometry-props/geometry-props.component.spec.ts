@@ -84,6 +84,7 @@ describe('GeometryPropsComponent', () => {
       enableShiftDragZoom: true,
       showZoomButtons: true,
       showFullscreenButton: true,
+      showAlgebraInput: false,
       showToolbar: true,
       customToolbar: '',
       trackedVariables: [],
@@ -96,6 +97,18 @@ describe('GeometryPropsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show the input bar setting and emit it when toggled', () => {
+    const checkbox = Array.from(
+      fixture.nativeElement.querySelectorAll('aspect-merged-checkbox') as NodeListOf<HTMLElement>
+    ).find(element => element.textContent?.includes('propertiesPanel.showAlgebraInput')) as HTMLElement;
+    const input = checkbox.querySelector('input') as HTMLInputElement;
+    expect(input.checked).toBe(false);
+
+    input.click();
+
+    expect(emitted).toEqual([{ property: 'showAlgebraInput', value: true }]);
   });
 
   it('should render the current app definition', () => {

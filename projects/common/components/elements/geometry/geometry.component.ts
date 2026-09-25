@@ -125,7 +125,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       enableUndoRedo: this.elementModel.enableUndoRedo,
       showResetIcon: false, // use custom html button icon
       showMenuBar: false,
-      showAlgebraInput: false,
+      showAlgebraInput: this.elementModel.showAlgebraInput,
       enableLabelDrags: false,
       enableRightClick: false,
       showToolBarHelp: false,

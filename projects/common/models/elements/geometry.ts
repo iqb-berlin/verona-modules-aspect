@@ -23,6 +23,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   enableShiftDragZoom: boolean = ELEMENT_DEFAULTS.geometry.enableShiftDragZoom;
   showZoomButtons: boolean = ELEMENT_DEFAULTS.geometry.showZoomButtons;
   showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton;
+  showAlgebraInput: boolean = ELEMENT_DEFAULTS.geometry.showAlgebraInput;
   customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar;
   fileName: string = ELEMENT_DEFAULTS.geometry.fileName;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
@@ -56,6 +57,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       this.enableShiftDragZoom = element.enableShiftDragZoom;
       this.showZoomButtons = element.showZoomButtons;
       this.showFullscreenButton = element.showFullscreenButton;
+      this.showAlgebraInput = element.showAlgebraInput;
       this.customToolbar = element.customToolbar;
       this.fileName = element.fileName;
       this.position = { ...element.position };
@@ -153,6 +155,9 @@ export interface GeometryProperties extends UIElementProperties, FileNamePropert
   enableShiftDragZoom: boolean;
   showZoomButtons: boolean;
   showFullscreenButton: boolean;
+  /** GeoGebra's input bar. Where it appears, in the algebra view or below the drawing, is set by the
+   * GeoGebra file itself. */
+  showAlgebraInput: boolean;
   customToolbar: string;
   position: PositionProperties;
   dimensions: {

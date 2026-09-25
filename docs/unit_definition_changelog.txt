@@ -270,3 +270,7 @@ iqb-aspect-definition@1.0.0
 - Section, Page, all elements:
   - number properties stored as strings become numbers, including the values of grid sizes and
     margins (#1306)
+
+4.13.0
+- GeometryElement:
+  - new property: showAlgebraInput: boolean (default false) (#1004)

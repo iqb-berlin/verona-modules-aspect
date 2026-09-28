@@ -426,3 +426,70 @@ Rationale:
 - the seam is testable in the view as well: a key has a spec of its own, and the keyboard's spec is
   then about which keys it hands out and what it does with the one that was pressed. Left inline,
   every question about a single key has to be asked through the whole keyboard
+
+# Workflow Rules
+
+Branches, releases, the pipeline and the board columns are described in the README under *How work
+flows through this repository*. Read it before creating a branch, opening a pull request or moving a
+card on the board. The sections below repeat the two points most easily got wrong and add what the
+README leaves open.
+
+## 18) Pull requests and worktrees
+
+- Never write `Closes #…`, `Fixes #…` or `Resolves #…` in a commit message or pull request text.
+  Reference the issue as `(#1357)`: GitHub would close the ticket on merge, and the board would move
+  it past *zu testen* and *Zu Veröffentlichen*.
+- Force-push only with `--force-with-lease`, never with `--force`, which silently overwrites whatever
+  someone else pushed to the branch in the meantime.
+- A pull request stays within the goal of its issue. What turns up on the way and belongs elsewhere —
+  in review as well — becomes an issue of its own, not a commit on the branch.
+- A worktree is created next to the checkout, never inside it — not under `.claude/worktrees/`
+  either.
+
+- Prefer: `git worktree add ../verona-modules-aspect-1357 -b feature/1357-topic origin/develop`
+- Avoid: `.claude/worktrees/1357` inside the main checkout
+
+Rationale:
+- every extra topic lengthens the review, and every further round costs a pipeline run of about half
+  an hour
+- ESLint 8 looks for its configuration upwards from the linted file. Inside the main checkout it
+  also finds that checkout's `package.json` and aborts with "couldn't determine the plugin
+  '@typescript-eslint' uniquely" as soon as the two stand on different dependency states. Tests
+  still run there; only lint breaks, and it does not say why
+
+## 19) Tickets and board 13
+
+A ticket goes on the board of its own repository, even when it comes out of work on another one:
+verona-modules-aspect on [board 13](https://github.com/orgs/iqb-berlin/projects/13), studio-lite on
+[board 18](https://github.com/orgs/iqb-berlin/projects/18). Board 13 adds a new issue of this
+repository by itself and puts it in *Neue Tickets* — check that it arrived rather than adding it a
+second time. *Priority* and *Aufwand* stay empty; the team estimates them.
+
+The columns in the order of the work:
+
+- *In Bearbeitung* only while working towards a pull request. The column tells colleagues that
+  something is being built; looking into a ticket, or an analysis that ends in a question, is not
+  that yet.
+- After the merge the test decides. With an end-to-end test of its own the change goes to
+  *Zu Veröffentlichen*, without one to *zu testen*, where someone else builds the test. "Of its own"
+  means a test that checks exactly this change and would fail without it; an existing spec that keeps
+  passing does not count.
+- A change nobody can see or trigger in the editor or the player (dead code removed, comments,
+  tooling), and one no end-to-end test can observe, go to *Zu Veröffentlichen* straight away. Say in
+  the pull request why — in *zu testen* someone would try to build a test that cannot work.
+- *Review* means released and awaiting validation by the reporters, not code-reviewed. A ticket stays
+  open through all of these columns; do not close it by hand.
+- *Icebox* means "never again", not "small" or "later". When in doubt, *Product Backlog*.
+
+In the ticket itself:
+
+- In a ticket written by someone else, leave their text as it is and keep exactly **one** comment
+  headed "Stand", edited whenever something new is known. In a ticket of your own the description is
+  the current state: edit it rather than append to it.
+- Keep comments short: the result, its consequence, one reference (a file, a commit, a pull
+  request). Approaches that were dropped stay out of the ticket.
+- A question goes to the person you are working for, not into the ticket.
+
+Rationale:
+- a ticket is read for where things stand, not as a log of how anyone got there
+- a question in a ticket makes work for everyone who reads it and is outdated the next day

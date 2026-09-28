@@ -2,13 +2,13 @@
  * Bridge script for tetfolio iframe content.
  *
  * Tetfolio units are rendered as self-contained HTML (produced by the
- * distpacker) inside a blob-URL iframe. Communication with the hosting
+ * distpacker) inside a srcdoc iframe. Communication with the hosting
  * TetfolioComponent works via a script that is spliced into that HTML
  * string before the iframe is created - the same string-level technique
  * the distpacker itself uses. This module owns everything about that
  * script; the component only calls injectTetfolioBridge().
  *
- * A blob iframe shares the parent's origin, so every tetfolio element in a
+ * A srcdoc iframe shares the parent's origin, so every tetfolio element in a
  * tab writes into ONE sessionStorage. The bridge therefore namespaces the
  * experiment's state keys per element: what the experiment reads and writes
  * under `ibe_logger-<pageId>` physically lands under

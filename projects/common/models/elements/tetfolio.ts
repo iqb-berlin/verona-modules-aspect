@@ -10,7 +10,7 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 
 /** An embedded Tetfolio unit: `htmlContent` holds a self-contained HTML document (packed from a
-   Tetfolio export zip in the editor), which the component renders in a same-origin blob-URL
+   Tetfolio export zip in the editor), which the component renders in a same-origin srcdoc
    iframe (not sandboxed - see docs/tetfolio-element.md for the trust model). `state` is
    the serialized answer state the embedded app reports back over the message bridge. */
 export class TetfolioElement extends UIElement implements TetfolioProperties {

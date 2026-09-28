@@ -1,7 +1,7 @@
 <div class="tetfolio-container">
-  @if (iframeSrc) {
+  @if (iframeContent) {
     <iframe #tetfolioIframe
-            [src]="iframeSrc"
+            [srcdoc]="iframeContent"
             [style.height.px]="iframeHeight"
             [title]="'tetfolioIframeTitle' | translate">
     </iframe>

@@ -89,7 +89,7 @@ describe('injectTetfolioBridge', () => {
 
 /**
  * Runtime tests: the injected script actually executes here. Vitest browser mode runs in a real
- * Chromium page, so a blob-URL iframe behaves exactly as in the player (same origin, no sandbox).
+ * Chromium page, so a srcdoc iframe behaves exactly as in the player (same origin, no sandbox).
  * A minimal stub stands in for tet.folio's logger: it reacts to postMessage commands with
  * sessionStorage calls, and one variant registers `window.ibe_logger_restore`. Real timers with
  * shrunken windows - fakeAsync cannot reach into another frame's realm.
@@ -111,12 +111,9 @@ describe('tetfolio bridge runtime', () => {
   class BridgeHarness {
     readonly messages: BridgeMessage[] = [];
     private readonly iframe: HTMLIFrameElement;
-    private readonly blobUrl: string;
     private readonly listener: (event: MessageEvent) => void;
 
     constructor(html: string, savedState: string | null, elementId: string) {
-      const bridged = injectTetfolioBridge(html, savedState, elementId, FAST);
-      this.blobUrl = URL.createObjectURL(new Blob([bridged], { type: 'text/html' }));
       this.iframe = document.createElement('iframe');
       this.listener = (event: MessageEvent) => {
         if (event.source === this.iframe.contentWindow &&
@@ -125,7 +122,7 @@ describe('tetfolio bridge runtime', () => {
         }
       };
       window.addEventListener('message', this.listener);
-      this.iframe.src = this.blobUrl;
+      this.iframe.srcdoc = injectTetfolioBridge(html, savedState, elementId, FAST);
       document.body.appendChild(this.iframe);
     }
 
@@ -140,7 +137,6 @@ describe('tetfolio bridge runtime', () => {
     dispose(): void {
       window.removeEventListener('message', this.listener);
       this.iframe.remove();
-      URL.revokeObjectURL(this.blobUrl);
     }
   }
 

@@ -2,17 +2,19 @@ import {
   ChangeDetectorRef, Component, ElementRef, EventEmitter,
   Input, OnDestroy, OnInit, Output, Renderer2, ViewChild
 } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TetfolioElement } from 'common/models/elements/tetfolio';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { injectTetfolioBridge } from 'common/utils/tetfolio-bridge';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
-/** Renders a tetfolio element's packed HTML document in a blob-URL iframe and relays the
-   resize and state messages the embedded app posts back over the bridge. The iframe is NOT
-   sandboxed - a blob URL shares the player's origin, and the bridge relies on that (storage,
-   postMessage source checks). The content is design-time author content, the same trust level
-   as the rest of the unit definition; see docs/tetfolio-element.md. */
+/** Renders a tetfolio element's packed HTML document in an iframe and relays the resize and
+   state messages the embedded app posts back over the bridge. The document is handed over via
+   `srcdoc`, not a blob URL: hosts like the Testcenter run the player under the policy
+   `frame-src 'self'`, which refuses `blob:` frames and lets `srcdoc` pass. The iframe is NOT
+   sandboxed - a srcdoc document shares the player's origin, and the bridge relies on that
+   (storage, postMessage source checks). The content is design-time author content, the same
+   trust level as the rest of the unit definition; see docs/tetfolio-element.md. */
 @Component({
   selector: 'aspect-tetfolio',
   templateUrl: './tetfolio.component.html',
@@ -25,9 +27,8 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @ViewChild('tetfolioIframe') tetfolioIframe!: ElementRef<HTMLIFrameElement>;
 
-  iframeSrc: SafeResourceUrl | null = null;
+  iframeContent: SafeHtml | null = null;
   iframeHeight: number = 300;
-  private blobUrl: string | null = null;
   private messageListener: ((event: MessageEvent) => void) | null = null;
 
   constructor(
@@ -47,8 +48,10 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
 
   /** Re-create the iframe after htmlContent has changed (used by the editor). */
   refresh(): void {
-    this.releaseBlobUrl();
-    this.iframeSrc = null;
+    // Two passes: the first removes the old iframe, the second builds a new one - so the
+    // document starts from scratch even when the content is the same string as before.
+    this.iframeContent = null;
+    this.changeDetectorRef.detectChanges();
     this.initIframe();
     this.changeDetectorRef.detectChanges();
   }
@@ -56,9 +59,7 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
   private initIframe(): void {
     if (this.elementModel.htmlContent) {
       const html = injectTetfolioBridge(this.elementModel.htmlContent, this.savedState, this.elementModel.id);
-      const blob = new Blob([html], { type: 'text/html' });
-      this.blobUrl = URL.createObjectURL(blob);
-      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.blobUrl);
+      this.iframeContent = this.sanitizer.bypassSecurityTrustHtml(html);
     }
   }
 
@@ -106,18 +107,10 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
     this.elementValueChanged.emit({ id: this.elementModel.id, value: state });
   }
 
-  private releaseBlobUrl(): void {
-    if (this.blobUrl) {
-      URL.revokeObjectURL(this.blobUrl);
-      this.blobUrl = null;
-    }
-  }
-
   ngOnDestroy(): void {
     if (this.messageListener) {
       window.removeEventListener('message', this.messageListener);
       this.messageListener = null;
     }
-    this.releaseBlobUrl();
   }
 }

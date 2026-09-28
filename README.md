@@ -158,8 +158,10 @@ and a test run cannot take the port from each other (#1423).
 | `npm run test:editor-modules` | `projects/editor/modules` |
 | `npm run test:player` | `projects/player/src` — player application |
 | `npm run lint` | ESLint over `projects/`, `e2e/` and the root configs |
-| `npm run e2e` | Opens the Cypress UI for the 51 end-to-end specs in `e2e/tests/` |
-| `npm run e2e-headless` | Runs the same specs headless, as the pipeline does |
+| `npm run e2e` | Opens the Cypress UI for the end-to-end specs in `e2e/tests/` |
+| `npm run e2e-headless` | Runs all specs headless |
+| `npm run e2e-headless-simple` | Runs simple specs headless (`e2e/tests/simple/`) |
+| `npm run e2e-headless-complex` | Runs complex specs headless (`e2e/tests/complex/`) |
 
 **The end-to-end tests do not run as part of `npm test`.** They need both dev servers up on the
 addresses Cypress drives: start `start-editor-e2e` and `start-player-e2e`, wait until both answer
@@ -260,8 +262,8 @@ of two that later have to be told apart.
    column the team works from. Referencing is fine, keywords are not.
 3. **Open a pull request against `develop`.** A branch without an open pull request gets no
    pipeline at all — that is deliberate, see the comment in `.gitlab-ci.yml`.
-4. **The pipeline runs on GitLab**, mirrored from GitHub, with three jobs in two stages:
-   `lint` (type-aware ESLint), `test-unit` (`npm test`) and `test-e2e` (both dev servers plus
+4. **The pipeline runs on GitLab**, mirrored from GitHub, with four jobs in two stages:
+   `lint` (type-aware ESLint), `test-unit` (`npm test`), `test-e2e-simple` and `test-e2e-complex` (both dev servers plus
    headless Cypress). **The module build is not part of it** — the `build` stage holds no job
    and the `deploy` job is commented out, so a change that breaks `build-editor` or
    `build-player` passes green and only shows up at release time. The single GitHub Actions

@@ -49,7 +49,7 @@ default:
   # Every job now pulls its image from a registry, and the dependency proxy in front of Docker Hub
   # answers a pull with a 404 now and then - studio-lite lost four pipelines to it on two days in
   # August 2026. Retried are only the classes that are infrastructure by definition: a red test or
-  # lint job is script_failure and is never retried. test-e2e keeps its own, wider retry.
+  # lint job is script_failure and is never retried. test-e2e-* keep their own, wider retry.
   retry:
     max: 2
     when:
@@ -118,7 +118,7 @@ build-test-image:
 
 # A stage of its own, ahead of test, because this job is not cheap: type-aware linting builds
 # the whole TypeScript program in one process - measured 26 s and 2.3 GB peak RSS. Running that
-# next to the two ng serve builds of test-e2e on the shared runner is the startup timeout the
+# next to the two ng serve builds of test-e2e-* on the shared runner is the startup timeout the
 # comment above describes. The price is the second npm ci on the critical path; the jobs have no
 # shared npm cache, so --prefer-offline saves little.
 # The scope is `eslint .` (see package.json): everything ignorePatterns does not exclude, so
@@ -150,7 +150,7 @@ test-unit:
   script:
     - npm run test
 
-test-e2e:
+test-e2e-simple:
   stage: test
   before_script:
     - npm ci --cache .npm --prefer-offline
@@ -164,7 +164,39 @@ test-e2e:
     - nohup npm run start-player-e2e > player.log 2>&1 &
     - ./scripts/wait-for-dev-server.sh http://localhost:4201 Editor
     - ./scripts/wait-for-dev-server.sh http://localhost:4202 Player
-    - npm run e2e-headless
+    - npm run e2e-headless-simple
+  # Both dev servers, Chrome and a second pipeline for the same commit share one runner, so
+  # the suite occasionally fails on startup rather than on an assertion. Retry once.
+  retry:
+    max: 1
+    when:
+      - script_failure
+      - runner_system_failure
+      - stuck_or_timeout_failure
+  artifacts:
+    when: always
+    paths:
+      - editor.log
+      - player.log
+      - e2e/downloads/**/*.*
+      - e2e/videos/**/*.mp4
+      - e2e/screenshots/**/*.png
+
+test-e2e-complex:
+  stage: test
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    # The e2e pair, not the local one: Cypress carries the addresses of 4201 and 4202 in its
+    # commands, and only these two scripts serve there. What a developer starts by hand sits on
+    # 4211/4212, so their server and an e2e run cannot take the port from each other (#1423).
+    # The server output goes to a log artifact: without it a dev server that dies or stops
+    # answering leaves no trace, and the run only shows Cypress' ESOCKETTIMEDOUT.
+    - nohup npm run start-editor-e2e > editor.log 2>&1 &
+    - nohup npm run start-player-e2e > player.log 2>&1 &
+    - ./scripts/wait-for-dev-server.sh http://localhost:4201 Editor
+    - ./scripts/wait-for-dev-server.sh http://localhost:4202 Player
+    - npm run e2e-headless-complex
   # Both dev servers, Chrome and a second pipeline for the same commit share one runner, so
   # the suite occasionally fails on startup rather than on an assertion. Retry once.
   retry:

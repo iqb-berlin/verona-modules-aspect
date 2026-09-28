@@ -23,6 +23,8 @@
     "lint": "eslint .",
     "e2e": "npx cypress open",
     "e2e-headless": "npx cypress run",
+    "e2e-headless-simple": "npx cypress run --spec 'e2e/tests/simple/**/*.spec.cy.ts'",
+    "e2e-headless-complex": "npx cypress run --spec 'e2e/tests/complex/**/*.spec.cy.ts'",
     "e2e-coverage": "scripts/e2e-coverage.sh",
     "docs": "compodoc -p tsconfig.doc.json -n \"Verona Module Aspect\" -d dist/docs",
     "generate-migration": "node scripts/generate-migration.js",

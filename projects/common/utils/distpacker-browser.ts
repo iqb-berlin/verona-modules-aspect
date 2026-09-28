@@ -322,7 +322,7 @@ function replaceIframes(
     // A copy per branch: `visited` must block only true cycles (the ancestor
     // chain), not two SIBLING iframes referencing the same file - with a
     // shared set the second sibling kept its relative src, which cannot
-    // resolve from a blob document, and showed an empty frame.
+    // resolve from the packed document, and showed an empty frame.
     const packedFrame = packHtmlFile(framePath, fileMap, new Set(visited));
     return `<iframe${before}srcdoc="${escapeHtmlAttribute(packedFrame)}"${after}>`;
   });

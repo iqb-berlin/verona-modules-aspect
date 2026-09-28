@@ -17,7 +17,7 @@ distpack()                    ──────►     htmlContent: one        
   inlines css/js/images/                  self-contained HTML          splices the bridge script
   audio/nested iframes                    string                       │
   (distpacker-browser.ts)                                              ▼
-                                          state: JSON string         blob-URL <iframe>
+                                          state: JSON string         srcdoc <iframe>
                                           (answer variable)            posts tetfolioResize /
                                                                        tetfolioStateChanged
 ```
@@ -27,8 +27,8 @@ distpack()                    ──────►     htmlContent: one        
   HTML so every asset is inlined — CSS as `<style>`, scripts inline, media as data URIs, nested
   pages as `srcdoc`. The result is written to the element's `htmlContent`.
 - **Rendering**: `TetfolioComponent` (`common/components/elements/tetfolio/`) calls
-  `injectTetfolioBridge()` (`common/utils/tetfolio-bridge.ts`) to splice a script into that HTML,
-  builds a `Blob` URL from it and shows it in an iframe. The bridge script reports the document
+  `injectTetfolioBridge()` (`common/utils/tetfolio-bridge.ts`) to splice a script into that HTML
+  and hands the result to an iframe via `srcdoc`. The bridge script reports the document
   height (`tetfolioResize`) and state changes (`tetfolioStateChanged`) via `postMessage`.
   Height: the panel's height is the initial height; afterwards the iframe follows the content's
   reported height, clamped to `minHeight`/`maxHeight` when set — and with `isHeightFixed` it
@@ -44,7 +44,7 @@ distpack()                    ──────►     htmlContent: one        
 ## The state model
 
 A tet.folio experiment logs its own interaction state into `sessionStorage` under
-`ibe_logger-<pageId>` keys. Because every blob iframe shares the player's origin, all tetfolio
+`ibe_logger-<pageId>` keys. Because every srcdoc iframe shares the player's origin, all tetfolio
 elements in a tab share ONE sessionStorage — and the pageId is identical for two copies of the
 same export. The bridge therefore namespaces physical storage per **element id**
 (`storageScopeOf()`): the experiment reads and writes its raw key names, the patched
@@ -71,8 +71,8 @@ overwritten together with them — the bridge's runtime specs pin this behavior.
 - **The packed HTML is stored, not the zip.** The player stays free of unzip logic and asset
   serving, and a unit definition remains one self-contained JSON. The cost is a large
   `htmlContent` string (the panel shows its size after upload).
-- **`bypassSecurityTrustResourceUrl` on a blob URL — the iframe is NOT sandboxed, and cannot
-  be.** A blob URL shares the player's origin, so zip-supplied scripts run with access to the
+- **`bypassSecurityTrustHtml` on `srcdoc` — the iframe is NOT sandboxed, and cannot be.** A
+  srcdoc document shares the player's origin, so zip-supplied scripts run with access to the
   player's DOM, storage and `window.parent`. That is accepted because the content is
   author-supplied at design time — the same trust level as everything else in a unit definition;
   nothing user- or runtime-supplied reaches the iframe. Sandboxing was evaluated and rejected
@@ -84,10 +84,17 @@ overwritten together with them — the bridge's runtime specs pin this behavior.
   (`window.iiwin`), so a sandboxed element would break every such export. Adding
   `allow-same-origin` is no alternative: a same-origin sandboxed script can undo its own sandbox.
   If hardening is ever needed, the workable direction is an injected Content-Security-Policy
-  (restricting network access against exfiltration), not origin isolation. Blob URL rather than
-  `srcdoc` at the top level so the document gets its own browsing context; `srcdoc` for the
-  nested experiment page inside, because of that same-origin requirement (a data: URI would
-  create an opaque origin — see `replaceIframes()` in the distpacker).
+  (restricting network access against exfiltration), not origin isolation.
+- **`srcdoc`, not a blob URL.** The first version loaded the document from a `blob:` URL. The
+  Testcenter refused it: it runs the player under `frame-src 'self'`, and `'self'` does not
+  cover `blob:` (its `child-src … blob:` does not help, `frame-src` takes precedence for
+  frames). `srcdoc` passes under that policy — the Testcenter loads the player itself that way
+  — so the element works on hosts as they are, without a host release. The nested experiment
+  page inside is `srcdoc` for a different reason: the outer page reaches into its
+  `contentWindow`, and a data: URI would create an opaque origin (see `replaceIframes()` in the
+  distpacker). Either way the document inherits the host's policy: what the distpacker inlines
+  is allowed by the Testcenter's, but an export that loads external images or stylesheets, or
+  sends requests to another server at runtime, is blocked there.
 - **Empty styling group.** No tetfolio template reads a styling value (the iframe document
   brings its own styles), so the element declares `styling: Record<never, never>` — the #1226
   convention, same as geometry and image.

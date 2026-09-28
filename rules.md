@@ -434,7 +434,7 @@ flows through this repository*. Read it before creating a branch, opening a pull
 card on the board. The sections below repeat the two points most easily got wrong and add what the
 README leaves open.
 
-## 18) Pull requests and worktrees
+## 18) Pull requests
 
 - Never write `Closes #…`, `Fixes #…` or `Resolves #…` in a commit message or pull request text.
   Reference the issue as `(#1357)`: GitHub would close the ticket on merge, and the board would move
@@ -443,19 +443,10 @@ README leaves open.
   someone else pushed to the branch in the meantime.
 - A pull request stays within the goal of its issue. What turns up on the way and belongs elsewhere —
   in review as well — becomes an issue of its own, not a commit on the branch.
-- A worktree is created next to the checkout, never inside it — not under `.claude/worktrees/`
-  either.
-
-- Prefer: `git worktree add ../verona-modules-aspect-1357 -b feature/1357-topic origin/develop`
-- Avoid: `.claude/worktrees/1357` inside the main checkout
 
 Rationale:
 - every extra topic lengthens the review, and every further round costs a pipeline run of about half
   an hour
-- ESLint 8 looks for its configuration upwards from the linted file. Inside the main checkout it
-  also finds that checkout's `package.json` and aborts with "couldn't determine the plugin
-  '@typescript-eslint' uniquely" as soon as the two stand on different dependency states. Tests
-  still run there; only lint breaks, and it does not say why
 
 ## 19) Tickets and board 13
 

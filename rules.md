@@ -431,10 +431,39 @@ Rationale:
 
 Branches, releases, the pipeline and the board columns are described in the README under *How work
 flows through this repository*. Read it before creating a branch, opening a pull request or moving a
-card on the board. The sections below repeat the two points most easily got wrong and add what the
-README leaves open.
+card on the board. The sections below begin with the step before any of that, the plan, then repeat
+the two points most easily got wrong and add what the README leaves open.
 
-## 18) Pull requests
+## 18) Before the work: a plan
+
+Every ticket starts with a plan, agreed with the person you are working for before anything is
+changed — a small ticket as well, whose plan is then three lines. Work out the plan in Claude Code's
+plan mode (Shift+Tab), which edits nothing until the plan is approved. The plan states decisions, not
+a list of options:
+
+- **what is asked for**, checked against the architecture: the editor authors a unit, the player
+  plays it, the host (Studio, the test center) stores and delivers it. A finding that belongs to the
+  host is not work for this repository
+- **the cause, with evidence** — reproduced or measured, not assumed
+- **whether the fix is reachable**: who calls the code, and whether something later overwrites what
+  it does
+- **the scope**, and what is left out and becomes an issue of its own
+- **the tests**, including whether an end-to-end test of its own is possible — that decides the
+  column after the merge (§20)
+- **the places at risk**: a change to the unit definition (normalizer or migration step, §14), e2e
+  selectors, what both applications share in `projects/common`
+
+The plan goes into the conversation, not into the ticket; the ticket gets the result. Approving the
+plan is what moves the card to *In Bearbeitung*. A plan that ends in a question, or in not building
+it, moves no card.
+
+Rationale:
+- a misunderstanding caught in a plan costs one message; caught in review it costs a pull request
+  and a pipeline run
+- a session does not know what earlier sessions decided or rejected. Without a plan, the first time a
+  person sees what it is about to do is the finished pull request
+
+## 19) Pull requests
 
 - Never write `Closes #…`, `Fixes #…` or `Resolves #…` in a commit message or pull request text.
   Reference the issue as `(#1357)`: GitHub would close the ticket on merge, and the board would move
@@ -448,7 +477,7 @@ Rationale:
 - every extra topic lengthens the review, and every further round costs a pipeline run of about half
   an hour
 
-## 19) Tickets and board 13
+## 20) Tickets and board 13
 
 A ticket goes on the board of its own repository, even when it comes out of work on another one:
 verona-modules-aspect on [board 13](https://github.com/orgs/iqb-berlin/projects/13), studio-lite on
@@ -458,9 +487,9 @@ second time. *Priority* and *Aufwand* stay empty; the team estimates them.
 
 The columns in the order of the work:
 
-- *In Bearbeitung* only while working towards a pull request. The column tells colleagues that
-  something is being built; looking into a ticket, or an analysis that ends in a question, is not
-  that yet.
+- *In Bearbeitung* once the plan is approved (§18), and only while working towards a pull request.
+  The column tells colleagues that something is being built; looking into a ticket, or an analysis
+  that ends in a question, is not that yet.
 - After the merge the test decides. With an end-to-end test of its own the change goes to
   *Zu Veröffentlichen*, without one to *zu testen*, where someone else builds the test. "Of its own"
   means a test that checks exactly this change and would fail without it; an existing spec that keeps

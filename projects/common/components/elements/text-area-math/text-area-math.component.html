@@ -21,7 +21,8 @@
      [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
      [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
      [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-     (pointerdown)="selectLastSegment()">
+     (pointerdown)="selectLastSegment($event)"
+     (mousedown)="keepFocusAfterTouch($event)">
   <span class="alignment-fix">&nbsp;</span>
   @for (segment of segments; track segment; let i = $index) {
     <aspect-text-area-math-segment #segment

@@ -7,6 +7,7 @@ import { TetfolioElement } from 'common/models/elements/tetfolio';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { injectTetfolioBridge } from 'common/utils/tetfolio-bridge';
 import { ElementComponent } from 'common/directives/element-component.directive';
+import { BehaviorSubject } from 'rxjs';
 
 /** Renders a tetfolio element's packed HTML document in an iframe and relays the resize and
    state messages the embedded app posts back over the bridge. The document is handed over via
@@ -29,6 +30,9 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
 
   iframeContent: SafeHtml | null = null;
   iframeHeight: number = 300;
+  /** False while a saved state is being restored inside the iframe; drives the overlay and
+     the spinner, the same way geometry and the media players use it. */
+  isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private messageListener: ((event: MessageEvent) => void) | null = null;
 
   constructor(
@@ -46,6 +50,12 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
     this.setupMessageListener();
   }
 
+  /** The restore took longer than the spinner allows: the experiment is still usable, so the
+     overlay goes without an error - unlike geometry, a late restore is no failure. */
+  onRestoreTimeout(): void {
+    this.isLoaded.next(true);
+  }
+
   /** Re-create the iframe after htmlContent has changed (used by the editor). */
   refresh(): void {
     // Two passes: the first removes the old iframe, the second builds a new one - so the
@@ -57,6 +67,8 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
   }
 
   private initIframe(): void {
+    // Nothing to restore means nothing to wait for: the overlay shows only for a saved state.
+    this.isLoaded.next(!this.savedState);
     if (this.elementModel.htmlContent) {
       const html = injectTetfolioBridge(this.elementModel.htmlContent, this.savedState, this.elementModel.id);
       this.iframeContent = this.sanitizer.bypassSecurityTrustHtml(html);
@@ -76,6 +88,9 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
     }
     if (event.data?.type === 'tetfolioStateChanged') {
       this.onStateChanged(event.data.state);
+    }
+    if (event.data?.type === 'tetfolioReady') {
+      this.isLoaded.next(true);
     }
   }
 

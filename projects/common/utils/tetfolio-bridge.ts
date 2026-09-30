@@ -19,6 +19,10 @@
  * reported state and the seeded state keep the RAW key names, so stored
  * answers are independent of the element id and survive duplication.
  *
+ * Messages to the host: `tetfolioResize` (document height), `tetfolioStateChanged`
+ * (the captured state) and `tetfolioReady`, posted once capture becomes active - i.e.
+ * the moment the seeded state is final, which is when the host lifts its restore overlay.
+ *
  * Accepted tradeoff, by design: while a restore replays the seeded state,
  * capture is suppressed and the replay window ends with `reseed(basis)` -
  * because the replay's own storage writes ("echoes") are indistinguishable
@@ -242,6 +246,7 @@ ${seed}
         setTimeout(function () {
           reseed(basis);
           captureSuppressed = false;
+          reportReady();
         }, replayWindowMs);
       }, RESTORE_DELAY_MS);
     };
@@ -257,7 +262,12 @@ ${seed}
     if (restoreStarted) return;
     if (hasKeys(seededSnapshot)) reseed(seededSnapshot);
     captureSuppressed = false;
+    reportReady();
   }, INIT_SETTLE_MS);
+  // The state is final from here on: the host may lift its restore overlay.
+  function reportReady() {
+    window.parent.postMessage({ type: 'tetfolioReady' }, '*');
+  }
   var stateReportTimer = null;
   function reportStateDebounced() {
     if (stateReportTimer) clearTimeout(stateReportTimer);

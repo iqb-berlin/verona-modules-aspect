@@ -19,7 +19,8 @@ distpack()                    ──────►     htmlContent: one        
   (distpacker-browser.ts)                                              ▼
                                           state: JSON string         srcdoc <iframe>
                                           (answer variable)            posts tetfolioResize /
-                                                                       tetfolioStateChanged
+                                                                       tetfolioStateChanged /
+                                                                       tetfolioReady
 ```
 
 - **Editor**: `TetfolioPropertiesComponent` (properties panel) takes the zip, unpacks it in
@@ -29,7 +30,11 @@ distpack()                    ──────►     htmlContent: one        
 - **Rendering**: `TetfolioComponent` (`common/components/elements/tetfolio/`) calls
   `injectTetfolioBridge()` (`common/utils/tetfolio-bridge.ts`) to splice a script into that HTML
   and hands the result to an iframe via `srcdoc`. The bridge script reports the document
-  height (`tetfolioResize`) and state changes (`tetfolioStateChanged`) via `postMessage`.
+  height (`tetfolioResize`), state changes (`tetfolioStateChanged`) and the end of a restore
+  (`tetfolioReady`) via `postMessage`. While a saved state is being replayed the component
+  covers the iframe with the shared spinner overlay, so the test taker never sees the
+  experiment jump from its initial to its restored state; the overlay lifts on `tetfolioReady`
+  (or silently after the spinner's timeout - a late restore is not an error).
   Height: the panel's height is the initial height; afterwards the iframe follows the content's
   reported height, clamped to `minHeight`/`maxHeight` when set — and with `isHeightFixed` it
   stays at the authored height and the content scrolls inside the iframe. Nothing is ever

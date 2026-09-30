@@ -1,15 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'common/environment';
 import { TetfolioElement } from 'common/models/elements/tetfolio';
 import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
 import { TetfolioComponent } from './tetfolio.component';
 
+@Component({
+  selector: 'aspect-spinner',
+  template: '',
+  standalone: false
+})
+class MockSpinnerComponent {
+  @Input() isLoaded!: BehaviorSubject<boolean>;
+  @Output() timeOut = new EventEmitter<number>();
+}
+
 describe('TetfolioComponent', () => {
   let component: TetfolioComponent;
   let fixture: ComponentFixture<TetfolioComponent>;
 
-  const createComponent = (htmlContent: string, dimensions: Partial<DimensionProperties> = {}): void => {
+  const createComponent = (
+    htmlContent: string, dimensions: Partial<DimensionProperties> = {}, savedState: string | null = null
+  ): void => {
     fixture = TestBed.createComponent(TetfolioComponent);
     component = fixture.componentInstance;
     component.elementModel = new TetfolioElement({
@@ -19,8 +35,11 @@ describe('TetfolioComponent', () => {
       htmlContent
     });
     Object.assign(component.elementModel.dimensions, dimensions);
+    component.savedState = savedState;
     fixture.detectChanges();
   };
+
+  const overlay = (): Element | null => fixture.nativeElement.querySelector('.tetfolio-restore-overlay');
 
   /** A resize/state message the component accepts: its source must be the own iframe's window. */
   const dispatchIframeMessage = (data: Record<string, unknown>): void => {
@@ -31,7 +50,7 @@ describe('TetfolioComponent', () => {
   beforeEach(async () => {
     environment.strictInstantiation = false;
     await TestBed.configureTestingModule({
-      declarations: [TetfolioComponent],
+      declarations: [TetfolioComponent, MockSpinnerComponent],
       imports: [TranslateModule.forRoot()]
     }).compileComponents();
   });
@@ -105,6 +124,50 @@ describe('TetfolioComponent', () => {
     const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
     dispatchIframeMessage({ type: 'tetfolioStateChanged', state: '{"key":"value"}' });
     expect(emitSpy).toHaveBeenCalledWith({ id: 'tetfolio_1', value: '{"key":"value"}' });
+  });
+
+  it('should show no restore overlay without a saved state', () => {
+    createComponent('<html><body></body></html>');
+    expect(component.isLoaded.value).toBe(true);
+    expect(overlay()).toBeNull();
+  });
+
+  it('should cover the iframe with the spinner overlay while a saved state is restored', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    expect(component.isLoaded.value).toBe(false);
+    expect(overlay()).toBeTruthy();
+    expect(overlay()?.querySelector('aspect-spinner')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('iframe')).toBeTruthy();
+  });
+
+  it('should lift the overlay when the bridge reports the state as final', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    dispatchIframeMessage({ type: 'tetfolioReady' });
+    fixture.detectChanges();
+    expect(component.isLoaded.value).toBe(true);
+    expect(overlay()).toBeNull();
+  });
+
+  it('should ignore a ready message that is not from its own iframe', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    window.dispatchEvent(new MessageEvent('message', { data: { type: 'tetfolioReady' } }));
+    fixture.detectChanges();
+    expect(overlay()).toBeTruthy();
+  });
+
+  it('should lift the overlay without an error when the spinner times out', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    component.onRestoreTimeout();
+    fixture.detectChanges();
+    expect(overlay()).toBeNull();
+  });
+
+  it('should show the overlay again for a rebuilt iframe with a saved state', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    dispatchIframeMessage({ type: 'tetfolioReady' });
+    component.refresh();
+    expect(component.isLoaded.value).toBe(false);
+    expect(overlay()).toBeTruthy();
   });
 
   it('should start with the authored height from the model', () => {

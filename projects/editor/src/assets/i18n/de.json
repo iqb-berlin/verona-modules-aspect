@@ -184,6 +184,7 @@
     "options": "Optionen",
     "resizeEnabled": "Größenverstellbar",
     "hasAutoHeight": "Automatische Höhenanpassung",
+    "showWordCount": "Wörter zählen",
     "action": "Aktion",
     "actionParam": "Aktionsparameter",
     "addStateVariables": "Bitte zuerst Zustandsvariablen anlegen",

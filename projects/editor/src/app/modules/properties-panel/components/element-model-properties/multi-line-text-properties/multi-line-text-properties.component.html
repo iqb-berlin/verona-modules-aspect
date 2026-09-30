@@ -48,3 +48,10 @@
     }
   </mat-form-field>
 }
+
+@if (combinedProperties.showWordCount !== undefined) {
+  <aspect-merged-checkbox [value]="combinedProperties.showWordCount"
+                          (valueChange)="updateModel.emit({ property: 'showWordCount', value: $event })">
+    {{ 'propertiesPanel.showWordCount' | translate }}
+  </aspect-merged-checkbox>
+}

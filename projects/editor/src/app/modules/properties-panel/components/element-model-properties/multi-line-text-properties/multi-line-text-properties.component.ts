@@ -13,11 +13,12 @@ import { UnitService } from 'editor/src/app/services/unit.service';
  * automatic height are mutually exclusive, and a dynamic row count replaces the row count with an
  * expected number of characters. Only `rowCount` and `hasAutoHeight` are shared with the math text
  * area (`MultiLineTextProperties`); the other two exist on the plain text area alone, which is why
- * they are picked from it by name rather than assumed to be everywhere.
+ * they are picked from it by name rather than assumed to be everywhere. The word count belongs here
+ * as well, although it gates nothing: it adds a line of its own below the text.
  */
 export type PanelMultiLineTextProperties =
   MultiLineTextProperties &
-  Pick<TextAreaProperties, 'hasDynamicRowCount' | 'expectedCharactersCount' | 'resizeEnabled'>;
+  Pick<TextAreaProperties, 'hasDynamicRowCount' | 'expectedCharactersCount' | 'resizeEnabled' | 'showWordCount'>;
 
 @Component({
   selector: 'aspect-multi-line-text-properties',

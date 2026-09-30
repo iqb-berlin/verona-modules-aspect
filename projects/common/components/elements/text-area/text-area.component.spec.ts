@@ -7,6 +7,7 @@ import {
   Component, Directive, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TextAreaElement, TextAreaProperties } from 'common/models/elements/text-area';
 import { InputElement } from 'common/models/elements/element';
 import { TextAreaComponent } from './text-area.component';
@@ -54,7 +55,8 @@ describe('TextAreaComponent', () => {
       imports: [
         ReactiveFormsModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        TranslateModule.forRoot()
       ]
     }).compileComponents();
   });
@@ -143,5 +145,102 @@ describe('TextAreaComponent', () => {
     const keyboardEvent = new KeyboardEvent('keydown', { key: 'a' });
     textarea.dispatchEvent(keyboardEvent);
     expect(component.onKeyDown.emit).toHaveBeenCalledWith({ keyboardEvent, inputElement: textarea });
+  });
+
+  describe('word count strip', () => {
+    const findStrip = (): HTMLElement | null => fixture.nativeElement.querySelector('.word-count');
+    const strip = (): HTMLElement => {
+      const found = findStrip();
+      if (!found) throw new Error('expected a word count strip');
+      return found;
+    };
+    const stripText = (): string => (strip().textContent ?? '').trim();
+    const isBelow = (upper: HTMLElement, lower: HTMLElement): boolean => lower
+      .getBoundingClientRect().top >= upper.getBoundingClientRect().bottom;
+
+    beforeEach(() => {
+      const translateService = TestBed.inject(TranslateService);
+      translateService.setTranslation('de', { wordCount: '{{count}} Wörter', wordCountOne: '1 Wort' });
+      translateService.use('de');
+    });
+
+    it('should not be there unless the element asks for it', () => {
+      expect(findStrip()).toBeNull();
+      component.tableMode = true;
+      fixture.detectChanges();
+      expect(findStrip()).toBeNull();
+    });
+
+    it('should sit inside the form field, below the text', () => {
+      component.elementModel.showWordCount = true;
+      fixture.detectChanges();
+
+      const textarea: HTMLElement = fixture.nativeElement.querySelector('textarea');
+      expect(fixture.nativeElement.querySelector('mat-form-field').contains(strip())).toBe(true);
+      expect(isBelow(textarea, strip())).toBe(true);
+    });
+
+    // The editor never sets a count, so what it shows is the count the component starts with.
+    it('should show no words until a count is set, and then the count', () => {
+      component.elementModel.showWordCount = true;
+      fixture.detectChanges();
+      expect(stripText()).toBe('0 Wörter');
+
+      component.wordCount.set(12);
+      fixture.detectChanges();
+
+      expect(stripText()).toBe('12 Wörter');
+    });
+
+    it('should share the table cell with the textarea in tableMode', () => {
+      component.tableMode = true;
+      component.elementModel.showWordCount = true;
+      component.wordCount.set(2);
+      fixture.detectChanges();
+
+      const textarea: HTMLElement = fixture.nativeElement.querySelector('textarea.table-child');
+      expect(fixture.nativeElement.classList).toContain('table-word-count');
+      expect(window.getComputedStyle(fixture.nativeElement).display).toBe('flex');
+      expect(stripText()).toBe('2 Wörter');
+      expect(isBelow(textarea, strip())).toBe(true);
+    });
+
+    // The strip takes its share of a cell too small for both; the rows must not pay for it.
+    it('should not squeeze the textarea below its rows in a table cell', () => {
+      fixture.nativeElement.style.height = '40px';
+      component.tableMode = true;
+      component.elementModel.hasDynamicRowCount = false;
+      component.elementModel.rowCount = 5;
+      fixture.detectChanges();
+      const textarea: HTMLElement = fixture.nativeElement.querySelector('textarea.table-child');
+      const heightWithoutStrip = textarea.getBoundingClientRect().height;
+
+      component.elementModel.showWordCount = true;
+      fixture.detectChanges();
+
+      expect(textarea.getBoundingClientRect().height).toBe(heightWithoutStrip);
+    });
+
+    it('should keep the count plain when the text is bold and italic', () => {
+      component.elementModel.showWordCount = true;
+      component.elementModel.styling.bold = true;
+      component.elementModel.styling.italic = true;
+      fixture.detectChanges();
+
+      const text: HTMLElement = fixture.nativeElement.querySelector('.word-count-text');
+      expect(window.getComputedStyle(text).fontWeight).toBe('400');
+      expect(window.getComputedStyle(text).fontStyle).toBe('normal');
+    });
+
+    it('should name a single word in the singular, and none in the plural', () => {
+      component.elementModel.showWordCount = true;
+      component.wordCount.set(1);
+      fixture.detectChanges();
+      expect(stripText()).toBe('1 Wort');
+
+      component.wordCount.set(0);
+      fixture.detectChanges();
+      expect(stripText()).toBe('0 Wörter');
+    });
   });
 });

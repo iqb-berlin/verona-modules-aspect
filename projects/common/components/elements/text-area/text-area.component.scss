@@ -30,3 +30,33 @@
 .errors {
   border: 2px solid #f44336 !important;
 }
+/* The strip has its own line below the text, so the count never covers what was written and does not
+   scroll with it. */
+.word-count {
+  height: 1.5em;
+  line-height: 1.5em;
+  text-align: right;
+  white-space: nowrap;
+}
+/* The count stays plain whatever the text is set in. Outside a table the form field carries bold,
+   italic and underline, and an underline reaches every block inside it; an inline-block is where it
+   stops. */
+.word-count-text {
+  display: inline-block;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+}
+/* In a table cell the textarea fills the cell on its own; with the strip, the two share it. The
+   textarea grows into what the strip leaves, but never below the height of its rows. */
+:host(.table-word-count) {
+  display: flex;
+  flex-direction: column;
+}
+:host(.table-word-count) .table-child {
+  flex: 1 0 auto;
+  min-height: 0;
+}
+:host(.table-word-count) .word-count {
+  padding: 0 8px;
+}

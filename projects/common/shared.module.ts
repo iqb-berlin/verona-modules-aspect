@@ -108,6 +108,7 @@ import {
   ClozeChildOverlayComponent
 } from './components/cloze-child-overlay/cloze-child-overlay.component';
 import { MarkListPipe } from './pipes/mark-list.pipe';
+import { ClozeLinePartsPipe } from './pipes/cloze-line-parts.pipe';
 import { IsDisabledDirective } from './directives/is-disabled.directive';
 import { GeometryComponent } from './components/elements/geometry/geometry.component';
 import { MathAtanPipe } from './pipes/math-atan.pipe';
@@ -176,6 +177,7 @@ import { FirstLineAlignedControlDirective } from './directives/first-line-aligne
     TextMarkingButtonComponent,
     ClozeChildOverlayComponent,
     MarkListPipe,
+    ClozeLinePartsPipe,
     IsDisabledDirective,
     GeometryComponent,
     MathAtanPipe,

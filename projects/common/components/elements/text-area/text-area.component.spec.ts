@@ -232,6 +232,16 @@ describe('TextAreaComponent', () => {
       expect(window.getComputedStyle(text).fontStyle).toBe('normal');
     });
 
+    it('should set the count smaller and lighter than the text', () => {
+      component.elementModel.showWordCount = true;
+      component.elementModel.styling.fontSize = 20;
+      fixture.detectChanges();
+
+      const text = window.getComputedStyle(fixture.nativeElement.querySelector('.word-count-text'));
+      expect(text.fontSize).toBe('15px');
+      expect(Number(text.opacity)).toBeLessThan(1);
+    });
+
     it('should name a single word in the singular, and none in the plural', () => {
       component.elementModel.showWordCount = true;
       component.wordCount.set(1);

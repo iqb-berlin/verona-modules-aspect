@@ -33,16 +33,19 @@
 /* The strip has its own line below the text, so the count never covers what was written and does not
    scroll with it. */
 .word-count {
-  height: 1.5em;
-  line-height: 1.5em;
+  height: 1.25em;
+  line-height: 1.25em;
   text-align: right;
   white-space: nowrap;
 }
 /* The count stays plain whatever the text is set in. Outside a table the form field carries bold,
    italic and underline, and an underline reaches every block inside it; an inline-block is where it
-   stops. */
+   stops. Smaller and lighter than the text, so it reads as a note on it rather than as part of it;
+   the opacity keeps it a shade of whatever colour the text has. */
 .word-count-text {
   display: inline-block;
+  font-size: 0.75em;
+  opacity: 0.6;
   font-weight: normal;
   font-style: normal;
   text-decoration: none;

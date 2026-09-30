@@ -78,7 +78,7 @@
 <ng-template #scrollPagesSeparatedView>
   <mat-tab-group [style.min-height.vh]="aspectRatioColumn.scrollPages"
                  [class.buttons-mode]="scrollPageMode==='buttons'"
-                 [animationDuration]="scrollPageMode === 'buttons' ? '0ms' : '300ms'"
+                 animationDuration="0ms"
                  [style.display]="'block'"
                  aspectPageLabel
                  [isHidden]="hidePageLabels"

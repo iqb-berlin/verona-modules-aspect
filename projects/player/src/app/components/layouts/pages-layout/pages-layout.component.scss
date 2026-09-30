@@ -46,6 +46,13 @@
   overflow: auto;
 }
 
+/* Trial for #1082 (iPadOS 26 draws no caret on pages after the first): Material parks every page
+   not shown at translate3d(±100%). Hidden pages are absolutely positioned and invisible anyway. */
+:host ::ng-deep .mat-tab-body-content-left,
+:host ::ng-deep .mat-tab-body-content-right {
+  transform: none;
+}
+
 :host ::ng-deep .buttons-mode .mat-mdc-tab-body.mat-mdc-tab-body-active {
   animation: fade-in 300ms;
 }

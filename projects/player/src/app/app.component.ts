@@ -1,4 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component, HostListener, OnDestroy, OnInit
+} from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,6 +35,19 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(isFocused => this.veronaPostService
         .sendVopWindowFocusChangedNotification(isFocused));
+  }
+
+  /** Trial for #1082: iPadOS 26 draws the caret once the layout around a focused field changes, as
+     opening the keypad does. Giving the field a layer of its own for one frame is that nudge. */
+  // eslint-disable-next-line class-methods-use-this
+  @HostListener('document:focusin', ['$event'])
+  onFocusIn(event: FocusEvent): void {
+    const field = event.target;
+    if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) return;
+    requestAnimationFrame(() => {
+      field.style.willChange = 'transform';
+      requestAnimationFrame(() => field.style.removeProperty('will-change'));
+    });
   }
 
   private setLocales(): void {

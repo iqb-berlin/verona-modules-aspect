@@ -145,6 +145,48 @@ describe('TextAreaMathComponent', () => {
     expect(component.segments.length).toBe(3); // text + math + text
   }));
 
+  /* A press is the pair the browser sends for it: the pointerdown, and the compatibility mousedown
+     that follows -- for a finger only once it lifts, after the caret has been set. */
+  describe('pressing beside the text (#1218)', () => {
+    const press = (target: Element, pointerType: string): MouseEvent => {
+      target.dispatchEvent(new PointerEvent('pointerdown', { pointerType, bubbles: true, cancelable: true }));
+      tick();
+      const mousedown = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+      target.dispatchEvent(mousedown);
+      return mousedown;
+    };
+    const textArea = (): HTMLElement => fixture.nativeElement.querySelector('.text-area');
+
+    it('cancels the mousedown after a finger, so it cannot take the focus from the segment', fakeAsync(() => {
+      const mousedown = press(textArea(), 'touch');
+
+      expect(mousedown.defaultPrevented).toBe(true);
+      expect(component.segments.length).toBe(1);
+    }));
+
+    it('cancels the mousedown after a pen as after a finger', fakeAsync(() => {
+      const mousedown = press(textArea(), 'pen');
+
+      expect(mousedown.defaultPrevented).toBe(true);
+    }));
+
+    it('leaves the mousedown of a mouse alone', fakeAsync(() => {
+      const mousedown = press(textArea(), 'mouse');
+
+      expect(mousedown.defaultPrevented).toBe(false);
+      expect(component.segments.length).toBe(1);
+    }));
+
+    it('leaves a finger on a segment alone, even right after one beside the text', fakeAsync(() => {
+      press(textArea(), 'touch');
+      fixture.detectChanges();
+
+      const mousedown = press(fixture.nativeElement.querySelector('aspect-text-area-math-segment'), 'touch');
+
+      expect(mousedown.defaultPrevented).toBe(false);
+    }));
+  });
+
   it('should be disabled when readonly', () => {
     component.elementModel.readOnly = true;
     fixture.detectChanges();

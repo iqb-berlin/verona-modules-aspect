@@ -22,6 +22,8 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
 
   segments: TextAreaMath[] = [];
   selectedFocus: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  /** Whether the last press beside the text came from a finger or a pen, see `keepFocusAfterTouch`. */
+  private pressedWithoutMouse: boolean = false;
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -143,11 +145,28 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
     this.segmentComponents.toArray()[index].setFocus(offset);
   }
 
-  selectLastSegment() {
+  selectLastSegment(event: PointerEvent) {
+    this.pressedWithoutMouse = event.pointerType !== 'mouse';
     if (this.segments.length === 0) {
       this.addStartSegment();
     }
     // wait for rendering of segments
     setTimeout(() => this.updateFocus(this.segments.length - 1));
+  }
+
+  /**
+   * On touch the browser sends the compatibility mousedown only once the finger lifts -- after
+   * `selectLastSegment` has put the caret into a segment. A mousedown on this area, which cannot be
+   * focused, then takes the focus away again, and the on-screen keyboard opened and closed at once on
+   * Android (#1218). Cancelling that mousedown keeps the focus. Cancelling the pointerdown instead
+   * suppresses the mousedown in Chrome 151, but not in Chromium 138 (Electron 37, where the e2e tests
+   * run), so the mousedown itself is what is cancelled.
+   * A pen is treated like a finger. A mouse sends its mousedown before the segment is focused, so it
+   * is left alone, and so is a press on a segment: there the browser places the caret itself.
+   */
+  keepFocusAfterTouch(event: MouseEvent): void {
+    if (this.pressedWithoutMouse && !(event.target as Element).closest('aspect-text-area-math-segment')) {
+      event.preventDefault();
+    }
   }
 }

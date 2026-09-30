@@ -212,7 +212,9 @@ describe('tetfolio bridge runtime', () => {
     harness.command({ op: 'set', key: 'ibe_logger-77', value: 'early' });
     await sleep(100);
     expect(harness.ofType('tetfolioStateChanged')).toHaveLength(0);
+    expect(harness.ofType('tetfolioReady')).toHaveLength(0);
     await sleep(200);
+    expect(harness.ofType('tetfolioReady')).toHaveLength(1);
     harness.command({ op: 'set', key: 'ibe_logger-88', value: 'late' });
     await waitFor(() => harness.ofType('tetfolioStateChanged').length > 0);
     expect(lastReportedState(harness)).toEqual({ 'ibe_logger-77': 'early', 'ibe_logger-88': 'late' });
@@ -226,7 +228,10 @@ describe('tetfolio bridge runtime', () => {
     await waitFor(() => harness.ofType('stubRestoreRan').length > 0);
     // Inside the replay window (replayMarginMs wide): indistinguishable from a replay echo.
     harness.command({ op: 'set', key: 'ibe_logger-77', value: 'user-input-during-replay' });
+    expect(harness.ofType('tetfolioReady')).toHaveLength(0);
     await sleep(500);
+    // Ready only once the replay window has closed - the overlay must outlast the replay.
+    expect(harness.ofType('tetfolioReady')).toHaveLength(1);
     harness.command({ op: 'get', key: 'ibe_logger-77' });
     await waitFor(() => harness.ofType('stubValue').length > 0);
     expect(harness.ofType('stubValue')[0].value).toBe('line1');

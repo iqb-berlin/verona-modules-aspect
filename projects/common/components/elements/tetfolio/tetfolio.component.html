@@ -5,6 +5,11 @@
             [style.height.px]="iframeHeight"
             [title]="'tetfolioIframeTitle' | translate">
     </iframe>
+    @if ((isLoaded | async) === false) {
+      <div class="tetfolio-restore-overlay">
+        <aspect-spinner [isLoaded]="isLoaded" (timeOut)="onRestoreTimeout()"></aspect-spinner>
+      </div>
+    }
   } @else {
     <div class="tetfolio-placeholder">
       {{ 'tetfolioNoContent' | translate }}

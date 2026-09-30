@@ -239,7 +239,9 @@ describe('TextAreaComponent', () => {
 
       const text = window.getComputedStyle(fixture.nativeElement.querySelector('.word-count-text'));
       expect(text.fontSize).toBe('15px');
+      // lighter, but not so light that the default black loses the contrast accessibility asks for
       expect(Number(text.opacity)).toBeLessThan(1);
+      expect(Number(text.opacity)).toBeGreaterThanOrEqual(0.75);
     });
 
     it('should name a single word in the singular, and none in the plural', () => {

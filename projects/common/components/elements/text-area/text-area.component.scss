@@ -41,11 +41,13 @@
 /* The count stays plain whatever the text is set in. Outside a table the form field carries bold,
    italic and underline, and an underline reaches every block inside it; an inline-block is where it
    stops. Smaller and lighter than the text, so it reads as a note on it rather than as part of it;
-   the opacity keeps it a shade of whatever colour the text has. */
+   the opacity keeps it a shade of whatever colour the text has. Not lighter than 0.75: the default
+   black then comes out as #404040, about 10:1 on white, and a lighter text colour or a coloured
+   background still has room before the contrast falls below what WCAG asks of small text. */
 .word-count-text {
   display: inline-block;
   font-size: 0.75em;
-  opacity: 0.6;
+  opacity: 0.75;
   font-weight: normal;
   font-style: normal;
   text-decoration: none;

@@ -23,6 +23,8 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   rowCount: number = ELEMENT_DEFAULTS['text-area'].rowCount;
   expectedCharactersCount: number = ELEMENT_DEFAULTS['text-area'].expectedCharactersCount;
   hasReturnKey: boolean = ELEMENT_DEFAULTS['text-area'].hasReturnKey;
+  /** Reserves a strip below the text for the player's word count; the editor leaves it empty. */
+  showWordCount: boolean = ELEMENT_DEFAULTS['text-area'].showWordCount;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
 
   dimensions: DimensionProperties = PropertyGroupGenerators
@@ -49,6 +51,7 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       if (element.hasAutoHeight !== undefined) this.hasAutoHeight = element.hasAutoHeight;
       if (element.expectedCharactersCount !== undefined) this.expectedCharactersCount = element.expectedCharactersCount;
       if (element.hasReturnKey !== undefined) this.hasReturnKey = element.hasReturnKey;
+      if (element.showWordCount !== undefined) this.showWordCount = element.showWordCount;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
       this.styling = PropertyGroupGenerators.mergeStyling(this.styling, element.styling);
@@ -80,6 +83,7 @@ export interface TextAreaProperties extends TextInputElementProperties, MultiLin
   hasDynamicRowCount: boolean;
   expectedCharactersCount: number;
   hasReturnKey: boolean;
+  showWordCount: boolean;
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: BasicStyles & {

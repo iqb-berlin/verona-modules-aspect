@@ -274,3 +274,5 @@ iqb-aspect-definition@1.0.0
 4.13.0
 - GeometryElement:
   - new property: showAlgebraInput: boolean (default false) (#1004)
+- TextAreaElement:
+  - new property: showWordCount: boolean (default false) (#989)

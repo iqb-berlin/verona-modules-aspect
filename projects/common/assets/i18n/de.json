@@ -17,5 +17,7 @@
   "tableHeaderAddRow": "Weitere Kopfzeile hinzufügen",
   "tableHeaderRemoveRow": "Kopfzeile entfernen",
   "mathTableAddRow": "weitere Zeile einfügen",
-  "mathTableRemoveRow": "letzte Zeile entfernen"
+  "mathTableRemoveRow": "letzte Zeile entfernen",
+  "wordCount": "{{count}} Wörter",
+  "wordCountOne": "1 Wort"
 }

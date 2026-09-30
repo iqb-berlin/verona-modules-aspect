@@ -2305,6 +2305,7 @@ checkbox "propertiesPanel.resizeEnabled" = false
 checkbox "propertiesPanel.hasAutoHeight" = false (disabled)
 checkbox "propertiesPanel.hasDynamicRowCount" = true
 input[number] "propertiesPanel.expectedCharactersCount" = 135
+checkbox "propertiesPanel.showWordCount" = false
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 select "propertiesPanel.appearance" = outline
@@ -2352,6 +2353,7 @@ textarea "preset" =
 checkbox "propertiesPanel.resizeEnabled" = indeterminate
 checkbox "propertiesPanel.hasAutoHeight" = indeterminate
 checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
+checkbox "propertiesPanel.showWordCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 select "propertiesPanel.appearance" = <null> [merged]
@@ -2399,6 +2401,7 @@ textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 textarea "preset" = 
 checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
+checkbox "propertiesPanel.showWordCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2417,6 +2420,7 @@ checkbox "propertiesPanel.readOnly" = false
 textarea "preset" = 
 checkbox "propertiesPanel.hasDynamicRowCount" = true
 input[number] "propertiesPanel.expectedCharactersCount" = 135
+checkbox "propertiesPanel.showWordCount" = false
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 checkbox "propertiesPanel.maxWidthEnabled" = false

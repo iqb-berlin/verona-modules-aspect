@@ -17,7 +17,9 @@ import {
 import { KeyLayout } from 'player/modules/key-input/configs/key-layout';
 import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { MathFieldComponent } from 'common/components/elements/math-field/math-field.component';
-import { takeUntil } from 'rxjs/operators';
+import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
+import { WordCounter } from 'player/src/app/classes/word-counter';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 @Directive()
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
@@ -37,6 +39,19 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   abstract keyboardService: KeyboardService;
   abstract mathKeyboardService: MathKeyboardService;
   abstract keyInputRestrictionService: KeyInputRestrictionService;
+
+  /**
+   * Keeps the word count of a text area up to date, if its element asks for one. The component only
+   * reserves the strip; the count follows the form control, so text the software keyboard or the
+   * keypad inserts through `setElementValue` is counted like typed text.
+   */
+  manageWordCount(textArea: TextAreaComponent): void {
+    if (!textArea.elementModel.showWordCount) return;
+    const control = textArea.elementFormControl;
+    control.valueChanges
+      .pipe(startWith(control.value), takeUntil(this.ngUnsubscribe))
+      .subscribe((value: string | null) => textArea.wordCount.set(WordCounter.count(value ?? '')));
+  }
 
   // eslint-disable-next-line class-methods-use-this
   onPaste(event: ClipboardEvent, elementModel: UIElement): void {

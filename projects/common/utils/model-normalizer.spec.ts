@@ -435,6 +435,13 @@ describe('ModelNormalizer', () => {
       expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'geometry', id: 'g1' })).showAlgebraInput)
         .toBe(false);
     });
+
+    /* Units stored before 4.13.0 had no word count, so the default must leave the strip away. */
+    it('should fill showWordCount into a unit stored without it as off (#989)', () => {
+      expect(ELEMENT_DEFAULTS['text-area'].showWordCount).toBe(false);
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'text-area', id: 'ta1' })).showWordCount)
+        .toBe(false);
+    });
   });
 
   /* #1184: no element may hold an object that ELEMENT_DEFAULTS or GLOBAL_DEFAULTS owns, or an in-place

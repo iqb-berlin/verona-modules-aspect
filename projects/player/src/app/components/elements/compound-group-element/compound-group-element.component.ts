@@ -227,6 +227,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     if (childModel.type === 'text-area') {
       this.manageKeyInputToggling(child as TextAreaComponent);
       this.manageOnKeyDown(child as TextAreaComponent, childModel as InputElement);
+      this.manageWordCount(child as TextAreaComponent);
     }
     if (childModel.type === 'button') {
       this.addButtonActionEventListener(child as ButtonComponent);

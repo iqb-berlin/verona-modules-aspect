@@ -331,6 +331,7 @@ export const ELEMENT_DEFAULTS = {
     rowCount: 3,
     expectedCharactersCount: 135,
     hasReturnKey: false,
+    showWordCount: false,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',

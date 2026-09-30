@@ -73,6 +73,7 @@ describe('PlayerStateDirective', () => {
 
   it('should report the current page', fakeAsync(() => {
     initDirective();
+    isVisibleIndexPages.next([{ index: 0, isVisible: true }]);
     tick(50);
 
     setCurrentPageIndex(2);
@@ -90,6 +91,61 @@ describe('PlayerStateDirective', () => {
     setCurrentPageIndex(1);
 
     expect(changedIndices).toEqual([1]);
+    directive.ngOnDestroy();
+  }));
+
+  /* Angular binds the inputs before ngOnInit, so the first change of currentPageIndex reaches the
+     directive before it has subscribed to the page list (#1462). */
+  it('should not report a player state for the first page index before the pages are counted', fakeAsync(() => {
+    const changedIndices: number[] = [];
+    navigationService.currentPageIndexChanged.subscribe(index => changedIndices.push(index));
+    directive.isVisibleIndexPages = isVisibleIndexPages;
+    directive.currentPageIndex = 0;
+    directive.ngOnChanges({ currentPageIndex: new SimpleChange(undefined, 0, true) });
+    directive.ngOnInit();
+
+    expect(changedIndices).toEqual([0]);
+    expect(veronaPostService.sendVopStateChangedNotification).not.toHaveBeenCalled();
+    directive.ngOnDestroy();
+  }));
+
+  it('should not report the initial empty page list, however long the pages take', fakeAsync(() => {
+    initDirective();
+    tick(100);
+
+    setCurrentPageIndex(1);
+
+    expect(veronaPostService.sendVopStateChangedNotification).not.toHaveBeenCalled();
+    directive.ngOnDestroy();
+  }));
+
+  it('should report the page index set before counting together with the counted pages', fakeAsync(() => {
+    initDirective();
+    tick(100);
+    setCurrentPageIndex(1);
+
+    isVisibleIndexPages.next([{ index: 0, isVisible: true }, { index: 1, isVisible: true }]);
+    tick(50);
+
+    expect(veronaPostService.sendVopStateChangedNotification).toHaveBeenCalledTimes(1);
+    expect(lastPlayerState()).toEqual({
+      currentPage: '1',
+      validPages: [
+        { id: '0', label: 'pageIndication-1' },
+        { id: '1', label: 'pageIndication-2' }
+      ]
+    });
+    directive.ngOnDestroy();
+  }));
+
+  it('should report an empty page list once counted pages are all hidden', fakeAsync(() => {
+    initDirective();
+
+    isVisibleIndexPages.next([{ index: 0, isVisible: false }, { index: 1, isVisible: false }]);
+    tick(50);
+
+    expect(veronaPostService.sendVopStateChangedNotification).toHaveBeenCalledTimes(1);
+    expect(lastPlayerState()?.validPages).toEqual([]);
     directive.ngOnDestroy();
   }));
 

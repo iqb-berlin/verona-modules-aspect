@@ -1,5 +1,9 @@
 Editor
 ======
+## next
+### Änderungen
+- Die Werkzeugleiste des Texteditors ist jetzt einfarbig hellgrau statt rosa verlaufend ([#1493](https://github.com/iqb-berlin/verona-modules-aspect/issues/1493))
+
 ## 3.0.1
 ### Neue Funktionen
 - Bilder lassen sich nachträglich verkleinern: Der Dialog zum Verkleinern, den bisher nur das Hochladen öffnete, ist jetzt auch für ein Bild erreichbar, das schon in der Aufgabe steckt — über einen eigenen Knopf neben dem Bild. Es gibt ihn bei Bild und Bildbereichen im Eigenschaftenbereich, bei Knopf und Kontrollkästchen mit Bild, beim Startbild der Abspielsteuerung und in jedem Dialog, in dem eine Beschriftung mit Bild bearbeitet wird (Optionsfelder, Klappliste, Ablegelistenoption, Zeilen und Spalten der Optionentabelle). Der Dialog weist dabei darauf hin, dass das Bild neu berechnet wird und ein JPEG oder WebP dabei ein zweites Mal an Qualität verliert. Bei Bildern, die sich gar nicht verkleinern lassen — etwa SVG —, ist der Knopf gesperrt und nennt den Grund ([#1378](https://github.com/iqb-berlin/verona-modules-aspect/issues/1378))

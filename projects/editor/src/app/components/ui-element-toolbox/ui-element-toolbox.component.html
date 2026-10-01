@@ -217,6 +217,12 @@
             <mat-icon>{{GeometryElement.icon}}</mat-icon>
             {{GeometryElement.title}}
           </button>
+          <button mat-stroked-button (click)="addUIElement('tetfolio')"
+                  draggable="true" (dragstart)="startDrag($event,'tetfolio')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{TetfolioElement.icon}}</mat-icon>
+            {{TetfolioElement.title}}
+          </button>
           <button mat-stroked-button (click)="addUIElement('marking-panel')"
                   draggable="true" (dragstart)="startDrag($event,'marking-panel')"
                   (dragend)="endDrag()">

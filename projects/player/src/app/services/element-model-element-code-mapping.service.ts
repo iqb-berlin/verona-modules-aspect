@@ -74,6 +74,8 @@ export class ElementModelElementCodeMappingService {
         return (elementCodeValue !== undefined) ?
           elementCodeValue as string :
           (elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state;
+      case 'tetfolio':
+        return (elementCodeValue !== undefined) ? elementCodeValue as string : null;
       case 'drop-list':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectByAlias(id)) as DragNDropValueObject[] :
@@ -139,6 +141,7 @@ export class ElementModelElementCodeMappingService {
       case 'geometry-variable':
       case 'widget-periodic-table':
       case 'widget-molecule-editor':
+      case 'tetfolio':
         return elementModelValue as string;
       case 'image':
         return elementModelValue as boolean;

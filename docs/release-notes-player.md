@@ -1,6 +1,9 @@
 Player
 ======
 ## next
+### Neue Funktionen
+- Neues Element "Tetfolio": Der Player zeigt ein eingebettetes tet.folio-Experiment an und meldet dessen Bearbeitungsstand, damit er beim Wiedereinstieg wiederhergestellt wird. Der Stand dient allein der Wiederherstellung und wird nicht kodiert ([#1461](https://github.com/iqb-berlin/verona-modules-aspect/issues/1461))
+
 ### Fehlerbehebungen
 - Periodensystem: Gibt das Widget eine leere Auswahl zurück, übernimmt der Player sie jetzt als Antwort. Bisher blieb dann die vorige Auswahl stehen. Das Widget selbst (1.0.0) lässt das Speichern einer leeren Auswahl allerdings nicht zu, es ist dort nicht umgesetzt: Sein Speichern-Knopf ist gesperrt, solange nichts ausgewählt ist. Eine gegebene Antwort lässt sich deshalb weiterhin nicht löschen ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
 - Seitennavigation der Testumgebung: Nach dem Start einer Aufgabe meldet der Player die Seiten erst, wenn er sie gezählt hat. Bisher schickte er zuerst eine leere Seitenliste, die eine Testumgebung nicht von einer Aufgabe ohne sichtbare Seiten unterscheiden konnte ([#1462](https://github.com/iqb-berlin/verona-modules-aspect/issues/1462))

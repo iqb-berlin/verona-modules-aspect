@@ -1,0 +1,19 @@
+<div class="tetfolio-container">
+  @if (iframeContent) {
+    <iframe #tetfolioIframe
+            class="tetfolio-frame"
+            [srcdoc]="iframeContent"
+            [style.height]="elementModel.dimensions.isHeightFixed ? '100%' : contentHeight + 'px'"
+            [title]="'tetfolioIframeTitle' | translate">
+    </iframe>
+    @if ((isLoaded | async) === false) {
+      <div class="tetfolio-restore-overlay">
+        <aspect-spinner [isLoaded]="isLoaded" (timeOut)="onRestoreTimeout()"></aspect-spinner>
+      </div>
+    }
+  } @else {
+    <div class="tetfolio-placeholder">
+      {{ 'tetfolioNoContent' | translate }}
+    </div>
+  }
+</div>

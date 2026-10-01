@@ -18,6 +18,7 @@ import { ToggleButtonElement } from 'common/models/elements/toggle-button';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
+import { TetfolioElement } from 'common/models/elements/tetfolio';
 import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor';
 import { ElementFactory } from 'common/utils/element-factory';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
@@ -236,6 +237,11 @@ describe('ElementModelElementCodeMappingService', () => {
     const textAreaValue = null;
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(textAreaValue, 'text-area'))
       .toEqual(null);
+  });
+
+  it('should map the state of a tetfolio elementModel to its elementCode value', () => {
+    expect(ElementModelElementCodeMappingService.mapToElementCodeValue('{"ibe_logger-1":"a=1"}', 'tetfolio'))
+      .toEqual('{"ibe_logger-1":"a=1"}');
   });
 
   it('should map the value of a widget-periodic-table elementModel to its elementCode value', () => {
@@ -652,6 +658,17 @@ describe('ElementModelElementCodeMappingService', () => {
     });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual('initial_state');
+  });
+
+  it('should hand a stored tetfolio state on unchanged', () => {
+    const elementModel = new TetfolioElement({ id: 'id1', alias: 'alias1', type: 'tetfolio' });
+    expect(service.mapToElementModelValue('{"ibe_logger-1":"a=1"}', elementModel))
+      .toEqual('{"ibe_logger-1":"a=1"}');
+  });
+
+  it('should give a tetfolio without a stored state nothing to restore', () => {
+    const elementModel = new TetfolioElement({ id: 'id1', alias: 'alias1', type: 'tetfolio' });
+    expect(service.mapToElementModelValue(undefined, elementModel)).toBeNull();
   });
 
   it('should map an elementCode value to widget-molecule-editor elementModel value', () => {

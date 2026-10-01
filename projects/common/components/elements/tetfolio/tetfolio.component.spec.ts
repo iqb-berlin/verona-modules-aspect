@@ -1,0 +1,243 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from 'common/environment';
+import { TetfolioElement } from 'common/models/elements/tetfolio';
+import { DimensionProperties } from 'common/models/elements/property-group-interfaces';
+import { TetfolioComponent } from './tetfolio.component';
+
+@Component({
+  selector: 'aspect-spinner',
+  template: '',
+  standalone: false
+})
+class MockSpinnerComponent {
+  @Input() isLoaded!: BehaviorSubject<boolean>;
+  @Output() timeOut = new EventEmitter<number>();
+}
+
+describe('TetfolioComponent', () => {
+  let component: TetfolioComponent;
+  let fixture: ComponentFixture<TetfolioComponent>;
+
+  const createComponent = (
+    htmlContent: string, dimensions: Partial<DimensionProperties> = {}, savedState: string | null = null
+  ): void => {
+    fixture = TestBed.createComponent(TetfolioComponent);
+    component = fixture.componentInstance;
+    component.elementModel = new TetfolioElement({
+      type: 'tetfolio',
+      id: 'tetfolio_1',
+      alias: 'tetfolio_1',
+      htmlContent
+    });
+    Object.assign(component.elementModel.dimensions, dimensions);
+    component.savedState = savedState;
+    fixture.detectChanges();
+  };
+
+  const overlay = (): Element | null => fixture.nativeElement.querySelector('.tetfolio-restore-overlay');
+
+  /** A resize/state message the component accepts: its source must be the own iframe's window. */
+  const dispatchIframeMessage = (data: Record<string, unknown>): void => {
+    const iframe = fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement;
+    window.dispatchEvent(new MessageEvent('message', { data, source: iframe.contentWindow }));
+  };
+
+  beforeEach(async () => {
+    environment.strictInstantiation = false;
+    await TestBed.configureTestingModule({
+      declarations: [TetfolioComponent, MockSpinnerComponent],
+      imports: [TranslateModule.forRoot()]
+    }).compileComponents();
+  });
+
+  it('should create', () => {
+    createComponent('');
+    expect(component).toBeTruthy();
+  });
+
+  it('should show the placeholder and no iframe without content', () => {
+    createComponent('');
+    expect(component.iframeContent).toBeNull();
+    const placeholder = fixture.nativeElement.querySelector('.tetfolio-placeholder');
+    expect(placeholder).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('iframe')).toBeNull();
+  });
+
+  it('should hand the content to the iframe via srcdoc, with the bridge spliced in', () => {
+    createComponent('<html><body><p>unit</p></body></html>');
+    const iframe = fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement;
+    expect(iframe).toBeTruthy();
+    expect(iframe.srcdoc).toContain('<p>unit</p>');
+    expect(iframe.srcdoc).toContain('tetfolioStateChanged');
+    expect(fixture.nativeElement.querySelector('.tetfolio-placeholder')).toBeNull();
+  });
+
+  /* A host policy of `frame-src 'self'` - the Testcenter's - refuses `blob:` frames. */
+  it('should not load the iframe from a blob URL', () => {
+    const createSpy = vi.spyOn(URL, 'createObjectURL');
+    createComponent('<html><body></body></html>');
+    const iframe = fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement;
+    expect(createSpy).not.toHaveBeenCalled();
+    expect(iframe.getAttribute('src')).toBeNull();
+  });
+
+  it('should build a new iframe with the changed content on refresh', () => {
+    createComponent('<html><body><p>old</p></body></html>');
+    const oldIframe = fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement;
+    component.elementModel.htmlContent = '<html><body><p>new</p></body></html>';
+    component.refresh();
+    const newIframe = fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement;
+    expect(newIframe).not.toBe(oldIframe);
+    expect(newIframe.srcdoc).toContain('<p>new</p>');
+  });
+
+  it('should build a new iframe on refresh even when the content is unchanged', () => {
+    createComponent('<html><body><p>same</p></body></html>');
+    const oldIframe = fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement;
+    component.refresh();
+    expect(fixture.nativeElement.querySelector('iframe')).not.toBe(oldIframe);
+  });
+
+  it('should release the message listener on destroy', () => {
+    createComponent('<html><body></body></html>');
+    const removeListenerSpy = vi.spyOn(window, 'removeEventListener');
+    fixture.destroy();
+    expect(removeListenerSpy).toHaveBeenCalledWith('message', expect.any(Function));
+  });
+
+  it('should ignore messages that are not from its own iframe', () => {
+    createComponent('<html><body></body></html>');
+    const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
+    window.dispatchEvent(new MessageEvent('message', {
+      data: { type: 'tetfolioStateChanged', state: '{}' }
+    }));
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should emit the reported state for a message from its own iframe', () => {
+    createComponent('<html><body></body></html>');
+    const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
+    dispatchIframeMessage({ type: 'tetfolioStateChanged', state: '{"key":"value"}' });
+    expect(emitSpy).toHaveBeenCalledWith({ id: 'tetfolio_1', value: '{"key":"value"}' });
+  });
+
+  it('should show no restore overlay without a saved state', () => {
+    createComponent('<html><body></body></html>');
+    expect(component.isLoaded.value).toBe(true);
+    expect(overlay()).toBeNull();
+  });
+
+  it('should cover the iframe with the spinner overlay while a saved state is restored', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    expect(component.isLoaded.value).toBe(false);
+    expect(overlay()).toBeTruthy();
+    expect(overlay()?.querySelector('aspect-spinner')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('iframe')).toBeTruthy();
+  });
+
+  it('should lift the overlay when the bridge reports the state as final', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    dispatchIframeMessage({ type: 'tetfolioReady' });
+    fixture.detectChanges();
+    expect(component.isLoaded.value).toBe(true);
+    expect(overlay()).toBeNull();
+  });
+
+  it('should ignore a ready message that is not from its own iframe', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    window.dispatchEvent(new MessageEvent('message', { data: { type: 'tetfolioReady' } }));
+    fixture.detectChanges();
+    expect(overlay()).toBeTruthy();
+  });
+
+  it('should lift the overlay without an error when the spinner times out', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    component.onRestoreTimeout();
+    fixture.detectChanges();
+    expect(overlay()).toBeNull();
+  });
+
+  it('should show the overlay again for a rebuilt iframe with a saved state', () => {
+    createComponent('<html><body></body></html>', {}, '{"ibe_logger-77":"line1"}');
+    dispatchIframeMessage({ type: 'tetfolioReady' });
+    component.refresh();
+    expect(component.isLoaded.value).toBe(false);
+    expect(overlay()).toBeTruthy();
+  });
+
+  describe('height', () => {
+    const iframeHeight = (): string => (fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement)
+      .style.height;
+
+    it('should start with the authored height from the model', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      expect(iframeHeight()).toBe('250px');
+    });
+
+    it('should follow the content height reported by the iframe', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('620px');
+    });
+
+    it('should clamp the content height to the authored bounds', () => {
+      createComponent('<html><body></body></html>', { height: 250, minHeight: 200, maxHeight: 500 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('500px');
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 100 });
+      expect(iframeHeight()).toBe('200px');
+    });
+
+    /* 0 in the min/max fields means "no limit", like an empty field (#1350). */
+    it('should not clamp to bounds of 0', () => {
+      createComponent('<html><body></body></html>', { height: 250, minHeight: 0, maxHeight: 0 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('620px');
+    });
+
+    it('should apply bounds changed after the start with the next report', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      component.elementModel.dimensions.maxHeight = 400;
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('400px');
+    });
+
+    it('should fill the container with a fixed height, whatever the content reports', () => {
+      createComponent('<html><body></body></html>', { height: 250, isHeightFixed: true });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('100%');
+    });
+
+    it('should switch between fixed and following height without a new report', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      component.elementModel.dimensions.isHeightFixed = true;
+      fixture.detectChanges();
+      expect(iframeHeight()).toBe('100%');
+      component.elementModel.dimensions.isHeightFixed = false;
+      fixture.detectChanges();
+      expect(iframeHeight()).toBe('620px');
+    });
+
+    it('should start a rebuilt iframe from the authored height, not the previous content\'s', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 1200 });
+      component.elementModel.dimensions.height = 300;
+      component.refresh();
+      expect(iframeHeight()).toBe('300px');
+    });
+
+    it('should leave the height of the host and its parent to the container bindings', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      const host = fixture.nativeElement as HTMLElement;
+      expect(host.style.height).toBe('');
+      expect(host.parentElement?.style.height).toBe('');
+    });
+  });
+});

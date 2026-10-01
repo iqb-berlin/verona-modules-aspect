@@ -1,6 +1,9 @@
 Editor
 ======
 ## next
+### Neue Funktionen
+- Neues Element "Tetfolio": Ein tet.folio-Export (ZIP) lässt sich im Eigenschaftenbereich hochladen; der Editor packt ihn in ein eigenständiges HTML-Dokument und zeigt das Experiment in der Aufgabe an ([#1461](https://github.com/iqb-berlin/verona-modules-aspect/issues/1461))
+
 ### Änderungen
 - Die Werkzeugleiste des Texteditors ist jetzt einfarbig hellgrau statt rosa verlaufend ([#1493](https://github.com/iqb-berlin/verona-modules-aspect/issues/1493))
 

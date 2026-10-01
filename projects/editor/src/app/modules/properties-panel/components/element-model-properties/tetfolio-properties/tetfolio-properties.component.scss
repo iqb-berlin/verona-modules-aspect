@@ -1,0 +1,21 @@
+.upload-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.success-text {
+  color: green;
+  font-size: 12px;
+}
+
+.error-text {
+  color: #c62828;
+  font-size: 12px;
+}
+
+.info-text {
+  color: #555;
+  font-size: 12px;
+}

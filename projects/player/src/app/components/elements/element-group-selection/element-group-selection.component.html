@@ -55,6 +55,12 @@
     [elementModel]="elementModel"
     [pageIndex]="pageIndex">
   </aspect-widget-group-element>
+  @if ('tetfolioGroup' === selectedGroup) {
+    <aspect-tetfolio-group-element
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+    </aspect-tetfolio-group-element>
+  }
   <aspect-base-group-element
       *ngIf="!selectedGroup"
       [elementModel]="elementModel"

@@ -93,7 +93,8 @@ const ELEMENT_TYPE_COVERAGE: Record<UIElementType, true> = {
   table: true,
   'marking-panel': true,
   'widget-periodic-table': true,
-  'widget-molecule-editor': true
+  'widget-molecule-editor': true,
+  tetfolio: true
 };
 
 const ELEMENT_TYPES = Object.keys(ELEMENT_TYPE_COVERAGE).sort() as UIElementType[];

@@ -45,6 +45,7 @@ const SECTION_KEYS = {
   slider: true,
   stickyHeader: true,
   table: true,
+  tetfolio: true,
   text: true,
   textFieldElement: true,
   widgetMoleculeEditor: true,
@@ -95,7 +96,8 @@ export const PANEL_SECTIONS: Record<UIElementType, readonly PanelSection[]> = {
   trigger: ['action'],
   video: ['mediaSource', 'image'],
   'widget-molecule-editor': ['widgetMoleculeEditor'],
-  'widget-periodic-table': ['widgetPeriodicTable']
+  'widget-periodic-table': ['widgetPeriodicTable'],
+  tetfolio: ['tetfolio']
 };
 
 /**

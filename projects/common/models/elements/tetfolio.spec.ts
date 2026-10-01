@@ -13,7 +13,6 @@ describe('TetfolioElement', () => {
   it('should apply the registry defaults', () => {
     const element = new TetfolioElement({ type: 'tetfolio', id: 'tetfolio_1', alias: 'tetfolio_1' });
     expect(element.htmlContent).toBe('');
-    expect(element.state).toBeNull();
     expect(element.dimensions.width).toBe(900);
     expect(element.dimensions.height).toBe(400);
     expect(element.styling).toEqual({});
@@ -24,20 +23,24 @@ describe('TetfolioElement', () => {
       type: 'tetfolio',
       id: 'tetfolio_1',
       alias: 'tetfolio_1',
-      htmlContent: '<html></html>',
-      state: '{"key":"value"}'
+      htmlContent: '<html></html>'
     });
     expect(element.htmlContent).toBe('<html></html>');
-    expect(element.state).toBe('{"key":"value"}');
   });
 
-  it('should declare one string variable named after the element', () => {
+  it('should keep no state of its own: the state belongs to the unit state, not the definition', () => {
+    const element = new TetfolioElement({ type: 'tetfolio', id: 'tetfolio_1', alias: 'tetfolio_1' });
+    expect(Object.keys(element)).not.toContain('state');
+  });
+
+  /* The reported state only serves the restore on re-entry and is not coded (#1461). */
+  it('should declare its variable as not coded', () => {
     const element = new TetfolioElement({ type: 'tetfolio', id: 'tetfolio_1', alias: 'my-alias' });
     const infos = element.getVariableInfos();
     expect(infos).toHaveLength(1);
     expect(infos[0].id).toBe('tetfolio_1');
     expect(infos[0].alias).toBe('my-alias');
-    expect(infos[0].type).toBe('string');
+    expect(infos[0].type).toBe('NO_VALUE');
   });
 
   it('should throw on a foreign blueprint under strict instantiation', () => {

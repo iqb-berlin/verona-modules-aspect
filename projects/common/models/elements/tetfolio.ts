@@ -1,4 +1,3 @@
-import { VariableInfo } from '@iqb/responses';
 import { UIElement } from 'common/models/elements/element';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
@@ -9,14 +8,18 @@ import {
   DimensionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 
-/** An embedded Tetfolio unit: `htmlContent` holds a self-contained HTML document (packed from a
-   Tetfolio export zip in the editor), which the component renders in a same-origin srcdoc
-   iframe (not sandboxed - see docs/tetfolio-element.md for the trust model). `state` is
-   the serialized answer state the embedded app reports back over the message bridge. */
+/**
+ * An embedded tet.folio experiment: `htmlContent` holds a self-contained HTML document (packed
+ * from a tet.folio export zip in the editor), which the component renders in a same-origin srcdoc
+ * iframe (not sandboxed - see docs/tetfolio-element.md for what that lets the content reach).
+ *
+ * The player reports the experiment's state as the element's value, but only to restore it on
+ * re-entry: it is not coded. That is why the element keeps the `NO_VALUE` variable info of the base
+ * class, as audio and video do for their playback time.
+ */
 export class TetfolioElement extends UIElement implements TetfolioProperties {
   type: UIElementType = 'tetfolio';
   htmlContent: string = ELEMENT_DEFAULTS.tetfolio.htmlContent;
-  state: string | null = ELEMENT_DEFAULTS.tetfolio.state;
   /** Full group, not just width/height: the component reads `isHeightFixed`, `minHeight` and
      `maxHeight` to decide whether and how far the iframe follows its content's height. */
   dimensions: DimensionProperties = PropertyGroupGenerators
@@ -32,26 +35,10 @@ export class TetfolioElement extends UIElement implements TetfolioProperties {
     super({ type: 'tetfolio', ...element }, idService);
     if (isTetfolioProperties(element)) {
       if (element.htmlContent !== undefined) this.htmlContent = element.htmlContent;
-      if (element.state !== undefined) this.state = element.state;
       if (element.dimensions !== undefined) this.dimensions = { ...element.dimensions };
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at Tetfolio instantiation', element);
     }
-  }
-
-  getVariableInfos(): VariableInfo[] {
-    return [{
-      id: this.id,
-      alias: this.alias,
-      type: 'string',
-      format: '',
-      multiple: false,
-      nullable: false,
-      values: [],
-      valuePositionLabels: [],
-      page: '',
-      valuesComplete: false
-    }];
   }
 }
 
@@ -59,7 +46,6 @@ export interface TetfolioProperties extends UIElementProperties {
   /** No styling: see the class field. */
   styling?: Record<never, never>;
   htmlContent: string;
-  state: string | null;
   dimensions: DimensionProperties;
 }
 

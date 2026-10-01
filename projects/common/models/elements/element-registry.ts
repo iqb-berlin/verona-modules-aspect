@@ -796,7 +796,6 @@ export const ELEMENT_DEFAULTS = {
   },
   tetfolio: {
     htmlContent: '',
-    state: null,
     dimensions: {
       width: 900,
       height: 400

@@ -47,27 +47,35 @@ describe('TetfolioGroupElementComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should restore a stored state into the element model on init', () => {
+  it('should hand the stored state to the iframe for restoring', () => {
     vi.spyOn(unitStateService, 'getElementCodeById')
       .mockReturnValue({
         id: 'tetfolio_1', alias: 'tetfolio_1', value: '{"key":"stored"}', status: 'VALUE_CHANGED'
       });
     fixture.detectChanges();
     expect(component.savedState).toBe('{"key":"stored"}');
-    expect((component.elementModel as TetfolioElement).state).toBe('{"key":"stored"}');
   });
 
-  it('should fall back to the model state when nothing is stored', () => {
+  it('should have no state to restore when nothing is stored', () => {
     vi.spyOn(unitStateService, 'getElementCodeById').mockReturnValue(undefined);
     fixture.detectChanges();
     expect(component.savedState).toBeNull();
   });
 
-  it('should write a changed value into the model and the unit state', () => {
+  it('should register the stored state as the initial value', () => {
+    vi.spyOn(unitStateService, 'getElementCodeById')
+      .mockReturnValue({
+        id: 'tetfolio_1', alias: 'tetfolio_1', value: '{"key":"stored"}', status: 'VALUE_CHANGED'
+      });
+    const registerSpy = vi.spyOn(unitStateService, 'registerElementCode');
+    fixture.detectChanges();
+    expect(registerSpy.mock.calls[0].slice(0, 3)).toEqual(['tetfolio_1', 'tetfolio_1', '{"key":"stored"}']);
+  });
+
+  it('should report a changed value to the unit state', () => {
     fixture.detectChanges();
     const changeSpy = vi.spyOn(unitStateService, 'changeElementCodeValue');
     component.changeElementCodeValue({ id: 'tetfolio_1', value: '{"key":"new"}' });
-    expect((component.elementModel as TetfolioElement).state).toBe('{"key":"new"}');
     expect(changeSpy).toHaveBeenCalledWith({ id: 'tetfolio_1', value: '{"key":"new"}' });
   });
 });

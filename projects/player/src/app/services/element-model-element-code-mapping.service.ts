@@ -16,7 +16,6 @@ import { UIElementType } from 'common/models/ui-element-interfaces';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
 import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor';
-import { TetfolioElement } from 'common/models/elements/tetfolio';
 import { MathFormulaMarkup } from 'common/utils/math-formula-markup';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
@@ -76,9 +75,7 @@ export class ElementModelElementCodeMappingService {
           elementCodeValue as string :
           (elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state;
       case 'tetfolio':
-        return (elementCodeValue !== undefined) ?
-          elementCodeValue as string :
-          (elementModel as TetfolioElement).state;
+        return (elementCodeValue !== undefined) ? elementCodeValue as string : null;
       case 'drop-list':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectByAlias(id)) as DragNDropValueObject[] :

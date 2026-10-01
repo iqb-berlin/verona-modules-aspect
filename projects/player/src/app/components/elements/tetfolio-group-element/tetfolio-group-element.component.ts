@@ -10,8 +10,8 @@ import {
   ElementModelElementCodeMappingService
 } from '../../../services/element-model-element-code-mapping.service';
 
-/** Hosts a tetfolio element in the player: restores the saved state into the model before the
-   iframe loads and writes state changes from the bridge back into the unit state. */
+/** Hosts a tetfolio element in the player: hands the stored state to the iframe for restoring
+   and reports state changes from the bridge to the unit state. */
 @Component({
   selector: 'aspect-tetfolio-group-element',
   templateUrl: './tetfolio-group-element.component.html',
@@ -22,6 +22,7 @@ export class TetfolioGroupElementComponent
   extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: TetfolioComponent;
   TetfolioElement!: TetfolioElement;
+  /** The state stored by the host for this element, read once before the iframe is built. */
   savedState: string | null = null;
 
   constructor(public unitStateService: UnitStateService,
@@ -33,7 +34,6 @@ export class TetfolioGroupElementComponent
     this.savedState = this.elementModelElementCodeMappingService.mapToElementModelValue(
       this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
     ) as string | null;
-    (this.elementModel as TetfolioElement).state = this.savedState;
   }
 
   ngAfterViewInit(): void {
@@ -49,7 +49,6 @@ export class TetfolioGroupElementComponent
   }
 
   changeElementCodeValue(value: ValueChangeElement): void {
-    (this.elementModel as TetfolioElement).state = value.value as string | null;
     this.unitStateService.changeElementCodeValue({
       id: value.id,
       value: ElementModelElementCodeMappingService

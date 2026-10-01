@@ -5,7 +5,7 @@ p {
 /* A gap is an atomic inline, so the line may break between it and the letters of the word it sits
    in. nowrap removes that break. The spaces stay outside this span, so the line breaks there and
    the whole interrupted word moves down together. */
-.broken-word {
+.unbreakable-word {
   white-space: nowrap;
 }
 

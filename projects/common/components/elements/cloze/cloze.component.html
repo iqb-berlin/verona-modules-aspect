@@ -121,7 +121,7 @@
 <ng-template #paragraphChildren let-part>
   @for (segment of $any(part).content | clozeLineParts; track $index) {
     @if (segment.keepTogether) {
-      <span class="broken-word">
+      <span class="unbreakable-word">
         <ng-container [ngTemplateOutlet]="segmentNodes"
                       [ngTemplateOutletContext]="{ $implicit: segment }"></ng-container>
       </span>

@@ -166,7 +166,7 @@ describe('ClozeComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const word = compiled.querySelector('.broken-word') as HTMLElement;
+    const word = compiled.querySelector('.unbreakable-word') as HTMLElement;
     const field = word.querySelector('aspect-compound-child-overlay') as HTMLElement;
     field.style.width = '80px';
     field.style.height = '18px';

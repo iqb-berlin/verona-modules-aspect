@@ -1,69 +1,7 @@
 /**
- * Bridge script for tetfolio iframe content.
- *
- * Tetfolio units are rendered as self-contained HTML (produced by the
- * distpacker) inside a srcdoc iframe. Communication with the hosting
- * TetfolioComponent works via a script that is spliced into that HTML
- * string before the iframe is created - the same string-level technique
- * the distpacker itself uses. This module owns everything about that
- * script; the component only calls injectTetfolioBridge().
- *
- * A srcdoc iframe shares the parent's origin, so every tetfolio element in a
- * tab writes into ONE sessionStorage. The bridge therefore namespaces the
- * experiment's state keys per element: what the experiment reads and writes
- * under `ibe_logger-<pageId>` physically lands under
- * `<element scope>ibe_logger-<pageId>` (see storageScopeOf), rewritten
- * transparently in the setItem/getItem/removeItem patches. Two elements -
- * even two copies of the SAME experiment, whose pageId-derived key names are
- * identical - can then never clear or overwrite each other's state. The
- * reported state and the seeded state keep the RAW key names, so stored
- * answers are independent of the element id and survive duplication.
- *
- * Messages to the host: `tetfolioResize` (document height), `tetfolioStateChanged`
- * (the captured state) and `tetfolioReady`, posted once capture becomes active - i.e.
- * the moment the seeded state is final, which is when the host lifts its restore overlay.
- *
- * Accepted tradeoff, by design: while a restore replays the seeded state,
- * capture is suppressed and the replay window ends with `reseed(basis)` -
- * because the replay's own storage writes ("echoes") are indistinguishable
- * from user input, input made during that window is overwritten along with
- * them. Without a restore, input before INIT_SETTLE_MS is kept in storage
- * but only reported with the next change after the settle. The runtime
- * specs pin both behaviors.
- *
- * Why the iframe is not sandboxed: `sandbox="allow-scripts"` gives the
- * document an opaque origin - and a NESTED iframe inside it gets an opaque
- * origin OF ITS OWN (verified in Chromium 2026-09: parent-child
- * `contentWindow` access throws SecurityError in both directions). Tet.folio
- * exports load the experiment as a nested page and the outer page reaches
- * into its `contentWindow` (see `replaceIframes()` in the distpacker), so a
- * sandboxed tetfolio element would break every such export. The trust model
- * is documented in docs/tetfolio-element.md.
- */
-
-/**
- * Session storage key prefix for experiment state.
- * The pageId comes from the static tetfoliopage="tf_<pageId>" attribute.
- * Framework keys like 'tet_cssTransform*' are intentionally not captured.
- */
-export const TETFOLIO_STATE_KEY_PREFIX = 'ibe_logger-';
-
-/** Delay for the experiment's own state replay (see module docs). */
-export const TETFOLIO_RESTORE_DELAY_MS = 1500;
-
-/** Extra margin after the computed replay duration (see module docs). */
-export const TETFOLIO_REPLAY_MARGIN_MS = 1500;
-
-/** Fallback: enable capture if no restore happens (see module docs). */
-export const TETFOLIO_INIT_SETTLE_MS = 4000;
-
-/** Debounce for reporting a state change to the host component. */
-export const TETFOLIO_REPORT_DEBOUNCE_MS = 300;
-
-/**
- * Overrides for the bridge's timing windows. Production uses the exported
- * constants; the runtime specs shrink the windows so the suppression, replay
- * and settle behavior can be exercised in milliseconds instead of seconds.
+ * Overrides for the bridge's timing windows. Production uses the constants on `TetfolioBridge`;
+ * the runtime specs shrink the windows so the suppression, replay and settle behavior can be
+ * exercised in milliseconds instead of seconds.
  */
 export interface TetfolioBridgeTimings {
   restoreDelayMs?: number;
@@ -73,55 +11,136 @@ export interface TetfolioBridgeTimings {
 }
 
 /**
- * The per-element namespace prepended to every state key in the tab's shared
- * sessionStorage. Derived from the element id, which is unique within a unit
- * - unlike the experiment's pageId, which is identical for two copies of the
- * same export.
+ * The script spliced into a packed tet.folio document, which connects the experiment inside the
+ * iframe to the hosting `TetfolioComponent`.
+ *
+ * Tetfolio units are rendered as self-contained HTML (produced by the `Distpacker`) inside a
+ * srcdoc iframe. The bridge is spliced into that HTML string before the iframe is created - the
+ * same string-level technique the distpacker itself uses. This class owns everything about that
+ * script; the component only calls `TetfolioBridge.inject()`.
+ *
+ * A srcdoc iframe shares the parent's origin, so every tetfolio element in a tab writes into ONE
+ * sessionStorage. The bridge therefore namespaces the experiment's state keys per element: what
+ * the experiment reads and writes under `ibe_logger-<pageId>` physically lands under
+ * `<element scope>ibe_logger-<pageId>` (see `storageScopeOf`), rewritten transparently in the
+ * setItem/getItem/removeItem patches. Two elements - even two copies of the SAME experiment, whose
+ * pageId-derived key names are identical - can then never clear or overwrite each other's state.
+ * The reported state and the seeded state keep the RAW key names, so stored states are
+ * independent of the element id and survive duplication.
+ *
+ * Messages to the host: `tetfolioResize` (document height), `tetfolioStateChanged` (the captured
+ * state) and `tetfolioReady`, posted once capture becomes active - i.e. the moment the seeded state
+ * is final, which is when the host lifts its restore overlay. When capture starts with a state that
+ * differs from the last one the host knows - input made before it, on a first visit - that state
+ * is reported right away instead of waiting for the next change.
+ *
+ * Accepted tradeoff, by design: while a restore replays the seeded state, capture is suppressed and
+ * the replay window ends with `reseed(basis)` - because the replay's own storage writes ("echoes")
+ * are indistinguishable from user input, input made during that window is overwritten along with
+ * them. The runtime specs pin this behavior.
+ *
+ * Why the iframe is not sandboxed: `sandbox="allow-scripts"` gives the document an opaque origin -
+ * and a NESTED iframe inside it gets an opaque origin OF ITS OWN (verified in Chromium 2026-09:
+ * parent-child `contentWindow` access throws SecurityError in both directions). Tet.folio exports
+ * load the experiment as a nested page and the outer page reaches into its `contentWindow` (see
+ * `replaceIframes()` in the distpacker), so a sandboxed tetfolio element would break every such
+ * export. What the content can reach instead is described in docs/tetfolio-element.md.
  */
-export function storageScopeOf(elementId: string): string {
-  return `tetfolio:${elementId}::`;
-}
+export class TetfolioBridge {
+  /**
+   * Session storage key prefix for experiment state. The pageId comes from the static
+   * `tetfoliopage="tf_<pageId>"` attribute. Framework keys like 'tet_cssTransform*' are
+   * intentionally not captured.
+   */
+  static readonly STATE_KEY_PREFIX = 'ibe_logger-';
 
-/**
- * Extract the element's own state keys from the packed HTML. They scope the
- * capture to experiment state (framework keys stay untouched); the
- * cross-element isolation itself comes from the element-id namespace.
- */
-export function extractTetfolioStateKeys(htmlContent: string): string[] {
-  const keys: string[] = [];
-  // Mirror the logger exactly: it derives the pageId from the attribute
-  // value as value.substring(3) (dropping the leading 'tf_' marker),
-  // whatever characters follow. Accept both quote styles.
-  const regex = /tetfoliopage=["']([^"']+)["']/gi;
-  let match = regex.exec(htmlContent);
-  while (match !== null) {
-    const pageAttribute = match[1];
-    if (pageAttribute.length > 3) {
-      const key = TETFOLIO_STATE_KEY_PREFIX + pageAttribute.substring(3);
-      if (!keys.includes(key)) keys.push(key);
+  /** Delay for the experiment's own state replay (see class docs). */
+  static readonly RESTORE_DELAY_MS = 1500;
+
+  /** Extra margin after the computed replay duration (see class docs). */
+  static readonly REPLAY_MARGIN_MS = 1500;
+
+  /** Fallback: enable capture if no restore happens (see class docs). */
+  static readonly INIT_SETTLE_MS = 4000;
+
+  /** Debounce for reporting a state change to the host component. */
+  static readonly REPORT_DEBOUNCE_MS = 300;
+
+  /**
+   * Splice the bridge script into the packed unit HTML, scoped to the element's own state keys and
+   * storage namespace (see class docs) and optionally seeding a saved state. `timings` is for tests
+   * only.
+   */
+  static inject(
+    html: string, savedState: string | null, elementId: string, timings?: TetfolioBridgeTimings
+  ): string {
+    const stateKeys = TetfolioBridge.extractStateKeys(html);
+    const bridge = TetfolioBridge.buildScript(savedState, stateKeys, elementId, timings);
+    const idx = html.lastIndexOf('</body>');
+    if (idx !== -1) {
+      return html.substring(0, idx) + bridge + html.substring(idx);
     }
-    match = regex.exec(htmlContent);
+    return html + bridge;
   }
-  return keys;
-}
 
-function buildBridgeScript(
-  savedState: string | null, stateKeys: string[], elementId: string, timings?: TetfolioBridgeTimings
-): string {
-  const keys = JSON.stringify(stateKeys);
-  const prefix = JSON.stringify(TETFOLIO_STATE_KEY_PREFIX);
-  const scope = JSON.stringify(storageScopeOf(elementId));
-  const restoreDelayMs = timings?.restoreDelayMs ?? TETFOLIO_RESTORE_DELAY_MS;
-  const replayMarginMs = timings?.replayMarginMs ?? TETFOLIO_REPLAY_MARGIN_MS;
-  const initSettleMs = timings?.initSettleMs ?? TETFOLIO_INIT_SETTLE_MS;
-  const reportDebounceMs = timings?.reportDebounceMs ?? TETFOLIO_REPORT_DEBOUNCE_MS;
-  // Seed the saved state synchronously at document parse time, so it is
-  // guaranteed to be present before the experiment's own autoRestore()
-  // (which waits for inner-iframe load + tet:afterinit) reads it. The saved
-  // state carries raw key names; they are scoped on the way in.
-  const seed = savedState ? `
+  /**
+   * The per-element namespace prepended to every state key in the tab's shared sessionStorage.
+   * Derived from the element id, which is unique within a unit - unlike the experiment's pageId,
+   * which is identical for two copies of the same export.
+   */
+  static storageScopeOf(elementId: string): string {
+    return `tetfolio:${elementId}::`;
+  }
+
+  /**
+   * Extract the element's own state keys from the packed HTML. They scope the capture to
+   * experiment state (framework keys stay untouched); the cross-element isolation itself comes from
+   * the element-id namespace.
+   */
+  static extractStateKeys(htmlContent: string): string[] {
+    const keys: string[] = [];
+    // Mirror the logger exactly: it derives the pageId from the attribute value as
+    // value.substring(3) (dropping the leading 'tf_' marker), whatever characters follow.
+    // Accept both quote styles.
+    const regex = /tetfoliopage=["']([^"']+)["']/gi;
+    let match = regex.exec(htmlContent);
+    while (match !== null) {
+      const pageAttribute = match[1];
+      if (pageAttribute.length > 3) {
+        const key = TetfolioBridge.STATE_KEY_PREFIX + pageAttribute.substring(3);
+        if (!keys.includes(key)) keys.push(key);
+      }
+      match = regex.exec(htmlContent);
+    }
+    return keys;
+  }
+
+  /**
+   * A value as a JavaScript literal that is safe inside an inline `<script>`. `JSON.stringify`
+   * leaves `<` as it is, so a `</script>` in the value - in a saved state the host hands back, say -
+   * would end the script in the middle of the string. As `<` it means the same to JavaScript
+   * and nothing to the HTML parser.
+   */
+  private static scriptLiteral(value: unknown): string {
+    return JSON.stringify(value).replace(/</g, '\\u003c');
+  }
+
+  private static buildScript(
+    savedState: string | null, stateKeys: string[], elementId: string, timings?: TetfolioBridgeTimings
+  ): string {
+    const keys = TetfolioBridge.scriptLiteral(stateKeys);
+    const prefix = TetfolioBridge.scriptLiteral(TetfolioBridge.STATE_KEY_PREFIX);
+    const scope = TetfolioBridge.scriptLiteral(TetfolioBridge.storageScopeOf(elementId));
+    const restoreDelayMs = timings?.restoreDelayMs ?? TetfolioBridge.RESTORE_DELAY_MS;
+    const replayMarginMs = timings?.replayMarginMs ?? TetfolioBridge.REPLAY_MARGIN_MS;
+    const initSettleMs = timings?.initSettleMs ?? TetfolioBridge.INIT_SETTLE_MS;
+    const reportDebounceMs = timings?.reportDebounceMs ?? TetfolioBridge.REPORT_DEBOUNCE_MS;
+    // Seed the saved state synchronously at document parse time, so it is guaranteed to be
+    // present before the experiment's own autoRestore() (which waits for inner-iframe load +
+    // tet:afterinit) reads it. The saved state carries raw key names; they are scoped on the way in.
+    const seed = savedState ? `
   try {
-    var seededState = ${JSON.stringify(savedState)};
+    var seededState = ${TetfolioBridge.scriptLiteral(savedState)};
     var parsedState = JSON.parse(seededState);
     for (var seedKey in parsedState) {
       if (Object.prototype.hasOwnProperty.call(parsedState, seedKey) && matchesKey(seedKey)) {
@@ -131,7 +150,7 @@ function buildBridgeScript(
     }
   } catch (e) { console.warn('tetfolio-bridge: state seeding failed', e); }
 ` : '';
-  return `<script>
+    return `<script>
 (function() {
   var STATE_KEYS = ${keys};
   var STATE_KEY_PREFIX = ${prefix};
@@ -158,7 +177,7 @@ function buildBridgeScript(
   // Clear own keys BEFORE seeding: sessionStorage is per-tab and survives
   // logout/login on a shared device, so leftover state from a previous
   // user must never become this session's starting point. After this,
-  // the state persisted by the Testcenter is the single source of truth.
+  // the state persisted by the host is the single source of truth.
   // Only keys inside this element's namespace are touched.
   try {
     var staleKeys = [];
@@ -177,6 +196,8 @@ ${seed}
   var captureSuppressed = true;
   var restoreStarted = false;
   var firstRestore = true;
+  // The state the host last heard of: the seeded one until the first report.
+  var reportedSnapshot = seededSnapshot;
   function reseed(snapshot) {
     for (var key in snapshot) {
       if (Object.prototype.hasOwnProperty.call(snapshot, key)) {
@@ -189,6 +210,16 @@ ${seed}
       if (Object.prototype.hasOwnProperty.call(obj, key)) return true;
     }
     return false;
+  }
+  function sameState(a, b) {
+    var key;
+    for (key in a) {
+      if (Object.prototype.hasOwnProperty.call(a, key) && a[key] !== b[key]) return false;
+    }
+    for (key in b) {
+      if (Object.prototype.hasOwnProperty.call(b, key) && !Object.prototype.hasOwnProperty.call(a, key)) return false;
+    }
+    return true;
   }
   // Raw key names in, raw key names out - the scope stays a storage detail.
   function collectStateRaw() {
@@ -220,8 +251,17 @@ ${seed}
     }
     return n;
   }
+  // The state is final from here on. Input made before - while capture was
+  // still suppressed on a first visit - is reported now rather than with the
+  // next change, which might never come.
+  function startCapture() {
+    captureSuppressed = false;
+    if (!sameState(collectStateRaw(), reportedSnapshot)) reportStateDebounced();
+    reportReady();
+  }
   try {
-    var realRestore = null;
+    // Kept if the experiment registered its restore before the bridge ran.
+    var realRestore = typeof window.ibe_logger_restore === 'function' ? window.ibe_logger_restore : null;
     var delayedRestore = function () {
       var args = arguments;
       restoreStarted = true;
@@ -242,12 +282,15 @@ ${seed}
         firstRestore = false;
         var replayWindowMs = countStateLines(basis) * 10 + REPLAY_MARGIN_MS;
         captureSuppressed = true;
-        realRestore.apply(window, args);
+        // Scheduled before the replay starts, so that a replay that throws
+        // still ends the window instead of suppressing capture for good.
         setTimeout(function () {
           reseed(basis);
-          captureSuppressed = false;
-          reportReady();
+          startCapture();
         }, replayWindowMs);
+        try {
+          realRestore.apply(window, args);
+        } catch (e) { console.warn('tetfolio-bridge: restore failed', e); }
       }, RESTORE_DELAY_MS);
     };
     Object.defineProperty(window, 'ibe_logger_restore', {
@@ -261,10 +304,8 @@ ${seed}
   setTimeout(function () {
     if (restoreStarted) return;
     if (hasKeys(seededSnapshot)) reseed(seededSnapshot);
-    captureSuppressed = false;
-    reportReady();
+    startCapture();
   }, INIT_SETTLE_MS);
-  // The state is final from here on: the host may lift its restore overlay.
   function reportReady() {
     window.parent.postMessage({ type: 'tetfolioReady' }, '*');
   }
@@ -272,9 +313,10 @@ ${seed}
   function reportStateDebounced() {
     if (stateReportTimer) clearTimeout(stateReportTimer);
     stateReportTimer = setTimeout(function() {
+      reportedSnapshot = collectStateRaw();
       window.parent.postMessage({
         type: 'tetfolioStateChanged',
-        state: JSON.stringify(collectStateRaw())
+        state: JSON.stringify(reportedSnapshot)
       }, '*');
     }, ${reportDebounceMs});
   }
@@ -312,21 +354,5 @@ ${seed}
   }
 })();
 </script>`;
-}
-
-/**
- * Splice the bridge script into the packed unit HTML, scoped to the
- * element's own state keys and storage namespace (see module docs) and
- * optionally seeding a saved state. `timings` is for tests only.
- */
-export function injectTetfolioBridge(
-  html: string, savedState: string | null, elementId: string, timings?: TetfolioBridgeTimings
-): string {
-  const stateKeys = extractTetfolioStateKeys(html);
-  const bridge = buildBridgeScript(savedState, stateKeys, elementId, timings);
-  const idx = html.lastIndexOf('</body>');
-  if (idx !== -1) {
-    return html.substring(0, idx) + bridge + html.substring(idx);
   }
-  return html + bridge;
 }

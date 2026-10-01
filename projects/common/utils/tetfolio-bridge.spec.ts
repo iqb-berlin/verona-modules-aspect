@@ -1,48 +1,45 @@
-import {
-  extractTetfolioStateKeys, injectTetfolioBridge, storageScopeOf,
-  TetfolioBridgeTimings, TETFOLIO_STATE_KEY_PREFIX
-} from 'common/utils/tetfolio-bridge';
+import { TetfolioBridge, TetfolioBridgeTimings } from 'common/utils/tetfolio-bridge';
 
-describe('extractTetfolioStateKeys', () => {
+const PREFIX = TetfolioBridge.STATE_KEY_PREFIX;
+
+describe('TetfolioBridge.extractStateKeys', () => {
   it('should derive the state key from the tetfoliopage attribute', () => {
     const html = '<div tetfoliopage="tf_1651734"></div>';
-    expect(extractTetfolioStateKeys(html)).toEqual([`${TETFOLIO_STATE_KEY_PREFIX}1651734`]);
+    expect(TetfolioBridge.extractStateKeys(html)).toEqual([`${PREFIX}1651734`]);
   });
 
   it('should accept single quotes and deduplicate repeated pages', () => {
     const html = "<div tetfoliopage='tf_42'></div><span tetfoliopage=\"tf_42\"></span>";
-    expect(extractTetfolioStateKeys(html)).toEqual([`${TETFOLIO_STATE_KEY_PREFIX}42`]);
+    expect(TetfolioBridge.extractStateKeys(html)).toEqual([`${PREFIX}42`]);
   });
 
   it('should collect the keys of several pages', () => {
     const html = '<div tetfoliopage="tf_1"></div><div tetfoliopage="tf_2"></div>';
-    expect(extractTetfolioStateKeys(html)).toEqual([
-      `${TETFOLIO_STATE_KEY_PREFIX}1`, `${TETFOLIO_STATE_KEY_PREFIX}2`
-    ]);
+    expect(TetfolioBridge.extractStateKeys(html)).toEqual([`${PREFIX}1`, `${PREFIX}2`]);
   });
 
   it('should ignore attribute values without a page id after the marker', () => {
-    expect(extractTetfolioStateKeys('<div tetfoliopage="tf_"></div>')).toEqual([]);
+    expect(TetfolioBridge.extractStateKeys('<div tetfoliopage="tf_"></div>')).toEqual([]);
   });
 
   it('should return no keys for HTML without the attribute', () => {
-    expect(extractTetfolioStateKeys('<html><body></body></html>')).toEqual([]);
+    expect(TetfolioBridge.extractStateKeys('<html><body></body></html>')).toEqual([]);
   });
 });
 
-describe('storageScopeOf', () => {
+describe('TetfolioBridge.storageScopeOf', () => {
   it('should derive different namespaces for different elements', () => {
-    expect(storageScopeOf('tetfolio_1')).not.toBe(storageScopeOf('tetfolio_2'));
+    expect(TetfolioBridge.storageScopeOf('tetfolio_1')).not.toBe(TetfolioBridge.storageScopeOf('tetfolio_2'));
   });
 
   it('should contain the element id', () => {
-    expect(storageScopeOf('tetfolio_1')).toContain('tetfolio_1');
+    expect(TetfolioBridge.storageScopeOf('tetfolio_1')).toContain('tetfolio_1');
   });
 });
 
-describe('injectTetfolioBridge', () => {
+describe('TetfolioBridge.inject', () => {
   it('should splice the bridge script before the closing body tag', () => {
-    const result = injectTetfolioBridge('<html><body><p>x</p></body></html>', null, 'tetfolio_1');
+    const result = TetfolioBridge.inject('<html><body><p>x</p></body></html>', null, 'tetfolio_1');
     const scriptIndex = result.indexOf('<script>');
     const bodyCloseIndex = result.indexOf('</body>');
     expect(scriptIndex).toBeGreaterThan(-1);
@@ -50,40 +47,49 @@ describe('injectTetfolioBridge', () => {
   });
 
   it('should append the bridge script when there is no body tag', () => {
-    const result = injectTetfolioBridge('<p>x</p>', null, 'tetfolio_1');
+    const result = TetfolioBridge.inject('<p>x</p>', null, 'tetfolio_1');
     expect(result.startsWith('<p>x</p>')).toBe(true);
     expect(result).toContain('<script>');
   });
 
   it('should scope the script to the state keys found in the HTML', () => {
     const html = '<html><body><div tetfoliopage="tf_77"></div></body></html>';
-    const result = injectTetfolioBridge(html, null, 'tetfolio_1');
-    expect(result).toContain(`"${TETFOLIO_STATE_KEY_PREFIX}77"`);
+    const result = TetfolioBridge.inject(html, null, 'tetfolio_1');
+    expect(result).toContain(`"${PREFIX}77"`);
   });
 
   it('should namespace the storage by the element id', () => {
-    const result = injectTetfolioBridge('<html><body></body></html>', null, 'tetfolio_1');
-    expect(result).toContain(JSON.stringify(storageScopeOf('tetfolio_1')));
+    const result = TetfolioBridge.inject('<html><body></body></html>', null, 'tetfolio_1');
+    expect(result).toContain(JSON.stringify(TetfolioBridge.storageScopeOf('tetfolio_1')));
   });
 
   it('should give two elements with the same experiment different namespaces', () => {
     const html = '<html><body><div tetfoliopage="tf_77"></div></body></html>';
-    const first = injectTetfolioBridge(html, null, 'tetfolio_1');
-    const second = injectTetfolioBridge(html, null, 'tetfolio_2');
-    expect(first).toContain(JSON.stringify(storageScopeOf('tetfolio_1')));
-    expect(second).toContain(JSON.stringify(storageScopeOf('tetfolio_2')));
-    expect(second).not.toContain(JSON.stringify(storageScopeOf('tetfolio_1')));
+    const first = TetfolioBridge.inject(html, null, 'tetfolio_1');
+    const second = TetfolioBridge.inject(html, null, 'tetfolio_2');
+    expect(first).toContain(JSON.stringify(TetfolioBridge.storageScopeOf('tetfolio_1')));
+    expect(second).toContain(JSON.stringify(TetfolioBridge.storageScopeOf('tetfolio_2')));
+    expect(second).not.toContain(JSON.stringify(TetfolioBridge.storageScopeOf('tetfolio_1')));
   });
 
   it('should embed the saved state for seeding when one is given', () => {
-    const savedState = JSON.stringify({ [`${TETFOLIO_STATE_KEY_PREFIX}77`]: 'line1' });
-    const result = injectTetfolioBridge('<html><body></body></html>', savedState, 'tetfolio_1');
+    const savedState = JSON.stringify({ [`${PREFIX}77`]: 'line1' });
+    const result = TetfolioBridge.inject('<html><body></body></html>', savedState, 'tetfolio_1');
     expect(result).toContain(JSON.stringify(savedState));
   });
 
   it('should not contain a seeding block without a saved state', () => {
-    const result = injectTetfolioBridge('<html><body></body></html>', null, 'tetfolio_1');
+    const result = TetfolioBridge.inject('<html><body></body></html>', null, 'tetfolio_1');
     expect(result).not.toContain('seededState');
+  });
+
+  it('should keep a closing script tag in the saved state from ending the bridge script', () => {
+    const savedState = JSON.stringify({ [`${PREFIX}77`]: 'a</script><p id="injected">x</p>' });
+    const result = TetfolioBridge.inject('<html><body></body></html>', savedState, 'tetfolio_1');
+    const doc = new DOMParser().parseFromString(result, 'text/html');
+    expect(doc.getElementById('injected')).toBeNull();
+    expect(doc.scripts).toHaveLength(1);
+    expect(doc.scripts[0].textContent).toContain('injected');
   });
 });
 
@@ -91,10 +97,10 @@ describe('injectTetfolioBridge', () => {
  * Runtime tests: the injected script actually executes here. Vitest browser mode runs in a real
  * Chromium page, so a srcdoc iframe behaves exactly as in the player (same origin, no sandbox).
  * A minimal stub stands in for tet.folio's logger: it reacts to postMessage commands with
- * sessionStorage calls, and one variant registers `window.ibe_logger_restore`. Real timers with
- * shrunken windows - fakeAsync cannot reach into another frame's realm.
+ * sessionStorage calls, and its variants register `window.ibe_logger_restore` in different ways.
+ * Real timers with shrunken windows - fakeAsync cannot reach into another frame's realm.
  */
-describe('tetfolio bridge runtime', () => {
+describe('TetfolioBridge runtime', () => {
   /** Small enough for fast tests, large enough that postMessage round-trips fit inside. */
   const FAST: TetfolioBridgeTimings = {
     restoreDelayMs: 50, replayMarginMs: 300, initSettleMs: 200, reportDebounceMs: 10
@@ -122,7 +128,7 @@ describe('tetfolio bridge runtime', () => {
         }
       };
       window.addEventListener('message', this.listener);
-      this.iframe.srcdoc = injectTetfolioBridge(html, savedState, elementId, FAST);
+      this.iframe.srcdoc = TetfolioBridge.inject(html, savedState, elementId, FAST);
       document.body.appendChild(this.iframe);
     }
 
@@ -140,12 +146,31 @@ describe('tetfolio bridge runtime', () => {
     }
   }
 
-  // The restore is registered on 'load', not at parse time: the bridge script sits at the end of
-  // the body, and its restore shim can only capture assignments made after it ran - which is when
-  // the real logger registers too (after inner-iframe load + tet:afterinit).
-  const stubExperimentHtml = (withRestore: boolean): string => `<!doctype html><html><body>
+  /**
+   * How the stub registers its restore:
+   * - 'none': not at all
+   * - 'onLoad': on 'load', after the bridge ran - when the real logger registers too (its script
+   *   is a `sebscript` that tet.folio evaluates on init)
+   * - 'atParse': in a script before the bridge, which the bridge's shim has to take over
+   * - 'throwing': on 'load', with a restore that throws
+   */
+  type RestoreVariant = 'none' | 'onLoad' | 'atParse' | 'throwing';
+
+  const stubExperimentHtml = (restore: RestoreVariant): string => {
+    const restoreFunction = restore === 'throwing' ?
+      "function () { parent.postMessage({ type: 'stubRestoreRan' }, '*'); throw new Error('replay broke'); }" :
+      "function () { parent.postMessage({ type: 'stubRestoreRan' }, '*'); }";
+    const registerAtParse = restore === 'atParse' ?
+      `<script>window.ibe_logger_restore = ${restoreFunction};</script>` : '';
+    const registerOnLoad = restore === 'onLoad' || restore === 'throwing' ?
+      `window.addEventListener('load', function () {
+        window.ibe_logger_restore = ${restoreFunction};
+        parent.postMessage({ type: 'stubRestoreRegistered' }, '*');
+      });` : '';
+    return `<!doctype html><html><body>
     <div tetfoliopage="tf_77"></div><div tetfoliopage="tf_88"></div>
     <div style="height: 400px"></div>
+    ${registerAtParse}
     <script>
       window.addEventListener('message', function (event) {
         var cmd = event.data || {};
@@ -155,13 +180,11 @@ describe('tetfolio bridge runtime', () => {
         }
         if (cmd.op === 'callRestore') window.ibe_logger_restore();
       });
-      ${withRestore ? `window.addEventListener('load', function () {
-        window.ibe_logger_restore = function () { parent.postMessage({ type: 'stubRestoreRan' }, '*'); };
-        parent.postMessage({ type: 'stubRestoreRegistered' }, '*');
-      });` : ''}
+      ${registerOnLoad}
       parent.postMessage({ type: 'stubReady' }, '*');
     </script>
   </body></html>`;
+  };
 
   const harnesses: BridgeHarness[] = [];
 
@@ -182,9 +205,12 @@ describe('tetfolio bridge runtime', () => {
     }
   };
 
-  const lastReportedState = (harness: BridgeHarness): Record<string, string> => JSON.parse(
-    harness.ofType('tetfolioStateChanged').slice(-1)[0].state as string
-  );
+  const reportedStates = (harness: BridgeHarness): Record<string, string>[] => harness
+    .ofType('tetfolioStateChanged')
+    .map(message => JSON.parse(message.state as string));
+
+  const lastReportedState = (harness: BridgeHarness): Record<string, string> => reportedStates(harness)
+    .slice(-1)[0];
 
   afterEach(() => {
     harnesses.forEach(harness => harness.dispose());
@@ -199,15 +225,25 @@ describe('tetfolio bridge runtime', () => {
 
   it('should seed the saved state where the experiment reads it', async () => {
     const savedState = JSON.stringify({ 'ibe_logger-77': 'line1' });
-    const harness = makeHarness(stubExperimentHtml(false), savedState, 'el_1');
+    const harness = makeHarness(stubExperimentHtml('none'), savedState, 'el_1');
     await waitFor(() => harness.ofType('stubReady').length > 0);
     harness.command({ op: 'get', key: 'ibe_logger-77' });
     await waitFor(() => harness.ofType('stubValue').length > 0);
     expect(harness.ofType('stubValue')[0].value).toBe('line1');
   });
 
+  it('should seed a saved state that contains a closing script tag', async () => {
+    const savedState = JSON.stringify({ 'ibe_logger-77': 'a</script><p>b' });
+    const harness = makeHarness(stubExperimentHtml('none'), savedState, 'el_1');
+    await waitFor(() => harness.ofType('stubReady').length > 0);
+    harness.command({ op: 'get', key: 'ibe_logger-77' });
+    await waitFor(() => harness.ofType('stubValue').length > 0);
+    expect(harness.ofType('stubValue')[0].value).toBe('a</script><p>b');
+    await waitFor(() => harness.ofType('tetfolioReady').length > 0);
+  });
+
   it('should suppress reports until the settle window, then report the full state', async () => {
-    const harness = makeHarness(stubExperimentHtml(false), null, 'el_1');
+    const harness = makeHarness(stubExperimentHtml('none'), null, 'el_1');
     await waitFor(() => harness.ofType('stubReady').length > 0);
     harness.command({ op: 'set', key: 'ibe_logger-77', value: 'early' });
     await sleep(100);
@@ -216,13 +252,29 @@ describe('tetfolio bridge runtime', () => {
     await sleep(200);
     expect(harness.ofType('tetfolioReady')).toHaveLength(1);
     harness.command({ op: 'set', key: 'ibe_logger-88', value: 'late' });
-    await waitFor(() => harness.ofType('tetfolioStateChanged').length > 0);
+    await waitFor(() => reportedStates(harness).some(state => state['ibe_logger-88'] === 'late'));
     expect(lastReportedState(harness)).toEqual({ 'ibe_logger-77': 'early', 'ibe_logger-88': 'late' });
+  }, 10000);
+
+  it('should report input made before the settle window without waiting for another change', async () => {
+    const harness = makeHarness(stubExperimentHtml('none'), null, 'el_1');
+    await waitFor(() => harness.ofType('stubReady').length > 0);
+    harness.command({ op: 'set', key: 'ibe_logger-77', value: 'only-click' });
+    await waitFor(() => harness.ofType('tetfolioStateChanged').length > 0);
+    expect(lastReportedState(harness)).toEqual({ 'ibe_logger-77': 'only-click' });
+  }, 10000);
+
+  it('should not report a restored state the host already has', async () => {
+    const savedState = JSON.stringify({ 'ibe_logger-77': 'line1' });
+    const harness = makeHarness(stubExperimentHtml('none'), savedState, 'el_1');
+    await waitFor(() => harness.ofType('tetfolioReady').length > 0);
+    await sleep(50);
+    expect(harness.ofType('tetfolioStateChanged')).toHaveLength(0);
   }, 10000);
 
   it('should revert input made during the replay window and capture again afterwards', async () => {
     const savedState = JSON.stringify({ 'ibe_logger-77': 'line1' });
-    const harness = makeHarness(stubExperimentHtml(true), savedState, 'el_1');
+    const harness = makeHarness(stubExperimentHtml('onLoad'), savedState, 'el_1');
     await waitFor(() => harness.ofType('stubRestoreRegistered').length > 0);
     harness.command({ op: 'callRestore' });
     await waitFor(() => harness.ofType('stubRestoreRan').length > 0);
@@ -240,8 +292,28 @@ describe('tetfolio bridge runtime', () => {
     expect(lastReportedState(harness)).toEqual({ 'ibe_logger-77': 'after-replay' });
   }, 10000);
 
+  it('should end the replay window and capture again when the replay throws', async () => {
+    const savedState = JSON.stringify({ 'ibe_logger-77': 'line1' });
+    const harness = makeHarness(stubExperimentHtml('throwing'), savedState, 'el_1');
+    await waitFor(() => harness.ofType('stubRestoreRegistered').length > 0);
+    harness.command({ op: 'callRestore' });
+    await waitFor(() => harness.ofType('stubRestoreRan').length > 0);
+    await waitFor(() => harness.ofType('tetfolioReady').length > 0);
+    harness.command({ op: 'set', key: 'ibe_logger-77', value: 'after-broken-replay' });
+    await waitFor(() => harness.ofType('tetfolioStateChanged').length > 0);
+    expect(lastReportedState(harness)).toEqual({ 'ibe_logger-77': 'after-broken-replay' });
+  }, 10000);
+
+  it('should take over a restore the experiment registered before the bridge ran', async () => {
+    const harness = makeHarness(stubExperimentHtml('atParse'), null, 'el_1');
+    await waitFor(() => harness.ofType('stubReady').length > 0);
+    harness.command({ op: 'callRestore' });
+    await waitFor(() => harness.ofType('stubRestoreRan').length > 0);
+    expect(harness.ofType('stubRestoreRan')).toHaveLength(1);
+  }, 10000);
+
   it('should keep two elements with the same experiment isolated', async () => {
-    const html = stubExperimentHtml(false);
+    const html = stubExperimentHtml('none');
     const first = makeHarness(html, null, 'el_1');
     const second = makeHarness(html, null, 'el_2');
     await waitFor(() => first.ofType('stubReady').length > 0 && second.ofType('stubReady').length > 0);
@@ -256,7 +328,7 @@ describe('tetfolio bridge runtime', () => {
   }, 10000);
 
   it('should report the content height after load', async () => {
-    const harness = makeHarness(stubExperimentHtml(false), null, 'el_1');
+    const harness = makeHarness(stubExperimentHtml('none'), null, 'el_1');
     await waitFor(() => harness.ofType('tetfolioResize')
       .some(message => (message.height ?? 0) >= 400));
     expect(harness.ofType('tetfolioResize').slice(-1)[0].height).toBeGreaterThanOrEqual(400);

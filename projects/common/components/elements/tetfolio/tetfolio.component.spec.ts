@@ -170,28 +170,74 @@ describe('TetfolioComponent', () => {
     expect(overlay()).toBeTruthy();
   });
 
-  it('should start with the authored height from the model', () => {
-    createComponent('<html><body></body></html>', { height: 250 });
-    expect(component.iframeHeight).toBe(250);
-  });
+  describe('height', () => {
+    const iframeHeight = (): string => (fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement)
+      .style.height;
 
-  it('should follow the content height reported by the iframe', () => {
-    createComponent('<html><body></body></html>', { height: 250 });
-    dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
-    expect(component.iframeHeight).toBe(620);
-  });
+    it('should start with the authored height from the model', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      expect(iframeHeight()).toBe('250px');
+    });
 
-  it('should clamp the content height to the authored bounds', () => {
-    createComponent('<html><body></body></html>', { height: 250, minHeight: 200, maxHeight: 500 });
-    dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
-    expect(component.iframeHeight).toBe(500);
-    dispatchIframeMessage({ type: 'tetfolioResize', height: 100 });
-    expect(component.iframeHeight).toBe(200);
-  });
+    it('should follow the content height reported by the iframe', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('620px');
+    });
 
-  it('should keep a fixed height regardless of the content height', () => {
-    createComponent('<html><body></body></html>', { height: 250, isHeightFixed: true });
-    dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
-    expect(component.iframeHeight).toBe(250);
+    it('should clamp the content height to the authored bounds', () => {
+      createComponent('<html><body></body></html>', { height: 250, minHeight: 200, maxHeight: 500 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('500px');
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 100 });
+      expect(iframeHeight()).toBe('200px');
+    });
+
+    /* 0 in the min/max fields means "no limit", like an empty field (#1350). */
+    it('should not clamp to bounds of 0', () => {
+      createComponent('<html><body></body></html>', { height: 250, minHeight: 0, maxHeight: 0 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('620px');
+    });
+
+    it('should apply bounds changed after the start with the next report', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      component.elementModel.dimensions.maxHeight = 400;
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('400px');
+    });
+
+    it('should fill the container with a fixed height, whatever the content reports', () => {
+      createComponent('<html><body></body></html>', { height: 250, isHeightFixed: true });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframeHeight()).toBe('100%');
+    });
+
+    it('should switch between fixed and following height without a new report', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      component.elementModel.dimensions.isHeightFixed = true;
+      fixture.detectChanges();
+      expect(iframeHeight()).toBe('100%');
+      component.elementModel.dimensions.isHeightFixed = false;
+      fixture.detectChanges();
+      expect(iframeHeight()).toBe('620px');
+    });
+
+    it('should start a rebuilt iframe from the authored height, not the previous content\'s', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 1200 });
+      component.elementModel.dimensions.height = 300;
+      component.refresh();
+      expect(iframeHeight()).toBe('300px');
+    });
+
+    it('should leave the height of the host and its parent to the container bindings', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      const host = fixture.nativeElement as HTMLElement;
+      expect(host.style.height).toBe('');
+      expect(host.parentElement?.style.height).toBe('');
+    });
   });
 });

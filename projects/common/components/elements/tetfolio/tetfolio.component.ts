@@ -1,21 +1,22 @@
 import {
   ChangeDetectorRef, Component, ElementRef, EventEmitter,
-  Input, OnDestroy, OnInit, Output, Renderer2, ViewChild
+  Input, OnDestroy, OnInit, Output, ViewChild
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TetfolioElement } from 'common/models/elements/tetfolio';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
-import { injectTetfolioBridge } from 'common/utils/tetfolio-bridge';
+import { TetfolioBridge } from 'common/utils/tetfolio-bridge';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { BehaviorSubject } from 'rxjs';
 
-/** Renders a tetfolio element's packed HTML document in an iframe and relays the resize and
-   state messages the embedded app posts back over the bridge. The document is handed over via
-   `srcdoc`, not a blob URL: hosts like the Testcenter run the player under the policy
-   `frame-src 'self'`, which refuses `blob:` frames and lets `srcdoc` pass. The iframe is NOT
-   sandboxed - a srcdoc document shares the player's origin, and the bridge relies on that
-   (storage, postMessage source checks). The content is design-time author content, the same
-   trust level as the rest of the unit definition; see docs/tetfolio-element.md. */
+/**
+ * Renders a tetfolio element's packed HTML document in an iframe and relays the resize and state
+ * messages the embedded app posts back over the bridge. The document is handed over via `srcdoc`,
+ * not a blob URL: hosts like the Testcenter run the player under the policy `frame-src 'self'`,
+ * which refuses `blob:` frames and lets `srcdoc` pass. The iframe is NOT sandboxed - a srcdoc
+ * document shares the player's origin, and the bridge relies on that (storage, postMessage source
+ * checks). What that lets the content reach is described in docs/tetfolio-element.md.
+ */
 @Component({
   selector: 'aspect-tetfolio',
   templateUrl: './tetfolio.component.html',
@@ -29,7 +30,12 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
   @ViewChild('tetfolioIframe') tetfolioIframe!: ElementRef<HTMLIFrameElement>;
 
   iframeContent: SafeHtml | null = null;
-  iframeHeight: number = 300;
+  /**
+   * The height the content last reported, clamped to the authored bounds; until the first report,
+   * the authored height. Only used while the height is not fixed - a fixed height is the
+   * container's, which the iframe fills.
+   */
+  contentHeight: number = 300;
   /** False while a saved state is being restored inside the iframe; drives the overlay and
      the spinner, the same way geometry and the media players use it. */
   isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -38,14 +44,12 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
   constructor(
     elementRef: ElementRef,
     private sanitizer: DomSanitizer,
-    private renderer: Renderer2,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     super(elementRef);
   }
 
   ngOnInit(): void {
-    this.iframeHeight = this.elementModel.dimensions.height;
     this.initIframe();
     this.setupMessageListener();
   }
@@ -69,8 +73,10 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
   private initIframe(): void {
     // Nothing to restore means nothing to wait for: the overlay shows only for a saved state.
     this.isLoaded.next(!this.savedState);
+    // A new document starts from the authored height, not from what the previous one reported.
+    this.contentHeight = this.elementModel.dimensions.height;
     if (this.elementModel.htmlContent) {
-      const html = injectTetfolioBridge(this.elementModel.htmlContent, this.savedState, this.elementModel.id);
+      const html = TetfolioBridge.inject(this.elementModel.htmlContent, this.savedState, this.elementModel.id);
       this.iframeContent = this.sanitizer.bypassSecurityTrustHtml(html);
     }
   }
@@ -94,30 +100,26 @@ export class TetfolioComponent extends ElementComponent implements OnInit, OnDes
     }
   }
 
-  // The authored dimensions govern how far the iframe follows its content:
-  // a fixed height ignores the content's size entirely (it scrolls inside),
-  // otherwise the reported height is clamped to the min/max bounds. The
-  // panel's height value is the initial height until the first report.
+  /**
+   * Records the content's height, clamped to the authored min/max bounds. The bounds are read on
+   * every report, so a change in the properties panel applies with the next one. It is recorded
+   * with a fixed height too, where the template does not show it - the iframe fills the container
+   * then - so that switching the height back to following needs no new report.
+   */
   private onResize(height: number): void {
     if (!height || height <= 0) return;
-    const { isHeightFixed, minHeight, maxHeight } = this.elementModel.dimensions;
-    if (isHeightFixed) return;
-    const boundedHeight = Math.min(
-      Math.max(height, minHeight ?? 0),
-      maxHeight ?? Number.MAX_SAFE_INTEGER
+    const { minHeight, maxHeight } = this.elementModel.dimensions;
+    this.contentHeight = Math.min(
+      Math.max(height, minHeight || 0),
+      maxHeight || Number.MAX_SAFE_INTEGER
     );
-    this.iframeHeight = boundedHeight;
-    const hostEl = this.elementRef.nativeElement;
-    this.renderer.setStyle(hostEl, 'height', `${boundedHeight}px`);
-    if (hostEl.parentElement) {
-      this.renderer.setStyle(hostEl.parentElement, 'height', `${boundedHeight}px`);
-    }
     this.changeDetectorRef.detectChanges();
   }
 
-  // Only emit; writing the state back into the element model is the
-  // player group element's job. Doing it here would also run in the
-  // editor preview and bake accidental state into the unit definition.
+  /**
+   * Only emits; what becomes of the state is the player group element's job. Keeping it out of the
+   * model also keeps a state reached in the editor preview out of the unit definition.
+   */
   private onStateChanged(state: string): void {
     this.elementValueChanged.emit({ id: this.elementModel.id, value: state });
   }

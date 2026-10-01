@@ -5,6 +5,7 @@ import { StyleMarksPipe } from 'common/pipes/style-marks.pipe';
 import { MarkListPipe } from 'common/pipes/mark-list.pipe';
 import { ArrayIncludesPipe } from 'common/pipes/array-includes.pipe';
 import { MathFormulaPipe } from 'common/pipes/math-formula.pipe';
+import { ClozeLinePartsPipe } from 'common/pipes/cloze-line-parts.pipe';
 import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
@@ -41,7 +42,8 @@ describe('ClozeComponent', () => {
         StyleMarksPipe,
         MarkListPipe,
         ArrayIncludesPipe,
-        MathFormulaPipe
+        MathFormulaPipe,
+        ClozeLinePartsPipe
       ]
     }).compileComponents();
   });
@@ -137,5 +139,52 @@ describe('ClozeComponent', () => {
     expect(kinder.length).toBe(2);
     expect(kinder[0].style.verticalAlign).toBe('baseline');
     expect(kinder[1].style.verticalAlign).toBe('middle');
+  });
+
+  /* A field in the middle of a word is an atomic inline, so the line would otherwise break between
+     the letters and the field. On a narrow line the letters have to stay with the field. */
+  it('should move a word that a field cuts in half onto the next line whole', () => {
+    component.elementModel.styling.fontSize = 16;
+    component.elementModel.document = {
+      type: 'doc',
+      content: [{
+        type: 'paragraph',
+        attrs: {},
+        content: [
+          { type: 'text', text: 'Lorem ips' },
+          {
+            type: 'TextField',
+            attrs: { model: { type: 'text-field' } as UIElement }
+          },
+          { type: 'text', text: 'um lorem ipsum' }
+        ]
+      }]
+    };
+    const host = fixture.nativeElement as HTMLElement;
+    host.style.display = 'block';
+    host.style.width = '120px';
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const word = compiled.querySelector('.unbreakable-word') as HTMLElement;
+    const field = word.querySelector('aspect-compound-child-overlay') as HTMLElement;
+    field.style.width = '80px';
+    field.style.height = '18px';
+    const lineOf = (node: Text): number => {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const rect = range.getBoundingClientRect();
+      return rect.top + rect.height / 2;
+    };
+    const loremNode = word.previousElementSibling?.firstChild as Text;
+    const wordTexts = word.querySelectorAll('span');
+    const ips = lineOf(wordTexts[0].firstChild as Text);
+    const um = lineOf(wordTexts[1].firstChild as Text);
+    const lorem = lineOf(loremNode);
+    const fieldLine = field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2;
+
+    expect(ips - lorem).toBeGreaterThan(10);
+    expect(Math.abs(ips - fieldLine)).toBeLessThan(10);
+    expect(Math.abs(um - fieldLine)).toBeLessThan(10);
   });
 });

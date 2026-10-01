@@ -119,7 +119,21 @@
 </ng-template>
 
 <ng-template #paragraphChildren let-part>
-  <ng-container *ngFor="let subPart of $any(part).content">
+  @for (segment of $any(part).content | clozeLineParts; track $index) {
+    @if (segment.keepTogether) {
+      <span class="unbreakable-word">
+        <ng-container [ngTemplateOutlet]="segmentNodes"
+                      [ngTemplateOutletContext]="{ $implicit: segment }"></ng-container>
+      </span>
+    } @else {
+      <ng-container [ngTemplateOutlet]="segmentNodes"
+                    [ngTemplateOutletContext]="{ $implicit: segment }"></ng-container>
+    }
+  }
+</ng-template>
+
+<ng-template #segmentNodes let-segment>
+  <ng-container *ngFor="let subPart of $any(segment.nodes)">
     <ng-container *ngIf="$any(subPart).type === 'text' &&
                          (!(subPart.marks | markList | arrayIncludes:'superscript')) &&
                          (!(subPart.marks | markList | arrayIncludes:'subscript')) &&

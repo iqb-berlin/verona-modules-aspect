@@ -4,7 +4,7 @@ import {
 import {
   DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import {
@@ -64,13 +64,12 @@ export class ImageElement extends UIElement implements ImageProperties {
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'boolean',
+      type: 'BOOLEAN',
       format: '',
       multiple: false,
       nullable: false,
       values: this.getVariableInfoValues(),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }

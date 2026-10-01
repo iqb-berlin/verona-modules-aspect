@@ -12,13 +12,12 @@ describe('WidgetPeriodicTableElement', () => {
     expect(element.getVariableInfos()).toEqual([{
       id: 'widget-periodic-table_1',
       alias: 'pse_1',
-      type: 'string',
+      type: 'STRING',
       format: '',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }]);
   });

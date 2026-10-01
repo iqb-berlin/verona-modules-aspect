@@ -2,7 +2,7 @@ import {
   CompoundElement,
   UIElement
 } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/utils/element-factory';
 import { environment } from 'common/environment';

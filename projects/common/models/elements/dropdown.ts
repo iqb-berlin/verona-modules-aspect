@@ -1,4 +1,4 @@
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   InputElement, UIElement
 } from 'common/models/elements/element';
@@ -45,13 +45,12 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'integer',
+      type: 'INTEGER',
       format: '',
       multiple: false,
       nullable: this.allowUnset,
       values: this.getVariableInfoValues(),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }

@@ -1,5 +1,5 @@
 import { InputElement } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -51,13 +51,12 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
-      format: 'latex',
+      type: 'STRING',
+      format: 'LATEX',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }

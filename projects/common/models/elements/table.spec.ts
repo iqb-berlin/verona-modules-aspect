@@ -272,7 +272,7 @@ describe('TableElement', () => {
       const section = new Section(createSectionProperties([tableWithCheckbox as UIElementProperties]));
       const checkboxInfos = getSectionVariableInfos(section).filter(info => info.id === 'checkbox_1');
       expect(checkboxInfos.length).toBe(1);
-      expect(checkboxInfos[0].type).toBe('boolean');
+      expect(checkboxInfos[0].type).toBe('BOOLEAN');
     });
 
     it('should keep reporting drop lists inside a cloze element', () => {

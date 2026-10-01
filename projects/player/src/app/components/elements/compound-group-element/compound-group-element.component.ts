@@ -20,7 +20,7 @@ import { UnitNavParam } from 'common/models/elements/button';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { Subscription, take } from 'rxjs';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
-import { ResponseValueType } from '@iqb/responses';
+import { ResponseValueType } from '@iqbspecs/response/response.interface';
 import { TableElement } from 'common/models/elements/table';
 import { ImageElement } from 'common/models/elements/image';
 import { TextFieldComponent } from 'common/components/elements/text-field/text-field.component';

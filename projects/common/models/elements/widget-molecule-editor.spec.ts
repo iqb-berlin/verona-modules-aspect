@@ -12,13 +12,12 @@ describe('WidgetMoleculeEditorElement', () => {
     expect(element.getVariableInfos()).toEqual([{
       id: 'widget-molecule-editor_1',
       alias: 'molecule_1',
-      type: 'json',
+      type: 'JSON',
       format: '',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }]);
   });

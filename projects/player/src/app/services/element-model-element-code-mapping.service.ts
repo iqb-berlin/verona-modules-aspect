@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ResponseValueType } from '@iqb/responses';
+import { ResponseValueType } from '@iqbspecs/response/response.interface';
 import {
   InputElement,
   UIElement

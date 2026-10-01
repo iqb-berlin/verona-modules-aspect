@@ -5,7 +5,7 @@ import {
   BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { TextInputElementProperties } from 'common/models/input-element-interfaces';
 import { UIElementType } from 'common/models/ui-element-interfaces';
@@ -65,13 +65,12 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
+      type: 'STRING',
       format: '',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }

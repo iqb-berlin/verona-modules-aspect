@@ -15,7 +15,7 @@ import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Response, ResponseStatusType } from '@iqb/responses';
+import { Response, ResponseStatusType } from '@iqbspecs/response/response.interface';
 
 @Component({
   selector: 'aspect-external-app-group-element',

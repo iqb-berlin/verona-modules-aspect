@@ -1,7 +1,7 @@
 import {
   InputElement
 } from 'common/models/elements/element';
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -126,13 +126,12 @@ export class DropListElement extends InputElement implements DropListProperties 
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
+      type: 'STRING',
       format: '',
       multiple: true,
       nullable: false,
       values: this.getVariableInfoValues(options),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }

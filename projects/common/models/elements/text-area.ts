@@ -1,7 +1,7 @@
 import {
   TextInputElement
 } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -64,13 +64,12 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
+      type: 'STRING',
       format: '',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }

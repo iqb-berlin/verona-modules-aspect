@@ -9,7 +9,7 @@ import {
   VopStartCommand
 } from 'player/modules/verona/models/verona';
 import { Page } from 'common/models/page';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 import { FormControl } from '@angular/forms';
 
 @Component({

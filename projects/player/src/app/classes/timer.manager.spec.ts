@@ -1,5 +1,5 @@
 import { fakeAsync, tick } from '@angular/core/testing';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { StorableTimer } from 'player/src/app/classes/storable-timer';

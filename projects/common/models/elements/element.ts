@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   DimensionProperties, PlayerProperties, PositionProperties,
   PropertyGroupGenerators, Stylings
@@ -165,13 +165,12 @@ export abstract class UIElement implements UIElementProperties {
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'no-value',
+      type: 'NO_VALUE',
       format: '',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }
@@ -373,13 +372,12 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'number',
+      type: 'NUMBER',
       format: '',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }

@@ -2,7 +2,7 @@ import { Page, PageProperties } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { StateVariable, StateVariableProperties } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';

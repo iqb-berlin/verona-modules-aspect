@@ -7,8 +7,11 @@ import { UnitProperties } from 'common/models/unit';
 import { StateVariable } from 'common/models/state-variable';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { TextElement } from 'common/models/elements/text';
+import { TextFieldElement } from 'common/models/elements/text-field';
+import { CheckboxElement } from 'common/models/elements/checkbox';
+import { MathTableElement } from 'common/models/elements/math-table';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -122,6 +125,29 @@ describe('UnitService - variable info validation (#1043)', () => {
     expect(reportedVariableInfos.length).toBe(1);
     expect(reportedVariableInfos[0].alias).toBe('valid_var-1');
     expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
+  });
+
+  /* The host stores this list as it arrives. It follows VariableInfo 2.0: `type` and `format` in upper
+     case, and no `page` (#1150). No end-to-end test can see it -- under Cypress the editor counts as
+     standalone and posts nothing to a host. */
+  it('reports its variables in the spelling of VariableInfo 2.0', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('state_1')));
+    const section = service.unit.pages[0].sections[0];
+    section.addElement(new TextFieldElement({ type: 'text-field', id: 'text-field_1', alias: 'text-field_1' }));
+    section.addElement(new CheckboxElement({ type: 'checkbox', id: 'checkbox_1', alias: 'checkbox_1' }));
+    section.addElement(new MathTableElement({
+      type: 'math-table', id: 'math-table_1', alias: 'math-table_1', operation: 'addition'
+    }));
+    service.updateUnitDefinition();
+
+    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
+    expect(reportedVariableInfos.map(info => `${info.id} ${info.type} ${info.format}`)).toEqual([
+      'state_1 NO_VALUE ',
+      'text-field_1 STRING ',
+      'checkbox_1 BOOLEAN ',
+      'math-table_1 JSON MATH_TABLE'
+    ]);
+    expect(reportedVariableInfos.filter(info => 'page' in info)).toEqual([]);
   });
 });
 

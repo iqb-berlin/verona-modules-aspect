@@ -11,7 +11,7 @@ import {
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import {
   OptionElement, UIElementProperties, UIElementType, UIElementValue,

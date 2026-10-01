@@ -1,7 +1,7 @@
 import { ElementRef } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 import { Section } from 'common/models/section';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';

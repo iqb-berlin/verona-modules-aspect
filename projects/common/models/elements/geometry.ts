@@ -2,7 +2,7 @@ import { UIElement } from 'common/models/elements/element';
 import {
   PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
@@ -113,13 +113,12 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     return {
       id: this.getGeometryVariableId(variableName),
       alias: this.getGeometryVariableAlias(variableName),
-      type: 'string',
-      format: 'ggb-variable',
+      type: 'STRING',
+      format: 'GGB_VARIABLE',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     };
   }
@@ -130,13 +129,12 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     answerSchemes.push({
       id: this.id,
       alias: this.alias,
-      type: 'string',
-      format: 'ggb-file',
+      type: 'STRING',
+      format: 'GGB_FILE',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     });
     return answerSchemes;

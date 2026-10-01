@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 import { UnitStateService } from './unit-state.service';
 
 class FakeIntersectionObserver {

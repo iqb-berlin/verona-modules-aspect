@@ -1,7 +1,7 @@
 import { Directive, Input } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { UIElement } from 'common/models/elements/element';
-import { ResponseValueType } from '@iqb/responses';
+import { ResponseValueType } from '@iqbspecs/response/response.interface';
 import { UnitStateService } from '../services/unit-state.service';
 
 @Directive()

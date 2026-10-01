@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 
 /**
  * The editor's half of the Verona editor API: it listens on `window` for the host's messages and posts

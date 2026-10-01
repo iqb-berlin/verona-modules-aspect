@@ -1,4 +1,4 @@
-import { ResponseStatusType } from '@iqb/responses';
+import { ResponseStatusType } from '@iqbspecs/response/response.interface';
 
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 export type Progress = 'none' | 'some' | 'complete';
@@ -7,7 +7,7 @@ export type PrintMode = 'off' | 'on' | 'on-with-ids';
 export enum ElementCodeStatusValue {
   UNSET = 0, NOT_REACHED = 1, DISPLAYED = 2, VALUE_CHANGED = 3, INVALID = 4,
   DERIVE_ERROR = 5, CODING_COMPLETE = 6, NO_CODING = 7, CODING_INCOMPLETE = 8,
-  CODING_ERROR = 9, PARTLY_DISPLAYED = 10, DERIVE_PENDING = 11
+  CODING_ERROR = 9, PARTLY_DISPLAYED = 10, DERIVE_PENDING = 11, INTENDED_INCOMPLETE = 12
 }
 
 export interface StatusChangeElement {

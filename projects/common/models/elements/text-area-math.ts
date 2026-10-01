@@ -5,7 +5,7 @@ import {
   PositionProperties,
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import {
@@ -57,13 +57,12 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'json',
-      format: 'math-text-mix',
+      type: 'JSON',
+      format: 'MATH_TEXT_MIX',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }

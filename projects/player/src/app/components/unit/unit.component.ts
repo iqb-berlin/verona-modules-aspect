@@ -33,7 +33,7 @@ import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 import { GeometryElement } from 'common/models/elements/geometry';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 
 @Component({
   selector: 'aspect-unit',

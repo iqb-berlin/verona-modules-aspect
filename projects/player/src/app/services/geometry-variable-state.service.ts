@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
-import { ResponseStatusType, ResponseValueType } from '@iqb/responses';
+import { ResponseStatusType, ResponseValueType } from '@iqbspecs/response/response.interface';
 import { LogService } from 'player/modules/logging/services/log.service';
 
 /**

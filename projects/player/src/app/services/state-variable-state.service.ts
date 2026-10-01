@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
-import { ResponseValueType } from '@iqb/responses';
+import { ResponseValueType } from '@iqbspecs/response/response.interface';
 
 /**
  * The state variables of a unit -- values that belong to no element: what a trigger set, how long a

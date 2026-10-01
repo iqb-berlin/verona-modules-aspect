@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 // 'fflate/browser', not 'fflate': the bare specifier resolves to the Node ESM build under
 // Vitest browser mode and crashes at import time on createRequire.
 import { zipSync } from 'fflate/browser';
+import { Distpacker } from 'common/utils/distpacker';
 import { TetfolioPropertiesComponent } from './tetfolio-properties.component';
 
 describe('TetfolioPropertiesComponent', () => {
@@ -50,6 +51,11 @@ describe('TetfolioPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
+  // The spies sit on a static method, so a failed expectation must not leave one in place.
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -73,6 +79,22 @@ describe('TetfolioPropertiesComponent', () => {
   it('should report an error for a file that is no zip', async () => {
     await selectZip(new File(['not a zip'], 'broken.zip'));
     expect(component.processingError).toContain('tetfolioZipError');
+    expect(emitted).toHaveLength(0);
+  });
+
+  it('should hand the bytes of the selected file to the distpacker', async () => {
+    const packSpy = vi.spyOn(Distpacker, 'packZip').mockResolvedValue('<html>packed</html>');
+    const zip = zipFileOf({ 'tetfolio.fu-berlin.de/web/123.html': '<html></html>' });
+    await selectZip(zip);
+    expect(packSpy).toHaveBeenCalledWith(new Uint8Array(await zip.arrayBuffer()));
+    expect(emitted).toEqual([{ property: 'htmlContent', value: '<html>packed</html>' }]);
+  });
+
+  it('should report a failure of the distpacker as an error', async () => {
+    vi.spyOn(Distpacker, 'packZip').mockRejectedValue(new Error('broken'));
+    await selectZip(zipFileOf({ 'tetfolio.fu-berlin.de/web/123.html': '<html></html>' }));
+    expect(component.processingError).toContain('tetfolioZipError');
+    expect(component.isProcessing).toBe(false);
     expect(emitted).toHaveLength(0);
   });
 

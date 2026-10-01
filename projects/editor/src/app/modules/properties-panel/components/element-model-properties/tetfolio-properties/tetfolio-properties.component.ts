@@ -3,11 +3,11 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { TetfolioProperties } from 'common/models/elements/tetfolio';
-import { distpack, findEntryHtml } from 'common/utils/distpacker-browser';
+import { Distpacker } from 'common/utils/distpacker';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
 
-/** Loads a Tetfolio export zip, packs it into one self-contained HTML document and writes the
-   result into the element's `htmlContent`. */
+/** Loads a tet.folio export zip, has the `Distpacker` pack it into one self-contained HTML
+   document and writes the result into the element's `htmlContent`. */
 @Component({
   selector: 'aspect-tetfolio-properties',
   standalone: false,
@@ -39,30 +39,11 @@ export class TetfolioPropertiesComponent {
     this.lastZipName = file.name;
 
     try {
-      // 'fflate/browser', not 'fflate': the bare specifier resolves to the Node ESM build
-      // under Vitest browser mode and crashes at import time on createRequire.
-      const { unzipSync } = await import('fflate/browser');
-
-      const arrayBuffer = await file.arrayBuffer();
-      const unzipped = unzipSync(new Uint8Array(arrayBuffer));
-
-      const fileMap = new Map<string, Uint8Array>();
-      (Object.entries(unzipped) as [string, Uint8Array][]).forEach(([filePath, data]) => {
-        fileMap.set(filePath, data);
-      });
-
-      const entryHtml = findEntryHtml(fileMap);
-      if (!entryHtml) {
+      const html = await Distpacker.packZip(new Uint8Array(await file.arrayBuffer()));
+      if (!html) {
         this.processingError = this.translateService.instant('tetfolioZipNoHtml');
         return;
       }
-
-      const html = distpack(fileMap, entryHtml);
-      if (!html) {
-        this.processingError = this.translateService.instant('tetfolioZipPackFailed');
-        return;
-      }
-
       this.updateModel.emit({ property: 'htmlContent', value: html });
     } catch (e) {
       this.processingError = this.translateService.instant(

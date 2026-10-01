@@ -483,7 +483,6 @@
   "tetfolioHtmlLoaded": "HTML geladen ({{kb}} KB)",
   "tetfolioNoHtmlContent": "Kein HTML-Inhalt",
   "tetfolioZipNoHtml": "Keine HTML-Datei in der ZIP gefunden.",
-  "tetfolioZipPackFailed": "Distpacker konnte die Datei nicht verarbeiten.",
   "tetfolioZipError": "Fehler: {{message}}",
   "addition": "Addition",
   "subtraction": "Subtraktion",

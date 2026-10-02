@@ -1116,6 +1116,62 @@ describe('UnitService - navigation buttons when pages change (#1511)', () => {
   });
 });
 
+/* The page tabs leave a permanently visible page uncounted and show only its icon; the question before deleting a
+   page names it the same way (#1513). */
+describe('UnitService - naming the page in the delete confirmation (#1513)', () => {
+  let service: UnitService;
+  let dialogServiceSpy: SpyObj<DialogService>;
+
+  /** Three pages, the first one permanently visible if asked for. */
+  const load = (alwaysVisibleFirst: boolean): void => {
+    const blueprint = createUnitBlueprint('state_1');
+    const page = JSON.stringify(blueprint.pages[0]);
+    blueprint.pages.push(JSON.parse(page), JSON.parse(page));
+    blueprint.pages[0].alwaysVisible = alwaysVisibleFirst;
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  };
+
+  const confirmationText = async (pageIndex: number): Promise<string> => {
+    await service.prepareDelete('page', service.unit.pages[pageIndex], pageIndex);
+    return dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[0] as string;
+  };
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation(((key: string, params?: { page: number }) => (params ?
+      `${key}:${params.page}` : key)) as TranslateService['instant']);
+    dialogServiceSpy = createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']);
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(false));
+    service = new UnitService(
+      new SelectionService(),
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      dialogServiceSpy,
+      new IDService(),
+      translateServiceSpy
+    );
+  });
+
+  it('should count every page when none is permanently visible', async () => {
+    load(false);
+
+    expect(await confirmationText(1)).toBe('deletePageConfirm:2');
+  });
+
+  it('should leave a permanently visible page uncounted', async () => {
+    load(true);
+
+    expect(await confirmationText(1)).toBe('deletePageConfirm:1');
+    expect(await confirmationText(2)).toBe('deletePageConfirm:2');
+  });
+
+  it('should name the permanently visible page itself without a number', async () => {
+    load(true);
+
+    expect(await confirmationText(0)).toBe('deleteAlwaysVisiblePageConfirm');
+  });
+});
+
 function createUnitBlueprint(marker: string, version: string = VersionManager.getCurrentVersion()): UnitProperties {
   return {
     type: 'aspect-unit-definition',

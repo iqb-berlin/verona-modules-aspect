@@ -217,7 +217,7 @@ everything here is `standalone: false`.
 ## How work flows through this repository
 
 ```
-issue → branch → pull request → green pipeline → review → merge into develop → release to master
+issue → branch → /code-review → pull request → green pipeline → review → merge into develop → release to master
 ```
 
 ### Branches
@@ -257,24 +257,27 @@ of two that later have to be told apart.
 ### From issue to merge
 
 1. **Branch off `develop`**, named as above.
-2. **Reference the issue in the commit subject**, e.g. `(#1357)`. Do **not** write
+2. **Review before committing.** Once the change is finished and verified, run `/code-review` on
+   the uncommitted diff — committed, that diff is empty and the review finds nothing. Then check
+   `git status` for files the review left behind. The details are in `rules.md`, §19.
+3. **Reference the issue in the commit subject**, e.g. `(#1357)`. Do **not** write
    `Closes #1357` in the pull request: it closes the ticket on merge and skips the board
    column the team works from. Referencing is fine, keywords are not.
-3. **Open a pull request against `develop`.** A branch without an open pull request gets no
+4. **Open a pull request against `develop`.** A branch without an open pull request gets no
    pipeline at all — that is deliberate, see the comment in `.gitlab-ci.yml`.
-4. **The pipeline runs on GitLab**, mirrored from GitHub, with four jobs in two stages:
+5. **The pipeline runs on GitLab**, mirrored from GitHub, with four jobs in two stages:
    `lint` (type-aware ESLint), `test-unit` (`npm test`), `test-e2e-simple` and `test-e2e-complex` (both dev servers plus
    headless Cypress). **The module build is not part of it** — the `build` stage holds no job
    and the `deploy` job is commented out, so a change that breaks `build-editor` or
    `build-player` passes green and only shows up at release time. The single GitHub Actions
    workflow builds the documentation and nothing else, which is why the Actions tab looks
    almost empty.
-5. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
+6. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
    something else is merged, rebase onto `origin/develop` and force-push with
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after
    a rebase the previous green run no longer counts.
-6. **Merge as a merge commit** once the required status check is green.
-7. **Release** from a `release/…` branch into `master` and `develop`, as described above.
+7. **Merge as a merge commit** once the required status check is green.
+8. **Release** from a `release/…` branch into `master` and `develop`, as described above.
 
 Tickets live on [project board 13](https://github.com/orgs/iqb-berlin/projects/13). A card
 moves to *In Bearbeitung* when work starts and to *zu testen* once the fix is merged into

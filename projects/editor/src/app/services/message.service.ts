@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ReferenceList } from 'editor/src/app/classes/reference-manager';
-import { UIElement } from 'common/models/elements/element';
+import { ReferenceList, ReferenceRepair } from 'editor/src/app/classes/reference-manager';
 import {
   ReferenceListSnackbarComponent
 } from 'editor/src/app/components/reference-list-snackbar/reference-list-snackbar.component';
@@ -64,10 +63,10 @@ export class MessageService {
   }
 
   /** Lists the references that were repaired along the way, so the author sees what changed without
-      having asked for it. */
-  showFixedReferencePanel(refs: UIElement[]): void {
+      having asked for it, and those found but left for the author to decide (#1509). */
+  showFixedReferencePanel(repair: ReferenceRepair): void {
     this._snackBar.openFromComponent(FixedReferencesSnackbarComponent, {
-      data: refs,
+      data: repair,
       horizontalPosition: 'left'
     });
   }

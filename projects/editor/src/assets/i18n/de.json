@@ -24,6 +24,15 @@
   "outdatedUnit": "Unit Definition aktualisiert",
   "sectionNotReplaced": "Der Abschnitt wurde nicht ersetzt. Der einzufügende Abschnitt wurde verworfen.",
   "invalidReferencesRemoved": "Invalide Referenzen bei folgenden Elementen wurden entfernt:",
+  "invalidVisibilityRulesToCheck": "Sichtbarkeitsbedingungen folgender Abschnitte verweisen auf nicht vorhandene Elemente oder Zustandsvariablen und sind nie erfüllt. Sie wurden nicht verändert – bitte prüfen:",
+  "deleteStateVariablesConfirm": "Zustandsvariablen löschen?",
+  "referenceList": {
+    "referencedBy": "wird referenziert von:",
+    "visibilityRuleOf": "Sichtbarkeitsbedingung von Seite {{page}}, Abschnitt {{section}}",
+    "visibilityRuleHint": "Fällt eine Sichtbarkeitsbedingung weg, ändert sich, wann der Abschnitt erscheint; ein Abschnitt ohne Bedingungen ist immer sichtbar.",
+    "textAnchor": "Textbereich \"{{id}}\"",
+    "sectionLocation": "Seite {{page}}, Abschnitt {{section}}"
+  },
   "save": "Speichern",
   "confirm": "Bestätigen",
   "cancel": "Abbrechen",

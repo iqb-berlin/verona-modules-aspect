@@ -265,7 +265,7 @@ export class ElementService {
 
   private handleTextElementChange(element: TextElement, value: string): void {
     const deletedAnchorIDs = ElementService.getRemovedTextAnchorIDs(element, value);
-    const refs = this.unitService.referenceManager.getTextAnchorReferences(deletedAnchorIDs);
+    const refs = this.unitService.referenceManager.getTextAnchorReferences(deletedAnchorIDs, new Set([element.id]));
     if (refs.length > 0) {
       this.dialogService.showDeleteReferenceDialog(refs)
         .subscribe((result: boolean) => {

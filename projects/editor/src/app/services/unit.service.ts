@@ -134,12 +134,9 @@ export class UnitService {
        error dialog of loadUnitDefinition, and the unit would be replaced all the same. */
     this.unitReplaced.next();
 
-    const invalidRefs = this.referenceManager.getAllInvalidRefs();
-    if (invalidRefs.length > 0) {
-      this.referenceManager.removeInvalidRefs(invalidRefs);
-      this.messageService.showFixedReferencePanel(invalidRefs);
-      this.updateUnitDefinition();
-    }
+    const repair = this.referenceManager.repairInvalidReferences();
+    if (repair.repaired.length > 0 || repair.toCheck.length > 0) this.messageService.showFixedReferencePanel(repair);
+    if (repair.repaired.length > 0) this.updateUnitDefinition();
     // The unit constructor updated the version. Therefore the unit has changed and notifies the  host.
     if (migratedUnitDefinition?.version !== VersionManager.getCurrentVersion()) {
       this.updateUnitDefinition();
@@ -208,12 +205,45 @@ export class UnitService {
   /** Opens the state variables for editing. A cancelled dialog may have registered aliases on the way, which
       re-registering takes back. */
   editStateVariables(): void {
+    /* The dialog result belongs to the unit it was opened on; a unit the host loaded meanwhile must not get it. */
+    const unitAtRequest = this.unit;
     this.dialogService.showStateVariablesDialog(this.unit.stateVariables)
       .subscribe(stateVariables => {
+        if (this.unit !== unitAtRequest) return;
         if (stateVariables) {
-          this.updateStateVariables(stateVariables);
+          this.applyEditedStateVariables(stateVariables, unitAtRequest);
         } else {
           this.reRegisterAll();
+        }
+      });
+  }
+
+  /**
+   * Takes over what the dialog returned. A variable it no longer holds may still be set by a button or a trigger, or
+   * be asked by a visibility rule; that is asked first, as deleting an element is, and the references go with the
+   * variable only once the author agreed. Declined, the variables still referred to stay, and everything else the
+   * dialog changed is taken over all the same (#1509).
+   */
+  private applyEditedStateVariables(stateVariables: StateVariable[], unitAtRequest: EditorUnit): void {
+    const removed = this.unit.stateVariables
+      .filter(stateVariable => !stateVariables.some(kept => kept.id === stateVariable.id));
+    const refs = this.referenceManager.getStateVariableReferences(removed);
+    if (refs.length === 0) {
+      this.updateStateVariables(stateVariables);
+      return;
+    }
+    this.dialogService.showDeleteConfirmDialog(
+      this.translateService.instant('deleteStateVariablesConfirm'), this.unitReplaced, undefined, refs)
+      .subscribe(confirmed => {
+        if (this.unit !== unitAtRequest) return;
+        if (confirmed) {
+          ReferenceManager.deleteReferences(refs);
+          this.updateStateVariables(stateVariables);
+        } else {
+          const referred = removed.filter(stateVariable => refs
+            .some(refList => (refList.element as { id: string }).id === stateVariable.id));
+          this.updateStateVariables([...stateVariables, ...referred]);
+          this.messageService.showReferencePanel(refs);
         }
       });
   }
@@ -237,14 +267,13 @@ export class UnitService {
       let dialogText: string = '';
       switch (deletedObjectType) {
         case 'page': {
-          refs = this.referenceManager.getPageElementsReferences(
-            this.unit.pages[this.selectionService.selectedPageIndex]
-          );
-          const pageNavButtonRefs = this.referenceManager.getButtonReferencesForPage(
-            this.selectionService.selectedPageIndex
-          );
-          refs = refs.concat(pageNavButtonRefs);
           if (pageIndex === undefined) throw Error();
+          /* The page handed in, not the selected one: the references belong to the page that goes. Both page menus
+             select their page before they open, so the two agree today; reading the selection instead would check
+             -- and on confirmation remove -- the references of another page as soon as they did not (#1509). */
+          refs = this.referenceManager.getPageElementsReferences(object as EditorPage);
+          const pageNavButtonRefs = this.referenceManager.getButtonReferencesForPage(pageIndex);
+          refs = refs.concat(pageNavButtonRefs);
           dialogText = `Seite ${pageIndex + 1} löschen?`;
           break;
         }

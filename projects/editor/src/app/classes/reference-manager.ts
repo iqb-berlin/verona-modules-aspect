@@ -1,76 +1,182 @@
 import { Unit } from 'common/models/unit';
 import { ButtonElement } from 'common/models/elements/button';
 import { DropListElement } from 'common/models/elements/drop-list';
-import { UIElement } from 'common/models/elements/element';
+import { PlayerElement, UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { AudioElement } from 'common/models/elements/audio';
-import { ClozeElement } from 'common/models/elements/cloze';
 import { TextElement } from 'common/models/elements/text';
-import { VideoElement } from 'common/models/elements/video';
+import { TriggerElement } from 'common/models/elements/trigger';
+import { StateVariable } from 'common/models/state-variable';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 
+/** What can hold a reference: an element, or a section through its visibility rules. */
+export type Referrer = UIElement | Section;
+
+/** A section that refers to something, with the place the author finds it at. */
+export interface SectionLocation {
+  section: Section;
+  pageIndex: number;
+  sectionIndex: number;
+}
+
+/**
+ * One way in which an object of the unit refers to another by its id. Every kind of reference is described here
+ * once -- which objects hold it, which ids it holds, how it is taken away -- and everything that looks for, removes or
+ * repairs references goes through these descriptions (#1509). A kind that is not listed is a reference nothing
+ * looks after; replacing an id (#1508) is meant to be one more operation here, not one more place per kind.
+ */
+interface ReferenceKind {
+  isReferrer(referrer: Referrer): boolean;
+  /** The ids the referrer points to through this kind. */
+  targets(referrer: Referrer): string[];
+  remove(referrer: Referrer, targetID: string): void;
+  /** The ids this kind may point to at all; anything else it holds is a reference into nothing. */
+  validTargets(unit: Unit): Set<string>;
+  /**
+   * Whether a reference into nothing is removed when a unit is loaded, or only reported. Removing is right where the
+   * player makes nothing of the reference anyway; a visibility rule is the exception, see there.
+   */
+  repairOnLoad: boolean;
+}
+
+const idsOf = (elements: UIElement[]): Set<string> => new Set(elements.map(element => element.id));
+const isElementOf = (referrer: Referrer, ...types: string[]): boolean => !(referrer instanceof Section) &&
+  types.includes(referrer.type);
+const isStateVariableAction = (referrer: Referrer): boolean => isElementOf(referrer, 'button', 'trigger') &&
+  (referrer as ButtonElement | TriggerElement).action === 'stateVariableChange' &&
+  typeof (referrer as ButtonElement | TriggerElement).actionParam === 'object' &&
+  (referrer as ButtonElement | TriggerElement).actionParam !== null;
+
+const REFERENCE_KINDS: ReferenceKind[] = [
+  /** A drop-list lists the drop-lists it exchanges items with. */
+  {
+    isReferrer: referrer => isElementOf(referrer, 'drop-list'),
+    targets: referrer => (referrer as DropListElement).connectedTo,
+    remove: (referrer, targetID) => {
+      const dropList = referrer as DropListElement;
+      dropList.connectedTo = dropList.connectedTo.filter(connectedID => connectedID !== targetID);
+    },
+    validTargets: unit => idsOf(unit.getAllElements('drop-list')),
+    repairOnLoad: true
+  },
+  /** An audio or video can wait for another one to have been played. */
+  {
+    isReferrer: referrer => isElementOf(referrer, 'audio', 'video'),
+    targets: referrer => {
+      const { activeAfterID } = (referrer as PlayerElement).player;
+      return activeAfterID ? [activeAfterID] : [];
+    },
+    remove: referrer => { (referrer as PlayerElement).player.activeAfterID = ''; },
+    validTargets: unit => idsOf([...unit.getAllElements('audio'), ...unit.getAllElements('video')]),
+    repairOnLoad: true
+  },
+  /** A text names the marking panels whose colours it can be marked with. */
+  {
+    isReferrer: referrer => isElementOf(referrer, 'text'),
+    targets: referrer => (referrer as TextElement).markingPanels,
+    remove: (referrer, targetID) => {
+      const text = referrer as TextElement;
+      text.markingPanels = text.markingPanels.filter(panelID => panelID !== targetID);
+    },
+    validTargets: unit => idsOf(unit.getAllElements('marking-panel')),
+    repairOnLoad: true
+  },
+  /**
+   * A section is shown on rules about the value of an element or a state variable. A rule whose target is gone is
+   * never fulfilled in the player, so with "and" its section is never shown, and a section left without rules is
+   * always shown. Removing such a rule on load would change what test takers see without anyone having decided it,
+   * which is why it is only reported then; deleting the target removes it, after the author confirmed.
+   */
+  {
+    isReferrer: referrer => referrer instanceof Section,
+    targets: referrer => (referrer as Section).visibilityRules.map(rule => rule.id),
+    remove: (referrer, targetID) => {
+      const section = referrer as Section;
+      section.visibilityRules = section.visibilityRules.filter(rule => rule.id !== targetID);
+    },
+    validTargets: unit => new Set([...idsOf(unit.getAllElements()), ...unit.stateVariables.map(v => v.id)]),
+    repairOnLoad: false
+  },
+  /**
+   * A button or a trigger can set a state variable. The action goes with the variable: left without one, the panel
+   * would offer the first remaining variable as if it were chosen, while the player sets nothing.
+   */
+  {
+    isReferrer: isStateVariableAction,
+    targets: referrer => [((referrer as ButtonElement | TriggerElement).actionParam as StateVariable).id],
+    remove: referrer => {
+      const element = referrer as ButtonElement | TriggerElement;
+      element.action = null;
+      element.actionParam = null;
+    },
+    validTargets: unit => new Set(unit.stateVariables.map(stateVariable => stateVariable.id)),
+    repairOnLoad: true
+  }
+];
+
+/** What is referred to: an element, or one of the targets that are not elements, named for the author. */
+export type ReferenceTarget = UIElement |
+{ type: 'page'; alias: string } |
+{ type: 'state-variable'; id: string; alias: string } |
+{ type: 'text-anchor'; id: string; alias: string };
+
+/** Who refers to one target. */
+export interface ReferenceList {
+  element: ReferenceTarget;
+  refs: UIElement[];
+  /** Sections that refer to the target through a visibility rule. */
+  sections?: SectionLocation[];
+}
+
+/** What loading a unit repaired, and what it found but left for the author to decide. */
+export interface ReferenceRepair {
+  repaired: UIElement[];
+  toCheck: SectionLocation[];
+}
+
+/** Everything that goes together and whose references among each other therefore do not count. */
+interface DeletedScope {
+  elementIDs: Set<string>;
+  sections: Set<Section>;
+}
+
 export class ReferenceManager {
-  /** Element types that may have references */
-  static REFERENCE_ELEMENT_TYPES = ['drop-list', 'audio', 'button'];
   unit: Unit;
 
   constructor(unit: Unit) {
     this.unit = unit;
   }
 
-  getAllInvalidRefs(): UIElement[] {
-    return [...this.getInvalidPageRefs(), ...this.getInvalidDropListRefs(), ...this.getInvalidPlayerElementRefs()];
-  }
-
-  getInvalidPageRefs(): ButtonElement[] {
-    const allRefs: ButtonElement[] = [];
-    const allButtons = this.unit.getAllElements('button') as ButtonElement[];
-    const validPageRange = this.unit.pages.length;
-    allButtons.forEach(button => {
-      if (button.action === 'pageNav' &&
-          typeof button.actionParam === 'number' &&
-          (button.actionParam + 1) > validPageRange) {
-        allRefs.push(button);
-      }
+  /**
+   * Called when a unit is loaded: removes references into nothing where the player makes nothing of them, and
+   * lists the sections whose visibility rules point into nothing. Navigation buttons to a page beyond the last
+   * are repaired as well.
+   */
+  repairInvalidReferences(): ReferenceRepair {
+    const repaired = new Set<UIElement>(this.repairInvalidPageRefs());
+    const toCheck: SectionLocation[] = [];
+    REFERENCE_KINDS.forEach(kind => {
+      const validTargets = kind.validTargets(this.unit);
+      this.getReferrers(kind).forEach(referrer => {
+        const invalidTargets = kind.targets(referrer).filter(targetID => !validTargets.has(targetID));
+        if (invalidTargets.length === 0) return;
+        if (!kind.repairOnLoad) {
+          toCheck.push(this.locateSection(referrer as Section));
+          return;
+        }
+        invalidTargets.forEach(targetID => kind.remove(referrer, targetID));
+        repaired.add(referrer as UIElement);
+      });
     });
-    return allRefs;
+    return { repaired: [...repaired], toCheck };
   }
 
-  private getInvalidDropListRefs(): DropListElement[] {
-    const allDropLists = this.unit.getAllElements('drop-list') as DropListElement[];
-    const allDropListIDs = allDropLists.map(dropList => dropList.id);
-    return allDropLists.filter(dropList => dropList.connectedTo
-      .filter(connectedList => !allDropListIDs.includes(connectedList)).length > 0);
-  }
-
-  private getInvalidPlayerElementRefs(): (AudioElement | VideoElement)[] {
-    const allAudioAndVideos: (AudioElement | VideoElement)[] = [
-      ...this.unit.getAllElements('audio') as AudioElement[],
-      ...this.unit.getAllElements('video') as VideoElement[]
-    ];
-    const allAudioAndVideoIDs = allAudioAndVideos.map(element => element.id);
-    return allAudioAndVideos.filter(
-      element => element.player.activeAfterID !== '' &&
-                                           !allAudioAndVideoIDs.includes(element.player.activeAfterID));
-  }
-
-  removeInvalidRefs(refs: UIElement[]): void {
-    refs.forEach(ref => {
-      switch (ref.type) {
-        case 'button':
-          (ref as ButtonElement).actionParam = null;
-          break;
-        case 'drop-list':
-          (ref as DropListElement).connectedTo = (ref as DropListElement).connectedTo
-            .filter(connectedList => this.unit.getAllElements('drop-list')
-              .map(dropList => dropList.id).includes(connectedList));
-          break;
-        case 'audio':
-          (ref as AudioElement).player.activeAfterID = '';
-          break;
-        // no default
-      }
-    });
+  private repairInvalidPageRefs(): ButtonElement[] {
+    const pageCount = this.unit.pages.length;
+    const invalid = (this.unit.getAllElements('button') as ButtonElement[])
+      .filter(button => button.action === 'pageNav' && typeof button.actionParam === 'number' &&
+        button.actionParam + 1 > pageCount);
+    invalid.forEach(button => { button.actionParam = null; });
+    return invalid;
   }
 
   getButtonReferencesForPage(pageIndex: number): ReferenceList[] {
@@ -94,128 +200,128 @@ export class ReferenceManager {
   }
 
   getPageElementsReferences(page: EditorPage): ReferenceList[] {
-    const ignoredElementIDs = page.getAllElements()
-      .filter(element => ReferenceManager.REFERENCE_ELEMENT_TYPES.includes(element.type))
-      .map(element => element.id);
-    return page.sections
-      .map(section => this.getElementsReferences(section.elements, ignoredElementIDs))
-      .flat();
+    return this.getSectionElementsReferences(page.sections);
   }
 
-  getSectionElementsReferences(sections: Section[], otherIgnoredElementIDs: string[] = []): ReferenceList[] {
-    return sections
-      .map(section => this.getElementsReferences(section.elements, otherIgnoredElementIDs))
-      .flat();
+  getSectionElementsReferences(sections: Section[]): ReferenceList[] {
+    const elements = sections.flatMap(section => section.elements);
+    return this.findReferences(elements, ReferenceManager.scopeOf(elements, sections));
   }
 
-  getElementsReferences(elements: UIElement[], otherIgnoredElementIDs: string[] = []): ReferenceList[] {
-    const ignoredElementIDs = elements
-      .filter(element => ReferenceManager.REFERENCE_ELEMENT_TYPES.includes(element.type))
-      .map(element => element.id)
-      .concat(otherIgnoredElementIDs);
-    const dropListRefs = this.getDropListsReferences(elements
-      .filter(element => element.type === 'drop-list') as DropListElement[], ignoredElementIDs);
-    const audioRefs = this.getAudioVideoReferences(elements
-      .filter(element => element.type === 'audio') as AudioElement[], ignoredElementIDs);
-    const clozeRefs = this.getClozeReferences(elements
-      .filter(element => element.type === 'cloze') as ClozeElement[], ignoredElementIDs);
-    const textRefs = this.getTextReferences(elements
-      .filter(element => element.type === 'text') as TextElement[], ignoredElementIDs);
-    return dropListRefs.concat(audioRefs).concat(clozeRefs).concat(textRefs);
+  getElementsReferences(elements: UIElement[]): ReferenceList[] {
+    return this.findReferences(elements, ReferenceManager.scopeOf(elements, []));
   }
 
-  private getDropListsReferences(dropLists: DropListElement[], ignoredElementIDs: string[] = []): ReferenceList[] {
-    const allRefs: ReferenceList[] = [];
-    const allDropLists = this.unit.getAllElements('drop-list') as DropListElement[];
-    dropLists.forEach(dropList => {
-      const otherConnectedDropLists = allDropLists
-        .filter(foundDropList => foundDropList.id !== dropList.id &&
-                                                 !ignoredElementIDs.includes(foundDropList.id) &&
-                                                 foundDropList.connectedTo.indexOf(dropList.id) !== -1);
-      if (otherConnectedDropLists && otherConnectedDropLists.length > 0) {
-        allRefs.push({
-          element: dropList,
-          refs: otherConnectedDropLists
-        });
-      }
-    });
-    return allRefs;
+  /** Who refers to the given state variables, about to be deleted. */
+  getStateVariableReferences(stateVariables: StateVariable[]): ReferenceList[] {
+    const referrersByKind = this.getReferrersByKind();
+    return stateVariables
+      .map(stateVariable => this.collect(
+        { type: 'state-variable' as const, id: stateVariable.id, alias: stateVariable.alias },
+        stateVariable.id,
+        { elementIDs: new Set(), sections: new Set() },
+        referrersByKind))
+      .filter(ReferenceManager.isNotEmpty);
   }
 
-  private getAudioVideoReferences(playerElements: (AudioElement | VideoElement)[], ignoredElementIDs: string[] = [])
-    : ReferenceList[] {
-    const allRefs: ReferenceList[] = [];
-    const allAudioAndVideos: (AudioElement | VideoElement)[] = [
-      ...this.unit.getAllElements('audio') as AudioElement[],
-      ...this.unit.getAllElements('video') as VideoElement[]
-    ];
-
-    playerElements.forEach(element => {
-      const refs = allAudioAndVideos
-        .filter(foundElement => foundElement.id !== element.id &&
-                                                          !ignoredElementIDs.includes(foundElement.id) &&
-                                                          foundElement.player.activeAfterID === element.id);
-      if (refs.length > 0) {
-        allRefs.push({
-          element: element,
-          refs: refs
-        });
-      }
-    });
-    return allRefs;
-  }
-
-  private getClozeReferences(clozes: ClozeElement[], ignoredElementIDs: string[] = []): ReferenceList[] {
-    return clozes.map(cloze => this.getElementsReferences(
-      cloze.getChildElements()
-        .filter(element => element.type === 'drop-list'),
-      cloze.getChildElements()
-        .filter(element => element.type === 'drop-list')
-        .map(element => element.id)), ignoredElementIDs
-    ).flat();
-  }
-
-  getTextReferences(textElements: TextElement[], ignoredElementIDs: string[] = []): ReferenceList[] {
-    return textElements
-      .map(textElement => this.getTextAnchorReferences(textElement.getAnchorIDs(), ignoredElementIDs))
-      .flat();
-  }
-
-  getTextAnchorReferences(deletedAnchorIDs: string[], ignoredElementIDs: string[] = []): ReferenceList[] {
-    const allButtons = this.unit.getAllElements('button');
-    return deletedAnchorIDs.map(id => ({
-      element: { id: `Textbereich "${id}"` } as UIElement,
-      refs: allButtons
-        .filter(button => !ignoredElementIDs.includes(button.id) &&
-                                     button.action === 'highlightText' && button.actionParam === id)
-        .flat()
-    }))
+  /**
+   * Buttons and triggers that highlight a text range about to go away. The anchor is no element and has no kind of
+   * its own in the table; its references are removed through the type of the group.
+   *
+   * An anchor's id is the marked text itself, so two texts can hold the same one, and a duplicated text always
+   * does. An anchor still held by a text that stays is not going away, and what highlights it keeps its target.
+   * `goingTextIDs` names the texts whose anchors go: the deleted ones, or the one being edited.
+   */
+  getTextAnchorReferences(deletedAnchorIDs: string[], goingTextIDs: Set<string>,
+                          ignoredElementIDs: Set<string> = new Set()): ReferenceList[] {
+    const remainingAnchorIDs = new Set((this.unit.getAllElements('text') as TextElement[])
+      .filter(text => !goingTextIDs.has(text.id))
+      .flatMap(text => text.getAnchorIDs()));
+    const highlighters = [...this.unit.getAllElements('button'), ...this.unit.getAllElements('trigger')] as
+      (ButtonElement | TriggerElement)[];
+    return [...new Set(deletedAnchorIDs)]
+      .filter(id => !remainingAnchorIDs.has(id))
+      .map(id => ({
+        element: { type: 'text-anchor' as const, id, alias: id },
+        refs: highlighters.filter(element => !ignoredElementIDs.has(element.id) &&
+          element.action === 'highlightText' && element.actionParam === id)
+      }))
       .filter(refList => refList.refs.length > 0);
   }
 
+  /** Removes what the lists name: the references the author agreed to give up along with their targets. */
   static deleteReferences(refs: ReferenceList[]): void {
-    refs.filter(ref => ref.element.type === 'drop-list').forEach(ref => {
-      (ref.refs as DropListElement[]).forEach((dropList: DropListElement) => {
-        dropList.connectedTo = dropList.connectedTo.filter(dropListID => dropListID !== (ref.element as UIElement).id);
-      });
-    });
-    refs.filter(ref => ref.element.type === 'audio').forEach(ref => {
-      (ref.refs as AudioElement[]).forEach((audio: AudioElement) => {
-        audio.player.activeAfterID = '';
-      });
-    });
-    refs.filter(ref => ref.element.type === 'page').forEach(ref => {
-      (ref.refs as ButtonElement[]).forEach((button: ButtonElement) => {
-        button.actionParam = null;
-      });
+    refs.forEach(refList => {
+      const { element } = refList;
+      if (element.type === 'page' || element.type === 'text-anchor') {
+        refList.refs.forEach(referrer => { (referrer as ButtonElement | TriggerElement).actionParam = null; });
+        return;
+      }
+      const targetID = (element as { id: string }).id;
+      const referrers: Referrer[] = [...refList.refs, ...(refList.sections ?? []).map(location => location.section)];
+      REFERENCE_KINDS.forEach(kind => referrers
+        .filter(referrer => kind.isReferrer(referrer) && kind.targets(referrer).includes(targetID))
+        .forEach(referrer => kind.remove(referrer, targetID)));
     });
   }
-}
 
-export interface ReferenceList {
-  element: UIElement | {
-    alias: string;
-    type: 'page'
-  };
-  refs: UIElement[];
+  private findReferences(elements: UIElement[], scope: DeletedScope): ReferenceList[] {
+    const targets = elements.flatMap(element => [element, ...element.getChildElements()]);
+    const referrersByKind = this.getReferrersByKind();
+    const elementRefs = targets
+      .map(target => this.collect(target, target.id, scope, referrersByKind))
+      .filter(ReferenceManager.isNotEmpty);
+    const anchorRefs = this.getTextAnchorReferences(
+      (targets.filter(target => target.type === 'text') as TextElement[]).flatMap(text => text.getAnchorIDs()),
+      scope.elementIDs,
+      scope.elementIDs);
+    return [...elementRefs, ...anchorRefs];
+  }
+
+  /** Everyone outside the deleted scope that refers to one target, through any kind. */
+  private collect(element: ReferenceTarget, targetID: string, scope: DeletedScope,
+                  referrersByKind: Map<ReferenceKind, Referrer[]> = this.getReferrersByKind()): ReferenceList {
+    const referrers = REFERENCE_KINDS.flatMap(kind => (referrersByKind.get(kind) ?? [])
+      .filter(referrer => kind.targets(referrer).includes(targetID)));
+    const unique = [...new Set(referrers)];
+    return {
+      element,
+      refs: unique.filter(referrer => !(referrer instanceof Section) && !scope.elementIDs.has(referrer.id)) as
+        UIElement[],
+      sections: unique.filter(referrer => referrer instanceof Section && !scope.sections.has(referrer))
+        .map(section => this.locateSection(section as Section))
+    };
+  }
+
+  private getReferrers(kind: ReferenceKind): Referrer[] {
+    return this.getAllReferrers().filter(referrer => kind.isReferrer(referrer));
+  }
+
+  /** Walks the unit once and sorts what can refer by kind, for a search over many targets. */
+  private getReferrersByKind(): Map<ReferenceKind, Referrer[]> {
+    const allReferrers = this.getAllReferrers();
+    return new Map(REFERENCE_KINDS.map(kind => [kind, allReferrers.filter(referrer => kind.isReferrer(referrer))]));
+  }
+
+  private getAllReferrers(): Referrer[] {
+    return [...this.unit.getAllElements(), ...this.unit.pages.flatMap(page => page.sections)];
+  }
+
+  private locateSection(section: Section): SectionLocation {
+    const pageIndex = this.unit.pages.findIndex(page => page.sections.includes(section));
+    return { section, pageIndex, sectionIndex: this.unit.pages[pageIndex]?.sections.indexOf(section) ?? -1 };
+  }
+
+  /** The deleted elements with their children, and the deleted sections. */
+  private static scopeOf(elements: UIElement[], sections: Section[]): DeletedScope {
+    return {
+      elementIDs: new Set(elements.flatMap(element => [element, ...element.getChildElements()])
+        .map(element => element.id)),
+      sections: new Set(sections)
+    };
+  }
+
+  private static isNotEmpty(refList: ReferenceList): boolean {
+    return refList.refs.length > 0 || (refList.sections ?? []).length > 0;
+  }
 }

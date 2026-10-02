@@ -6,67 +6,74 @@ import { MatListModule } from '@angular/material/list';
 import { MAT_SNACK_BAR_DATA, MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
+import { UIElementProperties } from 'common/models/ui-element-interfaces';
+import { ElementFactory } from 'common/utils/element-factory';
+import { Section } from 'common/models/section';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import { ReferenceRepair } from 'editor/src/app/classes/reference-manager';
+import { ElementListComponent } from 'editor/src/app/components/element-list/element-list.component';
 import {
   FixedReferencesSnackbarComponent
 } from 'editor/src/app/components/fixed-references-snackbar/fixed-references-snackbar.component';
 
 describe('FixedReferencesSnackbarComponent', () => {
-  let component: FixedReferencesSnackbarComponent;
   let fixture: ComponentFixture<FixedReferencesSnackbarComponent>;
   let snackBarRef: SpyObj<MatSnackBarRef<FixedReferencesSnackbarComponent>>;
 
-  const injectedData: UIElement[] = [
-    { type: 'drop-list', id: 'drop_list_1' } as unknown as UIElement,
-    { type: 'button', id: 'button_1' } as unknown as UIElement,
-    { type: 'audio', id: 'audio_1' } as unknown as UIElement,
-    { type: 'text', id: 'text_1' } as unknown as UIElement
-  ];
+  const element = (type: string, alias: string): UIElement => ElementFactory
+    .createElement({ type, id: `${type}_1`, alias } as unknown as UIElementProperties);
+
+  const create = (repair: ReferenceRepair): void => {
+    TestBed.overrideProvider(MAT_SNACK_BAR_DATA, { useValue: repair });
+    fixture = TestBed.createComponent(FixedReferencesSnackbarComponent);
+    fixture.detectChanges();
+  };
+  const text = (): string => fixture.nativeElement.textContent;
 
   beforeEach(async () => {
     snackBarRef = createSpyObj<MatSnackBarRef<FixedReferencesSnackbarComponent>>(['dismiss']);
 
     await TestBed.configureTestingModule({
-      declarations: [FixedReferencesSnackbarComponent],
+      declarations: [FixedReferencesSnackbarComponent, ElementListComponent],
       imports: [
         CommonModule, MatButtonModule, MatIconModule, MatListModule, MatSnackBarModule, TranslateModule.forRoot()
       ],
       providers: [
         { provide: MatSnackBarRef, useValue: snackBarRef },
-        { provide: MAT_SNACK_BAR_DATA, useValue: injectedData }
+        { provide: MAT_SNACK_BAR_DATA, useValue: { repaired: [], toCheck: [] } }
       ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(FixedReferencesSnackbarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    });
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  /* It listed three types by hand and left out every other one, video among them (#1509). */
+  it('should list every repaired element by its type and alias', () => {
+    create({
+      repaired: [element('drop-list', 'liste'), element('video', 'film'), element('text', 'lesetext'),
+        element('trigger', 'ausloeser')],
+      toCheck: []
+    });
+
+    expect(fixture.nativeElement.querySelectorAll('aspect-element-list mat-list-item').length).toBe(4);
+    expect(text()).toContain('Video: film');
+    expect(text()).toContain('Auslöser: ausloeser');
+    expect(text()).toContain('invalidReferencesRemoved');
+    expect(text()).not.toContain('invalidVisibilityRulesToCheck');
   });
 
-  it('should render one list item per injected element', () => {
-    expect(fixture.nativeElement.querySelectorAll('mat-list-item').length).toBe(4);
-  });
+  /* Rules into nothing are not removed on load, as that would change what test takers see (#1509). */
+  it('should list the sections whose visibility rules were left for the author to check', () => {
+    create({ repaired: [], toCheck: [{ section: new Section(), pageIndex: 1, sectionIndex: 0 }] });
 
-  // Without a loader the translate pipe renders the key, so the assertion holds the type-to-key
-  // mapping - the labels themselves live in assets/i18n/de.json (#1116).
-  it('should label the known element types with their id', () => {
-    const text: string = fixture.nativeElement.textContent;
-
-    expect(text).toContain('toolbox.drop-list: drop_list_1');
-    expect(text).toContain('toolbox.button: button_1');
-    expect(text).toContain('toolbox.audio: audio_1');
-  });
-
-  it('should not label element types it does not know about', () => {
-    expect(fixture.nativeElement.textContent).not.toContain('text_1');
+    expect(fixture.nativeElement.querySelectorAll('.section-to-check').length).toBe(1);
+    expect(text()).toContain('invalidVisibilityRulesToCheck');
+    expect(text()).toContain('referenceList.sectionLocation');
+    expect(text()).not.toContain('invalidReferencesRemoved');
   });
 
   it('should dismiss the snackbar when the close button is clicked', () => {
-    const closeButton: HTMLButtonElement = fixture.nativeElement.querySelector('button');
-    closeButton.click();
+    create({ repaired: [element('audio', 'ton')], toCheck: [] });
+
+    (fixture.nativeElement.querySelector('button') as HTMLButtonElement).click();
 
     expect(snackBarRef.dismiss).toHaveBeenCalled();
   });

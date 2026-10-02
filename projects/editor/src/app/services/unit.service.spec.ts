@@ -274,6 +274,119 @@ describe('UnitService - registering the options of a drop-list (#1506)', () => {
   });
 });
 
+describe('UnitService - references to what is deleted (#1509)', () => {
+  let service: UnitService;
+  let selectionService: SelectionService;
+  let messageServiceSpy: SpyObj<MessageService>;
+  let dialogServiceSpy: SpyObj<DialogService>;
+
+  const textField = (id: string): Record<string, unknown> => ({
+    type: 'text-field',
+    id,
+    alias: id,
+    position: {
+      gridColumn: 1, gridColumnRange: 1, gridRow: 1, gridRowRange: 1
+    }
+  });
+
+  /* Two pages; a section on the second asks a state variable and an element of the first page. */
+  const load = (secondPageRuleTargets: string[]): void => {
+    const blueprint = createUnitBlueprint('state_1');
+    blueprint.pages.push(JSON.parse(JSON.stringify(blueprint.pages[0])));
+    blueprint.pages[0].sections[0].elements.push(textField('text-field_1') as unknown as PositionedUIElement);
+    blueprint.pages[1].sections[0].elements.push(textField('text-field_2') as unknown as PositionedUIElement);
+    blueprint.pages[1].sections[0].visibilityRules = secondPageRuleTargets
+      .map(id => ({ id, operator: '=', value: '1' }));
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  };
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    selectionService = new SelectionService();
+    messageServiceSpy = createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']);
+    dialogServiceSpy = createSpyObj<DialogService>([
+      'showUnitDefErrorDialog', 'showDeleteConfirmDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
+    ]);
+    service = new UnitService(selectionService, createSpyObj<VeronaAPIService>(['sendChanged']), messageServiceSpy,
+                              dialogServiceSpy, new IDService(), translateServiceSpy);
+  });
+
+  /* The page menus select their page before they open, so selection and deleted page agree in the editor today;
+     the references are those of the deleted page all the same, whatever is selected. */
+  it('should check the references of the page that is deleted, not of the selected one', async () => {
+    load(['text-field_1']);
+    selectionService.selectedPageIndex = 1;
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(true));
+
+    await service.prepareDelete('page', service.unit.pages[0], 0);
+
+    const refs = dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[3] as ReferenceList[];
+    expect(refs.map(refList => (refList.element as { id: string }).id)).toEqual(['text-field_1']);
+    expect(service.unit.pages[1].sections[0].visibilityRules).toEqual([]);
+  });
+
+  it('should ask before deleting a state variable that is still asked, and remove the rule once agreed', () => {
+    load(['state_1']);
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of([]));
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(true));
+
+    service.editStateVariables();
+
+    expect(dialogServiceSpy.showDeleteConfirmDialog)
+      .toHaveBeenCalledWith('deleteStateVariablesConfirm', expect.anything(), undefined, expect.any(Array));
+    expect(service.unit.stateVariables).toEqual([]);
+    expect(service.unit.pages[1].sections[0].visibilityRules).toEqual([]);
+  });
+
+  /* Declining keeps what is still referred to, not the whole dialog undone: a rename made along the way stays. */
+  it('should keep a referred state variable when the author declines, and take over the other changes', () => {
+    load(['state_1']);
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of([new StateVariable('state_2', 'neu', '')]));
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(false));
+
+    service.editStateVariables();
+
+    expect(service.unit.stateVariables.map(stateVariable => stateVariable.id)).toEqual(['state_2', 'state_1']);
+    expect(service.unit.pages[1].sections[0].visibilityRules.length).toBe(1);
+    expect(messageServiceSpy.showReferencePanel).toHaveBeenCalled();
+  });
+
+  it('should not apply a state variables dialog to a unit the host loaded while it was open', () => {
+    load(['state_1']);
+    const result = new Subject<StateVariable[]>();
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(result);
+    service.editStateVariables();
+
+    load([]);
+    result.next([]);
+
+    expect(dialogServiceSpy.showDeleteConfirmDialog).not.toHaveBeenCalled();
+    expect(service.unit.stateVariables.map(stateVariable => stateVariable.id)).toEqual(['state_1']);
+  });
+
+  it('should delete a state variable nothing refers to without asking', () => {
+    load([]);
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of([]));
+
+    service.editStateVariables();
+
+    expect(dialogServiceSpy.showDeleteConfirmDialog).not.toHaveBeenCalled();
+    expect(service.unit.stateVariables).toEqual([]);
+  });
+
+  /* Removing a rule into nothing would change what test takers see: with "and" its section is never shown now. */
+  it('should report a visibility rule into nothing on loading, leave it, and report no change to the host', () => {
+    load(['text-field_9']);
+
+    expect(messageServiceSpy.showFixedReferencePanel).toHaveBeenCalledWith({
+      repaired: [],
+      toCheck: [expect.objectContaining({ pageIndex: 1, sectionIndex: 0 })]
+    });
+    expect(service.unit.pages[1].sections[0].visibilityRules.length).toBe(1);
+  });
+});
+
 describe('UnitService - discarding a unit that was never saved with content (#1089)', () => {
   let service: UnitService;
   let selectionService: SelectionService;

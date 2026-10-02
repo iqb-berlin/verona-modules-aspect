@@ -1,3 +1,9 @@
+/**
+ * Why a single identifier breaks the Verona contract (verona-interfaces/variable-info#2), named as the contract
+ * names it, so that a later switch to the shared validator only replaces the implementation.
+ */
+export type VariableIdentifierIssue = 'EMPTY_IDENTIFIER' | 'INVALID_CHARACTERS';
+
 export abstract class VariableAlias {
   /**
    * Verona-compliant pattern for VariableInfo ids and aliases (#1043), as the source text an HTML
@@ -18,6 +24,21 @@ export abstract class VariableAlias {
    * not valid -- the pattern demands at least one character -- and neither is a name with a space in it.
    */
   static isValid(alias: string): boolean {
-    return VariableAlias.PATTERN.test(alias);
+    return VariableAlias.check(alias) === null;
+  }
+
+  /** What is wrong with an id or alias, or `null` if nothing is. */
+  static check(identifier: string): VariableIdentifierIssue | null {
+    if (identifier === '') return 'EMPTY_IDENTIFIER';
+    return VariableAlias.PATTERN.test(identifier) ? null : 'INVALID_CHARACTERS';
+  }
+
+  /**
+   * The form under which two identifiers count as the same one. The contract makes identifiers unique regardless
+   * of letter case, so `Wert` and `wert` share this key -- while everything that maps an identifier to its
+   * variable keeps comparing exactly (#1129).
+   */
+  static toComparable(identifier: string): string {
+    return identifier.toLowerCase();
   }
 }

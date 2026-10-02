@@ -228,4 +228,25 @@ describe('SelectionService', () => {
     expect(service.isCompoundChildSelected).toBe(false);
     expect(setSelected).toHaveBeenCalledWith(false);
   });
+
+  /* The validation area asks for an element it can only name (#1129); the section rendering it takes the request. */
+  it('should turn to the page and section of a requested element and hold the request', () => {
+    selectAnElement();
+
+    service.requestElement(2, 1, 'text-field_2');
+
+    expect(service.selectedPageIndex).toBe(2);
+    expect(service.selectedSectionIndex).toBe(1);
+    expect(service.getSelectedElements()).toEqual([]);
+    expect(service.requestedElementID.value).toBe('text-field_2');
+  });
+
+  /* Generated ids repeat from unit to unit, so a request left over would select an element of the next one. */
+  it('should drop a pending element request on reset', () => {
+    service.requestElement(1, 0, 'text-field_2');
+
+    service.reset();
+
+    expect(service.requestedElementID.value).toBeNull();
+  });
 });

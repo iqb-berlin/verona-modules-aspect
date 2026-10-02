@@ -62,15 +62,18 @@ export class VeronaAPIService {
   /**
    * Hands the host the current unit and the variables it declares -- what the studio saves. Sent on
    * every change the editor considers worth saving, not on request.
+   *
+   * Without `variableInfos` the message carries no `variables` at all, which the editor API allows: the
+   * host then keeps the list it has (#1129).
    */
-  sendChanged(unitDefinition: string, unitDefinitionType: string, variableInfos: VariableInfo[]): void {
+  sendChanged(unitDefinition: string, unitDefinitionType: string, variableInfos?: VariableInfo[]): void {
     this.send({
       type: 'voeDefinitionChangedNotification',
       sessionId: this.sessionID as string,
       timeStamp: String(Date.now()),
       unitDefinition: unitDefinition,
       unitDefinitionType: unitDefinitionType,
-      variables: variableInfos
+      ...(variableInfos ? { variables: variableInfos } : {})
     });
   }
 }

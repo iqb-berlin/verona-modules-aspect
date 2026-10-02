@@ -27,6 +27,24 @@ describe('VariableAlias', () => {
     expect(VariableAlias.isValid('')).toBe(false);
   });
 
+  it('should accept one-character names and names longer than 20 characters', () => {
+    ['a', 'b', 'c', 'a_very_long_variable_name_beyond_twenty'].forEach(name => {
+      expect(VariableAlias.check(name)).toBeNull();
+    });
+  });
+
+  it('should name the issue the contract names', () => {
+    expect(VariableAlias.check('')).toBe('EMPTY_IDENTIFIER');
+    expect(VariableAlias.check('a.b')).toBe('INVALID_CHARACTERS');
+    expect(VariableAlias.check('a b')).toBe('INVALID_CHARACTERS');
+    expect(VariableAlias.check('fistgewählt')).toBe('INVALID_CHARACTERS');
+  });
+
+  it('should give names that differ only in letter case the same comparable form', () => {
+    expect(VariableAlias.toComparable('Wert')).toBe(VariableAlias.toComparable('wert'));
+    expect(VariableAlias.toComparable('Wert')).not.toBe(VariableAlias.toComparable('Werte'));
+  });
+
   /* HTML compiles a `pattern` attribute with the `v` flag. A pattern that does not survive that is
      silently discarded by the browser, and the field it belongs to is no longer checked natively at
      all -- which is what happened while the hyphen stood bare (#1391). */

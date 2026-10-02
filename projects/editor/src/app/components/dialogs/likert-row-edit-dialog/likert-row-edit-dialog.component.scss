@@ -3,6 +3,10 @@ mat-checkbox {
   margin-bottom: 15px;
 }
 
+.alias-taken-hint {
+  color: var(--mat-sys-error, #ba1a1a);
+}
+
 aspect-text-image-panel {
   margin-left: auto;
   margin-right: auto;

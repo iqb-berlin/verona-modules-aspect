@@ -28,6 +28,10 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { By } from '@angular/platform-browser';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { BehaviorSubject } from 'rxjs';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
+import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
+import { AliasIssuesPipe } from 'editor/src/app/modules/properties-panel/pipes/alias-issues.pipe';
 import {
   CombinedProperties
 } from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
@@ -149,7 +153,7 @@ describe('UIElementPropertiesComponent', () => {
   let fixture: ComponentFixture<UIElementPropertiesComponent>;
   let elementService: SpyObj<ElementService>;
   let emitted: { property: string; value: unknown }[];
-  let unitServiceMock: { expertMode: boolean };
+  let unitServiceMock: { expertMode: boolean, variableInfoFindings: BehaviorSubject<VariableInfoFinding[]> };
 
   const selectedElement = { type: 'button', id: 'btn1', alias: 'Btn1' } as unknown as UIElement;
 
@@ -164,7 +168,7 @@ describe('UIElementPropertiesComponent', () => {
   };
 
   beforeEach(async () => {
-    unitServiceMock = { expertMode: false };
+    unitServiceMock = { expertMode: false, variableInfoFindings: new BehaviorSubject<VariableInfoFinding[]>([]) };
     elementService = createSpyObj<ElementService>(
       ['updateElementsDimensionsProperty', 'showDefaultEditDialog']
     );
@@ -191,7 +195,8 @@ describe('UIElementPropertiesComponent', () => {
         MockMediaSourcePropertiesComponent,
         MockClozePropertiesComponent,
         MockStandardDimensionPropertiesComponent,
-        MergedCheckboxComponent
+        MergedCheckboxComponent,
+        AliasIssuesPipe
       ],
       imports: [
         CommonModule,
@@ -222,6 +227,35 @@ describe('UIElementPropertiesComponent', () => {
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
+  });
+
+  /* The field checks only what is typed. A name stored that way stood in it unremarked while the validation area
+     listed it (#1129). */
+  describe('the alias field', () => {
+    const hint = (): HTMLElement | null => fixture.nativeElement.querySelector('.alias-issue-hint');
+
+    it('should say nothing while the alias is fine', () => {
+      expect(hint()).toBeNull();
+    });
+
+    it('should say why a stored alias breaks the contract', () => {
+      unitServiceMock.variableInfoFindings.next([{
+        origin: {
+          info: { id: 'btn1', alias: 'Btn1' } as VariableInfo,
+          location: {
+            pageIndex: 0, sectionIndex: 0, element: selectedElement, navigationElement: selectedElement
+          },
+          property: 'alias'
+        },
+        issues: [{
+          index: 0, part: 'alias', value: 'Btn1', code: 'DUPLICATE_ALIAS'
+        }],
+        isCorrectable: true
+      }]);
+      fixture.detectChanges();
+
+      expect(hint()?.textContent).toContain('variableInfoFindings.code.DUPLICATE_ALIAS');
+    });
   });
 
   /* #1147: the button and the trigger have different action vocabularies, and a mixed selection

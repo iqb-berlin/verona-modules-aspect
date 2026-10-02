@@ -115,12 +115,28 @@ export class OptionsFieldSetComponent {
     } as LikertRowProperties);
     const columns = this.combinedProperties.options as TextImageLabel[];
 
+    /* The dialog edits a copy without an id service. The row that goes into the list is the one created here, and
+       what the author typed goes in through `setProperty` -- the alias like any other, checked and registered. The
+       copy went in before: its alias was neither checked nor registered, the generated one stayed registered, and
+       the row could not register or release anything afterwards (#1507). */
     this.dialogService.showLikertRowEditDialog(newRow, columns)
       .subscribe((result: LikertRowElement) => {
-        if (result) {
-          (this.combinedProperties.rows as LikertRowElement[]).push(result);
-          this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
+        if (!result) {
+          newRow.unregisterIDs();
+          return;
         }
+        try {
+          if (result.alias !== newRow.alias) newRow.setProperty('alias', result.alias);
+        } catch (error) {
+          newRow.unregisterIDs();
+          throw error;
+        }
+        newRow.setProperty('rowLabel', result.rowLabel);
+        newRow.setProperty('value', result.value);
+        newRow.setProperty('verticalButtonAlignment', result.verticalButtonAlignment);
+        newRow.setProperty('readOnly', result.readOnly);
+        (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
+        this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
       });
   }
 

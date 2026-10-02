@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
@@ -10,7 +9,6 @@ import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/utils/section-counter';
-import { VariableAlias } from 'common/utils/variable-alias';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import { MigrationManager } from 'common/services/migration-manager';
 import { EditorPage } from 'editor/src/app/models/editor-page';
@@ -19,6 +17,9 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import { VariableInfoOrigin, VariableInfoOrigins } from 'editor/src/app/utils/variable-info-origins';
+import { VariableInfoIssue, VariableInfoValidator } from 'editor/src/app/utils/variable-info-validator';
+import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
 
 /**
  * Holds the unit the editor is working on, and is the only place it is replaced.
@@ -45,6 +46,8 @@ export class UnitService {
   tetfolioElementPropertyUpdated: Subject<string> = new Subject<string>();
   sectionCountUpdated: Subject<void> = new Subject<void>();
   pageOrderChanged: Subject<void> = new Subject<void>();
+  /** The variables of the unit that break the Verona contract, renewed whenever the unit is reported (#1129). */
+  variableInfoFindings = new BehaviorSubject<VariableInfoFinding[]>([]);
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
   allowExpertMode: boolean = true;
@@ -109,12 +112,14 @@ export class UnitService {
        * Of what loadUnit does beyond these resets, nothing fits here. An empty unit has no references
        * to repair and no variable infos to validate, and reRegisterAll would find neither a state
        * variable nor an element to register. updateUnitDefinition is left out on purpose: it reports
-       * the unit to the host as changed, and a discard must not hand back a fresh change at once. */
+       * the unit to the host as changed, and a discard must not hand back a fresh change at once.
+       * The findings are renewed all the same, or those of the unit just left would stay on display. */
       this.idService.reset();
       this.selectionService.reset();
       this.unit = new EditorUnit(undefined, this.idService);
       this.referenceManager = new ReferenceManager(this.unit);
       this.updateSectionCounter();
+      this.refreshVariableInfoFindings();
       this.unitReplaced.next();
     }
   }
@@ -140,37 +145,39 @@ export class UnitService {
       this.updateUnitDefinition();
     }
     this.updateSectionCounter();
-    this.checkForInvalidVariableInfos();
+    /* Units stored before #1043 can carry identifiers the contract forbids. The author is shown where, once per
+       load and only for what can be fixed in the editor; the rest stays reachable through the indicator. */
+    const findings = this.refreshVariableInfoFindings();
+    if (findings.some(finding => finding.isCorrectable)) this.dialogService.showVariableInfoFindingsDialog();
   }
 
-  /** Invalid ids/aliases can come in via imported unit definitions. They are not reported
-     to the host (see getValidVariableInfos), therefore the user gets notified. (#1043) */
-  private checkForInvalidVariableInfos(): void {
-    const invalidVariableInfos = this.unit.getVariableInfos()
-      .filter(variableInfo => !UnitService.isReportableVariableInfo(variableInfo));
-    if (invalidVariableInfos.length > 0) {
-      this.messageService.showPrompt(
-        this.translateService.instant(
-          'invalidVariableAliases',
-          { aliases: invalidVariableInfos.map(v => v.alias ?? v.id).join(', ') }));
-    }
-  }
-
+  /**
+   * Reports the unit to the host together with its variables -- all of them, or none while the author still has
+   * something to correct. A partial list is worse than none: the host stores it, and studio drops the codings and
+   * the metadata of every variable missing from it. Sent without a list, studio keeps the one it has (#1129).
+   */
   updateUnitDefinition(): void {
+    const origins = VariableInfoOrigins.collect(this.unit);
+    const findings = this.refreshVariableInfoFindings(origins);
     this.veronaApiService.sendChanged(
       UnitService.createUnitDefinition(this.unit),
       `${this.unit.type}@${this.unit.version}`,
-      this.getValidVariableInfos());
+      findings.some(finding => finding.isCorrectable) ? undefined : origins.map(origin => origin.info));
   }
 
-  private getValidVariableInfos(): VariableInfo[] {
-    return this.unit.getVariableInfos()
-      .filter(variableInfo => UnitService.isReportableVariableInfo(variableInfo));
-  }
-
-  private static isReportableVariableInfo(variableInfo: VariableInfo): boolean {
-    return VariableAlias.isValid(variableInfo.id) &&
-      (variableInfo.alias === undefined || VariableAlias.isValid(variableInfo.alias));
+  private refreshVariableInfoFindings(
+    origins: VariableInfoOrigin[] = VariableInfoOrigins.collect(this.unit)
+  ): VariableInfoFinding[] {
+    const issuesByIndex = new Map<number, VariableInfoIssue[]>();
+    VariableInfoValidator.validate(origins.map(origin => origin.info))
+      .forEach(issue => issuesByIndex.set(issue.index, [...(issuesByIndex.get(issue.index) ?? []), issue]));
+    const findings = [...issuesByIndex.entries()]
+      .sort(([indexA], [indexB]) => indexA - indexB)
+      .map(([index, issues]) => ({
+        origin: origins[index], issues, isCorrectable: issues.some(issue => issue.part === 'alias')
+      }));
+    this.variableInfoFindings.next(findings);
+    return findings;
   }
 
   private static createUnitDefinition(unit: Unit): string {
@@ -196,6 +203,19 @@ export class UnitService {
     this.unit.stateVariables = stateVariables;
     this.reRegisterAll();
     this.updateUnitDefinition();
+  }
+
+  /** Opens the state variables for editing. A cancelled dialog may have registered aliases on the way, which
+      re-registering takes back. */
+  editStateVariables(): void {
+    this.dialogService.showStateVariablesDialog(this.unit.stateVariables)
+      .subscribe(stateVariables => {
+        if (stateVariables) {
+          this.updateStateVariables(stateVariables);
+        } else {
+          this.reRegisterAll();
+        }
+      });
   }
 
   reRegisterAll(): void {

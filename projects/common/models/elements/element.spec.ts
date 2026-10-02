@@ -39,6 +39,25 @@ describe('UIElement setProperty alias validation', () => {
     expect(() => element.setProperty('alias', 'weiter ')).toThrowError(/Leerzeichen/);
   });
 
+  /* The registry compares regardless of letter case, so it has to know which name is the element's own:
+     otherwise `text_1` could not become `Text_1` (#1129). */
+  it('should ask for availability leaving out the alias the element holds', () => {
+    const isAliasAvailable = vi.fn(() => true);
+    element.idService = { ...idServiceStub, isAliasAvailable };
+
+    element.setProperty('alias', 'Text_1');
+
+    expect(isAliasAvailable).toHaveBeenCalledWith('Text_1', 'text_1');
+    expect(element.alias).toBe('Text_1');
+  });
+
+  it('should reject an alias the registry does not consider free', () => {
+    element.idService = { ...idServiceStub, isAliasAvailable: () => false };
+
+    expect(() => element.setProperty('alias', 'Wert')).toThrowError(/bereits vergeben/);
+    expect(element.alias).toBe('text_1');
+  });
+
   /* The Verona contract sets no maximum length, therefore neither does Aspect (#1129). */
   it('should accept aliases longer than 20 characters', () => {
     const longAlias = 'a'.repeat(21);

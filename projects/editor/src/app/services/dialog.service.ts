@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ClozeDocument } from 'common/models/elements/cloze';
 import { LikertRowElement } from 'common/models/elements/likert-row';
@@ -27,6 +27,9 @@ import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { StateVariable } from 'common/models/state-variable';
+import {
+  VariableInfoFindingsDialogComponent
+} from 'editor/src/app/components/dialogs/variable-info-findings-dialog/variable-info-findings-dialog.component';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -77,6 +80,8 @@ import { EditorSection } from 'editor/src/app/models/editor-section';
   providedIn: 'root'
 })
 export class DialogService {
+  private variableInfoFindingsDialog: MatDialogRef<VariableInfoFindingsDialogComponent> | undefined;
+
   constructor(private dialog: MatDialog,
               private messageService: MessageService,
               private translateService: TranslateService) { }
@@ -272,6 +277,19 @@ export class DialogService {
         autoFocus: false
       });
     return dialogRef.afterClosed();
+  }
+
+  /** Opens the validation area, unless it is open already: it follows the findings, so a second one would only
+      show the same (#1129). */
+  showVariableInfoFindingsDialog(): void {
+    if (this.variableInfoFindingsDialog) return;
+    this.variableInfoFindingsDialog = this.dialog.open(VariableInfoFindingsDialogComponent, {
+      autoFocus: false,
+      maxWidth: '90vw'
+    });
+    this.variableInfoFindingsDialog.afterClosed().subscribe(() => {
+      this.variableInfoFindingsDialog = undefined;
+    });
   }
 
   showStateVariablesDialog(stateVariables: StateVariable[]): Observable<StateVariable[]> {

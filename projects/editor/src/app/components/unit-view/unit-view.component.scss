@@ -8,6 +8,15 @@
   box-shadow: -2px -5px 5px gray;
 }
 
+.variable-info-findings-icon,
+.variable-info-findings-count {
+  color: var(--mat-sys-error, #ba1a1a);
+}
+
+.variable-info-findings-count {
+  font-weight: bold;
+}
+
 .drawer-button {
   font-size: large;
   background-color: lightgray;

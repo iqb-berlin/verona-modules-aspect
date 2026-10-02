@@ -100,7 +100,7 @@ export class DropListElement extends InputElement implements DropListProperties 
 
   updateValueObject(valueIndex: number, value: DragNDropValueObject): void {
     if (value.alias !== this.value[valueIndex].alias) {
-      if (!this.idService?.isAliasAvailable(value.alias)) {
+      if (!this.idService?.isAliasAvailable(value.alias, this.value[valueIndex].alias)) {
         throw new IDError('ID ist bereits vergeben');
       }
       if (!VariableAlias.isValid(value.alias)) {
@@ -165,6 +165,14 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.idService?.register(val.id, true, false);
       this.idService?.register(val.alias, false, true);
     });
+  }
+
+  /** The values' ids belong to the list, so registering it registers them too. The constructor does so as well,
+      but `UnitService.reRegisterAll` empties the registry first and then asks only this method: without the
+      values here, every load left them unregistered, and a new option could get an alias already taken (#1506). */
+  registerIDs(): void {
+    super.registerIDs();
+    this.registerValueIDs();
   }
 
   unregisterIDs(): void {

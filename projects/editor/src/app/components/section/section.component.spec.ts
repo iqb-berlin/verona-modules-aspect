@@ -2,7 +2,9 @@
 import {
   Component, EventEmitter, Input, Output, QueryList
 } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { UIElement } from 'common/models/elements/element';
@@ -260,5 +262,49 @@ describe('SectionComponent', () => {
 
       expect(() => component.removeHighlight()).not.toThrow();
     });
+
+    /* The validation area asks for an element by its id (#1129). */
+    it('should select, reveal and settle a request for an element it renders', fakeAsync(() => {
+      const scrollIntoView = vi.fn();
+      Object.assign(overlay, { childComponent: { location: { nativeElement: { scrollIntoView } } } });
+      const selectElement = vi.spyOn(selectionService, 'selectElement');
+
+      selectionService.requestElement(0, 0, 'text_1');
+      selectionService.selectPage(0); // what the tab group reports after turning, which resets the section
+      selectionService.selectedSectionIndex = 3;
+      tick();
+
+      expect(selectElement).toHaveBeenCalledWith({ elementComponent: overlay, multiSelect: false });
+      expect(selectionService.selectedPageIndex).toBe(component.pageIndex);
+      expect(selectionService.selectedSectionIndex).toBe(component.sectionIndex);
+      expect(scrollIntoView).toHaveBeenCalled();
+      expect(overlay.highlight).toHaveBeenCalled();
+      expect(selectionService.requestedElementID.value).toBeNull();
+    }));
+
+    it('should leave a request for an element it does not render to the section that does', fakeAsync(() => {
+      const selectElement = vi.spyOn(selectionService, 'selectElement');
+
+      selectionService.requestElement(1, 0, 'text_9');
+      tick();
+
+      expect(selectElement).not.toHaveBeenCalled();
+      expect(selectionService.requestedElementID.value).toBe('text_9');
+    }));
+
+    /* In the tabbed view the section of another page is rendered only after the request turned to it. */
+    it('should take a request that was made before it was rendered', fakeAsync(() => {
+      const selectElement = vi.spyOn(selectionService, 'selectElement');
+      component.ngOnDestroy();
+      selectionService.requestElement(0, 0, 'text_1');
+      tick();
+      expect(selectElement).not.toHaveBeenCalled();
+
+      // What a section rendered only now does once its overlays exist.
+      component.ngAfterViewInit();
+      tick();
+
+      expect(selectElement).toHaveBeenCalledWith({ elementComponent: overlay, multiSelect: false });
+    }));
   });
 });

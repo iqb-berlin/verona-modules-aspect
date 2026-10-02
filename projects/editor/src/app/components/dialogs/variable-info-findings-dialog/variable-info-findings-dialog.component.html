@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>{{ 'variableInfoFindings.title' | translate }}</h2>
+<mat-dialog-content>
+  <p class="findings-explanation">{{ 'variableInfoFindings.explanation' | translate }}</p>
+  @if (hasGeometryFinding) {
+    <p class="findings-explanation">{{ 'variableInfoFindings.geometryHint' | translate }}</p>
+  }
+  @if (rows.length === 0) {
+    <p class="findings-explanation">{{ 'variableInfoFindings.none' | translate }}</p>
+  } @else {
+    <table class="findings-table">
+      <thead>
+        <tr>
+          <th class="findings-cell">{{ 'variableInfoFindings.column.location' | translate }}</th>
+          <th class="findings-cell">{{ 'variableInfoFindings.column.element' | translate }}</th>
+          <th class="findings-cell">{{ 'variableInfoFindings.column.property' | translate }}</th>
+          <th class="findings-cell">{{ 'variableInfoFindings.column.value' | translate }}</th>
+          <th class="findings-cell">{{ 'variableInfoFindings.column.reason' | translate }}</th>
+          <th class="findings-cell"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows; track row.finding.origin) {
+          <tr class="finding-row" [class.finding-row-uncorrectable]="!row.finding.isCorrectable">
+            @if (row.finding.origin.location; as location) {
+              <td class="findings-cell">{{ 'variableInfoFindings.location' | translate:
+                     { page: location.pageIndex + 1, section: location.sectionIndex + 1 } }}</td>
+              <td class="findings-cell">
+                {{ 'toolbox.' + location.element.type | translate }} <i>{{ location.element.alias }}</i>
+              </td>
+            } @else {
+              <td class="findings-cell">{{ 'stateVariables' | translate }}</td>
+              <td class="findings-cell">
+                {{ 'stateVariable' | translate }} <i>{{ row.finding.origin.stateVariable?.alias }}</i>
+              </td>
+            }
+            <td class="findings-cell">{{ row.propertyLabelKey | translate }}</td>
+            <td class="findings-cell finding-value">{{ row.value }}</td>
+            <td class="findings-cell">
+              @for (code of row.codes; track code) {
+                <div>{{ 'variableInfoFindings.code.' + code | translate }}</div>
+              }
+              @if (!row.finding.isCorrectable) {
+                <div class="finding-uncorrectable-hint">{{ 'variableInfoFindings.uncorrectable' | translate }}</div>
+              }
+            </td>
+            <td class="findings-cell">
+              @if (row.finding.origin.location; as location) {
+                <button mat-stroked-button class="finding-action" (click)="goToElement(location)">
+                  {{ 'variableInfoFindings.goToElement' | translate }}
+                </button>
+              } @else {
+                <button mat-stroked-button class="finding-action" (click)="editStateVariables()">
+                  {{ 'variableInfoFindings.editStateVariables' | translate }}
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>{{ 'close' | translate }}</button>
+</mat-dialog-actions>

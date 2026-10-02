@@ -1,6 +1,8 @@
 import {
-  Component, EventEmitter, Input, Output, QueryList, ViewChildren
+  AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChildren
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -20,7 +22,10 @@ import { EditorSection } from 'editor/src/app/models/editor-section';
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss']
 })
-export class SectionComponent {
+export class SectionComponent implements AfterViewInit, OnDestroy {
+  /** How long a revealed element keeps its highlight, in milliseconds. */
+  private static readonly REVEAL_HIGHLIGHT_DURATION = 2000;
+
   @Input() section!: EditorSection;
   @Input() sectionIndex!: number;
   @Input() lastSectionIndex!: number;
@@ -34,11 +39,45 @@ export class SectionComponent {
 
   sectionCounter: number | undefined;
   highlightedElementComponent: ElementOverlay | undefined;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
               public elementService: ElementService,
               public sectionService: SectionService) { }
+
+  /**
+   * Takes an element request once the overlays exist. Subscribing only now is what lets the tabbed view work: a
+   * page shown for the request renders this section after the request was made, and the subject hands it over.
+   */
+  ngAfterViewInit(): void {
+    this.selectionService.requestedElementID
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(elementID => {
+        if (elementID && this.getElementOverlay(elementID)) {
+          // Selecting changes what the rest of the editor displays, which may not happen during this check.
+          setTimeout(() => this.revealElement(elementID));
+        }
+      });
+  }
+
+  /** Selects the element, scrolls it into view and flashes its outline, for an author who arrives from elsewhere. */
+  private revealElement(elementID: string): void {
+    const elementComponent = this.getElementOverlay(elementID);
+    if (!elementComponent || this.selectionService.requestedElementID.value !== elementID) return;
+    this.selectionService.requestedElementID.next(null);
+    /* As a click does (#1204): the tab group reports the page it turned to through `selectPage`, which puts the
+       section back to the first one. */
+    this.selectionService.updateSelection(this.pageIndex, this.sectionIndex);
+    this.selectionService.selectElement({ elementComponent, multiSelect: false });
+    elementComponent.childComponent?.location.nativeElement.scrollIntoView({ block: 'center' });
+    elementComponent.highlight(SectionComponent.REVEAL_HIGHLIGHT_DURATION);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   updateSectionCounter(): void {
     this.sectionCounter = undefined;

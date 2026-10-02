@@ -20,7 +20,7 @@ export class IDEditDialogComponent {
   checkAvailability(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.value === this.data.alias) return null;
-      const isAvailable = this.idService.isAliasAvailable(control.value);
+      const isAvailable = this.idService.isAliasAvailable(control.value, this.data.alias);
       return isAvailable ? null : { idTaken: { value: control.value } };
     };
   }

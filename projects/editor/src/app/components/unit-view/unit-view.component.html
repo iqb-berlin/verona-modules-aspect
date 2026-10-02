@@ -15,7 +15,7 @@
       <mat-tab-group *ngIf="pagesLoaded"
                      preserveContent="true"
                      [style.height.%]="100" mat-align-tabs="start" mat-stretch-tabs="false"
-                     [selectedIndex]="showPagesAsList ? 0 : selectionService.selectedPageIndex"
+                     [selectedIndex]="showPagesAsList ? listTabIndex : selectionService.selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)"
                      (animationDone)="pageChangeService.pageChanged.emit()">
         <ng-container *ngIf="!showPagesAsList">
@@ -128,6 +128,14 @@
 
         <mat-tab [disabled]="true" class="align-right">
           <ng-template mat-tab-label>
+            @if ((unitService.variableInfoFindings | async)?.length; as findingsCount) {
+              <button mat-button class="variable-info-findings-button"
+                      [matTooltip]="'variableInfoFindings.indicator' | translate"
+                      (click)="showVariableInfoFindings()">
+                <mat-icon class="variable-info-findings-icon">warning</mat-icon>
+                <span class="variable-info-findings-count">{{ findingsCount }}</span>
+              </button>
+            }
             <button mat-icon-button [matMenuTriggerFor]="numberingMenu" #menuTrigger="matMenuTrigger">
               <mat-icon>settings</mat-icon>
             </button>

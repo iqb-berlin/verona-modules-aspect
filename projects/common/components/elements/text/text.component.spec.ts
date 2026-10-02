@@ -127,4 +127,44 @@ describe('TextComponent', () => {
     component.markingRange?.next({ first: 1, second: 5 });
     expect(component.showHint).toBe(false);
   });
+
+  describe('images in the text', () => {
+    const createImageSource = (width: number, height: number): string => {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      return canvas.toDataURL();
+    };
+
+    const renderImageInElementOf100px = async (img: string): Promise<HTMLImageElement> => {
+      fixture.nativeElement.style.display = 'block';
+      fixture.nativeElement.style.width = '100px';
+      component.elementModel = createTextElement({ text: `<p>${img}</p>` });
+      fixture.detectChanges();
+      const image: HTMLImageElement = fixture.nativeElement.querySelector('.text-container img');
+      await image.decode();
+      return image;
+    };
+
+    it('should shrink an image wider than the element to its width and keep the aspect ratio', async () => {
+      const image = await renderImageInElementOf100px(`<img src="${createImageSource(400, 200)}">`);
+      expect(image.getBoundingClientRect().width).toBe(100);
+      expect(image.getBoundingClientRect().height).toBe(50);
+    });
+
+    it('should leave an image narrower than the element at its own size', async () => {
+      const image = await renderImageInElementOf100px(`<img src="${createImageSource(60, 30)}">`);
+      expect(image.getBoundingClientRect().width).toBe(60);
+      expect(image.getBoundingClientRect().height).toBe(30);
+    });
+
+    it('should shrink a floating image so that it fits into the element together with its margin', async () => {
+      const image = await renderImageInElementOf100px(
+        `<img src="${createImageSource(400, 200)}" style="float: right; margin-left: 10px;">`
+      );
+      const container: HTMLElement = fixture.nativeElement.querySelector('.text-container');
+      expect(image.getBoundingClientRect().width).toBe(90);
+      expect(image.getBoundingClientRect().left - 10).toBe(container.getBoundingClientRect().left);
+    });
+  });
 });

@@ -582,6 +582,7 @@ export const ELEMENT_DEFAULTS = {
     showZoomButtons: false,
     showFullscreenButton: false,
     showAlgebraInput: false,
+    recomputedCountsAsChanged: false,
     customToolbar: '',
     trackedVariables: [],
     trackedExpectedVariables: [],

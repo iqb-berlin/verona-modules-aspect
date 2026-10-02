@@ -24,6 +24,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   showZoomButtons: boolean = ELEMENT_DEFAULTS.geometry.showZoomButtons;
   showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton;
   showAlgebraInput: boolean = ELEMENT_DEFAULTS.geometry.showAlgebraInput;
+  recomputedCountsAsChanged: boolean = ELEMENT_DEFAULTS.geometry.recomputedCountsAsChanged;
   customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar;
   fileName: string = ELEMENT_DEFAULTS.geometry.fileName;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
@@ -58,6 +59,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       this.showZoomButtons = element.showZoomButtons;
       this.showFullscreenButton = element.showFullscreenButton;
       this.showAlgebraInput = element.showAlgebraInput;
+      this.recomputedCountsAsChanged = element.recomputedCountsAsChanged;
       this.customToolbar = element.customToolbar;
       this.fileName = element.fileName;
       this.position = { ...element.position };
@@ -156,6 +158,11 @@ export interface GeometryProperties extends UIElementProperties, FileNamePropert
   /** GeoGebra's input bar. Where it appears, in the algebra view or below the drawing, is set by the
    * GeoGebra file itself. */
   showAlgebraInput: boolean;
+  /** Whether a tracked variable becomes `VALUE_CHANGED` as soon as GeoGebra recomputes it after an
+   * interaction, even if its value stays the same. Off, a variable only changes status when its value
+   * does -- which leaves an untouched `false` and a wrongly answered `false` alike. A file that marks the
+   * untouched state with a value of its own (0 untouched, 1 right, 2 wrong) needs no switch (#1460). */
+  recomputedCountsAsChanged: boolean;
   customToolbar: string;
   position: PositionProperties;
   dimensions: {

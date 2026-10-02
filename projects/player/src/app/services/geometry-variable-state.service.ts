@@ -37,7 +37,8 @@ export class GeometryVariableStateService extends ElementCodeService {
    * Like the base method, but a value equal to the one already held changes nothing and announces
    * nothing -- an applet reports on every interaction, including those that leave its variables where
    * they were, such as zooming. The exception is a variable GeoGebra recomputed (`wasUpdated`): it has
-   * been worked on even if the answer came out as before, and becomes `VALUE_CHANGED` once.
+   * been worked on even if the answer came out as before, and becomes `VALUE_CHANGED` once. The
+   * element reports that only with `recomputedCountsAsChanged` switched on.
    */
   override changeElementCodeValue(
     elementValue: { id: string, value: ResponseValueType, wasUpdated?: boolean }

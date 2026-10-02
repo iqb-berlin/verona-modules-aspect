@@ -176,7 +176,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       .map(variable => ({
         id: variable.id,
         value: this.getVariableValue(variable.id),
-        wasUpdated: this.updatedObjectNames.has(variable.id)
+        wasUpdated: this.elementModel.recomputedCountsAsChanged && this.updatedObjectNames.has(variable.id)
       }));
   }
 

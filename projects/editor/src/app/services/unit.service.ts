@@ -8,6 +8,7 @@ import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
+import { Page } from 'common/models/page';
 import { SectionCounter } from 'common/utils/section-counter';
 import { ReferenceHolder, ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import { MigrationManager } from 'common/services/migration-manager';
@@ -414,7 +415,7 @@ export class UnitService {
     sectionsToMove.forEach(section => newPage.addSection(section));
     newPage.deleteSection(0);
 
-    this.unit.pages.splice(pageIndex + 1, 0, newPage);
+    this.keepPageNavigation(() => this.unit.pages.splice(pageIndex + 1, 0, newPage));
     this.selectionService.selectedPageIndex = pageIndex + 1;
     this.selectionService.selectedSectionIndex = 0;
     this.updateUnitDefinition();
@@ -431,7 +432,22 @@ export class UnitService {
     sectionsToMove.forEach(section => this.unit.pages[pageIndex - 1].addSection(section));
     this.selectionService.selectedPageIndex = pageIndex - 1;
     this.selectionService.selectedSectionIndex = this.unit.pages[pageIndex - 1].sections.length - sectionsToMove.length;
-    this.unit.deletePage(pageIndex);
+    this.keepPageNavigation(
+      () => this.unit.deletePage(pageIndex),
+      new Map([[this.unit.pages[pageIndex], this.unit.pages[pageIndex - 1]]])
+    );
     this.updateUnitDefinition();
+  }
+
+  /**
+   * Runs a step that adds, removes or reorders pages so that every navigation button still leads to the page it
+   * led to before: a button stores a page number, and the step renumbers the pages (#1511). `mergedInto` is for a
+   * step that hands a page's content to another page and removes it.
+   */
+  keepPageNavigation(operation: () => void, mergedInto?: Map<Page, Page>): void {
+    const targets = this.referenceManager.capturePageTargets();
+    operation();
+    // Not every step drops the element selection, so a selected button would still show its old target.
+    if (this.referenceManager.restorePageTargets(targets, mergedInto)) this.elementPropertyUpdated.next();
   }
 }

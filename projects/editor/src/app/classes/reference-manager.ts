@@ -7,6 +7,8 @@ import { TextElement } from 'common/models/elements/text';
 import { TriggerElement } from 'common/models/elements/trigger';
 import { StateVariable } from 'common/models/state-variable';
 import { EditorPage } from 'editor/src/app/models/editor-page';
+import { Page } from 'common/models/page';
+import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 
 /** What can hold a reference: an element, or a section through its visibility rules. */
 export type Referrer = UIElement | Section;
@@ -205,27 +207,82 @@ export class ReferenceManager {
     return { repaired: [...repaired], toCheck };
   }
 
+  /**
+   * Counted as the player counts them: a number that names no scroll page -- beyond the last one, negative or not
+   * whole -- is no target (#1511).
+   */
   private repairInvalidPageRefs(): ButtonElement[] {
-    const pageCount = this.unit.pages.length;
-    const invalid = (this.unit.getAllElements('button') as ButtonElement[])
-      .filter(button => button.action === 'pageNav' && typeof button.actionParam === 'number' &&
-        button.actionParam + 1 > pageCount);
+    const pages = ReferenceManager.scrollPages(this.unit);
+    const invalid = this.getPageNavigationButtons()
+      .filter(button => pages[button.actionParam as number] === undefined);
     invalid.forEach(button => { button.actionParam = null; });
     return invalid;
   }
 
+  /**
+   * The pages a navigation button can lead to, which is what its number counts: all but a permanently visible page,
+   * by the rule the player navigates with (#1511).
+   */
+  static scrollPages(unit: Unit): Page[] {
+    return new ScrollPagesPipe().transform(unit.pages);
+  }
+
+  /**
+   * Which page each navigation button leads to, as the page itself rather than its number. Deleting, moving,
+   * inserting or merging pages renumbers them while the buttons keep their numbers; taken before such a step and
+   * handed to `restorePageTargets` after it, every button leads to the same page as before (#1511).
+   */
+  capturePageTargets(): Map<ButtonElement, Page> {
+    const pages = ReferenceManager.scrollPages(this.unit);
+    return new Map(this.getPageNavigationButtons()
+      .filter(button => pages[button.actionParam as number] !== undefined)
+      .map(button => [button, pages[button.actionParam as number]]));
+  }
+
+  /**
+   * Gives each button the number its page has now. A page no longer among the scroll pages -- deleted, or made
+   * permanently visible and so always in view -- leaves the button without a target. `mergedInto` names, for a page
+   * whose sections went to another page, where its content is now; when that is the page the button stands on, it
+   * has nowhere left to lead either.
+   *
+   * Returns whether any button changed, so the caller knows whether a panel showing one has to be refreshed.
+   */
+  restorePageTargets(captured: Map<ButtonElement, Page>, mergedInto: Map<Page, Page> = new Map()): boolean {
+    const pages = ReferenceManager.scrollPages(this.unit);
+    let changed = false;
+    captured.forEach((page, button) => {
+      const target = mergedInto.get(page) ?? page;
+      const index = target.getAllElements('button').includes(button) ? -1 : pages.indexOf(target);
+      const actionParam = index >= 0 ? index : null;
+      if (button.actionParam !== actionParam) changed = true;
+      button.actionParam = actionParam;
+    });
+    return changed;
+  }
+
+  private getPageNavigationButtons(): ButtonElement[] {
+    return (this.unit.getAllElements('button') as ButtonElement[])
+      .filter(button => button.action === 'pageNav' && typeof button.actionParam === 'number');
+  }
+
+  /**
+   * Buttons elsewhere that lead to the page at `pageIndex` in `unit.pages`. A button counts scroll pages only, so
+   * the index is translated first; compared as it was, with a permanently visible page in front every button was
+   * matched against the page after the deleted one (#1511). That page itself is no button's target.
+   */
   getButtonReferencesForPage(pageIndex: number): ReferenceList[] {
     const page = this.unit.pages[pageIndex];
-    const allButtons = this.unit.getAllElements('button') as ButtonElement[];
+    const scrollIndex = ReferenceManager.scrollPages(this.unit).indexOf(page);
+    if (scrollIndex < 0) return [];
     const pageButtonIDs = (page.getAllElements('button') as ButtonElement[])
       .map(pageButton => pageButton.id);
-    const refs = allButtons
-      .filter(button => button.action === 'pageNav' && button.actionParam === pageIndex)
+    const refs = this.getPageNavigationButtons()
+      .filter(button => button.actionParam === scrollIndex)
       .filter(button => !pageButtonIDs.includes(button.id));
     if (refs.length > 0) {
       return [{
         element: {
-          alias: `Seite ${pageIndex + 1}`,
+          alias: `Seite ${scrollIndex + 1}`,
           type: 'page'
         },
         refs: refs

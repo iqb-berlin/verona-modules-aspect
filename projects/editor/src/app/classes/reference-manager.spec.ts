@@ -360,4 +360,162 @@ describe('ReferenceManager', () => {
       });
     });
   });
+
+  /* A navigation button stores the number of a page among those it can lead to, which leaves out a permanently
+     visible page. Each step on the pages renumbers them, and the button has to keep leading to its page (#1511). */
+  describe('the page numbers of navigation buttons', () => {
+    const idService = {
+      getAndRegisterNewID: (idType: string): string => `${idType}_generated`,
+      register: (): void => {},
+      unregister: (): void => {}
+    } as unknown as AbstractIDService;
+
+    let unit: EditorUnit;
+    let refMan: ReferenceManager;
+    let pages: EditorPage[];
+
+    /** A button on the first page that leads to the page numbered `target`. */
+    const navigateTo = (target: number): ButtonElement => {
+      const button = ElementFactory.createElement({
+        type: 'button', id: `button_${target}`, alias: `button_${target}`, action: 'pageNav', actionParam: target
+      } as unknown as UIElementProperties, idService) as ButtonElement;
+      unit.pages[0].sections[0].elements.push(button as unknown as PositionedUIElement);
+      return button;
+    };
+
+    /** Runs a step on the pages between taking the targets and writing them back, as `UnitService` does. */
+    const keepingTargets = (operation: () => void, mergedInto?: Map<EditorPage, EditorPage>): void => {
+      const targets = refMan.capturePageTargets();
+      operation();
+      refMan.restorePageTargets(targets, mergedInto);
+    };
+
+    beforeEach(() => {
+      unit = new EditorUnit(undefined, idService);
+      pages = [0, 1, 2].map(() => new EditorPage(undefined, idService));
+      unit.pages = [...pages];
+      refMan = new ReferenceManager(unit);
+    });
+
+    it('should follow its page when a page before it is deleted', () => {
+      const button = navigateTo(2);
+
+      keepingTargets(() => unit.pages.splice(1, 1));
+
+      expect(button.actionParam).toBe(1);
+    });
+
+    it('should lose its target when its page is deleted', () => {
+      const button = navigateTo(2);
+      const before = navigateTo(1);
+
+      keepingTargets(() => unit.pages.splice(2, 1));
+
+      expect(button.actionParam).toBeNull();
+      expect(before.actionParam).toBe(1);
+    });
+
+    it('should follow its page when the pages are reordered', () => {
+      const button = navigateTo(1);
+
+      keepingTargets(() => unit.pages.push(unit.pages.splice(1, 1)[0]));
+
+      expect(button.actionParam).toBe(2);
+    });
+
+    it('should follow its page when a page is inserted before it', () => {
+      const button = navigateTo(1);
+
+      keepingTargets(() => unit.pages.splice(1, 0, new EditorPage(undefined, idService)));
+
+      expect(button.actionParam).toBe(2);
+    });
+
+    it('should lead to the page that took over the content of its page', () => {
+      const button = navigateTo(2);
+      const after = new EditorPage(undefined, idService);
+      unit.pages.push(after);
+      const afterButton = navigateTo(3);
+
+      keepingTargets(() => unit.pages.splice(2, 1), new Map([[pages[2], pages[1]]]));
+
+      expect(button.actionParam).toBe(1);
+      expect(afterButton.actionParam).toBe(2);
+    });
+
+    /* Its page went into the page the button stands on. A button cannot lead to its own page: the panel offers no
+       such option, and in the player it would do nothing. */
+    it('should lose its target when its page goes into the page it stands on', () => {
+      const button = navigateTo(1);
+
+      keepingTargets(() => unit.pages.splice(1, 1), new Map([[pages[1], pages[0]]]));
+
+      expect(button.actionParam).toBeNull();
+    });
+
+    it('should say whether any button changed', () => {
+      const button = navigateTo(2);
+      const targets = refMan.capturePageTargets();
+
+      expect(refMan.restorePageTargets(targets)).toBe(false);
+      unit.pages.splice(1, 1);
+      expect(refMan.restorePageTargets(targets)).toBe(true);
+      expect(button.actionParam).toBe(1);
+    });
+
+    /* Made permanently visible, a page moves to the front and is no longer counted. It is always in view then, so
+       there is nothing left to navigate to. */
+    it('should be renumbered when a page becomes permanently visible', () => {
+      const button = navigateTo(2);
+      const madeVisible = navigateTo(1);
+
+      keepingTargets(() => {
+        unit.movePageToFront(1);
+        pages[1].alwaysVisible = true;
+      });
+
+      expect(button.actionParam).toBe(1);
+      expect(madeVisible.actionParam).toBeNull();
+    });
+
+    it('should be renumbered when the permanently visible page becomes a page like the others', () => {
+      pages[0].alwaysVisible = true;
+      const button = navigateTo(1);
+
+      keepingTargets(() => { pages[0].alwaysVisible = false; });
+
+      expect(button.actionParam).toBe(2);
+    });
+
+    /* Compared with the position in `unit.pages`, a permanently visible page in front shifted every number by
+       one: deleting a page reported the buttons that lead to the page after it. */
+    it('should report the buttons that lead to a page, counting as the buttons count', () => {
+      pages[0].alwaysVisible = true;
+      const button = navigateTo(1);
+
+      expect(refMan.getButtonReferencesForPage(2)[0].refs).toEqual([button]);
+      expect(refMan.getButtonReferencesForPage(2)[0].element.alias).toBe('Seite 2');
+      expect(refMan.getButtonReferencesForPage(1)).toEqual([]);
+      expect(refMan.getButtonReferencesForPage(0)).toEqual([]);
+    });
+
+    it('should repair a navigation beyond the last page it can lead to', () => {
+      pages[0].alwaysVisible = true;
+      const button = navigateTo(2);
+      const valid = navigateTo(1);
+
+      expect(refMan.repairInvalidReferences().repaired).toEqual([button]);
+      expect(button.actionParam).toBeNull();
+      expect(valid.actionParam).toBe(1);
+    });
+
+    it('should repair a navigation to a number that names no page at all', () => {
+      const negative = navigateTo(-1);
+      const fraction = navigateTo(0.5);
+
+      expect(refMan.repairInvalidReferences().repaired).toEqual([negative, fraction]);
+      expect(negative.actionParam).toBeNull();
+      expect(fraction.actionParam).toBeNull();
+    });
+  });
 });

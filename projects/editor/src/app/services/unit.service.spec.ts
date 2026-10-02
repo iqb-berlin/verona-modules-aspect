@@ -1021,6 +1021,101 @@ describe('UnitService - removing a page break (#1298)', () => {
   });
 });
 
+/* A navigation button stores the number of the page it leads to. The steps on pages renumber them, and the button
+   has to keep leading to the page it led to (#1511). */
+describe('UnitService - navigation buttons when pages change (#1511)', () => {
+  let service: UnitService;
+  let selectionService: SelectionService;
+  let dialogServiceSpy: SpyObj<DialogService>;
+
+  const navigationButton = (id: string, target: number): Record<string, unknown> => ({
+    type: 'button',
+    id,
+    alias: id,
+    action: 'pageNav',
+    actionParam: target,
+    position: {
+      gridColumn: 1, gridColumnRange: 1, gridRow: 1, gridRowRange: 1
+    }
+  });
+
+  /** `pageCount` pages, the first with two sections and the buttons; `alwaysVisibleFirst` makes it permanently
+      visible, so the buttons count from the second page on. */
+  const load = (pageCount: number, buttons: Record<string, unknown>[], alwaysVisibleFirst = false): void => {
+    const blueprint = createUnitBlueprint('state_1');
+    const page = JSON.parse(JSON.stringify(blueprint.pages[0]));
+    blueprint.pages[0].sections.push(JSON.parse(JSON.stringify(blueprint.pages[0].sections[0])));
+    for (let i = 1; i < pageCount; i++) blueprint.pages.push(JSON.parse(JSON.stringify(page)));
+    blueprint.pages[0].alwaysVisible = alwaysVisibleFirst;
+    blueprint.pages[0].sections[0].elements.push(...buttons as unknown as PositionedUIElement[]);
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  };
+
+  const buttonOf = (id: string): ButtonElement => service.unit.getAllElements('button')
+    .find(element => element.id === id) as ButtonElement;
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    selectionService = new SelectionService();
+    dialogServiceSpy = createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']);
+    service = new UnitService(
+      selectionService,
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      dialogServiceSpy,
+      new IDService(),
+      translateServiceSpy
+    );
+  });
+
+  it('should follow its page when a page break inserts a page before it', () => {
+    load(3, [navigationButton('button_1', 2)]);
+
+    service.moveSectionToNewpage(0, 1);
+
+    expect(buttonOf('button_1').actionParam).toBe(3);
+  });
+
+  it('should lead to the page that took over the content of its page when the page break is removed', () => {
+    load(4, [navigationButton('button_1', 2), navigationButton('button_2', 3)]);
+
+    service.collapsePage(2);
+
+    expect(buttonOf('button_1').actionParam).toBe(1);
+    expect(buttonOf('button_2').actionParam).toBe(2);
+  });
+
+  /* A page break keeps the element selection, so the panel of a selected button would still show the old page. */
+  it('should have the properties panel refreshed when a button changed, and only then', () => {
+    load(3, [navigationButton('button_1', 1)]);
+    let refreshed = 0;
+    service.elementPropertyUpdated.subscribe(() => { refreshed += 1; });
+
+    service.keepPageNavigation(() => {});
+    expect(refreshed).toBe(0);
+
+    service.moveSectionToNewpage(0, 1);
+    expect(refreshed).toBe(1);
+  });
+
+  /* The case of the ticket: with a permanently visible page in front, deleting a page asked about the buttons
+     leading to the page after it, and those of the pages behind it led one page too far afterwards. */
+  it('should ask about the buttons of the page that is deleted, and keep the others on their pages', async () => {
+    load(4, [navigationButton('button_1', 0), navigationButton('button_2', 1), navigationButton('button_3', 2)], true);
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(true));
+    selectionService.selectedPageIndex = 1;
+
+    await new PageService(service, selectionService).deletePage(1);
+
+    const refs = dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[3] as ReferenceList[];
+    expect(refs.flatMap(refList => refList.refs)).toEqual([buttonOf('button_1')]);
+    expect(buttonOf('button_1').actionParam).toBeNull();
+    expect(buttonOf('button_2').actionParam).toBe(0);
+    expect(buttonOf('button_3').actionParam).toBe(1);
+  });
+});
+
 function createUnitBlueprint(marker: string, version: string = VersionManager.getCurrentVersion()): UnitProperties {
   return {
     type: 'aspect-unit-definition',

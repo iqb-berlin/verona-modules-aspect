@@ -40,16 +40,20 @@ export class PageMenu implements OnDestroy {
   updateModel(page: EditorPage, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
     if (isInputValid && value != null) {
       if (property === 'alwaysVisible') {
-        if (value === true) {
-          this.movePageToFront(page);
-          page.alwaysVisible = true;
-          this.selectionService.selectedPageIndex = 0;
-        }
+        // A permanently visible page is not counted by navigation buttons, so the switch renumbers the others.
+        this.unitService.keepPageNavigation(() => {
+          if (value === true) {
+            this.movePageToFront(page);
+            this.selectionService.selectedPageIndex = 0;
+          }
+          page.alwaysVisible = value as boolean;
+        });
         this.unitService.updateSectionCounter();
         this.alwaysVisiblePageModified.emit();
         this.pageOrderChanged.emit();
+      } else {
+        page[property] = value;
       }
-      page[property] = value;
       this.unitService.updateUnitDefinition(); // TODO
     } else {
       this.messageService.showWarning(this.translateService.instant('inputInvalid'));

@@ -29,6 +29,10 @@ interface ReferenceKind {
   /** The ids the referrer points to through this kind. */
   targets(referrer: Referrer): string[];
   remove(referrer: Referrer, targetID: string): void;
+  /** Points the reference at a new id of the same target, when an id that breaks the contract is replaced (#1508). */
+  replace(referrer: Referrer, oldID: string, newID: string): void;
+  /** Whether the target can be of this kind's referring at all: a drop-list connects to drop-lists only. */
+  accepts(target: ReferenceHolder): boolean;
   /** The ids this kind may point to at all; anything else it holds is a reference into nothing. */
   validTargets(unit: Unit): Set<string>;
   /**
@@ -38,7 +42,12 @@ interface ReferenceKind {
   repairOnLoad: boolean;
 }
 
+/** What can be referred to by its id: an element or a state variable. */
+export type ReferenceHolder = UIElement | StateVariable;
+
 const idsOf = (elements: UIElement[]): Set<string> => new Set(elements.map(element => element.id));
+const isElementType = (target: ReferenceHolder, ...types: string[]): boolean => !(target instanceof StateVariable) &&
+  types.includes(target.type);
 const isElementOf = (referrer: Referrer, ...types: string[]): boolean => !(referrer instanceof Section) &&
   types.includes(referrer.type);
 const isStateVariableAction = (referrer: Referrer): boolean => isElementOf(referrer, 'button', 'trigger') &&
@@ -55,6 +64,11 @@ const REFERENCE_KINDS: ReferenceKind[] = [
       const dropList = referrer as DropListElement;
       dropList.connectedTo = dropList.connectedTo.filter(connectedID => connectedID !== targetID);
     },
+    replace: (referrer, oldID, newID) => {
+      const dropList = referrer as DropListElement;
+      dropList.connectedTo = dropList.connectedTo.map(connectedID => (connectedID === oldID ? newID : connectedID));
+    },
+    accepts: target => isElementType(target, 'drop-list'),
     validTargets: unit => idsOf(unit.getAllElements('drop-list')),
     repairOnLoad: true
   },
@@ -66,6 +80,11 @@ const REFERENCE_KINDS: ReferenceKind[] = [
       return activeAfterID ? [activeAfterID] : [];
     },
     remove: referrer => { (referrer as PlayerElement).player.activeAfterID = ''; },
+    replace: (referrer, oldID, newID) => {
+      const { player } = referrer as PlayerElement;
+      if (player.activeAfterID === oldID) player.activeAfterID = newID;
+    },
+    accepts: target => isElementType(target, 'audio', 'video'),
     validTargets: unit => idsOf([...unit.getAllElements('audio'), ...unit.getAllElements('video')]),
     repairOnLoad: true
   },
@@ -77,6 +96,11 @@ const REFERENCE_KINDS: ReferenceKind[] = [
       const text = referrer as TextElement;
       text.markingPanels = text.markingPanels.filter(panelID => panelID !== targetID);
     },
+    replace: (referrer, oldID, newID) => {
+      const text = referrer as TextElement;
+      text.markingPanels = text.markingPanels.map(panelID => (panelID === oldID ? newID : panelID));
+    },
+    accepts: target => isElementType(target, 'marking-panel'),
     validTargets: unit => idsOf(unit.getAllElements('marking-panel')),
     repairOnLoad: true
   },
@@ -93,6 +117,12 @@ const REFERENCE_KINDS: ReferenceKind[] = [
       const section = referrer as Section;
       section.visibilityRules = section.visibilityRules.filter(rule => rule.id !== targetID);
     },
+    replace: (referrer, oldID, newID) => {
+      (referrer as Section).visibilityRules
+        .filter(rule => rule.id === oldID)
+        .forEach(rule => { rule.id = newID; });
+    },
+    accepts: () => true,
     validTargets: unit => new Set([...idsOf(unit.getAllElements()), ...unit.stateVariables.map(v => v.id)]),
     repairOnLoad: false
   },
@@ -108,6 +138,11 @@ const REFERENCE_KINDS: ReferenceKind[] = [
       element.action = null;
       element.actionParam = null;
     },
+    replace: (referrer, oldID, newID) => {
+      const stateVariable = (referrer as ButtonElement | TriggerElement).actionParam as StateVariable;
+      if (stateVariable.id === oldID) stateVariable.id = newID;
+    },
+    accepts: target => target instanceof StateVariable,
     validTargets: unit => new Set(unit.stateVariables.map(stateVariable => stateVariable.id)),
     repairOnLoad: true
   }
@@ -247,6 +282,21 @@ export class ReferenceManager {
           element.action === 'highlightText' && element.actionParam === id)
       }))
       .filter(refList => refList.refs.length > 0);
+  }
+
+  /**
+   * Points every reference to the holder's old id at its new one: the target stays, only its id changes (#1508).
+   *
+   * `twins` are other objects with exactly the old id, possible in stored units. A kind whose references could
+   * belong to a twin as well is left alone, as nothing tells them apart and the twin is the one that stays; a kind
+   * that can only mean the holder -- a drop-list connection where the twin is a state variable -- follows it.
+   */
+  replaceReferences(oldID: string, newID: string, holder: ReferenceHolder, twins: ReferenceHolder[] = []): void {
+    const referrersByKind = this.getReferrersByKind();
+    REFERENCE_KINDS
+      .filter(kind => kind.accepts(holder) && !twins.some(twin => kind.accepts(twin)))
+      .forEach(kind => (referrersByKind.get(kind) ?? [])
+        .forEach(referrer => kind.replace(referrer, oldID, newID)));
   }
 
   /** Removes what the lists name: the references the author agreed to give up along with their targets. */

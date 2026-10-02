@@ -5,6 +5,10 @@ import { Mock } from 'vitest';
 import { VersionManager } from 'common/services/version-manager';
 import { UnitProperties } from 'common/models/unit';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
+import { UIElement } from 'common/models/elements/element';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { ButtonElement } from 'common/models/elements/button';
+import { GeometryElement } from 'common/models/elements/geometry';
 import { StateVariable } from 'common/models/state-variable';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -160,7 +164,7 @@ describe('UnitService - variable info validation (#1043, #1129)', () => {
     service.updateUnitDefinition();
 
     expect(lastReportedVariables()?.map(info => info.id)).toEqual(['März']);
-    expect(service.variableInfoFindings.value.map(finding => finding.isCorrectable)).toEqual([false]);
+    expect(service.variableInfoFindings.value.map(finding => finding.holdsBackList)).toEqual([false]);
     expect(dialogServiceSpy.showVariableInfoFindingsDialog).not.toHaveBeenCalled();
   });
 
@@ -384,6 +388,191 @@ describe('UnitService - references to what is deleted (#1509)', () => {
       toCheck: [expect.objectContaining({ pageIndex: 1, sectionIndex: 0 })]
     });
     expect(service.unit.pages[1].sections[0].visibilityRules.length).toBe(1);
+  });
+});
+
+describe('UnitService - replacing ids that break the contract (#1508)', () => {
+  let service: UnitService;
+  let idService: IDService;
+  let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
+  const position = (gridRow: number) => ({
+    gridColumn: 1, gridColumnRange: 1, gridRow, gridRowRange: 1
+  });
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    idService = new IDService();
+    veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
+    const messageServiceSpy = createSpyObj<MessageService>([
+      'showFixedReferencePanel', 'showReferencePanel', 'showPrompt'
+    ]);
+    service = new UnitService(new SelectionService(), veronaApiServiceSpy, messageServiceSpy,
+                              createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showVariableInfoFindingsDialog']),
+                              idService, translateServiceSpy);
+    const blueprint = createUnitBlueprint('unused');
+    blueprint.stateVariables = [new StateVariable('März', 'maerz', '')];
+    blueprint.pages[0].sections[0].elements.push(...[
+      {
+        type: 'drop-list',
+        id: 'Ablage 1',
+        alias: 'ablage',
+        position: position(1),
+        value: [{ text: 'A', id: 'value_1', alias: 'option_a' }]
+      },
+      {
+        type: 'drop-list',
+        id: 'drop-list_2',
+        alias: 'zweite',
+        position: position(2),
+        connectedTo: ['Ablage 1']
+      },
+      {
+        type: 'text-field', id: 'Text_1', alias: 'erstes', position: position(3)
+      },
+      {
+        type: 'text-field', id: 'text_1', alias: 'zweites', position: position(4)
+      }
+    ] as unknown as PositionedUIElement[]);
+    blueprint.pages[0].sections[0].visibilityRules = [{ id: 'März', operator: '=', value: '1' }];
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  });
+
+  const elementOf = (alias: string): UIElement => service.unit.getAllElements()
+    .find(element => element.alias === alias) as UIElement;
+
+  it('should give an element a generated id, register it and point the references at it', () => {
+    const dropList = elementOf('ablage') as DropListElement;
+
+    service.replaceIds([{ element: dropList }]);
+
+    expect(dropList.id).toMatch(/^drop-list_\d+_\d+$/);
+    expect(idService.isIDAvailable(dropList.id)).toBe(false);
+    expect(idService.isIDAvailable('Ablage 1')).toBe(true);
+    expect((elementOf('zweite') as DropListElement).connectedTo).toEqual([dropList.id]);
+    expect(dropList.value[0].originListID).toBe(dropList.id);
+    expect(dropList.alias).toBe('ablage');
+  });
+
+  it('should report the unit with the new id, drop the finding and refresh the properties panel', () => {
+    const dropList = elementOf('ablage');
+    const panelRefresh = vi.fn();
+    service.elementPropertyUpdated.subscribe(panelRefresh);
+
+    service.replaceIds([{ element: dropList }]);
+
+    expect(panelRefresh).toHaveBeenCalled();
+
+    const reported = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
+    expect(reported.map(info => info.id)).toContain(dropList.id);
+    expect(service.variableInfoFindings.value
+      .some(finding => finding.origin.location?.element === dropList)).toBe(false);
+  });
+
+  it('should give a state variable a generated id and carry its visibility rule along', () => {
+    const [stateVariable] = service.unit.stateVariables;
+
+    service.replaceIds([{ stateVariable }]);
+
+    expect(stateVariable.id).toMatch(/^state-variable_\d+_\d+$/);
+    expect(service.unit.pages[0].sections[0].visibilityRules[0].id).toBe(stateVariable.id);
+  });
+
+  /* Each id is asked right before it is replaced: of a pair that differs only in letter case, one is enough, and
+     only one variable loses its codings. */
+  it('should replace only one of two ids that differ only in letter case', () => {
+    const first = elementOf('erstes');
+    const second = elementOf('zweites');
+
+    service.replaceIds([{ element: first }, { element: second }]);
+
+    expect(first.id).not.toBe('Text_1');
+    expect(second.id).toBe('text_1');
+  });
+
+  /* The validator compares variable ids, a GeoGebra variable's `<element id>_<name>` included; the replacement has
+     to see the same collision, or the button it offers would do nothing. */
+  it('should replace an id that collides only with a GeoGebra variable id', () => {
+    const geometry = new GeometryElement({ type: 'geometry', id: 'geo', alias: 'ggb' });
+    geometry.trackedVariables = [{ id: 'A', value: '' }];
+    const field = new TextFieldElement({ type: 'text-field', id: 'geo_A', alias: 'feld' });
+    service.unit.pages[0].sections[0].elements.push(...[geometry, field] as unknown as PositionedUIElement[]);
+
+    service.replaceIds([{ element: field }]);
+
+    expect(field.id).not.toBe('geo_A');
+  });
+
+  it('should report nothing to the host when no id needed replacing', () => {
+    veronaApiServiceSpy.sendChanged.mockClear();
+
+    service.replaceIds([{ element: elementOf('zweite') }]);
+
+    expect(elementOf('zweite').id).toBe('drop-list_2');
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+
+  it('should carry a button that sets the state variable along', () => {
+    const button = new ButtonElement({
+      type: 'button',
+      id: 'button_1',
+      alias: 'knopf',
+      action: 'stateVariableChange',
+      actionParam: new StateVariable('März', 'maerz', '1')
+    });
+    service.unit.pages[0].sections[0].elements.push(button as unknown as PositionedUIElement);
+    const [stateVariable] = service.unit.stateVariables;
+
+    service.replaceIds([{ stateVariable }]);
+
+    expect((button.actionParam as StateVariable).id).toBe(stateVariable.id);
+  });
+
+  /* The applet hangs under the element id in the page, which the template renames on its next check. */
+  it('should re-inject a geometry applet only after the id is in the page', fakeAsync(() => {
+    const geometry = new GeometryElement({ type: 'geometry', id: 'Geo 1', alias: 'geo' });
+    service.unit.pages[0].sections[0].elements.push(geometry as unknown as PositionedUIElement);
+    const reinjected = vi.fn();
+    service.geometryElementPropertyUpdated.subscribe(reinjected);
+
+    service.replaceIds([{ element: geometry }]);
+    expect(reinjected).not.toHaveBeenCalled();
+    tick();
+
+    expect(reinjected).toHaveBeenCalledWith(geometry.id);
+  }));
+});
+
+/* Stored units can hold a state variable and an element with exactly the same id. */
+describe('UnitService - replacing an id that has an exact twin (#1508)', () => {
+  it('should keep the registration and follow only the references that cannot mean the twin', () => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    const idService = new IDService();
+    const service = new UnitService(new SelectionService(), createSpyObj<VeronaAPIService>(['sendChanged']),
+                                    createSpyObj<MessageService>(['showFixedReferencePanel', 'showPrompt']),
+                                    createSpyObj<DialogService>(['showVariableInfoFindingsDialog']),
+                                    idService, translateServiceSpy);
+    const blueprint = createUnitBlueprint('unused');
+    blueprint.stateVariables = [new StateVariable('Wert', 'zustand', '')];
+    blueprint.pages[0].sections[0].elements.push({
+      type: 'text-field',
+      id: 'Wert',
+      alias: 'feld',
+      position: {
+        gridColumn: 1, gridColumnRange: 1, gridRow: 1, gridRowRange: 1
+      }
+    } as unknown as PositionedUIElement);
+    blueprint.pages[0].sections[0].visibilityRules = [{ id: 'Wert', operator: '=', value: '1' }];
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+    const [stateVariable] = service.unit.stateVariables;
+
+    service.replaceIds([{ stateVariable }]);
+
+    expect(stateVariable.id).not.toBe('Wert');
+    expect(idService.isIDAvailable('Wert')).toBe(false);
+    // A visibility rule could ask either; nothing tells them apart, so it stays with the element.
+    expect(service.unit.pages[0].sections[0].visibilityRules[0].id).toBe('Wert');
   });
 });
 

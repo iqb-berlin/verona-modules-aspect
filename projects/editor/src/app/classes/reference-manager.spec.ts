@@ -259,6 +259,52 @@ describe('ReferenceManager', () => {
       expect(refMan.getTextAnchorReferences(['a1'], new Set(['text_2']))).toEqual([]);
     });
 
+    /* The target stays and only its id changes, so every kind points at the new one (#1508). */
+    it('should point every kind of reference at a replaced id', () => {
+      refMan.replaceReferences('video_1', 'video_new', video1);
+      refMan.replaceReferences('marking-panel_1', 'marking-panel_new', panel);
+      refMan.replaceReferences('text-field_1', 'text-field_new', field);
+      refMan.replaceReferences('state_1', 'state_new', unit.stateVariables[0]);
+
+      expect(video2.player.activeAfterID).toBe('video_new');
+      expect(text.markingPanels).toEqual(['marking-panel_new']);
+      expect(unit.pages[1].sections[0].visibilityRules.map(rule => rule.id)).toEqual(['text-field_new', 'state_new']);
+      expect((button.actionParam as StateVariable).id).toBe('state_new');
+      expect((stateTrigger.actionParam as StateVariable).id).toBe('state_new');
+      expect(button.action).toBe('stateVariableChange');
+    });
+
+    it('should point a drop-list connection at a replaced id and leave the others', () => {
+      const listA = create<PositionedUIElement>({ type: 'drop-list', id: 'Ablage 1', alias: 'ablage' });
+      const listB = create<PositionedUIElement>({
+        type: 'drop-list', id: 'drop-list_2', alias: 'zweite', connectedTo: ['Ablage 1', 'drop-list_3']
+      });
+      unit.pages[0].sections[0].elements.push(listA, listB);
+
+      refMan.replaceReferences('Ablage 1', 'drop-list_new', listA);
+
+      expect((listB as unknown as { connectedTo: string[] }).connectedTo).toEqual(['drop-list_new', 'drop-list_3']);
+    });
+
+    /* Stored units can hold two objects with exactly the same id. Where a kind could mean either, nothing tells them
+       apart and the references stay with the twin; where it can only mean the replaced one, they follow it. */
+    it('should follow the replaced one where a twin of another kind cannot be meant, and stay where it can', () => {
+      const twinField = create<UIElement>({ type: 'text-field', id: 'state_1', alias: 'zwilling' });
+
+      refMan.replaceReferences('state_1', 'state_new', unit.stateVariables[0], [twinField]);
+
+      expect((button.actionParam as StateVariable).id).toBe('state_new');
+      expect(unit.pages[1].sections[0].visibilityRules.map(rule => rule.id)).toEqual(['text-field_1', 'state_1']);
+    });
+
+    it('should leave the references alone for a twin of the same kind', () => {
+      const twinVideo = create<UIElement>({ type: 'video', id: 'video_1', alias: 'zwilling' });
+
+      refMan.replaceReferences('video_1', 'video_new', video1, [twinVideo]);
+
+      expect(video2.player.activeAfterID).toBe('video_1');
+    });
+
     it('should not count references among what is deleted together', () => {
       expect(refMan.getElementsReferences([video1, video2])).toEqual([]);
       expect(refMan.getElementsReferences([panel, text])).toEqual([]);

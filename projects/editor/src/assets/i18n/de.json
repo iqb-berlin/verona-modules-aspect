@@ -657,7 +657,11 @@
       "DUPLICATE_ALIAS": "Der Name kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied).",
       "PUBLIC_IDENTIFIER_COLLISION": "Der Name kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied)."
     },
-    "uncorrectable": "Betrifft die interne ID, die sich im Editor nicht ändern lässt; sie hält die Variablenliste nicht zurück.",
+    "idHint": "Betrifft die interne ID; hält die Variablenliste nicht zurück. „ID ersetzen“ legt eine neue ID an.",
+    "replaceId": "ID ersetzen",
+    "replaceAll": "Alle IDs ersetzen ({{count}})",
+    "replaceWarning": "Die Kodierungen von bis zu {{count}} Variable(n) müssen im Studio neu angelegt werden, weil das Studio sie über die ID findet. Erhobene Antworten bleiben erhalten.",
+    "replaceConfirm": "Ersetzen",
     "goToElement": "Zum Element",
     "editStateVariables": "Zustandsvariablen bearbeiten"
   },

@@ -17,7 +17,7 @@ describe('AliasIssuesPipe', () => {
       ...(subValue === undefined ? {} : { subValue })
     },
     issues,
-    isCorrectable: true
+    holdsBackList: true
   });
   const issue = (part: 'id' | 'alias', code: VariableInfoIssue['code']): VariableInfoIssue => ({
     index: 0, part, value: 'März', code

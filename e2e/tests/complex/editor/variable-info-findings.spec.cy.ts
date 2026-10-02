@@ -67,12 +67,12 @@ const unit = {
   showUnitNavNext: false
 };
 
-function loadUnit(): void {
+function loadUnit(definition: Record<string, unknown> = unit): void {
   cy.window().then(window => {
     window.postMessage({
       type: 'voeStartCommand',
       sessionId: 'dev',
-      unitDefinition: JSON.stringify(unit),
+      unitDefinition: JSON.stringify(definition),
       unitDefinitionType: 'aspect-unit-definition',
       editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
     }, '*');
@@ -164,5 +164,44 @@ describe('Invalid variable names', { testIsolation: false }, () => {
   it('registers the alias of the new row, so no other element can take it', () => {
     setID('Mit-Bild');
     cy.get('.panel-title').should('not.contain.text', 'Mit-Bild');
+  });
+});
+
+/* Ids were editable until editor 2.6.0. Replacing one is offered, with the warning that the studio finds codings by
+   the id; whatever referred to the old id follows the new one (#1508). */
+describe('Replacing an id that breaks the contract', { testIsolation: false }, () => {
+  const dropList = (id: string, alias: string, gridRow: number, connectedTo: string[] = []) => ({
+    type: 'drop-list',
+    id,
+    alias,
+    connectedTo,
+    value: [],
+    position: {
+      gridColumn: 1, gridColumnRange: 1, gridRow, gridRowRange: 1
+    }
+  });
+  const legacyUnit = {
+    ...unit,
+    pages: [page([dropList('Ablage 1', 'ablage', 1), dropList('drop-list_2', 'zweite', 2, ['Ablage 1'])])]
+  };
+
+  before(() => {
+    cy.viewport(1300, 900);
+    cy.openEditor();
+    loadUnit(legacyUnit);
+  });
+
+  it('replaces the id after the warning, and keeps the connection to it', () => {
+    cy.get('.variable-info-findings-button').should('contain.text', '1').click();
+    cy.get('mat-dialog-container').contains('button', 'ID ersetzen').click();
+    cy.get('mat-dialog-container .replacement-warning').should('contain.text', 'im Studio neu angelegt');
+    cy.get('mat-dialog-container').contains('button', 'Ersetzen').click();
+    cy.get('mat-dialog-container').should('contain.text', 'Alle Variablennamen sind gültig');
+    cy.get('body').type('{esc}');
+    cy.get('.variable-info-findings-button').should('not.exist');
+
+    cy.get('[data-list-alias="zweite"]').click({ force: true });
+    cy.contains('mat-form-field', 'Verbundene Ablegelisten').find('mat-select').click();
+    cy.get('.cdk-overlay-container').contains('mat-option', 'ablage').should('have.attr', 'aria-selected', 'true');
   });
 });

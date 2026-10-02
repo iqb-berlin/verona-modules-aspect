@@ -9,7 +9,7 @@ import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/utils/section-counter';
-import { ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
+import { ReferenceHolder, ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import { MigrationManager } from 'common/services/migration-manager';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorUnit } from 'editor/src/app/models/editor-unit';
@@ -20,6 +20,9 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { VariableInfoOrigin, VariableInfoOrigins } from 'editor/src/app/utils/variable-info-origins';
 import { VariableInfoIssue, VariableInfoValidator } from 'editor/src/app/utils/variable-info-validator';
 import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
+import { IdReplacement, IdReplacementTarget } from 'editor/src/app/utils/id-replacement';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { IDTypes } from 'common/models/id-interfaces';
 
 /**
  * Holds the unit the editor is working on, and is the only place it is replaced.
@@ -145,7 +148,7 @@ export class UnitService {
     /* Units stored before #1043 can carry identifiers the contract forbids. The author is shown where, once per
        load and only for what can be fixed in the editor; the rest stays reachable through the indicator. */
     const findings = this.refreshVariableInfoFindings();
-    if (findings.some(finding => finding.isCorrectable)) this.dialogService.showVariableInfoFindingsDialog();
+    if (findings.some(finding => finding.holdsBackList)) this.dialogService.showVariableInfoFindingsDialog();
   }
 
   /**
@@ -159,7 +162,7 @@ export class UnitService {
     this.veronaApiService.sendChanged(
       UnitService.createUnitDefinition(this.unit),
       `${this.unit.type}@${this.unit.version}`,
-      findings.some(finding => finding.isCorrectable) ? undefined : origins.map(origin => origin.info));
+      findings.some(finding => finding.holdsBackList) ? undefined : origins.map(origin => origin.info));
   }
 
   private refreshVariableInfoFindings(
@@ -171,7 +174,7 @@ export class UnitService {
     const findings = [...issuesByIndex.entries()]
       .sort(([indexA], [indexB]) => indexA - indexB)
       .map(([index, issues]) => ({
-        origin: origins[index], issues, isCorrectable: issues.some(issue => issue.part === 'alias')
+        origin: origins[index], issues, holdsBackList: issues.some(issue => issue.part === 'alias')
       }));
     this.variableInfoFindings.next(findings);
     return findings;
@@ -246,6 +249,47 @@ export class UnitService {
           this.messageService.showReferencePanel(refs);
         }
       });
+  }
+
+  /**
+   * Gives elements and state variables a new id where their own breaks the Verona contract (#1508). The new id comes
+   * from the generator, as for any new element; everything that refers to the old one follows it, and what is derived
+   * from the id is renewed. Each id is asked right before it is replaced, so of two that differ only in letter case
+   * one is enough. The alias stays as it is: it is what the player stores the responses under.
+   */
+  replaceIds(targets: IdReplacementTarget[]): void {
+    let replacedCount = 0;
+    targets.forEach(target => {
+      const holder: ReferenceHolder = target.element ?? target.stateVariable;
+      const oldID = holder.id;
+      /* Compared as the validator compares: with every variable id of the unit, a GeoGebra variable's
+         `<element id>_<name>` included, leaving out only the ids the holder brings itself. */
+      const otherIDs = VariableInfoOrigins.collect(this.unit)
+        .filter(origin => (origin.location?.element ?? origin.stateVariable) !== holder)
+        .map(origin => origin.info.id);
+      if (!IdReplacement.needsReplacement(oldID, otherIDs)) return;
+      const twins = [...this.unit.getAllElements(), ...this.unit.stateVariables]
+        .filter(other => other !== holder && other.id === oldID);
+      const newID = this.idService
+        .getAndRegisterNewID(target.element ? target.element.type as IDTypes : 'state-variable');
+      // A twin with exactly the same id shares the registration, which therefore stays.
+      if (twins.length === 0) this.idService.unregister(oldID, true, false);
+      this.referenceManager.replaceReferences(oldID, newID, holder, twins);
+      holder.id = newID;
+      if (target.element?.type === 'drop-list') {
+        const dropList = target.element as DropListElement;
+        dropList.setProperty('value', dropList.value); // renews the options' originListID
+      }
+      if (target.element?.type === 'geometry') {
+        // The applet is injected into the element named by the id, which the template renames on the next check.
+        setTimeout(() => this.geometryElementPropertyUpdated.next(newID));
+      }
+      replacedCount += 1;
+    });
+    if (replacedCount === 0) return;
+    // The properties panel of a selected element would otherwise go on showing references by the old ids.
+    this.elementPropertyUpdated.next();
+    this.updateUnitDefinition();
   }
 
   reRegisterAll(): void {

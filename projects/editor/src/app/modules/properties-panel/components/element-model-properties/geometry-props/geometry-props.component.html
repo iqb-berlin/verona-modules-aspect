@@ -60,6 +60,10 @@
 </fieldset>
 <fieldset>
   <legend>{{ 'propertiesPanel.trackedGeogebraVariables' | translate }}</legend>
+  <aspect-merged-checkbox [value]="combinedProperties.recomputedCountsAsChanged"
+                          (valueChange)="updateModel.emit({ property: 'recomputedCountsAsChanged', value: $event })">
+    {{ 'propertiesPanel.recomputedCountsAsChanged' | translate }}
+  </aspect-merged-checkbox>
 
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{ 'propertiesPanel.trackedVariables' | translate }}</mat-label>

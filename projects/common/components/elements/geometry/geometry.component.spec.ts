@@ -136,6 +136,7 @@ describe('GeometryComponent', () => {
 
     beforeEach(() => {
       component.elementModel.trackedVariables = [{ id: 'A', value: 'A = false' }, { id: 'B', value: 'B = 1' }];
+      component.elementModel.recomputedCountsAsChanged = true;
       component.refresh();
       expect(mockGeoGebraAPI.registerUpdateListener).toHaveBeenCalled();
       reportUpdate = objectName => vi.mocked(mockGeoGebraAPI.registerUpdateListener)
@@ -154,6 +155,21 @@ describe('GeometryComponent', () => {
       expect(emittedVariables()).toEqual(expect.objectContaining({
         variables: [
           expect.objectContaining({ id: 'A', wasUpdated: true }),
+          expect.objectContaining({ id: 'B', wasUpdated: false })
+        ]
+      }));
+    }));
+
+    it('should mark no recomputed variable while the element has the switch off', fakeAsync(() => {
+      component.elementModel.recomputedCountsAsChanged = false;
+      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+
+      reportUpdate('A');
+      tick(200);
+
+      expect(emittedVariables()).toEqual(expect.objectContaining({
+        variables: [
+          expect.objectContaining({ id: 'A', wasUpdated: false }),
           expect.objectContaining({ id: 'B', wasUpdated: false })
         ]
       }));

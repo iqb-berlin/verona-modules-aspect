@@ -275,5 +275,6 @@ iqb-aspect-definition@1.0.0
 - new element TetfolioElement (type tetfolio): htmlContent: string (default ''), dimensions (#1461)
 - GeometryElement:
   - new property: showAlgebraInput: boolean (default false) (#1004)
+  - new property: recomputedCountsAsChanged: boolean (default false) (#1460)
 - TextAreaElement:
   - new property: showWordCount: boolean (default false) (#989)

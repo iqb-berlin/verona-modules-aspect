@@ -779,6 +779,7 @@ checkbox "propertiesPanel.showFullscreenButton" = false
 checkbox "propertiesPanel.showToolbar" = true
 input[text] "propertiesPanel.customToolbar" = 
 [propertiesPanel.trackedGeogebraVariables]
+checkbox "propertiesPanel.recomputedCountsAsChanged" = false
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -813,6 +814,7 @@ checkbox "propertiesPanel.showFullscreenButton" = indeterminate
 checkbox "propertiesPanel.showToolbar" = indeterminate
 input[text] "propertiesPanel.customToolbar" =  (disabled) [merged]
 [propertiesPanel.trackedGeogebraVariables]
+checkbox "propertiesPanel.recomputedCountsAsChanged" = indeterminate
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -843,6 +845,7 @@ text "originalFileName" =  [merged]
 input[text] "propertiesPanel.appDefinition" =  (disabled) [merged]
 [propertiesPanel.geogebraHeader]
 [propertiesPanel.trackedGeogebraVariables]
+checkbox "propertiesPanel.recomputedCountsAsChanged" = indeterminate
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
 input[number] "propertiesPanel.width" =  [merged]
@@ -861,6 +864,7 @@ text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 [propertiesPanel.geogebraHeader]
 [propertiesPanel.trackedGeogebraVariables]
+checkbox "propertiesPanel.recomputedCountsAsChanged" = false
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
 input[number] "propertiesPanel.width" = 600

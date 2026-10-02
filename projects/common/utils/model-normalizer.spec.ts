@@ -436,6 +436,14 @@ describe('ModelNormalizer', () => {
         .toBe(false);
     });
 
+    /* Units stored before 4.13.0 changed a tracked variable's status only with its value, so the
+       default must keep it that way. */
+    it('should fill recomputedCountsAsChanged into a unit stored without it as off (#1460)', () => {
+      expect(ELEMENT_DEFAULTS.geometry.recomputedCountsAsChanged).toBe(false);
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'geometry', id: 'g1' }))
+        .recomputedCountsAsChanged).toBe(false);
+    });
+
     /* Units stored before 4.13.0 had no word count, so the default must leave the strip away. */
     it('should fill showWordCount into a unit stored without it as off (#989)', () => {
       expect(ELEMENT_DEFAULTS['text-area'].showWordCount).toBe(false);

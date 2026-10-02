@@ -12,6 +12,7 @@ export interface GeometryVariable {
 export interface ReportedGeometryVariable extends GeometryVariable {
   /** GeoGebra recomputed the variable since the last report. A wrong answer can leave a variable at
    * the value it started with -- a truth value that stays `false` -- so this, not a changed value, is
-   * what says it has been worked on. */
+   * what says it has been worked on. Always `false` unless the element has
+   * `recomputedCountsAsChanged` switched on. */
   wasUpdated: boolean;
 }

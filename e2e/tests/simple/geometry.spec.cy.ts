@@ -49,9 +49,19 @@ describe('Geometry element', { testIsolation: false }, () => {
       setCheckbox('Eingabezeile anzeigen', true);
     });
 
-    it('creates a geometry element with a tracked truth value (Page 6)', () => {
+    it('creates a geometry element with a tracked truth value, recomputation counted (Page 6)', () => {
       addNewPage();
       addGeometryElement('Geometrie mit Wahrheitswert', 'kurven2.ggb', 'geo_truth_value');
+      selectFromDropdown('Bekannte Variablen', 'correct', true);
+      cy.get('aspect-ui-element-properties')
+        .contains('mat-form-field', 'Bekannte Variablen')
+        .should('contain.text', '(1)');
+      setCheckbox('Neu berechnet = Wert geändert', true);
+    });
+
+    it('creates a geometry element with a tracked truth value, recomputation not counted (Page 7)', () => {
+      addNewPage();
+      addGeometryElement('Geometrie mit Wahrheitswert ohne Schalter', 'kurven2.ggb', 'geo_truth_value_plain');
       selectFromDropdown('Bekannte Variablen', 'correct', true);
       cy.get('aspect-ui-element-properties')
         .contains('mat-form-field', 'Bekannte Variablen')
@@ -109,17 +119,22 @@ describe('Geometry element', { testIsolation: false }, () => {
       visibleAppletParams().its('showAlgebraInput').should('equal', true);
     });
 
-    it('reports a recomputed truth value as changed although it stayed false (Page 6)', () => {
-      // Both parts from one notification: the element has reported an interaction, and the truth value
-      // is in the given status. Without the first part, the notification sent on entering the page
-      // would satisfy the check for DISPLAYED on its own.
-      const truthValueCode = (status: string) => Cypress.sinon.match.has('unitState', Cypress.sinon.match.has(
+    // Both parts from one notification: the element has reported an interaction, and the truth value
+    // is in the given status. Without the first part, the notification sent on entering the page
+    // would satisfy the check for DISPLAYED on its own.
+    const variableCode = (elementId: string, status: string) => Cypress.sinon.match.has(
+      'unitState',
+      Cypress.sinon.match.has(
         'dataParts',
-        Cypress.sinon.match.has('elementCodes', Cypress.sinon.match('{"id":"geo_truth_value","status":"VALUE_CHANGED"'))
+        Cypress.sinon.match.has('elementCodes', Cypress.sinon.match(`{"id":"${elementId}","status":"VALUE_CHANGED"`))
           .and(Cypress.sinon.match.has('geometryVariableCodes', Cypress.sinon.match(
-            `{"id":"geo_truth_value_correct","status":"${status}","value":"correct = false"}`
+            `{"id":"${elementId}_correct","status":"${status}","value":"correct = false"}`
           )))
-      ));
+      )
+    );
+
+    it('reports a recomputed truth value as changed although it stayed false (Page 6)', () => {
+      const truthValueCode = (status: string) => variableCode('geo_truth_value', status);
       cy.goToPlayerPage(6);
       cy.wait(500);
       waitForVisibleGeometry();
@@ -133,6 +148,21 @@ describe('Geometry element', { testIsolation: false }, () => {
         // GeoGebra recomputed the truth value, as it does when a point is set in the wrong place.
         cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('correct'));
         cy.get('@postMessage').should('be.calledWithMatch', truthValueCode('VALUE_CHANGED'));
+      });
+    });
+
+    it('leaves a recomputed truth value displayed without the switch (Page 7)', () => {
+      const truthValueCode = (status: string) => variableCode('geo_truth_value_plain', status);
+      cy.goToPlayerPage(7);
+      cy.wait(500);
+      waitForVisibleGeometry();
+      addPostMessageStub();
+      cy.get('aspect-geometry:visible').first().trigger('pointerdown');
+      cy.get('aspect-geometry:visible .geogebra-applet').first().invoke('attr', 'id').then(id => {
+        // The same recomputation as on page 6. The report it causes is the one that marks the element as
+        // worked on, so the truth value it carries must still be DISPLAYED: the value stayed.
+        cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('correct'));
+        cy.get('@postMessage').should('be.calledWithMatch', truthValueCode('DISPLAYED'));
       });
     });
   });

@@ -85,6 +85,7 @@ describe('GeometryPropsComponent', () => {
       showZoomButtons: true,
       showFullscreenButton: true,
       showAlgebraInput: false,
+      recomputedCountsAsChanged: false,
       showToolbar: true,
       customToolbar: '',
       trackedVariables: [],
@@ -109,6 +110,20 @@ describe('GeometryPropsComponent', () => {
     input.click();
 
     expect(emitted).toEqual([{ property: 'showAlgebraInput', value: true }]);
+  });
+
+  it('should show the recomputation setting outside expert mode and emit it when toggled', () => {
+    component.unitService.expertMode = false;
+    fixture.detectChanges();
+    const checkbox = Array.from(
+      fixture.nativeElement.querySelectorAll('aspect-merged-checkbox') as NodeListOf<HTMLElement>
+    ).find(element => element.textContent?.includes('propertiesPanel.recomputedCountsAsChanged')) as HTMLElement;
+    const input = checkbox.querySelector('input') as HTMLInputElement;
+    expect(input.checked).toBe(false);
+
+    input.click();
+
+    expect(emitted).toEqual([{ property: 'recomputedCountsAsChanged', value: true }]);
   });
 
   it('should render the current app definition', () => {

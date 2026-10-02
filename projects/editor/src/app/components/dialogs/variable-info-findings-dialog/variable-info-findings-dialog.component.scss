@@ -20,14 +20,36 @@
   white-space: pre;
 }
 
-.finding-row-uncorrectable {
+.finding-row-id-only {
   color: #666;
 }
 
-.finding-uncorrectable-hint {
+.finding-id-hint {
   font-style: italic;
+}
+
+.finding-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .finding-action {
   white-space: nowrap;
+}
+
+.replace-all {
+  margin-bottom: 12px;
+}
+
+.replacement-warning {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border: 1px solid var(--mat-sys-error, #ba1a1a);
+  border-radius: 4px;
+  background-color: #fdecea;
 }

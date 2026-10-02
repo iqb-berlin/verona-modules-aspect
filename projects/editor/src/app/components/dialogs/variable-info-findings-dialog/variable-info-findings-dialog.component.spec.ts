@@ -6,6 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
+import { Mock } from 'vitest';
+import { EditorUnit } from 'editor/src/app/models/editor-unit';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -32,7 +34,12 @@ function location(pageIndex: number, sectionIndex: number,
 describe('VariableInfoFindingsDialogComponent', () => {
   let fixture: ComponentFixture<VariableInfoFindingsDialogComponent>;
   let findings: BehaviorSubject<VariableInfoFinding[]>;
-  let unitService: { variableInfoFindings: BehaviorSubject<VariableInfoFinding[]>, editStateVariables: () => void };
+  let unitService: {
+    unit: EditorUnit,
+    variableInfoFindings: BehaviorSubject<VariableInfoFinding[]>,
+    editStateVariables: () => void,
+    replaceIds: Mock
+  };
   let selectionService: SelectionService;
   let dialogRef: SpyObj<MatDialogRef<VariableInfoFindingsDialogComponent>>;
 
@@ -51,7 +58,7 @@ describe('VariableInfoFindingsDialogComponent', () => {
       issue(0, 'id', 'geometry_1_fistgewählt', 'INVALID_CHARACTERS'),
       issue(0, 'alias', 'ggb01_fistgewählt', 'INVALID_CHARACTERS')
     ],
-    isCorrectable: true
+    holdsBackList: true
   };
   const likert = element('likert', 'likert_1', 'likert');
   const rowFinding: VariableInfoFinding = {
@@ -61,7 +68,7 @@ describe('VariableInfoFindingsDialogComponent', () => {
       property: 'alias'
     },
     issues: [issue(1, 'alias', 'Wert', 'DUPLICATE_ALIAS')],
-    isCorrectable: true
+    holdsBackList: true
   };
   const stateVariable = new StateVariable('März', 'maerz', '');
   const stateVariableFinding: VariableInfoFinding = {
@@ -69,7 +76,7 @@ describe('VariableInfoFindingsDialogComponent', () => {
       info: info('März', 'maerz'), stateVariable, property: 'alias'
     },
     issues: [issue(2, 'id', 'März', 'INVALID_CHARACTERS')],
-    isCorrectable: false
+    holdsBackList: false
   };
 
   const rows = (): HTMLElement[] => Array.from(fixture.nativeElement.querySelectorAll('.finding-row'));
@@ -77,7 +84,11 @@ describe('VariableInfoFindingsDialogComponent', () => {
 
   beforeEach(async () => {
     findings = new BehaviorSubject<VariableInfoFinding[]>([geometryFinding, rowFinding, stateVariableFinding]);
-    unitService = { variableInfoFindings: findings, editStateVariables: vi.fn() };
+    const unit = new EditorUnit();
+    unit.stateVariables = [stateVariable];
+    unitService = {
+      unit, variableInfoFindings: findings, editStateVariables: vi.fn(), replaceIds: vi.fn()
+    };
     selectionService = new SelectionService();
     dialogRef = createSpyObj<MatDialogRef<VariableInfoFindingsDialogComponent>>(['close']);
 
@@ -120,9 +131,82 @@ describe('VariableInfoFindingsDialogComponent', () => {
     expect(text()).not.toContain('variableInfoFindings.geometryHint');
   });
 
-  it('should mark what cannot be corrected in the editor', () => {
-    expect(rows()[2].textContent).toContain('variableInfoFindings.uncorrectable');
-    expect(rows()[0].textContent).not.toContain('variableInfoFindings.uncorrectable');
+  it('should mark what concerns only the id and holds nothing back', () => {
+    expect(rows()[2].textContent).toContain('variableInfoFindings.idHint');
+    expect(rows()[0].textContent).not.toContain('variableInfoFindings.idHint');
+  });
+
+  /* Replacing an id costs the variable's codings in the studio, so it is offered where it helps and asked first
+     (#1508). */
+  describe('replacing an id', () => {
+    const replaceButton = (row: HTMLElement): HTMLButtonElement | null => row.querySelector('.replace-id');
+    const warning = (): HTMLElement | null => fixture.nativeElement.querySelector('.replacement-warning');
+
+    it('should be offered only where the finding is about an own id that breaks the contract', () => {
+      // The GeoGebra name is at fault, not the element's id; the likert row's alias is the only issue.
+      expect(replaceButton(rows()[0])).toBeNull();
+      expect(replaceButton(rows()[1])).toBeNull();
+      expect(replaceButton(rows()[2])).toBeTruthy();
+      expect(fixture.nativeElement.querySelector('.replace-all')).toBeNull();
+    });
+
+    it('should warn about the studio codings and replace only once confirmed', () => {
+      (replaceButton(rows()[2]) as HTMLButtonElement).click();
+      fixture.detectChanges();
+
+      expect(warning()?.textContent).toContain('variableInfoFindings.replaceWarning');
+      // The number the author decides on: the variables renamed, here the one of the state variable.
+      expect(fixture.componentInstance.pendingVariableCount).toBe(1);
+      expect(unitService.replaceIds).not.toHaveBeenCalled();
+
+      (fixture.nativeElement.querySelector('.confirm-replacement') as HTMLButtonElement).click();
+      fixture.detectChanges();
+
+      expect(unitService.replaceIds).toHaveBeenCalledWith([{ stateVariable }]);
+      expect(warning()).toBeNull();
+    });
+
+    /* The dialog stays open across a unit the host loads; what was asked belongs to the unit before. */
+    it('should drop a pending replacement once another unit is loaded', () => {
+      (replaceButton(rows()[2]) as HTMLButtonElement).click();
+      fixture.detectChanges();
+
+      unitService.unit = new EditorUnit();
+      findings.next([stateVariableFinding]);
+      fixture.detectChanges();
+
+      expect(warning()).toBeNull();
+      fixture.componentInstance.confirmReplacement();
+      expect(unitService.replaceIds).not.toHaveBeenCalled();
+    });
+
+    it('should replace nothing when the author cancels', () => {
+      (replaceButton(rows()[2]) as HTMLButtonElement).click();
+      fixture.detectChanges();
+      (fixture.nativeElement.querySelector('.cancel-replacement') as HTMLButtonElement).click();
+      fixture.detectChanges();
+
+      expect(unitService.replaceIds).not.toHaveBeenCalled();
+      expect(warning()).toBeNull();
+    });
+
+    it('should offer to replace all, each holder once, where there is more than one', () => {
+      const field = element('text-field', 'Aufgabe 1', 'aufgabe1');
+      findings.next([stateVariableFinding, {
+        origin: {
+          info: info('Aufgabe 1', 'aufgabe1'), location: location(0, 0, field, field), property: 'alias'
+        },
+        issues: [issue(3, 'id', 'Aufgabe 1', 'INVALID_CHARACTERS')],
+        holdsBackList: false
+      }]);
+      fixture.detectChanges();
+
+      (fixture.nativeElement.querySelector('.replace-all') as HTMLButtonElement).click();
+      fixture.detectChanges();
+      (fixture.nativeElement.querySelector('.confirm-replacement') as HTMLButtonElement).click();
+
+      expect(unitService.replaceIds).toHaveBeenCalledWith([{ stateVariable }, { element: field }]);
+    });
   });
 
   /* A likert row has no overlay of its own; the likert is what can be selected. */

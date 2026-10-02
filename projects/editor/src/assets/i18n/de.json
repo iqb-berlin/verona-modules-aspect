@@ -24,6 +24,15 @@
   "outdatedUnit": "Unit Definition aktualisiert",
   "sectionNotReplaced": "Der Abschnitt wurde nicht ersetzt. Der einzufügende Abschnitt wurde verworfen.",
   "invalidReferencesRemoved": "Invalide Referenzen bei folgenden Elementen wurden entfernt:",
+  "invalidVisibilityRulesToCheck": "Sichtbarkeitsbedingungen folgender Abschnitte verweisen auf nicht vorhandene Elemente oder Zustandsvariablen und sind nie erfüllt. Sie wurden nicht verändert – bitte prüfen:",
+  "deleteStateVariablesConfirm": "Zustandsvariablen löschen?",
+  "referenceList": {
+    "referencedBy": "wird referenziert von:",
+    "visibilityRuleOf": "Sichtbarkeitsbedingung von Seite {{page}}, Abschnitt {{section}}",
+    "visibilityRuleHint": "Fällt eine Sichtbarkeitsbedingung weg, ändert sich, wann der Abschnitt erscheint; ein Abschnitt ohne Bedingungen ist immer sichtbar.",
+    "textAnchor": "Textbereich \"{{id}}\"",
+    "sectionLocation": "Seite {{page}}, Abschnitt {{section}}"
+  },
   "save": "Speichern",
   "confirm": "Bestätigen",
   "cancel": "Abbrechen",
@@ -648,7 +657,11 @@
       "DUPLICATE_ALIAS": "Der Name kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied).",
       "PUBLIC_IDENTIFIER_COLLISION": "Der Name kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied)."
     },
-    "uncorrectable": "Betrifft die interne ID, die sich im Editor nicht ändern lässt; sie hält die Variablenliste nicht zurück.",
+    "idHint": "Betrifft die interne ID; hält die Variablenliste nicht zurück. „ID ersetzen“ legt eine neue ID an.",
+    "replaceId": "ID ersetzen",
+    "replaceAll": "Alle IDs ersetzen ({{count}})",
+    "replaceWarning": "Die Kodierungen von bis zu {{count}} Variable(n) müssen im Studio neu angelegt werden, weil das Studio sie über die ID findet. Erhobene Antworten bleiben erhalten.",
+    "replaceConfirm": "Ersetzen",
     "goToElement": "Zum Element",
     "editStateVariables": "Zustandsvariablen bearbeiten"
   },

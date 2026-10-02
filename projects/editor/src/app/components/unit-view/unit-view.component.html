@@ -126,16 +126,22 @@
 <!--          </ng-template>-->
 <!--        </mat-tab>-->
 
-        <mat-tab [disabled]="true" class="align-right">
-          <ng-template mat-tab-label>
-            @if ((unitService.variableInfoFindings | async)?.length; as findingsCount) {
+        <!-- The tabs below only hold buttons. They are disabled so that they cannot be selected, and the class undoes
+             the fading Material gives a disabled tab, which made the buttons look switched off. -->
+        @if (((unitService.variableInfoFindings | async) ?? []).length; as findingsCount) {
+          <mat-tab [disabled]="true" labelClass="button-tab">
+            <ng-template mat-tab-label>
               <button mat-button class="variable-info-findings-button"
                       [matTooltip]="'variableInfoFindings.indicator' | translate"
                       (click)="showVariableInfoFindings()">
                 <mat-icon class="variable-info-findings-icon">warning</mat-icon>
                 <span class="variable-info-findings-count">{{ findingsCount }}</span>
               </button>
-            }
+            </ng-template>
+          </mat-tab>
+        }
+        <mat-tab [disabled]="true" labelClass="button-tab">
+          <ng-template mat-tab-label>
             <button mat-icon-button [matMenuTriggerFor]="numberingMenu" #menuTrigger="matMenuTrigger">
               <mat-icon>settings</mat-icon>
             </button>
@@ -163,7 +169,7 @@
             </mat-menu>
           </ng-template>
         </mat-tab>
-        <mat-tab [disabled]="true" class="align-right">
+        <mat-tab [disabled]="true" labelClass="button-tab">
           <ng-template mat-tab-label>
             <button mat-icon-button [matMenuTriggerFor]="extrasMenu" data-cy="extras-menu">
               <mat-icon>menu</mat-icon>

@@ -70,9 +70,9 @@ describe('MessageService', () => {
     expect(snackBarMock.openFromComponent)
       .toHaveBeenCalledWith(ReferenceListSnackbarComponent, { data: refs, horizontalPosition: 'left' });
 
-    const elements = [{ id: 'el_1' }] as unknown as UIElement[];
-    service.showFixedReferencePanel(elements);
+    const repair = { repaired: [{ id: 'el_1' }] as unknown as UIElement[], toCheck: [] };
+    service.showFixedReferencePanel(repair);
     expect(snackBarMock.openFromComponent)
-      .toHaveBeenCalledWith(FixedReferencesSnackbarComponent, { data: elements, horizontalPosition: 'left' });
+      .toHaveBeenCalledWith(FixedReferencesSnackbarComponent, { data: repair, horizontalPosition: 'left' });
   });
 });

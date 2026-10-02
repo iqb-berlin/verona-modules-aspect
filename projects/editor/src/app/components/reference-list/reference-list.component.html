@@ -1,6 +1,29 @@
-<ng-container *ngFor="let refGroup of refs ? refs : data">
+@for (refGroup of refs ? refs : data; track refGroup) {
   <span>
-    <b>{{ refGroup.element.alias }}</b> wird referenziert von:
+    <b>
+      @if (refGroup.element.type === 'text-anchor') {
+        {{ 'referenceList.textAnchor' | translate: { id: refGroup.element.alias } }}
+      } @else {
+        {{ refGroup.element.alias }}
+      }
+    </b>
+    {{ 'referenceList.referencedBy' | translate }}
   </span>
-  <aspect-element-list [elements]="refGroup.refs"></aspect-element-list>
-</ng-container>
+  @if (refGroup.refs.length > 0) {
+    <aspect-element-list [elements]="refGroup.refs"></aspect-element-list>
+  }
+  @if (refGroup.sections?.length) {
+    <mat-list>
+      @for (location of refGroup.sections; track location.section) {
+        <mat-list-item class="referring-section">
+          <mat-icon matListItemIcon>visibility</mat-icon>
+          <div matListItemTitle>
+            {{ 'referenceList.visibilityRuleOf' | translate:
+               { page: location.pageIndex + 1, section: location.sectionIndex + 1 } }}
+          </div>
+        </mat-list-item>
+      }
+    </mat-list>
+    <p class="visibility-rule-hint">{{ 'referenceList.visibilityRuleHint' | translate }}</p>
+  }
+}

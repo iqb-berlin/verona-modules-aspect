@@ -8,6 +8,11 @@
   box-shadow: -2px -5px 5px gray;
 }
 
+/* Tabs that only hold buttons: Material fades a disabled tab as a whole, which made the buttons look switched off. */
+:host ::ng-deep .button-tab.mat-mdc-tab-disabled {
+  opacity: 1;
+}
+
 .variable-info-findings-icon,
 .variable-info-findings-count {
   color: var(--mat-sys-error, #ba1a1a);

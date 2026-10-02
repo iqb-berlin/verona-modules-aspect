@@ -8,8 +8,9 @@ import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
+import { Page } from 'common/models/page';
 import { SectionCounter } from 'common/utils/section-counter';
-import { ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
+import { ReferenceHolder, ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import { MigrationManager } from 'common/services/migration-manager';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorUnit } from 'editor/src/app/models/editor-unit';
@@ -20,6 +21,9 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { VariableInfoOrigin, VariableInfoOrigins } from 'editor/src/app/utils/variable-info-origins';
 import { VariableInfoIssue, VariableInfoValidator } from 'editor/src/app/utils/variable-info-validator';
 import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
+import { IdReplacement, IdReplacementTarget } from 'editor/src/app/utils/id-replacement';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { IDTypes } from 'common/models/id-interfaces';
 
 /**
  * Holds the unit the editor is working on, and is the only place it is replaced.
@@ -134,12 +138,9 @@ export class UnitService {
        error dialog of loadUnitDefinition, and the unit would be replaced all the same. */
     this.unitReplaced.next();
 
-    const invalidRefs = this.referenceManager.getAllInvalidRefs();
-    if (invalidRefs.length > 0) {
-      this.referenceManager.removeInvalidRefs(invalidRefs);
-      this.messageService.showFixedReferencePanel(invalidRefs);
-      this.updateUnitDefinition();
-    }
+    const repair = this.referenceManager.repairInvalidReferences();
+    if (repair.repaired.length > 0 || repair.toCheck.length > 0) this.messageService.showFixedReferencePanel(repair);
+    if (repair.repaired.length > 0) this.updateUnitDefinition();
     // The unit constructor updated the version. Therefore the unit has changed and notifies the  host.
     if (migratedUnitDefinition?.version !== VersionManager.getCurrentVersion()) {
       this.updateUnitDefinition();
@@ -148,7 +149,7 @@ export class UnitService {
     /* Units stored before #1043 can carry identifiers the contract forbids. The author is shown where, once per
        load and only for what can be fixed in the editor; the rest stays reachable through the indicator. */
     const findings = this.refreshVariableInfoFindings();
-    if (findings.some(finding => finding.isCorrectable)) this.dialogService.showVariableInfoFindingsDialog();
+    if (findings.some(finding => finding.holdsBackList)) this.dialogService.showVariableInfoFindingsDialog();
   }
 
   /**
@@ -162,7 +163,7 @@ export class UnitService {
     this.veronaApiService.sendChanged(
       UnitService.createUnitDefinition(this.unit),
       `${this.unit.type}@${this.unit.version}`,
-      findings.some(finding => finding.isCorrectable) ? undefined : origins.map(origin => origin.info));
+      findings.some(finding => finding.holdsBackList) ? undefined : origins.map(origin => origin.info));
   }
 
   private refreshVariableInfoFindings(
@@ -174,7 +175,7 @@ export class UnitService {
     const findings = [...issuesByIndex.entries()]
       .sort(([indexA], [indexB]) => indexA - indexB)
       .map(([index, issues]) => ({
-        origin: origins[index], issues, isCorrectable: issues.some(issue => issue.part === 'alias')
+        origin: origins[index], issues, holdsBackList: issues.some(issue => issue.part === 'alias')
       }));
     this.variableInfoFindings.next(findings);
     return findings;
@@ -208,14 +209,88 @@ export class UnitService {
   /** Opens the state variables for editing. A cancelled dialog may have registered aliases on the way, which
       re-registering takes back. */
   editStateVariables(): void {
+    /* The dialog result belongs to the unit it was opened on; a unit the host loaded meanwhile must not get it. */
+    const unitAtRequest = this.unit;
     this.dialogService.showStateVariablesDialog(this.unit.stateVariables)
       .subscribe(stateVariables => {
+        if (this.unit !== unitAtRequest) return;
         if (stateVariables) {
-          this.updateStateVariables(stateVariables);
+          this.applyEditedStateVariables(stateVariables, unitAtRequest);
         } else {
           this.reRegisterAll();
         }
       });
+  }
+
+  /**
+   * Takes over what the dialog returned. A variable it no longer holds may still be set by a button or a trigger, or
+   * be asked by a visibility rule; that is asked first, as deleting an element is, and the references go with the
+   * variable only once the author agreed. Declined, the variables still referred to stay, and everything else the
+   * dialog changed is taken over all the same (#1509).
+   */
+  private applyEditedStateVariables(stateVariables: StateVariable[], unitAtRequest: EditorUnit): void {
+    const removed = this.unit.stateVariables
+      .filter(stateVariable => !stateVariables.some(kept => kept.id === stateVariable.id));
+    const refs = this.referenceManager.getStateVariableReferences(removed);
+    if (refs.length === 0) {
+      this.updateStateVariables(stateVariables);
+      return;
+    }
+    this.dialogService.showDeleteConfirmDialog(
+      this.translateService.instant('deleteStateVariablesConfirm'), this.unitReplaced, undefined, refs)
+      .subscribe(confirmed => {
+        if (this.unit !== unitAtRequest) return;
+        if (confirmed) {
+          ReferenceManager.deleteReferences(refs);
+          this.updateStateVariables(stateVariables);
+        } else {
+          const referred = removed.filter(stateVariable => refs
+            .some(refList => (refList.element as { id: string }).id === stateVariable.id));
+          this.updateStateVariables([...stateVariables, ...referred]);
+          this.messageService.showReferencePanel(refs);
+        }
+      });
+  }
+
+  /**
+   * Gives elements and state variables a new id where their own breaks the Verona contract (#1508). The new id comes
+   * from the generator, as for any new element; everything that refers to the old one follows it, and what is derived
+   * from the id is renewed. Each id is asked right before it is replaced, so of two that differ only in letter case
+   * one is enough. The alias stays as it is: it is what the player stores the responses under.
+   */
+  replaceIds(targets: IdReplacementTarget[]): void {
+    let replacedCount = 0;
+    targets.forEach(target => {
+      const holder: ReferenceHolder = target.element ?? target.stateVariable;
+      const oldID = holder.id;
+      /* Compared as the validator compares: with every variable id of the unit, a GeoGebra variable's
+         `<element id>_<name>` included, leaving out only the ids the holder brings itself. */
+      const otherIDs = VariableInfoOrigins.collect(this.unit)
+        .filter(origin => (origin.location?.element ?? origin.stateVariable) !== holder)
+        .map(origin => origin.info.id);
+      if (!IdReplacement.needsReplacement(oldID, otherIDs)) return;
+      const twins = [...this.unit.getAllElements(), ...this.unit.stateVariables]
+        .filter(other => other !== holder && other.id === oldID);
+      const newID = this.idService
+        .getAndRegisterNewID(target.element ? target.element.type as IDTypes : 'state-variable');
+      // A twin with exactly the same id shares the registration, which therefore stays.
+      if (twins.length === 0) this.idService.unregister(oldID, true, false);
+      this.referenceManager.replaceReferences(oldID, newID, holder, twins);
+      holder.id = newID;
+      if (target.element?.type === 'drop-list') {
+        const dropList = target.element as DropListElement;
+        dropList.setProperty('value', dropList.value); // renews the options' originListID
+      }
+      if (target.element?.type === 'geometry') {
+        // The applet is injected into the element named by the id, which the template renames on the next check.
+        setTimeout(() => this.geometryElementPropertyUpdated.next(newID));
+      }
+      replacedCount += 1;
+    });
+    if (replacedCount === 0) return;
+    // The properties panel of a selected element would otherwise go on showing references by the old ids.
+    this.elementPropertyUpdated.next();
+    this.updateUnitDefinition();
   }
 
   reRegisterAll(): void {
@@ -237,14 +312,13 @@ export class UnitService {
       let dialogText: string = '';
       switch (deletedObjectType) {
         case 'page': {
-          refs = this.referenceManager.getPageElementsReferences(
-            this.unit.pages[this.selectionService.selectedPageIndex]
-          );
-          const pageNavButtonRefs = this.referenceManager.getButtonReferencesForPage(
-            this.selectionService.selectedPageIndex
-          );
-          refs = refs.concat(pageNavButtonRefs);
           if (pageIndex === undefined) throw Error();
+          /* The page handed in, not the selected one: the references belong to the page that goes. Both page menus
+             select their page before they open, so the two agree today; reading the selection instead would check
+             -- and on confirmation remove -- the references of another page as soon as they did not (#1509). */
+          refs = this.referenceManager.getPageElementsReferences(object as EditorPage);
+          const pageNavButtonRefs = this.referenceManager.getButtonReferencesForPage(pageIndex);
+          refs = refs.concat(pageNavButtonRefs);
           dialogText = `Seite ${pageIndex + 1} löschen?`;
           break;
         }
@@ -341,7 +415,7 @@ export class UnitService {
     sectionsToMove.forEach(section => newPage.addSection(section));
     newPage.deleteSection(0);
 
-    this.unit.pages.splice(pageIndex + 1, 0, newPage);
+    this.keepPageNavigation(() => this.unit.pages.splice(pageIndex + 1, 0, newPage));
     this.selectionService.selectedPageIndex = pageIndex + 1;
     this.selectionService.selectedSectionIndex = 0;
     this.updateUnitDefinition();
@@ -358,7 +432,22 @@ export class UnitService {
     sectionsToMove.forEach(section => this.unit.pages[pageIndex - 1].addSection(section));
     this.selectionService.selectedPageIndex = pageIndex - 1;
     this.selectionService.selectedSectionIndex = this.unit.pages[pageIndex - 1].sections.length - sectionsToMove.length;
-    this.unit.deletePage(pageIndex);
+    this.keepPageNavigation(
+      () => this.unit.deletePage(pageIndex),
+      new Map([[this.unit.pages[pageIndex], this.unit.pages[pageIndex - 1]]])
+    );
     this.updateUnitDefinition();
+  }
+
+  /**
+   * Runs a step that adds, removes or reorders pages so that every navigation button still leads to the page it
+   * led to before: a button stores a page number, and the step renumbers the pages (#1511). `mergedInto` is for a
+   * step that hands a page's content to another page and removes it.
+   */
+  keepPageNavigation(operation: () => void, mergedInto?: Map<Page, Page>): void {
+    const targets = this.referenceManager.capturePageTargets();
+    operation();
+    // Not every step drops the element selection, so a selected button would still show its old target.
+    if (this.referenceManager.restorePageTargets(targets, mergedInto)) this.elementPropertyUpdated.next();
   }
 }

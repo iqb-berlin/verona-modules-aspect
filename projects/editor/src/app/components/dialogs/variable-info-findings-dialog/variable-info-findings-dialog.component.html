@@ -1,8 +1,22 @@
 <h2 mat-dialog-title>{{ 'variableInfoFindings.title' | translate }}</h2>
 <mat-dialog-content>
+  @if (pendingReplacement) {
+    <div class="replacement-warning">
+      <p>{{ 'variableInfoFindings.replaceWarning' | translate: { count: pendingVariableCount } }}</p>
+      <button mat-flat-button color="warn" class="confirm-replacement" (click)="confirmReplacement()">
+        {{ 'variableInfoFindings.replaceConfirm' | translate }}
+      </button>
+      <button mat-button class="cancel-replacement" (click)="cancelReplacement()">{{ 'cancel' | translate }}</button>
+    </div>
+  }
   <p class="findings-explanation">{{ 'variableInfoFindings.explanation' | translate }}</p>
   @if (hasGeometryFinding) {
     <p class="findings-explanation">{{ 'variableInfoFindings.geometryHint' | translate }}</p>
+  }
+  @if (replaceableTargets.length > 1) {
+    <button mat-stroked-button class="replace-all" (click)="askToReplace(replaceableTargets)">
+      {{ 'variableInfoFindings.replaceAll' | translate: { count: replaceableTargets.length } }}
+    </button>
   }
   @if (rows.length === 0) {
     <p class="findings-explanation">{{ 'variableInfoFindings.none' | translate }}</p>
@@ -20,7 +34,7 @@
       </thead>
       <tbody>
         @for (row of rows; track row.finding.origin) {
-          <tr class="finding-row" [class.finding-row-uncorrectable]="!row.finding.isCorrectable">
+          <tr class="finding-row" [class.finding-row-id-only]="!row.finding.holdsBackList">
             @if (row.finding.origin.location; as location) {
               <td class="findings-cell">{{ 'variableInfoFindings.location' | translate:
                      { page: location.pageIndex + 1, section: location.sectionIndex + 1 } }}</td>
@@ -39,11 +53,11 @@
               @for (code of row.codes; track code) {
                 <div>{{ 'variableInfoFindings.code.' + code | translate }}</div>
               }
-              @if (!row.finding.isCorrectable) {
-                <div class="finding-uncorrectable-hint">{{ 'variableInfoFindings.uncorrectable' | translate }}</div>
+              @if (!row.finding.holdsBackList) {
+                <div class="finding-id-hint">{{ 'variableInfoFindings.idHint' | translate }}</div>
               }
             </td>
-            <td class="findings-cell">
+            <td class="findings-cell finding-actions">
               @if (row.finding.origin.location; as location) {
                 <button mat-stroked-button class="finding-action" (click)="goToElement(location)">
                   {{ 'variableInfoFindings.goToElement' | translate }}
@@ -51,6 +65,11 @@
               } @else {
                 <button mat-stroked-button class="finding-action" (click)="editStateVariables()">
                   {{ 'variableInfoFindings.editStateVariables' | translate }}
+                </button>
+              }
+              @if (row.replaceTarget; as target) {
+                <button mat-stroked-button class="finding-action replace-id" (click)="askToReplace([target])">
+                  {{ 'variableInfoFindings.replaceId' | translate }}
                 </button>
               }
             </td>

@@ -250,7 +250,7 @@ describe('UIElementPropertiesComponent', () => {
         issues: [{
           index: 0, part: 'alias', value: 'Btn1', code: 'DUPLICATE_ALIAS'
         }],
-        isCorrectable: true
+        holdsBackList: true
       }]);
       fixture.detectChanges();
 

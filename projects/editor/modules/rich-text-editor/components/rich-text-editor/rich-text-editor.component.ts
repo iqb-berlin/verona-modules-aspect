@@ -1,7 +1,8 @@
 import {
   Component, EventEmitter, Input, Output,
-  AfterViewInit, Injector, OnInit, ViewChild, ElementRef
+  AfterViewInit, Injector, OnDestroy, OnInit, ViewChild, ElementRef
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { AnyExtension, Editor } from '@tiptap/core';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
@@ -45,6 +46,10 @@ import CheckboxComponentExtension from 'editor/modules/rich-text-editor/extensio
 import DropdownComponentExtension from 'editor/modules/rich-text-editor/extensions/dropdown-component-extension';
 import MathFormulaExtension from 'editor/modules/rich-text-editor/extensions/math-formula-extension';
 import { ClozeDocument } from 'common/models/elements/cloze';
+import { NonBreakingSpaceHighlight } from 'editor/modules/rich-text-editor/extensions/non-breaking-space-highlight';
+import {
+  NonBreakingSpaceVisibilityService
+} from 'editor/modules/rich-text-editor/services/non-breaking-space-visibility.service';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -52,7 +57,7 @@ import { ClozeDocument } from 'common/models/elements/cloze';
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.scss']
 })
-export class RichTextEditorComponent implements OnInit, AfterViewInit {
+export class RichTextEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() content!: string | ClozeDocument;
   @Input() defaultFontSize!: number;
   @Input() clozeMode: boolean = false;
@@ -77,8 +82,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   defaultExtensions: AnyExtension[] = [];
   editor!: Editor;
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private injector: Injector, private dialogService: DialogService) { }
+  constructor(private injector: Injector, private dialogService: DialogService,
+              public nonBreakingSpaceVisibility: NonBreakingSpaceVisibilityService) { }
 
   ngOnInit(): void {
     this.defaultExtensions = [
@@ -112,7 +119,8 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       HorizontalRuleExtension,
       CharacterCount.configure(),
       Tooltip,
-      MathFormulaExtension(this.injector)
+      MathFormulaExtension(this.injector),
+      NonBreakingSpaceHighlight
     ];
 
     const activeExtensions = [...this.defaultExtensions];
@@ -137,6 +145,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
         handleDrop: RichTextEditorComponent.handleDropPlainText
       }
     });
+    // The current value arrives at once, so an editor opened later shows what the session switched to.
+    this.nonBreakingSpaceVisibility.visible
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(visible => this.editor.commands.setNonBreakingSpacesVisible(visible));
   }
 
   private static handlePastePlainText(view: EditorView, event: ClipboardEvent): boolean {
@@ -187,6 +199,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.autoFocus) this.editor.commands.focus();
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   toggleBold(): void {
@@ -340,6 +357,12 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   applyParagraphStyle(margin: number): void {
     this.editor.commands.setMargin(margin);
+  }
+
+  /** Switches the marking for every editor of the session and gives the focus back to this one's text. */
+  toggleNonBreakingSpaces(): void {
+    this.nonBreakingSpaceVisibility.toggle();
+    this.editor.commands.focus();
   }
 
   insertSpecialChar(char: string): void {

@@ -26,6 +26,8 @@
   "invalidReferencesRemoved": "Invalide Referenzen bei folgenden Elementen wurden entfernt:",
   "invalidVisibilityRulesToCheck": "Sichtbarkeitsbedingungen folgender Abschnitte verweisen auf nicht vorhandene Elemente oder Zustandsvariablen und sind nie erfüllt. Sie wurden nicht verändert – bitte prüfen:",
   "deleteStateVariablesConfirm": "Zustandsvariablen löschen?",
+  "deletePageConfirm": "Seite {{page}} löschen?",
+  "deleteAlwaysVisiblePageConfirm": "Dauerhaft sichtbare Seite löschen?",
   "referenceList": {
     "referencedBy": "wird referenziert von:",
     "visibilityRuleOf": "Sichtbarkeitsbedingung von Seite {{page}}, Abschnitt {{section}}",

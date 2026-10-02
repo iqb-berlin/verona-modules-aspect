@@ -319,7 +319,13 @@ export class UnitService {
           refs = this.referenceManager.getPageElementsReferences(object as EditorPage);
           const pageNavButtonRefs = this.referenceManager.getButtonReferencesForPage(pageIndex);
           refs = refs.concat(pageNavButtonRefs);
-          dialogText = `Seite ${pageIndex + 1} löschen?`;
+          /* Counted as the player and the navigation buttons count, without a permanently visible page, which has no
+             number at all. With that page in front, where the editor keeps it, this is what the tabs show (#1513). */
+          dialogText = (object as EditorPage).alwaysVisible ?
+            this.translateService.instant('deleteAlwaysVisiblePageConfirm') :
+            this.translateService.instant('deletePageConfirm', {
+              page: ReferenceManager.scrollPages(this.unit).indexOf(object as EditorPage) + 1
+            });
           break;
         }
         case 'section':

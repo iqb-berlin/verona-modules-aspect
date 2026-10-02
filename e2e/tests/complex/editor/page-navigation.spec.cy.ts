@@ -52,12 +52,12 @@ const unit = {
   showUnitNavNext: false
 };
 
-function loadUnit(): void {
+function loadUnit(unitDefinition: Record<string, unknown> = unit): void {
   cy.window().then(window => {
     window.postMessage({
       type: 'voeStartCommand',
       sessionId: 'dev',
-      unitDefinition: JSON.stringify(unit),
+      unitDefinition: JSON.stringify(unitDefinition),
       unitDefinitionType: 'aspect-unit-definition',
       editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
     }, '*');
@@ -83,5 +83,37 @@ describe('Navigation buttons when pages are deleted', () => {
 
     cy.get('aspect-editor-page-view').first().find('aspect-button').click({ force: true });
     cy.contains('mat-form-field', 'Aktionsparameter').find('mat-select').should('contain.text', 'Seite 2');
+  });
+});
+
+/* The editor does not count a permanently visible page and shows it without a number; the question before deleting
+   a page names it the same way (#1513). */
+describe('The delete confirmation with a permanently visible page', () => {
+  const unitWithAlwaysVisiblePage = {
+    ...unit,
+    pages: [{ ...page(), alwaysVisible: true }, page(), page()]
+  };
+
+  beforeEach(() => {
+    cy.viewport(1300, 900);
+    cy.openEditor();
+    loadUnit(unitWithAlwaysVisiblePage);
+  });
+
+  it('names the pages as the editor labels them', () => {
+    // The list view opens on the tab of the two pages that are counted.
+    cy.contains('[role="tab"]', '2 Seiten').should('have.attr', 'aria-selected', 'true');
+    cy.contains('.page-label', 'Seite 1').parents('aspect-editor-page-view')
+      .find('button:contains("more_vert")').click();
+    cy.get('.mat-mdc-menu-panel .delete-button').click();
+    cy.get('mat-dialog-container').should('contain.text', 'Seite 1 löschen?');
+    cy.get('mat-dialog-container').contains('button', 'Abbrechen').click();
+    cy.get('mat-dialog-container').should('not.exist');
+
+    cy.contains('[role="tab"]', 'sticky_note_2').click();
+    cy.contains('.page-label', 'dauerhaft sichtbare Seite').parents('aspect-editor-page-view')
+      .find('button:contains("more_vert")').click();
+    cy.get('.mat-mdc-menu-panel .delete-button').click();
+    cy.get('mat-dialog-container').should('contain.text', 'Dauerhaft sichtbare Seite löschen?');
   });
 });

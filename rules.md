@@ -431,8 +431,8 @@ Rationale:
 
 Branches, releases, the pipeline and the board columns are described in the README under *How work
 flows through this repository*. Read it before creating a branch, opening a pull request or moving a
-card on the board. The sections below begin with the step before any of that, the plan, then repeat
-the two points most easily got wrong and add what the README leaves open.
+card on the board. The sections below begin with the two steps before any of that, the plan and the
+review, then repeat the two points most easily got wrong and add what the README leaves open.
 
 ## 18) Before the work: a plan
 
@@ -449,7 +449,7 @@ a list of options:
   it does
 - **the scope**, and what is left out and becomes an issue of its own
 - **the tests**, including whether an end-to-end test of its own is possible — that decides the
-  column after the merge (§20)
+  column after the merge (§21)
 - **the places at risk**: a change to the unit definition (normalizer or migration step, §14), e2e
   selectors, what both applications share in `projects/common`
 
@@ -463,7 +463,23 @@ Rationale:
 - a session does not know what earlier sessions decided or rejected. Without a plan, the first time a
   person sees what it is about to do is the finished pull request
 
-## 19) Pull requests
+## 19) Before the commit: a review
+
+Finish the change and verify it (tests, lint, typecheck), but do not commit it yet. Run
+`/code-review` on it first; only then commit, push and open the pull request.
+
+- `/code-review` without a target reviews the uncommitted diff (`git diff HEAD`). Once the change is
+  committed that diff is empty and the review finds nothing; then name the scope explicitly
+  (`/code-review origin/develop..HEAD`, or the pull request number).
+- After the review, check `git status`. Review agents can leave files of their own in the working
+  tree; they do not belong in the commit.
+
+Rationale:
+- a review before the pull request can still turn the change around — a regression, or a fix that
+  compiles, passes every suite and does nothing. After the pull request every such round costs a
+  pipeline run
+
+## 20) Pull requests
 
 - Never write `Closes #…`, `Fixes #…` or `Resolves #…` in a commit message or pull request text.
   Reference the issue as `(#1357)`: GitHub would close the ticket on merge, and the board would move
@@ -477,7 +493,7 @@ Rationale:
 - every extra topic lengthens the review, and every further round costs a pipeline run of about half
   an hour
 
-## 20) Tickets and board 13
+## 21) Tickets and board 13
 
 A ticket goes on the board of its own repository, even when it comes out of work on another one:
 verona-modules-aspect on [board 13](https://github.com/orgs/iqb-berlin/projects/13), studio-lite on

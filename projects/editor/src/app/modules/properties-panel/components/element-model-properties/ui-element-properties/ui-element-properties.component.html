@@ -1,10 +1,21 @@
 <div class='fx-column-start-stretch'>
-  <mat-form-field appearance="fill">
+  @let aliasIssues = unitService.variableInfoFindings | async | aliasIssues : selectedElements[0]?.id;
+  <!-- `dynamic` while a reason is shown: it takes two lines, which the fixed subscript would lay over the next field.
+       Without one the field keeps the fixed spacing it always had. -->
+  <mat-form-field appearance="fill" [subscriptSizing]="aliasIssues.length > 0 ? 'dynamic' : 'fixed'">
     <mat-label>{{'propertiesPanel.id' | translate }}</mat-label>
     @if (selectedElements.length === 1) {
       <input #aliasField matInput type="text" [value]="combinedProperties.alias"
              (input)="emitOwn('alias', aliasField.value)"
              (keydown.space)="$event.preventDefault();">
+    }
+    <!-- A block of its own with the hint as its only node: Material projects it into the hint slot only so (#1116). -->
+    @if (selectedElements.length === 1 && aliasIssues.length > 0) {
+      <mat-hint class="alias-issue-hint">
+        @for (code of aliasIssues; track code) {
+          {{ 'variableInfoFindings.code.' + code | translate }}
+        }
+      </mat-hint>
     }
     @if (selectedElements.length > 1) {
       <input matInput type="text" disabled [value]="'propertiesPanel.mustBeUnique' | translate">

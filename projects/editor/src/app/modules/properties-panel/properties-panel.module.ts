@@ -110,6 +110,9 @@ import {
 import { PropertyDivergesPipe } from './pipes/property-diverges.pipe';
 import { HasAnyPropertyPipe } from './pipes/has-any-property.pipe';
 import { ScrollPageIndexPipe } from './pipes/scroll-page-index.pipe';
+import { GeometryVariableCheckPipe } from './pipes/geometry-variable-check.pipe';
+import { GeometryVariableOptionsPipe } from './pipes/geometry-variable-options.pipe';
+import { AliasIssuesPipe } from './pipes/alias-issues.pipe';
 import {
   SelectPropertiesComponent
 } from './components/element-model-properties/select-properties/select-properties.component';
@@ -210,7 +213,10 @@ import {
     PresetOptionTextPipe,
     PropertyDivergesPipe,
     HasAnyPropertyPipe,
-    ScrollPageIndexPipe
+    ScrollPageIndexPipe,
+    GeometryVariableCheckPipe,
+    GeometryVariableOptionsPipe,
+    AliasIssuesPipe
   ],
   imports: [
     CommonModule,

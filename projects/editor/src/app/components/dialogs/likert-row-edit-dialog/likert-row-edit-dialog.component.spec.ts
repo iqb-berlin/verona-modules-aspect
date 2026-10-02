@@ -21,6 +21,7 @@ import { DragNDropValueObject, TextImageLabel, TextLabel } from 'common/models/l
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { IDService } from 'editor/src/app/services/id.service';
 import {
   LikertRowEditDialogComponent
 } from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
@@ -52,6 +53,7 @@ describe('LikertRowEditDialogComponent', () => {
   let component: LikertRowEditDialogComponent;
   let fixture: ComponentFixture<LikertRowEditDialogComponent>;
   let dialogService: SpyObj<DialogService>;
+  let idService: SpyObj<IDService>;
   let dialogRefMock: { close: Mock };
   let row: LikertRowElement;
 
@@ -70,6 +72,8 @@ describe('LikertRowEditDialogComponent', () => {
       }
     } as Partial<LikertRowProperties>);
     dialogService = createSpyObj<DialogService>(['importImage', 'compressEmbeddedImage']);
+    idService = createSpyObj<IDService>(['isAliasAvailable']);
+    idService.isAliasAvailable.mockReturnValue(true);
     dialogRefMock = { close: vi.fn() };
 
     await TestBed.configureTestingModule({
@@ -95,7 +99,8 @@ describe('LikertRowEditDialogComponent', () => {
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { row, options } },
         { provide: MatDialogRef, useValue: dialogRefMock },
-        { provide: DialogService, useValue: dialogService }
+        { provide: DialogService, useValue: dialogService },
+        { provide: IDService, useValue: idService }
       ]
     }).compileComponents();
 
@@ -148,6 +153,19 @@ describe('LikertRowEditDialogComponent', () => {
     fixture.detectChanges();
 
     expect(getSaveButton().disabled).toBe(true);
+  });
+
+  /* Refused only after saving, a new row would go with the image and label just entered (#1507). */
+  it('should disable saving for an alias someone else holds, regardless of letter case', () => {
+    idService.isAliasAvailable.mockReturnValue(false);
+    const aliasInput = fixture.nativeElement.querySelector('input[type="text"]') as HTMLInputElement;
+    aliasInput.value = 'Vergeben';
+    aliasInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(idService.isAliasAvailable).toHaveBeenCalledWith('Vergeben', row.alias);
+    expect(getSaveButton().disabled).toBe(true);
+    expect(fixture.nativeElement.querySelector('.alias-taken-hint')).toBeTruthy();
   });
 
   it('should close with the edited row', async () => {

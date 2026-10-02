@@ -73,9 +73,26 @@
       <mat-select-trigger>
         {{ 'propertiesPanel.trackedVariables' | translate }} ({{ (combinedProperties.trackedVariables ?? []).length }})
       </mat-select-trigger>
-      <mat-option *ngFor="let variable of geometryObjects | async" [value]="variable">
-        {{ variable.id }}
-      </mat-option>
+      @for (option of geometryObjects | async | geometryVariableOptions : combinedProperties.trackedVariables;
+            track option.variable.id) {
+        @let check = option.variable.id | geometryVariableCheck : combinedProperties.trackedVariables
+                                                                : combinedProperties.trackedExpectedVariables;
+        <mat-option [value]="option.variable" [disabled]="check.isLocked">
+          {{ option.variable.id }}
+          @if (option.isMissing) {
+            <span class="geometry-variable-issue">
+              <mat-icon class="geometry-variable-issue-icon">warning</mat-icon>
+              {{ 'propertiesPanel.geometryVariableMissing' | translate }}
+            </span>
+          }
+          @if (check.issue) {
+            <span class="geometry-variable-issue">
+              <mat-icon class="geometry-variable-issue-icon">warning</mat-icon>
+              {{ 'propertiesPanel.geometryVariableIssue.' + check.issue | translate }}
+            </span>
+          }
+        </mat-option>
+      }
     </mat-select>
     @if (combinedProperties.trackedVariables === null) {
       <aspect-merged-marker matSuffix></aspect-merged-marker>
@@ -86,13 +103,22 @@
     <mat-label>{{ 'propertiesPanel.trackedExpectedVariables' | translate }}</mat-label>
     <mat-chip-grid #trackedExpectedVariables
                    [ngModel]="combinedProperties.trackedExpectedVariables">
-      <mat-chip-row *ngFor="let variable of  combinedProperties.trackedExpectedVariables"
-                    (removed)="removeTrackedExpectedVariable(variable)">
-        {{ variable.id }}
-        <button matChipRemove>
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip-row>
+      @for (variable of combinedProperties.trackedExpectedVariables; track variable.id) {
+        @let check = variable.id | geometryVariableCheck : combinedProperties.trackedVariables
+                                                         : combinedProperties.trackedExpectedVariables;
+        <mat-chip-row (removed)="removeTrackedExpectedVariable(variable)">
+          @if (check.issue) {
+            <mat-icon class="geometry-variable-issue-icon"
+                      [matTooltip]="'propertiesPanel.geometryVariableIssue.' + check.issue | translate">
+              warning
+            </mat-icon>
+          }
+          {{ variable.id }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
     </mat-chip-grid>
 
     <input

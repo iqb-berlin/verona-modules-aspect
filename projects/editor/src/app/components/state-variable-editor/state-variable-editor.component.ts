@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { StateVariable } from 'common/models/state-variable';
 import { VariableAlias } from 'common/utils/variable-alias';
@@ -11,7 +11,7 @@ import { IDService } from 'editor/src/app/services/id.service';
   styleUrls: ['./state-variable-editor.component.scss'],
   standalone: false
 })
-export class StateVariableEditorComponent {
+export class StateVariableEditorComponent implements OnInit {
   error: boolean = false;
   errorMessage: string = '';
   @Input() stateVariable!: StateVariable;
@@ -19,12 +19,25 @@ export class StateVariableEditorComponent {
 
   constructor(private idService: IDService) { }
 
+  /** Says at once what is wrong with an alias stored that way, rather than only once something is typed: the
+      validation area sends the author here to correct it (#1129). */
+  ngOnInit(): void {
+    const { alias } = this.stateVariable;
+    if (!VariableAlias.isValid(alias)) {
+      this.error = true;
+      this.errorMessage = 'idContainsInvalidCharacters';
+    } else if (!this.idService.isAliasAvailable(alias, alias)) {
+      this.error = true;
+      this.errorMessage = 'idTaken';
+    }
+  }
+
   checkId(alias: string): void {
     if (alias !== this.stateVariable.alias) {
       if (!VariableAlias.isValid(alias)) {
         this.error = true;
         this.errorMessage = 'idContainsInvalidCharacters';
-      } else if (!this.idService.isAliasAvailable(alias)) {
+      } else if (!this.idService.isAliasAvailable(alias, this.stateVariable.alias)) {
         this.error = true;
         this.errorMessage = 'idTaken';
       } else {

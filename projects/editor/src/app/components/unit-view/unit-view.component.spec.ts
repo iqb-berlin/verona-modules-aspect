@@ -16,7 +16,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject, of } from 'rxjs';
+import { BehaviorSubject, Subject, of } from 'rxjs';
+import { DialogService } from 'editor/src/app/services/dialog.service';
+import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
 import { PageChangeService } from 'common/services/page-change.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { UnitViewComponent } from 'editor/src/app/components/unit-view/unit-view.component';
@@ -65,11 +67,15 @@ describe('UnitViewComponent', () => {
   let unitService: SpyObj<UnitService>;
   let dialog: SpyObj<MatDialog>;
   let pageOrderChanged: Subject<void>;
+  let variableInfoFindings: BehaviorSubject<VariableInfoFinding[]>;
+  let dialogService: SpyObj<DialogService>;
   let pages: EditorPage[];
 
   beforeEach(async () => {
     pages = [new EditorPage(), new EditorPage()];
     pageOrderChanged = new Subject<void>();
+    variableInfoFindings = new BehaviorSubject<VariableInfoFinding[]>([]);
+    dialogService = createSpyObj<DialogService>(['showVariableInfoFindingsDialog']);
     selectionService = new SelectionService();
     pageService = createSpyObj<PageService>(['addPage']);
     unitService = createSpyObj<UnitService>([
@@ -77,6 +83,7 @@ describe('UnitViewComponent', () => {
     ]);
     Object.assign(unitService, {
       pageOrderChanged,
+      variableInfoFindings,
       allowExpertMode: true,
       expertMode: true,
       unit: {
@@ -116,6 +123,7 @@ describe('UnitViewComponent', () => {
         { provide: UnitService, useValue: unitService },
         { provide: PageService, useValue: pageService },
         { provide: MatDialog, useValue: dialog },
+        { provide: DialogService, useValue: dialogService },
         { provide: PageChangeService, useValue: new PageChangeService() }
       ]
     }).compileComponents();
@@ -218,6 +226,64 @@ describe('UnitViewComponent', () => {
     const rendered = renderedPageViews();
     expect(rendered.map(pageView => pageView.pageIndex)).toEqual([1, 2]);
     expect(rendered.map(pageView => pageView.isLastPage)).toEqual([false, true]);
+  });
+
+  /* The validation area stays reachable while the unit has findings, in the host as well, where there is no
+     toolbar (#1129). */
+  describe('the indicator of invalid variable names', () => {
+    const indicator = (): HTMLButtonElement | null => fixture.nativeElement
+      .querySelector('.variable-info-findings-button');
+
+    it('should not be there while the unit has no findings', () => {
+      expect(indicator()).toBeNull();
+    });
+
+    it('should show the number of findings and open the validation area', () => {
+      variableInfoFindings.next([{} as VariableInfoFinding, {} as VariableInfoFinding]);
+      fixture.detectChanges();
+
+      expect(indicator()?.textContent).toContain('2');
+      indicator()?.click();
+      expect(dialogService.showVariableInfoFindingsDialog).toHaveBeenCalled();
+    });
+  });
+
+  /* In the list view a permanently visible first page has a tab of its own; an element asked for by the validation
+     area may sit behind the other one (#1129). */
+  describe('the tab of the list view', () => {
+    beforeEach(() => {
+      pages[0].alwaysVisible = true;
+    });
+
+    it('should turn to the tab of a requested element', () => {
+      selectionService.requestElement(1, 0, 'text-field_2');
+      expect(component.listTabIndex).toBe(1);
+
+      selectionService.requestElement(0, 0, 'text-field_1');
+      expect(component.listTabIndex).toBe(0);
+    });
+
+    /* That a selection elsewhere leaves the tab where it is, is what the assistant specs rely on. */
+    it('should stay where it is when an element is merely selected', () => {
+      selectionService.updateSelection(1, 0);
+      fixture.detectChanges();
+
+      expect(component.listTabIndex).toBe(0);
+    });
+
+    it('should follow the author to the other tab', () => {
+      component.selectPage(1);
+
+      expect(component.listTabIndex).toBe(1);
+    });
+
+    it('should not move for a request without a permanently visible page', () => {
+      pages[0].alwaysVisible = false;
+
+      selectionService.requestElement(1, 0, 'text-field_2');
+
+      expect(component.listTabIndex).toBe(0);
+    });
   });
 
   it('should stop refreshing the tabs after destroy', () => {

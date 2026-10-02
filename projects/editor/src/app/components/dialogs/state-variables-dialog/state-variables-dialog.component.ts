@@ -14,7 +14,10 @@ export class StateVariablesDialogComponent {
   constructor(
     private idService: IDService,
     @Inject(MAT_DIALOG_DATA) private data: { stateVariables: StateVariable[] }) {
-    this.stateVariables = [...data.stateVariables];
+    /* Copies of the variables, not only of the list: the editor writes an alias into the variable it is given, and
+       a cancelled dialog left that alias in the unit, unreported and still listed as a finding (#1129, §15). */
+    this.stateVariables = data.stateVariables
+      .map(stateVariable => new StateVariable(stateVariable.id, stateVariable.alias, stateVariable.value));
   }
 
   addStateVariable() {

@@ -49,7 +49,7 @@ describe('StateVariableEditorComponent', () => {
   it('should update alias if available', () => {
     const spy = vi.spyOn(component.stateVariableChange, 'emit');
     component.checkId('new_v1');
-    expect(mockIDService.isAliasAvailable).toHaveBeenCalledWith('new_v1');
+    expect(mockIDService.isAliasAvailable).toHaveBeenCalledWith('new_v1', 'v1');
     expect(mockIDService.unregister).toHaveBeenCalledWith('v1', false, true);
     expect(mockIDService.register).toHaveBeenCalledWith('new_v1', false, true);
     expect(component.stateVariable.alias).toBe('new_v1');
@@ -72,6 +72,38 @@ describe('StateVariableEditorComponent', () => {
     });
     expect(mockIDService.register).not.toHaveBeenCalled();
     expect(component.stateVariable.alias).toBe('v1');
+  });
+
+  /* The validation area sends the author here to correct a stored alias; the editor has to say what is wrong with it
+     before anything is typed (#1129). */
+  describe('an alias stored that way', () => {
+    const open = (alias: string): void => {
+      component.stateVariable = new StateVariable('state_1', alias, '');
+      component.error = false;
+      component.errorMessage = '';
+      component.ngOnInit();
+    };
+
+    it('should be marked at once when it has characters the contract forbids', () => {
+      open('März');
+
+      expect(component.error).toBe(true);
+      expect(component.errorMessage).toBe('idContainsInvalidCharacters');
+    });
+
+    it('should be marked at once when another holds it regardless of letter case', () => {
+      mockIDService.isAliasAvailable.mockReturnValue(false);
+      open('Wert');
+
+      expect(mockIDService.isAliasAvailable).toHaveBeenCalledWith('Wert', 'Wert');
+      expect(component.errorMessage).toBe('idTaken');
+    });
+
+    it('should not be marked when it is fine', () => {
+      open('wert_1');
+
+      expect(component.error).toBe(false);
+    });
   });
 
   it('should clear error when alias becomes valid again', () => {

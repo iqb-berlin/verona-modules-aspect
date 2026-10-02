@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +9,7 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -24,6 +26,13 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { By } from '@angular/platform-browser';
+import {
+  GeometryVariableCheckPipe
+} from 'editor/src/app/modules/properties-panel/pipes/geometry-variable-check.pipe';
+import {
+  GeometryVariableOptionsPipe
+} from 'editor/src/app/modules/properties-panel/pipes/geometry-variable-options.pipe';
 import {
   GeometryPropsComponent
 } from './geometry-props.component';
@@ -51,7 +60,10 @@ describe('GeometryPropsComponent', () => {
     } as unknown as SelectionService;
 
     await TestBed.configureTestingModule({
-      declarations: [GeometryPropsComponent, MergedCheckboxComponent, MergedMarkerComponent],
+      declarations: [
+        GeometryPropsComponent, MergedCheckboxComponent, MergedMarkerComponent,
+        GeometryVariableCheckPipe, GeometryVariableOptionsPipe
+      ],
       imports: [
         CommonModule,
         FormsModule,
@@ -153,6 +165,120 @@ describe('GeometryPropsComponent', () => {
 
     expect(emitted).toEqual([]);
     expect(messageService.showError).not.toHaveBeenCalled();
+  });
+
+  /* `a` beside `A` would give two identifiers that differ only in letter case (#1129). */
+  it('should reject an expected variable that differs from a chosen one only in letter case', () => {
+    component.combinedProperties.trackedVariables = [{ id: 'B', value: '' }];
+
+    component.addTrackedExpectedVariable(chipInputEvent('a'));
+    component.addTrackedExpectedVariable(chipInputEvent('b'));
+
+    expect(messageService.showError).toHaveBeenCalledTimes(2);
+    expect(messageService.showError).toHaveBeenCalledWith('propertiesPanel.geometryVariableIssue.DUPLICATE_ALIAS');
+    expect(emitted).toEqual([]);
+  });
+
+  it('should mark a stored expected variable whose name breaks the contract', () => {
+    const issueIcons = (): number => fixture.nativeElement.querySelectorAll('.geometry-variable-issue-icon').length;
+    expect(issueIcons()).toBe(0);
+
+    component.combinedProperties = {
+      ...component.combinedProperties, trackedExpectedVariables: [{ id: 'fistgewählt', value: '' }]
+    };
+    fixture.detectChanges();
+
+    expect(issueIcons()).toBe(1);
+  });
+
+  describe('the list of GeoGebra objects', () => {
+    const openOptions = (): HTMLElement[] => {
+      fixture.debugElement.query(By.directive(MatSelect)).componentInstance.open();
+      fixture.detectChanges();
+      return Array.from(document.querySelectorAll<HTMLElement>('mat-option'));
+    };
+
+    beforeEach(() => {
+      component.geometryObjects.next([
+        { id: 'A', value: '' }, { id: 'a', value: '' }, { id: 'fistgewählt', value: '' }, { id: 'B', value: '' }
+      ]);
+    });
+
+    it('should lock names with an issue that are not chosen, and mark them', () => {
+      component.combinedProperties = { ...component.combinedProperties, trackedVariables: [{ id: 'B', value: '' }] };
+      fixture.detectChanges();
+
+      const options = openOptions();
+
+      expect(options.map(option => option.getAttribute('aria-disabled'))).toEqual(['false', 'true', 'true', 'false']);
+      expect(options[2].textContent).toContain('propertiesPanel.geometryVariableIssue.INVALID_CHARACTERS');
+      expect(options[1].textContent).toContain('propertiesPanel.geometryVariableIssue.DUPLICATE_ALIAS');
+    });
+
+    /* In a unit stored before #1129 that is how the author gets rid of them. */
+    it('should keep chosen names with an issue selectable', () => {
+      component.combinedProperties = {
+        ...component.combinedProperties,
+        trackedVariables: [{ id: 'a', value: '' }, { id: 'fistgewählt', value: '' }],
+        trackedExpectedVariables: []
+      };
+      fixture.detectChanges();
+
+      const options = openOptions();
+
+      expect(options.map(option => option.getAttribute('aria-disabled'))).toEqual(['true', 'false', 'false', 'false']);
+    });
+
+    /* A replaced file leaves its names tracked; they were missing from the list and so could not be taken out
+       (#1505). */
+    it('should list a tracked name the file no longer has, marked and selectable', fakeAsync(() => {
+      component.combinedProperties = {
+        ...component.combinedProperties,
+        trackedVariables: [{ id: 'B', value: '' }, { id: 'alt', value: '' }],
+        trackedExpectedVariables: []
+      };
+      fixture.detectChanges();
+      tick(); // ngModel writes the selection a microtask later
+
+      const options = openOptions();
+      tick(); // and the select marks the options it renders on opening a microtask later still
+      fixture.detectChanges();
+
+      expect(options.map(option => option.textContent?.trim().split(/\s/)[0]))
+        .toEqual(['A', 'a', 'fistgewählt', 'B', 'alt']);
+      expect(options[4].textContent).toContain('propertiesPanel.geometryVariableMissing');
+      expect(options[4].textContent).not.toContain('propertiesPanel.geometryVariableIssue');
+      expect(options[4].getAttribute('aria-disabled')).toBe('false');
+      expect(options[4].getAttribute('aria-selected')).toBe('true');
+    }));
+  });
+
+  it('should name both reasons for a missing name that breaks the contract as well', () => {
+    component.geometryObjects.next([{ id: 'A', value: '' }]);
+    component.combinedProperties = {
+      ...component.combinedProperties, trackedVariables: [{ id: 'größe', value: '' }], trackedExpectedVariables: []
+    };
+    fixture.detectChanges();
+
+    fixture.debugElement.query(By.directive(MatSelect)).componentInstance.open();
+    fixture.detectChanges();
+    const missingOption = Array.from(document.querySelectorAll<HTMLElement>('mat-option'))[1];
+
+    expect(missingOption.textContent).toContain('propertiesPanel.geometryVariableMissing');
+    expect(missingOption.textContent).toContain('propertiesPanel.geometryVariableIssue.INVALID_CHARACTERS');
+  });
+
+  it('should not tell a tracked name missing before the applet has loaded', () => {
+    component.geometryObjects.next(null);
+    component.combinedProperties = {
+      ...component.combinedProperties, trackedVariables: [{ id: 'B', value: '' }]
+    };
+    fixture.detectChanges();
+
+    fixture.debugElement.query(By.directive(MatSelect)).componentInstance.open();
+    fixture.detectChanges();
+
+    expect(document.querySelectorAll('mat-option').length).toBe(0);
   });
 
   it('should remove a tracked expected variable', () => {

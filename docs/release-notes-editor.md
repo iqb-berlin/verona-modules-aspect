@@ -3,9 +3,19 @@ Editor
 ## next
 ### Neue Funktionen
 - Neues Element "Tetfolio": Ein tet.folio-Export (ZIP) lässt sich im Eigenschaftenbereich hochladen; der Editor packt ihn in ein eigenständiges HTML-Dokument und zeigt das Experiment in der Aufgabe an ([#1461](https://github.com/iqb-berlin/verona-modules-aspect/issues/1461))
+- Ungültige Variablennamen werden mit Fundstelle angezeigt: Ein Dialog listet jede Variable, deren Name gegen die Regeln verstößt — unerlaubte Zeichen oder ein Name, der mehrfach vorkommt, wobei Groß- und Kleinschreibung nicht als Unterschied zählen —, mit Seite, Abschnitt, Element, Eigenschaft und Grund. "Zum Element" springt dorthin und wählt das Element aus, bei Zustandsvariablen öffnet sich deren Editor. Der Dialog öffnet sich beim Laden einer betroffenen Unit und bleibt danach über ein Warnzeichen mit der Anzahl im Kopf der Seitenansicht erreichbar. Der Grund steht außerdem unter dem ID-Feld des Elements und im Zustandsvariablen-Editor. Interne IDs aus Units vor Editor 2.6.0 lassen sich im Editor nicht ändern; sie werden als solche gekennzeichnet ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
 
 ### Änderungen
 - Die Werkzeugleiste des Texteditors ist jetzt einfarbig hellgrau statt rosa verlaufend ([#1493](https://github.com/iqb-berlin/verona-modules-aspect/issues/1493))
+- Ein Name, der sich von einem vorhandenen nur in der Groß- und Kleinschreibung unterscheidet, wird nicht mehr angenommen — `wert` neben `Wert` ist abgelehnt, wie es der Verona-Vertrag und der Schemer verlangen. Bestehende Units werden dabei nicht verändert; solche Paare werden gemeldet ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+- Solange eine Unit einen Namen enthält, der sich im Editor korrigieren lässt, meldet der Editor keine Variablenliste an das Studio; das Studio behält bis dahin die zuletzt gespeicherte. Bisher ging eine Liste ohne die ungültigen Variablen an das Studio, das daraufhin deren Kodierungen und Metadaten-Zuordnungen verwarf ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+- GeoGebra: In der Auswahl der verfolgten Variablen sind Objektnamen mit unerlaubten Zeichen (etwa Umlaute, griechische Buchstaben, Striche) und Namen, die sich von einem gewählten nur in der Groß- und Kleinschreibung unterscheiden, gekennzeichnet und nicht wählbar; schon gewählte bleiben abwählbar. Erwartete Variablen mit solchen Namen werden ebenso abgelehnt ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+
+### Fehlerbehebungen
+- GeoGebra: Wird die Datei ausgetauscht, erscheinen verfolgte Variablen, die es in der neuen Datei nicht mehr gibt, jetzt in der Auswahl — gekennzeichnet mit "nicht mehr in der GeoGebra-Datei" und abwählbar. Bisher fehlten sie dort und ließen sich nicht entfernen ([#1505](https://github.com/iqb-berlin/verona-modules-aspect/issues/1505))
+- Ablegelisten: Die IDs der Optionen bleiben nach dem Laden einer Unit belegt. Bisher waren sie danach wieder frei, sodass eine neue Option oder ein Element dieselbe ID bekommen konnte ([#1506](https://github.com/iqb-berlin/verona-modules-aspect/issues/1506))
+- Optionentabelle: Die ID einer neuen Zeile mit Bild wird jetzt geprüft; ist sie schon vergeben, lässt sich der Dialog nicht speichern. Bisher wurde sie ungeprüft übernommen, und die Zeile ließ sich danach nicht mehr sauber löschen ([#1507](https://github.com/iqb-berlin/verona-modules-aspect/issues/1507))
+- Zustandsvariablen: Ein abgebrochener Dialog verwirft jetzt auch eine Umbenennung. Bisher blieb der geänderte Name in der Unit stehen ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
 
 ## 3.0.1
 ### Neue Funktionen

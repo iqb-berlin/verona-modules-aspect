@@ -1,5 +1,6 @@
 import { IDTypes } from 'common/models/id-interfaces';
 import { IDError } from 'common/classes/id-error';
+import { VariableAlias } from 'common/utils/variable-alias';
 
 export class IdRegistry {
   registeredIDs: string[] = [];
@@ -10,12 +11,28 @@ export class IdRegistry {
     return id;
   }
 
-  isIdAvailable(id: string): boolean {
-    return !this.registeredIDs.includes(id);
+  /**
+   * Whether a name may be given out, which it may not if a registered one differs from it only in letter case: the
+   * Verona contract keeps identifiers apart regardless of case (#1129). `except` is the name the asker holds
+   * itself, so that `Wert` can become `wert`.
+   */
+  isIdAvailable(id: string, except?: string): boolean {
+    const comparable = VariableAlias.toComparable(id);
+    return !this.registeredIDs
+      .some(registeredID => registeredID !== except && VariableAlias.toComparable(registeredID) === comparable);
+  }
+
+  /**
+   * Whether exactly this name is registered. Bookkeeping asks this rather than `isIdAvailable`: a unit stored
+   * before #1129 may hold `Wert` and `wert`, and both have to be registered so that releasing one does not free
+   * the other.
+   */
+  isRegistered(id: string): boolean {
+    return this.registeredIDs.includes(id);
   }
 
   registerID(id: string): void {
-    if (!this.isIdAvailable(id)) throw new IDError(`ID bereits vergeben: ${id}`, 0, true);
+    if (this.isRegistered(id)) throw new IDError(`ID bereits vergeben: ${id}`, 0, true);
     this.registeredIDs.push(id);
   }
 

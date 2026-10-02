@@ -62,6 +62,13 @@ export class SelectionService {
    * written to exclude.
    */
   isSelectionDynamicallyPositioned: boolean = false;
+  /**
+   * An element asked for by its id from outside the unit view -- the validation area does this (#1129). Selecting
+   * needs the element's overlay, which only the section rendering it has, and in the tabbed view that section may
+   * not exist yet when the request is made. So the request waits here until the section that renders the element
+   * takes it, and `null` means none is waiting.
+   */
+  requestedElementID = new BehaviorSubject<string | null>(null);
 
   constructor() {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
@@ -78,6 +85,8 @@ export class SelectionService {
     this.selectedPageIndex = 0;
     this.selectedSectionIndex = 0;
     this.clearElementSelection();
+    // An id asked for in the unit left behind can name an element of the incoming one: generated ids repeat.
+    this.requestedElementID.next(null);
   }
 
   updateSelection(pageIndex: number, sectionIndex: number): void {
@@ -154,5 +163,12 @@ export class SelectionService {
 
   selectPreviousPage() {
     this.selectPage(Math.max(this.selectedPageIndex - 1, 0));
+  }
+
+  /** Turns to the element's page and section and asks the section rendering it to select it. */
+  requestElement(pageIndex: number, sectionIndex: number, elementID: string): void {
+    this.selectPage(pageIndex);
+    this.selectedSectionIndex = sectionIndex;
+    this.requestedElementID.next(elementID);
   }
 }

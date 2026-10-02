@@ -26,6 +26,9 @@ import {
 import {
   ImageResizeDialogComponent
 } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import {
+  VariableInfoFindingsDialogComponent
+} from 'editor/src/app/components/dialogs/variable-info-findings-dialog/variable-info-findings-dialog.component';
 
 describe('DialogService', () => {
   let service: DialogService;
@@ -332,5 +335,32 @@ describe('DialogService', () => {
         autoFocus: false
       }
     );
+  });
+
+  /* The validation area follows the findings, so a second one would only show the same; a host replaying loads
+     would otherwise stack them (#1129). */
+  describe('the validation area', () => {
+    let closed: Subject<void>;
+
+    beforeEach(() => {
+      closed = new Subject<void>();
+      dialogMock.open.mockReturnValue({ afterClosed: () => closed });
+    });
+
+    it('should open only once while it is open', () => {
+      service.showVariableInfoFindingsDialog();
+      service.showVariableInfoFindingsDialog();
+
+      expect(dialogMock.open).toHaveBeenCalledTimes(1);
+      expect(dialogMock.open).toHaveBeenCalledWith(VariableInfoFindingsDialogComponent, expect.anything());
+    });
+
+    it('should open again once it was closed', () => {
+      service.showVariableInfoFindingsDialog();
+      closed.next();
+      service.showVariableInfoFindingsDialog();
+
+      expect(dialogMock.open).toHaveBeenCalledTimes(2);
+    });
   });
 });

@@ -19,7 +19,6 @@
   "bottom": "unten",
   "idTaken": "ID ist bereits vergeben",
   "idContainsInvalidCharacters": "ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)",
-  "invalidVariableAliases": "Folgende Variablen-IDs entsprechen nicht dem erlaubten Muster (a-z, A-Z, 0-9, _, -) und werden nicht an den Host gemeldet: {{aliases}}",
   "inputInvalid": "Eingabe ungültig",
   "elementNotAddedFileFailed": "Die Datei konnte nicht geladen werden. Es wurde kein Element angelegt.",
   "outdatedUnit": "Unit Definition aktualisiert",
@@ -326,6 +325,11 @@
     "trackedVariables": "Bekannte Variablen",
     "trackedExpectedVariables": "Erwartete Variablen",
     "addTrackedExpectedVariable": "Neue Variable...",
+    "geometryVariableMissing": "nicht mehr in der GeoGebra-Datei – abwählen",
+    "geometryVariableIssue": {
+      "INVALID_CHARACTERS": "unerlaubte Zeichen – in GeoGebra umbenennen",
+      "DUPLICATE_ALIAS": "unterscheidet sich von einer gewählten Variable nur in Groß-/Kleinschreibung"
+    },
     "isSortList": "Sortierliste",
     "permanentPlaceholders": "Platzhalter anzeigen",
     "permanentPlaceholdersCC": "Platzhalter mit Durchschrift",
@@ -428,6 +432,7 @@
     "audio": "Audio",
     "video": "Video",
     "likert": "Optionentabelle",
+    "likert-row": "Zeile der Optionentabelle",
     "cloze": "Lückentext",
     "slider": "Schieberegler",
     "spell-correct": "Wort korrigieren",
@@ -621,6 +626,31 @@
   },
   "overviewDialog": {
     "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."
+  },
+  "variableInfoFindings": {
+    "title": "Ungültige Variablennamen",
+    "indicator": "Ungültige Variablennamen anzeigen",
+    "explanation": "Diese Variablen verstoßen gegen die Regeln für Variablennamen: erlaubt sind Buchstaben ohne Umlaute, Ziffern, _ und -, und jeder Name darf nur einmal vorkommen, wobei Groß- und Kleinschreibung nicht als Unterschied zählen. Solange sich einer der Namen hier korrigieren lässt, meldet der Editor keine Variablenliste an das Studio; das Studio behält bis dahin die zuletzt gespeicherte.",
+    "geometryHint": "Namen aus GeoGebra lassen sich nur in GeoGebra ändern: das Objekt dort umbenennen und die Datei neu laden. Bereits erhobene Antworten bleiben dem alten Namen zugeordnet.",
+    "none": "Alle Variablennamen sind gültig.",
+    "column": {
+      "location": "Ort",
+      "element": "Element",
+      "property": "Eigenschaft",
+      "value": "Betroffener Name",
+      "reason": "Grund"
+    },
+    "location": "Seite {{page}}, Abschnitt {{section}}",
+    "code": {
+      "EMPTY_IDENTIFIER": "Der Name ist leer.",
+      "INVALID_CHARACTERS": "Der Name enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -).",
+      "DUPLICATE_ID": "Die interne ID kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied).",
+      "DUPLICATE_ALIAS": "Der Name kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied).",
+      "PUBLIC_IDENTIFIER_COLLISION": "Der Name kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied)."
+    },
+    "uncorrectable": "Betrifft die interne ID, die sich im Editor nicht ändern lässt; sie hält die Variablenliste nicht zurück.",
+    "goToElement": "Zum Element",
+    "editStateVariables": "Zustandsvariablen bearbeiten"
   },
   "assistants": "Assistenten",
   "pageSettings": "Seiteneinstellungen",

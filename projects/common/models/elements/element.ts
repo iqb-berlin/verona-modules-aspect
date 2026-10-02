@@ -113,7 +113,7 @@ export abstract class UIElement implements UIElementProperties {
     }
     if (property === 'alias') {
       if (!this.idService) throw new Error('IDService not available');
-      if (!this.idService.isAliasAvailable(value as string)) {
+      if (!this.idService.isAliasAvailable(value as string, this.alias)) {
         throw new IDError('ID ist bereits vergeben');
       }
       if ((value as string).includes(' ')) {

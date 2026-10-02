@@ -78,7 +78,7 @@ describe('IDEditDialogComponent', () => {
   it('should accept an available alias', () => {
     component.aliasControl.setValue('text_2');
 
-    expect(idService.isAliasAvailable).toHaveBeenCalledWith('text_2');
+    expect(idService.isAliasAvailable).toHaveBeenCalledWith('text_2', 'text_1');
     expect(component.aliasControl.valid).toBe(true);
   });
 

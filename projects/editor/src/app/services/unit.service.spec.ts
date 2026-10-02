@@ -1,9 +1,10 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { Mock } from 'vitest';
 import { VersionManager } from 'common/services/version-manager';
 import { UnitProperties } from 'common/models/unit';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -79,10 +80,16 @@ describe('UnitService - rapid load handling', () => {
   });
 });
 
-describe('UnitService - variable info validation (#1043)', () => {
+describe('UnitService - variable info validation (#1043, #1129)', () => {
   let service: UnitService;
   let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
   let messageServiceSpy: SpyObj<MessageService>;
+  let dialogServiceSpy: SpyObj<DialogService>;
+
+  const unitWithStateVariables = (...stateVariables: StateVariable[]): string => JSON.stringify({
+    ...createUnitBlueprint('unused'), stateVariables
+  });
+  const lastReportedVariables = (): VariableInfo[] | undefined => veronaApiServiceSpy.sendChanged.mock.lastCall?.[2];
 
   beforeEach(() => {
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
@@ -93,38 +100,108 @@ describe('UnitService - variable info validation (#1043)', () => {
     ]);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    dialogServiceSpy = createSpyObj<DialogService>([
+      'showUnitDefErrorDialog', 'showDeleteConfirmDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
+    ]);
 
     service = new UnitService(
       new SelectionService(),
       veronaApiServiceSpy,
       messageServiceSpy,
-      createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']),
+      dialogServiceSpy,
       new IDService(),
       translateServiceSpy
     );
   });
 
-  it('does not report variable infos with invalid aliases to the host', () => {
+  /* A partial list would be stored by the host as the whole one, and studio drops the codings and metadata of
+     every variable missing from it. Without a list it keeps the one it has. */
+  it('sends no variable list at all while an alias needs correcting', () => {
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('März')));
     service.updateUnitDefinition();
 
-    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
-    expect(reportedVariableInfos.length).toBe(0);
+    expect(veronaApiServiceSpy.sendChanged).toHaveBeenCalled();
+    expect(lastReportedVariables()).toBeUndefined();
   });
 
-  it('notifies the user when a loaded unit contains invalid aliases', () => {
+  it('shows the findings when a loaded unit has something to correct', () => {
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('weiter ')));
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledWith('invalidVariableAliases');
+
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).toHaveBeenCalled();
+    expect(service.variableInfoFindings.value.map(finding => finding.origin.info.id)).toEqual(['weiter ']);
+    expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
   });
 
-  it('keeps reporting valid variable infos and shows no prompt', () => {
+  it('holds back the list for aliases that differ only in letter case', () => {
+    service.loadUnitDefinition(unitWithStateVariables(
+      new StateVariable('state_1', 'Wert', ''), new StateVariable('state_2', 'wert', '')
+    ));
+    service.updateUnitDefinition();
+
+    expect(lastReportedVariables()).toBeUndefined();
+    expect(service.variableInfoFindings.value.flatMap(finding => finding.issues.map(issue => issue.code)))
+      .toEqual(['DUPLICATE_ALIAS', 'DUPLICATE_ALIAS']);
+  });
+
+  it('reports the whole list again once the alias is corrected', () => {
+    service.loadUnitDefinition(unitWithStateVariables(
+      new StateVariable('state_1', 'März', ''), new StateVariable('state_2', 'other', '')
+    ));
+    service.unit.stateVariables[0].alias = 'Maerz';
+    service.updateUnitDefinition();
+
+    expect(lastReportedVariables()?.map(info => info.alias)).toEqual(['Maerz', 'other']);
+    expect(service.variableInfoFindings.value).toEqual([]);
+  });
+
+  /* The id is not editable since editor 2.6.0. Holding back the list for it would hold it back forever (#1508). */
+  it('reports an invalid id that cannot be corrected in the editor, but sends the whole list', () => {
+    service.loadUnitDefinition(unitWithStateVariables(new StateVariable('März', 'maerz', '')));
+    service.updateUnitDefinition();
+
+    expect(lastReportedVariables()?.map(info => info.id)).toEqual(['März']);
+    expect(service.variableInfoFindings.value.map(finding => finding.isCorrectable)).toEqual([false]);
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).not.toHaveBeenCalled();
+  });
+
+  it('keeps reporting valid variable infos and shows no findings', () => {
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('valid_var-1')));
     service.updateUnitDefinition();
 
-    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
+    const reportedVariableInfos = lastReportedVariables() as VariableInfo[];
     expect(reportedVariableInfos.length).toBe(1);
     expect(reportedVariableInfos[0].alias).toBe('valid_var-1');
-    expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
+    expect(service.variableInfoFindings.value).toEqual([]);
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).not.toHaveBeenCalled();
+  });
+
+  it('drops the findings of the unit left when an empty unit is loaded', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('März')));
+    service.loadUnitDefinition('');
+
+    expect(service.variableInfoFindings.value).toEqual([]);
+  });
+
+  it('applies edited state variables and reports them', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('März')));
+    const edited = [new StateVariable('März', 'Maerz', '')];
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of(edited));
+
+    service.editStateVariables();
+
+    expect(service.unit.stateVariables).toBe(edited);
+    expect(lastReportedVariables()?.map(info => info.alias)).toEqual(['Maerz']);
+  });
+
+  it('takes back what a cancelled state variables dialog registered', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('state_1')));
+    const reRegisterAll = vi.spyOn(service, 'reRegisterAll');
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of(undefined));
+
+    service.editStateVariables();
+
+    expect(reRegisterAll).toHaveBeenCalled();
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
   });
 
   /* The host stores this list as it arrives. It follows VariableInfo 2.0: `type` and `format` in upper
@@ -148,6 +225,52 @@ describe('UnitService - variable info validation (#1043)', () => {
       'math-table_1 JSON MATH_TABLE'
     ]);
     expect(reportedVariableInfos.filter(info => 'page' in info)).toEqual([]);
+  });
+});
+
+/* Loading empties the registry and registers every element again. A drop-list registered its options only in its
+   constructor, so after every load they were free: a new option could get `value_1` a second time, and an alias
+   could take the name of an option without any error (#1506). */
+describe('UnitService - registering the options of a drop-list (#1506)', () => {
+  let service: UnitService;
+  let idService: IDService;
+
+  beforeEach(() => {
+    idService = new IDService();
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    service = new UnitService(
+      new SelectionService(),
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<DialogService>([
+        'showUnitDefErrorDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
+      ]),
+      idService,
+      translateServiceSpy
+    );
+    const unit = createUnitBlueprint('state_1');
+    unit.pages[0].sections[0].elements.push({
+      type: 'drop-list',
+      id: 'drop-list_1',
+      alias: 'drop-list_1',
+      value: [{ text: 'A', id: 'value_1', alias: 'option-a' }],
+      position: {
+        gridColumn: 1, gridColumnRange: 1, gridRow: 1, gridRowRange: 1
+      }
+    } as unknown as PositionedUIElement);
+    service.loadUnitDefinition(JSON.stringify(unit));
+  });
+
+  it('should keep the ids of the options taken after loading', () => {
+    expect(idService.isIDAvailable('value_1')).toBe(false);
+    expect(idService.isAliasAvailable('option-a')).toBe(false);
+  });
+
+  it('should keep them taken after the state variables were edited, which registers everything again', () => {
+    service.reRegisterAll();
+
+    expect(idService.isAliasAvailable('Option-A')).toBe(false);
   });
 });
 

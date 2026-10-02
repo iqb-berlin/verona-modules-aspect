@@ -1,0 +1,33 @@
+.findings-explanation {
+  max-width: 70ch;
+}
+
+.findings-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.findings-cell {
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.finding-value {
+  font-weight: bold;
+  font-family: monospace;
+  white-space: pre;
+}
+
+.finding-row-uncorrectable {
+  color: #666;
+}
+
+.finding-uncorrectable-hint {
+  font-style: italic;
+}
+
+.finding-action {
+  white-space: nowrap;
+}

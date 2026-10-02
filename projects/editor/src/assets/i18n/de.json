@@ -710,6 +710,7 @@
     "specialCharacters": "Sonderzeichen",
     "nonBreakingSpace": "Nicht umbrechendes Leerzeichen",
     "narrowNonBreakingSpace": "Schmales nicht umbrechendes Leerzeichen",
+    "showNonBreakingSpaces": "Nicht umbrechende Leerzeichen hervorheben",
     "enDash": "Halbgeviertstrich",
     "nonBreakingHyphen": "Nicht umbrechender Viertelgeviertstrich",
     "singleQuoteLeft": "Einfaches Anführungszeichen links",

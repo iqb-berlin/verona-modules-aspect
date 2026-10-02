@@ -31,6 +31,15 @@ tiptap-editor {
   padding: 5px;
 }
 
+// Background only: the marked space keeps its width, so the line breaks where it would without the marking (#1476).
+:host ::ng-deep .ProseMirror .nbsp-marker {
+  background-color: #9fd3ff;
+}
+
+:host ::ng-deep .ProseMirror .narrow-nbsp-marker {
+  background-color: #ffb870;
+}
+
 .fold-button {
   clip-path: ellipse(60% 70% at 50% 90%);
   padding-top: 10px;

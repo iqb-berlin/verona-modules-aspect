@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
 import {
@@ -17,7 +18,7 @@ describe('RichTextEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RichTextEditorModule],
+      imports: [RichTextEditorModule, TranslateModule.forRoot()],
       providers: [{ provide: DialogService, useValue: {} }]
     }).compileComponents();
 
@@ -84,5 +85,55 @@ describe('RichTextEditorComponent', () => {
     const html = component.editor.getHTML();
     expect(html).toContain('Angekommen');
     expect(html).not.toContain('<em');
+  });
+
+  /* One switch for the session: every editor follows it, also one opened after it was switched (#1476). */
+  describe('marking non-breaking spaces', () => {
+    const markers = (editorComponent: RichTextEditorComponent): number => editorComponent.editor.view.dom
+      .querySelectorAll('.nbsp-marker').length;
+
+    const createEditor = (): RichTextEditorComponent => {
+      const other = TestBed.createComponent(RichTextEditorComponent);
+      other.componentInstance.content = '';
+      other.detectChanges();
+      other.componentInstance.editor.commands.setContent('<p>3&nbsp;m</p>');
+      return other.componentInstance;
+    };
+
+    beforeEach(() => {
+      component.editor.commands.setContent('<p>10&nbsp;kg</p>');
+      component.controlPanelFolded = false;
+      fixture.detectChanges();
+    });
+
+    it('should switch the marking with the button in the toolbar', () => {
+      const button = fixture.nativeElement.querySelector('.show-nbsp-button') as HTMLButtonElement;
+      expect(markers(component)).toBe(0);
+
+      button.click();
+      fixture.detectChanges();
+
+      expect(markers(component)).toBe(1);
+      expect(button.classList).toContain('active');
+    });
+
+    it('should switch an editor open beside it and one opened afterwards', () => {
+      const beside = createEditor();
+
+      component.nonBreakingSpaceVisibility.toggle();
+
+      expect(markers(beside)).toBe(1);
+      expect(markers(createEditor())).toBe(1);
+    });
+
+    it('should not report a change of the content when switched', () => {
+      const changes = vi.fn();
+      component.contentChange.subscribe(changes);
+
+      component.nonBreakingSpaceVisibility.toggle();
+      fixture.detectChanges();
+
+      expect(changes).not.toHaveBeenCalled();
+    });
   });
 });

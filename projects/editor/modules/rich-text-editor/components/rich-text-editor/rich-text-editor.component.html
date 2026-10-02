@@ -200,6 +200,13 @@
             [matMenuTriggerFor]="specialCharsMenu">
       <mat-icon>emoji_symbols</mat-icon>
     </button>
+    <button mat-icon-button class="show-nbsp-button"
+            [matTooltip]="'richTextEditor.showNonBreakingSpaces' | translate" [matTooltipShowDelay]="300"
+            [class.active]="nonBreakingSpaceVisibility.visible | async"
+            [attr.aria-pressed]="nonBreakingSpaceVisibility.visible | async"
+            (click)="toggleNonBreakingSpaces()">
+      <mat-icon>space_bar</mat-icon>
+    </button>
     <mat-menu #specialCharsMenu="matMenu" yPosition="above">
       <button mat-button (click)="insertSpecialChar('&nbsp;')"
               [matTooltip]="'richTextEditor.nonBreakingSpace' | translate">&blank;</button>

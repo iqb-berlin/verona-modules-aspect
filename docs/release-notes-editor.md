@@ -2,6 +2,7 @@ Editor
 ======
 ## next
 ### Neue Funktionen
+- Texteditor: Ein Schalter unter dem Text hebt nicht umbrechende Leerzeichen hellblau und schmale nicht umbrechende Leerzeichen hellorange hervor. Die Hervorhebung ist nur im Editor zu sehen und ändert den gespeicherten Text nicht; sie gilt für alle Texteditoren bis zum Neuladen ([#1476](https://github.com/iqb-berlin/verona-modules-aspect/issues/1476))
 - Neues Element "Tetfolio": Ein tet.folio-Export (ZIP) lässt sich im Eigenschaftenbereich hochladen; der Editor packt ihn in ein eigenständiges HTML-Dokument und zeigt das Experiment in der Aufgabe an ([#1461](https://github.com/iqb-berlin/verona-modules-aspect/issues/1461))
 - Ungültige Variablennamen werden mit Fundstelle angezeigt: Ein Dialog listet jede Variable, deren Name gegen die Regeln verstößt — unerlaubte Zeichen oder ein Name, der mehrfach vorkommt, wobei Groß- und Kleinschreibung nicht als Unterschied zählen —, mit Seite, Abschnitt, Element, Eigenschaft und Grund. "Zum Element" springt dorthin und wählt das Element aus, bei Zustandsvariablen öffnet sich deren Editor. Der Dialog öffnet sich beim Laden einer betroffenen Unit und bleibt danach über ein Warnzeichen mit der Anzahl im Kopf der Seitenansicht erreichbar. Der Grund steht außerdem unter dem ID-Feld des Elements und im Zustandsvariablen-Editor. Interne IDs aus Units vor Editor 2.6.0 lassen sich im Editor nicht ändern; sie werden als solche gekennzeichnet ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
 

@@ -359,12 +359,6 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit, OnDestroy
     this.editor.commands.setMargin(margin);
   }
 
-  /** Switches the marking for every editor of the session and gives the focus back to this one's text. */
-  toggleNonBreakingSpaces(): void {
-    this.nonBreakingSpaceVisibility.toggle();
-    this.editor.commands.focus();
-  }
-
   insertSpecialChar(char: string): void {
     this.editor.chain().insertContent(char).focus().run();
   }

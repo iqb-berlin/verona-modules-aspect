@@ -106,15 +106,34 @@ describe('RichTextEditorComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should switch the marking with the button in the toolbar', () => {
-      const button = fixture.nativeElement.querySelector('.show-nbsp-button') as HTMLButtonElement;
+    const toggleSwitch = (): HTMLButtonElement => fixture.nativeElement
+      .querySelector('.show-nbsp-toggle button[role="switch"]');
+
+    it('should switch the marking with the switch below the text', () => {
       expect(markers(component)).toBe(0);
 
-      button.click();
+      toggleSwitch().click();
       fixture.detectChanges();
 
       expect(markers(component)).toBe(1);
-      expect(button.classList).toContain('active');
+      expect(toggleSwitch().getAttribute('aria-checked')).toBe('true');
+    });
+
+    it('should offer the switch with the reduced toolbar and with the toolbar folded', () => {
+      component.showReducedControls = true;
+      fixture.detectChanges();
+      expect(toggleSwitch()).not.toBeNull();
+
+      component.controlPanelFolded = true;
+      fixture.detectChanges();
+      expect(toggleSwitch()).not.toBeNull();
+    });
+
+    it('should lock the switch together with the editor', () => {
+      fixture.componentRef.setInput('disabled', true);
+      fixture.detectChanges();
+
+      expect(toggleSwitch().disabled).toBe(true);
     });
 
     it('should switch an editor open beside it and one opened afterwards', () => {

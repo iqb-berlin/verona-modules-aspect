@@ -133,8 +133,15 @@ describe('Invalid variable names', { testIsolation: false }, () => {
     cy.get('aspect-editor-page-view').find('aspect-text-field').first().click({ force: true });
     aliasField().should('have.value', 'erstes');
     setID('maerz');
-    cy.contains('ID ist bereits vergeben').should('exist');
+    cy.get('mat-snack-bar-container').should('contain.text', 'ID ist bereits vergeben');
     cy.get('.variable-info-findings-button').should('not.exist');
+  });
+
+  /* The message fades after three seconds; the field goes on saying why (#1523). */
+  it('says at the field why the name was refused, after the message has gone', () => {
+    cy.get('mat-snack-bar-container').should('not.exist');
+    cy.get('.alias-refusal-hint').should('contain.text', 'ID ist bereits vergeben');
+    aliasField().should('have.value', 'maerz');
   });
 
   /* Loading registered every element again but forgot the options of a drop-list, so their aliases were free
@@ -143,6 +150,13 @@ describe('Invalid variable names', { testIsolation: false }, () => {
     setID('Option-A');
     // Every prefix typed on the way is free; the last of them is what the element holds.
     cy.get('.panel-title').should('contain.text', 'Option-').and('not.contain.text', 'Option-A');
+    cy.get('.alias-refusal-hint').should('contain.text', 'ID ist bereits vergeben');
+  });
+
+  it('lets the field\'s reason go once a name is typed that the element takes', () => {
+    setID('Option-B');
+    cy.get('.panel-title').should('contain.text', 'Option-B');
+    cy.get('.alias-refusal-hint').should('not.exist');
   });
 
   /* The dialog for a new row with an image edits a copy, and that copy went into the list: the typed alias was

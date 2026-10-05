@@ -19,7 +19,25 @@
   "bottom": "unten",
   "idTaken": "ID ist bereits vergeben",
   "idContainsInvalidCharacters": "ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)",
+  "idContainsSpace": "ID enthält unerlaubtes Leerzeichen",
+  "idEditDialog": {
+    "title": "ID ändern"
+  },
   "inputInvalid": "Eingabe ungültig",
+  "numberField": {
+    "badInput": "Keine gültige Zahl",
+    "required": "Pflichtfeld",
+    "min": "Mindestens {{min}}",
+    "max": "Höchstens {{max}}",
+    "invalid": "Eingabe ungültig"
+  },
+  "numberFieldRefused": {
+    "badInput": "Keine gültige Zahl – letzter gültiger Wert wiederhergestellt",
+    "required": "Pflichtfeld – letzter gültiger Wert wiederhergestellt",
+    "min": "Mindestens {{min}} – letzter gültiger Wert wiederhergestellt",
+    "max": "Höchstens {{max}} – letzter gültiger Wert wiederhergestellt",
+    "invalid": "Eingabe ungültig – letzter gültiger Wert wiederhergestellt"
+  },
   "elementNotAddedFileFailed": "Die Datei konnte nicht geladen werden. Es wurde kein Element angelegt.",
   "outdatedUnit": "Unit Definition aktualisiert",
   "sectionNotReplaced": "Der Abschnitt wurde nicht ersetzt. Der einzufügende Abschnitt wurde verworfen.",

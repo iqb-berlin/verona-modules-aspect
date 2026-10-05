@@ -4,6 +4,9 @@
  */
 export type VariableIdentifierIssue = 'EMPTY_IDENTIFIER' | 'INVALID_CHARACTERS';
 
+/** Why the author cannot give an element or an option a name, as the editor tells them (#1523). */
+export type AliasProblem = 'taken' | 'space' | 'invalidCharacters';
+
 export abstract class VariableAlias {
   /**
    * Verona-compliant pattern for VariableInfo ids and aliases (#1043), as the source text an HTML
@@ -19,12 +22,30 @@ export abstract class VariableAlias {
   /** The same rule for code, anchored. */
   static readonly PATTERN: RegExp = new RegExp(`^${VariableAlias.PATTERN_SOURCE}$`);
 
+  /** The translation key the editor says each problem under, see `problemOf` (#1523). */
+  static readonly PROBLEM_KEYS: Readonly<Record<AliasProblem, string>> = {
+    taken: 'idTaken',
+    space: 'idContainsSpace',
+    invalidCharacters: 'idContainsInvalidCharacters'
+  };
+
   /**
    * Whether an id or alias consists only of letters, digits, underscore and hyphen. The empty string is
    * not valid -- the pattern demands at least one character -- and neither is a name with a space in it.
    */
   static isValid(alias: string): boolean {
     return VariableAlias.check(alias) === null;
+  }
+
+  /**
+   * Why a name the author typed cannot be taken, or `null` if it can. Whether it is still free is the caller's to
+   * know, since that depends on the registry of the unit. The order is the one the author is told: a taken name
+   * first, a space before the other characters because it is the one most easily typed by mistake (#1523).
+   */
+  static problemOf(alias: string, isAvailable: boolean): AliasProblem | null {
+    if (!isAvailable) return 'taken';
+    if (alias.includes(' ')) return 'space';
+    return VariableAlias.isValid(alias) ? null : 'invalidCharacters';
   }
 
   /** What is wrong with an id or alias, or `null` if nothing is. */

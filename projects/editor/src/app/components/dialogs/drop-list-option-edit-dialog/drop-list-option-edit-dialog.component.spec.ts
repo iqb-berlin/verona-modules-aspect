@@ -17,6 +17,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interf
 import { FileService } from 'common/services/file.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { IDService } from 'editor/src/app/services/id.service';
 import {
   DropListOptionEditDialogComponent
 } from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
@@ -49,6 +50,7 @@ describe('DropListOptionEditDialogComponent', () => {
   let fixture: ComponentFixture<DropListOptionEditDialogComponent>;
   let dialogService: SpyObj<DialogService>;
   let dialogRefMock: { close: Mock };
+  let idService: SpyObj<IDService>;
 
   const createValue = (): DragNDropValueObject => ({
     text: 'Option 1',
@@ -69,6 +71,8 @@ describe('DropListOptionEditDialogComponent', () => {
     value = createValue();
     dialogService = createSpyObj<DialogService>(['importImage', 'compressEmbeddedImage']);
     dialogRefMock = { close: vi.fn() };
+    idService = createSpyObj<IDService>(['isAliasAvailable']);
+    idService.isAliasAvailable.mockReturnValue(true);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -91,7 +95,8 @@ describe('DropListOptionEditDialogComponent', () => {
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { value } },
         { provide: MatDialogRef, useValue: dialogRefMock },
-        { provide: DialogService, useValue: dialogService }
+        { provide: DialogService, useValue: dialogService },
+        { provide: IDService, useValue: idService }
       ]
     }).compileComponents();
 
@@ -162,6 +167,42 @@ describe('DropListOptionEditDialogComponent', () => {
 
     const saveButton = fixture.nativeElement.querySelector('.mat-mdc-dialog-actions button') as HTMLButtonElement;
     expect(saveButton.disabled).toBe(true);
+  });
+
+  /* The drop-list refused a taken alias only after the dialog had closed, with a message that faded (#1523). */
+  it('should say at the field that an alias is taken, and disable saving', async () => {
+    idService.isAliasAvailable.mockReturnValue(false);
+    const aliasInput = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    aliasInput.value = 'vergeben';
+    aliasInput.dispatchEvent(new Event('input'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(idService.isAliasAvailable).toHaveBeenCalledWith('vergeben', 'value_1');
+    expect(fixture.nativeElement.querySelector('.alias-problem-hint').textContent).toContain('idTaken');
+    const saveButton = fixture.nativeElement.querySelector('.mat-mdc-dialog-actions button') as HTMLButtonElement;
+    expect(saveButton.disabled).toBe(true);
+  });
+
+  /* The reason is the one the drop-list would give: a space is named as such, not as some invalid character. */
+  it('should name the reason the drop-list would refuse an alias for', async () => {
+    const aliasInput = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    aliasInput.value = 'Option A';
+    aliasInput.dispatchEvent(new Event('input'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.alias-problem-hint').textContent).toContain('idContainsSpace');
+
+    aliasInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('mat-error').textContent).toContain('idContainsSpace');
+
+    aliasInput.value = 'option_a';
+    aliasInput.dispatchEvent(new Event('input'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.alias-problem-hint')).toBeNull();
+    expect(fixture.nativeElement.querySelector('mat-error')).toBeNull();
   });
 
   /* Compressing an image that is already there: the dialog is the way in, `compressEmbeddedImage`

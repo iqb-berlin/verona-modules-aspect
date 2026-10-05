@@ -73,6 +73,14 @@ describe('ErrorService', () => {
     expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
   });
 
+  /* The models in common cannot translate; they name the key, which the editor shows translated (#1523). */
+  it('should show an ID error under its translation key where it has one', () => {
+    service.handleError(IDError.forAlias('space'));
+
+    expect(translateServiceSpy.instant).toHaveBeenCalledWith('idContainsSpace');
+    expect(messageServiceSpy.showError).toHaveBeenCalledWith(translateServiceSpy.instant('idContainsSpace'));
+  });
+
   it('should show a translated prompt for aspect errors', () => {
     service.handleError(new AspectError('sanitization-needed', 'Elementfehler'));
 

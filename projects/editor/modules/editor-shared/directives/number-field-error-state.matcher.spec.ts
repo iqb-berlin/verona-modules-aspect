@@ -37,4 +37,26 @@ describe('NumberFieldErrorStateMatcher', () => {
   it('should cope with no control at all', () => {
     expect(matcher.isErrorState(null)).toBe(false);
   });
+
+  /* The last valid value is back and the box is valid and pristine, but it goes on saying why until typed in
+     (#1523). */
+  it('should call a box wrong while its directive says an entry was refused', () => {
+    const refusing = new NumberFieldErrorStateMatcher();
+    const control = new FormControl<number | null>(5, Validators.required);
+
+    refusing.refused = true;
+    expect(refusing.isErrorState(control)).toBe(true);
+
+    refusing.refused = false;
+    expect(refusing.isErrorState(control)).toBe(false);
+  });
+
+  it('should never call a disabled box wrong', () => {
+    const refusing = new NumberFieldErrorStateMatcher();
+    const control = new FormControl<number | null>(5, Validators.required);
+    control.disable();
+
+    refusing.refused = true;
+    expect(refusing.isErrorState(control)).toBe(false);
+  });
 });

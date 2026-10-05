@@ -21,9 +21,11 @@
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.maxNumberOfSelections' | translate }}</mat-label>
       <input matInput type="number" min="0" required aspectNumberField
+             #maxNumberOfSelectionsField="aspectNumberField"
              [ngModel]="combinedProperties.maxNumberOfSelections"
              (numberChange)="updateModel.emit(
                     { property: 'maxNumberOfSelections', value: $event.value, isInputValid: $event.isInputValid })">
+      <mat-error>{{ maxNumberOfSelectionsField.errorText }}</mat-error>
       @if (combinedProperties.maxNumberOfSelections === null) {
         <aspect-merged-marker matSuffix></aspect-merged-marker>
       }

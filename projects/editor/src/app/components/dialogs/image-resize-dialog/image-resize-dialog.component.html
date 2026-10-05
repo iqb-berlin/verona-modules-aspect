@@ -57,9 +57,10 @@
       <div class="fx-row-start-center dimensions-row">
         <mat-form-field appearance="fill" style="flex: 1;">
           <mat-label>{{ 'imageResizeDialog.maxWidth' | translate }}</mat-label>
-          <input matInput type="number" min="1" required aspectNumberField
+          <input matInput type="number" min="1" required aspectNumberField #maxWidthField="aspectNumberField"
                  [ngModel]="data.options.maxWidth"
                  (numberChange)="commitWidth($event)">
+          <mat-error>{{ maxWidthField.errorText }}</mat-error>
         </mat-form-field>
 
         <mat-icon class="aspect-ratio-lock" color="primary"
@@ -69,9 +70,10 @@
 
         <mat-form-field appearance="fill" style="flex: 1;">
           <mat-label>{{ 'imageResizeDialog.maxHeight' | translate }}</mat-label>
-          <input matInput type="number" min="1" required aspectNumberField
+          <input matInput type="number" min="1" required aspectNumberField #maxHeightField="aspectNumberField"
                  [ngModel]="data.options.maxHeight"
                  (numberChange)="commitHeight($event)">
+          <mat-error>{{ maxHeightField.errorText }}</mat-error>
         </mat-form-field>
       </div>
 

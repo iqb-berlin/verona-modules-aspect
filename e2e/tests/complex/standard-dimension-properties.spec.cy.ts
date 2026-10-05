@@ -42,6 +42,12 @@ describe('Standard dimension properties', () => {
     cy.contains('Eingabe ungültig').should('be.visible');
     dimensionInput('Maximalbreite').should('have.value', `${SIZE.text.maxWidth}`);
     cy.contains('Eingabe ungültig').should('not.exist');
+    // The message has faded; the field goes on saying why, until it is typed in again (#1523).
+    standardDimensions().contains('mat-form-field', 'Maximalbreite')
+      .should('contain.text', 'Mindestens 0 – letzter gültiger Wert wiederhergestellt');
+    setDimension('Maximalbreite', SIZE.text.maxWidth);
+    standardDimensions().contains('mat-form-field', 'Maximalbreite')
+      .should('not.contain.text', 'wiederhergestellt');
 
     setStandardCheckbox('Maximalbreite setzen', false);
     dimensionInput('Maximalbreite').should('be.disabled');

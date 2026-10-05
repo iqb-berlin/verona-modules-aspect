@@ -131,12 +131,12 @@ describe('Editor menu tests', { testIsolation: false }, () => {
 
       // Type duplicate ID to test validation
       cy.get('aspect-id-edit-dialog').find('input').clear().type('radio_2').blur();
-      cy.get('aspect-id-edit-dialog').contains('ID bereits vergeben').should('be.visible');
+      cy.get('aspect-id-edit-dialog').contains('ID ist bereits vergeben').should('be.visible');
       cy.get('aspect-id-edit-dialog').contains('button', 'Speichern').should('be.disabled');
 
       // Type valid unique ID and save
       cy.get('aspect-id-edit-dialog').find('input').clear().type('Kaeschtle_unique');
-      cy.get('aspect-id-edit-dialog').contains('ID bereits vergeben').should('not.exist');
+      cy.get('aspect-id-edit-dialog').contains('ID ist bereits vergeben').should('not.exist');
       cy.get('aspect-id-edit-dialog').contains('button', 'Speichern').click();
 
       // Dialog should be closed and table updated

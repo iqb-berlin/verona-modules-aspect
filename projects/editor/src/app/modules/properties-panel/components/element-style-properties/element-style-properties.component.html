@@ -131,9 +131,10 @@
       <mat-form-field *ngIf="styles.fontSize !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.fontSize' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField required
+        <input matInput type="number" min="0" aspectNumberField required #fontSizeField="aspectNumberField"
                [ngModel]="styles.fontSize"
                (numberChange)="commitStyle('fontSize', $event)">
+        <mat-error>{{ fontSizeField.errorText }}</mat-error>
         @if (styles.fontSize === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -141,9 +142,10 @@
       <mat-form-field *ngIf="styles.lineHeight !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.lineHeight' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField required
+        <input matInput type="number" min="0" aspectNumberField required #lineHeightField="aspectNumberField"
                [ngModel]="styles.lineHeight"
                (numberChange)="commitStyle('lineHeight', $event)">
+        <mat-error>{{ lineHeightField.errorText }}</mat-error>
         @if (styles.lineHeight === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -172,9 +174,10 @@
 
       <mat-form-field *ngIf="styles.borderRadius !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField required
+        <input matInput type="number" min="0" aspectNumberField required #borderRadiusField="aspectNumberField"
                [ngModel]="styles.borderRadius"
                (numberChange)="commitStyle('borderRadius', $event)">
+        <mat-error>{{ borderRadiusField.errorText }}</mat-error>
         @if (styles.borderRadius === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -214,9 +217,10 @@
       <mat-form-field *ngIf="styles.borderWidth !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField required
+        <input matInput type="number" min="0" aspectNumberField required #borderWidthField="aspectNumberField"
                [ngModel]="styles.borderWidth"
                (numberChange)="commitStyle('borderWidth', $event)">
+        <mat-error>{{ borderWidthField.errorText }}</mat-error>
         @if (styles.borderWidth === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }

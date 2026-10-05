@@ -232,6 +232,15 @@ describe('SectionMenuComponent', () => {
       expect(boxes()[1].value).toBe('2');
     });
 
+    /* Beside the warning that fades, the box says why under itself, in the menu's overlay as well (#1523). */
+    it('should say at the box why a row count of zero was refused', async () => {
+      await edit(boxes()[1], '0');
+      fixture.detectChanges();
+
+      expect(boxes()[1].closest('mat-form-field')?.querySelector('mat-error')?.textContent)
+        .toContain('numberFieldRefused.min');
+    });
+
     /* The shared panel takes its floor from the call site: a grid track shorter than nothing is not
        a length, while the margins that use the same panel do want negative values (#1164). */
     it('should give the track size panels a floor of zero', () => {

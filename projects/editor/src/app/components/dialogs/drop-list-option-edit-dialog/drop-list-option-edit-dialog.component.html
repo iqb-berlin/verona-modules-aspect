@@ -6,8 +6,15 @@
     <mat-form-field>
       <mat-label>{{'id' | translate }}</mat-label>
       <input matInput type="text" [(ngModel)]="newLabel.alias" #aliasModel="ngModel"
-             required [pattern]="aliasPattern">
-      <mat-error>{{'idContainsInvalidCharacters' | translate }}</mat-error>
+             required [pattern]="aliasPattern" (ngModelChange)="checkAlias($event)">
+      <!-- One reason in both places: the hint while the field is being typed in, the error once it was left.
+           Two blocks, because a block with two nodes at its root is not projected into the form field's slots. -->
+      @if (aliasProblem) {
+        <mat-error>{{ aliasProblem | translate }}</mat-error>
+      }
+      @if (aliasProblem) {
+        <mat-hint class="alias-problem-hint">{{ aliasProblem | translate }}</mat-hint>
+      }
     </mat-form-field>
 
     <div class="media-panels">
@@ -57,7 +64,7 @@
 
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="newLabel" [disabled]="aliasModel.invalid">
+    <button mat-button [mat-dialog-close]="newLabel" [disabled]="aliasModel.invalid || aliasProblem !== null">
       {{'save' | translate }}
     </button>
     <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>

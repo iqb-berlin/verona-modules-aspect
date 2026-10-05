@@ -3,9 +3,11 @@
                   appearance="fill">
     <mat-label>{{'propertiesPanel.firstColumnSizeRatio' | translate }}</mat-label>
     <input matInput type="number" min="1" required aspectNumberField
+           #firstColumnSizeRatioField="aspectNumberField"
            [ngModel]="combinedProperties.firstColumnSizeRatio"
            (numberChange)="updateModel.emit(
                   { property: 'firstColumnSizeRatio', value: $event.value, isInputValid: $event.isInputValid })">
+    <mat-error>{{ firstColumnSizeRatioField.errorText }}</mat-error>
     @if (combinedProperties.firstColumnSizeRatio === null) {
       <aspect-merged-marker matSuffix></aspect-merged-marker>
     }

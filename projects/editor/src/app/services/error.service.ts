@@ -64,7 +64,9 @@ export class ErrorService implements ErrorHandler {
 
   handleError(error: unknown): void {
     if (error instanceof IDError) {
-      error.highSeverity ? this.messageService.showPrompt(error.message) : this.messageService.showError(error.message);
+      // The models in common carry the key; the editor shows it translated (#1523).
+      const text = error.translationKey ? this.translateService.instant(error.translationKey) : error.message;
+      error.highSeverity ? this.messageService.showPrompt(text) : this.messageService.showError(text);
     } else if (error instanceof AspectError && error.code !== 'geogebra-not-loading') {
       this.messageService
         .showPrompt(this.translateService.instant('error.corruptElement', { errorMsg: error.message }));

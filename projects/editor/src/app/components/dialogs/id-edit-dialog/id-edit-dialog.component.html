@@ -1,15 +1,14 @@
 <mat-dialog-content>
-    <h2 mat-dialog-title>ID ändern</h2>
+    <h2 mat-dialog-title>{{ 'idEditDialog.title' | translate }}</h2>
     <mat-form-field class="example-full-width">
       <mat-label>{{'propertiesPanel.id' | translate }}</mat-label>
-      <input matInput required [formControl]="aliasControl"
-             (keyup)="checkAvailability()">
+      <input matInput required [formControl]="aliasControl">
       @if (aliasControl.invalid) {
         <mat-error>
-          @if (aliasControl.hasError('idTaken')) {
-            <span>ID bereits vergeben</span>
+          @if (aliasControl.hasError('alias')) {
+            <span>{{ aliasControl.getError('alias') | translate }}</span>
           } @else {
-            <span>Eingabe ungültig</span>
+            <span>{{ 'inputInvalid' | translate }}</span>
           }
         </mat-error>
       }

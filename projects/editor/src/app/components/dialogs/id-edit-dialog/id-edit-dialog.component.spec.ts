@@ -69,10 +69,26 @@ describe('IDEditDialogComponent', () => {
     idService.isAliasAvailable.mockReturnValue(false);
 
     component.aliasControl.setValue('text_2');
+    component.aliasControl.markAsTouched();
     fixture.detectChanges();
 
-    expect(component.aliasControl.hasError('idTaken')).toBe(true);
+    expect(component.aliasControl.getError('alias')).toBe('idTaken');
+    expect(fixture.nativeElement.querySelector('mat-error').textContent).toContain('idTaken');
     expect(getSaveButton().disabled).toBe(true);
+  });
+
+  /* The element refused such a name only after the dialog had closed, with a message that faded (#1523). */
+  it('should refuse a name the element would refuse, and say why', () => {
+    component.aliasControl.setValue('Feld ä');
+    component.aliasControl.markAsTouched();
+    fixture.detectChanges();
+
+    expect(component.aliasControl.getError('alias')).toBe('idContainsSpace');
+    expect(fixture.nativeElement.querySelector('mat-error').textContent).toContain('idContainsSpace');
+    expect(getSaveButton().disabled).toBe(true);
+
+    component.aliasControl.setValue('März');
+    expect(component.aliasControl.getError('alias')).toBe('idContainsInvalidCharacters');
   });
 
   it('should accept an available alias', () => {

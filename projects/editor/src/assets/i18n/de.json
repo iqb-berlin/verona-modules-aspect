@@ -19,6 +19,10 @@
   "bottom": "unten",
   "idTaken": "ID ist bereits vergeben",
   "idContainsInvalidCharacters": "ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)",
+  "idContainsSpace": "ID enthält unerlaubtes Leerzeichen",
+  "idEditDialog": {
+    "title": "ID ändern"
+  },
   "inputInvalid": "Eingabe ungültig",
   "elementNotAddedFileFailed": "Die Datei konnte nicht geladen werden. Es wurde kein Element angelegt.",
   "outdatedUnit": "Unit Definition aktualisiert",

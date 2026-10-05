@@ -100,12 +100,10 @@ export class DropListElement extends InputElement implements DropListProperties 
 
   updateValueObject(valueIndex: number, value: DragNDropValueObject): void {
     if (value.alias !== this.value[valueIndex].alias) {
-      if (!this.idService?.isAliasAvailable(value.alias, this.value[valueIndex].alias)) {
-        throw new IDError('ID ist bereits vergeben');
-      }
-      if (!VariableAlias.isValid(value.alias)) {
-        throw new IDError('ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)');
-      }
+      const problem = VariableAlias.problemOf(
+        value.alias, !!this.idService?.isAliasAvailable(value.alias, this.value[valueIndex].alias)
+      );
+      if (problem) throw IDError.forAlias(problem);
       this.idService?.changeAlias(this.value[valueIndex].alias, value.alias);
     }
     this.value[valueIndex] = value;

@@ -40,6 +40,15 @@ describe('VariableAlias', () => {
     expect(VariableAlias.check('fistgewählt')).toBe('INVALID_CHARACTERS');
   });
 
+  /* One rule for the models that refuse a name and for the fields that say why (#1523). */
+  it('should tell why a typed name cannot be taken, a taken one first and a space before other characters', () => {
+    expect(VariableAlias.problemOf('frei_1', true)).toBeNull();
+    expect(VariableAlias.problemOf('März ', false)).toBe('taken');
+    expect(VariableAlias.problemOf('März ', true)).toBe('space');
+    expect(VariableAlias.problemOf('März', true)).toBe('invalidCharacters');
+    expect(VariableAlias.problemOf('', true)).toBe('invalidCharacters');
+  });
+
   it('should give names that differ only in letter case the same comparable form', () => {
     expect(VariableAlias.toComparable('Wert')).toBe(VariableAlias.toComparable('wert'));
     expect(VariableAlias.toComparable('Wert')).not.toBe(VariableAlias.toComparable('Werte'));

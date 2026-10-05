@@ -4,6 +4,7 @@ import { UIElementProperties, UIElementType } from 'common/models/ui-element-int
 import { UIElement } from 'common/models/elements/element';
 import { ELEMENT_DEFAULTS, GROUP_SECTIONS } from 'common/models/elements/element-registry';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
+import { IDError } from 'common/classes/id-error';
 
 describe('UIElement setProperty alias validation', () => {
   let element: UIElement;
@@ -31,12 +32,12 @@ describe('UIElement setProperty alias validation', () => {
   });
 
   it('should reject aliases with umlauts', () => {
-    expect(() => element.setProperty('alias', 'März')).toThrowError(/unerlaubte Zeichen/);
-    expect(() => element.setProperty('alias', 'Lösung1')).toThrowError(/unerlaubte Zeichen/);
+    expect(() => element.setProperty('alias', 'März')).toThrowError(/invalidCharacters/);
+    expect(() => element.setProperty('alias', 'Lösung1')).toThrowError(/invalidCharacters/);
   });
 
   it('should reject aliases with trailing whitespace', () => {
-    expect(() => element.setProperty('alias', 'weiter ')).toThrowError(/Leerzeichen/);
+    expect(() => element.setProperty('alias', 'weiter ')).toThrowError(/space/);
   });
 
   /* The registry compares regardless of letter case, so it has to know which name is the element's own:
@@ -54,8 +55,25 @@ describe('UIElement setProperty alias validation', () => {
   it('should reject an alias the registry does not consider free', () => {
     element.idService = { ...idServiceStub, isAliasAvailable: () => false };
 
-    expect(() => element.setProperty('alias', 'Wert')).toThrowError(/bereits vergeben/);
+    expect(() => element.setProperty('alias', 'Wert')).toThrowError(/taken/);
     expect(element.alias).toBe('text_1');
+  });
+
+  /* The editor shows the reason translated, so the error names its key (#1523). */
+  it('should name the translation key of the reason it refuses an alias for', () => {
+    const keyOf = (alias: string): string | undefined => {
+      try {
+        element.setProperty('alias', alias);
+      } catch (error) {
+        return (error as IDError).translationKey;
+      }
+      return undefined;
+    };
+
+    expect(keyOf('März')).toBe('idContainsInvalidCharacters');
+    expect(keyOf('weiter ')).toBe('idContainsSpace');
+    element.idService = { ...idServiceStub, isAliasAvailable: () => false };
+    expect(keyOf('Wert')).toBe('idTaken');
   });
 
   /* The Verona contract sets no maximum length, therefore neither does Aspect (#1129). */

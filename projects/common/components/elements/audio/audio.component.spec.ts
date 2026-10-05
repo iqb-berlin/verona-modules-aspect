@@ -122,4 +122,15 @@ describe('AudioComponent', () => {
     expect(component.timeoutMsg).toContain('test-alias');
     expect(component.timeoutMsg).toContain('test.mp3');
   });
+
+  it('should report a spinner timeout as a media timeout, and only as that', () => {
+    fixture.detectChanges();
+    const throwErrorSpy = vi.spyOn(component, 'throwError').mockImplementation(() => {});
+    const spinner = fixture.debugElement
+      .query(element => element.componentInstance instanceof MockSpinnerComponent)
+      .componentInstance as MockSpinnerComponent;
+    spinner.timeOut.emit(20000);
+    expect(throwErrorSpy).toHaveBeenCalledTimes(1);
+    expect(throwErrorSpy).toHaveBeenCalledWith('media-timeout', component.timeoutMsg);
+  });
 });

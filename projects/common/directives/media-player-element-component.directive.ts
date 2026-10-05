@@ -33,6 +33,12 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
     return `Media duration of element with alias "${this.elementModel.alias}" and filename "${this.elementModel.fileName}" is not available`;
   }
 
+  /** Reports to the host that the media did not load in time. Audio and video share the code, as they
+   * share the cause and the remedy: a very large file, or a format the browser cannot play. */
+  throwTimeoutError(): void {
+    this.throwError('media-timeout', this.timeoutMsg);
+  }
+
   ngOnInit(): void {
     this.dependencyDissolved = !this.elementModel.player.activeAfterID;
     if (this.actualPlayingId) {

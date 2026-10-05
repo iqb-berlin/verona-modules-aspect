@@ -1,5 +1,6 @@
 import { ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
+import { AspectError } from 'common/classes/aspect-error';
 import { AudioElement } from 'common/models/elements/audio';
 import { MediaPlayerElementComponent } from './media-player-element-component.directive';
 
@@ -147,6 +148,14 @@ describe('MediaPlayerElementComponent', () => {
 
       expect(component.mediaDurationNotAvailableMsg)
         .toBe('Media duration of element with alias "Hörtext 1" and filename "hoertext.mp3" is not available');
+    });
+
+    it('should report a timeout with the media code and the timeout message', () => {
+      const component = new TestMediaPlayerElementComponent('audio_1', '', 'Hörtext 1', 'hoertext.mp3');
+
+      expect(() => component.throwTimeoutError()).toThrow(AspectError);
+      expect(() => component.throwTimeoutError())
+        .toThrow(expect.objectContaining({ code: 'media-timeout', message: component.timeoutMsg }));
     });
   });
 });

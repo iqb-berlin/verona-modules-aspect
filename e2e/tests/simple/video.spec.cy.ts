@@ -1,6 +1,6 @@
 import {
   addMediaElement,
-  addNewPage, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField
+  addNewPage, addPostMessageStub, clickButtonDialog, editElementConfigDialog, setDialogCheckbox, setDialogField
 } from '../util';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -82,6 +82,24 @@ describe('Video element', { testIsolation: false }, () => {
       cy.get('aspect-video').first()
         .find('mat-icon').contains('volume_up')
         .should('exist');
+    });
+  });
+
+  context('player with a video that does not load', () => {
+    it('tells the host after 20 seconds, with the code shared by audio and video', () => {
+      cy.readFile('e2e/downloads/video.json').then(unit => {
+        const video = unit.pages[0].sections[0].elements.find((element: { type: string }) => element.type === 'video');
+        video.src = 'data:video/mp4;base64,AAAA';
+        cy.writeFile('e2e/downloads/video-broken.json', unit);
+        cy.openPlayer();
+        addPostMessageStub();
+        cy.loadUnit('../downloads/video-broken.json');
+        cy.get('@postMessage', { timeout: 30000 }).should('be.calledWithMatch', {
+          type: 'vopRuntimeErrorNotification',
+          code: 'media-timeout',
+          message: `Failed to load media element with alias "${video.alias}" and filename "${video.fileName}" in time`
+        });
+      });
     });
   });
 });

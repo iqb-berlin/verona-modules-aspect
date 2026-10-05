@@ -166,4 +166,25 @@ describe('Geometry element', { testIsolation: false }, () => {
       });
     });
   });
+
+  context('player without the GeoGebra package', () => {
+    it('tells the host which address GeoGebra could not be loaded from', () => {
+      // What a host answers when it does not provide the package: a 404 with a JSON body. Defined
+      // after the mock of the beforeEach hook, so it is the one that answers.
+      cy.intercept('**/deployggb.js', {
+        statusCode: 404,
+        headers: { 'content-type': 'application/json', 'x-content-type-options': 'nosniff' },
+        body: { message: 'Not Found' }
+      });
+      // A fresh page: GeoGebra is loaded once per application, and the previous context has loaded it.
+      cy.openPlayer();
+      addPostMessageStub();
+      cy.loadUnit('../downloads/geometry.json');
+      cy.get('@postMessage').should('be.calledWithMatch', {
+        type: 'vopRuntimeErrorNotification',
+        code: 'geogebra-not-loading',
+        message: Cypress.sinon.match(/could not be loaded from ".*\/GeoGebra\/GeoGebra\/deployggb\.js"/)
+      });
+    });
+  });
 });

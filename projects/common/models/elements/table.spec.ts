@@ -97,17 +97,16 @@ describe('TableElement', () => {
       const table = new TableElement({
         ...twoColumnTableProperties,
         headerEnabled: true,
-        headerRows: [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]],
+        headerRows: [[{ text: 'A' }, { text: 'B' }]],
         stickyHeader: true
       });
       expect(table.headerEnabled).toBe(true);
-      expect(table.headerRows).toEqual([[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]]);
+      expect(table.headerRows).toEqual([[{ text: 'A' }, { text: 'B' }]]);
       expect(table.stickyHeader).toBe(true);
     });
 
     it('should copy header cells instead of keeping blueprint references', () => {
-      const headerRows: { text: string; alignment: 'left' | 'center' | 'right' }[][] =
-        [[{ text: 'A', alignment: 'left' }]];
+      const headerRows: { text: string }[][] = [[{ text: 'A' }]];
       const table = new TableElement({ ...tableProperties, headerEnabled: true, headerRows });
       headerRows[0][0].text = 'changed';
       expect(table.headerRows[0][0].text).toBe('A');
@@ -117,28 +116,28 @@ describe('TableElement', () => {
       const table = new TableElement(twoColumnTableProperties);
       table.setProperty('headerEnabled', true);
       expect(table.headerRows).toEqual([
-        [{ text: '', alignment: 'left' }, { text: '', alignment: 'left' }]
+        [{ text: '' }, { text: '' }]
       ]);
     });
 
     it('should keep existing header rows when the header gets re-enabled', () => {
       const table = new TableElement({
         ...tableProperties,
-        headerRows: [[{ text: 'A', alignment: 'center' }]]
+        headerRows: [[{ text: 'A' }]]
       });
       table.setProperty('headerEnabled', true);
-      expect(table.headerRows).toEqual([[{ text: 'A', alignment: 'center' }]]);
+      expect(table.headerRows).toEqual([[{ text: 'A' }]]);
     });
 
     it('should extend header rows when columns are added', () => {
       const table = new TableElement({
         ...tableProperties,
         headerEnabled: true,
-        headerRows: [[{ text: 'A', alignment: 'center' }]]
+        headerRows: [[{ text: 'A' }]]
       });
       table.setProperty('gridColumnSizes', [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }]);
       expect(table.headerRows).toEqual([
-        [{ text: 'A', alignment: 'center' }, { text: '', alignment: 'left' }]
+        [{ text: 'A' }, { text: '' }]
       ]);
     });
 
@@ -146,31 +145,31 @@ describe('TableElement', () => {
       const table = new TableElement({
         ...twoColumnTableProperties,
         headerEnabled: true,
-        headerRows: [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]]
+        headerRows: [[{ text: 'A' }, { text: 'B' }]]
       });
       table.setProperty('gridColumnSizes', [{ value: 1, unit: 'fr' }]);
-      expect(table.headerRows).toEqual([[{ text: 'A', alignment: 'left' }]]);
+      expect(table.headerRows).toEqual([[{ text: 'A' }]]);
     });
 
     it('should replace header row arrays on setProperty, so components get updated', () => {
       const table = new TableElement(twoColumnTableProperties);
       const originalHeaderRows = table.headerRows;
-      table.setProperty('headerRows', [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'left' }]]);
+      table.setProperty('headerRows', [[{ text: 'A' }, { text: 'B' }]]);
       expect(table.headerRows).not.toBe(originalHeaderRows);
-      expect(table.headerRows[0][0]).toEqual({ text: 'A', alignment: 'left' });
+      expect(table.headerRows[0][0]).toEqual({ text: 'A' });
     });
 
     it('should append an empty header row matching the column count on addHeaderRow', () => {
       const table = new TableElement({
         ...twoColumnTableProperties,
         headerEnabled: true,
-        headerRows: [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]]
+        headerRows: [[{ text: 'A' }, { text: 'B' }]]
       });
       const originalHeaderRows = table.headerRows;
       table.addHeaderRow();
       expect(table.headerRows).toEqual([
-        [{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }],
-        [{ text: '', alignment: 'left' }, { text: '', alignment: 'left' }]
+        [{ text: 'A' }, { text: 'B' }],
+        [{ text: '' }, { text: '' }]
       ]);
       expect(table.headerRows).not.toBe(originalHeaderRows);
     });
@@ -180,24 +179,24 @@ describe('TableElement', () => {
         ...tableProperties,
         headerEnabled: true,
         headerRows: [
-          [{ text: 'A', alignment: 'left' }],
-          [{ text: 'B', alignment: 'center' }]
+          [{ text: 'A' }],
+          [{ text: 'B' }]
         ]
       });
       table.removeHeaderRow(0);
-      expect(table.headerRows).toEqual([[{ text: 'B', alignment: 'center' }]]);
+      expect(table.headerRows).toEqual([[{ text: 'B' }]]);
     });
 
     it('should keep header properties in the blueprint', () => {
       const table = new TableElement({
         ...twoColumnTableProperties,
         headerEnabled: true,
-        headerRows: [[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]],
+        headerRows: [[{ text: 'A' }, { text: 'B' }]],
         stickyHeader: true
       });
       const blueprint = table.getBlueprint();
       expect(blueprint.headerEnabled).toBe(true);
-      expect(blueprint.headerRows).toEqual([[{ text: 'A', alignment: 'left' }, { text: 'B', alignment: 'right' }]]);
+      expect(blueprint.headerRows).toEqual([[{ text: 'A' }, { text: 'B' }]]);
       expect(blueprint.stickyHeader).toBe(true);
     });
   });

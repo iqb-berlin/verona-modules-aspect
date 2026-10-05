@@ -104,7 +104,7 @@ export class TableElement extends CompoundElement implements TableProperties {
   }
 
   private static createHeaderRow(columnCount: number): TableHeaderCell[] {
-    return Array.from({ length: columnCount }, (): TableHeaderCell => ({ text: '', alignment: 'left' }));
+    return Array.from({ length: columnCount }, (): TableHeaderCell => ({ text: '' }));
   }
 
   getChildElements(): UIElement[] {
@@ -118,9 +118,9 @@ export class TableElement extends CompoundElement implements TableProperties {
   }
 }
 
+/** A cell of a header row. Its text is HTML from the rich text editor since 4.13 (#1430). */
 export interface TableHeaderCell {
   text: string;
-  alignment: 'left' | 'center' | 'right';
 }
 
 export interface TableProperties extends UIElementProperties, StickyHeaderProperties {

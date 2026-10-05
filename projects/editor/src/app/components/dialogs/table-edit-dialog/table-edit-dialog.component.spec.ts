@@ -1,5 +1,6 @@
+/* eslint-disable max-classes-per-file -- the dialog's two children are mocked side by side. */
 import {
-  Component, EventEmitter, forwardRef, Input, Output
+  Component, EventEmitter, forwardRef, Input, OnInit, Output, TemplateRef, ViewContainerRef
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -9,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import { TableComponent } from 'common/components/elements/table/table.component';
 import { UIElement } from 'common/models/elements/element';
-import { TableElement, TableProperties } from 'common/models/elements/table';
+import { TableElement, TableHeaderCell, TableProperties } from 'common/models/elements/table';
 import {
   TableChildOverlay
 } from 'common/components/table-child-overlay/table-child-overlay.component';
@@ -23,22 +24,46 @@ import {
   TableEditDialogComponent
 } from 'editor/src/app/components/dialogs/table-edit-dialog/table-edit-dialog.component';
 
+/** Renders the header cell editor the dialog hands in once per header cell, as the real table does in
+   the dialog. It does so from code: an inline template of a spec-local component is compiled without
+   a module, so `ngTemplateOutlet` would be unknown there. */
 @Component({
   selector: 'aspect-table',
   template: '',
   standalone: false,
   providers: [{ provide: TableComponent, useExisting: forwardRef(() => MockTableComponent) }]
 })
-class MockTableComponent {
+class MockTableComponent implements OnInit {
   @Input() elementModel!: TableElement;
   @Input() editorMode: boolean = false;
   @Input() allowElementEditing: boolean = false;
   @Input() contentRowHeight: string | null = null;
+  @Input() headerCellEditor: TemplateRef<{ $implicit: TableHeaderCell }> | null = null;
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
   @Output() elementRemoved = new EventEmitter<{ row: number, col: number }>();
   refresh = vi.fn();
+
+  constructor(private viewContainerRef: ViewContainerRef) {}
+
+  ngOnInit(): void {
+    const editor = this.headerCellEditor;
+    if (!editor) return;
+    this.elementModel.headerRows.flat()
+      .forEach(cell => this.viewContainerRef.createEmbeddedView(editor, { $implicit: cell }));
+  }
 }
 
+@Component({
+  selector: 'aspect-rich-text-editor',
+  template: '',
+  standalone: false
+})
+class MockRichTextEditorComponent {
+  @Input() content!: string;
+  @Input() showReducedControls: boolean = false;
+  @Input() defaultFontSize!: number;
+  @Output() contentChange = new EventEmitter<string>();
+}
 describe('TableEditDialogComponent', () => {
   let component: TableEditDialogComponent;
   let fixture: ComponentFixture<TableEditDialogComponent>;
@@ -78,7 +103,8 @@ describe('TableEditDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         TableEditDialogComponent,
-        MockTableComponent
+        MockTableComponent,
+        MockRichTextEditorComponent
       ],
       imports: [
         MatDialogModule,
@@ -126,12 +152,32 @@ describe('TableEditDialogComponent', () => {
   /* Header cells are edited in place, so the copy needs its own -- otherwise cancelling would keep a
      changed caption. */
   it('should copy the header rows down to their cells', () => {
-    table.headerRows = [[{ text: 'Kopf', alignment: 'left' }]];
+    table.headerRows = [[{ text: 'Kopf' }]];
 
     const copy = TestBed.createComponent(TableEditDialogComponent).componentInstance.newTable;
 
     expect(copy.headerRows).toEqual(table.headerRows);
     expect(copy.headerRows[0][0]).not.toBe(table.headerRows[0][0]);
+  });
+
+  /* A header cell is edited with the reduced rich text editor, which writes into the copy's cell and
+     leaves the injected table alone until saving (#1430). */
+  it('should edit each header cell of the copy with the reduced rich text editor', () => {
+    table.headerRows = [[{ text: '<p>Kopf</p>' }, { text: '' }]];
+    const dialogFixture = TestBed.createComponent(TableEditDialogComponent);
+    dialogFixture.detectChanges();
+
+    const editors = dialogFixture.debugElement.queryAll(By.directive(MockRichTextEditorComponent))
+      .map(debugElement => debugElement.componentInstance as MockRichTextEditorComponent);
+    expect(editors.length).toBe(2);
+    expect(editors[0].content).toBe('<p>Kopf</p>');
+    expect(editors[0].showReducedControls).toBe(true);
+    expect(editors[0].defaultFontSize).toBe(table.styling.fontSize);
+
+    editors[0].contentChange.emit('<p><strong>Kopf</strong></p>');
+
+    expect(dialogFixture.componentInstance.newTable.headerRows[0][0].text).toBe('<p><strong>Kopf</strong></p>');
+    expect(table.headerRows[0][0].text).toBe('<p>Kopf</p>');
   });
 
   it('should add a drop list with its table specific defaults at the given cell', async () => {

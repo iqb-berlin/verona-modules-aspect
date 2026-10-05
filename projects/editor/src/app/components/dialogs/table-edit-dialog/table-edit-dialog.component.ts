@@ -51,8 +51,8 @@ export class TableEditDialogComponent implements OnDestroy {
      anything (#1270). The copy is not a duplicate -- it holds the very same cell objects, only in
      its own array. Rebuilding them (getBlueprint(), the TableElement constructor) would hand out new
      IDs and put other objects into the unit than the ones the selection and the references know.
-     Its own header rows are copied down to the cells, because their text and alignment are edited in
-     place. */
+     Its own header rows are copied down to the cells, because the rich text editor of a header cell
+     writes its text in place. */
   private static copyForEditing(table: TableElement): TableElement {
     const copy = Object.create(Object.getPrototypeOf(table) as object) as TableElement;
     return Object.assign(copy, table, {

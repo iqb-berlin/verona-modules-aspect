@@ -7,8 +7,10 @@
      [style.grid-auto-rows]="'auto'"
      [style.background-color]="elementModel.styling.backgroundColor">
   @if (elementModel.headerEnabled) {
-    @for (headerRow of elementModel.headerRows; track $index; let r = $index) {
-      @for (headerCell of headerRow; track $index; let j = $index) {
+    <!-- Tracked by the cell itself: in the edit dialog each cell holds an editor of its own, and
+         removing a header row must not hand that row's editor over to the row below (#1430). -->
+    @for (headerRow of elementModel.headerRows; track headerRow; let r = $index) {
+      @for (headerCell of headerRow; track headerCell; let j = $index) {
         <div class="header-cell" #headerCellElement
              [class.sticky-header]="elementModel.stickyHeader && !allowElementEditing"
              [style.top.px]="elementModel.stickyHeader && !allowElementEditing ? stickyHeaderOffsets[r] || 0 : null"
@@ -29,29 +31,12 @@
              [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
              [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-             [style.text-align]="headerCell.alignment"
              [style.grid-row-start]="r + 1"
              [style.grid-column-start]="j + 1">
           @if (allowElementEditing) {
             <div class="header-cell-editor">
-              <input class="header-text-input"
-                     [attr.aria-label]="'tableHeaderText' | translate"
-                     [value]="headerCell.text"
-                     (input)="updateHeaderCellText(r, j, $any($event.target).value)">
+              <ng-container *ngTemplateOutlet="headerCellEditor; context: { $implicit: headerCell }"></ng-container>
               <div class="header-editor-actions">
-                <mat-button-toggle-group class="header-alignment-toggle"
-                                         [value]="headerCell.alignment"
-                                         (change)="updateHeaderCellAlignment(r, j, $event.value)">
-                  <mat-button-toggle value="left" [matTooltip]="'tableHeaderAlignLeft' | translate">
-                    <mat-icon class="toggle-icon">format_align_left</mat-icon>
-                  </mat-button-toggle>
-                  <mat-button-toggle value="center" [matTooltip]="'tableHeaderAlignCenter' | translate">
-                    <mat-icon class="toggle-icon">format_align_center</mat-icon>
-                  </mat-button-toggle>
-                  <mat-button-toggle value="right" [matTooltip]="'tableHeaderAlignRight' | translate">
-                    <mat-icon class="toggle-icon">format_align_right</mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
                 @if (j === 0) {
                   <div class="header-row-controls">
                     @if (r === elementModel.headerRows.length - 1) {
@@ -73,7 +58,7 @@
               </div>
             </div>
           } @else {
-            {{ headerCell.text }}
+            <div class="header-text" [innerHTML]="headerCell.text | safeResourceHTML"></div>
           }
         </div>
       }

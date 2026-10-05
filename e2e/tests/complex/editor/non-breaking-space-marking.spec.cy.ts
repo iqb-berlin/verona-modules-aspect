@@ -1,6 +1,6 @@
 import { addElement, clickButtonDialog } from '../../util';
 
-/* Non-breaking spaces look like any other space; a switch in the text editor marks them, one colour for each kind.
+/* Non-breaking spaces look like any other space; a switch below the text marks them, one colour for each kind.
    The marking is for the eye only and must not reach the stored text (#1476). */
 
 const insertSpecialChar = (index: number): void => {
@@ -29,8 +29,8 @@ describe('Marking non-breaking spaces in the text editor', () => {
 
     cy.get('mat-dialog-container .ProseMirror').find('.nbsp-marker, .narrow-nbsp-marker').should('not.exist');
 
-    cy.get('mat-dialog-container .show-nbsp-button').click();
-    cy.get('mat-dialog-container .show-nbsp-button').should('have.class', 'active');
+    cy.get('mat-dialog-container .show-nbsp-toggle button[role="switch"]').click();
+    cy.get('mat-dialog-container .show-nbsp-toggle button[role="switch"]').should('have.attr', 'aria-checked', 'true');
     cy.get('mat-dialog-container .ProseMirror .nbsp-marker').should('have.length', 1)
       .invoke('text').should('eq', String.fromCharCode(0xA0));
     cy.get('mat-dialog-container .ProseMirror .narrow-nbsp-marker').should('have.length', 1)

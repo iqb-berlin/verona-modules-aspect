@@ -106,27 +106,6 @@
   </fieldset>
 
   <fieldset *ngIf="!showReducedControls" class="input-group">
-    <legend>Listen</legend>
-    <aspect-combo-button [inputType]="'list'"
-                         [selectedValue]="editor.getAttributes('bulletList').listStyle"
-                         [availableValues]="['disc', 'circle', 'square']"
-                         [tooltip]="'Aufzählung'" [icon]="'format_list_bulleted'"
-                         [isActive]="editor.isActive('bulletList')"
-                         (applySelection)="toggleBulletList()"
-                         (selectionChanged)="applyListStyle('bulletList', $event)">
-    </aspect-combo-button>
-    <aspect-combo-button [inputType]="'list'"
-                         [selectedValue]="editor.getAttributes('orderedList').listStyle"
-                         [availableValues]="['decimal', 'lower-latin', 'upper-latin',
-                                             'lower-roman', 'upper-roman', 'lower-greek']"
-                         [tooltip]="'Aufzählung (nummeriert)'" [icon]="'format_list_numbered'"
-                         [isActive]="editor.isActive('orderedList')"
-                         (applySelection)="toggleOrderedList()"
-                         (selectionChanged)="applyListStyle('orderedList', $event)">
-    </aspect-combo-button>
-  </fieldset>
-
-  <fieldset *ngIf="!showReducedControls" class="input-group">
     <legend>Textausrichtung</legend>
     <button mat-icon-button [matTooltip]="'richTextEditor.alignLeft' | translate" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'left' })"
@@ -148,6 +127,27 @@
             (click)="alignText('justify')">
       <mat-icon>format_align_justify</mat-icon>
     </button>
+  </fieldset>
+
+  <fieldset *ngIf="!showReducedControls" class="input-group">
+    <legend>Listen</legend>
+    <aspect-combo-button [inputType]="'list'"
+                         [selectedValue]="editor.getAttributes('bulletList').listStyle"
+                         [availableValues]="['disc', 'circle', 'square']"
+                         [tooltip]="'Aufzählung'" [icon]="'format_list_bulleted'"
+                         [isActive]="editor.isActive('bulletList')"
+                         (applySelection)="toggleBulletList()"
+                         (selectionChanged)="applyListStyle('bulletList', $event)">
+    </aspect-combo-button>
+    <aspect-combo-button [inputType]="'list'"
+                         [selectedValue]="editor.getAttributes('orderedList').listStyle"
+                         [availableValues]="['decimal', 'lower-latin', 'upper-latin',
+                                             'lower-roman', 'upper-roman', 'lower-greek']"
+                         [tooltip]="'Aufzählung (nummeriert)'" [icon]="'format_list_numbered'"
+                         [isActive]="editor.isActive('orderedList')"
+                         (applySelection)="toggleOrderedList()"
+                         (selectionChanged)="applyListStyle('orderedList', $event)">
+    </aspect-combo-button>
   </fieldset>
 
   <fieldset *ngIf="!showReducedControls" class="input-group">
@@ -199,13 +199,6 @@
     <button mat-icon-button class="special-chars-button" [matTooltip]="'richTextEditor.specialCharacters' | translate" [matTooltipShowDelay]="300"
             [matMenuTriggerFor]="specialCharsMenu">
       <mat-icon>emoji_symbols</mat-icon>
-    </button>
-    <button mat-icon-button class="show-nbsp-button"
-            [matTooltip]="'richTextEditor.showNonBreakingSpaces' | translate" [matTooltipShowDelay]="300"
-            [class.active]="nonBreakingSpaceVisibility.visible | async"
-            [attr.aria-pressed]="nonBreakingSpaceVisibility.visible | async"
-            (click)="toggleNonBreakingSpaces()">
-      <mat-icon>space_bar</mat-icon>
     </button>
     <mat-menu #specialCharsMenu="matMenu" yPosition="above">
       <button mat-button (click)="insertSpecialChar('&nbsp;')"
@@ -342,7 +335,17 @@
                (ngModelChange)="contentChange.emit($event)">
 </tiptap-editor>
 <input type="file" hidden accept="image/*" #imageUpload (change)="onImageUpload($event)">
-<ng-container *ngIf="showWordCounter">
-  {{ editor.storage.characterCount.characters() }} Zeichen /
-  {{ editor.storage.characterCount.words() }} {{ editor.storage.characterCount.words() == 1 ? 'Wort' : 'Wörter' }}
-</ng-container>
+<div class="editor-footer">
+  <mat-slide-toggle class="show-nbsp-toggle" [disabled]="disabled"
+                    [checked]="nonBreakingSpaceVisibility.visible | async"
+                    (change)="nonBreakingSpaceVisibility.toggle()">
+    {{ 'richTextEditor.showNonBreakingSpaces' | translate }}
+  </mat-slide-toggle>
+  @if (showWordCounter) {
+    <span>
+      {{ editor.storage.characterCount.characters() }} {{ 'richTextEditor.characters' | translate }} /
+      {{ editor.storage.characterCount.words() }}
+      {{ (editor.storage.characterCount.words() == 1 ? 'richTextEditor.word' : 'richTextEditor.words') | translate }}
+    </span>
+  }
+</div>

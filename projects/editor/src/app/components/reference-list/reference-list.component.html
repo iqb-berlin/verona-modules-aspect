@@ -1,16 +1,15 @@
-@for (refGroup of refs ? refs : data; track refGroup) {
-  <span>
-    <b>
-      @if (refGroup.element.type === 'text-anchor') {
-        {{ 'referenceList.textAnchor' | translate: { id: refGroup.element.alias } }}
-      } @else {
-        {{ refGroup.element.alias }}
-      }
-    </b>
-    {{ 'referenceList.referencedBy' | translate }}
+@for (refGroup of refs; track refGroup) {
+  <span class="reference-group-title">
+    {{ 'referenceList.referencesTo' | translate }}
+    @if (refGroup.element.type === 'text-anchor') {
+      <b>{{ 'referenceList.textAnchor' | translate: { id: refGroup.element.alias } }}</b>:
+    } @else {
+      <b>{{ refGroup.element.alias }}</b>:
+    }
   </span>
   @if (refGroup.refs.length > 0) {
-    <aspect-element-list [elements]="refGroup.refs"></aspect-element-list>
+    <aspect-element-list [elements]="refGroup.refs" [navigable]="navigable"
+                         (goToElement)="goToElement.emit($event)"></aspect-element-list>
   }
   @if (refGroup.sections?.length) {
     <mat-list>
@@ -21,6 +20,11 @@
             {{ 'referenceList.visibilityRuleOf' | translate:
                { page: location.pageIndex + 1, section: location.sectionIndex + 1 } }}
           </div>
+          @if (navigable) {
+            <button mat-stroked-button matListItemMeta class="go-to-section" (click)="goToSection.emit(location)">
+              {{ 'unitHints.goToSection' | translate }}
+            </button>
+          }
         </mat-list-item>
       }
     </mat-list>

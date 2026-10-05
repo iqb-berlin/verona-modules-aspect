@@ -72,8 +72,9 @@ export function visibleAppletParams(): Cypress.Chainable<Record<string, unknown>
 
 export function dismissErrorDialogIfVisible() {
   cy.get('body').then($body => {
-    if ($body.find('button:contains("Verwerfen")').length > 0) {
-      cy.contains('button', 'Verwerfen').click();
+    // The dialog for an unexpected error, known by the error symbol in its title (#1520).
+    if ($body.find('mat-dialog-container .message-icon-error').length > 0) {
+      cy.get('mat-dialog-container').contains('button', 'Schließen').click();
       cy.get('.cdk-overlay-backdrop').should('not.exist');
     }
   });

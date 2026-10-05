@@ -1,19 +1,29 @@
-<div mat-dialog-title>Löschen bestätigen</div>
-<div mat-dialog-content>
-  {{data.text}}
-  <aspect-element-list *ngIf="data.elementList && data.elementList.length > 0"
-                       [elements]="data.elementList"></aspect-element-list>
-  <fieldset *ngIf="data.refs && data.refs.length > 0">
-    <legend [style.background-color]="'orange'">Referenzen festgestellt</legend>
-    <aspect-reference-list [refs]="data.refs"></aspect-reference-list>
-    <p [style.color]="'orange'" [style.font-weight]="'bold'">
-      Gefundene Referenzen werden entfernt.</p>
-    <p [style.color]="'orange'" [style.font-weight]="'bold'">
-      Entfernte Referenzen werden beim Rückgängigmachen nicht wiederhergestellt.</p>
-    <p>Bei Abbruch wird eine Liste der Referenzen zur manuellen Überprüfung abgezeigt.</p>
-  </fieldset>
-</div>
-<div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="true">{{'confirm' | translate }}</button>
-  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-</div>
+<h2 mat-dialog-title class="message-title">
+  @if (data.refs?.length) {
+    <mat-icon class="message-icon-warning">warning</mat-icon>
+  }
+  <span>{{ data.text }}</span>
+</h2>
+<mat-dialog-content>
+  @if (data.elementList && data.elementList.length > 0) {
+    <aspect-element-list [elements]="data.elementList"></aspect-element-list>
+  }
+  @if (data.refs && data.refs.length > 0) {
+    <aspect-reference-list [refs]="data.refs" [navigable]="true"
+                           (goToElement)="goToElement($event)" (goToSection)="goToSection($event)">
+    </aspect-reference-list>
+    <p class="reference-removal-hint">{{ 'referenceRemoval.removedWith' | translate }}</p>
+    <p class="reference-removal-hint">{{ 'referenceRemoval.goToCancels' | translate }}</p>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <!-- Focused first: Enter must neither delete nor go somewhere else. -->
+  <button mat-button mat-dialog-close cdkFocusInitial>{{ 'cancel' | translate }}</button>
+  @if (data.refs?.length) {
+    <button mat-flat-button color="warn" class="confirm-delete" [mat-dialog-close]="true">
+      {{ 'referenceRemoval.delete' | translate }}
+    </button>
+  } @else {
+    <button mat-button class="confirm-delete" [mat-dialog-close]="true">{{ 'delete' | translate }}</button>
+  }
+</mat-dialog-actions>

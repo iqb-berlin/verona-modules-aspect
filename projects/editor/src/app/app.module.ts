@@ -137,12 +137,6 @@ import {
 import {
   DynamicSectionHelperGridComponent
 } from 'editor/src/app/components/dynamic-section-helper-grid/dynamic-section-helper-grid.component';
-import {
-  FixedReferencesSnackbarComponent
-} from 'editor/src/app/components/fixed-references-snackbar/fixed-references-snackbar.component';
-import {
-  ReferenceListSnackbarComponent
-} from 'editor/src/app/components/reference-list-snackbar/reference-list-snackbar.component';
 import { SectionMenuComponent } from 'editor/src/app/components/section-menu/section-menu.component';
 import {
   StaticOverlayComponent
@@ -203,10 +197,8 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     DynamicSectionComponent,
     DynamicSectionHelperGridComponent,
     ElementListComponent,
-    FixedReferencesSnackbarComponent,
     PageMenu,
     ReferenceListComponent,
-    ReferenceListSnackbarComponent,
     SectionComponent,
     SectionMenuComponent,
     StaticOverlayComponent,

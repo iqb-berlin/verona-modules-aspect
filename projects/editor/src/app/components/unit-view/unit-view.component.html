@@ -128,14 +128,20 @@
 
         <!-- The tabs below only hold buttons. They are disabled so that they cannot be selected, and the class undoes
              the fading Material gives a disabled tab, which made the buttons look switched off. -->
-        @if (((unitService.variableInfoFindings | async) ?? []).length; as findingsCount) {
+        <!-- There while the hints area has anything to show: with the number of what is still open as a warning, as a
+             plain note while it only reports what loading repaired (#1520). -->
+        @if (unitService.hintIndicator | async; as indicator) {
           <mat-tab [disabled]="true" labelClass="button-tab">
             <ng-template mat-tab-label>
               <button mat-button class="variable-info-findings-button"
-                      [matTooltip]="'variableInfoFindings.indicator' | translate"
+                      [matTooltip]="'unitHints.indicator' | translate"
                       (click)="showVariableInfoFindings()">
-                <mat-icon class="variable-info-findings-icon">warning</mat-icon>
-                <span class="variable-info-findings-count">{{ findingsCount }}</span>
+                @if (indicator.open > 0) {
+                  <mat-icon class="variable-info-findings-icon">warning</mat-icon>
+                  <span class="variable-info-findings-count">{{ indicator.open }}</span>
+                } @else {
+                  <mat-icon class="variable-info-findings-info">info</mat-icon>
+                }
               </button>
             </ng-template>
           </mat-tab>

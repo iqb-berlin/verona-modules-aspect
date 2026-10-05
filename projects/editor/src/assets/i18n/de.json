@@ -23,16 +23,24 @@
   "elementNotAddedFileFailed": "Die Datei konnte nicht geladen werden. Es wurde kein Element angelegt.",
   "outdatedUnit": "Unit Definition aktualisiert",
   "sectionNotReplaced": "Der Abschnitt wurde nicht ersetzt. Der einzufügende Abschnitt wurde verworfen.",
-  "invalidReferencesRemoved": "Invalide Referenzen bei folgenden Elementen wurden entfernt:",
-  "invalidVisibilityRulesToCheck": "Sichtbarkeitsbedingungen folgender Abschnitte verweisen auf nicht vorhandene Elemente oder Zustandsvariablen und sind nie erfüllt. Sie wurden nicht verändert – bitte prüfen:",
   "deleteStateVariablesConfirm": "Zustandsvariablen löschen?",
   "deletePageConfirm": "Seite {{page}} löschen?",
   "deleteAlwaysVisiblePageConfirm": "Dauerhaft sichtbare Seite löschen?",
+  "deleteSectionConfirm": "Abschnitt {{section}} löschen?",
+  "deleteElementsConfirm": "Elemente löschen?",
+  "referenceRemoval": {
+    "removedWith": "Diese Verweise werden mit entfernt. „Schritt rückgängig“ stellt sie nicht wieder her.",
+    "goToCancels": "„Zum Element“ und „Zum Abschnitt“ brechen das Löschen ab.",
+    "goToCancelsChange": "„Zum Element“ und „Zum Abschnitt“ verwerfen die Änderung am Text.",
+    "delete": "Löschen und Verweise entfernen",
+    "changeTextTitle": "Text ändern?",
+    "changeText": "Ändern und Verweise entfernen"
+  },
   "referenceList": {
-    "referencedBy": "wird referenziert von:",
+    "referencesTo": "Verweise auf",
     "visibilityRuleOf": "Sichtbarkeitsbedingung von Seite {{page}}, Abschnitt {{section}}",
     "visibilityRuleHint": "Fällt eine Sichtbarkeitsbedingung weg, ändert sich, wann der Abschnitt erscheint; ein Abschnitt ohne Bedingungen ist immer sichtbar.",
-    "textAnchor": "Textbereich \"{{id}}\"",
+    "textAnchor": "Textbereich „{{id}}“",
     "sectionLocation": "Seite {{page}}, Abschnitt {{section}}"
   },
   "save": "Speichern",
@@ -516,8 +524,28 @@
     "reportError": "Fehler melden",
     "reportViaGitHub": "Fehlerbericht auf GitHub erstellen",
     "reportViaEmail": "Fehlerbericht als Email versenden",
-    "reportToClipboard": "Fehlerbericht in Zwischenablage kopieren",
-    "discard": "Verwerfen"
+    "reportToClipboard": "Fehlerbericht in Zwischenablage kopieren"
+  },
+  "unitDefError": {
+    "newer": "Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.",
+    "outdated": "Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden."
+  },
+  "sanitization": {
+    "title": "Unit-Definition wird aktualisiert",
+    "text": "Eine veraltete Unit-Definition wurde geladen und muss angepasst werden. Sobald gespeichert wird, ist sie nicht mehr mit alten Versionen kompatibel.",
+    "confirm": "Aktualisieren"
+  },
+  "sectionInsert": {
+    "title": "Seitenabschnitt einfügen",
+    "fromSaved": "Gespeicherten Abschnitt einfügen",
+    "fromClipboard": "Abschnitt über Zwischenablage einfügen",
+    "replaceExisting": "Bestehenden Abschnitt ersetzen",
+    "pastePrompt": "Kopierten Abschnitt einfügen:",
+    "readError": "Fehler beim Lesen des Abschnitts.",
+    "duplicateIds": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",
+    "readSuccess": "Abschnitt wurde erfolgreich gelesen.",
+    "savedFound": "Gespeicherter Abschnitt gefunden.",
+    "savedMissing": "Kein gespeicherter Abschnitt gefunden."
   },
   "error": {
     "corruptElement": "Element-Ressource ist vermutlich fehlerhaft und sollte ausgetauscht werden! \n\n Ursprüngliche Fehlermeldung: {{ errorMsg }}"
@@ -638,12 +666,27 @@
   "overviewDialog": {
     "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."
   },
+  "unitHints": {
+    "title": "Hinweise zur Unit",
+    "indicator": "Hinweise zur Unit anzeigen",
+    "none": "Zur Unit gibt es keine Hinweise.",
+    "goToElement": "Zum Element",
+    "goToSection": "Zum Abschnitt",
+    "rulesIntoNothing": {
+      "title": "Sichtbarkeitsbedingungen ohne Ziel",
+      "explanation": "Diese Abschnitte haben Sichtbarkeitsbedingungen, die nach einem Element oder einer Zustandsvariable fragen, die es in der Unit nicht gibt. Eine solche Bedingung ist nie erfüllt. Beim Laden werden sie nicht verändert, weil sich sonst ändern würde, wann der Abschnitt erscheint.",
+      "targets": "Fragt nach",
+      "noTarget": "(nichts gewählt)"
+    },
+    "loadRepairs": {
+      "title": "Beim Laden entfernte Verweise",
+      "explanation": "Diese Elemente verwiesen auf etwas, das es in der Unit nicht gibt. Die Verweise wurden beim Laden entfernt."
+    }
+  },
   "variableInfoFindings": {
     "title": "Ungültige Variablennamen",
-    "indicator": "Ungültige Variablennamen anzeigen",
     "explanation": "Diese Variablen verstoßen gegen die Regeln für Variablennamen: erlaubt sind Buchstaben ohne Umlaute, Ziffern, _ und -, und jeder Name darf nur einmal vorkommen, wobei Groß- und Kleinschreibung nicht als Unterschied zählen. Solange sich einer der Namen hier korrigieren lässt, meldet der Editor keine Variablenliste an das Studio; das Studio behält bis dahin die zuletzt gespeicherte.",
     "geometryHint": "Namen aus GeoGebra lassen sich nur in GeoGebra ändern: das Objekt dort umbenennen und die Datei neu laden. Bereits erhobene Antworten bleiben dem alten Namen zugeordnet.",
-    "none": "Alle Variablennamen sind gültig.",
     "column": {
       "location": "Ort",
       "element": "Element",
@@ -662,16 +705,18 @@
     "idHint": "Betrifft die interne ID; hält die Variablenliste nicht zurück. „ID ersetzen“ legt eine neue ID an.",
     "replaceId": "ID ersetzen",
     "replaceAll": "Alle IDs ersetzen ({{count}})",
-    "replaceWarning": "Die Kodierungen von bis zu {{count}} Variable(n) müssen im Studio neu angelegt werden, weil das Studio sie über die ID findet. Erhobene Antworten bleiben erhalten.",
-    "replaceConfirm": "Ersetzen",
-    "goToElement": "Zum Element",
+    "replaceWarning": {
+      "one": "Die Kodierungen dieser Variable müssen im Studio neu angelegt werden, weil das Studio sie über die ID findet. Erhobene Antworten bleiben erhalten.",
+      "other": "Die Kodierungen von bis zu {{count}} Variablen müssen im Studio neu angelegt werden, weil das Studio sie über die ID findet. Erhobene Antworten bleiben erhalten."
+    },
+    "replaceConfirm": {
+      "one": "ID ersetzen",
+      "other": "IDs ersetzen"
+    },
     "editStateVariables": "Zustandsvariablen bearbeiten"
   },
   "assistants": "Assistenten",
   "pageSettings": "Seiteneinstellungen",
-  "deleteReferenceDialog": {
-    "cleanUpHint": "Referenzen werden automatisch entfernt. Elemente mit Referenzen werden möglicherweise unbrauchbar."
-  },
   "unitView": {
     "alwaysVisiblePage": "Dauerhaft sichtbare Seite",
     "addPage": "Weitere Seite anlegen",

@@ -1,26 +1,18 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Mock } from 'vitest';
-import { UIElement } from 'common/models/elements/element';
-import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import { MessageService } from 'editor/src/app/services/message.service';
-import {
-  ReferenceListSnackbarComponent
-} from 'editor/src/app/components/reference-list-snackbar/reference-list-snackbar.component';
-import {
-  FixedReferencesSnackbarComponent
-} from 'editor/src/app/components/fixed-references-snackbar/fixed-references-snackbar.component';
 import {
   UnexpectedErrorComponent
 } from 'editor/src/app/components/unexpected-error/unexpected-error.component';
 
 describe('MessageService', () => {
   let service: MessageService;
-  let snackBarMock: { open: Mock; openFromComponent: Mock };
+  let snackBarMock: { open: Mock };
   let dialogMock: { open: Mock };
 
   beforeEach(() => {
-    snackBarMock = { open: vi.fn(), openFromComponent: vi.fn() };
+    snackBarMock = { open: vi.fn() };
     dialogMock = { open: vi.fn() };
     service = new MessageService(
       snackBarMock as unknown as MatSnackBar,
@@ -62,17 +54,5 @@ describe('MessageService', () => {
 
     expect(service.showErrorPrompt(error)).toBe(dialogRef);
     expect(dialogMock.open).toHaveBeenCalledWith(UnexpectedErrorComponent, { data: error });
-  });
-
-  it('should open the reference panels as snackbar components', () => {
-    const refs = [{ element: { id: 'el_1' }, refs: [] }] as unknown as ReferenceList[];
-    service.showReferencePanel(refs);
-    expect(snackBarMock.openFromComponent)
-      .toHaveBeenCalledWith(ReferenceListSnackbarComponent, { data: refs, horizontalPosition: 'left' });
-
-    const repair = { repaired: [{ id: 'el_1' }] as unknown as UIElement[], toCheck: [] };
-    service.showFixedReferencePanel(repair);
-    expect(snackBarMock.openFromComponent)
-      .toHaveBeenCalledWith(FixedReferencesSnackbarComponent, { data: repair, horizontalPosition: 'left' });
   });
 });

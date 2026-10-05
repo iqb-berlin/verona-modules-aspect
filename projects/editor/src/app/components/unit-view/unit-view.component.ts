@@ -5,7 +5,7 @@ import { PageService } from 'editor/src/app/services/page.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { OverviewDialogComponent } from 'editor/src/app/components/dialogs/overview-dialog/overview-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -43,10 +43,10 @@ export class UnitViewComponent implements OnInit, OnDestroy {
           this.refreshTabs();
         }
       );
-    this.selectionService.requestedElementID
+    merge(this.selectionService.requestedElementID, this.selectionService.requestedSection)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(elementID => {
-        if (elementID && this.showPagesAsList && this.unitService.unit.pages[0].alwaysVisible) {
+      .subscribe(request => {
+        if (request && this.showPagesAsList && this.unitService.unit.pages[0].alwaysVisible) {
           this.listTabIndex = this.selectionService.selectedPageIndex === 0 ? 0 : 1;
         }
       });

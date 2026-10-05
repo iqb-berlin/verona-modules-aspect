@@ -28,7 +28,7 @@ describe('Editor menu tests', { testIsolation: false }, () => {
 
     it('section-menu: delete section', () => {
       cy.get('aspect-section-menu').eq(1).find('mat-icon').contains('clear').click({ force: true });
-      cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
+      cy.get('mat-dialog-container').contains('button', 'Löschen').click();
       cy.get('aspect-editor-section-view').should('have.length', 1);
     });
 
@@ -171,7 +171,7 @@ describe('Editor menu tests', { testIsolation: false }, () => {
         .should('contain.text', 'check');
 
       cy.get('mat-dialog-container').find('td.mat-column-actions button').contains('Löschen').first().click();
-      cy.get('aspect-confirmation-dialog').contains('button', 'Bestätigen').click();
+      cy.get('aspect-confirmation-dialog').contains('button', 'Löschen').click();
 
       cy.get('mat-dialog-container').contains('button', 'Schließen').click();
       cy.get('mat-dialog-container').should('not.exist');
@@ -188,8 +188,9 @@ describe('Editor menu tests', { testIsolation: false }, () => {
           getData: (type: string) => (type === 'Text' ? 'invalid-json' : '')
         }
       });
-      cy.get('.message-area').should('have.css', 'color', 'rgb(255, 0, 0)')
-        .and('contain.text', 'Fehler beim Lesen des Abschnitts');
+      // The state is the symbol in front of the line, not the colour of the text (#1520).
+      cy.get('.message-area').should('contain.text', 'Fehler beim Lesen des Abschnitts')
+        .find('.message-icon-error').should('exist');
 
       const validSectionWithDuplicates = {
         gridColumnSizes: [{ value: 1, unit: 'fr' }],
@@ -221,8 +222,8 @@ describe('Editor menu tests', { testIsolation: false }, () => {
         }
       });
 
-      cy.get('.message-area').should('have.css', 'color', 'rgb(255, 165, 0)')
-        .and('contain.text', 'Doppelte IDs festgestellt');
+      cy.get('.message-area').should('contain.text', 'Doppelte IDs festgestellt')
+        .find('.message-icon-warning').should('exist');
 
       cy.get('mat-dialog-container').contains('mat-checkbox', 'Bestehenden Abschnitt ersetzen').find('input')
         .uncheck({ force: true });

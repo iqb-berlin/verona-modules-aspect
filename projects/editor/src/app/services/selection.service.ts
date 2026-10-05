@@ -69,6 +69,11 @@ export class SelectionService {
    * takes it, and `null` means none is waiting.
    */
   requestedElementID = new BehaviorSubject<string | null>(null);
+  /**
+   * A section asked for from outside the unit view, as `requestedElementID` is for an element: a list naming a
+   * section's visibility rules takes the author there (#1520). The section that renders it takes the request.
+   */
+  requestedSection = new BehaviorSubject<{ pageIndex: number; sectionIndex: number } | null>(null);
 
   constructor() {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
@@ -87,6 +92,7 @@ export class SelectionService {
     this.clearElementSelection();
     // An id asked for in the unit left behind can name an element of the incoming one: generated ids repeat.
     this.requestedElementID.next(null);
+    this.requestedSection.next(null);
   }
 
   updateSelection(pageIndex: number, sectionIndex: number): void {
@@ -170,5 +176,12 @@ export class SelectionService {
     this.selectPage(pageIndex);
     this.selectedSectionIndex = sectionIndex;
     this.requestedElementID.next(elementID);
+  }
+
+  /** Turns to the section's page and asks the section to show itself as selected. */
+  requestSection(pageIndex: number, sectionIndex: number): void {
+    this.selectPage(pageIndex);
+    this.selectedSectionIndex = sectionIndex;
+    this.requestedSection.next({ pageIndex, sectionIndex });
   }
 }

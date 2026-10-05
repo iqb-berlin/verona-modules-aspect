@@ -13,9 +13,14 @@
   opacity: 1;
 }
 
+/* A warning, like the symbol in the title of the hints area it opens (#1520). */
 .variable-info-findings-icon,
 .variable-info-findings-count {
-  color: var(--mat-sys-error, #ba1a1a);
+  color: var(--aspect-warning-color);
+}
+
+.variable-info-findings-info {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .variable-info-findings-count {

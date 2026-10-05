@@ -164,10 +164,10 @@ export interface ReferenceList {
   sections?: SectionLocation[];
 }
 
-/** What loading a unit repaired, and what it found but left for the author to decide. */
-export interface ReferenceRepair {
-  repaired: UIElement[];
-  toCheck: SectionLocation[];
+/** A section whose visibility rules ask for something the unit does not hold, with the ids they ask for. */
+export interface RulesIntoNothing {
+  location: SectionLocation;
+  targetIDs: string[];
 }
 
 /** Everything that goes together and whose references among each other therefore do not count. */
@@ -184,27 +184,40 @@ export class ReferenceManager {
   }
 
   /**
-   * Called when a unit is loaded: removes references into nothing where the player makes nothing of them, and
-   * lists the sections whose visibility rules point into nothing. Navigation buttons to a page beyond the last
-   * are repaired as well.
+   * Called when a unit is loaded: removes references into nothing where the player makes nothing of them, and returns
+   * the elements it removed them from. Navigation buttons to a page beyond the last are repaired as well. What is
+   * only reported, the visibility rules, is {@link getRulesIntoNothing}.
    */
-  repairInvalidReferences(): ReferenceRepair {
+  repairInvalidReferences(): UIElement[] {
     const repaired = new Set<UIElement>(this.repairInvalidPageRefs());
-    const toCheck: SectionLocation[] = [];
-    REFERENCE_KINDS.forEach(kind => {
+    REFERENCE_KINDS.filter(kind => kind.repairOnLoad).forEach(kind => {
       const validTargets = kind.validTargets(this.unit);
       this.getReferrers(kind).forEach(referrer => {
         const invalidTargets = kind.targets(referrer).filter(targetID => !validTargets.has(targetID));
         if (invalidTargets.length === 0) return;
-        if (!kind.repairOnLoad) {
-          toCheck.push(this.locateSection(referrer as Section));
-          return;
-        }
         invalidTargets.forEach(targetID => kind.remove(referrer, targetID));
         repaired.add(referrer as UIElement);
       });
     });
-    return { repaired: [...repaired], toCheck };
+    return [...repaired];
+  }
+
+  /**
+   * The sections whose visibility rules point into nothing, which loading leaves as they are. Asked again on every
+   * change, so the editor can show them until the author has fixed them (#1520).
+   */
+  getRulesIntoNothing(): RulesIntoNothing[] {
+    return REFERENCE_KINDS.filter(kind => !kind.repairOnLoad).flatMap(kind => {
+      const validTargets = kind.validTargets(this.unit);
+      return this.getReferrers(kind)
+        .map(referrer => ({
+          referrer,
+          targetIDs: [...new Set(kind.targets(referrer).filter(targetID => !validTargets.has(targetID)))]
+        }))
+        // Located only where something is reported: this runs on every change of the unit.
+        .filter(rules => rules.targetIDs.length > 0)
+        .map(rules => ({ location: this.locateSection(rules.referrer as Section), targetIDs: rules.targetIDs }));
+    });
   }
 
   /**

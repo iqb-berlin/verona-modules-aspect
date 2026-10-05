@@ -169,7 +169,7 @@ describe('Section and Layout Handling', { testIsolation: false }, () => {
       cy.get('aspect-editor-section-view').eq(3).find('.section').click({ force: true });
       cy.get('aspect-section-menu').eq(3).should('not.have.class', 'hidden');
       cy.get('aspect-section-menu').eq(3).find('mat-icon').contains('clear').click({ force: true });
-      cy.get('aspect-confirmation-dialog').contains('button', 'Bestätigen').click({ force: true });
+      cy.get('aspect-confirmation-dialog').contains('button', 'Löschen').click({ force: true });
       cy.wait(300);
       cy.get('aspect-editor-section-view').should('have.length', 3);
     });

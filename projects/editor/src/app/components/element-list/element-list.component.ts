@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 
 @Component({
@@ -9,4 +11,7 @@ import { UIElement } from 'common/models/elements/element';
 })
 export class ElementListComponent {
   @Input() elements!: UIElement[];
+  /** Offers "Zum Element" at each entry, for a list that names what the author should look at (#1520). */
+  @Input() navigable: boolean = false;
+  @Output() goToElement = new EventEmitter<UIElement>();
 }

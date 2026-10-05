@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,6 +19,8 @@ import { ReferenceListComponent } from 'editor/src/app/components/reference-list
 })
 class MockElementListComponent {
   @Input() elements!: UIElement[];
+  @Input() navigable: boolean = false;
+  @Output() goToElement = new EventEmitter<UIElement>();
 }
 
 const createReferenceList = (alias: string, refAliases: string[]): ReferenceList => ({
@@ -28,13 +31,10 @@ const createReferenceList = (alias: string, refAliases: string[]): ReferenceList
 describe('ReferenceListComponent', () => {
   let component: ReferenceListComponent;
   let fixture: ComponentFixture<ReferenceListComponent>;
-  const injectedData: ReferenceList[] = [createReferenceList('injected', ['ref_a'])];
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ReferenceListComponent, MockElementListComponent],
-      imports: [CommonModule, MatIconModule, MatListModule, TranslateModule.forRoot()],
-      providers: [{ provide: MAT_SNACK_BAR_DATA, useValue: injectedData }]
+      imports: [CommonModule, MatIconModule, MatListModule, TranslateModule.forRoot()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReferenceListComponent);
@@ -46,18 +46,51 @@ describe('ReferenceListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the injected snackbar data when no refs input is given', () => {
-    expect(component.data).toBe(injectedData);
-    expect(fixture.nativeElement.textContent).toContain('injected');
-    expect(fixture.debugElement.queryAll(By.directive(MockElementListComponent)).length).toBe(1);
-  });
-
-  it('should prefer the refs input over the injected snackbar data', () => {
+  it('should render the given references', () => {
     component.refs = [createReferenceList('from_input', ['ref_b', 'ref_c'])];
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain('from_input');
-    expect(fixture.nativeElement.textContent).not.toContain('injected');
+  });
+
+  /* The delete dialogs list what refers with the way there, so the author can resolve it by hand (#1520). */
+  describe('as a list to navigate', () => {
+    const section = { section: new Section(), pageIndex: 0, sectionIndex: 1 };
+
+    beforeEach(() => {
+      component.refs = [{ ...createReferenceList('feld', ['knopf']), sections: [section] }];
+    });
+
+    it('should offer no way anywhere unless asked to', () => {
+      fixture.detectChanges();
+
+      const elementList = fixture.debugElement.query(By.directive(MockElementListComponent));
+      expect(elementList.injector.get(MockElementListComponent).navigable).toBe(false);
+      expect(fixture.nativeElement.querySelector('.go-to-section')).toBeNull();
+    });
+
+    it('should pass the way to each element down and hand on the one chosen', () => {
+      component.navigable = true;
+      const chosen = vi.fn();
+      component.goToElement.subscribe(chosen);
+      fixture.detectChanges();
+
+      const elementList = fixture.debugElement.query(By.directive(MockElementListComponent))
+        .injector.get(MockElementListComponent);
+      expect(elementList.navigable).toBe(true);
+      elementList.goToElement.emit(component.refs[0].refs[0]);
+      expect(chosen).toHaveBeenCalledWith(component.refs[0].refs[0]);
+    });
+
+    it('should offer to go to a referring section', () => {
+      component.navigable = true;
+      const chosen = vi.fn();
+      component.goToSection.subscribe(chosen);
+      fixture.detectChanges();
+
+      (fixture.nativeElement.querySelector('.go-to-section') as HTMLButtonElement).click();
+      expect(chosen).toHaveBeenCalledWith(section);
+    });
   });
 
   it('should pass the references of a group down to the element list', () => {
@@ -89,6 +122,16 @@ describe('ReferenceListComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('.visibility-rule-hint')).toBeNull();
+  });
+
+  /* "Verweise auf Seite 2:" -- the target in bold after the words, the colon right behind it (#1520). */
+  it('should introduce each group with the references to its target', () => {
+    component.refs = [createReferenceList('Seite 2', ['knopf'])];
+    fixture.detectChanges();
+
+    const groupTitle: HTMLElement = fixture.nativeElement.querySelector('.reference-group-title');
+    expect(groupTitle.textContent?.replace(/\s+/g, ' ').trim()).toBe('referenceList.referencesTo Seite 2:');
+    expect(groupTitle.querySelector('b')?.textContent).toBe('Seite 2');
   });
 
   it('should name a text range through its translation', () => {

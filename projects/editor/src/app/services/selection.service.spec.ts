@@ -249,4 +249,16 @@ describe('SelectionService', () => {
 
     expect(service.requestedElementID.value).toBeNull();
   });
+
+  /* A list naming a section's visibility rules takes the author there (#1520). */
+  it('should turn to a requested section and leave the request for the section to take', () => {
+    service.requestSection(2, 1);
+
+    expect(service.selectedPageIndex).toBe(2);
+    expect(service.selectedSectionIndex).toBe(1);
+    expect(service.requestedSection.value).toEqual({ pageIndex: 2, sectionIndex: 1 });
+
+    service.reset();
+    expect(service.requestedSection.value).toBeNull();
+  });
 });

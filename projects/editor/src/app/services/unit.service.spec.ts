@@ -25,7 +25,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { PageService } from 'editor/src/app/services/page.service';
-import { ReferenceList } from 'editor/src/app/classes/reference-manager';
+import { ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import {
   SanitizationDialogComponent
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
@@ -40,11 +40,7 @@ describe('UnitService - rapid load handling', () => {
     const selectionService = new SelectionService();
     const idService = new IDService();
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
-    messageServiceSpy = createSpyObj<MessageService>([
-      'showFixedReferencePanel',
-      'showReferencePanel',
-      'showPrompt'
-    ]);
+    messageServiceSpy = createSpyObj<MessageService>(['showPrompt']);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
 
@@ -82,6 +78,19 @@ describe('UnitService - rapid load handling', () => {
     expect(service.unit.stateVariables[0].id).toBe('stable-unit');
     expect(dialogServiceSpy.showUnitDefErrorDialog).not.toHaveBeenCalled();
   });
+
+  /* The two version messages are translation keys, not German written into the service (#1520). */
+  it('names a unit newer than the editor through its translation key', () => {
+    service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('future'), version: '99.0.0' }));
+
+    expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('unitDefError.newer');
+  });
+
+  it('names a unit too old to migrate through its translation key', () => {
+    service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('ancient'), version: '3.0.0' }));
+
+    expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('unitDefError.outdated');
+  });
 });
 
 describe('UnitService - variable info validation (#1043, #1129)', () => {
@@ -97,11 +106,7 @@ describe('UnitService - variable info validation (#1043, #1129)', () => {
 
   beforeEach(() => {
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
-    messageServiceSpy = createSpyObj<MessageService>([
-      'showFixedReferencePanel',
-      'showReferencePanel',
-      'showPrompt'
-    ]);
+    messageServiceSpy = createSpyObj<MessageService>(['showPrompt']);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     dialogServiceSpy = createSpyObj<DialogService>([
@@ -246,7 +251,7 @@ describe('UnitService - registering the options of a drop-list (#1506)', () => {
     service = new UnitService(
       new SelectionService(),
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<MessageService>(['showPrompt']),
       createSpyObj<DialogService>([
         'showUnitDefErrorDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
       ]),
@@ -294,10 +299,12 @@ describe('UnitService - references to what is deleted (#1509)', () => {
   });
 
   /* Two pages; a section on the second asks a state variable and an element of the first page. */
-  const load = (secondPageRuleTargets: string[]): void => {
+  const load = (secondPageRuleTargets: string[], moreOnFirstPage: Record<string, unknown>[] = []): void => {
     const blueprint = createUnitBlueprint('state_1');
     blueprint.pages.push(JSON.parse(JSON.stringify(blueprint.pages[0])));
-    blueprint.pages[0].sections[0].elements.push(textField('text-field_1') as unknown as PositionedUIElement);
+    blueprint.pages[0].sections[0].elements.push(
+      ...[textField('text-field_1'), ...moreOnFirstPage] as unknown as PositionedUIElement[]
+    );
     blueprint.pages[1].sections[0].elements.push(textField('text-field_2') as unknown as PositionedUIElement);
     blueprint.pages[1].sections[0].visibilityRules = secondPageRuleTargets
       .map(id => ({ id, operator: '=', value: '1' }));
@@ -308,7 +315,7 @@ describe('UnitService - references to what is deleted (#1509)', () => {
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     selectionService = new SelectionService();
-    messageServiceSpy = createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']);
+    messageServiceSpy = createSpyObj<MessageService>(['showPrompt']);
     dialogServiceSpy = createSpyObj<DialogService>([
       'showUnitDefErrorDialog', 'showDeleteConfirmDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
     ]);
@@ -328,6 +335,18 @@ describe('UnitService - references to what is deleted (#1509)', () => {
     const refs = dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[3] as ReferenceList[];
     expect(refs.map(refList => (refList.element as { id: string }).id)).toEqual(['text-field_1']);
     expect(service.unit.pages[1].sections[0].visibilityRules).toEqual([]);
+  });
+
+  /* The question becomes the dialog's title, so each kind of deletion asks with a key of its own (#1520). */
+  it('should ask about a section and about elements through their translation keys', async () => {
+    load([]);
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(false));
+
+    await service.prepareDelete('section', service.unit.pages[0].sections[0]);
+    expect(dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[0]).toBe('deleteSectionConfirm');
+
+    await service.prepareDelete('elements', service.unit.pages[0].sections[0].elements);
+    expect(dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[0]).toBe('deleteElementsConfirm');
   });
 
   it('should ask before deleting a state variable that is still asked, and remove the rule once agreed', () => {
@@ -353,7 +372,6 @@ describe('UnitService - references to what is deleted (#1509)', () => {
 
     expect(service.unit.stateVariables.map(stateVariable => stateVariable.id)).toEqual(['state_2', 'state_1']);
     expect(service.unit.pages[1].sections[0].visibilityRules.length).toBe(1);
-    expect(messageServiceSpy.showReferencePanel).toHaveBeenCalled();
   });
 
   it('should not apply a state variables dialog to a unit the host loaded while it was open', () => {
@@ -379,15 +397,59 @@ describe('UnitService - references to what is deleted (#1509)', () => {
     expect(service.unit.stateVariables).toEqual([]);
   });
 
-  /* Removing a rule into nothing would change what test takers see: with "and" its section is never shown now. */
-  it('should report a visibility rule into nothing on loading, leave it, and report no change to the host', () => {
+  /* Removing a rule into nothing would change what test takers see: with "and" its section is never shown now. It is
+     shown in the hints area instead, which opens on loading (#1520). */
+  it('should report a visibility rule into nothing on loading, leave it, and open the hints area', () => {
     load(['text-field_9']);
 
-    expect(messageServiceSpy.showFixedReferencePanel).toHaveBeenCalledWith({
-      repaired: [],
-      toCheck: [expect.objectContaining({ pageIndex: 1, sectionIndex: 0 })]
-    });
+    expect(service.rulesIntoNothing.value).toEqual([{
+      location: expect.objectContaining({ pageIndex: 1, sectionIndex: 0 }), targetIDs: ['text-field_9']
+    }]);
+    expect(service.loadRepairs.value).toEqual([]);
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).toHaveBeenCalled();
     expect(service.unit.pages[1].sections[0].visibilityRules.length).toBe(1);
+  });
+
+  /* Asked again with every change, so the hint goes as soon as the rule asks for something that exists. */
+  it('should drop a rule into nothing from the hints once it is corrected, and count it until then', () => {
+    load(['text-field_9']);
+    let indicator: { open: number } | null | undefined;
+    service.hintIndicator.subscribe(value => { indicator = value; });
+    expect(indicator).toEqual({ open: 1 });
+
+    service.unit.pages[1].sections[0].visibilityRules[0].id = 'text-field_1';
+    service.updateUnitDefinition();
+
+    expect(service.rulesIntoNothing.value).toEqual([]);
+    expect(indicator).toBeNull();
+  });
+
+  it('should keep what loading repaired until the next load, without counting it as open', () => {
+    load([], [{
+      type: 'drop-list',
+      id: 'drop-list_1',
+      alias: 'ablage',
+      connectedTo: ['drop-list_9'],
+      position: {
+        gridColumn: 1, gridColumnRange: 1, gridRow: 2, gridRowRange: 1
+      }
+    }]);
+    let indicator: { open: number } | null | undefined;
+    service.hintIndicator.subscribe(value => { indicator = value; });
+
+    expect(service.loadRepairs.value.map(element => element.id)).toEqual(['drop-list_1']);
+    // Reachable through the indicator, with nothing counted as open.
+    expect(indicator).toEqual({ open: 0 });
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).toHaveBeenCalled();
+
+    load([]);
+    expect(service.loadRepairs.value).toEqual([]);
+  });
+
+  it('should not open the hints area for a unit that gives no hints', () => {
+    load([]);
+
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).not.toHaveBeenCalled();
   });
 });
 
@@ -405,7 +467,7 @@ describe('UnitService - replacing ids that break the contract (#1508)', () => {
     idService = new IDService();
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
     const messageServiceSpy = createSpyObj<MessageService>([
-      'showFixedReferencePanel', 'showReferencePanel', 'showPrompt'
+      'showPrompt'
     ]);
     service = new UnitService(new SelectionService(), veronaApiServiceSpy, messageServiceSpy,
                               createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showVariableInfoFindingsDialog']),
@@ -550,7 +612,7 @@ describe('UnitService - replacing an id that has an exact twin (#1508)', () => {
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     const idService = new IDService();
     const service = new UnitService(new SelectionService(), createSpyObj<VeronaAPIService>(['sendChanged']),
-                                    createSpyObj<MessageService>(['showFixedReferencePanel', 'showPrompt']),
+                                    createSpyObj<MessageService>(['showPrompt']),
                                     createSpyObj<DialogService>(['showVariableInfoFindingsDialog']),
                                     idService, translateServiceSpy);
     const blueprint = createUnitBlueprint('unused');
@@ -590,7 +652,7 @@ describe('UnitService - discarding a unit that was never saved with content (#10
     service = new UnitService(
       selectionService,
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<MessageService>(['showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']),
       idService,
       translateServiceSpy
@@ -686,7 +748,7 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
     service = new UnitService(
       new SelectionService(),
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<MessageService>(['showPrompt']),
       new DialogService({ open: dialogOpen } as unknown as MatDialog,
                         createSpyObj<MessageService>(['showError']), translateServiceSpy),
       new IDService(),
@@ -777,7 +839,7 @@ describe('UnitService - a delete whose unit is replaced while the confirmation i
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     selectionService = new SelectionService();
     messageServiceSpy = createSpyObj<MessageService>([
-      'showFixedReferencePanel', 'showReferencePanel', 'showPrompt'
+      'showPrompt'
     ]);
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
 
@@ -856,28 +918,20 @@ describe('UnitService - a delete whose unit is replaced while the confirmation i
     expect(confirmed).toBe(true);
   }));
 
-  /* Cancelling reports the references the deletion would have broken. Those name elements of the unit
-     that is gone, so a replaced unit must not bring up that panel. */
-  it('does not offer the references of the replaced unit', fakeAsync(() => {
+  /* The dialog lists the references with the way to each of them; cancelling leaves them as they are (#1520). */
+  it('keeps the references when the user cancels the delete herself', fakeAsync(() => {
     const references: ReferenceList[] = [{ element: { alias: 'page_1', type: 'page' }, refs: [] }];
     service.referenceManager.getPageElementsReferences = vi.fn(() => references);
-    service.prepareDelete('page', service.unit.pages[0], 0);
-
-    loadAnotherUnit();
-    tick();
-
-    expect(messageServiceSpy.showReferencePanel).not.toHaveBeenCalled();
-  }));
-
-  it('offers them when the user cancels the delete herself', fakeAsync(() => {
-    const references: ReferenceList[] = [{ element: { alias: 'page_1', type: 'page' }, refs: [] }];
-    service.referenceManager.getPageElementsReferences = vi.fn(() => references);
-    service.prepareDelete('page', service.unit.pages[0], 0);
+    const deleteReferences = vi.spyOn(ReferenceManager, 'deleteReferences');
+    let confirmed: boolean | undefined;
+    service.prepareDelete('page', service.unit.pages[0], 0).then(result => { confirmed = result; });
 
     afterClosed.next(false);
     tick();
 
-    expect(messageServiceSpy.showReferencePanel).toHaveBeenCalledWith(references);
+    expect(confirmed).toBe(false);
+    expect(deleteReferences).not.toHaveBeenCalled();
+    deleteReferences.mockRestore();
   }));
 
   /* The loss the ticket describes, through the caller that keeps the index: the page at that position
@@ -913,7 +967,7 @@ describe('UnitService - page break (#1203)', () => {
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<MessageService>(['showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog']),
       new IDService(),
       translateServiceSpy
@@ -981,7 +1035,7 @@ describe('UnitService - removing a page break (#1298)', () => {
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<MessageService>(['showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog']),
       new IDService(),
       translateServiceSpy
@@ -1062,7 +1116,7 @@ describe('UnitService - navigation buttons when pages change (#1511)', () => {
     service = new UnitService(
       selectionService,
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<MessageService>(['showPrompt']),
       dialogServiceSpy,
       new IDService(),
       translateServiceSpy
@@ -1145,7 +1199,7 @@ describe('UnitService - naming the page in the delete confirmation (#1513)', () 
     service = new UnitService(
       new SelectionService(),
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
+      createSpyObj<MessageService>(['showPrompt']),
       dialogServiceSpy,
       new IDService(),
       translateServiceSpy

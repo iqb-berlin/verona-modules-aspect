@@ -56,8 +56,28 @@ blockquote p {
   overflow: auto;
 }
 
-.snackbar-warning, .snackbar-error {border: 3px double #ff4d4d}
-.snackbar-error {white-space: pre-wrap;}
+/* The two signal colours of the editor's messages (#1520). Both reach at least 4.5:1 on white, so they stay
+   readable wherever they are used; the colour goes on the symbol in front of a title, never on the title. */
+:root {
+  --aspect-error-color: #ba1a1a;
+  --aspect-warning-color: #a15c00;
+}
+
+/* A dialog title led by a symbol: put on the `mat-dialog-title` element, the symbol as its first child. The title
+   stays a block -- Material's own title rule is loaded after this file -- so the symbol sits inline in front of the
+   text. */
+.message-title > .message-icon-error,
+.message-title > .message-icon-warning {
+  vertical-align: -5px;
+  margin-right: 8px;
+}
+
+.message-icon-error {color: var(--aspect-error-color);}
+.message-icon-warning {color: var(--aspect-warning-color);}
+
+/* A snackbar is dark, so its frame takes the light variants of the two colours. */
+.snackbar-warning {border: 3px double #ffb74d;}
+.snackbar-error {border: 3px double #ff4d4d; white-space: pre-wrap;}
 .snackbar-success {border: 3px double green;}
 
 .cdk-drag {

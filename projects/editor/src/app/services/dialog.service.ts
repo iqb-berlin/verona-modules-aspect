@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ClozeDocument } from 'common/models/elements/cloze';
@@ -86,6 +86,17 @@ export class DialogService {
               private messageService: MessageService,
               private translateService: TranslateService) { }
 
+  /**
+   * Closes every open dialog and then does what the author asked for, so that it happens in view: a delete dialog can
+   * stand on the element overview, and taking the author to an element under it would go unseen. Waiting for the
+   * close also lets the dialogs hand back the focus first, which would otherwise scroll back to where they were
+   * opened (#1520).
+   */
+  closeAllThen(action: () => void): void {
+    this.dialog.afterAllClosed.pipe(take(1)).subscribe(action);
+    this.dialog.closeAll();
+  }
+
   showLabelEditDialog(label: Label): Observable<Label> {
     const dialogRef = this.dialog.open(LabelEditDialogComponent, {
       data: { label },
@@ -95,10 +106,8 @@ export class DialogService {
   }
 
   /** The confirmation belongs to the unit the caller asked about, and the dialog outlives that unit as
-     soon as the host loads another one -- so a replaced unit takes the dialog with it. Narrowing the
-     result the way showSanitizationDialog does is left to the caller here: a cancelled delete still has
-     its references to report, so this one has to tell that apart from a superseded delete rather than
-     drop both. UnitService.prepareDelete does, on the unit it asked about (#1253). */
+     soon as the host loads another one -- so a replaced unit takes the dialog with it, closing it with
+     `false`. UnitService.prepareDelete checks the unit it asked about on every result (#1253). */
   showDeleteConfirmDialog(text: string, supersededBy: Observable<void>,
                           elementList?: UIElement[], refs?: ReferenceList[]): Observable<boolean> {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
@@ -119,8 +128,7 @@ export class DialogService {
 
   showDeleteReferenceDialog(refs: ReferenceList[]): Observable<boolean> {
     const dialogRef = this.dialog.open(DeleteReferenceDialogComponent, {
-      data: { refs },
-      autoFocus: 'button'
+      data: { refs }
     });
     return dialogRef.afterClosed();
   }

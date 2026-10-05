@@ -46,6 +46,22 @@ describe('DialogService', () => {
     service = new DialogService(dialogMock as unknown as MatDialog, messageService, translateService);
   });
 
+  /* A delete dialog can stand on the element overview; what it asks for has to happen once both are gone (#1520). */
+  it('should close every dialog and act only once they are all closed', () => {
+    const afterAllClosed = new Subject<void>();
+    const closeAll = vi.fn();
+    Object.assign(dialogMock, { afterAllClosed, closeAll });
+    const action = vi.fn();
+
+    service.closeAllThen(action);
+
+    expect(closeAll).toHaveBeenCalled();
+    expect(action).not.toHaveBeenCalled();
+    afterAllClosed.next();
+    afterAllClosed.next();
+    expect(action).toHaveBeenCalledTimes(1);
+  });
+
   it('should open the label edit dialog and pass through its result', () => {
     const label: Label = { text: 'Beschriftung' };
     const editedLabel: Label = { text: 'Neue Beschriftung' };

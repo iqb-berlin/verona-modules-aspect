@@ -175,7 +175,7 @@ export function staticDimensionBox(): Cypress.Chainable<JQuery<HTMLElement>> {
 export function deleteLastSection(): void {
   cy.get('aspect-editor-section-view').last().scrollIntoView().click({ force: true });
   cy.get('aspect-section-menu').last().find('mat-icon').contains('clear').click({ force: true });
-  cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
+  cy.get('mat-dialog-container').contains('button', 'Löschen').click();
   cy.get('mat-dialog-container').should('not.exist');
 }
 

@@ -1,1 +1,7 @@
 .mat-mdc-list-item-title {color: inherit !important;}
+
+/* As in the element list: the trailing slot would make the button small. */
+.go-to-section {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.87) !important;
+}

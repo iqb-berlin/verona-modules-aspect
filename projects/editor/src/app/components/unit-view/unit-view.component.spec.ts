@@ -18,7 +18,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Subject, of } from 'rxjs';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
 import { PageChangeService } from 'common/services/page-change.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { UnitViewComponent } from 'editor/src/app/components/unit-view/unit-view.component';
@@ -67,14 +66,14 @@ describe('UnitViewComponent', () => {
   let unitService: SpyObj<UnitService>;
   let dialog: SpyObj<MatDialog>;
   let pageOrderChanged: Subject<void>;
-  let variableInfoFindings: BehaviorSubject<VariableInfoFinding[]>;
+  let hintIndicator: BehaviorSubject<{ open: number } | null>;
   let dialogService: SpyObj<DialogService>;
   let pages: EditorPage[];
 
   beforeEach(async () => {
     pages = [new EditorPage(), new EditorPage()];
     pageOrderChanged = new Subject<void>();
-    variableInfoFindings = new BehaviorSubject<VariableInfoFinding[]>([]);
+    hintIndicator = new BehaviorSubject<{ open: number } | null>(null);
     dialogService = createSpyObj<DialogService>(['showVariableInfoFindingsDialog']);
     selectionService = new SelectionService();
     pageService = createSpyObj<PageService>(['addPage']);
@@ -83,7 +82,7 @@ describe('UnitViewComponent', () => {
     ]);
     Object.assign(unitService, {
       pageOrderChanged,
-      variableInfoFindings,
+      hintIndicator,
       allowExpertMode: true,
       expertMode: true,
       unit: {
@@ -228,23 +227,35 @@ describe('UnitViewComponent', () => {
     expect(rendered.map(pageView => pageView.isLastPage)).toEqual([false, true]);
   });
 
-  /* The validation area stays reachable while the unit has findings, in the host as well, where there is no
-     toolbar (#1129). */
-  describe('the indicator of invalid variable names', () => {
+  /* The hints area stays reachable while the unit has something to fix, in the host as well, where there is no
+     toolbar (#1129). What counts is decided by the unit service: invalid names and rules into nothing (#1520). */
+  describe('the indicator of open hints', () => {
     const indicator = (): HTMLButtonElement | null => fixture.nativeElement
       .querySelector('.variable-info-findings-button');
 
-    it('should not be there while the unit has no findings', () => {
+    it('should not be there while the unit has nothing to fix', () => {
       expect(indicator()).toBeNull();
     });
 
-    it('should show the number of findings and open the validation area', () => {
-      variableInfoFindings.next([{} as VariableInfoFinding, {} as VariableInfoFinding]);
+    it('should show the number of open hints as a warning and open the hints area', () => {
+      hintIndicator.next({ open: 2 });
       fixture.detectChanges();
 
       expect(indicator()?.textContent).toContain('2');
+      expect(indicator()?.querySelector('.variable-info-findings-icon')).toBeTruthy();
       indicator()?.click();
       expect(dialogService.showVariableInfoFindingsDialog).toHaveBeenCalled();
+    });
+
+    /* What loading repaired stays reachable, but nothing is open, so it is a note, not a warning (#1520). */
+    it('should stay reachable as a plain note while nothing is open', () => {
+      hintIndicator.next({ open: 0 });
+      fixture.detectChanges();
+
+      expect(indicator()).toBeTruthy();
+      expect(indicator()?.querySelector('.variable-info-findings-icon')).toBeNull();
+      expect(indicator()?.querySelector('.variable-info-findings-info')).toBeTruthy();
+      expect(indicator()?.querySelector('.variable-info-findings-count')).toBeNull();
     });
   });
 
@@ -260,6 +271,14 @@ describe('UnitViewComponent', () => {
       expect(component.listTabIndex).toBe(1);
 
       selectionService.requestElement(0, 0, 'text-field_1');
+      expect(component.listTabIndex).toBe(0);
+    });
+
+    it('should turn to the tab of a requested section as well (#1520)', () => {
+      selectionService.requestSection(1, 0);
+      expect(component.listTabIndex).toBe(1);
+
+      selectionService.requestSection(0, 0);
       expect(component.listTabIndex).toBe(0);
     });
 

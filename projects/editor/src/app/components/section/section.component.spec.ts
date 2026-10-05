@@ -307,4 +307,33 @@ describe('SectionComponent', () => {
       expect(selectElement).toHaveBeenCalledWith({ elementComponent: overlay, multiSelect: false });
     }));
   });
+
+  /* The hints area and the delete dialogs take the author to a section for its visibility rules (#1520). */
+  describe('a request for a section', () => {
+    it('should select itself, scroll into view and settle the request', fakeAsync(() => {
+      const scrollIntoView = vi.spyOn(fixture.nativeElement as HTMLElement, 'scrollIntoView')
+        .mockImplementation(() => {});
+
+      selectionService.requestSection(0, 0);
+      selectionService.selectPage(0); // what the tab group reports after turning, which resets the section
+      selectionService.selectedSectionIndex = 3;
+      tick();
+
+      expect(selectionService.selectedPageIndex).toBe(0);
+      expect(selectionService.selectedSectionIndex).toBe(0);
+      expect(scrollIntoView).toHaveBeenCalled();
+      expect(selectionService.requestedSection.value).toBeNull();
+    }));
+
+    it('should leave a request for another section to that one', fakeAsync(() => {
+      const scrollIntoView = vi.spyOn(fixture.nativeElement as HTMLElement, 'scrollIntoView')
+        .mockImplementation(() => {});
+
+      selectionService.requestSection(0, 1);
+      tick();
+
+      expect(scrollIntoView).not.toHaveBeenCalled();
+      expect(selectionService.requestedSection.value).toEqual({ pageIndex: 0, sectionIndex: 1 });
+    }));
+  });
 });

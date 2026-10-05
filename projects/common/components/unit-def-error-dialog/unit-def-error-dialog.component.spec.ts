@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { UnitDefErrorDialogComponent } from './unit-def-error-dialog.component';
 
 describe('UnitDefErrorDialogComponent', () => {
@@ -9,7 +11,7 @@ describe('UnitDefErrorDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UnitDefErrorDialogComponent],
-      imports: [MatDialogModule],
+      imports: [MatDialogModule, MatIconModule, TranslateModule.forRoot()],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { text: 'Testfehlermeldung' } }
       ]
@@ -24,9 +26,11 @@ describe('UnitDefErrorDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render a dialog title', () => {
+  /* An error by its symbol in front of the title, as in every message of the editor (#1520). */
+  it('should render a dialog title led by an error symbol', () => {
     const title: HTMLElement = fixture.nativeElement.querySelector('[mat-dialog-title]');
-    expect(title.textContent).toContain('Unit-Definition kann nicht geladen werden');
+    expect(title.textContent).toContain('unitDefErrorTitle');
+    expect(title.querySelector('.message-icon-error')).toBeTruthy();
   });
 
   it('should render the provided error text', () => {

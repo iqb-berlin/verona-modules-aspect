@@ -112,7 +112,7 @@ describe('ElementService', () => {
     ]);
     selectionService = new SelectionService();
     idService = new IDService();
-    messageServiceSpy = createSpyObj<MessageService>(['showReferencePanel', 'showError']);
+    messageServiceSpy = createSpyObj<MessageService>(['showError']);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     service = new ElementService(

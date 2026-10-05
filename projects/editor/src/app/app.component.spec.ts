@@ -25,8 +25,6 @@ describe('AppComponent startCommand loading', () => {
     const selectionService = new SelectionService();
     const idService = new IDService();
     const messageServiceSpy = createSpyObj<MessageService>([
-      'showFixedReferencePanel',
-      'showReferencePanel',
       'showPrompt'
     ]);
     const dialogServiceSpy = createSpyObj<DialogService>([

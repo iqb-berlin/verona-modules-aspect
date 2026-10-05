@@ -1,14 +1,18 @@
-<div mat-dialog-title [style.color]="'red'">Element wird referenziert</div>
-<div mat-dialog-content>
-  <aspect-reference-list [refs]="data.refs"></aspect-reference-list>
-</div>
-<div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="false">
-    Abbrechen
+<h2 mat-dialog-title class="message-title">
+  <mat-icon class="message-icon-warning">warning</mat-icon>
+  <span>{{ 'referenceRemoval.changeTextTitle' | translate }}</span>
+</h2>
+<mat-dialog-content>
+  <aspect-reference-list [refs]="data.refs" [navigable]="true"
+                         (goToElement)="goToElement($event)" (goToSection)="goToSection($event)">
+  </aspect-reference-list>
+  <p class="reference-removal-hint">{{ 'referenceRemoval.removedWith' | translate }}</p>
+  <p class="reference-removal-hint">{{ 'referenceRemoval.goToCancelsChange' | translate }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <!-- Focused first: Enter must neither change the text nor go somewhere else. -->
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>{{ 'cancel' | translate }}</button>
+  <button mat-flat-button color="warn" class="confirm-change" [mat-dialog-close]="true">
+    {{ 'referenceRemoval.changeText' | translate }}
   </button>
-  <button mat-button [matTooltipPosition]="'above'"
-                     [matTooltip]="'deleteReferenceDialog.cleanUpHint' | translate"
-          [mat-dialog-close]="true">
-    Bereinigen und Löschen
-  </button>
-</div>
+</mat-dialog-actions>

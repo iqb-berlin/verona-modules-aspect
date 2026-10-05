@@ -1,3 +1,6 @@
 :host ::ng-deep mat-icon {margin-right: 6px !important;}
 
-fieldset {margin-top: 10px !important;}
+/* The symbol in the title keeps the spacing every message title has (#1520). */
+.message-title .message-icon-warning {margin-right: 8px !important;}
+
+.reference-removal-hint {margin-top: 10px;}

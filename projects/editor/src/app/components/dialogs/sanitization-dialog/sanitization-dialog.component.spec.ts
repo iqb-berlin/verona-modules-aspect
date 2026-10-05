@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import {
   SanitizationDialogComponent
@@ -17,7 +19,9 @@ describe('SanitizationDialogComponent', () => {
       declarations: [SanitizationDialogComponent],
       imports: [
         MatDialogModule,
-        MatButtonModule
+        MatButtonModule,
+        MatIconModule,
+        TranslateModule.forRoot()
       ],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefMock }
@@ -33,17 +37,20 @@ describe('SanitizationDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should inform about the pending unit definition update', () => {
-    expect(fixture.nativeElement.querySelector('.mat-mdc-dialog-title').textContent)
-      .toContain('Unit-Definition wird aktualisiert');
+  /* Saving makes the unit unreadable for older versions, which the warning symbol stands for (#1520). */
+  it('should inform about the pending unit definition update behind a warning symbol', () => {
+    const title: HTMLElement = fixture.nativeElement.querySelector('.mat-mdc-dialog-title');
+    expect(title.textContent).toContain('sanitization.title');
+    expect(title.querySelector('.message-icon-warning')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.mat-mdc-dialog-content').textContent)
-      .toContain('veraltete Unit-Definition');
+      .toContain('sanitization.text');
   });
 
   it('should confirm on the single action button', () => {
     const buttons = fixture.nativeElement
       .querySelectorAll('.mat-mdc-dialog-actions button') as NodeListOf<HTMLButtonElement>;
     expect(buttons.length).toBe(1);
+    expect(buttons[0].textContent?.trim()).toBe('sanitization.confirm');
 
     buttons[0].click();
 

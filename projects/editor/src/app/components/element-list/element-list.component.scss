@@ -1,3 +1,10 @@
 mat-icon {color: inherit !important;}
 
 .mat-mdc-list-item-title {color: inherit !important;}
+
+/* The trailing slot of a list item sets small, muted supporting text; the button keeps the look of every other
+   button. */
+.go-to-element {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.87) !important;
+}

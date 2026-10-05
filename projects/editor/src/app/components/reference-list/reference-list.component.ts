@@ -1,8 +1,8 @@
 import {
-  Component, Inject, Input, Optional
+  Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-import { ReferenceList } from 'editor/src/app/classes/reference-manager';
+import { UIElement } from 'common/models/elements/element';
+import { ReferenceList, SectionLocation } from 'editor/src/app/classes/reference-manager';
 
 @Component({
   selector: 'aspect-reference-list',
@@ -11,7 +11,9 @@ import { ReferenceList } from 'editor/src/app/classes/reference-manager';
   styleUrls: ['./reference-list.component.scss']
 })
 export class ReferenceListComponent {
-  @Input() refs: ReferenceList[] | undefined;
-
-  constructor(@Optional()@Inject(MAT_SNACK_BAR_DATA) public data?: ReferenceList[]) { }
+  @Input() refs: ReferenceList[] = [];
+  /** Offers to go to each element and section that refers, so the author can resolve a reference by hand (#1520). */
+  @Input() navigable: boolean = false;
+  @Output() goToElement = new EventEmitter<UIElement>();
+  @Output() goToSection = new EventEmitter<SectionLocation>();
 }

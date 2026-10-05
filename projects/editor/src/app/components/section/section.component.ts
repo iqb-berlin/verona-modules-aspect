@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChildren
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChildren
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -44,7 +44,8 @@ export class SectionComponent implements AfterViewInit, OnDestroy {
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
               public elementService: ElementService,
-              public sectionService: SectionService) { }
+              public sectionService: SectionService,
+              private hostElement: ElementRef<HTMLElement>) { }
 
   /**
    * Takes an element request once the overlays exist. Subscribing only now is what lets the tabbed view work: a
@@ -59,6 +60,25 @@ export class SectionComponent implements AfterViewInit, OnDestroy {
           setTimeout(() => this.revealElement(elementID));
         }
       });
+    this.selectionService.requestedSection
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(request => {
+        if (request && this.isRequested(request)) setTimeout(() => this.revealSection());
+      });
+  }
+
+  private isRequested(request: { pageIndex: number; sectionIndex: number }): boolean {
+    return request.pageIndex === this.pageIndex && request.sectionIndex === this.sectionIndex;
+  }
+
+  /** Selects the section and scrolls it into view, for an author who arrives from a list naming it (#1520). */
+  private revealSection(): void {
+    const request = this.selectionService.requestedSection.value;
+    if (!request || !this.isRequested(request)) return;
+    this.selectionService.requestedSection.next(null);
+    // As revealElement does: the tab group has put the section back to the first one on turning the page.
+    this.selectionService.updateSelection(this.pageIndex, this.sectionIndex);
+    this.hostElement.nativeElement.scrollIntoView({ block: 'center' });
   }
 
   /** Selects the element, scrolls it into view and flashes its outline, for an author who arrives from elsewhere. */

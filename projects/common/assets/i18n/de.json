@@ -1,6 +1,7 @@
 {
   "pageIndication": "Seite {{index}}",
   "close": "Schließen",
+  "unitDefErrorTitle": "Unit-Definition kann nicht geladen werden",
   "imageNotFound": "Bild nicht gefunden",
   "confirm": "Bestätigen",
   "cancel": "Abbrechen",

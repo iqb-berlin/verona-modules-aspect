@@ -1,10 +1,17 @@
 <mat-list>
-  <mat-list-item *ngFor="let element of elements">
-    <mat-icon matListItemIcon>
-      {{ $any(element.constructor).icon }}
-    </mat-icon>
-    <div matListItemTitle>
-      {{ $any(element.constructor).title }}: <i>{{ element.alias }}</i>
-    </div>
-  </mat-list-item>
+  @for (element of elements; track element) {
+    <mat-list-item class="element-list-item">
+      <mat-icon matListItemIcon>
+        {{ $any(element.constructor).icon }}
+      </mat-icon>
+      <div matListItemTitle>
+        {{ $any(element.constructor).title }}: <i>{{ element.alias }}</i>
+      </div>
+      @if (navigable) {
+        <button mat-stroked-button matListItemMeta class="go-to-element" (click)="goToElement.emit(element)">
+          {{ 'unitHints.goToElement' | translate }}
+        </button>
+      }
+    </mat-list-item>
+  }
 </mat-list>

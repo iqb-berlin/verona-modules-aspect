@@ -1,4 +1,7 @@
-<h2 mat-dialog-title [style.color]="'red'">{{ 'unexpectedError.title' | translate }}</h2>
+<h2 mat-dialog-title class="message-title">
+  <mat-icon class="message-icon-error">error</mat-icon>
+  <span>{{ 'unexpectedError.title' | translate }}</span>
+</h2>
 <mat-dialog-content>
   <p><b>{{ 'unexpectedError.intro' | translate }}</b><br>
   {{ 'unexpectedError.hint' | translate }}
@@ -21,6 +24,6 @@
     </mat-select>
   </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button matButton (click)="dialogRef.close()">{{ 'unexpectedError.discard' | translate }}</button>
+<mat-dialog-actions align="end">
+  <button matButton (click)="dialogRef.close()">{{ 'close' | translate }}</button>
 </mat-dialog-actions>

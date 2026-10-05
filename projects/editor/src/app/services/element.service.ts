@@ -273,8 +273,6 @@ export class ElementService {
             ReferenceManager.deleteReferences(refs);
             element.setProperty('text', value);
             this.reportPropertyUpdate();
-          } else {
-            this.messageService.showReferencePanel(refs);
           }
         });
     } else {
@@ -292,8 +290,6 @@ export class ElementService {
           if (result) {
             ReferenceManager.deleteReferences(refs);
             this.setClozeDocument(element, newValue, deletedElements);
-          } else {
-            this.messageService.showReferencePanel(refs);
           }
         });
     } else {

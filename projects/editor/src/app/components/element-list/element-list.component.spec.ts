@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { ElementListComponent } from 'editor/src/app/components/element-list/element-list.component';
 
@@ -27,7 +29,7 @@ describe('ElementListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ElementListComponent],
-      imports: [CommonModule, MatIconModule, MatListModule]
+      imports: [CommonModule, MatIconModule, MatListModule, MatButtonModule, TranslateModule.forRoot()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ElementListComponent);
@@ -62,5 +64,21 @@ describe('ElementListComponent', () => {
     expect(listItem.querySelector('mat-icon')?.textContent?.trim()).toBe('text_fields');
     expect(listItem.textContent).toContain('Text');
     expect(listItem.textContent).toContain('text_1');
+  });
+
+  /* A list naming what the author should look at offers the way there (#1520). */
+  it('should offer "Zum Element" only where asked to, and hand on the element chosen', () => {
+    const element = new StubButtonElement() as unknown as UIElement;
+    component.elements = [element];
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.go-to-element')).toBeNull();
+
+    component.navigable = true;
+    const chosen = vi.fn();
+    component.goToElement.subscribe(chosen);
+    fixture.detectChanges();
+    (fixture.nativeElement.querySelector('.go-to-element') as HTMLButtonElement).click();
+
+    expect(chosen).toHaveBeenCalledWith(element);
   });
 });

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import {
+  BehaviorSubject, combineLatest, Observable, Subject
+} from 'rxjs';
+import { map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -10,7 +13,10 @@ import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
 import { Page } from 'common/models/page';
 import { SectionCounter } from 'common/utils/section-counter';
-import { ReferenceHolder, ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
+import {
+  ReferenceHolder, ReferenceList, ReferenceManager, RulesIntoNothing, SectionLocation
+} from 'editor/src/app/classes/reference-manager';
+import { ElementLocator } from 'editor/src/app/utils/element-locator';
 import { MigrationManager } from 'common/services/migration-manager';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorUnit } from 'editor/src/app/models/editor-unit';
@@ -18,7 +24,9 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import { VariableInfoOrigin, VariableInfoOrigins } from 'editor/src/app/utils/variable-info-origins';
+import {
+  VariableInfoLocation, VariableInfoOrigin, VariableInfoOrigins
+} from 'editor/src/app/utils/variable-info-origins';
 import { VariableInfoIssue, VariableInfoValidator } from 'editor/src/app/utils/variable-info-validator';
 import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
 import { IdReplacement, IdReplacementTarget } from 'editor/src/app/utils/id-replacement';
@@ -52,6 +60,21 @@ export class UnitService {
   pageOrderChanged: Subject<void> = new Subject<void>();
   /** The variables of the unit that break the Verona contract, renewed whenever the unit is reported (#1129). */
   variableInfoFindings = new BehaviorSubject<VariableInfoFinding[]>([]);
+  /** The sections whose visibility rules ask for something the unit does not hold, renewed with the findings. */
+  rulesIntoNothing = new BehaviorSubject<RulesIntoNothing[]>([]);
+  /** The elements loading took a reference into nothing from. Done already, so shown until the next load (#1520). */
+  loadRepairs = new BehaviorSubject<UIElement[]>([]);
+  /**
+   * What the indicator shows: null while the hints area has nothing to show, otherwise how much of it is still to be
+   * fixed -- the findings and the rules into nothing, not what loading did. A load that only repaired keeps the
+   * hints area reachable all the same, with nothing counted as open.
+   */
+  hintIndicator: Observable<{ open: number } | null> = combineLatest([
+    this.variableInfoFindings, this.rulesIntoNothing, this.loadRepairs
+  ]).pipe(map(([findings, rules, repairs]) => (findings.length + rules.length + repairs.length === 0 ?
+    null :
+    { open: findings.length + rules.length })));
+
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
   allowExpertMode: boolean = true;
@@ -84,10 +107,10 @@ export class UnitService {
         let unitDef = JSON.parse(unitDefinition);
         if (!VersionManager.hasCompatibleVersion(unitDef)) {
           if (VersionManager.isNewer(unitDef)) {
-            throw Error('Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.');
+            throw Error(this.translateService.instant('unitDefError.newer'));
           }
           if (!VersionManager.needsMigration(unitDef)) {
-            throw Error('Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden.');
+            throw Error(this.translateService.instant('unitDefError.outdated'));
           }
           this.dialogService.showSanitizationDialog(this.loadSuperseded).subscribe(() => {
             unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
@@ -123,7 +146,8 @@ export class UnitService {
       this.unit = new EditorUnit(undefined, this.idService);
       this.referenceManager = new ReferenceManager(this.unit);
       this.updateSectionCounter();
-      this.refreshVariableInfoFindings();
+      this.loadRepairs.next([]);
+      this.refreshUnitHints();
       this.unitReplaced.next();
     }
   }
@@ -138,18 +162,22 @@ export class UnitService {
        error dialog of loadUnitDefinition, and the unit would be replaced all the same. */
     this.unitReplaced.next();
 
-    const repair = this.referenceManager.repairInvalidReferences();
-    if (repair.repaired.length > 0 || repair.toCheck.length > 0) this.messageService.showFixedReferencePanel(repair);
-    if (repair.repaired.length > 0) this.updateUnitDefinition();
+    const repaired = this.referenceManager.repairInvalidReferences();
+    this.loadRepairs.next(repaired);
+    if (repaired.length > 0) this.updateUnitDefinition();
     // The unit constructor updated the version. Therefore the unit has changed and notifies the  host.
     if (migratedUnitDefinition?.version !== VersionManager.getCurrentVersion()) {
       this.updateUnitDefinition();
     }
     this.updateSectionCounter();
     /* Units stored before #1043 can carry identifiers the contract forbids. The author is shown where, once per
-       load and only for what can be fixed in the editor; the rest stays reachable through the indicator. */
-    const findings = this.refreshVariableInfoFindings();
-    if (findings.some(finding => finding.holdsBackList)) this.dialogService.showVariableInfoFindingsDialog();
+       load and only for what can be fixed in the editor; the rest stays reachable through the indicator. What
+       loading repaired and the visibility rules into nothing are shown in the same place (#1520). */
+    const findings = this.refreshUnitHints();
+    if (findings.some(finding => finding.holdsBackList) || repaired.length > 0 ||
+        this.rulesIntoNothing.value.length > 0) {
+      this.dialogService.showVariableInfoFindingsDialog();
+    }
   }
 
   /**
@@ -159,16 +187,18 @@ export class UnitService {
    */
   updateUnitDefinition(): void {
     const origins = VariableInfoOrigins.collect(this.unit);
-    const findings = this.refreshVariableInfoFindings(origins);
+    const findings = this.refreshUnitHints(origins);
     this.veronaApiService.sendChanged(
       UnitService.createUnitDefinition(this.unit),
       `${this.unit.type}@${this.unit.version}`,
       findings.some(finding => finding.holdsBackList) ? undefined : origins.map(origin => origin.info));
   }
 
-  private refreshVariableInfoFindings(
+  /** Renews what the hints area shows of the unit as it is now, and returns the findings about its variables. */
+  private refreshUnitHints(
     origins: VariableInfoOrigin[] = VariableInfoOrigins.collect(this.unit)
   ): VariableInfoFinding[] {
+    this.rulesIntoNothing.next(this.referenceManager.getRulesIntoNothing());
     const issuesByIndex = new Map<number, VariableInfoIssue[]>();
     VariableInfoValidator.validate(origins.map(origin => origin.info))
       .forEach(issue => issuesByIndex.set(issue.index, [...(issuesByIndex.get(issue.index) ?? []), issue]));
@@ -247,7 +277,6 @@ export class UnitService {
           const referred = removed.filter(stateVariable => refs
             .some(refList => (refList.element as { id: string }).id === stateVariable.id));
           this.updateStateVariables([...stateVariables, ...referred]);
-          this.messageService.showReferencePanel(refs);
         }
       });
   }
@@ -293,6 +322,25 @@ export class UnitService {
     this.updateUnitDefinition();
   }
 
+  /**
+   * Takes the author to an element a list names: turns to its page and selects it, or its parent for a compound
+   * child. An element the unit no longer holds leads nowhere (#1520).
+   */
+  revealElement(element: UIElement): void {
+    const location = ElementLocator.locate(this.unit, element);
+    if (location) this.revealLocation(location);
+  }
+
+  /** As revealElement, for a caller that knows the place already. */
+  revealLocation(location: VariableInfoLocation): void {
+    this.selectionService.requestElement(location.pageIndex, location.sectionIndex, location.navigationElement.id);
+  }
+
+  /** Takes the author to a section a list names, for its visibility rules (#1520). */
+  revealSection(location: SectionLocation): void {
+    this.selectionService.requestSection(location.pageIndex, location.sectionIndex);
+  }
+
   reRegisterAll(): void {
     this.idService.reset();
     this.unit.stateVariables.forEach(v => {
@@ -330,11 +378,13 @@ export class UnitService {
         }
         case 'section':
           refs = this.referenceManager.getSectionElementsReferences([object as Section]);
-          dialogText = `Abschnitt ${this.selectionService.selectedSectionIndex + 1} löschen?`;
+          dialogText = this.translateService.instant('deleteSectionConfirm', {
+            section: this.selectionService.selectedSectionIndex + 1
+          });
           break;
         case 'elements':
           refs = this.referenceManager.getElementsReferences(object as UIElement[]);
-          dialogText = 'Folgende Elemente werden gelöscht:';
+          dialogText = this.translateService.instant('deleteElementsConfirm');
           break;
         default:
           throw Error('Unknown object type');
@@ -348,19 +398,13 @@ export class UnitService {
         .subscribe(result => {
           /* Everything gathered above -- the object, the refs, and the index the caller kept -- belongs
              to the unit as it was when the dialog opened. Once that unit is gone, deleting would hit
-             the same position in the newly loaded one, and reporting the refs would name elements the
-             user cannot see; so this leaves both alone (#1253). */
+             the same position in the newly loaded one; so this leaves it alone (#1253). */
           if (this.unit !== unitAtRequest) {
             resolve(false);
             return;
           }
-          if (result) {
-            if (refs.length > 0) ReferenceManager.deleteReferences(refs); // TODO rollback?
-            resolve(true);
-          } else {
-            if (refs.length > 0) this.messageService.showReferencePanel(refs);
-            resolve(false);
-          }
+          if (result && refs.length > 0) ReferenceManager.deleteReferences(refs); // TODO rollback?
+          resolve(result === true);
         });
     });
   }

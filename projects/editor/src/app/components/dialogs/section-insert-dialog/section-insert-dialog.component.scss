@@ -10,6 +10,23 @@
   font-size: smaller;
 }
 
+/* The state of a status line is in its symbol; the text stays in the colour of the dialog (#1520). */
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.status-icon-success {
+  color: #2e7d32;
+}
+
 :host ::ng-deep mat-radio-button .mdc-label {
   font-size: larger;
 }

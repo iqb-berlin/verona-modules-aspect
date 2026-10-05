@@ -321,7 +321,8 @@ describe('ReferenceManager', () => {
 
     describe('on loading', () => {
       it('should leave valid references alone', () => {
-        expect(refMan.repairInvalidReferences()).toEqual({ repaired: [], toCheck: [] });
+        expect(refMan.repairInvalidReferences()).toEqual([]);
+        expect(refMan.getRulesIntoNothing()).toEqual([]);
       });
 
       it('should remove the references into nothing the player makes nothing of', () => {
@@ -329,9 +330,7 @@ describe('ReferenceManager', () => {
         text.markingPanels = ['marking-panel_1', 'marking-panel_9'];
         (button.actionParam as StateVariable).id = 'state_9';
 
-        const repair = refMan.repairInvalidReferences();
-
-        expect(repair.repaired).toEqual([video2, text, button]);
+        expect(refMan.repairInvalidReferences()).toEqual([video2, text, button]);
         expect(video2.player.activeAfterID).toBe('');
         expect(text.markingPanels).toEqual(['marking-panel_1']);
         expect(button.actionParam).toBeNull();
@@ -342,11 +341,22 @@ describe('ReferenceManager', () => {
       it('should only report a visibility rule into nothing, and leave it as it is', () => {
         unit.pages[1].sections[0].visibilityRules[0].id = 'text-field_9';
 
-        const repair = refMan.repairInvalidReferences();
-
-        expect(repair.repaired).toEqual([]);
-        expect(repair.toCheck).toEqual([{ section: unit.pages[1].sections[0], pageIndex: 1, sectionIndex: 0 }]);
+        expect(refMan.repairInvalidReferences()).toEqual([]);
+        expect(refMan.getRulesIntoNothing()).toEqual([{
+          location: { section: unit.pages[1].sections[0], pageIndex: 1, sectionIndex: 0 },
+          targetIDs: ['text-field_9']
+        }]);
         expect(unit.pages[1].sections[0].visibilityRules.length).toBe(2);
+      });
+
+      /* Asked on every change, so a rule the author corrects drops out of the list (#1520). */
+      it('should no longer report a rule once it asks for something the unit holds', () => {
+        unit.pages[1].sections[0].visibilityRules[0].id = 'text-field_9';
+        expect(refMan.getRulesIntoNothing().length).toBe(1);
+
+        unit.pages[1].sections[0].visibilityRules[0].id = 'state_1';
+
+        expect(refMan.getRulesIntoNothing()).toEqual([]);
       });
 
       it('should repair a navigation to a page beyond the last', () => {
@@ -355,7 +365,7 @@ describe('ReferenceManager', () => {
         });
         unit.pages[0].sections[0].elements.push(navigation as unknown as PositionedUIElement);
 
-        expect(refMan.repairInvalidReferences().repaired).toEqual([navigation]);
+        expect(refMan.repairInvalidReferences()).toEqual([navigation]);
         expect(navigation.actionParam).toBeNull();
       });
     });
@@ -504,7 +514,7 @@ describe('ReferenceManager', () => {
       const button = navigateTo(2);
       const valid = navigateTo(1);
 
-      expect(refMan.repairInvalidReferences().repaired).toEqual([button]);
+      expect(refMan.repairInvalidReferences()).toEqual([button]);
       expect(button.actionParam).toBeNull();
       expect(valid.actionParam).toBe(1);
     });
@@ -513,7 +523,7 @@ describe('ReferenceManager', () => {
       const negative = navigateTo(-1);
       const fraction = navigateTo(0.5);
 
-      expect(refMan.repairInvalidReferences().repaired).toEqual([negative, fraction]);
+      expect(refMan.repairInvalidReferences()).toEqual([negative, fraction]);
       expect(negative.actionParam).toBeNull();
       expect(fraction.actionParam).toBeNull();
     });

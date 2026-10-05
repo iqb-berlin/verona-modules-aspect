@@ -77,7 +77,7 @@ describe('Navigation buttons when pages are deleted', () => {
     cy.get('aspect-editor-page-view').should('have.length', 3);
     cy.get('aspect-editor-page-view').eq(1).find('button:contains("more_vert")').click();
     cy.get('.mat-mdc-menu-panel .delete-button').click();
-    cy.get('mat-dialog-container').contains('button', 'Bestätigen').click();
+    cy.get('mat-dialog-container').contains('button', 'Löschen').click();
     cy.get('mat-dialog-container').should('not.exist');
     cy.get('aspect-editor-page-view').should('have.length', 2);
 

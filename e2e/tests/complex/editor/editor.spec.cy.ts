@@ -50,17 +50,21 @@ describe('Basic Unit', () => {
     navigateToPage(3);
     cy.contains('[role="tab"]', 'Seite 3').find('button').click();
     cy.contains('delete').click();
-    cy.get('.cdk-overlay-container').contains('Referenzen festgestellt').should('not.exist');
-    cy.get('.cdk-overlay-container').contains('Seite 3 löschen?');
-    cy.contains('button', 'Bestätigen').click();
+    // A page nothing refers to: the question alone, no warning, a plain "Löschen" (#1520).
+    cy.get('mat-dialog-container [mat-dialog-title]').should('contain.text', 'Seite 3 löschen?');
+    cy.get('mat-dialog-container .message-icon-warning').should('not.exist');
+    cy.get('mat-dialog-container .confirm-delete').should('contain.text', 'Löschen')
+      .and('not.contain.text', 'Verweise').click();
     cy.contains('[role="tab"]', 'Seite 3').should('not.exist');
 
     cy.contains('[role="tab"]', 'Seite 2').find('button').should('be.visible').click();
     cy.contains('delete').click();
 
-    cy.get('.cdk-overlay-container').contains('Referenzen festgestellt');
-    cy.get('.cdk-overlay-container').contains('button_2');
-    cy.get('.cdk-overlay-container').contains('button_1').should('not.exist');
+    // A page a button leads to: a warning symbol in front of the question, and the button says what goes with it.
+    cy.get('mat-dialog-container [mat-dialog-title] .message-icon-warning').should('exist');
+    cy.get('mat-dialog-container .confirm-delete').should('contain.text', 'Löschen und Verweise entfernen');
+    cy.get('mat-dialog-container').contains('button_2');
+    cy.get('mat-dialog-container').contains('button_1').should('not.exist');
   });
 
   it('saves a unit definition to file', () => {

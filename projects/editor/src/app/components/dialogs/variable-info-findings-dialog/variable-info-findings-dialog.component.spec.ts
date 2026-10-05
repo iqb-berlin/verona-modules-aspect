@@ -1,6 +1,14 @@
+// eslint-disable-next-line max-classes-per-file
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { Section } from 'common/models/section';
+import { RulesIntoNothing } from 'editor/src/app/classes/reference-manager';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
@@ -10,13 +18,24 @@ import { Mock } from 'vitest';
 import { EditorUnit } from 'editor/src/app/models/editor-unit';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { SelectionService } from 'editor/src/app/services/selection.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
 import { VariableInfoLocation } from 'editor/src/app/utils/variable-info-origins';
 import { VariableInfoIssue, VariableInfoIssueCode } from 'editor/src/app/utils/variable-info-validator';
 import {
   VariableInfoFindingsDialogComponent
 } from 'editor/src/app/components/dialogs/variable-info-findings-dialog/variable-info-findings-dialog.component';
+
+@Component({
+  selector: 'aspect-element-list',
+  template: '',
+  standalone: false
+})
+class MockElementListComponent {
+  @Input() elements!: UIElement[];
+  @Input() navigable: boolean = false;
+  @Output() goToElement = new EventEmitter<UIElement>();
+}
 
 function issue(index: number, part: 'id' | 'alias', value: string, code: VariableInfoIssueCode): VariableInfoIssue {
   return {
@@ -37,10 +56,15 @@ describe('VariableInfoFindingsDialogComponent', () => {
   let unitService: {
     unit: EditorUnit,
     variableInfoFindings: BehaviorSubject<VariableInfoFinding[]>,
+    rulesIntoNothing: BehaviorSubject<RulesIntoNothing[]>,
+    loadRepairs: BehaviorSubject<UIElement[]>,
     editStateVariables: () => void,
-    replaceIds: Mock
+    replaceIds: Mock,
+    revealElement: Mock,
+    revealLocation: Mock,
+    revealSection: Mock
   };
-  let selectionService: SelectionService;
+  let dialogService: { closeAllThen: Mock };
   let dialogRef: SpyObj<MatDialogRef<VariableInfoFindingsDialogComponent>>;
 
   const info = (id: string, alias: string): VariableInfo => ({ id, alias } as VariableInfo);
@@ -87,17 +111,26 @@ describe('VariableInfoFindingsDialogComponent', () => {
     const unit = new EditorUnit();
     unit.stateVariables = [stateVariable];
     unitService = {
-      unit, variableInfoFindings: findings, editStateVariables: vi.fn(), replaceIds: vi.fn()
+      unit,
+      variableInfoFindings: findings,
+      rulesIntoNothing: new BehaviorSubject<RulesIntoNothing[]>([]),
+      loadRepairs: new BehaviorSubject<UIElement[]>([]),
+      editStateVariables: vi.fn(),
+      replaceIds: vi.fn(),
+      revealElement: vi.fn(),
+      revealLocation: vi.fn(),
+      revealSection: vi.fn()
     };
-    selectionService = new SelectionService();
+    // Closing every dialog is the service's part; here it acts at once, as it does once they are closed.
+    dialogService = { closeAllThen: vi.fn((action: () => void) => action()) };
     dialogRef = createSpyObj<MatDialogRef<VariableInfoFindingsDialogComponent>>(['close']);
 
     await TestBed.configureTestingModule({
-      declarations: [VariableInfoFindingsDialogComponent],
-      imports: [MatDialogModule, MatButtonModule, TranslateModule.forRoot()],
+      declarations: [VariableInfoFindingsDialogComponent, MockElementListComponent],
+      imports: [MatDialogModule, MatButtonModule, MatIconModule, TranslateModule.forRoot()],
       providers: [
         { provide: UnitService, useValue: unitService },
-        { provide: SelectionService, useValue: selectionService },
+        { provide: DialogService, useValue: dialogService },
         { provide: MatDialogRef, useValue: dialogRef }
       ]
     }).compileComponents();
@@ -154,9 +187,14 @@ describe('VariableInfoFindingsDialogComponent', () => {
       (replaceButton(rows()[2]) as HTMLButtonElement).click();
       fixture.detectChanges();
 
-      expect(warning()?.textContent).toContain('variableInfoFindings.replaceWarning');
+      expect(warning()?.textContent).toContain('variableInfoFindings.replaceWarning.one');
       // The number the author decides on: the variables renamed, here the one of the state variable.
       expect(fixture.componentInstance.pendingVariableCount).toBe(1);
+      // A warning by its symbol, not by a coloured frame; the colour is the button's (#1520).
+      expect(warning()?.querySelector('.message-icon-warning')).toBeTruthy();
+      const actions = Array.from(warning()?.querySelectorAll('button') ?? []);
+      expect(actions.map(button => button.classList.contains('confirm-replacement'))).toEqual([false, true]);
+      expect(actions[1].textContent?.trim()).toBe('variableInfoFindings.replaceConfirm.one');
       expect(unitService.replaceIds).not.toHaveBeenCalled();
 
       (fixture.nativeElement.querySelector('.confirm-replacement') as HTMLButtonElement).click();
@@ -203,6 +241,8 @@ describe('VariableInfoFindingsDialogComponent', () => {
 
       (fixture.nativeElement.querySelector('.replace-all') as HTMLButtonElement).click();
       fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.confirm-replacement').textContent.trim())
+        .toBe('variableInfoFindings.replaceConfirm.other');
       (fixture.nativeElement.querySelector('.confirm-replacement') as HTMLButtonElement).click();
 
       expect(unitService.replaceIds).toHaveBeenCalledWith([{ stateVariable }, { element: field }]);
@@ -210,13 +250,13 @@ describe('VariableInfoFindingsDialogComponent', () => {
   });
 
   /* A likert row has no overlay of its own; the likert is what can be selected. */
-  it('should take the author to the element that can be selected', () => {
-    const requestElement = vi.spyOn(selectionService, 'requestElement');
-
+  it('should take the author to the element that can be selected, once the dialogs are closed', () => {
     (rows()[1].querySelector('.finding-action') as HTMLButtonElement).click();
 
-    expect(dialogRef.close).toHaveBeenCalled();
-    expect(requestElement).toHaveBeenCalledWith(0, 0, 'likert_1');
+    expect(dialogService.closeAllThen).toHaveBeenCalled();
+    expect(unitService.revealLocation).toHaveBeenCalledWith(expect.objectContaining({
+      pageIndex: 0, sectionIndex: 0, navigationElement: likert
+    }));
   });
 
   it('should open the state variables for a state variable', () => {
@@ -226,11 +266,96 @@ describe('VariableInfoFindingsDialogComponent', () => {
     expect(unitService.editStateVariables).toHaveBeenCalled();
   });
 
+  it('should lead its title with a warning symbol and name the names section (#1520)', () => {
+    const title: HTMLElement = fixture.nativeElement.querySelector('[mat-dialog-title]');
+
+    expect(title.textContent).toContain('unitHints.title');
+    expect(title.querySelector('.message-icon-warning')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.variable-names-section h3').textContent)
+      .toContain('variableInfoFindings.title');
+  });
+
   it('should follow the findings while it is open', () => {
     findings.next([]);
     fixture.detectChanges();
 
     expect(rows().length).toBe(0);
-    expect(text()).toContain('variableInfoFindings.none');
+    expect(fixture.nativeElement.querySelector('.variable-names-section')).toBeNull();
+    expect(text()).toContain('unitHints.none');
+  });
+
+  /* What loading only reported lives here as well, with the way to the section, until the rule is fixed (#1520). */
+  describe('visibility rules into nothing', () => {
+    const sectionLocation = { section: new Section(), pageIndex: 1, sectionIndex: 0 };
+    const ruleRows = (): HTMLElement[] => Array.from(fixture.nativeElement.querySelectorAll('.rules-into-nothing-row'));
+
+    beforeEach(() => {
+      unitService.rulesIntoNothing.next([{ location: sectionLocation, targetIDs: ['text-field_9', 'state_9'] }]);
+      fixture.detectChanges();
+    });
+
+    it('should list each section with the ids its rules ask for', () => {
+      expect(ruleRows().length).toBe(1);
+      expect(ruleRows()[0].textContent).toContain('variableInfoFindings.location');
+      expect(Array.from(ruleRows()[0].querySelectorAll('.rule-target')).map(target => target.textContent?.trim()))
+        .toEqual(['text-field_9', 'state_9']);
+    });
+
+    it('should name a rule saved before anything was chosen', () => {
+      unitService.rulesIntoNothing.next([{ location: sectionLocation, targetIDs: [''] }]);
+      fixture.detectChanges();
+
+      expect(ruleRows()[0].querySelector('.no-target')?.textContent).toContain('unitHints.rulesIntoNothing.noTarget');
+    });
+
+    it('should lead the title with a warning while something is open, and with nothing otherwise', () => {
+      const title = (): HTMLElement => fixture.nativeElement.querySelector('[mat-dialog-title]');
+      findings.next([]);
+      fixture.detectChanges();
+      expect(title().querySelector('.message-icon-warning')).toBeTruthy();
+
+      unitService.rulesIntoNothing.next([]);
+      fixture.detectChanges();
+      expect(title().querySelector('.message-icon-warning')).toBeNull();
+    });
+
+    it('should take the author to the section', () => {
+      (ruleRows()[0].querySelector('.go-to-section') as HTMLButtonElement).click();
+
+      expect(dialogService.closeAllThen).toHaveBeenCalled();
+      expect(unitService.revealSection).toHaveBeenCalledWith(sectionLocation);
+    });
+
+    it('should drop the section once its rules are fixed', () => {
+      unitService.rulesIntoNothing.next([]);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.rules-into-nothing-section')).toBeNull();
+    });
+  });
+
+  describe('what loading repaired', () => {
+    const repairedList = (): MockElementListComponent | undefined => fixture.debugElement
+      .query(By.directive(MockElementListComponent))?.componentInstance;
+
+    it('should list the repaired elements the unit still holds, with the way there', () => {
+      const held = {
+        ...element('drop-list', 'drop-list_1', 'ablage'), getChildElements: () => []
+      } as unknown as UIElement;
+      unitService.unit.pages[0].sections[0].elements.push(held as never);
+      unitService.loadRepairs.next([held, element('button', 'button_9', 'weg')]);
+      fixture.detectChanges();
+
+      expect(repairedList()?.elements).toEqual([held]);
+      expect(repairedList()?.navigable).toBe(true);
+
+      repairedList()?.goToElement.emit(held);
+      expect(dialogService.closeAllThen).toHaveBeenCalled();
+      expect(unitService.revealElement).toHaveBeenCalledWith(held);
+    });
+
+    it('should show no such section after a load that repaired nothing', () => {
+      expect(fixture.nativeElement.querySelector('.load-repairs-section')).toBeNull();
+    });
   });
 });

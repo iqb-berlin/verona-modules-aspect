@@ -1,9 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UIElement } from 'common/models/elements/element';
+import { RulesIntoNothing, SectionLocation } from 'editor/src/app/classes/reference-manager';
+import { ElementLocator } from 'editor/src/app/utils/element-locator';
 import { UnitService } from 'editor/src/app/services/unit.service';
-import { SelectionService } from 'editor/src/app/services/selection.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
 import { VariableInfoLocation, VariableInfoOrigins } from 'editor/src/app/utils/variable-info-origins';
 import { VariableInfoIssueCode } from 'editor/src/app/utils/variable-info-validator';
@@ -22,8 +25,9 @@ export interface VariableInfoFindingRow {
 }
 
 /**
- * Lists the variables of the unit that break the Verona contract, each where the author has to fix it, and takes the
- * author there (#1129). It follows the findings while it is open, so what it shows is never older than the unit.
+ * The hints area of the unit: the variables that break the Verona contract (#1129), the visibility rules that ask for
+ * nothing and what loading repaired (#1520), each where the author has to look, with the way there. It follows the
+ * unit while it is open, so what it shows is never older than the unit.
  */
 @Component({
   templateUrl: './variable-info-findings-dialog.component.html',
@@ -33,6 +37,10 @@ export interface VariableInfoFindingRow {
 export class VariableInfoFindingsDialogComponent implements OnDestroy {
   rows: VariableInfoFindingRow[] = [];
   hasGeometryFinding: boolean = false;
+  /** The sections whose visibility rules ask for something the unit does not hold (#1520). */
+  rulesIntoNothing: RulesIntoNothing[] = [];
+  /** What loading took a reference into nothing from, as far as the unit still holds it (#1520). */
+  repairedElements: UIElement[] = [];
   /** Every element and state variable whose id can be replaced, each once. */
   replaceableTargets: IdReplacementTarget[] = [];
   /**
@@ -51,7 +59,7 @@ export class VariableInfoFindingsDialogComponent implements OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
-              private selectionService: SelectionService,
+              private dialogService: DialogService,
               private dialogRef: MatDialogRef<VariableInfoFindingsDialogComponent>) {
     this.unitService.variableInfoFindings
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -74,6 +82,16 @@ export class VariableInfoFindingsDialogComponent implements OnDestroy {
         });
         this.replaceableTargets = [...targetsByHolder.values()];
         if (this.pendingUnit !== null && this.pendingUnit !== this.unitService.unit) this.cancelReplacement();
+      });
+    this.unitService.rulesIntoNothing
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(rules => { this.rulesIntoNothing = rules; });
+    // Renewed with the findings, which follow every change: an element deleted since loading drops out.
+    combineLatest([this.unitService.loadRepairs, this.unitService.variableInfoFindings])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([repaired]) => {
+        this.repairedElements = repaired
+          .filter(element => ElementLocator.locate(this.unitService.unit, element) !== null);
       });
   }
 
@@ -102,9 +120,17 @@ export class VariableInfoFindingsDialogComponent implements OnDestroy {
     return target.element ?? target.stateVariable;
   }
 
+  /* Each goes there only once the dialog is closed, so the focus it hands back does not scroll away again (#1520). */
   goToElement(location: VariableInfoLocation): void {
-    this.dialogRef.close();
-    this.selectionService.requestElement(location.pageIndex, location.sectionIndex, location.navigationElement.id);
+    this.dialogService.closeAllThen(() => this.unitService.revealLocation(location));
+  }
+
+  goToSection(location: SectionLocation): void {
+    this.dialogService.closeAllThen(() => this.unitService.revealSection(location));
+  }
+
+  goToRepairedElement(element: UIElement): void {
+    this.dialogService.closeAllThen(() => this.unitService.revealElement(element));
   }
 
   editStateVariables(): void {

@@ -11,10 +11,11 @@
   @if (combinedProperties.columnCount !== undefined) {
     <mat-form-field appearance="fill">
       <mat-label>{{ 'propertiesPanel.columnCount' | translate }}</mat-label>
-      <input matInput type="number" min="1" required aspectNumberField
+      <input matInput type="number" min="1" required aspectNumberField #columnCountField="aspectNumberField"
              [ngModel]="combinedProperties.columnCount"
              (numberChange)="updateModel.emit(
                     { property: 'columnCount', value: $event.value, isInputValid: $event.isInputValid })">
+      <mat-error>{{ columnCountField.errorText }}</mat-error>
       @if (combinedProperties.columnCount === null) {
         <aspect-merged-marker matSuffix></aspect-merged-marker>
       }

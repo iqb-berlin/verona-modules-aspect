@@ -40,18 +40,20 @@
   </p>
   <mat-form-field class="menuItem" appearance="fill">
     <mat-label>Seitenbreite in px</mat-label>
-    <input matInput type="number" min="0" required aspectNumberField
+    <input matInput type="number" min="0" required aspectNumberField #maxWidthField="aspectNumberField"
            [disabled]="!page.hasMaxWidth"
            [ngModel]="page.hasMaxWidth ? page.maxWidth : null"
            (click)="$event.stopPropagation()"
            (numberChange)="commitNumber(page, 'maxWidth', $event)">
+    <mat-error>{{ maxWidthField.errorText }}</mat-error>
   </mat-form-field>
   <mat-form-field class="menuItem" appearance="fill">
     <mat-label>Randbreite in px</mat-label>
-    <input matInput type="number" min="0" required aspectNumberField
+    <input matInput type="number" min="0" required aspectNumberField #marginField="aspectNumberField"
            [ngModel]="page.margin"
            (click)="$event.stopPropagation()"
            (numberChange)="commitNumber(page, 'margin', $event)">
+    <mat-error>{{ marginField.errorText }}</mat-error>
   </mat-form-field>
 </fieldset>
 
@@ -83,8 +85,10 @@
 <mat-form-field *ngIf="unitService.expertMode" class="menuItem" appearance="fill">
   <mat-label>{{'pageProperties.alwaysVisibleAspectRatio' | translate }}</mat-label>
   <input matInput type="number" min="0" max="100" required aspectNumberField
+         #alwaysVisibleAspectRatioField="aspectNumberField"
          [disabled]="!page.alwaysVisible"
          [ngModel]="page.alwaysVisibleAspectRatio"
          (click)="$event.stopPropagation()"
          (numberChange)="commitNumber(page, 'alwaysVisibleAspectRatio', $event)">
+  <mat-error>{{ alwaysVisibleAspectRatioField.errorText }}</mat-error>
 </mat-form-field>

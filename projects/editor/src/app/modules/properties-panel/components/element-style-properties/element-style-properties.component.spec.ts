@@ -159,6 +159,16 @@ describe('ElementStylePropertiesComponent', () => {
       expect(messageService.showWarning).toHaveBeenCalledTimes(1);
     });
 
+    /* Beside the warning that fades, the box says why under itself (#1523). */
+    it('should say at the box why a negative font size was refused', async () => {
+      type('-5');
+      await leave();
+      fixture.detectChanges();
+
+      const formField: HTMLElement = box().closest('mat-form-field') as HTMLElement;
+      expect(formField.querySelector('mat-error')?.textContent).toContain('numberFieldRefused.min');
+    });
+
     /* #1153: the border width box committed to `borderRadius`, a copy-paste slip that existed
        because the pattern was written out by hand at every box. Migrating removes it - each box
        names its property once, and the directive holds the rest. What is left to get wrong is that

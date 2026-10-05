@@ -4,48 +4,53 @@
        name: those can point elsewhere, and the panel then offers grid fields for a statically placed
        element or the other way round (#1204). A compound child counts as dynamically positioned --
        it is laid out inline and has margins but no coordinates (#1268). -->
-  <div *ngIf="!selectionService.isSelectionDynamicallyPositioned; else elseBlock"
-       class="flex-row">
-    <mat-form-field *ngIf="positionProperties.xPosition !== undefined"
-                    appearance="outline">
-      <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
-      <input matInput type="number" min="0" aspectNumberField required
-             [ngModel]="positionProperties.xPosition"
-             (numberChange)="updateModel.emit(
-                    { property: 'xPosition', value: $event.value, isInputValid: $event.isInputValid })">
-      @if (positionProperties.xPosition === null) {
-        <aspect-merged-marker matSuffix></aspect-merged-marker>
+  @if (!selectionService.isSelectionDynamicallyPositioned) {
+    <div class="flex-row">
+      @if (positionProperties.xPosition !== undefined) {
+        <mat-form-field appearance="outline">
+          <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
+          <input matInput type="number" min="0" aspectNumberField required #xPositionField="aspectNumberField"
+                 [ngModel]="positionProperties.xPosition"
+                 (numberChange)="updateModel.emit(
+                        { property: 'xPosition', value: $event.value, isInputValid: $event.isInputValid })">
+          <mat-error>{{ xPositionField.errorText }}</mat-error>
+          @if (positionProperties.xPosition === null) {
+            <aspect-merged-marker matSuffix></aspect-merged-marker>
+          }
+        </mat-form-field>
       }
-    </mat-form-field>
-    <mat-form-field *ngIf="positionProperties.yPosition !== undefined"
-                    appearance="outline">
-      <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
-      <input matInput type="number" min="0" aspectNumberField required
-             [ngModel]="positionProperties.yPosition"
-             (numberChange)="updateModel.emit(
-                    { property: 'yPosition', value: $event.value, isInputValid: $event.isInputValid })">
-      @if (positionProperties.yPosition === null) {
-        <aspect-merged-marker matSuffix></aspect-merged-marker>
+      @if (positionProperties.yPosition !== undefined) {
+        <mat-form-field appearance="outline">
+          <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
+          <input matInput type="number" min="0" aspectNumberField required #yPositionField="aspectNumberField"
+                 [ngModel]="positionProperties.yPosition"
+                 (numberChange)="updateModel.emit(
+                        { property: 'yPosition', value: $event.value, isInputValid: $event.isInputValid })">
+          <mat-error>{{ yPositionField.errorText }}</mat-error>
+          @if (positionProperties.yPosition === null) {
+            <aspect-merged-marker matSuffix></aspect-merged-marker>
+          }
+        </mat-form-field>
       }
-    </mat-form-field>
-  </div>
-
-  <ng-template #elseBlock>
+    </div>
+  } @else {
     {{'propertiesPanel.grid' | translate }}
     <div class="flex-row">
       <mat-form-field appearance="outline">
         <mat-label>{{'row' | translate }}</mat-label>
-        <input matInput type="number" aspectNumberField
+        <input matInput type="number" aspectNumberField #gridRowField="aspectNumberField"
                [ngModel]="positionProperties.gridRow"
                (numberChange)="updateModel.emit(
                     { property: 'gridRow', value: $event.value, isInputValid: $event.isInputValid })">
+        <mat-error>{{ gridRowField.errorText }}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
-        <input matInput type="number" min="1" aspectNumberField required
+        <input matInput type="number" min="1" aspectNumberField required #gridRowRangeField="aspectNumberField"
                [ngModel]="positionProperties.gridRowRange"
                (numberChange)="updateModel.emit(
                     { property: 'gridRowRange', value: $event.value, isInputValid: $event.isInputValid })">
+        <mat-error>{{ gridRowRangeField.errorText }}</mat-error>
         @if (positionProperties.gridRowRange === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -54,17 +59,19 @@
     <div class="flex-row">
       <mat-form-field appearance="outline">
         <mat-label>{{'column' | translate }}</mat-label>
-        <input matInput type="number" aspectNumberField
+        <input matInput type="number" aspectNumberField #gridColumnField="aspectNumberField"
                [ngModel]="positionProperties.gridColumn"
                (numberChange)="updateModel.emit(
                     { property: 'gridColumn', value: $event.value, isInputValid: $event.isInputValid })">
+        <mat-error>{{ gridColumnField.errorText }}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
-        <input matInput type="number" min="1" aspectNumberField required
+        <input matInput type="number" min="1" aspectNumberField required #gridColumnRangeField="aspectNumberField"
                [ngModel]="positionProperties.gridColumnRange"
                (numberChange)="updateModel.emit(
                     { property: 'gridColumnRange', value: $event.value, isInputValid: $event.isInputValid })">
+        <mat-error>{{ gridColumnRangeField.errorText }}</mat-error>
         @if (positionProperties.gridColumnRange === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -114,20 +121,21 @@
                                                  })">
       </aspect-size-input-panel>
     </div>
-  </ng-template>
+  }
 
-  <ng-container *ngIf="!isZIndexDisabled">
+  @if (!isZIndexDisabled) {
     {{ 'propertiesPanel.stacking' | translate }}<br>
     <mat-form-field class="wide-form-field" appearance="fill">
       <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
-      <input matInput type="number" aspectNumberField required
+      <input matInput type="number" aspectNumberField required #zIndexField="aspectNumberField"
              [ngModel]="positionProperties.zIndex"
              (numberChange)="updateModel.emit(
                     { property: 'zIndex', value: $event.value, isInputValid: $event.isInputValid })"
              matTooltip="{{ 'propertiesPanel.zIndexTooltip' | translate }}">
+      <mat-error>{{ zIndexField.errorText }}</mat-error>
       @if (positionProperties.zIndex === null) {
         <aspect-merged-marker matSuffix></aspect-merged-marker>
       }
     </mat-form-field>
-  </ng-container>
+  }
 </fieldset>

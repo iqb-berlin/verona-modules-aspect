@@ -10,10 +10,11 @@
       </aspect-merged-checkbox>
       <mat-form-field appearance="fill">
         <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField required
+        <input matInput type="number" min="0" aspectNumberField required #widthFixedField="aspectNumberField"
                [disabled]="!fixedWidth.checked"
                [ngModel]="dimensions.width"
                (numberChange)="commitDimension('width', $event)">
+        <mat-error>{{ widthFixedField.errorText }}</mat-error>
         @if (dimensions.width === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -22,9 +23,10 @@
     <ng-template #elseBlockWidth>
       <mat-form-field appearance="fill">
         <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-        <input matInput type="number" min="0" aspectNumberField required
+        <input matInput type="number" min="0" aspectNumberField required #widthGridField="aspectNumberField"
                [ngModel]="dimensions.width"
                (numberChange)="commitDimension('width', $event)">
+        <mat-error>{{ widthGridField.errorText }}</mat-error>
         @if (dimensions.width === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -40,9 +42,10 @@
         <mat-label>
           {{'propertiesPanel.height' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField required
+        <input matInput type="number" min="0" aspectNumberField required #heightFixedField="aspectNumberField"
                [ngModel]="dimensions.height"
                (numberChange)="commitDimension('height', $event)">
+        <mat-error>{{ heightFixedField.errorText }}</mat-error>
         @if (dimensions.height === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -53,9 +56,10 @@
         <mat-label>
           {{'propertiesPanel.height' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField required
+        <input matInput type="number" min="0" aspectNumberField required #heightGridField="aspectNumberField"
                [ngModel]="dimensions.height"
                (numberChange)="commitDimension('height', $event)">
+        <mat-error>{{ heightGridField.errorText }}</mat-error>
         @if (dimensions.height === null) {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -80,10 +84,11 @@
         <mat-label>
           {{'propertiesPanel.minWidth' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField
+        <input matInput type="number" min="0" aspectNumberField #minWidthField="aspectNumberField"
                [disabled]="!minWidthEnabled.checked && !minWidthEnabled.indeterminate"
                [ngModel]="dimensions.minWidth"
                (numberChange)="commitDimension('minWidth', $event)">
+        <mat-error>{{ minWidthField.errorText }}</mat-error>
         @if (divergingProperties | propertyDiverges : 'dimensions.minWidth') {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -102,10 +107,11 @@
         <mat-label>
           {{'propertiesPanel.maxWidth' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField
+        <input matInput type="number" min="0" aspectNumberField #maxWidthField="aspectNumberField"
                [disabled]="!maxWidthEnabled.checked && !maxWidthEnabled.indeterminate"
                [ngModel]="dimensions.maxWidth"
                (numberChange)="commitDimension('maxWidth', $event)">
+        <mat-error>{{ maxWidthField.errorText }}</mat-error>
         @if (divergingProperties | propertyDiverges : 'dimensions.maxWidth') {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -124,10 +130,11 @@
         <mat-label>
           {{'propertiesPanel.minHeight' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField
+        <input matInput type="number" min="0" aspectNumberField #minHeightField="aspectNumberField"
                [disabled]="!minHeightEnabled.checked && !minHeightEnabled.indeterminate"
                [ngModel]="dimensions.minHeight"
                (numberChange)="commitDimension('minHeight', $event)">
+        <mat-error>{{ minHeightField.errorText }}</mat-error>
         @if (divergingProperties | propertyDiverges : 'dimensions.minHeight') {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -146,10 +153,11 @@
         <mat-label>
           {{'propertiesPanel.maxHeight' | translate }}
         </mat-label>
-        <input matInput type="number" min="0" aspectNumberField
+        <input matInput type="number" min="0" aspectNumberField #maxHeightField="aspectNumberField"
                [disabled]="!maxHeightEnabled.checked && !maxHeightEnabled.indeterminate"
                [ngModel]="dimensions.maxHeight"
                (numberChange)="commitDimension('maxHeight', $event)">
+        <mat-error>{{ maxHeightField.errorText }}</mat-error>
         @if (divergingProperties | propertyDiverges : 'dimensions.maxHeight') {
           <aspect-merged-marker matSuffix></aspect-merged-marker>
         }
@@ -161,9 +169,10 @@
   <ng-template #elseBlock>
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-      <input matInput type="number" min="0" aspectNumberField required
+      <input matInput type="number" min="0" aspectNumberField required #widthStaticField="aspectNumberField"
              [ngModel]="dimensions.width"
              (numberChange)="commitDimension('width', $event)">
+      <mat-error>{{ widthStaticField.errorText }}</mat-error>
       @if (dimensions.width === null) {
         <aspect-merged-marker matSuffix></aspect-merged-marker>
       }
@@ -172,9 +181,10 @@
       <mat-label>
         {{'propertiesPanel.height' | translate }}
       </mat-label>
-      <input matInput type="number" min="0" aspectNumberField required
+      <input matInput type="number" min="0" aspectNumberField required #heightStaticField="aspectNumberField"
              [ngModel]="dimensions.height"
              (numberChange)="commitDimension('height', $event)">
+      <mat-error>{{ heightStaticField.errorText }}</mat-error>
       @if (dimensions.height === null) {
         <aspect-merged-marker matSuffix></aspect-merged-marker>
       }

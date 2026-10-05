@@ -2,9 +2,13 @@
 import { Component, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
 import { userEvent } from 'vitest/browser';
+import { NUMBER_FIELD_SUBJECT_CHANGES } from './number-field.directive';
 import { NumberFieldModule } from './number-field.module';
 
 /**
@@ -71,19 +75,27 @@ class TwoWayHostComponent {
   value: number | null = 10;
 }
 
+/** What the properties panel provides for its fields: that the selection changed. */
+const subjectChanges = new Subject<void>();
+
 /* And one inside a `mat-form-field`, which is where `required` becomes visible: the asterisk on the
-   label and the red invalid state. */
+   label and the red invalid state. It stands in a view like the properties panel, which says when its
+   fields begin to stand for another element. */
 @Component({
   standalone: false,
   template: `
     <mat-form-field>
       <mat-label>Breite</mat-label>
-      <input matInput type="number" min="0" required aspectNumberField [ngModel]="value">
+      <input matInput type="number" min="0" required aspectNumberField #width="aspectNumberField" [ngModel]="value"
+             [disabled]="disabled">
+      <mat-error>{{ width.errorText }}</mat-error>
     </mat-form-field>
-  `
+  `,
+  providers: [{ provide: NUMBER_FIELD_SUBJECT_CHANGES, useValue: subjectChanges }]
 })
 class FormFieldHostComponent {
   value: number | null = null;
+  disabled: boolean = false;
 }
 
 /* And one for real typing and real focus changes, which needs somewhere to move the focus to. */
@@ -159,7 +171,7 @@ describe('NumberFieldDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestHostModule]
+      imports: [TestHostModule, TranslateModule.forRoot()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
@@ -711,21 +723,132 @@ describe('NumberFieldDirective', () => {
       expect(isRed()).toBe(true);
     });
 
-    /* And it goes away with the entry itself. Leaving the field puts the model value back and takes
-       the dirty marker off with it, so there is nothing left to be red about - what is left is the
-       warning the caller shows, which says more than a red border can. */
-    it('should stop being red once the refused entry has been put back', async () => {
-      formField.componentInstance.value = 10;
-      await settle();
+    /* Leaving the field puts the model value back, and the box goes on saying why it did, beside the warning that
+       fades after three seconds - until it is typed in again (#1523). Until then the red went with the entry and only
+       the warning was left. */
+    describe('saying why', () => {
+      const errorText = (): string | null => formField.nativeElement.querySelector('mat-error')?.textContent ?? null;
+      const refuseEmptying = async (): Promise<void> => {
+        formField.componentInstance.value = 10;
+        await settle();
+        await userEvent.click(box());
+        await userEvent.clear(box());
+        await settle();
+        await userEvent.click(document.body);
+        await settle();
+      };
 
-      await userEvent.click(box());
-      await userEvent.clear(box());
-      await settle();
-      await userEvent.click(document.body);
-      await settle();
+      it('should name the reason while an entry that would be refused is being typed', async () => {
+        formField.componentInstance.value = 10;
+        await settle();
 
-      expect(box().value).toBe('10');
-      expect(isRed()).toBe(false);
+        await userEvent.click(box());
+        await userEvent.clear(box());
+        await settle();
+
+        expect(errorText()).toContain('numberField.required');
+      });
+
+      it('should stay red and say that the last valid value is back once the entry was refused', async () => {
+        await refuseEmptying();
+
+        expect(box().value).toBe('10');
+        expect(isRed()).toBe(true);
+        expect(errorText()).toContain('numberFieldRefused.required');
+      });
+
+      it('should name a limit the entry broke', async () => {
+        formField.componentInstance.value = 10;
+        await settle();
+        await userEvent.click(box());
+        await userEvent.clear(box());
+        await userEvent.type(box(), '-5');
+        await settle();
+        await userEvent.click(document.body);
+        await settle();
+
+        expect(errorText()).toContain('numberFieldRefused.min');
+      });
+
+      it('should stop once the box is typed in again', async () => {
+        await refuseEmptying();
+
+        await userEvent.click(box());
+        await userEvent.type(box(), '2');
+        await settle();
+
+        expect(isRed()).toBe(false);
+        expect(errorText()).toBeNull();
+      });
+
+      it('should stop when another value arrives from outside, as for another element', async () => {
+        await refuseEmptying();
+
+        formField.componentInstance.value = 30;
+        await settle();
+        /* NgModel writes a new binding into the control in a microtask; the check that follows it, which the editor's
+           zone runs by itself, is where MatInput asks the matcher again. */
+        await settle();
+
+        expect(box().value).toBe('30');
+        expect(isRed()).toBe(false);
+        expect(formField.nativeElement.querySelector('mat-error')).toBeNull();
+      });
+
+      /* Another element with the same value: the binding does not change, so only the view can say so. */
+      it('should stop when the view says the field stands for something else now', async () => {
+        await refuseEmptying();
+
+        subjectChanges.next();
+        await settle();
+
+        expect(box().value).toBe('10');
+        expect(isRed()).toBe(false);
+        expect(formField.nativeElement.querySelector('mat-error')).toBeNull();
+      });
+
+      /* A disabled box cannot be typed in, so nothing else would ever end it -- the magnifier size once the
+         magnifier is switched off, say. */
+      it('should stop once the box is disabled, and not come back with it', async () => {
+        await refuseEmptying();
+
+        formField.componentInstance.disabled = true;
+        await settle();
+        await settle(); // NgModel disables the control in a microtask, see above
+        expect(isRed()).toBe(false);
+        expect(formField.nativeElement.querySelector('mat-error')).toBeNull();
+
+        formField.componentInstance.disabled = false;
+        await settle();
+        await settle();
+        expect(isRed()).toBe(false);
+      });
+
+      /* The fixed subscript holds one line; in a narrow field the reason takes three and lay over the field below. */
+      it('should let the space under the box grow only while it gives a reason', async () => {
+        const sizing = (): string => formField.debugElement.query(By.directive(MatFormField))
+          .injector.get(MatFormField).subscriptSizing;
+        expect(sizing()).toBe('fixed');
+
+        await refuseEmptying();
+        expect(sizing()).toBe('dynamic');
+
+        await userEvent.click(box());
+        await userEvent.type(box(), '2');
+        await settle();
+        expect(sizing()).toBe('fixed');
+      });
+
+      it('should keep saying it when the box is only visited afterwards', async () => {
+        await refuseEmptying();
+
+        await userEvent.click(box());
+        await userEvent.click(document.body);
+        await settle();
+
+        expect(isRed()).toBe(true);
+        expect(errorText()).toContain('numberFieldRefused.required');
+      });
     });
   });
 });

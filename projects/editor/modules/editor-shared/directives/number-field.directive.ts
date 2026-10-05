@@ -1,10 +1,23 @@
 import {
-  Directive, EventEmitter, HostListener, isDevMode, OnDestroy, OnInit, Output, Self
+  Directive, DoCheck, EventEmitter, HostListener, Inject, InjectionToken, isDevMode, OnDestroy, OnInit, Optional,
+  Output, Self
 } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { NgModel, ValidationErrors } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { MatFormField, SubscriptSizing } from '@angular/material/form-field';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  Observable, Subject, debounceTime, takeUntil
+} from 'rxjs';
 import { NumberFieldErrorStateMatcher } from './number-field-error-state.matcher';
+
+/**
+ * Says when the fields below stand for something else, for a view that shows one thing after another in the same
+ * fields -- the properties panel, whose fields stay while the selection changes. A refusal is about what the field
+ * stood for when it was refused, and a value that happens to be the same on the next element cannot tell the two
+ * apart (#1523).
+ */
+export const NUMBER_FIELD_SUBJECT_CHANGES = new InjectionToken<Observable<unknown>>('NUMBER_FIELD_SUBJECT_CHANGES');
 
 /* How long a step waits for the next one. Clicking an arrow four times is one edit from 2 to 6, and
    applying each step on its way there is what the waiting is for: a count that is applied slices the
@@ -49,11 +62,24 @@ const STEP_COMMIT_DELAY = 300;
 @Directive({
   selector: 'input[type=number][ngModel][aspectNumberField]',
   standalone: false,
+  exportAs: 'aspectNumberField',
   /* On the element, so it reaches the MatInput sitting next to it and nothing else: an empty box
      goes red once it has been typed in, not merely visited. See the matcher for why. */
   providers: [{ provide: ErrorStateMatcher, useClass: NumberFieldErrorStateMatcher }]
 })
-export class NumberFieldDirective implements OnInit, OnDestroy {
+export class NumberFieldDirective implements OnInit, DoCheck, OnDestroy {
+  /**
+   * Why the box is red, for the `mat-error` under it, translated (#1523). While an entry that would be refused is
+   * being typed it names the reason; once the entry was refused and the model's value put back it says that as well,
+   * and stays until the box is typed in again, the value changes from outside, the box is disabled or the view says
+   * the fields stand for something else (`NUMBER_FIELD_SUBJECT_CHANGES`). The warning the caller shows fades after
+   * three seconds; this does not.
+   *
+   * The model's value is the last valid one, not necessarily the one the edit started from: each valid keystroke
+   * has already been written, so typing `150` into a field limited to 100 leaves `15` behind. Which is why the text
+   * says "last valid value".
+   */
+  errorText: string | null = null;
   /**
    * A value the caller should act on. `isInputValid` is false only for a refused entry, where the
    * caller is expected to warn rather than write - the box has been put back already.
@@ -94,7 +120,17 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
    */
   private isMisused = false;
 
-  constructor(@Self() private ngModel: NgModel) {}
+  /** What the model held when an entry was refused; the refusal is spoken for as long as it still does. */
+  private refusedOver: number | null = null;
+
+  /** How the form field around the box sized its subscript before a reason was shown there. */
+  private ownSubscriptSizing: SubscriptSizing | null = null;
+
+  constructor(@Self() private ngModel: NgModel,
+              @Self() @Inject(ErrorStateMatcher) private errorStateMatcher: NumberFieldErrorStateMatcher,
+              @Optional() private translateService: TranslateService | null,
+              @Optional() private formField: MatFormField | null,
+              @Optional() @Inject(NUMBER_FIELD_SUBJECT_CHANGES) private subjectChanges: Observable<unknown> | null) {}
 
   /**
    * What the model holds, i.e. the value bound through `[ngModel]`, untouched by typing.
@@ -136,9 +172,16 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
       .pipe(debounceTime(STEP_COMMIT_DELAY), takeUntil(this.ngUnsubscribe))
       .subscribe(() => this.numberCommit.emit());
 
+    this.subjectChanges
+      ?.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => this.endRefusal());
+
     this.ngModel.update
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value: number | null) => {
+        // Typing in the box again is what ends a refusal; what is said now is about the new entry.
+        this.endRefusal();
+        this.showError(this.ngModel.control.invalid ? this.reasonOf(this.ngModel.control.errors, false) : null);
         /* An empty box is never reported on the keystroke, whichever kind of field this is. Where
            it is refused there is nothing to report until the user is done; where it is a value in
            its own right, reporting it mid-edit would clear the property under the box being typed
@@ -146,6 +189,15 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
            and disables the very field. Both are settled once the edit ends, see `settle`. */
         if (value !== null && this.ngModel.valid) this.numberChange.emit({ value, isInputValid: true });
       });
+  }
+
+  /**
+   * A value that arrives from outside -- a page or section edited elsewhere, say -- is not the one that was refused
+   * over. Nor is a field that was disabled since: it cannot be typed in, so nothing would ever end the refusal.
+   */
+  ngDoCheck(): void {
+    if (this.errorStateMatcher.refused &&
+      (this.modelValue !== this.refusedOver || this.ngModel.control.disabled)) this.endRefusal();
   }
 
   ngOnDestroy(): void {
@@ -238,8 +290,13 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
        knows by itself - `NumberFieldBadInputDirective` puts it there, so that this, the red border
        and Material all read the same answer. */
     if (control.invalid) {
+      // Read before the write-back, which leaves the box valid.
+      const reason = this.reasonOf(control.errors, true);
       this.numberChange.emit({ value: control.value as number | null, isInputValid: false });
       this.writeBack(this.modelValue);
+      this.showError(reason);
+      this.refusedOver = this.modelValue;
+      this.errorStateMatcher.refused = true;
     } else if (control.value === null) {
       /* Empty where empty is allowed: the property is cleared. Written into the box as well, not
          only reported - the model may already hold null, and then nothing else would put the box
@@ -275,5 +332,45 @@ export class NumberFieldDirective implements OnInit, OnDestroy {
   private writeBack(value: number | null): void {
     this.ngModel.control.setValue(value, { emitViewToModelChange: false, emitEvent: false });
     this.ngModel.viewModel = value;
+  }
+
+  private endRefusal(): void {
+    this.errorStateMatcher.refused = false;
+    this.showError(null);
+  }
+
+  /**
+   * Shows the reason under the box, or takes it away. While it is there the form field's subscript grows with it:
+   * the fixed one holds one line, and in a narrow field such as the coordinates (140 px) the reason takes three,
+   * which it would lay over the field below. Without a reason the field keeps the spacing it always had.
+   */
+  private showError(text: string | null): void {
+    this.errorText = text;
+    if (!this.formField) return;
+    if (text !== null && this.ownSubscriptSizing === null) {
+      this.ownSubscriptSizing = this.formField.subscriptSizing;
+      this.formField.subscriptSizing = 'dynamic';
+    } else if (text === null && this.ownSubscriptSizing !== null) {
+      this.formField.subscriptSizing = this.ownSubscriptSizing;
+      this.ownSubscriptSizing = null;
+    }
+  }
+
+  /**
+   * The reason, in the words of the field: what the browser could not read first, then an empty box, then the
+   * limits, which name their value. After a refusal it adds that the last valid value is back.
+   */
+  private reasonOf(errors: ValidationErrors | null, refused: boolean): string {
+    const group = refused ? 'numberFieldRefused' : 'numberField';
+    if (errors?.badInput) return this.translate(`${group}.badInput`);
+    if (errors?.required) return this.translate(`${group}.required`);
+    if (errors?.min) return this.translate(`${group}.min`, { min: errors.min.min });
+    if (errors?.max) return this.translate(`${group}.max`, { max: errors.max.max });
+    return this.translate(`${group}.invalid`);
+  }
+
+  /** The editor always has translations; a spec of a component that holds such a field need not provide them. */
+  private translate(key: string, params?: Record<string, unknown>): string {
+    return this.translateService ? this.translateService.instant(key, params) : key;
   }
 }

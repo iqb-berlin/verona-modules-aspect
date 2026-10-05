@@ -204,6 +204,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    /* ngx-tiptap's EditorDirective never destroys the editor it is given. Destroying it here is what
+       makes ProseMirror tear down its node views, which ngx-tiptap then detaches from the application;
+       without it every closed editor stayed alive, its node views in every change detection (#1516).
+       `?.` because ngOnInit may not have got as far as creating it. */
+    this.editor?.destroy();
   }
 
   toggleBold(): void {

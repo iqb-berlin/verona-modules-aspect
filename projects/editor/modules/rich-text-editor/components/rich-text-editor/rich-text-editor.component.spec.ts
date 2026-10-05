@@ -1,4 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ApplicationRef } from '@angular/core';
+import {
+  ComponentFixture, fakeAsync, flush, TestBed
+} from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
@@ -154,5 +157,36 @@ describe('RichTextEditorComponent', () => {
 
       expect(changes).not.toHaveBeenCalled();
     });
+  });
+
+  /* Measured in the editor before the fix: every closed text dialog left its editor alive, with its
+     node views and about 1,200 DOM nodes (#1516). */
+  describe('closing the editor', () => {
+    it('should destroy the tiptap editor', () => {
+      const { editor } = component;
+
+      fixture.destroy();
+
+      expect(editor.isDestroyed).toBe(true);
+    });
+
+    /* The node views are what change detection keeps visiting: ngx-tiptap attaches each one to the
+       application and detaches it only when the editor destroys it. The hook is called directly so the
+       fixture's own view stays where it is and the count changes by the node view alone; the teardown
+       calls it a second time, which both the subject and the editor take without complaint. `flush`
+       for the timer the formula's node view sets when it renders. */
+    it('should take its node views out of the application', fakeAsync(() => {
+      const appRef = TestBed.inject(ApplicationRef);
+      const withoutFormula = appRef.viewCount;
+      component.editor.commands.setContent(
+        '<p>a <aspect-nodeview-math-formula formula="x"></aspect-nodeview-math-formula></p>'
+      );
+      flush();
+      expect(appRef.viewCount).toBe(withoutFormula + 1);
+
+      component.ngOnDestroy();
+
+      expect(appRef.viewCount).toBe(withoutFormula);
+    }));
   });
 });

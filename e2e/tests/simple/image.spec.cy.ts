@@ -1,5 +1,5 @@
 import {
-  addElement, setCheckbox, uploadFile, clickButtonDialog
+  addElement, addPostMessageStub, setCheckbox, uploadFile, clickButtonDialog
 } from '../util';
 
 describe('Image element', { testIsolation: false }, () => {
@@ -187,6 +187,24 @@ describe('Image element', { testIsolation: false }, () => {
     it('hides magnifier on mouseleave', () => {
       cy.get('.image-container').first().trigger('mouseleave');
       cy.get('aspect-image-magnifier').should('not.exist');
+    });
+  });
+
+  context('player with a picture that does not load', () => {
+    it('tells the host which image element failed', () => {
+      cy.readFile('e2e/downloads/image.json').then(unit => {
+        const image = unit.pages[0].sections[0].elements.find((element: { type: string }) => element.type === 'image');
+        image.src = 'data:image/png;base64,AAAA';
+        cy.writeFile('e2e/downloads/image-broken.json', unit);
+        cy.openPlayer();
+        addPostMessageStub();
+        cy.loadUnit('../downloads/image-broken.json');
+        cy.get('@postMessage').should('be.calledWithMatch', {
+          type: 'vopRuntimeErrorNotification',
+          code: 'image-not-loading',
+          message: `Failed to load image element with alias "${image.alias}" and filename "${image.fileName}"`
+        });
+      });
     });
   });
 });

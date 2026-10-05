@@ -1,5 +1,6 @@
 import { Renderer2 } from '@angular/core';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import { AspectError } from 'common/classes/aspect-error';
 import { APIService } from './api.service';
 import { ExternalResourceService } from './external-resource.service';
 
@@ -50,5 +51,19 @@ describe('ExternalResourceService', () => {
     service.initializeGeoGebra(renderer);
     scriptElement.dispatchEvent(new Event('load'));
     expect(loadedStates).toEqual([false, true]);
+  });
+
+  it('should throw an AspectError naming the script address when the script fails to load', () => {
+    service.initializeGeoGebra(renderer);
+    let thrown: unknown;
+    try {
+      (scriptElement.onerror as (event: Event) => void)(new Event('error'));
+    } catch (error) {
+      thrown = error;
+    }
+    expect(thrown).toBeInstanceOf(AspectError);
+    expect((thrown as AspectError).code).toBe('geogebra-not-loading');
+    expect((thrown as AspectError).message)
+      .toBe('GeoGebra could not be loaded from "http://resource/GeoGebra/GeoGebra/deployggb.js"');
   });
 });

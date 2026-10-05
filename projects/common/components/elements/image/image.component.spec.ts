@@ -96,4 +96,16 @@ describe('ImageComponent', () => {
     magnifier.elementValueChanged.emit({ id: 'test-id', value: true });
     expect(emitSpy).toHaveBeenCalledWith({ id: 'test-id', value: true });
   });
+
+  it('should name the element by its alias and file name in the load error message', () => {
+    expect(component.loadErrorMsg)
+      .toBe('Failed to load image element with alias "test-alias" and filename "test.gif"');
+  });
+
+  it('should report a picture that fails to load with its code and the load error message', () => {
+    const throwErrorSpy = vi.spyOn(component, 'throwError').mockImplementation(() => {});
+    const image = fixture.nativeElement.querySelector('img') as HTMLImageElement;
+    image.dispatchEvent(new Event('error'));
+    expect(throwErrorSpy).toHaveBeenCalledWith('image-not-loading', component.loadErrorMsg);
+  });
 });

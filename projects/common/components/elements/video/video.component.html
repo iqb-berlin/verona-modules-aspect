@@ -32,6 +32,6 @@
   }
   <aspect-spinner
     [isLoaded]="isLoaded"
-    (timeOut)="throwError('audio-timeout', timeoutMsg)">
+    (timeOut)="throwTimeoutError()">
   </aspect-spinner>
 </div>

@@ -13,7 +13,9 @@ export function uploadGGBFile(fileName: string) {
 
 /** Stands in for GeoGebra. Every applet has one object, `correct`, a truth value that stays `false`,
  * and keeps its listeners in `window.ggbListeners[appletId]`, so that a spec can play GeoGebra
- * reporting a recomputation (`update`, with the object's name) or any other event (`client`). */
+ * reporting a recomputation (`update`, with the object's name) or any other event (`client`).
+ * Like GeoGebra, a pointerdown on its canvas focuses the screen reader announcement at the bottom of
+ * the applet and then the canvas, both without `preventScroll` (#971). */
 export function interceptDeployGGB() {
   cy.intercept('**/deployggb.js', req => {
     req.reply({
@@ -29,8 +31,19 @@ export function interceptDeployGGB() {
               container.style.width = '100%';
               container.style.height = '100%';
               container.style.minHeight = '100px';
-              const mockStyle = 'width: 100%; height: 100%; min-height: 100px; background: #eee;';
-              container.innerHTML = '<div style="' + mockStyle + '">Mock GeoGebra Applet</div>';
+              // As large as GeoGebra builds the applet: the size the element hands over.
+              const mockStyle = 'position: relative; width: ' + params.width + 'px; height: ' + params.height +
+                'px; background: #eee;';
+              container.innerHTML = '<div style="' + mockStyle + '">Mock GeoGebra Applet' +
+                '<canvas tabindex="0" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>' +
+                '<div class="screenReaderStyle" tabindex="-1"' +
+                ' style="position: absolute; bottom: 0; width: 1px; height: 1px;"></div></div>';
+              const canvas = container.querySelector('canvas');
+              const announcement = container.querySelector('.screenReaderStyle');
+              canvas.addEventListener('pointerdown', () => {
+                announcement.focus();
+                canvas.focus();
+              });
             }
             if (params && typeof params.appletOnLoad === 'function') {
               const listeners = {};

@@ -6,7 +6,7 @@ import { PageChangeService } from 'common/services/page-change.service';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { of, Subject } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
-import { Mock } from 'vitest';
+import { Mock, MockInstance } from 'vitest';
 import { GeometryElement } from 'common/models/elements/geometry';
 import {
   GeoGebraApi, GeoGebraApplet, GeoGebraAppletConstructor, GeoGebraAppletParameters
@@ -205,6 +205,66 @@ describe('GeometryComponent', () => {
         ]
       }));
     }));
+  });
+
+  describe('focus inside the applet (#971)', () => {
+    let canvas: HTMLCanvasElement;
+    let announcement: HTMLDivElement;
+
+    beforeEach(() => {
+      /* Builds what GeoGebra builds before it reports the applet as loaded: its canvas and the element
+         it focuses for screen reader announcements. */
+      ggbApplet.mockImplementationOnce(function GGBAppletMock(
+        this: GeoGebraApplet, params: GeoGebraAppletParameters
+      ) {
+        this.setHTML5Codebase = vi.fn();
+        this.inject = vi.fn().mockImplementation(() => {
+          const container = fixture.nativeElement.querySelector('.geogebra-applet') as HTMLElement;
+          canvas = document.createElement('canvas');
+          announcement = document.createElement('div');
+          announcement.classList.add('screenReaderStyle');
+          container.replaceChildren(canvas, announcement);
+          params.appletOnLoad(mockGeoGebraAPI);
+        });
+      });
+      component.refresh();
+    });
+
+    let focus: MockInstance<HTMLElement['focus']>;
+    beforeEach(() => {
+      focus = vi.spyOn(HTMLElement.prototype, 'focus');
+    });
+    afterEach(() => {
+      focus.mockRestore();
+    });
+
+    it.each([
+      ['canvas', () => canvas],
+      ['screen reader announcement', () => announcement]
+    ])('should focus the %s without scrolling', (_, element) => {
+      element().focus();
+
+      expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+      expect(focus.mock.contexts[0]).toBe(element());
+    });
+
+    it('should keep the options GeoGebra passes', () => {
+      // A browser option the DOM typings of this TypeScript version do not know yet.
+      canvas.focus({ focusVisible: true } as FocusOptions);
+
+      expect(focus).toHaveBeenCalledWith({ focusVisible: true, preventScroll: true });
+    });
+
+    it('should cover a view GeoGebra adds after loading, once it is tapped', () => {
+      const laterCanvas = document.createElement('canvas');
+      canvas.after(laterCanvas);
+
+      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+      laterCanvas.focus();
+
+      expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+      expect(focus.mock.contexts[0]).toBe(laterCanvas);
+    });
   });
 
   it.each([true, false])('should hand showAlgebraInput %s to GeoGebra', showAlgebraInput => {

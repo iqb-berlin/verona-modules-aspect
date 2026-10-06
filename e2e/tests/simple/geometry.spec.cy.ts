@@ -7,6 +7,7 @@ import {
   visibleAppletParams,
   waitForVisibleGeometry
 } from '../helpers/geometry-util';
+import { selectOnPage, setDimension } from '../helpers/standard-dimension-properties-util';
 
 describe('Geometry element', { testIsolation: false }, () => {
   beforeEach(() => {
@@ -66,6 +67,17 @@ describe('Geometry element', { testIsolation: false }, () => {
       cy.get('aspect-ui-element-properties')
         .contains('mat-form-field', 'Bekannte Variablen')
         .should('contain.text', '(1)');
+    });
+
+    it('creates a geometry element taller than the window (Page 8)', () => {
+      addNewPage();
+      addGeometryElement('Hohe Geometrie', 'kurven2.ggb', 'geo_tall');
+      // The size fields are only there outside the expert mode. The editor renders every page, so the
+      // element of this page is the eighth.
+      setExpertMode(false);
+      selectOnPage('aspect-geometry', 7);
+      setDimension('Höhe', 1200);
+      setExpertMode(true);
     });
 
     after('saves unit definition', () => {
@@ -163,6 +175,22 @@ describe('Geometry element', { testIsolation: false }, () => {
         // worked on, so the truth value it carries must still be DISPLAYED: the value stayed.
         cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('correct'));
         cy.get('@postMessage').should('be.calledWithMatch', truthValueCode('DISPLAYED'));
+      });
+    });
+
+    it('keeps the page where it is when the drawing is tapped (Page 8)', () => {
+      cy.goToPlayerPage(8);
+      cy.wait(500);
+      waitForVisibleGeometry();
+      // The top of the applet in view, its bottom far below the window.
+      cy.get('aspect-geometry:visible .geogebra-applet').first().scrollIntoView();
+      cy.get('aspect-geometry:visible .geogebra-applet').first().closest('.page-container').then($page => {
+        const scrollTop = $page.scrollTop();
+        expect(scrollTop, 'page scrolled to the applet').to.be.greaterThan(0);
+        // Near the top, inside the visible part: the centre of the canvas lies below the window.
+        cy.get('aspect-geometry:visible canvas').first().trigger('pointerdown', 'top', { scrollBehavior: false });
+        cy.focused().should('match', 'canvas');
+        cy.wrap($page).invoke('scrollTop').should('equal', scrollTop);
       });
     });
   });

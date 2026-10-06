@@ -58,7 +58,11 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
 
     fromEvent(this.elementRef.nativeElement, 'pointerdown', { capture: true })
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => { this.hasUserInteracted = true; });
+      .subscribe(() => {
+        this.hasUserInteracted = true;
+        // Before GeoGebra handles the tap, so that a view it created after loading is covered as well.
+        this.preventFocusScrolling();
+      });
     fromEvent(this.elementRef.nativeElement, 'keydown', { capture: true })
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => { this.hasUserInteracted = true; });
@@ -140,6 +144,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       appletOnLoad: (geoGebraApi: GeoGebraApi) => {
         this.geoGebraAPI = geoGebraApi;
         this.isLoaded.next(true);
+        this.preventFocusScrolling();
         this.geoGebraAPI.registerAddListener(() => {
           this.geometryUpdated.next();
         });
@@ -164,6 +169,28 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     const applet = new GGBApplet(params, '5.0');
     applet.setHTML5Codebase(this.externalResourceService.getGeoGebraHTML5URL());
     applet.inject(this.elementModel.id);
+  }
+
+  /**
+   * On every click or tap into the drawing, GeoGebra focuses its canvas and, for screen readers, a
+   * one-pixel announcement element at the bottom of the applet. Neither call passes `preventScroll`, so
+   * the browser scrolls both into view. GeoGebra restores the scroll position afterwards, but only that
+   * of the document, while the page scrolls in a container of its own. An applet reaching below the
+   * window would therefore move under the finger, and the second point of a segment land elsewhere
+   * (#971). The same holds for the focus moves of GeoGebra's own keyboard navigation inside the applet;
+   * tabbing into the applet is the browser's and scrolls as before.
+   *
+   * Applied once the applet has loaded and again on every pointerdown, which also covers a graphics
+   * view GeoGebra adds later. `screenReaderStyle` is the class GeoGebra gives the announcement in the
+   * version this repository ships.
+   */
+  private preventFocusScrolling(): void {
+    (this.elementRef.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('canvas, .screenReaderStyle')
+      .forEach(element => {
+        element.focus = (options?: FocusOptions) => {
+          HTMLElement.prototype.focus.call(element, { ...options, preventScroll: true });
+        };
+      });
   }
 
   getGeometryObjects(): GeometryVariable[] {

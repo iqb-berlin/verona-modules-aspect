@@ -82,7 +82,7 @@ describe('SectionVisibilityHandlingDirective', () => {
 
     initDirective(createSection([{ id: 'text-field_1', operator: '=', value: 'yes' }], { enableReHide: true }));
 
-    expect(hostElement.style.display).toBe('unset');
+    expect(hostElement.style.display).toBe('');
     expect(emittedVisibilities).toEqual([{ index: 1, isVisible: true }]);
   });
 
@@ -108,8 +108,40 @@ describe('SectionVisibilityHandlingDirective', () => {
     elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'yes' };
     unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
 
-    expect(hostElement.style.display).toBe('unset');
+    expect(hostElement.style.display).toBe('');
     expect(emittedVisibilities[emittedVisibilities.length - 1]).toEqual({ index: 1, isVisible: true });
+  });
+
+  it('should restore stylesheet layout when a section is shown again', () => {
+    const stylesheet = document.createElement('style');
+    stylesheet.textContent = '.visibility-layout-test { display: block; overflow: visible; }';
+    hostElement.className = 'visibility-layout-test';
+    document.head.appendChild(stylesheet);
+    document.body.appendChild(hostElement);
+
+    try {
+      elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'no' };
+      initDirective(createSection([{ id: 'text-field_1', operator: '=', value: 'yes' }], { enableReHide: true }));
+      expect(getComputedStyle(hostElement).display).toBe('none');
+
+      ['yes', 'no', 'yes'].forEach(value => {
+        elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value };
+        unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
+
+        expect(getComputedStyle(hostElement).display).toBe(value === 'yes' ? 'block' : 'none');
+        expect(getComputedStyle(hostElement).overflow).toBe('visible');
+      });
+
+      expect(emittedVisibilities).toEqual([
+        { index: 1, isVisible: false },
+        { index: 1, isVisible: true },
+        { index: 1, isVisible: false },
+        { index: 1, isVisible: true }
+      ]);
+    } finally {
+      hostElement.remove();
+      stylesheet.remove();
+    }
   });
 
   it('should ignore changes of elements that are not part of a rule', () => {

@@ -1,10 +1,10 @@
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
-import { TableElement, TableHeaderCell } from 'common/models/elements/table';
+import { TableElement } from 'common/models/elements/table';
 import {
   AfterViewChecked, ChangeDetectorRef,
   Component, ElementRef, HostListener, OnInit,
   Input, Output, EventEmitter,
-  QueryList, TemplateRef, ViewChildren
+  QueryList, ViewChildren
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { UIElement } from 'common/models/elements/element';
@@ -41,12 +41,12 @@ export class TableComponent extends CompoundElementComponent implements OnInit, 
      Only enabled in the table edit dialog, where the corresponding events are handled. */
   @Input() allowElementEditing: boolean = false;
   /** Fixed height for content rows, overriding the configured row sizes.
-     Used by the table edit dialog to provide roomy cells while header rows stay compact. */
+     Used by the table edit dialog to provide roomy cells; header rows keep the height of their content. */
   @Input() contentRowHeight: string | null = null;
-  /** What a header cell is edited with in the table edit dialog. The rich text editor belongs to the
-     editor and is out of reach of `common`, so the dialog hands it in, bound to the cell (#1430). */
-  @Input() headerCellEditor: TemplateRef<{ $implicit: TableHeaderCell }> | null = null;
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
+  /** Asks the table edit dialog to edit the text of a header cell. The rich text editor belongs to the
+     editor and is out of reach of `common` (#1430). */
+  @Output() headerCellEditRequested = new EventEmitter<{ row: number, col: number }>();
   @Output() elementRemoved = new EventEmitter<{ row: number, col: number }>();
   @Output() childElementSelected = new EventEmitter<TableChildOverlay>();
   @ViewChildren(TableChildOverlay) compoundChildren!: QueryList<TableChildOverlay>;
@@ -112,6 +112,10 @@ export class TableComponent extends CompoundElementComponent implements OnInit, 
 
   addElement(elementType: UIElementType, row: number, col: number): void {
     this.elementAdded.emit({ elementType, row, col });
+  }
+
+  editHeaderCell(row: number, col: number): void {
+    this.headerCellEditRequested.emit({ row, col });
   }
 
   addHeaderRow(): void {

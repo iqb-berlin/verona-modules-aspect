@@ -51,8 +51,8 @@ export class TableEditDialogComponent implements OnDestroy {
      anything (#1270). The copy is not a duplicate -- it holds the very same cell objects, only in
      its own array. Rebuilding them (getBlueprint(), the TableElement constructor) would hand out new
      IDs and put other objects into the unit than the ones the selection and the references know.
-     Its own header rows are copied down to the cells, because the rich text editor of a header cell
-     writes its text in place. */
+     Its own header rows are copied down to the cells, because an edited header text is written into
+     the cell in place. */
   private static copyForEditing(table: TableElement): TableElement {
     const copy = Object.create(Object.getPrototypeOf(table) as object) as TableElement;
     return Object.assign(copy, table, {
@@ -142,5 +142,14 @@ export class TableEditDialogComponent implements OnDestroy {
     } else {
       this.removedElements.push(removedElement);
     }
+  }
+
+  /** A header cell is edited in the label dialog with the reduced rich text editor and its text
+     alignment (#1430). The result goes into the copy's cell, so cancelling this dialog still leaves the
+     table as it was; cancelling the label dialog changes nothing. */
+  async editHeaderCell(coords: { row: number, col: number }): Promise<void> {
+    const cell = this.newTable.headerRows[coords.row][coords.col];
+    const label = await firstValueFrom(this.dialogService.showLabelEditDialog({ text: cell.text }, true));
+    if (label) cell.text = label.text;
   }
 }

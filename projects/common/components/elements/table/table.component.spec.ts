@@ -1,6 +1,3 @@
-/* eslint-disable max-classes-per-file -- the host component and the module that gives it its template
-   scope belong together in this spec. */
-import { Component, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +5,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'common/environment';
-import { SharedModule } from 'common/shared.module';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { TableGridRowsPipe } from 'common/pipes/table-grid-rows.pipe';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
@@ -17,30 +13,6 @@ import {
   TableChildOverlay
 } from 'common/components/table-child-overlay/table-child-overlay.component';
 import { TableComponent } from './table.component';
-
-/** Stands in for the table edit dialog: it hands in what a header cell is edited with, as the dialog
-   does with the rich text editor. The input writes into the cell it was given. */
-@Component({
-  template: `
-    <aspect-table [elementModel]="table" [allowElementEditing]="true"
-                  [headerCellEditor]="cellEditor"></aspect-table>
-    <ng-template #cellEditor let-cell>
-      <input class="test-cell-editor" [value]="cell.text" (input)="cell.text = $any($event.target).value">
-    </ng-template>`,
-  standalone: false
-})
-class EditingHostComponent {
-  table!: TableElement;
-}
-
-/** The host is declared in a module rather than through `declarations`: the AOT compiler resolves its
-   template against the NgModule it belongs to. The table comes in through SharedModule, which declares
-   it -- declaring it here as well would make it part of two modules. */
-@NgModule({
-  declarations: [EditingHostComponent],
-  imports: [SharedModule]
-})
-class EditingHostModule {}
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -160,13 +132,39 @@ describe('TableComponent', () => {
       expect(headerCell.style.textAlign).toBe('');
     });
 
-    it('should leave a header cell without an editor while element editing is not allowed', () => {
+    it('should leave a header cell without an edit button while element editing is not allowed', () => {
       component.elementModel = createTableElement(headerProperties);
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll('.header-cell-editor').length).toBe(0);
+      expect(fixture.nativeElement.querySelectorAll('.header-edit-button').length).toBe(0);
     });
 
-    it('should use the given content row height while keeping header rows compact', () => {
+    /* The rich text editor lives in the editor project, out of reach of common: in the edit dialog a
+       header cell shows its text and asks the dialog to edit it, the way a content cell asks for a
+       new element (#1430). */
+    it('should show the text of a header cell and an edit button when element editing is allowed', () => {
+      component.elementModel = createTableElement({
+        headerEnabled: true,
+        headerRows: [[{ text: '<p><strong>Bold</strong></p>' }, { text: 'Column B' }]]
+      });
+      component.allowElementEditing = true;
+      fixture.detectChanges();
+      const headerCells: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('.header-cell');
+      expect(headerCells[0].querySelector('strong')?.textContent).toBe('Bold');
+      expect(fixture.nativeElement.querySelectorAll('.header-edit-button').length).toBe(2);
+    });
+
+    it('should ask for the header cell whose edit button is clicked', () => {
+      component.elementModel = createTableElement(headerProperties);
+      component.allowElementEditing = true;
+      fixture.detectChanges();
+      const requested = vi.spyOn(component.headerCellEditRequested, 'emit');
+
+      fixture.nativeElement.querySelectorAll('.header-edit-button')[1].click();
+
+      expect(requested).toHaveBeenCalledWith({ row: 0, col: 1 });
+    });
+
+    it('should use the given content row height while header rows keep the height of their content', () => {
       component.elementModel = createTableElement(headerProperties);
       component.contentRowHeight = '250px';
       fixture.detectChanges();
@@ -238,66 +236,5 @@ describe('TableComponent', () => {
       component.addHeaderRow();
       expect(component.elementModel.headerRows[1].length).toBe(2);
     });
-  });
-});
-
-/* The rich text editor lives in the editor project, out of reach of common: the dialog hands it in as
-   a template, and what it is handed is the cell itself, so its edits reach the table (#1430). */
-describe('TableComponent with a header cell editor', () => {
-  beforeEach(async () => {
-    environment.strictInstantiation = false;
-    await TestBed.configureTestingModule({
-      imports: [EditingHostModule, TranslateModule.forRoot()]
-    }).compileComponents();
-  });
-
-  it('should edit each header cell with the editor it is handed', () => {
-    const hostFixture = TestBed.createComponent(EditingHostComponent);
-    hostFixture.componentInstance.table = new TableElement({
-      type: 'table',
-      id: 'table_1',
-      alias: 'table_1',
-      elements: [],
-      gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }],
-      gridRowSizes: [{ value: 1, unit: 'fr' }],
-      tableEdgesEnabled: false,
-      headerEnabled: true,
-      headerRows: [[{ text: 'Column A' }, { text: 'Column B' }]]
-    } as Partial<TableProperties>);
-    hostFixture.detectChanges();
-    const editors: NodeListOf<HTMLInputElement> = hostFixture.nativeElement.querySelectorAll('.test-cell-editor');
-    expect(Array.from(editors).map(editor => editor.value)).toEqual(['Column A', 'Column B']);
-
-    editors[1].value = 'changed';
-    editors[1].dispatchEvent(new Event('input'));
-
-    expect(hostFixture.componentInstance.table.headerRows[0][1].text).toBe('changed');
-  });
-
-  /* An editor holds state of its own -- the rich text editor its undo history. Tracked by position, the
-     editors of the first row would be handed the second row's cells and the second row's destroyed. */
-  it('should keep the editors of the remaining header row when a row above it is removed', () => {
-    const hostFixture = TestBed.createComponent(EditingHostComponent);
-    const table = new TableElement({
-      type: 'table',
-      id: 'table_1',
-      alias: 'table_1',
-      elements: [],
-      gridColumnSizes: [{ value: 1, unit: 'fr' }],
-      gridRowSizes: [{ value: 1, unit: 'fr' }],
-      tableEdgesEnabled: false,
-      headerEnabled: true,
-      headerRows: [[{ text: 'First' }], [{ text: 'Second' }]]
-    } as Partial<TableProperties>);
-    hostFixture.componentInstance.table = table;
-    hostFixture.detectChanges();
-    const editorOfSecondRow = hostFixture.nativeElement.querySelectorAll('.test-cell-editor')[1];
-
-    table.removeHeaderRow(0);
-    hostFixture.detectChanges();
-
-    const editors: NodeListOf<HTMLInputElement> = hostFixture.nativeElement.querySelectorAll('.test-cell-editor');
-    expect(editors.length).toBe(1);
-    expect(editors[0]).toBe(editorOfSecondRow);
   });
 });

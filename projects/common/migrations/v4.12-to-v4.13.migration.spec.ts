@@ -1,7 +1,8 @@
 import { Migration4m12To4m13 } from './v4.12-to-v4.13.migration';
 
-/* The header cells of a table turn from plain text with an alignment into rich text without one
-   (#1430). The escaping is what keeps a stored text looking as it did once it is rendered as HTML. */
+/* The header cells of a table turn from plain text with an alignment into rich text that carries the
+   alignment itself (#1430). Escaping and the paragraph are what keep a stored header looking as it did
+   once it is rendered as HTML. */
 describe('Migration4m12To4m13', () => {
   let migration: Migration4m12To4m13;
 
@@ -30,8 +31,8 @@ describe('Migration4m12To4m13', () => {
       type: 'table',
       id: 'table_1',
       headerRows: [
-        [{ text: 'a < b', alignment: 'left' }, { text: 'A & B', alignment: 'center' }],
-        [{ text: '<b>not bold</b>', alignment: 'right' }, { text: 'plain', alignment: 'left' }]
+        [{ text: 'a < b', alignment: 'left' }, { text: 'A & B', alignment: 'left' }],
+        [{ text: '<b>not bold</b>', alignment: 'left' }, { text: 'plain', alignment: 'left' }]
       ]
     }]));
 
@@ -41,7 +42,22 @@ describe('Migration4m12To4m13', () => {
     ]);
   });
 
-  it('should drop the alignment of a header cell', () => {
+  /* In a style the editor reads back as an alignment, and with margins of zero, so the paragraph brings
+     no margins of its own into the header. */
+  it('should carry a centred or right alignment into a paragraph of the text', () => {
+    const result = migration.execute(unitWith([{
+      type: 'table',
+      id: 'table_1',
+      headerRows: [[{ text: 'A & B', alignment: 'center' }, { text: 'Right', alignment: 'right' }]]
+    }]));
+
+    expect(headerRowsOf(elementsOf(result)[0])).toEqual([[
+      { text: '<p style="margin-bottom: 0px; margin-top: 0; text-align: center">A &amp; B</p>' },
+      { text: '<p style="margin-bottom: 0px; margin-top: 0; text-align: right">Right</p>' }
+    ]]);
+  });
+
+  it('should drop the alignment key of a header cell', () => {
     const result = migration.execute(unitWith([{
       type: 'table', id: 'table_1', headerRows: [[{ text: 'Head', alignment: 'center' }]]
     }]));

@@ -2,16 +2,10 @@
 <mat-dialog-content>
   <aspect-table [elementModel]="newTable" [editorMode]="true" [allowElementEditing]="true"
                 [contentRowHeight]="'250px'"
-                [headerCellEditor]="headerCellEditor"
                 (elementAdded)="addElement($event)"
-                (elementRemoved)="removeElement($event)"></aspect-table>
+                (elementRemoved)="removeElement($event)"
+                (headerCellEditRequested)="editHeaderCell($event)"></aspect-table>
 </mat-dialog-content>
-<ng-template #headerCellEditor let-cell>
-  <aspect-rich-text-editor class="header-cell-rich-text-editor"
-                           [(content)]="cell.text" [showReducedControls]="true"
-                           [defaultFontSize]="newTable.styling.fontSize">
-  </aspect-rich-text-editor>
-</ng-template>
 <mat-dialog-actions>
   <button mat-button (click)="save()">
     {{'save' | translate }}

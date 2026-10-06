@@ -74,9 +74,21 @@ describe('DialogService', () => {
 
     expect(dialogMock.open).toHaveBeenCalledWith(
       LabelEditDialogComponent,
-      { data: { label }, autoFocus: false }
+      { data: { label, showTextAlignment: false }, autoFocus: false }
     );
     expect(result).toBe(editedLabel);
+  });
+
+  it('should hand the label edit dialog the request for the text alignment', () => {
+    const label: Label = { text: 'Kopf' };
+    mockDialogResult(label);
+
+    service.showLabelEditDialog(label, true).subscribe();
+
+    expect(dialogMock.open).toHaveBeenCalledWith(
+      LabelEditDialogComponent,
+      { data: { label, showTextAlignment: true }, autoFocus: false }
+    );
   });
 
   it('should open the delete confirmation dialog with the given text', () => {

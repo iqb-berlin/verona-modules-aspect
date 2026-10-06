@@ -2,10 +2,7 @@
   grid-template-columns: unset !important;
   grid-auto-columns: 300px !important;
 }
+// The buttons below the text of a header cell would otherwise touch the cell's borders
 :host ::ng-deep aspect-table .header-cell {
-  display: flex;
-  align-items: center;
+  padding-block: 4px;
 }
-// The editor's text area claims 700px of its own; in a header cell it has the column's width. The class
-// is the one the reduced editor puts on `tiptap-editor`, which lives in the editor's template.
-.header-cell-rich-text-editor ::ng-deep .small-input {min-width: 0;}

@@ -1,9 +1,16 @@
-.header-cell {padding: 4px 8px;}
+/* A header row is as tall as a content row holding a text element with the same text (#1430): the
+   minimum height of `.cell-container`, the text centred vertically with 8px at the sides as in
+   `table-child-overlay`, and the text element's default line height of 135%. */
+.header-cell {display: flex; flex-direction: column; justify-content: center; gap: 4px; min-height: 50px;
+              padding: 0 8px; line-height: 135%;}
+/* What the text element sets on its rich text, so the same text is as tall and looks the same in a
+   header cell: an empty line keeps its height, bold is as heavy, a sup or sub adds no height. */
+:host ::ng-deep .header-text p:empty::after {content: ''; display: inline-block;}
+:host ::ng-deep .header-text p strong {letter-spacing: 0.02em; font-weight: 750;}
+:host ::ng-deep .header-text sup, :host ::ng-deep .header-text sub {line-height: 0;}
 /* Sticks within the table's grid container; row offsets are measured and set via [style.top.px]. */
 .sticky-header {position: sticky; top: 0; z-index: 2;}
-.header-cell-editor {display: flex; flex-direction: column; gap: 4px; width: 100%;}
-/* Fixed min-height keeps header cells the same height whether or not they hold row controls. */
-.header-editor-actions {display: flex; align-items: center; gap: 4px; min-height: 32px;}
+.header-editor-actions {display: flex; align-items: center; gap: 4px;}
 .header-row-controls {display: flex; gap: 4px;}
 .row-control-button {--mdc-icon-button-state-layer-size: 30px; width: 30px; height: 30px; padding: 3px;}
 .row-control-button ::ng-deep .mat-mdc-button-touch-target {display: none;}

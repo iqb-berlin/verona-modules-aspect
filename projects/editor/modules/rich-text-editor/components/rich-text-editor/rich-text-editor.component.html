@@ -105,29 +105,31 @@
     </mat-form-field>
   </fieldset>
 
-  <fieldset *ngIf="!showReducedControls" class="input-group">
-    <legend>Textausrichtung</legend>
-    <button mat-icon-button [matTooltip]="'richTextEditor.alignLeft' | translate" [matTooltipShowDelay]="300"
-            [class.active]="editor.isActive({ textAlign: 'left' })"
-            (click)="alignText('left')">
-      <mat-icon>format_align_left</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.alignRight' | translate" [matTooltipShowDelay]="300"
-            [class.active]="editor.isActive({ textAlign: 'right' })"
-            (click)="alignText('right')">
-      <mat-icon>format_align_right</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.alignCenter' | translate" [matTooltipShowDelay]="300"
-            [class.active]="editor.isActive({ textAlign: 'center' })"
-            (click)="alignText('center')">
-      <mat-icon>format_align_center</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.alignJustify' | translate" [matTooltipShowDelay]="300"
-            [class.active]="editor.isActive({ textAlign: 'justify' })"
-            (click)="alignText('justify')">
-      <mat-icon>format_align_justify</mat-icon>
-    </button>
-  </fieldset>
+  @if (!showReducedControls || showTextAlignment) {
+    <fieldset class="input-group text-alignment-group">
+      <legend>Textausrichtung</legend>
+      <button mat-icon-button [matTooltip]="'richTextEditor.alignLeft' | translate" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive({ textAlign: 'left' })"
+              (click)="alignText('left')">
+        <mat-icon>format_align_left</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.alignRight' | translate" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive({ textAlign: 'right' })"
+              (click)="alignText('right')">
+        <mat-icon>format_align_right</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.alignCenter' | translate" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive({ textAlign: 'center' })"
+              (click)="alignText('center')">
+        <mat-icon>format_align_center</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.alignJustify' | translate" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive({ textAlign: 'justify' })"
+              (click)="alignText('justify')">
+        <mat-icon>format_align_justify</mat-icon>
+      </button>
+    </fieldset>
+  }
 
   <fieldset *ngIf="!showReducedControls" class="input-group">
     <legend>Listen</legend>

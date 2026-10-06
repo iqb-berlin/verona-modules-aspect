@@ -412,11 +412,12 @@ describe('MigrationManager', () => {
       unit.pages[0].sections[0].elements[0] as unknown as TableProperties
     ).headerRows[0][0] as unknown as Record<string, unknown>;
 
-    it('should turn the plain text of a 4.12 header cell into rich text without an alignment', () => {
+    it('should turn the plain text of a 4.12 header cell into rich text that carries its alignment', () => {
       const migrated = MigrationManager
         .migrate(unitWithHeader('4.12.0', { text: 'a < b', alignment: 'center' }), '4.13.0');
 
-      expect(headerCellOf(migrated)).toEqual({ text: 'a &lt; b' });
+      expect(headerCellOf(migrated))
+        .toEqual({ text: '<p style="margin-bottom: 0px; margin-top: 0; text-align: center">a &lt; b</p>' });
     });
 
     it('should keep the rich text of a 4.13 header cell as it is stored', () => {

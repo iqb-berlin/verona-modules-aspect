@@ -35,6 +35,42 @@ describe('RichTextEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /* The reduced controls leave the alignment out; a table header cell asks for it back (#1430). */
+  describe('text alignment with the reduced controls', () => {
+    const alignmentGroup = (): HTMLElement | null => fixture.nativeElement.querySelector('.text-alignment-group');
+
+    beforeEach(() => {
+      component.controlPanelFolded = false;
+      component.showReducedControls = true;
+    });
+
+    it('should leave the alignment out by default', () => {
+      fixture.detectChanges();
+      expect(alignmentGroup()).toBeNull();
+    });
+
+    it('should offer the alignment when asked for it', () => {
+      component.showTextAlignment = true;
+      fixture.detectChanges();
+      expect(alignmentGroup()).not.toBeNull();
+    });
+
+    /* Migration4m12To4m13 writes the alignment of a stored header cell in exactly this form; the editor
+       has to read it back as an alignment and keep it, with the paragraph's margins at zero. */
+    it('should read and keep an aligned paragraph the way the 4.13 migration stores it', () => {
+      component.editor.commands
+        .setContent('<p style="margin-bottom: 0px; margin-top: 0; text-align: center">a &lt; b</p>');
+
+      expect(component.editor.isActive({ textAlign: 'center' })).toBe(true);
+      const paragraph = new DOMParser().parseFromString(component.editor.getHTML(), 'text/html')
+        .querySelector('p') as HTMLParagraphElement;
+      expect(paragraph.style.textAlign).toBe('center');
+      expect(paragraph.style.marginTop).toBe('0px');
+      expect(paragraph.style.marginBottom).toBe('0px');
+      expect(paragraph.textContent).toBe('a < b');
+    });
+  });
+
   it('should paste formatted clipboard content as plain text', () => {
     component.editor.view.dom.dispatchEvent(createClipboardEvent({
       'text/plain': 'Hallo Welt',

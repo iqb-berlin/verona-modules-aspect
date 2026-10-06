@@ -1,0 +1,57 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [{
+    "sections": [{
+      "elements": [
+        {
+          "type": "table", "id": "table_one_line", "alias": "table_one_line",
+          "gridColumnSizes": [{ "value": 1, "unit": "fr" }, { "value": 1, "unit": "fr" }],
+          "gridRowSizes": [{ "value": 1, "unit": "fr" }],
+          "headerEnabled": true,
+          "headerRows": [[{ "text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Kopf</p>" }, { "text": "" }]],
+          "elements": [
+            {
+              "type": "text", "id": "text_one_line", "alias": "text_one_line",
+              "text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Kopf</p>", "gridRow": 1, "gridColumn": 1
+            }
+          ]
+        },
+        {
+          "type": "table", "id": "table_two_lines", "alias": "table_two_lines",
+          "gridColumnSizes": [{ "value": 1, "unit": "fr" }, { "value": 1, "unit": "fr" }],
+          "gridRowSizes": [{ "value": 1, "unit": "fr" }],
+          "headerEnabled": true,
+          "headerRows": [[
+            { "text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Kopf</p><p style=\"margin-bottom: 0px; margin-top: 0\">zweite Zeile</p>" },
+            { "text": "" }
+          ]],
+          "elements": [
+            {
+              "type": "text", "id": "text_two_lines", "alias": "text_two_lines",
+              "text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Kopf</p><p style=\"margin-bottom: 0px; margin-top: 0\">zweite Zeile</p>",
+              "gridRow": 1, "gridColumn": 1
+            }
+          ]
+        },
+        {
+          "type": "table", "id": "table_rich_text", "alias": "table_rich_text",
+          "gridColumnSizes": [{ "value": 1, "unit": "fr" }, { "value": 1, "unit": "fr" }],
+          "gridRowSizes": [{ "value": 1, "unit": "fr" }],
+          "headerEnabled": true,
+          "headerRows": [[
+            { "text": "<p style=\"margin-bottom: 0px; margin-top: 0\"><strong>Kopf</strong></p><p style=\"margin-bottom: 0px; margin-top: 0\"></p><p style=\"margin-bottom: 0px; margin-top: 0\">m<sup>2</sup></p>" },
+            { "text": "" }
+          ]],
+          "elements": [
+            {
+              "type": "text", "id": "text_rich_text", "alias": "text_rich_text",
+              "text": "<p style=\"margin-bottom: 0px; margin-top: 0\"><strong>Kopf</strong></p><p style=\"margin-bottom: 0px; margin-top: 0\"></p><p style=\"margin-bottom: 0px; margin-top: 0\">m<sup>2</sup></p>",
+              "gridRow": 1, "gridColumn": 1
+            }
+          ]
+        }
+      ]
+    }]
+  }]
+}

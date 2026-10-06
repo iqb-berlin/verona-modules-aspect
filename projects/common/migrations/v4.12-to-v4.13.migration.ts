@@ -4,12 +4,14 @@
 import { UnitTraversalMigration } from './unit-traversal-migration';
 
 /**
- * The header cells of a table hold rich text from 4.13 on and lose their alignment (#1430).
+ * The header cells of a table hold rich text from 4.13 on, and their alignment moves into it (#1430).
  *
  * Up to 4.12 a header cell was `{ text, alignment }`, its text typed into a plain input and shown as it
  * was. From 4.13 on the text is HTML from the rich text editor and is rendered as such, so a stored text
- * is escaped here: `a < b` or `A & B` would otherwise be read as markup. The alignment is dropped; a
- * centred or right-aligned header is left-aligned from now on, which is what was decided for the ticket.
+ * is escaped here: `a < b` or `A & B` would otherwise be read as markup. A centred or right-aligned cell
+ * gets a paragraph with that alignment, in the style the editor reads back as an alignment -- with the
+ * margins of zero the editor gives every paragraph, or the browser's default margins would make the
+ * header taller. A left-aligned one needs no paragraph. The `alignment` key itself is dropped.
  *
  * Reaches units older than 4.13.0 only. See MigrationManager for why that matters.
  */
@@ -31,7 +33,13 @@ export class Migration4m12To4m13 extends UnitTraversalMigration {
     if (typeof cell !== 'object' || cell === null) return cell;
     const { alignment, ...rest } = cell as Record<string, unknown>;
     const text = rest['text'];
-    return typeof text === 'string' ? { ...rest, text: Migration4m12To4m13.escape(text) } : rest;
+    if (typeof text !== 'string') return rest;
+    const escaped = Migration4m12To4m13.escape(text);
+    return {
+      ...rest,
+      text: alignment === 'center' || alignment === 'right' ?
+        `<p style="margin-bottom: 0px; margin-top: 0; text-align: ${alignment}">${escaped}</p>` : escaped
+    };
   }
 
   private static escape(text: string): string {

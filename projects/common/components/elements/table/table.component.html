@@ -7,10 +7,8 @@
      [style.grid-auto-rows]="'auto'"
      [style.background-color]="elementModel.styling.backgroundColor">
   @if (elementModel.headerEnabled) {
-    <!-- Tracked by the cell itself: in the edit dialog each cell holds an editor of its own, and
-         removing a header row must not hand that row's editor over to the row below (#1430). -->
-    @for (headerRow of elementModel.headerRows; track headerRow; let r = $index) {
-      @for (headerCell of headerRow; track headerCell; let j = $index) {
+    @for (headerRow of elementModel.headerRows; track $index; let r = $index) {
+      @for (headerCell of headerRow; track $index; let j = $index) {
         <div class="header-cell" #headerCellElement
              [class.sticky-header]="elementModel.stickyHeader && !allowElementEditing"
              [style.top.px]="elementModel.stickyHeader && !allowElementEditing ? stickyHeaderOffsets[r] || 0 : null"
@@ -33,32 +31,33 @@
              [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
              [style.grid-row-start]="r + 1"
              [style.grid-column-start]="j + 1">
+          <div class="header-text" [innerHTML]="headerCell.text | safeResourceHTML"></div>
           @if (allowElementEditing) {
-            <div class="header-cell-editor">
-              <ng-container *ngTemplateOutlet="headerCellEditor; context: { $implicit: headerCell }"></ng-container>
-              <div class="header-editor-actions">
-                @if (j === 0) {
-                  <div class="header-row-controls">
-                    @if (r === elementModel.headerRows.length - 1) {
-                      <button mat-icon-button color="primary" class="row-control-button"
-                              [matTooltip]="'tableHeaderAddRow' | translate"
-                              (click)="addHeaderRow()">
-                        <mat-icon class="button-icon">add</mat-icon>
-                      </button>
-                    }
-                    @if (elementModel.headerRows.length > 1) {
-                      <button mat-icon-button color="primary" class="row-control-button"
-                              [matTooltip]="'tableHeaderRemoveRow' | translate"
-                              (click)="removeHeaderRow(r)">
-                        <mat-icon class="button-icon">remove</mat-icon>
-                      </button>
-                    }
-                  </div>
-                }
-              </div>
+            <div class="header-editor-actions">
+              <button mat-mini-fab color="primary" class="header-edit-button"
+                      [matTooltip]="'tableHeaderEdit' | translate"
+                      (click)="editHeaderCell(r, j)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              @if (j === 0) {
+                <div class="header-row-controls">
+                  @if (r === elementModel.headerRows.length - 1) {
+                    <button mat-icon-button color="primary" class="row-control-button"
+                            [matTooltip]="'tableHeaderAddRow' | translate"
+                            (click)="addHeaderRow()">
+                      <mat-icon class="button-icon">add</mat-icon>
+                    </button>
+                  }
+                  @if (elementModel.headerRows.length > 1) {
+                    <button mat-icon-button color="primary" class="row-control-button"
+                            [matTooltip]="'tableHeaderRemoveRow' | translate"
+                            (click)="removeHeaderRow(r)">
+                      <mat-icon class="button-icon">remove</mat-icon>
+                    </button>
+                  }
+                </div>
+              }
             </div>
-          } @else {
-            <div class="header-text" [innerHTML]="headerCell.text | safeResourceHTML"></div>
           }
         </div>
       }

@@ -10,6 +10,14 @@ import {
 } from '../helpers/assistant-util';
 import { generateRandomText } from '../helpers/text-util';
 
+/** The assistant gives the marking panel a bottom margin of 10px, the same as a manually added one
+ * (#1057); the length check keeps the assertion from passing against another page's panel. */
+function expectMarkingPanelBottomMargin(): void {
+  cy.get('aspect-marking-panel:visible').parents('aspect-element-group-selection')
+    .should('have.length', 1)
+    .and('have.css', 'margin-bottom', '10px');
+}
+
 describe('Marking panel assistant', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
@@ -77,6 +85,7 @@ describe('Marking panel assistant', { testIsolation: false }, () => {
     // ── Page 1: Word-wise Marking (wortweise) ────────────────────────────────────
     it('verifies and interacts with the word-wise marking panel (Page 1)', () => {
       cy.contains('aspect-text', 'Fragestellung Wortweise').should('be.visible');
+      expectMarkingPanelBottomMargin();
 
       // 1. Select the Yellow marking color (index 0) from the visible marking panel
       cy.get('aspect-marking-panel:visible').find('button.marking-button').eq(0).click();
@@ -102,6 +111,7 @@ describe('Marking panel assistant', { testIsolation: false }, () => {
       cy.wait(1000); // Give player page transitions and asynchronous state broadcasts time to settle
 
       cy.contains('aspect-text', 'Fragestellung Bereichsweise').should('be.visible');
+      expectMarkingPanelBottomMargin();
 
       // 1. Select the Yellow marking color (index 0) from the visible marking panel
       cy.get('aspect-marking-panel:visible').find('button.marking-button').eq(0).click();

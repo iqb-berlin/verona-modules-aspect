@@ -135,7 +135,11 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private handleVisibility(): void {
-    this.elementRef.nativeElement.style.display = this.isVisible ? 'unset' : 'none';
+    if (this.isVisible) {
+      this.elementRef.nativeElement.style.removeProperty('display');
+    } else {
+      this.elementRef.nativeElement.style.display = 'none';
+    }
     if (this.isVisible) {
       if (this.section.animatedVisibility) {
         this.scrollIntoView();

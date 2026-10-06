@@ -5,6 +5,11 @@
   z-index: 0;
 }
 
+.section:not(.static-section) {
+  display: block;
+  overflow: visible;
+}
+
 .static-section{
   display: block;
 }

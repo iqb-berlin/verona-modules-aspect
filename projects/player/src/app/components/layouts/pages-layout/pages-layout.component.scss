@@ -66,8 +66,14 @@
   overflow: unset;
 }
 
-:host ::ng-deep .mat-mdc-tab-body-wrapper, :host ::ng-deep .mat-mdc-tab-body {
+:host ::ng-deep .mat-mdc-tab-body-wrapper {
   display: unset;
 }
 
+:host ::ng-deep .mat-mdc-tab-body {
+  display: block;
+}
 
+:host ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active {
+  overflow: visible;
+}

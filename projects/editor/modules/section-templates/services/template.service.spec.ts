@@ -9,6 +9,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { TextElement } from 'common/models/elements/text';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { TwoPageTemplateOptions } from 'editor/modules/section-templates/models/droplist-interfaces';
 import {
   Text3WizardDialogComponent
@@ -194,5 +195,17 @@ describe('TemplateService', () => {
     );
 
     expect(element.position.marginBottom).toEqual({ value: 40, unit: 'px' });
+  });
+
+  it.each([
+    { showHelper: false, markingMode: 'word' },
+    { showHelper: true, markingMode: 'range' }
+  ])('should give the template marking panel the bottom margin of a manual one (%o)', async options => {
+    mockDialogResult({ text1: 'Fragestellung', connectedText: undefined, ...options });
+
+    await service.applyTemplate('text2');
+
+    const markingPanel = page.sections[0].getAllElements('marking-panel')[0] as PositionedUIElement;
+    expect(markingPanel.position.marginBottom).toEqual({ value: 10, unit: 'px' });
   });
 });

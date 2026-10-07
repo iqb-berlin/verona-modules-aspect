@@ -10,7 +10,7 @@ mat-button-toggle-group {
   max-width: 100%;
   justify-content: center;
   box-sizing: border-box;
-  text-indent: 0; /* fix misplaced text in blockquote elements */
+  text-indent: 0; /* not the inline text-indent of the paragraph it stands in (hanging indent) */
 }
 :host ::ng-deep mat-pseudo-checkbox {display: none;}
 :host ::ng-deep .mat-button-toggle-label-content {

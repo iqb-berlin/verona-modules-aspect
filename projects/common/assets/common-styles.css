@@ -15,20 +15,34 @@ body.inheritCursors * {
 
 blockquote {
   quotes: "\201E" "\201C";
-  text-indent: -1em;
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
-blockquote:before {
+/* Every paragraph of a quote starts a line of its own, so a poem keeps its verses (#658). The quotation
+   marks therefore sit in the first and the last paragraph: as ::before and ::after of the blockquote
+   itself they would each stand on a line of their own. The opening mark hangs out to the left, so that
+   the text of every line starts at the same edge: a box as wide as its negative margin takes up no room
+   in the line, whatever the width of the glyph. That is a margin on the mark, not a text-indent on the
+   paragraph, because HangingIndent writes an inline text-indent onto every paragraph; 0.4em of the
+   mark's 2.5em are 1em of the text. */
+blockquote > :first-child:before {
   content: open-quote;
-  font-size: 2.5em;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 0.4em;
+  margin-left: -0.4em;
   padding-right: 3px;
+  text-align: right;
+  font-size: 2.5em;
   font-family: 'PT Sans', sans-serif;
   line-height: 0;
 }
 
-blockquote:after {
+/* The second selector outweighs the `p:empty::after` of the text and cloze elements, which would
+   otherwise blank the closing mark of a quote ending in an empty paragraph. */
+blockquote > :last-child:after,
+blockquote > p:empty:last-child:after {
   content: close-quote;
   font-size: 2.5em;
   vertical-align: middle;
@@ -37,10 +51,6 @@ blockquote:after {
   padding-left: 3px;
   font-family: 'PT Sans', sans-serif;
   line-height: 0;
-}
-
-blockquote p {
-  display: inline;
 }
 
 .fixed-size-content-wrapper {

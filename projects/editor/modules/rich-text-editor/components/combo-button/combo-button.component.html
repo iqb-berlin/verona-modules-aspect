@@ -6,11 +6,13 @@
   </button>
 
   <input matInput type="color" #colorInput hidden
+         [value]="selectedValue | colorPickerValue"
          (input)="selectionChanged.emit($any($event.target).value); applySelection.emit()">
 
   <mat-select panelClass="select-overlay"
               (click)="onClickSelect($event)">
-    <mat-option *ngFor="let value of availableValues"
-                (click)="selectValue(value)">{{value}}</mat-option>
+    @for (value of availableValues; track value) {
+      <mat-option (click)="selectValue(value)">{{value}}</mat-option>
+    }
   </mat-select>
 </div>

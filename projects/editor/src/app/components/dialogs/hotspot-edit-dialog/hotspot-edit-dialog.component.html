@@ -63,7 +63,9 @@
         <mat-icon>edit</mat-icon>
       </button>
     </mat-form-field>
-    <input matInput type="color" hidden #backgroundColorInput [(ngModel)]="newHotspot.backgroundColor">
+    <input matInput type="color" hidden #backgroundColorInput
+           [ngModel]="newHotspot.backgroundColor | colorPickerValue"
+           (ngModelChange)="newHotspot.backgroundColor = $event">
 
     <mat-form-field appearance="fill" class="fx-flex-50">
       <mat-label>{{'hotspot.borderColor' | translate }}</mat-label>
@@ -72,7 +74,9 @@
         <mat-icon>edit</mat-icon>
       </button>
     </mat-form-field>
-    <input matInput type="color" hidden #borderColorInput [(ngModel)]="newHotspot.borderColor">
+    <input matInput type="color" hidden #borderColorInput
+           [ngModel]="newHotspot.borderColor | colorPickerValue"
+           (ngModelChange)="newHotspot.borderColor = $event">
   </div>
 
   <div class="fx-row-start-stretch fx-fix-gap-10">

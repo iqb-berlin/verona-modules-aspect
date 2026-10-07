@@ -3,6 +3,7 @@ import { Directive, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { ColorPickerValuePipe } from 'editor/modules/editor-shared/pipes/color-picker-value.pipe';
 import { ComboButtonComponent } from './combo-button.component';
 
 @Directive({ selector: '[matTooltip]', standalone: false })
@@ -16,7 +17,7 @@ describe('ComboButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ComboButtonComponent, MockMatTooltipDirective],
+      declarations: [ComboButtonComponent, MockMatTooltipDirective, ColorPickerValuePipe],
       imports: [MatButtonModule, MatIconModule, MatSelectModule]
     }).compileComponents();
 
@@ -65,6 +66,16 @@ describe('ComboButtonComponent', () => {
     component.onClickSelect(event);
     expect(preventDefaultSpy).toHaveBeenCalled();
     expect(colorInputSpy).toHaveBeenCalled();
+  });
+
+  /* The colour input used to start on black whatever was selected, because nothing handed it the
+     selection (#1532). */
+  it('should open the color input on the selected colour', () => {
+    component.inputType = 'color';
+    component.selectedValue = 'lightgrey';
+    fixture.detectChanges();
+
+    expect(component.colorInput.nativeElement.value).toBe('#d3d3d3');
   });
 
   it('should not intercept the select click in list mode', () => {

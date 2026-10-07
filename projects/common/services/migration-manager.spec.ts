@@ -386,4 +386,44 @@ describe('MigrationManager', () => {
     expect(section.visibilityRules).toEqual([{ id: 'text_1', operator: '≥', value: '1' }]);
     expect(section.visibilityDelay).toBe(500);
   });
+
+  /* Header cells hold rich text from 4.13 on (#1430). Escaping is right exactly once: for the plain
+     text a 4.12 unit stores, and never again for the HTML a 4.13 unit stores, or every load would
+     escape it one level further. */
+  describe('the header cells of a table (#1430)', () => {
+    const unitWithHeader = (version: string, cell: Record<string, unknown>): Record<string, unknown> => ({
+      type: 'aspect-unit-definition',
+      version,
+      pages: [{
+        sections: [{
+          elements: [{
+            type: 'table',
+            id: 'table_1',
+            elements: [],
+            gridColumnSizes: [{ value: 1, unit: 'fr' }],
+            gridRowSizes: [{ value: 1, unit: 'fr' }],
+            headerEnabled: true,
+            headerRows: [[cell]]
+          }]
+        }]
+      }]
+    });
+    const headerCellOf = (unit: UnitProperties): Record<string, unknown> => (
+      unit.pages[0].sections[0].elements[0] as unknown as TableProperties
+    ).headerRows[0][0] as unknown as Record<string, unknown>;
+
+    it('should turn the plain text of a 4.12 header cell into rich text that carries its alignment', () => {
+      const migrated = MigrationManager
+        .migrate(unitWithHeader('4.12.0', { text: 'a < b', alignment: 'center' }), '4.13.0');
+
+      expect(headerCellOf(migrated))
+        .toEqual({ text: '<p style="margin-bottom: 0px; margin-top: 0; text-align: center">a &lt; b</p>' });
+    });
+
+    it('should keep the rich text of a 4.13 header cell as it is stored', () => {
+      const migrated = MigrationManager.migrate(unitWithHeader('4.13.0', { text: '<p>a &lt; b</p>' }), '4.13.0');
+
+      expect(headerCellOf(migrated)).toEqual({ text: '<p>a &lt; b</p>' });
+    });
+  });
 });

@@ -62,6 +62,8 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit, OnDestroy
   @Input() defaultFontSize!: number;
   @Input() clozeMode: boolean = false;
   @Input() showReducedControls: boolean = false;
+  /** Offers the text alignment with the reduced controls as well, for a table header cell (#1430). */
+  @Input() showTextAlignment: boolean = false;
   @Input() placeholder: string = '';
   @Input() autoFocus: boolean = false;
   @Input() disabled: boolean = false;

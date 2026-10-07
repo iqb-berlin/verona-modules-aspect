@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'common/environment';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { TableGridRowsPipe } from 'common/pipes/table-grid-rows.pipe';
+import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { TableElement, TableProperties } from 'common/models/elements/table';
 import {
   TableChildOverlay
@@ -33,10 +33,12 @@ describe('TableComponent', () => {
   beforeEach(async () => {
     environment.strictInstantiation = false;
     await TestBed.configureTestingModule({
-      declarations: [TableComponent, TableChildOverlay, MeasurePipe, TableGridRowsPipe],
+      declarations: [
+        TableComponent, TableChildOverlay, MeasurePipe, TableGridRowsPipe, SafeResourceHTMLPipe
+      ],
       imports: [
         TranslateModule.forRoot(),
-        MatIconModule, MatButtonModule, MatButtonToggleModule, MatMenuModule, MatTooltipModule
+        MatIconModule, MatButtonModule, MatMenuModule, MatTooltipModule
       ]
     }).compileComponents();
   });
@@ -56,18 +58,16 @@ describe('TableComponent', () => {
   describe('header row (#864)', () => {
     const headerProperties: Partial<TableProperties> = {
       headerEnabled: true,
-      headerRows: [[{ text: 'Column A', alignment: 'left' }, { text: 'Column B', alignment: 'right' }]]
+      headerRows: [[{ text: 'Column A' }, { text: 'Column B' }]]
     };
 
-    it('should render one header cell per column with its text and alignment', () => {
+    it('should render one header cell per column with its text', () => {
       component.elementModel = createTableElement(headerProperties);
       fixture.detectChanges();
       const headerCells: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('.header-cell');
       expect(headerCells.length).toBe(2);
       expect(headerCells[0].textContent).toContain('Column A');
-      expect(headerCells[0].style.textAlign).toBe('left');
       expect(headerCells[1].textContent).toContain('Column B');
-      expect(headerCells[1].style.textAlign).toBe('right');
     });
 
     it('should not render header cells when the header is disabled', () => {
@@ -111,29 +111,60 @@ describe('TableComponent', () => {
       expect(headerCell.style.backgroundColor).toBe('white');
     });
 
-    it('should render header texts as plain text without inputs outside of the edit dialog', () => {
-      component.elementModel = createTableElement(headerProperties);
+    /* Since 4.13 a header text is HTML from the rich text editor (#1430). Interpolated, the tags would
+       stand in the cell as letters. */
+    it('should render the rich text of a header cell as markup', () => {
+      component.elementModel = createTableElement({
+        headerEnabled: true,
+        headerRows: [[{ text: '<p><strong>Bold</strong> head</p>' }, { text: 'a &lt; b' }]]
+      });
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll('.header-text-input').length).toBe(0);
+      const headerCells: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('.header-cell');
+      expect(headerCells[0].querySelector('strong')?.textContent).toBe('Bold');
+      expect(headerCells[0].textContent?.trim()).toBe('Bold head');
+      expect(headerCells[1].textContent?.trim()).toBe('a < b');
     });
 
-    it('should render inputs and alignment toggles when element editing is allowed', () => {
+    it('should not set an alignment on header cells', () => {
+      component.elementModel = createTableElement(headerProperties);
+      fixture.detectChanges();
+      const headerCell: HTMLElement = fixture.nativeElement.querySelector('.header-cell');
+      expect(headerCell.style.textAlign).toBe('');
+    });
+
+    it('should leave a header cell without an edit button while element editing is not allowed', () => {
+      component.elementModel = createTableElement(headerProperties);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelectorAll('.header-edit-button').length).toBe(0);
+    });
+
+    /* The rich text editor lives in the editor project, out of reach of common: in the edit dialog a
+       header cell shows its text and asks the dialog to edit it, the way a content cell asks for a
+       new element (#1430). */
+    it('should show the text of a header cell and an edit button when element editing is allowed', () => {
+      component.elementModel = createTableElement({
+        headerEnabled: true,
+        headerRows: [[{ text: '<p><strong>Bold</strong></p>' }, { text: 'Column B' }]]
+      });
+      component.allowElementEditing = true;
+      fixture.detectChanges();
+      const headerCells: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('.header-cell');
+      expect(headerCells[0].querySelector('strong')?.textContent).toBe('Bold');
+      expect(fixture.nativeElement.querySelectorAll('.header-edit-button').length).toBe(2);
+    });
+
+    it('should ask for the header cell whose edit button is clicked', () => {
       component.elementModel = createTableElement(headerProperties);
       component.allowElementEditing = true;
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelectorAll('.header-text-input').length).toBe(2);
-      expect(fixture.nativeElement.querySelectorAll('.header-alignment-toggle').length).toBe(2);
+      const requested = vi.spyOn(component.headerCellEditRequested, 'emit');
+
+      fixture.nativeElement.querySelectorAll('.header-edit-button')[1].click();
+
+      expect(requested).toHaveBeenCalledWith({ row: 0, col: 1 });
     });
 
-    it('should update the element model on header cell changes', () => {
-      component.elementModel = createTableElement(headerProperties);
-      component.updateHeaderCellText(0, 0, 'changed');
-      component.updateHeaderCellAlignment(0, 1, 'center');
-      expect(component.elementModel.headerRows[0][0].text).toBe('changed');
-      expect(component.elementModel.headerRows[0][1].alignment).toBe('center');
-    });
-
-    it('should use the given content row height while keeping header rows compact', () => {
+    it('should use the given content row height while header rows keep the height of their content', () => {
       component.elementModel = createTableElement(headerProperties);
       component.contentRowHeight = '250px';
       fixture.detectChanges();
@@ -145,14 +176,14 @@ describe('TableComponent', () => {
   describe('multiple header rows (#864)', () => {
     const headerProperties: Partial<TableProperties> = {
       headerEnabled: true,
-      headerRows: [[{ text: 'Column A', alignment: 'left' }, { text: 'Column B', alignment: 'right' }]]
+      headerRows: [[{ text: 'Column A' }, { text: 'Column B' }]]
     };
 
     const twoHeaderRows: Partial<TableProperties> = {
       headerEnabled: true,
       headerRows: [
-        [{ text: 'Group', alignment: 'center' }, { text: '', alignment: 'left' }],
-        [{ text: 'Value', alignment: 'left' }, { text: 'Unit', alignment: 'left' }]
+        [{ text: 'Group' }, { text: '' }],
+        [{ text: 'Value' }, { text: 'Unit' }]
       ]
     };
 

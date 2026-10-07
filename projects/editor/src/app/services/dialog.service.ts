@@ -97,9 +97,11 @@ export class DialogService {
     this.dialog.closeAll();
   }
 
-  showLabelEditDialog(label: Label): Observable<Label> {
+  /** `showTextAlignment` adds the alignment to the reduced editor, which a table header cell needs and
+     the labels of options do not (#1430). */
+  showLabelEditDialog(label: Label, showTextAlignment: boolean = false): Observable<Label> {
     const dialogRef = this.dialog.open(LabelEditDialogComponent, {
-      data: { label },
+      data: { label, showTextAlignment },
       autoFocus: false
     });
     return dialogRef.afterClosed();

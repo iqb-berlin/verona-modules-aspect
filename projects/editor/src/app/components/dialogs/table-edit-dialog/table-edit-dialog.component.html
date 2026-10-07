@@ -3,7 +3,8 @@
   <aspect-table [elementModel]="newTable" [editorMode]="true" [allowElementEditing]="true"
                 [contentRowHeight]="'250px'"
                 (elementAdded)="addElement($event)"
-                (elementRemoved)="removeElement($event)"></aspect-table>
+                (elementRemoved)="removeElement($event)"
+                (headerCellEditRequested)="editHeaderCell($event)"></aspect-table>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="save()">

@@ -2,6 +2,7 @@ import {
   Component, EventEmitter, forwardRef, Input, Output
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,6 +37,7 @@ class MockTableComponent {
   @Input() contentRowHeight: string | null = null;
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
   @Output() elementRemoved = new EventEmitter<{ row: number, col: number }>();
+  @Output() headerCellEditRequested = new EventEmitter<{ row: number, col: number }>();
   refresh = vi.fn();
 }
 
@@ -43,6 +45,7 @@ describe('TableEditDialogComponent', () => {
   let component: TableEditDialogComponent;
   let fixture: ComponentFixture<TableEditDialogComponent>;
   let idService: SpyObj<IDService>;
+  let dialogService: SpyObj<DialogService>;
   let dialogRefMock: { close: Mock };
   let table: TableElement;
 
@@ -74,6 +77,7 @@ describe('TableEditDialogComponent', () => {
     ));
     idService.isAliasAvailable.mockReturnValue(true);
     dialogRefMock = { close: vi.fn() };
+    dialogService = createSpyObj<DialogService>(['showImageResizeDialog', 'showLabelEditDialog']);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -89,7 +93,7 @@ describe('TableEditDialogComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { table } },
         { provide: MatDialogRef, useValue: dialogRefMock },
         { provide: IDService, useValue: idService },
-        { provide: DialogService, useValue: createSpyObj<DialogService>(['showImageResizeDialog']) }
+        { provide: DialogService, useValue: dialogService }
       ]
     }).compileComponents();
 
@@ -126,12 +130,53 @@ describe('TableEditDialogComponent', () => {
   /* Header cells are edited in place, so the copy needs its own -- otherwise cancelling would keep a
      changed caption. */
   it('should copy the header rows down to their cells', () => {
-    table.headerRows = [[{ text: 'Kopf', alignment: 'left' }]];
+    table.headerRows = [[{ text: 'Kopf' }]];
 
     const copy = TestBed.createComponent(TableEditDialogComponent).componentInstance.newTable;
 
     expect(copy.headerRows).toEqual(table.headerRows);
     expect(copy.headerRows[0][0]).not.toBe(table.headerRows[0][0]);
+  });
+
+  /* A header cell is edited in the label dialog with the text alignment, and what comes back goes into
+     the copy's cell -- the injected table stays as it is until saving (#1430). */
+  describe('editing a header cell', () => {
+    let dialogFixture: ComponentFixture<TableEditDialogComponent>;
+    let dialog: TableEditDialogComponent;
+
+    beforeEach(() => {
+      table.headerRows = [[{ text: '<p>Kopf</p>' }, { text: '' }]];
+      dialogFixture = TestBed.createComponent(TableEditDialogComponent);
+      dialogFixture.detectChanges();
+      dialog = dialogFixture.componentInstance;
+    });
+
+    it('should open the label dialog with the text alignment when the table asks for it', () => {
+      dialogService.showLabelEditDialog.mockReturnValue(of(undefined as unknown as { text: string }));
+      const tableMock = dialogFixture.debugElement.query(By.directive(MockTableComponent))
+        .componentInstance as MockTableComponent;
+
+      tableMock.headerCellEditRequested.emit({ row: 0, col: 0 });
+
+      expect(dialogService.showLabelEditDialog).toHaveBeenCalledWith({ text: '<p>Kopf</p>' }, true);
+    });
+
+    it('should write the edited text into the copy only', async () => {
+      dialogService.showLabelEditDialog.mockReturnValue(of({ text: '<p style="text-align: center">Kopf</p>' }));
+
+      await dialog.editHeaderCell({ row: 0, col: 0 });
+
+      expect(dialog.newTable.headerRows[0][0].text).toBe('<p style="text-align: center">Kopf</p>');
+      expect(table.headerRows[0][0].text).toBe('<p>Kopf</p>');
+    });
+
+    it('should keep the text when the label dialog is cancelled', async () => {
+      dialogService.showLabelEditDialog.mockReturnValue(of(undefined as unknown as { text: string }));
+
+      await dialog.editHeaderCell({ row: 0, col: 1 });
+
+      expect(dialog.newTable.headerRows[0][1].text).toBe('');
+    });
   });
 
   it('should add a drop list with its table specific defaults at the given cell', async () => {

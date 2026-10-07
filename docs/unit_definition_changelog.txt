@@ -278,3 +278,6 @@ iqb-aspect-definition@1.0.0
   - new property: recomputedCountsAsChanged: boolean (default false) (#1460)
 - TextAreaElement:
   - new property: showWordCount: boolean (default false) (#989)
+- TableElement:
+  - headerRows[][].text: plain text -> HTML (#1430)
+  - headerRows[][]: remove alignment (#1430)

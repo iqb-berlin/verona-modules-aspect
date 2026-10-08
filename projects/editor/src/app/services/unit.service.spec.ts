@@ -36,13 +36,11 @@ describe('UnitService - rapid load handling', () => {
   let service: UnitService;
   let dialogServiceSpy: SpyObj<DialogService>;
   let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
-  let messageServiceSpy: SpyObj<MessageService>;
 
   beforeEach(() => {
     const selectionService = new SelectionService();
     const idService = new IDService();
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
-    messageServiceSpy = createSpyObj<MessageService>(['showError']);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
 
@@ -54,7 +52,6 @@ describe('UnitService - rapid load handling', () => {
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      messageServiceSpy,
       dialogServiceSpy,
       idService,
       translateServiceSpy,
@@ -99,7 +96,6 @@ describe('UnitService - rapid load handling', () => {
 describe('UnitService - variable info validation (#1043, #1129)', () => {
   let service: UnitService;
   let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
-  let messageServiceSpy: SpyObj<MessageService>;
   let dialogServiceSpy: SpyObj<DialogService>;
 
   const unitWithStateVariables = (...stateVariables: StateVariable[]): string => JSON.stringify({
@@ -109,7 +105,6 @@ describe('UnitService - variable info validation (#1043, #1129)', () => {
 
   beforeEach(() => {
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
-    messageServiceSpy = createSpyObj<MessageService>(['showError']);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     dialogServiceSpy = createSpyObj<DialogService>([
@@ -119,7 +114,6 @@ describe('UnitService - variable info validation (#1043, #1129)', () => {
     service = new UnitService(
       new SelectionService(),
       veronaApiServiceSpy,
-      messageServiceSpy,
       dialogServiceSpy,
       new IDService(),
       translateServiceSpy,
@@ -255,7 +249,6 @@ describe('UnitService - registering the options of a drop-list (#1506)', () => {
     service = new UnitService(
       new SelectionService(),
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showError']),
       createSpyObj<DialogService>([
         'showUnitDefErrorDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
       ]),
@@ -291,7 +284,6 @@ describe('UnitService - registering the options of a drop-list (#1506)', () => {
 describe('UnitService - references to what is deleted (#1509)', () => {
   let service: UnitService;
   let selectionService: SelectionService;
-  let messageServiceSpy: SpyObj<MessageService>;
   let dialogServiceSpy: SpyObj<DialogService>;
   let loadErrorService: LoadErrorService;
 
@@ -321,13 +313,12 @@ describe('UnitService - references to what is deleted (#1509)', () => {
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     selectionService = new SelectionService();
-    messageServiceSpy = createSpyObj<MessageService>(['showError']);
     dialogServiceSpy = createSpyObj<DialogService>([
       'showUnitDefErrorDialog', 'showDeleteConfirmDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
     ]);
     loadErrorService = new LoadErrorService();
-    service = new UnitService(selectionService, createSpyObj<VeronaAPIService>(['sendChanged']), messageServiceSpy,
-                              dialogServiceSpy, new IDService(), translateServiceSpy, loadErrorService);
+    service = new UnitService(selectionService, createSpyObj<VeronaAPIService>(['sendChanged']), dialogServiceSpy,
+                              new IDService(), translateServiceSpy, loadErrorService);
   });
 
   /* The page menus select their page before they open, so selection and deleted page agree in the editor today;
@@ -520,10 +511,7 @@ describe('UnitService - replacing ids that break the contract (#1508)', () => {
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     idService = new IDService();
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
-    const messageServiceSpy = createSpyObj<MessageService>([
-      'showError'
-    ]);
-    service = new UnitService(new SelectionService(), veronaApiServiceSpy, messageServiceSpy,
+    service = new UnitService(new SelectionService(), veronaApiServiceSpy,
                               createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showVariableInfoFindingsDialog']),
                               idService, translateServiceSpy, new LoadErrorService());
     const blueprint = createUnitBlueprint('unused');
@@ -666,7 +654,6 @@ describe('UnitService - replacing an id that has an exact twin (#1508)', () => {
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     const idService = new IDService();
     const service = new UnitService(new SelectionService(), createSpyObj<VeronaAPIService>(['sendChanged']),
-                                    createSpyObj<MessageService>(['showError']),
                                     createSpyObj<DialogService>(['showVariableInfoFindingsDialog']),
                                     idService, translateServiceSpy, new LoadErrorService());
     const blueprint = createUnitBlueprint('unused');
@@ -706,7 +693,6 @@ describe('UnitService - discarding a unit that was never saved with content (#10
     service = new UnitService(
       selectionService,
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showError']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']),
       idService,
       translateServiceSpy,
@@ -803,7 +789,6 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
     service = new UnitService(
       new SelectionService(),
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showError']),
       new DialogService({ open: dialogOpen } as unknown as MatDialog,
                         createSpyObj<MessageService>(['showError']), translateServiceSpy),
       new IDService(),
@@ -877,7 +862,6 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
 describe('UnitService - a delete whose unit is replaced while the confirmation is open (#1253)', () => {
   let service: UnitService;
   let selectionService: SelectionService;
-  let messageServiceSpy: SpyObj<MessageService>;
   let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
   let afterClosed: Subject<boolean>;
   let close: Mock;
@@ -894,15 +878,11 @@ describe('UnitService - a delete whose unit is replaced while the confirmation i
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     selectionService = new SelectionService();
-    messageServiceSpy = createSpyObj<MessageService>([
-      'showError'
-    ]);
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
 
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      messageServiceSpy,
       new DialogService({
         open: vi.fn().mockReturnValue({ afterClosed: () => afterClosed, close })
       } as unknown as MatDialog, createSpyObj<MessageService>(['showError']), translateServiceSpy),
@@ -1024,7 +1004,6 @@ describe('UnitService - page break (#1203)', () => {
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showError']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog']),
       new IDService(),
       translateServiceSpy,
@@ -1093,7 +1072,6 @@ describe('UnitService - removing a page break (#1298)', () => {
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showError']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog']),
       new IDService(),
       translateServiceSpy,
@@ -1175,7 +1153,6 @@ describe('UnitService - navigation buttons when pages change (#1511)', () => {
     service = new UnitService(
       selectionService,
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showError']),
       dialogServiceSpy,
       new IDService(),
       translateServiceSpy,
@@ -1259,7 +1236,6 @@ describe('UnitService - naming the page in the delete confirmation (#1513)', () 
     service = new UnitService(
       new SelectionService(),
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showError']),
       dialogServiceSpy,
       new IDService(),
       translateServiceSpy,

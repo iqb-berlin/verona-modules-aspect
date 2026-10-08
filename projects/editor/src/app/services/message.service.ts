@@ -8,7 +8,7 @@ import {
 
 /**
  * Everything the editor says to its user in passing: four snackbars that fade after three seconds and
- * differ only in their colour, one that waits for an OK, one with a button that leads on, and one dialog.
+ * differ only in their colour, one with a button that leads on, and one dialog.
  *
  * The service passes on the text it is given, unchanged and untranslated.
  */
@@ -39,11 +39,6 @@ export class MessageService {
     return this.dialog.open(UnexpectedErrorComponent, {
       data: error
     });
-  }
-
-  /** A message that stays until it is acknowledged: no duration, and an OK button to dismiss it. */
-  showPrompt(text: string): void {
-    this._snackBar.open(text, 'OK', { panelClass: 'snackbar-error' });
   }
 
   /**

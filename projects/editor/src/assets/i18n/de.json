@@ -18,7 +18,6 @@
   "top": "oben",
   "bottom": "unten",
   "idTaken": "ID ist bereits vergeben",
-  "idAlreadyRegistered": "Die ID „{{ id }}“ ist in dieser Unit doppelt vergeben.",
   "idContainsInvalidCharacters": "ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)",
   "idContainsSpace": "ID enthält unerlaubtes Leerzeichen",
   "idEditDialog": {

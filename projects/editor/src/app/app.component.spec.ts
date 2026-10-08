@@ -26,7 +26,7 @@ describe('AppComponent startCommand loading', () => {
     const selectionService = new SelectionService();
     const idService = new IDService();
     const messageServiceSpy = createSpyObj<MessageService>([
-      'showPrompt'
+      'showError'
     ]);
     const dialogServiceSpy = createSpyObj<DialogService>([
       'showUnitDefErrorDialog',

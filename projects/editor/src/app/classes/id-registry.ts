@@ -1,5 +1,4 @@
 import { IDTypes } from 'common/models/id-interfaces';
-import { IDError } from 'common/classes/id-error';
 import { VariableAlias } from 'common/utils/variable-alias';
 
 export class IdRegistry {
@@ -31,11 +30,12 @@ export class IdRegistry {
     return this.registeredIDs.includes(id);
   }
 
+  /**
+   * Marks exactly this name as taken; one already taken stays as it is. Whether a name may be given out is
+   * `isIdAvailable`'s question, asked before.
+   */
   registerID(id: string): void {
-    if (this.isRegistered(id)) {
-      throw new IDError(`ID already registered: ${id}`, 0, true, 'idAlreadyRegistered', { id });
-    }
-    this.registeredIDs.push(id);
+    if (!this.isRegistered(id)) this.registeredIDs.push(id);
   }
 
   unregisterID(id: string): void {

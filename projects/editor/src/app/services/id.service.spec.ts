@@ -68,6 +68,13 @@ describe('IDService', () => {
     expect(idRegistry.isRegistered('Wert')).toBe(true);
     expect(idRegistry.isRegistered('wert')).toBe(true);
   });
+
+  /* Taken once is taken: a second registration changes nothing (#1542). */
+  it('registerID should keep a name registered twice once', () => {
+    idRegistry.registerID('text_1');
+    expect(() => idRegistry.registerID('text_1')).not.toThrow();
+    expect(idRegistry.registeredIDs).toEqual(['text_1']);
+  });
 });
 
 describe('IDService registration of names stored before #1129', () => {

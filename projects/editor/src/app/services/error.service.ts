@@ -73,10 +73,7 @@ export class ErrorService implements ErrorHandler {
   handleError(error: unknown): void {
     if (error instanceof IDError) {
       // The models in common carry the key; the editor shows it translated (#1523).
-      const text = error.translationKey ?
-        this.translateService.instant(error.translationKey, error.translationParams) :
-        error.message;
-      error.highSeverity ? this.messageService.showPrompt(text) : this.messageService.showError(text);
+      this.messageService.showError(this.translateService.instant(error.translationKey));
     } else if (error instanceof AspectError) {
       this.reportLoadError(error);
     } else {

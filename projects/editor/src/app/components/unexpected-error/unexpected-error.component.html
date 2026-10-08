@@ -6,6 +6,7 @@
   <p><b>{{ 'unexpectedError.intro' | translate }}</b><br>
   {{ 'unexpectedError.hint' | translate }}
   </p>
+  <p class="technical-detail">{{ 'unexpectedError.technicalDetail' | translate }} {{ data.message }}</p>
   <mat-form-field [style.width.px]="300">
     <mat-label>{{ 'unexpectedError.reportError' | translate }}</mat-label>
     <mat-select>

@@ -3,3 +3,11 @@ mat-dialog-content {
   flex-direction: column;
   align-items: flex-start;
 }
+
+/* The message itself, for whoever has to pass the error on (#1537). */
+.technical-detail {
+  margin-top: 0;
+  font-size: 0.85em;
+  color: #666;
+  overflow-wrap: anywhere;
+}

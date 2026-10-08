@@ -11,6 +11,7 @@ import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding
 import { VariableInfoLocation, VariableInfoOrigins } from 'editor/src/app/utils/variable-info-origins';
 import { VariableInfoIssueCode } from 'editor/src/app/utils/variable-info-validator';
 import { IdReplacement, IdReplacementTarget } from 'editor/src/app/utils/id-replacement';
+import { LoadErrorHint } from 'editor/src/app/models/load-error';
 
 /** One line of the dialog: a finding with what it shows already worked out. */
 export interface VariableInfoFindingRow {
@@ -26,8 +27,8 @@ export interface VariableInfoFindingRow {
 
 /**
  * The hints area of the unit: the variables that break the Verona contract (#1129), the visibility rules that ask for
- * nothing and what loading repaired (#1520), each where the author has to look, with the way there. It follows the
- * unit while it is open, so what it shows is never older than the unit.
+ * nothing, what loading repaired (#1520) and what could not be loaded (#1537), each where the author has to look,
+ * with the way there. It follows the unit while it is open, so what it shows is never older than the unit.
  */
 @Component({
   templateUrl: './variable-info-findings-dialog.component.html',
@@ -36,6 +37,8 @@ export interface VariableInfoFindingRow {
 })
 export class VariableInfoFindingsDialogComponent implements OnDestroy {
   rows: VariableInfoFindingRow[] = [];
+  /** What the unit could not load (#1537). */
+  loadErrors: LoadErrorHint[] = [];
   hasGeometryFinding: boolean = false;
   /** The sections whose visibility rules ask for something the unit does not hold (#1520). */
   rulesIntoNothing: RulesIntoNothing[] = [];
@@ -86,6 +89,9 @@ export class VariableInfoFindingsDialogComponent implements OnDestroy {
     this.unitService.rulesIntoNothing
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(rules => { this.rulesIntoNothing = rules; });
+    this.unitService.loadErrorHints
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(hints => { this.loadErrors = hints; });
     // Renewed with the findings, which follow every change: an element deleted since loading drops out.
     combineLatest([this.unitService.loadRepairs, this.unitService.variableInfoFindings])
       .pipe(takeUntil(this.ngUnsubscribe))

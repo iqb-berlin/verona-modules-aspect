@@ -52,6 +52,20 @@
   font-style: italic;
 }
 
+.load-error-text {
+  max-width: 60ch;
+}
+
+/* The text meant for the host, in English: there for whoever has to pass the error on, not to be read first. */
+.load-error-detail {
+  margin-top: 4px;
+  max-width: 60ch;
+  font-size: 0.85em;
+  color: #666;
+  overflow-wrap: anywhere;
+}
+
+/* Inside the cell, not on it: a cell set to flex stops being one, and its line no longer meets the others (#1537). */
 .finding-actions {
   display: flex;
   flex-direction: column;

@@ -1,6 +1,6 @@
 <h2 mat-dialog-title class="message-title">
   <!-- A warning only while something is still to be fixed; what loading repaired is a plain note (#1520). -->
-  @if (rows.length > 0 || rulesIntoNothing.length > 0) {
+  @if (rows.length > 0 || rulesIntoNothing.length > 0 || loadErrors.length > 0) {
     <mat-icon class="message-icon-warning">warning</mat-icon>
   }
   <span>{{ 'unitHints.title' | translate }}</span>
@@ -24,7 +24,8 @@
     </div>
   }
 
-  @if (rows.length === 0 && rulesIntoNothing.length === 0 && repairedElements.length === 0) {
+  @if (rows.length === 0 && rulesIntoNothing.length === 0 && loadErrors.length === 0 &&
+       repairedElements.length === 0) {
     <p class="findings-explanation">{{ 'unitHints.none' | translate }}</p>
   }
 
@@ -76,21 +77,23 @@
                   <div class="finding-id-hint">{{ 'variableInfoFindings.idHint' | translate }}</div>
                 }
               </td>
-              <td class="findings-cell finding-actions">
-                @if (row.finding.origin.location; as location) {
-                  <button mat-stroked-button class="finding-action" (click)="goToElement(location)">
-                    {{ 'unitHints.goToElement' | translate }}
-                  </button>
-                } @else {
-                  <button mat-stroked-button class="finding-action" (click)="editStateVariables()">
-                    {{ 'variableInfoFindings.editStateVariables' | translate }}
-                  </button>
-                }
-                @if (row.replaceTarget; as target) {
-                  <button mat-stroked-button class="finding-action replace-id" (click)="askToReplace([target])">
-                    {{ 'variableInfoFindings.replaceId' | translate }}
-                  </button>
-                }
+              <td class="findings-cell">
+                <div class="finding-actions">
+                  @if (row.finding.origin.location; as location) {
+                    <button mat-stroked-button class="finding-action" (click)="goToElement(location)">
+                      {{ 'unitHints.goToElement' | translate }}
+                    </button>
+                  } @else {
+                    <button mat-stroked-button class="finding-action" (click)="editStateVariables()">
+                      {{ 'variableInfoFindings.editStateVariables' | translate }}
+                    </button>
+                  }
+                  @if (row.replaceTarget; as target) {
+                    <button mat-stroked-button class="finding-action replace-id" (click)="askToReplace([target])">
+                      {{ 'variableInfoFindings.replaceId' | translate }}
+                    </button>
+                  }
+                </div>
               </td>
             </tr>
           }
@@ -128,10 +131,60 @@
                   </span>
                 }
               </td>
-              <td class="findings-cell finding-actions">
-                <button mat-stroked-button class="finding-action go-to-section" (click)="goToSection(rules.location)">
-                  {{ 'unitHints.goToSection' | translate }}
-                </button>
+              <td class="findings-cell">
+                <div class="finding-actions">
+                  <button mat-stroked-button class="finding-action go-to-section" (click)="goToSection(rules.location)">
+                    {{ 'unitHints.goToSection' | translate }}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (loadErrors.length > 0) {
+    <section class="hint-section load-errors-section">
+      <h3 class="hint-section-title">{{ 'unitHints.loadErrors.title' | translate }}</h3>
+      <p class="findings-explanation">{{ 'unitHints.loadErrors.explanation' | translate }}</p>
+      <table class="findings-table">
+        <thead>
+          <tr>
+            <th class="findings-cell">{{ 'variableInfoFindings.column.location' | translate }}</th>
+            <th class="findings-cell">{{ 'variableInfoFindings.column.element' | translate }}</th>
+            <th class="findings-cell">{{ 'unitHints.loadErrors.problem' | translate }}</th>
+            <th class="findings-cell"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (hint of loadErrors; track hint.error) {
+            <tr class="load-error-row">
+              @if (hint.location; as location) {
+                <td class="findings-cell">{{ 'variableInfoFindings.location' | translate:
+                       { page: location.pageIndex + 1, section: location.sectionIndex + 1 } }}</td>
+                <td class="findings-cell">
+                  {{ 'toolbox.' + location.element.type | translate }} <i>{{ location.element.alias }}</i>
+                </td>
+              } @else {
+                <td class="findings-cell">{{ 'unitHints.loadErrors.wholeUnit' | translate }}</td>
+                <td class="findings-cell"></td>
+              }
+              <td class="findings-cell load-error-problem">
+                <div class="load-error-text">{{ hint.textKey | translate }}</div>
+                <div class="load-error-detail">
+                  {{ 'unitHints.loadErrors.technicalDetail' | translate }} {{ hint.error.message }}
+                </div>
+              </td>
+              <td class="findings-cell">
+                @if (hint.location; as location) {
+                  <div class="finding-actions">
+                    <button mat-stroked-button class="finding-action go-to-load-error" (click)="goToElement(location)">
+                      {{ 'unitHints.goToElement' | translate }}
+                    </button>
+                  </div>
+                }
               </td>
             </tr>
           }

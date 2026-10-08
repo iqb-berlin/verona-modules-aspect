@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { Section } from 'common/models/section';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, takeWhile } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { Storable } from 'player/src/app/classes/storable';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
@@ -30,7 +30,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   private timerManager!: TimerManager;
 
   constructor(
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<HTMLElement>,
     private unitStateService: UnitStateService,
     private stateVariableStateService: StateVariableStateService
   ) {}
@@ -52,7 +52,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     const condition = this.areVisibilityRulesFulfilled() || this.stateVariableStateService
       .getElementCodeById(this.visibilityVariableID)?.value as boolean || false;
     this.isVisible = this.checkVisibility(condition);
-    this.handleVisibility();
+    // A section shown from the start does not appear, so the unit opens at its top (#1546)
+    this.handleVisibility(false);
     if (this.section.enableReHide || !this.isVisible) {
       this.addVisibilitySubscription();
     }
@@ -84,11 +85,20 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       this.unitStateService.elementCodeChanged,
       this.stateVariableStateService.elementCodeChanged
     )
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        // Once shown, a section that may not be hidden again has nothing left to watch (#1547)
+        takeWhile(() => this.section.enableReHide || !this.isVisible),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(code => {
         if (this.isRuleCode(code)) {
+          const wasVisible = this.isVisible;
           this.isVisible = this.checkVisibility(this.areVisibilityRulesFulfilled());
-          this.handleVisibility();
+          /* Scrolled to only when a changed value makes it appear (#1546): input that keeps the rule fulfilled must
+             not pull the view away, and an element registering on loading -- one placed after the section, which
+             reports itself as UNSET or NOT_REACHED -- is no reason to leave the top of the unit. A visibility timer
+             reports a changed value, so a delayed section is still scrolled to. */
+          this.handleVisibility(!wasVisible && code.status === 'VALUE_CHANGED');
           if (this.isVisible && !this.section.enableReHide) {
             this.timerManager.reset();
           }
@@ -134,13 +144,14 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     return false;
   }
 
-  private handleVisibility(): void {
+  /** Shows or hides the section; `appeared` says whether it has just become visible, the one moment to scroll to it. */
+  private handleVisibility(appeared: boolean): void {
     // Remove the inline value rather than set one, so the stylesheet decides again: 'unset' fell back
     // to inline, which ignores min-height, so a static section shown by a rule had no height and none
     // of its elements could be seen (#1535)
     if (this.isVisible) {
       this.elementRef.nativeElement.style.removeProperty('display');
-      if (this.section.animatedVisibility) this.scrollIntoView();
+      if (this.section.animatedVisibility && appeared) this.scrollIntoView();
     } else {
       this.elementRef.nativeElement.style.display = 'none';
     }
@@ -154,7 +165,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private scrollIntoView(): void {
-    this.elementRef.nativeElement.style.scrollMarginTop = 100;
+    // With its unit: a bare number is discarded without a word, and the section ends flush with the top (#1536)
+    this.elementRef.nativeElement.style.scrollMarginTop = '100px';
     setTimeout(() => {
       this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });

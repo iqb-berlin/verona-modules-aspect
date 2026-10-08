@@ -8,7 +8,6 @@ import { VersionManager } from 'common/services/version-manager';
 import { AppComponent } from './app.component';
 import { IDService } from './services/id.service';
 import { DialogService } from './services/dialog.service';
-import { MessageService } from './services/message.service';
 import { SelectionService } from './services/selection.service';
 import { UnitService } from './services/unit.service';
 import { LoadErrorService } from './services/load-error.service';
@@ -25,9 +24,6 @@ describe('AppComponent startCommand loading', () => {
 
     const selectionService = new SelectionService();
     const idService = new IDService();
-    const messageServiceSpy = createSpyObj<MessageService>([
-      'showError'
-    ]);
     const dialogServiceSpy = createSpyObj<DialogService>([
       'showUnitDefErrorDialog',
       'showDeleteConfirmDialog'
@@ -48,7 +44,6 @@ describe('AppComponent startCommand loading', () => {
     unitService = new UnitService(
       selectionService,
       veronaApiServiceMock as VeronaAPIService,
-      messageServiceSpy,
       dialogServiceSpy,
       idService,
       translateServiceMock as TranslateService,

@@ -5,7 +5,6 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
-import { MessageService } from 'editor/src/app/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
 import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
@@ -111,7 +110,6 @@ export class UnitService {
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
-              private messageService: MessageService,
               private dialogService: DialogService,
               private idService: IDService,
               private translateService: TranslateService,

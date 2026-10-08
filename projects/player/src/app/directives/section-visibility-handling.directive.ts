@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { Section } from 'common/models/section';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, takeWhile } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { Storable } from 'player/src/app/classes/storable';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
@@ -85,7 +85,11 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       this.unitStateService.elementCodeChanged,
       this.stateVariableStateService.elementCodeChanged
     )
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(
+        // Once shown, a section that may not be hidden again has nothing left to watch (#1547)
+        takeWhile(() => this.section.enableReHide || !this.isVisible),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(code => {
         if (this.isRuleCode(code)) {
           const wasVisible = this.isVisible;

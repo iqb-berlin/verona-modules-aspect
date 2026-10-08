@@ -32,13 +32,6 @@ export function selectAllInRichTextEditor(element: Element): void {
   component.editor.commands.selectAll();
 }
 
-/* The directive one visibility spec patches, to hold a section visible past the point where the
-   player would hide it again. Declared partial: it types every directive on the element, and only
-   one of them has this member. */
-export interface SectionVisibilityDirective {
-  areVisibilityRulesFulfilled: () => boolean;
-}
-
 /* WebKit's predecessor of `caretPositionFromPoint`; the specs call it optionally and fall back. */
 export type DocumentWithCaretRange = Document & {
   caretRangeFromPoint?(x: number, y: number): Range | null;

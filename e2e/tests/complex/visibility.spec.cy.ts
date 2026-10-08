@@ -1,4 +1,3 @@
-import { SectionVisibilityDirective, WindowWithAngular } from '../../support/app-runtime';
 import { setExpertMode } from '../util';
 import { addTriggerElement, configureSectionVisibilityRule, createSectionWithText } from '../helpers/visibility-util';
 
@@ -86,21 +85,7 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
       cy.get('aspect-section').eq(2).should('be.visible');
       cy.get('aspect-section').eq(2).contains('Hello Section 3').should('exist');
 
-      // Patch the directive to prevent the player bug from hiding the section
-      cy.window().then(win => {
-        cy.get('aspect-section').eq(2).then($el => {
-          const angular = (win as WindowWithAngular).ng;
-          if (angular && angular.getDirectives) {
-            const directives = angular.getDirectives<Partial<SectionVisibilityDirective>>($el[0]);
-            const dir = directives.find(d => d.constructor.name === 'SectionVisibilityHandlingDirective');
-            if (dir) {
-              dir.areVisibilityRulesFulfilled = () => true;
-            }
-          }
-        });
-      });
-
-      // Change text field value to 'hide' (condition no longer met) and blur it
+      // Change text field value to 'hide' (condition no longer met) and blur it (#1547)
       cy.get('aspect-text-field').find('input').clear({ force: true }).type('hide{enter}', { force: true })
         .blur({ force: true });
 

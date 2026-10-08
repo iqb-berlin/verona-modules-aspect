@@ -289,6 +289,33 @@ describe('SectionVisibilityHandlingDirective', () => {
       .toHaveBeenCalledWith({ id: 'section-0-1', value: 1 });
   });
 
+  /* Without re-hiding, once shown is shown for good, whatever the rule says afterwards (#1547). */
+  it('should keep a section that cannot be hidden again visible when its rule breaks', () => {
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'no' };
+    initDirective(createSection([{ id: 'text-field_1', operator: '=', value: 'yes' }]));
+
+    ['yes', 'no'].forEach(value => {
+      elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value };
+      unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
+    });
+
+    expect(hostElement.style.display).toBe('');
+    expect(emittedVisibilities[emittedVisibilities.length - 1]).toEqual({ index: 1, isVisible: true });
+    expect(stateVariableStateService.changeElementCodeValue).not.toHaveBeenCalledWith({ id: 'section-0-1', value: 0 });
+  });
+
+  it('should hide a section that may be hidden again when its rule breaks', () => {
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'no' };
+    initDirective(createSection([{ id: 'text-field_1', operator: '=', value: 'yes' }], { enableReHide: true }));
+
+    ['yes', 'no'].forEach(value => {
+      elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value };
+      unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
+    });
+
+    expect(hostElement.style.display).toBe('none');
+  });
+
   it('should keep a section visible that was already stored as visible', () => {
     stateVariableStateService.getElementCodeById
       .mockImplementation((id: string) => (id === 'section-0-1' ?

@@ -30,7 +30,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   private timerManager!: TimerManager;
 
   constructor(
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<HTMLElement>,
     private unitStateService: UnitStateService,
     private stateVariableStateService: StateVariableStateService
   ) {}
@@ -154,7 +154,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private scrollIntoView(): void {
-    this.elementRef.nativeElement.style.scrollMarginTop = 100;
+    // With its unit: a bare number is discarded without a word, and the section ends flush with the top (#1536)
+    this.elementRef.nativeElement.style.scrollMarginTop = '100px';
     setTimeout(() => {
       this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });

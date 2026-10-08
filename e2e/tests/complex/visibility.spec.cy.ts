@@ -145,4 +145,39 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
       expectShownWithHeight();
     });
   });
+
+  /* An animated section is scrolled to with 100 px of room above it. The margin was set without its unit, which the
+     browser drops, so the section ended flush with the top (#1536). */
+  context('player: section shown with animation', () => {
+    before('opens a player with an animated section below a tall one', () => {
+      cy.openPlayer();
+      cy.loadUnit('section-visibility-animated.json');
+    });
+
+    it('keeps 100 px of room above the section once it is shown', () => {
+      cy.get('aspect-section').eq(1).should('not.be.visible');
+      cy.get('aspect-text-field').find('input').type('show{enter}', { force: true }).blur({ force: true });
+
+      cy.get('aspect-section').eq(1).should('be.visible')
+        .and($section => {
+          expect(getComputedStyle($section[0]).scrollMarginTop).to.equal('100px');
+        });
+    });
+
+    /* Where the section comes to rest. Not in Electron, the browser of the pipeline: there the smooth scroll ends
+       flush with the top although the margin is in effect, which Chrome and Firefox honour. */
+    it('scrolls the section to 100 px below the top', { browser: '!electron' }, () => {
+      // Measured against the element that scrolls; retried until the smooth scroll has come to rest.
+      cy.get('aspect-section').eq(1).should($section => {
+        const section = $section[0];
+        const scrolls = (element: HTMLElement): boolean => element.scrollHeight > element.clientHeight &&
+          ['auto', 'scroll'].includes(getComputedStyle(element).overflowY);
+        let container = section.parentElement;
+        while (container && !scrolls(container)) container = container.parentElement;
+        expect(container, 'scroll container').not.to.equal(null);
+        expect(section.getBoundingClientRect().top - (container as HTMLElement).getBoundingClientRect().top)
+          .to.be.closeTo(100, 2);
+      });
+    });
+  });
 });

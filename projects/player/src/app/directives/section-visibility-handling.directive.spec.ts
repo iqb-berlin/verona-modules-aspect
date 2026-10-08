@@ -112,6 +112,26 @@ describe('SectionVisibilityHandlingDirective', () => {
     expect(emittedVisibilities[emittedVisibilities.length - 1]).toEqual({ index: 1, isVisible: true });
   });
 
+  /* The margin needs its unit, or the browser drops it and the section ends flush with the top (#1536). */
+  it('should scroll an animated section into view with a margin above it', fakeAsync(() => {
+    // Read at the moment of the scroll: a margin set afterwards would change nothing.
+    let marginAtScroll: string | undefined;
+    const scrollIntoView = vi.fn(() => { marginAtScroll = hostElement.style.scrollMarginTop; });
+    hostElement.scrollIntoView = scrollIntoView;
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'no' };
+    initDirective(createSection(
+      [{ id: 'text-field_1', operator: '=', value: 'yes' }],
+      { enableReHide: true, animatedVisibility: true }
+    ));
+
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'yes' };
+    unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
+    tick();
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
+    expect(marginAtScroll).toBe('100px');
+  }));
+
   it('should restore stylesheet layout when a section is shown again', () => {
     const stylesheet = document.createElement('style');
     stylesheet.textContent = '.visibility-layout-test { display: block; }';

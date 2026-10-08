@@ -135,11 +135,14 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private handleVisibility(): void {
-    this.elementRef.nativeElement.style.display = this.isVisible ? 'unset' : 'none';
+    // Remove the inline value rather than set one, so the stylesheet decides again: 'unset' fell back
+    // to inline, which ignores min-height, so a static section shown by a rule had no height and none
+    // of its elements could be seen (#1535)
     if (this.isVisible) {
-      if (this.section.animatedVisibility) {
-        this.scrollIntoView();
-      }
+      this.elementRef.nativeElement.style.removeProperty('display');
+      if (this.section.animatedVisibility) this.scrollIntoView();
+    } else {
+      this.elementRef.nativeElement.style.display = 'none';
     }
     if (this.visibilityVariable) this.visibilityVariable.value = this.isVisible ? 1 : 0;
     this.emitIsVisibleIndexChange(this.isVisible);

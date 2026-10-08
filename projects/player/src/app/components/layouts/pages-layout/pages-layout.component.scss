@@ -66,8 +66,18 @@
   overflow: unset;
 }
 
-:host ::ng-deep .mat-mdc-tab-body-wrapper, :host ::ng-deep .mat-mdc-tab-body {
+:host ::ng-deep .mat-mdc-tab-body-wrapper {
   display: unset;
 }
 
+// A block rather than an inline box: with block layout, the iPadOS 26 simulator drew caret and
+// selection in text fields again, which it had not before (#1082). Overflow stays visible, so sticky
+// table headers and the marking bar keep sticking to the outer scroll container, as they did while
+// the body was inline (6e8d8096).
+:host ::ng-deep .mat-mdc-tab-body {
+  display: block;
+}
 
+:host ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active {
+  overflow: visible;
+}

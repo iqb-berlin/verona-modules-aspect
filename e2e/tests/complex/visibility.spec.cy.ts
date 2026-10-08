@@ -108,4 +108,41 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
       cy.get('aspect-section').eq(2).should('be.visible');
     });
   });
+
+  context('player: section without dynamic layout', () => {
+    const setTrigger = (value: string) => {
+      cy.get('aspect-text-field').find('input').clear({ force: true }).type(`${value}{enter}`, { force: true })
+        .blur({ force: true });
+    };
+    const expectShownWithHeight = () => {
+      cy.get('aspect-section').eq(1).should($section => {
+        expect($section[0].getBoundingClientRect().height).to.equal(200);
+      });
+      cy.get('aspect-section').eq(1).contains('Statischer Abschnitt').should('be.visible');
+    };
+
+    before('opens a player with a static section that has a visibility rule', () => {
+      cy.openPlayer();
+      cy.loadUnit('section-visibility-static.json');
+    });
+
+    it('is hidden and takes no space before its rule is fulfilled', () => {
+      cy.get('aspect-section').eq(1).should('not.be.visible');
+      cy.get('aspect-section').eq(1).should($section => {
+        expect($section[0].getBoundingClientRect().height).to.equal(0);
+      });
+    });
+
+    it('is shown with its height and its elements once the rule is fulfilled', () => {
+      setTrigger('show');
+      expectShownWithHeight();
+    });
+
+    it('keeps its height when it is hidden and shown again', () => {
+      setTrigger('hide');
+      cy.get('aspect-section').eq(1).should('not.be.visible');
+      setTrigger('show');
+      expectShownWithHeight();
+    });
+  });
 });

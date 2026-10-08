@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject, combineLatest, Observable, Subject
 } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -32,6 +32,9 @@ import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding
 import { IdReplacement, IdReplacementTarget } from 'editor/src/app/utils/id-replacement';
 import { DropListElement } from 'common/models/elements/drop-list';
 import { IDTypes } from 'common/models/id-interfaces';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
+import { LoadErrorHint } from 'editor/src/app/models/load-error';
+import { LoadErrorHints } from 'editor/src/app/utils/load-error-hints';
 
 /**
  * Holds the unit the editor is working on, and is the only place it is replaced.
@@ -65,15 +68,31 @@ export class UnitService {
   /** The elements loading took a reference into nothing from. Done already, so shown until the next load (#1520). */
   loadRepairs = new BehaviorSubject<UIElement[]>([]);
   /**
+   * What the unit could not load, as far as it concerns the unit as it is now (#1537). Renewed with the findings,
+   * which follow every change: an element deleted since drops out.
+   */
+  loadErrorHints: Observable<LoadErrorHint[]> = combineLatest([
+    this.loadErrorService.errors, this.variableInfoFindings
+  ]).pipe(
+    map(([errors]) => LoadErrorHints.resolve(this.unit, errors)),
+    // Indicator and hints area read the same answer: worked out once per change, not once per reader.
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
+  /**
    * What the indicator shows: null while the hints area has nothing to show, otherwise how much of it is still to be
-   * fixed -- the findings and the rules into nothing, not what loading did. A load that only repaired keeps the
-   * hints area reachable all the same, with nothing counted as open.
+   * fixed -- the findings, the rules into nothing and what could not be loaded, not what loading repaired. A load
+   * that only repaired keeps the hints area reachable all the same, with nothing counted as open.
+   *
+   * The findings are read through the load errors, which are renewed with them, rather than combined a second time:
+   * combined twice, every change of the findings would first count with the load errors from before it.
    */
   hintIndicator: Observable<{ open: number } | null> = combineLatest([
-    this.variableInfoFindings, this.rulesIntoNothing, this.loadRepairs
-  ]).pipe(map(([findings, rules, repairs]) => (findings.length + rules.length + repairs.length === 0 ?
-    null :
-    { open: findings.length + rules.length })));
+    this.loadErrorHints, this.rulesIntoNothing, this.loadRepairs
+  ]).pipe(map(([loadErrors, rules, repairs]) => {
+    const open = this.variableInfoFindings.value.length + rules.length + loadErrors.length;
+    return open + repairs.length === 0 ? null : { open };
+  }));
 
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
@@ -95,7 +114,8 @@ export class UnitService {
               private messageService: MessageService,
               private dialogService: DialogService,
               private idService: IDService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private loadErrorService: LoadErrorService) {
     this.unit = new EditorUnit(undefined, this.idService);
     this.referenceManager = new ReferenceManager(this.unit);
   }
@@ -144,6 +164,7 @@ export class UnitService {
       this.idService.reset();
       this.selectionService.reset();
       this.unit = new EditorUnit(undefined, this.idService);
+      this.loadErrorService.clearElementErrors();
       this.referenceManager = new ReferenceManager(this.unit);
       this.updateSectionCounter();
       this.loadRepairs.next([]);
@@ -156,6 +177,9 @@ export class UnitService {
     this.idService.reset();
     this.selectionService.reset();
     this.unit = new EditorUnit(migratedUnitDefinition, this.idService);
+    /* What the previous unit could not load is no concern of this one, whose elements report once they render. As
+       soon as the unit is swapped, so that nothing below can throw past it and leave the old errors standing. */
+    this.loadErrorService.clearElementErrors();
     this.reRegisterAll();
     this.referenceManager = new ReferenceManager(this.unit);
     /* As early as the unit and its reference manager are in place: everything below can throw into the

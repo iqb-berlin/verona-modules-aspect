@@ -32,7 +32,9 @@ export class IdRegistry {
   }
 
   registerID(id: string): void {
-    if (this.isRegistered(id)) throw new IDError(`ID bereits vergeben: ${id}`, 0, true);
+    if (this.isRegistered(id)) {
+      throw new IDError(`ID already registered: ${id}`, 0, true, 'idAlreadyRegistered', { id });
+    }
     this.registeredIDs.push(id);
   }
 

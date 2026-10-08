@@ -24,6 +24,8 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
+import { LoadErrorHint } from 'editor/src/app/models/load-error';
 import { PageService } from 'editor/src/app/services/page.service';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import {
@@ -55,7 +57,8 @@ describe('UnitService - rapid load handling', () => {
       messageServiceSpy,
       dialogServiceSpy,
       idService,
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -119,7 +122,8 @@ describe('UnitService - variable info validation (#1043, #1129)', () => {
       messageServiceSpy,
       dialogServiceSpy,
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -256,7 +260,8 @@ describe('UnitService - registering the options of a drop-list (#1506)', () => {
         'showUnitDefErrorDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
       ]),
       idService,
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
     const unit = createUnitBlueprint('state_1');
     unit.pages[0].sections[0].elements.push({
@@ -288,6 +293,7 @@ describe('UnitService - references to what is deleted (#1509)', () => {
   let selectionService: SelectionService;
   let messageServiceSpy: SpyObj<MessageService>;
   let dialogServiceSpy: SpyObj<DialogService>;
+  let loadErrorService: LoadErrorService;
 
   const textField = (id: string): Record<string, unknown> => ({
     type: 'text-field',
@@ -319,8 +325,9 @@ describe('UnitService - references to what is deleted (#1509)', () => {
     dialogServiceSpy = createSpyObj<DialogService>([
       'showUnitDefErrorDialog', 'showDeleteConfirmDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
     ]);
+    loadErrorService = new LoadErrorService();
     service = new UnitService(selectionService, createSpyObj<VeronaAPIService>(['sendChanged']), messageServiceSpy,
-                              dialogServiceSpy, new IDService(), translateServiceSpy);
+                              dialogServiceSpy, new IDService(), translateServiceSpy, loadErrorService);
   });
 
   /* The page menus select their page before they open, so selection and deleted page agree in the editor today;
@@ -451,6 +458,53 @@ describe('UnitService - references to what is deleted (#1509)', () => {
 
     expect(dialogServiceSpy.showVariableInfoFindingsDialog).not.toHaveBeenCalled();
   });
+
+  /* What could not be loaded is still to be fixed, so the indicator counts it (#1537). */
+  it('should list a load error at its element and count it as open', () => {
+    load([]);
+    let indicator: { open: number } | null | undefined;
+    let hints: LoadErrorHint[] = [];
+    service.hintIndicator.subscribe(value => { indicator = value; });
+    service.loadErrorHints.subscribe(value => { hints = value; });
+
+    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'text-field_2' });
+
+    expect(indicator).toEqual({ open: 1 });
+    expect(hints.map(hint => [hint.element?.id, hint.location?.pageIndex])).toEqual([['text-field_2', 1]]);
+  });
+
+  it('should drop the load error of an element that is deleted', () => {
+    load([]);
+    let hints: LoadErrorHint[] = [];
+    let indicator: { open: number } | null | undefined;
+    service.loadErrorHints.subscribe(value => { hints = value; });
+    service.hintIndicator.subscribe(value => { indicator = value; });
+    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'text-field_2' });
+
+    service.unit.pages[1].sections[0].elements = [];
+    service.updateUnitDefinition();
+
+    expect(hints).toEqual([]);
+    expect(indicator).toBeNull();
+  });
+
+  it('should forget what the previous unit could not load when the next one is loaded', () => {
+    load([]);
+    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'text-field_2' });
+
+    load([]);
+
+    expect(loadErrorService.errors.value).toEqual([]);
+  });
+
+  it('should forget it on loading an empty unit as well', () => {
+    load([]);
+    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'text-field_2' });
+
+    service.loadUnitDefinition('');
+
+    expect(loadErrorService.errors.value).toEqual([]);
+  });
 });
 
 describe('UnitService - replacing ids that break the contract (#1508)', () => {
@@ -471,7 +525,7 @@ describe('UnitService - replacing ids that break the contract (#1508)', () => {
     ]);
     service = new UnitService(new SelectionService(), veronaApiServiceSpy, messageServiceSpy,
                               createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showVariableInfoFindingsDialog']),
-                              idService, translateServiceSpy);
+                              idService, translateServiceSpy, new LoadErrorService());
     const blueprint = createUnitBlueprint('unused');
     blueprint.stateVariables = [new StateVariable('März', 'maerz', '')];
     blueprint.pages[0].sections[0].elements.push(...[
@@ -614,7 +668,7 @@ describe('UnitService - replacing an id that has an exact twin (#1508)', () => {
     const service = new UnitService(new SelectionService(), createSpyObj<VeronaAPIService>(['sendChanged']),
                                     createSpyObj<MessageService>(['showPrompt']),
                                     createSpyObj<DialogService>(['showVariableInfoFindingsDialog']),
-                                    idService, translateServiceSpy);
+                                    idService, translateServiceSpy, new LoadErrorService());
     const blueprint = createUnitBlueprint('unused');
     blueprint.stateVariables = [new StateVariable('Wert', 'zustand', '')];
     blueprint.pages[0].sections[0].elements.push({
@@ -655,7 +709,8 @@ describe('UnitService - discarding a unit that was never saved with content (#10
       createSpyObj<MessageService>(['showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']),
       idService,
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -752,7 +807,8 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
       new DialogService({ open: dialogOpen } as unknown as MatDialog,
                         createSpyObj<MessageService>(['showError']), translateServiceSpy),
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -851,7 +907,8 @@ describe('UnitService - a delete whose unit is replaced while the confirmation i
         open: vi.fn().mockReturnValue({ afterClosed: () => afterClosed, close })
       } as unknown as MatDialog, createSpyObj<MessageService>(['showError']), translateServiceSpy),
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('unit-to-delete-from')));
   });
@@ -970,7 +1027,8 @@ describe('UnitService - page break (#1203)', () => {
       createSpyObj<MessageService>(['showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog']),
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
     /* Two pages, the first with three sections: the second page's button carries index 1, which names
        nothing on a page that holds one section. */
@@ -1038,7 +1096,8 @@ describe('UnitService - removing a page break (#1298)', () => {
       createSpyObj<MessageService>(['showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog']),
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -1119,7 +1178,8 @@ describe('UnitService - navigation buttons when pages change (#1511)', () => {
       createSpyObj<MessageService>(['showPrompt']),
       dialogServiceSpy,
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -1202,7 +1262,8 @@ describe('UnitService - naming the page in the delete confirmation (#1513)', () 
       createSpyObj<MessageService>(['showPrompt']),
       dialogServiceSpy,
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 

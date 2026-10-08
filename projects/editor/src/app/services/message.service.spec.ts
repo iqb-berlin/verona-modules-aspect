@@ -1,6 +1,7 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Mock } from 'vitest';
+import { Subject } from 'rxjs';
 import { MessageService } from 'editor/src/app/services/message.service';
 import {
   UnexpectedErrorComponent
@@ -45,6 +46,19 @@ describe('MessageService', () => {
     service.showPrompt('Bitte bestätigen');
     expect(snackBarMock.open)
       .toHaveBeenCalledWith('Bitte bestätigen', 'OK', { panelClass: 'snackbar-error' });
+  });
+
+  it('should show a warning with a button and hand on its presses', () => {
+    const onAction = new Subject<void>();
+    snackBarMock.open.mockReturnValue({ onAction: () => onAction.asObservable() });
+    let pressed = 0;
+
+    service.showWarningWithAction('Nicht geladen', 'Anzeigen').subscribe(() => { pressed += 1; });
+    onAction.next();
+
+    expect(snackBarMock.open)
+      .toHaveBeenCalledWith('Nicht geladen', 'Anzeigen', { duration: 6000, panelClass: 'snackbar-warning' });
+    expect(pressed).toBe(1);
   });
 
   it('should open the unexpected error dialog with the error as data and return its ref', () => {

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import {
   UnexpectedErrorComponent
 } from 'editor/src/app/components/unexpected-error/unexpected-error.component';
 
 /**
  * Everything the editor says to its user in passing: four snackbars that fade after three seconds and
- * differ only in their colour, one that waits for an OK, and one dialog.
+ * differ only in their colour, one that waits for an OK, one with a button that leads on, and one dialog.
  *
  * The service passes on the text it is given, unchanged and untranslated.
  */
@@ -43,5 +44,13 @@ export class MessageService {
   /** A message that stays until it is acknowledged: no duration, and an OK button to dismiss it. */
   showPrompt(text: string): void {
     this._snackBar.open(text, 'OK', { panelClass: 'snackbar-error' });
+  }
+
+  /**
+   * A warning that leads somewhere: its button takes the author to what it is about. It fades like the others, a
+   * little later, because what it announces stays reachable elsewhere. Emits when the button is pressed.
+   */
+  showWarningWithAction(text: string, action: string, duration: number = 6000): Observable<void> {
+    return this._snackBar.open(text, action, { duration: duration, panelClass: 'snackbar-warning' }).onAction();
   }
 }

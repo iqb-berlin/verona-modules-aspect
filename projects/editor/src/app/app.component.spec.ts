@@ -11,6 +11,7 @@ import { DialogService } from './services/dialog.service';
 import { MessageService } from './services/message.service';
 import { SelectionService } from './services/selection.service';
 import { UnitService } from './services/unit.service';
+import { LoadErrorService } from './services/load-error.service';
 import { StartCommand, VeronaAPIService } from './services/verona-api.service';
 
 describe('AppComponent startCommand loading', () => {
@@ -50,7 +51,8 @@ describe('AppComponent startCommand loading', () => {
       messageServiceSpy,
       dialogServiceSpy,
       idService,
-      translateServiceMock as TranslateService
+      translateServiceMock as TranslateService,
+      new LoadErrorService()
     );
   });
 

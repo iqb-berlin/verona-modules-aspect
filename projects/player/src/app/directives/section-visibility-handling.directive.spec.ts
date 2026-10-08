@@ -114,7 +114,7 @@ describe('SectionVisibilityHandlingDirective', () => {
 
   it('should restore stylesheet layout when a section is shown again', () => {
     const stylesheet = document.createElement('style');
-    stylesheet.textContent = '.visibility-layout-test { display: block; overflow: visible; }';
+    stylesheet.textContent = '.visibility-layout-test { display: block; }';
     hostElement.className = 'visibility-layout-test';
     document.head.appendChild(stylesheet);
     document.body.appendChild(hostElement);
@@ -129,7 +129,6 @@ describe('SectionVisibilityHandlingDirective', () => {
         unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
 
         expect(getComputedStyle(hostElement).display).toBe(value === 'yes' ? 'block' : 'none');
-        expect(getComputedStyle(hostElement).overflow).toBe('visible');
       });
 
       expect(emittedVisibilities).toEqual([

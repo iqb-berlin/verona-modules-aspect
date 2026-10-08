@@ -4,6 +4,7 @@ import {
   VopReadyNotification, VopStateChangedNotification, VopUnitNavigationRequestedNotification,
   VopWindowFocusChangedNotification
 } from 'player/modules/verona/models/verona';
+import { AspectError } from 'common/classes/aspect-error';
 import { VeronaPostService } from './verona-post.service';
 
 describe('VeronaPostService', () => {
@@ -102,6 +103,22 @@ describe('VeronaPostService', () => {
         done();
       });
     service.sendVopUnitNavigationRequestedNotification('next');
+  }));
+
+  /* The element id an AspectError carries is for the editor's own list (#1537); the host gets what it always got. */
+  it('should post a VopRuntimeErrorNotification with code and message only', () => new Promise<void>(done => {
+    const eventSubscription = fromEvent(window.parent, 'message')
+      .subscribe(event => {
+        expect((event as MessageEvent).data).toEqual({
+          type: 'vopRuntimeErrorNotification',
+          sessionId: 'test',
+          code: 'image-not-loading',
+          message: 'Failed to load image'
+        });
+        eventSubscription.unsubscribe();
+        done();
+      });
+    service.sendVopRuntimeErrorNotification(new AspectError('image-not-loading', 'Failed to load image', 'image_1'));
   }));
 
   it('should post a VopUnitNavigationRequestedNotification', () => new Promise<void>(done => {

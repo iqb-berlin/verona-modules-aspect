@@ -21,8 +21,7 @@ export abstract class ElementComponent implements AfterContentChecked {
     this.project = this.elementRef.nativeElement.closest('aspect-unit') ? 'player' : 'editor';
   }
 
-  // eslint-disable-next-line class-methods-use-this
   throwError(code: string, message: string) {
-    throw new AspectError(code, message);
+    throw new AspectError(code, message, this.elementModel.id);
   }
 }

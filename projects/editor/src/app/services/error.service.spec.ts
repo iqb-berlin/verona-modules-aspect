@@ -42,7 +42,7 @@ describe('ErrorService', () => {
     startCommand = new Subject<StartCommand>();
     veronaApiServiceMock = { startCommand };
     messageServiceSpy = createSpyObj<MessageService>(
-      ['showPrompt', 'showError', 'showErrorPrompt', 'showWarningWithAction']
+      ['showError', 'showErrorPrompt', 'showWarningWithAction']
     );
     noticeAction = new Subject<void>();
     messageServiceSpy.showWarningWithAction.mockReturnValue(noticeAction.asObservable());
@@ -72,34 +72,12 @@ describe('ErrorService', () => {
   /** The reset ignores the payload, so an empty command stands in for any unit the host loads. */
   const startNextUnit = (): void => startCommand.next({} as StartCommand);
 
-  it('should show a prompt for high severity ID errors', () => {
-    service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
-
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledWith('ID ist bereits vergeben');
-    expect(messageServiceSpy.showError).not.toHaveBeenCalled();
-  });
-
-  it('should show a dismissable error for low severity ID errors', () => {
-    service.handleError(new IDError('ID enthält unerlaubtes Leerzeichen'));
-
-    expect(messageServiceSpy.showError).toHaveBeenCalledWith('ID enthält unerlaubtes Leerzeichen');
-    expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
-  });
-
   /* The models in common cannot translate; they name the key, which the editor shows translated (#1523). */
   it('should show an ID error under its translation key where it has one', () => {
     service.handleError(IDError.forAlias('space'));
 
-    // Nothing to fill in: the key alone.
-    expect(translateServiceSpy.instant).toHaveBeenCalledWith('idContainsSpace', undefined);
+    expect(translateServiceSpy.instant).toHaveBeenCalledWith('idContainsSpace');
     expect(messageServiceSpy.showError).toHaveBeenCalledWith(translateServiceSpy.instant('idContainsSpace'));
-  });
-
-  it('should fill in what an ID error names', () => {
-    service.handleError(new IDError('ID already registered: text_1', 0, true, 'idAlreadyRegistered', { id: 'text_1' }));
-
-    expect(translateServiceSpy.instant).toHaveBeenCalledWith('idAlreadyRegistered', { id: 'text_1' });
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledWith('idAlreadyRegistered');
   });
 
   /* What the player reports to the host goes into the hints area, at its element (#1537). */
@@ -110,7 +88,7 @@ describe('ErrorService', () => {
       .toEqual([{ code: 'image-not-loading', message: 'Failed to load image', elementId: 'image_1' }]);
     expect(messageServiceSpy.showWarningWithAction)
       .toHaveBeenCalledWith('unitHints.loadErrors.notice', 'unitHints.loadErrors.show');
-    expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
+    expect(messageServiceSpy.showError).not.toHaveBeenCalled();
     expect(messageServiceSpy.showErrorPrompt).not.toHaveBeenCalled();
   });
 
@@ -157,10 +135,10 @@ describe('ErrorService', () => {
   });
 
   it('should keep repeating ID error feedback for a repeated user action', () => {
-    service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
-    service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
+    service.handleError(IDError.forAlias('taken'));
+    service.handleError(IDError.forAlias('taken'));
 
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledTimes(2);
+    expect(messageServiceSpy.showError).toHaveBeenCalledTimes(2);
   });
 
   it('should not open a second dialog while the first one is still open', () => {

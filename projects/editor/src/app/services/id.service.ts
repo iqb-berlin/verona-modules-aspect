@@ -44,13 +44,11 @@ export class IDService {
     this.register(newID, false, true);
   }
 
-  /** Marks a name as taken, in either registry or both. A name that is already taken is silently left
-      as it is, so this cannot be used to find out whether it was free -- ask `isIDAvailable` for that.
-      Taken means exactly this name: one that differs only in letter case is registered beside it, as a
-      unit stored before #1129 may hold both. */
+  /** Marks a name as taken, in either registry or both, as `IdRegistry.registerID` does. It cannot be
+      used to find out whether the name was free -- ask `isIDAvailable` for that. */
   register(id: string, useIDRegistry: boolean, useAliasRegistry: boolean) {
-    if (useIDRegistry && !this.idRegistry.isRegistered(id)) this.idRegistry.registerID(id);
-    if (useAliasRegistry && !this.aliasRegistry.isRegistered(id)) this.aliasRegistry.registerID(id);
+    if (useIDRegistry) this.idRegistry.registerID(id);
+    if (useAliasRegistry) this.aliasRegistry.registerID(id);
   }
 
   /** Gives a name back, so the id of a deleted element can be used again. Unlike `register` this does

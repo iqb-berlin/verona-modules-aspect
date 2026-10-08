@@ -89,8 +89,8 @@ blockquote > p:empty:last-child:after {
 .snackbar-warning {border: 3px double #ffb74d;}
 .snackbar-error {border: 3px double #ff4d4d; white-space: pre-wrap;}
 .snackbar-success {border: 3px double green;}
-/* Its button ("OK", "Anzeigen") likewise: the theme's mid blue was hardly readable on the dark ground (#1537). */
-.snackbar-warning, .snackbar-error, .snackbar-success {--mat-snack-bar-button-color: #c5cae9;}
+/* Its button ("Anzeigen") likewise: the theme's mid blue was hardly readable on the dark ground (#1537). */
+.snackbar-warning {--mat-snack-bar-button-color: #c5cae9;}
 
 .cdk-drag {
   cursor: grab;

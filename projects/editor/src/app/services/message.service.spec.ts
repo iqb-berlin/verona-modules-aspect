@@ -42,12 +42,6 @@ describe('MessageService', () => {
       .toHaveBeenCalledWith('Fehler', undefined, { duration: 3000, panelClass: 'snackbar-error' });
   });
 
-  it('should show prompts with an OK action and without auto dismiss', () => {
-    service.showPrompt('Bitte bestätigen');
-    expect(snackBarMock.open)
-      .toHaveBeenCalledWith('Bitte bestätigen', 'OK', { panelClass: 'snackbar-error' });
-  });
-
   it('should show a warning with a button and hand on its presses', () => {
     const onAction = new Subject<void>();
     snackBarMock.open.mockReturnValue({ onAction: () => onAction.asObservable() });

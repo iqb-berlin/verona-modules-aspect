@@ -10,7 +10,7 @@
   </button>
   <div class="editor-control-panel" [class.disabled]="disabled">
   <fieldset class="input-group">
-    <legend>Schriftauszeichnung</legend>
+    <legend>{{ 'richTextEditor.group.fontStyle' | translate }}</legend>
     <button mat-icon-button [matTooltip]="'richTextEditor.bold' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('bold')"
             (click)="toggleBold()">
@@ -44,70 +44,74 @@
   </fieldset>
 
   <fieldset class="input-group">
-    <legend>Schrift</legend>
-    <mat-form-field *ngIf="!showReducedControls" [floatLabel]="'always'" appearance="outline"
-                    class="dropdown" [style.width.px]="115">
-      <mat-label>Größe</mat-label>
-      <mat-select panelClass="select-overlay" placeholder="Standard"
-                  [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize" >
-        <mat-option (click)="applyFontSize(null)" [value]="null">Standard</mat-option>
-        <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
-        <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
-        <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
-        <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
-        <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
-        <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
-        <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
-        <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
-        <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
-        <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
-        <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
-        <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
-        <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <legend>{{ 'richTextEditor.group.font' | translate }}</legend>
+    @if (!showReducedControls) {
+      <mat-form-field [floatLabel]="'always'" appearance="outline"
+                      class="dropdown" [style.width.px]="115">
+        <mat-label>{{ 'richTextEditor.label.fontSize' | translate }}</mat-label>
+        <mat-select panelClass="select-overlay" [placeholder]="'richTextEditor.fontSizeDefault' | translate"
+                    [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize" >
+          <mat-option (click)="applyFontSize(null)" [value]="null">{{ 'richTextEditor.fontSizeDefault' | translate }}</mat-option>
+          <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
+          <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
+          <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
+          <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
+          <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
+          <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
+          <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
+          <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
+          <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
+          <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
+          <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
+          <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
+          <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
     <aspect-combo-button [inputType]="'color'" [selectedValue]="selectedFontColor"
-                         [tooltip]="'Textfarbe'" [icon]="'format_color_text'"
+                         [tooltip]="'richTextEditor.fontColor'" [icon]="'format_color_text'"
                          (applySelection)="applyFontColor()"
                          (selectionChanged)="selectedFontColor = $event">
     </aspect-combo-button>
     <aspect-combo-button [inputType]="'color'" [selectedValue]="selectedHighlightColor"
-                         [tooltip]="'Texthintergrund'" [icon]="'format_color_fill'"
+                         [tooltip]="'richTextEditor.highlightColor'" [icon]="'format_color_fill'"
                          (applySelection)="applyHighlightColor()"
                          (selectionChanged)="selectedHighlightColor = $event">
     </aspect-combo-button>
   </fieldset>
 
-  <fieldset *ngIf="!showReducedControls" class="input-group" >
-    <legend>Absatz</legend>
-    <mat-form-field appearance="outline" class="dropdown" [style.width.px]="130">
-      <mat-label>Typ</mat-label>
-      <mat-select panelClass="select-overlay"
-                  [value]="editor.getAttributes('heading').level?.toString() || ''"
-                  (valueChange)="toggleHeading($event)">
-        <mat-option value="1">H1</mat-option>
-        <mat-option value="2">H2</mat-option>
-        <mat-option value="3">H3</mat-option>
-        <mat-option value="4">H4</mat-option>
-        <mat-option value="">Paragraph</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="dropdown" [style.width.px]="80">
-      <mat-label>Abstand</mat-label>
-      <mat-select panelClass="select-overlay"
-                  [matTooltip]="'richTextEditor.paragraphSpacing' | translate" [matTooltipShowDelay]="300"
-                  [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"
-                  (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
-        <mat-option value="0">0px</mat-option>
-        <mat-option value="10">10px</mat-option>
-        <mat-option value="20">20px</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </fieldset>
+  @if (!showReducedControls) {
+    <fieldset class="input-group">
+      <legend>{{ 'richTextEditor.group.paragraph' | translate }}</legend>
+      <mat-form-field appearance="outline" class="dropdown" [style.width.px]="130">
+        <mat-label>{{ 'richTextEditor.label.paragraphType' | translate }}</mat-label>
+        <mat-select panelClass="select-overlay"
+                    [value]="editor.getAttributes('heading').level?.toString() || ''"
+                    (valueChange)="toggleHeading($event)">
+          <mat-option value="1">H1</mat-option>
+          <mat-option value="2">H2</mat-option>
+          <mat-option value="3">H3</mat-option>
+          <mat-option value="4">H4</mat-option>
+          <mat-option value="">{{ 'richTextEditor.paragraph' | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="dropdown" [style.width.px]="80">
+        <mat-label>{{ 'richTextEditor.label.paragraphSpacing' | translate }}</mat-label>
+        <mat-select panelClass="select-overlay"
+                    [matTooltip]="'richTextEditor.paragraphSpacing' | translate" [matTooltipShowDelay]="300"
+                    [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"
+                    (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
+          <mat-option value="0">0px</mat-option>
+          <mat-option value="10">10px</mat-option>
+          <mat-option value="20">20px</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </fieldset>
+  }
 
   @if (!showReducedControls || showTextAlignment) {
     <fieldset class="input-group text-alignment-group">
-      <legend>Textausrichtung</legend>
+      <legend>{{ 'richTextEditor.group.textAlignment' | translate }}</legend>
       <button mat-icon-button [matTooltip]="'richTextEditor.alignLeft' | translate" [matTooltipShowDelay]="300"
               [class.active]="editor.isActive({ textAlign: 'left' })"
               (click)="alignText('left')">
@@ -131,73 +135,78 @@
     </fieldset>
   }
 
-  <fieldset *ngIf="!showReducedControls" class="input-group">
-    <legend>Listen</legend>
-    <aspect-combo-button [inputType]="'list'"
-                         [selectedValue]="editor.getAttributes('bulletList').listStyle"
-                         [availableValues]="['disc', 'circle', 'square']"
-                         [tooltip]="'Aufzählung'" [icon]="'format_list_bulleted'"
-                         [isActive]="editor.isActive('bulletList')"
-                         (applySelection)="toggleBulletList()"
-                         (selectionChanged)="applyListStyle('bulletList', $event)">
-    </aspect-combo-button>
-    <aspect-combo-button [inputType]="'list'"
-                         [selectedValue]="editor.getAttributes('orderedList').listStyle"
-                         [availableValues]="['decimal', 'lower-latin', 'upper-latin',
-                                             'lower-roman', 'upper-roman', 'lower-greek']"
-                         [tooltip]="'Aufzählung (nummeriert)'" [icon]="'format_list_numbered'"
-                         [isActive]="editor.isActive('orderedList')"
-                         (applySelection)="toggleOrderedList()"
-                         (selectionChanged)="applyListStyle('orderedList', $event)">
-    </aspect-combo-button>
-  </fieldset>
+  @if (!showReducedControls) {
+    <fieldset class="input-group">
+      <legend>{{ 'richTextEditor.group.lists' | translate }}</legend>
+      <aspect-combo-button [inputType]="'list'"
+                           [selectedValue]="editor.getAttributes('bulletList').listStyle"
+                           [availableValues]="bulletListStyles"
+                           [tooltip]="'richTextEditor.bulletList'" [icon]="'format_list_bulleted'"
+                           [isActive]="editor.isActive('bulletList')"
+                           (applySelection)="toggleBulletList()"
+                           (selectionChanged)="applyListStyle('bulletList', $event)">
+      </aspect-combo-button>
+      <aspect-combo-button [inputType]="'list'"
+                           [selectedValue]="editor.getAttributes('orderedList').listStyle"
+                           [availableValues]="orderedListStyles"
+                           [tooltip]="'richTextEditor.orderedList'" [icon]="'format_list_numbered'"
+                           [isActive]="editor.isActive('orderedList')"
+                           (applySelection)="toggleOrderedList()"
+                           (selectionChanged)="applyListStyle('orderedList', $event)">
+      </aspect-combo-button>
+    </fieldset>
+  }
 
-  <fieldset *ngIf="!showReducedControls" class="input-group">
-    <legend>Einrückung</legend>
-    <button mat-icon-button [matTooltip]="'richTextEditor.indent' | translate" [matTooltipShowDelay]="300"
-            (click)="indent()">
-      <mat-icon>format_indent_increase</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.outdent' | translate" [matTooltipShowDelay]="300"
-            (click)="outdent()">
-      <mat-icon>format_indent_decrease</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.hangingIndent' | translate" [matTooltipShowDelay]="300"
-            (click)="hangIndent()">
-      <mat-icon>segment</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.removeHangingIndent' | translate" [matTooltipShowDelay]="300"
-            (click)="unhangIndent()">
-      <mat-icon>view_headline</mat-icon>
-    </button>
-    <mat-form-field appearance="outline" class="textfield">
-      <mat-label>Tiefe</mat-label>
-      <input matInput type="text" [(ngModel)]="selectedIndentSize">
-    </mat-form-field>
-  </fieldset>
+  @if (!showReducedControls) {
+    <fieldset class="input-group">
+      <legend>{{ 'richTextEditor.group.indentation' | translate }}</legend>
+      <button mat-icon-button [matTooltip]="'richTextEditor.indent' | translate" [matTooltipShowDelay]="300"
+              (click)="indent()">
+        <mat-icon>format_indent_increase</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.outdent' | translate" [matTooltipShowDelay]="300"
+              (click)="outdent()">
+        <mat-icon>format_indent_decrease</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.hangingIndent' | translate" [matTooltipShowDelay]="300"
+              (click)="hangIndent()">
+        <mat-icon>segment</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.removeHangingIndent' | translate" [matTooltipShowDelay]="300"
+              (click)="unhangIndent()">
+        <mat-icon>view_headline</mat-icon>
+      </button>
+      <mat-form-field appearance="outline" class="textfield">
+        <mat-label>{{ 'richTextEditor.label.indentDepth' | translate }}</mat-label>
+        <input matInput type="text" [(ngModel)]="selectedIndentSize">
+      </mat-form-field>
+    </fieldset>
+  }
 
-  <fieldset *ngIf="!showReducedControls" class="input-group">
-    <legend>Bild</legend>
-    <button mat-icon-button [matTooltip]="'richTextEditor.imageInline' | translate" [matTooltipShowDelay]="300"
-            (click)="insertImage()">
-      <mat-icon style="transform: scale(1.1);">burst_mode</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.imageParagraph' | translate" [matTooltipShowDelay]="300"
-            (click)="insertBlockImage('none')">
-      <mat-icon style="transform: scale(0.9);">image</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.imageRight' | translate" [matTooltipShowDelay]="300"
-            (click)="insertBlockImage('right')">
-      <mat-icon style="transform: scale(-1.5, 1.5);">art_track</mat-icon>
-    </button>
-    <button mat-icon-button [matTooltip]="'richTextEditor.imageLeft' | translate" [matTooltipShowDelay]="300"
-            (click)="insertBlockImage('left')">
-      <mat-icon style="transform: scale(1.5);">art_track</mat-icon>
-    </button>
-  </fieldset>
+  @if (!showReducedControls) {
+    <fieldset class="input-group">
+      <legend>{{ 'richTextEditor.group.image' | translate }}</legend>
+      <button mat-icon-button [matTooltip]="'richTextEditor.imageInline' | translate" [matTooltipShowDelay]="300"
+              (click)="insertImage()">
+        <mat-icon style="transform: scale(1.1);">burst_mode</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.imageParagraph' | translate" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('none')">
+        <mat-icon style="transform: scale(0.9);">image</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.imageRight' | translate" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('right')">
+        <mat-icon style="transform: scale(-1.5, 1.5);">art_track</mat-icon>
+      </button>
+      <button mat-icon-button [matTooltip]="'richTextEditor.imageLeft' | translate" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('left')">
+        <mat-icon style="transform: scale(1.5);">art_track</mat-icon>
+      </button>
+    </fieldset>
+  }
 
   <fieldset class="input-group">
-    <legend>Sonderelemente</legend>
+    <legend>{{ 'richTextEditor.group.specialElements' | translate }}</legend>
     <button mat-icon-button class="special-chars-button" [matTooltip]="'richTextEditor.specialCharacters' | translate" [matTooltipShowDelay]="300"
             [matMenuTriggerFor]="specialCharsMenu">
       <mat-icon>emoji_symbols</mat-icon>
@@ -269,66 +278,72 @@
             (click)="insertFormula()">
       <mat-icon>functions</mat-icon>
     </button>
-    <aspect-combo-button *ngIf="!showReducedControls"
-                         [inputType]="'list'"
-                         [availableValues]="['kurze Linie (20%)']"
-                         [tooltip]="'horizontale Linie'" [icon]="'horizontal_rule'"
-                         (applySelection)="insertLine()"
-                         (selectionChanged)="insertLine(true)">
-    </aspect-combo-button>
-    <button *ngIf="!showReducedControls" mat-icon-button [matTooltip]="'richTextEditor.quote' | translate" [matTooltipShowDelay]="300"
-            [class.active]="editor.isActive('blockquote')"
-            (click)="toggleBlockquote()">
-      <mat-icon>format_quote</mat-icon>
-    </button>
-    <button *ngIf="!showReducedControls" mat-icon-button
-            [matTooltip]="'richTextEditor.tooltip' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
-            [class.active]="editor.isActive('tooltip')"
-            (click)="showTooltipPropertiesDialog()">
-      <mat-icon>announcement</mat-icon>
-    </button>
-    <aspect-combo-button *ngIf="!clozeMode && !showReducedControls"
-                         [inputType]="'color'" [selectedValue]="selectedAnchorColor"
-                         [tooltip]="'Bereich hervorheben'" [icon]="'read_more'"
-                         (applySelection)="applyAnchorId()"
-                         (selectionChanged)="selectedAnchorColor = $event">
-    </aspect-combo-button>
+    @if (!showReducedControls) {
+      <aspect-combo-button [inputType]="'list'"
+                           [availableValues]="horizontalRuleOptions"
+                           [tooltip]="'richTextEditor.horizontalRule'" [icon]="'horizontal_rule'"
+                           (applySelection)="insertLine()"
+                           (selectionChanged)="insertLine($event === 'short')">
+      </aspect-combo-button>
+    }
+    @if (!showReducedControls) {
+      <button mat-icon-button [matTooltip]="'richTextEditor.quote' | translate" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('blockquote')"
+              (click)="toggleBlockquote()">
+        <mat-icon>format_quote</mat-icon>
+      </button>
+      <button mat-icon-button
+              [matTooltip]="'richTextEditor.tooltip' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('tooltip')"
+              (click)="showTooltipPropertiesDialog()">
+        <mat-icon>announcement</mat-icon>
+      </button>
+    }
+    @if (!clozeMode && !showReducedControls) {
+      <aspect-combo-button [inputType]="'color'" [selectedValue]="selectedAnchorColor"
+                           [tooltip]="'richTextEditor.anchor'" [icon]="'read_more'"
+                           (applySelection)="applyAnchorId()"
+                           (selectionChanged)="selectedAnchorColor = $event">
+      </aspect-combo-button>
+    }
   </fieldset>
 </div>
 }
 
-<div *ngIf="clozeMode" class="fx-row-space-around-center" >
+@if (clozeMode) {
+  <div class="fx-row-space-around-center">
     <button mat-button [matTooltip]="'richTextEditor.textField' | translate" [matTooltipShowDelay]="300"
             (click)="insertTextField()">
       <mat-icon>edit</mat-icon>
-      Eingabefeld
+      {{ 'richTextEditor.textField' | translate }}
     </button>
     <button mat-button [matTooltip]="'richTextEditor.dropList' | translate" [matTooltipShowDelay]="300"
             (click)="insertDropList()">
       <mat-icon>drag_indicator</mat-icon>
-      Ablegeliste
+      {{ 'richTextEditor.dropList' | translate }}
     </button>
     <button mat-button [matTooltip]="'richTextEditor.radio' | translate" [matTooltipShowDelay]="300"
             (click)="insertToggleButton()">
       <mat-icon>radio_button_checked</mat-icon>
-      Optionsfeld
+      {{ 'richTextEditor.radio' | translate }}
     </button>
     <button mat-button [matTooltip]="'richTextEditor.button' | translate" [matTooltipShowDelay]="300"
             (click)="insertButton()">
       <mat-icon>smart_button</mat-icon>
-      Knopf
+      {{ 'richTextEditor.button' | translate }}
     </button>
     <button mat-button [matTooltip]="'richTextEditor.checkbox' | translate" [matTooltipShowDelay]="300"
             (click)="insertCheckbox()">
       <mat-icon>check_box</mat-icon>
-      Kontrollkästchen
+      {{ 'richTextEditor.checkbox' | translate }}
     </button>
     <button mat-button [matTooltip]="'richTextEditor.dropdown' | translate" [matTooltipShowDelay]="300"
             (click)="insertDropdown()">
       <mat-icon>menu_open</mat-icon>
-      Klappliste
+      {{ 'richTextEditor.dropdown' | translate }}
     </button>
-</div>
+  </div>
+}
 
 <tiptap-editor [editor]="editor" [ngModel]="content" [disabled]="disabled"
                [outputFormat]="clozeMode ? 'json' : 'html'"

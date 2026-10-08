@@ -50,6 +50,7 @@ import { NonBreakingSpaceHighlight } from 'editor/modules/rich-text-editor/exten
 import {
   NonBreakingSpaceVisibilityService
 } from 'editor/modules/rich-text-editor/services/non-breaking-space-visibility.service';
+import { ComboButtonOption } from 'editor/modules/rich-text-editor/components/combo-button/combo-button.component';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -78,6 +79,28 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit, OnDestroy
   selectedAnchorIdText = '';
   selectedFontSize: string | null = null;
   selectedIndentSize = 20;
+
+  /** The value is the CSS `list-style-type` written into the text; the label is only what the list shows. */
+  readonly bulletListStyles: ComboButtonOption[] = [
+    { value: 'disc', label: 'richTextEditor.listStyle.disc' },
+    { value: 'circle', label: 'richTextEditor.listStyle.circle' },
+    { value: 'square', label: 'richTextEditor.listStyle.square' }
+  ];
+
+  readonly orderedListStyles: ComboButtonOption[] = [
+    { value: 'decimal', label: 'richTextEditor.listStyle.decimal' },
+    { value: 'lower-latin', label: 'richTextEditor.listStyle.lower-latin' },
+    { value: 'upper-latin', label: 'richTextEditor.listStyle.upper-latin' },
+    { value: 'lower-roman', label: 'richTextEditor.listStyle.lower-roman' },
+    { value: 'upper-roman', label: 'richTextEditor.listStyle.upper-roman' },
+    { value: 'lower-greek', label: 'richTextEditor.listStyle.lower-greek' }
+  ];
+
+  /** Picking the short line from the list; the button itself inserts the full width one. */
+  readonly horizontalRuleOptions: ComboButtonOption[] = [
+    { value: 'short', label: 'richTextEditor.horizontalRuleShort' }
+  ];
+
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
   lastImageAlignment: 'inline' | 'none' | 'right' | 'left' = 'inline';

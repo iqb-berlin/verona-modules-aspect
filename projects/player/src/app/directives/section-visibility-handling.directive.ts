@@ -94,8 +94,11 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
         if (this.isRuleCode(code)) {
           const wasVisible = this.isVisible;
           this.isVisible = this.checkVisibility(this.areVisibilityRulesFulfilled());
-          // Only the change from hidden to shown: input keeping the rule fulfilled must not pull the view away (#1546)
-          this.handleVisibility(!wasVisible);
+          /* Scrolled to only when a changed value makes it appear (#1546): input that keeps the rule fulfilled must
+             not pull the view away, and an element registering on loading -- one placed after the section, which
+             reports itself as UNSET or NOT_REACHED -- is no reason to leave the top of the unit. A visibility timer
+             reports a changed value, so a delayed section is still scrolled to. */
+          this.handleVisibility(!wasVisible && code.status === 'VALUE_CHANGED');
           if (this.isVisible && !this.section.enableReHide) {
             this.timerManager.reset();
           }

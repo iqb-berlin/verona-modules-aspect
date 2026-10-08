@@ -185,6 +185,25 @@ describe('SectionVisibilityHandlingDirective', () => {
     expect(scrollIntoView).not.toHaveBeenCalled();
   }));
 
+  /* An element placed after the section registers once the section is set up, and its registration announces it.
+     That shows the section, but it is no change anyone made, so the unit stays at its top (#1546). */
+  it('should not scroll to an animated section shown by an element registering on loading', fakeAsync(() => {
+    const scrollIntoView = vi.fn();
+    hostElement.scrollIntoView = scrollIntoView;
+    initDirective(createSection(
+      [{ id: 'text-field_1', operator: '≠', value: 'x' }],
+      { enableReHide: true, animatedVisibility: true }
+    ));
+    expect(hostElement.style.display).toBe('none');
+
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'NOT_REACHED', value: '' };
+    unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
+    tick();
+
+    expect(hostElement.style.display).toBe('');
+    expect(scrollIntoView).not.toHaveBeenCalled();
+  }));
+
   it('should restore stylesheet layout when a section is shown again', () => {
     const stylesheet = document.createElement('style');
     stylesheet.textContent = '.visibility-layout-test { display: block; }';

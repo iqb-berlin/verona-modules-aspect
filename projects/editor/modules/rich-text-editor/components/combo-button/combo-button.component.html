@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <button class="apply-button" mat-button [matTooltip]="tooltip"
+  <button class="apply-button" mat-button [matTooltip]="tooltip | translate"
           [style.background-color]="inputType === 'list' && isActive ? 'lightgrey' : 'unset'"
           (click)="applySelection.emit()">
     <mat-icon>{{icon}}</mat-icon>
@@ -11,8 +11,8 @@
 
   <mat-select panelClass="select-overlay"
               (click)="onClickSelect($event)">
-    @for (value of availableValues; track value) {
-      <mat-option (click)="selectValue(value)">{{value}}</mat-option>
+    @for (option of availableValues; track option.value) {
+      <mat-option (click)="selectValue(option.value)">{{ option.label | translate }}</mat-option>
     }
   </mat-select>
 </div>

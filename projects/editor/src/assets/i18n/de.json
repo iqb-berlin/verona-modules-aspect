@@ -813,7 +813,43 @@
     "radio": "Optionsfeld",
     "button": "Knopf",
     "checkbox": "Kontrollkästchen",
-    "dropdown": "Klappliste"
+    "dropdown": "Klappliste",
+    "group": {
+      "fontStyle": "Schriftauszeichnung",
+      "font": "Schrift",
+      "paragraph": "Absatz",
+      "textAlignment": "Textausrichtung",
+      "lists": "Listen",
+      "indentation": "Einrückung",
+      "image": "Bild",
+      "specialElements": "Sonderelemente"
+    },
+    "label": {
+      "fontSize": "Größe",
+      "paragraphType": "Typ",
+      "paragraphSpacing": "Abstand",
+      "indentDepth": "Tiefe"
+    },
+    "fontSizeDefault": "Standard",
+    "paragraph": "Paragraph",
+    "fontColor": "Textfarbe",
+    "highlightColor": "Texthintergrund",
+    "bulletList": "Aufzählung",
+    "orderedList": "Aufzählung (nummeriert)",
+    "horizontalRule": "horizontale Linie",
+    "horizontalRuleShort": "kurze Linie (20%)",
+    "anchor": "Bereich hervorheben",
+    "listStyle": {
+      "disc": "Punkt",
+      "circle": "Kreis",
+      "square": "Quadrat",
+      "decimal": "1, 2, 3",
+      "lower-latin": "a, b, c",
+      "upper-latin": "A, B, C",
+      "lower-roman": "i, ii, iii",
+      "upper-roman": "I, II, III",
+      "lower-greek": "α, β, γ"
+    }
   },
   "imageResizeDialog": {
     "title": "Bild komprimieren",

@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Directive, Input } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,17 +20,31 @@ describe('ComboButtonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComboButtonComponent, MockMatTooltipDirective, ColorPickerValuePipe],
-      imports: [MatButtonModule, MatIconModule, MatSelectModule]
+      imports: [MatButtonModule, MatIconModule, MatSelectModule, TranslateModule.forRoot()]
     }).compileComponents();
+
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setTranslation('de', {
+      tooltipKey: 'Übersetzter Tooltip',
+      small: 'klein',
+      large: 'groß'
+    });
+    translateService.use('de');
 
     fixture = TestBed.createComponent(ComboButtonComponent);
     component = fixture.componentInstance;
     component.inputType = 'list';
     component.icon = 'format_size';
-    component.tooltip = 'Schriftgröße';
-    component.availableValues = ['10', '12'];
+    component.tooltip = 'tooltipKey';
+    component.availableValues = [{ value: '10', label: 'small' }, { value: '12', label: 'large' }];
     fixture.detectChanges();
   });
+
+  const openOptions = (): HTMLElement[] => {
+    fixture.nativeElement.querySelector('.mat-mdc-select-trigger').click();
+    fixture.detectChanges();
+    return Array.from(document.querySelectorAll<HTMLElement>('mat-option'));
+  };
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -36,6 +52,22 @@ describe('ComboButtonComponent', () => {
 
   it('should render the icon', () => {
     expect(fixture.nativeElement.querySelector('mat-icon').textContent).toContain('format_size');
+  });
+
+  it('should translate the tooltip key', () => {
+    const tooltip = fixture.debugElement.query(By.directive(MockMatTooltipDirective))
+      .injector.get(MockMatTooltipDirective);
+    expect(tooltip.matTooltip).toBe('Übersetzter Tooltip');
+  });
+
+  it('should show the translated labels instead of the values', () => {
+    expect(openOptions().map(option => option.textContent?.trim())).toEqual(['klein', 'groß']);
+  });
+
+  it('should emit the value, not the label, when an option is clicked', () => {
+    vi.spyOn(component.selectionChanged, 'emit');
+    openOptions()[1].click();
+    expect(component.selectionChanged.emit).toHaveBeenCalledWith('12');
   });
 
   it('should emit applySelection when the button is clicked', () => {

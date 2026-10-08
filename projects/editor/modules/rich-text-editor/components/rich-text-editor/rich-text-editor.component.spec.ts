@@ -1,13 +1,16 @@
-import { ApplicationRef } from '@angular/core';
+import { ApplicationRef, DebugElement } from '@angular/core';
 import {
   ComponentFixture, fakeAsync, flush, TestBed
 } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { MatSelect } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
 import {
   RichTextEditorComponent
 } from 'editor/modules/rich-text-editor/components/rich-text-editor/rich-text-editor.component';
+import { ComboButtonComponent } from 'editor/modules/rich-text-editor/components/combo-button/combo-button.component';
 
 describe('RichTextEditorComponent', () => {
   let component: RichTextEditorComponent;
@@ -33,6 +36,105 @@ describe('RichTextEditorComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  /* Without a loader the translate pipe shows the key, so a text written into the template stands out. */
+  describe('toolbar texts', () => {
+    const texts = (selector: string): string[] => Array.from<HTMLElement>(
+      fixture.nativeElement.querySelectorAll(selector)
+    ).map(element => element.textContent?.trim() ?? '');
+
+    beforeEach(() => {
+      component.controlPanelFolded = false;
+      fixture.detectChanges();
+    });
+
+    it('should take the group headings from translation keys', () => {
+      expect(texts('legend')).toEqual([
+        'richTextEditor.group.fontStyle', 'richTextEditor.group.font', 'richTextEditor.group.paragraph',
+        'richTextEditor.group.textAlignment', 'richTextEditor.group.lists', 'richTextEditor.group.indentation',
+        'richTextEditor.group.image', 'richTextEditor.group.specialElements'
+      ]);
+    });
+
+    it('should take the field labels from translation keys', () => {
+      expect(texts('mat-label')).toEqual([
+        'richTextEditor.label.fontSize', 'richTextEditor.label.paragraphType',
+        'richTextEditor.label.paragraphSpacing', 'richTextEditor.label.indentDepth'
+      ]);
+    });
+
+    it('should hand the combo buttons translation keys as tooltips', () => {
+      const tooltips = fixture.debugElement.queryAll(By.directive(ComboButtonComponent))
+        .map(button => (button.componentInstance as ComboButtonComponent).tooltip);
+      expect(tooltips).toEqual([
+        'richTextEditor.fontColor', 'richTextEditor.highlightColor', 'richTextEditor.bulletList',
+        'richTextEditor.orderedList', 'richTextEditor.horizontalRule', 'richTextEditor.anchor'
+      ]);
+    });
+
+    /* Found by its label: the combo buttons hold a select of their own. */
+    const selectLabelled = (label: string): MatSelect => {
+      const field = fixture.debugElement.queryAll(By.css('mat-form-field'))
+        .find(formField => formField.nativeElement.querySelector('mat-label')?.textContent?.trim() === label);
+      expect(field, `form field labelled ${label}`).toBeDefined();
+      return field?.query(By.directive(MatSelect)).componentInstance as MatSelect;
+    };
+
+    /* The options of a select only exist while its panel is open. */
+    const optionTexts = (select: MatSelect): string[] => {
+      select.open();
+      fixture.detectChanges();
+      return select.options.map(option => option.viewValue);
+    };
+
+    it('should take the default font size from a translation key', () => {
+      const fontSizeSelect = selectLabelled('richTextEditor.label.fontSize');
+      expect(fontSizeSelect.placeholder).toBe('richTextEditor.fontSizeDefault');
+      expect(optionTexts(fontSizeSelect)[0]).toBe('richTextEditor.fontSizeDefault');
+    });
+
+    it('should take the plain paragraph from a translation key', () => {
+      expect(optionTexts(selectLabelled('richTextEditor.label.paragraphType')))
+        .toEqual(['H1', 'H2', 'H3', 'H4', 'richTextEditor.paragraph']);
+    });
+
+    it('should keep the CSS list styles as values and label them with keys', () => {
+      expect(component.bulletListStyles.map(option => option.value)).toEqual(['disc', 'circle', 'square']);
+      expect(component.orderedListStyles.map(option => option.value)).toEqual(
+        ['decimal', 'lower-latin', 'upper-latin', 'lower-roman', 'upper-roman', 'lower-greek']
+      );
+      [...component.bulletListStyles, ...component.orderedListStyles].forEach(option => {
+        expect(option.label).toBe(`richTextEditor.listStyle.${option.value}`);
+      });
+    });
+
+    describe('horizontal line', () => {
+      const lineButton = (): DebugElement => {
+        const button = fixture.debugElement.queryAll(By.directive(ComboButtonComponent))
+          .find(combo => (combo.componentInstance as ComboButtonComponent).icon === 'horizontal_rule');
+        expect(button, 'combo button with the horizontal_rule icon').toBeDefined();
+        return button as DebugElement;
+      };
+
+      /* Through the combo button's own list, so that what reaches insertLine is what its option emits. */
+      it('should insert the short line when it is picked from the list', () => {
+        const insertLine = vi.spyOn(component, 'insertLine');
+        const select = lineButton().query(By.directive(MatSelect)).componentInstance as MatSelect;
+        select.open();
+        fixture.detectChanges();
+        const options = Array.from(document.querySelectorAll<HTMLElement>('.select-overlay mat-option'));
+        expect(options.map(option => option.textContent?.trim())).toEqual(['richTextEditor.horizontalRuleShort']);
+        options[0].click();
+        expect(insertLine).toHaveBeenCalledWith(true);
+      });
+
+      it('should insert the full width line from the button itself', () => {
+        const insertLine = vi.spyOn(component, 'insertLine');
+        (lineButton().componentInstance as ComboButtonComponent).applySelection.emit();
+        expect(insertLine).toHaveBeenCalledWith();
+      });
+    });
   });
 
   /* The reduced controls leave the alignment out; a table header cell asks for it back (#1430). */

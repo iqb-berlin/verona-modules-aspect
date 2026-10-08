@@ -146,6 +146,16 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
     });
   });
 
+  /** The element the player scrolls in, found from a section. */
+  const scrollContainerOf = (section: HTMLElement): HTMLElement => {
+    const scrolls = (element: HTMLElement): boolean => element.scrollHeight > element.clientHeight &&
+      ['auto', 'scroll'].includes(getComputedStyle(element).overflowY);
+    let container = section.parentElement;
+    while (container && !scrolls(container)) container = container.parentElement;
+    expect(container, 'scroll container').not.to.equal(null);
+    return container as HTMLElement;
+  };
+
   /* An animated section is scrolled to with 100 px of room above it. The margin was set without its unit, which the
      browser drops, so the section ended flush with the top (#1536). */
   context('player: section shown with animation', () => {
@@ -170,13 +180,38 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
       // Measured against the element that scrolls; retried until the smooth scroll has come to rest.
       cy.get('aspect-section').eq(1).should($section => {
         const section = $section[0];
-        const scrolls = (element: HTMLElement): boolean => element.scrollHeight > element.clientHeight &&
-          ['auto', 'scroll'].includes(getComputedStyle(element).overflowY);
-        let container = section.parentElement;
-        while (container && !scrolls(container)) container = container.parentElement;
-        expect(container, 'scroll container').not.to.equal(null);
-        expect(section.getBoundingClientRect().top - (container as HTMLElement).getBoundingClientRect().top)
+        expect(section.getBoundingClientRect().top - scrollContainerOf(section).getBoundingClientRect().top)
           .to.be.closeTo(100, 2);
+      });
+    });
+
+    /* Typing on in the field keeps the rule fulfilled; the view stays where the test taker put it (#1546). */
+    it('does not scroll to the section again on input that keeps it shown', () => {
+      cy.get('aspect-section').eq(1).then($section => { scrollContainerOf($section[0]).scrollTop = 0; });
+      cy.get('aspect-text-field').find('input').type('x', { force: true, scrollBehavior: false });
+      // Waiting out a scroll that must not come: a smooth scroll would have moved well past this by then.
+      cy.wait(1000);
+      cy.get('aspect-section').eq(1).then($section => {
+        expect(scrollContainerOf($section[0]).scrollTop).to.equal(0);
+      });
+    });
+  });
+
+  /* A section whose rule holds from the start does not appear, so there is nothing to scroll to (#1546). Only Chrome
+     and Firefox show the difference: Electron does not carry out the scroll on loading in either case, so there the
+     directive spec holds the rule. */
+  context('player: animated section visible on loading', () => {
+    before('opens a player whose animated section is shown from the start', () => {
+      cy.openPlayer();
+      cy.loadUnit('section-visibility-animated-on-load.json');
+    });
+
+    it('opens the unit at its top', () => {
+      // Shown, though below the fold, which Cypress would count as not visible.
+      cy.get('aspect-section').eq(1).should('not.have.css', 'display', 'none');
+      cy.wait(1000);
+      cy.get('aspect-section').eq(1).then($section => {
+        expect(scrollContainerOf($section[0]).scrollTop).to.equal(0);
       });
     });
   });

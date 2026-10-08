@@ -19,11 +19,11 @@
         "height": 1200,
         "animatedVisibility": true,
         "enableReHide": true,
-        "visibilityRules": [{ "id": "trigger", "operator": "contains", "value": "show" }],
+        "visibilityRules": [{ "id": "trigger", "operator": "≠", "value": "x" }],
         "elements": [
           {
             "type": "text", "id": "animated_text", "alias": "animated_text",
-            "text": "<p>Eingeblendeter Abschnitt</p>",
+            "text": "<p>Von Anfang an sichtbar</p>",
             "position": { "xPosition": 20, "yPosition": 20 },
             "dimensions": { "width": 300, "height": 40 }
           }

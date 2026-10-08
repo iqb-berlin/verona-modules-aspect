@@ -52,7 +52,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     const condition = this.areVisibilityRulesFulfilled() || this.stateVariableStateService
       .getElementCodeById(this.visibilityVariableID)?.value as boolean || false;
     this.isVisible = this.checkVisibility(condition);
-    this.handleVisibility();
+    // A section shown from the start does not appear, so the unit opens at its top (#1546)
+    this.handleVisibility(false);
     if (this.section.enableReHide || !this.isVisible) {
       this.addVisibilitySubscription();
     }
@@ -87,8 +88,10 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(code => {
         if (this.isRuleCode(code)) {
+          const wasVisible = this.isVisible;
           this.isVisible = this.checkVisibility(this.areVisibilityRulesFulfilled());
-          this.handleVisibility();
+          // Only the change from hidden to shown: input keeping the rule fulfilled must not pull the view away (#1546)
+          this.handleVisibility(!wasVisible);
           if (this.isVisible && !this.section.enableReHide) {
             this.timerManager.reset();
           }
@@ -134,13 +137,14 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     return false;
   }
 
-  private handleVisibility(): void {
+  /** Shows or hides the section; `appeared` says whether it has just become visible, the one moment to scroll to it. */
+  private handleVisibility(appeared: boolean): void {
     // Remove the inline value rather than set one, so the stylesheet decides again: 'unset' fell back
     // to inline, which ignores min-height, so a static section shown by a rule had no height and none
     // of its elements could be seen (#1535)
     if (this.isVisible) {
       this.elementRef.nativeElement.style.removeProperty('display');
-      if (this.section.animatedVisibility) this.scrollIntoView();
+      if (this.section.animatedVisibility && appeared) this.scrollIntoView();
     } else {
       this.elementRef.nativeElement.style.display = 'none';
     }

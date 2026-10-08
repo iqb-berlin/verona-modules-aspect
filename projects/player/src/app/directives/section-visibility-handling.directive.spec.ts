@@ -132,6 +132,59 @@ describe('SectionVisibilityHandlingDirective', () => {
     expect(marginAtScroll).toBe('100px');
   }));
 
+  /* Scrolled to when it appears, not on every input that keeps its rule fulfilled (#1546). */
+  it('should scroll an animated section into view only when it appears', fakeAsync(() => {
+    const scrollIntoView = vi.fn();
+    hostElement.scrollIntoView = scrollIntoView;
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'no' };
+    initDirective(createSection(
+      [{ id: 'text-field_1', operator: 'contains', value: 'show' }],
+      { enableReHide: true, animatedVisibility: true }
+    ));
+
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'show' };
+    unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
+    tick();
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'showx' };
+    unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
+    tick();
+
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+  }));
+
+  it('should scroll to an animated section again when it appears again', fakeAsync(() => {
+    const scrollIntoView = vi.fn();
+    hostElement.scrollIntoView = scrollIntoView;
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'no' };
+    initDirective(createSection(
+      [{ id: 'text-field_1', operator: '=', value: 'yes' }],
+      { enableReHide: true, animatedVisibility: true }
+    ));
+
+    ['yes', 'no', 'yes'].forEach(value => {
+      elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value };
+      unitStateService.elementCodeChanged.next(elementCodes['text-field_1']);
+      tick();
+    });
+
+    expect(scrollIntoView).toHaveBeenCalledTimes(2);
+  }));
+
+  /* Shown from the start, it does not appear: the unit opens at its top (#1546). */
+  it('should not scroll to an animated section that is visible on loading', fakeAsync(() => {
+    const scrollIntoView = vi.fn();
+    hostElement.scrollIntoView = scrollIntoView;
+    elementCodes['text-field_1'] = { id: 'text-field_1', status: 'VALUE_CHANGED', value: 'yes' };
+    initDirective(createSection(
+      [{ id: 'text-field_1', operator: '=', value: 'yes' }],
+      { enableReHide: true, animatedVisibility: true }
+    ));
+    tick();
+
+    expect(hostElement.style.display).toBe('');
+    expect(scrollIntoView).not.toHaveBeenCalled();
+  }));
+
   it('should restore stylesheet layout when a section is shown again', () => {
     const stylesheet = document.createElement('style');
     stylesheet.textContent = '.visibility-layout-test { display: block; }';

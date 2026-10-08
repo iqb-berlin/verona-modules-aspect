@@ -228,6 +228,17 @@ describe('RichTextEditorComponent', () => {
     expect(html).not.toContain('<em');
   });
 
+  it('should take the labels of the cloze buttons from translation keys', () => {
+    component.clozeMode = true;
+    fixture.detectChanges();
+    const labels = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.fx-row-space-around-center button'))
+      .map(button => button.textContent?.replace(button.querySelector('mat-icon')?.textContent ?? '', '').trim());
+    expect(labels).toEqual([
+      'richTextEditor.textField', 'richTextEditor.dropList', 'richTextEditor.radio',
+      'richTextEditor.button', 'richTextEditor.checkbox', 'richTextEditor.dropdown'
+    ]);
+  });
+
   /* One switch for the session: every editor follows it, also one opened after it was switched (#1476). */
   describe('marking non-breaking spaces', () => {
     const markers = (editorComponent: RichTextEditorComponent): number => editorComponent.editor.view.dom

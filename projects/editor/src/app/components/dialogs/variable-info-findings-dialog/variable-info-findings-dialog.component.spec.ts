@@ -20,6 +20,7 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
+import { LoadErrorHint } from 'editor/src/app/models/load-error';
 import { VariableInfoLocation } from 'editor/src/app/utils/variable-info-origins';
 import { VariableInfoIssue, VariableInfoIssueCode } from 'editor/src/app/utils/variable-info-validator';
 import {
@@ -58,6 +59,7 @@ describe('VariableInfoFindingsDialogComponent', () => {
     variableInfoFindings: BehaviorSubject<VariableInfoFinding[]>,
     rulesIntoNothing: BehaviorSubject<RulesIntoNothing[]>,
     loadRepairs: BehaviorSubject<UIElement[]>,
+    loadErrorHints: BehaviorSubject<LoadErrorHint[]>,
     editStateVariables: () => void,
     replaceIds: Mock,
     revealElement: Mock,
@@ -115,6 +117,7 @@ describe('VariableInfoFindingsDialogComponent', () => {
       variableInfoFindings: findings,
       rulesIntoNothing: new BehaviorSubject<RulesIntoNothing[]>([]),
       loadRepairs: new BehaviorSubject<UIElement[]>([]),
+      loadErrorHints: new BehaviorSubject<LoadErrorHint[]>([]),
       editStateVariables: vi.fn(),
       replaceIds: vi.fn(),
       revealElement: vi.fn(),
@@ -331,6 +334,66 @@ describe('VariableInfoFindingsDialogComponent', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('.rules-into-nothing-section')).toBeNull();
+    });
+  });
+
+  /* What the player would report to the host, listed at its element with a text the author can act on (#1537). */
+  describe('what could not be loaded', () => {
+    const image = element('image', 'image_1', 'bild');
+    const imageHint: LoadErrorHint = {
+      error: { code: 'image-not-loading', message: 'Failed to load image element', elementId: 'image_1' },
+      element: image,
+      location: location(1, 0, image, image),
+      textKey: 'unitHints.loadErrors.code.image-not-loading'
+    };
+    const geogebraHint: LoadErrorHint = {
+      error: { code: 'geogebra-not-loading', message: 'GeoGebra could not be loaded' },
+      element: null,
+      location: null,
+      textKey: 'unitHints.loadErrors.code.geogebra-not-loading'
+    };
+    const errorRows = (): HTMLElement[] => Array.from(fixture.nativeElement.querySelectorAll('.load-error-row'));
+
+    beforeEach(() => {
+      findings.next([]);
+      unitService.loadErrorHints.next([imageHint, geogebraHint]);
+      fixture.detectChanges();
+    });
+
+    it('should explain each error by its text and give the technical message beneath', () => {
+      expect(errorRows().length).toBe(2);
+      expect(errorRows()[0].querySelector('.load-error-text')?.textContent)
+        .toContain('unitHints.loadErrors.code.image-not-loading');
+      expect(errorRows()[0].querySelector('.load-error-detail')?.textContent)
+        .toContain('Failed to load image element');
+      expect(errorRows()[1].querySelector('.load-error-text')?.textContent)
+        .toContain('unitHints.loadErrors.code.geogebra-not-loading');
+    });
+
+    it('should name where an element sits, and the whole unit for an error without one', () => {
+      expect(errorRows()[0].textContent).toContain('variableInfoFindings.location');
+      expect(errorRows()[0].textContent).toContain('bild');
+      expect(errorRows()[1].textContent).toContain('unitHints.loadErrors.wholeUnit');
+    });
+
+    it('should take the author to the element, and offer no way for the whole unit', () => {
+      expect(errorRows()[1].querySelector('.go-to-load-error')).toBeNull();
+
+      (errorRows()[0].querySelector('.go-to-load-error') as HTMLButtonElement).click();
+
+      expect(dialogService.closeAllThen).toHaveBeenCalled();
+      expect(unitService.revealLocation).toHaveBeenCalledWith(imageHint.location);
+    });
+
+    it('should count as something open in the title', () => {
+      const title: HTMLElement = fixture.nativeElement.querySelector('[mat-dialog-title]');
+      expect(title.querySelector('.message-icon-warning')).toBeTruthy();
+
+      unitService.loadErrorHints.next([]);
+      fixture.detectChanges();
+
+      expect(title.querySelector('.message-icon-warning')).toBeNull();
+      expect(fixture.nativeElement.querySelector('.load-errors-section')).toBeNull();
     });
   });
 

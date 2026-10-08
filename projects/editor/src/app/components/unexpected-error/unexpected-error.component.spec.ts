@@ -50,6 +50,12 @@ describe('UnexpectedErrorComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /* Without it the author cannot tell one error from another without filing a report (#1537). */
+  it('should show the error message as a technical detail', () => {
+    expect(fixture.nativeElement.querySelector('.technical-detail')?.textContent)
+      .toContain('Etwas ist schiefgelaufen');
+  });
+
   it('should build the report title from the error message', () => {
     expect(component.reportTitle).toBe('Generierte Fehlermeldung: Etwas ist schiefgelaufen');
   });

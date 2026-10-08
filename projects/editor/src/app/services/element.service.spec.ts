@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/cloze';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 import { FileService } from 'common/services/file.service';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
 
 /* Methods that need file imports or a fully built unit (handleTextElementChange, ...) are not covered
    here; they depend on FileService dialogs and the real EditorUnit and are exercised via the unit
@@ -26,6 +27,7 @@ describe('ElementService', () => {
   let messageServiceSpy: SpyObj<MessageService>;
   let selectionService: SelectionService;
   let idService: IDService;
+  let loadErrorService: LoadErrorService;
   let unitServiceMock: {
     elementPropertyUpdated: Subject<void>;
     geometryElementPropertyUpdated: Subject<string>;
@@ -115,14 +117,45 @@ describe('ElementService', () => {
     messageServiceSpy = createSpyObj<MessageService>(['showError']);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    loadErrorService = new LoadErrorService();
     service = new ElementService(
       unitServiceMock as unknown as UnitService,
       selectionService,
       dialogServiceSpy,
       messageServiceSpy,
       idService,
-      translateServiceSpy
+      translateServiceSpy,
+      loadErrorService
     );
+  });
+
+  /* A new file is loaded anew and reports again if it fails as well; until then the old error is no longer true
+     (#1537). */
+  it('should forget what an element could not load once its source is replaced', () => {
+    const image = putIntoSection(ElementFactory.createElement({
+      type: 'image', id: 'image_1', alias: 'bild'
+    } as unknown as UIElementProperties, idService));
+    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'image_1' });
+    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'image_2' });
+
+    service.updateElementsProperty([image], 'alt', 'Beschreibung');
+    expect(loadErrorService.errors.value.length).toBe(2);
+
+    service.updateElementsProperty([image], 'src', 'data:image/png;base64,AAAA');
+    expect(loadErrorService.errors.value.map(error => error.elementId)).toEqual(['image_2']);
+  });
+
+  /* A medium's timeout does not restart for a new file, so a file that still fails would never report again: its
+     entry stays until the unit is loaded anew. */
+  it('should keep what a medium could not load when its source is replaced', () => {
+    const audio = putIntoSection(ElementFactory.createElement({
+      type: 'audio', id: 'audio_1', alias: 'hoertext'
+    } as unknown as UIElementProperties, idService));
+    loadErrorService.report({ code: 'media-timeout', message: 'Failed', elementId: 'audio_1' });
+
+    service.updateElementsProperty([audio], 'src', 'data:audio/mp3;base64,AAAA');
+
+    expect(loadErrorService.errors.value.length).toBe(1);
   });
 
   /* One test replaces a FileService static to make the import fail; the spy would otherwise stay

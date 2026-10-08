@@ -18,6 +18,7 @@
   "top": "oben",
   "bottom": "unten",
   "idTaken": "ID ist bereits vergeben",
+  "idAlreadyRegistered": "Die ID „{{ id }}“ ist in dieser Unit doppelt vergeben.",
   "idContainsInvalidCharacters": "ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)",
   "idContainsSpace": "ID enthält unerlaubtes Leerzeichen",
   "idEditDialog": {
@@ -542,7 +543,8 @@
     "reportError": "Fehler melden",
     "reportViaGitHub": "Fehlerbericht auf GitHub erstellen",
     "reportViaEmail": "Fehlerbericht als Email versenden",
-    "reportToClipboard": "Fehlerbericht in Zwischenablage kopieren"
+    "reportToClipboard": "Fehlerbericht in Zwischenablage kopieren",
+    "technicalDetail": "Technische Angabe:"
   },
   "unitDefError": {
     "newer": "Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.",
@@ -564,9 +566,6 @@
     "readSuccess": "Abschnitt wurde erfolgreich gelesen.",
     "savedFound": "Gespeicherter Abschnitt gefunden.",
     "savedMissing": "Kein gespeicherter Abschnitt gefunden."
-  },
-  "error": {
-    "corruptElement": "Element-Ressource ist vermutlich fehlerhaft und sollte ausgetauscht werden! \n\n Ursprüngliche Fehlermeldung: {{ errorMsg }}"
   },
   "sectionTemplates": {
     "inputTitle": "Assistent: Antwortfeld(er)",
@@ -699,6 +698,23 @@
     "loadRepairs": {
       "title": "Beim Laden entfernte Verweise",
       "explanation": "Diese Elemente verwiesen auf etwas, das es in der Unit nicht gibt. Die Verweise wurden beim Laden entfernt."
+    },
+    "loadErrors": {
+      "title": "Nicht geladene Inhalte",
+      "explanation": "Diese Inhalte konnten nicht geladen werden. Dasselbe Problem tritt meist auch im Player auf.",
+      "problem": "Problem",
+      "wholeUnit": "Ganze Unit",
+      "technicalDetail": "Technische Angabe:",
+      "notice": "Ein Inhalt der Unit konnte nicht geladen werden.",
+      "show": "Anzeigen",
+      "code": {
+        "image-not-loading": "Das Bild kann nicht angezeigt werden. Die Bilddatei ist vermutlich beschädigt. Bitte das Bild neu hochladen.",
+        "media-timeout": "Das Audio oder Video wurde nicht rechtzeitig geladen. Mögliche Ursachen sind eine sehr große Datei oder ein Format, das der Browser nicht abspielen kann. Tritt der Fehler nach erneutem Laden der Unit wieder auf, bitte die Datei prüfen.",
+        "media-duration-error": "Die Länge des Audios oder Videos lässt sich nicht bestimmen. Das kommt etwa bei Aufnahmen vor, die direkt im Browser entstanden sind. Bitte die Datei in einem anderen Format, zum Beispiel MP3 oder MP4, speichern und neu hochladen.",
+        "geometry-timeout": "Das Geometrie-Element wurde nicht rechtzeitig fertig geladen. Mögliche Ursachen sind eine langsame Verbindung, ein unvollständiges GeoGebra-Paket oder eine fehlerhafte GeoGebra-Datei. Tritt der Fehler nach erneutem Laden der Unit wieder auf, bitte die GeoGebra-Datei prüfen oder die Administration ansprechen.",
+        "geogebra-not-loading": "Das GeoGebra-Paket konnte nicht geladen werden. Es fehlt auf dem Server oder ist gerade nicht erreichbar. Die Geometrie-Elemente bleiben deshalb leer. Bitte wenden Sie sich an die Administration.",
+        "other": "Dieser Inhalt konnte nicht geladen werden."
+      }
     }
   },
   "variableInfoFindings": {

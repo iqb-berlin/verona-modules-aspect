@@ -28,7 +28,7 @@ export class ExternalResourceService {
    *
    * A failing load throws from the `onerror` callback, so the error does not reach this caller but
    * Angular's error handler -- and the two applications do different things with it: the player reports
-   * `geogebra-not-loading` to the host, while the editor excludes exactly this code from its snackbar.
+   * `geogebra-not-loading` to the host, while the editor lists it in its hints area for the whole unit (#1537).
    * The message names the address and says "could not be loaded", which covers every cause a script's
    * `onerror` stands for: a missing package, a refused connection and a blocked response alike.
    */

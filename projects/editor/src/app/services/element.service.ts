@@ -32,6 +32,7 @@ import { TextElement } from 'common/models/elements/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/cloze';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogCanceledError } from 'editor/src/app/classes/dialog-canceled-error';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
 import { TableElement } from 'common/models/elements/table';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
@@ -82,7 +83,8 @@ export class ElementService {
               private dialogService: DialogService,
               private messageService: MessageService,
               private idService: IDService,
-              private translateService: TranslateService) { }
+              private translateService: TranslateService,
+              private loadErrorService: LoadErrorService) { }
 
   async addElementToSection(elementType: UIElementType, sectionParam?: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
@@ -231,6 +233,8 @@ export class ElementService {
            them, so one value handed to a selection would leave them all holding the same objects --
            editing a label on one would change it on the others (#1188). */
         element.setProperty(property, copyPlainData(value));
+        // A new picture is loaded anew, and reports again if it fails as well (#1537).
+        if (LoadErrorService.reloadsOnWrite(element.type, property)) this.loadErrorService.clearErrorsOf(element.id);
         if (element.type === 'geometry' && property !== 'trackedVariables' && property !== 'trackedExpectedVariables') {
           this.unitService.geometryElementPropertyUpdated.next(element.id);
         }

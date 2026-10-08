@@ -4,6 +4,8 @@ import { IDError } from 'common/classes/id-error';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 
 /**
  * Registered as Angular's global ErrorHandler (app.module.ts), so handleError runs for every throw
@@ -35,10 +37,14 @@ import { TranslateService } from '@ngx-translate/core';
  * start command, deliberately: the previous unit's dialog can still be on screen, so until it is
  * dismissed the new unit's first error only reaches the console.
  *
- * The IDError and AspectError branches are NOT gated: they report a concrete element or resource
- * ("ID is already taken", a broken image), are thrown from event handlers rather than from a
- * template expression, and use snackbars, which replace each other instead of stacking. Note that
- * an AspectError with code 'geogebra-not-loading' deliberately falls through to the gated branch.
+ * The IDError branch is NOT gated: it reports what the author just typed, is thrown from an event
+ * handler rather than from a template expression, and uses snackbars, which replace each other
+ * instead of stacking.
+ *
+ * An AspectError is what the player reports to the host as a runtime error. The editor has no such
+ * message (verona-interfaces/editor#16), so it lists the error in the hints area instead and announces
+ * it once (#1537). That gate is the LoadErrorService's: an element reports again each time it is
+ * built, and only the first report is news.
  */
 @Injectable({
   providedIn: 'root'
@@ -51,7 +57,9 @@ export class ErrorService implements ErrorHandler {
   constructor(
     private translateService: TranslateService,
     private messageService: MessageService,
-    veronaApiService: VeronaAPIService) {
+    veronaApiService: VeronaAPIService,
+    private loadErrorService: LoadErrorService,
+    private dialogService: DialogService) {
     // Subscribed here rather than called from outside, because it puts the clearing ahead of the
     // load: Angular builds the ErrorHandler at bootstrap, so this subscriber is registered before
     // the one in AppComponent that loads the definition. Calling it from outside is at least sound
@@ -65,14 +73,28 @@ export class ErrorService implements ErrorHandler {
   handleError(error: unknown): void {
     if (error instanceof IDError) {
       // The models in common carry the key; the editor shows it translated (#1523).
-      const text = error.translationKey ? this.translateService.instant(error.translationKey) : error.message;
+      const text = error.translationKey ?
+        this.translateService.instant(error.translationKey, error.translationParams) :
+        error.message;
       error.highSeverity ? this.messageService.showPrompt(text) : this.messageService.showError(text);
-    } else if (error instanceof AspectError && error.code !== 'geogebra-not-loading') {
-      this.messageService
-        .showPrompt(this.translateService.instant('error.corruptElement', { errorMsg: error.message }));
+    } else if (error instanceof AspectError) {
+      this.reportLoadError(error);
     } else {
       this.reportUnexpectedError(ErrorService.asError(error));
     }
+  }
+
+  private reportLoadError(error: AspectError): void {
+    const isNew = this.loadErrorService
+      .report({ code: error.code, message: error.message, elementId: error.elementId });
+    if (!isNew) return;
+    // eslint-disable-next-line no-console
+    console.error(error);
+    this.messageService
+      .showWarningWithAction(
+        this.translateService.instant('unitHints.loadErrors.notice'),
+        this.translateService.instant('unitHints.loadErrors.show'))
+      .subscribe(() => this.dialogService.showVariableInfoFindingsDialog());
   }
 
   private reportUnexpectedError(error: Error): void {

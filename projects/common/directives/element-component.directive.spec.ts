@@ -94,4 +94,16 @@ describe('ElementComponent', () => {
       expect((error as AspectError).name).toBe('AspectError');
     }
   });
+
+  /* The editor lists a load error at the element that threw it (#1537). */
+  it('should name the element the error is about', () => {
+    const component = componentOn(host);
+
+    try {
+      component.throwError('image-not-loading', 'Failed to load image');
+      expect.unreachable('throwError did not throw');
+    } catch (error) {
+      expect((error as AspectError).elementId).toBe('element_1');
+    }
+  });
 });

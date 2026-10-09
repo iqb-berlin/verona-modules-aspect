@@ -9,8 +9,7 @@ import {
   VopMetaData,
   VopStateChangedNotification,
   WidgetType,
-  WidgetParameter,
-  SharedParameter
+  WidgetParameter
 } from '../models/verona';
 
 @Injectable({
@@ -86,7 +85,6 @@ export class VeronaPostService {
     callId?: string;
     widgetType: WidgetType;
     parameters?: WidgetParameter[];
-    sharedParameters?: SharedParameter[];
     state?: string;
   }): void {
     this.sendMessage({

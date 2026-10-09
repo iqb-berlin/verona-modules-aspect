@@ -35,6 +35,7 @@ export interface GeoGebraAppletParameters {
   errorDialogsActive: boolean;
   showLogging: boolean;
   useBrowserForJS: boolean;
+  detachKeyboard: boolean;
   ggbBase64: string;
   appletOnLoad: (geoGebraApi: GeoGebraApi) => void;
 }

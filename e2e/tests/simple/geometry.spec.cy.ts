@@ -101,6 +101,10 @@ describe('Geometry element', { testIsolation: false }, () => {
       visibleAppletParams().its('showAlgebraInput').should('equal', false);
     });
 
+    it('keeps GeoGebra\'s keyboard inside the applet (Page 1)', () => {
+      visibleAppletParams().its('detachKeyboard').should('equal', false);
+    });
+
     it('renders a geometry element without a reset button (Page 2)', () => {
       cy.goToPlayerPage(2);
       cy.wait(500);

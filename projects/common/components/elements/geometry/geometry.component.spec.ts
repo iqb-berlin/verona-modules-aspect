@@ -90,6 +90,12 @@ describe('GeometryComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should keep GeoGebra\'s keyboard inside the applet (#1549)', () => {
+    component.refresh();
+
+    expect(ggbApplet).toHaveBeenCalledWith(expect.objectContaining({ detachKeyboard: false }), '5.0');
+  });
+
   it('should not emit valuechanged on initial load (no user interaction)', fakeAsync(() => {
     vi.spyOn(component.elementValueChanged, 'emit');
 

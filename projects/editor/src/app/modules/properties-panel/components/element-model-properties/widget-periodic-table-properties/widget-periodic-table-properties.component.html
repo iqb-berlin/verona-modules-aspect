@@ -20,7 +20,7 @@
 
     <mat-form-field appearance="fill">
       <mat-label>{{'propertiesPanel.maxNumberOfSelections' | translate }}</mat-label>
-      <input matInput type="number" min="0" required aspectNumberField
+      <input matInput type="number" min="0" max="118" required aspectNumberField
              #maxNumberOfSelectionsField="aspectNumberField"
              [ngModel]="combinedProperties.maxNumberOfSelections"
              (numberChange)="updateModel.emit(

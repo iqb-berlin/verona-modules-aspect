@@ -486,7 +486,7 @@
     "table": "Tabelle",
     "widget-molecule-editor": "Molekül-Editor",
     "widget-periodic-table": "Periodensystem",
-    "tetfolio": "Tetfolio"
+    "tetfolio": "Tetfolio (experimentell)"
   },
   "section-menu": {
     "elementList": "Elementliste",
@@ -754,7 +754,7 @@
     "alwaysVisiblePage": "Dauerhaft sichtbare Seite",
     "addPage": "Weitere Seite anlegen",
     "unitNavNextHint": "Wird am Ende der letzten Seite angezeigt",
-    "unitSettings": "Aufgabe-Einstellungen",
+    "unitSettings": "Unit-Einstellungen",
     "editorSettings": "Editor-Einstellungen",
     "overview": "Übersicht",
     "openElementList": "Elementliste öffnen",

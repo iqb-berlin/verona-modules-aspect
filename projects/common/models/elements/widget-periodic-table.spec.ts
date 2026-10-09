@@ -52,6 +52,9 @@ describe('WidgetPeriodicTableElement', () => {
       showInfoOrder: false,
       showInfoENeg: true,
       showInfoAMass: false,
+      showInfoName: false,
+      showInfoSymbol: false,
+      highlightBlocks: true,
       closeOnSelection: true,
       maxNumberOfSelections: 4
     };

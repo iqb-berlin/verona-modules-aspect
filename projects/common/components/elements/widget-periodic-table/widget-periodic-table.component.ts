@@ -21,6 +21,9 @@ export class WidgetPeriodicTableComponent extends ElementComponent {
       showInfoOrder: this.elementModel.showInfoOrder,
       showInfoENeg: this.elementModel.showInfoENeg,
       showInfoAMass: this.elementModel.showInfoAMass,
+      showInfoName: this.elementModel.showInfoName,
+      showInfoSymbol: this.elementModel.showInfoSymbol,
+      highlightBlocks: this.elementModel.highlightBlocks,
       closeOnSelection: this.elementModel.closeOnSelection,
       maxNumberOfSelections: this.elementModel.maxNumberOfSelections
     };

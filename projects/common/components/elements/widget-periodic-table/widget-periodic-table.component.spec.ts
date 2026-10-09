@@ -40,6 +40,9 @@ describe('WidgetPeriodicTableComponent', () => {
     component.elementModel.showInfoOrder = true;
     component.elementModel.showInfoENeg = false;
     component.elementModel.showInfoAMass = true;
+    component.elementModel.showInfoName = false;
+    component.elementModel.showInfoSymbol = true;
+    component.elementModel.highlightBlocks = true;
     component.elementModel.closeOnSelection = false;
     component.elementModel.maxNumberOfSelections = 3;
 
@@ -49,6 +52,9 @@ describe('WidgetPeriodicTableComponent', () => {
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: true,
+      showInfoName: false,
+      showInfoSymbol: true,
+      highlightBlocks: true,
       closeOnSelection: false,
       maxNumberOfSelections: 3
     });

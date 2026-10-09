@@ -49,6 +49,9 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: false,
+      showInfoName: true,
+      showInfoSymbol: false,
+      highlightBlocks: true,
       closeOnSelection: false,
       maxNumberOfSelections: 3
     };
@@ -65,7 +68,7 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     const inputs = Array.from(
       fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
     );
-    expect(inputs.map(input => input.checked)).toEqual([true, false, false, false]);
+    expect(inputs.map(input => input.checked)).toEqual([true, false, false, true, false, true, false]);
     expect((fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement).value).toBe('3');
   });
 
@@ -79,6 +82,9 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
       { property: 'showInfoOrder', value: false },
       { property: 'showInfoENeg', value: true },
       { property: 'showInfoAMass', value: true },
+      { property: 'showInfoName', value: false },
+      { property: 'showInfoSymbol', value: true },
+      { property: 'highlightBlocks', value: false },
       { property: 'closeOnSelection', value: true }
     ]);
   });

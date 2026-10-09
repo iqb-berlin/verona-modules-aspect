@@ -13,6 +13,18 @@
                             (valueChange)="updateModel.emit({ property: 'showInfoAMass', value: $event })">
       {{ 'propertiesPanel.showInfoAMass' | translate }}
     </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoName"
+                            (valueChange)="updateModel.emit({ property: 'showInfoName', value: $event })">
+      {{ 'propertiesPanel.showInfoName' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.showInfoSymbol"
+                            (valueChange)="updateModel.emit({ property: 'showInfoSymbol', value: $event })">
+      {{ 'propertiesPanel.showInfoSymbol' | translate }}
+    </aspect-merged-checkbox>
+    <aspect-merged-checkbox [value]="combinedProperties.highlightBlocks"
+                            (valueChange)="updateModel.emit({ property: 'highlightBlocks', value: $event })">
+      {{ 'propertiesPanel.highlightBlocks' | translate }}
+    </aspect-merged-checkbox>
     <aspect-merged-checkbox [value]="combinedProperties.closeOnSelection"
                             (valueChange)="updateModel.emit({ property: 'closeOnSelection', value: $event })">
       {{ 'propertiesPanel.closeOnSelection' | translate }}

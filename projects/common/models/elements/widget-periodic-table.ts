@@ -21,6 +21,11 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoOrder;
   showInfoENeg: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoENeg;
   showInfoAMass: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoAMass;
+  showInfoName: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoName;
+  showInfoSymbol: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoSymbol;
+  /** Colours each element field in the widget by its block (s, p, d, f). The answer the player shows
+      next to the button is then dark grey instead of the widget's purple. */
+  highlightBlocks: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].highlightBlocks;
   closeOnSelection: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].closeOnSelection;
   maxNumberOfSelections: number = ELEMENT_DEFAULTS['widget-periodic-table'].maxNumberOfSelections;
   state: string | null = ELEMENT_DEFAULTS['widget-periodic-table'].state;
@@ -35,6 +40,9 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
       if (element.showInfoOrder !== undefined) this.showInfoOrder = element.showInfoOrder;
       if (element.showInfoENeg !== undefined) this.showInfoENeg = element.showInfoENeg;
       if (element.showInfoAMass !== undefined) this.showInfoAMass = element.showInfoAMass;
+      if (element.showInfoName !== undefined) this.showInfoName = element.showInfoName;
+      if (element.showInfoSymbol !== undefined) this.showInfoSymbol = element.showInfoSymbol;
+      if (element.highlightBlocks !== undefined) this.highlightBlocks = element.highlightBlocks;
       if (element.closeOnSelection !== undefined) this.closeOnSelection = element.closeOnSelection;
       if (element.maxNumberOfSelections !== undefined) this.maxNumberOfSelections = element.maxNumberOfSelections;
       if (element.state !== undefined) this.state = element.state;
@@ -64,6 +72,9 @@ export interface WidgetPeriodicTableProperties extends UIElementProperties {
   showInfoOrder: boolean;
   showInfoENeg: boolean;
   showInfoAMass: boolean;
+  showInfoName: boolean;
+  showInfoSymbol: boolean;
+  highlightBlocks: boolean;
   closeOnSelection: boolean;
   maxNumberOfSelections: number;
   state: string | null;

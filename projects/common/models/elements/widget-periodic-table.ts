@@ -43,9 +43,18 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
     }
   }
 
+  /** With a maximum of 0 (or below) nothing can be selected: the periodic table is only there to look
+      at (#1488). Read as a number, because the editor loads a unit without the normalizer and a value
+      stored as a string stays one there. */
+  isViewOnly(): boolean {
+    return Number(this.maxNumberOfSelections) <= 0;
+  }
+
   /** The answer is the widget's `state` as the player stores it: the selected element symbols,
-      separated by spaces. VariableInfo has no format for such a list, hence `''`. */
+      separated by spaces. VariableInfo has no format for such a list, hence `''`. A periodic table that
+      is only there to look at gives no answer, and the variable says so. */
   getVariableInfos(): VariableInfo[] {
+    if (this.isViewOnly()) return super.getVariableInfos();
     return [{ ...super.getVariableInfos()[0], type: 'STRING' }];
   }
 }

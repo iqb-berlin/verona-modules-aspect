@@ -113,7 +113,10 @@ export class WidgetGroupElementComponent
        it unanswered (#1465). */
     const previousState =
       (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state ?? '';
-    if (typeof message.state === 'string' && message.state !== previousState) {
+    /* A periodic table that is only there to look at has no answer, and its variable says so (#1488).
+       A widget that still reads 0 as unlimited lets a selection through all the same. */
+    const viewOnly = this.elementModel instanceof WidgetPeriodicTableElement && this.elementModel.isViewOnly();
+    if (!viewOnly && typeof message.state === 'string' && message.state !== previousState) {
       (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state =
         message.state;
 

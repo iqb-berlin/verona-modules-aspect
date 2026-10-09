@@ -183,6 +183,17 @@ describe('WidgetGroupElementComponent', () => {
       expect(component.changeElementCodeValue).not.toHaveBeenCalled();
     });
 
+    /* Its variable is NO_VALUE, so an answer has nowhere to go -- and a widget that still reads 0 as
+       unlimited sends one all the same (#1488). */
+    it('should take no answer from a periodic table that is only there to look at', () => {
+      (component.elementModel as WidgetPeriodicTableElement).maxNumberOfSelections = 0;
+
+      returnFromWidget('H He');
+
+      expect((component.elementModel as WidgetPeriodicTableElement).state).toBe('Na Cl');
+      expect(component.changeElementCodeValue).not.toHaveBeenCalled();
+    });
+
     it('should keep an unanswered widget unanswered when it is confirmed without a choice', () => {
       (component.elementModel as WidgetPeriodicTableElement).state = null;
 

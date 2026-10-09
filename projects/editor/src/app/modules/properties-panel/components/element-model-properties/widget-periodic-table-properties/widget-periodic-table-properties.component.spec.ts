@@ -49,6 +49,9 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: false,
+      showInfoName: true,
+      showInfoSymbol: false,
+      highlightBlocks: true,
       closeOnSelection: false,
       maxNumberOfSelections: 3
     };
@@ -65,7 +68,7 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     const inputs = Array.from(
       fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>
     );
-    expect(inputs.map(input => input.checked)).toEqual([true, false, false, false]);
+    expect(inputs.map(input => input.checked)).toEqual([true, false, false, true, false, true, false]);
     expect((fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement).value).toBe('3');
   });
 
@@ -79,6 +82,9 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
       { property: 'showInfoOrder', value: false },
       { property: 'showInfoENeg', value: true },
       { property: 'showInfoAMass', value: true },
+      { property: 'showInfoName', value: false },
+      { property: 'showInfoSymbol', value: true },
+      { property: 'highlightBlocks', value: false },
       { property: 'closeOnSelection', value: true }
     ]);
   });
@@ -111,10 +117,32 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     expect(numberInput.value).toBe('3');
   });
 
-  /* The value travels into the widget call unchanged, so what a 0 does is decided in the widget:
-     `maxSelectCount < 1` skips its limit check, which makes the selection unlimited rather than
-     impossible (`ps-select.service.ts` in iqb-berlin/verona-widgets-chemistry). The field is the
-     only place an author can learn that (#1350). */
+  /* The periodic table has 118 elements, so no more can be selected (#1488). */
+  it('should refuse more selections than there are elements', async () => {
+    const numberInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+    numberInput.value = '119';
+    numberInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    numberInput.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(emitted).toEqual([{ property: 'maxNumberOfSelections', value: 119, isInputValid: false }]);
+    expect(numberInput.value).toBe('3');
+  });
+
+  it('should accept 118 selections', () => {
+    const numberInput = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
+    numberInput.value = '118';
+    numberInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(emitted).toEqual([{ property: 'maxNumberOfSelections', value: 118, isInputValid: true }]);
+  });
+
+  /* A 0 means no selection at all: the periodic table is only there to look at, and the player takes
+     no answer from it (#1488; until then a 0 meant unlimited, #1350). The field is the only place an
+     author can learn that; the text itself is checked in e2e (widget.spec.cy.ts). */
   it('should say what a zero number of selections means', () => {
     const hints = Array.from(
       fixture.nativeElement.querySelectorAll('mat-hint') as NodeListOf<HTMLElement>

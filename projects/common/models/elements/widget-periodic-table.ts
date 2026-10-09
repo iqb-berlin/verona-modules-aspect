@@ -21,6 +21,11 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   showInfoOrder: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoOrder;
   showInfoENeg: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoENeg;
   showInfoAMass: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoAMass;
+  showInfoName: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoName;
+  showInfoSymbol: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].showInfoSymbol;
+  /** Colours each element field in the widget by its block (s, p, d, f). The answer the player shows
+      next to the button is then dark grey instead of the widget's purple. */
+  highlightBlocks: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].highlightBlocks;
   closeOnSelection: boolean = ELEMENT_DEFAULTS['widget-periodic-table'].closeOnSelection;
   maxNumberOfSelections: number = ELEMENT_DEFAULTS['widget-periodic-table'].maxNumberOfSelections;
   state: string | null = ELEMENT_DEFAULTS['widget-periodic-table'].state;
@@ -35,6 +40,9 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
       if (element.showInfoOrder !== undefined) this.showInfoOrder = element.showInfoOrder;
       if (element.showInfoENeg !== undefined) this.showInfoENeg = element.showInfoENeg;
       if (element.showInfoAMass !== undefined) this.showInfoAMass = element.showInfoAMass;
+      if (element.showInfoName !== undefined) this.showInfoName = element.showInfoName;
+      if (element.showInfoSymbol !== undefined) this.showInfoSymbol = element.showInfoSymbol;
+      if (element.highlightBlocks !== undefined) this.highlightBlocks = element.highlightBlocks;
       if (element.closeOnSelection !== undefined) this.closeOnSelection = element.closeOnSelection;
       if (element.maxNumberOfSelections !== undefined) this.maxNumberOfSelections = element.maxNumberOfSelections;
       if (element.state !== undefined) this.state = element.state;
@@ -43,9 +51,18 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
     }
   }
 
+  /** With a maximum of 0 (or below) nothing can be selected: the periodic table is only there to look
+      at (#1488). Read as a number, because the editor loads a unit without the normalizer and a value
+      stored as a string stays one there. */
+  isViewOnly(): boolean {
+    return Number(this.maxNumberOfSelections) <= 0;
+  }
+
   /** The answer is the widget's `state` as the player stores it: the selected element symbols,
-      separated by spaces. VariableInfo has no format for such a list, hence `''`. */
+      separated by spaces. VariableInfo has no format for such a list, hence `''`. A periodic table that
+      is only there to look at gives no answer, and the variable says so. */
   getVariableInfos(): VariableInfo[] {
+    if (this.isViewOnly()) return super.getVariableInfos();
     return [{ ...super.getVariableInfos()[0], type: 'STRING' }];
   }
 }
@@ -55,6 +72,9 @@ export interface WidgetPeriodicTableProperties extends UIElementProperties {
   showInfoOrder: boolean;
   showInfoENeg: boolean;
   showInfoAMass: boolean;
+  showInfoName: boolean;
+  showInfoSymbol: boolean;
+  highlightBlocks: boolean;
   closeOnSelection: boolean;
   maxNumberOfSelections: number;
   state: string | null;

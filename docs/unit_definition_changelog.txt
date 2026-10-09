@@ -281,3 +281,7 @@ iqb-aspect-definition@1.0.0
 - TableElement:
   - headerRows[][].text: plain text -> HTML (#1430)
   - headerRows[][]: remove alignment (#1430)
+- WidgetPeriodicTableElement:
+  - new property: showInfoName: boolean (default true) (#1420)
+  - new property: showInfoSymbol: boolean (default true) (#1420)
+  - new property: highlightBlocks: boolean (default false) (#1420)

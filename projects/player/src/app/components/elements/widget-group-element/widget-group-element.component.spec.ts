@@ -59,6 +59,9 @@ describe('WidgetGroupElementComponent', () => {
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: true,
+      showInfoName: false,
+      showInfoSymbol: true,
+      highlightBlocks: true,
       closeOnSelection: true,
       maxNumberOfSelections: 3
     }, 'PERIODIC_TABLE');
@@ -70,6 +73,9 @@ describe('WidgetGroupElementComponent', () => {
         { key: 'SHOW_INFO_ORDER', value: '1' },
         { key: 'SHOW_INFO_E_NEG', value: '0' },
         { key: 'SHOW_INFO_A_MASS', value: '1' },
+        { key: 'SHOW_INFO_NAME', value: '0' },
+        { key: 'SHOW_INFO_SYMBOL', value: '1' },
+        { key: 'HIGHLIGHT_BLOCKS', value: '1' },
         { key: 'CLOSE_ON_SELECTION', value: '1' },
         { key: 'MAX_NUMBER_OF_SELECTIONS', value: '3' }
       ]
@@ -99,6 +105,9 @@ describe('WidgetGroupElementComponent', () => {
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: true,
+      showInfoName: true,
+      showInfoSymbol: true,
+      highlightBlocks: false,
       closeOnSelection: true,
       maxNumberOfSelections: 3
     }, 'PERIODIC_TABLE');
@@ -123,6 +132,9 @@ describe('WidgetGroupElementComponent', () => {
       showInfoOrder: true,
       showInfoENeg: false,
       showInfoAMass: true,
+      showInfoName: true,
+      showInfoSymbol: true,
+      highlightBlocks: false,
       closeOnSelection: true,
       maxNumberOfSelections: 3
     }, 'PERIODIC_TABLE');
@@ -144,6 +156,9 @@ describe('WidgetGroupElementComponent', () => {
         showInfoOrder: true,
         showInfoENeg: false,
         showInfoAMass: true,
+        showInfoName: true,
+        showInfoSymbol: true,
+        highlightBlocks: false,
         closeOnSelection: false,
         maxNumberOfSelections: 3
       }, 'PERIODIC_TABLE');
@@ -178,6 +193,17 @@ describe('WidgetGroupElementComponent', () => {
 
     it('should leave the answer as it was when the return carries null', () => {
       returnFromWidget(null);
+
+      expect((component.elementModel as WidgetPeriodicTableElement).state).toBe('Na Cl');
+      expect(component.changeElementCodeValue).not.toHaveBeenCalled();
+    });
+
+    /* Its variable is NO_VALUE, so an answer has nowhere to go -- and a widget that still reads 0 as
+       unlimited sends one all the same (#1488). */
+    it('should take no answer from a periodic table that is only there to look at', () => {
+      (component.elementModel as WidgetPeriodicTableElement).maxNumberOfSelections = 0;
+
+      returnFromWidget('H He');
 
       expect((component.elementModel as WidgetPeriodicTableElement).state).toBe('Na Cl');
       expect(component.changeElementCodeValue).not.toHaveBeenCalled();

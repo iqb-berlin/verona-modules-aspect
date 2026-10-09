@@ -450,6 +450,16 @@ describe('ModelNormalizer', () => {
       expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'text-area', id: 'ta1' })).showWordCount)
         .toBe(false);
     });
+
+    /* Units stored before 4.13.0 sent none of the three, and the widget then showed names and symbols
+       and coloured no blocks -- the defaults keep that picture (#1420). */
+    it('should fill the new periodic table settings in as the widget showed them without', () => {
+      expect(ELEMENT_DEFAULTS['widget-periodic-table']).toEqual(expect.objectContaining({
+        showInfoName: true, showInfoSymbol: true, highlightBlocks: false
+      }));
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'widget-periodic-table', id: 'p1' })))
+        .toEqual(expect.objectContaining({ showInfoName: true, showInfoSymbol: true, highlightBlocks: false }));
+    });
   });
 
   /* #1184: no element may hold an object that ELEMENT_DEFAULTS or GLOBAL_DEFAULTS owns, or an in-place

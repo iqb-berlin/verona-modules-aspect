@@ -151,18 +151,12 @@ export interface WidgetParameter {
   value?: string;
 }
 
-export interface SharedParameter {
-  key: string;
-  value?: string;
-}
-
 export interface VopWidgetCall {
   type: 'vopWidgetCall';
   sessionId: string;
   callId?: string;
   widgetType: WidgetType;
   parameters?: WidgetParameter[];
-  sharedParameters?: SharedParameter[];
   state?: string;
 }
 

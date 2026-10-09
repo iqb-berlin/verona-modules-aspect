@@ -1,0 +1,15 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [{
+    "sections": [
+      {
+        "dynamicPositioning": true,
+        "elements": [
+          { "type": "widget-periodic-table", "id": "pse_zero", "alias": "pse_zero", "maxNumberOfSelections": 0 },
+          { "type": "widget-periodic-table", "id": "pse_one", "alias": "pse_one", "maxNumberOfSelections": 1 }
+        ]
+      }
+    ]
+  }]
+}

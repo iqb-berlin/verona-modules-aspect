@@ -69,6 +69,18 @@ describe('Editor menu tests', { testIsolation: false }, () => {
       cy.contains('Speichern').click();
     });
 
+    it('setting-button and menu-button: name their menus in a tooltip', () => {
+      cy.get('.mat-mdc-tooltip').should('not.exist');
+      cy.get('.unit-settings-button').trigger('mouseenter');
+      cy.get('.mat-mdc-tooltip').should('contain.text', 'Aufgabe-Einstellungen');
+      cy.get('.unit-settings-button').trigger('mouseleave');
+      cy.get('.mat-mdc-tooltip').should('not.exist');
+      cy.get('.editor-settings-button').trigger('mouseenter');
+      cy.get('.mat-mdc-tooltip').should('contain.text', 'Editor-Einstellungen');
+      cy.get('.editor-settings-button').trigger('mouseleave');
+      cy.get('.mat-mdc-tooltip').should('not.exist');
+    });
+
     it('setting-button: activate the numbering', () => {
       cy.get('button').find('mat-icon').contains('settings').click({ force: true });
       cy.get('.cdk-overlay-pane').contains('Nummerierung aktivieren').click({ force: true });

@@ -753,7 +753,18 @@
   "unitView": {
     "alwaysVisiblePage": "Dauerhaft sichtbare Seite",
     "addPage": "Weitere Seite anlegen",
-    "unitNavNextHint": "Wird am Ende der letzten Seite angezeigt"
+    "unitNavNextHint": "Wird am Ende der letzten Seite angezeigt",
+    "unitSettings": "Aufgabe-Einstellungen",
+    "editorSettings": "Editor-Einstellungen",
+    "overview": "Übersicht",
+    "openElementList": "Elementliste öffnen",
+    "sectionNumbering": "Abschnittsnummerierung",
+    "enableNumbering": "Nummerierung aktivieren",
+    "verticalAlignment": "vertikale Ausrichtung",
+    "navigation": "Navigation",
+    "unitNavNext": "Navigationsknopf zur nächsten Unit anfügen",
+    "expertMode": "Erweiterter Modus",
+    "pagesAsList": "Seitenansicht untereinander"
   },
   "pageView": {
     "addPageBreak": "Seitenumbruch ab gewähltem Abschnitt",

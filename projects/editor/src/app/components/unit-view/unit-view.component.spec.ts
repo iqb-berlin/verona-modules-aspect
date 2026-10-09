@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Subject, of } from 'rxjs';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -302,6 +302,29 @@ describe('UnitViewComponent', () => {
       selectionService.requestElement(1, 0, 'text-field_2');
 
       expect(component.listTabIndex).toBe(0);
+    });
+  });
+
+  /* The two settings buttons next to the page tabs show only an icon; the tooltip says what is behind
+     them, as the page menu does (#1517). */
+  describe('the tooltips of the settings buttons', () => {
+    const tooltipOf = (selector: string): MatTooltip => fixture.debugElement
+      .query(By.css(selector)).injector.get(MatTooltip);
+
+    it('should name the unit settings behind the gear', () => {
+      const tooltip = tooltipOf('.unit-settings-button');
+
+      expect(tooltip.message).toBe('unitView.unitSettings');
+      expect(tooltip.position).toBe('above');
+      expect(tooltip.showDelay).toBe(400);
+    });
+
+    it('should name the editor settings behind the menu icon', () => {
+      const tooltip = tooltipOf('.editor-settings-button');
+
+      expect(tooltip.message).toBe('unitView.editorSettings');
+      expect(tooltip.position).toBe('above');
+      expect(tooltip.showDelay).toBe(400);
     });
   });
 

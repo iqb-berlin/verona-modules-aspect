@@ -11,14 +11,23 @@
   padding: 10px 0 0;
 }
 
+// A selected element looks as it does in the widget: its field size and corners, the symbol bold at
+// 150 % of the widget's 14 px, white on the widget's purple (#1369).
 .element-square {
   width: 50px;
   height: 50px;
-  font-weight: 400;
-  border: 1px solid #666;
+  font-size: 21px;
+  font-weight: 700;
   border-radius: 4px;
-  background-color: #ccc;
+  color: #ffffff;
+  background-color: #6b369a;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+// With block colours the widget colours every field by its block, and the player knows no blocks, so
+// the answer stands in one neutral dark grey.
+.block-colors .element-square {
+  background-color: #424242;
 }

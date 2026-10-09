@@ -140,6 +140,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       errorDialogsActive: true,
       showLogging: false,
       useBrowserForJS: false,
+      // Unset, GeoGebra pins its keyboard to the bottom of the window unless a spreadsheet, CAS or
+      // probability view, or under some conditions the algebra view, is shown. It stays in the section's
+      // stacking context there, so every element after the section covers it (#1549).
+      detachKeyboard: false,
       ggbBase64: this.appDefinition || this.elementModel.appDefinition,
       appletOnLoad: (geoGebraApi: GeoGebraApi) => {
         this.geoGebraAPI = geoGebraApi;

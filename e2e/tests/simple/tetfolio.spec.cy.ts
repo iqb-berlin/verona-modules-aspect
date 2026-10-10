@@ -66,8 +66,8 @@ describe('Tetfolio element', { testIsolation: false }, () => {
     });
 
     it('packs an uploaded export and shows it on the canvas', () => {
-      addElement('Tetfolio (experimentell)', 'Sonstige');
-      cy.get('aspect-tetfolio-properties legend').should('have.text', 'Tetfolio (experimentell)');
+      addElement('Tetfolio', 'Experimentell');
+      cy.get('aspect-tetfolio-properties legend').should('have.text', 'Tetfolio');
       setID('tetfolio_e2e');
       cy.get('aspect-tetfolio-properties input[type=file]')
         .selectFile(experimentZip(), { action: 'select', force: true });

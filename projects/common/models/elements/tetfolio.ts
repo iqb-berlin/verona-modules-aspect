@@ -28,7 +28,7 @@ export class TetfolioElement extends UIElement implements TetfolioProperties {
   /** No styling: the iframe document brings its own styles, no template reads a styling value. */
   styling: Record<never, never> = {};
 
-  static title: string = 'Tetfolio (experimentell)';
+  static title: string = 'Tetfolio';
   static icon: string = 'science';
 
   constructor(element?: Partial<TetfolioProperties>, idService?: AbstractIDService) {

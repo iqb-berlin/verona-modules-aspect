@@ -489,7 +489,8 @@
     "table": "Tabelle",
     "widget-molecule-editor": "Molekül-Editor",
     "widget-periodic-table": "Periodensystem",
-    "tetfolio": "Tetfolio (experimentell)"
+    "tetfolio": "Tetfolio",
+    "experimental": "Experimentell"
   },
   "section-menu": {
     "elementList": "Elementliste",

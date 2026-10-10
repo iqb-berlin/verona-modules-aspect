@@ -217,12 +217,6 @@
             <mat-icon>{{GeometryElement.icon}}</mat-icon>
             {{GeometryElement.title}}
           </button>
-          <button mat-stroked-button (click)="addUIElement('tetfolio')"
-                  draggable="true" (dragstart)="startDrag($event,'tetfolio')"
-                  (dragend)="endDrag()">
-            <mat-icon>{{TetfolioElement.icon}}</mat-icon>
-            {{TetfolioElement.title}}
-          </button>
           <button mat-stroked-button (click)="addUIElement('marking-panel')"
                   draggable="true" (dragstart)="startDrag($event,'marking-panel')"
                   (dragend)="endDrag()">
@@ -234,6 +228,19 @@
                   (dragend)="endDrag()">
             <mat-icon>{{TriggerElement.icon}}</mat-icon>
             {{TriggerElement.title}}
+          </button>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              {{ 'toolbox.experimental' | translate }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <button mat-stroked-button (click)="addUIElement('tetfolio')"
+                  draggable="true" (dragstart)="startDrag($event,'tetfolio')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{TetfolioElement.icon}}</mat-icon>
+            {{TetfolioElement.title}}
           </button>
         </mat-expansion-panel>
       </mat-accordion>

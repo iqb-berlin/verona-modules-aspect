@@ -1,10 +1,11 @@
-import { addElement } from '../util';
+import { addElement, addPostMessageStub } from '../util';
 
 interface WidgetCallMessage {
   type: string;
   widgetType: string;
   callId: string;
   parameters: { key: string, value: string }[];
+  state?: string;
 }
 
 interface PostMessageStub {
@@ -25,6 +26,16 @@ function widgetCallFromStub(stub: PostMessageStub, widgetType: string): WidgetCa
     .find(arg => isWidgetCall(arg, widgetType));
   expect(match, `vopWidgetCall for ${widgetType}`).to.not.equal(undefined);
   return match as WidgetCallMessage;
+}
+
+/** The last code the player reported for an element, from the messages a stub has seen. */
+function lastCodeOf(stub: unknown, id: string): unknown {
+  return (stub as { args: { unitState?: { dataParts?: { elementCodes?: string } } }[][] }).args
+    .map(call => call[0]?.unitState?.dataParts?.elementCodes)
+    .filter((codes): codes is string => typeof codes === 'string')
+    .flatMap(codes => JSON.parse(codes) as { id: string }[])
+    .filter(code => code.id === id)
+    .pop();
 }
 
 /** `loadUnit` sends its start command twice, 150 ms apart, and the second one builds the unit anew -- a
@@ -177,10 +188,13 @@ describe('Widget Element', { testIsolation: false }, () => {
   });
 
   context('player with stored periodic tables', () => {
+    let calls = 0;
     const callFor = (alias: string): Cypress.Chainable<WidgetCallMessage> => {
-      // One alias per element: the stubs of all calls in a test are made while the test queues its
+      // One alias per call: the stubs of all calls in a test are made while the test queues its
       // commands, so a shared alias would point every call at the last one
-      const postMessageStub = cy.stub().as(`postMessage-${alias}`);
+      calls += 1;
+      const stubAlias = `postMessage-${alias}-${calls}`;
+      const postMessageStub = cy.stub().as(stubAlias);
       const onMessage = (e: MessageEvent): void => postMessageStub(e.data);
       let listeningWindow: Window | undefined;
       cy.window().then(window => {
@@ -188,7 +202,7 @@ describe('Widget Element', { testIsolation: false }, () => {
         listeningWindow.addEventListener('message', onMessage);
       });
       cy.getElementByAlias(alias).find('button').click({ force: true });
-      return cy.get(`@postMessage-${alias}`)
+      return cy.get(`@${stubAlias}`)
         .should('be.calledWithMatch', Cypress.sinon.match({ type: 'vopWidgetCall', widgetType: 'PERIODIC_TABLE' }))
         .then(stub => {
           listeningWindow?.removeEventListener('message', onMessage);
@@ -230,6 +244,35 @@ describe('Widget Element', { testIsolation: false }, () => {
       cy.getElementByAlias('pse_blocks').find('.element-square').should('have.length', 2)
         .first()
         .should('have.css', 'background-color', 'rgb(66, 66, 66)');
+    });
+
+    /* Deselecting every symbol leaves the widget with an empty selection, which it returns as ''. That
+       is the new answer: the symbols beside the button go, the player reports '' as a changed value,
+       and the next call starts the widget without a state (#1465). */
+    it('clears the answer when the widget returns an empty selection', () => {
+      startPlayerWith('widget-periodic-table-answer.json');
+      callFor('pse_answer').then(msg => {
+        cy.window().then(window => {
+          window.postMessage({ type: 'vopWidgetReturn', callId: msg.callId, state: 'Na Cl' }, '*');
+        });
+      });
+      cy.getElementByAlias('pse_answer').find('.element-square').should('have.length', 2);
+
+      addPostMessageStub();
+      callFor('pse_answer').then(msg => {
+        expect(msg.state).to.equal('Na Cl');
+        cy.window().then(window => {
+          window.postMessage({ type: 'vopWidgetReturn', callId: msg.callId, state: '' }, '*');
+        });
+      });
+      cy.getElementByAlias('pse_answer').find('.element-square').should('not.exist');
+      cy.get('@postMessage').should(stub => {
+        expect(lastCodeOf(stub, 'pse_answer')).to.deep.equal({ id: 'pse_answer', status: 'VALUE_CHANGED', value: '' });
+      });
+
+      callFor('pse_answer').then(msg => {
+        expect(msg).to.not.have.property('state');
+      });
     });
   });
 });

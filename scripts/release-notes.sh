@@ -13,7 +13,10 @@
 # in the common notes, `## <v>` in the other two (decided 2026-09-23).
 #
 #   scripts/release-notes.sh 3.0.1 > notes.md
-#   gh release create "editor/$V+player/$V" --notes-file notes.md --verify-tag dist/iqb-*-aspect-$V.html
+#   gh release create "editor/$V+player/$V" --notes-file notes.md --verify-tag
+#
+# The release is created without files: .github/workflows/release-files.yml attaches them once it is
+# published.
 set -eu
 
 if [ $# -lt 1 ]; then

@@ -1,3 +1,5 @@
+import { isValidVariableIdentifier } from '@iqbspecs/variable-info/variable-info.interface';
+import validationCases from '@iqbspecs/variable-info/variable-validation-cases.json';
 import { VariableAlias } from 'common/utils/variable-alias';
 
 describe('VariableAlias', () => {
@@ -65,6 +67,26 @@ describe('VariableAlias', () => {
     const asHtmlWould = new RegExp(`^${VariableAlias.PATTERN_SOURCE}$`, 'v');
     ['var1', 'drop-list_2', '-', 'März', 'a b', ''].forEach(name => {
       expect(asHtmlWould.test(name)).toBe(VariableAlias.isValid(name));
+    });
+  });
+
+  /* The conformance suite of `@iqbspecs/variable-info` (#1504). */
+  it('should judge every identifier as the contract does', () => {
+    validationCases.identifierCases.valid.forEach(name => {
+      expect(VariableAlias.check(name)).toBeNull();
+    });
+    validationCases.identifierCases.invalid.forEach(({ value, code }) => {
+      expect(VariableAlias.check(value)).toBe(code);
+    });
+  });
+
+  /* The contract does not hand out its pattern, so the fields keep one of their own; this is what holds it to the
+     contract's verdict (#1504). */
+  it('should give the input fields a pattern that agrees with the contract', () => {
+    const asHtmlWould = new RegExp(`^${VariableAlias.PATTERN_SOURCE}$`, 'v');
+    const { valid, invalid } = validationCases.identifierCases;
+    [...valid, ...invalid.map(({ value }) => value), 'März', '-', '_', 'a+b'].forEach(name => {
+      expect(asHtmlWould.test(name)).toBe(isValidVariableIdentifier(name));
     });
   });
 });

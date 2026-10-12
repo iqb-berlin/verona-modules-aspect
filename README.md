@@ -242,7 +242,9 @@ A branch name carries the issue it belongs to: `feature/1357-topic`.
 on the merge commit on `master`, one tag for both modules — `editor/3.0.0+player/3.0.0`. What the
 release branch carries: the two version numbers in `package.json` (`config.player_version` and
 `config.editor_version` — the version stands nowhere else) followed by an `npm install`, and the
-entries in `docs/release-notes-*.md`.
+entries in `docs/release-notes-*.md`. The GitHub release for the tag is created with its notes only:
+once it is published, `.github/workflows/release-files.yml` builds both modules from the tag and
+attaches the two HTML files, as soon as the GitLab pipeline on the tagged commit is green.
 
 Two merges out of the branch, rather than one route through `develop`, mean `master` receives exactly
 the state the release branch froze while `develop` can move on meanwhile. They also mean `master` is
@@ -269,9 +271,9 @@ of two that later have to be told apart.
    `lint` (type-aware ESLint), `test-unit` (`npm test`), `test-e2e-simple` and `test-e2e-complex` (both dev servers plus
    headless Cypress). **The module build is not part of it** — the `build` stage holds no job
    and the `deploy` job is commented out, so a change that breaks `build-editor` or
-   `build-player` passes green and only shows up at release time. The single GitHub Actions
-   workflow builds the documentation and nothing else, which is why the Actions tab looks
-   almost empty.
+   `build-player` passes green and only shows up at release time. The two GitHub Actions
+   workflows stay outside this flow: one publishes the documentation after a merge, the other
+   attaches the module files to a published release.
 6. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
    something else is merged, rebase onto `origin/develop` and force-push with
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after

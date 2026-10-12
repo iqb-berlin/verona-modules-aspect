@@ -1,0 +1,35 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [{
+    "sections": [{
+      "dynamicPositioning": false,
+      "height": 300,
+      "elements": [{
+        "type": "cloze", "id": "cloze_word", "alias": "cloze_word",
+        "position": { "xPosition": 0, "yPosition": 0 },
+        "dimensions": { "width": 300, "height": 200 },
+        "document": {
+          "type": "doc",
+          "content": [{
+            "type": "paragraph",
+            "attrs": {},
+            "content": [
+              { "type": "text", "text": "Lorem ipsum Fahr" },
+              {
+                "type": "TextField",
+                "attrs": {
+                  "model": {
+                    "type": "text-field-simple", "id": "field_in_word", "alias": "field_in_word",
+                    "dimensions": { "width": 160, "height": 40 }
+                  }
+                }
+              },
+              { "type": "text", "text": "rad und mehr" }
+            ]
+          }]
+        }
+      }]
+    }]
+  }]
+}

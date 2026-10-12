@@ -59,11 +59,11 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   }
 
   /** The answer is the widget's `state` as the player stores it: the selected element symbols,
-      separated by spaces. VariableInfo has no format for such a list, hence `''`. A periodic table that
-      is only there to look at gives no answer, and the variable says so. */
+      separated by spaces, which VariableInfo 2.1 names `CHEM_ELEMENT_SYMBOLS` (#1471). A periodic table
+      that is only there to look at gives no answer, and the variable says so. */
   getVariableInfos(): VariableInfo[] {
     if (this.isViewOnly()) return super.getVariableInfos();
-    return [{ ...super.getVariableInfos()[0], type: 'STRING' }];
+    return [{ ...super.getVariableInfos()[0], type: 'STRING', format: 'CHEM_ELEMENT_SYMBOLS' }];
   }
 }
 

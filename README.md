@@ -205,7 +205,7 @@ projects/common     element models, migration, shared components — used by bot
 projects/editor     editor application (src) and its feature modules (modules)
 projects/player     player application (src) and its feature modules (modules)
 e2e/tests           Cypress end-to-end specs
-scripts             build, deploy and generator scripts
+scripts             build, release and generator scripts
 docs                changelogs, release notes, version history
 example_data        unit definitions the e2e tests load, and useful by hand
 test-data           fixtures the unit tests load
@@ -267,13 +267,15 @@ of two that later have to be told apart.
    column the team works from. Referencing is fine, keywords are not.
 4. **Open a pull request against `develop`.** A branch without an open pull request gets no
    pipeline at all — that is deliberate, see the comment in `.gitlab-ci.yml`.
-5. **The pipeline runs on GitLab**, mirrored from GitHub, with four jobs in two stages:
-   `lint` (type-aware ESLint), `test-unit` (`npm test`), `test-e2e-simple` and `test-e2e-complex` (both dev servers plus
-   headless Cypress). **The module build is not part of it** — the `build` stage holds no job
-   and the `deploy` job is commented out, so a change that breaks `build-editor` or
-   `build-player` passes green and only shows up at release time. The two GitHub Actions
-   workflows stay outside this flow: one publishes the documentation after a merge, the other
-   attaches the module files to a published release.
+5. **The pipeline runs on GitLab**, mirrored from GitHub. A pull request gets five jobs in two
+   stages: `lint` (type-aware ESLint) and `build-modules` (`build-editor` and `build-player`,
+   through `scripts/build.sh`) side by side, then `test-unit` (`npm test`), `test-e2e-simple` and
+   `test-e2e-complex` (both dev servers plus headless Cypress). A change to `scripts/Dockerfile` or
+   `.gitlab-ci.yml` first rebuilds the image the jobs run in. `master` runs the same. A merge
+   into `develop` only builds the modules, since its tree is the one the pull request just
+   passed, and a tag starts no pipeline. The comment at the top of `.gitlab-ci.yml` gives the
+   reasons. The two GitHub Actions workflows stay outside this flow: one publishes the
+   documentation after a merge, the other attaches the module files to a published release.
 6. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
    something else is merged, rebase onto `origin/develop` and force-push with
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after

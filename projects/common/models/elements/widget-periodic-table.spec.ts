@@ -3,8 +3,9 @@ import { WidgetPeriodicTableElement } from 'common/models/elements/widget-period
 describe('WidgetPeriodicTableElement', () => {
   /* The player stores the widget's state -- the selected symbols -- as the element's value, so the
      variable reported to the host has to be one that carries a string. Inherited from `UIElement`, it
-     said `no-value`, and the answer was not available for coding (#1463). */
-  it('should report its answer as one string variable', () => {
+     said `no-value`, and the answer was not available for coding (#1463). The format tells coding that
+     the string is a list of element symbols (#1471). */
+  it('should report its answer as one string variable of element symbols', () => {
     const element = new WidgetPeriodicTableElement({
       id: 'widget-periodic-table_1', alias: 'pse_1', type: 'widget-periodic-table'
     });
@@ -13,7 +14,7 @@ describe('WidgetPeriodicTableElement', () => {
       id: 'widget-periodic-table_1',
       alias: 'pse_1',
       type: 'STRING',
-      format: '',
+      format: 'CHEM_ELEMENT_SYMBOLS',
       multiple: false,
       nullable: false,
       values: [],
@@ -30,7 +31,7 @@ describe('WidgetPeriodicTableElement', () => {
     });
 
     expect(element.getVariableInfos()).toEqual([expect.objectContaining({
-      id: 'widget-periodic-table_1', alias: 'pse_1', type: 'NO_VALUE'
+      id: 'widget-periodic-table_1', alias: 'pse_1', type: 'NO_VALUE', format: ''
     })]);
   });
 

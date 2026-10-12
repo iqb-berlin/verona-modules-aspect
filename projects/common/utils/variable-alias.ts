@@ -1,8 +1,9 @@
-/**
- * Why a single identifier breaks the Verona contract (verona-interfaces/variable-info#2), named as the contract
- * names it, so that a later switch to the shared validator only replaces the implementation.
- */
-export type VariableIdentifierIssue = 'EMPTY_IDENTIFIER' | 'INVALID_CHARACTERS';
+import {
+  isValidVariableIdentifier, VariableValidationErrorCode
+} from '@iqbspecs/variable-info/variable-info.interface';
+
+/** Why a single identifier breaks the Verona contract: the two of its codes that do not need the whole list. */
+export type VariableIdentifierIssue = Extract<VariableValidationErrorCode, 'EMPTY_IDENTIFIER' | 'INVALID_CHARACTERS'>;
 
 /** Why the author cannot give an element or an option a name, as the editor tells them (#1523). */
 export type AliasProblem = 'taken' | 'space' | 'invalidCharacters';
@@ -10,7 +11,8 @@ export type AliasProblem = 'taken' | 'space' | 'invalidCharacters';
 export abstract class VariableAlias {
   /**
    * Verona-compliant pattern for VariableInfo ids and aliases (#1043), as the source text an HTML
-   * `pattern` attribute takes.
+   * `pattern` attribute takes. Code checks with `isValidVariableIdentifier` from `@iqbspecs/variable-info`,
+   * which does not hand out its pattern; the spec holds the two to the same verdict (#1504).
    *
    * The hyphen is escaped although it stands at the end of the class, where the older `u` semantics
    * allow it bare: HTML compiles a `pattern` attribute with the **`v` flag**, and there the hyphen is a
@@ -18,9 +20,6 @@ export abstract class VariableAlias {
    * `patternMismatch` at all, so a field looks validated and is not (#1391).
    */
   static readonly PATTERN_SOURCE: string = '[0-9a-zA-Z_\\-]+';
-
-  /** The same rule for code, anchored. */
-  static readonly PATTERN: RegExp = new RegExp(`^${VariableAlias.PATTERN_SOURCE}$`);
 
   /** The translation key the editor says each problem under, see `problemOf` (#1523). */
   static readonly PROBLEM_KEYS: Readonly<Record<AliasProblem, string>> = {
@@ -48,10 +47,13 @@ export abstract class VariableAlias {
     return VariableAlias.isValid(alias) ? null : 'invalidCharacters';
   }
 
-  /** What is wrong with an id or alias, or `null` if nothing is. */
+  /**
+   * What is wrong with an id or alias, or `null` if nothing is. The verdict is the contract's own validator's
+   * (#1504); it only says yes or no, and an empty name is told apart here, the way its list validation does.
+   */
   static check(identifier: string): VariableIdentifierIssue | null {
     if (identifier === '') return 'EMPTY_IDENTIFIER';
-    return VariableAlias.PATTERN.test(identifier) ? null : 'INVALID_CHARACTERS';
+    return isValidVariableIdentifier(identifier) ? null : 'INVALID_CHARACTERS';
   }
 
   /**

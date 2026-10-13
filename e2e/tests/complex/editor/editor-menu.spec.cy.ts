@@ -72,11 +72,11 @@ describe('Editor menu tests', { testIsolation: false }, () => {
     it('setting-button and menu-button: name their menus in a tooltip', () => {
       cy.get('.mat-mdc-tooltip').should('not.exist');
       cy.get('.unit-settings-button').trigger('mouseenter');
-      cy.get('.mat-mdc-tooltip').should('contain.text', 'Unit-Einstellungen');
+      cy.get('.mat-mdc-tooltip').should('contain.text', 'Aufgaben-Einstellungen');
       cy.get('.unit-settings-button').trigger('mouseleave');
       cy.get('.mat-mdc-tooltip').should('not.exist');
       cy.get('.editor-settings-button').trigger('mouseenter');
-      cy.get('.mat-mdc-tooltip').should('contain.text', 'Editor-Einstellungen');
+      cy.get('.mat-mdc-tooltip').should('contain.text', 'Arbeitsmodus');
       cy.get('.editor-settings-button').trigger('mouseleave');
       cy.get('.mat-mdc-tooltip').should('not.exist');
     });

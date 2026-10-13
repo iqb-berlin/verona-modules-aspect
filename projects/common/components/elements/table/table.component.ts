@@ -43,6 +43,9 @@ export class TableComponent extends CompoundElementComponent implements OnInit, 
   /** Fixed height for content rows, overriding the configured row sizes.
      Used by the table edit dialog to provide roomy cells; header rows keep the height of their content. */
   @Input() contentRowHeight: string | null = null;
+  /** The name shown above an element in a cell while editing, by element type. Handed in by the editor, whose
+     translations hold the names, so that the cell names an element the way the toolbox does (#1553). */
+  @Input() elementNames: Partial<Record<UIElementType, string>> = {};
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
   /** Asks the table edit dialog to edit the text of a header cell. The rich text editor belongs to the
      editor and is out of reach of `common` (#1430). */

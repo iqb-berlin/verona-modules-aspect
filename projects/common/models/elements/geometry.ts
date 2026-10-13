@@ -43,7 +43,6 @@ export class GeometryElement extends UIElement implements GeometryProperties {
      element.spec.ts, not the type. */
   styling: Record<never, never> = {};
 
-  static title: string = 'Geometrie';
   static icon: string = 'architecture';
 
   constructor(element?: Partial<GeometryProperties>, idService?: AbstractIDService) {

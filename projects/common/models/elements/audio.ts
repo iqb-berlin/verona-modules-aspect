@@ -21,7 +21,6 @@ export class AudioElement extends PlayerElement implements AudioProperties {
     backgroundColor: ELEMENT_DEFAULTS.audio.styling.backgroundColor
   };
 
-  static title: string = 'Audio';
   static icon: string = 'volume_up';
 
   constructor(element?: Partial<AudioProperties>, idService?: AbstractIDService) {

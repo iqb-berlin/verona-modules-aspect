@@ -98,7 +98,7 @@
       </ng-container>
       <div *ngIf="elementGrid[i][j] !== undefined" class="element-container">
         <div *ngIf="allowElementEditing" class="element-title">
-          {{$any($any(elementGrid[i][j]).constructor).title}}
+          {{ elementNames[elementGrid[i][j]!.type] }}
           <ng-container *ngIf="$any(elementGrid[i][j]).alias !== 'alias-placeholder'">
             - {{$any(elementGrid[i][j]).alias}}
           </ng-container>

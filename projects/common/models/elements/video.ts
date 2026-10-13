@@ -22,7 +22,6 @@ export class VideoElement extends PlayerElement implements VideoProperties {
     backgroundColor: ELEMENT_DEFAULTS.video.styling.backgroundColor
   };
 
-  static title: string = 'Video';
   static icon: string = 'ondemand_video';
 
   constructor(element?: Partial<VideoProperties>, idService?: AbstractIDService) {

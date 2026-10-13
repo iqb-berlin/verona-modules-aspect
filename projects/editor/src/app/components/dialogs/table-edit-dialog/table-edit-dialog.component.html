@@ -2,6 +2,7 @@
 <mat-dialog-content>
   <aspect-table [elementModel]="newTable" [editorMode]="true" [allowElementEditing]="true"
                 [contentRowHeight]="'250px'"
+                [elementNames]="'toolbox' | translate"
                 (elementAdded)="addElement($event)"
                 (elementRemoved)="removeElement($event)"
                 (headerCellEditRequested)="editHeaderCell($event)"></aspect-table>

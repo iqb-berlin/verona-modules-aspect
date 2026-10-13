@@ -22,7 +22,6 @@ export class FrameElement extends UIElement implements FrameProperties {
     backgroundColor: ELEMENT_DEFAULTS.frame.styling.backgroundColor
   };
 
-  static title: string = 'Rahmen';
   static icon: string = 'crop_square';
 
   constructor(element?: Partial<FrameProperties>, idService?: AbstractIDService) {

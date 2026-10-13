@@ -52,7 +52,6 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
       firstLineColoringColor: ELEMENT_DEFAULTS.likert.styling.firstLineColoringColor
     };
 
-  static title: string = 'Optionentabelle';
   static icon: string = 'margin';
 
   constructor(element?: Partial<LikertProperties>, idService?: AbstractIDService) {

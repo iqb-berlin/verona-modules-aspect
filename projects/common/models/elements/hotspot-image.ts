@@ -44,7 +44,6 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
      element.spec.ts, not the type. */
   styling: Record<never, never> = {};
 
-  static title: string = 'Bildbereiche';
   static icon: string = 'ads_click';
 
   constructor(element?: Partial<HotspotImageProperties>, idService?: AbstractIDService) {

@@ -30,7 +30,6 @@ export class WidgetPeriodicTableElement extends UIElement implements WidgetPerio
   maxNumberOfSelections: number = ELEMENT_DEFAULTS['widget-periodic-table'].maxNumberOfSelections;
   state: string | null = ELEMENT_DEFAULTS['widget-periodic-table'].state;
 
-  static title: string = 'Periodensystem';
   static icon: string = 'grid_on';
 
   constructor(element?: Partial<WidgetPeriodicTableProperties>, idService?: AbstractIDService) {

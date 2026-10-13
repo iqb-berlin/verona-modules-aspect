@@ -1,20 +1,22 @@
 Player
 ======
 ## next
-### Neue Funktionen
-- Tetfolio: Neues Element. Der Player zeigt ein eingebettetes tet.folio-Experiment an und meldet dessen Bearbeitungsstand, damit er beim Wiedereinstieg wiederhergestellt wird. Der Stand dient allein der Wiederherstellung und wird nicht kodiert ([#1461](https://github.com/iqb-berlin/verona-modules-aspect/issues/1461))
-
 ### Änderungen
-- Meldungen: Die Meldung "Unit-Definition kann nicht geladen werden" zeigt vor dem Titel ein Fehlersymbol, wie die Meldungen im Editor ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+- Audio, Video: Der Fehlercode bei zu langem Laden heißt `media-timeout` statt `audio-timeout` ([#1526](https://github.com/iqb-berlin/verona-modules-aspect/issues/1526))
+- Meldungen: Die Meldung „Unit-Definition kann nicht geladen werden“ zeigt ein Fehlersymbol ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
 
 ### Fehlerbehebungen
-- Abschnitte mit animiertem Einblenden: Wird ein solcher Abschnitt sichtbar und angescrollt, bleiben darüber 100 px Abstand, wie vorgesehen. Bisher landete er bündig am oberen Rand ([#1536](https://github.com/iqb-berlin/verona-modules-aspect/issues/1536))
-- Abschnitte mit animiertem Einblenden: Der Player scrollt nur noch in dem Moment zum Abschnitt, in dem er erscheint. Bisher zog jede weitere Eingabe, bei der seine Regel erfüllt blieb, die Ansicht wieder zu ihm, und war die Regel schon beim Laden erfüllt, öffnete die Aufgabe bereits nach unten gescrollt ([#1546](https://github.com/iqb-berlin/verona-modules-aspect/issues/1546))
-- Abschnitte mit Einblendregel ohne „wieder ausblenden“: Ein solcher Abschnitt bleibt sichtbar, sobald er einmal erschienen ist. Bisher verschwand er wieder, wenn seine Regel danach nicht mehr erfüllt war, und erschien erneut, wenn sie wieder erfüllt war. Aufgaben, die auf dieses Verhalten gebaut waren, verhalten sich jetzt anders ([#1547](https://github.com/iqb-berlin/verona-modules-aspect/issues/1547))
-- Abschnitte mit Einblendregel: Ein Abschnitt ohne „dynamisches Layout“ erscheint mit seiner Höhe und seinen Elementen, sobald die Regel erfüllt ist, genau wie derselbe Abschnitt ohne Regel. Bisher blieb er leer und ohne Höhe; nur Abschnitte mit dynamischem Layout wurden richtig eingeblendet ([#1535](https://github.com/iqb-berlin/verona-modules-aspect/issues/1535))
-- iPad: In Eingabefeldern und -bereichen auf den Seiten nach der ersten sind Cursor und Markierung wieder zu sehen. Bisher fehlten sie dort ab iPadOS 26; tippen ließ sich trotzdem, und das Menü zum Einsetzen und Auswählen erschien ([#1082](https://github.com/iqb-berlin/verona-modules-aspect/issues/1082))
-- Periodensystem: Gibt das Widget eine leere Auswahl zurück, übernimmt der Player sie jetzt als Antwort. Bisher blieb dann die vorige Auswahl stehen. Das Widget 1.0.0 lässt das Speichern einer leeren Auswahl allerdings nicht zu: Sein Speichern-Knopf ist gesperrt, solange nichts ausgewählt ist. Löschen lässt sich eine gegebene Antwort ab Widget 1.1.0: Dort bleibt der Knopf bei geleerter Auswahl aktiv, wenn das Widget mit einer Antwort geöffnet wurde ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
-- Seitennavigation der Testumgebung: Nach dem Start einer Aufgabe meldet der Player die Seiten erst, wenn er sie gezählt hat. Bisher schickte er zuerst eine leere Seitenliste, die eine Testumgebung nicht von einer Aufgabe ohne sichtbare Seiten unterscheiden konnte ([#1462](https://github.com/iqb-berlin/verona-modules-aspect/issues/1462))
+- Abschnitte mit animiertem Einblenden: Über dem eingeblendeten Abschnitt bleiben 100 px Abstand ([#1536](https://github.com/iqb-berlin/verona-modules-aspect/issues/1536))
+- Abschnitte mit animiertem Einblenden: Der Player scrollt nur im Moment des Erscheinens zum Abschnitt, nicht bei jeder weiteren Eingabe ([#1546](https://github.com/iqb-berlin/verona-modules-aspect/issues/1546))
+- Abschnitte mit Einblendregel ohne „wieder ausblenden“: Der Abschnitt bleibt sichtbar, sobald er einmal erschienen ist. Aufgaben, die auf das bisherige Verhalten gebaut waren, verhalten sich jetzt anders ([#1547](https://github.com/iqb-berlin/verona-modules-aspect/issues/1547))
+- Abschnitte mit Einblendregel: Ein Abschnitt ohne „dynamisches Layout“ erscheint mit seinem Inhalt, statt leer zu bleiben ([#1535](https://github.com/iqb-berlin/verona-modules-aspect/issues/1535))
+- Formelbereich: Auf Android-Tablets bleibt die Bildschirmtastatur beim Antippen offen ([#1218](https://github.com/iqb-berlin/verona-modules-aspect/issues/1218))
+- Geometrie: Tippen in die Zeichnung verschiebt die Seite nicht mehr ([#971](https://github.com/iqb-berlin/verona-modules-aspect/issues/971))
+- Geometrie: Die GeoGebra-Tastatur öffnet sich im Applet statt am Fensterrand, wo andere Elemente sie verdecken konnten. Ein GeoGebra-Element mit Eingabefeld sollte mindestens 400 Pixel hoch sein ([#1549](https://github.com/iqb-berlin/verona-modules-aspect/issues/1549))
+- Geometrie, Bild: Kann GeoGebra oder ein Bild nicht geladen werden, nennt die Fehlermeldung an die Testumgebung, was fehlt ([#1456](https://github.com/iqb-berlin/verona-modules-aspect/issues/1456))
+- iPad: Auf Seiten nach der ersten sind Cursor und Markierung in Eingabefeldern und -bereichen wieder zu sehen (iPadOS 26) ([#1082](https://github.com/iqb-berlin/verona-modules-aspect/issues/1082))
+- Periodensystem: Eine leere Auswahl des Widgets wird als Antwort übernommen. Löschen lässt sich eine Antwort ab Widget 1.1.0 ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
+- Seitennavigation der Testumgebung: Der Player meldet die Seiten erst, wenn er sie gezählt hat, statt zuerst eine leere Liste zu schicken ([#1462](https://github.com/iqb-berlin/verona-modules-aspect/issues/1462))
 
 ## 3.0.1
 ### Fehlerbehebungen

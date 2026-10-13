@@ -11,6 +11,7 @@ import { EditorPage } from 'editor/src/app/models/editor-page';
 import { TextElement } from 'common/models/elements/text';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { TwoPageTemplateOptions } from 'editor/modules/section-templates/models/droplist-interfaces';
+import { TEXT_EDITOR_DIALOG_CONFIG } from 'editor/modules/rich-text-editor/configs/text-editor-dialog.config';
 import {
   Text3WizardDialogComponent
 } from 'editor/modules/section-templates/components/text3-dialog/text3-dialog.component';
@@ -82,7 +83,7 @@ describe('TemplateService', () => {
 
     await service.applyTemplate('text3');
 
-    expect(dialogMock.open).toHaveBeenCalledWith(Text3WizardDialogComponent, {});
+    expect(dialogMock.open).toHaveBeenCalledWith(Text3WizardDialogComponent, TEXT_EDITOR_DIALOG_CONFIG);
     expect(page.sections.length).toBe(1);
     const textElements = page.sections[0].getAllElements('text') as TextElement[];
     expect(textElements.length).toBe(11);
@@ -114,6 +115,20 @@ describe('TemplateService', () => {
     expect(selectionServiceMock.updateSelection).not.toHaveBeenCalled();
     expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
   }));
+
+  /* Material stops the content of a dialog at 65vh, whatever the window; an assistant with a text editor lifts
+     that limit and may take the window instead (#1006). */
+  it.each(['stimulus', 'text2', 'text3', 'input', 'radio', 'likert', 'checkbox', 'geometry', 'droplist'])(
+    'should open the %s assistant as a text editor dialog',
+    templateName => {
+      mockDialogResult(undefined);
+
+      service.applyTemplate(templateName);
+
+      expect(dialogMock.open)
+        .toHaveBeenCalledWith(expect.anything(), expect.objectContaining(TEXT_EDITOR_DIALOG_CONFIG));
+    }
+  );
 
   it('should reject for an unknown template name', async () => {
     await expect(service.applyTemplate('unknown')).rejects.toThrow('Template name not found: unknown');

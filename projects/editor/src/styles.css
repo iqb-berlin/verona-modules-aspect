@@ -19,6 +19,11 @@ u>span {
   text-decoration: underline;
 }
 
+/* Dialogs with a rich text editor: the dialog's maxHeight bounds the content instead of Material's 65vh (#1006). */
+.text-editor-dialog .mat-mdc-dialog-content {
+  max-height: none;
+}
+
 /* Overlay size for dropdown panel */
 .cdk-overlay-pane .select-overlay {
   min-width: 150px;

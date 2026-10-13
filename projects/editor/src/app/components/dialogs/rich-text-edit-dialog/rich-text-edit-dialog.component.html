@@ -1,6 +1,5 @@
-<h2 mat-dialog-title>Text bearbeiten</h2>
 <mat-dialog-content>
-  <aspect-rich-text-editor [(content)]="data.content" [showWordCounter]="true"
+  <aspect-rich-text-editor class="text-editor" [(content)]="data.content" [showWordCounter]="true"
                            [clozeMode]="data.clozeMode" [autoFocus]="true" [controlPanelFolded]="false"
                            [defaultFontSize]="data.defaultFontSize">
   </aspect-rich-text-editor>

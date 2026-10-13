@@ -1,72 +1,71 @@
-<div class="wrapper">
-  <h2 mat-dialog-title>Ablegelistenoption anpassen</h2>
-  <mat-dialog-content class="content">
-    <aspect-rich-text-editor [(content)]="newLabel.text" [showReducedControls]="true">
-    </aspect-rich-text-editor>
-    <mat-form-field>
-      <mat-label>{{'id' | translate }}</mat-label>
-      <input matInput type="text" [(ngModel)]="newLabel.alias" #aliasModel="ngModel"
-             required [pattern]="aliasPattern" (ngModelChange)="checkAlias($event)">
-      <!-- One reason in both places: the hint while the field is being typed in, the error once it was left.
-           Two blocks, because a block with two nodes at its root is not projected into the form field's slots. -->
-      @if (aliasProblem) {
-        <mat-error>{{ aliasProblem | translate }}</mat-error>
-      }
-      @if (aliasProblem) {
-        <mat-hint class="alias-problem-hint">{{ aliasProblem | translate }}</mat-hint>
-      }
-    </mat-form-field>
+<h2 mat-dialog-title>Ablegelistenoption anpassen</h2>
+<mat-dialog-content class="content">
+  <aspect-rich-text-editor [(content)]="newLabel.text" [showReducedControls]="true">
+  </aspect-rich-text-editor>
+  <mat-form-field>
+    <mat-label>{{'id' | translate }}</mat-label>
+    <input matInput type="text" [(ngModel)]="newLabel.alias" #aliasModel="ngModel"
+           required [pattern]="aliasPattern" (ngModelChange)="checkAlias($event)">
+    <!-- One reason in both places: the hint while the field is being typed in, the error once it was left.
+         Two blocks, because a block with two nodes at its root is not projected into the form field's slots. -->
+    @if (aliasProblem) {
+      <mat-error>{{ aliasProblem | translate }}</mat-error>
+    }
+    @if (aliasProblem) {
+      <mat-hint class="alias-problem-hint">{{ aliasProblem | translate }}</mat-hint>
+    }
+  </mat-form-field>
 
-    <div class="media-panels">
-      <fieldset class="image-panel-controls">
-        <legend>Bild</legend>
-        <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
-        <button mat-raised-button [disabled]="newLabel.imgSrc === null" (click)="newLabel.imgSrc = null">
-          {{ 'removeImage' | translate }}
-        </button>
-        <!--Compresses the image that is already in the option (#1378).-->
-        <button class="compress-image-button" mat-raised-button disabledInteractive
-                [disabled]="!(newLabel.imgSrc | isCompressibleImage)"
-                [matTooltip]="newLabel.imgSrc && !(newLabel.imgSrc | isCompressibleImage) ?
-                               ('compressImageUnavailable' | translate) : ''"
-                (click)="compressImage()">
-          {{ 'compressImage' | translate }}
-        </button>
-        <mat-form-field>
-          <mat-label>{{'imagePosition' | translate }}</mat-label>
-          <mat-select [(ngModel)]="newLabel.imgPosition"
-                      [disabled]="newLabel.imgSrc == null">
-            <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
-                        [value]="option">
+  <div class="media-panels">
+    <fieldset class="image-panel-controls">
+      <legend>Bild</legend>
+      <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
+      <button mat-raised-button [disabled]="newLabel.imgSrc === null" (click)="newLabel.imgSrc = null">
+        {{ 'removeImage' | translate }}
+      </button>
+      <!--Compresses the image that is already in the option (#1378).-->
+      <button class="compress-image-button" mat-raised-button disabledInteractive
+              [disabled]="!(newLabel.imgSrc | isCompressibleImage)"
+              [matTooltip]="newLabel.imgSrc && !(newLabel.imgSrc | isCompressibleImage) ?
+                             ('compressImageUnavailable' | translate) : ''"
+              (click)="compressImage()">
+        {{ 'compressImage' | translate }}
+      </button>
+      <mat-form-field>
+        <mat-label>{{'imagePosition' | translate }}</mat-label>
+        <mat-select [(ngModel)]="newLabel.imgPosition"
+                    [disabled]="newLabel.imgSrc == null">
+          @for (option of ['above', 'below', 'left', 'right']; track option) {
+            <mat-option [value]="option">
               {{ option | translate }}
             </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </fieldset>
-
-      <fieldset>
-        <legend>Audio</legend>
-        <div class="image-panel-controls">
-          <button mat-raised-button (click)="loadAudio()">
-            {{(newLabel.audioSrc ? 'changeAudio' : 'loadAudio') | translate }}
-          </button>
-          <button mat-raised-button [disabled]="newLabel.audioSrc === null" (click)="newLabel.audioSrc = null">
-            {{ 'removeAudio' | translate }}
-          </button>
-        </div>
-      </fieldset>
-    </div>
-
-    <fieldset [style.height.px]="180" [style.margin-top.px]="10">
-      <legend>Vorschau</legend>
-      <aspect-text-image-panel [label]="newLabel" [style.justify-content]="'center'"></aspect-text-image-panel>
+          }
+        </mat-select>
+      </mat-form-field>
     </fieldset>
 
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="newLabel" [disabled]="aliasModel.invalid || aliasProblem !== null">
-      {{'save' | translate }}
-    </button>
-    <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-  </mat-dialog-actions>
-</div>
+    <fieldset>
+      <legend>Audio</legend>
+      <div class="image-panel-controls">
+        <button mat-raised-button (click)="loadAudio()">
+          {{(newLabel.audioSrc ? 'changeAudio' : 'loadAudio') | translate }}
+        </button>
+        <button mat-raised-button [disabled]="newLabel.audioSrc === null" (click)="newLabel.audioSrc = null">
+          {{ 'removeAudio' | translate }}
+        </button>
+      </div>
+    </fieldset>
+  </div>
+
+  <fieldset [style.height.px]="180" [style.margin-top.px]="10">
+    <legend>Vorschau</legend>
+    <aspect-text-image-panel [label]="newLabel" [style.justify-content]="'center'"></aspect-text-image-panel>
+  </fieldset>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="newLabel" [disabled]="aliasModel.invalid || aliasProblem !== null">
+    {{'save' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+</mat-dialog-actions>

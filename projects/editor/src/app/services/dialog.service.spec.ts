@@ -1,8 +1,11 @@
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { of, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Mock } from 'vitest';
-import { Label } from 'common/models/label-interfaces';
+import { ClozeDocument } from 'common/models/elements/cloze';
+import { LikertRowElement } from 'common/models/elements/likert-row';
+import { DragNDropValueObject, Label } from 'common/models/label-interfaces';
+import { TEXT_EDITOR_DIALOG_CONFIG } from 'editor/modules/rich-text-editor/configs/text-editor-dialog.config';
 import { FileService } from 'common/services/file.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -29,6 +32,15 @@ import {
 import {
   VariableInfoFindingsDialogComponent
 } from 'editor/src/app/components/dialogs/variable-info-findings-dialog/variable-info-findings-dialog.component';
+import {
+  LikertRowEditDialogComponent
+} from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
+import {
+  DropListOptionEditDialogComponent
+} from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
+import {
+  TooltipPropertiesDialogComponent
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
 
 describe('DialogService', () => {
   let service: DialogService;
@@ -74,7 +86,7 @@ describe('DialogService', () => {
 
     expect(dialogMock.open).toHaveBeenCalledWith(
       LabelEditDialogComponent,
-      { data: { label, showTextAlignment: false }, autoFocus: false }
+      { ...TEXT_EDITOR_DIALOG_CONFIG, data: { label, showTextAlignment: false }, autoFocus: false }
     );
     expect(result).toBe(editedLabel);
   });
@@ -87,7 +99,7 @@ describe('DialogService', () => {
 
     expect(dialogMock.open).toHaveBeenCalledWith(
       LabelEditDialogComponent,
-      { data: { label, showTextAlignment: true }, autoFocus: false }
+      { ...TEXT_EDITOR_DIALOG_CONFIG, data: { label, showTextAlignment: true }, autoFocus: false }
     );
   });
 
@@ -241,6 +253,8 @@ describe('DialogService', () => {
     expect(result).toBe('bearbeiteter Text');
   });
 
+  /* The dialog has no title, so it is announced by the name of the button that opens it, and it takes the height
+     of the window for the text (#1006). */
   it('should open the rich text edit dialog without cloze mode', () => {
     mockDialogResult('<p>Text</p>');
 
@@ -249,10 +263,50 @@ describe('DialogService', () => {
     expect(dialogMock.open).toHaveBeenCalledWith(
       RichTextEditDialogComponent,
       {
+        ...TEXT_EDITOR_DIALOG_CONFIG,
         data: { content: '<p>Alt</p>', defaultFontSize: 20, clozeMode: false },
+        height: '95vh',
+        ariaLabel: 'propertiesPanel.editText',
         autoFocus: false
       }
     );
+  });
+
+  it('should open the cloze text in the same dialog, in cloze mode', () => {
+    const document = { type: 'doc', content: [] } as unknown as ClozeDocument;
+    mockDialogResult(document);
+
+    service.showClozeTextEditDialog(document, 20).subscribe();
+
+    expect(dialogMock.open).toHaveBeenCalledWith(
+      RichTextEditDialogComponent,
+      {
+        ...TEXT_EDITOR_DIALOG_CONFIG,
+        data: { content: document, defaultFontSize: 20, clozeMode: true },
+        height: '95vh',
+        ariaLabel: 'propertiesPanel.editText',
+        autoFocus: false
+      }
+    );
+  });
+
+  /* Material stops the content of a dialog at 65vh, whatever the window; a dialog with a text editor lifts that
+     limit and may take the window instead (#1006). The label, text and cloze dialogs are checked in full above. */
+  const textEditorDialogs: [string, (dialogService: DialogService) => Observable<unknown>, unknown][] = [
+    ['likert row', dialogService => dialogService.showLikertRowEditDialog({} as LikertRowElement, []),
+      LikertRowEditDialogComponent],
+    ['drop list option', dialogService => dialogService.showDropListOptionEditDialog({} as DragNDropValueObject),
+      DropListOptionEditDialogComponent],
+    ['tooltip', dialogService => dialogService.showTooltipDialog(undefined, undefined),
+      TooltipPropertiesDialogComponent]
+  ];
+
+  it.each(textEditorDialogs)('should open the %s dialog as a text editor dialog', (_, open, component) => {
+    mockDialogResult(undefined);
+
+    open(service).subscribe();
+
+    expect(dialogMock.open).toHaveBeenCalledWith(component, expect.objectContaining(TEXT_EDITOR_DIALOG_CONFIG));
   });
 
   /* The way in for an image that is already in the unit: the same dialog the upload path opens, and

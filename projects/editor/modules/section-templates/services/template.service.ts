@@ -5,6 +5,7 @@ import {
   RadioWizardDialogComponent
 } from 'editor/modules/section-templates/components/radio/radio-dialog/radio-dialog.component';
 import { ElementFactory } from 'common/utils/element-factory';
+import { TEXT_EDITOR_DIALOG_CONFIG } from 'editor/modules/rich-text-editor/configs/text-editor-dialog.config';
 import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -122,7 +123,7 @@ export class TemplateService {
     return new Promise(resolve => {
       switch (templateName) {
         case 'stimulus':
-          this.dialog.open(StimulusWizardDialogComponent, { autoFocus: 'dialog' })
+          this.dialog.open(StimulusWizardDialogComponent, { ...TEXT_EDITOR_DIALOG_CONFIG, autoFocus: 'dialog' })
             .afterClosed().subscribe(
               (result: {
                 variant: 'text' | 'email' | 'message' | 'audio1' | 'audio2',
@@ -156,8 +157,10 @@ export class TemplateService {
           break;
         case 'text2': {
           const availableTextElements = this.unitService.unit.getAllElements('text') as TextElement[];
-          this.dialog.open(MarkingPanelDialogComponent,
-                           { data: { availableTextIDs: availableTextElements.map(text => text.alias) } })
+          this.dialog.open(MarkingPanelDialogComponent, {
+            ...TEXT_EDITOR_DIALOG_CONFIG,
+            data: { availableTextIDs: availableTextElements.map(text => text.alias) }
+          })
             .afterClosed()
             .subscribe((result: {
               text1: string, showHelper: boolean, markingMode: 'word' | 'range', connectedText: string | undefined
@@ -179,7 +182,7 @@ export class TemplateService {
           break;
         }
         case 'text3':
-          this.dialog.open(Text3WizardDialogComponent, {})
+          this.dialog.open(Text3WizardDialogComponent, TEXT_EDITOR_DIALOG_CONFIG)
             .afterClosed().subscribe(
               (result: { text1: string, text2: string, text3: string, text4: string, text5: string }) => {
                 if (result) {
@@ -189,7 +192,7 @@ export class TemplateService {
               });
           break;
         case 'input':
-          this.dialog.open(InputWizardDialogComponent, {})
+          this.dialog.open(InputWizardDialogComponent, TEXT_EDITOR_DIALOG_CONFIG)
             .afterClosed().subscribe((result: {
               text: string,
               answerCount: number,
@@ -205,7 +208,7 @@ export class TemplateService {
             });
           break;
         case 'radio':
-          this.dialog.open(RadioWizardDialogComponent, { autoFocus: 'dialog' })
+          this.dialog.open(RadioWizardDialogComponent, { ...TEXT_EDITOR_DIALOG_CONFIG, autoFocus: 'dialog' })
             .afterClosed().subscribe((result: {
               variant: 'text' | 'image',
               options: TextRadioOptions | ImageRadioOptions
@@ -222,7 +225,7 @@ export class TemplateService {
             });
           break;
         case 'likert':
-          this.dialog.open(LikertWizardDialogComponent, {})
+          this.dialog.open(LikertWizardDialogComponent, TEXT_EDITOR_DIALOG_CONFIG)
             .afterClosed().subscribe((result: {
               text1: string, text2: string, options: TextImageLabel[], rows: TextImageLabel[] }) => {
               if (result) {
@@ -232,7 +235,7 @@ export class TemplateService {
             });
           break;
         case 'checkbox':
-          this.dialog.open(CheckboxWizardDialogComponent, {})
+          this.dialog.open(CheckboxWizardDialogComponent, TEXT_EDITOR_DIALOG_CONFIG)
             .afterClosed().subscribe((result: { text1: string, options: string[], useImages: boolean }) => {
               if (result) {
                 resolve(CheckboxBuilders
@@ -241,7 +244,7 @@ export class TemplateService {
             });
           break;
         case 'geometry':
-          this.dialog.open(GeometryWizardDialogComponent, {})
+          this.dialog.open(GeometryWizardDialogComponent, TEXT_EDITOR_DIALOG_CONFIG)
             .afterClosed().subscribe((result: { text: string, geometryAppDefinition: string, geometryFileName: string,
               showHelper: boolean }) => {
               if (result) {
@@ -263,7 +266,7 @@ export class TemplateService {
             });
           break;
         case 'droplist':
-          this.dialog.open(DroplistWizardDialogComponent, { autoFocus: false })
+          this.dialog.open(DroplistWizardDialogComponent, { ...TEXT_EDITOR_DIALOG_CONFIG, autoFocus: false })
             .afterClosed().subscribe((result: {
               variant: 'classic' | '2pages' | 'sort',
               options: ClassicTemplateOptions | SortTemplateOptions | TwoPageTemplateOptions

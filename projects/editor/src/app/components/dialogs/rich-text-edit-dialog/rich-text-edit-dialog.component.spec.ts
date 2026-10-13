@@ -67,6 +67,11 @@ describe('RichTextEditDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /* The title only repeated the button that opens the dialog, and its line goes to the text (#1006). */
+  it('should give the dialog no title', () => {
+    expect(fixture.nativeElement.querySelector('.mat-mdc-dialog-title')).toBeNull();
+  });
+
   it('should configure the editor with the injected data', () => {
     const editor = getEditor();
     expect(editor.content).toBe('<p>Text</p>');

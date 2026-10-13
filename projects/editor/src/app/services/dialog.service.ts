@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ClozeDocument } from 'common/models/elements/cloze';
+import { TEXT_EDITOR_DIALOG_CONFIG } from 'editor/modules/rich-text-editor/configs/text-editor-dialog.config';
 import { LikertRowElement } from 'common/models/elements/likert-row';
 import {
   SectionInsertDialogComponent
@@ -101,6 +102,7 @@ export class DialogService {
      the labels of options do not (#1430). */
   showLabelEditDialog(label: Label, showTextAlignment: boolean = false): Observable<Label> {
     const dialogRef = this.dialog.open(LabelEditDialogComponent, {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
       data: { label, showTextAlignment },
       autoFocus: false
     });
@@ -165,14 +167,15 @@ export class DialogService {
 
   showDropListOptionEditDialog(value: DragNDropValueObject): Observable<DragNDropValueObject> {
     const dialogRef = this.dialog.open(DropListOptionEditDialogComponent, {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
       data: { value },
-      height: '700px',
       // The rich text editor gives its text area a minimum width of 700px. Opened any narrower,
       // the dialog has a horizontal scrollbar even while empty and the right half of the toolbar
       // sits outside the visible area (#1347). 700px plus the content padding of 48px is already
       // 748, so 750 would leave two pixels and no room for the vertical scrollbar this dialog
-      // always has. Material's default `maxWidth` of 80vw would take the 800 back below a 1000px
-      // window, which is where the scrollbar came from in the first place.
+      // has whenever the window is lower than its content. Material's default `maxWidth` of 80vw
+      // would take the 800 back below a 1000px window, which is where the scrollbar came from in
+      // the first place.
       width: '800px',
       maxWidth: '95vw'
     });
@@ -187,27 +190,34 @@ export class DialogService {
   }
 
   showRichTextEditDialog(text: string, defaultFontSize: number): Observable<string> {
-    const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: {
-        content: text,
-        defaultFontSize,
-        clozeMode: false
-      },
-      autoFocus: false
-    });
+    const dialogRef = this.dialog.open(RichTextEditDialogComponent, this.richTextEditDialogConfig({
+      content: text,
+      defaultFontSize,
+      clozeMode: false
+    }));
     return dialogRef.afterClosed();
   }
 
   showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<ClozeDocument | undefined> {
-    const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: {
-        content: document,
-        defaultFontSize,
-        clozeMode: true
-      },
-      autoFocus: false
-    });
+    const dialogRef = this.dialog.open(RichTextEditDialogComponent, this.richTextEditDialogConfig({
+      content: document,
+      defaultFontSize,
+      clozeMode: true
+    }));
     return dialogRef.afterClosed();
+  }
+
+  /** The dialog is nothing but the text area, so it takes the height of the window. It has no title: that only
+     repeated the action that opens it, and took a line the text needs. It is announced by what the title said,
+     for the cloze as well (#1006). */
+  private richTextEditDialogConfig(data: RichTextEditDialogComponent['data']): MatDialogConfig {
+    return {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
+      data,
+      height: '95vh',
+      ariaLabel: this.translateService.instant('propertiesPanel.editText'),
+      autoFocus: false
+    };
   }
 
   showPlayerEditDialog(elementID: string, playerProps: PlayerProperties): Observable<PlayerProperties> {
@@ -221,6 +231,7 @@ export class DialogService {
 
   showLikertRowEditDialog(row: LikertRowElement, options: TextImageLabel[]): Observable<LikertRowElement> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
       data: { row, options },
       autoFocus: false
     });
@@ -314,6 +325,7 @@ export class DialogService {
     tooltipText: string | undefined, tooltipPosition: TooltipPosition | undefined
   ): Observable<{ tooltipText: string, tooltipPosition: TooltipPosition, action: 'save' | 'delete' }> {
     const dialogRef = this.dialog.open(TooltipPropertiesDialogComponent, {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
       data: { tooltipText, tooltipPosition },
       width: '750px',
       autoFocus: false

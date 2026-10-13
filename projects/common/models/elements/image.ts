@@ -37,7 +37,6 @@ export class ImageElement extends UIElement implements ImageProperties {
      element.spec.ts, not the type. */
   styling: Record<never, never> = {};
 
-  static title: string = 'Bild';
   static icon: string = 'image';
 
   constructor(element?: Partial<ImageProperties>, idService?: AbstractIDService) {

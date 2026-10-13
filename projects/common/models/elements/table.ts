@@ -39,7 +39,6 @@ export class TableElement extends CompoundElement implements TableProperties {
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.table.styling)
   };
 
-  static title: string = 'Tabelle';
   static icon: string = 'grid_on';
 
   constructor(element?: Partial<TableProperties>, idService?: AbstractIDService) {

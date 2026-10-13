@@ -205,7 +205,7 @@
     "highlightable": "Markieren erlauben",
     "marking": "Markierung",
     "markingMode": "Markierungsmodus",
-    "markingPanels": "Markierungselemente",
+    "markingPanels": "Textmarkierungen",
     "markingMode-selection": "Auswahl",
     "markingMode-word": "Wort",
     "markingMode-range": "Bereich",
@@ -454,7 +454,7 @@
   },
   "toolbox": {
     "text": "Text",
-    "marking-panel": "Markierungselement",
+    "marking-panel": "Textmarkierung",
     "button": "Knopf",
     "frame": "Rahmen",
     "text-field": "Eingabefeld",

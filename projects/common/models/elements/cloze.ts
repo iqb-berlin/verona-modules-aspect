@@ -26,7 +26,6 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       lineHeight: ELEMENT_DEFAULTS.cloze.styling.lineHeight
     };
 
-  static title: string = 'Lückentext';
   static icon: string = 'vertical_split';
 
   static validChildElements = ['TextField', 'DropList', 'ToggleButton', 'Button', 'Checkbox', 'Dropdown'];

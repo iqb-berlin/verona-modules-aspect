@@ -32,7 +32,6 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       lineHeight: ELEMENT_DEFAULTS['text-field'].styling.lineHeight
     };
 
-  static title: string = 'Eingabefeld';
   static icon: string = 'edit';
 
   constructor(element?: Partial<TextFieldProperties>, idService?: AbstractIDService) {

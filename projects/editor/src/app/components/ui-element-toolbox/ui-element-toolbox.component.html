@@ -16,25 +16,25 @@
                   draggable="true" (dragstart)="startDrag($event, 'text')"
                   (dragend)="endDrag()">
             <mat-icon>{{TextElement.icon}}</mat-icon>
-            {{TextElement.title}}
+            {{ 'toolbox.text' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('image')"
                   draggable="true" (dragstart)="startDrag($event, 'image')"
                   (dragend)="endDrag()">
             <mat-icon>{{ImageElement.icon}}</mat-icon>
-            {{ImageElement.title}}
+            {{ 'toolbox.image' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('audio')"
                   draggable="true" (dragstart)="startDrag($event, 'audio')"
                   (dragend)="endDrag()">
             <mat-icon>{{AudioElement.icon}}</mat-icon>
-            {{AudioElement.title}}
+            {{ 'toolbox.audio' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('video')"
                   draggable="true" (dragstart)="startDrag($event, 'video')"
                   (dragend)="endDrag()">
             <mat-icon>{{VideoElement.icon}}</mat-icon>
-            {{VideoElement.title}}
+            {{ 'toolbox.video' | translate }}
           </button>
         </mat-expansion-panel>
         <mat-expansion-panel expanded>
@@ -47,19 +47,19 @@
                   draggable="true" (dragstart)="startDrag($event, 'text-field')"
                   (dragend)="endDrag()">
             <mat-icon>{{TextFieldElement.icon}}</mat-icon>
-            {{TextFieldElement.title}}
+            {{ 'toolbox.text-field' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('text-area')"
                   draggable="true" (dragstart)="startDrag($event, 'text-area')"
                   (dragend)="endDrag()">
             <mat-icon>{{TextAreaElement.icon}}</mat-icon>
-            {{TextAreaElement.title}}
+            {{ 'toolbox.text-area' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('spell-correct')"
                   draggable="true" (dragstart)="startDrag($event,'spell-correct')"
                   (dragend)="endDrag()">
             <mat-icon>{{SpellCorrectElement.icon}}</mat-icon>
-            {{SpellCorrectElement.title}}
+            {{ 'toolbox.spell-correct' | translate }}
           </button>
           <div class="fx-row-start-stretch" (mouseover)="hoverFormulaButton = true" (mouseleave)="hoverFormulaButton = false">
             <button *ngIf="!hoverFormulaButton" mat-stroked-button>
@@ -81,7 +81,7 @@
                   draggable="true" (dragstart)="startDrag($event,'math-table');"
                   (dragend)="endDrag()">
             <mat-icon>{{MathTableElement.icon}}</mat-icon>
-            {{MathTableElement.title}}
+            {{ 'toolbox.math-table' | translate }}
           </button>
         </mat-expansion-panel>
         <mat-expansion-panel expanded>
@@ -108,31 +108,31 @@
                   draggable="true" (dragstart)="startDrag($event,'likert')"
                   (dragend)="endDrag()">
             <mat-icon>{{LikertElement.icon}}</mat-icon>
-            {{LikertElement.title}}
+            {{ 'toolbox.likert' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('dropdown')"
                   draggable="true" (dragstart)="startDrag($event,'dropdown')"
                   (dragend)="endDrag()">
             <mat-icon>{{DropdownElement.icon}}</mat-icon>
-            {{DropdownElement.title}}
+            {{ 'toolbox.dropdown' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('checkbox')"
                   draggable="true" (dragstart)="startDrag($event,'checkbox')"
                   (dragend)="endDrag()">
             <mat-icon>{{CheckboxElement.icon}}</mat-icon>
-            {{CheckboxElement.title}}
+            {{ 'toolbox.checkbox' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('slider')"
                   draggable="true" (dragstart)="startDrag($event,'slider')"
                   (dragend)="endDrag()">
             <mat-icon>{{SliderElement.icon}}</mat-icon>
-            {{SliderElement.title}}
+            {{ 'toolbox.slider' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('hotspot-image')"
                   draggable="true" (dragstart)="startDrag($event,'hotspot-image')"
                   (dragend)="endDrag()">
             <mat-icon>{{HotspotImageElement.icon}}</mat-icon>
-            {{HotspotImageElement.title}}
+            {{ 'toolbox.hotspot-image' | translate }}
           </button>
         </mat-expansion-panel>
         <mat-expansion-panel>
@@ -145,7 +145,7 @@
                   draggable="true" (dragstart)="startDrag($event,'drop-list')"
                   (dragend)="endDrag()">
             <mat-icon>{{DropListElement.icon}}</mat-icon>
-            {{DropListElement.title}}
+            {{ 'toolbox.drop-list' | translate }}
           </button>
         </mat-expansion-panel>
         <mat-expansion-panel>
@@ -158,14 +158,14 @@
                   draggable="true" (dragstart)="startDrag($event,'cloze')"
                   (dragend)="endDrag()">
             <mat-icon>{{ClozeElement.icon}}</mat-icon>
-            {{ClozeElement.title}}
+            {{ 'toolbox.cloze' | translate }}
           </button>
 
           <button mat-stroked-button (click)="addUIElement('table')"
                   draggable="true" (dragstart)="startDrag($event,'table')"
                   (dragend)="endDrag()">
             <mat-icon>{{TableElement.icon}}</mat-icon>
-            {{TableElement.title}}
+            {{ 'toolbox.table' | translate }}
           </button>
         </mat-expansion-panel>
 
@@ -180,13 +180,13 @@
                   draggable="true" (dragstart)="startDrag($event,'widget-periodic-table')"
                   (dragend)="endDrag()">
             <mat-icon>{{WidgetPeriodicTableElement.icon}}</mat-icon>
-            {{WidgetPeriodicTableElement.title}}
+            {{ 'toolbox.widget-periodic-table' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('widget-molecule-editor')"
                   draggable="true" (dragstart)="startDrag($event,'widget-molecule-editor')"
                   (dragend)="endDrag()">
             <mat-icon>{{WidgetMoleculeEditorElement.icon}}</mat-icon>
-            {{WidgetMoleculeEditorElement.title}}
+            {{ 'toolbox.widget-molecule-editor' | translate }}
           </button>
         </mat-expansion-panel>
 
@@ -203,31 +203,31 @@
                   draggable="true" (dragstart)="startDrag($event,'button')"
                   (dragend)="endDrag()">
             <mat-icon>{{ButtonElement.icon}}</mat-icon>
-            {{ButtonElement.title}}
+            {{ 'toolbox.button' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('frame')"
                   draggable="true" (dragstart)="startDrag($event,'frame')"
                   (dragend)="endDrag()">
             <mat-icon>{{FrameElement.icon}}</mat-icon>
-            {{FrameElement.title}}
+            {{ 'toolbox.frame' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('geometry')"
                   draggable="true" (dragstart)="startDrag($event,'geometry');"
                   (dragend)="endDrag()">
             <mat-icon>{{GeometryElement.icon}}</mat-icon>
-            {{GeometryElement.title}}
+            {{ 'toolbox.geometry' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('marking-panel')"
                   draggable="true" (dragstart)="startDrag($event,'marking-panel')"
                   (dragend)="endDrag()">
             <mat-icon>{{MarkingPanelElement.icon}}</mat-icon>
-            {{MarkingPanelElement.title}}
+            {{ 'toolbox.marking-panel' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('trigger')"
                   draggable="true" (dragstart)="startDrag($event,'trigger')"
                   (dragend)="endDrag()">
             <mat-icon>{{TriggerElement.icon}}</mat-icon>
-            {{TriggerElement.title}}
+            {{ 'toolbox.trigger' | translate }}
           </button>
         </mat-expansion-panel>
         <mat-expansion-panel>
@@ -240,7 +240,7 @@
                   draggable="true" (dragstart)="startDrag($event,'tetfolio')"
                   (dragend)="endDrag()">
             <mat-icon>{{TetfolioElement.icon}}</mat-icon>
-            {{TetfolioElement.title}}
+            {{ 'toolbox.tetfolio' | translate }}
           </button>
         </mat-expansion-panel>
       </mat-accordion>
@@ -300,25 +300,25 @@
                   draggable="true" (dragstart)="startDrag($event, 'text')"
                   (dragend)="endDrag()">
             <mat-icon>{{TextElement.icon}}</mat-icon>
-            {{TextElement.title}}
+            {{ 'toolbox.text' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('image')"
                   draggable="true" (dragstart)="startDrag($event, 'image')"
                   (dragend)="endDrag()">
             <mat-icon>{{ImageElement.icon}}</mat-icon>
-            {{ImageElement.title}}
+            {{ 'toolbox.image' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('audio')"
                   draggable="true" (dragstart)="startDrag($event, 'audio')"
                   (dragend)="endDrag()">
             <mat-icon>{{AudioElement.icon}}</mat-icon>
-            {{AudioElement.title}}
+            {{ 'toolbox.audio' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('video')"
                   draggable="true" (dragstart)="startDrag($event, 'video')"
                   (dragend)="endDrag()">
             <mat-icon>{{VideoElement.icon}}</mat-icon>
-            {{VideoElement.title}}
+            {{ 'toolbox.video' | translate }}
           </button>
         </mat-expansion-panel>
 
@@ -332,14 +332,14 @@
                   draggable="true" (dragstart)="startDrag($event,'cloze')"
                   (dragend)="endDrag()">
             <mat-icon>{{ClozeElement.icon}}</mat-icon>
-            {{ClozeElement.title}}
+            {{ 'toolbox.cloze' | translate }}
           </button>
 
           <button mat-stroked-button (click)="addUIElement('table')"
                   draggable="true" (dragstart)="startDrag($event,'table')"
                   (dragend)="endDrag()">
             <mat-icon>{{TableElement.icon}}</mat-icon>
-            {{TableElement.title}}
+            {{ 'toolbox.table' | translate }}
           </button>
         </mat-expansion-panel>
 

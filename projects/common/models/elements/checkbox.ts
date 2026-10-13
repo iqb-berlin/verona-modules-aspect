@@ -27,7 +27,6 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
 
   styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
 
-  static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';
 
   constructor(element?: Partial<CheckboxProperties>, idService?: AbstractIDService) {

@@ -41,7 +41,6 @@ export class DropListElement extends InputElement implements DropListProperties 
       itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].styling.itemBackgroundColor
     };
 
-  static title: string = 'Ablegeliste';
   static icon: string = 'drag_indicator';
 
   constructor(element?: Partial<DropListProperties>, idService?: AbstractIDService) {

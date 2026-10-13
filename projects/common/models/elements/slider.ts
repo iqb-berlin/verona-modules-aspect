@@ -31,7 +31,6 @@ export class SliderElement extends InputElement implements SliderProperties {
       lineHeight: ELEMENT_DEFAULTS.slider.styling.lineHeight
     };
 
-  static title: string = 'Schieberegler';
   static icon: string = 'linear_scale';
 
   constructor(element?: Partial<SliderProperties>, idService?: AbstractIDService) {

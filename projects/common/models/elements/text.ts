@@ -32,7 +32,6 @@ export class TextElement extends UIElement implements TextProperties {
       lineHeight: ELEMENT_DEFAULTS.text.styling.lineHeight
     };
 
-  static title: string = 'Text';
   static icon: string = 'text_snippet';
   static selectionColors: Record<string, string> = {
     yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'

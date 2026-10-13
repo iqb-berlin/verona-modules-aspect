@@ -9,6 +9,7 @@ import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { TableGridRowsPipe } from 'common/pipes/table-grid-rows.pipe';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { TableElement, TableProperties } from 'common/models/elements/table';
+import { CheckboxElement } from 'common/models/elements/checkbox';
 import {
   TableChildOverlay
 } from 'common/components/table-child-overlay/table-child-overlay.component';
@@ -40,7 +41,10 @@ describe('TableComponent', () => {
         TranslateModule.forRoot(),
         MatIconModule, MatButtonModule, MatMenuModule, MatTooltipModule
       ]
-    }).compileComponents();
+    })
+      // The overlay renders the element in a cell, which none of these tests is about.
+      .overrideComponent(TableChildOverlay, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -236,5 +240,21 @@ describe('TableComponent', () => {
       component.addHeaderRow();
       expect(component.elementModel.headerRows[1].length).toBe(2);
     });
+  });
+
+  /* The edit dialog names an element in a cell the way the toolbox does; the names come from the editor,
+     whose translations hold them (#1553). */
+  it('should title an element in a cell with the name handed in for its type when editing', () => {
+    const checkbox = new CheckboxElement({ id: 'checkbox_1', alias: 'checkbox_1' });
+    checkbox.gridRow = 1;
+    checkbox.gridColumn = 1;
+    component.elementModel = createTableElement();
+    component.elementModel.elements = [checkbox];
+    component.elementNames = { checkbox: 'Checkbox' };
+    component.allowElementEditing = true;
+    fixture.detectChanges();
+
+    const title: HTMLElement = fixture.nativeElement.querySelector('.element-title');
+    expect(title.textContent?.replace(/\s+/g, ' ').trim()).toBe('Checkbox - checkbox_1');
   });
 });

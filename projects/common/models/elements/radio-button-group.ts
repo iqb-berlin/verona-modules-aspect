@@ -32,7 +32,6 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
       lineHeight: ELEMENT_DEFAULTS.radio.styling.lineHeight
     };
 
-  static title: string = 'Optionsfelder';
   static icon: string = 'radio_button_checked';
 
   constructor(element?: Partial<RadioButtonGroupProperties>, idService?: AbstractIDService) {

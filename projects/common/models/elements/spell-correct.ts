@@ -29,7 +29,6 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
      property was declared, and is what made its uselessness visible. */
   styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
 
-  static title: string = 'Wort korrigieren';
   static icon: string = 'format_strikethrough';
 
   constructor(element?: Partial<SpellCorrectProperties>, idService?: AbstractIDService) {

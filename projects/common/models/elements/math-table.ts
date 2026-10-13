@@ -67,7 +67,6 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       helperRowColor: ELEMENT_DEFAULTS['math-table'].styling.helperRowColor
     };
 
-  static title: string = 'Rechenkästchen';
   static icon: string = 'apps';
 
   constructor(element?: Partial<MathTableProperties>, idService?: AbstractIDService) {

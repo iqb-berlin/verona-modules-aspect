@@ -32,7 +32,6 @@ export class RadioButtonGroupComplexElement extends InputElement
   styling: FontStyles = PropertyGroupGenerators
     .generateFontStylingProps();
 
-  static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';
 
   constructor(element?: Partial<RadioButtonGroupComplexProperties>, idService?: AbstractIDService) {

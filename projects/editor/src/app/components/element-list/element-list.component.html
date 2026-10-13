@@ -5,7 +5,7 @@
         {{ $any(element.constructor).icon }}
       </mat-icon>
       <div matListItemTitle>
-        {{ $any(element.constructor).title }}: <i>{{ element.alias }}</i>
+        {{ 'toolbox.' + element.type | translate }}: <i>{{ element.alias }}</i>
       </div>
       @if (navigable) {
         <button mat-stroked-button matListItemMeta class="go-to-element" (click)="goToElement.emit(element)">

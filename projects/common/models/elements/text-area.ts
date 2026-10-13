@@ -37,7 +37,6 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
       lineHeight: ELEMENT_DEFAULTS['text-area'].styling.lineHeight
     };
 
-  static title: string = 'Eingabebereich';
   static icon: string = 'edit_note';
 
   constructor(element?: Partial<TextAreaProperties>, idService?: AbstractIDService) {

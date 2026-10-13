@@ -25,7 +25,6 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
 
   styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
 
-  static title: string = 'Klappliste';
   static icon: string = 'menu_open';
 
   constructor(element?: Partial<DropdownProperties>, idService?: AbstractIDService) {

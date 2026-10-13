@@ -6,7 +6,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { TemplateService } from 'editor/modules/section-templates/services/template.service';
 import {
@@ -108,6 +108,21 @@ describe('UiElementToolboxComponent', () => {
     component.applyTemplate('likert');
 
     expect(templateService.applyTemplate).toHaveBeenCalledWith('likert');
+  });
+
+  /* A button carries the name the properties panel shows for the element it adds (#1553). */
+  it('should label an element button with the toolbox translation of its type', () => {
+    TestBed.inject(TranslateService).setTranslation('de', { toolbox: { 'marking-panel': 'Text marking' } });
+    TestBed.inject(TranslateService).use('de');
+    fixture.detectChanges();
+
+    const buttons: HTMLButtonElement[] = Array.from(fixture.nativeElement.querySelectorAll('button'));
+    const markingPanelButton = buttons.find(button => button.textContent?.includes('Text marking'));
+    markingPanelButton?.click();
+
+    expect(markingPanelButton).toBeDefined();
+    expect(elementService.addElementToSection)
+      .toHaveBeenCalledWith('marking-panel', pages[0].sections[0]);
   });
 
   it('should show the state variables button only in expert mode', () => {

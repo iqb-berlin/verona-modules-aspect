@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import { TableComponent } from 'common/components/elements/table/table.component';
 import { UIElement } from 'common/models/elements/element';
@@ -35,6 +35,7 @@ class MockTableComponent {
   @Input() editorMode: boolean = false;
   @Input() allowElementEditing: boolean = false;
   @Input() contentRowHeight: string | null = null;
+  @Input() elementNames: Partial<Record<UIElementType, string>> = {};
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
   @Output() elementRemoved = new EventEmitter<{ row: number, col: number }>();
   @Output() headerCellEditRequested = new EventEmitter<{ row: number, col: number }>();
@@ -125,6 +126,16 @@ describe('TableEditDialogComponent', () => {
     expect(getTableMock().elementModel).toBe(component.newTable);
     expect(getTableMock().editorMode).toBe(true);
     expect(getTableMock().allowElementEditing).toBe(true);
+  });
+
+  /* The table lives in common and has no names of its own; it gets the ones the toolbox shows (#1553). */
+  it('should hand the toolbox names of the element types to the table component', () => {
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setTranslation('de', { toolbox: { checkbox: 'Checkbox', 'marking-panel': 'Text marking' } });
+    translateService.use('de');
+    fixture.detectChanges();
+
+    expect(getTableMock().elementNames).toEqual({ checkbox: 'Checkbox', 'marking-panel': 'Text marking' });
   });
 
   /* Header cells are edited in place, so the copy needs its own -- otherwise cancelling would keep a

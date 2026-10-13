@@ -36,7 +36,6 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
       lineHeight: ELEMENT_DEFAULTS['text-area-math'].styling.lineHeight
     };
 
-  static title: string = 'Formelbereich';
   static icon: string = 'calculate';
 
   constructor(element?: Partial<TextAreaMathProperties>, idService?: AbstractIDService) {

@@ -4,22 +4,28 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
 import { ElementListComponent } from 'editor/src/app/components/element-list/element-list.component';
 
-/* The template reads the static `icon`/`title` of the element class, so the stubs
+/* The template reads the static `icon` of the element class, so the stubs
    need to be real classes instead of object literals. */
 class StubTextElement {
   static icon = 'text_fields';
-  static title = 'Text';
+  type = 'text';
   alias = 'text_1';
 }
 
 class StubButtonElement {
   static icon = 'smart_button';
-  static title = 'Knopf';
+  type = 'button';
   alias = 'button_1';
+}
+
+class StubMarkingPanelElement {
+  static icon = 'border_color';
+  type = 'marking-panel';
+  alias = 'marking-panel_1';
 }
 
 describe('ElementListComponent', () => {
@@ -56,14 +62,27 @@ describe('ElementListComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('mat-list-item').length).toBe(2);
   });
 
-  it('should show the element class title, its icon and the element alias', () => {
+  it('should show the element name, its icon and the element alias', () => {
+    TestBed.inject(TranslateService).setTranslation('de', { toolbox: { text: 'Text' } });
+    TestBed.inject(TranslateService).use('de');
     component.elements = [new StubTextElement() as unknown as UIElement];
     fixture.detectChanges();
 
     const listItem: HTMLElement = fixture.nativeElement.querySelector('mat-list-item');
     expect(listItem.querySelector('mat-icon')?.textContent?.trim()).toBe('text_fields');
-    expect(listItem.textContent).toContain('Text');
-    expect(listItem.textContent).toContain('text_1');
+    expect(listItem.querySelector('[matListItemTitle]')?.textContent?.trim()).toBe('Text: text_1');
+  });
+
+  /* The list names an element the way the properties panel does: by the translation of its type,
+     not by a name of its own that has to be kept in step by hand (#1553). */
+  it('should name an element by the toolbox translation of its type', () => {
+    TestBed.inject(TranslateService).setTranslation('de', { toolbox: { 'marking-panel': 'Text marking' } });
+    TestBed.inject(TranslateService).use('de');
+    component.elements = [new StubMarkingPanelElement() as unknown as UIElement];
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[matListItemTitle]')?.textContent?.trim())
+      .toBe('Text marking: marking-panel_1');
   });
 
   /* A list naming what the author should look at offers the way there (#1520). */

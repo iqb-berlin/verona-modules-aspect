@@ -31,7 +31,6 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
       lineHeight: ELEMENT_DEFAULTS['math-field'].styling.lineHeight
     };
 
-  static title: string = 'Formelfeld';
   static icon: string = 'calculate';
 
   constructor(element?: Partial<MathFieldProperties>, idService?: AbstractIDService) {

@@ -510,6 +510,9 @@ The columns in the order of the work:
   *Zu Veröffentlichen*, without one to *zu testen*, where someone else builds the test. "Of its own"
   means a test that checks exactly this change and would fail without it; an existing spec that keeps
   passing does not count.
+- No end-to-end test of its own either when it would catch nothing new: unit tests fail without the
+  change, and a named existing spec exercises exactly the changed path. The change goes to
+  *Zu Veröffentlichen*; say in the pull request which tests these are.
 - A change nobody can see or trigger in the editor or the player (dead code removed, comments,
   tooling), and one no end-to-end test can observe, go to *Zu Veröffentlichen* straight away. Say in
   the pull request why — in *zu testen* someone would try to build a test that cannot work.

@@ -1,5 +1,5 @@
 import { Command, Extension } from '@tiptap/core';
-import { TextSelection, Transaction } from 'prosemirror-state';
+import { AllSelection, TextSelection, Transaction } from 'prosemirror-state';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -30,11 +30,11 @@ export const HangingIndent = Extension.create({
               { style: `text-indent: -${attributes.indentSize}px` } :
               { style: 'text-indent: 0px' }
             ),
-            parseHTML: element => element.style.textIndent !== '0px'
+            parseHTML: element => parseFloat(element.style.textIndent) < 0
           },
           indentSize: {
             default: 20,
-            parseHTML: element => Number(element.getAttribute('indentSize'))
+            parseHTML: element => Number(element.getAttribute('indentSize')) || 20
           }
         }
       }
@@ -46,7 +46,7 @@ export const HangingIndent = Extension.create({
       (tr: Transaction, pos: number, hangingIndent: boolean, indentSize: number): Transaction => {
         const node = tr?.doc?.nodeAt(pos);
         if (node) {
-          if (hangingIndent !== node.attrs.indent) {
+          if (hangingIndent !== node.attrs.hangingIndent) {
             const nodeAttrs = { ...node.attrs, hangingIndent, indentSize };
             return tr.setNodeMarkup(pos, node.type, nodeAttrs, node.marks);
           }
@@ -57,11 +57,14 @@ export const HangingIndent = Extension.create({
     const updateIndentLevel = (tr: Transaction, hangingIndent: boolean, indentSize: number): Transaction => {
       const { doc, selection } = tr;
 
-      if (doc && selection && (selection instanceof TextSelection)) {
+      if (doc && selection && (selection instanceof TextSelection || selection instanceof AllSelection)) {
         const { from, to } = selection;
         doc.nodesBetween(from, to, (node, pos) => {
-          setNodeIndentMarkup(tr, pos, hangingIndent, indentSize);
-          return false;
+          if (this.options.types.includes(node.type.name)) {
+            setNodeIndentMarkup(tr, pos, hangingIndent, indentSize);
+            return false;
+          }
+          return true;
         });
       }
 

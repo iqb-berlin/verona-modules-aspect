@@ -1,5 +1,5 @@
 import { Command, Extension } from '@tiptap/core';
-import { TextSelection, Transaction } from 'prosemirror-state';
+import { AllSelection, TextSelection, Transaction } from 'prosemirror-state';
 
 export interface IndentOptions {
   types: string[];
@@ -44,7 +44,7 @@ export const Indent = Extension.create<IndentOptions>({
           },
           indentSize: {
             default: 20,
-            parseHTML: element => Number(element.getAttribute('indentSize'))
+            parseHTML: element => Number(element.getAttribute('indentSize')) || 20
           }
         }
       }
@@ -77,7 +77,7 @@ export const Indent = Extension.create<IndentOptions>({
       const { doc, selection } = tr;
       let transaction = tr;
 
-      if (doc && selection && (selection instanceof TextSelection)) {
+      if (doc && selection && (selection instanceof TextSelection || selection instanceof AllSelection)) {
         const { from, to } = selection;
         doc.nodesBetween(from, to, (node, pos) => {
           if (this.options.types.includes(node.type.name)) {

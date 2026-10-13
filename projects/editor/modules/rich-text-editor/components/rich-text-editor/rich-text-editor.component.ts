@@ -45,6 +45,7 @@ import CheckboxComponentExtension from 'editor/modules/rich-text-editor/extensio
 import DropdownComponentExtension from 'editor/modules/rich-text-editor/extensions/dropdown-component-extension';
 import MathFormulaExtension from 'editor/modules/rich-text-editor/extensions/math-formula-extension';
 import { ClozeDocument } from 'common/models/elements/cloze';
+import { PreserveWhitespace } from '../../extensions/preserve-whitespace';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -82,7 +83,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.defaultExtensions = [
-      Document, Text, ListItem,
+      Document, Text, ListItem, PreserveWhitespace,
       Underline, Superscript, Subscript,
       TextStyle, Color,
       Bold, Italic, Strike, History,
@@ -127,6 +128,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       );
     }
     this.editor = new Editor({
+      parseOptions: { preserveWhitespace: 'full' },
       extensions: [
         ...activeExtensions,
         Placeholder.configure({
@@ -367,7 +369,9 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   }
 
   onImageUpload(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
     if (file) {
       FileService.readFileAsText(file, true).then(base64 => {
         if (FileService.isResizable(file.type)) {

@@ -31,6 +31,24 @@ describe('RichTextEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('clears the image input so the same file can be selected again', async () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    const files = new DataTransfer();
+    const file = new File(['<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>'],
+                          'same.svg', { type: 'image/svg+xml' });
+    files.items.add(file);
+    input.files = files.files;
+    expect(input.value).toContain('same.svg');
+    component.onImageUpload({ target: input } as unknown as Event);
+    expect(input.value).toBe('');
+    await fixture.whenStable();
+    const selectedAgain = new DataTransfer();
+    selectedAgain.items.add(file);
+    input.files = selectedAgain.files;
+    expect(input.value).toContain('same.svg');
+  });
+
   it('should paste formatted clipboard content as plain text', () => {
     component.editor.view.dom.dispatchEvent(createClipboardEvent({
       'text/plain': 'Hallo Welt',

@@ -33,7 +33,7 @@ export function addText(numParagraphs: number, numSentences: number, numColumns:
  */
 export function connectToMarkingPanels(panelAliases: string[]): void {
   cy.get('aspect-ui-element-properties')
-    .contains('mat-form-field', 'Markierungselemente').find('mat-select').click();
+    .contains('mat-form-field', 'Textmarkierungen').find('mat-select').click();
   panelAliases.forEach(alias => {
     cy.get('.cdk-overlay-container').contains('mat-option', alias).click({ force: true });
   });

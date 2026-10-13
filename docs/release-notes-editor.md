@@ -9,10 +9,11 @@ Editor
 - Texteditor: Ein Schalter hebt nicht umbrechende Leerzeichen farbig hervor ([#1476](https://github.com/iqb-berlin/verona-modules-aspect/issues/1476))
 
 ### Änderungen
-- Assistent „Markieren“: Das angelegte Markierungselement hat 10 px Abstand nach unten ([#1057](https://github.com/iqb-berlin/verona-modules-aspect/issues/1057))
+- Assistent „Markieren“: Die angelegte Textmarkierung hat 10 px Abstand nach unten ([#1057](https://github.com/iqb-berlin/verona-modules-aspect/issues/1057))
 - Eigenschaftenbereich: Die Felder unter „Dimensionen“ und „Z-Index“ nutzen die volle Breite
 - Eingabeprüfung: Abgelehnte Eingaben in ID- und Zahlenfeldern werden am Feld begründet ([#1523](https://github.com/iqb-berlin/verona-modules-aspect/issues/1523))
 - Einstellungen: Die Knöpfe für Aufgaben-Einstellungen und Arbeitsmodus haben einen Tooltip ([#1517](https://github.com/iqb-berlin/verona-modules-aspect/issues/1517), [#1551](https://github.com/iqb-berlin/verona-modules-aspect/issues/1551))
+- Elementnamen: Das Markierungselement heißt jetzt überall Textmarkierung, das Feld „Markierungselemente“ am Textelement entsprechend „Textmarkierungen“ ([#1553](https://github.com/iqb-berlin/verona-modules-aspect/issues/1553))
 - GeoGebra: Objektnamen mit unerlaubten Zeichen lassen sich nicht als verfolgte Variable wählen ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
 - Löschen: Die Löschrückfrage bietet an jedem Verweis „Zum Element“ bzw. „Zum Abschnitt“ ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
 - Meldungen: Fehler- und Warnmeldungen sehen einheitlich aus ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))

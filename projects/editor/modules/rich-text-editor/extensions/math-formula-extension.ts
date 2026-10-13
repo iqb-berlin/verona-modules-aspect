@@ -13,7 +13,8 @@ const MathFormulaExtension = (injector: Injector): Node => Node.create({
   addAttributes() {
     return {
       formula: {
-        default: ''
+        default: '',
+        parseHTML: element => element.getAttribute('formula') || element.getAttribute('data-latex') || ''
       },
       formulaHTML: {
         default: ''
@@ -22,7 +23,7 @@ const MathFormulaExtension = (injector: Injector): Node => Node.create({
   },
 
   parseHTML() {
-    return [{ tag: 'aspect-nodeview-math-formula' }];
+    return [{ tag: 'aspect-nodeview-math-formula' }, { tag: 'span.iqb-math-formula[data-latex]' }];
   },
 
   renderHTML({ HTMLAttributes }) {

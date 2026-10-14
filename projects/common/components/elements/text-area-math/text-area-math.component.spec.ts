@@ -214,6 +214,16 @@ describe('TextAreaMathComponent', () => {
     }));
   });
 
+  /* WebKit draws the text caret as high as what the line holds: an inline-block counts in full, the
+     leading of line-height does not (#1218) */
+  it('gives the first line its height through line-height, not through a box', () => {
+    const area: HTMLElement = fixture.nativeElement.querySelector('.text-area');
+    const spacer = getComputedStyle(fixture.nativeElement.querySelector('.alignment-fix'));
+
+    expect(spacer.display).toBe('inline');
+    expect(parseFloat(spacer.lineHeight)).toBeCloseTo(parseFloat(getComputedStyle(area).lineHeight) + 28);
+  });
+
   it('should be disabled when readonly', () => {
     component.elementModel.readOnly = true;
     fixture.detectChanges();

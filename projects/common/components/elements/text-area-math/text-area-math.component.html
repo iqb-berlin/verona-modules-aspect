@@ -23,7 +23,11 @@
      [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
      (pointerdown)="selectLastSegment($event)"
      (mousedown)="keepFocusAfterTouch($event)">
-  <span class="alignment-fix">&nbsp;</span>
+  <!-- Makes the first line as high as one with a formula, through the line height of an empty span
+       rather than a box of its own: WebKit draws the text caret as high as the boxes in the line,
+       without the leading of line-height (#1218) -->
+  <span class="alignment-fix"
+        [style.line-height.px]="elementModel.styling.fontSize * elementModel.styling.lineHeight / 100 + 28"></span>
   @for (segment of segments; track segment; let i = $index) {
     <aspect-text-area-math-segment #segment
       [style.display]="'inline'"

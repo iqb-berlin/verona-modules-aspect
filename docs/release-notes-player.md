@@ -10,7 +10,7 @@ Player
 - Abschnitte mit animiertem Einblenden: Der Player scrollt nur im Moment des Erscheinens zum Abschnitt, nicht bei jeder weiteren Eingabe ([#1546](https://github.com/iqb-berlin/verona-modules-aspect/issues/1546))
 - Abschnitte mit Einblendregel ohne „wieder ausblenden“: Der Abschnitt bleibt sichtbar, sobald er einmal erschienen ist. Aufgaben, die auf das bisherige Verhalten gebaut waren, verhalten sich jetzt anders ([#1547](https://github.com/iqb-berlin/verona-modules-aspect/issues/1547))
 - Abschnitte mit Einblendregel: Ein Abschnitt ohne „dynamisches Layout“ erscheint mit seinem Inhalt, statt leer zu bleiben ([#1535](https://github.com/iqb-berlin/verona-modules-aspect/issues/1535))
-- Formelbereich: Beim Antippen bleibt auf Android-Tablets die Bildschirmtastatur offen, und auf dem iPad ist der Cursor zu sehen ([#1218](https://github.com/iqb-berlin/verona-modules-aspect/issues/1218))
+- Formelbereich: Beim Antippen bleibt auf Android-Tablets die Bildschirmtastatur offen, und auf dem iPad ist der Cursor zu sehen, in Zeilen ohne Formel in normaler Höhe ([#1218](https://github.com/iqb-berlin/verona-modules-aspect/issues/1218))
 - Geometrie: Tippen in die Zeichnung verschiebt die Seite nicht mehr ([#971](https://github.com/iqb-berlin/verona-modules-aspect/issues/971))
 - Geometrie: Die GeoGebra-Tastatur öffnet sich im Applet statt am Fensterrand, wo andere Elemente sie verdecken konnten. Ein GeoGebra-Element mit Eingabefeld sollte mindestens 400 Pixel hoch sein ([#1549](https://github.com/iqb-berlin/verona-modules-aspect/issues/1549))
 - Geometrie, Bild: Kann GeoGebra oder ein Bild nicht geladen werden, nennt die Fehlermeldung an die Testumgebung, was fehlt ([#1456](https://github.com/iqb-berlin/verona-modules-aspect/issues/1456))

@@ -684,6 +684,20 @@
     "geometrySource": "Erstellt mit GeoGebra, https://www.geogebra.org/ (es gelten die GeoGebra-Lizenzbedingungen)."
   },
   "overviewDialog": {
+    "title": "Übersicht Elemente",
+    "filter": "Filter",
+    "pages": "Seiten",
+    "sections": "Abschnitte",
+    "resetFilter": "Filter zurücksetzen",
+    "bulkChange": "Mehrfachänderung",
+    "property": "Eigenschaft",
+    "selectedElements": "Ausgewählte Elemente: {{count}}",
+    "section": "Abschnitt",
+    "elementType": "Elementtyp",
+    "relevantForPresentationComplete": "Relevant für <br/> \"Presentation Complete\"",
+    "actions": "Aktionen",
+    "editId": "ID ändern",
+    "noData": "Keine Daten vorhanden",
     "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."
   },
   "unitHints": {
@@ -772,13 +786,22 @@
   },
   "pageView": {
     "addPageBreak": "Seitenumbruch ab gewähltem Abschnitt",
-    "removePageBreak": "Seitenumbruch entfernen"
+    "removePageBreak": "Seitenumbruch entfernen",
+    "pageLabel": "Seite {{page}}",
+    "alwaysVisiblePage": "dauerhaft sichtbare Seite",
+    "newSection": "Neuer Abschnitt"
   },
   "pageMenu": {
     "movePageForward": "Seite nach vorn verschieben",
     "movePageBackward": "Seite nach hinten verschieben",
     "deletePage": "Seite löschen",
-    "limitPageWidthHint": "Abgewählt wird die verfügbare Bildschirmbreite voll ausgenutzt."
+    "limitPageWidthHint": "Abgewählt wird die verfügbare Bildschirmbreite voll ausgenutzt.",
+    "pageWidth": "Seitenbreite",
+    "limitPageWidth": "Seitenbreite begrenzen",
+    "effectivePageWidth": "effektive Seitenbreite:",
+    "maxWidthInPx": "Seitenbreite in px",
+    "marginInPx": "Randbreite in px",
+    "alwaysVisible": "Seite dauerhaft sichtbar"
   },
   "richTextEditor": {
     "bold": "Fett",
@@ -878,5 +901,20 @@
     "newSizeLarger": "— größer als bisher",
     "recompressionHint": "Dieses Bild steckt schon in der Aufgabe. Beim Verkleinern wird es neu berechnet: Ein JPEG und ein WebP verlieren dabei ein zweites Mal an Qualität, ein GIF seine Animation.",
     "fixedOverlaysWarning": "Achtung: Die Bildbereiche dieses Elements liegen an festen Positionen im Bild. Wird das Bild kleiner, wandern sie nicht mit und müssen danach neu gesetzt werden. Nur die Dateigröße zu senken, ohne die Maße zu ändern, lässt sie unberührt."
+  },
+  "dropListOptionEditDialog": {
+    "title": "Ablegelistenoption anpassen",
+    "image": "Bild",
+    "audio": "Audio",
+    "preview": "Vorschau"
+  },
+  "tableEditDialog": {
+    "title": "Tabellenelemente"
+  },
+  "geogebraAppDefinitionDialog": {
+    "pasteBase64": "Base64 Repräsentation einfügen"
+  },
+  "likertRowEditDialog": {
+    "optionWithIndex": "{{text}} (Index: {{index}})"
   }
 }

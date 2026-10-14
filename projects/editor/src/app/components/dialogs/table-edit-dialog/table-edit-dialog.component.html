@@ -1,4 +1,4 @@
-<div mat-dialog-title>Tabellenelemente</div>
+<div mat-dialog-title>{{ 'tableEditDialog.title' | translate }}</div>
 <mat-dialog-content>
   <aspect-table [elementModel]="newTable" [editorMode]="true" [allowElementEditing]="true"
                 [contentRowHeight]="'250px'"

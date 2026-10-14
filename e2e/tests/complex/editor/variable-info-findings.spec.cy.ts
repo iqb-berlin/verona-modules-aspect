@@ -210,7 +210,7 @@ describe('Replacing an id that breaks the contract', { testIsolation: false }, (
     cy.get('mat-dialog-container').contains('button', 'ID ersetzen').click();
     cy.get('mat-dialog-container .replacement-warning').should('contain.text', 'im Studio neu angelegt');
     cy.get('mat-dialog-container .confirm-replacement').should('contain.text', 'ID ersetzen').click();
-    cy.get('mat-dialog-container').should('contain.text', 'Zur Unit gibt es keine Hinweise');
+    cy.get('mat-dialog-container').should('contain.text', 'Zur Aufgabe gibt es keine Hinweise');
     cy.get('body').type('{esc}');
     cy.get('.variable-info-findings-button').should('not.exist');
 

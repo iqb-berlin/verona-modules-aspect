@@ -3,7 +3,8 @@ Player
 ## next
 ### Änderungen
 - Audio, Video: Der Fehlercode bei zu langem Laden heißt `media-timeout` statt `audio-timeout` ([#1526](https://github.com/iqb-berlin/verona-modules-aspect/issues/1526))
-- Meldungen: Die Meldung „Unit-Definition kann nicht geladen werden“ zeigt ein Fehlersymbol ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+- Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ zeigt ein Fehlersymbol ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+- Meldungen: Die Fehlermeldungen beim Laden sprechen von „Aufgabe“ statt „Unit“ ([#1572](https://github.com/iqb-berlin/verona-modules-aspect/issues/1572))
 
 ### Fehlerbehebungen
 - Abschnitte mit animiertem Einblenden: Über dem eingeblendeten Abschnitt bleiben 100 px Abstand ([#1536](https://github.com/iqb-berlin/verona-modules-aspect/issues/1536))

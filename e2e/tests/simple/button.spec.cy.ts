@@ -26,8 +26,8 @@ describe('Button element', { testIsolation: false }, () => {
   it('creates unit nav button in editor', () => {
     addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-next-unit');
-    selectFromDropdown('Aktion', 'Unitnavigation', true);
-    selectFromDropdown('Aktionsparameter', 'Nächste Unit', true);
+    selectFromDropdown('Aktion', 'Aufgabennavigation', true);
+    selectFromDropdown('Aktionsparameter', 'Nächste Aufgabe', true);
   });
 
   it('creates page nav button in editor', () => {

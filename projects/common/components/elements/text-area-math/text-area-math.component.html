@@ -15,7 +15,7 @@
                         elementModel.styling.fontSize : elementModel.styling.lineHeight)"
      [style.overflow-y]="!elementModel.hasAutoHeight && 'auto'"
      [style.background-color]="elementModel.styling.backgroundColor"
-     [style.line-height.%]="elementModel.styling.lineHeight"
+     [style.--text-area-line-height.%]="elementModel.styling.lineHeight"
      [style.color]="elementModel.styling.fontColor"
      [style.font-size.px]="elementModel.styling.fontSize"
      [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
@@ -23,7 +23,7 @@
      [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
      (pointerdown)="selectLastSegment($event)"
      (mousedown)="keepFocusAfterTouch($event)">
-  <span class="alignment-fix">&nbsp;</span>
+  <span class="alignment-fix"></span>
   @for (segment of segments; track segment; let i = $index) {
     <aspect-text-area-math-segment #segment
       [style.display]="'inline'"

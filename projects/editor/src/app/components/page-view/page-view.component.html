@@ -3,8 +3,10 @@
      [style.height]="singlePageMode && '100%'"
      (click)="selectionService.clearElementSelection()">
   <div *ngIf="!singlePageMode">
-    <ng-container *ngIf="!page.alwaysVisible">
-      <div class="page-label">Seite {{pageIndex + (unitService.unit.pages[0].alwaysVisible ? 0 : 1)}}</div>
+    @if (!page.alwaysVisible) {
+      <div class="page-label">
+        {{ 'pageView.pageLabel' | translate: { page: pageIndex + (unitService.unit.pages[0].alwaysVisible ? 0 : 1) } }}
+      </div>
       <!-- The selected section has to be one of THIS page's: every page shows its own button while the
            selection indices name one page, so the button of another page would break at a section it
            does not hold - moving nothing and leaving a page without sections (#1203). -->
@@ -31,8 +33,9 @@
               (click)="collapsePage(pageIndex)">
         <mat-icon>compress</mat-icon>
       </button>
-    </ng-container>
-    <div *ngIf="page.alwaysVisible" class="page-label"><i>dauerhaft sichtbare Seite</i></div>
+    } @else {
+      <div class="page-label"><i>{{ 'pageView.alwaysVisiblePage' | translate }}</i></div>
+    }
     <button mat-icon-button [matMenuTriggerFor]="pageMenu"
             [matTooltip]="'pageSettings' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
             (click)="selectionService.selectPage(pageIndex)">
@@ -63,6 +66,6 @@
   <button mat-fab extended class="add-section-button"
           (click)="addSection(pageIndex)">
     <mat-icon class="add-section-icon">add</mat-icon>
-    Neuer Abschnitt
+    {{ 'pageView.newSection' | translate }}
   </button>
 </div>

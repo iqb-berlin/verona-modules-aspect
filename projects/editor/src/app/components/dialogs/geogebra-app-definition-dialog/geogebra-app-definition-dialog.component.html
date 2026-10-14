@@ -1,7 +1,7 @@
 <mat-dialog-content class="fx-column-start-stretch">
   <div class="paste-area" contenteditable="true"
        (paste)="validateBase64($event.clipboardData?.getData('Text'))">
-    <span>Base64 Repräsentation einfügen</span>
+    <span>{{ 'geogebraAppDefinitionDialog.pasteBase64' | translate }}</span>
   </div>
   <div class="status-area" [style.color]="statusMessage?.color" [hidden]="!statusMessage">
     {{ statusMessage?.text }}

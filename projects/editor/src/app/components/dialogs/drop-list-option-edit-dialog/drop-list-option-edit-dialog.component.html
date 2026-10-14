@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Ablegelistenoption anpassen</h2>
+<h2 mat-dialog-title>{{ 'dropListOptionEditDialog.title' | translate }}</h2>
 <mat-dialog-content class="content">
   <aspect-rich-text-editor [(content)]="newLabel.text" [showReducedControls]="true">
   </aspect-rich-text-editor>
@@ -18,7 +18,7 @@
 
   <div class="media-panels">
     <fieldset class="image-panel-controls">
-      <legend>Bild</legend>
+      <legend>{{ 'dropListOptionEditDialog.image' | translate }}</legend>
       <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
       <button mat-raised-button [disabled]="newLabel.imgSrc === null" (click)="newLabel.imgSrc = null">
         {{ 'removeImage' | translate }}
@@ -45,7 +45,7 @@
     </fieldset>
 
     <fieldset>
-      <legend>Audio</legend>
+      <legend>{{ 'dropListOptionEditDialog.audio' | translate }}</legend>
       <div class="image-panel-controls">
         <button mat-raised-button (click)="loadAudio()">
           {{(newLabel.audioSrc ? 'changeAudio' : 'loadAudio') | translate }}
@@ -58,7 +58,7 @@
   </div>
 
   <fieldset [style.height.px]="180" [style.margin-top.px]="10">
-    <legend>Vorschau</legend>
+    <legend>{{ 'dropListOptionEditDialog.preview' | translate }}</legend>
     <aspect-text-image-panel [label]="newLabel" [style.justify-content]="'center'"></aspect-text-image-panel>
   </fieldset>
 

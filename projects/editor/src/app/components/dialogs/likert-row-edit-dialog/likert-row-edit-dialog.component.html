@@ -21,13 +21,17 @@
       <mat-label>{{'preset' | translate }}</mat-label>
       <mat-select [(ngModel)]="newLikertRow.value">
         <mat-select-trigger
-          [innerHTML]="newLikertRow.value !== null ?
-            '<span>' + data.options[$any(newLikertRow.value)].text + '</span>' : 'undefiniert' | safeResourceHTML">
+          [innerHTML]="(newLikertRow.value !== null ?
+            '<span>' + data.options[$any(newLikertRow.value)].text + '</span>' :
+            ('propertiesPanel.undefined' | translate)) | safeResourceHTML">
         </mat-select-trigger>
         <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-        <mat-option *ngFor="let column of data.options; let i = index" [value]="i"
-                    [innerHTML]="'<span>' + column.text + ' (Index: ' + i + ')</span>' | safeResourceHTML">
-        </mat-option>
+        @for (column of data.options; track $index; let i = $index) {
+          <mat-option [value]="i"
+                      [innerHTML]="'<span>' + ('likertRowEditDialog.optionWithIndex' | translate: { text: column.text, index: i }) +
+                                   '</span>' | safeResourceHTML">
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 

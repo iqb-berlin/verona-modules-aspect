@@ -224,15 +224,15 @@
     "action": "Aktion",
     "actionParam": "Aktionsparameter",
     "addStateVariables": "Bitte zuerst Zustandsvariablen anlegen",
-    "unitNav": "Unitnavigation",
+    "unitNav": "Aufgabennavigation",
     "pageNav": "Seitennavigation",
     "highlightText": "Textabschnitt hervorheben",
     "removeHighlights": "Hervorhebungen ausblenden",
     "stateVariableChange": "Zustandsvariable ändern",
-    "previous": "Vorherige Unit",
-    "next": "Nächste Unit",
-    "first": "Erste Unit",
-    "last": "Letzte Unit",
+    "previous": "Vorherige Aufgabe",
+    "next": "Nächste Aufgabe",
+    "first": "Erste Aufgabe",
+    "last": "Letzte Aufgabe",
     "end": "Beenden",
     "undefined": "undefiniert",
     "pageNavSelectionHint": "Hier erscheinen nur Seiten, welche als Ziel zu Verfügung stehen.",
@@ -542,7 +542,7 @@
   "unexpectedError": {
     "title": "Unerwarteter Fehler",
     "intro": "Es ist ein Fehler aufgetreten. Es kann zu schwerwiegenden Problemen kommen.",
-    "hint": "Das Problem kann halbautomatisiert gemeldet werden. Dazu bitte auch die Unit verlinken oder exportieren und an den Bericht anhängen.",
+    "hint": "Das Problem kann halbautomatisiert gemeldet werden. Dazu bitte auch die Aufgabe verlinken oder exportieren und an den Bericht anhängen.",
     "reportError": "Fehler melden",
     "reportViaGitHub": "Fehlerbericht auf GitHub erstellen",
     "reportViaEmail": "Fehlerbericht als Email versenden",
@@ -550,12 +550,12 @@
     "technicalDetail": "Technische Angabe:"
   },
   "unitDefError": {
-    "newer": "Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.",
-    "outdated": "Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden."
+    "newer": "Aufgabenversion ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.",
+    "outdated": "Aufgabenversion ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden."
   },
   "sanitization": {
-    "title": "Unit-Definition wird aktualisiert",
-    "text": "Eine veraltete Unit-Definition wurde geladen und muss angepasst werden. Sobald gespeichert wird, ist sie nicht mehr mit alten Versionen kompatibel.",
+    "title": "Aufgabendefinition wird aktualisiert",
+    "text": "Eine veraltete Aufgabendefinition wurde geladen und muss angepasst werden. Sobald gespeichert wird, ist sie nicht mehr mit alten Versionen kompatibel.",
     "confirm": "Aktualisieren"
   },
   "sectionInsert": {
@@ -702,34 +702,34 @@
     "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."
   },
   "unitHints": {
-    "title": "Hinweise zur Unit",
-    "indicator": "Hinweise zur Unit anzeigen",
-    "none": "Zur Unit gibt es keine Hinweise.",
+    "title": "Hinweise zur Aufgabe",
+    "indicator": "Hinweise zur Aufgabe anzeigen",
+    "none": "Zur Aufgabe gibt es keine Hinweise.",
     "goToElement": "Zum Element",
     "goToSection": "Zum Abschnitt",
     "rulesIntoNothing": {
       "title": "Sichtbarkeitsbedingungen ohne Ziel",
-      "explanation": "Diese Abschnitte haben Sichtbarkeitsbedingungen, die nach einem Element oder einer Zustandsvariable fragen, die es in der Unit nicht gibt. Eine solche Bedingung ist nie erfüllt. Beim Laden werden sie nicht verändert, weil sich sonst ändern würde, wann der Abschnitt erscheint.",
+      "explanation": "Diese Abschnitte haben Sichtbarkeitsbedingungen, die nach einem Element oder einer Zustandsvariable fragen, die es in der Aufgabe nicht gibt. Eine solche Bedingung ist nie erfüllt. Beim Laden werden sie nicht verändert, weil sich sonst ändern würde, wann der Abschnitt erscheint.",
       "targets": "Fragt nach",
       "noTarget": "(nichts gewählt)"
     },
     "loadRepairs": {
       "title": "Beim Laden entfernte Verweise",
-      "explanation": "Diese Elemente verwiesen auf etwas, das es in der Unit nicht gibt. Die Verweise wurden beim Laden entfernt."
+      "explanation": "Diese Elemente verwiesen auf etwas, das es in der Aufgabe nicht gibt. Die Verweise wurden beim Laden entfernt."
     },
     "loadErrors": {
       "title": "Nicht geladene Inhalte",
       "explanation": "Diese Inhalte konnten nicht geladen werden. Dasselbe Problem tritt meist auch im Player auf.",
       "problem": "Problem",
-      "wholeUnit": "Ganze Unit",
+      "wholeUnit": "Ganze Aufgabe",
       "technicalDetail": "Technische Angabe:",
-      "notice": "Ein Inhalt der Unit konnte nicht geladen werden.",
+      "notice": "Ein Inhalt der Aufgabe konnte nicht geladen werden.",
       "show": "Anzeigen",
       "code": {
         "image-not-loading": "Das Bild kann nicht angezeigt werden. Die Bilddatei ist vermutlich beschädigt. Bitte das Bild neu hochladen.",
-        "media-timeout": "Das Audio oder Video wurde nicht rechtzeitig geladen. Mögliche Ursachen sind eine sehr große Datei oder ein Format, das der Browser nicht abspielen kann. Tritt der Fehler nach erneutem Laden der Unit wieder auf, bitte die Datei prüfen.",
+        "media-timeout": "Das Audio oder Video wurde nicht rechtzeitig geladen. Mögliche Ursachen sind eine sehr große Datei oder ein Format, das der Browser nicht abspielen kann. Tritt der Fehler nach erneutem Laden der Aufgabe wieder auf, bitte die Datei prüfen.",
         "media-duration-error": "Die Länge des Audios oder Videos lässt sich nicht bestimmen. Das kommt etwa bei Aufnahmen vor, die direkt im Browser entstanden sind. Bitte die Datei in einem anderen Format, zum Beispiel MP3 oder MP4, speichern und neu hochladen.",
-        "geometry-timeout": "Das Geometrie-Element wurde nicht rechtzeitig fertig geladen. Mögliche Ursachen sind eine langsame Verbindung, ein unvollständiges GeoGebra-Paket oder eine fehlerhafte GeoGebra-Datei. Tritt der Fehler nach erneutem Laden der Unit wieder auf, bitte die GeoGebra-Datei prüfen oder die Administration ansprechen.",
+        "geometry-timeout": "Das Geometrie-Element wurde nicht rechtzeitig fertig geladen. Mögliche Ursachen sind eine langsame Verbindung, ein unvollständiges GeoGebra-Paket oder eine fehlerhafte GeoGebra-Datei. Tritt der Fehler nach erneutem Laden der Aufgabe wieder auf, bitte die GeoGebra-Datei prüfen oder die Administration ansprechen.",
         "geogebra-not-loading": "Das GeoGebra-Paket konnte nicht geladen werden. Es fehlt auf dem Server oder ist gerade nicht erreichbar. Die Geometrie-Elemente bleiben deshalb leer. Bitte wenden Sie sich an die Administration.",
         "other": "Dieser Inhalt konnte nicht geladen werden."
       }
@@ -781,7 +781,7 @@
     "enableNumbering": "Nummerierung aktivieren",
     "verticalAlignment": "vertikale Ausrichtung",
     "navigation": "Navigation",
-    "unitNavNext": "Navigationsknopf zur nächsten Unit anfügen",
+    "unitNavNext": "Navigationsknopf zur nächsten Aufgabe anfügen",
     "expertMode": "Erweiterter Modus",
     "pagesAsList": "Seitenansicht untereinander"
   },

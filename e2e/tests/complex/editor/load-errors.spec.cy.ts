@@ -84,7 +84,7 @@ describe('Content that could not be loaded', { testIsolation: false }, () => {
 
   it('announces a picture that does not load, instead of the old message', () => {
     cy.get('mat-snack-bar-container')
-      .should('contain.text', 'Ein Inhalt der Unit konnte nicht geladen werden.')
+      .should('contain.text', 'Ein Inhalt der Aufgabe konnte nicht geladen werden.')
       .and('not.contain.text', 'Element-Ressource');
   });
 

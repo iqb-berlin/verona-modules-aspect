@@ -2,14 +2,15 @@ Editor
 ======
 ## next
 ### Neue Funktionen
-- Hinweise zur Unit: Neuer Dialog listet ungültige Variablennamen mit Fundstelle und „Zum Element“. Er ist über ein Warnzeichen im Kopf der Seitenansicht erreichbar ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
-- Hinweise zur Unit: Ungültige interne IDs aus Units vor Editor 2.6.0 lassen sich ersetzen. Die Kodierungen der betroffenen Variablen müssen danach im Studio neu angelegt werden ([#1508](https://github.com/iqb-berlin/verona-modules-aspect/issues/1508))
-- Hinweise zur Unit: Der Dialog zeigt auch Sichtbarkeitsbedingungen ohne Ziel und die beim Laden entfernten Verweise ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
-- Hinweise zur Unit: Der Dialog zeigt auch Bilder, Audios, Videos und Geometrie-Elemente, die nicht geladen werden können, mit Ursache und Abhilfe ([#1537](https://github.com/iqb-berlin/verona-modules-aspect/issues/1537))
+- Hinweise zur Aufgabe: Neuer Dialog listet ungültige Variablennamen mit Fundstelle und „Zum Element“. Er ist über ein Warnzeichen im Kopf der Seitenansicht erreichbar ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+- Hinweise zur Aufgabe: Ungültige interne IDs aus Units vor Editor 2.6.0 lassen sich ersetzen. Die Kodierungen der betroffenen Variablen müssen danach im Studio neu angelegt werden ([#1508](https://github.com/iqb-berlin/verona-modules-aspect/issues/1508))
+- Hinweise zur Aufgabe: Der Dialog zeigt auch Sichtbarkeitsbedingungen ohne Ziel und die beim Laden entfernten Verweise ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+- Hinweise zur Aufgabe: Der Dialog zeigt auch Bilder, Audios, Videos und Geometrie-Elemente, die nicht geladen werden können, mit Ursache und Abhilfe ([#1537](https://github.com/iqb-berlin/verona-modules-aspect/issues/1537))
 - Texteditor: Ein Schalter hebt nicht umbrechende Leerzeichen farbig hervor ([#1476](https://github.com/iqb-berlin/verona-modules-aspect/issues/1476))
 
 ### Änderungen
 - Assistent „Markieren“: Die angelegte Textmarkierung hat 10 px Abstand nach unten ([#1057](https://github.com/iqb-berlin/verona-modules-aspect/issues/1057))
+- Bezeichnungen: Die Oberfläche spricht von „Aufgabe“ statt „Unit“, etwa bei „Aufgabennavigation“ und „Hinweise zur Aufgabe“ ([#1572](https://github.com/iqb-berlin/verona-modules-aspect/issues/1572))
 - Eigenschaftenbereich: Die Felder unter „Dimensionen“ und „Z-Index“ nutzen die volle Breite
 - Eingabeprüfung: Abgelehnte Eingaben in ID- und Zahlenfeldern werden am Feld begründet ([#1523](https://github.com/iqb-berlin/verona-modules-aspect/issues/1523))
 - Einstellungen: Die Knöpfe für Aufgaben-Einstellungen und Arbeitsmodus haben einen Tooltip ([#1517](https://github.com/iqb-berlin/verona-modules-aspect/issues/1517), [#1551](https://github.com/iqb-berlin/verona-modules-aspect/issues/1551))

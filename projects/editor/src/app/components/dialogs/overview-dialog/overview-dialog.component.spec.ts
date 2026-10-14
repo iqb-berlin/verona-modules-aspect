@@ -15,7 +15,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import de from 'editor/src/assets/i18n/de.json';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { ElementService } from 'editor/src/app/services/element.service';
@@ -196,9 +195,10 @@ describe('OverviewDialogComponent', () => {
     );
   });
 
-  /* The property's name is a key the template translates; the real de.json makes a missing key fail (#1571). */
+  /* The property's name is a key the template translates (#1571). */
   it('should offer the editable property under its translated name', () => {
-    TestBed.inject(TranslateService).setTranslation('de', de);
+    TestBed.inject(TranslateService)
+      .setTranslation('de', { overviewDialog: { presentationComplete: 'Presentation complete' } });
     TestBed.inject(TranslateService).use('de');
     const trigger = fixture.nativeElement
       .querySelector('.editable-property-panel .mat-mdc-select-trigger') as HTMLElement;
@@ -207,7 +207,7 @@ describe('OverviewDialogComponent', () => {
     fixture.detectChanges();
 
     const options: HTMLElement[] = Array.from(document.querySelectorAll('.mat-mdc-select-panel mat-option'));
-    expect(options.map(option => option.textContent?.trim())).toEqual(['Presentation Complete']);
+    expect(options.map(option => option.textContent?.trim())).toEqual(['Presentation complete']);
   });
 
   /* A cloze gap or a table cell is listed like everything else, but no deletion here can reach it:

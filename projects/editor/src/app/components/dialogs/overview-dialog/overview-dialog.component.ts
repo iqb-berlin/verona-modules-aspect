@@ -37,7 +37,7 @@ export class OverviewDialogComponent implements AfterViewInit {
 
   elementOptions: EditableProperty [] = [{
     fieldName: 'isRelevantForPresentationComplete',
-    displayName: 'Presentation Complete',
+    displayName: 'overviewDialog.presentationComplete',
     control: 'bool'
   }];
 
@@ -212,6 +212,7 @@ interface OverviewRow {
 
 interface EditableProperty {
   fieldName: string;
+  /** A translation key, translated where the option is shown. */
   displayName: string;
   control: 'text' | 'bool';
 }

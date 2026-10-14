@@ -695,6 +695,7 @@
     "section": "Abschnitt",
     "elementType": "Elementtyp",
     "relevantForPresentationComplete": "Relevant für <br/> \"Presentation Complete\"",
+    "presentationComplete": "Presentation Complete",
     "actions": "Aktionen",
     "editId": "ID ändern",
     "noData": "Keine Daten vorhanden",
@@ -912,7 +913,8 @@
     "title": "Tabellenelemente"
   },
   "geogebraAppDefinitionDialog": {
-    "pasteBase64": "Base64 Repräsentation einfügen"
+    "pasteBase64": "Base64 Repräsentation einfügen",
+    "invalidBase64": "Fehler beim Lesen der eingefügten GeoGebra-Definition"
   },
   "likertRowEditDialog": {
     "optionWithIndex": "{{text}} (Index: {{index}})"

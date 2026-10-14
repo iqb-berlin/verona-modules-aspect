@@ -4,7 +4,9 @@
     <span>{{ 'geogebraAppDefinitionDialog.pasteBase64' | translate }}</span>
   </div>
   <div class="status-area" [style.color]="statusMessage?.color" [hidden]="!statusMessage">
-    {{ statusMessage?.text }}
+    @if (statusMessage) {
+      {{ statusMessage.text | translate }}
+    }
   </div>
   <button mat-raised-button (click)="loadGeogebraFile()">
     {{'loadGeogebraFile' | translate}}

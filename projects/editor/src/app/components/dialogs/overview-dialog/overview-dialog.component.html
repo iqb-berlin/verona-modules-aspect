@@ -40,7 +40,7 @@
           <mat-select>
             @for (option of elementOptions; track option) {
               <mat-option [value]="option" (click)="selectedEditableProperty = option">
-                {{ option.displayName }}
+                {{ option.displayName | translate }}
               </mat-option>
             }
           </mat-select>

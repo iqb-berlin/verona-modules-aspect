@@ -12,10 +12,19 @@
   margin-bottom: 15px;
 }
 
+// Makes the first line about as high as one with a formula: 28px more than the area's line height,
+// 14px above and below the text. The height comes from the line height of an empty span, not from a
+// box of its own, because WebKit draws the text caret as high as the boxes in the line, without the
+// leading of line-height (#1218).
+.alignment-fix {
+  line-height: calc(var(--text-area-line-height) + 28px);
+}
+
 .text-area {
   border: 1px solid black;
   border-radius: 3px;
   padding: 10px 5px;
+  line-height: var(--text-area-line-height);
   // Buchstabenketten ohne Leerzeichen in Text-Segmenten umbrechen (#1076)
   overflow-wrap: anywhere;
 }

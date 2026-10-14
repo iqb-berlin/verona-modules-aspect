@@ -9,6 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   standalone: false
 })
 export class GeogebraAppDefinitionDialogComponent {
+  /** `text` is a translation key, translated in the template. */
   statusMessage: { text: string; color: string } | undefined;
 
   constructor(private dialogRef: MatDialogRef<GeogebraAppDefinitionDialogComponent>) { }
@@ -18,7 +19,7 @@ export class GeogebraAppDefinitionDialogComponent {
       this.dialogRef.close({ fileName: '', content: pastedBase64 });
     } else {
       this.statusMessage = {
-        text: 'Fehler beim Lesen der eingefügten GeoGebra-Definition',
+        text: 'geogebraAppDefinitionDialog.invalidBase64',
         color: 'red'
       };
     }

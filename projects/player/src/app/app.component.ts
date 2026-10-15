@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
+import { WakeLockService } from './services/wake-lock.service';
 
 @Component({
   selector: 'aspect-player',
@@ -22,12 +23,14 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private translateService: TranslateService,
               private nativeEventService: NativeEventService,
               private veronaPostService: VeronaPostService,
-              private metaDataService: MetaDataService) {
+              private metaDataService: MetaDataService,
+              private wakeLockService: WakeLockService) {
     this.isStandalone = window === window.parent;
   }
 
   ngOnInit(): void {
     this.setLocales();
+    this.wakeLockService.start();
     this.veronaPostService.sendReadyNotification(this.metaDataService.playerMetadata);
     this.nativeEventService.focus
       .pipe(takeUntil(this.ngUnsubscribe))

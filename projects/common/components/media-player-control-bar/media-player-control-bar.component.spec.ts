@@ -129,4 +129,21 @@ describe('MediaPlayerControlBarComponent', () => {
     expect(component.disabled).toBe(true); // maxRuns default is 1
     flush();
   }));
+
+  it('should report the stop itself when it is destroyed while playing', () => {
+    const emitSpy = vi.spyOn(component.mediaPlayStatusChanged, 'emit');
+    component.playing = true;
+
+    fixture.destroy();
+
+    expect(emitSpy).toHaveBeenCalledExactlyOnceWith(null);
+  });
+
+  it('should report nothing when it is destroyed while not playing', () => {
+    const emitSpy = vi.spyOn(component.mediaPlayStatusChanged, 'emit');
+
+    fixture.destroy();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
 });

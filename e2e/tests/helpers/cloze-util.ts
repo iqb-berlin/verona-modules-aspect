@@ -2,6 +2,7 @@ import {
   addElement, addOption, setCheckbox, setID, selectParagraphElement
 } from '../util';
 import { setConfigDroplist } from './droplist-util';
+import { selectedTextInRichTextEditor } from '../../support/app-runtime';
 
 export const STYLED_CLOZE_TEXT = 'gestylter Lückentext';
 export const STYLED_HEADINGS: Record<number, string> = {
@@ -25,8 +26,21 @@ function saveClozeEditor(): void {
   cy.get('mat-dialog-container').should('not.exist');
 }
 
+/**
+ * Waits until ProseMirror holds the selection too: it takes over a DOM selection only on the next
+ * `selectionchange`, and a toolbar click before that acts on the block selected before (#1576).
+ */
 function selectClozeBlock(text: string): void {
-  cy.get('mat-dialog-container .ProseMirror').contains(text).then(selectParagraphElement);
+  cy.get('mat-dialog-container .ProseMirror').contains(text).then($block => {
+    selectParagraphElement($block);
+    cy.get('mat-dialog-container aspect-rich-text-editor')
+      .should($editor => expect(selectedTextInRichTextEditor($editor[0])).to.equal($block.text()));
+  });
+}
+
+/** The block of the open text editor that carries this text, for checking a step where it is taken. */
+function clozeEditorBlock(tag: string, text: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.get('mat-dialog-container .ProseMirror').contains(tag, text);
 }
 
 function setClozeHeading(text: string, level: number): void {
@@ -173,26 +187,38 @@ export function createRichCloze(id: string): void {
   selectClozeBlock(RICH_CLOZE_TEXT);
   cy.get('mat-dialog-container')
     .contains('aspect-combo-button', 'format_list_bulleted').find('button.apply-button').click();
+  clozeEditorBlock('ul', RICH_CLOZE_TEXT).should('exist');
   selectClozeBlock('Nummerierung');
   cy.get('mat-dialog-container')
     .contains('aspect-combo-button', 'format_list_numbered').find('button.apply-button').click();
+  clozeEditorBlock('ol', 'Nummerierung').should('exist');
   selectClozeBlock('Zitat');
   clickClozeEditorIcon('format_quote');
+  clozeEditorBlock('blockquote', 'Zitat').should('exist');
 
   selectClozeBlock('eingerueckt');
   clickClozeEditorIcon('format_indent_increase');
   cy.get('mat-dialog-container').contains('mat-form-field', 'Abstand').find('mat-select').click();
   cy.get('.cdk-overlay-container').contains('mat-option', '10px').click();
+  clozeEditorBlock('p', 'eingerueckt').should('have.attr', 'style')
+    .and('contain', 'padding-left: 20px')
+    .and('contain', 'margin-bottom: 10px');
 
   selectClozeBlock('haengend');
   clickClozeEditorIcon('segment');
+  clozeEditorBlock('p', 'haengend').should('have.attr', 'style')
+    .and('contain', 'padding-left: 20px')
+    .and('contain', 'text-indent: -20px');
 
   selectClozeBlock('hoch');
   clickClozeEditorIcon('superscript');
+  clozeEditorBlock('sup', 'hoch').should('exist');
   selectClozeBlock('tief');
   clickClozeEditorIcon('subscript');
+  clozeEditorBlock('sub', 'tief').should('exist');
   selectClozeBlock('durchgestrichen');
   clickClozeEditorIcon('strikethrough_s');
+  clozeEditorBlock('s', 'durchgestrichen').should('exist');
 
   selectClozeBlock('Formelabsatz');
   clickClozeEditorIcon('functions');

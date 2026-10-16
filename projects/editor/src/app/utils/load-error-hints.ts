@@ -9,7 +9,7 @@ export abstract class LoadErrorHints {
    * general one, and its technical message beneath says the rest.
    */
   static readonly EXPLAINED_CODES: readonly string[] = [
-    'image-not-loading', 'media-timeout', 'media-duration-error', 'geometry-timeout', 'geogebra-not-loading'
+    'IMAGE_NOT_LOADING', 'MEDIA_TIMEOUT', 'MEDIA_DURATION_ERROR', 'GEOGEBRA_TIMEOUT', 'GEOGEBRA_NOT_LOADING'
   ];
 
   /**

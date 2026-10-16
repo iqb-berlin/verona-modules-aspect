@@ -19,6 +19,7 @@ Editor
 - Löschen: Die Löschrückfrage bietet an jedem Verweis „Zum Element“ bzw. „Zum Abschnitt“ ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
 - Meldungen: Fehler- und Warnmeldungen sehen einheitlich aus ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
 - Meldungen: Der Dialog „Unerwarteter Fehler“ zeigt die Fehlermeldung als technische Angabe ([#1537](https://github.com/iqb-berlin/verona-modules-aspect/issues/1537))
+- Meldungen: Eine nicht lesbare Aufgabendefinition meldet „Aufgabendefinition konnte nicht gelesen werden!“ statt einer technischen Meldung ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
 - Texteditor: Dialoge mit Texteditor nutzen die Höhe des Fensters ([#1006](https://github.com/iqb-berlin/verona-modules-aspect/issues/1006))
 - Texteditor: Die Werkzeugleiste ist einfarbig hellgrau ([#1493](https://github.com/iqb-berlin/verona-modules-aspect/issues/1493))
 - Variablenliste: Der Editor meldet die Variablen nach VariableInfo 2.0. Erfordert Studio 20.1.0 ([#1150](https://github.com/iqb-berlin/verona-modules-aspect/issues/1150))

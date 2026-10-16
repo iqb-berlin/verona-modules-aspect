@@ -155,7 +155,7 @@ describe('MediaPlayerElementComponent', () => {
 
       expect(() => component.throwTimeoutError()).toThrow(AspectError);
       expect(() => component.throwTimeoutError())
-        .toThrow(expect.objectContaining({ code: 'media-timeout', message: component.timeoutMsg }));
+        .toThrow(expect.objectContaining({ code: 'MEDIA_TIMEOUT', message: component.timeoutMsg }));
     });
   });
 });

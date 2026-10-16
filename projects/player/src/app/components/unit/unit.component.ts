@@ -7,7 +7,7 @@ import {
   VopPlayerConfigChangedNotification,
   VopStartCommand
 } from 'player/modules/verona/models/verona';
-import { Unit } from 'common/models/unit';
+import { Unit, UnitDefinitionErrorCode } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
 import { Page } from 'common/models/page';
@@ -97,19 +97,10 @@ export class UnitComponent implements OnInit, OnDestroy {
     this.reset();
     this.unitBuildTimeout = setTimeout(() => {
       if (message.unitDefinition) {
+        LogService.debug('player: unitDefinition', message.unitDefinition);
+        const unit = this.readUnitDefinition(message.unitDefinition as string);
+        if (!unit) return;
         try {
-          LogService.debug('player: unitDefinition', message.unitDefinition);
-          const unitDefinition = JSON.parse(message.unitDefinition as string);
-          if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
-            if (VersionManager.isNewer(unitDefinition)) {
-              throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
-            }
-            if (!VersionManager.needsMigration(unitDefinition)) {
-              throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
-            }
-          }
-          const migratedDefinition = MigrationManager.migrate(unitDefinition, VersionManager.getCurrentVersion());
-          const unit: Unit = new Unit(migratedDefinition);
           this.pages = unit.pages;
           this.showUnitNavNext = unit.showUnitNavNext;
           this.updateSectionNumbering(unit);
@@ -126,20 +117,49 @@ export class UnitComponent implements OnInit, OnDestroy {
         } catch (e: unknown) {
           // eslint-disable-next-line no-console
           console.error(e);
-          if (e instanceof InstantiationEror) {
-            // eslint-disable-next-line no-console
-            console.error('Failing element blueprint: ', e.faultyBlueprint);
-            this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
-          } else if (e instanceof Error) {
-            this.showErrorDialog(e.message);
-          } else {
-            this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
-          }
+          this.showErrorDialog(e instanceof Error ?
+            e.message :
+            this.translateService.instant('errorMessage.UNIT_DEFINITION_NOT_READABLE'));
         }
       } else {
-        LogService.warn('player: message has no unitDefinition');
+        LogService.warn('UNIT_DEFINITION_MISSING', 'player: message has no unitDefinition');
       }
     });
+  }
+
+  /**
+   * The unit the definition describes, or null once the dialog has said why there is none. Everything that can go
+   * wrong in reading it -- the JSON, the migration, building the unit -- counts as not readable; what goes wrong
+   * afterwards, with the unit state for instance, is not the definition's fault and is left to the caller (#1578).
+   */
+  private readUnitDefinition(unitDefinition: string): Unit | null {
+    try {
+      const parsedDefinition: Record<string, unknown> = JSON.parse(unitDefinition);
+      if (!VersionManager.hasCompatibleVersion(parsedDefinition)) {
+        if (VersionManager.isNewer(parsedDefinition)) {
+          this.refuseUnitDefinition('UNIT_DEFINITION_NEWER');
+          return null;
+        }
+        if (!VersionManager.needsMigration(parsedDefinition)) {
+          this.refuseUnitDefinition('UNIT_DEFINITION_OUTDATED');
+          return null;
+        }
+      }
+      return new Unit(MigrationManager.migrate(parsedDefinition, VersionManager.getCurrentVersion()));
+    } catch (e: unknown) {
+      this.refuseUnitDefinition('UNIT_DEFINITION_NOT_READABLE', e);
+      if (e instanceof InstantiationEror) {
+        // eslint-disable-next-line no-console
+        console.error('Failing element blueprint: ', e.faultyBlueprint);
+      }
+      return null;
+    }
+  }
+
+  private refuseUnitDefinition(code: UnitDefinitionErrorCode, ...details: unknown[]): void {
+    // eslint-disable-next-line no-console
+    console.error(code, ...details);
+    this.showErrorDialog(this.translateService.instant(`errorMessage.${code}`));
   }
 
   private setPlayerConfig(playerConfig: PlayerConfig): void {

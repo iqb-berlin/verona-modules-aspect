@@ -106,6 +106,6 @@ describe('ImageComponent', () => {
     const throwErrorSpy = vi.spyOn(component, 'throwError').mockImplementation(() => {});
     const image = fixture.nativeElement.querySelector('img') as HTMLImageElement;
     image.dispatchEvent(new Event('error'));
-    expect(throwErrorSpy).toHaveBeenCalledWith('image-not-loading', component.loadErrorMsg);
+    expect(throwErrorSpy).toHaveBeenCalledWith('IMAGE_NOT_LOADING', component.loadErrorMsg);
   });
 });

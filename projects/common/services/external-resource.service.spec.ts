@@ -62,7 +62,7 @@ describe('ExternalResourceService', () => {
       thrown = error;
     }
     expect(thrown).toBeInstanceOf(AspectError);
-    expect((thrown as AspectError).code).toBe('geogebra-not-loading');
+    expect((thrown as AspectError).code).toBe('GEOGEBRA_NOT_LOADING');
     expect((thrown as AspectError).message)
       .toBe('GeoGebra could not be loaded from "http://resource/GeoGebra/GeoGebra/deployggb.js"');
   });

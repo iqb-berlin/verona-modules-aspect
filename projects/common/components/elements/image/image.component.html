@@ -10,7 +10,7 @@
          [class.allow-fullscreen]="elementModel.allowFullscreen"
          imageFullscreen [imgSrc]="elementModel.src | safeResourceUrl"
          [allowFullscreen]="elementModel.allowFullscreen"
-         (error)="throwError('image-not-loading', loadErrorMsg)"
+         (error)="throwError('IMAGE_NOT_LOADING', loadErrorMsg)"
          [src]="elementModel.src | safeResourceUrl"
          [alt]="elementModel.alt"
          [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">

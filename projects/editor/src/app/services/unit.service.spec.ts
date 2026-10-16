@@ -79,17 +79,54 @@ describe('UnitService - rapid load handling', () => {
     expect(dialogServiceSpy.showUnitDefErrorDialog).not.toHaveBeenCalled();
   });
 
-  /* The two version messages are translation keys, not German written into the service (#1520). */
-  it('names a unit newer than the editor through its translation key', () => {
+  /* The messages are translation keys named after the codes of the player specification, not German written into
+     the service (#1520, #1578). */
+  it('names a unit newer than the editor by its code', () => {
     service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('future'), version: '99.0.0' }));
 
-    expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('unitDefError.newer');
+    expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NEWER');
   });
 
-  it('names a unit too old to migrate through its translation key', () => {
+  it('names a unit too old to migrate by its code', () => {
     service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('ancient'), version: '3.0.0' }));
 
-    expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('unitDefError.outdated');
+    expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_OUTDATED');
+  });
+
+  /* Until #1578 the dialog showed the parser's English message; it is left to the console now, under the code. */
+  describe('a definition that fails', () => {
+    beforeEach(() => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('names a definition it cannot parse by its code', () => {
+      service.loadUnitDefinition('no json');
+
+      expect(dialogServiceSpy.showUnitDefErrorDialog)
+        .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NOT_READABLE');
+      expect(console.error).toHaveBeenCalledWith('UNIT_DEFINITION_NOT_READABLE', expect.any(SyntaxError));
+    });
+
+    it('names a definition it cannot build a unit from by its code', () => {
+      service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('broken'), pages: {} }));
+
+      expect(dialogServiceSpy.showUnitDefErrorDialog)
+        .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NOT_READABLE');
+    });
+
+    /* Once the unit is swapped in, a failure is no longer the definition's fault; it keeps its own message. */
+    it('keeps the message of a failure after the unit was swapped in', () => {
+      service.updateSectionCounter = vi.fn(() => { throw new Error('fails after the swap'); });
+
+      service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('swapped')));
+
+      expect(service.unit.stateVariables[0].id).toBe('swapped');
+      expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('fails after the swap');
+    });
   });
 });
 
@@ -458,7 +495,7 @@ describe('UnitService - references to what is deleted (#1509)', () => {
     service.hintIndicator.subscribe(value => { indicator = value; });
     service.loadErrorHints.subscribe(value => { hints = value; });
 
-    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'text-field_2' });
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'text-field_2' });
 
     expect(indicator).toEqual({ open: 1 });
     expect(hints.map(hint => [hint.element?.id, hint.location?.pageIndex])).toEqual([['text-field_2', 1]]);
@@ -470,7 +507,7 @@ describe('UnitService - references to what is deleted (#1509)', () => {
     let indicator: { open: number } | null | undefined;
     service.loadErrorHints.subscribe(value => { hints = value; });
     service.hintIndicator.subscribe(value => { indicator = value; });
-    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'text-field_2' });
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'text-field_2' });
 
     service.unit.pages[1].sections[0].elements = [];
     service.updateUnitDefinition();
@@ -481,7 +518,7 @@ describe('UnitService - references to what is deleted (#1509)', () => {
 
   it('should forget what the previous unit could not load when the next one is loaded', () => {
     load([]);
-    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'text-field_2' });
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'text-field_2' });
 
     load([]);
 
@@ -490,7 +527,7 @@ describe('UnitService - references to what is deleted (#1509)', () => {
 
   it('should forget it on loading an empty unit as well', () => {
     load([]);
-    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'text-field_2' });
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'text-field_2' });
 
     service.loadUnitDefinition('');
 

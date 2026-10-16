@@ -341,16 +341,16 @@ describe('VariableInfoFindingsDialogComponent', () => {
   describe('what could not be loaded', () => {
     const image = element('image', 'image_1', 'bild');
     const imageHint: LoadErrorHint = {
-      error: { code: 'image-not-loading', message: 'Failed to load image element', elementId: 'image_1' },
+      error: { code: 'IMAGE_NOT_LOADING', message: 'Failed to load image element', elementId: 'image_1' },
       element: image,
       location: location(1, 0, image, image),
-      textKey: 'unitHints.loadErrors.code.image-not-loading'
+      textKey: 'unitHints.loadErrors.code.IMAGE_NOT_LOADING'
     };
     const geogebraHint: LoadErrorHint = {
-      error: { code: 'geogebra-not-loading', message: 'GeoGebra could not be loaded' },
+      error: { code: 'GEOGEBRA_NOT_LOADING', message: 'GeoGebra could not be loaded' },
       element: null,
       location: null,
-      textKey: 'unitHints.loadErrors.code.geogebra-not-loading'
+      textKey: 'unitHints.loadErrors.code.GEOGEBRA_NOT_LOADING'
     };
     const errorRows = (): HTMLElement[] => Array.from(fixture.nativeElement.querySelectorAll('.load-error-row'));
 
@@ -363,11 +363,11 @@ describe('VariableInfoFindingsDialogComponent', () => {
     it('should explain each error by its text and give the technical message beneath', () => {
       expect(errorRows().length).toBe(2);
       expect(errorRows()[0].querySelector('.load-error-text')?.textContent)
-        .toContain('unitHints.loadErrors.code.image-not-loading');
+        .toContain('unitHints.loadErrors.code.IMAGE_NOT_LOADING');
       expect(errorRows()[0].querySelector('.load-error-detail')?.textContent)
         .toContain('Failed to load image element');
       expect(errorRows()[1].querySelector('.load-error-text')?.textContent)
-        .toContain('unitHints.loadErrors.code.geogebra-not-loading');
+        .toContain('unitHints.loadErrors.code.GEOGEBRA_NOT_LOADING');
     });
 
     it('should name where an element sits, and the whole unit for an error without one', () => {

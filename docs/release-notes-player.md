@@ -2,9 +2,11 @@ Player
 ======
 ## next
 ### Änderungen
-- Audio, Video: Der Fehlercode bei zu langem Laden heißt `media-timeout` statt `audio-timeout` ([#1526](https://github.com/iqb-berlin/verona-modules-aspect/issues/1526))
+- Audio, Video: Der Fehlercode bei zu langem Laden heißt `MEDIA_TIMEOUT` statt `audio-timeout` ([#1526](https://github.com/iqb-berlin/verona-modules-aspect/issues/1526), [#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
+- Fehlercodes: Die Fehlermeldungen an die Testumgebung tragen die Codes der Player-Spezifikation, etwa `GEOGEBRA_NOT_LOADING` statt `geogebra-not-loading` und `GEOGEBRA_TIMEOUT` statt `geometry-timeout` ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
 - Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ zeigt ein Fehlersymbol ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
 - Meldungen: Die Fehlermeldungen beim Laden sprechen von „Aufgabe“ statt „Unit“ ([#1572](https://github.com/iqb-berlin/verona-modules-aspect/issues/1572))
+- Meldungen: Eine nicht lesbare Aufgabendefinition meldet „Aufgabendefinition konnte nicht gelesen werden!“ statt einer technischen Meldung ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
 
 ### Fehlerbehebungen
 - Abschnitte mit animiertem Einblenden: Über dem eingeblendeten Abschnitt bleiben 100 px Abstand ([#1536](https://github.com/iqb-berlin/verona-modules-aspect/issues/1536))

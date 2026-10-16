@@ -82,10 +82,10 @@ describe('ErrorService', () => {
 
   /* What the player reports to the host goes into the hints area, at its element (#1537). */
   it('should list a load error with its element and announce it', () => {
-    service.handleError(new AspectError('image-not-loading', 'Failed to load image', 'image_1'));
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
 
     expect(loadErrorService.errors.value)
-      .toEqual([{ code: 'image-not-loading', message: 'Failed to load image', elementId: 'image_1' }]);
+      .toEqual([{ code: 'IMAGE_NOT_LOADING', message: 'Failed to load image', elementId: 'image_1' }]);
     expect(messageServiceSpy.showWarningWithAction)
       .toHaveBeenCalledWith('unitHints.loadErrors.notice', 'unitHints.loadErrors.show');
     expect(messageServiceSpy.showError).not.toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe('ErrorService', () => {
   });
 
   it('should open the hints area from the announcement', () => {
-    service.handleError(new AspectError('image-not-loading', 'Failed to load image', 'image_1'));
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
 
     noticeAction.next();
 
@@ -102,26 +102,26 @@ describe('ErrorService', () => {
 
   /* An element reports again each time it is built anew; only the first report is news. */
   it('should announce the same load error of the same element only once', () => {
-    service.handleError(new AspectError('image-not-loading', 'Failed to load image', 'image_1'));
-    service.handleError(new AspectError('image-not-loading', 'Failed to load image', 'image_1'));
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
 
     expect(messageServiceSpy.showWarningWithAction).toHaveBeenCalledTimes(1);
     expect(loadErrorService.errors.value.length).toBe(1);
   });
 
   it('should announce the load error of another element', () => {
-    service.handleError(new AspectError('image-not-loading', 'Failed to load image', 'image_1'));
-    service.handleError(new AspectError('image-not-loading', 'Failed to load image', 'image_2'));
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_2'));
 
     expect(messageServiceSpy.showWarningWithAction).toHaveBeenCalledTimes(2);
   });
 
   /* A missing GeoGebra package is no programming error: it is listed like the others, for the whole unit. */
   it('should list GeoGebra failing to load instead of reporting an unexpected error', () => {
-    service.handleError(new AspectError('geogebra-not-loading', 'GeoGebra could not be loaded'));
+    service.handleError(new AspectError('GEOGEBRA_NOT_LOADING', 'GeoGebra could not be loaded'));
 
     expect(loadErrorService.errors.value)
-      .toEqual([{ code: 'geogebra-not-loading', message: 'GeoGebra could not be loaded', elementId: undefined }]);
+      .toEqual([{ code: 'GEOGEBRA_NOT_LOADING', message: 'GeoGebra could not be loaded', elementId: undefined }]);
     expect(messageServiceSpy.showErrorPrompt).not.toHaveBeenCalled();
   });
 

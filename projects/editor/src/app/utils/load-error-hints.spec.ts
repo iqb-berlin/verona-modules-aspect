@@ -28,7 +28,7 @@ describe('LoadErrorHints', () => {
   });
 
   it('should name the element of an error and where it sits', () => {
-    const error = { code: 'image-not-loading', message: 'Failed', elementId: 'image_1' };
+    const error = { code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'image_1' };
 
     expect(LoadErrorHints.resolve(unit, [error])).toEqual([{
       error,
@@ -36,24 +36,24 @@ describe('LoadErrorHints', () => {
       location: {
         pageIndex: 1, sectionIndex: 0, element: image, navigationElement: image
       },
-      textKey: 'unitHints.loadErrors.code.image-not-loading'
+      textKey: 'unitHints.loadErrors.code.IMAGE_NOT_LOADING'
     }]);
   });
 
   /* The texts are those of studio-lite#1788; a code without one gets a general text. */
   it('should explain each code the player reports by a text of its own, and any other in general terms', () => {
     expect(LoadErrorHints.EXPLAINED_CODES.map(code => LoadErrorHints.textKeyOf(code))).toEqual([
-      'unitHints.loadErrors.code.image-not-loading',
-      'unitHints.loadErrors.code.media-timeout',
-      'unitHints.loadErrors.code.media-duration-error',
-      'unitHints.loadErrors.code.geometry-timeout',
-      'unitHints.loadErrors.code.geogebra-not-loading'
+      'unitHints.loadErrors.code.IMAGE_NOT_LOADING',
+      'unitHints.loadErrors.code.MEDIA_TIMEOUT',
+      'unitHints.loadErrors.code.MEDIA_DURATION_ERROR',
+      'unitHints.loadErrors.code.GEOGEBRA_TIMEOUT',
+      'unitHints.loadErrors.code.GEOGEBRA_NOT_LOADING'
     ]);
     expect(LoadErrorHints.textKeyOf('something-new')).toBe('unitHints.loadErrors.code.other');
   });
 
   it('should leave out the error of an element the unit no longer holds', () => {
-    const error = { code: 'image-not-loading', message: 'Failed', elementId: 'image_1' };
+    const error = { code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'image_1' };
     unit.pages[1].sections[0].elements = [];
 
     expect(LoadErrorHints.resolve(unit, [error])).toEqual([]);
@@ -61,21 +61,21 @@ describe('LoadErrorHints', () => {
 
   /* GeoGebra is all that reports without an element, and a unit without geometry does not miss it. */
   it('should list an error without an element only while the unit has a geometry element', () => {
-    const error = { code: 'geogebra-not-loading', message: 'Failed' };
+    const error = { code: 'GEOGEBRA_NOT_LOADING', message: 'Failed' };
     expect(LoadErrorHints.resolve(unit, [error])).toEqual([]);
 
     unit.pages[0].sections[0].elements.push(create({ type: 'geometry', id: 'geometry_1', alias: 'geo' }));
 
     expect(LoadErrorHints.resolve(unit, [error])).toEqual([{
-      error, element: null, location: null, textKey: 'unitHints.loadErrors.code.geogebra-not-loading'
+      error, element: null, location: null, textKey: 'unitHints.loadErrors.code.GEOGEBRA_NOT_LOADING'
     }]);
   });
 
   it('should keep the order the errors were reported in', () => {
     unit.pages[0].sections[0].elements.push(create({ type: 'image', id: 'image_2', alias: 'zweites' }));
     const errors = [
-      { code: 'image-not-loading', message: 'Failed', elementId: 'image_1' },
-      { code: 'image-not-loading', message: 'Failed', elementId: 'image_2' }
+      { code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'image_1' },
+      { code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'image_2' }
     ];
 
     expect(LoadErrorHints.resolve(unit, errors).map(hint => hint.element?.id)).toEqual(['image_1', 'image_2']);

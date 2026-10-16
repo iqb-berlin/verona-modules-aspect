@@ -120,3 +120,10 @@ export interface UnitProperties {
   sectionNumberingPosition: 'left' | 'above';
   showUnitNavNext: boolean;
 }
+
+/**
+ * Why a unit definition cannot be loaded, under the codes of the player specification. Player and editor show it in
+ * their own dialog and name it in the console; neither reports it to the host (#1578).
+ */
+export type UnitDefinitionErrorCode =
+  'UNIT_DEFINITION_NOT_READABLE' | 'UNIT_DEFINITION_NEWER' | 'UNIT_DEFINITION_OUTDATED';

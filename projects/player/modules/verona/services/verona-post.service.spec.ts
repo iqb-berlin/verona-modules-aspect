@@ -112,13 +112,13 @@ describe('VeronaPostService', () => {
         expect((event as MessageEvent).data).toEqual({
           type: 'vopRuntimeErrorNotification',
           sessionId: 'test',
-          code: 'image-not-loading',
+          code: 'IMAGE_NOT_LOADING',
           message: 'Failed to load image'
         });
         eventSubscription.unsubscribe();
         done();
       });
-    service.sendVopRuntimeErrorNotification(new AspectError('image-not-loading', 'Failed to load image', 'image_1'));
+    service.sendVopRuntimeErrorNotification(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
   }));
 
   it('should post a VopUnitNavigationRequestedNotification', () => new Promise<void>(done => {

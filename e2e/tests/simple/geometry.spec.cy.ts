@@ -214,7 +214,7 @@ describe('Geometry element', { testIsolation: false }, () => {
       cy.loadUnit('../downloads/geometry.json');
       cy.get('@postMessage').should('be.calledWithMatch', {
         type: 'vopRuntimeErrorNotification',
-        code: 'geogebra-not-loading',
+        code: 'GEOGEBRA_NOT_LOADING',
         message: Cypress.sinon.match(/could not be loaded from ".*\/GeoGebra\/GeoGebra\/deployggb\.js"/)
       });
     });

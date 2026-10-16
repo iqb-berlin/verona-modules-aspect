@@ -1,11 +1,13 @@
-<button *ngIf="this.elementModel.showResetIcon"
-        mat-stroked-button class="reset-button"
-        (click)="reset()">
-  <mat-icon class="reset-icon">autorenew</mat-icon>
-  {{ 'geometry_reset' | translate }}
-</button>
+@if (this.elementModel.showResetIcon) {
+  <button mat-stroked-button class="reset-button"
+          (click)="reset()">
+    <mat-icon class="reset-icon">autorenew</mat-icon>
+    {{ 'geometry_reset' | translate }}
+  </button>
+}
 <div [id]="elementModel.id" class="geogebra-applet"></div>
-<aspect-spinner *ngIf="isGeoGebraLoaded"
-                [isLoaded]="isLoaded"
-                (timeOut)="throwError('geometry-timeout', timeoutMsg)">
-</aspect-spinner>
+@if (isGeoGebraLoaded) {
+  <aspect-spinner [isLoaded]="isLoaded"
+                  (timeOut)="throwError('GEOGEBRA_TIMEOUT', timeoutMsg)">
+  </aspect-spinner>
+}

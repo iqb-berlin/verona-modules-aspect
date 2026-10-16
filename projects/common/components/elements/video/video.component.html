@@ -19,7 +19,7 @@
                                      (elementValueChanged)="elementValueChanged.emit($event)"
                                      (hintDelayInitialized)="hintDelayInitialized.emit($event)"
                                      (mediaDurationNotAvailable)="throwError(
-                                       'media-duration-error',
+                                       'MEDIA_DURATION_ERROR',
                                        mediaDurationNotAvailableMsg)">
       <video #player
              [style.width.%]="100"

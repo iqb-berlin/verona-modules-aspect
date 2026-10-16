@@ -550,8 +550,9 @@
     "technicalDetail": "Technische Angabe:"
   },
   "unitDefError": {
-    "newer": "Aufgabenversion ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.",
-    "outdated": "Aufgabenversion ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden."
+    "UNIT_DEFINITION_NOT_READABLE": "Aufgabendefinition konnte nicht gelesen werden!",
+    "UNIT_DEFINITION_NEWER": "Aufgabenversion ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.",
+    "UNIT_DEFINITION_OUTDATED": "Aufgabenversion ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden."
   },
   "sanitization": {
     "title": "Aufgabendefinition wird aktualisiert",
@@ -726,11 +727,11 @@
       "notice": "Ein Inhalt der Aufgabe konnte nicht geladen werden.",
       "show": "Anzeigen",
       "code": {
-        "image-not-loading": "Das Bild kann nicht angezeigt werden. Die Bilddatei ist vermutlich beschädigt. Bitte das Bild neu hochladen.",
-        "media-timeout": "Das Audio oder Video wurde nicht rechtzeitig geladen. Mögliche Ursachen sind eine sehr große Datei oder ein Format, das der Browser nicht abspielen kann. Tritt der Fehler nach erneutem Laden der Aufgabe wieder auf, bitte die Datei prüfen.",
-        "media-duration-error": "Die Länge des Audios oder Videos lässt sich nicht bestimmen. Das kommt etwa bei Aufnahmen vor, die direkt im Browser entstanden sind. Bitte die Datei in einem anderen Format, zum Beispiel MP3 oder MP4, speichern und neu hochladen.",
-        "geometry-timeout": "Das Geometrie-Element wurde nicht rechtzeitig fertig geladen. Mögliche Ursachen sind eine langsame Verbindung, ein unvollständiges GeoGebra-Paket oder eine fehlerhafte GeoGebra-Datei. Tritt der Fehler nach erneutem Laden der Aufgabe wieder auf, bitte die GeoGebra-Datei prüfen oder die Administration ansprechen.",
-        "geogebra-not-loading": "Das GeoGebra-Paket konnte nicht geladen werden. Es fehlt auf dem Server oder ist gerade nicht erreichbar. Die Geometrie-Elemente bleiben deshalb leer. Bitte wenden Sie sich an die Administration.",
+        "IMAGE_NOT_LOADING": "Das Bild kann nicht angezeigt werden. Die Bilddatei ist vermutlich beschädigt. Bitte das Bild neu hochladen.",
+        "MEDIA_TIMEOUT": "Das Audio oder Video wurde nicht rechtzeitig geladen. Mögliche Ursachen sind eine sehr große Datei oder ein Format, das der Browser nicht abspielen kann. Tritt der Fehler nach erneutem Laden der Aufgabe wieder auf, bitte die Datei prüfen.",
+        "MEDIA_DURATION_ERROR": "Die Länge des Audios oder Videos lässt sich nicht bestimmen. Das kommt etwa bei Aufnahmen vor, die direkt im Browser entstanden sind. Bitte die Datei in einem anderen Format, zum Beispiel MP3 oder MP4, speichern und neu hochladen.",
+        "GEOGEBRA_TIMEOUT": "Das Geometrie-Element wurde nicht rechtzeitig fertig geladen. Mögliche Ursachen sind eine langsame Verbindung, ein unvollständiges GeoGebra-Paket oder eine fehlerhafte GeoGebra-Datei. Tritt der Fehler nach erneutem Laden der Aufgabe wieder auf, bitte die GeoGebra-Datei prüfen oder die Administration ansprechen.",
+        "GEOGEBRA_NOT_LOADING": "Das GeoGebra-Paket konnte nicht geladen werden. Es fehlt auf dem Server oder ist gerade nicht erreichbar. Die Geometrie-Elemente bleiben deshalb leer. Bitte wenden Sie sich an die Administration.",
         "other": "Dieser Inhalt konnte nicht geladen werden."
       }
     }

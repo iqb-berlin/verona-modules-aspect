@@ -126,6 +126,6 @@ describe('VideoComponent', () => {
       .componentInstance as MockSpinnerComponent;
     spinner.timeOut.emit(20000);
     expect(throwErrorSpy).toHaveBeenCalledTimes(1);
-    expect(throwErrorSpy).toHaveBeenCalledWith('media-timeout', component.timeoutMsg);
+    expect(throwErrorSpy).toHaveBeenCalledWith('MEDIA_TIMEOUT', component.timeoutMsg);
   });
 });

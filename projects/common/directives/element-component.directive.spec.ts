@@ -100,7 +100,7 @@ describe('ElementComponent', () => {
     const component = componentOn(host);
 
     try {
-      component.throwError('image-not-loading', 'Failed to load image');
+      component.throwError('IMAGE_NOT_LOADING', 'Failed to load image');
       expect.unreachable('throwError did not throw');
     } catch (error) {
       expect((error as AspectError).elementId).toBe('element_1');

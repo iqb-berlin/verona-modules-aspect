@@ -16,7 +16,7 @@
                                    (elementValueChanged)="elementValueChanged.emit($event)"
                                    (hintDelayInitialized)="hintDelayInitialized.emit($event)"
                                    (mediaDurationNotAvailable)="throwError(
-                                     'media-duration-error',
+                                     'MEDIA_DURATION_ERROR',
                                      mediaDurationNotAvailableMsg)">
     <audio #player
            [style.width.%]="100">

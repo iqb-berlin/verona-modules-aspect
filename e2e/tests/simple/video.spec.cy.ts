@@ -96,7 +96,7 @@ describe('Video element', { testIsolation: false }, () => {
         cy.loadUnit('../downloads/video-broken.json');
         cy.get('@postMessage', { timeout: 30000 }).should('be.calledWithMatch', {
           type: 'vopRuntimeErrorNotification',
-          code: 'media-timeout',
+          code: 'MEDIA_TIMEOUT',
           message: `Failed to load media element with alias "${video.alias}" and filename "${video.fileName}" in time`
         });
       });

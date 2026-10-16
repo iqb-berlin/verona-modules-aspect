@@ -201,7 +201,7 @@ describe('Image element', { testIsolation: false }, () => {
         cy.loadUnit('../downloads/image-broken.json');
         cy.get('@postMessage').should('be.calledWithMatch', {
           type: 'vopRuntimeErrorNotification',
-          code: 'image-not-loading',
+          code: 'IMAGE_NOT_LOADING',
           message: `Failed to load image element with alias "${image.alias}" and filename "${image.fileName}"`
         });
       });

@@ -36,7 +36,7 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
   /** Reports to the host that the media did not load in time. Audio and video share the code, as they
    * share the cause and the remedy: a very large file, or a format the browser cannot play. */
   throwTimeoutError(): void {
-    this.throwError('media-timeout', this.timeoutMsg);
+    this.throwError('MEDIA_TIMEOUT', this.timeoutMsg);
   }
 
   ngOnInit(): void {

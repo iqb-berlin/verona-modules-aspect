@@ -5,7 +5,7 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
-import { Unit, UnitProperties } from 'common/models/unit';
+import { Unit, UnitDefinitionErrorCode, UnitProperties } from 'common/models/unit';
 import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
@@ -121,26 +121,37 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     this.loadSuperseded.next();
     if (unitDefinition) {
+      let loadedDefinition: UnitProperties;
       try {
         let unitDef = JSON.parse(unitDefinition);
         if (!VersionManager.hasCompatibleVersion(unitDef)) {
           if (VersionManager.isNewer(unitDef)) {
-            throw Error(this.translateService.instant('unitDefError.newer'));
+            this.refuseUnitDefinition('UNIT_DEFINITION_NEWER');
+            return;
           }
           if (!VersionManager.needsMigration(unitDef)) {
-            throw Error(this.translateService.instant('unitDefError.outdated'));
+            this.refuseUnitDefinition('UNIT_DEFINITION_OUTDATED');
+            return;
           }
           this.dialogService.showSanitizationDialog(this.loadSuperseded).subscribe(() => {
             unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
-            this.loadUnit(unitDef);
+            this.replaceUnit(unitDef);
+            this.settleUnit(unitDef);
             this.updateUnitDefinition();
           });
-        } else {
-          if (VersionManager.needsMigration(unitDef)) {
-            unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
-          }
-          this.loadUnit(unitDef);
+          return;
         }
+        if (VersionManager.needsMigration(unitDef)) {
+          unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
+        }
+        this.replaceUnit(unitDef);
+        loadedDefinition = unitDef;
+      } catch (e) {
+        this.refuseUnitDefinition('UNIT_DEFINITION_NOT_READABLE', e);
+        return;
+      }
+      try {
+        this.settleUnit(loadedDefinition);
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);
@@ -171,10 +182,21 @@ export class UnitService {
     }
   }
 
-  private loadUnit(migratedUnitDefinition?: UnitProperties): void {
+  private refuseUnitDefinition(code: UnitDefinitionErrorCode, ...details: unknown[]): void {
+    // eslint-disable-next-line no-console
+    console.error(code, ...details);
+    this.dialogService.showUnitDefErrorDialog(this.translateService.instant(`unitDefError.${code}`));
+  }
+
+  /** Swaps in the unit the definition describes. What throws here is the definition's fault (#1578). */
+  private replaceUnit(migratedUnitDefinition: UnitProperties): void {
     this.idService.reset();
     this.selectionService.reset();
     this.unit = new EditorUnit(migratedUnitDefinition, this.idService);
+  }
+
+  /** What a unit needs once it is swapped in. What throws from here on is no longer the definition's fault (#1578). */
+  private settleUnit(migratedUnitDefinition: UnitProperties): void {
     /* What the previous unit could not load is no concern of this one, whose elements report once they render. As
        soon as the unit is swapped, so that nothing below can throw past it and leave the old errors standing. */
     this.loadErrorService.clearElementErrors();
@@ -188,7 +210,7 @@ export class UnitService {
     this.loadRepairs.next(repaired);
     if (repaired.length > 0) this.updateUnitDefinition();
     // The unit constructor updated the version. Therefore the unit has changed and notifies the  host.
-    if (migratedUnitDefinition?.version !== VersionManager.getCurrentVersion()) {
+    if (migratedUnitDefinition.version !== VersionManager.getCurrentVersion()) {
       this.updateUnitDefinition();
     }
     this.updateSectionCounter();

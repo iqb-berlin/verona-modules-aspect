@@ -135,8 +135,8 @@ describe('ElementService', () => {
     const image = putIntoSection(ElementFactory.createElement({
       type: 'image', id: 'image_1', alias: 'bild'
     } as unknown as UIElementProperties, idService));
-    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'image_1' });
-    loadErrorService.report({ code: 'image-not-loading', message: 'Failed', elementId: 'image_2' });
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'image_1' });
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'image_2' });
 
     service.updateElementsProperty([image], 'alt', 'Beschreibung');
     expect(loadErrorService.errors.value.length).toBe(2);
@@ -151,7 +151,7 @@ describe('ElementService', () => {
     const audio = putIntoSection(ElementFactory.createElement({
       type: 'audio', id: 'audio_1', alias: 'hoertext'
     } as unknown as UIElementProperties, idService));
-    loadErrorService.report({ code: 'media-timeout', message: 'Failed', elementId: 'audio_1' });
+    loadErrorService.report({ code: 'MEDIA_TIMEOUT', message: 'Failed', elementId: 'audio_1' });
 
     service.updateElementsProperty([audio], 'src', 'data:audio/mp3;base64,AAAA');
 

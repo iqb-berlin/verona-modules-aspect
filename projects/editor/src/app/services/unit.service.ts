@@ -155,7 +155,7 @@ export class UnitService {
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);
-        if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message);
+        if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message, this.loadSuperseded);
       }
     } else {
       /* The host replays the stored definition on every load, and for a unit that was never saved
@@ -185,7 +185,8 @@ export class UnitService {
   private refuseUnitDefinition(code: UnitDefinitionErrorCode, ...details: unknown[]): void {
     // eslint-disable-next-line no-console
     console.error(code, ...details);
-    this.dialogService.showUnitDefErrorDialog(this.translateService.instant(`unitDefError.${code}`));
+    this.dialogService
+      .showUnitDefErrorDialog(this.translateService.instant(`unitDefError.${code}`), this.loadSuperseded);
   }
 
   /** Swaps in the unit the definition describes. What throws here is the definition's fault (#1578). */

@@ -20,7 +20,7 @@ import {
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { VersionManager } from 'common/services/version-manager';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { MigrationManager } from 'common/services/migration-manager';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
@@ -56,6 +56,9 @@ export class UnitComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   private unitBuildTimeout?: ReturnType<typeof setTimeout>;
   private startPageTimeout?: ReturnType<typeof setTimeout>;
+  /** The load error dialog has no close option, and the host can keep the player for the next unit, so the next
+     start command closes it (#1581). */
+  private errorDialog?: MatDialogRef<UnitDefErrorDialogComponent>;
 
   constructor(public unitStateService: UnitStateService,
               public stateVariableStateService: StateVariableStateService,
@@ -176,7 +179,7 @@ export class UnitComponent implements OnInit, OnDestroy {
   }
 
   private showErrorDialog(text: string): void {
-    this.dialog.open(UnitDefErrorDialogComponent, {
+    this.errorDialog = this.dialog.open(UnitDefErrorDialogComponent, {
       data: { text: text },
       disableClose: true
     });
@@ -211,6 +214,8 @@ export class UnitComponent implements OnInit, OnDestroy {
 
   private reset(): void {
     this.cancelPendingUnitBuild();
+    this.errorDialog?.close();
+    this.errorDialog = undefined;
     this.presentationProgressStatus.next('none');
     this.pages = [];
     this.playerConfig = {};

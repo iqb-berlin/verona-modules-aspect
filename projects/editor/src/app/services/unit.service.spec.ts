@@ -84,13 +84,15 @@ describe('UnitService - rapid load handling', () => {
   it('names a unit newer than the editor by its code', () => {
     service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('future'), version: '99.0.0' }));
 
-    expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NEWER');
+    expect(dialogServiceSpy.showUnitDefErrorDialog)
+      .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NEWER', expect.anything());
   });
 
   it('names a unit too old to migrate by its code', () => {
     service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('ancient'), version: '3.0.0' }));
 
-    expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_OUTDATED');
+    expect(dialogServiceSpy.showUnitDefErrorDialog)
+      .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_OUTDATED', expect.anything());
   });
 
   /* Until #1578 the dialog showed the parser's English message; it is left to the console now, under the code. */
@@ -107,7 +109,7 @@ describe('UnitService - rapid load handling', () => {
       service.loadUnitDefinition('no json');
 
       expect(dialogServiceSpy.showUnitDefErrorDialog)
-        .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NOT_READABLE');
+        .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NOT_READABLE', expect.anything());
       expect(console.error).toHaveBeenCalledWith('UNIT_DEFINITION_NOT_READABLE', expect.any(SyntaxError));
     });
 
@@ -115,7 +117,7 @@ describe('UnitService - rapid load handling', () => {
       service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('broken'), pages: {} }));
 
       expect(dialogServiceSpy.showUnitDefErrorDialog)
-        .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NOT_READABLE');
+        .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NOT_READABLE', expect.anything());
     });
 
     /* Once the unit is swapped in, a failure is no longer the definition's fault; it keeps its own message. */
@@ -125,7 +127,7 @@ describe('UnitService - rapid load handling', () => {
       service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('swapped')));
 
       expect(service.unit.stateVariables[0].id).toBe('swapped');
-      expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('fails after the swap');
+      expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('fails after the swap', expect.anything());
     });
   });
 });
@@ -891,6 +893,63 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
 
     expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
   }));
+});
+
+/* The load error dialog has no close option, and the host keeps the editor for the next unit and only sends a new
+   start command. Real DialogService, fake MatDialog, as for #1247 (#1581). */
+describe('UnitService - a load error dialog superseded by the next load (#1581)', () => {
+  let service: UnitService;
+  let dialogs: { close: Mock }[];
+
+  beforeEach(() => {
+    dialogs = [];
+    const dialogOpen = vi.fn(() => {
+      const dialog = { afterClosed: () => new Subject<void>(), close: vi.fn() };
+      dialogs.push(dialog);
+      return dialog;
+    });
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    service = new UnitService(
+      new SelectionService(),
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      new DialogService({ open: dialogOpen } as unknown as MatDialog,
+                        createSpyObj<MessageService>(['showError']), translateServiceSpy),
+      new IDService(),
+      translateServiceSpy,
+      new LoadErrorService()
+    );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  const loadNewerUnit = (): void => {
+    service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('future'), version: '99.0.0' }));
+  };
+
+  it('takes the dialog away when the next unit loads', () => {
+    loadNewerUnit();
+    expect(dialogs.length).toBe(1);
+
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('current-unit')));
+
+    expect(dialogs[0].close).toHaveBeenCalled();
+    expect(service.unit.stateVariables[0].id).toBe('current-unit');
+  });
+
+  it('takes it away when the next unit is refused as well, instead of stacking a second one', () => {
+    loadNewerUnit();
+
+    loadNewerUnit();
+
+    expect(dialogs.length).toBe(2);
+    expect(dialogs[0].close).toHaveBeenCalled();
+    expect(dialogs[1].close).not.toHaveBeenCalled();
+  });
 });
 
 /* A delete waits for its confirmation, and the object, the references and the index the caller kept all

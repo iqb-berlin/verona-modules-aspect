@@ -123,11 +123,16 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showUnitDefErrorDialog(text: string): void {
-    this.dialog.open(UnitDefErrorDialogComponent, {
+  /** The dialog has no close option, as the unit did not load as it should. The host keeps the editor when the author
+     moves to another unit and only sends a new start command, so the next load closes it (#1581). */
+  showUnitDefErrorDialog(text: string, supersededBy: Observable<void>): void {
+    const dialogRef = this.dialog.open(UnitDefErrorDialogComponent, {
       data: { text },
       disableClose: true
     });
+    supersededBy
+      .pipe(takeUntil(dialogRef.afterClosed()))
+      .subscribe(() => dialogRef.close());
   }
 
   showDeleteReferenceDialog(refs: ReferenceList[]): Observable<boolean> {

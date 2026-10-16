@@ -146,13 +146,21 @@ describe('DialogService', () => {
     expect(close).not.toHaveBeenCalled();
   });
 
-  it('should open the unit definition error dialog without close option', () => {
-    service.showUnitDefErrorDialog('Fehlertext');
+  /* No close option, so only the next load takes it away (#1581). */
+  it('should open the unit definition error dialog without close option until a later load', () => {
+    const close = vi.fn();
+    dialogMock.open.mockReturnValue({ afterClosed: () => new Subject<void>(), close });
+    const superseded = new Subject<void>();
+
+    service.showUnitDefErrorDialog('Fehlertext', superseded);
 
     expect(dialogMock.open).toHaveBeenCalledWith(
       UnitDefErrorDialogComponent,
       { data: { text: 'Fehlertext' }, disableClose: true }
     );
+    expect(close).not.toHaveBeenCalled();
+    superseded.next();
+    expect(close).toHaveBeenCalled();
   });
 
   describe('sanitization dialog superseded by a later load (#1247)', () => {

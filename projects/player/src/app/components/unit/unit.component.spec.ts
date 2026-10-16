@@ -1,7 +1,9 @@
 import {
   ComponentFixture, fakeAsync, TestBed, tick
 } from '@angular/core/testing';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog, MatDialogModule, MatDialogRef, MatDialogState
+} from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import {
@@ -250,6 +252,19 @@ describe('UnitComponent', () => {
       disableClose: true
     });
     expect(console.error).toHaveBeenCalledWith('UNIT_DEFINITION_NOT_READABLE', expect.any(SyntaxError));
+  }));
+
+  /* The dialog has no close option, and the host can keep the player for the next unit (#1581). */
+  it('should close the error dialog when the next unit starts', fakeAsync(() => {
+    const open = vi.spyOn(dialog, 'open');
+    startUnit({ unitDefinition: 'no json' });
+    const errorDialog: MatDialogRef<unknown> = open.mock.results[0].value;
+    expect(errorDialog.getState()).toBe(MatDialogState.OPEN);
+
+    startUnit({ unitDefinition: createUnitDefinition({ pages: [{ sections: [] }] }) });
+
+    expect(errorDialog.getState()).not.toBe(MatDialogState.OPEN);
+    expect(component.pages.length).toBe(1);
   }));
 
   it('should show an error dialog for a newer unit definition', fakeAsync(() => {

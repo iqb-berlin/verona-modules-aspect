@@ -66,18 +66,6 @@ const unit = {
   showUnitNavNext: false
 };
 
-function loadUnit(): void {
-  cy.window().then(window => {
-    window.postMessage({
-      type: 'voeStartCommand',
-      sessionId: 'dev',
-      unitDefinition: JSON.stringify(unit),
-      unitDefinitionType: 'aspect-unit-definition',
-      editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
-    }, '*');
-  });
-}
-
 /** Checks how many rules the visibility dialog of the second section shows, and closes it again. */
 function expectVisibilityRules(count: number): void {
   cy.get('aspect-section-menu').eq(1).find('mat-icon').contains('disabled_visible').click({ force: true });
@@ -90,7 +78,7 @@ describe('References to what is deleted', { testIsolation: false }, () => {
   before(() => {
     cy.viewport(1300, 900);
     cy.openEditor();
-    loadUnit();
+    cy.sendEditorStartCommand(JSON.stringify(unit));
   });
 
   /* The hints area opens on loading and lists the rule with the way to its section (#1520). */

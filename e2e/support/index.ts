@@ -23,6 +23,7 @@ declare global {
     interface Chainable {
       loadUnit(value: string): Chainable<JQuery<HTMLElement>>;
       sendStartCommand(startCommand: VopStartCommandMessage): Chainable<void>;
+      sendEditorStartCommand(unitDefinition: string): Chainable<void>;
       saveUnit(filepath?: string): Chainable<JQuery<HTMLElement>>;
       openPlayer(): Chainable<JQuery<HTMLElement>>;
       openEditor(): Chainable<JQuery<HTMLElement>>;

@@ -68,6 +68,25 @@ Cypress.Commands.add('sendStartCommand', (startCommand: VopStartCommandMessage) 
   });
 });
 
+/* The editor subscribes to start commands in `AppComponent.ngOnInit`, on a plain Subject, so a command sent
+   before that is lost and the test runs against an empty editor (#1585). Its ready notification cannot tell when
+   that has happened: Cypress rewrites `window === window.parent` to `window === window.self`, so under Cypress the
+   editor takes itself for standalone and posts nothing at all. What it renders can: the tab headers of the element
+   toolbox are drawn by a loop, so they appear in the update pass below `AppComponent`, after its `ngOnInit`, and
+   they do not depend on the unit. The definition is a string so that a spec can send one that is not JSON. */
+Cypress.Commands.add('sendEditorStartCommand', (unitDefinition: string) => {
+  cy.get('aspect-ui-element-toolbox [role="tab"]', { timeout: 10000 }).should('exist');
+  cy.window().then(window => {
+    window.postMessage({
+      type: 'voeStartCommand',
+      sessionId: 'dev',
+      unitDefinition,
+      unitDefinitionType: 'aspect-unit-definition',
+      editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
+    }, '*');
+  });
+});
+
 /** What the player renders once it has built a unit, or the dialog in which it says why it could not. */
 const UNIT_OUTCOME = 'aspect-player-layout, aspect-print-layout, mat-dialog-container';
 

@@ -11,7 +11,6 @@ Allgemein
 - Text, Lückentext: Ein Zitat kann mehrere Zeilen haben, jeder Absatz steht in einer eigenen Zeile. Bestehende Zitate mit mehreren Absätzen erscheinen dadurch untereinander statt in einer Zeile und sollten nach dem Update angesehen werden ([#658](https://github.com/iqb-berlin/verona-modules-aspect/issues/658))
 
 ### Änderungen
-- Geometrie: Das Element meldet `VALUE_CHANGED` erst, wenn in der Zeichnung etwas verändert wird — ein Objekt gezogen, gesetzt, gelöscht oder umbenannt, ein Wert eingegeben —, und nicht mehr schon beim Anklicken, Zoomen oder Verschieben der Ansicht; auch seine verfolgten Variablen ändern sich vorher nicht ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
 - Lückentext: Eine Lücke direkt an einem Wort oder Satzzeichen bricht mit dem Wort zusammen um. Bestehende Aufgaben können dadurch an anderen Stellen umbrechen ([#895](https://github.com/iqb-berlin/verona-modules-aspect/issues/895))
 - Periodensystem: Die ausgewählten Elemente neben dem Knopf sehen aus wie im Widget ([#1369](https://github.com/iqb-berlin/verona-modules-aspect/issues/1369))
 - Periodensystem: „Max. Anzahl Auswahlen“ 0 bedeutet keine Auswahl statt unbegrenzt, das Periodensystem dient dann nur zum Ansehen. Erfordert Widget 1.1.0 ([#1488](https://github.com/iqb-berlin/verona-modules-aspect/issues/1488))

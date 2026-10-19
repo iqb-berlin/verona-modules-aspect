@@ -5,10 +5,14 @@ export interface GeoGebraApi {
   getBase64(): string;
   getAllObjectNames(): string[];
   getValueString(objectName: string): string;
+  /** Whether the user can change the object directly: a free point, a point on a path, a slider, a
+   * checkbox, the number behind an input box. Objects that only follow others, or the view, cannot. */
+  isMoveable(objectName: string): boolean;
   registerAddListener(listener: () => void): void;
   registerRemoveListener(listener: () => void): void;
-  /** GeoGebra calls the listener once per object it recomputed, with that object's name -- also when
-   * the recomputation left the value as it was. */
+  /** GeoGebra calls the listener once per object it recomputed, with that object's name: the object
+   * the user changed and everything that depends on it, but also whatever depends on the view when it
+   * is zoomed or moved. */
   registerUpdateListener(listener: (objectName: string) => void): void;
   registerRenameListener(listener: () => void): void;
   registerClearListener(listener: () => void): void;

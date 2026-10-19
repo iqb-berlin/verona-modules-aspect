@@ -50,17 +50,17 @@ describe('Geometry element', { testIsolation: false }, () => {
       setCheckbox('Eingabezeile anzeigen', true);
     });
 
-    it('creates a geometry element with a tracked truth value, recomputation counted (Page 6)', () => {
+    it('creates a geometry element with a tracked truth value taking over the element\'s status (Page 6)', () => {
       addNewPage();
       addGeometryElement('Geometrie mit Wahrheitswert', 'kurven2.ggb', 'geo_truth_value');
       selectFromDropdown('Bekannte Variablen', 'correct', true);
       cy.get('aspect-ui-element-properties')
         .contains('mat-form-field', 'Bekannte Variablen')
         .should('contain.text', '(1)');
-      setCheckbox('Neu berechnet = Wert geändert', true);
+      setCheckbox('„Wert geändert“ des Elements für die Variablen übernehmen', true);
     });
 
-    it('creates a geometry element with a tracked truth value, recomputation not counted (Page 7)', () => {
+    it('creates a geometry element with a tracked truth value, each variable its own answer (Page 7)', () => {
       addNewPage();
       addGeometryElement('Geometrie mit Wahrheitswert ohne Schalter', 'kurven2.ggb', 'geo_truth_value_plain');
       selectFromDropdown('Bekannte Variablen', 'correct', true);
@@ -135,9 +135,17 @@ describe('Geometry element', { testIsolation: false }, () => {
       visibleAppletParams().its('showAlgebraInput').should('equal', true);
     });
 
-    // Both parts from one notification: the element has reported an interaction, and the truth value
-    // is in the given status. Without the first part, the notification sent on entering the page
-    // would satisfy the check for DISPLAYED on its own.
+    const elementWorkedOn = (elementId: string) => Cypress.sinon.match.has(
+      'unitState',
+      Cypress.sinon.match.has(
+        'dataParts',
+        Cypress.sinon.match.has('elementCodes', Cypress.sinon.match(`{"id":"${elementId}","status":"VALUE_CHANGED"`))
+      )
+    );
+
+    // Both parts from one notification: the element has been worked on, and the truth value is in the
+    // given status. Without the first part, the notification sent on entering the page would satisfy
+    // the check for DISPLAYED on its own.
     const variableCode = (elementId: string, status: string) => Cypress.sinon.match.has(
       'unitState',
       Cypress.sinon.match.has(
@@ -149,36 +157,36 @@ describe('Geometry element', { testIsolation: false }, () => {
       )
     );
 
-    it('reports a recomputed truth value as changed although it stayed false (Page 6)', () => {
-      const truthValueCode = (status: string) => variableCode('geo_truth_value', status);
+    it('counts no click and no zoom, but an edit for the element and every variable (Page 6)', () => {
       cy.goToPlayerPage(6);
       cy.wait(500);
       waitForVisibleGeometry();
       addPostMessageStub();
       cy.get('aspect-geometry:visible').first().trigger('pointerdown');
       cy.get('aspect-geometry:visible .geogebra-applet').first().invoke('attr', 'id').then(id => {
-        // An event that recomputes nothing, as zooming is: the value stayed, so nothing changed.
+        // A click, and a zoom that recomputes only what follows the view: no edit, nothing worked on.
         cy.window().its(`ggbListeners.${id}.client`).then(listener => listener());
-        cy.get('@postMessage').should('be.calledWithMatch', truthValueCode('DISPLAYED'));
+        cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('viewText'));
+        cy.wait(1000);
+        cy.get('@postMessage').should('not.be.calledWithMatch', elementWorkedOn('geo_truth_value'));
 
-        // GeoGebra recomputed the truth value, as it does when a point is set in the wrong place.
-        cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('correct'));
-        cy.get('@postMessage').should('be.calledWithMatch', truthValueCode('VALUE_CHANGED'));
+        // A point moved: the element is worked on, and with the switch the truth value as well,
+        // although it stayed false.
+        cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('A'));
+        cy.get('@postMessage').should('be.calledWithMatch', variableCode('geo_truth_value', 'VALUE_CHANGED'));
       });
     });
 
-    it('leaves a recomputed truth value displayed without the switch (Page 7)', () => {
-      const truthValueCode = (status: string) => variableCode('geo_truth_value_plain', status);
+    it('leaves a truth value that stayed false displayed without the switch (Page 7)', () => {
       cy.goToPlayerPage(7);
       cy.wait(500);
       waitForVisibleGeometry();
       addPostMessageStub();
       cy.get('aspect-geometry:visible').first().trigger('pointerdown');
       cy.get('aspect-geometry:visible .geogebra-applet').first().invoke('attr', 'id').then(id => {
-        // The same recomputation as on page 6. The report it causes is the one that marks the element as
-        // worked on, so the truth value it carries must still be DISPLAYED: the value stayed.
-        cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('correct'));
-        cy.get('@postMessage').should('be.calledWithMatch', truthValueCode('DISPLAYED'));
+        // The same edit as on page 6. The element is worked on, the truth value is an answer of its own.
+        cy.window().its(`ggbListeners.${id}.update`).then(listener => listener('A'));
+        cy.get('@postMessage').should('be.calledWithMatch', variableCode('geo_truth_value_plain', 'DISPLAYED'));
       });
     });
 

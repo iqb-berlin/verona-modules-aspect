@@ -34,18 +34,24 @@ export class GeometryVariableStateService extends ElementCodeService {
   }
 
   /**
+   * Replaces the value a variable starts with, without touching its status or announcing anything. A
+   * variable that has been worked on keeps its value.
+   */
+  setStartValue(id: string, value: ResponseValueType): void {
+    if (this.getElementCodeById(id)?.status === 'VALUE_CHANGED') return;
+    this.setElementCodeValue(id, value);
+  }
+
+  /**
    * Like the base method, but a value equal to the one already held changes nothing and announces
    * nothing -- an applet reports on every interaction, including those that leave its variables where
-   * they were, such as zooming. The exception is a variable GeoGebra recomputed (`wasUpdated`): it has
-   * been worked on even if the answer came out as before, and becomes `VALUE_CHANGED` once. The
-   * element reports that only with `recomputedCountsAsChanged` switched on.
+   * they were, such as zooming. That a variable has been worked on although its value stayed is
+   * something only the element can tell; with `recomputedCountsAsChanged` on it hands its status down
+   * (`ExternalAppGroupElementComponent`).
    */
-  override changeElementCodeValue(
-    elementValue: { id: string, value: ResponseValueType, wasUpdated?: boolean }
-  ): void {
-    const elementCode = this.getElementCodeById(elementValue.id);
-    const isWorkedOnForTheFirstTime = !!elementValue.wasUpdated && elementCode?.status !== 'VALUE_CHANGED';
-    if (elementCode?.value === elementValue.value && !isWorkedOnForTheFirstTime) return;
+  override changeElementCodeValue(elementValue: { id: string, value: ResponseValueType }): void {
+    const value = this.getElementCodeById(elementValue.id)?.value;
+    if (value === elementValue.value) return;
     LogService.debug(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
     this.setElementCodeValue(elementValue.id, elementValue.value);
     this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');

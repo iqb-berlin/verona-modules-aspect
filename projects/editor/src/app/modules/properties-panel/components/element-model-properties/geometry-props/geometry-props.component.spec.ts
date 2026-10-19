@@ -124,7 +124,7 @@ describe('GeometryPropsComponent', () => {
     expect(emitted).toEqual([{ property: 'showAlgebraInput', value: true }]);
   });
 
-  it('should show the recomputation setting outside expert mode and emit it when toggled', () => {
+  it('should show the setting to hand the element\'s status down outside expert mode and emit it when toggled', () => {
     component.unitService.expertMode = false;
     fixture.detectChanges();
     const checkbox = Array.from(

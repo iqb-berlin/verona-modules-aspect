@@ -67,18 +67,6 @@ function startPlayer(unitDefinition: string): void {
   cy.sendStartCommand({ sessionId: 'session_1', unitDefinition });
 }
 
-function startEditor(unitDefinition: string): void {
-  cy.window().then(window => {
-    window.postMessage({
-      type: 'voeStartCommand',
-      sessionId: 'dev',
-      unitDefinition,
-      unitDefinitionType: 'aspect-unit-definition',
-      editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
-    }, '*');
-  });
-}
-
 describe('A unit definition that cannot be loaded', () => {
   context('in the player', () => {
     beforeEach(() => {
@@ -111,16 +99,16 @@ describe('A unit definition that cannot be loaded', () => {
 
     cases.forEach(({ name, unitDefinition, text }) => {
       it(`names a definition that ${name}`, () => {
-        startEditor(unitDefinition);
+        cy.sendEditorStartCommand(unitDefinition);
         cy.get('aspect-unit-def-error-dialog').should('contain.text', text);
       });
     });
 
     it('takes the dialog away when the next unit starts', () => {
-      startEditor(definition('99.0.0'));
+      cy.sendEditorStartCommand(definition('99.0.0'));
       cy.get('aspect-unit-def-error-dialog').should('exist');
 
-      startEditor(loadableDefinition);
+      cy.sendEditorStartCommand(loadableDefinition);
 
       cy.get('aspect-unit-def-error-dialog').should('not.exist');
       cy.get('aspect-editor-page-view').contains(LOADABLE_TEXT).should('be.visible');

@@ -63,23 +63,11 @@ const unit = (imageSrc: string): Record<string, unknown> => ({
   showUnitNavNext: false
 });
 
-function loadUnit(imageSrc: string): void {
-  cy.window().then(window => {
-    window.postMessage({
-      type: 'voeStartCommand',
-      sessionId: 'dev',
-      unitDefinition: JSON.stringify(unit(imageSrc)),
-      unitDefinitionType: 'aspect-unit-definition',
-      editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
-    }, '*');
-  });
-}
-
 describe('Content that could not be loaded', { testIsolation: false }, () => {
   before(() => {
     cy.viewport(1300, 900);
     cy.openEditor();
-    loadUnit('data:image/png;base64,AAAA');
+    cy.sendEditorStartCommand(JSON.stringify(unit('data:image/png;base64,AAAA')));
   });
 
   it('announces a picture that does not load, instead of the old message', () => {
@@ -109,7 +97,7 @@ describe('Content that could not be loaded', { testIsolation: false }, () => {
   });
 
   it('forgets it once a unit is loaded whose picture loads', () => {
-    loadUnit(WORKING_PICTURE);
+    cy.sendEditorStartCommand(JSON.stringify(unit(WORKING_PICTURE)));
     cy.get('aspect-editor-page-view').find('aspect-text-field').should('exist');
     cy.get('.variable-info-findings-button').should('not.exist');
   });

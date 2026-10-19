@@ -52,23 +52,11 @@ const unit = {
   showUnitNavNext: false
 };
 
-function loadUnit(unitDefinition: Record<string, unknown> = unit): void {
-  cy.window().then(window => {
-    window.postMessage({
-      type: 'voeStartCommand',
-      sessionId: 'dev',
-      unitDefinition: JSON.stringify(unitDefinition),
-      unitDefinitionType: 'aspect-unit-definition',
-      editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
-    }, '*');
-  });
-}
-
 describe('Navigation buttons when pages are deleted', () => {
   beforeEach(() => {
     cy.viewport(1300, 900);
     cy.openEditor();
-    loadUnit();
+    cy.sendEditorStartCommand(JSON.stringify(unit));
   });
 
   /* Without the renumbering the button kept the number 2, which names no page once there are two: the field
@@ -97,7 +85,7 @@ describe('The delete confirmation with a permanently visible page', () => {
   beforeEach(() => {
     cy.viewport(1300, 900);
     cy.openEditor();
-    loadUnit(unitWithAlwaysVisiblePage);
+    cy.sendEditorStartCommand(JSON.stringify(unitWithAlwaysVisiblePage));
   });
 
   it('names the pages as the editor labels them', () => {

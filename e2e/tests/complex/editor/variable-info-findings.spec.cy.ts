@@ -67,18 +67,6 @@ const unit = {
   showUnitNavNext: false
 };
 
-function loadUnit(definition: Record<string, unknown> = unit): void {
-  cy.window().then(window => {
-    window.postMessage({
-      type: 'voeStartCommand',
-      sessionId: 'dev',
-      unitDefinition: JSON.stringify(definition),
-      unitDefinitionType: 'aspect-unit-definition',
-      editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
-    }, '*');
-  });
-}
-
 function aliasField(): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get('aspect-ui-element-properties').contains('mat-form-field', 'ID').find('input');
 }
@@ -87,7 +75,7 @@ describe('Invalid variable names', { testIsolation: false }, () => {
   before(() => {
     cy.viewport(1300, 900);
     cy.openEditor();
-    loadUnit();
+    cy.sendEditorStartCommand(JSON.stringify(unit));
   });
 
   it('shows where an invalid name is as soon as the unit is loaded', () => {
@@ -109,7 +97,7 @@ describe('Invalid variable names', { testIsolation: false }, () => {
      element on the second does not exist yet when it is asked for. */
   it('takes the author there in the tabbed view as well, to a page not rendered yet', () => {
     cy.switchToTabbedViewMode();
-    loadUnit();
+    cy.sendEditorStartCommand(JSON.stringify(unit));
     cy.get('aspect-editor-page-view').find('aspect-text-field').should('have.length', 1);
     cy.get('mat-dialog-container').contains('button', 'Zum Element').click();
     aliasField().should('have.value', 'März');
@@ -202,7 +190,7 @@ describe('Replacing an id that breaks the contract', { testIsolation: false }, (
   before(() => {
     cy.viewport(1300, 900);
     cy.openEditor();
-    loadUnit(legacyUnit);
+    cy.sendEditorStartCommand(JSON.stringify(legacyUnit));
   });
 
   it('replaces the id after the warning, and keeps the connection to it', () => {

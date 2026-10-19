@@ -68,6 +68,27 @@ Cypress.Commands.add('sendStartCommand', (startCommand: VopStartCommandMessage) 
   });
 });
 
+/* A start command the editor receives before `AppComponent.ngOnInit` has subscribed is lost: before bootstrap
+   nothing listens yet, and after it the command goes out on a plain Subject (#1585). Today only microtasks lie
+   between the listener and the subscription, as long as no initializer is asynchronous. The editor's ready
+   notification cannot mark the moment, because under Cypress it is never sent: Cypress rewrites
+   `window === window.parent` to `window === window.self`, so the editor takes itself for standalone. What it
+   renders can: `<aspect-editor>` is a custom element whose component runs `ngOnInit` and its first change detection
+   at once, so anything inside it means the subscription is there. The definition is a string so that a spec can
+   send one that is not JSON. */
+Cypress.Commands.add('sendEditorStartCommand', (unitDefinition: string) => {
+  cy.get('aspect-ui-element-toolbox [role="tab"]', { timeout: 10000 }).should('exist');
+  cy.window().then(window => {
+    window.postMessage({
+      type: 'voeStartCommand',
+      sessionId: 'dev',
+      unitDefinition,
+      unitDefinitionType: 'aspect-unit-definition',
+      editorConfig: { directDownloadUrl: 'assets', role: 'maintainer' }
+    }, '*');
+  });
+});
+
 /** What the player renders once it has built a unit, or the dialog in which it says why it could not. */
 const UNIT_OUTCOME = 'aspect-player-layout, aspect-print-layout, mat-dialog-container';
 

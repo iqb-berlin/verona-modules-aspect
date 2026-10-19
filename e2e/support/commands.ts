@@ -68,12 +68,14 @@ Cypress.Commands.add('sendStartCommand', (startCommand: VopStartCommandMessage) 
   });
 });
 
-/* The editor subscribes to start commands in `AppComponent.ngOnInit`, on a plain Subject, so a command sent
-   before that is lost and the test runs against an empty editor (#1585). Its ready notification cannot tell when
-   that has happened: Cypress rewrites `window === window.parent` to `window === window.self`, so under Cypress the
-   editor takes itself for standalone and posts nothing at all. What it renders can: the tab headers of the element
-   toolbox are drawn by a loop, so they appear in the update pass below `AppComponent`, after its `ngOnInit`, and
-   they do not depend on the unit. The definition is a string so that a spec can send one that is not JSON. */
+/* A start command the editor receives before `AppComponent.ngOnInit` has subscribed is lost: before bootstrap
+   nothing listens yet, and after it the command goes out on a plain Subject (#1585). Today only microtasks lie
+   between the listener and the subscription, as long as no initializer is asynchronous. The editor's ready
+   notification cannot mark the moment, because under Cypress it is never sent: Cypress rewrites
+   `window === window.parent` to `window === window.self`, so the editor takes itself for standalone. What it
+   renders can: `<aspect-editor>` is a custom element whose component runs `ngOnInit` and its first change detection
+   at once, so anything inside it means the subscription is there. The definition is a string so that a spec can
+   send one that is not JSON. */
 Cypress.Commands.add('sendEditorStartCommand', (unitDefinition: string) => {
   cy.get('aspect-ui-element-toolbox [role="tab"]', { timeout: 10000 }).should('exist');
   cy.window().then(window => {

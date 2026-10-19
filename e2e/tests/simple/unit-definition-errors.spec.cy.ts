@@ -64,12 +64,7 @@ const cases = [
 ];
 
 function startPlayer(unitDefinition: string): void {
-  cy.window().then(window => {
-    const message = { type: 'vopStartCommand', sessionId: 'session_1', unitDefinition };
-    window.postMessage(message, '*');
-    // Retried as `loadUnit` does, in case the player's message subscription is not up yet.
-    return Cypress.Promise.delay(150).then(() => window.postMessage(message, '*'));
-  });
+  cy.sendStartCommand({ sessionId: 'session_1', unitDefinition });
 }
 
 function startEditor(unitDefinition: string): void {

@@ -8,12 +8,21 @@ export interface PlayerConfigOptions {
   logPolicy?: 'lean' | 'rich' | 'debug' | 'disabled';
 }
 
+/** The members of a vopStartCommand the suite sends; `sendStartCommand` adds the type. */
+export interface VopStartCommandMessage {
+  unitDefinition: string;
+  sessionId?: string;
+  playerConfig?: PlayerConfigOptions;
+  unitState?: { dataParts: Record<string, string> };
+}
+
 declare global {
   // Cypress declares Chainable inside a namespace, so augmenting it needs one too.
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       loadUnit(value: string): Chainable<JQuery<HTMLElement>>;
+      sendStartCommand(startCommand: VopStartCommandMessage): Chainable<void>;
       saveUnit(filepath?: string): Chainable<JQuery<HTMLElement>>;
       openPlayer(): Chainable<JQuery<HTMLElement>>;
       openEditor(): Chainable<JQuery<HTMLElement>>;

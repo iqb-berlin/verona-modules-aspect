@@ -35,7 +35,63 @@
 //   }
 // }
 
-import type { PlayerConfigOptions } from './index';
+import type { PlayerConfigOptions, VopStartCommandMessage } from './index';
+
+/** Player windows that have sent their `vopReadyNotification`. The player sends it once per page load, so
+    a unit loaded into a player that is already running cannot wait for a new one; what it asks is
+    whether the window it is in has said it is ready. Held per window, a reload starts from "not ready". */
+const readyPlayers = new WeakSet<Window>();
+
+Cypress.on('window:before:load', (window: Window) => {
+  const onMessage = (event: MessageEvent<unknown>): void => {
+    const { data } = event;
+    if (event.source === window && typeof data === 'object' && data !== null &&
+      'type' in data && data.type === 'vopReadyNotification') {
+      readyPlayers.add(window);
+      window.parent.removeEventListener('message', onMessage);
+    }
+  };
+  window.parent.addEventListener('message', onMessage);
+  // The editor never sends it, and a page can be left before it does; the listener goes with the page.
+  window.addEventListener('pagehide', () => window.parent.removeEventListener('message', onMessage));
+});
+
+/* The player subscribes to start commands in the same change detection run in which it sends its ready
+   notification, so once that has arrived, one start command is enough. A second one would rebuild the
+   unit under whatever the test is doing at that moment (#1555). */
+Cypress.Commands.add('sendStartCommand', (startCommand: VopStartCommandMessage) => {
+  cy.window({ timeout: 10000 }).should(window => {
+    expect(readyPlayers.has(window), 'vopReadyNotification received').to.equal(true);
+  });
+  cy.window().then(window => {
+    window.postMessage({ type: 'vopStartCommand', ...startCommand }, '*');
+  });
+});
+
+/** What the player renders once it has built a unit, or the dialog in which it says why it could not. */
+const UNIT_OUTCOME = 'aspect-player-layout, aspect-print-layout, mat-dialog-container';
+
+/** Loads a fixture into the running player and waits until the player has built it or rejected it. A start
+    command first takes the previous unit down, so only an outcome that was not on the page before it counts.
+    A rejection fails here, with the player's reason, rather than at the first selector that finds nothing. */
+function loadUnitWith(filename: string, playerConfig?: PlayerConfigOptions): void {
+  cy.fixture(filename).then(unit => {
+    cy.get('body').then($body => {
+      const previousOutcome = $body.find(UNIT_OUTCOME).toArray();
+      cy.sendStartCommand({ unitDefinition: JSON.stringify(unit), ...(playerConfig && { playerConfig }) });
+      cy.get(UNIT_OUTCOME, { timeout: 10000 })
+        .should($outcome => {
+          expect($outcome.not(previousOutcome), 'unit built or rejected').to.have.length.greaterThan(0);
+        })
+        .then($outcome => {
+          const errorDialog = $outcome.not(previousOutcome).filter('mat-dialog-container');
+          if (errorDialog.length > 0) {
+            throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
+          }
+        });
+    });
+  });
+}
 
 Cypress.Commands.add('openPlayer', () => {
   cy.visit('http://localhost:4202/');
@@ -53,51 +109,10 @@ Cypress.Commands.add('switchToTabbedViewMode', () => {
   cy.get('.cdk-overlay-backdrop').should('not.exist');
 });
 
-Cypress.Commands.add('loadUnit', (filename: string) => {
-  cy.fixture(filename).then(unit => {
-    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
-    cy.window().then(window => {
-      const postMessage = {
-        type: 'vopStartCommand',
-        unitDefinition: JSON.stringify(unit)
-      };
-      window.postMessage(postMessage, '*');
-      // Retry once to avoid race conditions while the player message subscription initializes.
-      return Cypress.Promise.delay(150).then(() => {
-        window.postMessage(postMessage, '*');
-      });
-    });
-    cy.get('body', { timeout: 10000 }).then($body => {
-      const errorDialog = $body.find('mat-dialog-container');
-      if (errorDialog.length > 0) {
-        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
-      }
-    });
-  });
-});
+Cypress.Commands.add('loadUnit', (filename: string) => loadUnitWith(filename));
 
-Cypress.Commands.add('loadUnitWithPrintMode', (filename: string, printMode: 'off' | 'on' | 'on-with-ids') => {
-  cy.fixture(filename).then(unit => {
-    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
-    cy.window().then(window => {
-      const postMessage = {
-        type: 'vopStartCommand',
-        unitDefinition: JSON.stringify(unit),
-        playerConfig: { printMode }
-      };
-      window.postMessage(postMessage, '*');
-      return Cypress.Promise.delay(150).then(() => {
-        window.postMessage(postMessage, '*');
-      });
-    });
-    cy.get('body', { timeout: 10000 }).then($body => {
-      const errorDialog = $body.find('mat-dialog-container');
-      if (errorDialog.length > 0) {
-        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
-      }
-    });
-  });
-});
+Cypress.Commands.add('loadUnitWithPrintMode', (filename: string, printMode: 'off' | 'on' | 'on-with-ids') => (
+  loadUnitWith(filename, { printMode })));
 
 Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json') => {
   cy.get('body').type('{esc}', { force: true });
@@ -157,25 +172,5 @@ Cypress.Commands.add('stubFileInput', () => {
   });
 });
 
-Cypress.Commands.add('loadUnitWithOptions', (filename: string, playerConfig: PlayerConfigOptions) => {
-  cy.fixture(filename).then(unit => {
-    cy.get('aspect-unit', { timeout: 10000 }).should('exist');
-    cy.window().then(window => {
-      const postMessage = {
-        type: 'vopStartCommand',
-        unitDefinition: JSON.stringify(unit),
-        playerConfig
-      };
-      window.postMessage(postMessage, '*');
-      return Cypress.Promise.delay(150).then(() => {
-        window.postMessage(postMessage, '*');
-      });
-    });
-    cy.get('body', { timeout: 10000 }).then($body => {
-      const errorDialog = $body.find('mat-dialog-container');
-      if (errorDialog.length > 0) {
-        throw new Error(`Player rejected unit definition: ${errorDialog.text().trim()}`);
-      }
-    });
-  });
-});
+Cypress.Commands.add('loadUnitWithOptions', (filename: string, playerConfig: PlayerConfigOptions) => (
+  loadUnitWith(filename, playerConfig)));

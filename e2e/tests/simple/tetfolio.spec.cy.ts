@@ -104,14 +104,9 @@ describe('Tetfolio element', { testIsolation: false }, () => {
       cy.openPlayer();
       cy.fixture('../downloads/tetfolio.json').then(unit => {
         cy.get('aspect-unit', { timeout: 10000 }).should('exist');
-        cy.window().then(window => {
-          const startCommand = {
-            type: 'vopStartCommand',
-            unitDefinition: JSON.stringify(unit),
-            unitState: { dataParts: { elementCodes: storedElementCodes } }
-          };
-          window.postMessage(startCommand, '*');
-          return Cypress.Promise.delay(150).then(() => window.postMessage(startCommand, '*'));
+        cy.sendStartCommand({
+          unitDefinition: JSON.stringify(unit),
+          unitState: { dataParts: { elementCodes: storedElementCodes } }
         });
       });
       inExperiment('#log').should('have.text', 'restored: step');

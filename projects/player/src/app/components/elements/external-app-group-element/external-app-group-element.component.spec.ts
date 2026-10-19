@@ -164,7 +164,7 @@ describe('ExternalAppGroupElementComponent', () => {
     let appletFixture: ComponentFixture<ExternalAppGroupElementComponent>;
 
     /** A displayed applet with two truth values, `correct` and `other`, both `false` -- or stored with
-     * the value given, as units before definition 4.11 store an empty one. */
+     * the value given, as variables chosen with an editor before 2.11.0 are stored with an empty one. */
     const createApplet = (recomputedCountsAsChanged: boolean, storedValue?: string): void => {
       unitStateService = TestBed.inject(UnitStateService);
       geometryVariableStateService = TestBed.inject(GeometryVariableStateService);

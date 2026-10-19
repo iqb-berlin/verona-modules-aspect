@@ -123,8 +123,9 @@ export class ExternalAppGroupElementComponent
 
   /**
    * Makes GeoGebra's own values, once the applet has loaded, the ones a variable is compared with. What
-   * the unit stores can differ -- before definition 4.11 it was empty -- and every variable would then
-   * count as changed with the first edit, whatever the edit touched.
+   * the unit stores can differ -- it is empty for variables chosen with an editor before 2.11.0
+   * (definition 4.10.0) -- and every variable would then count as changed with the first edit, whatever
+   * the edit touched.
    */
   takeOverStartValues(variables: GeometryVariable[]): void {
     variables.forEach(variable => this.geometryVariableStateService.setStartValue(

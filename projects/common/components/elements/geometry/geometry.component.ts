@@ -28,8 +28,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   @Input() appDefinition: string | undefined;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   /** The tracked variables with the values GeoGebra computed on loading the applet, each time it loads,
-   * the reset included. They can differ from the values stored in the unit: before definition 4.11 those
-   * were empty. */
+   * the reset included. They can differ from the values stored in the unit, which are empty for variables
+   * chosen with an editor before 2.11.0 (definition 4.10.0). */
   @Output() appletLoaded = new EventEmitter<GeometryVariable[]>();
 
   isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);

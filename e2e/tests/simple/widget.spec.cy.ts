@@ -38,29 +38,6 @@ function lastCodeOf(stub: unknown, id: string): unknown {
     .pop();
 }
 
-/** `loadUnit` sends its start command twice, 150 ms apart, and the second one builds the unit anew -- a
-    call made in between is answered to an element that no longer exists. The start command goes out
-    once here, after the player has said it is ready to take it. */
-function startPlayerWith(fixture: string): void {
-  const ready = cy.stub().as('ready');
-  const onMessage = (e: MessageEvent): void => {
-    if (e.data?.type === 'vopReadyNotification') ready();
-  };
-  cy.visit('http://localhost:4202/', {
-    onBeforeLoad(window) {
-      window.parent.addEventListener('message', onMessage);
-    }
-  });
-  cy.get('@ready').should('have.been.called');
-  cy.window().then(window => window.parent.removeEventListener('message', onMessage));
-  cy.get('aspect-unit').should('exist');
-  cy.fixture(fixture).then(unit => {
-    cy.window().then(window => {
-      window.postMessage({ type: 'vopStartCommand', unitDefinition: JSON.stringify(unit) }, '*');
-    });
-  });
-}
-
 describe('Widget Element', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
@@ -86,7 +63,8 @@ describe('Widget Element', { testIsolation: false }, () => {
 
   context('player', () => {
     before('opens a player, and loads the previously saved json file', () => {
-      startPlayerWith('../downloads/widget.json');
+      cy.openPlayer();
+      cy.loadUnit('../downloads/widget.json');
     });
 
     it('checks that all widgets are rendered', () => {
@@ -213,7 +191,8 @@ describe('Widget Element', { testIsolation: false }, () => {
     /* A maximum of 0 means view only: the widget gets the 0, and whatever comes back is no answer -- a
        widget that still reads 0 as unlimited sends a selection all the same (#1488). */
     it('takes no answer from a periodic table that is only there to look at', () => {
-      startPlayerWith('widget-periodic-table-view-only.json');
+      cy.openPlayer();
+      cy.loadUnit('widget-periodic-table-view-only.json');
       callFor('pse_zero').then(msg => {
         expect(msg.parameters).to.deep.include({ key: 'MAX_NUMBER_OF_SELECTIONS', value: '0' });
         cy.window().then(window => {
@@ -234,7 +213,8 @@ describe('Widget Element', { testIsolation: false }, () => {
     /* With block colours the widget colours every field by its block, which the player does not
        know; the answer stands in dark grey (#1369). */
     it('shows the answer dark grey when the fields are coloured by block', () => {
-      startPlayerWith('widget-periodic-table-block-colors.json');
+      cy.openPlayer();
+      cy.loadUnit('widget-periodic-table-block-colors.json');
       callFor('pse_blocks').then(msg => {
         expect(msg.parameters).to.deep.include({ key: 'HIGHLIGHT_BLOCKS', value: '1' });
         cy.window().then(window => {
@@ -250,7 +230,8 @@ describe('Widget Element', { testIsolation: false }, () => {
        is the new answer: the symbols beside the button go, the player reports '' as a changed value,
        and the next call starts the widget without a state (#1465). */
     it('clears the answer when the widget returns an empty selection', () => {
-      startPlayerWith('widget-periodic-table-answer.json');
+      cy.openPlayer();
+      cy.loadUnit('widget-periodic-table-answer.json');
       callFor('pse_answer').then(msg => {
         cy.window().then(window => {
           window.postMessage({ type: 'vopWidgetReturn', callId: msg.callId, state: 'Na Cl' }, '*');

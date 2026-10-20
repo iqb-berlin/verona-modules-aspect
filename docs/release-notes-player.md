@@ -20,6 +20,7 @@ Player
 - Geometrie: Die GeoGebra-Tastatur öffnet sich im Applet statt am Fensterrand, wo andere Elemente sie verdecken konnten. Ein GeoGebra-Element mit Eingabefeld sollte mindestens 400 Pixel hoch sein ([#1549](https://github.com/iqb-berlin/verona-modules-aspect/issues/1549))
 - Geometrie, Bild: Kann GeoGebra oder ein Bild nicht geladen werden, nennt die Fehlermeldung an die Testumgebung, was fehlt ([#1456](https://github.com/iqb-berlin/verona-modules-aspect/issues/1456))
 - iPad: Auf Seiten nach der ersten sind Cursor und Markierung in Eingabefeldern und -bereichen wieder zu sehen (iPadOS 26) ([#1082](https://github.com/iqb-berlin/verona-modules-aspect/issues/1082))
+- Lückentext, Tabelle: Knöpfe mit der Aktion „Aufgabennavigation“ erscheinen nur, wenn die Testumgebung ihr Ziel erlaubt, statt umgekehrt ([#1583](https://github.com/iqb-berlin/verona-modules-aspect/issues/1583))
 - Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ schließt sich, sobald eine andere Aufgabe geladen wird, statt über ihr stehen zu bleiben ([#1581](https://github.com/iqb-berlin/verona-modules-aspect/issues/1581))
 - Periodensystem: Eine leere Auswahl des Widgets wird als Antwort übernommen. Löschen lässt sich eine Antwort ab Widget 1.1.0 ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
 - Seitennavigation der Testumgebung: Der Player meldet die Seiten erst, wenn er sie gezählt hat, statt zuerst eine leere Liste zu schicken ([#1462](https://github.com/iqb-berlin/verona-modules-aspect/issues/1462))

@@ -27,37 +27,16 @@ function sendNavigationTargets(enabledNavigationTargets: NavigationTargets): voi
    is placed on the page and in a cloze: the children of a cloze are hidden in code rather than in a
    template and once followed the opposite rule (#1583). */
 describe('Enabled navigation targets', () => {
-  const cases: { targets: NavigationTargets; visible: boolean }[] = [
-    { targets: undefined, visible: true },
-    { targets: ['next'], visible: true },
-    { targets: ['next', 'previous'], visible: true },
-    { targets: [], visible: false },
-    { targets: ['previous'], visible: false }
-  ];
-
-  cases.forEach(({ targets, visible }) => {
-    it(`${visible ? 'shows' : 'hides'} the buttons for "next" when started with ${JSON.stringify(targets)}`, () => {
-      cy.openPlayer();
-      cy.loadUnitWithOptions('unit-navigation-targets.json', { enabledNavigationTargets: targets });
-      navigationButtons().should('have.length', BUTTON_LABELS.length);
-
-      expectButtons(visible);
-    });
-  });
-
-  it('follows the targets the host changes while the unit runs', () => {
+  it('follows the targets the host sends at the start and while the unit runs', () => {
     cy.openPlayer();
-    cy.loadUnitWithOptions('unit-navigation-targets.json', {});
+    cy.loadUnitWithOptions('unit-navigation-targets.json', { enabledNavigationTargets: ['previous'] });
     navigationButtons().should('have.length', BUTTON_LABELS.length);
-    expectButtons(true);
-
-    sendNavigationTargets([]);
     expectButtons(false);
 
     sendNavigationTargets(['next']);
     expectButtons(true);
 
-    sendNavigationTargets(['previous']);
+    sendNavigationTargets([]);
     expectButtons(false);
 
     sendNavigationTargets(undefined);

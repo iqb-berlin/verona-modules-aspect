@@ -34,7 +34,7 @@ Editor
 - GeoGebra: Nach dem Austausch der Datei lassen sich nicht mehr vorhandene verfolgte Variablen abwählen ([#1505](https://github.com/iqb-berlin/verona-modules-aspect/issues/1505))
 - Löschdialog: Mit einer dauerhaft sichtbaren Seite stimmt die Seitennummer in der Rückfrage ([#1513](https://github.com/iqb-berlin/verona-modules-aspect/issues/1513))
 - Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ schließt sich, sobald eine andere Aufgabe geöffnet wird, statt bis zum Neuladen der Seite stehen zu bleiben ([#1581](https://github.com/iqb-berlin/verona-modules-aspect/issues/1581))
-- Neue Elemente ziehen: Das Vorschaubild beim Ziehen eines Knopfs aus der linken Leiste zeigt in Chrome nur noch den Knopf, nicht mehr den Rand des nächsten ([#437](https://github.com/iqb-berlin/verona-modules-aspect/issues/437))
+- Neue Elemente ziehen: Das Vorschaubild beim Ziehen eines Knopfs aus der linken Leiste zeigt in Chrome nur noch den Knopf, nicht mehr die Knöpfe darüber und darunter ([#437](https://github.com/iqb-berlin/verona-modules-aspect/issues/437))
 - Neue Elemente ziehen: Nach dem Ziehen eines Optionsfelds aus der linken Leiste lassen sich Rahmen in dynamischen Abschnitten wieder anklicken. Bisher blieben sie unerreichbar, bis ein anderer Knopf gezogen oder der Editor neu geladen wurde ([#1590](https://github.com/iqb-berlin/verona-modules-aspect/issues/1590))
 - Optionentabelle: Die ID einer neuen Zeile mit Bild wird auf Doppelvergabe geprüft ([#1507](https://github.com/iqb-berlin/verona-modules-aspect/issues/1507))
 - Seitennavigation: Knöpfe führen nach dem Löschen, Verschieben oder Einfügen von Seiten weiter zur selben Seite ([#1511](https://github.com/iqb-berlin/verona-modules-aspect/issues/1511))

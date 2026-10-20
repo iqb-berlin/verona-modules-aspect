@@ -22,11 +22,13 @@ button {
   min-height: 36px;
 }
 
-/* Material's invisible touch area reaches 6px above and below every button. Chrome crops the image of a
-   dragged element to the box around it and all its descendants, so the drag image of a new element took
-   in the edge of the neighbouring button (#437). Without the area that box is the button. Switched off
-   through Material's own tokens: a rule on the touch target itself loses to Material's, which is as
-   specific and loaded later. Stroked buttons are "outlined", raised ones "protected". */
+/* Chrome crops the image of a dragged element to the box around it and all its descendants, clipped
+   or not, and paints whatever lies in that box. Two descendants of a Material button reach out of it
+   (#437): the click ripple, a circle up to twice the button's width across while the mouse is down,
+   switched off on the draggable buttons with `disableRipple` in the template; and the invisible touch
+   area, 6px above and below, switched off here. Through Material's own tokens: a rule on the touch
+   target itself loses to Material's, which is as specific and loaded later. Stroked buttons are
+   "outlined", raised ones "protected". */
 :host {
   --mat-button-outlined-touch-target-display: none;
   --mat-button-protected-touch-target-display: none;

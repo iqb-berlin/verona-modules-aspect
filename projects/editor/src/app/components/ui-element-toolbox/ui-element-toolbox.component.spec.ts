@@ -104,26 +104,52 @@ describe('UiElementToolboxComponent', () => {
     expect(dragNDropService.isDragInProgress).toBe(false);
   });
 
+  /** Hands the draggable buttons of both tabs to `check` and collects the names of the buttons it
+   * returns: those of the element tab, the ones shown only on hover included, and those of the
+   * assistants tab, which is the open one once expert mode is off and the element tab gone. */
+  const offendingButtons = (check: (buttons: HTMLElement[]) => HTMLElement[]): (string | undefined)[] => {
+    let seen = 0;
+    const offending = [true, false].flatMap(expertMode => {
+      TestBed.inject(UnitService).expertMode = expertMode;
+      const toolbox = TestBed.createComponent(UiElementToolboxComponent);
+      toolbox.componentInstance.hoverFormulaButton = true;
+      toolbox.componentInstance.hoverRadioButton = true;
+      toolbox.detectChanges();
+      const buttons: HTMLElement[] = Array.from(toolbox.nativeElement.querySelectorAll('[draggable="true"]'));
+      seen += buttons.length;
+      return check(buttons);
+    });
+    expect(seen).toBe(34);
+    return offending.map(button => button.textContent?.trim());
+  };
+
+  /* Left standing, the flag keeps the frames of dynamic sections from being clicked (#1590). */
+  it('should end the drag again for every draggable button', () => {
+    const leftStanding = offendingButtons(buttons => buttons.filter(button => {
+      button.dispatchEvent(new DragEvent('dragstart'));
+      const started = dragNDropService.isDragInProgress;
+      button.dispatchEvent(new DragEvent('dragend'));
+      const stillDragging = dragNDropService.isDragInProgress;
+      dragNDropService.isDragInProgress = false;
+      return !started || stillDragging;
+    }));
+
+    expect(leftStanding).toEqual([]);
+  });
+
   /* Chrome crops the image of a dragged element to the box around it and all its descendants, so
      whatever reaches out of a button comes along into its drag image (#437). */
   it('should keep everything inside a draggable button within the button', () => {
-    // The raised buttons show only while the pointer is over their group.
-    component.hoverFormulaButton = true;
-    component.hoverRadioButton = true;
-    fixture.detectChanges();
-    const buttons: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('[draggable="true"]'));
-    expect(buttons.filter(button => button.hasAttribute('mat-raised-button')).length).toBe(4);
-
-    const reachingOut = buttons.filter(button => {
+    const reachingOut = offendingButtons(buttons => buttons.filter(button => {
       const own = button.getBoundingClientRect();
       return Array.from(button.querySelectorAll('*'))
         .map(descendant => descendant.getBoundingClientRect())
         .filter(box => box.width > 0 && box.height > 0)
         .some(box => box.top < own.top - 0.5 || box.bottom > own.bottom + 0.5 ||
           box.left < own.left - 0.5 || box.right > own.right + 0.5);
-    });
+    }));
 
-    expect(reachingOut.map(button => button.textContent?.trim())).toEqual([]);
+    expect(reachingOut).toEqual([]);
   });
 
   it('should delegate applying a section template', () => {

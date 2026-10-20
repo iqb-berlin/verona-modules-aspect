@@ -96,11 +96,13 @@
               {{'toolbox.radio' | translate }}
             </button>
             <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio')"
-                    draggable="true" (dragstart)="startDrag($event,'radio')">
+                    draggable="true" (dragstart)="startDrag($event,'radio')"
+                    (dragend)="endDrag()">
               {{'toolbox.simple' | translate }}
             </button>
             <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio-group-images')"
-                    draggable="true" (dragstart)="startDrag($event,'radio-group-images')">
+                    draggable="true" (dragstart)="startDrag($event,'radio-group-images')"
+                    (dragend)="endDrag()">
               {{'toolbox.complex' | translate }}
             </button>
           </div>

@@ -11,9 +11,11 @@ export function uploadGGBFile(fileName: string) {
     });
 }
 
-/** Stands in for GeoGebra. Every applet has one object, `correct`, a truth value that stays `false`,
- * and keeps its listeners in `window.ggbListeners[appletId]`, so that a spec can play GeoGebra
- * reporting a recomputation (`update`, with the object's name) or any other event (`client`).
+/** Stands in for GeoGebra. Every applet has one tracked object, `correct`, a truth value that stays
+ * `false`, and keeps its listeners in `window.ggbListeners[appletId]`, so that a spec can play GeoGebra
+ * reporting a recomputation (`update`, with the object's name), an object added, removed or renamed
+ * (`add`, `remove`, `rename`) or any other event (`client`). Every object can be changed by the user
+ * except `viewText`, which follows the view, as a text placed at a corner of the drawing does.
  * Like GeoGebra, a pointerdown on its canvas focuses the screen reader announcement at the bottom of
  * the applet and then the canvas, both without `preventScroll` (#971). */
 export function interceptDeployGGB() {
@@ -49,15 +51,16 @@ export function interceptDeployGGB() {
               const listeners = {};
               (window.ggbListeners = window.ggbListeners || {})[containerId] = listeners;
               const mockGeoGebraApi = {
-                registerAddListener: () => {},
-                registerRemoveListener: () => {},
+                registerAddListener: listener => { listeners.add = listener; },
+                registerRemoveListener: listener => { listeners.remove = listener; },
                 registerUpdateListener: listener => { listeners.update = listener; },
-                registerRenameListener: () => {},
+                registerRenameListener: listener => { listeners.rename = listener; },
                 registerClearListener: () => {},
                 registerClientListener: listener => { listeners.client = listener; },
                 getBase64: () => "",
                 getAllObjectNames: () => ["correct"],
-                getValueString: name => name + " = false"
+                getValueString: name => name + " = false",
+                isMoveable: name => name !== "viewText"
               };
               setTimeout(() => {
                 params.appletOnLoad(mockGeoGebraApi);

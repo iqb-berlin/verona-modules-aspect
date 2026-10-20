@@ -1,18 +1,14 @@
 export interface GeometryValue {
   appDefinition: string;
-  variables: ReportedGeometryVariable[];
+  variables: GeometryVariable[];
+  /** Whether the user has edited the construction since the last report: changed an object they can
+   * change directly, or added, deleted or renamed one. Zooming, moving the view, selecting, undo and
+   * redo are no edit -- but they can change the construction, which is why the applet reports them all
+   * the same. */
+  edited: boolean;
 }
 
 export interface GeometryVariable {
   id: string;
   value: string;
-}
-
-/** A tracked variable as the applet reports it after an interaction. */
-export interface ReportedGeometryVariable extends GeometryVariable {
-  /** GeoGebra recomputed the variable since the last report. A wrong answer can leave a variable at
-   * the value it started with -- a truth value that stays `false` -- so this, not a changed value, is
-   * what says it has been worked on. Always `false` unless the element has
-   * `recomputedCountsAsChanged` switched on. */
-  wasUpdated: boolean;
 }

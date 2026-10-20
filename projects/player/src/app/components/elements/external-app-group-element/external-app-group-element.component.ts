@@ -8,9 +8,7 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { GeometryElement } from 'common/models/elements/geometry';
 import { GeometryComponent } from 'common/components/elements/geometry/geometry.component';
-import {
-  GeometryValue, GeometryVariable, ReportedGeometryVariable
-} from 'common/models/geometry-interfaces';
+import { GeometryValue, GeometryVariable } from 'common/models/geometry-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 import { takeUntil } from 'rxjs/operators';
@@ -48,22 +46,34 @@ export class ExternalAppGroupElementComponent
     this.unitStateService.elementCodeChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(elementCode => {
-        this.propagateDisplayedStatus(elementCode);
+        this.propagateStatus(elementCode);
       });
   }
 
-  private propagateDisplayedStatus(elementCode: Response & { alias: string }): void {
-    if (elementCode.id === this.elementModel.id && elementCode.status === 'DISPLAYED') {
-      (this.elementModel as GeometryElement).getAllCleanedTrackedVariables().forEach(variable => {
-        const varId = (this.elementModel as GeometryElement).getGeometryVariableId(variable.id);
-        if (this.geometryVariableStateService.isElementCodeRegistered(varId)) {
-          const variableCode = this.geometryVariableStateService.getElementCodeById(varId);
-          if (variableCode && variableCode.status === 'NOT_REACHED') {
-            this.geometryVariableStateService.setElementCodeStatus(varId, 'DISPLAYED');
-          }
-        }
-      });
-    }
+  /**
+   * Hands the element's status down to its tracked variables. `DISPLAYED` reaches those not yet
+   * reached. `VALUE_CHANGED` reaches all that lack it, but only with `recomputedCountsAsChanged` on: the
+   * element and its variables are then one answer, worked on as a whole as soon as anything in the
+   * drawing has been edited. Without the switch each variable is an answer of its own, worked on when its
+   * value changes.
+   */
+  private propagateStatus(elementCode: Response & { alias: string }): void {
+    if (elementCode.id !== this.elementModel.id) return;
+    const element = this.elementModel as GeometryElement;
+    const takesOver = (variableStatus: ResponseStatusType): boolean => {
+      if (elementCode.status === 'DISPLAYED') return variableStatus === 'NOT_REACHED';
+      if (elementCode.status === 'VALUE_CHANGED') {
+        return element.recomputedCountsAsChanged && variableStatus !== 'VALUE_CHANGED';
+      }
+      return false;
+    };
+    element.getAllCleanedTrackedVariables().forEach(variable => {
+      const variableCode = this.geometryVariableStateService
+        .getElementCodeById(element.getGeometryVariableId(variable.id));
+      if (variableCode && takesOver(variableCode.status)) {
+        this.geometryVariableStateService.setElementCodeStatus(variableCode.id, elementCode.status);
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -94,7 +104,7 @@ export class ExternalAppGroupElementComponent
     );
   }
 
-  private changeGeometryVariableValue(variable: ReportedGeometryVariable): void {
+  private changeGeometryVariableValue(variable: GeometryVariable): void {
     const varId = (this.elementModel as GeometryElement).getGeometryVariableId(variable.id);
     if (!this.geometryVariableStateService.isElementCodeRegistered(varId)) {
       const parentStatus = this.unitStateService.getElementCodeById(this.elementModel.id)?.status ?? 'NOT_REACHED';
@@ -103,22 +113,46 @@ export class ExternalAppGroupElementComponent
     this.geometryVariableStateService.changeElementCodeValue({
       id: varId,
       value: ElementModelElementCodeMappingService
-        .mapToElementCodeValue(variable.value, 'geometry-variable'),
-      wasUpdated: variable.wasUpdated
+        .mapToElementCodeValue(variable.value, 'geometry-variable')
     });
   }
 
-  private changeGeometryVariableValues(variables: ReportedGeometryVariable[]): void {
+  private changeGeometryVariableValues(variables: GeometryVariable[]): void {
     variables.forEach(variable => this.changeGeometryVariableValue(variable));
   }
 
+  /**
+   * Makes GeoGebra's own values, once the applet has loaded, the ones a variable is compared with. What
+   * the unit stores can differ -- it is empty for variables chosen with an editor before 2.11.0
+   * (definition 4.10.0) -- and every variable would then count as changed with the first edit, whatever
+   * the edit touched.
+   */
+  takeOverStartValues(variables: GeometryVariable[]): void {
+    variables.forEach(variable => this.geometryVariableStateService.setStartValue(
+      (this.elementModel as GeometryElement).getGeometryVariableId(variable.id),
+      ElementModelElementCodeMappingService.mapToElementCodeValue(variable.value, 'geometry-variable')
+    ));
+  }
+
+  /**
+   * Takes over what the applet reports -- but nothing before the first edit. Until then a report
+   * follows a click, a zoom or a change of the view, and what it carries is no answer: GeoGebra rewrites
+   * the construction on loading and again afterwards, so even the element's value differs from the one
+   * it started with (#990). From the first edit on, every report is taken over, edit or not: undo, redo
+   * and hiding an object change the construction without being an edit.
+   *
+   * The variables come first, so that a status handed down from the element finds their new values.
+   */
   changeElementCodeValue(value: ValueChangeElement): void {
+    const geometryValue = value.value as GeometryValue;
+    const isWorkedOn = this.unitStateService.getElementCodeById(this.elementModel.id)?.status === 'VALUE_CHANGED';
+    if (!geometryValue.edited && !isWorkedOn) return;
+    this.changeGeometryVariableValues(geometryValue.variables);
     this.unitStateService.changeElementCodeValue({
       id: value.id,
       value: ElementModelElementCodeMappingService
-        .mapToElementCodeValue((value.value as GeometryValue).appDefinition, this.elementModel.type)
+        .mapToElementCodeValue(geometryValue.appDefinition, this.elementModel.type)
     });
-    this.changeGeometryVariableValues((value.value as GeometryValue).variables);
   }
 
   ngOnDestroy(): void {

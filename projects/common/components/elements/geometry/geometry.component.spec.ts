@@ -41,6 +41,7 @@ describe('GeometryComponent', () => {
       getBase64: vi.fn().mockReturnValue('mockBase64'),
       getAllObjectNames: vi.fn().mockReturnValue([]),
       getValueString: vi.fn(),
+      isMoveable: vi.fn().mockReturnValue(true),
       registerAddListener: vi.fn(),
       registerRemoveListener: vi.fn(),
       registerUpdateListener: vi.fn(),
@@ -136,79 +137,108 @@ describe('GeometryComponent', () => {
     expect(component.elementValueChanged.emit).toHaveBeenCalled();
   }));
 
-  describe('recomputed tracked variables', () => {
-    /* The listener the component hands GeoGebra; calling it stands in for GeoGebra recomputing an object. */
-    let reportUpdate: (objectName: string) => void;
+  describe('edits', () => {
+    /* The listeners the component hands GeoGebra; calling one stands in for GeoGebra reporting. */
+    const listener = (register: keyof GeoGebraApi): ((...args: string[]) => void) => (...args) => (
+      vi.mocked(mockGeoGebraAPI[register]).mock.lastCall?.[0] as (...a: string[]) => void
+    )(...args);
+    const reportUpdate = listener('registerUpdateListener');
 
     beforeEach(() => {
       component.elementModel.trackedVariables = [{ id: 'A', value: 'A = false' }, { id: 'B', value: 'B = 1' }];
-      component.elementModel.recomputedCountsAsChanged = true;
+      vi.mocked(mockGeoGebraAPI.getValueString).mockImplementation(name => `${name} = 0`);
       component.refresh();
-      expect(mockGeoGebraAPI.registerUpdateListener).toHaveBeenCalled();
-      reportUpdate = objectName => vi.mocked(mockGeoGebraAPI.registerUpdateListener)
-        .mock.lastCall?.[0](objectName);
       vi.spyOn(component.elementValueChanged, 'emit');
     });
 
-    const emittedVariables = (): unknown => vi.mocked(component.elementValueChanged.emit).mock.lastCall?.[0]?.value;
+    const reported = (): unknown => vi.mocked(component.elementValueChanged.emit).mock.lastCall?.[0]?.value;
+    const interact = (): void => { fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown')); };
 
-    it('should mark the variables GeoGebra recomputed, and only those', fakeAsync(() => {
-      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
-
-      reportUpdate('A');
-      tick(200);
-
-      expect(emittedVariables()).toEqual(expect.objectContaining({
-        variables: [
-          expect.objectContaining({ id: 'A', wasUpdated: true }),
-          expect.objectContaining({ id: 'B', wasUpdated: false })
-        ]
-      }));
-    }));
-
-    it('should mark no recomputed variable while the element has the switch off', fakeAsync(() => {
-      component.elementModel.recomputedCountsAsChanged = false;
-      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+    it('should report an edit when GeoGebra recomputes an object the user can change', fakeAsync(() => {
+      interact();
 
       reportUpdate('A');
       tick(200);
 
-      expect(emittedVariables()).toEqual(expect.objectContaining({
-        variables: [
-          expect.objectContaining({ id: 'A', wasUpdated: false }),
-          expect.objectContaining({ id: 'B', wasUpdated: false })
-        ]
-      }));
+      expect(reported()).toEqual(expect.objectContaining({ edited: true }));
     }));
 
-    it('should forget a recomputation once it has been reported', fakeAsync(() => {
-      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+    it('should report no edit when GeoGebra recomputes only what follows the view, as on zooming', fakeAsync(() => {
+      vi.mocked(mockGeoGebraAPI.isMoveable).mockReturnValue(false);
+      interact();
+
+      reportUpdate('cornerText');
+      tick(200);
+
+      expect(reported()).toEqual(expect.objectContaining({ edited: false }));
+    }));
+
+    it.each([
+      ['an object added', 'registerAddListener'],
+      ['an object removed', 'registerRemoveListener'],
+      ['an object renamed', 'registerRenameListener']
+    ] as const)('should report %s as an edit', fakeAsync((_: string, register: keyof GeoGebraApi) => {
+      interact();
+
+      listener(register)('P');
+      tick(200);
+
+      expect(reported()).toEqual(expect.objectContaining({ edited: true }));
+    }));
+
+    it('should report a click as no edit, but report it', fakeAsync(() => {
+      interact();
+
+      listener('registerClientListener')();
+      tick(200);
+
+      expect(reported()).toEqual(expect.objectContaining({ appDefinition: 'mockBase64', edited: false }));
+    }));
+
+    it('should report a reset as no edit', fakeAsync(() => {
+      component.reset();
+      tick(200);
+
+      expect(reported()).toEqual(expect.objectContaining({ edited: false }));
+    }));
+
+    it('should forget an edit once it has been reported', fakeAsync(() => {
+      interact();
       reportUpdate('A');
       tick(200);
 
       geometryUpdated().next();
       tick(200);
 
-      expect(emittedVariables()).toEqual(expect.objectContaining({
-        variables: [
-          expect.objectContaining({ id: 'A', wasUpdated: false }),
-          expect.objectContaining({ id: 'B', wasUpdated: false })
-        ]
-      }));
+      expect(reported()).toEqual(expect.objectContaining({ edited: false }));
     }));
 
-    it('should not count a recomputation from before the first interaction', fakeAsync(() => {
+    it('should not count an edit from before the first interaction', fakeAsync(() => {
       reportUpdate('A');
-      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+      interact();
 
       geometryUpdated().next();
       tick(200);
 
-      expect(emittedVariables()).toEqual(expect.objectContaining({
-        variables: [
-          expect.objectContaining({ id: 'A', wasUpdated: false }),
-          expect.objectContaining({ id: 'B', wasUpdated: false })
-        ]
+      expect(reported()).toEqual(expect.objectContaining({ edited: false }));
+    }));
+
+    it('should report the values of the tracked variables as soon as the applet has loaded', () => {
+      const loaded = vi.spyOn(component.appletLoaded, 'emit');
+
+      component.refresh();
+
+      expect(loaded).toHaveBeenCalledWith([{ id: 'A', value: 'A = 0' }, { id: 'B', value: 'B = 0' }]);
+    });
+
+    it('should report the values of the tracked variables', fakeAsync(() => {
+      interact();
+
+      geometryUpdated().next();
+      tick(200);
+
+      expect(reported()).toEqual(expect.objectContaining({
+        variables: [{ id: 'A', value: 'A = 0' }, { id: 'B', value: 'B = 0' }]
       }));
     }));
   });

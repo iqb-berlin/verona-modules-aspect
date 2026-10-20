@@ -157,10 +157,15 @@ export interface GeometryProperties extends UIElementProperties, FileNamePropert
   /** GeoGebra's input bar. Where it appears, in the algebra view or below the drawing, is set by the
    * GeoGebra file itself. */
   showAlgebraInput: boolean;
-  /** Whether a tracked variable becomes `VALUE_CHANGED` as soon as GeoGebra recomputes it after an
-   * interaction, even if its value stays the same. Off, a variable only changes status when its value
-   * does -- which leaves an untouched `false` and a wrongly answered `false` alike. A file that marks the
-   * untouched state with a value of its own (0 untouched, 1 right, 2 wrong) needs no switch (#1460). */
+  /** Whether the tracked variables take over the element's `VALUE_CHANGED`: as soon as the user edits
+   * anything in the drawing, every tracked variable becomes `VALUE_CHANGED` with the element -- also a
+   * truth value that stayed `false`. Off, each variable is an answer of its own and changes status when
+   * its value does, which suits an element with several items. A file can tell untouched from wrong
+   * without the switch by a value of its own for the untouched state (0 untouched, 1 right, 2 wrong)
+   * (#1460).
+   *
+   * The name is older than this meaning: in 3.1.0-beta the switch counted the variables GeoGebra
+   * recomputed. It stays, so that units saved with the beta keep their setting. */
   recomputedCountsAsChanged: boolean;
   customToolbar: string;
   position: PositionProperties;

@@ -9,7 +9,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { GeometryElement } from 'common/models/elements/geometry';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { PageChangeService } from 'common/services/page-change.service';
-import { GeometryVariable, ReportedGeometryVariable } from 'common/models/geometry-interfaces';
+import { GeometryVariable } from 'common/models/geometry-interfaces';
 import {
   GeoGebraApi, GeoGebraAppletConstructor, GeoGebraAppletParameters
 } from 'common/models/geogebra-interfaces';
@@ -27,6 +27,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   @Input() elementModel!: GeometryElement;
   @Input() appDefinition: string | undefined;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
+  /** The tracked variables with the values GeoGebra computed on loading the applet, each time it loads,
+   * the reset included. They can differ from the values stored in the unit, which are empty for variables
+   * chosen with an editor before 2.11.0 (definition 4.10.0). */
+  @Output() appletLoaded = new EventEmitter<GeometryVariable[]>();
 
   isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isGeoGebraLoaded: boolean = false;
@@ -36,9 +40,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private geometryUpdated = new Subject<void>(); // local subscription to be able to debounce
   private pageChangeSubscription: Subscription;
   private hasUserInteracted = false;
-  /** The objects GeoGebra recomputed since the last report. Collected only once the user has
-   * interacted: what GeoGebra recomputes before that, on its own, is no work of the user's. */
-  private updatedObjectNames = new Set<string>();
+  /** Whether the user has edited the construction since the last report. Noted only once the user has
+   * interacted: what GeoGebra does before that, on its own, is no work of the user's. */
+  private isEditedSinceReport = false;
 
   get timeoutMsg(): string {
     // eslint-disable-next-line max-len
@@ -78,11 +82,12 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
             id: this.elementModel.id,
             value: {
               appDefinition: this.geoGebraAPI.getBase64(),
-              variables: this.getVariablesToEmit()
+              variables: this.getVariablesToEmit(),
+              edited: this.isEditedSinceReport
             }
           });
         }
-        this.updatedObjectNames.clear();
+        this.isEditedSinceReport = false;
       });
   }
 
@@ -150,16 +155,21 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         this.isLoaded.next(true);
         this.preventFocusScrolling();
         this.geoGebraAPI.registerAddListener(() => {
+          this.noteEdit();
           this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerRemoveListener(() => {
+          this.noteEdit();
           this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerUpdateListener((objectName: string) => {
-          if (this.hasUserInteracted) this.updatedObjectNames.add(objectName);
+          // Only an object the user can change counts: zooming recomputes what depends on the view, and
+          // that never is one. Asked once per report -- a drag recomputes every dependent object.
+          if (!this.isEditedSinceReport && this.geoGebraAPI.isMoveable(objectName)) this.noteEdit();
           this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerRenameListener(() => {
+          this.noteEdit();
           this.geometryUpdated.next();
         });
         this.geoGebraAPI.registerClearListener(() => {
@@ -168,6 +178,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         this.geoGebraAPI.registerClientListener(() => {
           this.geometryUpdated.next();
         });
+        this.appletLoaded.emit(this.getVariablesToEmit());
       }
     };
     const applet = new GGBApplet(params, '5.0');
@@ -202,13 +213,13 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       .map((name: string) => ({ id: name, value: this.geoGebraAPI.getValueString(name) }));
   }
 
-  private getVariablesToEmit(): ReportedGeometryVariable[] {
+  private noteEdit(): void {
+    if (this.hasUserInteracted) this.isEditedSinceReport = true;
+  }
+
+  private getVariablesToEmit(): GeometryVariable[] {
     return this.elementModel.getAllCleanedTrackedVariables()
-      .map(variable => ({
-        id: variable.id,
-        value: this.getVariableValue(variable.id),
-        wasUpdated: this.elementModel.recomputedCountsAsChanged && this.updatedObjectNames.has(variable.id)
-      }));
+      .map(variable => ({ id: variable.id, value: this.getVariableValue(variable.id) }));
   }
 
   private getVariableValue(name: string): string {

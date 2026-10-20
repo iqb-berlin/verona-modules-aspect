@@ -22,6 +22,16 @@ button {
   min-height: 36px;
 }
 
+/* Material's invisible touch area reaches 6px above and below every button. Chrome crops the image of a
+   dragged element to the box around it and all its descendants, so the drag image of a new element took
+   in the edge of the neighbouring button (#437). Without the area that box is the button. Switched off
+   through Material's own tokens: a rule on the touch target itself loses to Material's, which is as
+   specific and loaded later. Stroked buttons are "outlined", raised ones "protected". */
+:host {
+  --mat-button-outlined-touch-target-display: none;
+  --mat-button-protected-touch-target-display: none;
+}
+
 .fill {
   height: 100%;
   min-height: 100%;

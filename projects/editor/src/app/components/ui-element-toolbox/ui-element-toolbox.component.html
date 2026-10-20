@@ -13,25 +13,25 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('text')"
-                  draggable="true" (dragstart)="startDrag($event, 'text')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'text')"
                   (dragend)="endDrag()">
             <mat-icon>{{TextElement.icon}}</mat-icon>
             {{ 'toolbox.text' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('image')"
-                  draggable="true" (dragstart)="startDrag($event, 'image')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'image')"
                   (dragend)="endDrag()">
             <mat-icon>{{ImageElement.icon}}</mat-icon>
             {{ 'toolbox.image' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('audio')"
-                  draggable="true" (dragstart)="startDrag($event, 'audio')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'audio')"
                   (dragend)="endDrag()">
             <mat-icon>{{AudioElement.icon}}</mat-icon>
             {{ 'toolbox.audio' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('video')"
-                  draggable="true" (dragstart)="startDrag($event, 'video')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'video')"
                   (dragend)="endDrag()">
             <mat-icon>{{VideoElement.icon}}</mat-icon>
             {{ 'toolbox.video' | translate }}
@@ -44,19 +44,19 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('text-field')"
-                  draggable="true" (dragstart)="startDrag($event, 'text-field')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'text-field')"
                   (dragend)="endDrag()">
             <mat-icon>{{TextFieldElement.icon}}</mat-icon>
             {{ 'toolbox.text-field' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('text-area')"
-                  draggable="true" (dragstart)="startDrag($event, 'text-area')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'text-area')"
                   (dragend)="endDrag()">
             <mat-icon>{{TextAreaElement.icon}}</mat-icon>
             {{ 'toolbox.text-area' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('spell-correct')"
-                  draggable="true" (dragstart)="startDrag($event,'spell-correct')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'spell-correct')"
                   (dragend)="endDrag()">
             <mat-icon>{{SpellCorrectElement.icon}}</mat-icon>
             {{ 'toolbox.spell-correct' | translate }}
@@ -67,18 +67,18 @@
               {{'toolbox.formula' | translate }}
             </button>
             <button *ngIf="hoverFormulaButton" mat-raised-button (click)="addUIElement('math-field')"
-                    draggable="true" (dragstart)="startDrag($event,'math-field')"
+                    draggable="true" disableRipple (dragstart)="startDrag($event,'math-field')"
                     (dragend)="endDrag()">
               {{'toolbox.field' | translate }}
             </button>
             <button *ngIf="hoverFormulaButton" mat-raised-button (click)="addUIElement('text-area-math')"
-                    draggable="true" (dragstart)="startDrag($event,'text-area-math')"
+                    draggable="true" disableRipple (dragstart)="startDrag($event,'text-area-math')"
                     (dragend)="endDrag()">
               {{'toolbox.area' | translate }}
             </button>
           </div>
           <button mat-stroked-button (click)="addUIElement('math-table')"
-                  draggable="true" (dragstart)="startDrag($event,'math-table');"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'math-table');"
                   (dragend)="endDrag()">
             <mat-icon>{{MathTableElement.icon}}</mat-icon>
             {{ 'toolbox.math-table' | translate }}
@@ -96,42 +96,42 @@
               {{'toolbox.radio' | translate }}
             </button>
             <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio')"
-                    draggable="true" (dragstart)="startDrag($event,'radio')"
+                    draggable="true" disableRipple (dragstart)="startDrag($event,'radio')"
                     (dragend)="endDrag()">
               {{'toolbox.simple' | translate }}
             </button>
             <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio-group-images')"
-                    draggable="true" (dragstart)="startDrag($event,'radio-group-images')"
+                    draggable="true" disableRipple (dragstart)="startDrag($event,'radio-group-images')"
                     (dragend)="endDrag()">
               {{'toolbox.complex' | translate }}
             </button>
           </div>
           <button mat-stroked-button (click)="addUIElement('likert')"
-                  draggable="true" (dragstart)="startDrag($event,'likert')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'likert')"
                   (dragend)="endDrag()">
             <mat-icon>{{LikertElement.icon}}</mat-icon>
             {{ 'toolbox.likert' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('dropdown')"
-                  draggable="true" (dragstart)="startDrag($event,'dropdown')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'dropdown')"
                   (dragend)="endDrag()">
             <mat-icon>{{DropdownElement.icon}}</mat-icon>
             {{ 'toolbox.dropdown' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('checkbox')"
-                  draggable="true" (dragstart)="startDrag($event,'checkbox')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'checkbox')"
                   (dragend)="endDrag()">
             <mat-icon>{{CheckboxElement.icon}}</mat-icon>
             {{ 'toolbox.checkbox' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('slider')"
-                  draggable="true" (dragstart)="startDrag($event,'slider')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'slider')"
                   (dragend)="endDrag()">
             <mat-icon>{{SliderElement.icon}}</mat-icon>
             {{ 'toolbox.slider' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('hotspot-image')"
-                  draggable="true" (dragstart)="startDrag($event,'hotspot-image')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'hotspot-image')"
                   (dragend)="endDrag()">
             <mat-icon>{{HotspotImageElement.icon}}</mat-icon>
             {{ 'toolbox.hotspot-image' | translate }}
@@ -144,7 +144,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('drop-list')"
-                  draggable="true" (dragstart)="startDrag($event,'drop-list')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'drop-list')"
                   (dragend)="endDrag()">
             <mat-icon>{{DropListElement.icon}}</mat-icon>
             {{ 'toolbox.drop-list' | translate }}
@@ -157,14 +157,14 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('cloze')"
-                  draggable="true" (dragstart)="startDrag($event,'cloze')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'cloze')"
                   (dragend)="endDrag()">
             <mat-icon>{{ClozeElement.icon}}</mat-icon>
             {{ 'toolbox.cloze' | translate }}
           </button>
 
           <button mat-stroked-button (click)="addUIElement('table')"
-                  draggable="true" (dragstart)="startDrag($event,'table')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'table')"
                   (dragend)="endDrag()">
             <mat-icon>{{TableElement.icon}}</mat-icon>
             {{ 'toolbox.table' | translate }}
@@ -179,13 +179,13 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('widget-periodic-table')"
-                  draggable="true" (dragstart)="startDrag($event,'widget-periodic-table')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'widget-periodic-table')"
                   (dragend)="endDrag()">
             <mat-icon>{{WidgetPeriodicTableElement.icon}}</mat-icon>
             {{ 'toolbox.widget-periodic-table' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('widget-molecule-editor')"
-                  draggable="true" (dragstart)="startDrag($event,'widget-molecule-editor')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'widget-molecule-editor')"
                   (dragend)="endDrag()">
             <mat-icon>{{WidgetMoleculeEditorElement.icon}}</mat-icon>
             {{ 'toolbox.widget-molecule-editor' | translate }}
@@ -202,31 +202,31 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('button')"
-                  draggable="true" (dragstart)="startDrag($event,'button')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'button')"
                   (dragend)="endDrag()">
             <mat-icon>{{ButtonElement.icon}}</mat-icon>
             {{ 'toolbox.button' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('frame')"
-                  draggable="true" (dragstart)="startDrag($event,'frame')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'frame')"
                   (dragend)="endDrag()">
             <mat-icon>{{FrameElement.icon}}</mat-icon>
             {{ 'toolbox.frame' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('geometry')"
-                  draggable="true" (dragstart)="startDrag($event,'geometry');"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'geometry');"
                   (dragend)="endDrag()">
             <mat-icon>{{GeometryElement.icon}}</mat-icon>
             {{ 'toolbox.geometry' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('marking-panel')"
-                  draggable="true" (dragstart)="startDrag($event,'marking-panel')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'marking-panel')"
                   (dragend)="endDrag()">
             <mat-icon>{{MarkingPanelElement.icon}}</mat-icon>
             {{ 'toolbox.marking-panel' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('trigger')"
-                  draggable="true" (dragstart)="startDrag($event,'trigger')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'trigger')"
                   (dragend)="endDrag()">
             <mat-icon>{{TriggerElement.icon}}</mat-icon>
             {{ 'toolbox.trigger' | translate }}
@@ -239,7 +239,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('tetfolio')"
-                  draggable="true" (dragstart)="startDrag($event,'tetfolio')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'tetfolio')"
                   (dragend)="endDrag()">
             <mat-icon>{{TetfolioElement.icon}}</mat-icon>
             {{ 'toolbox.tetfolio' | translate }}
@@ -299,25 +299,25 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('text')"
-                  draggable="true" (dragstart)="startDrag($event, 'text')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'text')"
                   (dragend)="endDrag()">
             <mat-icon>{{TextElement.icon}}</mat-icon>
             {{ 'toolbox.text' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('image')"
-                  draggable="true" (dragstart)="startDrag($event, 'image')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'image')"
                   (dragend)="endDrag()">
             <mat-icon>{{ImageElement.icon}}</mat-icon>
             {{ 'toolbox.image' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('audio')"
-                  draggable="true" (dragstart)="startDrag($event, 'audio')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'audio')"
                   (dragend)="endDrag()">
             <mat-icon>{{AudioElement.icon}}</mat-icon>
             {{ 'toolbox.audio' | translate }}
           </button>
           <button mat-stroked-button (click)="addUIElement('video')"
-                  draggable="true" (dragstart)="startDrag($event, 'video')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event, 'video')"
                   (dragend)="endDrag()">
             <mat-icon>{{VideoElement.icon}}</mat-icon>
             {{ 'toolbox.video' | translate }}
@@ -331,14 +331,14 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('cloze')"
-                  draggable="true" (dragstart)="startDrag($event,'cloze')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'cloze')"
                   (dragend)="endDrag()">
             <mat-icon>{{ClozeElement.icon}}</mat-icon>
             {{ 'toolbox.cloze' | translate }}
           </button>
 
           <button mat-stroked-button (click)="addUIElement('table')"
-                  draggable="true" (dragstart)="startDrag($event,'table')"
+                  draggable="true" disableRipple (dragstart)="startDrag($event,'table')"
                   (dragend)="endDrag()">
             <mat-icon>{{TableElement.icon}}</mat-icon>
             {{ 'toolbox.table' | translate }}

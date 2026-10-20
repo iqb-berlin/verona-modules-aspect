@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ButtonElement } from 'common/models/elements/button';
+import { NavigationTargetRule } from 'common/utils/navigation-target-rule';
 import { ClozeElement } from 'common/models/elements/cloze';
 import { LikertElement } from 'common/models/elements/likert';
 import { TableElement, TableProperties } from 'common/models/elements/table';
@@ -168,6 +169,10 @@ describe('CompoundGroupElementComponent', () => {
       .compileComponents();
 
     markingPanelService = TestBed.inject(MarkingPanelService);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('should create', () => {
@@ -407,9 +412,41 @@ describe('CompoundGroupElementComponent', () => {
     component.registerCompoundChildren([child]);
 
     navigationService.enabledNavigationTargets.next(['next']);
-    expect(child.domElement.classList).toContain('hide-navigation');
+    expect(child.domElement.classList).not.toContain('hide-navigation');
 
     navigationService.enabledNavigationTargets.next([]);
+    expect(child.domElement.classList).toContain('hide-navigation');
+
+    navigationService.enabledNavigationTargets.next(['previous']);
+    expect(child.domElement.classList).toContain('hide-navigation');
+
+    navigationService.enabledNavigationTargets.next(['next', 'previous']);
+    expect(child.domElement.classList).not.toContain('hide-navigation');
+  });
+
+  it('should ask the navigation target rule whether to show a unit navigation button', () => {
+    initComponent(createTable([]));
+    const buttonModel = new ButtonElement({ id: 'button_1', alias: 'button_1' });
+    buttonModel.action = 'unitNav';
+    buttonModel.actionParam = 'next';
+    const child = createChild(buttonModel, { buttonActionEvent: new EventEmitter() });
+    const isEnabled = vi.spyOn(NavigationTargetRule, 'isEnabled');
+    component.registerCompoundChildren([child]);
+
+    navigationService.enabledNavigationTargets.next(['previous']);
+    expect(isEnabled).toHaveBeenLastCalledWith('unitNav', 'next', ['previous']);
+  });
+
+  it('should show a unit navigation button while no navigation targets have been sent', () => {
+    initComponent(createTable([]));
+    const buttonModel = new ButtonElement({ id: 'button_1', alias: 'button_1' });
+    buttonModel.action = 'unitNav';
+    buttonModel.actionParam = 'next';
+    const child = createChild(buttonModel, { buttonActionEvent: new EventEmitter() });
+    component.registerCompoundChildren([child]);
+
+    navigationService.enabledNavigationTargets.next(['previous']);
+    navigationService.enabledNavigationTargets.next(undefined);
     expect(child.domElement.classList).not.toContain('hide-navigation');
   });
 

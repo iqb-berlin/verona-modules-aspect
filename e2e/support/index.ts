@@ -6,6 +6,7 @@ export interface PlayerConfigOptions {
   pagingMode?: 'separate' | 'buttons' | 'concat-scroll' | 'concat-scroll-snap';
   printMode?: 'off' | 'on' | 'on-with-ids';
   logPolicy?: 'lean' | 'rich' | 'debug' | 'disabled';
+  enabledNavigationTargets?: ('next' | 'previous' | 'first' | 'last' | 'end')[];
 }
 
 /** The members of a vopStartCommand the suite sends; `sendStartCommand` adds the type. */

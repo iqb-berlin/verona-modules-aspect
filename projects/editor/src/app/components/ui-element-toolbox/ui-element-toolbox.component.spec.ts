@@ -104,6 +104,28 @@ describe('UiElementToolboxComponent', () => {
     expect(dragNDropService.isDragInProgress).toBe(false);
   });
 
+  /* Chrome crops the image of a dragged element to the box around it and all its descendants, so
+     whatever reaches out of a button comes along into its drag image (#437). */
+  it('should keep everything inside a draggable button within the button', () => {
+    // The raised buttons show only while the pointer is over their group.
+    component.hoverFormulaButton = true;
+    component.hoverRadioButton = true;
+    fixture.detectChanges();
+    const buttons: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('[draggable="true"]'));
+    expect(buttons.filter(button => button.hasAttribute('mat-raised-button')).length).toBe(4);
+
+    const reachingOut = buttons.filter(button => {
+      const own = button.getBoundingClientRect();
+      return Array.from(button.querySelectorAll('*'))
+        .map(descendant => descendant.getBoundingClientRect())
+        .filter(box => box.width > 0 && box.height > 0)
+        .some(box => box.top < own.top - 0.5 || box.bottom > own.bottom + 0.5 ||
+          box.left < own.left - 0.5 || box.right > own.right + 0.5);
+    });
+
+    expect(reachingOut.map(button => button.textContent?.trim())).toEqual([]);
+  });
+
   it('should delegate applying a section template', () => {
     component.applyTemplate('likert');
 

@@ -223,20 +223,5 @@ describe('MathInputComponent', () => {
       tick();
       expect(emitSpy).toHaveBeenCalledTimes(1);
     }));
-
-    it('should hide the virtual keyboard but not report a pending focus out once destroyed', fakeAsync(() => {
-      focusAfterwards(document.body);
-      component.onFocusOut(new FocusEvent('focusout'));
-      component.ngOnDestroy();
-      expect(hideSpy).toHaveBeenCalledTimes(1);
-      tick();
-      expect(emitSpy).not.toHaveBeenCalled();
-      expect(hideSpy).toHaveBeenCalledTimes(1);
-    }));
-
-    it('should leave the virtual keyboard alone when destroyed without a pending focus out', () => {
-      component.ngOnDestroy();
-      expect(hideSpy).not.toHaveBeenCalled();
-    });
   });
 });

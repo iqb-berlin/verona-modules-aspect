@@ -5,7 +5,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   Output,
   SimpleChanges,
   ViewChild
@@ -21,7 +20,7 @@ import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
   styleUrls: ['./math-input.component.scss'],
   standalone: false
 })
-export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class MathInputComponent implements AfterViewInit, OnChanges {
   @Input() value!: string;
   @Input() fullWidth: boolean = true;
   @Input() readonly: boolean = false;
@@ -39,7 +38,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     mathVirtualKeyboardPolicy: 'manual'
   });
 
-  /** Held so that a component destroyed while a focus out is pending does not report it any more. */
+  /** Held so that the two focusout events of one blur -- the browser's and mathlive's own -- are acted on once. */
   private focusOutTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(public elementRef: ElementRef) {}
@@ -143,7 +142,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
     clearTimeout(this.focusOutTimeout);
     this.focusOutTimeout = setTimeout(() => {
-      this.focusOutTimeout = undefined;
       const focusedElement = this.mathFieldElement.ownerDocument.activeElement;
       if (focusedElement === this.mathFieldElement) return;
       this.focusOut.emit(this.mathFieldElement);
@@ -161,16 +159,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private static isInsideMathKeyboard(target: EventTarget): boolean {
     return target instanceof Element && !!target.closest('.ML__keyboard');
-  }
-
-  ngOnDestroy(): void {
-    /* On the iPad the tap that leaves the field can also be the one that destroys it, such as a page
-       navigation button, whose click comes before the pending check. The keyboard is still hidden
-       then; the focus out itself is not reported from a component being torn down. */
-    if (this.focusOutTimeout === undefined) return;
-    clearTimeout(this.focusOutTimeout);
-    this.focusOutTimeout = undefined;
-    this.hideKeyboardUnlessMathFieldFocused();
   }
 
   /* No teardown for the layer-change listener, deliberately: it belongs to the window-wide keyboard

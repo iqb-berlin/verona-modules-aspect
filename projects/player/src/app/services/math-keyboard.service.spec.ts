@@ -37,6 +37,17 @@ describe('MathKeyboardService', () => {
     expect(service.isOpen).toBe(false);
   });
 
+  it('should stay open when a math input it is not open for is blurred (#1600)', () => {
+    const previousInputElement = document.createElement('div') as unknown as MathfieldElement;
+    service.toggle({ inputElement, focused: true }, elementComponent);
+
+    const isOpen = service.toggle({ inputElement: previousInputElement, focused: false }, elementComponent);
+
+    expect(isOpen).toBe(true);
+    expect(service.isOpen).toBe(true);
+    expect(service.inputElement).toBe(inputElement);
+  });
+
   it('should keep the current input element when closing', () => {
     service.toggle({ inputElement, focused: true }, elementComponent);
 

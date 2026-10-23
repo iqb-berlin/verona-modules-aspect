@@ -1,5 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick
+} from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
+import { MathfieldElement } from '@iqb/mathlive';
 import { MatButtonToggle, MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MathInputComponent } from './math-input.component';
 
@@ -99,6 +102,24 @@ describe('MathInputComponent', () => {
     expect(window.mathVirtualKeyboard.layouts.length).toBe(2);
   });
 
+  /* Every assignment rebuilds the keyboard and drops it back to its first layer; on the iPad the
+     focus comes back into the field after every key tap (#1600). */
+  it('should not assign the keyboard layouts again when they are unchanged', () => {
+    component.mathKeyboardPresets = ['math', 'greek'];
+    component.onFocusIn();
+    const layoutsSetter = vi.spyOn(window.mathVirtualKeyboard, 'layouts', 'set');
+    component.onFocusIn();
+    expect(layoutsSetter).not.toHaveBeenCalled();
+  });
+
+  it('should assign the keyboard layouts when another field has other presets', () => {
+    component.mathKeyboardPresets = ['math', 'greek'];
+    component.onFocusIn();
+    component.mathKeyboardPresets = ['math'];
+    component.onFocusIn();
+    expect(window.mathVirtualKeyboard.layouts.length).toBe(1);
+  });
+
   it('should keep resetting the shift for the math inputs that are still alive', () => {
     const secondInput = TestBed.createComponent(MathInputComponent);
     secondInput.detectChanges();
@@ -128,11 +149,94 @@ describe('MathInputComponent', () => {
     expect(new Set(listeners).size).toBe(1);
   });
 
-  it('should emit focusOut and hide the virtual keyboard on focus out', () => {
+  it('should emit focusOut and hide the virtual keyboard at once when the focus moves to another element', () => {
     const emitSpy = vi.spyOn(component.focusOut, 'emit');
     const hideSpy = vi.spyOn(window.mathVirtualKeyboard, 'hide');
-    component.onFocusOut();
+    component.onFocusOut(new FocusEvent('focusout', { relatedTarget: document.createElement('input') }));
     expect(emitSpy).toHaveBeenCalledWith(component.mathFieldElement);
     expect(hideSpy).toHaveBeenCalled();
+  });
+
+  describe('on a focus out that does not name another element (#1600)', () => {
+    /* What a tap on a key of the formula keyboard gives on the iPad: it is only acted on once it is
+       clear that the field did not get its focus back. */
+    let emitSpy: ReturnType<typeof vi.spyOn>;
+    let hideSpy: ReturnType<typeof vi.spyOn>;
+
+    const focusAfterwards = (element: Element | null): void => {
+      vi.spyOn(document, 'activeElement', 'get').mockReturnValue(element);
+    };
+
+    beforeEach(() => {
+      emitSpy = vi.spyOn(component.focusOut, 'emit');
+      hideSpy = vi.spyOn(window.mathVirtualKeyboard, 'hide');
+    });
+
+    it('should not act before it is clear where the focus went', fakeAsync(() => {
+      focusAfterwards(document.body);
+      component.onFocusOut(new FocusEvent('focusout'));
+      expect(emitSpy).not.toHaveBeenCalled();
+      expect(hideSpy).not.toHaveBeenCalled();
+      tick();
+      expect(emitSpy).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should emit focusOut and hide the virtual keyboard when the field has not got its focus back', fakeAsync(() => {
+      focusAfterwards(document.body);
+      component.onFocusOut(new FocusEvent('focusout'));
+      tick();
+      expect(emitSpy).toHaveBeenCalledWith(component.mathFieldElement);
+      expect(hideSpy).toHaveBeenCalled();
+    }));
+
+    it('should keep the virtual keyboard open when the field has got its focus back', fakeAsync(() => {
+      focusAfterwards(component.mathFieldElement);
+      component.onFocusOut(new FocusEvent('focusout'));
+      tick();
+      expect(emitSpy).not.toHaveBeenCalled();
+      expect(hideSpy).not.toHaveBeenCalled();
+    }));
+
+    it('should treat a focus out into the virtual keyboard the same way', fakeAsync(() => {
+      const keyboard = document.createElement('div');
+      keyboard.className = 'ML__keyboard';
+      const keycap = keyboard.appendChild(document.createElement('div'));
+      focusAfterwards(component.mathFieldElement);
+      component.onFocusOut(new FocusEvent('focusout', { relatedTarget: keycap }));
+      tick();
+      expect(emitSpy).not.toHaveBeenCalled();
+      expect(hideSpy).not.toHaveBeenCalled();
+    }));
+
+    it('should emit focusOut but leave the keyboard to the math field that has the focus by now', fakeAsync(() => {
+      focusAfterwards(new MathfieldElement());
+      component.onFocusOut(new FocusEvent('focusout'));
+      tick();
+      expect(emitSpy).toHaveBeenCalledWith(component.mathFieldElement);
+      expect(hideSpy).not.toHaveBeenCalled();
+    }));
+
+    it('should report a focus out only once for the two events of one blur', fakeAsync(() => {
+      focusAfterwards(document.body);
+      component.onFocusOut(new FocusEvent('focusout'));
+      component.onFocusOut(new FocusEvent('focusout'));
+      tick();
+      expect(emitSpy).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should hide the virtual keyboard but not report a pending focus out once destroyed', fakeAsync(() => {
+      focusAfterwards(document.body);
+      component.onFocusOut(new FocusEvent('focusout'));
+      component.ngOnDestroy();
+      expect(hideSpy).toHaveBeenCalledTimes(1);
+      tick();
+      expect(emitSpy).not.toHaveBeenCalled();
+      expect(hideSpy).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should leave the virtual keyboard alone when destroyed without a pending focus out', () => {
+      component.ngOnDestroy();
+      expect(hideSpy).not.toHaveBeenCalled();
+    });
   });
 });

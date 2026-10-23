@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   Output,
   SimpleChanges,
   ViewChild
@@ -20,7 +21,7 @@ import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
   styleUrls: ['./math-input.component.scss'],
   standalone: false
 })
-export class MathInputComponent implements AfterViewInit, OnChanges {
+export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() value!: string;
   @Input() fullWidth: boolean = true;
   @Input() readonly: boolean = false;
@@ -37,6 +38,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   mathFieldElement: MathfieldElement = new MathfieldElement({
     mathVirtualKeyboardPolicy: 'manual'
   });
+
+  /** Held so that a component destroyed while a focus out is pending does not report it any more. */
+  private focusOutTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(public elementRef: ElementRef) {}
 
@@ -107,19 +111,66 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     window.mathVirtualKeyboard.show({ firstLayer: true, resetShift: true });
   }
 
+  /** Assigns the layouts only when they differ from the keyboard's: mathlive rebuilds the keyboard on
+      every assignment, with new layer IDs, and so drops back to the first layer. On the iPad the focus
+      bounces back into the field after every key tap, and the layout jumped back to the first one
+      after each character (#1600). */
   private updateKeyboardLayout(): void {
-    window.mathVirtualKeyboard.layouts = [
+    const layouts = [
       ...(this.mathKeyboardPresets.includes('physics') ? [FORMULA_KEYBOARD_PRESETS.iqbPhysics] : []),
       ...(this.mathKeyboardPresets.includes('math') ? [FORMULA_KEYBOARD_PRESETS.iqbNumeric] : []),
       ...(this.mathKeyboardPresets.includes('symbols') ? [FORMULA_KEYBOARD_PRESETS.iqbSymbols] : []),
       ...(this.mathKeyboardPresets.includes('latin') ? [FORMULA_KEYBOARD_PRESETS.iqbText] : []),
       ...(this.mathKeyboardPresets.includes('greek') ? [FORMULA_KEYBOARD_PRESETS.iqbGreek] : [])
     ];
+    const currentLayouts = window.mathVirtualKeyboard.layouts;
+    if (currentLayouts.length === layouts.length &&
+      layouts.every((layout, index) => currentLayouts[index] === layout)) return;
+    window.mathVirtualKeyboard.layouts = layouts;
   }
 
-  onFocusOut() {
-    this.focusOut.emit(this.mathFieldElement);
-    window.mathVirtualKeyboard.hide();
+  onFocusOut(event: FocusEvent) {
+    /* On the iPad every tap on a key of the formula keyboard takes the focus away from the field for
+       a moment, without a relatedTarget, and the field has it back at once. Closing the keyboard on
+       that focusout closed it after every character, and since mathlive still counted the field as
+       focused, tapping it again opened nothing (#1600). Such a focusout, and one into the keyboard
+       itself, is therefore only acted on when the field has not got its focus back a moment later.
+       One that names another element as the new focus is acted on at once as before. */
+    if (event.relatedTarget && !MathInputComponent.isInsideMathKeyboard(event.relatedTarget)) {
+      this.focusOut.emit(this.mathFieldElement);
+      window.mathVirtualKeyboard.hide();
+      return;
+    }
+    clearTimeout(this.focusOutTimeout);
+    this.focusOutTimeout = setTimeout(() => {
+      this.focusOutTimeout = undefined;
+      const focusedElement = this.mathFieldElement.ownerDocument.activeElement;
+      if (focusedElement === this.mathFieldElement) return;
+      this.focusOut.emit(this.mathFieldElement);
+      this.hideKeyboardUnlessMathFieldFocused();
+    });
+  }
+
+  /** A field that has the focus by now has already shown the keyboard for itself -- the focus out of the
+      field left behind can arrive after it, mathlive's own focusout as well. */
+  private hideKeyboardUnlessMathFieldFocused(): void {
+    if (!(this.mathFieldElement.ownerDocument.activeElement instanceof MathfieldElement)) {
+      window.mathVirtualKeyboard.hide();
+    }
+  }
+
+  private static isInsideMathKeyboard(target: EventTarget): boolean {
+    return target instanceof Element && !!target.closest('.ML__keyboard');
+  }
+
+  ngOnDestroy(): void {
+    /* On the iPad the tap that leaves the field can also be the one that destroys it, such as a page
+       navigation button, whose click comes before the pending check. The keyboard is still hidden
+       then; the focus out itself is not reported from a component being torn down. */
+    if (this.focusOutTimeout === undefined) return;
+    clearTimeout(this.focusOutTimeout);
+    this.focusOutTimeout = undefined;
+    this.hideKeyboardUnlessMathFieldFocused();
   }
 
   /* No teardown for the layer-change listener, deliberately: it belongs to the window-wide keyboard

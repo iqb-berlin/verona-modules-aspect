@@ -30,16 +30,21 @@
            (change)="loadImage(options, imageUpload)">
   }
   <div class="drop-list" cdkDropList [cdkDropListData]="options" (cdkDropListDropped)="drop($event)">
-    <div *ngFor="let item of options; let i = index" cdkDrag cdkDragLockAxis="y" class="drop-list-option">
-      @if (useImages) {
-        <img [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
-      } @else {
-        <div class="text-item">{{ item }}</div>
-      }
-      <button mat-icon-button color="primary" (click)="removeListItem(options, i)">
-        <mat-icon>clear</mat-icon>
-      </button>
-    </div>
+    @for (item of options; track $index; let i = $index) {
+      <div cdkDrag cdkDragLockAxis="y" class="drop-list-option">
+        @if (useImages) {
+          <img class="image-item" [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
+        } @else {
+          <div class="text-item">{{ item }}</div>
+          <button mat-icon-button color="primary" (click)="editItem(options, i)">
+            <mat-icon>build</mat-icon>
+          </button>
+        }
+        <button mat-icon-button color="primary" (click)="removeListItem(options, i)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    }
   </div>
 </div>
 <div mat-dialog-actions>

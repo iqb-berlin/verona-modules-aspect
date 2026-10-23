@@ -2,6 +2,7 @@ Editor
 ======
 ## next
 ### Neue Funktionen
+- Assistent „Kontrollkästchen“: Angelegte Optionen lassen sich wie in den anderen Assistenten über den Schraubenschlüssel bearbeiten ([#1604](https://github.com/iqb-berlin/verona-modules-aspect/issues/1604))
 - Hinweise zur Aufgabe: Neuer Dialog listet ungültige Variablennamen mit Fundstelle und „Zum Element“. Er ist über ein Warnzeichen im Kopf der Seitenansicht erreichbar ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
 - Hinweise zur Aufgabe: Ungültige interne IDs aus Units vor Editor 2.6.0 lassen sich ersetzen. Die Kodierungen der betroffenen Variablen müssen danach im Studio neu angelegt werden ([#1508](https://github.com/iqb-berlin/verona-modules-aspect/issues/1508))
 - Hinweise zur Aufgabe: Der Dialog zeigt auch Sichtbarkeitsbedingungen ohne Ziel und die beim Laden entfernten Verweise ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))

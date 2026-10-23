@@ -33,6 +33,17 @@ export class CheckboxWizardDialogComponent {
     }
   }
 
+  /** Plain text, as the checkbox's label is everywhere else in the editor: the same dialog opens on a
+      double click on a checkbox, and the properties panel edits the label in a text field (#1604). */
+  editItem(list: string[], i: number) {
+    this.dialogService.showTextEditDialog(list[i])
+      .subscribe((result: string) => {
+        if (result) {
+          list[i] = result;
+        }
+      });
+  }
+
   // eslint-disable-next-line class-methods-use-this
   removeListItem(list: string[], i: number) {
     list.splice(i, 1);

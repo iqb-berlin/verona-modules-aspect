@@ -10,6 +10,6 @@ h3:not(:first-child) {margin-top: 40px;}
   overflow: auto;
   max-height: 100px;
 }
-.drop-list-option button {
-  margin-left: auto;
+.drop-list-option .text-item, .drop-list-option .image-item {
+  margin-right: auto;
 }

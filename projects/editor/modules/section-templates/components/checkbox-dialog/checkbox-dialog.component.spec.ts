@@ -44,7 +44,7 @@ describe('CheckboxWizardDialogComponent', () => {
   };
 
   beforeEach(async () => {
-    mockDialogService = createSpyObj<DialogService>(['showImageResizeDialog']);
+    mockDialogService = createSpyObj<DialogService>(['showImageResizeDialog', 'showTextEditDialog']);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -87,6 +87,44 @@ describe('CheckboxWizardDialogComponent', () => {
     component.options = ['a', 'b', 'c'];
     component.removeListItem(component.options, 1);
     expect(component.options).toEqual(['a', 'c']);
+  });
+
+  it('should keep the option when editing is cancelled or leaves the text empty', () => {
+    component.options = ['a'];
+    mockDialogService.showTextEditDialog.mockReturnValue(of(undefined as never));
+    component.editItem(component.options, 0);
+    mockDialogService.showTextEditDialog.mockReturnValue(of(''));
+    component.editItem(component.options, 0);
+
+    expect(component.options).toEqual(['a']);
+  });
+
+  it('should offer the wrench for text options only', () => {
+    const iconsOfFirstOption = () => Array.from(
+      (fixture.nativeElement.querySelector('.drop-list-option') as HTMLElement).querySelectorAll('mat-icon')
+    ).map(icon => icon.textContent?.trim());
+
+    component.options = ['a'];
+    fixture.detectChanges();
+    expect(iconsOfFirstOption()).toEqual(['build', 'clear']);
+
+    component.useImages = true;
+    component.options = ['data:image/png;base64,abc'];
+    fixture.detectChanges();
+    expect(iconsOfFirstOption()).toEqual(['clear']);
+  });
+
+  it('should open the text dialog for the option whose wrench is clicked', () => {
+    component.options = ['a', 'b'];
+    mockDialogService.showTextEditDialog.mockReturnValue(of('edited'));
+    fixture.detectChanges();
+
+    const wrenches = Array.from(fixture.nativeElement.querySelectorAll('.drop-list-option button') as
+      NodeListOf<HTMLButtonElement>).filter(button => button.textContent?.includes('build'));
+    wrenches[1].click();
+
+    expect(mockDialogService.showTextEditDialog).toHaveBeenCalledWith('b');
+    expect(component.options).toEqual(['a', 'edited']);
   });
 
   it('should reorder options on drop', () => {

@@ -56,15 +56,18 @@ export class DroplistWizardDialogComponent {
     }
   }
 
+  /** Serves both lists, the elements and the target labels; each drop reorders its own (#1595). */
+  // eslint-disable-next-line class-methods-use-this
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.options.options, event.previousIndex, event.currentIndex);
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 
+  /** Offered for text items only: an image item is its data URL, which the dialog would show as text (#1595). */
   editItem(list: string[], i: number) {
     this.dialogService.showLabelEditDialog({ text: list[i] })
       .subscribe((result: Label) => {
         if (result) {
-          this.options.options[i] = result.text;
+          list[i] = result.text;
         }
       });
   }

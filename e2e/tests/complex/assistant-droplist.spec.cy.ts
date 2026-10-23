@@ -8,6 +8,17 @@ import {
 } from '../helpers/assistant-util';
 import { dragTo } from '../helpers/droplist-util';
 
+function editItemWithWrench(oldText: string, newText: string): void {
+  cy.get('aspect-editor-droplist-wizard-dialog').contains('.drop-list-option', oldText)
+    .contains('button', 'build')
+    .click();
+  cy.get('aspect-label-edit-dialog').find('aspect-rich-text-editor .ProseMirror')
+    .click()
+    .type(`{selectall}{backspace}${newText}`);
+  cy.get('aspect-label-edit-dialog').contains('button', 'Speichern').click();
+  cy.get('aspect-label-edit-dialog').should('not.exist');
+}
+
 describe('Droplist assistant', { testIsolation: false }, () => {
   context('editor', () => {
     before('opens an editor', () => {
@@ -28,7 +39,7 @@ describe('Droplist assistant', { testIsolation: false }, () => {
 
       // Add Elementliste options
       addOptionViaFormField('Item A', 0);
-      addOptionViaFormField('Item B', 0);
+      addOptionViaFormField('Item Typo', 0);
 
       // Ziel-Ablagen Überschrift
       typeInRichTextEditor('Zielliste', 2);
@@ -36,7 +47,17 @@ describe('Droplist assistant', { testIsolation: false }, () => {
       // Add Ziel-Ablagen options
       // WRONG FORMAT
       addOptionViaFormField('Target X', 2);
-      addOptionViaFormField('Target Y', 2);
+      addOptionViaFormField('Target Typo', 2);
+
+      // Correct both typos with the wrench: each lands in its own list and reads as text (#1595)
+      editItemWithWrench('Item Typo', 'Item B');
+      editItemWithWrench('Target Typo', 'Target Y');
+      cy.get('aspect-editor-droplist-wizard-dialog').find('.drop-list').eq(0).find('.text-item')
+        .then(items => [...items].map(item => item.textContent))
+        .should('deep.equal', ['Item A', 'Item B']);
+      cy.get('aspect-editor-droplist-wizard-dialog').find('.drop-list').eq(1).find('.text-item')
+        .then(items => [...items].map(item => item.textContent))
+        .should('deep.equal', ['Target X', 'Target Y']);
 
       // Click Confirm
       clickButtonDialog('Bestätigen');

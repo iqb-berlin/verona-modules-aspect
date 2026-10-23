@@ -170,47 +170,57 @@ describe('TetfolioComponent', () => {
     expect(overlay()).toBeTruthy();
   });
 
+  const iframe = (): HTMLIFrameElement => fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement;
+  const container = (): HTMLElement => fixture.nativeElement.querySelector('.tetfolio-container') as HTMLElement;
+
   describe('height', () => {
-    const iframeHeight = (): string => (fixture.nativeElement.querySelector('iframe') as HTMLIFrameElement)
-      .style.height;
+    const containerHeight = (): string => container().style.height;
 
     it('should start with the authored height from the model', () => {
       createComponent('<html><body></body></html>', { height: 250 });
-      expect(iframeHeight()).toBe('250px');
+      expect(containerHeight()).toBe('250px');
     });
 
     it('should follow the content height reported by the iframe', () => {
       createComponent('<html><body></body></html>', { height: 250 });
       dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
-      expect(iframeHeight()).toBe('620px');
+      expect(containerHeight()).toBe('620px');
+    });
+
+    it('should let the unscaled iframe fill the container', () => {
+      createComponent('<html><body></body></html>', { height: 250 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
+      expect(iframe().style.height).toBe('100%');
+      expect(iframe().getBoundingClientRect().height).toBeCloseTo(620, 0);
     });
 
     it('should clamp the content height to the authored bounds', () => {
       createComponent('<html><body></body></html>', { height: 250, minHeight: 200, maxHeight: 500 });
       dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
-      expect(iframeHeight()).toBe('500px');
+      expect(containerHeight()).toBe('500px');
       dispatchIframeMessage({ type: 'tetfolioResize', height: 100 });
-      expect(iframeHeight()).toBe('200px');
+      expect(containerHeight()).toBe('200px');
     });
 
     /* 0 in the min/max fields means "no limit", like an empty field (#1350). */
     it('should not clamp to bounds of 0', () => {
       createComponent('<html><body></body></html>', { height: 250, minHeight: 0, maxHeight: 0 });
       dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
-      expect(iframeHeight()).toBe('620px');
+      expect(containerHeight()).toBe('620px');
     });
 
     it('should apply bounds changed after the start with the next report', () => {
       createComponent('<html><body></body></html>', { height: 250 });
       component.elementModel.dimensions.maxHeight = 400;
       dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
-      expect(iframeHeight()).toBe('400px');
+      expect(containerHeight()).toBe('400px');
     });
 
     it('should fill the container with a fixed height, whatever the content reports', () => {
       createComponent('<html><body></body></html>', { height: 250, isHeightFixed: true });
       dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
-      expect(iframeHeight()).toBe('100%');
+      expect(containerHeight()).toBe('100%');
+      expect(iframe().style.height).toBe('100%');
     });
 
     it('should switch between fixed and following height without a new report', () => {
@@ -218,10 +228,10 @@ describe('TetfolioComponent', () => {
       dispatchIframeMessage({ type: 'tetfolioResize', height: 620 });
       component.elementModel.dimensions.isHeightFixed = true;
       fixture.detectChanges();
-      expect(iframeHeight()).toBe('100%');
+      expect(containerHeight()).toBe('100%');
       component.elementModel.dimensions.isHeightFixed = false;
       fixture.detectChanges();
-      expect(iframeHeight()).toBe('620px');
+      expect(containerHeight()).toBe('620px');
     });
 
     it('should start a rebuilt iframe from the authored height, not the previous content\'s', () => {
@@ -229,7 +239,7 @@ describe('TetfolioComponent', () => {
       dispatchIframeMessage({ type: 'tetfolioResize', height: 1200 });
       component.elementModel.dimensions.height = 300;
       component.refresh();
-      expect(iframeHeight()).toBe('300px');
+      expect(containerHeight()).toBe('300px');
     });
 
     it('should leave the height of the host and its parent to the container bindings', () => {
@@ -238,6 +248,121 @@ describe('TetfolioComponent', () => {
       const host = fixture.nativeElement as HTMLElement;
       expect(host.style.height).toBe('');
       expect(host.parentElement?.style.height).toBe('');
+    });
+  });
+
+  /*
+   * The element's width reaches the component through a ResizeObserver, which reports from the
+   * browser's own rendering loop; fakeAsync cannot drive it, so these tests wait for two frames.
+   */
+  describe('width', () => {
+    const rendered = async (): Promise<void> => {
+      await new Promise<void>(resolve => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      });
+      fixture.detectChanges();
+    };
+
+    const createAtWidth = async (
+      width: number, dimensions: Partial<DimensionProperties> = {}
+    ): Promise<void> => {
+      createComponent('<html><body></body></html>', { height: 250, ...dimensions });
+      (fixture.nativeElement as HTMLElement).style.width = `${width}px`;
+      await rendered();
+    };
+
+    it('should fill the element unscaled until the content reports the width it needs', async () => {
+      await createAtWidth(600);
+      expect(iframe().style.width).toBe('100%');
+      expect(iframe().style.transform).toBe('');
+    });
+
+    it('should scale an experiment wider than the element down to the element\'s width', async () => {
+      await createAtWidth(600);
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 1000 });
+      expect(iframe().style.transform).toBe('scale(0.6)');
+      const frame = iframe().getBoundingClientRect();
+      expect(frame.width).toBeCloseTo(600, 0);
+      expect(frame.height).toBeCloseTo(480, 0);
+      expect(container().style.height).toBe('480px');
+    });
+
+    it('should lay the iframe out at the width the experiment needs', async () => {
+      await createAtWidth(600);
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 1000 });
+      expect(iframe().offsetWidth).toBeCloseTo(1000, 0);
+      expect(iframe().offsetHeight).toBeCloseTo(800, 0);
+    });
+
+    it('should not enlarge an experiment narrower than the element', async () => {
+      await createAtWidth(600);
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 400 });
+      expect(iframe().style.transform).toBe('');
+      expect(iframe().getBoundingClientRect().width).toBeCloseTo(600, 0);
+      expect(container().style.height).toBe('800px');
+    });
+
+    it('should follow a change of the element\'s width', async () => {
+      await createAtWidth(600);
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 1000 });
+      (fixture.nativeElement as HTMLElement).style.width = '1200px';
+      await rendered();
+      expect(iframe().style.transform).toBe('');
+      expect(container().style.height).toBe('800px');
+      (fixture.nativeElement as HTMLElement).style.width = '500px';
+      await rendered();
+      expect(iframe().style.transform).toBe('scale(0.5)');
+    });
+
+    it('should show the whole experiment however narrow the element is', async () => {
+      await createAtWidth(250);
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 1000 });
+      expect(iframe().style.transform).toBe('scale(0.25)');
+      expect(iframe().offsetWidth).toBeCloseTo(1000, 0);
+      expect(iframe().getBoundingClientRect().width).toBeCloseTo(250, 0);
+      expect(container().style.height).toBe('200px');
+    });
+
+    /* 800 scaled is 480, inside the bound of 500; unscaled it would have been cut to 500. */
+    it('should apply the authored bounds to the scaled height', async () => {
+      await createAtWidth(600, { maxHeight: 500 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 1000 });
+      expect(container().style.height).toBe('480px');
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 1000, width: 1000 });
+      expect(container().style.height).toBe('500px');
+    });
+
+    it('should fill a fixed height with the scaled iframe', async () => {
+      await createAtWidth(600, { isHeightFixed: true });
+      (fixture.nativeElement as HTMLElement).style.height = '300px';
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 1000 });
+      const frame = iframe().getBoundingClientRect();
+      expect(frame.width).toBeCloseTo(600, 0);
+      expect(frame.height).toBeCloseTo(300, 0);
+      expect(iframe().offsetHeight).toBeCloseTo(500, 0);
+    });
+
+    it('should keep the known width when a report comes without one', async () => {
+      await createAtWidth(600);
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 1000 });
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 900 });
+      expect(iframe().style.transform).toBe('scale(0.6)');
+      expect(container().style.height).toBe('540px');
+    });
+
+    it('should start a rebuilt iframe unscaled, not at the previous content\'s width', async () => {
+      await createAtWidth(600);
+      dispatchIframeMessage({ type: 'tetfolioResize', height: 800, width: 1000 });
+      component.refresh();
+      expect(iframe().style.transform).toBe('');
+    });
+
+    it('should stop observing the element\'s width on destroy', async () => {
+      await createAtWidth(600);
+      const observer = (component as unknown as { widthObserver: ResizeObserver }).widthObserver;
+      const disconnectSpy = vi.spyOn(observer, 'disconnect');
+      fixture.destroy();
+      expect(disconnectSpy).toHaveBeenCalled();
     });
   });
 });

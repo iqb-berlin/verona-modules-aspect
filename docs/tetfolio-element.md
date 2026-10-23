@@ -31,15 +31,26 @@ audio/nested iframes                      self-contained HTML          splices t
 - **Rendering**: `TetfolioComponent` (`common/components/elements/tetfolio/`) calls
   `TetfolioBridge.inject()` (`common/utils/tetfolio-bridge.ts`) to splice a script into that HTML
   and hands the result to an iframe via `srcdoc`. The bridge script reports the document
-  height (`tetfolioResize`), state changes (`tetfolioStateChanged`) and the end of a restore
+  height and the width the page needs (`tetfolioResize`), state changes (`tetfolioStateChanged`) and the end of a restore
   (`tetfolioReady`) via `postMessage`. While a saved state is being replayed the component
   covers the iframe with the shared spinner overlay, so the test taker never sees the
   experiment jump from its initial to its restored state; the overlay lifts on `tetfolioReady`
   (or silently after the spinner's timeout - a late restore is not an error).
+- **Width**: tet.folio exports have a fixed size. Where the page needs more width than the element
+  has, the component lays the iframe out at that width and scales it down with a CSS transform
+  (`TetfolioScaling`, `common/utils/tetfolio-scaling.ts`), however narrow the element. There is no
+  lower bound: below it the experiment would be cut, and tet.folio hides its horizontal scrollbar
+  (`::-webkit-scrollbar { height: 0 }`), so nothing would show that the rest can be scrolled to in
+  Chromium and Safari. The bridge measures the width from the page, not
+  from the iframe, so the result does not change when the host lays the iframe out wider: the width
+  of `#mainPane`, and how far the visible content reaches beyond its unshifted box — on both sides
+  once the page is centred, as tet.folio centres it. What a box inside clips or scrolls does not
+  count. Without `#mainPane` the body stands in for the page; content that fills the iframe then
+  never asks for more than it has, and is never scaled.
 - **Height**: in a dynamic section the panel's height is the initial height; afterwards the
-  iframe follows the content's reported height, clamped to `minHeight`/`maxHeight` when set
-  (0 means no bound). With `isHeightFixed` the iframe fills the height the container gives it and
-  the content scrolls inside. The component never sets a height outside its own template — the
+  element follows the content's reported height times the scale, clamped to
+  `minHeight`/`maxHeight` when set (0 means no bound). With `isHeightFixed` the scaled iframe fills
+  the height the container gives it and the content scrolls inside. The component never sets a height outside its own template — the
   container bindings of the player and the editor stay in charge. In a static section every
   element has a fixed box from its dimensions, and that box scrolls when the content is taller.
 - **Player**: `TetfolioGroupElementComponent` reads the stored state before the iframe is built,
@@ -131,6 +142,13 @@ a host can provide by serving the content from elsewhere.
   policy: what the distpacker inlines is allowed by the Testcenter's, but an export that loads
   external images or stylesheets, or sends requests to another server at runtime, is blocked
   there.
+- **Scaled by a transform, without an option.** A transform outside the iframe is invisible to
+  the experiment: it measures pointer positions in its own document, and the browser maps the
+  input through the transform into it, so clicks and drags land where they are shown (checked
+  with real clicks on the IBE-Logger exports, #1598). The iframe is positioned absolutely, because
+  laid out at the experiment's width in the flow it would widen a grid cell of a dynamic section
+  to that width. There is no setting to turn it off: the alternative is a cut experiment, and
+  where the page fits, nothing changes. Images shrink to the element's width without an option too.
 - **Empty styling group.** No tetfolio template reads a styling value (the iframe document
   brings its own styles), so the element declares `styling: Record<never, never>` — the #1226
   convention, same as geometry and image.
@@ -148,6 +166,7 @@ a host can provide by serving the content from elsewhere.
 | Component | `projects/common/components/elements/tetfolio/` |
 | Zip packer | `projects/common/utils/distpacker.ts` |
 | Iframe bridge | `projects/common/utils/tetfolio-bridge.ts` |
+| Scale to the element's width | `projects/common/utils/tetfolio-scaling.ts` |
 | Player group | `projects/player/src/app/components/elements/tetfolio-group-element/` |
 | Editor properties | `projects/editor/src/app/modules/properties-panel/components/element-model-properties/tetfolio-properties/` |
 

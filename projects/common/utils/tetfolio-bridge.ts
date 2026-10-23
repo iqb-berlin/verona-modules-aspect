@@ -28,7 +28,8 @@ export interface TetfolioBridgeTimings {
  * The reported state and the seeded state keep the RAW key names, so stored states are
  * independent of the element id and survive duplication.
  *
- * Messages to the host: `tetfolioResize` (document height), `tetfolioStateChanged` (the captured
+ * Messages to the host: `tetfolioResize` (document height, and the width the page needs to show
+ * uncut, which the host scales the iframe to - see `TetfolioScaling`), `tetfolioStateChanged` (the captured
  * state) and `tetfolioReady`, posted once capture becomes active - i.e. the moment the seeded state
  * is final, which is when the host lifts its restore overlay. When capture starts with a state that
  * differs from the last one the host knows - input made before it, on a first visit - that state
@@ -342,10 +343,74 @@ ${seed}
       origRemoveItem.apply(this, arguments);
     }
   };
+  // The iframe width at which the page shows uncut. It is derived from the
+  // page, never from the iframe's current width: the host lays the iframe out
+  // at the width reported here, and a measure that followed the iframe would
+  // chase itself. tet.folio centres its page (#mainPane, a child of the body)
+  // with auto margins, and its content may stand out of the page on either
+  // side - so what counts is how far the content reaches beyond the page's
+  // unshifted box, and the page needs that on both sides once it is centred.
+  // Without such a page the body is the page: it fills the iframe, and only
+  // content wider than the body asks for more.
+  function contentWidth() {
+    var body = document.body;
+    if (!body) return 0;
+    var bodyStyle = window.getComputedStyle(body);
+    var padLeft = parseFloat(bodyStyle.paddingLeft) || 0;
+    var inner = body.clientWidth - padLeft - (parseFloat(bodyStyle.paddingRight) || 0);
+    // Body margins, borders and padding and the scrollbars come on top.
+    var chrome = window.innerWidth - inner;
+    var pageLeft = body.getBoundingClientRect().left + body.clientLeft + padLeft;
+    var pageWidth = inner;
+    var centred = false;
+    var pane = document.getElementById('mainPane');
+    var root = pane && pane.parentElement === body ? pane : body;
+    if (root !== body) {
+      var paneStyle = window.getComputedStyle(pane);
+      var marginLeft = parseFloat(paneStyle.marginLeft) || 0;
+      var marginRight = parseFloat(paneStyle.marginRight) || 0;
+      pageWidth = pane.offsetWidth;
+      pageLeft += marginLeft;
+      // A page wider than the body has its auto margins resolved to 0 on the
+      // left and a negative rest on the right, which no longer tells a centred
+      // page from one that is not. It takes the formula of a centred one; that
+      // only asks too much where it was not, and once laid out at that width,
+      // the page's margins tell again.
+      centred = pageWidth > inner ? marginLeft < 0.5 :
+        marginLeft > 0 && Math.abs(marginLeft - marginRight) < 1;
+    }
+    var left = 0;
+    var right = pageWidth;
+    // The body's own scroll moves its content, not the body. In quirks mode
+    // body.scrollLeft is the viewport's scroll, which moves the body as well.
+    var scrolled = document.compatMode === 'CSS1Compat' ? body.scrollLeft : 0;
+    var extend = function (node) {
+      var rect = node.getBoundingClientRect();
+      if (!rect.width && !rect.height) return;
+      left = Math.min(left, rect.left + scrolled - pageLeft);
+      right = Math.max(right, rect.right + scrolled - pageLeft);
+    };
+    // What a box clips or scrolls inside needs no width outside it, and what
+    // is invisible - hidden measuring boxes, say - needs none at all.
+    var measure = function (node) {
+      var style = window.getComputedStyle(node);
+      if (style.display === 'none') return;
+      if (style.visibility !== 'hidden') extend(node);
+      if (style.overflowX !== 'visible') return;
+      for (var child = node.firstElementChild; child; child = child.nextElementSibling) measure(child);
+    };
+    // The body is walked whatever its overflow: what it scrolls is the page.
+    if (root !== body) extend(root);
+    if (root === body || window.getComputedStyle(root).overflowX === 'visible') {
+      for (var child = root.firstElementChild; child; child = child.nextElementSibling) measure(child);
+    }
+    var needed = centred ? Math.max(pageWidth - 2 * left, 2 * right - pageWidth) : right - left;
+    return Math.ceil(needed + chrome);
+  }
   function reportSize() {
     var body = document.body;
     var h = Math.max(body.scrollHeight, body.offsetHeight);
-    window.parent.postMessage({ type: 'tetfolioResize', height: h }, '*');
+    window.parent.postMessage({ type: 'tetfolioResize', height: h, width: contentWidth() }, '*');
   }
   if (document.readyState === 'complete') { setTimeout(reportSize, 200); }
   else { window.addEventListener('load', function() { setTimeout(reportSize, 200); }); }

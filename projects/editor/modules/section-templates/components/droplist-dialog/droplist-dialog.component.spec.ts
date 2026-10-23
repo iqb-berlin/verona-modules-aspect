@@ -17,6 +17,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { SpyObj, createSpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
@@ -50,7 +51,8 @@ describe('DroplistWizardDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         DroplistWizardDialogComponent,
-        MockRichTextEditorComponent
+        MockRichTextEditorComponent,
+        SafeResourceHTMLPipe
       ],
       imports: [
         CommonModule,
@@ -104,8 +106,20 @@ describe('DroplistWizardDialogComponent', () => {
 
   it('should reorder options on drop', () => {
     component.options.options = ['a', 'b', 'c'];
-    component.drop({ previousIndex: 2, currentIndex: 0 } as CdkDragDrop<string[]>);
+    component.drop({
+      previousIndex: 2, currentIndex: 0, container: { data: component.options.options }
+    } as CdkDragDrop<string[]>);
     expect(component.options.options).toEqual(['c', 'a', 'b']);
+  });
+
+  it('should reorder the target labels, not the options, on a drop in the target list', () => {
+    component.options.options = ['a', 'b'];
+    component.options.targetLabels = ['x', 'y'];
+    component.drop({
+      previousIndex: 1, currentIndex: 0, container: { data: component.options.targetLabels }
+    } as CdkDragDrop<string[]>);
+    expect(component.options.targetLabels).toEqual(['y', 'x']);
+    expect(component.options.options).toEqual(['a', 'b']);
   });
 
   it('should update an option after label editing', () => {
@@ -116,6 +130,40 @@ describe('DroplistWizardDialogComponent', () => {
 
     expect(mockDialogService.showLabelEditDialog).toHaveBeenCalledWith({ text: 'b' });
     expect(component.options.options).toEqual(['a', 'edited']);
+  });
+
+  it('should write an edited target label into the target labels, not into the options', () => {
+    component.options.options = ['a', 'b'];
+    component.options.targetLabels = ['x', 'y'];
+    mockDialogService.showLabelEditDialog.mockReturnValue(of({ text: 'edited' }));
+
+    component.editItem(component.options.targetLabels, 1);
+
+    expect(mockDialogService.showLabelEditDialog).toHaveBeenCalledWith({ text: 'y' });
+    expect(component.options.targetLabels).toEqual(['x', 'edited']);
+    expect(component.options.options).toEqual(['a', 'b']);
+  });
+
+  it('should show an edited item as formatted text, not as its markup', () => {
+    component.templateVariant = 'classic';
+    component.options.options = ['<p style="margin-bottom: 0px; margin-top: 0px;">edited</p>'];
+    fixture.detectChanges();
+
+    const item = fixture.nativeElement.querySelector('.drop-list-option') as HTMLElement;
+    expect(item.textContent).toContain('edited');
+    expect(item.textContent).not.toContain('<p');
+  });
+
+  it('should offer the wrench for text items only', () => {
+    component.templateVariant = '2pages';
+    component.options.srcUseImages = true;
+    component.options.options = ['data:image/png;base64,abc'];
+    component.options.targetLabels = ['x'];
+    fixture.detectChanges();
+
+    const iconsPerList = Array.from(fixture.nativeElement.querySelectorAll('.drop-list') as NodeListOf<HTMLElement>)
+      .map(list => Array.from(list.querySelectorAll('mat-icon')).map(icon => icon.textContent?.trim()));
+    expect(iconsPerList).toEqual([['clear'], ['build', 'clear']]);
   });
 
   it('should keep the option unchanged when label editing is cancelled', () => {

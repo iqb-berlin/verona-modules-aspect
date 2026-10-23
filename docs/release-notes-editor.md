@@ -2,6 +2,7 @@ Editor
 ======
 ## next
 ### Neue Funktionen
+- Assistent „Kontrollkästchen“: Angelegte Optionen lassen sich wie in den anderen Assistenten über den Schraubenschlüssel bearbeiten ([#1604](https://github.com/iqb-berlin/verona-modules-aspect/issues/1604))
 - Hinweise zur Aufgabe: Neuer Dialog listet ungültige Variablennamen mit Fundstelle und „Zum Element“. Er ist über ein Warnzeichen im Kopf der Seitenansicht erreichbar ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
 - Hinweise zur Aufgabe: Ungültige interne IDs aus Units vor Editor 2.6.0 lassen sich ersetzen. Die Kodierungen der betroffenen Variablen müssen danach im Studio neu angelegt werden ([#1508](https://github.com/iqb-berlin/verona-modules-aspect/issues/1508))
 - Hinweise zur Aufgabe: Der Dialog zeigt auch Sichtbarkeitsbedingungen ohne Ziel und die beim Laden entfernten Verweise ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
@@ -30,6 +31,7 @@ Editor
 
 ### Fehlerbehebungen
 - Ablegelisten: IDs der Optionen werden nach dem Laden nicht mehr doppelt vergeben ([#1506](https://github.com/iqb-berlin/verona-modules-aspect/issues/1506))
+- Assistent „Drag & Drop“: Ein mit dem Schraubenschlüssel bearbeitetes Element zeigt im Assistenten seinen Text statt HTML-Code. Bearbeiten und Verschieben bei den Ziel-Ablagen verändert nicht mehr die Elementliste ([#1595](https://github.com/iqb-berlin/verona-modules-aspect/issues/1595))
 - Farbauswahl: Ohne gesetzte Farbe öffnet der Farbdialog auf Grau statt Schwarz ([#1532](https://github.com/iqb-berlin/verona-modules-aspect/issues/1532))
 - GeoGebra: Nach dem Austausch der Datei lassen sich nicht mehr vorhandene verfolgte Variablen abwählen ([#1505](https://github.com/iqb-berlin/verona-modules-aspect/issues/1505))
 - Löschdialog: Mit einer dauerhaft sichtbaren Seite stimmt die Seitennummer in der Rückfrage ([#1513](https://github.com/iqb-berlin/verona-modules-aspect/issues/1513))

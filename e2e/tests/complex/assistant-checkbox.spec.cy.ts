@@ -23,7 +23,16 @@ describe('Checkbox assistant', { testIsolation: false }, () => {
       // Add options
       addOptionViaFormField('Apfel');
       addOptionViaFormField('Banane');
-      addOptionViaFormField('Orange');
+      addOptionViaFormField('Ornage');
+
+      // Correct the typo with the wrench (#1604)
+      cy.get('mat-dialog-container').contains('.drop-list-option', 'Ornage')
+        .contains('button', 'build')
+        .click();
+      cy.get('aspect-text-edit-dialog').find('input').clear().type('Orange');
+      cy.get('aspect-text-edit-dialog').contains('button', 'Speichern').click();
+      cy.get('aspect-text-edit-dialog').should('not.exist');
+      cy.get('mat-dialog-container').find('.drop-list-option .text-item').eq(2).should('have.text', 'Orange');
 
       clickButtonDialog('Bestätigen');
     });

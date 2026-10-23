@@ -4,6 +4,7 @@ import {
   createCloze,
   createHeadingCloze,
   createRichCloze,
+  createSublistCloze,
   expectDefaultFont,
   expectRichClozeDefaultHeadings,
   expectRichClozeDocument,
@@ -11,7 +12,8 @@ import {
   expectStyledFont,
   expectStyledHeadings,
   markLastClozeChildRequired,
-  STYLED_CLOZE_TEXT
+  STYLED_CLOZE_TEXT,
+  SUBLIST_CLOZE_TEXT
 } from '../helpers/cloze-util';
 import { connectLists, dragTo } from '../helpers/droplist-util';
 
@@ -75,6 +77,10 @@ describe('Cloze element', { testIsolation: false }, () => {
       createRichCloze('Lückentext12');
     });
 
+    it('creates a cloze with a gap in a sub-item made with Tab', () => {
+      createSublistCloze('Lückentext13');
+    });
+
     it('connects the droplists, and add two options for the first droplist inside cloze', () => {
       connectLists('droplist1', 'droplist2');
       connectLists('droplist2', 'droplist1');
@@ -92,7 +98,7 @@ describe('Cloze element', { testIsolation: false }, () => {
     });
 
     it('renders all cloze elements', () => {
-      cy.get('aspect-cloze').should('have.length', 12);
+      cy.get('aspect-cloze').should('have.length', 13);
     });
 
     it('first cloze renders the default Lorem Ipsum text', () => {
@@ -244,6 +250,17 @@ describe('Cloze element', { testIsolation: false }, () => {
 
     it('keeps the rich cloze headings on the default font', () => {
       expectRichClozeDefaultHeadings();
+    });
+
+    /* The template drew only the paragraphs of a list item, so a sublist and the gap in it were left
+       out (#1602). */
+    it('shows the gap in the sub-item and takes an answer there', () => {
+      cy.contains('aspect-cloze', SUBLIST_CLOZE_TEXT)
+        .find('ul > li > ul > li aspect-text-field-simple input')
+        .type('Antwort');
+      cy.contains('aspect-cloze', SUBLIST_CLOZE_TEXT)
+        .find('ul > li > ul > li aspect-text-field-simple input')
+        .should('have.value', 'Antwort');
     });
   });
 });

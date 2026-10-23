@@ -105,6 +105,56 @@ describe('ClozeComponent', () => {
     expect(compiled.querySelector('math')).toBeNull();
   });
 
+  /* Tab in the editor gives a list item sub-items, a list inside the item (#1602). The gaps in it count
+     as children of the element on every level, so the sublist has to be drawn with them -- before, only
+     the paragraphs of an item were, and the sublist was left out without a trace. */
+  describe('a list with sub-items', () => {
+    const paragraph = (text: string, ...children: { type: string; attrs: { model: UIElement } }[]) => ({
+      type: 'paragraph', attrs: {}, content: [{ type: 'text', text }, ...children]
+    });
+    const gap = { type: 'TextField', attrs: { model: { type: 'text-field' } as UIElement } };
+
+    beforeEach(() => {
+      component.elementModel.document = {
+        type: 'doc',
+        content: [{
+          type: 'bulletList',
+          attrs: { listStyle: 'disc' },
+          content: [{
+            type: 'listItem',
+            attrs: {},
+            content: [
+              paragraph('Obst'),
+              {
+                type: 'orderedList',
+                attrs: { listStyle: 'lower-latin', fontSize: '24px' },
+                content: [{
+                  type: 'listItem',
+                  attrs: {},
+                  content: [paragraph('Apfel: ', gap)]
+                }]
+              }
+            ]
+          }]
+        }]
+      };
+      fixture.detectChanges();
+    });
+
+    it('should draw the sublist inside its item, with the gap in it', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      const subItem = compiled.querySelector('ul > li > ol > li');
+      expect(subItem?.textContent).toContain('Apfel:');
+      expect(subItem?.querySelector('aspect-compound-child-overlay')).toBeTruthy();
+    });
+
+    it('should give the sublist its own marker and font size', () => {
+      const sublist = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('ul ol');
+      expect(sublist?.style.listStyle).toContain('lower-latin');
+      expect(sublist?.style.fontSize).toBe('24px');
+    });
+  });
+
   /* Which children hang in the line by their box and which by their text (#1435). A dropdown wears
      the element's font since then, so its text meets the text beside it; a drop list is a box and
      stays centred. One expression in the template decides it for every child type, and a wrong entry

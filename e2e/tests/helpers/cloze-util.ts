@@ -1,5 +1,5 @@
 import {
-  addElement, addOption, setCheckbox, setID, selectParagraphElement
+  addElement, addOption, setCheckbox, setID, selectParagraphElement, pressTabInListItem
 } from '../util';
 import { setConfigDroplist } from './droplist-util';
 import { selectedTextInRichTextEditor } from '../../support/app-runtime';
@@ -12,6 +12,7 @@ export const STYLED_HEADINGS: Record<number, string> = {
   4: 'gestylte Ueberschrift H4'
 };
 export const RICH_CLOZE_TEXT = 'Aufzaehlung';
+export const SUBLIST_CLOZE_TEXT = 'Obstsorten';
 
 function openClozeEditor(id: string): void {
   addElement('Lückentext', 'Verbund', id);
@@ -236,6 +237,20 @@ export function createRichCloze(id: string): void {
   cy.get('mat-dialog-container .ProseMirror').click().type('{end}{enter}');
   insertClozeImage('block');
 
+  saveClozeEditor();
+}
+
+/** A list whose second item became a sub-item with Tab, and a gap in that sub-item (#1602). */
+export function createSublistCloze(id: string): void {
+  openClozeEditor(id);
+  cy.get('mat-dialog-container .ProseMirror p').clear();
+  cy.get('mat-dialog-container .ProseMirror p').type(SUBLIST_CLOZE_TEXT);
+  cy.get('mat-dialog-container')
+    .contains('aspect-combo-button', 'format_list_bulleted').find('button.apply-button').click();
+  cy.get('mat-dialog-container .ProseMirror li p').type('{end}{enter}Apfel ');
+  pressTabInListItem('Apfel');
+  clozeEditorBlock('ul ul', 'Apfel').should('exist');
+  cy.get('mat-dialog-content').find('button').contains('Eingabefeld').click();
   saveClozeEditor();
 }
 

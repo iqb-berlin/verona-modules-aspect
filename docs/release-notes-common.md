@@ -18,6 +18,7 @@ Allgemein
 
 ### Fehlerbehebungen
 - Formelfeld, Formelbereich: Die Formeltastatur bleibt am iPad beim Tippen offen und behält die gewählte Belegung. Bisher schloss sie sich nach jedem Zeichen, und ein erneutes Antippen des Felds öffnete sie nicht wieder ([#1600](https://github.com/iqb-berlin/verona-modules-aspect/issues/1600))
+- Formelfeld, Formelbereich: Die Umschalttaste (⇧) der Formeltastatur bleibt am iPad aktiv, bis ein Zeichen angetippt wurde. Bisher sprang sie sofort wieder zurück ([#1607](https://github.com/iqb-berlin/verona-modules-aspect/issues/1607))
 - Text: Pfeil- und Sonderzeichen aus der mitgelieferten Symbolschrift (etwa `🠗`) werden auf dem iPad wieder dargestellt; seit 3.0.1 erschien dort ein Platzhalterkästchen ([#1599](https://github.com/iqb-berlin/verona-modules-aspect/issues/1599))
 ## editor/3.0.1+player/3.0.1
 ### Neue Funktionen

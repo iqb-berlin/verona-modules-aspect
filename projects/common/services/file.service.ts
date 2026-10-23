@@ -83,6 +83,27 @@ export class FileService {
     return ['image/jpeg', 'image/jpg', 'image/webp'].includes(mimeType);
   }
 
+  /**
+   * Whether `toDataURL` stops compressing with loss at this quality. Chromium and Firefox both write a
+   * WebP asked for at 1 losslessly (a `VP8L` stream; measured in Chromium 155 and Firefox 158), which
+   * makes 100 % a different kind of encoding rather than the top of the scale: many times the bytes of
+   * any lossy setting for a photo, and often the fewest of all for a flat graphic. A JPEG at 1 is
+   * still lossy (#1603).
+   */
+  static qualityMeansLossless(mimeType: string, quality: number): boolean {
+    return mimeType === 'image/webp' && quality >= 1;
+  }
+
+  /**
+   * The type an image is asked to come out as: the conversion if one is chosen, otherwise the type in
+   * its own `data:` prefix. `scaleImage` encodes by it, and whatever the dialog says about the quality
+   * has to be about this type rather than the one picked from disk (#1398, #1603). `scaleImage` then
+   * writes a GIF as PNG and a type without an encoder of its own as JPEG.
+   */
+  static outputMimeType(base64: string, targetMimeType?: string): string {
+    return targetMimeType || base64.match(/data:([^;]+);/)?.[1] || '';
+  }
+
   static scaleImage(base64Image: string, options: ImageOptions = {}): Promise<string> {
     return new Promise((resolve, reject) => {
       const mimeType = base64Image.match(/data:([^;]+);/)?.[1] || '';
@@ -102,7 +123,7 @@ export class FileService {
 
         let { width, height } = img;
 
-        const outputMimeType = options.targetMimeType || mimeType;
+        const outputMimeType = FileService.outputMimeType(base64Image, options.targetMimeType);
         const needsResize = width > maxWidth || height > maxHeight;
         const needsConversion = options.targetMimeType !== undefined && options.targetMimeType !== mimeType;
         /* Asking for the same size in the same format is a no-op unless the caller wants the image

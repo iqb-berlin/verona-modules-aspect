@@ -168,6 +168,52 @@ describe('FileService', () => {
     });
   });
 
+  describe('outputMimeType', () => {
+    it('should take a chosen conversion over the type of the image', () => {
+      expect(FileService.outputMimeType('data:image/png;base64,abc', 'image/webp')).toBe('image/webp');
+    });
+
+    it('should otherwise take the type from the data: prefix', () => {
+      expect(FileService.outputMimeType('data:image/jpeg;base64,abc')).toBe('image/jpeg');
+      expect(FileService.outputMimeType('not a data url')).toBe('');
+    });
+  });
+
+  describe('qualityMeansLossless', () => {
+    it('should call a WebP at 100 % lossless', () => {
+      expect(FileService.qualityMeansLossless('image/webp', 1)).toBe(true);
+    });
+
+    it('should leave every lower WebP quality and a JPEG at 100 % lossy', () => {
+      expect(FileService.qualityMeansLossless('image/webp', 0.95)).toBe(false);
+      expect(FileService.qualityMeansLossless('image/jpeg', 1)).toBe(false);
+    });
+
+    /* The label in the dialog repeats what the browser does, so the browser is asked too: a WebP holds
+       either a `VP8L` stream (lossless) or a `VP8 ` one. Chromium puts a colour profile of some 450
+       bytes in front of it, so the chunks are walked rather than the first bytes searched. */
+    const chunkNames = (dataUrl: string): string[] => {
+      const bytes = atob(dataUrl.split(',')[1]);
+      const names: string[] = [];
+      for (let at = 12; at + 8 <= bytes.length;) {
+        const size = [4, 5, 6, 7].reduce((sum, i, shift) => sum + bytes.charCodeAt(at + i) * 256 ** shift, 0);
+        names.push(bytes.slice(at, at + 4));
+        at += 8 + size + (size % 2);
+      }
+      return names;
+    };
+
+    const encodedLosslessly = async (quality: number): Promise<boolean> => {
+      const result = await FileService.scaleImage(createImage(10, 10), { targetMimeType: 'image/webp', quality });
+      return chunkNames(result).includes('VP8L');
+    };
+
+    it('should agree with what the browser writes', async () => {
+      expect(await encodedLosslessly(1)).toBe(true);
+      expect(await encodedLosslessly(0.95)).toBe(false);
+    });
+  });
+
   /* Which formats can be scaled is already answered for an upload, where the File carries its type.
      An image that is only in the unit carries it in its own `data:` prefix, and the compress buttons
      ask this one to decide whether they are usable at all (#1378). */

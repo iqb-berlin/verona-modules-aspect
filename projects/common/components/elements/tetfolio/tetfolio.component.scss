@@ -4,12 +4,20 @@
   position: relative;
   width: 100%;
   height: 100%;
+  // The iframe is laid out larger than the container when it is scaled down; the transform shrinks
+  // it back, but layout still sees the unscaled size.
+  overflow: hidden;
 }
 
+// Taken out of the flow: laid out at the experiment's own width, it would otherwise push a grid
+// cell of a dynamic section to that width, and there would be nothing left to scale down to.
 .tetfolio-frame {
-  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
   border: none;
   display: block;
+  transform-origin: 0 0;
 }
 
 // Covers the iframe while a saved state is replayed inside it; the iframe stays rendered

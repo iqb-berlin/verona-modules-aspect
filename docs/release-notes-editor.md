@@ -24,6 +24,7 @@ Editor
 - Meldungen: Eine nicht lesbare Aufgabendefinition meldet „Aufgabendefinition konnte nicht gelesen werden!“ statt einer technischen Meldung ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
 - Texteditor: Dialoge mit Texteditor nutzen die Höhe des Fensters ([#1006](https://github.com/iqb-berlin/verona-modules-aspect/issues/1006))
 - Texteditor: Die Werkzeugleiste ist einfarbig hellgrau ([#1493](https://github.com/iqb-berlin/verona-modules-aspect/issues/1493))
+- Texteditor: Die Tab-Taste macht einen Listenpunkt zum Unterpunkt des vorigen, mit dem nächsten Aufzählungszeichen (● ○ ▪, 1. a. i.), Umschalt+Tab stuft ihn wieder hoch ([#1602](https://github.com/iqb-berlin/verona-modules-aspect/issues/1602))
 - Variablenliste: Der Editor meldet die Variablen nach VariableInfo 2.0. Erfordert Studio 20.1.0 ([#1150](https://github.com/iqb-berlin/verona-modules-aspect/issues/1150))
 - Variablenliste: Die Antworten von Periodensystem und Molekül-Editor tragen das Format `CHEM_ELEMENT_SYMBOLS` bzw. `CHEM_MOLECULE` (VariableInfo 2.1) ([#1471](https://github.com/iqb-berlin/verona-modules-aspect/issues/1471))
 - Variablennamen: Namen, die sich nur in Groß- und Kleinschreibung unterscheiden, werden abgelehnt. Bestehende Units bleiben unverändert, solche Paare werden gemeldet ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))

@@ -329,6 +329,16 @@ export function selectParagraphElement($p: JQuery<HTMLElement>): void {
   el.dispatchEvent(new MouseEvent('mouseup', eventOpts(endX, endY)));
 }
 
+/**
+ * Tab on the list item with this text in the open text editor. `type` has no key for it, a `\t` in the
+ * text arrives as a character, so the keydown goes straight to ProseMirror, where its keymap listens.
+ */
+export function pressTabInListItem(text: string): void {
+  cy.contains('mat-dialog-container .ProseMirror li p', text)
+    .type('{end}')
+    .trigger('keydown', { key: 'Tab', keyCode: 9 });
+}
+
 export function editElementConfigDialog(): void {
   cy.get('aspect-ui-element-properties')
     .contains('button', 'Medienoptionen anpassen')

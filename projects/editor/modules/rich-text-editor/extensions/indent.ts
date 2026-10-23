@@ -81,6 +81,9 @@ export const Indent = Extension.create<IndentOptions>({
         const { from, to } = selection;
         doc.nodesBetween(from, to, (node, pos) => {
           if (this.options.types.includes(node.type.name)) {
+            /* An item whose own paragraph lies before the selection holds it only in one of its sublists;
+               the indent belongs to the sub-item there, not to the whole item around it (#1602). */
+            if (node.type.name === 'listItem' && from >= pos + 1 + (node.firstChild?.nodeSize ?? 0)) return true;
             transaction = setNodeIndentMarkup(tr, pos, delta, indentSize);
             return false;
           }

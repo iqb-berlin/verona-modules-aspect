@@ -16,7 +16,6 @@ import { Blockquote } from '@tiptap/extension-blockquote';
 import { Document } from '@tiptap/extension-document';
 import { History } from '@tiptap/extension-history';
 import { Text } from '@tiptap/extension-text';
-import { ListItem } from '@tiptap/extension-list-item';
 import { Bold } from '@tiptap/extension-bold';
 import { Italic } from '@tiptap/extension-italic';
 import { Strike } from '@tiptap/extension-strike';
@@ -37,6 +36,7 @@ import { ParagraphExtension } from 'editor/modules/rich-text-editor/extensions/p
 import { FontSize } from 'editor/modules/rich-text-editor/extensions/font-size';
 import { BulletListExtension } from 'editor/modules/rich-text-editor/extensions/bullet-list';
 import { OrderedListExtension } from 'editor/modules/rich-text-editor/extensions/ordered-list';
+import { ListItemExtension } from 'editor/modules/rich-text-editor/extensions/list-item';
 import { HorizontalRuleExtension } from 'editor/modules/rich-text-editor/extensions/horizontal-rule';
 import ToggleButtonComponentExtension
   from 'editor/modules/rich-text-editor/extensions/toggle-button-component-extension';
@@ -114,7 +114,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnInit(): void {
     this.defaultExtensions = [
-      Document, Text, ListItem,
+      Document, Text, ListItemExtension,
       Underline, Superscript, Subscript,
       TextStyle, Color,
       Bold, Italic, Strike, History,

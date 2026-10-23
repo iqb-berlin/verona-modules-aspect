@@ -1,6 +1,7 @@
 import { DocumentWithCaretRange, selectAllInRichTextEditor } from '../../support/app-runtime';
 import {
-  addNewPage, setID, addTextElement, selectParagraphElement, addElement, setCheckbox, selectFromDropdown
+  addNewPage, setID, addTextElement, selectParagraphElement, addElement, setCheckbox, selectFromDropdown,
+  pressTabInListItem
 } from '../util';
 import { addText, selectRange } from '../helpers/text-util';
 
@@ -231,6 +232,24 @@ describe('Text element', { testIsolation: false }, () => {
 
       setCheckbox('Gelb', true);
       selectFromDropdown('Markierungsmodus', 'Wort');
+    });
+
+    // ── Page 8: a list item made a sub-item with Tab ─────────────────────────
+    it('makes a list item the sub-item of the one before it with Tab (page 8)', () => {
+      addNewPage();
+      addTextElement('Obst');
+      setID('text-sublist');
+      cy.get('aspect-ui-element-properties')
+        .contains('edit').click();
+
+      cy.get('mat-dialog-container')
+        .contains('aspect-combo-button', 'format_list_bulleted').find('button.apply-button').click();
+      cy.get('mat-dialog-container .ProseMirror li p').type('{end}{enter}Apfel');
+      pressTabInListItem('Apfel');
+      cy.get('mat-dialog-container .ProseMirror ul ul').should('contain.text', 'Apfel');
+      cy.get('mat-dialog-container').contains('button', 'Speichern').click();
+      /* The unit is saved right after this; the text has to have reached the element on the canvas. */
+      cy.contains('aspect-text', 'Apfel').find('ul ul').should('exist');
     });
 
     after('saves the unit definition', () => {
@@ -590,6 +609,15 @@ describe('Text element', { testIsolation: false }, () => {
       cy.getElementByAlias('text-math-words').within(() => {
         cy.get('aspect-nodeview-math-formula .ML__latex').should('exist');
         cy.get('aspect-nodeview-math-formula aspect-markable-word').should('not.exist');
+      });
+    });
+
+    /* Tab used to pad the item, so the text moved and the marker stayed (#1602). */
+    it('shows the sub-item in a list of its own, with the next marker (page 8)', () => {
+      cy.goToPlayerPage(8);
+      cy.getElementByAlias('text-sublist').within(() => {
+        cy.get('ul > li > ul > li').should('contain.text', 'Apfel');
+        cy.get('ul ul').should('have.attr', 'style').and('contain', 'circle');
       });
     });
   });

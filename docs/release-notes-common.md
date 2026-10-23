@@ -17,6 +17,7 @@ Allgemein
 - Tabelle: Kopfzellen enthalten formatierten Text und werden im Texteditor bearbeitet. Bestehende einzeilige Kopfzeilen werden dadurch etwas höher ([#1430](https://github.com/iqb-berlin/verona-modules-aspect/issues/1430))
 
 ### Fehlerbehebungen
+- Formelfeld, Formelbereich: Die Formeltastatur bleibt am iPad beim Tippen offen und behält die gewählte Belegung. Bisher schloss sie sich nach jedem Zeichen, und ein erneutes Antippen des Felds öffnete sie nicht wieder ([#1600](https://github.com/iqb-berlin/verona-modules-aspect/issues/1600))
 - Text: Pfeil- und Sonderzeichen aus der mitgelieferten Symbolschrift (etwa `🠗`) werden auf dem iPad wieder dargestellt; seit 3.0.1 erschien dort ein Platzhalterkästchen ([#1599](https://github.com/iqb-berlin/verona-modules-aspect/issues/1599))
 ## editor/3.0.1+player/3.0.1
 ### Neue Funktionen

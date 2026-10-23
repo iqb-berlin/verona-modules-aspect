@@ -11,7 +11,8 @@ export class MathKeyboardService extends ScrollToInputService {
   isOpen: boolean = false;
 
   /**
-   * Opens the formula keyboard for a field that has the focus, closes it otherwise, and returns the
+   * Opens the formula keyboard for a field that has the focus, closes it when the field it is open for
+   * loses the focus (a focus out of any other field leaves it as it is), and returns the
    * state that was reached. Happens at once -- unlike `KeyboardService` and `KeypadService`, this one
    * has no delayed variant and emits no `willToggle`.
    */
@@ -19,7 +20,9 @@ export class MathKeyboardService extends ScrollToInputService {
          elementComponent: TextInputComponentType | MathFieldComponent): boolean {
     if (focusedTextInput.focused) {
       this.open(focusedTextInput.inputElement, elementComponent);
-    } else {
+    } else if (focusedTextInput.inputElement === this.inputElement) {
+      /* A field's focus out can arrive after the next field has opened the keyboard (#1600); only
+         the field the keyboard is open for closes it. */
       this.close();
     }
     return this.isOpen;

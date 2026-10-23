@@ -12,6 +12,7 @@ Editor
 ### Änderungen
 - Assistent „Markieren“: Die angelegte Textmarkierung hat 10 px Abstand nach unten ([#1057](https://github.com/iqb-berlin/verona-modules-aspect/issues/1057))
 - Bezeichnungen: Die Oberfläche spricht von „Aufgabe“ statt „Unit“, etwa bei „Aufgabennavigation“ und „Hinweise zur Aufgabe“ ([#1572](https://github.com/iqb-berlin/verona-modules-aspect/issues/1572))
+- Bilder verkleinern: Bei einem WebP-Bild zeigt der Qualitätsregler auf 100 % „verlustfrei“ an, denn dort speichert der Browser das Bild ohne Verlust, was bei Fotos sehr groß und bei Grafiken mit wenigen Farben oft am kleinsten wird ([#1603](https://github.com/iqb-berlin/verona-modules-aspect/issues/1603))
 - Eigenschaftenbereich: Die Felder unter „Dimensionen“ und „Z-Index“ nutzen die volle Breite
 - Eingabeprüfung: Abgelehnte Eingaben in ID- und Zahlenfeldern werden am Feld begründet ([#1523](https://github.com/iqb-berlin/verona-modules-aspect/issues/1523))
 - Einstellungen: Die Knöpfe für Aufgaben-Einstellungen und Arbeitsmodus haben einen Tooltip ([#1517](https://github.com/iqb-berlin/verona-modules-aspect/issues/1517), [#1551](https://github.com/iqb-berlin/verona-modules-aspect/issues/1551))

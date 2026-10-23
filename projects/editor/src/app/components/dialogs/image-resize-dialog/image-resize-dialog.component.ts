@@ -46,6 +46,14 @@ export class ImageResizeDialogComponent implements OnInit, OnDestroy {
    */
   willResize: boolean = false;
 
+  /**
+   * Whether the quality on the slider makes the browser encode without loss, which the slider's label
+   * then says. Without that, 100 % reads as the top of the same scale, and a flat graphic that comes
+   * out smaller at 100 % than at 80 % looks like a fault (#1603). Held for the same reason as
+   * `willResize`.
+   */
+  lossless: boolean = false;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: ImageResizeDialogData,
               private messageService: MessageService,
               private translateService: TranslateService) {
@@ -97,6 +105,10 @@ export class ImageResizeDialogComponent implements OnInit, OnDestroy {
     this.willResize = !this.data.options.uncompressed && this.originalWidth > 0 &&
       ((this.data.options.maxWidth as number) < this.originalWidth ||
        (this.data.options.maxHeight as number) < this.originalHeight);
+    this.lossless = FileService.qualityMeansLossless(
+      FileService.outputMimeType(this.data.base64, this.data.options.targetMimeType),
+      this.data.options.quality as number
+    );
     this.estimatePending = true;
     this.estimateRequested.next();
   }

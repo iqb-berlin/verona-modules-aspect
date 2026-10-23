@@ -898,6 +898,7 @@
     "maxHeight": "Maximale Höhe (px)",
     "aspectRatioLocked": "Das Seitenverhältnis bleibt immer erhalten",
     "quality": "Qualität",
+    "lossless": "verlustfrei",
     "convertToWebP": "In WebP konvertieren (spart Speicherplatz)",
     "newSize": "Voraussichtliche neue Größe",
     "newSizeLarger": "— größer als bisher",

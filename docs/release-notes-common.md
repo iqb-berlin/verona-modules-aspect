@@ -15,6 +15,9 @@ Allgemein
 - Periodensystem: Die ausgewählten Elemente neben dem Knopf sehen aus wie im Widget ([#1369](https://github.com/iqb-berlin/verona-modules-aspect/issues/1369))
 - Periodensystem: „Max. Anzahl Auswahlen“ 0 bedeutet keine Auswahl statt unbegrenzt, das Periodensystem dient dann nur zum Ansehen. Erfordert Widget 1.1.0 ([#1488](https://github.com/iqb-berlin/verona-modules-aspect/issues/1488))
 - Tabelle: Kopfzellen enthalten formatierten Text und werden im Texteditor bearbeitet. Bestehende einzeilige Kopfzeilen werden dadurch etwas höher ([#1430](https://github.com/iqb-berlin/verona-modules-aspect/issues/1430))
+
+### Fehlerbehebungen
+- Text: Pfeil- und Sonderzeichen aus der mitgelieferten Symbolschrift (etwa `🠗`) werden auf dem iPad wieder dargestellt; seit 3.0.1 erschien dort ein Platzhalterkästchen ([#1599](https://github.com/iqb-berlin/verona-modules-aspect/issues/1599))
 ## editor/3.0.1+player/3.0.1
 ### Neue Funktionen
 - Ablegeliste: Während ein Element sein Audio abspielt, ist es umrandet und sein Abspielknopf vergrößert. Liegt dasselbe Element mehrfach auf der Seite — etwa in einer Liste, die beim Ablegen kopiert —, wird nur die angetippte Darstellung hervorgehoben ([#1107](https://github.com/iqb-berlin/verona-modules-aspect/issues/1107))

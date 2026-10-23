@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   ClassicTemplateOptions, SortTemplateOptions, TwoPageTemplateOptions
@@ -16,8 +17,13 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 export class DroplistWizardDialogComponent {
   templateVariant: 'classic' | '2pages' | 'sort' | undefined;
   options: ClassicTemplateOptions & SortTemplateOptions & TwoPageTemplateOptions;
+  /** The image counterparts of `options.options` and `options.targetLabels`, so switching images in the
+      two-page variant neither shows a text as an image nor hands one over as such (#1610). */
+  srcImages: string[] = [];
+  targetImages: string[] = [];
 
-  constructor(private dialogService: DialogService) {
+  constructor(private dialogService: DialogService,
+              private dialogRef: MatDialogRef<DroplistWizardDialogComponent>) {
     this.options = {
       targetLabelAlignment: 'column',
       text1: '',
@@ -75,5 +81,24 @@ export class DroplistWizardDialogComponent {
   // eslint-disable-next-line class-methods-use-this
   removeListItem(list: string[], i: number) {
     list.splice(i, 1);
+  }
+
+  /** The target switch is only offered while the elements are images, so it goes off with them: left on
+      out of sight, it would hide the alignment choice and lay the targets out for images (#1610). */
+  setSrcUseImages(useImages: boolean): void {
+    this.options.srcUseImages = useImages;
+    if (!useImages) this.options.targetUseImages = false;
+  }
+
+  /** Hands over the lists of the modes in force. */
+  confirmAndClose(): void {
+    this.dialogRef.close({
+      variant: this.templateVariant,
+      options: {
+        ...this.options,
+        options: this.options.srcUseImages ? this.srcImages : this.options.options,
+        targetLabels: this.options.targetUseImages ? this.targetImages : this.options.targetLabels
+      }
+    });
   }
 }

@@ -45,9 +45,13 @@ describe('Checkbox assistant', { testIsolation: false }, () => {
       // Set Question
       typeInRichTextEditor('Welche dieser Früchte magst du?');
 
+      // A text option entered first stays out of the image options (#1610)
+      addOptionViaFormField('Apfel');
+
       // Enable Image Options
-      setDialogCheckbox('Bildoptionen verwenden');
+      setDialogCheckbox('Bildoptionen verwenden', true);
       cy.wait(200);
+      cy.get('mat-dialog-container').find('.drop-list-option').should('not.exist');
 
       // Upload option image
       cy.stubFileInput();
@@ -109,6 +113,16 @@ describe('Checkbox assistant', { testIsolation: false }, () => {
       cy.goToPlayerPage(2);
       cy.contains('aspect-text', 'Welche dieser Früchte magst du?').should('be.visible');
       cy.get('aspect-checkbox:visible').find('img[alt="Bildplatzhalter"]').should('be.visible');
+    });
+
+    // Counted in the unit: with the bug back, `aspect-checkbox:visible img` found one of its two image checkboxes
+    it('has no checkbox made from the text option entered before switching (Page 2, #1610)', () => {
+      cy.readFile('e2e/downloads/assistant-checkbox.json')
+        .then((unit: { pages: { sections: { elements: { type: string }[] }[] }[] }) => {
+          const checkboxes = unit.pages[1].sections.flatMap(section => section.elements)
+            .filter(element => element.type === 'checkbox');
+          expect(checkboxes).to.have.length(1);
+        });
     });
 
     it('checks option in the image checkbox group (Page 2)', () => {

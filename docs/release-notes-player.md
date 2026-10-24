@@ -24,6 +24,7 @@ Player
 - Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ schließt sich, sobald eine andere Aufgabe geladen wird, statt über ihr stehen zu bleiben ([#1581](https://github.com/iqb-berlin/verona-modules-aspect/issues/1581))
 - Periodensystem: Eine leere Auswahl des Widgets wird als Antwort übernommen. Löschen lässt sich eine Antwort ab Widget 1.1.0 ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
 - Seitennavigation der Testumgebung: Der Player meldet die Seiten erst, wenn er sie gezählt hat, statt zuerst eine leere Liste zu schicken ([#1462](https://github.com/iqb-berlin/verona-modules-aspect/issues/1462))
+- Textmarkierung: Bei der Bereichsmarkierung schneidet die Markierungsfarbe den letzten Buchstaben kursiver Wörter nicht mehr an ([#1613](https://github.com/iqb-berlin/verona-modules-aspect/issues/1613))
 
 ## 3.0.1
 ### Fehlerbehebungen

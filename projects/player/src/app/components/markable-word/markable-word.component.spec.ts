@@ -5,6 +5,9 @@ import { By } from '@angular/platform-browser';
 import { BehaviorSubject, config, Subject } from 'rxjs';
 import { MarkingRange } from 'common/models/marking-data';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
+import {
+  MarkableDelimiterComponent
+} from 'player/src/app/components/markable-delimiter/markable-delimiter.component';
 import { MarkableWordComponent } from './markable-word.component';
 
 describe('MarkableWordComponent', () => {
@@ -32,7 +35,7 @@ describe('MarkableWordComponent', () => {
     colorChanges = [];
 
     await TestBed.configureTestingModule({
-      declarations: [MarkableWordComponent],
+      declarations: [MarkableWordComponent, MarkableDelimiterComponent],
       providers: [{ provide: NativeEventService, useValue: { mouseUp: mouseUp.asObservable() } }]
     })
       .compileComponents();
@@ -245,5 +248,47 @@ describe('MarkableWordComponent', () => {
     markingRange.next({ first: 0, second: 2 });
 
     expect(colorChanges).toEqual([]);
+  });
+
+  describe('before a delimiter', () => {
+    let line: HTMLElement | undefined;
+
+    afterEach(() => line?.remove());
+
+    /*
+     * An italic last letter reaches over the right edge of its word into the following delimiter, whose
+     * marking colour covers it if the delimiter is painted later (#1613). Moved onto the end of the word, the
+     * delimiter shows which of the two is painted last: the topmost element at a point is the one painted
+     * last there. The point lies in a padding without letters, because a point on a letter finds the word
+     * in either order.
+     */
+    it('should be painted over the following delimiter', () => {
+      initComponent(undefined);
+      component.color = '#f9f871';
+      fixture.detectChanges();
+      const delimiterFixture = TestBed.createComponent(MarkableDelimiterComponent);
+      delimiterFixture.componentInstance.text = ', ';
+      delimiterFixture.componentInstance.color = '#f9f871';
+      delimiterFixture.componentInstance.neighbourColor = '#f9f871';
+      delimiterFixture.detectChanges();
+      const delimiter = delimiterFixture.nativeElement as HTMLElement;
+      // TestBed renders each host as a div; in the player both are inline elements in a line of text
+      fixture.nativeElement.style.display = 'inline';
+      delimiter.style.display = 'inline';
+      word().style.paddingRight = '10px';
+      delimiter.style.marginLeft = '-8px';
+      line = document.createElement('p');
+      line.style.fontSize = '20px';
+      line.append(fixture.nativeElement, delimiter);
+      document.body.append(line);
+      const wordBox = word().getBoundingClientRect();
+      const x = wordBox.right - 4;
+      const y = (wordBox.top + wordBox.bottom) / 2;
+      expect(delimiter.getBoundingClientRect().left).toBeLessThan(x);
+
+      const topmost = document.elementFromPoint(x, y);
+
+      expect(word().contains(topmost)).toBe(true);
+    });
   });
 });

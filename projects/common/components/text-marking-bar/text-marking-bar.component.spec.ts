@@ -9,7 +9,7 @@ import { TextMarkingBarComponent } from './text-marking-bar.component';
 
 @Component({
   selector: 'aspect-text-marking-button',
-  template: '',
+  template: '<button type="button">M</button>',
   standalone: false
 })
 class MockTextMarkingButtonComponent {
@@ -124,5 +124,34 @@ describe('TextMarkingBarComponent', () => {
     component.showHint = true;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.hint')).not.toBeNull();
+  });
+
+  describe('above a scrolled text', () => {
+    let scroller: HTMLElement | undefined;
+
+    afterEach(() => scroller?.remove());
+
+    /* The marked words of a text are positioned (#1613). Scrolled beneath the sticky bar, they must not cover its
+       buttons and take their clicks. */
+    it('should stay above positioned text that scrolls beneath it', () => {
+      component.sticky = true;
+      fixture.detectChanges();
+      // TestBed renders the host as a div, which would hold the sticky bar; in the text it is an inline element
+      fixture.nativeElement.style.display = 'inline';
+      scroller = document.createElement('div');
+      scroller.style.cssText = 'height: 100px; overflow: auto;';
+      const text = document.createElement('div');
+      text.style.cssText = 'position: relative; height: 400px;';
+      scroller.append(fixture.nativeElement, text);
+      document.body.append(scroller);
+      scroller.scrollTop = 100;
+      const { left, top, bottom } = fixture.nativeElement.querySelector('.marking-bar').getBoundingClientRect();
+      expect(bottom - top).toBeGreaterThan(0);
+      expect(text.getBoundingClientRect().top).toBeLessThan(top);
+
+      const topmost = document.elementFromPoint(left + 5, (top + bottom) / 2);
+
+      expect(fixture.nativeElement.contains(topmost)).toBe(true);
+    });
   });
 });

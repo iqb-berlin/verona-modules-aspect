@@ -2,24 +2,10 @@
      [style.height]="'auto'"
      [style.column-count]="elementModel.columnCount">
   <ng-container *ngFor="let part of elementModel.document.content">
-    <ul *ngIf="part.type === 'bulletList'"
-        [style.font-size]="part.attrs.fontSize"
-        [style.list-style]="part.attrs.listStyle">
-      <li *ngFor="let listItem of part.content">
-        <ng-container *ngFor="let listItemPart of $any(listItem).content"
-                      [ngTemplateOutlet]="paragraphs"
-                      [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
-      </li>
-    </ul>
-    <ol *ngIf="part.type === 'orderedList'"
-        [style.font-size]="part.attrs.fontSize"
-        [style.list-style]="part.attrs.listStyle">
-      <li *ngFor="let listItem of part.content">
-        <ng-container *ngFor="let listItemPart of $any(listItem).content"
-                      [ngTemplateOutlet]="paragraphs"
-                      [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
-      </li>
-    </ol>
+    @if (part.type === 'bulletList' || part.type === 'orderedList') {
+      <ng-container [ngTemplateOutlet]="list"
+                    [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+    }
     <blockquote *ngIf="part.type === 'blockquote'">
       <ng-container *ngFor="let blockquotePart of $any(part).content"
                     [ngTemplateOutlet]="paragraphs"
@@ -32,6 +18,40 @@
          [src]="part.attrs.src" [alt]="$any(part.attrs.alt)">
   </ng-container>
 </div>
+
+<!--An item holds its paragraphs and, once it was given sub-items with Tab, a list of its own (#1602).
+    `ClozeElement.getCustomNodes` finds the gaps on every level, so every level is drawn here as well.-->
+<ng-template #list let-part>
+  @if (part.type === 'bulletList') {
+    <ul [style.font-size]="part.attrs.fontSize"
+        [style.list-style]="part.attrs.listStyle">
+      <ng-container [ngTemplateOutlet]="listItems"
+                    [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+    </ul>
+  } @else {
+    <ol [style.font-size]="part.attrs.fontSize"
+        [style.list-style]="part.attrs.listStyle">
+      <ng-container [ngTemplateOutlet]="listItems"
+                    [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+    </ol>
+  }
+</ng-template>
+
+<ng-template #listItems let-part>
+  @for (listItem of $any(part).content; track listItem) {
+    <li>
+      @for (listItemPart of $any(listItem).content; track listItemPart) {
+        @if (listItemPart.type === 'bulletList' || listItemPart.type === 'orderedList') {
+          <ng-container [ngTemplateOutlet]="list"
+                        [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
+        } @else {
+          <ng-container [ngTemplateOutlet]="paragraphs"
+                        [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
+        }
+      }
+    </li>
+  }
+</ng-template>
 
 <ng-template #paragraphs let-part>
   <p *ngIf="part.type === 'paragraph'"

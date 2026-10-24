@@ -11,7 +11,10 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 })
 export class CheckboxWizardDialogComponent {
   text1: string = '';
-  options: string[] = [];
+  /** One list per mode, so switching image options neither shows a text as an image nor hands one
+      over as such; confirming takes the list of the mode in force (#1610). */
+  textOptions: string[] = [];
+  imageOptions: string[] = [];
   useImages: boolean = false;
 
   constructor(private dialogService: DialogService) {}
@@ -49,7 +52,8 @@ export class CheckboxWizardDialogComponent {
     list.splice(i, 1);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.options, event.previousIndex, event.currentIndex);
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 }

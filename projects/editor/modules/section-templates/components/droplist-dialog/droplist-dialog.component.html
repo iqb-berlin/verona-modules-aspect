@@ -114,7 +114,8 @@
     </aspect-rich-text-editor>
     <h4>{{ 'elements' | translate }}</h4>
     @if (templateVariant === '2pages') {
-      <mat-checkbox [(ngModel)]="options.srcUseImages" class="image-checkbox">
+      <mat-checkbox [ngModel]="options.srcUseImages" (ngModelChange)="setSrcUseImages($event)"
+                    class="image-checkbox">
         {{ 'sectionTemplates.useImages' | translate }}
       </mat-checkbox>
     }
@@ -126,7 +127,8 @@
       </mat-radio-group>
     }
     <ng-container
-      *ngTemplateOutlet="elementInputs; context: { list: options.options, useImages: options.srcUseImages }">
+      *ngTemplateOutlet="elementInputs; context: { list: options.srcUseImages ? srcImages : options.options,
+                                                   useImages: options.srcUseImages }">
     </ng-container>
   </ng-template>
   <ng-template #targetList>
@@ -142,8 +144,8 @@
       </mat-checkbox>
     }
     <ng-container
-      *ngTemplateOutlet="elementInputs; context: { list: options.targetLabels,
-                                                   useImages: options.srcUseImages && options.targetUseImages }">
+      *ngTemplateOutlet="elementInputs; context: { list: options.targetUseImages ? targetImages : options.targetLabels,
+                                                   useImages: options.targetUseImages }">
     </ng-container>
   </ng-template>
 
@@ -189,7 +191,7 @@
   <button mat-button
           [disabled]="(templateVariant == 'classic' && (!options.optionWidth || !options.targetWidth)) ||
                       (templateVariant == 'sort' && !options.optionWidth)"
-          [mat-dialog-close]="{ variant: templateVariant, options }">
+          (click)="confirmAndClose()">
     {{ 'confirm' | translate }}
   </button>
   <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>

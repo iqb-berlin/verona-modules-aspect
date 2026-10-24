@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, TestBed, fakeAsync, flush
+} from '@angular/core/testing';
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
@@ -18,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
+import { FileService } from 'common/services/file.service';
 import { SpyObj, createSpyObj } from 'common/utils/vitest-spy-object';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
@@ -46,6 +49,7 @@ describe('DroplistWizardDialogComponent', () => {
   };
 
   beforeEach(async () => {
+    mockDialogRef.close.mockClear();
     mockDialogService = createSpyObj<DialogService>(['showImageResizeDialog', 'showLabelEditDialog']);
 
     await TestBed.configureTestingModule({
@@ -157,7 +161,7 @@ describe('DroplistWizardDialogComponent', () => {
   it('should offer the wrench for text items only', () => {
     component.templateVariant = '2pages';
     component.options.srcUseImages = true;
-    component.options.options = ['data:image/png;base64,abc'];
+    component.srcImages = ['data:image/png;base64,abc'];
     component.options.targetLabels = ['x'];
     fixture.detectChanges();
 
@@ -189,5 +193,96 @@ describe('DroplistWizardDialogComponent', () => {
     confirmButton.click();
 
     expect(mockDialogRef.close).toHaveBeenCalledWith({ variant: 'sort', options: component.options });
+  });
+
+  describe('switching images in the two-page variant (#1610)', () => {
+    const ELEMENTS = 0;
+    const TARGETS = 1;
+    /** The element list's controls come first in the two-page variant, the target list's last. */
+    const pick = <T extends Element>(selector: string, list: number): T => {
+      const matches = Array.from(fixture.nativeElement.querySelectorAll(selector) as NodeListOf<T>);
+      return list === ELEMENTS ? matches[0] : matches[matches.length - 1];
+    };
+    const addTextItem = (list: number, text: string) => {
+      const textarea = pick<HTMLTextAreaElement>('textarea', list);
+      textarea.value = text;
+      textarea.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+    };
+    /** Focuses first, as a click does: a focused text field removed during change detection would blur
+        there, and fakeAsync would then hand the appearing image size radios their value mid-check. */
+    const toggleImages = (list: number) => {
+      const checkbox = pick<HTMLInputElement>('.image-checkbox input', list);
+      checkbox.focus();
+      checkbox.click();
+      fixture.detectChanges();
+    };
+    const uploadImage = (list: number, dataUrl: string) => {
+      vi.spyOn(FileService, 'readFileAsText').mockResolvedValue(dataUrl);
+      vi.spyOn(FileService, 'isResizable').mockReturnValue(false);
+      const input = pick<HTMLInputElement>('input[type="file"]', list);
+      Object.defineProperty(input, 'files', { value: [new File([''], 'test.gif', { type: 'image/gif' })] });
+      input.dispatchEvent(new Event('change'));
+      flush();
+      fixture.detectChanges();
+    };
+    const itemsOf = (list: number) => (fixture.nativeElement
+      .querySelectorAll('.drop-list') as NodeListOf<HTMLElement>)[list].querySelectorAll('.drop-list-option');
+    const confirm = () => {
+      (fixture.nativeElement.querySelector('div[mat-dialog-actions] button') as HTMLButtonElement).click();
+      return mockDialogRef.close.mock.lastCall?.[0].options;
+    };
+
+    beforeEach(() => {
+      component.templateVariant = '2pages';
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('should keep text elements out of the images and bring them back when switched off', fakeAsync(() => {
+      addTextItem(ELEMENTS, 'Apfel');
+      toggleImages(ELEMENTS);
+
+      expect(itemsOf(ELEMENTS).length).toBe(0);
+
+      uploadImage(ELEMENTS, 'data:image/gif;base64,abc');
+      expect(confirm()).toEqual(expect.objectContaining({
+        srcUseImages: true, options: ['data:image/gif;base64,abc']
+      }));
+
+      toggleImages(ELEMENTS);
+
+      expect(itemsOf(ELEMENTS)[0].textContent).toContain('Apfel');
+      expect(itemsOf(ELEMENTS).length).toBe(1);
+      expect(confirm()).toEqual(expect.objectContaining({ srcUseImages: false, options: ['Apfel'] }));
+    }));
+
+    it('should keep text target labels out of the images', fakeAsync(() => {
+      toggleImages(ELEMENTS);
+      addTextItem(TARGETS, 'Ziel X');
+      toggleImages(TARGETS);
+
+      expect(itemsOf(TARGETS).length).toBe(0);
+
+      uploadImage(TARGETS, 'data:image/gif;base64,abc');
+      expect(confirm()).toEqual(expect.objectContaining({
+        targetUseImages: true, targetLabels: ['data:image/gif;base64,abc']
+      }));
+    }));
+
+    it('should switch the target images off with the element images', fakeAsync(() => {
+      toggleImages(ELEMENTS);
+      toggleImages(TARGETS);
+      toggleImages(ELEMENTS);
+      addTextItem(TARGETS, 'Ziel X');
+
+      expect(fixture.nativeElement.textContent).toContain('sectionTemplates.targetLabelsBelow');
+      expect(confirm()).toEqual(expect.objectContaining({
+        srcUseImages: false, targetUseImages: false, targetLabels: ['Ziel X']
+      }));
+    }));
   });
 });

@@ -1,6 +1,9 @@
 Player
 ======
 ## next
+### Neue Funktionen
+- Audio, Video: Während ein Audio oder Video läuft, schaltet sich der Bildschirm nicht ab, sodass ein Tablet keinen Sperrbildschirm mit eigenen Wiedergabeknöpfen zeigt ([#251](https://github.com/iqb-berlin/verona-modules-aspect/issues/251))
+
 ### Änderungen
 - Audio, Video: Der Fehlercode bei zu langem Laden heißt `MEDIA_TIMEOUT` statt `audio-timeout` ([#1526](https://github.com/iqb-berlin/verona-modules-aspect/issues/1526), [#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
 - Fehlercodes: Die Fehlermeldungen an die Testumgebung tragen die Codes der Player-Spezifikation, etwa `GEOGEBRA_NOT_LOADING` statt `geogebra-not-loading` und `GEOGEBRA_TIMEOUT` statt `geometry-timeout` ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
@@ -15,6 +18,8 @@ Player
 - Abschnitte mit Einblendregel ohne „wieder ausblenden“: Der Abschnitt bleibt sichtbar, sobald er einmal erschienen ist. Aufgaben, die auf das bisherige Verhalten gebaut waren, verhalten sich jetzt anders ([#1547](https://github.com/iqb-berlin/verona-modules-aspect/issues/1547))
 - Abschnitte mit Einblendregel: Ein Abschnitt ohne „dynamisches Layout“ erscheint mit seinem Inhalt, statt leer zu bleiben ([#1535](https://github.com/iqb-berlin/verona-modules-aspect/issues/1535))
 - Formelbereich: Beim Antippen bleibt auf Android-Tablets die Bildschirmtastatur offen, und auf dem iPad ist der Cursor zu sehen, in Zeilen ohne Formel in normaler Höhe ([#1218](https://github.com/iqb-berlin/verona-modules-aspect/issues/1218))
+- Formelfeld, Formelbereich: Am iPad bleibt die Formeltastatur beim Tippen offen und auf der gewählten Belegung, statt sich nach jedem Zeichen zu schließen ([#1600](https://github.com/iqb-berlin/verona-modules-aspect/issues/1600))
+- Formelfeld, Formelbereich: Am iPad bleibt die Umschalttaste (⇧) der Formeltastatur aktiv, bis ein Zeichen angetippt wurde, statt sofort zurückzuspringen ([#1607](https://github.com/iqb-berlin/verona-modules-aspect/issues/1607))
 - Geometrie: Verfolgte Variablen, die mit einem Editor vor 2.11.0 ausgewählt wurden, galten mit der ersten Meldung des Elements alle als geändert, weil zu ihnen kein Startwert gespeichert ist. Der Player vergleicht jetzt mit den Werten, die GeoGebra beim Laden berechnet ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
 - Geometrie: Tippen in die Zeichnung verschiebt die Seite nicht mehr ([#971](https://github.com/iqb-berlin/verona-modules-aspect/issues/971))
 - Geometrie: Die GeoGebra-Tastatur öffnet sich im Applet statt am Fensterrand, wo andere Elemente sie verdecken konnten. Ein GeoGebra-Element mit Eingabefeld sollte mindestens 400 Pixel hoch sein ([#1549](https://github.com/iqb-berlin/verona-modules-aspect/issues/1549))

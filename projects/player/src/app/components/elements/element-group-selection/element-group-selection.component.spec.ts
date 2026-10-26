@@ -18,6 +18,7 @@ import { ClozeElement } from 'common/models/elements/cloze';
 import { FrameElement } from 'common/models/elements/frame';
 import { ImageElement } from 'common/models/elements/image';
 import { ButtonElement } from 'common/models/elements/button';
+import { StartsWithTextPipe } from 'player/modules/print/pipes/starts-with-text.pipe';
 import { ElementGroupSelectionComponent } from './element-group-selection.component';
 
 describe('ElementGroupSelectionComponent', () => {
@@ -115,7 +116,8 @@ describe('ElementGroupSelectionComponent', () => {
         ElementCompoundGroupComponent,
         ElementBaseGroupComponent,
         ElementInteractiveGroupComponent,
-        ElementActionGroupComponent
+        ElementActionGroupComponent,
+        StartsWithTextPipe
       ]
     })
       .compileComponents();
@@ -231,5 +233,16 @@ describe('ElementGroupSelectionComponent', () => {
     component.elementModel = new ButtonElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('actionGroup');
+  });
+  it('should give an element without a line of text at its top an invisible first line', () => {
+    component.elementModel = new ImageElement({ id: 'id', alias: 'alias' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-element-id]').classList).toContain('starts-without-text');
+  });
+
+  it('should leave an element that begins with a line of text as it is', () => {
+    component.elementModel = new ClozeElement({ id: 'id', alias: 'alias' });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-element-id]').classList).not.toContain('starts-without-text');
   });
 });

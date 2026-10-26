@@ -1,0 +1,205 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "enableSectionNumbering": true,
+  "sectionNumberingPosition": "left",
+  "pages": [
+    {
+      "sections": [
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "text",
+              "id": "text",
+              "alias": "text",
+              "text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Text in der voreingestellten Schrift</p>"
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_large",
+              "alias": "text_large",
+              "text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Text in 30px mit 200 % Zeilenhöhe</p>",
+              "styling": {
+                "fontSize": 30,
+                "lineHeight": 200
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "cloze",
+              "id": "cloze",
+              "alias": "cloze",
+              "document": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {},
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Lückentext mit 180 % Zeilenhöhe"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "spell-correct",
+              "id": "spell_correct",
+              "alias": "spell_correct",
+              "label": "Wortkorrektur"
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "image",
+              "id": "image",
+              "alias": "image",
+              "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iODAiPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iODAiIGZpbGw9IiM4OGMiLz48L3N2Zz4=",
+              "dimensions": {
+                "width": 100,
+                "height": 80,
+                "isWidthFixed": true,
+                "isHeightFixed": true
+              },
+              "position": {
+                "marginTop": {
+                  "value": 30,
+                  "unit": "px"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "image",
+              "id": "image_beside_text",
+              "alias": "image_beside_text",
+              "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iODAiPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iODAiIGZpbGw9IiM4OGMiLz48L3N2Zz4=",
+              "dimensions": {
+                "width": 100,
+                "height": 80,
+                "isWidthFixed": true,
+                "isHeightFixed": true
+              },
+              "position": {
+                "gridColumn": 1,
+                "gridRow": 1
+              }
+            },
+            {
+              "type": "text",
+              "id": "text_beside_image",
+              "alias": "text_beside_image",
+              "text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Text neben einem Bild</p>",
+              "position": {
+                "gridColumn": 2,
+                "gridRow": 1
+              }
+            }
+          ],
+          "autoColumnSize": false,
+          "gridColumnSizes": [
+            {
+              "value": 1,
+              "unit": "fr"
+            },
+            {
+              "value": 1,
+              "unit": "fr"
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_after_image",
+              "alias": "text_after_image",
+              "text": "<img src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iODAiPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iODAiIGZpbGw9IiM4OGMiLz48L3N2Zz4=\"><p style=\"margin-bottom: 0px; margin-top: 0\">Text unter einem Bild</p>"
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "cloze",
+              "id": "cloze_after_image",
+              "alias": "cloze_after_image",
+              "document": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "blockImage",
+                    "attrs": {
+                      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iODAiPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iODAiIGZpbGw9IiM4OGMiLz48L3N2Zz4=",
+                      "alt": "",
+                      "title": null,
+                      "style": null
+                    },
+                    "content": []
+                  },
+                  {
+                    "type": "paragraph",
+                    "attrs": {},
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Lückentext unter einem Bild"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": false,
+          "height": 80,
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_static",
+              "alias": "text_static",
+              "text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Text in einem statischen Abschnitt</p>",
+              "position": {
+                "xPosition": 0,
+                "yPosition": 0
+              },
+              "dimensions": {
+                "width": 500,
+                "height": 40
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { CdkConnectedOverlay, CdkOverlayOrigin, CdkScrollable } from '@angular/cdk/overlay';
 import { PrintLabelComponent } from 'player/modules/print/components/print-label/print-label.component';
+import { StartsWithTextPipe } from 'player/modules/print/pipes/starts-with-text.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PrintLabelComponent } from 'player/modules/print/components/print-label
     PrintPageComponent,
     PrintSectionComponent,
     PrintElementComponent,
-    PrintLabelComponent
+    PrintLabelComponent,
+    StartsWithTextPipe
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,9 @@ import { PrintLabelComponent } from 'player/modules/print/components/print-label
     CdkScrollable
   ],
   exports: [
-    PrintLayoutComponent
+    PrintLayoutComponent,
+    // The preview aligns its section numbers the same way; AppModule takes the pipe from here.
+    StartsWithTextPipe
   ]
 })
 export class PrintModule { }

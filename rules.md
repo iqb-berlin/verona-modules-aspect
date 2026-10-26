@@ -479,8 +479,19 @@ Rationale:
   compiles, passes every suite and does nothing. After the pull request every such round costs a
   pipeline run
 
-## 20) Pull requests
+## 20) Commit messages and pull requests
 
+Commit messages:
+- The subject line names the change in the imperative, at most 72 characters, with the issue as
+  `(#1357)`.
+- The body says only what the diff cannot: why the change was needed, a decision the code does not
+  make obvious, a change in behaviour someone will look for later. As a guide, no more than five
+  lines; more only for a behaviour change that needs it.
+- Leave out how the change came about (drafts, review rounds, what was tried first, where it sits in
+  a series), test results (they belong in the pull request) and a retelling of the diff. Why the
+  code is built the way it is belongs in a code comment, where it survives the next refactoring.
+
+Pull requests:
 - Never write `Closes #…`, `Fixes #…` or `Resolves #…` in a commit message or pull request text.
   Reference the issue as `(#1357)`: GitHub would close the ticket on merge, and the board would move
   it past *zu testen* and *Zu Veröffentlichen*.
@@ -490,6 +501,8 @@ Rationale:
   in review as well — becomes an issue of its own, not a commit on the branch.
 
 Rationale:
+- a commit message is read in `git log` and `git blame`, months later, by someone asking why the
+  code is the way it is; every further paragraph makes that answer harder to find
 - every extra topic lengthens the review, and every further round costs a pipeline run of about half
   an hour
 

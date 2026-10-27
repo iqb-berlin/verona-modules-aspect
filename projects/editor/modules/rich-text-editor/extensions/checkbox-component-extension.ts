@@ -22,7 +22,8 @@ const CheckboxComponentExtension = (injector: Injector): Node => Node.create({
           alias: 'cloze-child-alias-placeholder',
           crossOutChecked: true,
           dimensions: {
-            height: 30
+            height: 30,
+            isHeightFixed: true
           }
         } as Partial<CheckboxProperties> as UIElementProperties)
       }
@@ -39,7 +40,8 @@ const CheckboxComponentExtension = (injector: Injector): Node => Node.create({
           alias: 'cloze-child-alias-placeholder',
           crossOutChecked: true,
           dimensions: {
-            height: 30
+            height: 30,
+            isHeightFixed: true
           }
         } as Partial<CheckboxProperties> as UIElementProperties)
       })

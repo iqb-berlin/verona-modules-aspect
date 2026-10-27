@@ -19,6 +19,7 @@ Editor
 - Elementnamen: Das Markierungselement heißt jetzt überall Textmarkierung, das Feld „Markierungselemente“ am Textelement entsprechend „Textmarkierungen“ ([#1553](https://github.com/iqb-berlin/verona-modules-aspect/issues/1553))
 - GeoGebra: Objektnamen mit unerlaubten Zeichen lassen sich nicht als verfolgte Variable wählen ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
 - Löschen: Die Löschrückfrage bietet an jedem Verweis „Zum Element“ bzw. „Zum Abschnitt“ ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+- Lückentext: Knöpfe und Kontrollkästchen werden wie die übrigen Lücken mit einer festen Höhe von 30 px eingefügt; bisher hatten sie keine feste Höhe und waren 36 bzw. 39 px hoch ([#1619](https://github.com/iqb-berlin/verona-modules-aspect/issues/1619))
 - Meldungen: Fehler- und Warnmeldungen sehen einheitlich aus ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
 - Meldungen: Der Dialog „Unerwarteter Fehler“ zeigt die Fehlermeldung als technische Angabe ([#1537](https://github.com/iqb-berlin/verona-modules-aspect/issues/1537))
 - Meldungen: Eine nicht lesbare Aufgabendefinition meldet „Aufgabendefinition konnte nicht gelesen werden!“ statt einer technischen Meldung ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))

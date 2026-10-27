@@ -89,6 +89,44 @@
   justify-content: center;
 }
 
+/* In a gap a word is the line the gap gives it, without the margin of its label, plus 1px above and
+   below, so that a list without a fixed height is as tall as a text field beside it -- the margin and
+   the line height of the cloze made it 56px and pushed its line apart by 20px (#1619). The strut does
+   the same for an empty list. Only in a gap: a table cell shares the cloze context but not its sizes. */
+.in-gap .drop-list-item {
+  padding: 1px 5px;
+  box-sizing: border-box;
+}
+:host ::ng-deep .in-gap .drop-list-item .text {
+  margin: 0;
+}
+/* The word fills the gap it lies in, which it used to do only because it was taller than the gap and
+   cut down to it. Several words share it: a list that stacks them its height, a list that lines them up
+   its width, and a list that floats them stretches its rows, which it otherwise centres. Unlike the
+   other gaps a list does not cut off what does not fit: its warning and the play button of a word,
+   which grows while it plays, reach beyond it on purpose. */
+.in-gap.drop-list > .list-item-wrapper {
+  flex-grow: 1;
+}
+.in-gap.drop-list.float {
+  align-content: stretch;
+  align-items: stretch;
+}
+/* The highlight of a list that can take the dragged word is drawn inside it, so that a gap without a
+   fixed height keeps its size, and its line its place, while a word is dragged. As a border it made the
+   gap 4px taller. */
+.in-gap.drop-list.isHighlighted {
+  border: none;
+  outline: 2px solid;
+  outline-offset: -2px;
+}
+.baseline-strut {
+  width: 0;
+}
+.baseline-strut.in-gap {
+  padding-block: 1px;
+}
+
 .drop-list-item.show-as-placeholder { /* set via controller */
   background-color: #ccc !important;
   color: transparent !important;

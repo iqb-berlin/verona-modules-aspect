@@ -10,4 +10,5 @@ import { ToggleButtonElement } from 'common/models/elements/toggle-button';
 })
 export class ToggleButtonComponent extends FormElementComponent {
   @Input() elementModel!: ToggleButtonElement;
+  @Input() clozeContext: boolean = false;
 }

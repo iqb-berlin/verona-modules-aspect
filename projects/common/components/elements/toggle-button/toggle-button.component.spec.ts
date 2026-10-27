@@ -31,6 +31,19 @@ class MockErrorTransformPipe implements PipeTransform {
   transform(): string { return 'Error'; }
 }
 
+/** One line of the font `element` renders in, at normal line height: what a gap is made of (#1619). */
+const normalLineOf = (element: HTMLElement): number => {
+  const style = getComputedStyle(element);
+  const probe = document.createElement('span');
+  probe.style.cssText = `display: inline-block; line-height: normal; font-family: ${style.fontFamily};
+    font-size: ${style.fontSize};`;
+  probe.textContent = 'Wort';
+  document.body.appendChild(probe);
+  const height = probe.getBoundingClientRect().height;
+  probe.remove();
+  return height;
+};
+
 describe('ToggleButtonComponent', () => {
   let component: ToggleButtonComponent;
   let fixture: ComponentFixture<ToggleButtonComponent>;
@@ -135,5 +148,55 @@ describe('ToggleButtonComponent', () => {
     // which is outside the test ProxyZone — fakeAsync/tick cannot flush it.
     await fixture.whenStable();
     expect(component.elementFormControl.disabled).toBe(true);
+  });
+
+  /* An option is set to a line height of 100% by default, which the gap's own normal line height does
+     not reach through, so what the rules do shows without one given to the host (#1619). */
+  describe('in a gap', () => {
+    beforeEach(() => {
+      component.clozeContext = true;
+      fixture.detectChanges();
+    });
+
+    const group = (): HTMLElement => fixture.nativeElement.querySelector('mat-button-toggle-group');
+    const label = (): HTMLElement => fixture.nativeElement.querySelector('.mat-button-toggle-label-content');
+
+    it('should mark the group as standing in a gap', () => {
+      expect(group().classList).toContain('cloze-context');
+    });
+
+    /* On the option: the 1px border around it is the theme's, which the tests do not load. */
+    it('should make an option at least one line of normal height', () => {
+      expect(label().getBoundingClientRect().height).toBeCloseTo(normalLineOf(label()), 0);
+    });
+
+    it('should still let a larger line height make an option taller', () => {
+      component.elementModel = createToggleButtonElement();
+      component.elementModel.styling.lineHeight = 300;
+      fixture.detectChanges();
+
+      expect(label().getBoundingClientRect().height).toBeCloseTo(3 * parseFloat(getComputedStyle(label()).fontSize), 0);
+    });
+
+    /* The label dialog saves an option as a paragraph, and a strut in front of a paragraph is a line of
+       its own: the option was two lines high. */
+    it('should keep an option that is a paragraph one line high', () => {
+      component.elementModel = createToggleButtonElement({
+        options: [{ text: '<p style="margin-bottom: 0px; margin-top: 0">Option A</p>' }, { text: 'Option B' }]
+      });
+      fixture.detectChanges();
+
+      expect(label().getBoundingClientRect().height).toBeCloseTo(normalLineOf(label()), 0);
+    });
+
+    it('should centre an option in a gap lower than its line', () => {
+      (fixture.nativeElement as HTMLElement).style.height = '20px';
+      fixture.detectChanges();
+      const button = (fixture.nativeElement.querySelector('.mat-button-toggle-button') as HTMLElement)
+        .getBoundingClientRect();
+      const content = label().getBoundingClientRect();
+
+      expect((content.top + content.bottom) / 2).toBeCloseTo((button.top + button.bottom) / 2, 0);
+    });
   });
 });

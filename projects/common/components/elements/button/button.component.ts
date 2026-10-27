@@ -12,5 +12,6 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 })
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;
+  @Input() clozeContext: boolean = false;
   @Output() buttonActionEvent = new EventEmitter<ButtonEvent>();
 }

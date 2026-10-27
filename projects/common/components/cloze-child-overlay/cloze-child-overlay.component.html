@@ -1,8 +1,5 @@
 <div class="gap-box"
      [style.border]="isSelected ? 'purple solid 1px' : ''"
-     [style.box-sizing]="'border-box'"
-     [style.display]="'flex'"
-     [style.align-items]="'center'"
      [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width+'px' : null"
      [style.height]="element.dimensions.isHeightFixed ? element.dimensions.height + 'px' : null"
      [style.min-width]="element.dimensions.minWidth ? element.dimensions.minWidth + 'px' : null"
@@ -13,7 +10,6 @@
   @switch (element.type) {
     @case ('text-field-simple') {
       <aspect-text-field-simple #childComponent
-                                class="fill-gap-height"
                                 [style.pointer-events]="editorMode ? 'none' : 'auto'"
                                 [parentForm]="parentForm"
                                 [elementModel]="$any(element)">
@@ -22,6 +18,7 @@
     @case ('drop-list') {
       <aspect-drop-list #childComponent
                         [clozeContext]="true"
+                        [inGap]="true"
                         [style.pointer-events]="editorMode ? 'none' : 'auto'"
                         [parentForm]="parentForm"
                         [elementModel]="$any(element)">
@@ -29,6 +26,7 @@
     }
     @case ('toggle-button') {
       <aspect-toggle-button #childComponent
+                            [clozeContext]="true"
                             [style.pointer-events]="editorMode ? 'none' : 'auto'"
                             [parentForm]="parentForm"
                             [elementModel]="$any(element)">
@@ -36,7 +34,7 @@
     }
     @case ('button') {
       <aspect-button #childComponent
-                     [style.display]="'flex'"
+                     [clozeContext]="true"
                      [style.pointer-events]="editorMode ? 'none' : 'auto'"
                      [elementModel]="$any(element)">
       </aspect-button>

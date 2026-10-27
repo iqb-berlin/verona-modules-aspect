@@ -24,9 +24,13 @@ function numberOf(element: HTMLElement): HTMLElement {
 /** How far the first line of text of an element lies below the baseline of its number. */
 function textOffset(document: Document, alias: string): number {
   const element = elementByAlias(document, alias);
-  const firstParagraph = Array.from(element.querySelectorAll('p')).find(p => p.textContent?.trim());
-  if (!firstParagraph) throw new Error(`No text in ${alias}`);
-  return baselineOf(firstParagraph) - baselineOf(numberOf(element));
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  let firstLine: HTMLElement | null = null;
+  for (let node = walker.nextNode(); node && !firstLine; node = walker.nextNode()) {
+    if (node.textContent?.trim() && node.parentElement?.offsetParent) firstLine = node.parentElement;
+  }
+  if (!firstLine) throw new Error(`No text in ${alias}`);
+  return baselineOf(firstLine) - baselineOf(numberOf(element));
 }
 
 /** How far the first picture of an element lies below the top of its number. */
@@ -37,7 +41,7 @@ function pictureOffset(document: Document, alias: string): number {
   return picture.getBoundingClientRect().top - numberOf(element).getBoundingClientRect().top;
 }
 
-/** The input of a word correction is the line the number belongs to; both are set in 20px. */
+/** The input of a word correction or a text field is the line the number belongs to; both are set in 20px. */
 function inputOffset(document: Document, alias: string): number {
   const element = elementByAlias(document, alias);
   const input = element.querySelector('input');
@@ -51,6 +55,10 @@ function inputOffset(document: Document, alias: string): number {
  * one at its top -- a picture -- with its top edge rather than its bottom (#1021). Between 3.0.1 and the fix
  * the number stood at the top of every section, which is off by the difference in the first line: 4 px beside a
  * cloze with its 180 % line height, 14 px beside a word correction, 19 px beside text in 30px.
+ *
+ * Every component that says it begins with a line of text (`ElementComponent.startsWithText`) has a case here.
+ * Where its first line would stand at the top in the default font anyway -- button, toggle buttons, both radio
+ * groups, formula field, likert -- the case is set in 30px, which puts that line 10 to 20 px lower.
  */
 function expectNumbersAligned(): void {
   cy.document().should(document => {
@@ -58,6 +66,13 @@ function expectNumbersAligned(): void {
     expect(textOffset(document, 'text_large'), 'text in 30px').to.be.closeTo(0, 1);
     expect(textOffset(document, 'cloze'), 'cloze').to.be.closeTo(0, 1);
     expect(inputOffset(document, 'spell_correct'), 'word correction').to.be.closeTo(0, 1);
+    expect(inputOffset(document, 'text_field'), 'text field').to.be.closeTo(0, 1);
+    expect(textOffset(document, 'toggle_button'), 'toggle buttons').to.be.closeTo(0, 1);
+    expect(textOffset(document, 'button'), 'button').to.be.closeTo(0, 1);
+    expect(textOffset(document, 'radio'), 'radio group').to.be.closeTo(0, 1);
+    expect(textOffset(document, 'radio_images'), 'radio group with images').to.be.closeTo(0, 1);
+    expect(textOffset(document, 'math_field'), 'formula field').to.be.closeTo(0, 1);
+    expect(textOffset(document, 'likert'), 'likert').to.be.closeTo(0, 1);
     expect(pictureOffset(document, 'image'), 'picture with a margin above').to.be.closeTo(0, 1);
     expect(pictureOffset(document, 'image_beside_text'), 'picture beside text').to.be.closeTo(0, 1);
     expect(pictureOffset(document, 'text_after_image'), 'text that begins with a picture').to.be.closeTo(0, 1);

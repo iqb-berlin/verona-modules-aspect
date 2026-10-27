@@ -7,6 +7,7 @@ import { MarkingRange, MarkingData } from 'common/models/marking-data';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
+import { RichTextStart } from 'common/utils/rich-text-start';
 
 @Component({
   selector: 'aspect-text',
@@ -29,6 +30,12 @@ export class TextComponent extends ElementComponent implements OnInit, OnDestroy
   private ngUnsubscribe: Subject<void> = new Subject();
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
+
+  /** No while the marking bar stands above the text: it holds only pictures. */
+  static override startsWithText(element: TextElement): boolean {
+    if (element.highlightableYellow || element.highlightableTurquoise || element.highlightableOrange) return false;
+    return RichTextStart.isText(element.text);
+  }
 
   ngOnInit(): void {
     this.selectedColor

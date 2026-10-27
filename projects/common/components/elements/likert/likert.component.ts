@@ -18,6 +18,11 @@ export class LikertComponent extends CompoundElementComponent {
   @ViewChildren(LikertRadioButtonGroupComponent) compoundChildren!: QueryList<LikertRadioButtonGroupComponent>;
   @Input() elementModel!: LikertElement;
 
+  /** The label is plain text, not HTML. */
+  static override startsWithText(element: LikertElement): boolean {
+    return !!element.label?.trim();
+  }
+
   getFormElementChildrenComponents(): ElementComponent[] {
     return this.compoundChildren.toArray();
   }

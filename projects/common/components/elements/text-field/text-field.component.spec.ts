@@ -124,4 +124,8 @@ describe('TextFieldComponent', () => {
     input.dispatchEvent(keyboardEvent);
     expect(component.onKeyDown.emit).toHaveBeenCalledWith({ keyboardEvent, inputElement: input });
   });
+
+  it('should begin with a line of text', () => {
+    expect(TextFieldComponent.startsWithText()).toBe(true);
+  });
 });

@@ -14,4 +14,8 @@ export class TextFieldComponent extends TextInputComponent {
   @Input() elementModel!: TextFieldElement;
   @Output() onPaste = new EventEmitter<ClipboardEvent>();
   @Input() tableMode: boolean = false;
+
+  static override startsWithText(): boolean {
+    return true;
+  }
 }

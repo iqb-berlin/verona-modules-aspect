@@ -136,4 +136,20 @@ describe('ToggleButtonComponent', () => {
     await fixture.whenStable();
     expect(component.elementFormControl.disabled).toBe(true);
   });
+
+  describe('startsWithText', () => {
+    it('should say yes when its first option begins with text', () => {
+      expect(ToggleButtonComponent.startsWithText(createToggleButtonElement())).toBe(true);
+    });
+
+    it('should say no when its first option begins with a picture', () => {
+      expect(ToggleButtonComponent.startsWithText(
+        createToggleButtonElement({ options: [{ text: '<img src="picture.png"><p>A</p>' }] })
+      )).toBe(false);
+    });
+
+    it('should say no without options, when it holds only an empty line in its middle', () => {
+      expect(ToggleButtonComponent.startsWithText(createToggleButtonElement({ options: [] }))).toBe(false);
+    });
+  });
 });

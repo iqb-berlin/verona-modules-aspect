@@ -180,6 +180,158 @@
           ]
         },
         {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "text-field",
+              "id": "text_field",
+              "alias": "text_field",
+              "label": "Eingabefeld"
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "toggle-button",
+              "id": "toggle_button",
+              "alias": "toggle_button",
+              "options": [
+                {
+                  "text": "Option A"
+                },
+                {
+                  "text": "Option B"
+                }
+              ],
+              "styling": {
+                "fontSize": 30,
+                "lineHeight": 200
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "button",
+              "id": "button",
+              "alias": "button",
+              "label": "Knopf",
+              "styling": {
+                "fontSize": 30,
+                "lineHeight": 200
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "radio",
+              "id": "radio",
+              "alias": "radio",
+              "label": "<p>Optionsfelder</p>",
+              "options": [
+                {
+                  "text": "A"
+                },
+                {
+                  "text": "B"
+                }
+              ],
+              "styling": {
+                "fontSize": 30,
+                "lineHeight": 200
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "radio-group-images",
+              "id": "radio_images",
+              "alias": "radio_images",
+              "label": "<p>Optionsfelder mit Bildern</p>",
+              "options": [
+                {
+                  "text": "A",
+                  "imgSrc": null,
+                  "imgPosition": "above"
+                },
+                {
+                  "text": "B",
+                  "imgSrc": null,
+                  "imgPosition": "above"
+                }
+              ],
+              "styling": {
+                "fontSize": 30,
+                "lineHeight": 200
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "math-field",
+              "id": "math_field",
+              "alias": "math_field",
+              "label": "Formelfeld",
+              "styling": {
+                "fontSize": 30,
+                "lineHeight": 200
+              }
+            }
+          ]
+        },
+        {
+          "dynamicPositioning": true,
+          "elements": [
+            {
+              "type": "likert",
+              "id": "likert",
+              "alias": "likert",
+              "label": "Likert-Frage",
+              "options": [
+                {
+                  "text": "stimmt",
+                  "imgSrc": null,
+                  "imgPosition": "above"
+                },
+                {
+                  "text": "stimmt nicht",
+                  "imgSrc": null,
+                  "imgPosition": "above"
+                }
+              ],
+              "rows": [
+                {
+                  "type": "likert-row",
+                  "id": "likert_row",
+                  "alias": "likert_row",
+                  "rowLabel": {
+                    "text": "Aussage",
+                    "imgSrc": null,
+                    "imgPosition": "above"
+                  }
+                }
+              ],
+              "styling": {
+                "fontSize": 30,
+                "lineHeight": 200
+              }
+            }
+          ]
+        },
+        {
           "dynamicPositioning": false,
           "height": 80,
           "elements": [

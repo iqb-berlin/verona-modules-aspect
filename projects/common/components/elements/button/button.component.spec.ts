@@ -101,4 +101,26 @@ describe('ButtonComponent', () => {
     // Angular refuses to unwrap ends up as the sanitizer's complaint in the attribute.
     expect(imageInput.getAttribute('src')).toBe(imageSrc);
   });
+
+  describe('startsWithText', () => {
+    it('should say yes for a button with a text label', () => {
+      expect(ButtonComponent.startsWithText(component.elementModel)).toBe(true);
+    });
+
+    it('should say no for a picture button', () => {
+      component.elementModel.imageSrc = 'picture.png';
+      expect(ButtonComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+
+    it('should say no for a button without a label', () => {
+      component.elementModel.label = ' ';
+      expect(ButtonComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+
+    it('should say no for unit navigation, which the player can hide', () => {
+      component.elementModel.action = 'unitNav';
+      component.elementModel.actionParam = 'next';
+      expect(ButtonComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+  });
 });

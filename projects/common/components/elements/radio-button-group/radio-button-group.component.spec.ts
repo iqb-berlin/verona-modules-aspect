@@ -115,4 +115,18 @@ describe('RadioButtonGroupComponent', () => {
       expect(directives().every(directive => !directive.firstLineAlignedControl)).toBe(true);
     });
   });
+
+  describe('startsWithText', () => {
+    it('should say yes when the label begins with text', () => {
+      component.elementModel.label = '<p>Frage</p>';
+      expect(RadioButtonGroupComponent.startsWithText(component.elementModel)).toBe(true);
+    });
+
+    it('should say no when the label is empty or begins with a picture', () => {
+      component.elementModel.label = '<p></p>';
+      expect(RadioButtonGroupComponent.startsWithText(component.elementModel)).toBe(false);
+      component.elementModel.label = '<img src="picture.png"><p>Frage</p>';
+      expect(RadioButtonGroupComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+  });
 });

@@ -10,4 +10,9 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
 })
 export class MathFieldComponent extends TextInputComponent {
   @Input() elementModel!: MathFieldElement;
+
+  /** The label is plain text, not HTML. */
+  static override startsWithText(element: MathFieldElement): boolean {
+    return !!element.label?.trim();
+  }
 }

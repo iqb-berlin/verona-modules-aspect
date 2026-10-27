@@ -14,4 +14,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
 export class SpellCorrectComponent extends TextInputComponent {
   @Input() elementModel!: SpellCorrectElement;
   @ViewChild(MatInput) inputElement!: MatInput;
+
+  static override startsWithText(): boolean {
+    return true;
+  }
 }

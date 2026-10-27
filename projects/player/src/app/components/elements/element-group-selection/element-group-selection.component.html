@@ -1,4 +1,5 @@
-<div [style.width]="elementModel.dimensions.isWidthFixed ? elementModel.dimensions.width + 'px' : '100%'"
+<div [class.starts-without-text]="!(elementModel | startsWithText)"
+     [style.width]="elementModel.dimensions.isWidthFixed ? elementModel.dimensions.width + 'px' : '100%'"
      [style.height]="elementModel.dimensions.isHeightFixed ? elementModel.dimensions.height + 'px' : '100%'"
      [style.min-width]="!elementModel.dimensions.isWidthFixed && elementModel.dimensions.minWidth ?
                           elementModel.dimensions.minWidth + 'px' : null"

@@ -98,4 +98,16 @@ describe('MathFieldComponent', () => {
 
     expect(control.touched).toBe(true);
   });
+
+  describe('startsWithText', () => {
+    it('should say yes when there is a label', () => {
+      component.elementModel.label = 'Frage';
+      expect(MathFieldComponent.startsWithText(component.elementModel)).toBe(true);
+    });
+
+    it('should say no when the label is empty', () => {
+      component.elementModel.label = '  ';
+      expect(MathFieldComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+  });
 });

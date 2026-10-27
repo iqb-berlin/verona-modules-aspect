@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ClozeElement, ClozeProperties } from 'common/models/elements/cloze';
+import { ClozeDocumentWrapperNode, ClozeElement, ClozeProperties } from 'common/models/elements/cloze';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { StyleMarksPipe } from 'common/pipes/style-marks.pipe';
 import { MarkListPipe } from 'common/pipes/mark-list.pipe';
@@ -244,5 +244,40 @@ describe('ClozeComponent', () => {
     expect(ips - lorem).toBeGreaterThan(10);
     expect(Math.abs(ips - fieldLine)).toBeLessThan(10);
     expect(Math.abs(um - fieldLine)).toBeLessThan(10);
+  });
+
+  describe('startsWithText', () => {
+    const paragraph = (text: string): ClozeDocumentWrapperNode => ({
+      type: 'paragraph', attrs: {}, content: [{ type: 'text', text }]
+    });
+    const blockImage: ClozeDocumentWrapperNode = { type: 'blockImage', attrs: { src: 'picture.png' }, content: [] };
+    const horizontalRule: ClozeDocumentWrapperNode = { type: 'horizontalRule', attrs: {}, content: [] };
+    const cloze = (...content: ClozeDocumentWrapperNode[]): ClozeElement => new ClozeElement({
+      type: 'cloze', id: 'cloze_1', document: { type: 'doc', content }
+    } as Partial<ClozeProperties>);
+
+    it('should say yes for a cloze that begins with text', () => {
+      expect(ClozeComponent.startsWithText(cloze(paragraph('Text')))).toBe(true);
+    });
+
+    it('should say no for a cloze that begins with a block image', () => {
+      expect(ClozeComponent.startsWithText(cloze(blockImage, paragraph('Text')))).toBe(false);
+    });
+
+    it('should look past the nodes the template does not draw', () => {
+      expect(ClozeComponent.startsWithText(cloze(horizontalRule, blockImage, paragraph('Text')))).toBe(false);
+      expect(ClozeComponent.startsWithText(cloze(horizontalRule, paragraph('Text')))).toBe(true);
+    });
+
+    it('should say no for an empty cloze', () => {
+      expect(ClozeComponent.startsWithText(cloze())).toBe(false);
+    });
+
+    it('should say no for a document without content, which the template draws empty', () => {
+      const withoutContent = cloze();
+      (withoutContent as unknown as { document: object }).document = { type: 'doc' };
+
+      expect(ClozeComponent.startsWithText(withoutContent)).toBe(false);
+    });
   });
 });

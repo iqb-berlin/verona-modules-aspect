@@ -148,3 +148,16 @@ u>span {
   margin-left: -40px;
 }
 
+/* An element that does not begin with a line of text, as `StartsWithTextPipe` decides it: a line with no
+   height and nothing visible in it, set in the section number's font. A section numbered on the left aligns
+   its number with the content's first baseline, and without this line the browser would make that one up
+   at the element's bottom edge (#1021). With it, the number stands at the element's top edge (#1618). The
+   font size comes from the section; outside a numbered section the line changes nothing. */
+.starts-without-text::before {
+  content: '\200B';
+  display: block;
+  height: 0;
+  font-size: var(--section-number-font-size);
+  font-weight: bold;
+  pointer-events: none;
+}

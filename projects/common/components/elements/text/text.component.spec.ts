@@ -167,4 +167,21 @@ describe('TextComponent', () => {
       expect(image.getBoundingClientRect().left - 10).toBe(container.getBoundingClientRect().left);
     });
   });
+
+  describe('startsWithText', () => {
+    it('should say yes for a text that begins with a line of text', () => {
+      expect(TextComponent.startsWithText(createTextElement({ text: '<p>Text</p>' }))).toBe(true);
+    });
+
+    it('should say no for a text that begins with a picture', () => {
+      expect(TextComponent.startsWithText(createTextElement({ text: '<img src="picture.png"><p>Text</p>' })))
+        .toBe(false);
+    });
+
+    it('should say no while the marking bar stands above the text', () => {
+      expect(TextComponent.startsWithText(createTextElement({ highlightableYellow: true }))).toBe(false);
+      expect(TextComponent.startsWithText(createTextElement({ highlightableTurquoise: true }))).toBe(false);
+      expect(TextComponent.startsWithText(createTextElement({ highlightableOrange: true }))).toBe(false);
+    });
+  });
 });

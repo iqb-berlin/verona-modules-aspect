@@ -10,6 +10,8 @@ import {
 } from 'common/models/elements/text-field-simple';
 import { DropListElement } from 'common/models/elements/drop-list';
 import { DropdownElement } from 'common/models/elements/dropdown';
+import { ButtonElement } from 'common/models/elements/button';
+import { CheckboxElement } from 'common/models/elements/checkbox';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 
 @Component({
@@ -19,7 +21,9 @@ import { ValueChangeElement } from 'common/models/input-element-interfaces';
   standalone: false
 })
 export class ClozeChildOverlayComponent {
-  @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement | DropdownElement;
+  @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement | DropdownElement
+  | ButtonElement | CheckboxElement;
+
   @Input() parentForm!: UntypedFormGroup;
   @Input() editorMode: boolean = false;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();

@@ -22,6 +22,44 @@
 :host ::ng-deep mat-checkbox.centered-control .mdc-form-field .mdc-label {
   padding-top: 0;
 }
+/* In a gap the box is hidden and the label is all there is: a word that is struck out when it is chosen
+   (#1619). The padding above and before the label is there to put it beside the box, so it goes; the 4px
+   before it also kept the text of a centred paragraph off its middle. The label is the line the gap gives
+   it, plus 1px above and below, which makes a checkbox without a fixed height as tall as a text field
+   beside it -- the padding and the line height of the cloze made it 39px and pushed its line apart by
+   3px. With a height of its own the band fills it, and so does the label, which is what takes the click:
+   centred in the band at the height of its text, it left the rest of the band dead.
+   Flex boxes from the band down to the label, each filling the one around it, so that nothing between
+   them is a line of its own and the label's text is centred whatever height the gap has; inside the
+   label the text is a block again, and keeps the alignment of its paragraph. What does not fit is cut
+   off at the band, as in a text field. */
+.cloze-context.mat-form-field {
+  display: flex;
+  box-sizing: border-box;
+  padding-block: 1px;
+  overflow: hidden;
+}
+:host ::ng-deep .cloze-context .mat-mdc-checkbox {
+  display: flex;
+  flex-grow: 1;
+}
+:host ::ng-deep .cloze-context .mdc-checkbox {
+  display: none;
+}
+/* Both classes, to outweigh the rule for a centred box, which would centre the label instead of
+   stretching it. The line height is the gap's rather than the 20px of the theme. */
+:host ::ng-deep .cloze-context .mdc-form-field.mat-internal-form-field {
+  flex-grow: 1;
+  align-items: stretch;
+  line-height: inherit;
+}
+:host ::ng-deep .cloze-context .mdc-form-field .mdc-label {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+}
 .error-message {
   position: absolute;
   display: block;

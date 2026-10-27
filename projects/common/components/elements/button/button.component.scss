@@ -5,3 +5,33 @@
 .image {object-fit: contain;}
 
 .mdc-button {min-width: unset;}
+
+/* In a gap the label is the line the gap gives it, plus 1px above and below, so that a button without a
+   fixed height is as tall as a text field beside it (#1619). The gap is filled, with the label in its
+   middle -- the button does both itself, the link as a flex box; a link used to be as wide as its text
+   whatever width the gap had. What does not fit is cut off at the frame, as in a text field -- for the
+   button at its label, since the button itself carries Material's touch target, which reaches beyond
+   it on purpose. */
+.cloze-context.mdc-button {
+  padding-block: 1px;
+}
+
+/* A column, so that the label's text stays in its middle when the label is cut down to a gap lower than
+   its line, rather than running from its top edge. */
+:host ::ng-deep .cloze-context .mdc-button__label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.link.cloze-context {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-block: 1px;
+  overflow: hidden;
+}

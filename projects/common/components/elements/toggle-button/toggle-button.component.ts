@@ -11,6 +11,7 @@ import { RichTextStart } from 'common/utils/rich-text-start';
 })
 export class ToggleButtonComponent extends FormElementComponent {
   @Input() elementModel!: ToggleButtonElement;
+  @Input() clozeContext: boolean = false;
 
   /** Without options the template holds only an empty line in its middle. */
   static override startsWithText(element: ToggleButtonElement): boolean {

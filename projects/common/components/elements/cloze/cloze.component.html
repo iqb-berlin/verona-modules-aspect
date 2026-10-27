@@ -179,24 +179,24 @@
     <ng-container *ngIf="$any(subPart).type === 'math-formula'">
       <span [innerHTML]="subPart | mathFormula"></span>
     </ng-container>
-    <!--A child sits on the baseline of the text around it, unless what belongs in the line is its box
-        rather than its text: a drop list and an upright toggle button are boxes, and `middle` centres
-        them. A dropdown was in that list from the time Material drew its content in 16px whatever the
-        element said. Now that it wears the element's font (#1435), its text has to meet the text
-        beside it — centring the box left the glyphs 1.6px low at the 20px default and 2.2px at 28px,
-        and stretched the line by the same amount.-->
-    <aspect-compound-child-overlay
-      *ngIf="ClozeElement.validChildElements | arrayIncludes:subPart.type"
-      [style.display]="'inline-block'"
-      [parentForm]="parentForm"
-      [element]="$any(subPart).attrs.model"
-      [style.vertical-align]="(subPart.attrs.model.type === 'toggle-button' &&
-                                subPart.attrs.model.verticalOrientation === true) ||
-                                (['drop-list',
-                                'toggle-button'] | arrayIncludes:subPart.attrs.model.type) ?
-                                  'middle' : 'baseline'"
-      [editorMode]="editorMode"
-      (elementSelected)="childElementSelected.emit($event)">
-    </aspect-compound-child-overlay>
+    <!--A child stands in the line by its text: whatever height its gap has, it centres its content in
+        the gap, and the gap sits on the baseline of the text around it (#1619). Only an upright toggle
+        button is placed as a box, with `middle` -- its options stand above each other, and none of
+        them is the one line that belongs in the line around it.
+        A drop list and a toggle button used to be boxes as well, which left their text 1-2px low at
+        the 20px default and 4px at 28px; the dropdown left that list with #1435 for the same reason.
+        An empty drop list has no text of its own and stands in the line by a strut it keeps for that.-->
+    @if (ClozeElement.validChildElements | arrayIncludes:subPart.type) {
+      <aspect-compound-child-overlay
+        [style.display]="'inline-block'"
+        [parentForm]="parentForm"
+        [element]="$any(subPart).attrs.model"
+        [style.vertical-align]="subPart.attrs.model.type === 'toggle-button' &&
+                                  subPart.attrs.model.verticalOrientation === true ?
+                                    'middle' : 'baseline'"
+        [editorMode]="editorMode"
+        (elementSelected)="childElementSelected.emit($event)">
+      </aspect-compound-child-overlay>
+    }
   </ng-container>
 </ng-template>

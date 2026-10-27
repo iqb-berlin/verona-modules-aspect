@@ -124,4 +124,35 @@ describe('DragImageComponent', () => {
     expect(component.dragImageY).toBeUndefined();
     expect(fixture.nativeElement.querySelector('.drag-preview')).toBeNull();
   });
+
+  /* A word picked up from a gap is a line high and has no margin around its label (#1619). The preview
+     keeps the size of the word, so with the padding and the margin of a table cell's word the label
+     moved the moment it was grabbed. The label of the mock panel is given the margin the real one has. */
+  describe('picked up from a gap', () => {
+    let margin: HTMLStyleElement;
+
+    beforeEach(() => {
+      margin = document.createElement('style');
+      margin.textContent = '.text { margin: 10px; }';
+      document.head.appendChild(margin);
+    });
+
+    afterEach(() => {
+      margin.remove();
+    });
+
+    it('should look like a word of the gap', () => {
+      component.clozeContext = true;
+      component.inGap = true;
+      component.initDragPreview(testItem, createSourceElement(), 30, 40);
+      const preview = fixture.nativeElement.querySelector('.drag-preview') as HTMLElement;
+      const text = document.createElement('div');
+      text.className = 'text';
+      (preview.querySelector('aspect-text-image-panel') as HTMLElement).appendChild(text);
+
+      expect(getComputedStyle(preview).padding).toBe('1px 5px');
+      expect(getComputedStyle(preview).lineHeight).toBe('normal');
+      expect(getComputedStyle(text).margin).toBe('0px');
+    });
+  });
 });

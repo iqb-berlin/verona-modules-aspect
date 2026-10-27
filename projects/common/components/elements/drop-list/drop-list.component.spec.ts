@@ -12,6 +12,11 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interf
 import { DragOperatorService } from 'common/services/drag-operator.service';
 import { DragImageComponent } from 'common/components/drag-image/drag-image.component';
 import { DragStartEvent } from 'common/directives/draggable.directive';
+import { TextImagePanelComponent } from 'common/components/text-image-panel/text-image-panel.component';
+import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
+import { SafeResourceUrlPipe } from 'common/pipes/safe-resource-url.pipe';
+import { HasRenderableContentPipe } from 'common/pipes/has-renderable-content.pipe';
+import { MatIconModule } from '@angular/material/icon';
 import { DropListComponent } from './drop-list.component';
 
 @Component({
@@ -48,40 +53,42 @@ interface DragOperatorServiceMock {
   checkHoveredListOrElement: ReturnType<typeof vi.fn>;
 }
 
+const createDragOperatorServiceMock = (): DragOperatorServiceMock => ({
+  isDragActive: false,
+  hoveredListID: undefined,
+  dragOperation: undefined,
+  registerComponent: vi.fn(),
+  unregisterComponent: vi.fn(),
+  startDrag: vi.fn(),
+  endDrag: vi.fn(),
+  handleDrop: vi.fn(),
+  setTargetList: vi.fn(),
+  unSetTargetList: vi.fn(),
+  positionSortPlaceholder: vi.fn(),
+  isListEligible: vi.fn().mockReturnValue(true),
+  checkHoveredListOrElement: vi.fn()
+});
+
+const createValueObject = (text: string, id: string): DragNDropValueObject => ({
+  text,
+  id,
+  alias: id,
+  originListID: 'test-id',
+  originListIndex: 0,
+  imgSrc: null,
+  imgFileName: '',
+  imgPosition: 'above',
+  audioSrc: null,
+  audioFileName: ''
+});
+
 describe('DropListComponent', () => {
   let component: DropListComponent;
   let fixture: ComponentFixture<DropListComponent>;
   let dragOpServiceMock: DragOperatorServiceMock;
 
-  const createValueObject = (text: string, id: string): DragNDropValueObject => ({
-    text,
-    id,
-    alias: id,
-    originListID: 'test-id',
-    originListIndex: 0,
-    imgSrc: null,
-    imgFileName: '',
-    imgPosition: 'above',
-    audioSrc: null,
-    audioFileName: ''
-  });
-
   beforeEach(async () => {
-    dragOpServiceMock = {
-      isDragActive: false,
-      hoveredListID: undefined,
-      dragOperation: undefined,
-      registerComponent: vi.fn(),
-      unregisterComponent: vi.fn(),
-      startDrag: vi.fn(),
-      endDrag: vi.fn(),
-      handleDrop: vi.fn(),
-      setTargetList: vi.fn(),
-      unSetTargetList: vi.fn(),
-      positionSortPlaceholder: vi.fn(),
-      isListEligible: vi.fn().mockReturnValue(true),
-      checkHoveredListOrElement: vi.fn()
-    };
+    dragOpServiceMock = createDragOperatorServiceMock();
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -295,5 +302,137 @@ describe('DropListComponent', () => {
 
     panel.nativeElement.classList.remove('is-playing');
     expect(getComputedStyle(listItems[0]).boxShadow).toBe('none');
+  });
+});
+
+/* With the real label panel: its margin is what a word in a gap has to drop. The gap gives its children
+   their line; here the host does, with a height to tell it apart from the 36px a list used to inherit
+   from the cloze (#1619). */
+describe('DropListComponent in a gap', () => {
+  let component: DropListComponent;
+  let fixture: ComponentFixture<DropListComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [
+        DropListComponent,
+        DragImageComponent,
+        TextImagePanelComponent,
+        SafeResourceHTMLPipe,
+        SafeResourceUrlPipe,
+        HasRenderableContentPipe,
+        MockErrorTransformPipe
+      ],
+      imports: [
+        ReactiveFormsModule,
+        OverlayModule,
+        MatFormFieldModule,
+        MatIconModule
+      ],
+      providers: [
+        { provide: DragOperatorService, useValue: createDragOperatorServiceMock() }
+      ]
+    }).compileComponents();
+  });
+
+  const render = (
+    value: DragNDropValueObject[], inGap: boolean = true, properties: Partial<DropListProperties> = {}
+  ): HTMLElement => {
+    fixture = TestBed.createComponent(DropListComponent);
+    component = fixture.componentInstance;
+    component.elementModel = new DropListElement({
+      type: 'drop-list',
+      id: 'test-id',
+      alias: 'test-alias',
+      value,
+      ...properties
+    } as Partial<DropListProperties>);
+    component.parentForm = new UntypedFormGroup({ 'test-id': new UntypedFormControl(value) });
+    component.clozeContext = true;
+    component.inGap = inGap;
+    const host = fixture.nativeElement as HTMLElement;
+    host.style.lineHeight = '30px';
+    fixture.detectChanges();
+    return host;
+  };
+
+  it('should make a list with a word its line plus 1px above and below', () => {
+    const host = render([createValueObject('Wort', 'value_1')]);
+
+    expect((host.querySelector('.drop-list') as HTMLElement).getBoundingClientRect().height).toBe(32);
+  });
+
+  it('should make an empty list as tall, by its strut', () => {
+    expect(render([]).getBoundingClientRect().height).toBe(32);
+  });
+
+  it('should let the word fill a taller gap', () => {
+    const host = render([createValueObject('Wort', 'value_1')]);
+    host.style.height = '50px';
+
+    expect((host.querySelector('.drop-list-item') as HTMLElement).getBoundingClientRect().height).toBe(50);
+  });
+
+  it.each(['horizontal', 'flex'])('should let the word fill a gap that lines its words up %s', orientation => {
+    const host = render([createValueObject('Wort', 'value_1')], true, {
+      orientation
+    } as Partial<DropListProperties>);
+    host.style.width = '200px';
+    host.style.height = '50px';
+    const list = (host.querySelector('.drop-list') as HTMLElement).getBoundingClientRect();
+    const word = (host.querySelector('.drop-list-item') as HTMLElement).getBoundingClientRect();
+
+    expect(word.width).toBe(list.width);
+    expect(word.height).toBe(list.height);
+  });
+
+  /* As a border, the highlight made a gap without a fixed height 4px taller for as long as a word was
+     dragged, and moved its line. */
+  it('should keep its size while it is highlighted for a drag', () => {
+    const host = render([createValueObject('Wort', 'value_1')]);
+    const height = host.getBoundingClientRect().height;
+    component.isHighlighted = true;
+    fixture.detectChanges();
+
+    expect(host.getBoundingClientRect().height).toBe(height);
+    expect(getComputedStyle(host.querySelector('.drop-list') as HTMLElement).outlineWidth).toBe('2px');
+  });
+
+  it('should give the strut the font size of the list', () => {
+    const host = render([], true, { styling: { fontSize: 28 } } as Partial<DropListProperties>);
+
+    expect((host.querySelector('.baseline-strut') as HTMLElement).style.fontSize).toBe('28px');
+  });
+
+  /* Which end of the list the line of an empty one comes from is the browser's choice: Chromium takes the
+     first item, CSS the last line. Either is the strut, so both readings agree. */
+  it('should end with the strut it begins with', () => {
+    const host = render([], true, { styling: { fontSize: 28 } } as Partial<DropListProperties>);
+    const first = host.firstElementChild as HTMLElement;
+    const last = host.lastElementChild as HTMLElement;
+
+    expect(first.classList).toContain('baseline-strut');
+    expect(last.classList).toContain('baseline-strut');
+    expect(last.style.fontSize).toBe('28px');
+    expect(last.getBoundingClientRect().top).toBe(first.getBoundingClientRect().top);
+    expect(last.getBoundingClientRect().height).toBe(first.getBoundingClientRect().height);
+  });
+
+  it('should tell its drag image that it is a gap', () => {
+    render([createValueObject('Wort', 'value_1')]);
+
+    expect(component.dragImageRef?.instance.inGap).toBe(true);
+  });
+
+  /* A table cell asks for the compact look of a gap with `clozeContext`, but keeps the sizes it had. */
+  it('should leave a list in a table cell as it was', () => {
+    const host = render(
+      [createValueObject('Wort', 'value_1')], false, { styling: { fontSize: 28 } } as Partial<DropListProperties>
+    );
+
+    expect(getComputedStyle(host.querySelector('.text') as HTMLElement).marginTop).toBe('10px');
+    expect(getComputedStyle(host.querySelector('.drop-list-item') as HTMLElement).paddingTop).toBe('0px');
+    expect((host.querySelector('.baseline-strut') as HTMLElement).style.fontSize).toBe('');
+    expect(host.querySelectorAll('.baseline-strut').length).toBe(1);
   });
 });

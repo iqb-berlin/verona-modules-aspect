@@ -10,6 +10,8 @@ import { DragNDropValueObject } from 'common/models/label-interfaces';
 })
 export class DragImageComponent {
   @Input() clozeContext: boolean = false;
+  /** Whether the list it was picked up from is a gap of a cloze, whose words are a line high (#1619). */
+  @Input() inGap: boolean = false;
   /**
    * The drop list's own styling group, not the narrower BasicStyles this used to declare: the
    * template reads itemBackgroundColor, which only the drop list has. It compiled because the

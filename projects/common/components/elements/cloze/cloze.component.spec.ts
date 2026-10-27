@@ -12,6 +12,7 @@ import {
 
 import { UntypedFormGroup } from '@angular/forms';
 import { UIElement } from 'common/models/elements/element';
+import { ToggleButtonElement } from 'common/models/elements/toggle-button';
 import {
   ClozeChildOverlayComponent
 } from 'common/components/cloze-child-overlay/cloze-child-overlay.component';
@@ -155,14 +156,15 @@ describe('ClozeComponent', () => {
     });
   });
 
-  /* Which children hang in the line by their box and which by their text (#1435). A dropdown wears
-     the element's font since then, so its text meets the text beside it; a drop list is a box and
-     stays centred. One expression in the template decides it for every child type, and a wrong entry
-     in its list is invisible until someone looks at a cloze. */
-  it('should align a dropdown child on the baseline and a drop list in the middle', () => {
+  /* Which children hang in the line by their box and which by their text. Every child stands by its
+     text since #1619 -- a drop list and a toggle button used to be boxes, which left their text 1-2px
+     low; the dropdown had left that list with #1435 for the same reason. Only an upright toggle button
+     is still a box: its options stand above each other. One expression in the template decides it for
+     every child type, and a wrong entry is invisible until someone looks at a cloze. */
+  it('should align every child on the baseline but an upright toggle button', () => {
     /* The document goes on the element that is already built: the constructor instantiates the child
        models through the registry, which is not reachable from here. What the binding reads is the
-       type on the model, and that is all these two need to carry. */
+       type on the model, and the orientation of a toggle button. */
     component.elementModel.document = {
       type: 'doc',
       content: [{
@@ -170,14 +172,18 @@ describe('ClozeComponent', () => {
         attrs: {},
         content: [
           { type: 'text', text: 'Ein Dreieck hat ' },
-          {
-            type: 'Dropdown',
-            attrs: { model: { type: 'dropdown' } as UIElement }
-          },
+          { type: 'Dropdown', attrs: { model: { type: 'dropdown' } as UIElement } },
           { type: 'text', text: ' Ecken, und hier liegt ' },
+          { type: 'DropList', attrs: { model: { type: 'drop-list' } as UIElement } },
+          { type: 'text', text: ', das ist ' },
           {
-            type: 'DropList',
-            attrs: { model: { type: 'drop-list' } as UIElement }
+            type: 'ToggleButton',
+            attrs: { model: { type: 'toggle-button', verticalOrientation: false } as ToggleButtonElement }
+          },
+          { type: 'text', text: ' oder ' },
+          {
+            type: 'ToggleButton',
+            attrs: { model: { type: 'toggle-button', verticalOrientation: true } as ToggleButtonElement }
           }
         ]
       }]
@@ -186,9 +192,11 @@ describe('ClozeComponent', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
     const kinder = compiled.querySelectorAll<HTMLElement>('aspect-compound-child-overlay');
-    expect(kinder.length).toBe(2);
+    expect(kinder.length).toBe(4);
     expect(kinder[0].style.verticalAlign).toBe('baseline');
-    expect(kinder[1].style.verticalAlign).toBe('middle');
+    expect(kinder[1].style.verticalAlign).toBe('baseline');
+    expect(kinder[2].style.verticalAlign).toBe('baseline');
+    expect(kinder[3].style.verticalAlign).toBe('middle');
   });
 
   /* A field in the middle of a word is an atomic inline, so the line would otherwise break between

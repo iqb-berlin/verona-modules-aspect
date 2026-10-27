@@ -1,0 +1,55 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [{
+    "sections": [{
+      "dynamicPositioning": false,
+      "height": 300,
+      "elements": [{
+        "type": "cloze", "id": "cloze_heights", "alias": "cloze_heights",
+        "position": { "xPosition": 0, "yPosition": 0 },
+        "dimensions": { "width": 700, "height": 200 },
+        "document": {
+          "type": "doc",
+          "content": [{
+            "type": "paragraph",
+            "attrs": {},
+            "content": [
+              { "type": "text", "text": "Niedrig " },
+              {
+                "type": "TextField",
+                "attrs": {
+                  "model": {
+                    "type": "text-field-simple", "id": "field_20", "alias": "field_20",
+                    "dimensions": { "width": 150, "height": 20, "isWidthFixed": true, "isHeightFixed": true }
+                  }
+                }
+              },
+              { "type": "text", "text": " hoch " },
+              {
+                "type": "TextField",
+                "attrs": {
+                  "model": {
+                    "type": "text-field-simple", "id": "field_50", "alias": "field_50",
+                    "dimensions": { "width": 150, "height": 50, "isWidthFixed": true, "isHeightFixed": true }
+                  }
+                }
+              },
+              { "type": "text", "text": " frei " },
+              {
+                "type": "TextField",
+                "attrs": {
+                  "model": {
+                    "type": "text-field-simple", "id": "field_free", "alias": "field_free",
+                    "dimensions": { "width": 150, "height": 30, "isWidthFixed": true, "isHeightFixed": false }
+                  }
+                }
+              },
+              { "type": "text", "text": " Ende" }
+            ]
+          }]
+        }
+      }]
+    }]
+  }]
+}

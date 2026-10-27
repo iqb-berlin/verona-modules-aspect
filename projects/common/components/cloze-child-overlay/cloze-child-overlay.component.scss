@@ -50,6 +50,25 @@
   flex-grow: 1;
 }
 
+/* The same for the height, on the other axis. The box centres its children, and a centred flex item
+   keeps the height of its content -- so the text field's <input>, which asks for `height: 100%`, had
+   nothing to resolve that against and fell back to the 29px it gives itself at the default font,
+   whatever height the gap was set to (#1619). Stretched, the field takes the height of the box.
+   `flex` rather than the `block` above: a block holds the <input> in a line box whose height is the
+   line height of the cloze, and in a gap lower than that line the input sat on the line's baseline
+   and stuck out below the gap -- by 7.5px at 20px. As a flex item it fills the field from top to
+   bottom, and the field's baseline is still that of its text, so it stands in the line where it stood.
+   Without a fixed height the input keeps its own height and the box shrinks to it, where the line box
+   used to make the box as tall as the line -- 36px around a 29px field at the defaults. A minimum or
+   maximum height now reaches the input as well.
+   Only the text field leaves the centring. The others need it where a gap is taller than they are, as
+   with a minimum height: stretched, a dropdown, a button and a toggle button moved to the top of such
+   a gap, and the first two pushed their line apart. */
+:host .gap-box > .fill-gap-height {
+  align-self: stretch;
+  display: flex;
+}
+
 :host ::ng-deep mat-checkbox .mdc-form-field {
   vertical-align: baseline;
 }

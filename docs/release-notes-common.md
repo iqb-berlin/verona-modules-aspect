@@ -19,6 +19,7 @@ Allgemein
 ### Fehlerbehebungen
 - Lückentext: Unterpunkte einer Aufzählung werden angezeigt, samt den Lücken darin ([#1602](https://github.com/iqb-berlin/verona-modules-aspect/issues/1602))
 - Text: Pfeil- und Sonderzeichen aus der mitgelieferten Symbolschrift (etwa `🠗`) werden auf dem iPad wieder dargestellt; seit 3.0.1 erschien dort ein Platzhalterkästchen ([#1599](https://github.com/iqb-berlin/verona-modules-aspect/issues/1599))
+- Lückentext, Eingabefeld: Die eingestellte Höhe einer Lücke gilt wieder für das Eingabefeld, ebenso eine Mindest- oder Höchsthöhe. Seit 3.0.0 blieb das Feld unabhängig davon so hoch wie seine Schrift, bei 20 px etwa 29 px; ohne eingestellte Höhe bleibt es dabei. Ist in einer bestehenden Aufgabe eine Höhe unter dieser Eigenhöhe eingestellt, wird der Text im Feld jetzt abgeschnitten — solche Lücken sollten nach dem Update angesehen werden ([#1619](https://github.com/iqb-berlin/verona-modules-aspect/issues/1619))
 ## editor/3.0.1+player/3.0.1
 ### Neue Funktionen
 - Ablegeliste: Während ein Element sein Audio abspielt, ist es umrandet und sein Abspielknopf vergrößert. Liegt dasselbe Element mehrfach auf der Seite — etwa in einer Liste, die beim Ablegen kopiert —, wird nur die angetippte Darstellung hervorgehoben ([#1107](https://github.com/iqb-berlin/verona-modules-aspect/issues/1107))

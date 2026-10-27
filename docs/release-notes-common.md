@@ -3,23 +3,27 @@ Allgemein
 ## next
 ### Neue Funktionen
 - Eingabebereich: Neue Einstellung „Wörter zählen“ zeigt unter dem Text die Zahl der geschriebenen Wörter an. Die Zahl geht nicht in die Antwort ein ([#989](https://github.com/iqb-berlin/verona-modules-aspect/issues/989))
-- Geometrie: Neue Einstellung „Eingabezeile anzeigen“ (Expertenmodus) blendet die Eingabezeile von GeoGebra ein ([#1004](https://github.com/iqb-berlin/verona-modules-aspect/issues/1004))
-- Geometrie: Neue Einstellung „‚Wert geändert‘ des Elements für die Variablen übernehmen“: Sobald das Element `VALUE_CHANGED` meldet, melden es auch alle seine verfolgten Variablen, auch eine, deren Wert gleich geblieben ist ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
+- Geometrie
+  - Neue Einstellung „Eingabezeile anzeigen“ (Expertenmodus) blendet die Eingabezeile von GeoGebra ein ([#1004](https://github.com/iqb-berlin/verona-modules-aspect/issues/1004))
+  - Neue Einstellung „‚Wert geändert‘ des Elements für die Variablen übernehmen“: Sobald das Element `VALUE_CHANGED` meldet, melden es auch alle seine verfolgten Variablen, auch eine, deren Wert gleich geblieben ist ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
 - Periodensystem: Neue Einstellungen „Elementnamen“, „Elementsymbole“ und „Felder nach Block einfärben“ ([#1420](https://github.com/iqb-berlin/verona-modules-aspect/issues/1420))
 - Tetfolio: Neues Element im Bereich „Experimentell“ zum Einbinden eines tet.folio-Exports ([#1461](https://github.com/iqb-berlin/verona-modules-aspect/issues/1461)). Der Bearbeitungsstand wird für den Wiedereinstieg gespeichert, aber nicht kodiert. Ist das Experiment breiter als das Element, wird es so weit verkleinert, dass es ganz zu sehen ist, und bleibt bedienbar ([#1598](https://github.com/iqb-berlin/verona-modules-aspect/issues/1598)). Das Element kann wegen offener Sicherheitsfragen wieder entfernt werden ([#1497](https://github.com/iqb-berlin/verona-modules-aspect/issues/1497), [#1551](https://github.com/iqb-berlin/verona-modules-aspect/issues/1551), [#1557](https://github.com/iqb-berlin/verona-modules-aspect/issues/1557))
 - Text: Ein im Text eingefügtes Bild ist höchstens so breit wie das Element und wird mit dem Fenster schmaler. Bestehende Aufgaben zeigen solche Bilder dadurch teils kleiner ([#1459](https://github.com/iqb-berlin/verona-modules-aspect/issues/1459))
 - Text, Lückentext: Ein Zitat kann mehrere Zeilen haben, jeder Absatz steht in einer eigenen Zeile. Bestehende Zitate mit mehreren Absätzen erscheinen dadurch untereinander statt in einer Zeile und sollten nach dem Update angesehen werden ([#658](https://github.com/iqb-berlin/verona-modules-aspect/issues/658))
 
 ### Änderungen
-- Lückentext: Eine Lücke direkt an einem Wort oder Satzzeichen bricht mit dem Wort zusammen um. Bestehende Aufgaben können dadurch an anderen Stellen umbrechen ([#895](https://github.com/iqb-berlin/verona-modules-aspect/issues/895))
-- Lückentext: Lücken stehen mit ihrem Text auf der Grundlinie der Zeile und sind ohne feste Höhe so hoch wie ein Eingabefeld. Bestehende Aufgaben sehen dadurch anders aus: Knöpfe, Kontrollkästchen und Ablegelisten ohne feste Höhe werden niedriger, Optionsfelder höher ([#1619](https://github.com/iqb-berlin/verona-modules-aspect/issues/1619))
-- Periodensystem: Die ausgewählten Elemente neben dem Knopf sehen aus wie im Widget ([#1369](https://github.com/iqb-berlin/verona-modules-aspect/issues/1369))
-- Periodensystem: „Max. Anzahl Auswahlen“ 0 bedeutet keine Auswahl statt unbegrenzt, das Periodensystem dient dann nur zum Ansehen. Erfordert Widget 1.1.0 ([#1488](https://github.com/iqb-berlin/verona-modules-aspect/issues/1488))
+- Lückentext
+  - Eine Lücke direkt an einem Wort oder Satzzeichen bricht mit dem Wort zusammen um. Bestehende Aufgaben können dadurch an anderen Stellen umbrechen ([#895](https://github.com/iqb-berlin/verona-modules-aspect/issues/895))
+  - Lücken stehen mit ihrem Text auf der Grundlinie der Zeile und sind ohne feste Höhe so hoch wie ein Eingabefeld. Bestehende Aufgaben sehen dadurch anders aus: Knöpfe, Kontrollkästchen und Ablegelisten ohne feste Höhe werden niedriger, Optionsfelder höher ([#1619](https://github.com/iqb-berlin/verona-modules-aspect/issues/1619))
+- Periodensystem
+  - Die ausgewählten Elemente neben dem Knopf sehen aus wie im Widget ([#1369](https://github.com/iqb-berlin/verona-modules-aspect/issues/1369))
+  - „Max. Anzahl Auswahlen“ 0 bedeutet keine Auswahl statt unbegrenzt, das Periodensystem dient dann nur zum Ansehen. Erfordert Widget 1.1.0 ([#1488](https://github.com/iqb-berlin/verona-modules-aspect/issues/1488))
 - Tabelle: Kopfzellen enthalten formatierten Text und werden im Texteditor bearbeitet. Bestehende einzeilige Kopfzeilen werden dadurch etwas höher ([#1430](https://github.com/iqb-berlin/verona-modules-aspect/issues/1430))
 
 ### Fehlerbehebungen
-- Lückentext: Unterpunkte einer Aufzählung werden angezeigt, samt den Lücken darin ([#1602](https://github.com/iqb-berlin/verona-modules-aspect/issues/1602))
-- Lückentext: Jede Lücke ist so hoch wie eingestellt, auch bei Mindest- und Höchsthöhe; beim Eingabefeld und beim Kontrollkästchen wirkte seit 3.0.0 keine Höheneinstellung. Ist eine Höhe unter der Höhe der Schrift eingestellt, wird der Inhalt jetzt abgeschnitten, bei einer Ablegeliste ragt er heraus ([#1619](https://github.com/iqb-berlin/verona-modules-aspect/issues/1619))
+- Lückentext
+  - Unterpunkte einer Aufzählung werden angezeigt, samt den Lücken darin ([#1602](https://github.com/iqb-berlin/verona-modules-aspect/issues/1602))
+  - Jede Lücke ist so hoch wie eingestellt, auch bei Mindest- und Höchsthöhe; beim Eingabefeld und beim Kontrollkästchen wirkte seit 3.0.0 keine Höheneinstellung. Ist eine Höhe unter der Höhe der Schrift eingestellt, wird der Inhalt jetzt abgeschnitten, bei einer Ablegeliste ragt er heraus ([#1619](https://github.com/iqb-berlin/verona-modules-aspect/issues/1619))
 - Text: Pfeil- und Sonderzeichen aus der mitgelieferten Symbolschrift (etwa `🠗`) werden auf dem iPad wieder dargestellt; seit 3.0.1 erschien dort ein Platzhalterkästchen ([#1599](https://github.com/iqb-berlin/verona-modules-aspect/issues/1599))
 ## editor/3.0.1+player/3.0.1
 ### Neue Funktionen

@@ -1,8 +1,13 @@
 <div class="section-wrapper"
-     [ngClass]="sectionNumbering?.sectionNumberingPosition === 'left' ? 'row-align' : 'column-align'">
-  <div *ngIf="sectionNumbering?.enableSectionNumbering" [style.min-width.px]="35" [style.font-size.px]="20">
-    <b *ngIf="sectionCounter">{{sectionCounter}}.</b>
-  </div>
+     [ngClass]="sectionNumbering?.sectionNumberingPosition === 'left' ? 'row-align' : 'column-align'"
+     [class.first-line-aligned]="section.dynamicPositioning && section.elements.length > 0">
+  @if (sectionNumbering?.enableSectionNumbering) {
+    <div class="section-number">
+      @if (sectionCounter) {
+        <b>{{sectionCounter}}.</b>
+      }
+    </div>
+  }
   <ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
 </div>
 

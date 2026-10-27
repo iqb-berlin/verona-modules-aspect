@@ -106,4 +106,8 @@ describe('ElementComponent', () => {
       expect((error as AspectError).elementId).toBe('element_1');
     }
   });
+
+  it('should say by default that an element does not begin with a line of text', () => {
+    expect(TestElementComponent.startsWithText({ id: 'element_1' } as unknown as UIElement)).toBe(false);
+  });
 });

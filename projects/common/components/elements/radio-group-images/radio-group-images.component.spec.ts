@@ -99,4 +99,18 @@ describe('RadioGroupImagesComponent', () => {
     radioInputs[2].click();
     expect(component.elementFormControl.value).toBe(2);
   });
+
+  describe('startsWithText', () => {
+    it('should say yes when the label begins with text', () => {
+      component.elementModel.label = '<p>Frage</p>';
+      expect(RadioGroupImagesComponent.startsWithText(component.elementModel)).toBe(true);
+    });
+
+    it('should say no when the label is empty or begins with a picture', () => {
+      component.elementModel.label = '<p></p>';
+      expect(RadioGroupImagesComponent.startsWithText(component.elementModel)).toBe(false);
+      component.elementModel.label = '<img src="picture.png"><p>Frage</p>';
+      expect(RadioGroupImagesComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+  });
 });

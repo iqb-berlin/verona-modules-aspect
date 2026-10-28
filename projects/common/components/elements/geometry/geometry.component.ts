@@ -55,6 +55,15 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private appletParameters?: Omit<GeoGebraAppletParameters, 'appletOnLoad'>;
   /** A report that fell due while the applet was being replaced, sent once the new one has loaded. */
   private isReportDue = false;
+  /** Whether the current applet has started up. GeoGebra calls the construction's own `ggbOnInit` just
+   * before it reports the applet as loaded, and a script there can queue work for right afterwards, as
+   * with `setTimeout(…, 0)`. Replacing the applet before that work has run removes the applet under the
+   * script, which then fails with "app was already removed" (#1627). One round of timers after loading,
+   * that work has run; work a script queues for later than that is not waited for. */
+  private isAppletStartedUp = false;
+  private startUpTimeout?: ReturnType<typeof setTimeout>;
+  /** A new applet asked for while the current one was starting up, built once it has. */
+  private isBuildDue = false;
 
   get timeoutMsg(): string {
     // eslint-disable-next-line max-len
@@ -172,9 +181,15 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   private initApplet(): void {
+    if (this.isAppletLoaded && !this.isAppletStartedUp) {
+      this.isBuildDue = true;
+      return;
+    }
+    this.isBuildDue = false;
     this.appletCount += 1;
     const appletNumber = this.appletCount;
     this.isAppletLoaded = false;
+    this.isAppletStartedUp = false;
     this.appletParameters = this.getAppletParameters();
     const params: GeoGebraAppletParameters = {
       ...this.appletParameters,
@@ -215,6 +230,11 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
           this.isReportDue = false;
           this.geometryUpdated.next();
         }
+        // Set after ggbOnInit has queued its work, so it runs after that work.
+        this.startUpTimeout = setTimeout(() => {
+          this.isAppletStartedUp = true;
+          if (this.isBuildDue) this.initApplet();
+        });
       }
     };
     const applet = new GGBApplet(params, '5.0');
@@ -293,6 +313,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   ngOnDestroy(): void {
+    clearTimeout(this.startUpTimeout);
     this.pageChangeSubscription.unsubscribe();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

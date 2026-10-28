@@ -28,6 +28,12 @@ describe('GeometryComponent', () => {
     component as unknown as { geometryUpdated: Subject<void> }
   ).geometryUpdated;
 
+  /* The flag is private; the tests that build anew right after loading set it, standing in for the
+     round of timers after loading in which the applet starts up. */
+  const startUp = (): void => {
+    (component as unknown as { isAppletStartedUp: boolean }).isAppletStartedUp = true;
+  };
+
   const createGeoGebraApi = (base64: string): GeoGebraApi => ({
     getBase64: vi.fn().mockReturnValue(base64),
     setSize: vi.fn(),
@@ -156,6 +162,7 @@ describe('GeometryComponent', () => {
       component.elementModel.trackedVariables = [{ id: 'A', value: 'A = false' }, { id: 'B', value: 'B = 1' }];
       vi.mocked(mockGeoGebraAPI.getValueString).mockImplementation(name => `${name} = 0`);
       component.refresh();
+      startUp();
       vi.spyOn(component.elementValueChanged, 'emit');
     });
 
@@ -259,6 +266,7 @@ describe('GeometryComponent', () => {
 
     beforeEach(() => {
       component.refresh();
+      startUp();
       ggbApplet.mockClear();
     });
 
@@ -347,6 +355,70 @@ describe('GeometryComponent', () => {
       expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({
         value: expect.objectContaining({ appDefinition: 'after reset' })
       }));
+    }));
+  });
+
+  describe('replacing an applet that has just loaded (#1627)', () => {
+    /* Loads an applet as GeoGebra does: the construction's ggbOnInit queues work before the load is
+       reported. Returns what that work finds when it runs: how many applets were built meanwhile. */
+    const loadWithScript = (): { appletsBuiltMeanwhile?: number } => {
+      const loads: GeoGebraAppletParameters[] = [];
+      heldBackLoads = loads;
+      component.refresh();
+      ggbApplet.mockClear();
+      const script: { appletsBuiltMeanwhile?: number } = {};
+      setTimeout(() => { script.appletsBuiltMeanwhile = ggbApplet.mock.calls.length; });
+      loads[0].appletOnLoad(createGeoGebraApi('loaded'));
+      return script;
+    };
+
+    it('should build a new applet only after that work has run', fakeAsync(() => {
+      const script = loadWithScript();
+      component.elementModel.showToolbar = !component.elementModel.showToolbar;
+
+      component.refresh();
+
+      expect(ggbApplet).not.toHaveBeenCalled();
+      tick();
+      expect(script.appletsBuiltMeanwhile).toBe(0);
+      expect(ggbApplet).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should reset only after that work has run', fakeAsync(() => {
+      const script = loadWithScript();
+
+      component.reset();
+
+      expect(ggbApplet).not.toHaveBeenCalled();
+      tick();
+      expect(script.appletsBuiltMeanwhile).toBe(0);
+      expect(ggbApplet).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should build one applet for everything asked for meanwhile, as the element is then', fakeAsync(() => {
+      loadWithScript();
+      component.elementModel.showToolbar = !component.elementModel.showToolbar;
+      component.refresh();
+      component.elementModel.showZoomButtons = !component.elementModel.showZoomButtons;
+      component.refresh();
+
+      tick();
+
+      expect(ggbApplet).toHaveBeenCalledTimes(1);
+      expect(ggbApplet).toHaveBeenCalledWith(expect.objectContaining({
+        showToolBar: component.elementModel.showToolbar,
+        showZoomButtons: component.elementModel.showZoomButtons
+      }), '5.0');
+    }));
+
+    it('should build nothing once the element is gone', fakeAsync(() => {
+      loadWithScript();
+      component.reset();
+
+      fixture.destroy();
+      tick();
+
+      expect(ggbApplet).not.toHaveBeenCalled();
     }));
   });
 

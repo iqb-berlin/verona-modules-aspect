@@ -20,11 +20,27 @@ describe('GeometryComponent', () => {
   let mockExternalResourceService: Partial<ExternalResourceService>;
   let mockGeoGebraAPI: GeoGebraApi;
   let ggbApplet: Mock;
+  /* While set, injecting an applet does not load it: the test loads it, by calling its `appletOnLoad`. */
+  let heldBackLoads: GeoGebraAppletParameters[] | undefined;
 
   /* The subject is private; the tests drive it directly to stand in for a GeoGebra event. */
   const geometryUpdated = (): Subject<void> => (
     component as unknown as { geometryUpdated: Subject<void> }
   ).geometryUpdated;
+
+  const createGeoGebraApi = (base64: string): GeoGebraApi => ({
+    getBase64: vi.fn().mockReturnValue(base64),
+    setSize: vi.fn(),
+    getAllObjectNames: vi.fn().mockReturnValue([]),
+    getValueString: vi.fn(),
+    isMoveable: vi.fn().mockReturnValue(true),
+    registerAddListener: vi.fn(),
+    registerRemoveListener: vi.fn(),
+    registerUpdateListener: vi.fn(),
+    registerRenameListener: vi.fn(),
+    registerClearListener: vi.fn(),
+    registerClientListener: vi.fn()
+  });
 
   beforeEach(async () => {
     mockPageChangeService = {
@@ -37,25 +53,17 @@ describe('GeometryComponent', () => {
       getGeoGebraHTML5URL: vi.fn().mockReturnValue('http://geogebra.url')
     };
 
-    mockGeoGebraAPI = {
-      getBase64: vi.fn().mockReturnValue('mockBase64'),
-      getAllObjectNames: vi.fn().mockReturnValue([]),
-      getValueString: vi.fn(),
-      isMoveable: vi.fn().mockReturnValue(true),
-      registerAddListener: vi.fn(),
-      registerRemoveListener: vi.fn(),
-      registerUpdateListener: vi.fn(),
-      registerRenameListener: vi.fn(),
-      registerClearListener: vi.fn(),
-      registerClientListener: vi.fn()
-    };
+    mockGeoGebraAPI = createGeoGebraApi('mockBase64');
+    heldBackLoads = undefined;
 
     // Global Mock for GGBApplet with named function to satisfy ESLint and constructor requirements
     ggbApplet = vi.fn()
       .mockImplementation(function GGBAppletMock(this: GeoGebraApplet, params: GeoGebraAppletParameters) {
         this.setHTML5Codebase = vi.fn();
         this.inject = vi.fn().mockImplementation(() => {
-          if (params.appletOnLoad) {
+          if (heldBackLoads) {
+            heldBackLoads.push(params);
+          } else if (params.appletOnLoad) {
             params.appletOnLoad(mockGeoGebraAPI);
           }
         });
@@ -114,7 +122,7 @@ describe('GeometryComponent', () => {
     const event = new PointerEvent('pointerdown');
     fixture.nativeElement.dispatchEvent(event);
 
-    component.geoGebraAPI = mockGeoGebraAPI;
+    component.refresh();
 
     // Simulate GeoGebra update
     geometryUpdated().next();
@@ -226,7 +234,7 @@ describe('GeometryComponent', () => {
     it('should report the values of the tracked variables as soon as the applet has loaded', () => {
       const loaded = vi.spyOn(component.appletLoaded, 'emit');
 
-      component.refresh();
+      component.reset();
 
       expect(loaded).toHaveBeenCalledWith([{ id: 'A', value: 'A = 0' }, { id: 'B', value: 'B = 0' }]);
     });
@@ -239,6 +247,105 @@ describe('GeometryComponent', () => {
 
       expect(reported()).toEqual(expect.objectContaining({
         variables: [{ id: 'A', value: 'A = 0' }, { id: 'B', value: 'B = 0' }]
+      }));
+    }));
+  });
+
+  describe('replacing the applet (#1625)', () => {
+    const container = (): HTMLElement => fixture.nativeElement.querySelector('.geogebra-applet');
+    const toggleToolbar = (): void => {
+      component.elementModel.showToolbar = !component.elementModel.showToolbar;
+    };
+
+    beforeEach(() => {
+      component.refresh();
+      ggbApplet.mockClear();
+    });
+
+    it('should resize the running applet when only the size has changed', () => {
+      // What deployggb.js puts around the applet, sized as the applet when it was built.
+      const scaler = document.createElement('div');
+      scaler.classList.add('applet_scaler');
+      container().append(scaler);
+      component.elementModel.dimensions.height = 300;
+
+      component.refresh();
+
+      expect(ggbApplet).not.toHaveBeenCalled();
+      expect(mockGeoGebraAPI.setSize).toHaveBeenCalledWith(196, 296);
+      expect([container().style.height, scaler.style.height]).toEqual(['296px', '296px']);
+    });
+
+    it('should build a new applet when anything else has changed', () => {
+      toggleToolbar();
+
+      component.refresh();
+
+      expect(ggbApplet).toHaveBeenCalledTimes(1);
+      expect(mockGeoGebraAPI.setSize).not.toHaveBeenCalled();
+    });
+
+    it('should leave the applet alone when nothing it was built with has changed', () => {
+      component.elementModel.alias = 'renamed';
+
+      component.refresh();
+
+      expect(ggbApplet).not.toHaveBeenCalled();
+      expect(mockGeoGebraAPI.setSize).not.toHaveBeenCalled();
+    });
+
+    it('should give an applet the size set while it was loading', () => {
+      const loads: GeoGebraAppletParameters[] = [];
+      heldBackLoads = loads;
+      toggleToolbar();
+      component.refresh();
+      component.elementModel.dimensions.width = 300;
+      component.refresh();
+      const loaded = createGeoGebraApi('loaded');
+
+      loads[0].appletOnLoad(loaded);
+
+      expect(ggbApplet).toHaveBeenCalledTimes(1);
+      expect(loaded.setSize).toHaveBeenCalledWith(296, 196);
+    });
+
+    it('should take nothing from an applet that loads after it was replaced', () => {
+      const loads: GeoGebraAppletParameters[] = [];
+      heldBackLoads = loads;
+      const appletLoaded = vi.spyOn(component.appletLoaded, 'emit');
+      toggleToolbar();
+      component.refresh();
+      toggleToolbar();
+      component.refresh();
+      const replaced = createGeoGebraApi('replaced');
+      const current = createGeoGebraApi('current');
+
+      loads[1].appletOnLoad(current);
+      loads[0].appletOnLoad(replaced);
+
+      expect(component.geoGebraAPI).toBe(current);
+      expect(replaced.registerUpdateListener).not.toHaveBeenCalled();
+      expect(appletLoaded).toHaveBeenCalledTimes(1);
+    });
+
+    it('should ask the new applet, not the one it replaces, for a report due while it loads', fakeAsync(() => {
+      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+      vi.spyOn(component.elementValueChanged, 'emit');
+      const loads: GeoGebraAppletParameters[] = [];
+      heldBackLoads = loads;
+      component.reset();
+
+      geometryUpdated().next();
+      tick(200);
+
+      expect(mockGeoGebraAPI.getBase64).not.toHaveBeenCalled();
+      expect(component.elementValueChanged.emit).not.toHaveBeenCalled();
+
+      loads[0].appletOnLoad(createGeoGebraApi('after reset'));
+      tick(200);
+
+      expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({
+        value: expect.objectContaining({ appDefinition: 'after reset' })
       }));
     }));
   });

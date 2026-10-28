@@ -43,6 +43,18 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   /** Whether the user has edited the construction since the last report. Noted only once the user has
    * interacted: what GeoGebra does before that, on its own, is no work of the user's. */
   private isEditedSinceReport = false;
+  /** How many applets the component has built. GeoGebra still reports an applet as loaded after a newer
+   * one has replaced it; the number tells that report apart from the current applet's. */
+  private appletCount = 0;
+  /** Whether the current applet has loaded. Until it has, `geoGebraAPI` is the one of the applet it
+   * replaced, which building the new one removed: GeoGebra throws "app was already removed" at every
+   * call to it (#1625). */
+  private isAppletLoaded = false;
+  /** What the current applet was built with, to tell a change GeoGebra can apply to the running applet
+   * from one that needs a new applet. */
+  private appletParameters?: Omit<GeoGebraAppletParameters, 'appletOnLoad'>;
+  /** A report that fell due while the applet was being replaced, sent once the new one has loaded. */
+  private isReportDue = false;
 
   get timeoutMsg(): string {
     // eslint-disable-next-line max-len
@@ -78,6 +90,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       .pipe(debounceTime(100), takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         if (this.hasUserInteracted) {
+          if (!this.isAppletLoaded) {
+            this.isReportDue = true;
+            return;
+          }
           this.elementValueChanged.emit({
             id: this.elementModel.id,
             value: {
@@ -109,49 +125,64 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     }
   }
 
+  /**
+   * Brings the applet up to the element after the editor changed one of its properties. A new applet is
+   * built only when GeoGebra would be handed something else to build it with. A change of size alone is
+   * applied to the running applet: building a new one removes the old, and a construction's own script
+   * still due to run in the old one then fails on the removed applet -- on every step of the size
+   * fields, until #1625.
+   */
   refresh(): void {
-    this.initApplet();
+    const parameters = this.getAppletParameters();
+    const built = this.appletParameters;
+    const needsNewApplet = !built || (Object.keys(parameters) as (keyof typeof parameters)[])
+      .some(key => key !== 'width' && key !== 'height' && parameters[key] !== built[key]);
+    if (needsNewApplet) {
+      this.initApplet();
+    } else {
+      this.resizeApplet();
+    }
   }
 
   reset(): void {
     this.appDefinition = this.elementModel.appDefinition;
     this.hasUserInteracted = true;
+    this.isReportDue = true;
     this.initApplet();
-    // needs time to reload
-    setTimeout(() => {
-      this.geometryUpdated.next();
+  }
+
+  /**
+   * Gives the running applet the element's size. `deployggb.js` sizes the container and the
+   * `applet_scaler` it puts around the applet when it builds one and leaves them alone afterwards; left
+   * as they are, the container of a shrunk applet would reach beyond the element. An applet that has not
+   * loaded yet takes the size once it has.
+   */
+  private resizeApplet(): void {
+    if (!this.isAppletLoaded || !this.appletParameters) return;
+    const { width, height } = this.getAppletParameters();
+    if (width === this.appletParameters.width && height === this.appletParameters.height) return;
+    this.geoGebraAPI.setSize(width, height);
+    this.appletParameters = { ...this.appletParameters, width, height };
+    const container = (this.elementRef.nativeElement as HTMLElement).querySelector('.geogebra-applet');
+    [container, container?.querySelector('.applet_scaler')].forEach(element => {
+      if (!element) return;
+      this.renderer.setStyle(element, 'width', `${width}px`);
+      this.renderer.setStyle(element, 'height', `${height}px`);
     });
   }
 
   private initApplet(): void {
+    this.appletCount += 1;
+    const appletNumber = this.appletCount;
+    this.isAppletLoaded = false;
+    this.appletParameters = this.getAppletParameters();
     const params: GeoGebraAppletParameters = {
-      id: this.elementModel.id,
-      // must be smaller than the container, otherwise scroll bars will be displayed
-      width: (this.elementModel.dimensions?.width || 180) - 4,
-      height: (this.elementModel.dimensions?.height || 60) - 4,
-      scale: 1,
-      showToolBar: this.elementModel.showToolbar,
-      enableShiftDragZoom: this.elementModel.enableShiftDragZoom,
-      showZoomButtons: this.elementModel.showZoomButtons,
-      showFullscreenButton: this.elementModel.showFullscreenButton,
-      customToolBar: this.elementModel.customToolbar,
-      enableUndoRedo: this.elementModel.enableUndoRedo,
-      showResetIcon: false, // use custom html button icon
-      showMenuBar: false,
-      showAlgebraInput: this.elementModel.showAlgebraInput,
-      enableLabelDrags: false,
-      enableRightClick: false,
-      showToolBarHelp: false,
-      errorDialogsActive: true,
-      showLogging: false,
-      useBrowserForJS: false,
-      // Unset, GeoGebra pins its keyboard to the bottom of the window unless a spreadsheet, CAS or
-      // probability view, or under some conditions the algebra view, is shown. It stays in the section's
-      // stacking context there, so every element after the section covers it (#1549).
-      detachKeyboard: false,
-      ggbBase64: this.appDefinition || this.elementModel.appDefinition,
+      ...this.appletParameters,
       appletOnLoad: (geoGebraApi: GeoGebraApi) => {
+        // Replaced before it had loaded, so no longer shown: neither its API nor its events are wanted.
+        if (appletNumber !== this.appletCount) return;
         this.geoGebraAPI = geoGebraApi;
+        this.isAppletLoaded = true;
         this.isLoaded.next(true);
         this.preventFocusScrolling();
         this.geoGebraAPI.registerAddListener(() => {
@@ -179,11 +210,46 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
           this.geometryUpdated.next();
         });
         this.appletLoaded.emit(this.getVariablesToEmit());
+        this.resizeApplet();
+        if (this.isReportDue) {
+          this.isReportDue = false;
+          this.geometryUpdated.next();
+        }
       }
     };
     const applet = new GGBApplet(params, '5.0');
     applet.setHTML5Codebase(this.externalResourceService.getGeoGebraHTML5URL());
     applet.inject(this.elementModel.id);
+  }
+
+  private getAppletParameters(): Omit<GeoGebraAppletParameters, 'appletOnLoad'> {
+    return {
+      id: this.elementModel.id,
+      // must be smaller than the container, otherwise scroll bars will be displayed
+      width: (this.elementModel.dimensions?.width || 180) - 4,
+      height: (this.elementModel.dimensions?.height || 60) - 4,
+      scale: 1,
+      showToolBar: this.elementModel.showToolbar,
+      enableShiftDragZoom: this.elementModel.enableShiftDragZoom,
+      showZoomButtons: this.elementModel.showZoomButtons,
+      showFullscreenButton: this.elementModel.showFullscreenButton,
+      customToolBar: this.elementModel.customToolbar,
+      enableUndoRedo: this.elementModel.enableUndoRedo,
+      showResetIcon: false, // use custom html button icon
+      showMenuBar: false,
+      showAlgebraInput: this.elementModel.showAlgebraInput,
+      enableLabelDrags: false,
+      enableRightClick: false,
+      showToolBarHelp: false,
+      errorDialogsActive: true,
+      showLogging: false,
+      useBrowserForJS: false,
+      // Unset, GeoGebra pins its keyboard to the bottom of the window unless a spreadsheet, CAS or
+      // probability view, or under some conditions the algebra view, is shown. It stays in the section's
+      // stacking context there, so every element after the section covers it (#1549).
+      detachKeyboard: false,
+      ggbBase64: this.appDefinition || this.elementModel.appDefinition
+    };
   }
 
   /**

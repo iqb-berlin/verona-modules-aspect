@@ -65,10 +65,21 @@ describe('Standard dimension properties', () => {
     dimensionInput('Breite').should('have.value', `${SIZE.geometry.defaultWidth}`).and('not.be.disabled');
     dimensionInput('Höhe').should('have.value', `${SIZE.geometry.defaultHeight}`).and('not.be.disabled');
 
-    setDimension('Breite', SIZE.geometry.width);
-    setDimension('Höhe', SIZE.geometry.height);
-    dimensionInput('Breite').should('have.value', `${SIZE.geometry.width}`);
-    dimensionInput('Höhe').should('have.value', `${SIZE.geometry.height}`);
+    cy.window().its('ggbAppletParams').its('length').then(appletsBuilt => {
+      setDimension('Breite', SIZE.geometry.width);
+      setDimension('Höhe', SIZE.geometry.height);
+      dimensionInput('Breite').should('have.value', `${SIZE.geometry.width}`);
+      dimensionInput('Höhe').should('have.value', `${SIZE.geometry.height}`);
+
+      // Resized in place, not built anew: a new applet removes the old one, and a script of the
+      // construction still due to run there fails on the removed applet (#1625).
+      cy.window().its('ggbAppletSizes').should((sizes: { width: number; height: number }[]) => {
+        expect(sizes[sizes.length - 1]).to.include({
+          width: SIZE.geometry.width - 4, height: SIZE.geometry.height - 4
+        });
+      });
+      cy.window().its('ggbAppletParams').its('length').should('equal', appletsBuilt);
+    });
 
     setDimension('Höhe', SIZE.geometry.invalidHeight);
     cy.contains('Eingabe ungültig').should('be.visible');

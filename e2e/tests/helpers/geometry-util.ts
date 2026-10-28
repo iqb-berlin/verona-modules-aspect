@@ -17,7 +17,8 @@ export function uploadGGBFile(fileName: string) {
  * (`add`, `remove`, `rename`) or any other event (`client`). Every object can be changed by the user
  * except `viewText`, which follows the view, as a text placed at a corner of the drawing does.
  * Like GeoGebra, a pointerdown on its canvas focuses the screen reader announcement at the bottom of
- * the applet and then the canvas, both without `preventScroll` (#971). */
+ * the applet and then the canvas, both without `preventScroll` (#971). Every applet built is recorded in
+ * `window.ggbAppletParams`, every resize of a running applet in `window.ggbAppletSizes` (#1625). */
 export function interceptDeployGGB() {
   cy.intercept('**/deployggb.js', req => {
     req.reply({
@@ -58,6 +59,14 @@ export function interceptDeployGGB() {
                 registerClearListener: () => {},
                 registerClientListener: listener => { listeners.client = listener; },
                 getBase64: () => "",
+                setSize: (width, height) => {
+                  (window.ggbAppletSizes = window.ggbAppletSizes || []).push({ id: containerId, width, height });
+                  const applet = container && container.firstElementChild;
+                  if (applet) {
+                    applet.style.width = width + 'px';
+                    applet.style.height = height + 'px';
+                  }
+                },
                 getAllObjectNames: () => ["correct"],
                 getValueString: name => name + " = false",
                 isMoveable: name => name !== "viewText"

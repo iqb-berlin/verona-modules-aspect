@@ -276,12 +276,19 @@ describe('GeometryComponent', () => {
       scaler.classList.add('applet_scaler');
       container().append(scaler);
       component.elementModel.dimensions.height = 300;
+      const dispatch = vi.spyOn(window, 'dispatchEvent');
 
       component.refresh();
 
       expect(ggbApplet).not.toHaveBeenCalled();
       expect(mockGeoGebraAPI.setSize).toHaveBeenCalledWith(196, 296);
       expect([container().style.height, scaler.style.height]).toEqual(['296px', '296px']);
+      // For GeoGebra to scale the applet to the window anew, as it does on building it.
+      const resize = dispatch.mock.calls.findIndex(([event]) => event.type === 'resize');
+      expect(resize).toBeGreaterThan(-1);
+      expect(dispatch.mock.invocationCallOrder[resize])
+        .toBeGreaterThan(vi.mocked(mockGeoGebraAPI.setSize).mock.invocationCallOrder[0]);
+      dispatch.mockRestore();
     });
 
     it('should build a new applet when anything else has changed', () => {

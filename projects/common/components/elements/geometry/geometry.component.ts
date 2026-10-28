@@ -165,6 +165,11 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
    * `applet_scaler` it puts around the applet when it builds one and leaves them alone afterwards; left
    * as they are, the container of a shrunk applet would reach beyond the element. An applet that has not
    * loaded yet takes the size once it has.
+   *
+   * An applet that does not fit the window is scaled down to fit it, when it is built and again whenever
+   * the window changes size. `setSize` leaves the scale as it was -- an applet made taller than the
+   * window would stay at full size, one scaled down would stay scaled down after shrinking -- so the
+   * change of size is announced as one of the window, for GeoGebra to scale the applet anew.
    */
   private resizeApplet(): void {
     if (!this.isAppletLoaded || !this.appletParameters) return;
@@ -178,6 +183,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       this.renderer.setStyle(element, 'width', `${width}px`);
       this.renderer.setStyle(element, 'height', `${height}px`);
     });
+    window.dispatchEvent(new Event('resize'));
   }
 
   private initApplet(): void {

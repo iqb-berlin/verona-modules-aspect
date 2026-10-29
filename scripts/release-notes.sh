@@ -13,10 +13,11 @@
 # in the common notes, `## <v>` in the other two (decided 2026-09-23).
 #
 #   scripts/release-notes.sh 3.0.1 > notes.md
-#   gh release create "editor/$V+player/$V" --notes-file notes.md --verify-tag
+#   gh release create "editor/$V+player/$V" --notes-file notes.md --verify-tag --draft
 #
-# The release is created without files: .github/workflows/release-files.yml attaches them once it is
-# published.
+# The release is created as a draft without files, a beta with --prerelease as well. Pushing the tag
+# has started .github/workflows/release-files.yml, which attaches the files and then publishes the
+# draft (#1631).
 set -eu
 
 if [ $# -lt 1 ]; then

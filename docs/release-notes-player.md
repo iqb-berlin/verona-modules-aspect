@@ -7,7 +7,7 @@ Player
 ### Änderungen
 - Audio, Video: Der Fehlercode bei zu langem Laden heißt `MEDIA_TIMEOUT` statt `audio-timeout` ([#1526](https://github.com/iqb-berlin/verona-modules-aspect/issues/1526), [#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
 - Fehlercodes: Die Fehlermeldungen an die Testumgebung tragen die Codes der Player-Spezifikation, etwa `GEOGEBRA_NOT_LOADING` statt `geogebra-not-loading` und `GEOGEBRA_TIMEOUT` statt `geometry-timeout` ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
-- Geometrie: Das Element meldet `VALUE_CHANGED` erst, wenn in der Zeichnung etwas verändert wird — ein Objekt gezogen, gesetzt, gelöscht oder umbenannt, ein Wert eingegeben —, und nicht mehr schon beim Anklicken, Zoomen oder Verschieben der Ansicht; auch seine verfolgten Variablen ändern sich vorher nicht ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
+- GeoGebra: Das Element meldet `VALUE_CHANGED` erst, wenn in der Zeichnung etwas verändert wird — ein Objekt gezogen, gesetzt, gelöscht oder umbenannt, ein Wert eingegeben —, und nicht mehr schon beim Anklicken, Zoomen oder Verschieben der Ansicht; auch seine verfolgten Variablen ändern sich vorher nicht ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
 - Meldungen
   - Die Meldung „Aufgabendefinition kann nicht geladen werden“ zeigt ein Fehlersymbol ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
   - Die Fehlermeldungen beim Laden sprechen von „Aufgabe“ statt „Unit“ ([#1572](https://github.com/iqb-berlin/verona-modules-aspect/issues/1572))
@@ -24,11 +24,12 @@ Player
 - Formelfeld, Formelbereich
   - Am iPad bleibt die Formeltastatur beim Tippen offen und auf der gewählten Belegung, statt sich nach jedem Zeichen zu schließen ([#1600](https://github.com/iqb-berlin/verona-modules-aspect/issues/1600))
   - Am iPad bleibt die Umschalttaste (⇧) der Formeltastatur aktiv, bis ein Zeichen angetippt wurde, statt sofort zurückzuspringen ([#1607](https://github.com/iqb-berlin/verona-modules-aspect/issues/1607))
-- Geometrie
+- GeoGebra
   - Verfolgte Variablen, die mit einem Editor vor 2.11.0 ausgewählt wurden, galten mit der ersten Meldung des Elements alle als geändert, weil zu ihnen kein Startwert gespeichert ist. Der Player vergleicht jetzt mit den Werten, die GeoGebra beim Laden berechnet ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
   - Tippen in die Zeichnung verschiebt die Seite nicht mehr ([#971](https://github.com/iqb-berlin/verona-modules-aspect/issues/971))
   - Die GeoGebra-Tastatur öffnet sich im Applet statt am Fensterrand, wo andere Elemente sie verdecken konnten. Ein GeoGebra-Element mit Eingabefeld sollte mindestens 400 Pixel hoch sein ([#1549](https://github.com/iqb-berlin/verona-modules-aspect/issues/1549))
-- Geometrie, Bild: Kann GeoGebra oder ein Bild nicht geladen werden, nennt die Fehlermeldung an die Testumgebung, was fehlt ([#1456](https://github.com/iqb-berlin/verona-modules-aspect/issues/1456))
+  - Nach „neu anfangen“ meldet das Element seinen Stand erst, wenn die Zeichnung neu geladen ist, statt bei schnell wiederholtem Zurücksetzen die schon entfernte Zeichnung abzufragen ([#1625](https://github.com/iqb-berlin/verona-modules-aspect/issues/1625))
+- GeoGebra, Bild: Kann GeoGebra oder ein Bild nicht geladen werden, nennt die Fehlermeldung an die Testumgebung, was fehlt ([#1456](https://github.com/iqb-berlin/verona-modules-aspect/issues/1456))
 - iPad: Auf Seiten nach der ersten sind Cursor und Markierung in Eingabefeldern und -bereichen wieder zu sehen (iPadOS 26) ([#1082](https://github.com/iqb-berlin/verona-modules-aspect/issues/1082))
 - Lückentext, Tabelle: Knöpfe mit der Aktion „Aufgabennavigation“ erscheinen nur, wenn die Testumgebung ihr Ziel erlaubt, statt umgekehrt ([#1583](https://github.com/iqb-berlin/verona-modules-aspect/issues/1583))
 - Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ schließt sich, sobald eine andere Aufgabe geladen wird, statt über ihr stehen zu bleiben ([#1581](https://github.com/iqb-berlin/verona-modules-aspect/issues/1581))

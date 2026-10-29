@@ -1,6 +1,6 @@
 Player
 ======
-## next
+## 3.1.0
 ### Neue Funktionen
 - Audio, Video: Während ein Audio oder Video läuft, schaltet sich der Bildschirm nicht ab, sodass ein Tablet keinen Sperrbildschirm mit eigenen Wiedergabeknöpfen zeigt ([#251](https://github.com/iqb-berlin/verona-modules-aspect/issues/251))
 

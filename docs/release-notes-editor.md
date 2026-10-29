@@ -1,6 +1,6 @@
 Editor
 ======
-## next
+## 3.1.0
 ### Neue Funktionen
 - Assistent „Kontrollkästchen“: Angelegte Optionen lassen sich wie in den anderen Assistenten über den Schraubenschlüssel bearbeiten ([#1604](https://github.com/iqb-berlin/verona-modules-aspect/issues/1604))
 - Hinweise zur Aufgabe

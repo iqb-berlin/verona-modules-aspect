@@ -1,9 +1,9 @@
 Allgemein
 =========
-## next
+## editor/3.1.0+player/3.1.0
 ### Neue Funktionen
 - Eingabebereich: Neue Einstellung „Wörter zählen“ zeigt unter dem Text die Zahl der geschriebenen Wörter an. Die Zahl geht nicht in die Antwort ein ([#989](https://github.com/iqb-berlin/verona-modules-aspect/issues/989))
-- Geometrie
+- GeoGebra
   - Neue Einstellung „Eingabezeile anzeigen“ (Expertenmodus) blendet die Eingabezeile von GeoGebra ein ([#1004](https://github.com/iqb-berlin/verona-modules-aspect/issues/1004))
   - Neue Einstellung „‚Wert geändert‘ des Elements für die Variablen übernehmen“: Sobald das Element `VALUE_CHANGED` meldet, melden es auch alle seine verfolgten Variablen, auch eine, deren Wert gleich geblieben ist ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
 - Periodensystem: Neue Einstellungen „Elementnamen“, „Elementsymbole“ und „Felder nach Block einfärben“ ([#1420](https://github.com/iqb-berlin/verona-modules-aspect/issues/1420))

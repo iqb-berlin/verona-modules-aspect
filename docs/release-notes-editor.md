@@ -1,6 +1,6 @@
 Editor
 ======
-## next
+## 3.1.0
 ### Neue Funktionen
 - Assistent „Kontrollkästchen“: Angelegte Optionen lassen sich wie in den anderen Assistenten über den Schraubenschlüssel bearbeiten ([#1604](https://github.com/iqb-berlin/verona-modules-aspect/issues/1604))
 - Hinweise zur Aufgabe
@@ -42,7 +42,10 @@ Editor
 - Assistent „Drag & Drop“: Ein mit dem Schraubenschlüssel bearbeitetes Element zeigt im Assistenten seinen Text statt HTML-Code. Bearbeiten und Verschieben bei den Ziel-Ablagen verändert nicht mehr die Elementliste ([#1595](https://github.com/iqb-berlin/verona-modules-aspect/issues/1595))
 - Assistenten „Drag & Drop“ und „Kontrollkästchen“: Wer nach angelegten Texten auf Bilder umschaltet, bekommt keine Elemente mit ungültigem Bild mehr, und beim Zurückschalten sind die Texte wieder da ([#1610](https://github.com/iqb-berlin/verona-modules-aspect/issues/1610))
 - Farbauswahl: Ohne gesetzte Farbe öffnet der Farbdialog auf Grau statt Schwarz ([#1532](https://github.com/iqb-berlin/verona-modules-aspect/issues/1532))
-- GeoGebra: Nach dem Austausch der Datei lassen sich nicht mehr vorhandene verfolgte Variablen abwählen ([#1505](https://github.com/iqb-berlin/verona-modules-aspect/issues/1505))
+- GeoGebra
+  - Nach dem Austausch der Datei lassen sich nicht mehr vorhandene verfolgte Variablen abwählen ([#1505](https://github.com/iqb-berlin/verona-modules-aspect/issues/1505))
+  - Breite und Höhe werden am laufenden Applet geändert, statt es bei jedem Schritt neu aufzubauen; eine Konstruktion mit eigenem Skript löst dabei keine Fehlermeldung „app was already removed“ mehr aus ([#1625](https://github.com/iqb-berlin/verona-modules-aspect/issues/1625))
+  - Wird das Applet direkt nach dem Laden neu aufgebaut, etwa beim Umschalten der Werkzeugleiste, wartet der Neuaufbau die Arbeit ab, die das Skript der Konstruktion beim Start sofort einplant, statt dass sie am entfernten Applet mit „app was already removed“ scheitert ([#1627](https://github.com/iqb-berlin/verona-modules-aspect/issues/1627))
 - Löschdialog: Mit einer dauerhaft sichtbaren Seite stimmt die Seitennummer in der Rückfrage ([#1513](https://github.com/iqb-berlin/verona-modules-aspect/issues/1513))
 - Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ schließt sich, sobald eine andere Aufgabe geöffnet wird, statt bis zum Neuladen der Seite stehen zu bleiben ([#1581](https://github.com/iqb-berlin/verona-modules-aspect/issues/1581))
 - Neue Elemente ziehen

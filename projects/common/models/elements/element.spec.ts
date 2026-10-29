@@ -2,8 +2,9 @@ import { ElementFactory } from 'common/utils/element-factory';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { UIElementProperties, UIElementType } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
-import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
+import { ELEMENT_DEFAULTS, GROUP_SECTIONS } from 'common/models/elements/element-registry';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
+import { IDError } from 'common/classes/id-error';
 
 describe('UIElement setProperty alias validation', () => {
   let element: UIElement;
@@ -31,12 +32,48 @@ describe('UIElement setProperty alias validation', () => {
   });
 
   it('should reject aliases with umlauts', () => {
-    expect(() => element.setProperty('alias', 'März')).toThrowError(/unerlaubte Zeichen/);
-    expect(() => element.setProperty('alias', 'Lösung1')).toThrowError(/unerlaubte Zeichen/);
+    expect(() => element.setProperty('alias', 'März')).toThrowError(/invalidCharacters/);
+    expect(() => element.setProperty('alias', 'Lösung1')).toThrowError(/invalidCharacters/);
   });
 
   it('should reject aliases with trailing whitespace', () => {
-    expect(() => element.setProperty('alias', 'weiter ')).toThrowError(/Leerzeichen/);
+    expect(() => element.setProperty('alias', 'weiter ')).toThrowError(/space/);
+  });
+
+  /* The registry compares regardless of letter case, so it has to know which name is the element's own:
+     otherwise `text_1` could not become `Text_1` (#1129). */
+  it('should ask for availability leaving out the alias the element holds', () => {
+    const isAliasAvailable = vi.fn(() => true);
+    element.idService = { ...idServiceStub, isAliasAvailable };
+
+    element.setProperty('alias', 'Text_1');
+
+    expect(isAliasAvailable).toHaveBeenCalledWith('Text_1', 'text_1');
+    expect(element.alias).toBe('Text_1');
+  });
+
+  it('should reject an alias the registry does not consider free', () => {
+    element.idService = { ...idServiceStub, isAliasAvailable: () => false };
+
+    expect(() => element.setProperty('alias', 'Wert')).toThrowError(/taken/);
+    expect(element.alias).toBe('text_1');
+  });
+
+  /* The editor shows the reason translated, so the error names its key (#1523). */
+  it('should name the translation key of the reason it refuses an alias for', () => {
+    const keyOf = (alias: string): string | undefined => {
+      try {
+        element.setProperty('alias', alias);
+      } catch (error) {
+        return (error as IDError).translationKey;
+      }
+      return undefined;
+    };
+
+    expect(keyOf('März')).toBe('idContainsInvalidCharacters');
+    expect(keyOf('weiter ')).toBe('idContainsSpace');
+    element.idService = { ...idServiceStub, isAliasAvailable: () => false };
+    expect(keyOf('Wert')).toBe('idTaken');
   });
 
   /* The Verona contract sets no maximum length, therefore neither does Aspect (#1129). */
@@ -69,12 +106,14 @@ describe('the styling group an element keeps', () => {
     });
   });
 
-  /* The six that declare no styling at all, because not one of their templates reads one. They had
-     the basic group until #1226 -- from the base class, not from any declaration of their own -- and
-     the inspector offered six controls for it that rendered nothing. In the shipped master they had
-     no group either: there the base field was optional and unset. */
-  it('should give the six elements that declare no styling an empty group', () => {
-    (['image', 'geometry', 'trigger', 'hotspot-image', 'marking-panel', 'likert-row'] as UIElementType[])
+  /* The elements that declare no styling at all, because not one of their templates reads one. The
+     first six had the basic group until #1226 -- from the base class, not from any declaration of
+     their own -- and the inspector offered six controls for it that rendered nothing. In the shipped
+     master they had no group either: there the base field was optional and unset. Tetfolio joined
+     with an empty group from the start (its iframe document brings its own styles). */
+  it('should give the elements that declare no styling an empty group', () => {
+    (['image', 'geometry', 'trigger', 'hotspot-image', 'marking-panel', 'likert-row',
+      'tetfolio'] as UIElementType[])
       .forEach(type => {
         expect(stylingOf(type)).toEqual({});
         expect(stylingOf(type, { backgroundColor: 'red', fontSize: 40 })).toEqual({});
@@ -252,5 +291,72 @@ describe('the player group an element keeps', () => {
 
   it('should keep the stored values for an element that declares the group', () => {
     expect(playerOf('audio')).toMatchObject({ minRuns: 3, defaultVolume: 0.5 });
+  });
+});
+
+/* The groups have their sweeps above; this is the same question for the element's own properties.
+   Each constructor takes them over one line at a time, and a line that is missing, or that asks
+   `if (element.x)` instead of `!== undefined`, loses a stored value on every load -- silently, the
+   failure class of #1139. Reading the 31 classes is the only other way to know, so the sweep asks every
+   type for every key its default element carries -- read off the built element rather than off
+   ELEMENT_DEFAULTS, whose entries are partial: a field the class initializes itself, such as
+   `isRelevantForPresentationComplete`, is asked as well, and so is one a new class adds (#1309).
+
+   Keys with a primitive value only. Arrays and objects become models or groups rather than copies and
+   are not asked here. */
+describe('the own properties an element keeps', () => {
+  const allTypes = Object.keys(ELEMENT_DEFAULTS) as UIElementType[];
+  const NOT_STORED_VALUES = ['id', 'alias', 'type', 'idService', ...GROUP_SECTIONS];
+
+  /* Built through the factory, as a unit is loaded: the normalizer fills what the blueprint leaves out,
+     so the stored values are the only thing that differs from a default element. */
+  const build = (type: UIElementType, stored: Record<string, unknown> = {}): Record<string, unknown> => {
+    const blueprint: Record<string, unknown> = {
+      type, id: `${type}_1`, alias: `${type}_1`, ...stored
+    };
+    if (type === 'likert') blueprint.rows = [];
+    return ElementFactory.createElement(blueprint as unknown as UIElementProperties) as
+      unknown as Record<string, unknown>;
+  };
+
+  const primitiveDefaultsOf = (type: UIElementType): [string, unknown][] => Object.entries(build(type))
+    .filter(([key, value]) => !NOT_STORED_VALUES.includes(key) &&
+      value !== undefined && (value === null || typeof value !== 'object'));
+
+  /* Falsy wherever the type of the default allows it, because that is what a truthiness check drops --
+     and only where it differs from the default, since a dropped `false` that equals the default is no
+     loss. Every key that may be null has null as its default, so 0 and '' stand in for the falsy values
+     such a key can hold besides it: a page-navigation button stores `actionParam: 0`. */
+  const differingFrom = (fallback: unknown): unknown[] => {
+    if (typeof fallback === 'boolean') return [!fallback];
+    if (typeof fallback === 'number') return [fallback === 0 ? 7 : 0];
+    if (typeof fallback === 'string') return [fallback === '' ? 'stored' : ''];
+    if (fallback === null) return ['stored', 0, ''];
+    return [];
+  };
+
+  /* The two truthiness checks there are, on purpose: neither '' nor null is a value of
+     'fill' | 'outline', so falling back to the default is the better answer to such a unit. The sweep
+     cannot know a union's members, and these are the only keys where that matters. */
+  const FALLS_BACK_ON_PURPOSE = [['text-field', 'appearance'], ['text-area', 'appearance']] as const;
+
+  it('should keep a stored value that differs from the default, for every own property of every type', () => {
+    const lost = allTypes.flatMap(type => primitiveDefaultsOf(type)
+      .filter(([key]) => !FALLS_BACK_ON_PURPOSE.some(([t, k]) => t === type && k === key))
+      .flatMap(([key, fallback]) => differingFrom(fallback)
+        .filter(stored => build(type, { [key]: stored })[key] !== stored)
+        .map(stored => `${type}.${key} = ${JSON.stringify(stored)}`)));
+
+    // A sweep over nothing is green as well: the keys of a class, of its base and of UIElement.
+    expect(primitiveDefaultsOf('text-area').map(([key]) => key))
+      .toEqual(expect.arrayContaining(['showWordCount', 'required', 'isRelevantForPresentationComplete']));
+    expect(lost).toEqual([]);
+  });
+
+  /* Held rather than only skipped, or the exemption would outlive the reason for it. */
+  it('should fall back to the default for an appearance that is no value of its type', () => {
+    FALLS_BACK_ON_PURPOSE.forEach(([type, key]) => {
+      expect(build(type, { [key]: '' })[key]).toBe(build(type)[key]);
+    });
   });
 });

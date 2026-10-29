@@ -11,10 +11,11 @@
 
 <h3>{{ 'sectionTemplates.imagesPerRow' | translate }}</h3>
 <mat-form-field [style.align-self]="'flex-start'">
-  <input matInput type="number" min="1" max="9" required aspectNumberField
+  <input matInput type="number" min="1" max="9" required aspectNumberField #itemsPerRowField="aspectNumberField"
          [style.margin-left]="'unset'"
          [ngModel]="options.itemsPerRow"
          (numberChange)="commitItemsPerRow($event)">
+  <mat-error>{{ itemsPerRowField.errorText }}</mat-error>
 </mat-form-field>
 <p>{{ 'sectionTemplates.imagesPerRowHint4' | translate }}<br>
   {{ 'sectionTemplates.imagesPerRowHint2' | translate }}</p>

@@ -18,6 +18,7 @@ import {
 import {
   NumberFieldDirective
 } from 'editor/modules/editor-shared/directives/number-field.directive';
+import { ColorPickerValuePipe } from 'editor/modules/editor-shared/pipes/color-picker-value.pipe';
 
 describe('HotspotEditDialogComponent', () => {
   let component: HotspotEditDialogComponent;
@@ -44,7 +45,7 @@ describe('HotspotEditDialogComponent', () => {
     messageService = createSpyObj<MessageService>(['showWarning']);
 
     await TestBed.configureTestingModule({
-      declarations: [HotspotEditDialogComponent, NumberFieldDirective],
+      declarations: [HotspotEditDialogComponent, NumberFieldDirective, ColorPickerValuePipe],
       imports: [
         FormsModule,
         MatDialogModule,
@@ -109,6 +110,43 @@ describe('HotspotEditDialogComponent', () => {
 
     expect(dialogRefMock.close).toHaveBeenCalledWith(component.newHotspot);
     expect(hotspot.shape).toBe('rectangle');
+  });
+
+  /* The text box beside each pen takes any CSS colour; the colour input behind the pen opens on
+     black for `transparent`, which is black once its alpha is dropped (#1532). */
+  describe('the colour pickers', () => {
+    const pickers = (): HTMLInputElement[] => Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="color"]') as NodeListOf<HTMLInputElement>
+    );
+    const show = async (): Promise<void> => {
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    };
+
+    it('should open on the colours of the hotspot', async () => {
+      await show();
+
+      expect(pickers().map(picker => picker.value)).toEqual(['#ffffff', '#000000']);
+    });
+
+    it('should open on a medium grey for a transparent colour, and on a typed colour name', async () => {
+      component.newHotspot.backgroundColor = 'transparent';
+      component.newHotspot.borderColor = 'red';
+      await show();
+
+      expect(pickers().map(picker => picker.value)).toEqual(['#808080', '#ff0000']);
+    });
+
+    it('should take the colour picked there into the draft', async () => {
+      await show();
+
+      pickers()[1].value = '#3366cc';
+      pickers()[1].dispatchEvent(new Event('input'));
+
+      expect(component.newHotspot.borderColor).toBe('#3366cc');
+      expect(hotspot.borderColor).toBe('#000000');
+    });
   });
 
   /* The six number boxes carried `min="0"` and nothing enforced it, so a negative size or rotation

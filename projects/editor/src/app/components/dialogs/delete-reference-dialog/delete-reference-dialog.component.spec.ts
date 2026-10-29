@@ -1,13 +1,18 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 import { Mock } from 'vitest';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIElement } from 'common/models/elements/element';
-import { ReferenceList } from 'editor/src/app/classes/reference-manager';
+import { ReferenceList, SectionLocation } from 'editor/src/app/classes/reference-manager';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
+import { Section } from 'common/models/section';
 import {
   DeleteReferenceDialogComponent
 } from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
@@ -19,12 +24,17 @@ import {
 })
 class MockReferenceListComponent {
   @Input() refs: ReferenceList[] | undefined;
+  @Input() navigable: boolean = false;
+  @Output() goToElement = new EventEmitter<UIElement>();
+  @Output() goToSection = new EventEmitter<SectionLocation>();
 }
 
 describe('DeleteReferenceDialogComponent', () => {
   let component: DeleteReferenceDialogComponent;
   let fixture: ComponentFixture<DeleteReferenceDialogComponent>;
   let dialogRefMock: { close: Mock };
+  let unitServiceMock: { revealElement: Mock, revealSection: Mock };
+  let dialogServiceMock: { closeAllThen: Mock };
 
   const createElement = (id: string): UIElement => ({
     type: 'text',
@@ -39,6 +49,8 @@ describe('DeleteReferenceDialogComponent', () => {
 
   beforeEach(async () => {
     dialogRefMock = { close: vi.fn() };
+    unitServiceMock = { revealElement: vi.fn(), revealSection: vi.fn() };
+    dialogServiceMock = { closeAllThen: vi.fn((action: () => void) => action()) };
     await TestBed.configureTestingModule({
       declarations: [
         DeleteReferenceDialogComponent,
@@ -47,12 +59,14 @@ describe('DeleteReferenceDialogComponent', () => {
       imports: [
         MatDialogModule,
         MatButtonModule,
-        MatTooltipModule,
+        MatIconModule,
         TranslateModule.forRoot()
       ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { refs } },
-        { provide: MatDialogRef, useValue: dialogRefMock }
+        { provide: MatDialogRef, useValue: dialogRefMock },
+        { provide: UnitService, useValue: unitServiceMock },
+        { provide: DialogService, useValue: dialogServiceMock }
       ]
     }).compileComponents();
 
@@ -85,5 +99,38 @@ describe('DeleteReferenceDialogComponent', () => {
   it('should close with true when confirming the cleanup', () => {
     getActionButtons()[1].click();
     expect(dialogRefMock.close).toHaveBeenCalledWith(true);
+  });
+
+  /* What is removed is a text anchor or a cloze child, not always an element: the title asks about the text change,
+     with the warning as a symbol in front of it rather than as red text (#1520). */
+  it('should ask about the text change behind a warning symbol', () => {
+    const title: HTMLElement = fixture.nativeElement.querySelector('[mat-dialog-title]');
+
+    expect(title.textContent).toContain('referenceRemoval.changeTextTitle');
+    expect(title.querySelector('.message-icon-warning')).toBeTruthy();
+    expect(title.getAttribute('style')).toBeNull();
+  });
+
+  /* Going to what refers keeps the text as it was, so the author can resolve the reference first (#1520). */
+  it('should keep the text and take the author to an element or section that refers', () => {
+    const referenceList: MockReferenceListComponent = fixture.debugElement
+      .query(By.directive(MockReferenceListComponent)).componentInstance;
+    expect(referenceList.navigable).toBe(true);
+
+    referenceList.goToElement.emit(refs[0].refs[0]);
+    expect(dialogServiceMock.closeAllThen).toHaveBeenCalled();
+    expect(unitServiceMock.revealElement).toHaveBeenCalledWith(refs[0].refs[0]);
+
+    const location = { section: new Section(), pageIndex: 0, sectionIndex: 2 };
+    referenceList.goToSection.emit(location);
+    expect(unitServiceMock.revealSection).toHaveBeenCalledWith(location);
+  });
+
+  it('should name the removal of the references on the marked confirm button', () => {
+    const [cancelButton, confirmButton] = getActionButtons();
+
+    expect(cancelButton.textContent).toContain('cancel');
+    expect(confirmButton.textContent?.trim()).toBe('referenceRemoval.changeText');
+    expect(confirmButton.classList).toContain('mat-warn');
   });
 });

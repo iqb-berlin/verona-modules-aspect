@@ -20,7 +20,8 @@ describe('StateVariablesDialogComponent', () => {
 
   const mockIDService = {
     getAndRegisterNewIDs: vi.fn().mockReturnValue({ id: 'v2', alias: 'v2' }),
-    unregister: vi.fn()
+    unregister: vi.fn(),
+    isAliasAvailable: vi.fn().mockReturnValue(true)
   };
 
   const mockData = {
@@ -66,5 +67,14 @@ describe('StateVariablesDialogComponent', () => {
     component.deleteStateVariable(0);
     expect(component.stateVariables.length).toBe(0);
     expect(mockIDService.unregister).toHaveBeenCalled();
+  });
+
+  /* The editor writes the alias into the variable it is given. On the unit's own variables a cancelled dialog
+     left the rename in place (#1129). */
+  it('should edit copies of the variables, so that cancelling leaves the unit as it was', () => {
+    component.stateVariables[0].alias = 'renamed';
+
+    expect(mockData.stateVariables[0].alias).toBe('v1');
+    expect(component.stateVariables[0]).toEqual(new StateVariable('v1', 'renamed', 'val1'));
   });
 });

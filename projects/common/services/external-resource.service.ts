@@ -28,7 +28,9 @@ export class ExternalResourceService {
    *
    * A failing load throws from the `onerror` callback, so the error does not reach this caller but
    * Angular's error handler -- and the two applications do different things with it: the player reports
-   * `geogebra-not-loading` to the host, while the editor excludes exactly this code from its snackbar.
+   * `GEOGEBRA_NOT_LOADING` to the host, while the editor lists it in its hints area for the whole unit (#1537).
+   * The message names the address and says "could not be loaded", which covers every cause a script's
+   * `onerror` stands for: a missing package, a refused connection and a blocked response alike.
    */
   initializeGeoGebra(renderer: Renderer2): void {
     if (!this.geoGebraInitStarted) {
@@ -39,8 +41,8 @@ export class ExternalResourceService {
       script.onload = () => {
         this.isGeoGebraScriptInitialized.next(true);
       };
-      script.onerror = (message: string) => {
-        throw new AspectError('geogebra-not-loading', message);
+      script.onerror = () => {
+        throw new AspectError('GEOGEBRA_NOT_LOADING', `GeoGebra could not be loaded from "${script.src}"`);
       };
       renderer.appendChild(document.head, script);
     }

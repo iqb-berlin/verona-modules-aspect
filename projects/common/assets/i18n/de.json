@@ -1,6 +1,7 @@
 {
   "pageIndication": "Seite {{index}}",
   "close": "Schließen",
+  "unitDefErrorTitle": "Aufgabendefinition kann nicht geladen werden",
   "imageNotFound": "Bild nicht gefunden",
   "confirm": "Bestätigen",
   "cancel": "Abbrechen",
@@ -10,12 +11,13 @@
   "calculator": "Rechner",
   "moleculeEditor": "Molekül-Editor",
   "openWidget": "{{widget}} öffnen",
-  "tableHeaderText": "Kopfzeilentext",
-  "tableHeaderAlignLeft": "Linksbündig",
-  "tableHeaderAlignCenter": "Zentriert",
-  "tableHeaderAlignRight": "Rechtsbündig",
+  "tetfolioNoContent": "Kein Tetfolio-Inhalt vorhanden",
+  "tetfolioIframeTitle": "Tetfolio-Experiment",
+  "tableHeaderEdit": "Kopfzelle bearbeiten",
   "tableHeaderAddRow": "Weitere Kopfzeile hinzufügen",
   "tableHeaderRemoveRow": "Kopfzeile entfernen",
   "mathTableAddRow": "weitere Zeile einfügen",
-  "mathTableRemoveRow": "letzte Zeile entfernen"
+  "mathTableRemoveRow": "letzte Zeile entfernen",
+  "wordCount": "{{count}} Wörter",
+  "wordCountOne": "1 Wort"
 }

@@ -770,6 +770,7 @@ input[text] "propertiesPanel.id" = geometry
 text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 checkbox "propertiesPanel.showResetIcon" = true
+checkbox "propertiesPanel.showAlgebraInput" = false
 [propertiesPanel.geogebraHeader]
 checkbox "propertiesPanel.enableUndoRedo" = true
 checkbox "propertiesPanel.enableShiftDragZoom" = false
@@ -778,6 +779,7 @@ checkbox "propertiesPanel.showFullscreenButton" = false
 checkbox "propertiesPanel.showToolbar" = true
 input[text] "propertiesPanel.customToolbar" = 
 [propertiesPanel.trackedGeogebraVariables]
+checkbox "propertiesPanel.recomputedCountsAsChanged" = false
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -803,6 +805,7 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 text "originalFileName" =  [merged]
 input[text] "propertiesPanel.appDefinition" =  (disabled) [merged]
 checkbox "propertiesPanel.showResetIcon" = indeterminate
+checkbox "propertiesPanel.showAlgebraInput" = indeterminate
 [propertiesPanel.geogebraHeader]
 checkbox "propertiesPanel.enableUndoRedo" = indeterminate
 checkbox "propertiesPanel.enableShiftDragZoom" = indeterminate
@@ -811,6 +814,7 @@ checkbox "propertiesPanel.showFullscreenButton" = indeterminate
 checkbox "propertiesPanel.showToolbar" = indeterminate
 input[text] "propertiesPanel.customToolbar" =  (disabled) [merged]
 [propertiesPanel.trackedGeogebraVariables]
+checkbox "propertiesPanel.recomputedCountsAsChanged" = indeterminate
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -841,6 +845,7 @@ text "originalFileName" =  [merged]
 input[text] "propertiesPanel.appDefinition" =  (disabled) [merged]
 [propertiesPanel.geogebraHeader]
 [propertiesPanel.trackedGeogebraVariables]
+checkbox "propertiesPanel.recomputedCountsAsChanged" = indeterminate
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
 input[number] "propertiesPanel.width" =  [merged]
@@ -859,6 +864,7 @@ text "originalFileName" = unknown
 input[text] "propertiesPanel.appDefinition" =  (disabled)
 [propertiesPanel.geogebraHeader]
 [propertiesPanel.trackedGeogebraVariables]
+checkbox "propertiesPanel.recomputedCountsAsChanged" = false
 select "propertiesPanel.trackedVariables" = []
 input[text] "propertiesPanel.trackedExpectedVariables" = 
 input[number] "propertiesPanel.width" = 600
@@ -2171,6 +2177,78 @@ input[number] "propertiesPanel.maxWidth" =  (disabled)
 --- footer ---
 button "propertiesPanel.deleteElement"`,
 
+  'tetfolio|expert': `--- tabs --- element properties, position and size
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = tetfolio
+[toolbox.tetfolio]
+button "upload_file loadTetfolioZip"
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
+
+--- tab "position and size" ---
+[propertiesPanel.position]
+input[number] "propertiesPanel.xPosition" = 0
+input[number] "propertiesPanel.yPosition" = 0
+input[number] "propertiesPanel.zIndex" = 0
+[propertiesPanel.dimensions]
+input[number] "propertiesPanel.width" = 900
+input[number] "propertiesPanel.height" = 400
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement"
+button "propertiesPanel.deleteElement"`,
+
+  'tetfolio|multi-expert': `--- tabs --- element properties, position and size
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[toolbox.tetfolio]
+button "upload_file loadTetfolioZip"
+checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
+
+--- tab "position and size" ---
+[propertiesPanel.position]
+input[number] "propertiesPanel.xPosition" =  [merged]
+input[number] "propertiesPanel.yPosition" =  [merged]
+input[number] "propertiesPanel.zIndex" =  [merged]
+[propertiesPanel.dimensions]
+input[number] "propertiesPanel.width" =  [merged]
+input[number] "propertiesPanel.height" =  [merged]
+button "align_horizontal_left"
+button "align_horizontal_right"
+button "align_vertical_top"
+button "align_vertical_bottom"
+
+--- footer ---
+checkbox "propertiesPanel.setElementInteractionEnabled" = false
+button "propertiesPanel.duplicateElement" (disabled)
+button "propertiesPanel.deleteElement"`,
+
+  'tetfolio|multi-standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
+[toolbox.tetfolio]
+button "upload_file loadTetfolioZip"
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
+  'tetfolio|standard': `--- tabs --- element properties
+
+--- tab "element properties" ---
+input[text] "propertiesPanel.id" = tetfolio
+[toolbox.tetfolio]
+button "upload_file loadTetfolioZip"
+checkbox "propertiesPanel.maxWidthEnabled" = false
+input[number] "propertiesPanel.maxWidth" =  (disabled)
+
+--- footer ---
+button "propertiesPanel.deleteElement"`,
+
   'text-area-math|expert': `--- tabs --- element properties, position and size, styling
 
 --- tab "element properties" ---
@@ -2303,6 +2381,7 @@ checkbox "propertiesPanel.resizeEnabled" = false
 checkbox "propertiesPanel.hasAutoHeight" = false (disabled)
 checkbox "propertiesPanel.hasDynamicRowCount" = true
 input[number] "propertiesPanel.expectedCharactersCount" = 135
+checkbox "propertiesPanel.showWordCount" = false
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 select "propertiesPanel.appearance" = outline
@@ -2350,6 +2429,7 @@ textarea "preset" =
 checkbox "propertiesPanel.resizeEnabled" = indeterminate
 checkbox "propertiesPanel.hasAutoHeight" = indeterminate
 checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
+checkbox "propertiesPanel.showWordCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 select "propertiesPanel.appearance" = <null> [merged]
@@ -2397,6 +2477,7 @@ textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 textarea "preset" = 
 checkbox "propertiesPanel.hasDynamicRowCount" = indeterminate
+checkbox "propertiesPanel.showWordCount" = indeterminate
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -2415,6 +2496,7 @@ checkbox "propertiesPanel.readOnly" = false
 textarea "preset" = 
 checkbox "propertiesPanel.hasDynamicRowCount" = true
 input[number] "propertiesPanel.expectedCharactersCount" = 135
+checkbox "propertiesPanel.showWordCount" = false
 [propertiesPanel.textAlign]
 toggle-group [format_align_left, format_align_center, format_align_right]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -3181,6 +3263,9 @@ input[text] "propertiesPanel.id" = widget-periodic-table
 checkbox "propertiesPanel.showInfoOrder" = true
 checkbox "propertiesPanel.showInfoENeg" = false
 checkbox "propertiesPanel.showInfoAMass" = true
+checkbox "propertiesPanel.showInfoName" = true
+checkbox "propertiesPanel.showInfoSymbol" = true
+checkbox "propertiesPanel.highlightBlocks" = false
 checkbox "propertiesPanel.closeOnSelection" = false
 input[number] "propertiesPanel.maxNumberOfSelections" = 1
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
@@ -3211,6 +3296,9 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 checkbox "propertiesPanel.showInfoOrder" = indeterminate
 checkbox "propertiesPanel.showInfoENeg" = indeterminate
 checkbox "propertiesPanel.showInfoAMass" = indeterminate
+checkbox "propertiesPanel.showInfoName" = indeterminate
+checkbox "propertiesPanel.showInfoSymbol" = indeterminate
+checkbox "propertiesPanel.highlightBlocks" = indeterminate
 checkbox "propertiesPanel.closeOnSelection" = indeterminate
 input[number] "propertiesPanel.maxNumberOfSelections" =  [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -3245,6 +3333,9 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 checkbox "propertiesPanel.showInfoOrder" = indeterminate
 checkbox "propertiesPanel.showInfoENeg" = indeterminate
 checkbox "propertiesPanel.showInfoAMass" = indeterminate
+checkbox "propertiesPanel.showInfoName" = indeterminate
+checkbox "propertiesPanel.showInfoSymbol" = indeterminate
+checkbox "propertiesPanel.highlightBlocks" = indeterminate
 checkbox "propertiesPanel.closeOnSelection" = indeterminate
 input[number] "propertiesPanel.maxNumberOfSelections" =  [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
@@ -3261,6 +3352,9 @@ input[text] "propertiesPanel.id" = widget-periodic-table
 checkbox "propertiesPanel.showInfoOrder" = true
 checkbox "propertiesPanel.showInfoENeg" = false
 checkbox "propertiesPanel.showInfoAMass" = true
+checkbox "propertiesPanel.showInfoName" = true
+checkbox "propertiesPanel.showInfoSymbol" = true
+checkbox "propertiesPanel.highlightBlocks" = false
 checkbox "propertiesPanel.closeOnSelection" = false
 input[number] "propertiesPanel.maxNumberOfSelections" = 1
 checkbox "propertiesPanel.maxWidthEnabled" = false

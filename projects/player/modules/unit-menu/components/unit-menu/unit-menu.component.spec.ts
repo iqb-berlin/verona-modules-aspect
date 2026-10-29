@@ -7,7 +7,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 import { FileService } from 'common/services/file.service';
 import {
   VopPageNavigationCommand, VopPlayerConfigChangedNotification, VopStartCommand

@@ -5,6 +5,14 @@
   z-index: 0;
 }
 
+// aspect-section is an inline element unless told otherwise. A block for the same reason as the tab
+// body in pages-layout (#1082); overflow visible, because the inline box used to ignore the
+// overflow: auto above and sticky content relies on the outer scroll container.
+.section:not(.static-section) {
+  display: block;
+  overflow: visible;
+}
+
 .static-section{
   display: block;
 }

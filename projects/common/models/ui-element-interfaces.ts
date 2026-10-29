@@ -45,7 +45,8 @@ export type UIElementType =
   | 'table'
   | 'marking-panel'
   | 'widget-periodic-table'
-  | 'widget-molecule-editor';
+  | 'widget-molecule-editor'
+  | 'tetfolio';
 
 export interface OptionElement extends UIElement {
   getNewOptionLabel(optionText: string): Label;

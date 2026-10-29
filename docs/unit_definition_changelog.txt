@@ -270,3 +270,18 @@ iqb-aspect-definition@1.0.0
 - Section, Page, all elements:
   - number properties stored as strings become numbers, including the values of grid sizes and
     margins (#1306)
+
+4.13.0
+- new element TetfolioElement (type tetfolio): htmlContent: string (default ''), dimensions (#1461)
+- GeometryElement:
+  - new property: showAlgebraInput: boolean (default false) (#1004)
+  - new property: recomputedCountsAsChanged: boolean (default false) (#1460)
+- TextAreaElement:
+  - new property: showWordCount: boolean (default false) (#989)
+- TableElement:
+  - headerRows[][].text: plain text -> HTML (#1430)
+  - headerRows[][]: remove alignment (#1430)
+- WidgetPeriodicTableElement:
+  - new property: showInfoName: boolean (default true) (#1420)
+  - new property: showInfoSymbol: boolean (default true) (#1420)
+  - new property: highlightBlocks: boolean (default false) (#1420)

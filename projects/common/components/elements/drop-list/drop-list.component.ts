@@ -22,6 +22,12 @@ import { DragOperatorService } from 'common/services/drag-operator.service';
 export class DropListComponent extends FormElementComponent implements OnInit, OnDestroy {
   @Input() elementModel!: DropListElement;
   @Input() clozeContext: boolean = false;
+  /**
+   * Whether the list is a gap of a cloze, set together with `clozeContext`. That one alone does not say so:
+   * a table cell asks for the compact look of a gap as well, but not for the size a gap gives its children
+   * (#1619).
+   */
+  @Input() inGap: boolean = false;
   @ViewChildren('listItem') droplistItems: QueryList<ElementRef> | undefined;
 
   /** Needed for sortlists, where the displayed items are (temporarily) not the same as the actual form value */
@@ -101,6 +107,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, O
     const componentPortal = new ComponentPortal(DragImageComponent);
     this.dragImageRef = this.dragImageOverlayRef.attach(componentPortal);
     this.dragImageRef.instance.clozeContext = this.clozeContext;
+    this.dragImageRef.instance.inGap = this.inGap;
     this.dragImageRef.instance.styling = this.elementModel.styling;
   }
 

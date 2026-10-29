@@ -1,7 +1,7 @@
 import {
   InputElement, UIElement
 } from 'common/models/elements/element';
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   FontStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -32,7 +32,6 @@ export class RadioButtonGroupComplexElement extends InputElement
   styling: FontStyles = PropertyGroupGenerators
     .generateFontStylingProps();
 
-  static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';
 
   constructor(element?: Partial<RadioButtonGroupComplexProperties>, idService?: AbstractIDService) {
@@ -53,13 +52,12 @@ export class RadioButtonGroupComplexElement extends InputElement
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'integer',
+      type: 'INTEGER',
       format: '',
       multiple: false,
       nullable: false,
       values: this.getVariableInfoValues(),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }

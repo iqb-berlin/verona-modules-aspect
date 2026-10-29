@@ -29,51 +29,35 @@
              [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
              [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-             [style.text-align]="headerCell.alignment"
              [style.grid-row-start]="r + 1"
              [style.grid-column-start]="j + 1">
+          <div class="header-text" [innerHTML]="headerCell.text | safeResourceHTML"></div>
           @if (allowElementEditing) {
-            <div class="header-cell-editor">
-              <input class="header-text-input"
-                     [attr.aria-label]="'tableHeaderText' | translate"
-                     [value]="headerCell.text"
-                     (input)="updateHeaderCellText(r, j, $any($event.target).value)">
-              <div class="header-editor-actions">
-                <mat-button-toggle-group class="header-alignment-toggle"
-                                         [value]="headerCell.alignment"
-                                         (change)="updateHeaderCellAlignment(r, j, $event.value)">
-                  <mat-button-toggle value="left" [matTooltip]="'tableHeaderAlignLeft' | translate">
-                    <mat-icon class="toggle-icon">format_align_left</mat-icon>
-                  </mat-button-toggle>
-                  <mat-button-toggle value="center" [matTooltip]="'tableHeaderAlignCenter' | translate">
-                    <mat-icon class="toggle-icon">format_align_center</mat-icon>
-                  </mat-button-toggle>
-                  <mat-button-toggle value="right" [matTooltip]="'tableHeaderAlignRight' | translate">
-                    <mat-icon class="toggle-icon">format_align_right</mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-                @if (j === 0) {
-                  <div class="header-row-controls">
-                    @if (r === elementModel.headerRows.length - 1) {
-                      <button mat-icon-button color="primary" class="row-control-button"
-                              [matTooltip]="'tableHeaderAddRow' | translate"
-                              (click)="addHeaderRow()">
-                        <mat-icon class="button-icon">add</mat-icon>
-                      </button>
-                    }
-                    @if (elementModel.headerRows.length > 1) {
-                      <button mat-icon-button color="primary" class="row-control-button"
-                              [matTooltip]="'tableHeaderRemoveRow' | translate"
-                              (click)="removeHeaderRow(r)">
-                        <mat-icon class="button-icon">remove</mat-icon>
-                      </button>
-                    }
-                  </div>
-                }
-              </div>
+            <div class="header-editor-actions">
+              <button mat-mini-fab color="primary" class="header-edit-button"
+                      [matTooltip]="'tableHeaderEdit' | translate"
+                      (click)="editHeaderCell(r, j)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              @if (j === 0) {
+                <div class="header-row-controls">
+                  @if (r === elementModel.headerRows.length - 1) {
+                    <button mat-icon-button color="primary" class="row-control-button"
+                            [matTooltip]="'tableHeaderAddRow' | translate"
+                            (click)="addHeaderRow()">
+                      <mat-icon class="button-icon">add</mat-icon>
+                    </button>
+                  }
+                  @if (elementModel.headerRows.length > 1) {
+                    <button mat-icon-button color="primary" class="row-control-button"
+                            [matTooltip]="'tableHeaderRemoveRow' | translate"
+                            (click)="removeHeaderRow(r)">
+                      <mat-icon class="button-icon">remove</mat-icon>
+                    </button>
+                  }
+                </div>
+              }
             </div>
-          } @else {
-            {{ headerCell.text }}
           }
         </div>
       }
@@ -112,27 +96,33 @@
           <button mat-menu-item (click)="addElement('audio', i, j)">Audio</button>
         </mat-menu>
       </ng-container>
-      <div *ngIf="elementGrid[i][j] !== undefined" class="element-container">
-        <div *ngIf="allowElementEditing" class="element-title">
-          {{$any($any(elementGrid[i][j]).constructor).title}}
-          <ng-container *ngIf="$any(elementGrid[i][j]).alias !== 'alias-placeholder'">
-            - {{$any(elementGrid[i][j]).alias}}
-          </ng-container>
+      @if (elementGrid[i][j]; as element) {
+        <div class="element-container">
+          @if (allowElementEditing) {
+            <div class="element-title">
+              {{ elementNames[element.type] }}
+              @if (element.alias !== 'alias-placeholder') {
+                - {{ element.alias }}
+              }
+            </div>
+          }
+          <aspect-table-child-overlay [element]="$any(element)"
+                                      [parentForm]="parentForm"
+                                      [savedTexts]="savedTexts"
+                                      [savedPlaybackTimes]="savedPlaybackTimes"
+                                      [mediaStatusChanged]="mediaStatusChanged"
+                                      [actualPlayingId]="actualPlayingId"
+                                      [editorMode]="editorMode"
+                                      (elementSelected)="childElementSelected.emit($event)">
+          </aspect-table-child-overlay>
+          @if (allowElementEditing) {
+            <button class="remove-button" mat-mini-fab color="primary"
+                    (click)="removeElement(i, j)">
+              <mat-icon>remove</mat-icon>
+            </button>
+          }
         </div>
-        <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"
-                                    [parentForm]="parentForm"
-                                    [savedTexts]="savedTexts"
-                                    [savedPlaybackTimes]="savedPlaybackTimes"
-                                    [mediaStatusChanged]="mediaStatusChanged"
-                                    [actualPlayingId]="actualPlayingId"
-                                    [editorMode]="editorMode"
-                                    (elementSelected)="childElementSelected.emit($event)">
-        </aspect-table-child-overlay>
-        <button *ngIf="allowElementEditing" class="remove-button" mat-mini-fab color="primary"
-                (click)="removeElement(i, j)">
-          <mat-icon>remove</mat-icon>
-        </button>
-      </div>
+      }
     </div>
   </ng-container>
 </div>

@@ -38,6 +38,7 @@ import type {
 import type {
   WidgetPeriodicTableProperties
 } from 'common/models/elements/widget-periodic-table';
+import type { TetfolioProperties } from 'common/models/elements/tetfolio';
 import type {
   AssertNever, BasicStyles, DimensionProperties, PlayerProperties, PositionProperties, Stylings
 } from 'common/models/elements/property-group-interfaces';
@@ -200,6 +201,7 @@ interface ElementPropertiesMap {
   likert: LikertProperties;
   'widget-molecule-editor': WidgetMoleculeEditorProperties;
   'widget-periodic-table': WidgetPeriodicTableProperties;
+  tetfolio: TetfolioProperties;
 }
 
 /** Mapped over UIElementType, so the table and the union cannot drift: a new
@@ -331,6 +333,7 @@ export const ELEMENT_DEFAULTS = {
     rowCount: 3,
     expectedCharactersCount: 135,
     hasReturnKey: false,
+    showWordCount: false,
     inputAssistancePreset: null,
     inputAssistancePosition: 'floating',
     inputAssistanceFloatingStartPosition: 'startBottom',
@@ -578,6 +581,8 @@ export const ELEMENT_DEFAULTS = {
     enableShiftDragZoom: false,
     showZoomButtons: false,
     showFullscreenButton: false,
+    showAlgebraInput: false,
+    recomputedCountsAsChanged: false,
     customToolbar: '',
     trackedVariables: [],
     trackedExpectedVariables: [],
@@ -782,12 +787,22 @@ export const ELEMENT_DEFAULTS = {
     showInfoOrder: true,
     showInfoENeg: false,
     showInfoAMass: true,
+    showInfoName: true,
+    showInfoSymbol: true,
+    highlightBlocks: false,
     closeOnSelection: false,
     maxNumberOfSelections: 1,
     state: null,
     styling: {
       backgroundColor: '#f1f1f1',
       fontColor: '#006064'
+    }
+  },
+  tetfolio: {
+    htmlContent: '',
+    dimensions: {
+      width: 900,
+      height: 400
     }
   }
 } satisfies ElementDefaultsMap;

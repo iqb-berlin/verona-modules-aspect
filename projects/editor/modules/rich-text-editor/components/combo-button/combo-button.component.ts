@@ -2,6 +2,12 @@ import {
   Component, ElementRef, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 
+/** An entry of the combo button's list: the value it emits, and the translation key it shows instead. */
+export interface ComboButtonOption {
+  value: string;
+  label: string;
+}
+
 @Component({
   selector: 'aspect-combo-button',
   standalone: false,
@@ -11,7 +17,8 @@ import {
 export class ComboButtonComponent {
   @Input() inputType!: 'color' | 'list';
   @Input() selectedValue!: string;
-  @Input() availableValues: string[] | undefined;
+  @Input() availableValues: ComboButtonOption[] | undefined;
+  /** A translation key; the button translates it itself. */
   @Input() tooltip!: string;
   @Input() icon!: string;
   @Input() isActive: boolean = false;

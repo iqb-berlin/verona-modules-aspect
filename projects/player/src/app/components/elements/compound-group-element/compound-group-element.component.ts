@@ -20,7 +20,7 @@ import { UnitNavParam } from 'common/models/elements/button';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { Subscription, take } from 'rxjs';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
-import { ResponseValueType } from '@iqb/responses';
+import { ResponseValueType } from '@iqbspecs/response/response.interface';
 import { TableElement } from 'common/models/elements/table';
 import { ImageElement } from 'common/models/elements/image';
 import { TextFieldComponent } from 'common/components/elements/text-field/text-field.component';
@@ -33,7 +33,7 @@ import { TextComponent } from 'common/components/elements/text/text.component';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { TextElement } from 'common/models/elements/text';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
-import { NavigationTarget } from 'player/modules/verona/models/verona';
+import { NavigationTargetRule } from 'common/utils/navigation-target-rule';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import {
@@ -227,6 +227,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     if (childModel.type === 'text-area') {
       this.manageKeyInputToggling(child as TextAreaComponent);
       this.manageOnKeyDown(child as TextAreaComponent, childModel as InputElement);
+      this.manageWordCount(child as TextAreaComponent);
     }
     if (childModel.type === 'button') {
       this.addButtonActionEventListener(child as ButtonComponent);
@@ -380,12 +381,11 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       this.navigationService.enabledNavigationTargets
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(enabledNavigationTargets => {
-          if (enabledNavigationTargets && enabledNavigationTargets
-            .includes(button.elementModel.actionParam as NavigationTarget)) {
+          if (NavigationTargetRule.isEnabled(
+            button.elementModel.action, button.elementModel.actionParam, enabledNavigationTargets)) {
             this.renderer.removeClass(button.domElement, 'hide-navigation');
-            this.renderer.addClass(button.domElement, 'hide-navigation');
           } else {
-            this.renderer.removeClass(button.domElement, 'hide-navigation');
+            this.renderer.addClass(button.domElement, 'hide-navigation');
           }
         });
     }

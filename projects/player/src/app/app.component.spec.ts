@@ -14,12 +14,14 @@ import { VopMetaData } from 'player/modules/verona/models/verona';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
+import { WakeLockService } from 'player/src/app/services/wake-lock.service';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let veronaPostService: SpyObj<VeronaPostService>;
+  let wakeLockService: SpyObj<WakeLockService>;
   let translateService: TranslateService;
   let playerMetadata: VopMetaData;
   let focus: Subject<boolean>;
@@ -46,6 +48,7 @@ describe('AppComponent', () => {
     veronaPostService = createSpyObj<VeronaPostService>([
       'sendReadyNotification', 'sendVopWindowFocusChangedNotification'
     ]);
+    wakeLockService = createSpyObj<WakeLockService>(['start']);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -65,7 +68,8 @@ describe('AppComponent', () => {
         { provide: APIService, useClass: ApiStubService },
         { provide: VeronaPostService, useValue: veronaPostService },
         { provide: NativeEventService, useValue: { focus: focus.asObservable() } },
-        { provide: MetaDataService, useValue: { playerMetadata } }
+        { provide: MetaDataService, useValue: { playerMetadata } },
+        { provide: WakeLockService, useValue: wakeLockService }
       ]
     })
       .compileComponents();
@@ -110,6 +114,10 @@ describe('AppComponent', () => {
     focus.next(true);
 
     expect(veronaPostService.sendVopWindowFocusChangedNotification).not.toHaveBeenCalled();
+  });
+
+  it('should start keeping the screen awake while media play', () => {
+    expect(wakeLockService.start).toHaveBeenCalledTimes(1);
   });
 
   it('should show the unit', () => {

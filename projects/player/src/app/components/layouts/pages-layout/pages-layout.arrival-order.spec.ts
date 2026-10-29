@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, ElementRef, EventEmitter } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { PageChangeService } from 'common/services/page-change.service';

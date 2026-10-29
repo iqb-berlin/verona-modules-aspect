@@ -18,6 +18,8 @@ import { ToggleButtonElement } from 'common/models/elements/toggle-button';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { WidgetPeriodicTableElement } from 'common/models/elements/widget-periodic-table';
+import { TetfolioElement } from 'common/models/elements/tetfolio';
+import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor';
 import { ElementFactory } from 'common/utils/element-factory';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 
@@ -235,6 +237,11 @@ describe('ElementModelElementCodeMappingService', () => {
     const textAreaValue = null;
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(textAreaValue, 'text-area'))
       .toEqual(null);
+  });
+
+  it('should map the state of a tetfolio elementModel to its elementCode value', () => {
+    expect(ElementModelElementCodeMappingService.mapToElementCodeValue('{"ibe_logger-1":"a=1"}', 'tetfolio'))
+      .toEqual('{"ibe_logger-1":"a=1"}');
   });
 
   it('should map the value of a widget-periodic-table elementModel to its elementCode value', () => {
@@ -651,6 +658,35 @@ describe('ElementModelElementCodeMappingService', () => {
     });
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual('initial_state');
+  });
+
+  it('should hand a stored tetfolio state on unchanged', () => {
+    const elementModel = new TetfolioElement({ id: 'id1', alias: 'alias1', type: 'tetfolio' });
+    expect(service.mapToElementModelValue('{"ibe_logger-1":"a=1"}', elementModel))
+      .toEqual('{"ibe_logger-1":"a=1"}');
+  });
+
+  it('should give a tetfolio without a stored state nothing to restore', () => {
+    const elementModel = new TetfolioElement({ id: 'id1', alias: 'alias1', type: 'tetfolio' });
+    expect(service.mapToElementModelValue(undefined, elementModel)).toBeNull();
+  });
+
+  it('should map an elementCode value to widget-molecule-editor elementModel value', () => {
+    const elementModel = new WidgetMoleculeEditorElement({
+      id: 'id1', alias: 'alias1', type: 'widget-molecule-editor', state: 'initial_state'
+    });
+    expect(service.mapToElementModelValue('new_state', elementModel))
+      .toEqual('new_state');
+  });
+
+  /* The molecule editor keeps its answer in `state`, not in `value`. Left to the default branch, an
+     element without a stored answer started from `undefined` instead of its `null` (#1463). */
+  it('should start a widget-molecule-editor without stored answer from its empty state', () => {
+    const elementModel = new WidgetMoleculeEditorElement({
+      id: 'id1', alias: 'alias1', type: 'widget-molecule-editor'
+    });
+    expect(service.mapToElementModelValue(undefined, elementModel))
+      .toBeNull();
   });
 
   /* Selection marks are stored as character offsets into the text as the browser rendered it, and they

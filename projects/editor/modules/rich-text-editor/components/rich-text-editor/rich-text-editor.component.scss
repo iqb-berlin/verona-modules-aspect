@@ -12,7 +12,7 @@ tiptap-editor {
   // The text area is what grows with the content, and left to itself it takes the host with it
   // until the editor fills the dialog frame and the fields below are out of reach (#1347). The
   // limit belongs here and not on the host: a host limit would either raise the floor for every
-  // editor -- the ones in the assistant dialogs stand at 118px with a folded toolbar and have no
+  // editor -- the ones in the assistant dialogs stand at 142px with a folded toolbar and have no
   // business claiming more -- or squeeze the host below what its unfolded toolbar needs, which
   // then paints over what follows. It has to be `max-height` and not `height`, or every empty
   // editor would start out 200px tall.
@@ -29,6 +29,23 @@ tiptap-editor {
   border: 1px solid gray;
   max-width: 1040px;
   padding: 5px;
+}
+
+// Background only: the marked space keeps its width, so the line breaks where it would without the marking (#1476).
+:host ::ng-deep .ProseMirror .nbsp-marker {
+  background-color: #9fd3ff;
+}
+
+:host ::ng-deep .ProseMirror .narrow-nbsp-marker {
+  background-color: #ffb870;
+}
+
+// Below the text and not in the toolbar: the switch changes what the editor shows, not the text.
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
 }
 
 .fold-button {
@@ -54,7 +71,7 @@ tiptap-editor {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  background: linear-gradient(to top right, #FFF5F8, #FAFAFA);
+  background-color: #FAFAFA;
   box-shadow: 0 2px 2px -2px rgba(34,47,62,.1),0 8px 8px -4px rgba(34,47,62,.07);
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;

@@ -1,5 +1,6 @@
 <mat-dialog-content class="fx-column-start-stretch" >
-  <aspect-rich-text-editor [(content)]="newLabel.text" [showReducedControls]="true">
+  <aspect-rich-text-editor [(content)]="newLabel.text" [showReducedControls]="true"
+                           [showTextAlignment]="data.showTextAlignment ?? false">
   </aspect-rich-text-editor>
 
   <div *ngIf="newLabel.imgSrc !== undefined" class="image-panel">

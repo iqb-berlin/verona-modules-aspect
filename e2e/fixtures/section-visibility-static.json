@@ -1,0 +1,34 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [{
+    "sections": [
+      {
+        "dynamicPositioning": true,
+        "elements": [
+          { "type": "text-field", "id": "trigger", "alias": "trigger" }
+        ]
+      },
+      {
+        "dynamicPositioning": false,
+        "height": 200,
+        "enableReHide": true,
+        "visibilityRules": [{ "id": "trigger", "operator": "=", "value": "show" }],
+        "elements": [
+          {
+            "type": "text", "id": "static_text", "alias": "static_text",
+            "text": "<p>Statischer Abschnitt</p>",
+            "position": { "xPosition": 20, "yPosition": 20 },
+            "dimensions": { "width": 300, "height": 40 }
+          }
+        ]
+      },
+      {
+        "dynamicPositioning": true,
+        "elements": [
+          { "type": "text", "id": "text_after", "alias": "text_after", "text": "<p>Folgender Abschnitt</p>" }
+        ]
+      }
+    ]
+  }]
+}

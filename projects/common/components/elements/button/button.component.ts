@@ -12,5 +12,11 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 })
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;
+  @Input() clozeContext: boolean = false;
   @Output() buttonActionEvent = new EventEmitter<ButtonEvent>();
+
+  /** A button for unit navigation is hidden by the player while the host does not allow its target. */
+  static override startsWithText(element: ButtonElement): boolean {
+    return !element.imageSrc && element.action !== 'unitNav' && !!element.label?.trim();
+  }
 }

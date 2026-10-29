@@ -26,34 +26,38 @@
 
 <mat-divider></mat-divider>
 
-<fieldset *ngIf="unitService.expertMode" class="fx-column-start-stretch">
-  <legend>Seitenbreite</legend>
-  <mat-checkbox class="menuItem"
-                [matTooltip]="'pageMenu.limitPageWidthHint' | translate"
-                [checked]="page.hasMaxWidth"
-                (click)="$event.stopPropagation()"
-                (change)="updateModel(page, 'hasMaxWidth', $event.source.checked)">
-    Seitenbreite begrenzen
-  </mat-checkbox>
-  <p class="menuItem" [style.margin-top.px]="5" [style.margin-left.px]="10">
-    effektive Seitenbreite: <br>{{page.hasMaxWidth ? page.maxWidth + 2 * page.margin + 'px' : '∞'}}
-  </p>
-  <mat-form-field class="menuItem" appearance="fill">
-    <mat-label>Seitenbreite in px</mat-label>
-    <input matInput type="number" min="0" required aspectNumberField
-           [disabled]="!page.hasMaxWidth"
-           [ngModel]="page.hasMaxWidth ? page.maxWidth : null"
-           (click)="$event.stopPropagation()"
-           (numberChange)="commitNumber(page, 'maxWidth', $event)">
-  </mat-form-field>
-  <mat-form-field class="menuItem" appearance="fill">
-    <mat-label>Randbreite in px</mat-label>
-    <input matInput type="number" min="0" required aspectNumberField
-           [ngModel]="page.margin"
-           (click)="$event.stopPropagation()"
-           (numberChange)="commitNumber(page, 'margin', $event)">
-  </mat-form-field>
-</fieldset>
+@if (unitService.expertMode) {
+  <fieldset class="fx-column-start-stretch">
+    <legend>{{ 'pageMenu.pageWidth' | translate }}</legend>
+    <mat-checkbox class="menuItem"
+                  [matTooltip]="'pageMenu.limitPageWidthHint' | translate"
+                  [checked]="page.hasMaxWidth"
+                  (click)="$event.stopPropagation()"
+                  (change)="updateModel(page, 'hasMaxWidth', $event.source.checked)">
+      {{ 'pageMenu.limitPageWidth' | translate }}
+    </mat-checkbox>
+    <p class="menuItem" [style.margin-top.px]="5" [style.margin-left.px]="10">
+      {{ 'pageMenu.effectivePageWidth' | translate }} <br>{{page.hasMaxWidth ? page.maxWidth + 2 * page.margin + 'px' : '∞'}}
+    </p>
+    <mat-form-field class="menuItem" appearance="fill">
+      <mat-label>{{ 'pageMenu.maxWidthInPx' | translate }}</mat-label>
+      <input matInput type="number" min="0" required aspectNumberField #maxWidthField="aspectNumberField"
+             [disabled]="!page.hasMaxWidth"
+             [ngModel]="page.hasMaxWidth ? page.maxWidth : null"
+             (click)="$event.stopPropagation()"
+             (numberChange)="commitNumber(page, 'maxWidth', $event)">
+      <mat-error>{{ maxWidthField.errorText }}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="menuItem" appearance="fill">
+      <mat-label>{{ 'pageMenu.marginInPx' | translate }}</mat-label>
+      <input matInput type="number" min="0" required aspectNumberField #marginField="aspectNumberField"
+             [ngModel]="page.margin"
+             (click)="$event.stopPropagation()"
+             (numberChange)="commitNumber(page, 'margin', $event)">
+      <mat-error>{{ marginField.errorText }}</mat-error>
+    </mat-form-field>
+  </fieldset>
+}
 
 <mat-form-field *ngIf="unitService.expertMode" class="menuItem" appearance="fill" [style.margin-top.px]="16">
   <mat-label>{{'pageProperties.backgroundColor' | translate }}</mat-label>
@@ -66,7 +70,7 @@
               [ngModel]="page.alwaysVisible"
               (click)="$event.stopPropagation()"
               (change)="updateModel(page, 'alwaysVisible', $event.source.checked)">
-  Seite dauerhaft sichtbar
+  {{ 'pageMenu.alwaysVisible' | translate }}
 </mat-checkbox>
 <mat-form-field *ngIf="unitService.expertMode" class="menuItem" appearance="fill">
   <mat-label>{{'pageProperties.position' | translate }}</mat-label>
@@ -83,8 +87,10 @@
 <mat-form-field *ngIf="unitService.expertMode" class="menuItem" appearance="fill">
   <mat-label>{{'pageProperties.alwaysVisibleAspectRatio' | translate }}</mat-label>
   <input matInput type="number" min="0" max="100" required aspectNumberField
+         #alwaysVisibleAspectRatioField="aspectNumberField"
          [disabled]="!page.alwaysVisible"
          [ngModel]="page.alwaysVisibleAspectRatio"
          (click)="$event.stopPropagation()"
          (numberChange)="commitNumber(page, 'alwaysVisibleAspectRatio', $event)">
+  <mat-error>{{ alwaysVisibleAspectRatioField.errorText }}</mat-error>
 </mat-form-field>

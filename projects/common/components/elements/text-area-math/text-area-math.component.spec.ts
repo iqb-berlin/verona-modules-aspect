@@ -145,6 +145,89 @@ describe('TextAreaMathComponent', () => {
     expect(component.segments.length).toBe(3); // text + math + text
   }));
 
+  /* A press is the pair the browser sends for it: the pointerdown, and the compatibility mousedown
+     that follows -- for a finger only once it lifts, after the caret has been set. */
+  describe('pressing beside the text (#1218)', () => {
+    const press = (target: Element, pointerType: string): MouseEvent => {
+      target.dispatchEvent(new PointerEvent('pointerdown', { pointerType, bubbles: true, cancelable: true }));
+      tick();
+      const mousedown = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+      target.dispatchEvent(mousedown);
+      return mousedown;
+    };
+    const textArea = (): HTMLElement => fixture.nativeElement.querySelector('.text-area');
+
+    it('cancels the mousedown after a finger, so it cannot take the focus from the segment', fakeAsync(() => {
+      const mousedown = press(textArea(), 'touch');
+
+      expect(mousedown.defaultPrevented).toBe(true);
+      expect(component.segments.length).toBe(1);
+    }));
+
+    it('cancels the mousedown after a pen as after a finger', fakeAsync(() => {
+      const mousedown = press(textArea(), 'pen');
+
+      expect(mousedown.defaultPrevented).toBe(true);
+    }));
+
+    it('leaves the mousedown of a mouse alone', fakeAsync(() => {
+      const mousedown = press(textArea(), 'mouse');
+
+      expect(mousedown.defaultPrevented).toBe(false);
+      expect(component.segments.length).toBe(1);
+    }));
+
+    /* iPadOS shows the caret only for a focus set while it handles the touch; one from a timer
+       got the IQB keyboard, but no caret */
+    it('focuses the segment while a finger is handled, in an empty area and beside text', () => {
+      const setFocus = vi.spyOn(MockAreaSegmentComponent.prototype, 'setFocus');
+      const touch = () => textArea()
+        .dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'touch', bubbles: true }));
+
+      touch();
+      expect(setFocus).toHaveBeenCalledTimes(1);
+
+      touch();
+      expect(setFocus).toHaveBeenCalledTimes(2);
+    });
+
+    /* Called directly rather than dispatched: a timer started by a dispatched event runs on the real
+       clock, out of reach of fakeAsync. The finger above covers the binding. */
+    it('focuses the segment only after the mousedown of a mouse', fakeAsync(() => {
+      const setFocus = vi.spyOn(MockAreaSegmentComponent.prototype, 'setFocus');
+
+      component.selectLastSegment(new PointerEvent('pointerdown', { pointerType: 'mouse' }));
+
+      expect(setFocus).not.toHaveBeenCalled();
+      fixture.detectChanges(); // as the zone does after the event
+      tick();
+      expect(setFocus).toHaveBeenCalledTimes(1);
+    }));
+
+    it('leaves a finger on a segment alone, even right after one beside the text', fakeAsync(() => {
+      press(textArea(), 'touch');
+      fixture.detectChanges();
+
+      const mousedown = press(fixture.nativeElement.querySelector('aspect-text-area-math-segment'), 'touch');
+
+      expect(mousedown.defaultPrevented).toBe(false);
+    }));
+  });
+
+  /* WebKit draws the text caret as high as what the line holds: an inline-block counts in full, the
+     leading of line-height does not (#1218) */
+  it('gives the first line its height through line-height, not through a box', () => {
+    const area: HTMLElement = fixture.nativeElement.querySelector('.text-area');
+    const spacer = getComputedStyle(fixture.nativeElement.querySelector('.alignment-fix'));
+
+    // the area's own line height arrives through the custom property the spacer builds on
+    const { fontSize, lineHeight } = component.elementModel.styling;
+    expect(parseFloat(getComputedStyle(area).lineHeight)).toBeCloseTo((fontSize * lineHeight) / 100, 1);
+    expect(spacer.display).toBe('inline');
+    // calc() resolves to whole 1/64 px, the unit of layout
+    expect(parseFloat(spacer.lineHeight)).toBeCloseTo(parseFloat(getComputedStyle(area).lineHeight) + 28, 1);
+  });
+
   it('should be disabled when readonly', () => {
     component.elementModel.readOnly = true;
     fixture.detectChanges();

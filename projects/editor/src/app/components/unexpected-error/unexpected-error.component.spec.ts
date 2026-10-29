@@ -50,6 +50,12 @@ describe('UnexpectedErrorComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /* Without it the author cannot tell one error from another without filing a report (#1537). */
+  it('should show the error message as a technical detail', () => {
+    expect(fixture.nativeElement.querySelector('.technical-detail')?.textContent)
+      .toContain('Etwas ist schiefgelaufen');
+  });
+
   it('should build the report title from the error message', () => {
     expect(component.reportTitle).toBe('Generierte Fehlermeldung: Etwas ist schiefgelaufen');
   });
@@ -82,11 +88,21 @@ describe('UnexpectedErrorComponent', () => {
       .toHaveBeenCalledWith(JSON.stringify('Etwas ist schiefgelaufenat someFunction (file.ts:1:1)'));
   });
 
-  it('should close the dialog via the discard button', () => {
-    const discardButton: HTMLButtonElement =
+  it('should close the dialog via the close button', () => {
+    const closeButton: HTMLButtonElement =
       fixture.nativeElement.querySelector('mat-dialog-actions button');
-    discardButton.click();
+    expect(closeButton.textContent?.trim()).toBe('close');
+    closeButton.click();
 
     expect(dialogRef.close).toHaveBeenCalled();
+  });
+
+  /* An error by its symbol; the title itself is not coloured (#1520). */
+  it('should lead the title with an error symbol', () => {
+    const title: HTMLElement = fixture.nativeElement.querySelector('[mat-dialog-title]');
+
+    expect(title.textContent).toContain('unexpectedError.title');
+    expect(title.querySelector('.message-icon-error')).toBeTruthy();
+    expect(title.getAttribute('style')).toBeNull();
   });
 });

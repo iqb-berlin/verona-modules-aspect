@@ -7,10 +7,11 @@
 
   <h3>{{ 'sectionTemplates.answerCount' | translate }}</h3>
   <mat-form-field class="align-start">
-    <input matInput type="number" min="1" max="9" required aspectNumberField
+    <input matInput type="number" min="1" max="9" required aspectNumberField #answerCountField="aspectNumberField"
            [ngModel]="answerCount"
            (numberChange)="commitAnswerCount($event)"
            (numberCommit)="applyAnswerCount()">
+    <mat-error>{{ answerCountField.errorText }}</mat-error>
   </mat-form-field>
 
   <h3>{{ 'sectionTemplates.numbering' | translate }}</h3>
@@ -55,8 +56,10 @@
       <mat-form-field [style]="'width: 270px;'">
         <mat-label>{{ 'sectionTemplates.expectedCharsCount' | translate }}</mat-label>
         <input matInput type="number" min="1" required aspectNumberField
+               #expectedCharsCountField="aspectNumberField"
                [ngModel]="expectedCharsCount" [disabled]="!multilineInputs"
                (numberChange)="commitExpectedCharsCount($event)">
+        <mat-error>{{ expectedCharsCountField.errorText }}</mat-error>
       </mat-form-field>
     }
   </div>

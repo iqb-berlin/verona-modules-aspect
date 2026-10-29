@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
-import { ResponseStatusType, ResponseValueType } from '@iqb/responses';
+import { ResponseStatusType, ResponseValueType } from '@iqbspecs/response/response.interface';
 import { LogService } from 'player/modules/logging/services/log.service';
 
 /**
@@ -34,9 +34,20 @@ export class GeometryVariableStateService extends ElementCodeService {
   }
 
   /**
+   * Replaces the value a variable starts with, without touching its status or announcing anything. A
+   * variable that has been worked on keeps its value.
+   */
+  setStartValue(id: string, value: ResponseValueType): void {
+    if (this.getElementCodeById(id)?.status === 'VALUE_CHANGED') return;
+    this.setElementCodeValue(id, value);
+  }
+
+  /**
    * Like the base method, but a value equal to the one already held changes nothing and announces
    * nothing -- an applet reports on every interaction, including those that leave its variables where
-   * they were.
+   * they were, such as zooming. That a variable has been worked on although its value stayed is
+   * something only the element can tell; with `recomputedCountsAsChanged` on it hands its status down
+   * (`ExternalAppGroupElementComponent`).
    */
   override changeElementCodeValue(elementValue: { id: string, value: ResponseValueType }): void {
     const value = this.getElementCodeById(elementValue.id)?.value;

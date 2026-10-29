@@ -80,6 +80,18 @@ describe('VeronaAPIService', () => {
     );
   });
 
+  /* The editor API makes `variables` optional, and studio keeps its stored list only when the key is absent
+     -- an empty list would be stored as one (#1129). */
+  it('should leave out the variables when no list is given', () => {
+    const parentWindowMock = mockParentWindow();
+
+    service.sendChanged('unit-def', 'aspect-unit-definition');
+
+    const message = parentWindowMock.postMessage.mock.lastCall?.[0];
+    expect(message.unitDefinition).toBe('unit-def');
+    expect('variables' in message).toBe(false);
+  });
+
   it('should not post messages in standalone mode', () => {
     vi.spyOn(window, 'parent', 'get').mockReturnValue(window);
     const postMessageSpy = vi.spyOn(window, 'postMessage').mockImplementation(() => {});

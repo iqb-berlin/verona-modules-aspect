@@ -59,12 +59,15 @@
   <mat-form-field appearance="fill">
     <mat-label>{{'itemsPerRow' | translate }}</mat-label>
     <input matInput type="number" [min]="1" [pattern]="'[1-9]'" #itemsPerRow="ngModel" required aspectNumberField
+           #itemsPerRowField="aspectNumberField"
            [disabled]="!itemsPerRowEnabled.checked && !itemsPerRowEnabled.indeterminate"
            [ngModel]="combinedProperties.itemsPerRow"
            (numberChange)="updateModel.emit(
                   { property: 'itemsPerRow', value: $event.value, isInputValid: $event.isInputValid })">
     @if (itemsPerRow.errors?.['pattern']) {
       <mat-error>{{'numberGreater0' | translate}}</mat-error>
+    } @else {
+      <mat-error>{{ itemsPerRowField.errorText }}</mat-error>
     }
     @if (divergingProperties | propertyDiverges : 'itemsPerRow') {
       <aspect-merged-marker matSuffix></aspect-merged-marker>

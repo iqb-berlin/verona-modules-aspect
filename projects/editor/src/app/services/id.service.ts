@@ -32,8 +32,9 @@ export class IDService {
     return this.idRegistry.isIdAvailable(id);
   }
 
-  isAliasAvailable(id: string): boolean {
-    return this.aliasRegistry.isIdAvailable(id);
+  /** Free regardless of letter case; `ownAlias` is the alias the asker holds and wants to change (#1129). */
+  isAliasAvailable(id: string, ownAlias?: string): boolean {
+    return this.aliasRegistry.isIdAvailable(id, ownAlias);
   }
 
   /** Frees the old alias and takes the new one. Both steps touch the alias registry only, so an element
@@ -43,11 +44,11 @@ export class IDService {
     this.register(newID, false, true);
   }
 
-  /** Marks a name as taken, in either registry or both. A name that is already taken is silently left
-      as it is, so this cannot be used to find out whether it was free -- ask `isIDAvailable` for that. */
+  /** Marks a name as taken, in either registry or both, as `IdRegistry.registerID` does. It cannot be
+      used to find out whether the name was free -- ask `isIDAvailable` for that. */
   register(id: string, useIDRegistry: boolean, useAliasRegistry: boolean) {
-    if (useIDRegistry && this.isIDAvailable(id)) this.idRegistry.registerID(id);
-    if (useAliasRegistry && this.isAliasAvailable(id)) this.aliasRegistry.registerID(id);
+    if (useIDRegistry) this.idRegistry.registerID(id);
+    if (useAliasRegistry) this.aliasRegistry.registerID(id);
   }
 
   /** Gives a name back, so the id of a deleted element can be used again. Unlike `register` this does

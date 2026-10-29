@@ -32,6 +32,7 @@ import { TextElement } from 'common/models/elements/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/cloze';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogCanceledError } from 'editor/src/app/classes/dialog-canceled-error';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
 import { TableElement } from 'common/models/elements/table';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import {
@@ -82,7 +83,8 @@ export class ElementService {
               private dialogService: DialogService,
               private messageService: MessageService,
               private idService: IDService,
-              private translateService: TranslateService) { }
+              private translateService: TranslateService,
+              private loadErrorService: LoadErrorService) { }
 
   async addElementToSection(elementType: UIElementType, sectionParam?: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
@@ -231,11 +233,16 @@ export class ElementService {
            them, so one value handed to a selection would leave them all holding the same objects --
            editing a label on one would change it on the others (#1188). */
         element.setProperty(property, copyPlainData(value));
+        // A new picture is loaded anew, and reports again if it fails as well (#1537).
+        if (LoadErrorService.reloadsOnWrite(element.type, property)) this.loadErrorService.clearErrorsOf(element.id);
         if (element.type === 'geometry' && property !== 'trackedVariables' && property !== 'trackedExpectedVariables') {
           this.unitService.geometryElementPropertyUpdated.next(element.id);
         }
         if (element.type === 'math-table') this.unitService.mathTableElementPropertyUpdated.next(element.id);
         if (element.type === 'table') this.unitService.tablePropUpdated.next(element.id);
+        if (element.type === 'tetfolio' && property === 'htmlContent') {
+          this.unitService.tetfolioElementPropertyUpdated.next(element.id);
+        }
         hasDirectWrite = true;
       }
     });
@@ -262,7 +269,7 @@ export class ElementService {
 
   private handleTextElementChange(element: TextElement, value: string): void {
     const deletedAnchorIDs = ElementService.getRemovedTextAnchorIDs(element, value);
-    const refs = this.unitService.referenceManager.getTextAnchorReferences(deletedAnchorIDs);
+    const refs = this.unitService.referenceManager.getTextAnchorReferences(deletedAnchorIDs, new Set([element.id]));
     if (refs.length > 0) {
       this.dialogService.showDeleteReferenceDialog(refs)
         .subscribe((result: boolean) => {
@@ -270,8 +277,6 @@ export class ElementService {
             ReferenceManager.deleteReferences(refs);
             element.setProperty('text', value);
             this.reportPropertyUpdate();
-          } else {
-            this.messageService.showReferencePanel(refs);
           }
         });
     } else {
@@ -289,8 +294,6 @@ export class ElementService {
           if (result) {
             ReferenceManager.deleteReferences(refs);
             this.setClozeDocument(element, newValue, deletedElements);
-          } else {
-            this.messageService.showReferencePanel(refs);
           }
         });
     } else {

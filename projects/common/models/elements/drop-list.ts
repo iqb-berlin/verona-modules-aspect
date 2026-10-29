@@ -1,7 +1,7 @@
 import {
   InputElement
 } from 'common/models/elements/element';
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -41,7 +41,6 @@ export class DropListElement extends InputElement implements DropListProperties 
       itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].styling.itemBackgroundColor
     };
 
-  static title: string = 'Ablegeliste';
   static icon: string = 'drag_indicator';
 
   constructor(element?: Partial<DropListProperties>, idService?: AbstractIDService) {
@@ -100,12 +99,10 @@ export class DropListElement extends InputElement implements DropListProperties 
 
   updateValueObject(valueIndex: number, value: DragNDropValueObject): void {
     if (value.alias !== this.value[valueIndex].alias) {
-      if (!this.idService?.isAliasAvailable(value.alias)) {
-        throw new IDError('ID ist bereits vergeben');
-      }
-      if (!VariableAlias.isValid(value.alias)) {
-        throw new IDError('ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)');
-      }
+      const problem = VariableAlias.problemOf(
+        value.alias, !!this.idService?.isAliasAvailable(value.alias, this.value[valueIndex].alias)
+      );
+      if (problem) throw IDError.forAlias(problem);
       this.idService?.changeAlias(this.value[valueIndex].alias, value.alias);
     }
     this.value[valueIndex] = value;
@@ -126,13 +123,12 @@ export class DropListElement extends InputElement implements DropListProperties 
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
+      type: 'STRING',
       format: '',
       multiple: true,
       nullable: false,
       values: this.getVariableInfoValues(options),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }
@@ -166,6 +162,14 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.idService?.register(val.id, true, false);
       this.idService?.register(val.alias, false, true);
     });
+  }
+
+  /** The values' ids belong to the list, so registering it registers them too. The constructor does so as well,
+      but `UnitService.reRegisterAll` empties the registry first and then asks only this method: without the
+      values here, every load left them unregistered, and a new option could get an alias already taken (#1506). */
+  registerIDs(): void {
+    super.registerIDs();
+    this.registerValueIDs();
   }
 
   unregisterIDs(): void {

@@ -1,4 +1,4 @@
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 
 /**
  * What a state variable is in a stored unit: three strings. The class adds `getVariableInfo` to them,
@@ -27,13 +27,12 @@ export class StateVariable implements StateVariableProperties {
     return {
       id: this.id,
       alias: this.alias,
-      type: 'no-value',
+      type: 'NO_VALUE',
       format: '',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     };
   }

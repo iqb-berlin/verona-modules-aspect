@@ -44,16 +44,33 @@
    it too, which is the same rule and what the setting asks for.
    Two of the six children lack a width of their own and are therefore moved by this: the text field
    and the checkbox, whose coloured band now spans the width it was set to instead of hugging its
-   label. The other four already carry `width: 100%`, so for them the rule changes nothing. */
-:host div > * {
-  display: block;
+   label. The other four already carry `width: 100%`, so for them the rule changes nothing.
+
+   The height the same way, on the other axis (#1619). The box used to centre its child, and a
+   centred flex item keeps the height of its content: a text field stayed at the 29px an <input> gives
+   itself and a checkbox at 39px, whatever height the gap was set to. Now the box stretches its child,
+   as a flex box does unless told otherwise, and every child takes the height of the box -- fixed,
+   minimum or maximum. `height: auto` because four of them ask for `height: 100%` of their host, which
+   resolves against a fixed height only: a minimum or maximum left them at their own height, and a flex
+   item with a height of its own is not stretched. `flex` rather than `block`, because a block holds an
+   inline child in a line box as tall as the line of the cloze, which pushed a text field below a gap
+   lower than that line -- by 7.5px at 20px.
+   Stretched, a child has to centre its content in the height it is given, and the gap stands in the
+   line by the child's text. Each child does both in its own stylesheet, under its cloze context.
+
+   Without a fixed height a gap is one line of its font at normal line height, plus 1px above and
+   below: the height a text field has of itself, so the gaps of a line are equally tall and none
+   pushes its line apart. The line height is set here, for every child to inherit -- they inherited
+   the 180% of the cloze, which made a button 36px tall and a drop list 56px; the 1px each child adds
+   itself, where its frame is not a border of 1px already. */
+:host .gap-box {
+  display: flex;
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+:host .gap-box > * {
+  display: flex;
   flex-grow: 1;
-}
-
-:host ::ng-deep mat-checkbox .mdc-form-field {
-  vertical-align: baseline;
-}
-
-:host ::ng-deep mat-checkbox .mdc-checkbox {
-  display: none;
+  height: auto;
 }

@@ -1,8 +1,11 @@
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { of, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Mock } from 'vitest';
-import { Label } from 'common/models/label-interfaces';
+import { ClozeDocument } from 'common/models/elements/cloze';
+import { LikertRowElement } from 'common/models/elements/likert-row';
+import { DragNDropValueObject, Label } from 'common/models/label-interfaces';
+import { TEXT_EDITOR_DIALOG_CONFIG } from 'editor/modules/rich-text-editor/configs/text-editor-dialog.config';
 import { FileService } from 'common/services/file.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -26,6 +29,18 @@ import {
 import {
   ImageResizeDialogComponent
 } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
+import {
+  VariableInfoFindingsDialogComponent
+} from 'editor/src/app/components/dialogs/variable-info-findings-dialog/variable-info-findings-dialog.component';
+import {
+  LikertRowEditDialogComponent
+} from 'editor/src/app/components/dialogs/likert-row-edit-dialog/likert-row-edit-dialog.component';
+import {
+  DropListOptionEditDialogComponent
+} from 'editor/src/app/components/dialogs/drop-list-option-edit-dialog/drop-list-option-edit-dialog.component';
+import {
+  TooltipPropertiesDialogComponent
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
 
 describe('DialogService', () => {
   let service: DialogService;
@@ -43,6 +58,22 @@ describe('DialogService', () => {
     service = new DialogService(dialogMock as unknown as MatDialog, messageService, translateService);
   });
 
+  /* A delete dialog can stand on the element overview; what it asks for has to happen once both are gone (#1520). */
+  it('should close every dialog and act only once they are all closed', () => {
+    const afterAllClosed = new Subject<void>();
+    const closeAll = vi.fn();
+    Object.assign(dialogMock, { afterAllClosed, closeAll });
+    const action = vi.fn();
+
+    service.closeAllThen(action);
+
+    expect(closeAll).toHaveBeenCalled();
+    expect(action).not.toHaveBeenCalled();
+    afterAllClosed.next();
+    afterAllClosed.next();
+    expect(action).toHaveBeenCalledTimes(1);
+  });
+
   it('should open the label edit dialog and pass through its result', () => {
     const label: Label = { text: 'Beschriftung' };
     const editedLabel: Label = { text: 'Neue Beschriftung' };
@@ -55,9 +86,21 @@ describe('DialogService', () => {
 
     expect(dialogMock.open).toHaveBeenCalledWith(
       LabelEditDialogComponent,
-      { data: { label }, autoFocus: false }
+      { ...TEXT_EDITOR_DIALOG_CONFIG, data: { label, showTextAlignment: false }, autoFocus: false }
     );
     expect(result).toBe(editedLabel);
+  });
+
+  it('should hand the label edit dialog the request for the text alignment', () => {
+    const label: Label = { text: 'Kopf' };
+    mockDialogResult(label);
+
+    service.showLabelEditDialog(label, true).subscribe();
+
+    expect(dialogMock.open).toHaveBeenCalledWith(
+      LabelEditDialogComponent,
+      { ...TEXT_EDITOR_DIALOG_CONFIG, data: { label, showTextAlignment: true }, autoFocus: false }
+    );
   });
 
   it('should open the delete confirmation dialog with the given text', () => {
@@ -103,13 +146,21 @@ describe('DialogService', () => {
     expect(close).not.toHaveBeenCalled();
   });
 
-  it('should open the unit definition error dialog without close option', () => {
-    service.showUnitDefErrorDialog('Fehlertext');
+  /* No close option, so only the next load takes it away (#1581). */
+  it('should open the unit definition error dialog without close option until a later load', () => {
+    const close = vi.fn();
+    dialogMock.open.mockReturnValue({ afterClosed: () => new Subject<void>(), close });
+    const superseded = new Subject<void>();
+
+    service.showUnitDefErrorDialog('Fehlertext', superseded);
 
     expect(dialogMock.open).toHaveBeenCalledWith(
       UnitDefErrorDialogComponent,
       { data: { text: 'Fehlertext' }, disableClose: true }
     );
+    expect(close).not.toHaveBeenCalled();
+    superseded.next();
+    expect(close).toHaveBeenCalled();
   });
 
   describe('sanitization dialog superseded by a later load (#1247)', () => {
@@ -210,6 +261,8 @@ describe('DialogService', () => {
     expect(result).toBe('bearbeiteter Text');
   });
 
+  /* The dialog has no title, so it is announced by the name of the button that opens it, and it takes the height
+     of the window for the text (#1006). */
   it('should open the rich text edit dialog without cloze mode', () => {
     mockDialogResult('<p>Text</p>');
 
@@ -218,10 +271,50 @@ describe('DialogService', () => {
     expect(dialogMock.open).toHaveBeenCalledWith(
       RichTextEditDialogComponent,
       {
+        ...TEXT_EDITOR_DIALOG_CONFIG,
         data: { content: '<p>Alt</p>', defaultFontSize: 20, clozeMode: false },
+        height: '95vh',
+        ariaLabel: 'propertiesPanel.editText',
         autoFocus: false
       }
     );
+  });
+
+  it('should open the cloze text in the same dialog, in cloze mode', () => {
+    const document = { type: 'doc', content: [] } as unknown as ClozeDocument;
+    mockDialogResult(document);
+
+    service.showClozeTextEditDialog(document, 20).subscribe();
+
+    expect(dialogMock.open).toHaveBeenCalledWith(
+      RichTextEditDialogComponent,
+      {
+        ...TEXT_EDITOR_DIALOG_CONFIG,
+        data: { content: document, defaultFontSize: 20, clozeMode: true },
+        height: '95vh',
+        ariaLabel: 'propertiesPanel.editText',
+        autoFocus: false
+      }
+    );
+  });
+
+  /* Material stops the content of a dialog at 65vh, whatever the window; a dialog with a text editor lifts that
+     limit and may take the window instead (#1006). The label, text and cloze dialogs are checked in full above. */
+  const textEditorDialogs: [string, (dialogService: DialogService) => Observable<unknown>, unknown][] = [
+    ['likert row', dialogService => dialogService.showLikertRowEditDialog({} as LikertRowElement, []),
+      LikertRowEditDialogComponent],
+    ['drop list option', dialogService => dialogService.showDropListOptionEditDialog({} as DragNDropValueObject),
+      DropListOptionEditDialogComponent],
+    ['tooltip', dialogService => dialogService.showTooltipDialog(undefined, undefined),
+      TooltipPropertiesDialogComponent]
+  ];
+
+  it.each(textEditorDialogs)('should open the %s dialog as a text editor dialog', (_, open, component) => {
+    mockDialogResult(undefined);
+
+    open(service).subscribe();
+
+    expect(dialogMock.open).toHaveBeenCalledWith(component, expect.objectContaining(TEXT_EDITOR_DIALOG_CONFIG));
   });
 
   /* The way in for an image that is already in the unit: the same dialog the upload path opens, and
@@ -332,5 +425,32 @@ describe('DialogService', () => {
         autoFocus: false
       }
     );
+  });
+
+  /* The validation area follows the findings, so a second one would only show the same; a host replaying loads
+     would otherwise stack them (#1129). */
+  describe('the validation area', () => {
+    let closed: Subject<void>;
+
+    beforeEach(() => {
+      closed = new Subject<void>();
+      dialogMock.open.mockReturnValue({ afterClosed: () => closed });
+    });
+
+    it('should open only once while it is open', () => {
+      service.showVariableInfoFindingsDialog();
+      service.showVariableInfoFindingsDialog();
+
+      expect(dialogMock.open).toHaveBeenCalledTimes(1);
+      expect(dialogMock.open).toHaveBeenCalledWith(VariableInfoFindingsDialogComponent, expect.anything());
+    });
+
+    it('should open again once it was closed', () => {
+      service.showVariableInfoFindingsDialog();
+      closed.next();
+      service.showVariableInfoFindingsDialog();
+
+      expect(dialogMock.open).toHaveBeenCalledTimes(2);
+    });
   });
 });

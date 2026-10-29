@@ -1,7 +1,9 @@
 import {
   ComponentFixture, fakeAsync, TestBed, tick
 } from '@angular/core/testing';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog, MatDialogModule, MatDialogRef, MatDialogState
+} from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import {
@@ -238,14 +240,31 @@ describe('UnitComponent', () => {
     expect(component.pages.length).toBe(0);
   }));
 
+  /* The dialog texts are translation keys named after the codes of the player specification; until #1578 an
+     unparsable definition showed the parser's English message, which is left to the console now. */
   it('should show an error dialog for an unreadable unit definition', fakeAsync(() => {
     const open = vi.spyOn(dialog, 'open');
 
     startUnit({ unitDefinition: 'no json' });
 
-    expect(open).toHaveBeenCalledWith(UnitDefErrorDialogComponent, expect.objectContaining({
+    expect(open).toHaveBeenCalledWith(UnitDefErrorDialogComponent, {
+      data: { text: 'errorMessage.UNIT_DEFINITION_NOT_READABLE' },
       disableClose: true
-    }));
+    });
+    expect(console.error).toHaveBeenCalledWith('UNIT_DEFINITION_NOT_READABLE', expect.any(SyntaxError));
+  }));
+
+  /* The dialog has no close option, and the host can keep the player for the next unit (#1581). */
+  it('should close the error dialog when the next unit starts', fakeAsync(() => {
+    const open = vi.spyOn(dialog, 'open');
+    startUnit({ unitDefinition: 'no json' });
+    const errorDialog: MatDialogRef<unknown> = open.mock.results[0].value;
+    expect(errorDialog.getState()).toBe(MatDialogState.OPEN);
+
+    startUnit({ unitDefinition: createUnitDefinition({ pages: [{ sections: [] }] }) });
+
+    expect(errorDialog.getState()).not.toBe(MatDialogState.OPEN);
+    expect(component.pages.length).toBe(1);
   }));
 
   it('should show an error dialog for a newer unit definition', fakeAsync(() => {
@@ -253,7 +272,9 @@ describe('UnitComponent', () => {
 
     startUnit({ unitDefinition: createUnitDefinition({ version: '99.0.0' }) });
 
-    expect(open).toHaveBeenCalled();
+    expect(open).toHaveBeenCalledWith(UnitDefErrorDialogComponent, expect.objectContaining({
+      data: { text: 'errorMessage.UNIT_DEFINITION_NEWER' }
+    }));
   }));
 
   it('should show an error dialog for an outdated unit definition', fakeAsync(() => {
@@ -261,16 +282,37 @@ describe('UnitComponent', () => {
 
     startUnit({ unitDefinition: createUnitDefinition({ version: '1.0.0' }) });
 
-    expect(open).toHaveBeenCalled();
+    expect(open).toHaveBeenCalledWith(UnitDefErrorDialogComponent, expect.objectContaining({
+      data: { text: 'errorMessage.UNIT_DEFINITION_OUTDATED' }
+    }));
+  }));
+
+  /* A broken unit state is not the definition's fault, and the dialog does not claim it is (#1578). */
+  it('should not call the unit definition unreadable when the unit state is broken', fakeAsync(() => {
+    const open = vi.spyOn(dialog, 'open');
+    let parserMessage = '';
+    try {
+      JSON.parse('no json');
+    } catch (e: unknown) {
+      parserMessage = (e as Error).message;
+    }
+
+    startUnit({ unitState: { dataParts: { elementCodes: 'no json' } } } as Partial<VopStartCommand>);
+
+    expect(open).toHaveBeenCalledWith(UnitDefErrorDialogComponent, expect.objectContaining({
+      data: { text: parserMessage }
+    }));
   }));
 
   it('should keep the pages of a message without unit definition', fakeAsync(() => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     startUnit({ unitDefinition: createUnitDefinition({ pages: [{ sections: [] }] }) });
 
     startUnit({ unitDefinition: undefined });
 
     expect(component.pages.length).toBe(0);
     expect(component.playerConfig).toEqual({});
+    expect(warn).toHaveBeenCalledWith('UNIT_DEFINITION_MISSING', 'player: message has no unitDefinition');
   }));
 
   it('should ignore verona messages after the component was destroyed', fakeAsync(() => {

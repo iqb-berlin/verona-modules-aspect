@@ -49,10 +49,11 @@ writes the e2e report first, and a merge run after it takes that in as well.
 
 ## Requirements
 
-- **Node 24**, as named in `.nvmrc`, and the version the pipeline image
-  (`scripts/Dockerfile`) and the documentation workflow run as well. The `engines` field
-  accepts `^22.12.0 || >=24.0.0`, which is the range every package in the tree with a Node
-  lower bound asks for; without `engine-strict` it is an advisory, not a gate.
+- **Node 24.20.0**, the version `.nvmrc` names and the pipeline image (`scripts/Dockerfile`)
+  is built on, down to the patch: it decides which npm writes and reads the lock file, and two
+  npm builds do not accept each other's file. `nvm install && nvm use` in the repository is the
+  whole setup, and `engines` names the pair again — `node 24.20.0`, `npm 11.19.0` — as a warning
+  for a shell that missed it.
 - **Chromium for Playwright**, because the unit tests run in browser mode:
   `npx playwright install chromium`.
 
@@ -63,16 +64,35 @@ npm ci
 ```
 
 To change a dependency, edit `package.json` and apply the delta on top of the existing lock
-file rather than regenerating it — different npm generations resolve and deduplicate
-differently, and a lock file written by one has been rejected by `npm ci` in the pipeline
-before. The pipeline now runs the same npm as development, so that is the one to write with;
-npm 10 stays in the check because `engines` still allows it:
+file rather than regenerating it: a regeneration re-resolves every range and has raised
+transitive versions, and with them the TypeScript errors of a build nobody had touched.
+Then it is plain npm, because the version above is the one the pipeline runs:
 
 ```bash
 npm install
-npx npm@10 ci --dry-run && npm ci --dry-run   # both must pass
-npm ci                                        # --dry-run empties node_modules
+npm ci --dry-run   # empties node_modules
+npm ci
 ```
+
+Both commands name six packages whose install scripts are "not yet covered by allowScripts" and run
+them anyway: npm 11.19 announces a gate it does not yet close, and `npm install-scripts ls` offers
+`approve` and `deny` without either being required. Of the six only Cypress needs its script — that
+is where its binary comes from. The other five carry a prebuilt package for this platform: after
+`npm ci --ignore-scripts`, `lmdb`, `msgpackr`, `@parcel/watcher` and `esbuild` all load and work,
+and only Cypress' binary is missing.
+
+What the pinned version is for is the one thing about a lock file that is not obvious: **which
+optional peer dependencies it materialises is an opinion, and each npm build has its own.** A
+file written by another build is not merely formatted differently — `npm ci` rejects it, naming a
+package it wants and does not find. Measured on this tree (#1448): npm 11.6.2 leaves out
+`@emnapi/*`, which 11.19.0 demands; 11.19.0 nests a `readdirp` that 11.6.2 does not want; npm 10
+writes both plus seven `chokidar@5.0.0` copies, which is why its file is the one every build
+accepts and why the lock file used to be written with `npx npm@10 install`. So whoever bumps
+Node here rewrites the lock file in the same commit, and reviews what the new npm dropped. In
+the current tree `npm ls` calls nine of those slots invalid, all the optional `chokidar` peer of
+`@angular-devkit/core`, which the hoisted chokidar 3.6.0 now fills: nothing here asks that
+package for a file watcher, and a build that did would get chokidar 3 rather than the error the
+package raises when the peer is missing entirely.
 
 ## Getting started
 
@@ -138,8 +158,10 @@ and a test run cannot take the port from each other (#1423).
 | `npm run test:editor-modules` | `projects/editor/modules` |
 | `npm run test:player` | `projects/player/src` — player application |
 | `npm run lint` | ESLint over `projects/`, `e2e/` and the root configs |
-| `npm run e2e` | Opens the Cypress UI for the 51 end-to-end specs in `e2e/tests/` |
-| `npm run e2e-headless` | Runs the same specs headless, as the pipeline does |
+| `npm run e2e` | Opens the Cypress UI for the end-to-end specs in `e2e/tests/` |
+| `npm run e2e-headless` | Runs all specs headless |
+| `npm run e2e-headless-simple` | Runs simple specs headless (`e2e/tests/simple/`) |
+| `npm run e2e-headless-complex` | Runs complex specs headless (`e2e/tests/complex/`) |
 
 **The end-to-end tests do not run as part of `npm test`.** They need both dev servers up on the
 addresses Cypress drives: start `start-editor-e2e` and `start-player-e2e`, wait until both answer
@@ -183,7 +205,7 @@ projects/common     element models, migration, shared components — used by bot
 projects/editor     editor application (src) and its feature modules (modules)
 projects/player     player application (src) and its feature modules (modules)
 e2e/tests           Cypress end-to-end specs
-scripts             build, deploy and generator scripts
+scripts             build, release and generator scripts
 docs                changelogs, release notes, version history
 example_data        unit definitions the e2e tests load, and useful by hand
 test-data           fixtures the unit tests load
@@ -195,7 +217,7 @@ everything here is `standalone: false`.
 ## How work flows through this repository
 
 ```
-issue → branch → pull request → green pipeline → review → merge into develop → release to master
+issue → branch → /code-review → pull request → green pipeline → review → merge into develop → release to master
 ```
 
 ### Branches
@@ -220,7 +242,9 @@ A branch name carries the issue it belongs to: `feature/1357-topic`.
 on the merge commit on `master`, one tag for both modules — `editor/3.0.0+player/3.0.0`. What the
 release branch carries: the two version numbers in `package.json` (`config.player_version` and
 `config.editor_version` — the version stands nowhere else) followed by an `npm install`, and the
-entries in `docs/release-notes-*.md`.
+entries in `docs/release-notes-*.md`. The GitHub release for the tag is created with its notes only:
+once it is published, `.github/workflows/release-files.yml` builds both modules from the tag and
+attaches the two HTML files, as soon as the GitLab pipeline on the tagged commit is green.
 
 Two merges out of the branch, rather than one route through `develop`, mean `master` receives exactly
 the state the release branch froze while `develop` can move on meanwhile. They also mean `master` is
@@ -235,24 +259,29 @@ of two that later have to be told apart.
 ### From issue to merge
 
 1. **Branch off `develop`**, named as above.
-2. **Reference the issue in the commit subject**, e.g. `(#1357)`. Do **not** write
+2. **Review before committing.** Once the change is finished and verified, run `/code-review` on
+   the uncommitted diff — committed, that diff is empty and the review finds nothing. Then check
+   `git status` for files the review left behind. The details are in `rules.md`, §19.
+3. **Reference the issue in the commit subject**, e.g. `(#1357)`. Do **not** write
    `Closes #1357` in the pull request: it closes the ticket on merge and skips the board
    column the team works from. Referencing is fine, keywords are not.
-3. **Open a pull request against `develop`.** A branch without an open pull request gets no
+4. **Open a pull request against `develop`.** A branch without an open pull request gets no
    pipeline at all — that is deliberate, see the comment in `.gitlab-ci.yml`.
-4. **The pipeline runs on GitLab**, mirrored from GitHub, with three jobs in two stages:
-   `lint` (type-aware ESLint), `test-unit` (`npm test`) and `test-e2e` (both dev servers plus
-   headless Cypress). **The module build is not part of it** — the `build` stage holds no job
-   and the `deploy` job is commented out, so a change that breaks `build-editor` or
-   `build-player` passes green and only shows up at release time. The single GitHub Actions
-   workflow builds the documentation and nothing else, which is why the Actions tab looks
-   almost empty.
-5. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
+5. **The pipeline runs on GitLab**, mirrored from GitHub. A pull request gets five jobs in two
+   stages: `lint` (type-aware ESLint) and `build-modules` (`build-editor` and `build-player`,
+   through `scripts/build.sh`) side by side, then `test-unit` (`npm test`), `test-e2e-simple` and
+   `test-e2e-complex` (both dev servers plus headless Cypress). A change to `scripts/Dockerfile` or
+   `.gitlab-ci.yml` first rebuilds the image the jobs run in. `master` runs the same. A merge
+   into `develop` only builds the modules, since its tree is the one the pull request just
+   passed, and a tag starts no pipeline. The comment at the top of `.gitlab-ci.yml` gives the
+   reasons. The two GitHub Actions workflows stay outside this flow: one publishes the
+   documentation after a merge, the other attaches the module files to a published release.
+6. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
    something else is merged, rebase onto `origin/develop` and force-push with
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after
    a rebase the previous green run no longer counts.
-6. **Merge as a merge commit** once the required status check is green.
-7. **Release** from a `release/…` branch into `master` and `develop`, as described above.
+7. **Merge as a merge commit** once the required status check is green.
+8. **Release** from a `release/…` branch into `master` and `develop`, as described above.
 
 Tickets live on [project board 13](https://github.com/orgs/iqb-berlin/projects/13). A card
 moves to *In Bearbeitung* when work starts and to *zu testen* once the fix is merged into

@@ -1,0 +1,35 @@
+import { WidgetMoleculeEditorElement } from 'common/models/elements/widget-molecule-editor';
+
+describe('WidgetMoleculeEditorElement', () => {
+  /* The player stores the widget's state -- the drawn molecule as a JSON string -- as the element's
+     value, so the variable reported to the host has to be one that carries it. Inherited from
+     `UIElement`, it said `no-value`, and the answer was not available for coding (#1463). The format
+     tells coding that the JSON is a molecule (#1471). */
+  it('should report its answer as one json variable of a molecule', () => {
+    const element = new WidgetMoleculeEditorElement({
+      id: 'widget-molecule-editor_1', alias: 'molecule_1', type: 'widget-molecule-editor'
+    });
+
+    expect(element.getVariableInfos()).toEqual([{
+      id: 'widget-molecule-editor_1',
+      alias: 'molecule_1',
+      type: 'JSON',
+      format: 'CHEM_MOLECULE',
+      multiple: false,
+      nullable: false,
+      values: [],
+      valuePositionLabels: [],
+      valuesComplete: false
+    }]);
+  });
+
+  /* The editor loads a unit without the normalizer, so what the constructor does not copy is replaced
+     by the default and written back on the next save. */
+  it('should keep the stored bonding type', () => {
+    const element = new WidgetMoleculeEditorElement({
+      id: 'm1', type: 'widget-molecule-editor', bondingType: 'ELECTRONS'
+    });
+
+    expect(element.bondingType).toBe('ELECTRONS');
+  });
+});

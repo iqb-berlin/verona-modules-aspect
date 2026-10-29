@@ -21,7 +21,8 @@ const ButtonComponentExtension = (injector: Injector): Node => Node.create({
           id: 'cloze-child-id-placeholder',
           alias: 'cloze-child-alias-placeholder',
           dimensions: {
-            height: 30
+            height: 30,
+            isHeightFixed: true
           },
           asLink: true
         } as Partial<ButtonProperties> as UIElementProperties)
@@ -38,7 +39,8 @@ const ButtonComponentExtension = (injector: Injector): Node => Node.create({
           id: 'cloze-child-id-placeholder',
           alias: 'cloze-child-alias-placeholder',
           dimensions: {
-            height: 30
+            height: 30,
+            isHeightFixed: true
           },
           asLink: true
         } as Partial<ButtonProperties> as UIElementProperties)

@@ -1,7 +1,7 @@
 import {
   TextInputElement
 } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -32,7 +32,6 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       lineHeight: ELEMENT_DEFAULTS['text-field'].styling.lineHeight
     };
 
-  static title: string = 'Eingabefeld';
   static icon: string = 'edit';
 
   constructor(element?: Partial<TextFieldProperties>, idService?: AbstractIDService) {
@@ -59,13 +58,12 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
+      type: 'STRING',
       format: '',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }

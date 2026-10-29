@@ -41,8 +41,6 @@ export class ButtonElement extends UIElement implements ButtonProperties {
     ...PropertyGroupGenerators.generateBorderStylingProps(ELEMENT_DEFAULTS.button.styling)
   };
 
-  static title: string = 'Knopf';
-
   static icon: string = 'smart_button';
 
   constructor(element?: Partial<ButtonProperties>, idService?: AbstractIDService) {

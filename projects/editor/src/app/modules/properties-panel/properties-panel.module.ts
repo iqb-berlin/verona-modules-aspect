@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
@@ -109,6 +110,10 @@ import {
 import { PropertyDivergesPipe } from './pipes/property-diverges.pipe';
 import { HasAnyPropertyPipe } from './pipes/has-any-property.pipe';
 import { ScrollPageIndexPipe } from './pipes/scroll-page-index.pipe';
+import { GeometryVariableCheckPipe } from './pipes/geometry-variable-check.pipe';
+import { GeometryVariableOptionsPipe } from './pipes/geometry-variable-options.pipe';
+import { AliasIssuesPipe } from './pipes/alias-issues.pipe';
+import { AliasRefusalPipe } from './pipes/alias-refusal.pipe';
 import {
   SelectPropertiesComponent
 } from './components/element-model-properties/select-properties/select-properties.component';
@@ -139,6 +144,9 @@ import {
   WidgetPeriodicTablePropertiesComponent
   // eslint-disable-next-line max-len -- deepest folder plus longest component name, three chars over
 } from './components/element-model-properties/widget-periodic-table-properties/widget-periodic-table-properties.component';
+import {
+  TetfolioPropertiesComponent
+} from './components/element-model-properties/tetfolio-properties/tetfolio-properties.component';
 
 /**
  * The element properties panel of the editor — the inspector beside the unit view.
@@ -198,6 +206,7 @@ import {
     UIElementPropertiesComponent,
     WidgetMoleculeEditorPropertiesComponent,
     WidgetPeriodicTablePropertiesComponent,
+    TetfolioPropertiesComponent,
     GetStateVariablePipe,
     GetValidDropListsPipe,
     LikertRowLabelPipe,
@@ -205,7 +214,11 @@ import {
     PresetOptionTextPipe,
     PropertyDivergesPipe,
     HasAnyPropertyPipe,
-    ScrollPageIndexPipe
+    ScrollPageIndexPipe,
+    GeometryVariableCheckPipe,
+    GeometryVariableOptionsPipe,
+    AliasIssuesPipe,
+    AliasRefusalPipe
   ],
   imports: [
     CommonModule,
@@ -220,6 +233,7 @@ import {
     MatIconModule,
     MatInputModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatSliderModule,
     MatTabsModule,

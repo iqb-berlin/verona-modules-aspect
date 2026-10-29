@@ -8,6 +8,7 @@ import { TextFieldElement } from 'common/models/elements/text-field';
 import { SpellCorrectElement } from 'common/models/elements/spell-correct';
 import { TextAreaMathElement } from 'common/models/elements/text-area-math';
 import { MathFieldElement } from 'common/models/elements/math-field';
+import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
 import { InputElement } from 'common/models/elements/element';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
@@ -64,5 +65,6 @@ export class TextInputGroupElementComponent
       this.elementComponent,
       this.pageIndex
     );
+    if (this.elementModel.type === 'text-area') this.manageWordCount(this.elementComponent as TextAreaComponent);
   }
 }

@@ -62,6 +62,18 @@ export class SelectionService {
    * written to exclude.
    */
   isSelectionDynamicallyPositioned: boolean = false;
+  /**
+   * An element asked for by its id from outside the unit view -- the validation area does this (#1129). Selecting
+   * needs the element's overlay, which only the section rendering it has, and in the tabbed view that section may
+   * not exist yet when the request is made. So the request waits here until the section that renders the element
+   * takes it, and `null` means none is waiting.
+   */
+  requestedElementID = new BehaviorSubject<string | null>(null);
+  /**
+   * A section asked for from outside the unit view, as `requestedElementID` is for an element: a list naming a
+   * section's visibility rules takes the author there (#1520). The section that renders it takes the request.
+   */
+  requestedSection = new BehaviorSubject<{ pageIndex: number; sectionIndex: number } | null>(null);
 
   constructor() {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
@@ -78,6 +90,9 @@ export class SelectionService {
     this.selectedPageIndex = 0;
     this.selectedSectionIndex = 0;
     this.clearElementSelection();
+    // An id asked for in the unit left behind can name an element of the incoming one: generated ids repeat.
+    this.requestedElementID.next(null);
+    this.requestedSection.next(null);
   }
 
   updateSelection(pageIndex: number, sectionIndex: number): void {
@@ -154,5 +169,19 @@ export class SelectionService {
 
   selectPreviousPage() {
     this.selectPage(Math.max(this.selectedPageIndex - 1, 0));
+  }
+
+  /** Turns to the element's page and section and asks the section rendering it to select it. */
+  requestElement(pageIndex: number, sectionIndex: number, elementID: string): void {
+    this.selectPage(pageIndex);
+    this.selectedSectionIndex = sectionIndex;
+    this.requestedElementID.next(elementID);
+  }
+
+  /** Turns to the section's page and asks the section to show itself as selected. */
+  requestSection(pageIndex: number, sectionIndex: number): void {
+    this.selectPage(pageIndex);
+    this.selectedSectionIndex = sectionIndex;
+    this.requestedSection.next({ pageIndex, sectionIndex });
   }
 }

@@ -131,6 +131,18 @@ describe('MultiLineTextPropertiesComponent', () => {
     expect(emitted).toEqual([{ property: 'hasAutoHeight', value: true }]);
   });
 
+  it('should emit the toggled word count, outside expert mode as well', () => {
+    unitServiceMock.expertMode = false;
+    component.combinedProperties = { ...component.combinedProperties, showWordCount: false };
+    fixture.detectChanges();
+    const emitted: { property: string; value: unknown }[] = [];
+    component.updateModel.subscribe(update => emitted.push(update));
+
+    checkboxFor('showWordCount').triggerEventHandler('valueChange', true);
+
+    expect(emitted).toEqual([{ property: 'showWordCount', value: true }]);
+  });
+
   // The two height modes exclude each other, each disabling the other's switch.
   it('should disable the auto height while the row count is dynamic', () => {
     component.combinedProperties = { hasAutoHeight: false, hasDynamicRowCount: true };
@@ -162,6 +174,7 @@ describe('MultiLineTextPropertiesComponent', () => {
     await fixture.whenStable(); // NgModel writes the box in a microtask
 
     expect(findCheckbox('hasDynamicRowCount')).toBeUndefined();
+    expect(findCheckbox('showWordCount')).toBeUndefined();
     expect(inputs().length).toBe(1);
     expect(inputs()[0].nativeElement.value).toBe('4');
   });

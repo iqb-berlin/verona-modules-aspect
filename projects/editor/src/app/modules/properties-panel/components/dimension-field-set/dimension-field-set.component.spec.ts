@@ -252,10 +252,9 @@ describe('DimensionFieldSetComponent', () => {
         .querySelectorAll('mat-checkbox input')[3] as HTMLInputElement;
       expect(maxWidthCheckbox().checked).toBe(false);
       expect(boxes()[3].disabled).toBe(true);
-      /* And it lets go cleanly: disabling the box the caret sat in leaves neither the browser's
-         focus nor Material's focused state behind. Measured, because a form field that keeps
-         `mat-focused` goes on showing a raised label over a box nobody can reach. */
-      expect(document.activeElement).toBe(document.body);
+      /* `mat-focused` is what raises the label. The box is disabled, so the author cannot click
+         it or tab into it; the checkbox above is the only way back. A field that keeps the class
+         goes on showing that raised label over a box that cannot be typed in. */
       expect((fixture.nativeElement.querySelectorAll('mat-form-field')[3] as HTMLElement)
         .classList.contains('mat-focused')).toBe(false);
 

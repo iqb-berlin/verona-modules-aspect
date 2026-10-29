@@ -1,5 +1,5 @@
 import { UIElement } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -32,7 +32,6 @@ export class TextElement extends UIElement implements TextProperties {
       lineHeight: ELEMENT_DEFAULTS.text.styling.lineHeight
     };
 
-  static title: string = 'Text';
   static icon: string = 'text_snippet';
   static selectionColors: Record<string, string> = {
     yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'
@@ -70,13 +69,12 @@ export class TextElement extends UIElement implements TextProperties {
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
-      format: 'text-selection',
+      type: 'STRING',
+      format: 'TEXT_SELECTION',
       multiple: true,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }

@@ -18,6 +18,12 @@
 
 ::ng-deep .text-container h4 {font-weight: normal; font-size: 16px;}
 
+// Shrinks with the element, never grows past its own size - as the image element does (#1459)
+::ng-deep .text-container img {max-width: 100%;}
+
+// A floating image brings the 10px margin of RichTextEditorComponent.insertResizedImage with it, inline
+::ng-deep .text-container img[style*="float"] {max-width: calc(100% - 10px);}
+
 :host ::ng-deep mark {color: inherit}
 
 ::ng-deep sup {line-height: 0;}

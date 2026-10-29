@@ -11,7 +11,8 @@ export class SafeResourceHTMLPipe implements PipeTransform {
 
   /**
    * The choke point for every stored rich text the app displays -- text element, the labels of
-   * checkbox, radio, toggle button and image radio, dropdown options, tooltip and text image panel.
+   * checkbox, radio, toggle button and image radio, dropdown options, tooltip, text image panel and
+   * the header cells of a table.
    * Formulas are rebuilt from their LaTeX on the way through, for the reasons on
    * `MathFormulaMarkup` (#1105); the pipe is pure, so that happens once per distinct text rather
    * than on every change detection run.

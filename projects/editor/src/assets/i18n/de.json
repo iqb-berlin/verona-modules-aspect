@@ -19,12 +19,48 @@
   "bottom": "unten",
   "idTaken": "ID ist bereits vergeben",
   "idContainsInvalidCharacters": "ID enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -)",
-  "invalidVariableAliases": "Folgende Variablen-IDs entsprechen nicht dem erlaubten Muster (a-z, A-Z, 0-9, _, -) und werden nicht an den Host gemeldet: {{aliases}}",
+  "idContainsSpace": "ID enthält unerlaubtes Leerzeichen",
+  "idEditDialog": {
+    "title": "ID ändern"
+  },
   "inputInvalid": "Eingabe ungültig",
+  "numberField": {
+    "badInput": "Keine gültige Zahl",
+    "required": "Pflichtfeld",
+    "min": "Mindestens {{min}}",
+    "max": "Höchstens {{max}}",
+    "invalid": "Eingabe ungültig"
+  },
+  "numberFieldRefused": {
+    "badInput": "Keine gültige Zahl – letzter gültiger Wert wiederhergestellt",
+    "required": "Pflichtfeld – letzter gültiger Wert wiederhergestellt",
+    "min": "Mindestens {{min}} – letzter gültiger Wert wiederhergestellt",
+    "max": "Höchstens {{max}} – letzter gültiger Wert wiederhergestellt",
+    "invalid": "Eingabe ungültig – letzter gültiger Wert wiederhergestellt"
+  },
   "elementNotAddedFileFailed": "Die Datei konnte nicht geladen werden. Es wurde kein Element angelegt.",
   "outdatedUnit": "Unit Definition aktualisiert",
   "sectionNotReplaced": "Der Abschnitt wurde nicht ersetzt. Der einzufügende Abschnitt wurde verworfen.",
-  "invalidReferencesRemoved": "Invalide Referenzen bei folgenden Elementen wurden entfernt:",
+  "deleteStateVariablesConfirm": "Zustandsvariablen löschen?",
+  "deletePageConfirm": "Seite {{page}} löschen?",
+  "deleteAlwaysVisiblePageConfirm": "Dauerhaft sichtbare Seite löschen?",
+  "deleteSectionConfirm": "Abschnitt {{section}} löschen?",
+  "deleteElementsConfirm": "Elemente löschen?",
+  "referenceRemoval": {
+    "removedWith": "Diese Verweise werden mit entfernt. „Schritt rückgängig“ stellt sie nicht wieder her.",
+    "goToCancels": "„Zum Element“ und „Zum Abschnitt“ brechen das Löschen ab.",
+    "goToCancelsChange": "„Zum Element“ und „Zum Abschnitt“ verwerfen die Änderung am Text.",
+    "delete": "Löschen und Verweise entfernen",
+    "changeTextTitle": "Text ändern?",
+    "changeText": "Ändern und Verweise entfernen"
+  },
+  "referenceList": {
+    "referencesTo": "Verweise auf",
+    "visibilityRuleOf": "Sichtbarkeitsbedingung von Seite {{page}}, Abschnitt {{section}}",
+    "visibilityRuleHint": "Fällt eine Sichtbarkeitsbedingung weg, ändert sich, wann der Abschnitt erscheint; ein Abschnitt ohne Bedingungen ist immer sichtbar.",
+    "textAnchor": "Textbereich „{{id}}“",
+    "sectionLocation": "Seite {{page}}, Abschnitt {{section}}"
+  },
   "save": "Speichern",
   "confirm": "Bestätigen",
   "cancel": "Abbrechen",
@@ -169,7 +205,7 @@
     "highlightable": "Markieren erlauben",
     "marking": "Markierung",
     "markingMode": "Markierungsmodus",
-    "markingPanels": "Markierungselemente",
+    "markingPanels": "Textmarkierungen",
     "markingMode-selection": "Auswahl",
     "markingMode-word": "Wort",
     "markingMode-range": "Bereich",
@@ -184,18 +220,19 @@
     "options": "Optionen",
     "resizeEnabled": "Größenverstellbar",
     "hasAutoHeight": "Automatische Höhenanpassung",
+    "showWordCount": "Wörter zählen",
     "action": "Aktion",
     "actionParam": "Aktionsparameter",
     "addStateVariables": "Bitte zuerst Zustandsvariablen anlegen",
-    "unitNav": "Unitnavigation",
+    "unitNav": "Aufgabennavigation",
     "pageNav": "Seitennavigation",
     "highlightText": "Textabschnitt hervorheben",
     "removeHighlights": "Hervorhebungen ausblenden",
     "stateVariableChange": "Zustandsvariable ändern",
-    "previous": "Vorherige Unit",
-    "next": "Nächste Unit",
-    "first": "Erste Unit",
-    "last": "Letzte Unit",
+    "previous": "Vorherige Aufgabe",
+    "next": "Nächste Aufgabe",
+    "first": "Erste Aufgabe",
+    "last": "Letzte Aufgabe",
     "end": "Beenden",
     "undefined": "undefiniert",
     "pageNavSelectionHint": "Hier erscheinen nur Seiten, welche als Ziel zu Verfügung stehen.",
@@ -293,6 +330,8 @@
     "showToolbar": "Werkzeugleiste anzeigen",
     "showZoomButtons": "Zoom-Knöpfe anzeigen",
     "showFullscreenButton": "Vollbild-Knopf anzeigen",
+    "showAlgebraInput": "Eingabezeile anzeigen",
+    "recomputedCountsAsChanged": "„Wert geändert“ des Elements für die Variablen übernehmen",
     "enableShiftDragZoom": "Bewegen und Zoom erlauben",
     "customToolbar": "Anpassung Werkzeugleiste",
     "customToolbarHelp": "Hier kann definiert werden, welche Elemente auf der Werkzeigleiste angezeigt werden sollen. Für Details bitte die Dokumentation konsultieren.",
@@ -323,6 +362,11 @@
     "trackedVariables": "Bekannte Variablen",
     "trackedExpectedVariables": "Erwartete Variablen",
     "addTrackedExpectedVariable": "Neue Variable...",
+    "geometryVariableMissing": "nicht mehr in der GeoGebra-Datei – abwählen",
+    "geometryVariableIssue": {
+      "INVALID_CHARACTERS": "unerlaubte Zeichen – in GeoGebra umbenennen",
+      "DUPLICATE_ALIAS": "unterscheidet sich von einer gewählten Variable nur in Groß-/Kleinschreibung"
+    },
     "isSortList": "Sortierliste",
     "permanentPlaceholders": "Platzhalter anzeigen",
     "permanentPlaceholdersCC": "Platzhalter mit Durchschrift",
@@ -342,9 +386,12 @@
     "showInfoOrder": "Ordnungszahlen",
     "showInfoENeg": "Elektronegativität",
     "showInfoAMass": "Mittlere relative Atommasse",
+    "showInfoName": "Elementnamen",
+    "showInfoSymbol": "Elementsymbole",
+    "highlightBlocks": "Felder nach Block einfärben (s, p, d, f)",
     "closeOnSelection": "Schließen bei Auswahl",
     "maxNumberOfSelections": "Max. Anzahl Auswahlen",
-    "maxNumberOfSelectionsHint": "0 = unbegrenzt viele Auswahlen",
+    "maxNumberOfSelectionsHint": "0 = keine Auswahl, nur Ansehen",
     "bondingType": "Darstellungsart",
     "moleculeBondingTypeValence": "Valenzstrichformel",
     "moleculeBondingTypeElectrons": "Elektronenformel",
@@ -407,7 +454,7 @@
   },
   "toolbox": {
     "text": "Text",
-    "marking-panel": "Markierungselement",
+    "marking-panel": "Textmarkierung",
     "button": "Knopf",
     "frame": "Rahmen",
     "text-field": "Eingabefeld",
@@ -425,6 +472,7 @@
     "audio": "Audio",
     "video": "Video",
     "likert": "Optionentabelle",
+    "likert-row": "Zeile der Optionentabelle",
     "cloze": "Lückentext",
     "slider": "Schieberegler",
     "spell-correct": "Wort korrigieren",
@@ -440,7 +488,9 @@
     "trigger": "Auslöser",
     "table": "Tabelle",
     "widget-molecule-editor": "Molekül-Editor",
-    "widget-periodic-table": "Periodensystem"
+    "widget-periodic-table": "Periodensystem",
+    "tetfolio": "Tetfolio",
+    "experimental": "Experimentell"
   },
   "section-menu": {
     "elementList": "Elementliste",
@@ -476,6 +526,11 @@
   "numberGreater0": "Zahlenwert größer 0",
   "itemsPerRow": "Anzahl der Elemente",
   "loadGeogebraFile": "GGB-Datei hochladen",
+  "loadTetfolioZip": "Tetfolio-ZIP hochladen",
+  "tetfolioHtmlLoaded": "HTML geladen ({{kb}} KB)",
+  "tetfolioNoHtmlContent": "Kein HTML-Inhalt",
+  "tetfolioZipNoHtml": "Keine HTML-Datei in der ZIP gefunden.",
+  "tetfolioZipError": "Fehler: {{message}}",
   "addition": "Addition",
   "subtraction": "Subtraktion",
   "multiplication": "Multiplikation",
@@ -487,15 +542,34 @@
   "unexpectedError": {
     "title": "Unerwarteter Fehler",
     "intro": "Es ist ein Fehler aufgetreten. Es kann zu schwerwiegenden Problemen kommen.",
-    "hint": "Das Problem kann halbautomatisiert gemeldet werden. Dazu bitte auch die Unit verlinken oder exportieren und an den Bericht anhängen.",
+    "hint": "Das Problem kann halbautomatisiert gemeldet werden. Dazu bitte auch die Aufgabe verlinken oder exportieren und an den Bericht anhängen.",
     "reportError": "Fehler melden",
     "reportViaGitHub": "Fehlerbericht auf GitHub erstellen",
     "reportViaEmail": "Fehlerbericht als Email versenden",
     "reportToClipboard": "Fehlerbericht in Zwischenablage kopieren",
-    "discard": "Verwerfen"
+    "technicalDetail": "Technische Angabe:"
   },
-  "error": {
-    "corruptElement": "Element-Ressource ist vermutlich fehlerhaft und sollte ausgetauscht werden! \n\n Ursprüngliche Fehlermeldung: {{ errorMsg }}"
+  "unitDefError": {
+    "UNIT_DEFINITION_NOT_READABLE": "Aufgabendefinition konnte nicht gelesen werden!",
+    "UNIT_DEFINITION_NEWER": "Aufgabenversion ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.",
+    "UNIT_DEFINITION_OUTDATED": "Aufgabenversion ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden."
+  },
+  "sanitization": {
+    "title": "Aufgabendefinition wird aktualisiert",
+    "text": "Eine veraltete Aufgabendefinition wurde geladen und muss angepasst werden. Sobald gespeichert wird, ist sie nicht mehr mit alten Versionen kompatibel.",
+    "confirm": "Aktualisieren"
+  },
+  "sectionInsert": {
+    "title": "Seitenabschnitt einfügen",
+    "fromSaved": "Gespeicherten Abschnitt einfügen",
+    "fromClipboard": "Abschnitt über Zwischenablage einfügen",
+    "replaceExisting": "Bestehenden Abschnitt ersetzen",
+    "pastePrompt": "Kopierten Abschnitt einfügen:",
+    "readError": "Fehler beim Lesen des Abschnitts.",
+    "duplicateIds": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",
+    "readSuccess": "Abschnitt wurde erfolgreich gelesen.",
+    "savedFound": "Gespeicherter Abschnitt gefunden.",
+    "savedMissing": "Kein gespeicherter Abschnitt gefunden."
   },
   "sectionTemplates": {
     "inputTitle": "Assistent: Antwortfeld(er)",
@@ -611,27 +685,125 @@
     "geometrySource": "Erstellt mit GeoGebra, https://www.geogebra.org/ (es gelten die GeoGebra-Lizenzbedingungen)."
   },
   "overviewDialog": {
+    "title": "Übersicht Elemente",
+    "filter": "Filter",
+    "pages": "Seiten",
+    "sections": "Abschnitte",
+    "resetFilter": "Filter zurücksetzen",
+    "bulkChange": "Mehrfachänderung",
+    "property": "Eigenschaft",
+    "selectedElements": "Ausgewählte Elemente: {{count}}",
+    "section": "Abschnitt",
+    "elementType": "Elementtyp",
+    "relevantForPresentationComplete": "Relevant für <br/> \"Presentation Complete\"",
+    "presentationComplete": "Presentation Complete",
+    "actions": "Aktionen",
+    "editId": "ID ändern",
+    "noData": "Keine Daten vorhanden",
     "compoundChildNotDeletable": "Elemente in Lückentext, Tabelle und Optionentabelle werden beim übergeordneten Element gelöscht."
+  },
+  "unitHints": {
+    "title": "Hinweise zur Aufgabe",
+    "indicator": "Hinweise zur Aufgabe anzeigen",
+    "none": "Zur Aufgabe gibt es keine Hinweise.",
+    "goToElement": "Zum Element",
+    "goToSection": "Zum Abschnitt",
+    "rulesIntoNothing": {
+      "title": "Sichtbarkeitsbedingungen ohne Ziel",
+      "explanation": "Diese Abschnitte haben Sichtbarkeitsbedingungen, die nach einem Element oder einer Zustandsvariable fragen, die es in der Aufgabe nicht gibt. Eine solche Bedingung ist nie erfüllt. Beim Laden werden sie nicht verändert, weil sich sonst ändern würde, wann der Abschnitt erscheint.",
+      "targets": "Fragt nach",
+      "noTarget": "(nichts gewählt)"
+    },
+    "loadRepairs": {
+      "title": "Beim Laden entfernte Verweise",
+      "explanation": "Diese Elemente verwiesen auf etwas, das es in der Aufgabe nicht gibt. Die Verweise wurden beim Laden entfernt."
+    },
+    "loadErrors": {
+      "title": "Nicht geladene Inhalte",
+      "explanation": "Diese Inhalte konnten nicht geladen werden. Dasselbe Problem tritt meist auch im Player auf.",
+      "problem": "Problem",
+      "wholeUnit": "Ganze Aufgabe",
+      "technicalDetail": "Technische Angabe:",
+      "notice": "Ein Inhalt der Aufgabe konnte nicht geladen werden.",
+      "show": "Anzeigen",
+      "code": {
+        "IMAGE_NOT_LOADING": "Das Bild kann nicht angezeigt werden. Die Bilddatei ist vermutlich beschädigt. Bitte das Bild neu hochladen.",
+        "MEDIA_TIMEOUT": "Das Audio oder Video wurde nicht rechtzeitig geladen. Mögliche Ursachen sind eine sehr große Datei oder ein Format, das der Browser nicht abspielen kann. Tritt der Fehler nach erneutem Laden der Aufgabe wieder auf, bitte die Datei prüfen.",
+        "MEDIA_DURATION_ERROR": "Die Länge des Audios oder Videos lässt sich nicht bestimmen. Das kommt etwa bei Aufnahmen vor, die direkt im Browser entstanden sind. Bitte die Datei in einem anderen Format, zum Beispiel MP3 oder MP4, speichern und neu hochladen.",
+        "GEOGEBRA_TIMEOUT": "Das Geometrie-Element wurde nicht rechtzeitig fertig geladen. Mögliche Ursachen sind eine langsame Verbindung, ein unvollständiges GeoGebra-Paket oder eine fehlerhafte GeoGebra-Datei. Tritt der Fehler nach erneutem Laden der Aufgabe wieder auf, bitte die GeoGebra-Datei prüfen oder die Administration ansprechen.",
+        "GEOGEBRA_NOT_LOADING": "Das GeoGebra-Paket konnte nicht geladen werden. Es fehlt auf dem Server oder ist gerade nicht erreichbar. Die Geometrie-Elemente bleiben deshalb leer. Bitte wenden Sie sich an die Administration.",
+        "other": "Dieser Inhalt konnte nicht geladen werden."
+      }
+    }
+  },
+  "variableInfoFindings": {
+    "title": "Ungültige Variablennamen",
+    "explanation": "Diese Variablen verstoßen gegen die Regeln für Variablennamen: erlaubt sind Buchstaben ohne Umlaute, Ziffern, _ und -, und jeder Name darf nur einmal vorkommen, wobei Groß- und Kleinschreibung nicht als Unterschied zählen. Solange sich einer der Namen hier korrigieren lässt, meldet der Editor keine Variablenliste an das Studio; das Studio behält bis dahin die zuletzt gespeicherte.",
+    "geometryHint": "Namen aus GeoGebra lassen sich nur in GeoGebra ändern: das Objekt dort umbenennen und die Datei neu laden. Bereits erhobene Antworten bleiben dem alten Namen zugeordnet.",
+    "column": {
+      "location": "Ort",
+      "element": "Element",
+      "property": "Eigenschaft",
+      "value": "Betroffener Name",
+      "reason": "Grund"
+    },
+    "location": "Seite {{page}}, Abschnitt {{section}}",
+    "code": {
+      "EMPTY_IDENTIFIER": "Der Name ist leer.",
+      "INVALID_CHARACTERS": "Der Name enthält unerlaubte Zeichen (erlaubt: a-z, A-Z, 0-9, _, -).",
+      "DUPLICATE_ID": "Die interne ID kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied).",
+      "DUPLICATE_ALIAS": "Der Name kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied).",
+      "PUBLIC_IDENTIFIER_COLLISION": "Der Name kommt mehrfach vor (Groß- und Kleinschreibung zählen nicht als Unterschied)."
+    },
+    "idHint": "Betrifft die interne ID; hält die Variablenliste nicht zurück. „ID ersetzen“ legt eine neue ID an.",
+    "replaceId": "ID ersetzen",
+    "replaceAll": "Alle IDs ersetzen ({{count}})",
+    "replaceWarning": {
+      "one": "Die Kodierungen dieser Variable müssen im Studio neu angelegt werden, weil das Studio sie über die ID findet. Erhobene Antworten bleiben erhalten.",
+      "other": "Die Kodierungen von bis zu {{count}} Variablen müssen im Studio neu angelegt werden, weil das Studio sie über die ID findet. Erhobene Antworten bleiben erhalten."
+    },
+    "replaceConfirm": {
+      "one": "ID ersetzen",
+      "other": "IDs ersetzen"
+    },
+    "editStateVariables": "Zustandsvariablen bearbeiten"
   },
   "assistants": "Assistenten",
   "pageSettings": "Seiteneinstellungen",
-  "deleteReferenceDialog": {
-    "cleanUpHint": "Referenzen werden automatisch entfernt. Elemente mit Referenzen werden möglicherweise unbrauchbar."
-  },
   "unitView": {
     "alwaysVisiblePage": "Dauerhaft sichtbare Seite",
     "addPage": "Weitere Seite anlegen",
-    "unitNavNextHint": "Wird am Ende der letzten Seite angezeigt"
+    "unitNavNextHint": "Wird am Ende der letzten Seite angezeigt",
+    "unitSettings": "Aufgaben-Einstellungen",
+    "editorSettings": "Arbeitsmodus",
+    "overview": "Übersicht",
+    "openElementList": "Elementliste öffnen",
+    "sectionNumbering": "Abschnittsnummerierung",
+    "enableNumbering": "Nummerierung aktivieren",
+    "verticalAlignment": "vertikale Ausrichtung",
+    "navigation": "Navigation",
+    "unitNavNext": "Navigationsknopf zur nächsten Aufgabe anfügen",
+    "expertMode": "Erweiterter Modus",
+    "pagesAsList": "Seitenansicht untereinander"
   },
   "pageView": {
     "addPageBreak": "Seitenumbruch ab gewähltem Abschnitt",
-    "removePageBreak": "Seitenumbruch entfernen"
+    "removePageBreak": "Seitenumbruch entfernen",
+    "pageLabel": "Seite {{page}}",
+    "alwaysVisiblePage": "dauerhaft sichtbare Seite",
+    "newSection": "Neuer Abschnitt"
   },
   "pageMenu": {
     "movePageForward": "Seite nach vorn verschieben",
     "movePageBackward": "Seite nach hinten verschieben",
     "deletePage": "Seite löschen",
-    "limitPageWidthHint": "Abgewählt wird die verfügbare Bildschirmbreite voll ausgenutzt."
+    "limitPageWidthHint": "Abgewählt wird die verfügbare Bildschirmbreite voll ausgenutzt.",
+    "pageWidth": "Seitenbreite",
+    "limitPageWidth": "Seitenbreite begrenzen",
+    "effectivePageWidth": "effektive Seitenbreite:",
+    "maxWidthInPx": "Seitenbreite in px",
+    "marginInPx": "Randbreite in px",
+    "alwaysVisible": "Seite dauerhaft sichtbar"
   },
   "richTextEditor": {
     "bold": "Fett",
@@ -656,6 +828,10 @@
     "specialCharacters": "Sonderzeichen",
     "nonBreakingSpace": "Nicht umbrechendes Leerzeichen",
     "narrowNonBreakingSpace": "Schmales nicht umbrechendes Leerzeichen",
+    "showNonBreakingSpaces": "Nicht umbrechende Leerzeichen hervorheben",
+    "characters": "Zeichen",
+    "word": "Wort",
+    "words": "Wörter",
     "enDash": "Halbgeviertstrich",
     "nonBreakingHyphen": "Nicht umbrechender Viertelgeviertstrich",
     "singleQuoteLeft": "Einfaches Anführungszeichen links",
@@ -676,7 +852,43 @@
     "radio": "Optionsfeld",
     "button": "Knopf",
     "checkbox": "Kontrollkästchen",
-    "dropdown": "Klappliste"
+    "dropdown": "Klappliste",
+    "group": {
+      "fontStyle": "Schriftauszeichnung",
+      "font": "Schrift",
+      "paragraph": "Absatz",
+      "textAlignment": "Textausrichtung",
+      "lists": "Listen",
+      "indentation": "Einrückung",
+      "image": "Bild",
+      "specialElements": "Sonderelemente"
+    },
+    "label": {
+      "fontSize": "Größe",
+      "paragraphType": "Typ",
+      "paragraphSpacing": "Abstand",
+      "indentDepth": "Tiefe"
+    },
+    "fontSizeDefault": "Standard",
+    "paragraph": "Paragraph",
+    "fontColor": "Textfarbe",
+    "highlightColor": "Texthintergrund",
+    "bulletList": "Aufzählung",
+    "orderedList": "Aufzählung (nummeriert)",
+    "horizontalRule": "horizontale Linie",
+    "horizontalRuleShort": "kurze Linie (20%)",
+    "anchor": "Bereich hervorheben",
+    "listStyle": {
+      "disc": "Punkt",
+      "circle": "Kreis",
+      "square": "Quadrat",
+      "decimal": "1, 2, 3",
+      "lower-latin": "a, b, c",
+      "upper-latin": "A, B, C",
+      "lower-roman": "i, ii, iii",
+      "upper-roman": "I, II, III",
+      "lower-greek": "α, β, γ"
+    }
   },
   "imageResizeDialog": {
     "title": "Bild komprimieren",
@@ -686,10 +898,27 @@
     "maxHeight": "Maximale Höhe (px)",
     "aspectRatioLocked": "Das Seitenverhältnis bleibt immer erhalten",
     "quality": "Qualität",
+    "lossless": "verlustfrei",
     "convertToWebP": "In WebP konvertieren (spart Speicherplatz)",
     "newSize": "Voraussichtliche neue Größe",
     "newSizeLarger": "— größer als bisher",
     "recompressionHint": "Dieses Bild steckt schon in der Aufgabe. Beim Verkleinern wird es neu berechnet: Ein JPEG und ein WebP verlieren dabei ein zweites Mal an Qualität, ein GIF seine Animation.",
     "fixedOverlaysWarning": "Achtung: Die Bildbereiche dieses Elements liegen an festen Positionen im Bild. Wird das Bild kleiner, wandern sie nicht mit und müssen danach neu gesetzt werden. Nur die Dateigröße zu senken, ohne die Maße zu ändern, lässt sie unberührt."
+  },
+  "dropListOptionEditDialog": {
+    "title": "Ablegelistenoption anpassen",
+    "image": "Bild",
+    "audio": "Audio",
+    "preview": "Vorschau"
+  },
+  "tableEditDialog": {
+    "title": "Tabellenelemente"
+  },
+  "geogebraAppDefinitionDialog": {
+    "pasteBase64": "Base64 Repräsentation einfügen",
+    "invalidBase64": "Fehler beim Lesen der eingefügten GeoGebra-Definition"
+  },
+  "likertRowEditDialog": {
+    "optionWithIndex": "{{text}} (Index: {{index}})"
   }
 }

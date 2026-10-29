@@ -27,6 +27,7 @@ import {
   NumberFieldBadInputDirective
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import { ColorPickerValuePipe } from 'editor/modules/editor-shared/pipes/color-picker-value.pipe';
 
 describe('ElementStylePropertiesComponent', () => {
   let component: ElementStylePropertiesComponent;
@@ -41,7 +42,7 @@ describe('ElementStylePropertiesComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         ElementStylePropertiesComponent, MergedCheckboxComponent, MergedMarkerComponent,
-        NumberFieldDirective, NumberFieldBadInputDirective
+        NumberFieldDirective, NumberFieldBadInputDirective, ColorPickerValuePipe
       ],
       imports: [
         CommonModule,
@@ -107,6 +108,58 @@ describe('ElementStylePropertiesComponent', () => {
       .toHaveBeenCalledWith('backgroundColor', '#ff0000');
   });
 
+  /* The pen beside a colour box opens the colour input that follows the box. That input opens on
+     black for `transparent` and for a merged selection - and in the colour dialog of Windows nothing
+     picked in the spectrum field changes black, because the field leaves the brightness alone (#1532). */
+  describe('the colour pickers', () => {
+    const picker = (label: string): HTMLInputElement => {
+      const formField = Array.from(
+        fixture.nativeElement.querySelectorAll('mat-form-field') as NodeListOf<HTMLElement>
+      ).find(field => field.querySelector('mat-label')?.textContent?.includes(label)) as HTMLElement;
+      return formField.nextElementSibling as HTMLInputElement;
+    };
+    const showStyles = async (styles: Partial<Merged<Stylings>>): Promise<void> => {
+      component.styles = { ...component.styles, ...styles } as unknown as Merged<Stylings>;
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should open on the colour the element has', () => {
+      expect(picker('propertiesPanel.backgroundColor').type).toBe('color');
+      expect(picker('propertiesPanel.backgroundColor').value).toBe('#ffffff');
+      expect(picker('propertiesPanel.fontColor').value).toBe('#000000');
+    });
+
+    it('should open on a medium grey for a transparent background', async () => {
+      await showStyles({ backgroundColor: 'transparent' });
+
+      expect(picker('propertiesPanel.backgroundColor').value).toBe('#808080');
+    });
+
+    it('should open on a medium grey for a colour the selection disagrees about', async () => {
+      await showStyles({ backgroundColor: null });
+
+      expect(picker('propertiesPanel.backgroundColor').value).toBe('#808080');
+    });
+
+    it('should open on a named colour rather than on black', async () => {
+      await showStyles({ backgroundColor: 'lightgrey' });
+
+      expect(picker('propertiesPanel.backgroundColor').value).toBe('#d3d3d3');
+    });
+
+    it('should write the colour picked there', async () => {
+      await showStyles({ backgroundColor: 'transparent' });
+      const backgroundPicker = picker('propertiesPanel.backgroundColor');
+
+      backgroundPicker.value = '#3366cc';
+      backgroundPicker.dispatchEvent(new Event('input'));
+
+      expect(elementService.updateSelectedElementsStyleProperty)
+        .toHaveBeenCalledWith('backgroundColor', '#3366cc');
+    });
+  });
+
   /* The four number boxes here wrote into the ElementService straight from the template, so the
      host's guard never covered them: an emptied box sent null into a property declared `number`,
      and the `(change)` handler that patched the display back to 0 assigned into `styles` - with
@@ -157,6 +210,16 @@ describe('ElementStylePropertiesComponent', () => {
       expect(elementService.updateSelectedElementsStyleProperty).not.toHaveBeenCalled();
       expect(box().value).toBe('20');
       expect(messageService.showWarning).toHaveBeenCalledTimes(1);
+    });
+
+    /* Beside the warning that fades, the box says why under itself (#1523). */
+    it('should say at the box why a negative font size was refused', async () => {
+      type('-5');
+      await leave();
+      fixture.detectChanges();
+
+      const formField: HTMLElement = box().closest('mat-form-field') as HTMLElement;
+      expect(formField.querySelector('mat-error')?.textContent).toContain('numberFieldRefused.min');
     });
 
     /* #1153: the border width box committed to `borderRadius`, a copy-paste slip that existed

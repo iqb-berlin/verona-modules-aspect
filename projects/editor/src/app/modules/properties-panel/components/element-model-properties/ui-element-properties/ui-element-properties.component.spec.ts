@@ -28,6 +28,12 @@ import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { By } from '@angular/platform-browser';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { BehaviorSubject } from 'rxjs';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
+import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
+import { AliasIssuesPipe } from 'editor/src/app/modules/properties-panel/pipes/alias-issues.pipe';
+import { AliasRefusalPipe } from 'editor/src/app/modules/properties-panel/pipes/alias-refusal.pipe';
+import { IDService } from 'editor/src/app/services/id.service';
 import {
   CombinedProperties
 } from 'editor/src/app/modules/properties-panel/components/element-properties-panel/element-properties-panel.component';
@@ -149,7 +155,7 @@ describe('UIElementPropertiesComponent', () => {
   let fixture: ComponentFixture<UIElementPropertiesComponent>;
   let elementService: SpyObj<ElementService>;
   let emitted: { property: string; value: unknown }[];
-  let unitServiceMock: { expertMode: boolean };
+  let unitServiceMock: { expertMode: boolean, variableInfoFindings: BehaviorSubject<VariableInfoFinding[]> };
 
   const selectedElement = { type: 'button', id: 'btn1', alias: 'Btn1' } as unknown as UIElement;
 
@@ -164,7 +170,7 @@ describe('UIElementPropertiesComponent', () => {
   };
 
   beforeEach(async () => {
-    unitServiceMock = { expertMode: false };
+    unitServiceMock = { expertMode: false, variableInfoFindings: new BehaviorSubject<VariableInfoFinding[]>([]) };
     elementService = createSpyObj<ElementService>(
       ['updateElementsDimensionsProperty', 'showDefaultEditDialog']
     );
@@ -191,7 +197,9 @@ describe('UIElementPropertiesComponent', () => {
         MockMediaSourcePropertiesComponent,
         MockClozePropertiesComponent,
         MockStandardDimensionPropertiesComponent,
-        MergedCheckboxComponent
+        MergedCheckboxComponent,
+        AliasIssuesPipe,
+        AliasRefusalPipe
       ],
       imports: [
         CommonModule,
@@ -210,7 +218,8 @@ describe('UIElementPropertiesComponent', () => {
       providers: [
         { provide: UnitService, useValue: unitServiceMock as unknown as UnitService },
         { provide: ElementService, useValue: elementService },
-        { provide: SelectionService, useValue: selectionServiceMock }
+        { provide: SelectionService, useValue: selectionServiceMock },
+        { provide: IDService, useValue: { isAliasAvailable: () => true } }
       ]
     }).compileComponents();
 
@@ -222,6 +231,103 @@ describe('UIElementPropertiesComponent', () => {
     emitted = [];
     component.updateModel.subscribe(update => emitted.push(update));
     fixture.detectChanges();
+  });
+
+  /* The field checks only what is typed. A name stored that way stood in it unremarked while the validation area
+     listed it (#1129). */
+  describe('the alias field', () => {
+    const hint = (): HTMLElement | null => fixture.nativeElement.querySelector('.alias-issue-hint');
+
+    it('should say nothing while the alias is fine', () => {
+      expect(hint()).toBeNull();
+    });
+
+    it('should say why a stored alias breaks the contract', () => {
+      unitServiceMock.variableInfoFindings.next([{
+        origin: {
+          info: { id: 'btn1', alias: 'Btn1' } as VariableInfo,
+          location: {
+            pageIndex: 0, sectionIndex: 0, element: selectedElement, navigationElement: selectedElement
+          },
+          property: 'alias'
+        },
+        issues: [{
+          index: 0, part: 'alias', value: 'Btn1', code: 'DUPLICATE_ALIAS'
+        }],
+        holdsBackList: true
+      }]);
+      fixture.detectChanges();
+
+      expect(hint()?.textContent).toContain('variableInfoFindings.code.DUPLICATE_ALIAS');
+    });
+
+    /* The element refuses a name and keeps its own; the field keeps the typed text and now says why, beside the
+       message that fades after three seconds (#1523). */
+    describe('for a typed name', () => {
+      const type = (value: string): void => {
+        const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+        input.value = value;
+        input.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+      };
+
+      it('should hand the name on to the element', () => {
+        type('neu');
+
+        expect(emitted).toEqual([{ property: 'alias', value: 'neu' }]);
+      });
+
+      it('should say why the element refused it', () => {
+        type('Btn 2');
+
+        expect(fixture.nativeElement.querySelector('.alias-refusal-hint').textContent).toContain('idContainsSpace');
+      });
+
+      it('should say nothing once the element took the name', () => {
+        type('neu');
+        component.combinedProperties = { ...component.combinedProperties, alias: 'neu' };
+        fixture.detectChanges();
+
+        expect(hint()).toBeNull();
+      });
+
+      it('should forget what was typed for another element', () => {
+        type('Btn 2');
+        select('button');
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('.alias-refusal-hint')).toBeNull();
+      });
+
+      /* Renamed through "ID ändern" in the element overview: the selection stays, the field shows the new name. */
+      it('should forget what was typed once the element was renamed elsewhere', () => {
+        type('Btn 2');
+        fixture.componentRef.setInput('combinedProperties', { ...component.combinedProperties, alias: 'umbenannt' });
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('.alias-refusal-hint')).toBeNull();
+      });
+
+      it('should speak of the typed name rather than the stored one while it differs', () => {
+        unitServiceMock.variableInfoFindings.next([{
+          origin: {
+            info: { id: 'btn1', alias: 'Btn1' } as VariableInfo,
+            location: {
+              pageIndex: 0, sectionIndex: 0, element: selectedElement, navigationElement: selectedElement
+            },
+            property: 'alias'
+          },
+          issues: [{
+            index: 0, part: 'alias', value: 'Btn1', code: 'DUPLICATE_ALIAS'
+          }],
+          holdsBackList: true
+        }]);
+        type('März');
+
+        expect(fixture.nativeElement.querySelectorAll('.alias-issue-hint').length).toBe(1);
+        expect(hint()?.textContent).toContain('idContainsInvalidCharacters');
+      });
+    });
   });
 
   /* #1147: the button and the trigger have different action vocabularies, and a mixed selection

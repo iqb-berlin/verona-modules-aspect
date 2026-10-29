@@ -52,6 +52,7 @@ import {
 import {
   WidgetMoleculeEditorComponent
 } from 'common/components/elements/widget-molecule-editor/widget-molecule-editor.component';
+import { TetfolioComponent } from 'common/components/elements/tetfolio/tetfolio.component';
 import { AreaSegmentComponent } from './components/area-segment/area-segment.component';
 import { TextComponent } from './components/elements/text/text.component';
 import { ButtonComponent } from './components/elements/button/button.component';
@@ -107,6 +108,7 @@ import {
   ClozeChildOverlayComponent
 } from './components/cloze-child-overlay/cloze-child-overlay.component';
 import { MarkListPipe } from './pipes/mark-list.pipe';
+import { ClozeLinePartsPipe } from './pipes/cloze-line-parts.pipe';
 import { IsDisabledDirective } from './directives/is-disabled.directive';
 import { GeometryComponent } from './components/elements/geometry/geometry.component';
 import { MathAtanPipe } from './pipes/math-atan.pipe';
@@ -175,6 +177,7 @@ import { FirstLineAlignedControlDirective } from './directives/first-line-aligne
     TextMarkingButtonComponent,
     ClozeChildOverlayComponent,
     MarkListPipe,
+    ClozeLinePartsPipe,
     IsDisabledDirective,
     GeometryComponent,
     MathAtanPipe,
@@ -197,6 +200,7 @@ import { FirstLineAlignedControlDirective } from './directives/first-line-aligne
     DragImageComponent,
     WidgetPeriodicTableComponent,
     WidgetMoleculeEditorComponent,
+    TetfolioComponent,
     ImageSrcPipe,
     TableComponent,
     TableChildOverlay,
@@ -262,6 +266,7 @@ import { FirstLineAlignedControlDirective } from './directives/first-line-aligne
     MathTableComponent,
     WidgetPeriodicTableComponent,
     WidgetMoleculeEditorComponent,
+    TetfolioComponent,
     ImageSrcPipe,
     TableComponent,
     TableChildOverlay,

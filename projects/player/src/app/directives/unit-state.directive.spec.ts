@@ -1,6 +1,6 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { Progress } from 'player/modules/verona/models/verona';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';

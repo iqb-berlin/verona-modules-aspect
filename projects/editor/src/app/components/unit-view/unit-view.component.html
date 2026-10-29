@@ -15,7 +15,7 @@
       <mat-tab-group *ngIf="pagesLoaded"
                      preserveContent="true"
                      [style.height.%]="100" mat-align-tabs="start" mat-stretch-tabs="false"
-                     [selectedIndex]="showPagesAsList ? 0 : selectionService.selectedPageIndex"
+                     [selectedIndex]="showPagesAsList ? listTabIndex : selectionService.selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)"
                      (animationDone)="pageChangeService.pageChanged.emit()">
         <ng-container *ngIf="!showPagesAsList">
@@ -126,48 +126,70 @@
 <!--          </ng-template>-->
 <!--        </mat-tab>-->
 
-        <mat-tab [disabled]="true" class="align-right">
+        <!-- The tabs below only hold buttons. They are disabled so that they cannot be selected, and the class undoes
+             the fading Material gives a disabled tab, which made the buttons look switched off. -->
+        <!-- There while the hints area has anything to show: with the number of what is still open as a warning, as a
+             plain note while it only reports what loading repaired (#1520). -->
+        @if (unitService.hintIndicator | async; as indicator) {
+          <mat-tab [disabled]="true" labelClass="button-tab">
+            <ng-template mat-tab-label>
+              <button mat-button class="variable-info-findings-button"
+                      [matTooltip]="'unitHints.indicator' | translate"
+                      (click)="showVariableInfoFindings()">
+                @if (indicator.open > 0) {
+                  <mat-icon class="variable-info-findings-icon">warning</mat-icon>
+                  <span class="variable-info-findings-count">{{ indicator.open }}</span>
+                } @else {
+                  <mat-icon class="variable-info-findings-info">info</mat-icon>
+                }
+              </button>
+            </ng-template>
+          </mat-tab>
+        }
+        <mat-tab [disabled]="true" labelClass="button-tab">
           <ng-template mat-tab-label>
-            <button mat-icon-button [matMenuTriggerFor]="numberingMenu" #menuTrigger="matMenuTrigger">
+            <button mat-icon-button class="unit-settings-button" [matMenuTriggerFor]="numberingMenu" #menuTrigger="matMenuTrigger"
+                    [matTooltip]="'unitView.unitSettings' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
               <mat-icon>settings</mat-icon>
             </button>
             <mat-menu #numberingMenu="matMenu" (click)="$event.stopPropagation()">
               <div [style.padding]="'0 20px 10px'" (click)="$event.stopPropagation()">
-                <h3>Übersicht</h3>
+                <h3>{{ 'unitView.overview' | translate }}</h3>
                 <button mat-stroked-button (click)="openOverview(); menuTrigger.closeMenu()">
-                  Elementliste öffnen
+                  {{ 'unitView.openElementList' | translate }}
                 </button>
-                <h3>Abschnittsnummerierung</h3>
+                <h3>{{ 'unitView.sectionNumbering' | translate }}</h3>
                 <mat-checkbox #numberingInput [checked]="unitService.unit.enableSectionNumbering"
                               (change)="setSectionNumbering($event)">
-                  Nummerierung aktivieren
+                  {{ 'unitView.enableNumbering' | translate }}
                 </mat-checkbox>
                 <mat-checkbox [disabled]="!numberingInput.checked" [checked]="unitService.unit.sectionNumberingPosition == 'above'"
                               (change)="setSectionNumberingPosition($event)">
-                  vertikale Ausrichtung
+                  {{ 'unitView.verticalAlignment' | translate }}
                 </mat-checkbox>
-                <h3>Navigation</h3>
+                <h3>{{ 'unitView.navigation' | translate }}</h3>
                 <mat-checkbox [matTooltip]="'unitView.unitNavNextHint' | translate" [checked]="unitService.unit.showUnitNavNext"
                               (change)="setUnitNavNext($event)">
-                  Navigationsknopf zur nächsten Unit anfügen
+                  {{ 'unitView.unitNavNext' | translate }}
                 </mat-checkbox>
               </div>
             </mat-menu>
           </ng-template>
         </mat-tab>
-        <mat-tab [disabled]="true" class="align-right">
+        <mat-tab [disabled]="true" labelClass="button-tab">
           <ng-template mat-tab-label>
-            <button mat-icon-button [matMenuTriggerFor]="extrasMenu" data-cy="extras-menu">
+            <button mat-icon-button class="editor-settings-button" [matMenuTriggerFor]="extrasMenu" data-cy="extras-menu"
+                    [matTooltip]="'unitView.editorSettings' | translate" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
               <mat-icon>menu</mat-icon>
             </button>
             <mat-menu #extrasMenu="matMenu" (click)="$event.stopPropagation()">
               <div [style.padding]="'0 20px 10px'" (click)="$event.stopPropagation()">
                 <mat-checkbox [disabled]="!unitService.allowExpertMode"
                               [ngModel]="unitService.expertMode" (change)="setExpertMode($event)">
-                  Erweiterter Modus
+                  {{ 'unitView.expertMode' | translate }}
                 </mat-checkbox>
                 <mat-checkbox [checked]="showPagesAsList" (change)="toggleViewMode()">
-                  Seitenansicht untereinander
+                  {{ 'unitView.pagesAsList' | translate }}
                 </mat-checkbox>
               </div>
             </mat-menu>

@@ -1,7 +1,7 @@
 import {
   InputElement
 } from 'common/models/elements/element';
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -27,7 +27,6 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
 
   styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
 
-  static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';
 
   constructor(element?: Partial<CheckboxProperties>, idService?: AbstractIDService) {
@@ -52,13 +51,12 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'boolean',
+      type: 'BOOLEAN',
       format: '',
       multiple: false,
       nullable: false,
       values: this.getVariableInfoValues(),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }

@@ -3,6 +3,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -30,6 +31,7 @@ import {
 class MockRichTextEditorComponent {
   @Input() content!: string | Record<string, unknown>;
   @Input() showReducedControls: boolean = false;
+  @Input() showTextAlignment: boolean = false;
   @Output() contentChange = new EventEmitter<string>();
 }
 
@@ -48,7 +50,7 @@ describe('LabelEditDialogComponent', () => {
   let dialogService: SpyObj<DialogService>;
   let dialogRefMock: { close: Mock };
 
-  const configureTestBed = async (label: TextImageLabel): Promise<void> => {
+  const configureTestBed = async (label: TextImageLabel, showTextAlignment?: boolean): Promise<void> => {
     dialogService = createSpyObj<DialogService>(['importImage', 'compressEmbeddedImage']);
     dialogRefMock = { close: vi.fn() };
 
@@ -70,7 +72,7 @@ describe('LabelEditDialogComponent', () => {
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: { label } },
+        { provide: MAT_DIALOG_DATA, useValue: { label, showTextAlignment } },
         { provide: MatDialogRef, useValue: dialogRefMock },
         { provide: DialogService, useValue: dialogService }
       ]
@@ -167,6 +169,26 @@ describe('LabelEditDialogComponent', () => {
 
     it('should not show the image panel', () => {
       expect(fixture.nativeElement.querySelector('.image-panel')).toBeNull();
+    });
+
+    it('should leave the text alignment out of the editor by default', () => {
+      const editor = fixture.debugElement.query(By.directive(MockRichTextEditorComponent))
+        .componentInstance as MockRichTextEditorComponent;
+      expect(editor.showTextAlignment).toBe(false);
+    });
+  });
+
+  /* A table header cell is edited here and asks for the alignment (#1430). */
+  describe('with the text alignment asked for', () => {
+    beforeEach(async () => {
+      await configureTestBed({ text: 'Kopf' } as TextImageLabel, true);
+    });
+
+    it('should hand the request on to the editor', () => {
+      const editor = fixture.debugElement.query(By.directive(MockRichTextEditorComponent))
+        .componentInstance as MockRichTextEditorComponent;
+      expect(editor.showReducedControls).toBe(true);
+      expect(editor.showTextAlignment).toBe(true);
     });
   });
 });

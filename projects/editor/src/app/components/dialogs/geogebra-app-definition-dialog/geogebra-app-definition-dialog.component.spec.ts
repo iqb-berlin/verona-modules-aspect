@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import { FileService } from 'common/services/file.service';
 import {
@@ -52,7 +52,11 @@ describe('GeogebraAppDefinitionDialogComponent', () => {
     expect(dialogRefMock.close).toHaveBeenCalledWith({ fileName: '', content: validBase64 });
   });
 
-  it('should show an error message for a malformed base64 definition', () => {
+  /* The message is a key the template translates (#1571). */
+  it('should show the translated error message for a malformed base64 definition', () => {
+    TestBed.inject(TranslateService)
+      .setTranslation('de', { geogebraAppDefinitionDialog: { invalidBase64: 'Invalid definition' } });
+    TestBed.inject(TranslateService).use('de');
     component.validateBase64('YW Jj');
     fixture.detectChanges();
 
@@ -60,14 +64,14 @@ describe('GeogebraAppDefinitionDialogComponent', () => {
     expect(component.statusMessage?.color).toBe('red');
     const statusArea = fixture.nativeElement.querySelector('.status-area') as HTMLElement;
     expect(statusArea.hidden).toBe(false);
-    expect(statusArea.textContent).toContain('Fehler beim Lesen');
+    expect(statusArea.textContent).toContain('Invalid definition');
   });
 
   it('should show an error message when nothing was pasted', () => {
     component.validateBase64(undefined);
 
     expect(dialogRefMock.close).not.toHaveBeenCalled();
-    expect(component.statusMessage).toBeTruthy();
+    expect(component.statusMessage?.text).toBe('geogebraAppDefinitionDialog.invalidBase64');
   });
 
   it('should close with the loaded GeoGebra file', async () => {

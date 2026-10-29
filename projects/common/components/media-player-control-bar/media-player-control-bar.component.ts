@@ -297,6 +297,10 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
 
   ngOnDestroy(): void {
     this.clearDurationErrorTimeOut();
+    // The `pause` event that would report the stop arrives after this output is torn down.
+    if (this.playing) {
+      this.mediaPlayStatusChanged.emit(null);
+    }
     this.pause();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

@@ -2,7 +2,7 @@ import {
   InputElement
 } from 'common/models/elements/element';
 import { environment } from 'common/environment';
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
 import { TextImageLabel } from 'common/models/label-interfaces';
@@ -49,13 +49,12 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
     return {
       id: this.id,
       alias: this.alias,
-      type: 'integer',
+      type: 'INTEGER',
       format: '',
       multiple: false,
       nullable: false,
       values: this.getVariableInfoValues(options),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     };
   }

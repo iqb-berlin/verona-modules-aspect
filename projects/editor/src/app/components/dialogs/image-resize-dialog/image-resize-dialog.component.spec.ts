@@ -307,6 +307,49 @@ describe('ImageResizeDialogComponent', () => {
     });
   });
 
+  /* At 100 % a WebP is written without loss, so for a flat graphic 100 % can come out smaller than
+     80 %. The label says so, and it is driven through the slider itself, the way an author moves it
+     (#1603). */
+  describe('the quality label', () => {
+    const note = () => fixture.nativeElement.querySelector('.lossless-note');
+
+    const moveSlider = (base64: string, quality: number): void => {
+      component.data.base64 = base64;
+      fixture.detectChanges();
+      const thumb = fixture.nativeElement.querySelector('mat-slider input') as HTMLInputElement;
+      thumb.value = String(quality);
+      thumb.dispatchEvent(new Event('input'));
+      thumb.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+    };
+
+    it('should call a WebP at 100 % lossless', () => {
+      moveSlider('data:image/webp;base64,AAAA', 1);
+
+      expect(note().textContent).toContain('imageResizeDialog.lossless');
+    });
+
+    it('should say nothing below 100 %', () => {
+      moveSlider('data:image/webp;base64,AAAA', 0.95);
+
+      expect(note()).toBeNull();
+    });
+
+    it('should say nothing for a JPEG, which stays lossy at 100 %', () => {
+      moveSlider('data:image/jpeg;base64,AAAA', 1);
+
+      expect(note()).toBeNull();
+    });
+
+    // The format that counts is the one written, not the one picked from disk.
+    it('should call a picture converted to WebP at 100 % lossless', () => {
+      component.onFormatChange(true);
+      moveSlider(mockDialogData.base64, 1);
+
+      expect(note()).not.toBeNull();
+    });
+  });
+
   /* Scaling the image is what the estimate costs, and where the browser reads the whole picture that
      is around 90 ms of the main thread. Typing a width is a burst of those, and only the last one is
      ever read (#1434). */

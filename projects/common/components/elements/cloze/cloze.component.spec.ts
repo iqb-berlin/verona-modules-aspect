@@ -1,16 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ClozeElement, ClozeProperties } from 'common/models/elements/cloze';
+import { ClozeDocumentWrapperNode, ClozeElement, ClozeProperties } from 'common/models/elements/cloze';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import { StyleMarksPipe } from 'common/pipes/style-marks.pipe';
 import { MarkListPipe } from 'common/pipes/mark-list.pipe';
 import { ArrayIncludesPipe } from 'common/pipes/array-includes.pipe';
 import { MathFormulaPipe } from 'common/pipes/math-formula.pipe';
+import { ClozeLinePartsPipe } from 'common/pipes/cloze-line-parts.pipe';
 import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
 
 import { UntypedFormGroup } from '@angular/forms';
 import { UIElement } from 'common/models/elements/element';
+import { ToggleButtonElement } from 'common/models/elements/toggle-button';
 import {
   ClozeChildOverlayComponent
 } from 'common/components/cloze-child-overlay/cloze-child-overlay.component';
@@ -41,7 +43,8 @@ describe('ClozeComponent', () => {
         StyleMarksPipe,
         MarkListPipe,
         ArrayIncludesPipe,
-        MathFormulaPipe
+        MathFormulaPipe,
+        ClozeLinePartsPipe
       ]
     }).compileComponents();
   });
@@ -103,14 +106,65 @@ describe('ClozeComponent', () => {
     expect(compiled.querySelector('math')).toBeNull();
   });
 
-  /* Which children hang in the line by their box and which by their text (#1435). A dropdown wears
-     the element's font since then, so its text meets the text beside it; a drop list is a box and
-     stays centred. One expression in the template decides it for every child type, and a wrong entry
-     in its list is invisible until someone looks at a cloze. */
-  it('should align a dropdown child on the baseline and a drop list in the middle', () => {
+  /* Tab in the editor gives a list item sub-items, a list inside the item (#1602). The gaps in it count
+     as children of the element on every level, so the sublist has to be drawn with them -- before, only
+     the paragraphs of an item were, and the sublist was left out without a trace. */
+  describe('a list with sub-items', () => {
+    const paragraph = (text: string, ...children: { type: string; attrs: { model: UIElement } }[]) => ({
+      type: 'paragraph', attrs: {}, content: [{ type: 'text', text }, ...children]
+    });
+    const gap = { type: 'TextField', attrs: { model: { type: 'text-field' } as UIElement } };
+
+    beforeEach(() => {
+      component.elementModel.document = {
+        type: 'doc',
+        content: [{
+          type: 'bulletList',
+          attrs: { listStyle: 'disc' },
+          content: [{
+            type: 'listItem',
+            attrs: {},
+            content: [
+              paragraph('Obst'),
+              {
+                type: 'orderedList',
+                attrs: { listStyle: 'lower-latin', fontSize: '24px' },
+                content: [{
+                  type: 'listItem',
+                  attrs: {},
+                  content: [paragraph('Apfel: ', gap)]
+                }]
+              }
+            ]
+          }]
+        }]
+      };
+      fixture.detectChanges();
+    });
+
+    it('should draw the sublist inside its item, with the gap in it', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      const subItem = compiled.querySelector('ul > li > ol > li');
+      expect(subItem?.textContent).toContain('Apfel:');
+      expect(subItem?.querySelector('aspect-compound-child-overlay')).toBeTruthy();
+    });
+
+    it('should give the sublist its own marker and font size', () => {
+      const sublist = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('ul ol');
+      expect(sublist?.style.listStyle).toContain('lower-latin');
+      expect(sublist?.style.fontSize).toBe('24px');
+    });
+  });
+
+  /* Which children hang in the line by their box and which by their text. Every child stands by its
+     text since #1619 -- a drop list and a toggle button used to be boxes, which left their text 1-2px
+     low; the dropdown had left that list with #1435 for the same reason. Only an upright toggle button
+     is still a box: its options stand above each other. One expression in the template decides it for
+     every child type, and a wrong entry is invisible until someone looks at a cloze. */
+  it('should align every child on the baseline but an upright toggle button', () => {
     /* The document goes on the element that is already built: the constructor instantiates the child
        models through the registry, which is not reachable from here. What the binding reads is the
-       type on the model, and that is all these two need to carry. */
+       type on the model, and the orientation of a toggle button. */
     component.elementModel.document = {
       type: 'doc',
       content: [{
@@ -118,14 +172,18 @@ describe('ClozeComponent', () => {
         attrs: {},
         content: [
           { type: 'text', text: 'Ein Dreieck hat ' },
-          {
-            type: 'Dropdown',
-            attrs: { model: { type: 'dropdown' } as UIElement }
-          },
+          { type: 'Dropdown', attrs: { model: { type: 'dropdown' } as UIElement } },
           { type: 'text', text: ' Ecken, und hier liegt ' },
+          { type: 'DropList', attrs: { model: { type: 'drop-list' } as UIElement } },
+          { type: 'text', text: ', das ist ' },
           {
-            type: 'DropList',
-            attrs: { model: { type: 'drop-list' } as UIElement }
+            type: 'ToggleButton',
+            attrs: { model: { type: 'toggle-button', verticalOrientation: false } as ToggleButtonElement }
+          },
+          { type: 'text', text: ' oder ' },
+          {
+            type: 'ToggleButton',
+            attrs: { model: { type: 'toggle-button', verticalOrientation: true } as ToggleButtonElement }
           }
         ]
       }]
@@ -134,8 +192,92 @@ describe('ClozeComponent', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
     const kinder = compiled.querySelectorAll<HTMLElement>('aspect-compound-child-overlay');
-    expect(kinder.length).toBe(2);
+    expect(kinder.length).toBe(4);
     expect(kinder[0].style.verticalAlign).toBe('baseline');
-    expect(kinder[1].style.verticalAlign).toBe('middle');
+    expect(kinder[1].style.verticalAlign).toBe('baseline');
+    expect(kinder[2].style.verticalAlign).toBe('baseline');
+    expect(kinder[3].style.verticalAlign).toBe('middle');
+  });
+
+  /* A field in the middle of a word is an atomic inline, so the line would otherwise break between
+     the letters and the field. On a narrow line the letters have to stay with the field. */
+  it('should move a word that a field cuts in half onto the next line whole', () => {
+    component.elementModel.styling.fontSize = 16;
+    component.elementModel.document = {
+      type: 'doc',
+      content: [{
+        type: 'paragraph',
+        attrs: {},
+        content: [
+          { type: 'text', text: 'Lorem ips' },
+          {
+            type: 'TextField',
+            attrs: { model: { type: 'text-field' } as UIElement }
+          },
+          { type: 'text', text: 'um lorem ipsum' }
+        ]
+      }]
+    };
+    const host = fixture.nativeElement as HTMLElement;
+    host.style.display = 'block';
+    host.style.width = '120px';
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const word = compiled.querySelector('.unbreakable-word') as HTMLElement;
+    const field = word.querySelector('aspect-compound-child-overlay') as HTMLElement;
+    field.style.width = '80px';
+    field.style.height = '18px';
+    const lineOf = (node: Text): number => {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const rect = range.getBoundingClientRect();
+      return rect.top + rect.height / 2;
+    };
+    const loremNode = word.previousElementSibling?.firstChild as Text;
+    const wordTexts = word.querySelectorAll('span');
+    const ips = lineOf(wordTexts[0].firstChild as Text);
+    const um = lineOf(wordTexts[1].firstChild as Text);
+    const lorem = lineOf(loremNode);
+    const fieldLine = field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2;
+
+    expect(ips - lorem).toBeGreaterThan(10);
+    expect(Math.abs(ips - fieldLine)).toBeLessThan(10);
+    expect(Math.abs(um - fieldLine)).toBeLessThan(10);
+  });
+
+  describe('startsWithText', () => {
+    const paragraph = (text: string): ClozeDocumentWrapperNode => ({
+      type: 'paragraph', attrs: {}, content: [{ type: 'text', text }]
+    });
+    const blockImage: ClozeDocumentWrapperNode = { type: 'blockImage', attrs: { src: 'picture.png' }, content: [] };
+    const horizontalRule: ClozeDocumentWrapperNode = { type: 'horizontalRule', attrs: {}, content: [] };
+    const cloze = (...content: ClozeDocumentWrapperNode[]): ClozeElement => new ClozeElement({
+      type: 'cloze', id: 'cloze_1', document: { type: 'doc', content }
+    } as Partial<ClozeProperties>);
+
+    it('should say yes for a cloze that begins with text', () => {
+      expect(ClozeComponent.startsWithText(cloze(paragraph('Text')))).toBe(true);
+    });
+
+    it('should say no for a cloze that begins with a block image', () => {
+      expect(ClozeComponent.startsWithText(cloze(blockImage, paragraph('Text')))).toBe(false);
+    });
+
+    it('should look past the nodes the template does not draw', () => {
+      expect(ClozeComponent.startsWithText(cloze(horizontalRule, blockImage, paragraph('Text')))).toBe(false);
+      expect(ClozeComponent.startsWithText(cloze(horizontalRule, paragraph('Text')))).toBe(true);
+    });
+
+    it('should say no for an empty cloze', () => {
+      expect(ClozeComponent.startsWithText(cloze())).toBe(false);
+    });
+
+    it('should say no for a document without content, which the template draws empty', () => {
+      const withoutContent = cloze();
+      (withoutContent as unknown as { document: object }).document = { type: 'doc' };
+
+      expect(ClozeComponent.startsWithText(withoutContent)).toBe(false);
+    });
   });
 });

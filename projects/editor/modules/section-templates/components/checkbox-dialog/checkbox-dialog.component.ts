@@ -11,7 +11,10 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 })
 export class CheckboxWizardDialogComponent {
   text1: string = '';
-  options: string[] = [];
+  /** One list per mode, so switching image options neither shows a text as an image nor hands one
+      over as such; confirming takes the list of the mode in force (#1610). */
+  textOptions: string[] = [];
+  imageOptions: string[] = [];
   useImages: boolean = false;
 
   constructor(private dialogService: DialogService) {}
@@ -33,12 +36,24 @@ export class CheckboxWizardDialogComponent {
     }
   }
 
+  /** Plain text, as the checkbox's label is everywhere else in the editor: the same dialog opens on a
+      double click on a checkbox, and the properties panel edits the label in a text field (#1604). */
+  editItem(list: string[], i: number) {
+    this.dialogService.showTextEditDialog(list[i])
+      .subscribe((result: string) => {
+        if (result) {
+          list[i] = result;
+        }
+      });
+  }
+
   // eslint-disable-next-line class-methods-use-this
   removeListItem(list: string[], i: number) {
     list.splice(i, 1);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.options, event.previousIndex, event.currentIndex);
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 }

@@ -1,19 +1,21 @@
 <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
   <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>
-  <input matInput type="number" aspectNumberField required
+  <input matInput type="number" aspectNumberField required #minValueField="aspectNumberField"
          [ngModel]="combinedProperties.minValue"
          (numberChange)="updateModel.emit(
                 { property: 'minValue', value: $event.value, isInputValid: $event.isInputValid })">
+  <mat-error>{{ minValueField.errorText }}</mat-error>
   @if (combinedProperties.minValue === null) {
     <aspect-merged-marker matSuffix></aspect-merged-marker>
   }
 </mat-form-field>
 <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
   <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
-  <input matInput type="number" aspectNumberField required
+  <input matInput type="number" aspectNumberField required #maxValueField="aspectNumberField"
          [ngModel]="combinedProperties.maxValue"
          (numberChange)="updateModel.emit(
                 { property: 'maxValue', value: $event.value, isInputValid: $event.isInputValid })">
+  <mat-error>{{ maxValueField.errorText }}</mat-error>
   @if (combinedProperties.maxValue === null) {
     <aspect-merged-marker matSuffix></aspect-merged-marker>
   }
@@ -40,10 +42,11 @@
 @if (combinedProperties.minValue !== undefined) {
   <mat-form-field class="wide-form-field" appearance="fill">
     <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
-    <input matInput type="number" aspectNumberField
+    <input matInput type="number" aspectNumberField #valueField="aspectNumberField"
            [ngModel]="combinedProperties.value"
            (numberChange)="updateModel.emit(
                     { property: 'value', value: $event.value, isInputValid: $event.isInputValid })">
+    <mat-error>{{ valueField.errorText }}</mat-error>
     <!-- Through the pipe, not `value === null` as above: an empty box is a legitimate "no preset",
          and the marker may only speak for a selection that actually disagrees (#1167). -->
     @if (divergingProperties | propertyDiverges : 'value') {

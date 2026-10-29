@@ -1,6 +1,9 @@
+// Above the marked words, which are positioned and scroll beneath the bar. They would cover its buttons and take
+// their clicks (#1613).
 .sticky {
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 .marking-bar {
   margin-bottom: 13px;

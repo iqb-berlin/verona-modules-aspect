@@ -1,0 +1,99 @@
+# Builds the editor and the player from the tag of a published release and attaches the two HTML
+# files to it. The files are what a release delivers; before #1561 they were built by hand from
+# whatever the local checkout held at the time.
+#
+# Deliberately a GitHub Actions workflow and not a GitLab job: only GitHub knows when a release is
+# published, and GITHUB_TOKEN may upload to it. GitLab sees no more than the mirrored tag and would
+# need someone's GitHub token to upload anything.
+#
+# The files are built here rather than taken from the pipeline on `master`: same commit, same lock
+# file, same Node, and nothing has to be fetched across from GitLab. What is taken from GitLab is its
+# verdict - the files are attached only once the pipeline on the tagged commit reports success.
+# Releases used to go out before that pipeline had even started: 3.0.1 was published at 12:23 UTC,
+# and its commit turned green at 13:00.
+#
+# Started by hand, the workflow builds the tag it is given and keeps the files as a workflow artifact
+# instead of touching the release - a dry run to compare against the files a release already carries.
+name: Release files
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag of an existing release, e.g. editor/3.0.1+player/3.0.1
+        required: true
+
+permissions:
+  contents: write
+  statuses: read
+
+jobs:
+  build-and-attach:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: refs/tags/${{ env.TAG }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      # build.sh takes the version from package.json, not from the tag. Without this comparison a
+      # release could carry files whose version is not the one in its name.
+      - name: Compare the tag with package.json
+        run: |
+          editor=$(node -p "require('./package.json').config.editor_version")
+          player=$(node -p "require('./package.json').config.player_version")
+          if [ "$TAG" != "editor/$editor+player/$player" ]; then
+            echo "::error::Tag $TAG does not match package.json, which says editor/$editor+player/$player"
+            exit 1
+          fi
+          echo "EDITOR_FILE=dist/iqb-editor-aspect-$editor.html" >> "$GITHUB_ENV"
+          echo "PLAYER_FILE=dist/iqb-player-aspect-$player.html" >> "$GITHUB_ENV"
+      # The Cypress binary is a download of several hundred megabytes the build has no use for.
+      - run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+      - run: npm run build-editor
+      - run: npm run build-player
+      # The verdict as GitLab reports it to GitHub, under the context branch protection requires. The
+      # mirror picks a pushed commit up a few minutes later, and the pipeline then takes about half an
+      # hour on a runner it shares with the pull requests, hence the generous limit. A red pipeline
+      # fails the run; once a retry in GitLab has turned the commit green, re-run this workflow. A
+      # failed request only costs one round: over half an hour of polling, a 502 is to be expected.
+      - name: Wait for the GitLab pipeline on the tagged commit
+        timeout-minutes: 120
+        env:
+          CONTEXT: ci/gitlab/scm.cms.hu-berlin.de
+        run: |
+          sha=$(git rev-parse HEAD)
+          while true; do
+            state=$(gh api "repos/$GH_REPO/commits/$sha/status" \
+              --jq ".statuses[] | select(.context == \"$CONTEXT\") | .state") || state=""
+            case "$state" in
+              success) echo "$CONTEXT reports success for $sha"; break ;;
+              failure|error) echo "::error::$CONTEXT reports $state for $sha"; exit 1 ;;
+              *) echo "$CONTEXT: ${state:-nothing reported yet} for $sha, waiting"; sleep 60 ;;
+            esac
+          done
+      # --clobber, so that a re-run after a half-finished upload does not fail on its own first file.
+      # Replacing is safe because the build is reproducible: run against editor/3.0.1+player/3.0.1, it
+      # produced both files byte for byte as attached to that release.
+      - name: Attach the files to the release
+        if: github.event_name == 'release'
+        run: gh release upload --clobber "$TAG" "$EDITOR_FILE" "$PLAYER_FILE"
+      - name: Keep the files as a workflow artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-files
+          path: |
+            ${{ env.EDITOR_FILE }}
+            ${{ env.PLAYER_FILE }}
+          if-no-files-found: error

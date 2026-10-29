@@ -3,11 +3,20 @@
 
 export interface GeoGebraApi {
   getBase64(): string;
+  /** Resizes the running applet. The drawing keeps its scale and position and shows more or less of the
+   * plane, as a new applet of that size would. */
+  setSize(width: number, height: number): void;
   getAllObjectNames(): string[];
   getValueString(objectName: string): string;
+  /** Whether the user can change the object directly: a free point, a point on a path, a slider, a
+   * checkbox, the number behind an input box. Objects that only follow others, or the view, cannot. */
+  isMoveable(objectName: string): boolean;
   registerAddListener(listener: () => void): void;
   registerRemoveListener(listener: () => void): void;
-  registerUpdateListener(listener: () => void): void;
+  /** GeoGebra calls the listener once per object it recomputed, with that object's name: the object
+   * the user changed and everything that depends on it, but also whatever depends on the view when it
+   * is zoomed or moved. */
+  registerUpdateListener(listener: (objectName: string) => void): void;
   registerRenameListener(listener: () => void): void;
   registerClearListener(listener: () => void): void;
   registerClientListener(listener: () => void): void;
@@ -33,6 +42,7 @@ export interface GeoGebraAppletParameters {
   errorDialogsActive: boolean;
   showLogging: boolean;
   useBrowserForJS: boolean;
+  detachKeyboard: boolean;
   ggbBase64: string;
   appletOnLoad: (geoGebraApi: GeoGebraApi) => void;
 }

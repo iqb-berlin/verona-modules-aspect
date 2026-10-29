@@ -15,28 +15,38 @@ export function angularDebugApi(win: Window | null): AngularDebugApi {
   return ng;
 }
 
-/* The one member the specs call on the rich text editor component. */
+/* The members the specs use of the rich text editor component. */
 export interface RichTextEditorInstance {
   editor: {
     commands: {
       selectAll(): void;
     };
+    state: {
+      selection: { from: number; to: number };
+      doc: { textBetween(from: number, to: number): string };
+    };
   };
+}
+
+function richTextEditorAt(element: Element): RichTextEditorInstance {
+  const component = angularDebugApi(element.ownerDocument.defaultView)
+    .getComponent<RichTextEditorInstance>(element);
+  if (!component) throw new Error('An diesem Element hängt kein Rich-Text-Editor');
+  return component;
 }
 
 /* Selecting text through the editor instance, where clicking and dragging would be brittle. */
 export function selectAllInRichTextEditor(element: Element): void {
-  const component = angularDebugApi(element.ownerDocument.defaultView)
-    .getComponent<RichTextEditorInstance>(element);
-  if (!component) throw new Error('An diesem Element hängt kein Rich-Text-Editor');
-  component.editor.commands.selectAll();
+  richTextEditorAt(element).editor.commands.selectAll();
 }
 
-/* The directive one visibility spec patches, to hold a section visible past the point where the
-   player would hide it again. Declared partial: it types every directive on the element, and only
-   one of them has this member. */
-export interface SectionVisibilityDirective {
-  areVisibilityRulesFulfilled: () => boolean;
+/**
+ * The text the editor itself holds as selected. It can lag behind the DOM selection: ProseMirror
+ * only picks up a selection set from outside on the next `selectionchange` (#1576).
+ */
+export function selectedTextInRichTextEditor(element: Element): string {
+  const { state } = richTextEditorAt(element).editor;
+  return state.doc.textBetween(state.selection.from, state.selection.to);
 }
 
 /* WebKit's predecessor of `caretPositionFromPoint`; the specs call it optionally and fall back. */

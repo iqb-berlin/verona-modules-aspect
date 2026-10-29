@@ -1,7 +1,7 @@
 import {
   UIElement
 } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { environment } from 'common/environment';
 import {
   BasicStyles,
@@ -67,7 +67,6 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       helperRowColor: ELEMENT_DEFAULTS['math-table'].styling.helperRowColor
     };
 
-  static title: string = 'Rechenkästchen';
   static icon: string = 'apps';
 
   constructor(element?: Partial<MathTableProperties>, idService?: AbstractIDService) {
@@ -112,13 +111,12 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'json',
-      format: 'math-table',
+      type: 'JSON',
+      format: 'MATH_TABLE',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     }];
   }

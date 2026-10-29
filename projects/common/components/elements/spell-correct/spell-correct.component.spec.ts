@@ -83,4 +83,8 @@ describe('SpellCorrectComponent', () => {
     const button = fixture.nativeElement.querySelector('.spell-correct-button');
     expect(button.disabled).toBe(true);
   });
+
+  it('should begin with a line of text', () => {
+    expect(SpellCorrectComponent.startsWithText()).toBe(true);
+  });
 });

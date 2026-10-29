@@ -187,4 +187,70 @@ describe('CheckboxComponent', () => {
       expect(directive().firstLineAlignedControl).toBe(false);
     });
   });
+
+  /* The gap gives its children their line; here the host does, with a height to tell it apart from the
+     36px a checkbox used to inherit from the cloze (#1619). The size of the box's state layer is the
+     theme's, which the tests do not load; without it the padding above the label came to nothing. */
+  describe('in a gap', () => {
+    beforeEach(() => {
+      component.clozeContext = true;
+      (fixture.nativeElement as HTMLElement).style.lineHeight = '30px';
+      (fixture.nativeElement as HTMLElement).style.setProperty('--mat-checkbox-state-layer-size', '40px');
+      fixture.detectChanges();
+    });
+
+    const host = (): HTMLElement => fixture.nativeElement as HTMLElement;
+    const band = (): HTMLElement => fixture.nativeElement.querySelector('.mat-form-field');
+    const label = (): HTMLElement => fixture.nativeElement.querySelector('.mdc-label');
+    const fillGap = (height: number): void => {
+      host().style.display = 'block';
+      host().style.height = `${height}px`;
+    };
+
+    it('should mark the band as standing in a gap', () => {
+      expect(band().classList).toContain('cloze-context');
+    });
+
+    it('should hide the box', () => {
+      expect(getComputedStyle(fixture.nativeElement.querySelector('.mdc-checkbox')).display).toBe('none');
+    });
+
+    it('should drop the padding that put the label beside the box', () => {
+      expect(getComputedStyle(label()).paddingTop).toBe('0px');
+    });
+
+    it('should make the band its line plus 1px above and below', () => {
+      expect(band().getBoundingClientRect().height).toBe(32);
+    });
+
+    it('should fill a taller gap with the band and keep the text in its middle', () => {
+      fillGap(50);
+      const box = band().getBoundingClientRect();
+      const text = (label().firstElementChild as HTMLElement).getBoundingClientRect();
+
+      expect(box.height).toBe(50);
+      expect(Math.abs((text.top + text.bottom) / 2 - (box.top + box.bottom) / 2)).toBeLessThan(1);
+    });
+
+    /* The label takes the click. Centred in the band at the height of its text, it left the rest of a
+       taller band dead. */
+    it('should let the whole height of a taller band take the click', () => {
+      fillGap(50);
+      const box = band().getBoundingClientRect();
+      const inside = (y: number): boolean => label().contains(document.elementFromPoint(box.left + 5, y));
+
+      expect(inside(box.top + 2)).toBe(true);
+      expect(inside(box.bottom - 2)).toBe(true);
+    });
+
+    it('should keep the label where its paragraph aligns text', () => {
+      host().style.display = 'block';
+      host().style.width = '300px';
+      host().style.textAlign = 'center';
+      const box = band().getBoundingClientRect();
+      const text = label().getBoundingClientRect();
+
+      expect(Math.abs((text.left + text.right) / 2 - (box.left + box.right) / 2)).toBeLessThan(1);
+    });
+  });
 });

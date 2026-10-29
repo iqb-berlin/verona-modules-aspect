@@ -1,9 +1,9 @@
 {
   "name": "verona-modules-aspect",
   "config": {
-    "player_version": "3.0.1",
-    "editor_version": "3.0.1",
-    "unit_definition_version": "4.12.0",
+    "player_version": "3.1.0",
+    "editor_version": "3.1.0",
+    "unit_definition_version": "4.13.0",
     "unit_definition_min_version": "4.0.0"
   },
   "scripts": {
@@ -23,6 +23,8 @@
     "lint": "eslint .",
     "e2e": "npx cypress open",
     "e2e-headless": "npx cypress run",
+    "e2e-headless-simple": "npx cypress run --spec 'e2e/tests/simple/**/*.spec.cy.ts'",
+    "e2e-headless-complex": "npx cypress run --spec 'e2e/tests/complex/**/*.spec.cy.ts'",
     "e2e-coverage": "scripts/e2e-coverage.sh",
     "docs": "compodoc -p tsconfig.doc.json -n \"Verona Module Aspect\" -d dist/docs",
     "generate-migration": "node scripts/generate-migration.js",
@@ -32,8 +34,8 @@
   },
   "private": true,
   "engines": {
-    "node": "^22.12.0 || >=24.0.0",
-    "npm": ">=10.0.0"
+    "node": "24.20.0",
+    "npm": "11.19.0"
   },
   "eslintConfig": {
     "extends": "@iqb/eslint-config",
@@ -118,8 +120,9 @@
     "@angular/platform-browser": "^21.2.9",
     "@angular/platform-browser-dynamic": "^21.2.9",
     "@angular/router": "^21.2.9",
-    "@iqb/mathlive": "^0.4.1",
-    "@iqb/responses": "^3.3.2",
+    "@iqb/mathlive": "^0.4.2",
+    "@iqbspecs/response": "^2.0.0",
+    "@iqbspecs/variable-info": "^2.1.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@tiptap/core": "^2.11.5",
@@ -149,6 +152,7 @@
     "@tiptap/extension-text-align": "^2.11.5",
     "@tiptap/extension-text-style": "^2.11.5",
     "@tiptap/extension-underline": "^2.11.5",
+    "fflate": "^0.8.3",
     "katex": "^0.16.11",
     "ngx-tiptap": "^11.1.0",
     "ngx-translate-testing": "^7.0.0",

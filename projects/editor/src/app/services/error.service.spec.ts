@@ -7,6 +7,8 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ErrorService } from 'editor/src/app/services/error.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { StartCommand, VeronaAPIService } from 'editor/src/app/services/verona-api.service';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 import {
   UnexpectedErrorComponent
 } from 'editor/src/app/components/unexpected-error/unexpected-error.component';
@@ -32,11 +34,20 @@ describe('ErrorService', () => {
   let dialogClosed: Subject<void>;
   let startCommand: Subject<StartCommand>;
   let veronaApiServiceMock: Pick<VeronaAPIService, 'startCommand'>;
+  let noticeAction: Subject<void>;
+  let loadErrorService: LoadErrorService;
+  let dialogServiceSpy: SpyObj<DialogService>;
 
   beforeEach(() => {
     startCommand = new Subject<StartCommand>();
     veronaApiServiceMock = { startCommand };
-    messageServiceSpy = createSpyObj<MessageService>(['showPrompt', 'showError', 'showErrorPrompt']);
+    messageServiceSpy = createSpyObj<MessageService>(
+      ['showError', 'showErrorPrompt', 'showWarningWithAction']
+    );
+    noticeAction = new Subject<void>();
+    messageServiceSpy.showWarningWithAction.mockReturnValue(noticeAction.asObservable());
+    loadErrorService = new LoadErrorService();
+    dialogServiceSpy = createSpyObj<DialogService>(['showVariableInfoFindingsDialog']);
     dialogClosed = new Subject<void>();
     messageServiceSpy.showErrorPrompt.mockReturnValue({
       afterClosed: () => dialogClosed.asObservable()
@@ -48,7 +59,9 @@ describe('ErrorService', () => {
     service = new ErrorService(
       translateServiceSpy,
       messageServiceSpy,
-      veronaApiServiceMock as VeronaAPIService
+      veronaApiServiceMock as VeronaAPIService,
+      loadErrorService,
+      dialogServiceSpy
     );
   });
 
@@ -59,34 +72,57 @@ describe('ErrorService', () => {
   /** The reset ignores the payload, so an empty command stands in for any unit the host loads. */
   const startNextUnit = (): void => startCommand.next({} as StartCommand);
 
-  it('should show a prompt for high severity ID errors', () => {
-    service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
+  /* The models in common cannot translate; they name the key, which the editor shows translated (#1523). */
+  it('should show an ID error under its translation key where it has one', () => {
+    service.handleError(IDError.forAlias('space'));
 
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledWith('ID ist bereits vergeben');
+    expect(translateServiceSpy.instant).toHaveBeenCalledWith('idContainsSpace');
+    expect(messageServiceSpy.showError).toHaveBeenCalledWith(translateServiceSpy.instant('idContainsSpace'));
+  });
+
+  /* What the player reports to the host goes into the hints area, at its element (#1537). */
+  it('should list a load error with its element and announce it', () => {
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
+
+    expect(loadErrorService.errors.value)
+      .toEqual([{ code: 'IMAGE_NOT_LOADING', message: 'Failed to load image', elementId: 'image_1' }]);
+    expect(messageServiceSpy.showWarningWithAction)
+      .toHaveBeenCalledWith('unitHints.loadErrors.notice', 'unitHints.loadErrors.show');
     expect(messageServiceSpy.showError).not.toHaveBeenCalled();
+    expect(messageServiceSpy.showErrorPrompt).not.toHaveBeenCalled();
   });
 
-  it('should show a dismissable error for low severity ID errors', () => {
-    service.handleError(new IDError('ID enthält unerlaubtes Leerzeichen'));
+  it('should open the hints area from the announcement', () => {
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
 
-    expect(messageServiceSpy.showError).toHaveBeenCalledWith('ID enthält unerlaubtes Leerzeichen');
-    expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
+    noticeAction.next();
+
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).toHaveBeenCalledTimes(1);
   });
 
-  it('should show a translated prompt for aspect errors', () => {
-    service.handleError(new AspectError('sanitization-needed', 'Elementfehler'));
+  /* An element reports again each time it is built anew; only the first report is news. */
+  it('should announce the same load error of the same element only once', () => {
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
 
-    expect(translateServiceSpy.instant)
-      .toHaveBeenCalledWith('error.corruptElement', { errorMsg: 'Elementfehler' });
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledWith('error.corruptElement');
+    expect(messageServiceSpy.showWarningWithAction).toHaveBeenCalledTimes(1);
+    expect(loadErrorService.errors.value.length).toBe(1);
   });
 
-  it('should treat geogebra loading errors as unexpected errors', () => {
-    const error = new AspectError('geogebra-not-loading', 'GeoGebra lädt nicht');
-    service.handleError(error);
+  it('should announce the load error of another element', () => {
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_1'));
+    service.handleError(new AspectError('IMAGE_NOT_LOADING', 'Failed to load image', 'image_2'));
 
-    expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledWith(error);
-    expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
+    expect(messageServiceSpy.showWarningWithAction).toHaveBeenCalledTimes(2);
+  });
+
+  /* A missing GeoGebra package is no programming error: it is listed like the others, for the whole unit. */
+  it('should list GeoGebra failing to load instead of reporting an unexpected error', () => {
+    service.handleError(new AspectError('GEOGEBRA_NOT_LOADING', 'GeoGebra could not be loaded'));
+
+    expect(loadErrorService.errors.value)
+      .toEqual([{ code: 'GEOGEBRA_NOT_LOADING', message: 'GeoGebra could not be loaded', elementId: undefined }]);
+    expect(messageServiceSpy.showErrorPrompt).not.toHaveBeenCalled();
   });
 
   it('should show the unexpected error prompt and log generic errors', () => {
@@ -99,10 +135,10 @@ describe('ErrorService', () => {
   });
 
   it('should keep repeating ID error feedback for a repeated user action', () => {
-    service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
-    service.handleError(new IDError('ID ist bereits vergeben', undefined, true));
+    service.handleError(IDError.forAlias('taken'));
+    service.handleError(IDError.forAlias('taken'));
 
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledTimes(2);
+    expect(messageServiceSpy.showError).toHaveBeenCalledTimes(2);
   });
 
   it('should not open a second dialog while the first one is still open', () => {
@@ -303,12 +339,5 @@ describe('ErrorService', () => {
 
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(2);
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenLastCalledWith(ofNextUnit);
-  });
-
-  it('should keep repeating the corrupt element prompt', () => {
-    service.handleError(new AspectError('sanitization-needed', 'Elementfehler'));
-    service.handleError(new AspectError('sanitization-needed', 'Elementfehler'));
-
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledTimes(2);
   });
 });

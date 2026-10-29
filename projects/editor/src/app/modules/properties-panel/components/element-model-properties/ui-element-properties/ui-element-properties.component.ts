@@ -61,6 +61,13 @@ export class UIElementPropertiesComponent implements OnChanges {
    */
   show: Record<PanelSection, boolean> = panelSectionsOf([]);
 
+  /**
+   * What was last typed into the ID field, for the field to say why the element did not take it (#1523). The element
+   * keeps its alias when it refuses one, while the field keeps the typed text; `null` until something is typed for
+   * the current selection.
+   */
+  typedAlias: string | null = null;
+
   BUTTON_ACTIONS = BUTTON_ACTIONS;
   TRIGGER_ACTIONS = TRIGGER_ACTIONS;
 
@@ -73,11 +80,25 @@ export class UIElementPropertiesComponent implements OnChanges {
     // object identity each time, for a value that cannot have changed.
     if (changes.selectedElements) {
       this.show = panelSectionsOf(this.selectedElements);
+      // What was typed for another element says nothing about this one.
+      this.typedAlias = null;
+    }
+    // A stored alias that changed has replaced the typed text in the field, whether the field wrote it or the
+    // element was renamed elsewhere, through "ID ändern" in the element overview, say.
+    if (changes.combinedProperties &&
+      changes.combinedProperties.previousValue?.alias !== changes.combinedProperties.currentValue?.alias) {
+      this.typedAlias = null;
     }
   }
 
   /** Emit one of this component's own properties, with the name checked against the model. */
   emitOwn(property: keyof PanelUIElementProperties, value: UIElementValue): void {
     this.updateModel.emit({ property, value });
+  }
+
+  /** Hands a typed name on to the element and keeps it for the field's hint. */
+  emitAlias(value: string): void {
+    this.typedAlias = value;
+    this.emitOwn('alias', value);
   }
 }

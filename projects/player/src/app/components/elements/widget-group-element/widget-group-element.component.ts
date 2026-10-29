@@ -81,8 +81,12 @@ export class WidgetGroupElementComponent
     this.veronaPostService.sendVopWidgetCall({
       callId: this.currentCallId,
       widgetType,
+      // The widget specifications (verona-interfaces.github.io, widget-docs) write yes and no as "1" and "0"
       parameters: Object.entries(event)
-        .map(([key, value]) => ({ key: StringUtils.camelCaseToUpperSnakeCase(key), value: String(value) })),
+        .map(([key, value]) => ({
+          key: StringUtils.camelCaseToUpperSnakeCase(key),
+          value: typeof value === 'boolean' ? String(Number(value)) : String(value)
+        })),
       ...(currentState ?
         { state: currentState as string } : {})
     });
@@ -102,7 +106,17 @@ export class WidgetGroupElementComponent
   private handleWidgetReturnMessage(message: VopWidgetReturn): void {
     if (message.callId !== this.currentCallId) return;
     this.currentCallId = undefined;
-    if (message.state) {
+    /* `state` is an optional string in the Verona spec, and it arrives by postMessage unchecked. An
+       empty one is a state like any other: the periodic table sends '' once every symbol is
+       deselected. A return that brings the state it was called with changes nothing, and an unset
+       state counts as '' for that -- confirming an unanswered widget without choosing anything keeps
+       it unanswered (#1465). */
+    const previousState =
+      (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state ?? '';
+    /* A periodic table that is only there to look at has no answer, and its variable says so (#1488).
+       A widget that still reads 0 as unlimited lets a selection through all the same. */
+    const viewOnly = this.elementModel instanceof WidgetPeriodicTableElement && this.elementModel.isViewOnly();
+    if (!viewOnly && typeof message.state === 'string' && message.state !== previousState) {
       (this.elementModel as WidgetPeriodicTableElement | WidgetMoleculeEditorElement).state =
         message.state;
 

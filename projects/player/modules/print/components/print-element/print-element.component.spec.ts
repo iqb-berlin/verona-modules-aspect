@@ -9,6 +9,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { TextFieldElement } from 'common/models/elements/text-field';
 import { TextFieldSimpleElement } from 'common/models/elements/text-field-simple';
 import { ComponentRegistry } from 'common/utils/component-registry';
+import { StartsWithTextPipe } from 'player/modules/print/pipes/starts-with-text.pipe';
 import { PrintElementComponent } from './print-element.component';
 
 @Component({
@@ -63,7 +64,8 @@ describe('PrintElementComponent', () => {
         PrintElementComponent,
         ElementStubComponent,
         CompoundElementStubComponent,
-        MockPrintLabelComponent
+        MockPrintLabelComponent,
+        StartsWithTextPipe
       ]
     }).compileComponents();
 
@@ -134,4 +136,17 @@ describe('PrintElementComponent', () => {
     expect(children[0].domElement.getAttribute('data-element-alias')).toBe('child_1_alias');
     expect(fixture.debugElement.queryAll(By.directive(MockPrintLabelComponent)).length).toBe(3);
   }));
+  it('should give an element an invisible first line where its component says it does not begin with text', () => {
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[data-element-id]').classList).toContain('starts-without-text');
+  });
+
+  it('should leave an element as it is where its component says it begins with a line of text', () => {
+    vi.spyOn(ElementStubComponent, 'startsWithText').mockReturnValue(true);
+
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[data-element-id]').classList).not.toContain('starts-without-text');
+  });
 });

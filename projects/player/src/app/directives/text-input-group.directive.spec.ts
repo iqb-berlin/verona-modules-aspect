@@ -1,6 +1,10 @@
-import { Directive } from '@angular/core';
+import { Directive, signal } from '@angular/core';
+import { UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { TextFieldElement } from 'common/models/elements/text-field';
+import { TextAreaElement } from 'common/models/elements/text-area';
+import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
+import { WordCounter } from 'player/src/app/classes/word-counter';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
@@ -225,5 +229,63 @@ describe('TextInputGroupDirective', () => {
 
     expect(deviceService.hasHardwareKeyboard).toBe(false);
     expect(keyboardService.close).not.toHaveBeenCalled();
+  });
+
+  describe('word count', () => {
+    const createTextArea = (showWordCount: boolean, value: string): TextAreaComponent => ({
+      elementModel: new TextAreaElement({
+        type: 'text-area', id: 'text-area_1', rowCount: 3, showWordCount
+      }),
+      elementFormControl: new UntypedFormControl(value),
+      wordCount: signal<number>(0)
+    }) as unknown as TextAreaComponent;
+
+    afterEach(() => vi.restoreAllMocks());
+
+    it('should count the value the text area starts with', () => {
+      const textArea = createTextArea(true, 'eins zwei drei');
+
+      directive.manageWordCount(textArea);
+
+      expect(textArea.wordCount()).toBe(3);
+    });
+
+    it('should count again whenever the value changes', () => {
+      const textArea = createTextArea(true, '');
+      directive.manageWordCount(textArea);
+
+      textArea.elementFormControl.setValue('eins zwei');
+
+      expect(textArea.wordCount()).toBe(2);
+    });
+
+    it('should leave the counting to the WordCounter', () => {
+      const count = vi.spyOn(WordCounter, 'count').mockReturnValue(42);
+      const textArea = createTextArea(true, 'eins');
+
+      directive.manageWordCount(textArea);
+
+      expect(count).toHaveBeenCalledWith('eins');
+      expect(textArea.wordCount()).toBe(42);
+    });
+
+    it('should not count a text area that shows no word count', () => {
+      const textArea = createTextArea(false, 'eins zwei');
+      directive.manageWordCount(textArea);
+
+      textArea.elementFormControl.setValue('eins zwei drei');
+
+      expect(textArea.wordCount()).toBe(0);
+    });
+
+    it('should stop counting once destroyed', () => {
+      const textArea = createTextArea(true, 'eins');
+      directive.manageWordCount(textArea);
+
+      directive.ngOnDestroy();
+      textArea.elementFormControl.setValue('eins zwei');
+
+      expect(textArea.wordCount()).toBe(1);
+    });
   });
 });

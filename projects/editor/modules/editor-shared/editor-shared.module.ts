@@ -14,6 +14,7 @@ import { OptionListPanelComponent } from './components/option-list-panel/option-
 import { SizeInputPanelComponent } from './components/size-input-panel/size-input-panel.component';
 import { NumberFieldModule } from './directives/number-field.module';
 import { IsCompressibleImagePipe } from './pipes/is-compressible-image.pipe';
+import { ColorPickerValuePipe } from './pipes/color-picker-value.pipe';
 
 /**
  * Leaf controls of the editor that more than one feature area needs.
@@ -32,7 +33,8 @@ import { IsCompressibleImagePipe } from './pipes/is-compressible-image.pipe';
     MergedMarkerComponent,
     OptionListPanelComponent,
     SizeInputPanelComponent,
-    IsCompressibleImagePipe
+    IsCompressibleImagePipe,
+    ColorPickerValuePipe
   ],
   imports: [
     CommonModule,
@@ -52,6 +54,7 @@ import { IsCompressibleImagePipe } from './pipes/is-compressible-image.pipe';
     OptionListPanelComponent,
     SizeInputPanelComponent,
     IsCompressibleImagePipe,
+    ColorPickerValuePipe,
     NumberFieldModule
   ]
 })

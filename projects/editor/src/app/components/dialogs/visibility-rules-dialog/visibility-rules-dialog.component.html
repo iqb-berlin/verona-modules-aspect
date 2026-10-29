@@ -23,10 +23,12 @@
              min="0"
              required
              aspectNumberField
+             #visibilityDelayField="aspectNumberField"
              [disabled]="enableReHide"
              [placeholder]="'section.visibilityDelay' | translate"
              [ngModel]="visibilityDelay"
              (numberChange)="commitDelay($event)">
+      <mat-error>{{ visibilityDelayField.errorText }}</mat-error>
     </mat-form-field>
   </div>
 

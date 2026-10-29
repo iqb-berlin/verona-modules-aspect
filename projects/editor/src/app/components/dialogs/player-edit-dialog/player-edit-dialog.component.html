@@ -64,16 +64,18 @@
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.defaultVolume' | translate }}</mat-label>
               <input matInput type="number" min="0" max="1" step="0.1"
-                     aspectNumberField required
+                     aspectNumberField required #defaultVolumeField="aspectNumberField"
                      [ngModel]="newPlayerConfig.defaultVolume"
                      (numberChange)="commitNumber('defaultVolume', $event)">
+              <mat-error>{{ defaultVolumeField.errorText }}</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.minVolume' | translate }}</mat-label>
               <input matInput type="number" min="0" max="1" step="0.1"
-                     aspectNumberField required
+                     aspectNumberField required #minVolumeField="aspectNumberField"
                      [ngModel]="newPlayerConfig.minVolume"
                      (numberChange)="commitNumber('minVolume', $event)">
+              <mat-error>{{ minVolumeField.errorText }}</mat-error>
             </mat-form-field>
             <mat-checkbox #muteControl
                           [checked]="newPlayerConfig.muteControl"
@@ -116,9 +118,10 @@
               <mat-label>{{ 'player.hintDelay' | translate }}</mat-label>
               <input matInput type="number" step="1000" min="0"
                      [disabled]="!newPlayerConfig.showHint"
-                     aspectNumberField required
+                     aspectNumberField required #hintDelayField="aspectNumberField"
                      [ngModel]="newPlayerConfig.hintDelay"
                      (numberChange)="commitNumber('hintDelay', $event)">
+              <mat-error>{{ hintDelayField.errorText }}</mat-error>
             </mat-form-field>
           </div>
         </fieldset>
@@ -133,17 +136,19 @@
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.minRuns' | translate }}</mat-label>
               <input matInput type="number" min="0"
-                     aspectNumberField required
+                     aspectNumberField required #minRunsField="aspectNumberField"
                      [ngModel]="newPlayerConfig.minRuns"
                      (numberChange)="commitNumber('minRuns', $event)">
+              <mat-error>{{ minRunsField.errorText }}</mat-error>
               <mat-hint>{{ 'player.minRunsHint' | translate }}</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.maxRuns' | translate }}</mat-label>
               <input matInput type="number" min="0"
-                     aspectNumberField required
+                     aspectNumberField required #maxRunsField="aspectNumberField"
                      [ngModel]="newPlayerConfig.maxRuns"
                      (numberChange)="commitNumber('maxRuns', $event)">
+              <mat-error>{{ maxRunsField.errorText }}</mat-error>
               <mat-hint>{{ 'player.maxRunsHint' | translate }}</mat-hint>
             </mat-form-field>
             <mat-checkbox [checked]="newPlayerConfig.showRestRuns"

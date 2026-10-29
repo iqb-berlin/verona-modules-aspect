@@ -18,11 +18,13 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
 import { VariableAlias } from 'common/utils/variable-alias';
+import { GeometryVariableNames } from 'editor/src/app/utils/geometry-variable-names';
 
 @Component({
   selector: 'aspect-geometry-props',
   standalone: false,
-  templateUrl: './geometry-props.component.html'
+  templateUrl: './geometry-props.component.html',
+  styleUrls: ['./geometry-props.component.scss']
 })
 export class GeometryPropsComponent implements OnInit, OnDestroy {
   @Input() combinedProperties!: Merged<GeometryProperties>;
@@ -32,7 +34,8 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
       value: string | number | boolean | null | GeometryVariable[]
     }>();
 
-  geometryObjects: BehaviorSubject<GeometryVariable[]> = new BehaviorSubject<GeometryVariable[]>([]);
+  /** The objects of the loaded file; `null` while no applet has loaded, when none can be told missing either. */
+  geometryObjects = new BehaviorSubject<GeometryVariable[] | null>(null);
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
@@ -54,6 +57,12 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
     }
     const variables = [...(this.combinedProperties.trackedExpectedVariables as GeometryVariable[])];
     if (variables.some(v => v.id === id)) return;
+    const chosen = [...(this.combinedProperties.trackedVariables ?? []), ...variables];
+    if (GeometryVariableNames.findIssue(id, chosen) === 'DUPLICATE_ALIAS') {
+      this.messageService
+        .showError(this.translateService.instant('propertiesPanel.geometryVariableIssue.DUPLICATE_ALIAS'));
+      return;
+    }
 
     variables.push({ id: id, value: '' } as GeometryVariable);
     this.updateModel.emit({
@@ -88,7 +97,10 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
       }))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isLoaded: boolean) => {
-        if (!isLoaded) return;
+        if (!isLoaded) {
+          this.geometryObjects.next(null);
+          return;
+        }
         this.geometryObjects.next(
           (this.selectionService.selectedElementComponents[0].childComponent as ComponentRef<GeometryComponent>)
             .instance.getGeometryObjects());

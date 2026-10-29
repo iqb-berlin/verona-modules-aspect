@@ -28,7 +28,6 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
      element.spec.ts, not the type. */
   styling: Record<never, never> = {};
 
-  static title: string = 'Textmarkierung';
   static icon: string = 'border_color';
 
   constructor(element?: Partial<MarkingPanelProperties>, idService?: AbstractIDService) {

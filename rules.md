@@ -317,3 +317,231 @@ Rationale:
 - the number is not the point and there is no `--coverageTest` gate: a gate would produce
   `@param element the element`, and the ticket says so at length. What the rule is for is simpler —
   an explanation nobody can find is the same as one that was never written
+
+## 17) Work that is not the class's own job gets a class of its own
+
+A service, a component, a directive does the work its name promises. A body that answers a different
+question — an algorithm, a format, a set of domain rules — becomes a class of its own beside it and
+is called by name. What stays behind is the seam: the few lines that decide when the other one is
+asked and what is done with its answer.
+
+- Avoid: `FileService` computing a resampling kernel because the file it loads happens to be a picture
+- Prefer: `ImageResampler` in `common/utils/`, asked by `FileService.drawScaled` (#1434)
+
+Three questions decide it, and any one of them is enough:
+
+- **Does the body need the class it stands in?** No `this`, no injected dependency, no field of the
+  class, no template and no host element — then it already is a separate unit, only an unnamed one.
+- **Can you say what it does without naming its host's job?** "Makes a picture smaller" says nothing
+  about loading and saving files.
+- **Do private members exist only to serve one public method?** They are that unit's insides, and
+  they are only private to the wrong class.
+
+This is not "one method per class": a helper of a few lines that reads the state around it stays
+where it is. What the rule is aimed at is the body that grew until it needs explaining.
+
+Where the new unit goes — §12 for the file layout, §11 for its spec, which it always gets:
+
+- computation without DI and without state → `utils/`, a class with static methods
+  (`ImageResampler`, `DropLogic`, `SectionCounter`)
+- needs injection, or holds state the app shares → `services/`
+- a value computed for a template → a pipe (§2)
+
+For components and directives the same cut runs one step further in. A component keeps what touches
+its template, its inputs and its outputs; a directive keeps what touches its host element. Parsing,
+validating, converting, measuring, deciding a rule — each is a class the component asks, and the
+component holds the answer for the template to read.
+
+That cut alone does not make a component small, because what is usually too big about one is its
+view, and a helper class cannot take view work. Which of the four ways applies is decided by what is
+too much, and they are meant to be used in this order:
+
+1. **Foreign work → a class of its own**, as above. Do this one first: what is left afterwards is
+   often already the component it should be, and the other three are then answering a question that
+   no longer exists.
+2. **Too much view → a child component.** The plainest case is the body of a `@for`. What a loop
+   renders per entry already is one thing with a name; its data already arrives as one value per
+   pass, which are its inputs, and its event already has to travel upwards, which is its output — so
+   the boundary is drawn before anyone looks for it. `KeyboardKeyComponent` and `KeypadKeyComponent`
+   in `player/modules/key-input/components/` are one key each, and the keypad's key then stands ten
+   times in its layout with only three of them inside a loop: the return key, the arrow block and the
+   operator grid all reach for the component the loop body became. Neither key holds any state —
+   inputs and one output are the whole class — so state is not what makes the cut worth making.
+   The other case is a template that branches over many kinds: the properties panel, one component
+   per property group under `properties-panel/components/element-model-properties/`, instead of one
+   template that knows every group.
+   What does not qualify is length alone. A loop body of one element with two bindings stays where it
+   is, and a child that holds nothing but a stretch of markup, with nothing crossing the boundary but
+   the parent's own fields, spreads one view over two places without separating anything. A child is
+   not free: §12 (four files) and §13 (declared in the owning module) apply.
+3. **Behaviour at the host element → an applied directive**, with a selector, in `directives/`:
+   `AutoHeightDirective`, `DraggableDirective`, `InViewDetectionDirective`,
+   `InputBackgroundColorDirective`. The mark is that it hangs on an element rather than on the data
+   flow, and that a second element should be able to have it by writing an attribute — without
+   touching that element's class, which is exactly what a base class would demand.
+4. **A shared role → an abstract base class**, and only for "is a", never merely to share code.
+   Inheritance ties what it shares to the hierarchy, so it earns its place where several components
+   owe the rest of the application the same contract: `ElementComponent`, `FormElementComponent`,
+   `TextInputComponent`, `ElementGroupDirective`. Everything the base holds must be something every
+   subclass needs — the moment a member is there for some of them, it belongs in a class or a
+   directive one of them uses. Angular requires a decorator on an inherited base, which is why these
+   are written `@Directive()` **without a selector** and live in `directives/` (10 of the 28 there);
+   that makes them base classes in a directive's clothing, not directives, and they get no selector.
+
+The four are not alternatives, and `player/src/app/components/elements/` is what they look like
+together. `ElementGroupSelectionComponent` holds only the frame — the element's dimensions and its
+`data-element-id` — and picks a group component from the element's type: nine named groups and a base
+group for the types no group claims. Its `groups` table is the single place where a type is assigned
+to a group. Each group component then holds what
+its own group needs of the player and nothing of what the others need: a form and the value it
+reports, a media element with its hint timer, the dynamic creation of an element component that has
+no group of its own. What all of them need lives in a base — and in three steps rather than one,
+which is that condition on inheritance doing its work: `ElementGroupDirective` (22 lines: the two
+inputs and registering at the `UnitStateService`), `ElementFormGroupDirective` above it (the form and
+its validation, 107), `TextInputGroupDirective` above that (keyboard, keypad, key restriction, 452).
+Every group component inherits exactly the step it needs — the media player and the base group the
+lowest, the input group the middle one, the text input group the top. Rolled into one base, every
+group would carry the keyboard. A base asks for its services as an abstract member
+(`abstract unitStateService: UnitStateService`) and the subclass injects them, which keeps the base
+free of a constructor and says in the base itself what it depends on.
+
+Test the seam, not just the new class. `FileService` keeps two tests that bind it to the resampler —
+`vi.spyOn(ImageResampler, 'scaleDown')`, used when the picture shrinks, untouched when it is merely
+re-encoded — because a class tested to bits still says nothing about whether its caller reaches for
+it.
+
+Rationale:
+- as long as the arithmetic sat inside `scaleImage`, the only way at it was through an image, a
+  canvas and whatever the test browser does with them. Five tests written that way stayed green
+  under the mutation "always `drawImage`", because headless Chromium happens to scale well enough
+  on its own (#1434). Moved out, the same question is numbers in, numbers out
+- the two jobs age at different speeds: the kernel was rewritten twice while nothing about loading a
+  file changed, and each rewrite re-read a service it had no business in
+- the name is the review. "The image compression in the file service" is a phrase nobody wants to
+  defend, and something that cannot be named where it stands rarely belongs there
+- the four ways are listed because the first one is the reflex and answers the rarer half of the
+  cases. A component is usually too big in its view, and a helper class leaves that untouched; the
+  order above puts the cheap, reversible move first and inheritance — the one that cannot be undone
+  in a single file — last
+- the seam is testable in the view as well: a key has a spec of its own, and the keyboard's spec is
+  then about which keys it hands out and what it does with the one that was pressed. Left inline,
+  every question about a single key has to be asked through the whole keyboard
+
+# Workflow Rules
+
+Branches, releases, the pipeline and the board columns are described in the README under *How work
+flows through this repository*. Read it before creating a branch, opening a pull request or moving a
+card on the board. The sections below begin with the two steps before any of that, the plan and the
+review, then repeat the two points most easily got wrong and add what the README leaves open.
+
+## 18) Before the work: a plan
+
+Every ticket starts with a plan, agreed with the person you are working for before anything is
+changed — a small ticket as well, whose plan is then three lines. Work out the plan in Claude Code's
+plan mode (Shift+Tab), which edits nothing until the plan is approved. The plan states decisions, not
+a list of options:
+
+- **what is asked for**, checked against the architecture: the editor authors a unit, the player
+  plays it, the host (Studio, the test center) stores and delivers it. A finding that belongs to the
+  host is not work for this repository
+- **the cause, with evidence** — reproduced or measured, not assumed
+- **whether the fix is reachable**: who calls the code, and whether something later overwrites what
+  it does
+- **the scope**, and what is left out and becomes an issue of its own
+- **the tests**, including whether an end-to-end test of its own is possible — that decides the
+  column after the merge (§21)
+- **the places at risk**: a change to the unit definition (normalizer or migration step, §14), e2e
+  selectors, what both applications share in `projects/common`
+
+The plan goes into the conversation, not into the ticket; the ticket gets the result. Approving the
+plan is what moves the card to *In Bearbeitung*. A plan that ends in a question, or in not building
+it, moves no card.
+
+Rationale:
+- a misunderstanding caught in a plan costs one message; caught in review it costs a pull request
+  and a pipeline run
+- a session does not know what earlier sessions decided or rejected. Without a plan, the first time a
+  person sees what it is about to do is the finished pull request
+
+## 19) Before the commit: a review
+
+Finish the change and verify it (tests, lint, typecheck), but do not commit it yet. Run
+`/code-review` on it first; only then commit, push and open the pull request.
+
+- `/code-review` without a target reviews the uncommitted diff (`git diff HEAD`). Once the change is
+  committed that diff is empty and the review finds nothing; then name the scope explicitly
+  (`/code-review origin/develop..HEAD`, or the pull request number).
+- After the review, check `git status`. Review agents can leave files of their own in the working
+  tree; they do not belong in the commit.
+
+Rationale:
+- a review before the pull request can still turn the change around — a regression, or a fix that
+  compiles, passes every suite and does nothing. After the pull request every such round costs a
+  pipeline run
+
+## 20) Commit messages and pull requests
+
+Commit messages:
+- The subject line names the change in the imperative, at most 72 characters, with the issue as
+  `(#1357)`.
+- The body says only what the diff cannot: why the change was needed, a decision the code does not
+  make obvious, a change in behaviour someone will look for later. As a guide, no more than five
+  lines; more only for a behaviour change that needs it.
+- Leave out how the change came about (drafts, review rounds, what was tried first, where it sits in
+  a series), test results (they belong in the pull request) and a retelling of the diff. Why the
+  code is built the way it is belongs in a code comment, where it survives the next refactoring.
+
+Pull requests:
+- Never write `Closes #…`, `Fixes #…` or `Resolves #…` in a commit message or pull request text.
+  Reference the issue as `(#1357)`: GitHub would close the ticket on merge, and the board would move
+  it past *zu testen* and *Zu Veröffentlichen*.
+- Force-push only with `--force-with-lease`, never with `--force`, which silently overwrites whatever
+  someone else pushed to the branch in the meantime.
+- A pull request stays within the goal of its issue. What turns up on the way and belongs elsewhere —
+  in review as well — becomes an issue of its own, not a commit on the branch.
+
+Rationale:
+- a commit message is read in `git log` and `git blame`, months later, by someone asking why the
+  code is the way it is; every further paragraph makes that answer harder to find
+- every extra topic lengthens the review, and every further round costs a pipeline run of about half
+  an hour
+
+## 21) Tickets and board 13
+
+A ticket goes on the board of its own repository, even when it comes out of work on another one:
+verona-modules-aspect on [board 13](https://github.com/orgs/iqb-berlin/projects/13), studio-lite on
+[board 18](https://github.com/orgs/iqb-berlin/projects/18). Board 13 adds a new issue of this
+repository by itself and puts it in *Neue Tickets* — check that it arrived rather than adding it a
+second time. *Priority* and *Aufwand* stay empty; the team estimates them.
+
+The columns in the order of the work:
+
+- *In Bearbeitung* once the plan is approved (§18), and only while working towards a pull request.
+  The column tells colleagues that something is being built; looking into a ticket, or an analysis
+  that ends in a question, is not that yet.
+- After the merge the test decides. With an end-to-end test of its own the change goes to
+  *Zu Veröffentlichen*, without one to *zu testen*, where someone else builds the test. "Of its own"
+  means a test that checks exactly this change and would fail without it; an existing spec that keeps
+  passing does not count.
+- No end-to-end test of its own either when it would catch nothing new: unit tests fail without the
+  change, and a named existing spec exercises exactly the changed path. The change goes to
+  *Zu Veröffentlichen*; say in the pull request which tests these are.
+- A change nobody can see or trigger in the editor or the player (dead code removed, comments,
+  tooling), and one no end-to-end test can observe, go to *Zu Veröffentlichen* straight away. Say in
+  the pull request why — in *zu testen* someone would try to build a test that cannot work.
+- *Review* means released and awaiting validation by the reporters, not code-reviewed. A ticket stays
+  open through all of these columns; do not close it by hand.
+- *Icebox* means "never again", not "small" or "later". When in doubt, *Product Backlog*.
+
+In the ticket itself:
+
+- In a ticket written by someone else, leave their text as it is and keep exactly **one** comment
+  headed "Stand", edited whenever something new is known. In a ticket of your own the description is
+  the current state: edit it rather than append to it.
+- Keep comments short: the result, its consequence, one reference (a file, a commit, a pull
+  request). Approaches that were dropped stay out of the ticket.
+- A question goes to the person you are working for, not into the ticket.
+
+Rationale:
+- a ticket is read for where things stand, not as a log of how anyone got there
+- a question in a ticket makes work for everyone who reads it and is outdated the next day

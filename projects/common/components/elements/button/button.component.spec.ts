@@ -101,4 +101,92 @@ describe('ButtonComponent', () => {
     // Angular refuses to unwrap ends up as the sanitizer's complaint in the attribute.
     expect(imageInput.getAttribute('src')).toBe(imageSrc);
   });
+
+  describe('startsWithText', () => {
+    it('should say yes for a button with a text label', () => {
+      expect(ButtonComponent.startsWithText(component.elementModel)).toBe(true);
+    });
+
+    it('should say no for a picture button', () => {
+      component.elementModel.imageSrc = 'picture.png';
+      expect(ButtonComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+
+    it('should say no for a button without a label', () => {
+      component.elementModel.label = ' ';
+      expect(ButtonComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+
+    it('should say no for unit navigation, which the player can hide', () => {
+      component.elementModel.action = 'unitNav';
+      component.elementModel.actionParam = 'next';
+      expect(ButtonComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+  });
+
+  /* The gap gives its children their line; here the host does, with a height to tell it apart from the
+     36px a button used to inherit from the cloze (#1619). */
+  describe('in a gap', () => {
+    beforeEach(() => {
+      component.clozeContext = true;
+      (fixture.nativeElement as HTMLElement).style.lineHeight = '30px';
+      fixture.detectChanges();
+    });
+
+    const link = (): HTMLElement => {
+      component.elementModel.asLink = true;
+      fixture.detectChanges();
+      return fixture.nativeElement.querySelector('.link');
+    };
+
+    it('should mark the button and the link as standing in a gap', () => {
+      expect(fixture.nativeElement.querySelector('button').classList).toContain('cloze-context');
+      expect(link().classList).toContain('cloze-context');
+    });
+
+    it('should make a button its line plus 1px above and below', () => {
+      expect((fixture.nativeElement.querySelector('button') as HTMLElement).getBoundingClientRect().height)
+        .toBe(32);
+    });
+
+    it('should make a link its line plus 1px above and below', () => {
+      expect(link().getBoundingClientRect().height).toBe(32);
+    });
+
+    it('should make a link as wide as its gap', () => {
+      const anchor = link();
+      (fixture.nativeElement as HTMLElement).style.width = '120px';
+
+      expect(anchor.getBoundingClientRect().width).toBe(120);
+    });
+
+    /* Cut down to a gap lower than its line, the label ran from its top edge and its text stood 2.5px
+       off the line the other gaps keep. */
+    it('should keep a label cut down to a lower gap in its middle', () => {
+      (fixture.nativeElement as HTMLElement).style.height = '16px';
+      const button = fixture.nativeElement.querySelector('button') as HTMLElement;
+      const label = button.querySelector('.mdc-button__label') as HTMLElement;
+      const range = document.createRange();
+      range.selectNodeContents(label);
+      const text = range.getBoundingClientRect();
+      const box = button.getBoundingClientRect();
+
+      expect(label.getBoundingClientRect().height).toBeLessThanOrEqual(box.height);
+      expect(Math.abs((text.top + text.bottom) / 2 - (box.top + box.bottom) / 2)).toBeLessThan(1);
+    });
+
+    it('should centre the label of a link in a taller gap', () => {
+      const anchor = link();
+      (fixture.nativeElement as HTMLElement).style.height = '50px';
+      const range = document.createRange();
+      range.selectNodeContents(anchor);
+      const text = range.getBoundingClientRect();
+      const box = anchor.getBoundingClientRect();
+
+      /* Within a pixel: the range is the box of the font, which does not sit quite evenly in its line.
+         Without the rule the label stood 7px above the middle. */
+      expect(box.height).toBe(50);
+      expect(Math.abs((text.top + text.bottom) / 2 - (box.top + box.bottom) / 2)).toBeLessThan(1);
+    });
+  });
 });

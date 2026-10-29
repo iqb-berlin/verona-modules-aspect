@@ -7,7 +7,7 @@ import {
   VopPlayerConfigChangedNotification,
   VopStartCommand
 } from 'player/modules/verona/models/verona';
-import { Unit } from 'common/models/unit';
+import { Unit, UnitDefinitionErrorCode } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
 import { Page } from 'common/models/page';
@@ -20,7 +20,7 @@ import {
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { VersionManager } from 'common/services/version-manager';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { MigrationManager } from 'common/services/migration-manager';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
@@ -33,7 +33,7 @@ import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 import { GeometryElement } from 'common/models/elements/geometry';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 
 @Component({
   selector: 'aspect-unit',
@@ -56,6 +56,9 @@ export class UnitComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   private unitBuildTimeout?: ReturnType<typeof setTimeout>;
   private startPageTimeout?: ReturnType<typeof setTimeout>;
+  /** The load error dialog has no close option, and the host can keep the player for the next unit, so the next
+     start command closes it (#1581). */
+  private errorDialog?: MatDialogRef<UnitDefErrorDialogComponent>;
 
   constructor(public unitStateService: UnitStateService,
               public stateVariableStateService: StateVariableStateService,
@@ -97,19 +100,10 @@ export class UnitComponent implements OnInit, OnDestroy {
     this.reset();
     this.unitBuildTimeout = setTimeout(() => {
       if (message.unitDefinition) {
+        LogService.debug('player: unitDefinition', message.unitDefinition);
+        const unit = this.readUnitDefinition(message.unitDefinition as string);
+        if (!unit) return;
         try {
-          LogService.debug('player: unitDefinition', message.unitDefinition);
-          const unitDefinition = JSON.parse(message.unitDefinition as string);
-          if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
-            if (VersionManager.isNewer(unitDefinition)) {
-              throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
-            }
-            if (!VersionManager.needsMigration(unitDefinition)) {
-              throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
-            }
-          }
-          const migratedDefinition = MigrationManager.migrate(unitDefinition, VersionManager.getCurrentVersion());
-          const unit: Unit = new Unit(migratedDefinition);
           this.pages = unit.pages;
           this.showUnitNavNext = unit.showUnitNavNext;
           this.updateSectionNumbering(unit);
@@ -126,20 +120,49 @@ export class UnitComponent implements OnInit, OnDestroy {
         } catch (e: unknown) {
           // eslint-disable-next-line no-console
           console.error(e);
-          if (e instanceof InstantiationEror) {
-            // eslint-disable-next-line no-console
-            console.error('Failing element blueprint: ', e.faultyBlueprint);
-            this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
-          } else if (e instanceof Error) {
-            this.showErrorDialog(e.message);
-          } else {
-            this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
-          }
+          this.showErrorDialog(e instanceof Error ?
+            e.message :
+            this.translateService.instant('errorMessage.UNIT_DEFINITION_NOT_READABLE'));
         }
       } else {
-        LogService.warn('player: message has no unitDefinition');
+        LogService.warn('UNIT_DEFINITION_MISSING', 'player: message has no unitDefinition');
       }
     });
+  }
+
+  /**
+   * The unit the definition describes, or null once the dialog has said why there is none. Everything that can go
+   * wrong in reading it -- the JSON, the migration, building the unit -- counts as not readable; what goes wrong
+   * afterwards, with the unit state for instance, is not the definition's fault and is left to the caller (#1578).
+   */
+  private readUnitDefinition(unitDefinition: string): Unit | null {
+    try {
+      const parsedDefinition: Record<string, unknown> = JSON.parse(unitDefinition);
+      if (!VersionManager.hasCompatibleVersion(parsedDefinition)) {
+        if (VersionManager.isNewer(parsedDefinition)) {
+          this.refuseUnitDefinition('UNIT_DEFINITION_NEWER');
+          return null;
+        }
+        if (!VersionManager.needsMigration(parsedDefinition)) {
+          this.refuseUnitDefinition('UNIT_DEFINITION_OUTDATED');
+          return null;
+        }
+      }
+      return new Unit(MigrationManager.migrate(parsedDefinition, VersionManager.getCurrentVersion()));
+    } catch (e: unknown) {
+      this.refuseUnitDefinition('UNIT_DEFINITION_NOT_READABLE', e);
+      if (e instanceof InstantiationEror) {
+        // eslint-disable-next-line no-console
+        console.error('Failing element blueprint: ', e.faultyBlueprint);
+      }
+      return null;
+    }
+  }
+
+  private refuseUnitDefinition(code: UnitDefinitionErrorCode, ...details: unknown[]): void {
+    // eslint-disable-next-line no-console
+    console.error(code, ...details);
+    this.showErrorDialog(this.translateService.instant(`errorMessage.${code}`));
   }
 
   private setPlayerConfig(playerConfig: PlayerConfig): void {
@@ -156,7 +179,7 @@ export class UnitComponent implements OnInit, OnDestroy {
   }
 
   private showErrorDialog(text: string): void {
-    this.dialog.open(UnitDefErrorDialogComponent, {
+    this.errorDialog = this.dialog.open(UnitDefErrorDialogComponent, {
       data: { text: text },
       disableClose: true
     });
@@ -191,6 +214,8 @@ export class UnitComponent implements OnInit, OnDestroy {
 
   private reset(): void {
     this.cancelPendingUnitBuild();
+    this.errorDialog?.close();
+    this.errorDialog = undefined;
     this.presentationProgressStatus.next('none');
     this.pages = [];
     this.playerConfig = {};

@@ -1,5 +1,6 @@
-<ng-container *ngIf="!tableMode">
+@if (!tableMode) {
   <div class="mat-form-field"
+       [class.cloze-context]="clozeContext"
        [style.width.%]="100"
        [style.height.%]="100"
        [style.background-color]="elementModel.styling.backgroundColor">
@@ -26,17 +27,19 @@
     </mat-checkbox>
     <!-- In a gap the message belongs to the gap, and the shared one is the one that carries a border
          and a background of its own; `mat-error` would print red letters onto the running text (#1052). -->
-    <mat-error *ngIf="!clozeContext && elementFormControl.errors && elementFormControl.touched"
-               class="error-message">
-      {{elementFormControl.errors | errorTransform: elementModel}}
-    </mat-error>
-    <aspect-cloze-child-error-message *ngIf="clozeContext && elementFormControl.errors && elementFormControl.touched"
-                                      [elementModel]="elementModel"
-                                      [elementFormControl]="elementFormControl">
-    </aspect-cloze-child-error-message>
+    @if (!clozeContext && elementFormControl.errors && elementFormControl.touched) {
+      <mat-error class="error-message">
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
+    }
+    @if (clozeContext && elementFormControl.errors && elementFormControl.touched) {
+      <aspect-cloze-child-error-message [elementModel]="elementModel"
+                                        [elementFormControl]="elementFormControl">
+      </aspect-cloze-child-error-message>
+    }
   </div>
-</ng-container>
-<ng-container *ngIf="tableMode">
+}
+@if (tableMode) {
   <div class="svg-checkbox"
        [class.read-only] = "elementModel.readOnly"
        [class.errors]="elementFormControl.errors && elementFormControl.touched"
@@ -49,8 +52,9 @@
       <path d='M0 99 L99 0 L100 1 L1 100' fill='black' stroke="black" stroke-width="1" />
     </svg>
   </div>
-  <aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
-                                    [elementModel]="elementModel"
-                                    [elementFormControl]="elementFormControl">
-  </aspect-cloze-child-error-message>
-</ng-container>
+  @if (elementFormControl.errors && elementFormControl.touched) {
+    <aspect-cloze-child-error-message [elementModel]="elementModel"
+                                      [elementFormControl]="elementFormControl">
+    </aspect-cloze-child-error-message>
+  }
+}

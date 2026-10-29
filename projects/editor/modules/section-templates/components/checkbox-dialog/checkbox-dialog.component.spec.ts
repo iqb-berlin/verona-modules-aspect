@@ -1,5 +1,5 @@
 import {
-  ComponentFixture, TestBed, fakeAsync, flushMicrotasks
+  ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks
 } from '@angular/core/testing';
 import {
   Component, EventEmitter, Input, Output
@@ -44,7 +44,8 @@ describe('CheckboxWizardDialogComponent', () => {
   };
 
   beforeEach(async () => {
-    mockDialogService = createSpyObj<DialogService>(['showImageResizeDialog']);
+    mockDialogRef.close.mockClear();
+    mockDialogService = createSpyObj<DialogService>(['showImageResizeDialog', 'showTextEditDialog']);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -84,15 +85,55 @@ describe('CheckboxWizardDialogComponent', () => {
   });
 
   it('should remove an option from the list', () => {
-    component.options = ['a', 'b', 'c'];
-    component.removeListItem(component.options, 1);
-    expect(component.options).toEqual(['a', 'c']);
+    component.textOptions = ['a', 'b', 'c'];
+    component.removeListItem(component.textOptions, 1);
+    expect(component.textOptions).toEqual(['a', 'c']);
+  });
+
+  it('should keep the option when editing is cancelled or leaves the text empty', () => {
+    component.textOptions = ['a'];
+    mockDialogService.showTextEditDialog.mockReturnValue(of(undefined as never));
+    component.editItem(component.textOptions, 0);
+    mockDialogService.showTextEditDialog.mockReturnValue(of(''));
+    component.editItem(component.textOptions, 0);
+
+    expect(component.textOptions).toEqual(['a']);
+  });
+
+  it('should offer the wrench for text options only', () => {
+    const iconsOfFirstOption = () => Array.from(
+      (fixture.nativeElement.querySelector('.drop-list-option') as HTMLElement).querySelectorAll('mat-icon')
+    ).map(icon => icon.textContent?.trim());
+
+    component.textOptions = ['a'];
+    fixture.detectChanges();
+    expect(iconsOfFirstOption()).toEqual(['build', 'clear']);
+
+    component.useImages = true;
+    component.imageOptions = ['data:image/png;base64,abc'];
+    fixture.detectChanges();
+    expect(iconsOfFirstOption()).toEqual(['clear']);
+  });
+
+  it('should open the text dialog for the option whose wrench is clicked', () => {
+    component.textOptions = ['a', 'b'];
+    mockDialogService.showTextEditDialog.mockReturnValue(of('edited'));
+    fixture.detectChanges();
+
+    const wrenches = Array.from(fixture.nativeElement.querySelectorAll('.drop-list-option button') as
+      NodeListOf<HTMLButtonElement>).filter(button => button.textContent?.includes('build'));
+    wrenches[1].click();
+
+    expect(mockDialogService.showTextEditDialog).toHaveBeenCalledWith('b');
+    expect(component.textOptions).toEqual(['a', 'edited']);
   });
 
   it('should reorder options on drop', () => {
-    component.options = ['a', 'b', 'c'];
-    component.drop({ previousIndex: 0, currentIndex: 2 } as CdkDragDrop<string[]>);
-    expect(component.options).toEqual(['b', 'c', 'a']);
+    component.textOptions = ['a', 'b', 'c'];
+    component.drop({
+      previousIndex: 0, currentIndex: 2, container: { data: component.textOptions }
+    } as CdkDragDrop<string[]>);
+    expect(component.textOptions).toEqual(['b', 'c', 'a']);
   });
 
   it('should push non-resizable images directly to the list', fakeAsync(() => {
@@ -100,10 +141,10 @@ describe('CheckboxWizardDialogComponent', () => {
     vi.spyOn(FileService, 'isResizable').mockReturnValue(false);
     const eventTarget = { files: [new File([''], 'test.gif', { type: 'image/gif' })] } as unknown as HTMLInputElement;
 
-    component.loadImage(component.options, eventTarget);
+    component.loadImage(component.imageOptions, eventTarget);
     flushMicrotasks();
 
-    expect(component.options).toEqual(['data:image/gif;base64,abc']);
+    expect(component.imageOptions).toEqual(['data:image/gif;base64,abc']);
     expect(mockDialogService.showImageResizeDialog).not.toHaveBeenCalled();
   }));
 
@@ -114,25 +155,25 @@ describe('CheckboxWizardDialogComponent', () => {
     mockDialogService.showImageResizeDialog.mockReturnValue(of({ maxWidth: 100 }));
     const eventTarget = { files: [new File([''], 'test.png', { type: 'image/png' })] } as unknown as HTMLInputElement;
 
-    component.loadImage(component.options, eventTarget);
+    component.loadImage(component.imageOptions, eventTarget);
     flushMicrotasks();
 
     expect(mockDialogService.showImageResizeDialog).toHaveBeenCalledWith('data:image/png;base64,abc', {});
-    expect(component.options).toEqual(['data:image/png;base64,scaled']);
+    expect(component.imageOptions).toEqual(['data:image/png;base64,scaled']);
   }));
 
   it('should disable the confirm button until an option is present', () => {
     const confirmButton = fixture.nativeElement.querySelector('div[mat-dialog-actions] button') as HTMLButtonElement;
     expect(confirmButton.disabled).toBe(true);
 
-    component.options.push('option 1');
+    component.textOptions.push('option 1');
     fixture.detectChanges();
     expect(confirmButton.disabled).toBe(false);
   });
 
   it('should close the dialog with the entered values on confirm', () => {
     component.text1 = 'question';
-    component.options = ['a', 'b'];
+    component.textOptions = ['a', 'b'];
     component.useImages = false;
     fixture.detectChanges();
 
@@ -140,5 +181,62 @@ describe('CheckboxWizardDialogComponent', () => {
     confirmButton.click();
 
     expect(mockDialogRef.close).toHaveBeenCalledWith({ text1: 'question', options: ['a', 'b'], useImages: false });
+  });
+
+  describe('switching image options (#1610)', () => {
+    const addTextOption = (text: string) => {
+      const textarea = fixture.nativeElement.querySelector('textarea') as HTMLTextAreaElement;
+      textarea.value = text;
+      textarea.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+    };
+    /** Focuses first, as a click does, so the text field the switch removes does not blur mid-check. */
+    const toggleImageOptions = () => {
+      const checkbox = fixture.nativeElement.querySelector('mat-checkbox input') as HTMLInputElement;
+      checkbox.focus();
+      checkbox.click();
+      fixture.detectChanges();
+    };
+    const uploadImage = (dataUrl: string) => {
+      vi.spyOn(FileService, 'readFileAsText').mockResolvedValue(dataUrl);
+      vi.spyOn(FileService, 'isResizable').mockReturnValue(false);
+      const input = fixture.nativeElement.querySelector('input[type="file"]') as HTMLInputElement;
+      Object.defineProperty(input, 'files', { value: [new File([''], 'test.gif', { type: 'image/gif' })] });
+      input.dispatchEvent(new Event('change'));
+      flush();
+      fixture.detectChanges();
+    };
+    const confirmButton = () => fixture.nativeElement
+      .querySelector('div[mat-dialog-actions] button') as HTMLButtonElement;
+    const shownTexts = () => Array.from(fixture.nativeElement.querySelectorAll('.drop-list-option .text-item'))
+      .map(item => (item as HTMLElement).textContent?.trim());
+
+    it('should not show text options as images, nor hand them over as such', fakeAsync(() => {
+      addTextOption('Apfel');
+      toggleImageOptions();
+
+      expect(fixture.nativeElement.querySelectorAll('.drop-list-option').length).toBe(0);
+      expect(confirmButton().disabled).toBe(true);
+
+      uploadImage('data:image/gif;base64,abc');
+      confirmButton().click();
+
+      expect(mockDialogRef.close)
+        .toHaveBeenLastCalledWith({ text1: '', options: ['data:image/gif;base64,abc'], useImages: true });
+    }));
+
+    it('should bring the text options back, without the images, when switched off again', fakeAsync(() => {
+      addTextOption('Apfel');
+      toggleImageOptions();
+      uploadImage('data:image/gif;base64,abc');
+      toggleImageOptions();
+
+      expect(shownTexts()).toEqual(['Apfel']);
+      expect(fixture.nativeElement.querySelectorAll('.drop-list-option img').length).toBe(0);
+
+      confirmButton().click();
+
+      expect(mockDialogRef.close).toHaveBeenLastCalledWith({ text1: '', options: ['Apfel'], useImages: false });
+    }));
   });
 });

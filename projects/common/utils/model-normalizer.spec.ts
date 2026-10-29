@@ -427,6 +427,39 @@ describe('ModelNormalizer', () => {
         expect(ELEMENT_DEFAULTS['likert-row'].verticalButtonAlignment).toBe('center');
       });
     });
+
+    /* Units stored before 4.13.0 had the input bar hidden unconditionally, so the default must keep it
+       hidden. */
+    it('should fill showAlgebraInput into a unit stored without it as hidden (#1004)', () => {
+      expect(ELEMENT_DEFAULTS.geometry.showAlgebraInput).toBe(false);
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'geometry', id: 'g1' })).showAlgebraInput)
+        .toBe(false);
+    });
+
+    /* Units stored before 4.13.0 changed a tracked variable's status only with its value, so the
+       default must keep it that way. */
+    it('should fill recomputedCountsAsChanged into a unit stored without it as off (#1460)', () => {
+      expect(ELEMENT_DEFAULTS.geometry.recomputedCountsAsChanged).toBe(false);
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'geometry', id: 'g1' }))
+        .recomputedCountsAsChanged).toBe(false);
+    });
+
+    /* Units stored before 4.13.0 had no word count, so the default must leave the strip away. */
+    it('should fill showWordCount into a unit stored without it as off (#989)', () => {
+      expect(ELEMENT_DEFAULTS['text-area'].showWordCount).toBe(false);
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'text-area', id: 'ta1' })).showWordCount)
+        .toBe(false);
+    });
+
+    /* Units stored before 4.13.0 sent none of the three, and the widget then showed names and symbols
+       and coloured no blocks -- the defaults keep that picture (#1420). */
+    it('should fill the new periodic table settings in as the widget showed them without', () => {
+      expect(ELEMENT_DEFAULTS['widget-periodic-table']).toEqual(expect.objectContaining({
+        showInfoName: true, showInfoSymbol: true, highlightBlocks: false
+      }));
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'widget-periodic-table', id: 'p1' })))
+        .toEqual(expect.objectContaining({ showInfoName: true, showInfoSymbol: true, highlightBlocks: false }));
+    });
   });
 
   /* #1184: no element may hold an object that ELEMENT_DEFAULTS or GLOBAL_DEFAULTS owns, or an in-place

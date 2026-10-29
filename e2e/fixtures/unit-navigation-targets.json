@@ -1,0 +1,43 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [{
+    "sections": [{
+      "dynamicPositioning": false,
+      "height": 300,
+      "elements": [
+        {
+          "type": "button", "id": "nav_on_page", "alias": "nav_on_page",
+          "label": "Auf der Seite", "action": "unitNav", "actionParam": "next",
+          "position": { "xPosition": 0, "yPosition": 0 },
+          "dimensions": { "width": 200, "height": 50 }
+        },
+        {
+          "type": "cloze", "id": "cloze_with_nav", "alias": "cloze_with_nav",
+          "position": { "xPosition": 0, "yPosition": 100 },
+          "dimensions": { "width": 400, "height": 150 },
+          "document": {
+            "type": "doc",
+            "content": [{
+              "type": "paragraph",
+              "attrs": {},
+              "content": [
+                { "type": "text", "text": "Lückentext " },
+                {
+                  "type": "Button",
+                  "attrs": {
+                    "model": {
+                      "type": "button", "id": "nav_in_cloze", "alias": "nav_in_cloze",
+                      "label": "Im Lückentext", "action": "unitNav", "actionParam": "next",
+                      "dimensions": { "width": 150, "height": 40 }
+                    }
+                  }
+                }
+              ]
+            }]
+          }
+        }
+      ]
+    }]
+  }]
+}

@@ -28,7 +28,8 @@ export class ElementGroupSelectionComponent implements OnInit {
     { name: 'interactiveGroup', types: ['image', 'math-table', 'marking-panel'] },
     { name: 'actionGroup', types: ['button', 'trigger'] },
     { name: 'externalAppGroup', types: ['geometry'] },
-    { name: 'widgetGroup', types: ['widget-periodic-table', 'widget-molecule-editor'] }
+    { name: 'widgetGroup', types: ['widget-periodic-table', 'widget-molecule-editor'] },
+    { name: 'tetfolioGroup', types: ['tetfolio'] }
   ];
 
   selectedGroup!: ElementGroupName | undefined;

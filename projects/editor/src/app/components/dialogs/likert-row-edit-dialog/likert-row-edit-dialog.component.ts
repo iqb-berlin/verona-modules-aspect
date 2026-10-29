@@ -4,6 +4,7 @@ import { LikertRowElement } from 'common/models/elements/likert-row';
 import { TextLabel } from 'common/models/label-interfaces';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { VariableAlias } from 'common/utils/variable-alias';
+import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
   selector: 'aspect-likert-row-edit-dialog',
@@ -15,8 +16,17 @@ export class LikertRowEditDialogComponent {
   /** The one place the rule for ids and aliases is written down. */
   readonly aliasPattern = VariableAlias.PATTERN_SOURCE;
 
+  /** Set while the typed alias is held by someone else, regardless of letter case. Asked here rather than after
+      saving: refused then, a new row would go with the image and the label just entered (#1507). */
+  isAliasTaken: boolean = false;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, options: TextLabel[] },
-              private dialogService: DialogService) { }
+              private dialogService: DialogService,
+              private idService: IDService) { }
+
+  checkAliasAvailability(alias: string): void {
+    this.isAliasTaken = !this.idService.isAliasAvailable(alias, this.data.row.alias);
+  }
 
   newLikertRow = new LikertRowElement({
     ...this.data.row,

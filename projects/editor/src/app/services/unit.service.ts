@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import {
+  BehaviorSubject, combineLatest, Observable, Subject
+} from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { VariableInfo } from '@iqb/responses';
 import { FileService } from 'common/services/file.service';
-import { MessageService } from 'editor/src/app/services/message.service';
-import { Unit, UnitProperties } from 'common/models/unit';
+import { Unit, UnitDefinitionErrorCode, UnitProperties } from 'common/models/unit';
 import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
 import { Section } from 'common/models/section';
+import { Page } from 'common/models/page';
 import { SectionCounter } from 'common/utils/section-counter';
-import { VariableAlias } from 'common/utils/variable-alias';
-import { ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
+import {
+  ReferenceHolder, ReferenceList, ReferenceManager, RulesIntoNothing, SectionLocation
+} from 'editor/src/app/classes/reference-manager';
+import { ElementLocator } from 'editor/src/app/utils/element-locator';
 import { MigrationManager } from 'common/services/migration-manager';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorUnit } from 'editor/src/app/models/editor-unit';
@@ -19,6 +23,17 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import {
+  VariableInfoLocation, VariableInfoOrigin, VariableInfoOrigins
+} from 'editor/src/app/utils/variable-info-origins';
+import { VariableInfoIssue, VariableInfoValidator } from 'editor/src/app/utils/variable-info-validator';
+import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
+import { IdReplacement, IdReplacementTarget } from 'editor/src/app/utils/id-replacement';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { IDTypes } from 'common/models/id-interfaces';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
+import { LoadErrorHint } from 'editor/src/app/models/load-error';
+import { LoadErrorHints } from 'editor/src/app/utils/load-error-hints';
 
 /**
  * Holds the unit the editor is working on, and is the only place it is replaced.
@@ -42,8 +57,42 @@ export class UnitService {
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   tablePropUpdated: Subject<string> = new Subject<string>();
+  tetfolioElementPropertyUpdated: Subject<string> = new Subject<string>();
   sectionCountUpdated: Subject<void> = new Subject<void>();
   pageOrderChanged: Subject<void> = new Subject<void>();
+  /** The variables of the unit that break the Verona contract, renewed whenever the unit is reported (#1129). */
+  variableInfoFindings = new BehaviorSubject<VariableInfoFinding[]>([]);
+  /** The sections whose visibility rules ask for something the unit does not hold, renewed with the findings. */
+  rulesIntoNothing = new BehaviorSubject<RulesIntoNothing[]>([]);
+  /** The elements loading took a reference into nothing from. Done already, so shown until the next load (#1520). */
+  loadRepairs = new BehaviorSubject<UIElement[]>([]);
+  /**
+   * What the unit could not load, as far as it concerns the unit as it is now (#1537). Renewed with the findings,
+   * which follow every change: an element deleted since drops out.
+   */
+  loadErrorHints: Observable<LoadErrorHint[]> = combineLatest([
+    this.loadErrorService.errors, this.variableInfoFindings
+  ]).pipe(
+    map(([errors]) => LoadErrorHints.resolve(this.unit, errors)),
+    // Indicator and hints area read the same answer: worked out once per change, not once per reader.
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
+  /**
+   * What the indicator shows: null while the hints area has nothing to show, otherwise how much of it is still to be
+   * fixed -- the findings, the rules into nothing and what could not be loaded, not what loading repaired. A load
+   * that only repaired keeps the hints area reachable all the same, with nothing counted as open.
+   *
+   * The findings are read through the load errors, which are renewed with them, rather than combined a second time:
+   * combined twice, every change of the findings would first count with the load errors from before it.
+   */
+  hintIndicator: Observable<{ open: number } | null> = combineLatest([
+    this.loadErrorHints, this.rulesIntoNothing, this.loadRepairs
+  ]).pipe(map(([loadErrors, rules, repairs]) => {
+    const open = this.variableInfoFindings.value.length + rules.length + loadErrors.length;
+    return open + repairs.length === 0 ? null : { open };
+  }));
+
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
   allowExpertMode: boolean = true;
@@ -61,10 +110,10 @@ export class UnitService {
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
-              private messageService: MessageService,
               private dialogService: DialogService,
               private idService: IDService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private loadErrorService: LoadErrorService) {
     this.unit = new EditorUnit(undefined, this.idService);
     this.referenceManager = new ReferenceManager(this.unit);
   }
@@ -72,30 +121,41 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     this.loadSuperseded.next();
     if (unitDefinition) {
+      let loadedDefinition: UnitProperties;
       try {
         let unitDef = JSON.parse(unitDefinition);
         if (!VersionManager.hasCompatibleVersion(unitDef)) {
           if (VersionManager.isNewer(unitDef)) {
-            throw Error('Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.');
+            this.refuseUnitDefinition('UNIT_DEFINITION_NEWER');
+            return;
           }
           if (!VersionManager.needsMigration(unitDef)) {
-            throw Error('Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden.');
+            this.refuseUnitDefinition('UNIT_DEFINITION_OUTDATED');
+            return;
           }
           this.dialogService.showSanitizationDialog(this.loadSuperseded).subscribe(() => {
             unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
-            this.loadUnit(unitDef);
+            this.replaceUnit(unitDef);
+            this.settleUnit(unitDef);
             this.updateUnitDefinition();
           });
-        } else {
-          if (VersionManager.needsMigration(unitDef)) {
-            unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
-          }
-          this.loadUnit(unitDef);
+          return;
         }
+        if (VersionManager.needsMigration(unitDef)) {
+          unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
+        }
+        this.replaceUnit(unitDef);
+        loadedDefinition = unitDef;
+      } catch (e) {
+        this.refuseUnitDefinition('UNIT_DEFINITION_NOT_READABLE', e);
+        return;
+      }
+      try {
+        this.settleUnit(loadedDefinition);
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);
-        if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message);
+        if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message, this.loadSuperseded);
       }
     } else {
       /* The host replays the stored definition on every load, and for a unit that was never saved
@@ -108,68 +168,92 @@ export class UnitService {
        * Of what loadUnit does beyond these resets, nothing fits here. An empty unit has no references
        * to repair and no variable infos to validate, and reRegisterAll would find neither a state
        * variable nor an element to register. updateUnitDefinition is left out on purpose: it reports
-       * the unit to the host as changed, and a discard must not hand back a fresh change at once. */
+       * the unit to the host as changed, and a discard must not hand back a fresh change at once.
+       * The findings are renewed all the same, or those of the unit just left would stay on display. */
       this.idService.reset();
       this.selectionService.reset();
       this.unit = new EditorUnit(undefined, this.idService);
+      this.loadErrorService.clearElementErrors();
       this.referenceManager = new ReferenceManager(this.unit);
       this.updateSectionCounter();
+      this.loadRepairs.next([]);
+      this.refreshUnitHints();
       this.unitReplaced.next();
     }
   }
 
-  private loadUnit(migratedUnitDefinition?: UnitProperties): void {
+  private refuseUnitDefinition(code: UnitDefinitionErrorCode, ...details: unknown[]): void {
+    // eslint-disable-next-line no-console
+    console.error(code, ...details);
+    this.dialogService
+      .showUnitDefErrorDialog(this.translateService.instant(`unitDefError.${code}`), this.loadSuperseded);
+  }
+
+  /** Swaps in the unit the definition describes. What throws here is the definition's fault (#1578). */
+  private replaceUnit(migratedUnitDefinition: UnitProperties): void {
     this.idService.reset();
     this.selectionService.reset();
     this.unit = new EditorUnit(migratedUnitDefinition, this.idService);
+  }
+
+  /** What a unit needs once it is swapped in. What throws from here on is no longer the definition's fault (#1578). */
+  private settleUnit(migratedUnitDefinition: UnitProperties): void {
+    /* What the previous unit could not load is no concern of this one, whose elements report once they render. As
+       soon as the unit is swapped, so that nothing below can throw past it and leave the old errors standing. */
+    this.loadErrorService.clearElementErrors();
     this.reRegisterAll();
     this.referenceManager = new ReferenceManager(this.unit);
     /* As early as the unit and its reference manager are in place: everything below can throw into the
        error dialog of loadUnitDefinition, and the unit would be replaced all the same. */
     this.unitReplaced.next();
 
-    const invalidRefs = this.referenceManager.getAllInvalidRefs();
-    if (invalidRefs.length > 0) {
-      this.referenceManager.removeInvalidRefs(invalidRefs);
-      this.messageService.showFixedReferencePanel(invalidRefs);
-      this.updateUnitDefinition();
-    }
+    const repaired = this.referenceManager.repairInvalidReferences();
+    this.loadRepairs.next(repaired);
+    if (repaired.length > 0) this.updateUnitDefinition();
     // The unit constructor updated the version. Therefore the unit has changed and notifies the  host.
-    if (migratedUnitDefinition?.version !== VersionManager.getCurrentVersion()) {
+    if (migratedUnitDefinition.version !== VersionManager.getCurrentVersion()) {
       this.updateUnitDefinition();
     }
     this.updateSectionCounter();
-    this.checkForInvalidVariableInfos();
-  }
-
-  /** Invalid ids/aliases can come in via imported unit definitions. They are not reported
-     to the host (see getValidVariableInfos), therefore the user gets notified. (#1043) */
-  private checkForInvalidVariableInfos(): void {
-    const invalidVariableInfos = this.unit.getVariableInfos()
-      .filter(variableInfo => !UnitService.isReportableVariableInfo(variableInfo));
-    if (invalidVariableInfos.length > 0) {
-      this.messageService.showPrompt(
-        this.translateService.instant(
-          'invalidVariableAliases',
-          { aliases: invalidVariableInfos.map(v => v.alias ?? v.id).join(', ') }));
+    /* Units stored before #1043 can carry identifiers the contract forbids. The author is shown where, once per
+       load and only for what can be fixed in the editor; the rest stays reachable through the indicator. What
+       loading repaired and the visibility rules into nothing are shown in the same place (#1520). */
+    const findings = this.refreshUnitHints();
+    if (findings.some(finding => finding.holdsBackList) || repaired.length > 0 ||
+        this.rulesIntoNothing.value.length > 0) {
+      this.dialogService.showVariableInfoFindingsDialog();
     }
   }
 
+  /**
+   * Reports the unit to the host together with its variables -- all of them, or none while the author still has
+   * something to correct. A partial list is worse than none: the host stores it, and studio drops the codings and
+   * the metadata of every variable missing from it. Sent without a list, studio keeps the one it has (#1129).
+   */
   updateUnitDefinition(): void {
+    const origins = VariableInfoOrigins.collect(this.unit);
+    const findings = this.refreshUnitHints(origins);
     this.veronaApiService.sendChanged(
       UnitService.createUnitDefinition(this.unit),
       `${this.unit.type}@${this.unit.version}`,
-      this.getValidVariableInfos());
+      findings.some(finding => finding.holdsBackList) ? undefined : origins.map(origin => origin.info));
   }
 
-  private getValidVariableInfos(): VariableInfo[] {
-    return this.unit.getVariableInfos()
-      .filter(variableInfo => UnitService.isReportableVariableInfo(variableInfo));
-  }
-
-  private static isReportableVariableInfo(variableInfo: VariableInfo): boolean {
-    return VariableAlias.isValid(variableInfo.id) &&
-      (variableInfo.alias === undefined || VariableAlias.isValid(variableInfo.alias));
+  /** Renews what the hints area shows of the unit as it is now, and returns the findings about its variables. */
+  private refreshUnitHints(
+    origins: VariableInfoOrigin[] = VariableInfoOrigins.collect(this.unit)
+  ): VariableInfoFinding[] {
+    this.rulesIntoNothing.next(this.referenceManager.getRulesIntoNothing());
+    const issuesByIndex = new Map<number, VariableInfoIssue[]>();
+    VariableInfoValidator.validate(origins.map(origin => origin.info))
+      .forEach(issue => issuesByIndex.set(issue.index, [...(issuesByIndex.get(issue.index) ?? []), issue]));
+    const findings = [...issuesByIndex.entries()]
+      .sort(([indexA], [indexB]) => indexA - indexB)
+      .map(([index, issues]) => ({
+        origin: origins[index], issues, holdsBackList: issues.some(issue => issue.part === 'alias')
+      }));
+    this.variableInfoFindings.next(findings);
+    return findings;
   }
 
   private static createUnitDefinition(unit: Unit): string {
@@ -197,6 +281,111 @@ export class UnitService {
     this.updateUnitDefinition();
   }
 
+  /** Opens the state variables for editing. A cancelled dialog may have registered aliases on the way, which
+      re-registering takes back. */
+  editStateVariables(): void {
+    /* The dialog result belongs to the unit it was opened on; a unit the host loaded meanwhile must not get it. */
+    const unitAtRequest = this.unit;
+    this.dialogService.showStateVariablesDialog(this.unit.stateVariables)
+      .subscribe(stateVariables => {
+        if (this.unit !== unitAtRequest) return;
+        if (stateVariables) {
+          this.applyEditedStateVariables(stateVariables, unitAtRequest);
+        } else {
+          this.reRegisterAll();
+        }
+      });
+  }
+
+  /**
+   * Takes over what the dialog returned. A variable it no longer holds may still be set by a button or a trigger, or
+   * be asked by a visibility rule; that is asked first, as deleting an element is, and the references go with the
+   * variable only once the author agreed. Declined, the variables still referred to stay, and everything else the
+   * dialog changed is taken over all the same (#1509).
+   */
+  private applyEditedStateVariables(stateVariables: StateVariable[], unitAtRequest: EditorUnit): void {
+    const removed = this.unit.stateVariables
+      .filter(stateVariable => !stateVariables.some(kept => kept.id === stateVariable.id));
+    const refs = this.referenceManager.getStateVariableReferences(removed);
+    if (refs.length === 0) {
+      this.updateStateVariables(stateVariables);
+      return;
+    }
+    this.dialogService.showDeleteConfirmDialog(
+      this.translateService.instant('deleteStateVariablesConfirm'), this.unitReplaced, undefined, refs)
+      .subscribe(confirmed => {
+        if (this.unit !== unitAtRequest) return;
+        if (confirmed) {
+          ReferenceManager.deleteReferences(refs);
+          this.updateStateVariables(stateVariables);
+        } else {
+          const referred = removed.filter(stateVariable => refs
+            .some(refList => (refList.element as { id: string }).id === stateVariable.id));
+          this.updateStateVariables([...stateVariables, ...referred]);
+        }
+      });
+  }
+
+  /**
+   * Gives elements and state variables a new id where their own breaks the Verona contract (#1508). The new id comes
+   * from the generator, as for any new element; everything that refers to the old one follows it, and what is derived
+   * from the id is renewed. Each id is asked right before it is replaced, so of two that differ only in letter case
+   * one is enough. The alias stays as it is: it is what the player stores the responses under.
+   */
+  replaceIds(targets: IdReplacementTarget[]): void {
+    let replacedCount = 0;
+    targets.forEach(target => {
+      const holder: ReferenceHolder = target.element ?? target.stateVariable;
+      const oldID = holder.id;
+      /* Compared as the validator compares: with every variable id of the unit, a GeoGebra variable's
+         `<element id>_<name>` included, leaving out only the ids the holder brings itself. */
+      const otherIDs = VariableInfoOrigins.collect(this.unit)
+        .filter(origin => (origin.location?.element ?? origin.stateVariable) !== holder)
+        .map(origin => origin.info.id);
+      if (!IdReplacement.needsReplacement(oldID, otherIDs)) return;
+      const twins = [...this.unit.getAllElements(), ...this.unit.stateVariables]
+        .filter(other => other !== holder && other.id === oldID);
+      const newID = this.idService
+        .getAndRegisterNewID(target.element ? target.element.type as IDTypes : 'state-variable');
+      // A twin with exactly the same id shares the registration, which therefore stays.
+      if (twins.length === 0) this.idService.unregister(oldID, true, false);
+      this.referenceManager.replaceReferences(oldID, newID, holder, twins);
+      holder.id = newID;
+      if (target.element?.type === 'drop-list') {
+        const dropList = target.element as DropListElement;
+        dropList.setProperty('value', dropList.value); // renews the options' originListID
+      }
+      if (target.element?.type === 'geometry') {
+        // The applet is injected into the element named by the id, which the template renames on the next check.
+        setTimeout(() => this.geometryElementPropertyUpdated.next(newID));
+      }
+      replacedCount += 1;
+    });
+    if (replacedCount === 0) return;
+    // The properties panel of a selected element would otherwise go on showing references by the old ids.
+    this.elementPropertyUpdated.next();
+    this.updateUnitDefinition();
+  }
+
+  /**
+   * Takes the author to an element a list names: turns to its page and selects it, or its parent for a compound
+   * child. An element the unit no longer holds leads nowhere (#1520).
+   */
+  revealElement(element: UIElement): void {
+    const location = ElementLocator.locate(this.unit, element);
+    if (location) this.revealLocation(location);
+  }
+
+  /** As revealElement, for a caller that knows the place already. */
+  revealLocation(location: VariableInfoLocation): void {
+    this.selectionService.requestElement(location.pageIndex, location.sectionIndex, location.navigationElement.id);
+  }
+
+  /** Takes the author to a section a list names, for its visibility rules (#1520). */
+  revealSection(location: SectionLocation): void {
+    this.selectionService.requestSection(location.pageIndex, location.sectionIndex);
+  }
+
   reRegisterAll(): void {
     this.idService.reset();
     this.unit.stateVariables.forEach(v => {
@@ -216,24 +405,31 @@ export class UnitService {
       let dialogText: string = '';
       switch (deletedObjectType) {
         case 'page': {
-          refs = this.referenceManager.getPageElementsReferences(
-            this.unit.pages[this.selectionService.selectedPageIndex]
-          );
-          const pageNavButtonRefs = this.referenceManager.getButtonReferencesForPage(
-            this.selectionService.selectedPageIndex
-          );
-          refs = refs.concat(pageNavButtonRefs);
           if (pageIndex === undefined) throw Error();
-          dialogText = `Seite ${pageIndex + 1} löschen?`;
+          /* The page handed in, not the selected one: the references belong to the page that goes. Both page menus
+             select their page before they open, so the two agree today; reading the selection instead would check
+             -- and on confirmation remove -- the references of another page as soon as they did not (#1509). */
+          refs = this.referenceManager.getPageElementsReferences(object as EditorPage);
+          const pageNavButtonRefs = this.referenceManager.getButtonReferencesForPage(pageIndex);
+          refs = refs.concat(pageNavButtonRefs);
+          /* Counted as the player and the navigation buttons count, without a permanently visible page, which has no
+             number at all. With that page in front, where the editor keeps it, this is what the tabs show (#1513). */
+          dialogText = (object as EditorPage).alwaysVisible ?
+            this.translateService.instant('deleteAlwaysVisiblePageConfirm') :
+            this.translateService.instant('deletePageConfirm', {
+              page: ReferenceManager.scrollPages(this.unit).indexOf(object as EditorPage) + 1
+            });
           break;
         }
         case 'section':
           refs = this.referenceManager.getSectionElementsReferences([object as Section]);
-          dialogText = `Abschnitt ${this.selectionService.selectedSectionIndex + 1} löschen?`;
+          dialogText = this.translateService.instant('deleteSectionConfirm', {
+            section: this.selectionService.selectedSectionIndex + 1
+          });
           break;
         case 'elements':
           refs = this.referenceManager.getElementsReferences(object as UIElement[]);
-          dialogText = 'Folgende Elemente werden gelöscht:';
+          dialogText = this.translateService.instant('deleteElementsConfirm');
           break;
         default:
           throw Error('Unknown object type');
@@ -247,19 +443,13 @@ export class UnitService {
         .subscribe(result => {
           /* Everything gathered above -- the object, the refs, and the index the caller kept -- belongs
              to the unit as it was when the dialog opened. Once that unit is gone, deleting would hit
-             the same position in the newly loaded one, and reporting the refs would name elements the
-             user cannot see; so this leaves both alone (#1253). */
+             the same position in the newly loaded one; so this leaves it alone (#1253). */
           if (this.unit !== unitAtRequest) {
             resolve(false);
             return;
           }
-          if (result) {
-            if (refs.length > 0) ReferenceManager.deleteReferences(refs); // TODO rollback?
-            resolve(true);
-          } else {
-            if (refs.length > 0) this.messageService.showReferencePanel(refs);
-            resolve(false);
-          }
+          if (result && refs.length > 0) ReferenceManager.deleteReferences(refs); // TODO rollback?
+          resolve(result === true);
         });
     });
   }
@@ -320,7 +510,7 @@ export class UnitService {
     sectionsToMove.forEach(section => newPage.addSection(section));
     newPage.deleteSection(0);
 
-    this.unit.pages.splice(pageIndex + 1, 0, newPage);
+    this.keepPageNavigation(() => this.unit.pages.splice(pageIndex + 1, 0, newPage));
     this.selectionService.selectedPageIndex = pageIndex + 1;
     this.selectionService.selectedSectionIndex = 0;
     this.updateUnitDefinition();
@@ -337,7 +527,22 @@ export class UnitService {
     sectionsToMove.forEach(section => this.unit.pages[pageIndex - 1].addSection(section));
     this.selectionService.selectedPageIndex = pageIndex - 1;
     this.selectionService.selectedSectionIndex = this.unit.pages[pageIndex - 1].sections.length - sectionsToMove.length;
-    this.unit.deletePage(pageIndex);
+    this.keepPageNavigation(
+      () => this.unit.deletePage(pageIndex),
+      new Map([[this.unit.pages[pageIndex], this.unit.pages[pageIndex - 1]]])
+    );
     this.updateUnitDefinition();
+  }
+
+  /**
+   * Runs a step that adds, removes or reorders pages so that every navigation button still leads to the page it
+   * led to before: a button stores a page number, and the step renumbers the pages (#1511). `mergedInto` is for a
+   * step that hands a page's content to another page and removes it.
+   */
+  keepPageNavigation(operation: () => void, mergedInto?: Map<Page, Page>): void {
+    const targets = this.referenceManager.capturePageTargets();
+    operation();
+    // Not every step drops the element selection, so a selected button would still show its old target.
+    if (this.referenceManager.restorePageTargets(targets, mergedInto)) this.elementPropertyUpdated.next();
   }
 }

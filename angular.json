@@ -36,7 +36,10 @@
               "projects/editor/src/styles.css",
               "projects/common/assets/customTheme.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "@iqbspecs/variable-info"
+            ]
           },
           "configurations": {
             "production": {
@@ -235,7 +238,10 @@
               "projects/player/src/styles.scss",
               "projects/common/assets/customTheme.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "@iqbspecs/variable-info"
+            ]
           },
           "configurations": {
             "production": {

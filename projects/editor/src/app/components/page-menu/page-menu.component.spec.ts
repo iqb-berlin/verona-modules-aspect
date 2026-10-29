@@ -33,6 +33,7 @@ describe('PageMenu', () => {
   let movePageToFront: Mock;
   let updateUnitDefinition: Mock;
   let updateSectionCounter: Mock;
+  let keepPageNavigation: Mock;
 
   beforeEach(async () => {
     pages = [new EditorPage(), new EditorPage()];
@@ -43,11 +44,14 @@ describe('PageMenu', () => {
     messageService = createSpyObj<MessageService>(['showWarning']);
     selectionService = new SelectionService();
 
+    keepPageNavigation = vi.fn((operation: () => void) => operation());
+
     const unitServiceMock = {
       expertMode: true,
       unit: { pages, movePageToFront },
       updateUnitDefinition,
-      updateSectionCounter
+      updateSectionCounter,
+      keepPageNavigation
     } as unknown as UnitService;
 
     await TestBed.configureTestingModule({
@@ -139,6 +143,57 @@ describe('PageMenu', () => {
     expect(updateSectionCounter).toHaveBeenCalled();
     expect(orderChanged).toBe(true);
     expect(alwaysVisibleModified).toBe(true);
+  });
+
+  /* Navigation buttons do not count a permanently visible page, so switching it on or off renumbers the others.
+     The mock does not run the step: a page left as it was shows that the switch acts only inside
+     `keepPageNavigation` (#1511). */
+  it('should keep the navigation buttons on their pages when the page becomes permanently visible', () => {
+    keepPageNavigation.mockImplementation(() => {});
+
+    component.updateModel(component.page, 'alwaysVisible', true);
+
+    expect(keepPageNavigation).toHaveBeenCalledOnce();
+    expect(movePageToFront).not.toHaveBeenCalled();
+    expect(component.page.alwaysVisible).toBe(false);
+  });
+
+  /* The targets are taken before the step and written back after it, so the step has to be whole inside: moved to
+     the front AND marked, or the buttons are counted against a page list that is half done. */
+  it('should both move and mark the page within the step that keeps the buttons on their pages', () => {
+    const states: { moved: boolean; alwaysVisible: boolean }[] = [];
+    const record = () => states.push({
+      moved: movePageToFront.mock.calls.length > 0, alwaysVisible: component.page.alwaysVisible
+    });
+    keepPageNavigation.mockImplementation((operation: () => void) => {
+      record();
+      operation();
+      record();
+    });
+
+    component.updateModel(component.page, 'alwaysVisible', true);
+
+    expect(states).toEqual([{ moved: false, alwaysVisible: false }, { moved: true, alwaysVisible: true }]);
+  });
+
+  it('should keep the navigation buttons on their pages when the page stops being permanently visible', () => {
+    component.page.alwaysVisible = true;
+    keepPageNavigation.mockImplementation(() => {});
+
+    component.updateModel(component.page, 'alwaysVisible', false);
+
+    expect(keepPageNavigation).toHaveBeenCalledOnce();
+    expect(component.page.alwaysVisible).toBe(true);
+  });
+
+  it('should make a permanently visible page a page like the others again', () => {
+    component.page.alwaysVisible = true;
+
+    component.updateModel(component.page, 'alwaysVisible', false);
+
+    expect(component.page.alwaysVisible).toBe(false);
+    expect(movePageToFront).not.toHaveBeenCalled();
+    expect(updateUnitDefinition).toHaveBeenCalled();
   });
 
   /* The three number boxes had a guard already, and it was the closest of the pre-#1161 fields to

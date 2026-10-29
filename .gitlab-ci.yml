@@ -1,9 +1,7 @@
 stages:
   - build-image
-  - lint
+  - check
   - test
-  - build
-  - deploy
 
 variables:
   # The image every other job runs in, built from scripts/Dockerfile by the job below and kept in
@@ -16,25 +14,39 @@ variables:
   # the same time then cannot pull each other's image: a different recipe is a different tag, and
   # a commit names the image it needs. `build-test-image` compares tag and hash and fails if they
   # drift apart, so the tag cannot be forgotten when the recipe changes.
-  TEST_IMAGE: ${CI_REGISTRY_IMAGE}/aspect-test:node24-fe6e7d845137
+  TEST_IMAGE: ${CI_REGISTRY_IMAGE}/aspect-test:node24-f8ed27aaebed
   # Docker Hub images come through the group's dependency proxy: the shared runner IP shares one
   # anonymous pull quota with every other project on it, and an exhausted quota kills a job as
   # runner_system_failure before a line of our code has run.
   DOCKER_HUB_PROXY: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/"
-  BASE_IMAGE: node:24-bookworm
+  # A patch version, not `node:24-bookworm`: the tag decides which npm the pipeline runs, and two
+  # npm builds do not accept each other's lock file. scripts/Dockerfile says what a bump entails.
+  BASE_IMAGE: node:24.20.0-bookworm
 
-# A push and the pull request GitLab mirrors from GitHub each start a pipeline for the same
-# commit. Both report to the same GitHub status context (ci/gitlab/scm.cms.hu-berlin.de), so
-# whichever finishes last decides whether the pull request looks green, and both compete for
-# the same runner - four ng serve processes and two Chrome instances at once, which is what
-# makes the e2e job time out during startup. Keep the pull request pipeline, which is the one
-# the required status check links to, and drop the redundant push pipeline on feature
-# branches. Consequence: a branch without an open pull request gets no pipeline.
+# Which pipeline runs when (#1363):
+#
+#   pull request     lint, unit, e2e, module build - the gate
+#   develop          module build only, see .skipped-on-develop below
+#   master           lint, unit, e2e, module build
+#   tag              none
+#   branch, no PR    none
+#
+# A branch without a pull request gets no pipeline because a push and the pull request GitLab
+# mirrors from GitHub would each start one for the same commit. Both report to the same GitHub
+# status context (ci/gitlab/scm.cms.hu-berlin.de), so whichever finishes last decides whether the
+# pull request looks green, and both compete for the same runner - four ng serve processes and two
+# Chrome instances at once, which is what makes the e2e job time out during startup. Keep the pull
+# request pipeline, which is the one the required status check links to.
+#
+# A tag sits on the merge commit on master, so its pipeline would test the commit the master
+# pipeline is testing at the same moment (3.0.1: 100058 and 100059). The files of a release are
+# built by .github/workflows/release-files.yml, which waits for the master pipeline's verdict.
 workflow:
   auto_cancel:
     on_new_commit: interruptible
   rules:
     - if: $CI_COMMIT_TAG
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH != "develop" && $CI_COMMIT_BRANCH != "master"
       when: never
     - when: always
@@ -47,7 +59,7 @@ default:
   # Every job now pulls its image from a registry, and the dependency proxy in front of Docker Hub
   # answers a pull with a 404 now and then - studio-lite lost four pipelines to it on two days in
   # August 2026. Retried are only the classes that are infrastructure by definition: a red test or
-  # lint job is script_failure and is never retried. test-e2e keeps its own, wider retry.
+  # lint job is script_failure and is never retried. test-e2e-* keep their own, wider retry.
   retry:
     max: 2
     when:
@@ -58,8 +70,7 @@ default:
 # come from GitLab itself (CI_REGISTRY_*), so this needs no account anyone has to hold.
 #
 # It runs only when the recipe changes, so a normal pipeline is no longer than before: every other
-# run pulls the image an earlier build left in the registry, and the tag tells it which one. Tag
-# pipelines never build - a release must not depend on Docker Hub or on a base image that moved.
+# run pulls the image an earlier build left in the registry, and the tag tells it which one.
 #
 # The docker-in-docker settings are taken from studio-lite, where they were arrived at on this same
 # runner network: the MTU, without which the build hangs on the first network access inside the
@@ -68,8 +79,6 @@ default:
 build-test-image:
   stage: build-image
   rules:
-    - if: $CI_COMMIT_TAG
-      when: never
     - changes:
         - scripts/Dockerfile
         - .gitlab-ci.yml
@@ -114,11 +123,42 @@ build-test-image:
     - docker logout "${CI_REGISTRY}"
     - docker logout "${CI_DEPENDENCY_PROXY_SERVER}"
 
-# A stage of its own, ahead of test, because this job is not cheap: type-aware linting builds
+# Lint and the tests are left out on develop. Branch protection requires a pull request to be up to
+# date before it is merged, so the merge commit carries exactly the tree its pull request pipeline
+# has just passed; running the suites again tests nothing new and adds a run of the flakiest jobs
+# (103319, the merge of #1554, failed test-e2e-simple on the tree 103312 had passed). After a merge
+# the Documentation workflow on GitHub runs both suites once more for the coverage report.
+.skipped-on-develop:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "develop"
+      when: never
+    - when: on_success
+
+# Builds both modules the way a release does, through scripts/build.sh and its checks of the
+# metadata - before #1363 no job took that path, and a change that broke it passed green and showed
+# up only at release time (#1208, #1211). On develop it is the one job, kept for what reaches develop
+# without a pull request.
+# Next to lint rather than after the tests: a broken build fails within minutes instead of after the
+# e2e jobs, and the tests then do not start - there is nothing to release anyway. Both jobs are
+# mostly npm ci; what the build adds to the wait is the two ng builds beyond eslint's 26 s, 79 s on a
+# GitHub runner (#1561). Neither runs next to the e2e dev servers, which is what the next comment is
+# about.
+build-modules:
+  stage: check
+  variables:
+    # The Cypress binary is a download the build has no use for.
+    CYPRESS_INSTALL_BINARY: "0"
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    - npm run build-editor
+    - npm run build-player
+
+# In a stage ahead of test, because this job is not cheap: type-aware linting builds
 # the whole TypeScript program in one process - measured 26 s and 2.3 GB peak RSS. Running that
-# next to the two ng serve builds of test-e2e on the shared runner is the startup timeout the
-# comment above describes. The price is the second npm ci on the critical path; the jobs have no
-# shared npm cache, so --prefer-offline saves little.
+# next to the two ng serve builds of test-e2e-* on the shared runner is the startup timeout the
+# comment above the workflow describes. The price is the second npm ci on the critical path; the
+# jobs have no shared npm cache, so --prefer-offline saves little.
 # The scope is `eslint .` (see package.json): everything ignorePatterns does not exclude, so
 # projects/, e2e/ and the root configs, without any assets/ tree, dist/, coverage/, scripts/
 # and test-data/. Those last three do not exist in a fresh checkout, which is what this job
@@ -126,13 +166,15 @@ build-test-image:
 # No --max-warnings: the repository lints clean of errors, and the warnings that remain are
 # meant to stay visible without failing the pipeline (#1320, #1324).
 lint:
-  stage: lint
+  extends: .skipped-on-develop
+  stage: check
   before_script:
     - npm ci --cache .npm --prefer-offline
   script:
     - npm run lint
 
 test-unit:
+  extends: .skipped-on-develop
   stage: test
   before_script:
     - npm ci --cache .npm --prefer-offline
@@ -148,7 +190,8 @@ test-unit:
   script:
     - npm run test
 
-test-e2e:
+test-e2e-simple:
+  extends: .skipped-on-develop
   stage: test
   before_script:
     - npm ci --cache .npm --prefer-offline
@@ -162,7 +205,7 @@ test-e2e:
     - nohup npm run start-player-e2e > player.log 2>&1 &
     - ./scripts/wait-for-dev-server.sh http://localhost:4201 Editor
     - ./scripts/wait-for-dev-server.sh http://localhost:4202 Player
-    - npm run e2e-headless
+    - npm run e2e-headless-simple
   # Both dev servers, Chrome and a second pipeline for the same commit share one runner, so
   # the suite occasionally fails on startup rather than on an assertion. Retry once.
   retry:
@@ -180,19 +223,35 @@ test-e2e:
       - e2e/videos/**/*.mp4
       - e2e/screenshots/**/*.png
 
-#deploy:
-#  stage: deploy
-#  only:
-#    refs:
-#      - master
-#  before_script:
-#    - npm ci --cache .npm --prefer-offline
-#  script:
-#    - npm run build-editor
-#    - npm run build-player
-#    - ./scripts/deploy.sh $TESTSTUDIO_USERNAME $TESTSTUDIO_PASSWORD
-#  artifacts:
-#    paths:
-#      - dist/iqb-editor-aspect-nightly.html
-#      - dist/iqb-player-aspect-nightly.html
-#    expire_in: 1 week
+test-e2e-complex:
+  extends: .skipped-on-develop
+  stage: test
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    # The e2e pair, not the local one: Cypress carries the addresses of 4201 and 4202 in its
+    # commands, and only these two scripts serve there. What a developer starts by hand sits on
+    # 4211/4212, so their server and an e2e run cannot take the port from each other (#1423).
+    # The server output goes to a log artifact: without it a dev server that dies or stops
+    # answering leaves no trace, and the run only shows Cypress' ESOCKETTIMEDOUT.
+    - nohup npm run start-editor-e2e > editor.log 2>&1 &
+    - nohup npm run start-player-e2e > player.log 2>&1 &
+    - ./scripts/wait-for-dev-server.sh http://localhost:4201 Editor
+    - ./scripts/wait-for-dev-server.sh http://localhost:4202 Player
+    - npm run e2e-headless-complex
+  # Both dev servers, Chrome and a second pipeline for the same commit share one runner, so
+  # the suite occasionally fails on startup rather than on an assertion. Retry once.
+  retry:
+    max: 1
+    when:
+      - script_failure
+      - runner_system_failure
+      - stuck_or_timeout_failure
+  artifacts:
+    when: always
+    paths:
+      - editor.log
+      - player.log
+      - e2e/downloads/**/*.*
+      - e2e/videos/**/*.mp4
+      - e2e/screenshots/**/*.png

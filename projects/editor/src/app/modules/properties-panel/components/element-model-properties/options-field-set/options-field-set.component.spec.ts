@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick
+} from '@angular/core/testing';
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
@@ -7,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
+import { config as rxjsConfig, of } from 'rxjs';
 import { vi } from 'vitest';
 import { LikertRowElement } from 'common/models/elements/likert-row';
 import { Label, TextImageLabel } from 'common/models/label-interfaces';
@@ -220,6 +222,63 @@ describe('OptionsFieldSetComponent', () => {
       expect.objectContaining({ type: 'likert-row', id: 'row2', columnCount: 2 })
     );
     expect(emitted).toEqual([{ property: 'rows', value: [existingRow, newRow] }]);
+  });
+
+  describe('a new likert row with an image', () => {
+    let newRow: LikertRowElement;
+
+    beforeEach(() => {
+      newRow = createLikertRow('likert-row_2', '');
+      Object.assign(newRow, { setProperty: vi.fn() });
+      component.combinedProperties.rows = [];
+      idService.getAndRegisterNewIDs.mockReturnValue({ id: 'likert-row_2', alias: 'likert-row_2' });
+      elementService.createLikertRowElement.mockReturnValue(newRow);
+    });
+
+    /* The dialog edits a copy without an id service; that copy went into the list, so a typed alias was neither
+       checked nor registered (#1507). */
+    it('should add the row it created and set the typed alias through the checked path', () => {
+      const typedLabel = { text: '', imgSrc: 'data:image/png;base64,' };
+      dialogService.showLikertRowEditDialog.mockReturnValue(of({
+        ...newRow, alias: 'mit-bild', rowLabel: typedLabel
+      } as unknown as LikertRowElement));
+
+      component.addLikertRowImage();
+
+      expect(newRow.setProperty).toHaveBeenCalledWith('alias', 'mit-bild');
+      expect(newRow.setProperty).toHaveBeenCalledWith('rowLabel', typedLabel);
+      expect(emitted).toEqual([{ property: 'rows', value: [newRow] }]);
+    });
+
+    /* The refusal goes on to the error handler, which shows it, as it does when an existing row is renamed. */
+    it('should add nothing and release the ids of the row when the alias is refused', fakeAsync(() => {
+      const reported: unknown[] = [];
+      const previousHandler = rxjsConfig.onUnhandledError;
+      rxjsConfig.onUnhandledError = error => reported.push(error);
+      (newRow.setProperty as ReturnType<typeof vi.fn>).mockImplementation((property: string) => {
+        if (property === 'alias') throw new Error('ID ist bereits vergeben');
+      });
+      dialogService.showLikertRowEditDialog.mockReturnValue(of({
+        ...newRow, alias: 'vergeben'
+      } as unknown as LikertRowElement));
+
+      component.addLikertRowImage();
+      tick();
+      rxjsConfig.onUnhandledError = previousHandler;
+
+      expect((reported[0] as Error).message).toBe('ID ist bereits vergeben');
+      expect(newRow.unregisterIDs).toHaveBeenCalled();
+      expect(emitted).toEqual([]);
+    }));
+
+    it('should release the ids of the row when the dialog is cancelled', () => {
+      dialogService.showLikertRowEditDialog.mockReturnValue(of(undefined as unknown as LikertRowElement));
+
+      component.addLikertRowImage();
+
+      expect(newRow.unregisterIDs).toHaveBeenCalled();
+      expect(emitted).toEqual([]);
+    });
   });
 
   it('should unregister the ids of a removed likert row', () => {

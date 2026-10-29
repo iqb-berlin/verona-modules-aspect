@@ -1,7 +1,8 @@
 import {
   Component, EventEmitter, Input, Output,
-  AfterViewInit, Injector, OnInit, ViewChild, ElementRef
+  AfterViewInit, Injector, OnDestroy, OnInit, ViewChild, ElementRef
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { AnyExtension, Editor } from '@tiptap/core';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
@@ -15,7 +16,6 @@ import { Blockquote } from '@tiptap/extension-blockquote';
 import { Document } from '@tiptap/extension-document';
 import { History } from '@tiptap/extension-history';
 import { Text } from '@tiptap/extension-text';
-import { ListItem } from '@tiptap/extension-list-item';
 import { Bold } from '@tiptap/extension-bold';
 import { Italic } from '@tiptap/extension-italic';
 import { Strike } from '@tiptap/extension-strike';
@@ -36,6 +36,7 @@ import { ParagraphExtension } from 'editor/modules/rich-text-editor/extensions/p
 import { FontSize } from 'editor/modules/rich-text-editor/extensions/font-size';
 import { BulletListExtension } from 'editor/modules/rich-text-editor/extensions/bullet-list';
 import { OrderedListExtension } from 'editor/modules/rich-text-editor/extensions/ordered-list';
+import { ListItemExtension } from 'editor/modules/rich-text-editor/extensions/list-item';
 import { HorizontalRuleExtension } from 'editor/modules/rich-text-editor/extensions/horizontal-rule';
 import ToggleButtonComponentExtension
   from 'editor/modules/rich-text-editor/extensions/toggle-button-component-extension';
@@ -45,6 +46,11 @@ import CheckboxComponentExtension from 'editor/modules/rich-text-editor/extensio
 import DropdownComponentExtension from 'editor/modules/rich-text-editor/extensions/dropdown-component-extension';
 import MathFormulaExtension from 'editor/modules/rich-text-editor/extensions/math-formula-extension';
 import { ClozeDocument } from 'common/models/elements/cloze';
+import { NonBreakingSpaceHighlight } from 'editor/modules/rich-text-editor/extensions/non-breaking-space-highlight';
+import {
+  NonBreakingSpaceVisibilityService
+} from 'editor/modules/rich-text-editor/services/non-breaking-space-visibility.service';
+import { ComboButtonOption } from 'editor/modules/rich-text-editor/components/combo-button/combo-button.component';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -52,11 +58,13 @@ import { ClozeDocument } from 'common/models/elements/cloze';
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.scss']
 })
-export class RichTextEditorComponent implements OnInit, AfterViewInit {
+export class RichTextEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() content!: string | ClozeDocument;
   @Input() defaultFontSize!: number;
   @Input() clozeMode: boolean = false;
   @Input() showReducedControls: boolean = false;
+  /** Offers the text alignment with the reduced controls as well, for a table header cell (#1430). */
+  @Input() showTextAlignment: boolean = false;
   @Input() placeholder: string = '';
   @Input() autoFocus: boolean = false;
   @Input() disabled: boolean = false;
@@ -71,18 +79,42 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   selectedAnchorIdText = '';
   selectedFontSize: string | null = null;
   selectedIndentSize = 20;
+
+  /** The value is the CSS `list-style-type` written into the text; the label is only what the list shows. */
+  readonly bulletListStyles: ComboButtonOption[] = [
+    { value: 'disc', label: 'richTextEditor.listStyle.disc' },
+    { value: 'circle', label: 'richTextEditor.listStyle.circle' },
+    { value: 'square', label: 'richTextEditor.listStyle.square' }
+  ];
+
+  readonly orderedListStyles: ComboButtonOption[] = [
+    { value: 'decimal', label: 'richTextEditor.listStyle.decimal' },
+    { value: 'lower-latin', label: 'richTextEditor.listStyle.lower-latin' },
+    { value: 'upper-latin', label: 'richTextEditor.listStyle.upper-latin' },
+    { value: 'lower-roman', label: 'richTextEditor.listStyle.lower-roman' },
+    { value: 'upper-roman', label: 'richTextEditor.listStyle.upper-roman' },
+    { value: 'lower-greek', label: 'richTextEditor.listStyle.lower-greek' }
+  ];
+
+  /** Picking the short line from the list; the button itself inserts the full width one. */
+  readonly horizontalRuleOptions: ComboButtonOption[] = [
+    { value: 'short', label: 'richTextEditor.horizontalRuleShort' }
+  ];
+
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
   lastImageAlignment: 'inline' | 'none' | 'right' | 'left' = 'inline';
 
   defaultExtensions: AnyExtension[] = [];
   editor!: Editor;
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private injector: Injector, private dialogService: DialogService) { }
+  constructor(private injector: Injector, private dialogService: DialogService,
+              public nonBreakingSpaceVisibility: NonBreakingSpaceVisibilityService) { }
 
   ngOnInit(): void {
     this.defaultExtensions = [
-      Document, Text, ListItem,
+      Document, Text, ListItemExtension,
       Underline, Superscript, Subscript,
       TextStyle, Color,
       Bold, Italic, Strike, History,
@@ -112,7 +144,8 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       HorizontalRuleExtension,
       CharacterCount.configure(),
       Tooltip,
-      MathFormulaExtension(this.injector)
+      MathFormulaExtension(this.injector),
+      NonBreakingSpaceHighlight
     ];
 
     const activeExtensions = [...this.defaultExtensions];
@@ -137,6 +170,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
         handleDrop: RichTextEditorComponent.handleDropPlainText
       }
     });
+    // The current value arrives at once, so an editor opened later shows what the session switched to.
+    this.nonBreakingSpaceVisibility.visible
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(visible => this.editor.commands.setNonBreakingSpacesVisible(visible));
   }
 
   private static handlePastePlainText(view: EditorView, event: ClipboardEvent): boolean {
@@ -187,6 +224,16 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.autoFocus) this.editor.commands.focus();
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    /* ngx-tiptap's EditorDirective never destroys the editor it is given. Destroying it here is what
+       makes ProseMirror tear down its node views, which ngx-tiptap then detaches from the application;
+       without it every closed editor stayed alive, its node views in every change detection (#1516).
+       `?.` because ngOnInit may not have got as far as creating it. */
+    this.editor?.destroy();
   }
 
   toggleBold(): void {

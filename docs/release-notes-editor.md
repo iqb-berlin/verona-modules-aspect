@@ -1,5 +1,64 @@
 Editor
 ======
+## 3.1.0
+### Neue Funktionen
+- Assistent „Kontrollkästchen“: Angelegte Optionen lassen sich wie in den anderen Assistenten über den Schraubenschlüssel bearbeiten ([#1604](https://github.com/iqb-berlin/verona-modules-aspect/issues/1604))
+- Hinweise zur Aufgabe
+  - Neuer Dialog listet ungültige Variablennamen mit Fundstelle und „Zum Element“. Er ist über ein Warnzeichen im Kopf der Seitenansicht erreichbar ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+  - Ungültige interne IDs aus Units vor Editor 2.6.0 lassen sich ersetzen. Die Kodierungen der betroffenen Variablen müssen danach im Studio neu angelegt werden ([#1508](https://github.com/iqb-berlin/verona-modules-aspect/issues/1508))
+  - Der Dialog zeigt auch Sichtbarkeitsbedingungen ohne Ziel und die beim Laden entfernten Verweise ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+  - Der Dialog zeigt auch Bilder, Audios, Videos und Geometrie-Elemente, die nicht geladen werden können, mit Ursache und Abhilfe ([#1537](https://github.com/iqb-berlin/verona-modules-aspect/issues/1537))
+- Texteditor: Ein Schalter hebt nicht umbrechende Leerzeichen farbig hervor ([#1476](https://github.com/iqb-berlin/verona-modules-aspect/issues/1476))
+
+### Änderungen
+- Assistent „Markieren“: Die angelegte Textmarkierung hat 10 px Abstand nach unten ([#1057](https://github.com/iqb-berlin/verona-modules-aspect/issues/1057))
+- Bezeichnungen: Die Oberfläche spricht von „Aufgabe“ statt „Unit“, etwa bei „Aufgabennavigation“ und „Hinweise zur Aufgabe“ ([#1572](https://github.com/iqb-berlin/verona-modules-aspect/issues/1572))
+- Bilder verkleinern: Bei einem WebP-Bild zeigt der Qualitätsregler auf 100 % „verlustfrei“ an, denn dort speichert der Browser das Bild ohne Verlust, was bei Fotos sehr groß und bei Grafiken mit wenigen Farben oft am kleinsten wird ([#1603](https://github.com/iqb-berlin/verona-modules-aspect/issues/1603))
+- Eigenschaftenbereich: Die Felder unter „Dimensionen“ und „Z-Index“ nutzen die volle Breite
+- Eingabeprüfung: Abgelehnte Eingaben in ID- und Zahlenfeldern werden am Feld begründet ([#1523](https://github.com/iqb-berlin/verona-modules-aspect/issues/1523))
+- Einstellungen: Die Knöpfe für Aufgaben-Einstellungen und Arbeitsmodus haben einen Tooltip ([#1517](https://github.com/iqb-berlin/verona-modules-aspect/issues/1517), [#1551](https://github.com/iqb-berlin/verona-modules-aspect/issues/1551))
+- Elementnamen: Das Markierungselement heißt jetzt überall Textmarkierung, das Feld „Markierungselemente“ am Textelement entsprechend „Textmarkierungen“ ([#1553](https://github.com/iqb-berlin/verona-modules-aspect/issues/1553))
+- GeoGebra: Objektnamen mit unerlaubten Zeichen lassen sich nicht als verfolgte Variable wählen ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+- Löschen: Die Löschrückfrage bietet an jedem Verweis „Zum Element“ bzw. „Zum Abschnitt“ ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+- Lückentext: Knöpfe und Kontrollkästchen werden wie die übrigen Lücken mit einer festen Höhe von 30 px eingefügt ([#1619](https://github.com/iqb-berlin/verona-modules-aspect/issues/1619))
+- Meldungen
+  - Fehler- und Warnmeldungen sehen einheitlich aus ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+  - Der Dialog „Unerwarteter Fehler“ zeigt die Fehlermeldung als technische Angabe ([#1537](https://github.com/iqb-berlin/verona-modules-aspect/issues/1537))
+  - Eine nicht lesbare Aufgabendefinition meldet „Aufgabendefinition konnte nicht gelesen werden!“ statt einer technischen Meldung ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
+- Texteditor
+  - Dialoge mit Texteditor nutzen die Höhe des Fensters ([#1006](https://github.com/iqb-berlin/verona-modules-aspect/issues/1006))
+  - Die Werkzeugleiste ist einfarbig hellgrau ([#1493](https://github.com/iqb-berlin/verona-modules-aspect/issues/1493))
+  - Die Tab-Taste macht einen Listenpunkt zum Unterpunkt des vorigen, mit dem nächsten Aufzählungszeichen (● ○ ▪, 1. a. i.), Umschalt+Tab stuft ihn wieder hoch ([#1602](https://github.com/iqb-berlin/verona-modules-aspect/issues/1602))
+- Variablenliste
+  - Der Editor meldet die Variablen nach VariableInfo 2.0. Erfordert Studio 20.1.0 ([#1150](https://github.com/iqb-berlin/verona-modules-aspect/issues/1150))
+  - Die Antworten von Periodensystem und Molekül-Editor tragen das Format `CHEM_ELEMENT_SYMBOLS` bzw. `CHEM_MOLECULE` (VariableInfo 2.1) ([#1471](https://github.com/iqb-berlin/verona-modules-aspect/issues/1471))
+- Variablennamen
+  - Namen, die sich nur in Groß- und Kleinschreibung unterscheiden, werden abgelehnt. Bestehende Units bleiben unverändert, solche Paare werden gemeldet ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+  - Enthält eine Unit korrigierbare ungültige Namen, meldet der Editor dem Studio keine Variablenliste. Bisher gingen dabei im Studio Kodierungen verloren ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+  - Geprüft wird mit `@iqbspecs/variable-info` 2.1.0 ([#1504](https://github.com/iqb-berlin/verona-modules-aspect/issues/1504))
+
+### Fehlerbehebungen
+- Ablegelisten: IDs der Optionen werden nach dem Laden nicht mehr doppelt vergeben ([#1506](https://github.com/iqb-berlin/verona-modules-aspect/issues/1506))
+- Assistent „Drag & Drop“: Ein mit dem Schraubenschlüssel bearbeitetes Element zeigt im Assistenten seinen Text statt HTML-Code. Bearbeiten und Verschieben bei den Ziel-Ablagen verändert nicht mehr die Elementliste ([#1595](https://github.com/iqb-berlin/verona-modules-aspect/issues/1595))
+- Assistenten „Drag & Drop“ und „Kontrollkästchen“: Wer nach angelegten Texten auf Bilder umschaltet, bekommt keine Elemente mit ungültigem Bild mehr, und beim Zurückschalten sind die Texte wieder da ([#1610](https://github.com/iqb-berlin/verona-modules-aspect/issues/1610))
+- Farbauswahl: Ohne gesetzte Farbe öffnet der Farbdialog auf Grau statt Schwarz ([#1532](https://github.com/iqb-berlin/verona-modules-aspect/issues/1532))
+- GeoGebra
+  - Nach dem Austausch der Datei lassen sich nicht mehr vorhandene verfolgte Variablen abwählen ([#1505](https://github.com/iqb-berlin/verona-modules-aspect/issues/1505))
+  - Breite und Höhe werden am laufenden Applet geändert, statt es bei jedem Schritt neu aufzubauen; eine Konstruktion mit eigenem Skript löst dabei keine Fehlermeldung „app was already removed“ mehr aus ([#1625](https://github.com/iqb-berlin/verona-modules-aspect/issues/1625))
+  - Wird das Applet direkt nach dem Laden neu aufgebaut, etwa beim Umschalten der Werkzeugleiste, wartet der Neuaufbau die Arbeit ab, die das Skript der Konstruktion beim Start sofort einplant, statt dass sie am entfernten Applet mit „app was already removed“ scheitert ([#1627](https://github.com/iqb-berlin/verona-modules-aspect/issues/1627))
+- Löschdialog: Mit einer dauerhaft sichtbaren Seite stimmt die Seitennummer in der Rückfrage ([#1513](https://github.com/iqb-berlin/verona-modules-aspect/issues/1513))
+- Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ schließt sich, sobald eine andere Aufgabe geöffnet wird, statt bis zum Neuladen der Seite stehen zu bleiben ([#1581](https://github.com/iqb-berlin/verona-modules-aspect/issues/1581))
+- Neue Elemente ziehen
+  - Das Vorschaubild beim Ziehen eines Knopfs aus der linken Leiste zeigt in Chrome nur noch den Knopf, nicht mehr die Knöpfe darüber und darunter ([#437](https://github.com/iqb-berlin/verona-modules-aspect/issues/437))
+  - Nach dem Ziehen eines Optionsfelds aus der linken Leiste lassen sich Rahmen in dynamischen Abschnitten wieder anklicken. Bisher blieben sie unerreichbar, bis ein anderer Knopf gezogen oder der Editor neu geladen wurde ([#1590](https://github.com/iqb-berlin/verona-modules-aspect/issues/1590))
+- Optionentabelle: Die ID einer neuen Zeile mit Bild wird auf Doppelvergabe geprüft ([#1507](https://github.com/iqb-berlin/verona-modules-aspect/issues/1507))
+- Seitennavigation: Knöpfe führen nach dem Löschen, Verschieben oder Einfügen von Seiten weiter zur selben Seite ([#1511](https://github.com/iqb-berlin/verona-modules-aspect/issues/1511))
+- Texteditor: Geschlossene Texteditoren geben ihren Speicher frei, der Editor wird bei langer Arbeit nicht mehr langsamer ([#1516](https://github.com/iqb-berlin/verona-modules-aspect/issues/1516))
+- Variablenliste: Die Antworten von Periodensystem und Molekül-Editor werden als Variable mit Wert gemeldet und sind damit kodierbar ([#1463](https://github.com/iqb-berlin/verona-modules-aspect/issues/1463))
+- Verweise auf Gelöschtes: Beim Löschen werden alle Verweise genannt und entfernt ([#1509](https://github.com/iqb-berlin/verona-modules-aspect/issues/1509))
+- Verweise beim Laden: Verwaiste Verweise werden beim Laden entfernt und gemeldet, Sichtbarkeitsbedingungen nur gemeldet ([#1509](https://github.com/iqb-berlin/verona-modules-aspect/issues/1509))
+- Zustandsvariablen: Ein abgebrochener Dialog verwirft auch eine Umbenennung ([#1129](https://github.com/iqb-berlin/verona-modules-aspect/issues/1129))
+
 ## 3.0.1
 ### Neue Funktionen
 - Bilder lassen sich nachträglich verkleinern: Der Dialog zum Verkleinern, den bisher nur das Hochladen öffnete, ist jetzt auch für ein Bild erreichbar, das schon in der Aufgabe steckt — über einen eigenen Knopf neben dem Bild. Es gibt ihn bei Bild und Bildbereichen im Eigenschaftenbereich, bei Knopf und Kontrollkästchen mit Bild, beim Startbild der Abspielsteuerung und in jedem Dialog, in dem eine Beschriftung mit Bild bearbeitet wird (Optionsfelder, Klappliste, Ablegelistenoption, Zeilen und Spalten der Optionentabelle). Der Dialog weist dabei darauf hin, dass das Bild neu berechnet wird und ein JPEG oder WebP dabei ein zweites Mal an Qualität verliert. Bei Bildern, die sich gar nicht verkleinern lassen — etwa SVG —, ist der Knopf gesperrt und nennt den Grund ([#1378](https://github.com/iqb-berlin/verona-modules-aspect/issues/1378))

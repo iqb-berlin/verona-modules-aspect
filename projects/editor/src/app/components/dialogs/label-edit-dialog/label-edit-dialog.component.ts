@@ -12,7 +12,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 export class LabelEditDialogComponent {
   newLabel = { ...this.data.label };
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { label: TextImageLabel },
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { label: TextImageLabel, showTextAlignment?: boolean },
               private dialogService: DialogService) { }
 
   async loadImage(): Promise<void> {

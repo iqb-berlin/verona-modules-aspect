@@ -1,3 +1,4 @@
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { UIElement } from 'common/models/elements/element';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
@@ -21,7 +22,6 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
 
   state: string | null = ELEMENT_DEFAULTS['widget-molecule-editor'].state;
 
-  static title: string = 'Molekül-Editor';
   static icon: string = 'hub';
 
   constructor(element?: Partial<WidgetMoleculeEditorProperties>, idService?: AbstractIDService) {
@@ -33,6 +33,14 @@ export class WidgetMoleculeEditorElement extends UIElement implements WidgetMole
     } else if (environment.strictInstantiation) {
       throw new InstantiationEror('Error at WidgetMoleculeEditor instantiation', element);
     }
+  }
+
+  /** The answer is the widget's `state` as the player stores it: the drawn molecule as a JSON string,
+      which the widget also puts its rendered image into. So it is reported as `JSON`, like the other
+      answers stored as JSON strings (`math-table`, `text-area-math`), in the format VariableInfo 2.1
+      names `CHEM_MOLECULE` (#1471). */
+  getVariableInfos(): VariableInfo[] {
+    return [{ ...super.getVariableInfos()[0], type: 'JSON', format: 'CHEM_MOLECULE' }];
   }
 }
 

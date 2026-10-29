@@ -214,9 +214,13 @@ export function setExpertMode(enable: boolean) {
   cy.get('.cdk-overlay-backdrop').should('not.exist');
 }
 
-export function setSectionDynamicLayout(enable: boolean) {
-  cy.get('aspect-editor-section-view').first().scrollIntoView().click({ force: true });
-  cy.get('aspect-editor-section-view').first()
+export function setSectionDynamicLayout(enable: boolean, which: 'first' | 'last' = 'first') {
+  const sectionView = () => (which === 'last' ?
+    cy.get('aspect-editor-section-view').last() :
+    cy.get('aspect-editor-section-view').first());
+
+  sectionView().scrollIntoView().click({ force: true });
+  sectionView()
     .find('mat-icon').contains('space_dashboard')
     .click({ force: true });
 
@@ -241,7 +245,13 @@ export function switchToElementTab() {
 }
 
 export function switchToPositionTab() {
-  cy.get('.mat-mdc-tab').contains('mat-icon', 'format_shapes').click({ force: true });
+  cy.get('aspect-element-properties')
+    .contains('.mat-mdc-tab', 'format_shapes')
+    .click();
+  cy.get('aspect-element-properties')
+    .contains('.mat-mdc-tab', 'format_shapes')
+    .should('have.attr', 'aria-selected', 'true');
+  cy.get('aspect-position-and-dimension-properties').should('be.visible');
 }
 
 export function setDimensionValue(label: string, value: number | string) {
@@ -317,6 +327,16 @@ export function selectParagraphElement($p: JQuery<HTMLElement>): void {
   el.dispatchEvent(new MouseEvent('mousemove', eventOpts(endX, endY)));
   el.dispatchEvent(new PointerEvent('pointerup', eventOpts(endX, endY)));
   el.dispatchEvent(new MouseEvent('mouseup', eventOpts(endX, endY)));
+}
+
+/**
+ * Tab on the list item with this text in the open text editor. `type` has no key for it, a `\t` in the
+ * text arrives as a character, so the keydown goes straight to ProseMirror, where its keymap listens.
+ */
+export function pressTabInListItem(text: string): void {
+  cy.contains('mat-dialog-container .ProseMirror li p', text)
+    .type('{end}')
+    .trigger('keydown', { key: 'Tab', keyCode: 9 });
 }
 
 export function editElementConfigDialog(): void {

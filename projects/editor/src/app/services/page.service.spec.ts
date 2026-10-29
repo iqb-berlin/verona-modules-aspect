@@ -15,6 +15,7 @@ describe('PageService', () => {
     updateSectionCounter: Mock;
     updateUnitDefinition: Mock;
     prepareDelete: Mock;
+    keepPageNavigation: Mock;
   };
 
   const createPageMock = (elements: UIElement[] = []): EditorPage => ({
@@ -30,7 +31,8 @@ describe('PageService', () => {
       unit: { pages: [] },
       updateSectionCounter: vi.fn(),
       updateUnitDefinition: vi.fn(),
-      prepareDelete: vi.fn()
+      prepareDelete: vi.fn(),
+      keepPageNavigation: vi.fn((operation: () => void) => operation())
     };
     TestBed.configureTestingModule({
       providers: [{ provide: UnitService, useValue: unitServiceMock }]
@@ -117,5 +119,34 @@ describe('PageService', () => {
 
     expect(unitServiceMock.unit.pages).toEqual([secondPage, firstPage]);
     expect(selectionService.selectedPageIndex).toBe(0);
+  });
+
+  /* Both steps renumber the pages, and navigation buttons store page numbers. The mock below does not run the
+     step, so a page list left as it was shows that the step runs nowhere but inside `keepPageNavigation` (#1511). */
+  describe('the navigation buttons', () => {
+    beforeEach(() => {
+      unitServiceMock.keepPageNavigation.mockImplementation(() => {});
+    });
+
+    it('should be kept on their pages around deleting a page', async () => {
+      const pages = [createPageMock(), createPageMock()];
+      unitServiceMock.unit.pages = [...pages];
+      unitServiceMock.prepareDelete.mockResolvedValue(true);
+
+      await service.deletePage(1);
+
+      expect(unitServiceMock.keepPageNavigation).toHaveBeenCalledOnce();
+      expect(unitServiceMock.unit.pages).toEqual(pages);
+    });
+
+    it('should be kept on their pages around moving a page', () => {
+      const pages = [createPageMock(), createPageMock()];
+      unitServiceMock.unit.pages = [...pages];
+
+      service.moveSelectedPage(0, 'right');
+
+      expect(unitServiceMock.keepPageNavigation).toHaveBeenCalledOnce();
+      expect(unitServiceMock.unit.pages).toEqual(pages);
+    });
   });
 });

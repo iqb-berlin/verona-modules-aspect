@@ -2,7 +2,7 @@ import { Page, PageProperties } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { UIElement } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { StateVariable, StateVariableProperties } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
@@ -120,3 +120,10 @@ export interface UnitProperties {
   sectionNumberingPosition: 'left' | 'above';
   showUnitNavNext: boolean;
 }
+
+/**
+ * Why a unit definition cannot be loaded, under the codes of the player specification. Player and editor show it in
+ * their own dialog and name it in the console; neither reports it to the host (#1578).
+ */
+export type UnitDefinitionErrorCode =
+  'UNIT_DEFINITION_NOT_READABLE' | 'UNIT_DEFINITION_NEWER' | 'UNIT_DEFINITION_OUTDATED';

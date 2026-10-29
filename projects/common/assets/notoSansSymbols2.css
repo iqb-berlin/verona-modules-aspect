@@ -1,5 +1,14 @@
+/* Extends the NunitoSans family for the math keypad symbols (U+2B1C, U+2758, U+2219) and the
+   Supplemental Arrows-C block (U+1F800-1F8FF, e.g. U+1F817, #1599), which contains no emoji code
+   points and is not covered by iPadOS system fonts.
+
+   Linked as the last @font-face of the NunitoSans family (after dejaVuSuperSubscripts.css): WebKit
+   builds its FontRanges in reverse CSS order and passes fontForFirstRange() (m_ranges[0]) to
+   CoreText as the base font for system fallback, which lets CoreText resolve any non-emoji symbol
+   from this 2,655-glyph font when no iPadOS system font covers it, while keeping emoji code points
+   outside unicode-range so SystemFallbackFontCache still routes them to Apple Color Emoji. */
 @font-face {
-  font-family: 'NunitoSans'; /* Extend the Roboto font family */
+  font-family: 'NunitoSans';
   src: url(fonts/noto-sans-symbols-2-v13-symbols-regular.woff2) format('woff2');
-  unicode-range: U+2B1C, U+2758, U+2219; /* Square, Dot, Point*/
+  unicode-range: U+2B1C, U+2758, U+2219, U+1F800-1F8FF;
 }

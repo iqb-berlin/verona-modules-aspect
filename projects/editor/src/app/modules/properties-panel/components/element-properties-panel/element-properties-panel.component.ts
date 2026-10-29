@@ -3,7 +3,8 @@ import {
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { NUMBER_FIELD_SUBJECT_CHANGES } from 'editor/modules/editor-shared/directives/number-field.directive';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { copyPlainData } from 'editor/src/app/utils/copy-plain-data';
@@ -22,7 +23,17 @@ export type CombinedProperties = UIElement & { idList?: string[] };
   selector: 'aspect-element-properties',
   templateUrl: './element-properties-panel.component.html',
   styleUrls: ['./element-properties-panel.component.scss'],
-  standalone: false
+  standalone: false,
+  /* The number fields stay while the selection changes, and a refusal they show belongs to the element it was made
+     on (#1523). Only a different selection counts: clicking the selected element again publishes the same one. */
+  providers: [{
+    provide: NUMBER_FIELD_SUBJECT_CHANGES,
+    useFactory: (selectionService: SelectionService) => selectionService.selectedElements.pipe(
+      distinctUntilChanged((previous: UIElement[], current: UIElement[]) => previous.length === current.length &&
+        previous.every((element, index) => element === current[index]))
+    ),
+    deps: [SelectionService]
+  }]
 })
 export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   selectedElements: UIElement[] = [];

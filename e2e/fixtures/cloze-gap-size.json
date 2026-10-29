@@ -1,0 +1,222 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [{
+    "sections": [{
+      "dynamicPositioning": false,
+      "height": 2200,
+      "elements": [{
+        "type": "cloze", "id": "cloze_gaps", "alias": "cloze_gaps",
+        "position": { "xPosition": 0, "yPosition": 0 },
+        "dimensions": { "width": 600, "height": 2100 },
+        "document": { "type": "doc", "content": [
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "text-field-simple editor: "},
+          { "type": "TextField", "attrs": { "model": {"type": "text-field-simple", "id": "text-field-simple_editor", "alias": "text-field-simple_editor", "dimensions": {"minHeight": null, "maxHeight": null, "width": 150, "height": 30, "isWidthFixed": true, "isHeightFixed": true}, "value": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "text-field-simple fixed20: "},
+          { "type": "TextField", "attrs": { "model": {"type": "text-field-simple", "id": "text-field-simple_fixed20", "alias": "text-field-simple_fixed20", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 20, "isHeightFixed": true}, "value": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "text-field-simple fixed50: "},
+          { "type": "TextField", "attrs": { "model": {"type": "text-field-simple", "id": "text-field-simple_fixed50", "alias": "text-field-simple_fixed50", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 50, "isHeightFixed": true}, "value": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "text-field-simple min50: "},
+          { "type": "TextField", "attrs": { "model": {"type": "text-field-simple", "id": "text-field-simple_min50", "alias": "text-field-simple_min50", "dimensions": {"minHeight": 50, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "value": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "text-field-simple max20: "},
+          { "type": "TextField", "attrs": { "model": {"type": "text-field-simple", "id": "text-field-simple_max20", "alias": "text-field-simple_max20", "dimensions": {"minHeight": null, "maxHeight": 20, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "value": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "text-field-simple free: "},
+          { "type": "TextField", "attrs": { "model": {"type": "text-field-simple", "id": "text-field-simple_free", "alias": "text-field-simple_free", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "value": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "drop-list editor: "},
+          { "type": "DropList", "attrs": { "model": {"type": "drop-list", "id": "drop-list_editor", "alias": "drop-list_editor", "dimensions": {"minHeight": null, "maxHeight": null, "width": 150, "height": 30, "isWidthFixed": true, "isHeightFixed": true}, "onlyOneItem": true, "value": [{"text": "Wort", "id": "drop-list_editor_word", "alias": "drop-list_editor_word", "originListID": "drop-list_editor", "originListIndex": 0, "imgSrc": null, "imgFileName": "", "imgPosition": "above", "audioSrc": null, "audioFileName": ""}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "drop-list fixed20: "},
+          { "type": "DropList", "attrs": { "model": {"type": "drop-list", "id": "drop-list_fixed20", "alias": "drop-list_fixed20", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 20, "isHeightFixed": true}, "onlyOneItem": true, "value": [{"text": "Wort", "id": "drop-list_fixed20_word", "alias": "drop-list_fixed20_word", "originListID": "drop-list_fixed20", "originListIndex": 0, "imgSrc": null, "imgFileName": "", "imgPosition": "above", "audioSrc": null, "audioFileName": ""}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "drop-list fixed50: "},
+          { "type": "DropList", "attrs": { "model": {"type": "drop-list", "id": "drop-list_fixed50", "alias": "drop-list_fixed50", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 50, "isHeightFixed": true}, "onlyOneItem": true, "value": [{"text": "Wort", "id": "drop-list_fixed50_word", "alias": "drop-list_fixed50_word", "originListID": "drop-list_fixed50", "originListIndex": 0, "imgSrc": null, "imgFileName": "", "imgPosition": "above", "audioSrc": null, "audioFileName": ""}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "drop-list min50: "},
+          { "type": "DropList", "attrs": { "model": {"type": "drop-list", "id": "drop-list_min50", "alias": "drop-list_min50", "dimensions": {"minHeight": 50, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "onlyOneItem": true, "value": [{"text": "Wort", "id": "drop-list_min50_word", "alias": "drop-list_min50_word", "originListID": "drop-list_min50", "originListIndex": 0, "imgSrc": null, "imgFileName": "", "imgPosition": "above", "audioSrc": null, "audioFileName": ""}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "drop-list max20: "},
+          { "type": "DropList", "attrs": { "model": {"type": "drop-list", "id": "drop-list_max20", "alias": "drop-list_max20", "dimensions": {"minHeight": null, "maxHeight": 20, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "onlyOneItem": true, "value": [{"text": "Wort", "id": "drop-list_max20_word", "alias": "drop-list_max20_word", "originListID": "drop-list_max20", "originListIndex": 0, "imgSrc": null, "imgFileName": "", "imgPosition": "above", "audioSrc": null, "audioFileName": ""}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "drop-list free: "},
+          { "type": "DropList", "attrs": { "model": {"type": "drop-list", "id": "drop-list_free", "alias": "drop-list_free", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "onlyOneItem": true, "value": [{"text": "Wort", "id": "drop-list_free_word", "alias": "drop-list_free_word", "originListID": "drop-list_free", "originListIndex": 0, "imgSrc": null, "imgFileName": "", "imgPosition": "above", "audioSrc": null, "audioFileName": ""}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "toggle-button editor: "},
+          { "type": "ToggleButton", "attrs": { "model": {"type": "toggle-button", "id": "toggle-button_editor", "alias": "toggle-button_editor", "dimensions": {"minHeight": null, "maxHeight": null, "width": 150, "height": 30, "isWidthFixed": false, "isHeightFixed": true}, "options": [{"text": "Wort"}, {"text": "Wort"}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "toggle-button fixed20: "},
+          { "type": "ToggleButton", "attrs": { "model": {"type": "toggle-button", "id": "toggle-button_fixed20", "alias": "toggle-button_fixed20", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 20, "isHeightFixed": true}, "options": [{"text": "Wort"}, {"text": "Wort"}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "toggle-button fixed50: "},
+          { "type": "ToggleButton", "attrs": { "model": {"type": "toggle-button", "id": "toggle-button_fixed50", "alias": "toggle-button_fixed50", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 50, "isHeightFixed": true}, "options": [{"text": "Wort"}, {"text": "Wort"}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "toggle-button min50: "},
+          { "type": "ToggleButton", "attrs": { "model": {"type": "toggle-button", "id": "toggle-button_min50", "alias": "toggle-button_min50", "dimensions": {"minHeight": 50, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "options": [{"text": "Wort"}, {"text": "Wort"}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "toggle-button max20: "},
+          { "type": "ToggleButton", "attrs": { "model": {"type": "toggle-button", "id": "toggle-button_max20", "alias": "toggle-button_max20", "dimensions": {"minHeight": null, "maxHeight": 20, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "options": [{"text": "Wort"}, {"text": "Wort"}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "toggle-button free: "},
+          { "type": "ToggleButton", "attrs": { "model": {"type": "toggle-button", "id": "toggle-button_free", "alias": "toggle-button_free", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "options": [{"text": "Wort"}, {"text": "Wort"}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "button editor: "},
+          { "type": "Button", "attrs": { "model": {"type": "button", "id": "button_editor", "alias": "button_editor", "dimensions": {"minHeight": null, "maxHeight": null, "height": 30, "isHeightFixed": true}, "label": "Wort", "asLink": true} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "button fixed20: "},
+          { "type": "Button", "attrs": { "model": {"type": "button", "id": "button_fixed20", "alias": "button_fixed20", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 20, "isHeightFixed": true}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "button fixed50: "},
+          { "type": "Button", "attrs": { "model": {"type": "button", "id": "button_fixed50", "alias": "button_fixed50", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 50, "isHeightFixed": true}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "button min50: "},
+          { "type": "Button", "attrs": { "model": {"type": "button", "id": "button_min50", "alias": "button_min50", "dimensions": {"minHeight": 50, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "button max20: "},
+          { "type": "Button", "attrs": { "model": {"type": "button", "id": "button_max20", "alias": "button_max20", "dimensions": {"minHeight": null, "maxHeight": 20, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "button free: "},
+          { "type": "Button", "attrs": { "model": {"type": "button", "id": "button_free", "alias": "button_free", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "checkbox editor: "},
+          { "type": "Checkbox", "attrs": { "model": {"type": "checkbox", "id": "checkbox_editor", "alias": "checkbox_editor", "dimensions": {"minHeight": null, "maxHeight": null, "height": 30, "isHeightFixed": true}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "checkbox fixed20: "},
+          { "type": "Checkbox", "attrs": { "model": {"type": "checkbox", "id": "checkbox_fixed20", "alias": "checkbox_fixed20", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 20, "isHeightFixed": true}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "checkbox fixed50: "},
+          { "type": "Checkbox", "attrs": { "model": {"type": "checkbox", "id": "checkbox_fixed50", "alias": "checkbox_fixed50", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 50, "isHeightFixed": true}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "checkbox min50: "},
+          { "type": "Checkbox", "attrs": { "model": {"type": "checkbox", "id": "checkbox_min50", "alias": "checkbox_min50", "dimensions": {"minHeight": 50, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "checkbox max20: "},
+          { "type": "Checkbox", "attrs": { "model": {"type": "checkbox", "id": "checkbox_max20", "alias": "checkbox_max20", "dimensions": {"minHeight": null, "maxHeight": 20, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "checkbox free: "},
+          { "type": "Checkbox", "attrs": { "model": {"type": "checkbox", "id": "checkbox_free", "alias": "checkbox_free", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "dropdown editor: "},
+          { "type": "Dropdown", "attrs": { "model": {"type": "dropdown", "id": "dropdown_editor", "alias": "dropdown_editor", "dimensions": {"minHeight": null, "maxHeight": null, "width": 150, "height": 30, "isWidthFixed": false, "isHeightFixed": true, "minWidth": 40}, "options": [{"text": "Wort"}], "value": 0} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "dropdown fixed20: "},
+          { "type": "Dropdown", "attrs": { "model": {"type": "dropdown", "id": "dropdown_fixed20", "alias": "dropdown_fixed20", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 20, "isHeightFixed": true}, "options": [{"text": "Wort"}], "value": 0} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "dropdown fixed50: "},
+          { "type": "Dropdown", "attrs": { "model": {"type": "dropdown", "id": "dropdown_fixed50", "alias": "dropdown_fixed50", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 50, "isHeightFixed": true}, "options": [{"text": "Wort"}], "value": 0} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "dropdown min50: "},
+          { "type": "Dropdown", "attrs": { "model": {"type": "dropdown", "id": "dropdown_min50", "alias": "dropdown_min50", "dimensions": {"minHeight": 50, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "options": [{"text": "Wort"}], "value": 0} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "dropdown max20: "},
+          { "type": "Dropdown", "attrs": { "model": {"type": "dropdown", "id": "dropdown_max20", "alias": "dropdown_max20", "dimensions": {"minHeight": null, "maxHeight": 20, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "options": [{"text": "Wort"}], "value": 0} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "dropdown free: "},
+          { "type": "Dropdown", "attrs": { "model": {"type": "dropdown", "id": "dropdown_free", "alias": "dropdown_free", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "options": [{"text": "Wort"}], "value": 0} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "drop-list empty: "},
+          { "type": "DropList", "attrs": { "model": {"type": "drop-list", "id": "drop-list_empty", "alias": "drop-list_empty", "dimensions": {"minHeight": null, "maxHeight": null, "width": 150, "height": 30, "isWidthFixed": true, "isHeightFixed": true}, "onlyOneItem": true, "value": []} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "drop-list emptyfree: "},
+          { "type": "DropList", "attrs": { "model": {"type": "drop-list", "id": "drop-list_emptyfree", "alias": "drop-list_emptyfree", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "onlyOneItem": true, "value": []} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "toggle-button paragraphs: "},
+          { "type": "ToggleButton", "attrs": { "model": {"type": "toggle-button", "id": "toggle-button_paragraphs", "alias": "toggle-button_paragraphs", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "options": [{"text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Wort</p>"}, {"text": "<p style=\"margin-bottom: 0px; margin-top: 0\">Wort</p>"}]} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {"textAlign": "center"}, "content": [
+          {"type": "text", "text": "checkbox centred: "},
+          { "type": "Checkbox", "attrs": { "model": {"type": "checkbox", "id": "checkbox_centred", "alias": "checkbox_centred", "dimensions": {"minHeight": null, "maxHeight": null, "width": 200, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "label": "Wort"} } },
+          {"type": "text", "text": " Text"}
+        ] },
+        { "type": "paragraph", "attrs": {}, "content": [
+          {"type": "text", "text": "toggle-button upright: "},
+          { "type": "ToggleButton", "attrs": { "model": {"type": "toggle-button", "id": "toggle-button_upright", "alias": "toggle-button_upright", "dimensions": {"minHeight": null, "maxHeight": null, "width": 120, "isWidthFixed": true, "height": 30, "isHeightFixed": false}, "options": [{"text": "Wort"}, {"text": "Wort"}], "verticalOrientation": true} } },
+          {"type": "text", "text": " Text"}
+        ] }
+        ] }
+      }]
+    }]
+  }]
+}

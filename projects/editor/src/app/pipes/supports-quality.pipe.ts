@@ -12,7 +12,6 @@ export class SupportsQualityPipe implements PipeTransform {
    * `FileService.supportsQuality` is the one place the list lives; `scaleImage` asks it too (#1398).
    */
   transform(base64: string, targetMimeType?: string): boolean {
-    if (targetMimeType) return FileService.supportsQuality(targetMimeType);
-    return FileService.supportsQuality(base64.match(/data:([^;]+);/)?.[1] || '');
+    return FileService.supportsQuality(FileService.outputMimeType(base64, targetMimeType));
   }
 }

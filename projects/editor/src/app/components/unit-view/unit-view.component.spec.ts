@@ -14,9 +14,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject, of } from 'rxjs';
+import { BehaviorSubject, Subject, of } from 'rxjs';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 import { PageChangeService } from 'common/services/page-change.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { UnitViewComponent } from 'editor/src/app/components/unit-view/unit-view.component';
@@ -65,11 +66,15 @@ describe('UnitViewComponent', () => {
   let unitService: SpyObj<UnitService>;
   let dialog: SpyObj<MatDialog>;
   let pageOrderChanged: Subject<void>;
+  let hintIndicator: BehaviorSubject<{ open: number } | null>;
+  let dialogService: SpyObj<DialogService>;
   let pages: EditorPage[];
 
   beforeEach(async () => {
     pages = [new EditorPage(), new EditorPage()];
     pageOrderChanged = new Subject<void>();
+    hintIndicator = new BehaviorSubject<{ open: number } | null>(null);
+    dialogService = createSpyObj<DialogService>(['showVariableInfoFindingsDialog']);
     selectionService = new SelectionService();
     pageService = createSpyObj<PageService>(['addPage']);
     unitService = createSpyObj<UnitService>([
@@ -77,6 +82,7 @@ describe('UnitViewComponent', () => {
     ]);
     Object.assign(unitService, {
       pageOrderChanged,
+      hintIndicator,
       allowExpertMode: true,
       expertMode: true,
       unit: {
@@ -116,6 +122,7 @@ describe('UnitViewComponent', () => {
         { provide: UnitService, useValue: unitService },
         { provide: PageService, useValue: pageService },
         { provide: MatDialog, useValue: dialog },
+        { provide: DialogService, useValue: dialogService },
         { provide: PageChangeService, useValue: new PageChangeService() }
       ]
     }).compileComponents();
@@ -218,6 +225,107 @@ describe('UnitViewComponent', () => {
     const rendered = renderedPageViews();
     expect(rendered.map(pageView => pageView.pageIndex)).toEqual([1, 2]);
     expect(rendered.map(pageView => pageView.isLastPage)).toEqual([false, true]);
+  });
+
+  /* The hints area stays reachable while the unit has something to fix, in the host as well, where there is no
+     toolbar (#1129). What counts is decided by the unit service: invalid names and rules into nothing (#1520). */
+  describe('the indicator of open hints', () => {
+    const indicator = (): HTMLButtonElement | null => fixture.nativeElement
+      .querySelector('.variable-info-findings-button');
+
+    it('should not be there while the unit has nothing to fix', () => {
+      expect(indicator()).toBeNull();
+    });
+
+    it('should show the number of open hints as a warning and open the hints area', () => {
+      hintIndicator.next({ open: 2 });
+      fixture.detectChanges();
+
+      expect(indicator()?.textContent).toContain('2');
+      expect(indicator()?.querySelector('.variable-info-findings-icon')).toBeTruthy();
+      indicator()?.click();
+      expect(dialogService.showVariableInfoFindingsDialog).toHaveBeenCalled();
+    });
+
+    /* What loading repaired stays reachable, but nothing is open, so it is a note, not a warning (#1520). */
+    it('should stay reachable as a plain note while nothing is open', () => {
+      hintIndicator.next({ open: 0 });
+      fixture.detectChanges();
+
+      expect(indicator()).toBeTruthy();
+      expect(indicator()?.querySelector('.variable-info-findings-icon')).toBeNull();
+      expect(indicator()?.querySelector('.variable-info-findings-info')).toBeTruthy();
+      expect(indicator()?.querySelector('.variable-info-findings-count')).toBeNull();
+    });
+  });
+
+  /* In the list view a permanently visible first page has a tab of its own; an element asked for by the validation
+     area may sit behind the other one (#1129). */
+  describe('the tab of the list view', () => {
+    beforeEach(() => {
+      pages[0].alwaysVisible = true;
+    });
+
+    it('should turn to the tab of a requested element', () => {
+      selectionService.requestElement(1, 0, 'text-field_2');
+      expect(component.listTabIndex).toBe(1);
+
+      selectionService.requestElement(0, 0, 'text-field_1');
+      expect(component.listTabIndex).toBe(0);
+    });
+
+    it('should turn to the tab of a requested section as well (#1520)', () => {
+      selectionService.requestSection(1, 0);
+      expect(component.listTabIndex).toBe(1);
+
+      selectionService.requestSection(0, 0);
+      expect(component.listTabIndex).toBe(0);
+    });
+
+    /* That a selection elsewhere leaves the tab where it is, is what the assistant specs rely on. */
+    it('should stay where it is when an element is merely selected', () => {
+      selectionService.updateSelection(1, 0);
+      fixture.detectChanges();
+
+      expect(component.listTabIndex).toBe(0);
+    });
+
+    it('should follow the author to the other tab', () => {
+      component.selectPage(1);
+
+      expect(component.listTabIndex).toBe(1);
+    });
+
+    it('should not move for a request without a permanently visible page', () => {
+      pages[0].alwaysVisible = false;
+
+      selectionService.requestElement(1, 0, 'text-field_2');
+
+      expect(component.listTabIndex).toBe(0);
+    });
+  });
+
+  /* The two settings buttons next to the page tabs show only an icon; the tooltip says what is behind
+     them, as the page menu does (#1517). */
+  describe('the tooltips of the settings buttons', () => {
+    const tooltipOf = (selector: string): MatTooltip => fixture.debugElement
+      .query(By.css(selector)).injector.get(MatTooltip);
+
+    it('should name the unit settings behind the gear', () => {
+      const tooltip = tooltipOf('.unit-settings-button');
+
+      expect(tooltip.message).toBe('unitView.unitSettings');
+      expect(tooltip.position).toBe('above');
+      expect(tooltip.showDelay).toBe(400);
+    });
+
+    it('should name the editor settings behind the menu icon', () => {
+      const tooltip = tooltipOf('.editor-settings-button');
+
+      expect(tooltip.message).toBe('unitView.editorSettings');
+      expect(tooltip.position).toBe('above');
+      expect(tooltip.showDelay).toBe(400);
+    });
   });
 
   it('should stop refreshing the tabs after destroy', () => {

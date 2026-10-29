@@ -114,7 +114,8 @@
     </aspect-rich-text-editor>
     <h4>{{ 'elements' | translate }}</h4>
     @if (templateVariant === '2pages') {
-      <mat-checkbox [(ngModel)]="options.srcUseImages" class="image-checkbox">
+      <mat-checkbox [ngModel]="options.srcUseImages" (ngModelChange)="setSrcUseImages($event)"
+                    class="image-checkbox">
         {{ 'sectionTemplates.useImages' | translate }}
       </mat-checkbox>
     }
@@ -126,7 +127,8 @@
       </mat-radio-group>
     }
     <ng-container
-      *ngTemplateOutlet="elementInputs; context: { list: options.options, useImages: options.srcUseImages }">
+      *ngTemplateOutlet="elementInputs; context: { list: options.srcUseImages ? srcImages : options.options,
+                                                   useImages: options.srcUseImages }">
     </ng-container>
   </ng-template>
   <ng-template #targetList>
@@ -142,8 +144,8 @@
       </mat-checkbox>
     }
     <ng-container
-      *ngTemplateOutlet="elementInputs; context: { list: options.targetLabels,
-                                                   useImages: options.srcUseImages && options.targetUseImages }">
+      *ngTemplateOutlet="elementInputs; context: { list: options.targetUseImages ? targetImages : options.targetLabels,
+                                                   useImages: options.targetUseImages }">
     </ng-container>
   </ng-template>
 
@@ -166,19 +168,22 @@
              (change)="loadImage(list, imageUpload)">
     }
     <div class="drop-list" cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="drop($event)">
-      <div *ngFor="let item of list; let i = index" cdkDrag cdkDragLockAxis="y" class="drop-list-option">
-        @if (useImages) {
-          <img [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
-        } @else {
-          {{ item }}
-        }
-        <button mat-icon-button color="primary" (click)="editItem(list, i)">
-          <mat-icon>build</mat-icon>
-        </button>
-        <button mat-icon-button color="primary" (click)="removeListItem(list, i)">
-          <mat-icon>clear</mat-icon>
-        </button>
-      </div>
+      @for (item of list; track $index; let i = $index) {
+        <div cdkDrag cdkDragLockAxis="y" class="drop-list-option">
+          @if (useImages) {
+            <img [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
+          } @else {
+            <!-- An edited item holds the HTML the label dialog returns (#1595) -->
+            <div class="text-item" [innerHTML]="item | safeResourceHTML"></div>
+            <button mat-icon-button color="primary" (click)="editItem(list, i)">
+              <mat-icon>build</mat-icon>
+            </button>
+          }
+          <button mat-icon-button color="primary" (click)="removeListItem(list, i)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      }
     </div>
   </ng-template>
 </div>
@@ -186,7 +191,7 @@
   <button mat-button
           [disabled]="(templateVariant == 'classic' && (!options.optionWidth || !options.targetWidth)) ||
                       (templateVariant == 'sort' && !options.optionWidth)"
-          [mat-dialog-close]="{ variant: templateVariant, options }">
+          (click)="confirmAndClose()">
     {{ 'confirm' | translate }}
   </button>
   <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>

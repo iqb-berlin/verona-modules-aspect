@@ -10,7 +10,7 @@ mat-button-toggle-group {
   max-width: 100%;
   justify-content: center;
   box-sizing: border-box;
-  text-indent: 0; /* fix misplaced text in blockquote elements */
+  text-indent: 0; /* not the inline text-indent of the paragraph it stands in (hanging indent) */
 }
 :host ::ng-deep mat-pseudo-checkbox {display: none;}
 :host ::ng-deep .mat-button-toggle-label-content {
@@ -18,6 +18,29 @@ mat-button-toggle-group {
 }
 :host ::ng-deep .mat-button-toggle-button {
   height: 100%;
+}
+/* In a gap an option's text is the line the gap gives every child, so that it meets the text of the
+   other gaps to the pixel, and a toggle button without a fixed height is as tall as a text field beside
+   it -- 29px at 20px, where the line height of 100% the option is set to by default left it at 22px
+   (#1619). The line height that is set goes to a zero-width strut beside the text instead, so that a
+   larger one still makes the option taller. Beside it rather than in it: an option edited in the label
+   dialog is a paragraph, and a strut in front of a paragraph is a line of its own. It comes after the
+   text, so that the option stands in the line by its text. */
+.cloze-context .option-text {
+  line-height: normal;
+}
+:host ::ng-deep .cloze-context .mat-button-toggle-label-content::after {
+  content: '\200b';
+}
+/* Flex boxes, both centring: the label, so that its text and the strut stand side by side; and the button
+   around it, since a button puts content taller than itself at its top -- in a gap lower than that line
+   the option sank by half the difference, 3.5px at 20px, and its frame stood higher than the frame of a
+   text field in the same line. */
+:host ::ng-deep .cloze-context .mat-button-toggle-button,
+:host ::ng-deep .cloze-context .mat-button-toggle-label-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 :host ::ng-deep .strike-selected-option.mat-button-toggle-checked .mat-button-toggle-label-content {
   text-decoration: line-through;

@@ -5,7 +5,7 @@ import {
   BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InputElementProperties } from 'common/models/input-element-interfaces';
 import { TextLabel } from 'common/models/label-interfaces';
@@ -61,13 +61,12 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'integer',
+      type: 'INTEGER',
       format: '',
       multiple: false,
       nullable: false,
       values: this.getVariableInfoValues(),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }

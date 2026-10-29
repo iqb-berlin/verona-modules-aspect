@@ -1,6 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { Response, ResponseStatusType, ResponseValueType } from '@iqb/responses';
+import { Response, ResponseStatusType, ResponseValueType } from '@iqbspecs/response/response.interface';
 
 /**
  * The answers of one kind -- element values, state variables, geometry variables -- as the player keeps

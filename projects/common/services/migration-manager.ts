@@ -1,6 +1,7 @@
 import { MigrationLegacy } from '../migrations/legacy-migration';
 import { Migration4m10To4m11 } from '../migrations/v4.10-to-v4.11.migration';
 import { Migration4m11To4m12 } from '../migrations/v4.11-to-v4.12.migration';
+import { Migration4m12To4m13 } from '../migrations/v4.12-to-v4.13.migration';
 import { MigrationStep } from '../migrations/migration-step.interface';
 import { NormalizationMigration } from '../migrations/normalization';
 import { UnitProperties } from '../models/unit';
@@ -71,7 +72,8 @@ export class MigrationManager {
   private static steps: MigrationStep[] = [
     new MigrationLegacy(),
     new Migration4m10To4m11(),
-    new Migration4m11To4m12()
+    new Migration4m11To4m12(),
+    new Migration4m12To4m13()
   ];
 
   /** Loose in, typed out: what comes back is a `UnitProperties` and can be handed to `new Unit(...)`

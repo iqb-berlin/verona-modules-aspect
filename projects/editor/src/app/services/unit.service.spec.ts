@@ -1,14 +1,22 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { Mock } from 'vitest';
 import { VersionManager } from 'common/services/version-manager';
 import { UnitProperties } from 'common/models/unit';
+import { PositionedUIElement } from 'common/models/ui-element-interfaces';
+import { UIElement } from 'common/models/elements/element';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { ButtonElement } from 'common/models/elements/button';
+import { GeometryElement } from 'common/models/elements/geometry';
 import { StateVariable } from 'common/models/state-variable';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { TextElement } from 'common/models/elements/text';
+import { TextFieldElement } from 'common/models/elements/text-field';
+import { CheckboxElement } from 'common/models/elements/checkbox';
+import { MathTableElement } from 'common/models/elements/math-table';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { ElementOverlay } from 'editor/src/app/directives/element-overlay.directive';
 import { DialogService } from 'editor/src/app/services/dialog.service';
@@ -16,8 +24,10 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { LoadErrorService } from 'editor/src/app/services/load-error.service';
+import { LoadErrorHint } from 'editor/src/app/models/load-error';
 import { PageService } from 'editor/src/app/services/page.service';
-import { ReferenceList } from 'editor/src/app/classes/reference-manager';
+import { ReferenceList, ReferenceManager } from 'editor/src/app/classes/reference-manager';
 import {
   SanitizationDialogComponent
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
@@ -26,17 +36,11 @@ describe('UnitService - rapid load handling', () => {
   let service: UnitService;
   let dialogServiceSpy: SpyObj<DialogService>;
   let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
-  let messageServiceSpy: SpyObj<MessageService>;
 
   beforeEach(() => {
     const selectionService = new SelectionService();
     const idService = new IDService();
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
-    messageServiceSpy = createSpyObj<MessageService>([
-      'showFixedReferencePanel',
-      'showReferencePanel',
-      'showPrompt'
-    ]);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
 
@@ -48,10 +52,10 @@ describe('UnitService - rapid load handling', () => {
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      messageServiceSpy,
       dialogServiceSpy,
       idService,
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -74,54 +78,643 @@ describe('UnitService - rapid load handling', () => {
     expect(service.unit.stateVariables[0].id).toBe('stable-unit');
     expect(dialogServiceSpy.showUnitDefErrorDialog).not.toHaveBeenCalled();
   });
+
+  /* The messages are translation keys named after the codes of the player specification, not German written into
+     the service (#1520, #1578). */
+  it('names a unit newer than the editor by its code', () => {
+    service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('future'), version: '99.0.0' }));
+
+    expect(dialogServiceSpy.showUnitDefErrorDialog)
+      .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NEWER', expect.anything());
+  });
+
+  it('names a unit too old to migrate by its code', () => {
+    service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('ancient'), version: '3.0.0' }));
+
+    expect(dialogServiceSpy.showUnitDefErrorDialog)
+      .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_OUTDATED', expect.anything());
+  });
+
+  /* Until #1578 the dialog showed the parser's English message; it is left to the console now, under the code. */
+  describe('a definition that fails', () => {
+    beforeEach(() => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('names a definition it cannot parse by its code', () => {
+      service.loadUnitDefinition('no json');
+
+      expect(dialogServiceSpy.showUnitDefErrorDialog)
+        .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NOT_READABLE', expect.anything());
+      expect(console.error).toHaveBeenCalledWith('UNIT_DEFINITION_NOT_READABLE', expect.any(SyntaxError));
+    });
+
+    it('names a definition it cannot build a unit from by its code', () => {
+      service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('broken'), pages: {} }));
+
+      expect(dialogServiceSpy.showUnitDefErrorDialog)
+        .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_NOT_READABLE', expect.anything());
+    });
+
+    /* Once the unit is swapped in, a failure is no longer the definition's fault; it keeps its own message. */
+    it('keeps the message of a failure after the unit was swapped in', () => {
+      service.updateSectionCounter = vi.fn(() => { throw new Error('fails after the swap'); });
+
+      service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('swapped')));
+
+      expect(service.unit.stateVariables[0].id).toBe('swapped');
+      expect(dialogServiceSpy.showUnitDefErrorDialog).toHaveBeenCalledWith('fails after the swap', expect.anything());
+    });
+  });
 });
 
-describe('UnitService - variable info validation (#1043)', () => {
+describe('UnitService - variable info validation (#1043, #1129)', () => {
   let service: UnitService;
   let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
-  let messageServiceSpy: SpyObj<MessageService>;
+  let dialogServiceSpy: SpyObj<DialogService>;
+
+  const unitWithStateVariables = (...stateVariables: StateVariable[]): string => JSON.stringify({
+    ...createUnitBlueprint('unused'), stateVariables
+  });
+  const lastReportedVariables = (): VariableInfo[] | undefined => veronaApiServiceSpy.sendChanged.mock.lastCall?.[2];
 
   beforeEach(() => {
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
-    messageServiceSpy = createSpyObj<MessageService>([
-      'showFixedReferencePanel',
-      'showReferencePanel',
-      'showPrompt'
-    ]);
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    dialogServiceSpy = createSpyObj<DialogService>([
+      'showUnitDefErrorDialog', 'showDeleteConfirmDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
+    ]);
 
     service = new UnitService(
       new SelectionService(),
       veronaApiServiceSpy,
-      messageServiceSpy,
-      createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']),
+      dialogServiceSpy,
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
-  it('does not report variable infos with invalid aliases to the host', () => {
+  /* A partial list would be stored by the host as the whole one, and studio drops the codings and metadata of
+     every variable missing from it. Without a list it keeps the one it has. */
+  it('sends no variable list at all while an alias needs correcting', () => {
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('März')));
     service.updateUnitDefinition();
 
-    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
-    expect(reportedVariableInfos.length).toBe(0);
+    expect(veronaApiServiceSpy.sendChanged).toHaveBeenCalled();
+    expect(lastReportedVariables()).toBeUndefined();
   });
 
-  it('notifies the user when a loaded unit contains invalid aliases', () => {
+  it('shows the findings when a loaded unit has something to correct', () => {
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('weiter ')));
-    expect(messageServiceSpy.showPrompt).toHaveBeenCalledWith('invalidVariableAliases');
+
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).toHaveBeenCalled();
+    expect(service.variableInfoFindings.value.map(finding => finding.origin.info.id)).toEqual(['weiter ']);
+    expect(dialogServiceSpy.showUnitDefErrorDialog).not.toHaveBeenCalled();
   });
 
-  it('keeps reporting valid variable infos and shows no prompt', () => {
+  it('holds back the list for aliases that differ only in letter case', () => {
+    service.loadUnitDefinition(unitWithStateVariables(
+      new StateVariable('state_1', 'Wert', ''), new StateVariable('state_2', 'wert', '')
+    ));
+    service.updateUnitDefinition();
+
+    expect(lastReportedVariables()).toBeUndefined();
+    expect(service.variableInfoFindings.value.flatMap(finding => finding.issues.map(issue => issue.code)))
+      .toEqual(['DUPLICATE_ALIAS', 'DUPLICATE_ALIAS']);
+  });
+
+  it('reports the whole list again once the alias is corrected', () => {
+    service.loadUnitDefinition(unitWithStateVariables(
+      new StateVariable('state_1', 'März', ''), new StateVariable('state_2', 'other', '')
+    ));
+    service.unit.stateVariables[0].alias = 'Maerz';
+    service.updateUnitDefinition();
+
+    expect(lastReportedVariables()?.map(info => info.alias)).toEqual(['Maerz', 'other']);
+    expect(service.variableInfoFindings.value).toEqual([]);
+  });
+
+  /* The id is not editable since editor 2.6.0. Holding back the list for it would hold it back forever (#1508). */
+  it('reports an invalid id that cannot be corrected in the editor, but sends the whole list', () => {
+    service.loadUnitDefinition(unitWithStateVariables(new StateVariable('März', 'maerz', '')));
+    service.updateUnitDefinition();
+
+    expect(lastReportedVariables()?.map(info => info.id)).toEqual(['März']);
+    expect(service.variableInfoFindings.value.map(finding => finding.holdsBackList)).toEqual([false]);
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).not.toHaveBeenCalled();
+  });
+
+  it('keeps reporting valid variable infos and shows no findings', () => {
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('valid_var-1')));
     service.updateUnitDefinition();
 
-    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
+    const reportedVariableInfos = lastReportedVariables() as VariableInfo[];
     expect(reportedVariableInfos.length).toBe(1);
     expect(reportedVariableInfos[0].alias).toBe('valid_var-1');
-    expect(messageServiceSpy.showPrompt).not.toHaveBeenCalled();
+    expect(service.variableInfoFindings.value).toEqual([]);
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).not.toHaveBeenCalled();
+  });
+
+  it('drops the findings of the unit left when an empty unit is loaded', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('März')));
+    service.loadUnitDefinition('');
+
+    expect(service.variableInfoFindings.value).toEqual([]);
+  });
+
+  it('applies edited state variables and reports them', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('März')));
+    const edited = [new StateVariable('März', 'Maerz', '')];
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of(edited));
+
+    service.editStateVariables();
+
+    expect(service.unit.stateVariables).toBe(edited);
+    expect(lastReportedVariables()?.map(info => info.alias)).toEqual(['Maerz']);
+  });
+
+  it('takes back what a cancelled state variables dialog registered', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('state_1')));
+    const reRegisterAll = vi.spyOn(service, 'reRegisterAll');
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of(undefined));
+
+    service.editStateVariables();
+
+    expect(reRegisterAll).toHaveBeenCalled();
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+
+  /* The host stores this list as it arrives. It follows VariableInfo 2.0: `type` and `format` in upper
+     case, and no `page` (#1150). No end-to-end test can see it -- under Cypress the editor counts as
+     standalone and posts nothing to a host. */
+  it('reports its variables in the spelling of VariableInfo 2.0', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('state_1')));
+    const section = service.unit.pages[0].sections[0];
+    section.addElement(new TextFieldElement({ type: 'text-field', id: 'text-field_1', alias: 'text-field_1' }));
+    section.addElement(new CheckboxElement({ type: 'checkbox', id: 'checkbox_1', alias: 'checkbox_1' }));
+    section.addElement(new MathTableElement({
+      type: 'math-table', id: 'math-table_1', alias: 'math-table_1', operation: 'addition'
+    }));
+    service.updateUnitDefinition();
+
+    const reportedVariableInfos = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
+    expect(reportedVariableInfos.map(info => `${info.id} ${info.type} ${info.format}`)).toEqual([
+      'state_1 NO_VALUE ',
+      'text-field_1 STRING ',
+      'checkbox_1 BOOLEAN ',
+      'math-table_1 JSON MATH_TABLE'
+    ]);
+    expect(reportedVariableInfos.filter(info => 'page' in info)).toEqual([]);
+  });
+});
+
+/* Loading empties the registry and registers every element again. A drop-list registered its options only in its
+   constructor, so after every load they were free: a new option could get `value_1` a second time, and an alias
+   could take the name of an option without any error (#1506). */
+describe('UnitService - registering the options of a drop-list (#1506)', () => {
+  let service: UnitService;
+  let idService: IDService;
+
+  beforeEach(() => {
+    idService = new IDService();
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    service = new UnitService(
+      new SelectionService(),
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      createSpyObj<DialogService>([
+        'showUnitDefErrorDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
+      ]),
+      idService,
+      translateServiceSpy,
+      new LoadErrorService()
+    );
+    const unit = createUnitBlueprint('state_1');
+    unit.pages[0].sections[0].elements.push({
+      type: 'drop-list',
+      id: 'drop-list_1',
+      alias: 'drop-list_1',
+      value: [{ text: 'A', id: 'value_1', alias: 'option-a' }],
+      position: {
+        gridColumn: 1, gridColumnRange: 1, gridRow: 1, gridRowRange: 1
+      }
+    } as unknown as PositionedUIElement);
+    service.loadUnitDefinition(JSON.stringify(unit));
+  });
+
+  it('should keep the ids of the options taken after loading', () => {
+    expect(idService.isIDAvailable('value_1')).toBe(false);
+    expect(idService.isAliasAvailable('option-a')).toBe(false);
+  });
+
+  it('should keep them taken after the state variables were edited, which registers everything again', () => {
+    service.reRegisterAll();
+
+    expect(idService.isAliasAvailable('Option-A')).toBe(false);
+  });
+});
+
+describe('UnitService - references to what is deleted (#1509)', () => {
+  let service: UnitService;
+  let selectionService: SelectionService;
+  let dialogServiceSpy: SpyObj<DialogService>;
+  let loadErrorService: LoadErrorService;
+
+  const textField = (id: string): Record<string, unknown> => ({
+    type: 'text-field',
+    id,
+    alias: id,
+    position: {
+      gridColumn: 1, gridColumnRange: 1, gridRow: 1, gridRowRange: 1
+    }
+  });
+
+  /* Two pages; a section on the second asks a state variable and an element of the first page. */
+  const load = (secondPageRuleTargets: string[], moreOnFirstPage: Record<string, unknown>[] = []): void => {
+    const blueprint = createUnitBlueprint('state_1');
+    blueprint.pages.push(JSON.parse(JSON.stringify(blueprint.pages[0])));
+    blueprint.pages[0].sections[0].elements.push(
+      ...[textField('text-field_1'), ...moreOnFirstPage] as unknown as PositionedUIElement[]
+    );
+    blueprint.pages[1].sections[0].elements.push(textField('text-field_2') as unknown as PositionedUIElement);
+    blueprint.pages[1].sections[0].visibilityRules = secondPageRuleTargets
+      .map(id => ({ id, operator: '=', value: '1' }));
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  };
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    selectionService = new SelectionService();
+    dialogServiceSpy = createSpyObj<DialogService>([
+      'showUnitDefErrorDialog', 'showDeleteConfirmDialog', 'showVariableInfoFindingsDialog', 'showStateVariablesDialog'
+    ]);
+    loadErrorService = new LoadErrorService();
+    service = new UnitService(selectionService, createSpyObj<VeronaAPIService>(['sendChanged']), dialogServiceSpy,
+                              new IDService(), translateServiceSpy, loadErrorService);
+  });
+
+  /* The page menus select their page before they open, so selection and deleted page agree in the editor today;
+     the references are those of the deleted page all the same, whatever is selected. */
+  it('should check the references of the page that is deleted, not of the selected one', async () => {
+    load(['text-field_1']);
+    selectionService.selectedPageIndex = 1;
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(true));
+
+    await service.prepareDelete('page', service.unit.pages[0], 0);
+
+    const refs = dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[3] as ReferenceList[];
+    expect(refs.map(refList => (refList.element as { id: string }).id)).toEqual(['text-field_1']);
+    expect(service.unit.pages[1].sections[0].visibilityRules).toEqual([]);
+  });
+
+  /* The question becomes the dialog's title, so each kind of deletion asks with a key of its own (#1520). */
+  it('should ask about a section and about elements through their translation keys', async () => {
+    load([]);
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(false));
+
+    await service.prepareDelete('section', service.unit.pages[0].sections[0]);
+    expect(dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[0]).toBe('deleteSectionConfirm');
+
+    await service.prepareDelete('elements', service.unit.pages[0].sections[0].elements);
+    expect(dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[0]).toBe('deleteElementsConfirm');
+  });
+
+  it('should ask before deleting a state variable that is still asked, and remove the rule once agreed', () => {
+    load(['state_1']);
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of([]));
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(true));
+
+    service.editStateVariables();
+
+    expect(dialogServiceSpy.showDeleteConfirmDialog)
+      .toHaveBeenCalledWith('deleteStateVariablesConfirm', expect.anything(), undefined, expect.any(Array));
+    expect(service.unit.stateVariables).toEqual([]);
+    expect(service.unit.pages[1].sections[0].visibilityRules).toEqual([]);
+  });
+
+  /* Declining keeps what is still referred to, not the whole dialog undone: a rename made along the way stays. */
+  it('should keep a referred state variable when the author declines, and take over the other changes', () => {
+    load(['state_1']);
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of([new StateVariable('state_2', 'neu', '')]));
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(false));
+
+    service.editStateVariables();
+
+    expect(service.unit.stateVariables.map(stateVariable => stateVariable.id)).toEqual(['state_2', 'state_1']);
+    expect(service.unit.pages[1].sections[0].visibilityRules.length).toBe(1);
+  });
+
+  it('should not apply a state variables dialog to a unit the host loaded while it was open', () => {
+    load(['state_1']);
+    const result = new Subject<StateVariable[]>();
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(result);
+    service.editStateVariables();
+
+    load([]);
+    result.next([]);
+
+    expect(dialogServiceSpy.showDeleteConfirmDialog).not.toHaveBeenCalled();
+    expect(service.unit.stateVariables.map(stateVariable => stateVariable.id)).toEqual(['state_1']);
+  });
+
+  it('should delete a state variable nothing refers to without asking', () => {
+    load([]);
+    dialogServiceSpy.showStateVariablesDialog.mockReturnValue(of([]));
+
+    service.editStateVariables();
+
+    expect(dialogServiceSpy.showDeleteConfirmDialog).not.toHaveBeenCalled();
+    expect(service.unit.stateVariables).toEqual([]);
+  });
+
+  /* Removing a rule into nothing would change what test takers see: with "and" its section is never shown now. It is
+     shown in the hints area instead, which opens on loading (#1520). */
+  it('should report a visibility rule into nothing on loading, leave it, and open the hints area', () => {
+    load(['text-field_9']);
+
+    expect(service.rulesIntoNothing.value).toEqual([{
+      location: expect.objectContaining({ pageIndex: 1, sectionIndex: 0 }), targetIDs: ['text-field_9']
+    }]);
+    expect(service.loadRepairs.value).toEqual([]);
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).toHaveBeenCalled();
+    expect(service.unit.pages[1].sections[0].visibilityRules.length).toBe(1);
+  });
+
+  /* Asked again with every change, so the hint goes as soon as the rule asks for something that exists. */
+  it('should drop a rule into nothing from the hints once it is corrected, and count it until then', () => {
+    load(['text-field_9']);
+    let indicator: { open: number } | null | undefined;
+    service.hintIndicator.subscribe(value => { indicator = value; });
+    expect(indicator).toEqual({ open: 1 });
+
+    service.unit.pages[1].sections[0].visibilityRules[0].id = 'text-field_1';
+    service.updateUnitDefinition();
+
+    expect(service.rulesIntoNothing.value).toEqual([]);
+    expect(indicator).toBeNull();
+  });
+
+  it('should keep what loading repaired until the next load, without counting it as open', () => {
+    load([], [{
+      type: 'drop-list',
+      id: 'drop-list_1',
+      alias: 'ablage',
+      connectedTo: ['drop-list_9'],
+      position: {
+        gridColumn: 1, gridColumnRange: 1, gridRow: 2, gridRowRange: 1
+      }
+    }]);
+    let indicator: { open: number } | null | undefined;
+    service.hintIndicator.subscribe(value => { indicator = value; });
+
+    expect(service.loadRepairs.value.map(element => element.id)).toEqual(['drop-list_1']);
+    // Reachable through the indicator, with nothing counted as open.
+    expect(indicator).toEqual({ open: 0 });
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).toHaveBeenCalled();
+
+    load([]);
+    expect(service.loadRepairs.value).toEqual([]);
+  });
+
+  it('should not open the hints area for a unit that gives no hints', () => {
+    load([]);
+
+    expect(dialogServiceSpy.showVariableInfoFindingsDialog).not.toHaveBeenCalled();
+  });
+
+  /* What could not be loaded is still to be fixed, so the indicator counts it (#1537). */
+  it('should list a load error at its element and count it as open', () => {
+    load([]);
+    let indicator: { open: number } | null | undefined;
+    let hints: LoadErrorHint[] = [];
+    service.hintIndicator.subscribe(value => { indicator = value; });
+    service.loadErrorHints.subscribe(value => { hints = value; });
+
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'text-field_2' });
+
+    expect(indicator).toEqual({ open: 1 });
+    expect(hints.map(hint => [hint.element?.id, hint.location?.pageIndex])).toEqual([['text-field_2', 1]]);
+  });
+
+  it('should drop the load error of an element that is deleted', () => {
+    load([]);
+    let hints: LoadErrorHint[] = [];
+    let indicator: { open: number } | null | undefined;
+    service.loadErrorHints.subscribe(value => { hints = value; });
+    service.hintIndicator.subscribe(value => { indicator = value; });
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'text-field_2' });
+
+    service.unit.pages[1].sections[0].elements = [];
+    service.updateUnitDefinition();
+
+    expect(hints).toEqual([]);
+    expect(indicator).toBeNull();
+  });
+
+  it('should forget what the previous unit could not load when the next one is loaded', () => {
+    load([]);
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'text-field_2' });
+
+    load([]);
+
+    expect(loadErrorService.errors.value).toEqual([]);
+  });
+
+  it('should forget it on loading an empty unit as well', () => {
+    load([]);
+    loadErrorService.report({ code: 'IMAGE_NOT_LOADING', message: 'Failed', elementId: 'text-field_2' });
+
+    service.loadUnitDefinition('');
+
+    expect(loadErrorService.errors.value).toEqual([]);
+  });
+});
+
+describe('UnitService - replacing ids that break the contract (#1508)', () => {
+  let service: UnitService;
+  let idService: IDService;
+  let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
+  const position = (gridRow: number) => ({
+    gridColumn: 1, gridColumnRange: 1, gridRow, gridRowRange: 1
+  });
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    idService = new IDService();
+    veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
+    service = new UnitService(new SelectionService(), veronaApiServiceSpy,
+                              createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showVariableInfoFindingsDialog']),
+                              idService, translateServiceSpy, new LoadErrorService());
+    const blueprint = createUnitBlueprint('unused');
+    blueprint.stateVariables = [new StateVariable('März', 'maerz', '')];
+    blueprint.pages[0].sections[0].elements.push(...[
+      {
+        type: 'drop-list',
+        id: 'Ablage 1',
+        alias: 'ablage',
+        position: position(1),
+        value: [{ text: 'A', id: 'value_1', alias: 'option_a' }]
+      },
+      {
+        type: 'drop-list',
+        id: 'drop-list_2',
+        alias: 'zweite',
+        position: position(2),
+        connectedTo: ['Ablage 1']
+      },
+      {
+        type: 'text-field', id: 'Text_1', alias: 'erstes', position: position(3)
+      },
+      {
+        type: 'text-field', id: 'text_1', alias: 'zweites', position: position(4)
+      }
+    ] as unknown as PositionedUIElement[]);
+    blueprint.pages[0].sections[0].visibilityRules = [{ id: 'März', operator: '=', value: '1' }];
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  });
+
+  const elementOf = (alias: string): UIElement => service.unit.getAllElements()
+    .find(element => element.alias === alias) as UIElement;
+
+  it('should give an element a generated id, register it and point the references at it', () => {
+    const dropList = elementOf('ablage') as DropListElement;
+
+    service.replaceIds([{ element: dropList }]);
+
+    expect(dropList.id).toMatch(/^drop-list_\d+_\d+$/);
+    expect(idService.isIDAvailable(dropList.id)).toBe(false);
+    expect(idService.isIDAvailable('Ablage 1')).toBe(true);
+    expect((elementOf('zweite') as DropListElement).connectedTo).toEqual([dropList.id]);
+    expect(dropList.value[0].originListID).toBe(dropList.id);
+    expect(dropList.alias).toBe('ablage');
+  });
+
+  it('should report the unit with the new id, drop the finding and refresh the properties panel', () => {
+    const dropList = elementOf('ablage');
+    const panelRefresh = vi.fn();
+    service.elementPropertyUpdated.subscribe(panelRefresh);
+
+    service.replaceIds([{ element: dropList }]);
+
+    expect(panelRefresh).toHaveBeenCalled();
+
+    const reported = veronaApiServiceSpy.sendChanged.mock.lastCall?.[2] as VariableInfo[];
+    expect(reported.map(info => info.id)).toContain(dropList.id);
+    expect(service.variableInfoFindings.value
+      .some(finding => finding.origin.location?.element === dropList)).toBe(false);
+  });
+
+  it('should give a state variable a generated id and carry its visibility rule along', () => {
+    const [stateVariable] = service.unit.stateVariables;
+
+    service.replaceIds([{ stateVariable }]);
+
+    expect(stateVariable.id).toMatch(/^state-variable_\d+_\d+$/);
+    expect(service.unit.pages[0].sections[0].visibilityRules[0].id).toBe(stateVariable.id);
+  });
+
+  /* Each id is asked right before it is replaced: of a pair that differs only in letter case, one is enough, and
+     only one variable loses its codings. */
+  it('should replace only one of two ids that differ only in letter case', () => {
+    const first = elementOf('erstes');
+    const second = elementOf('zweites');
+
+    service.replaceIds([{ element: first }, { element: second }]);
+
+    expect(first.id).not.toBe('Text_1');
+    expect(second.id).toBe('text_1');
+  });
+
+  /* The validator compares variable ids, a GeoGebra variable's `<element id>_<name>` included; the replacement has
+     to see the same collision, or the button it offers would do nothing. */
+  it('should replace an id that collides only with a GeoGebra variable id', () => {
+    const geometry = new GeometryElement({ type: 'geometry', id: 'geo', alias: 'ggb' });
+    geometry.trackedVariables = [{ id: 'A', value: '' }];
+    const field = new TextFieldElement({ type: 'text-field', id: 'geo_A', alias: 'feld' });
+    service.unit.pages[0].sections[0].elements.push(...[geometry, field] as unknown as PositionedUIElement[]);
+
+    service.replaceIds([{ element: field }]);
+
+    expect(field.id).not.toBe('geo_A');
+  });
+
+  it('should report nothing to the host when no id needed replacing', () => {
+    veronaApiServiceSpy.sendChanged.mockClear();
+
+    service.replaceIds([{ element: elementOf('zweite') }]);
+
+    expect(elementOf('zweite').id).toBe('drop-list_2');
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+
+  it('should carry a button that sets the state variable along', () => {
+    const button = new ButtonElement({
+      type: 'button',
+      id: 'button_1',
+      alias: 'knopf',
+      action: 'stateVariableChange',
+      actionParam: new StateVariable('März', 'maerz', '1')
+    });
+    service.unit.pages[0].sections[0].elements.push(button as unknown as PositionedUIElement);
+    const [stateVariable] = service.unit.stateVariables;
+
+    service.replaceIds([{ stateVariable }]);
+
+    expect((button.actionParam as StateVariable).id).toBe(stateVariable.id);
+  });
+
+  /* The applet hangs under the element id in the page, which the template renames on its next check. */
+  it('should re-inject a geometry applet only after the id is in the page', fakeAsync(() => {
+    const geometry = new GeometryElement({ type: 'geometry', id: 'Geo 1', alias: 'geo' });
+    service.unit.pages[0].sections[0].elements.push(geometry as unknown as PositionedUIElement);
+    const reinjected = vi.fn();
+    service.geometryElementPropertyUpdated.subscribe(reinjected);
+
+    service.replaceIds([{ element: geometry }]);
+    expect(reinjected).not.toHaveBeenCalled();
+    tick();
+
+    expect(reinjected).toHaveBeenCalledWith(geometry.id);
+  }));
+});
+
+/* Stored units can hold a state variable and an element with exactly the same id. */
+describe('UnitService - replacing an id that has an exact twin (#1508)', () => {
+  it('should keep the registration and follow only the references that cannot mean the twin', () => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    const idService = new IDService();
+    const service = new UnitService(new SelectionService(), createSpyObj<VeronaAPIService>(['sendChanged']),
+                                    createSpyObj<DialogService>(['showVariableInfoFindingsDialog']),
+                                    idService, translateServiceSpy, new LoadErrorService());
+    const blueprint = createUnitBlueprint('unused');
+    blueprint.stateVariables = [new StateVariable('Wert', 'zustand', '')];
+    blueprint.pages[0].sections[0].elements.push({
+      type: 'text-field',
+      id: 'Wert',
+      alias: 'feld',
+      position: {
+        gridColumn: 1, gridColumnRange: 1, gridRow: 1, gridRowRange: 1
+      }
+    } as unknown as PositionedUIElement);
+    blueprint.pages[0].sections[0].visibilityRules = [{ id: 'Wert', operator: '=', value: '1' }];
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+    const [stateVariable] = service.unit.stateVariables;
+
+    service.replaceIds([{ stateVariable }]);
+
+    expect(stateVariable.id).not.toBe('Wert');
+    expect(idService.isIDAvailable('Wert')).toBe(false);
+    // A visibility rule could ask either; nothing tells them apart, so it stays with the element.
+    expect(service.unit.pages[0].sections[0].visibilityRules[0].id).toBe('Wert');
   });
 });
 
@@ -139,10 +732,10 @@ describe('UnitService - discarding a unit that was never saved with content (#10
     service = new UnitService(
       selectionService,
       createSpyObj<VeronaAPIService>(['sendChanged']),
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']),
       idService,
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -235,11 +828,11 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
     service = new UnitService(
       new SelectionService(),
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
       new DialogService({ open: dialogOpen } as unknown as MatDialog,
                         createSpyObj<MessageService>(['showError']), translateServiceSpy),
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -302,13 +895,69 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
   }));
 });
 
+/* The load error dialog has no close option, and the host keeps the editor for the next unit and only sends a new
+   start command. Real DialogService, fake MatDialog, as for #1247 (#1581). */
+describe('UnitService - a load error dialog superseded by the next load (#1581)', () => {
+  let service: UnitService;
+  let dialogs: { close: Mock }[];
+
+  beforeEach(() => {
+    dialogs = [];
+    const dialogOpen = vi.fn(() => {
+      const dialog = { afterClosed: () => new Subject<void>(), close: vi.fn() };
+      dialogs.push(dialog);
+      return dialog;
+    });
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    service = new UnitService(
+      new SelectionService(),
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      new DialogService({ open: dialogOpen } as unknown as MatDialog,
+                        createSpyObj<MessageService>(['showError']), translateServiceSpy),
+      new IDService(),
+      translateServiceSpy,
+      new LoadErrorService()
+    );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  const loadNewerUnit = (): void => {
+    service.loadUnitDefinition(JSON.stringify({ ...createUnitBlueprint('future'), version: '99.0.0' }));
+  };
+
+  it('takes the dialog away when the next unit loads', () => {
+    loadNewerUnit();
+    expect(dialogs.length).toBe(1);
+
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('current-unit')));
+
+    expect(dialogs[0].close).toHaveBeenCalled();
+    expect(service.unit.stateVariables[0].id).toBe('current-unit');
+  });
+
+  it('takes it away when the next unit is refused as well, instead of stacking a second one', () => {
+    loadNewerUnit();
+
+    loadNewerUnit();
+
+    expect(dialogs.length).toBe(2);
+    expect(dialogs[0].close).toHaveBeenCalled();
+    expect(dialogs[1].close).not.toHaveBeenCalled();
+  });
+});
+
 /* A delete waits for its confirmation, and the object, the references and the index the caller kept all
    belong to the unit as it was then. A start command arriving in between replaces that unit, so these
    tests use the real DialogService and fake only MatDialog itself (#1253). */
 describe('UnitService - a delete whose unit is replaced while the confirmation is open (#1253)', () => {
   let service: UnitService;
   let selectionService: SelectionService;
-  let messageServiceSpy: SpyObj<MessageService>;
   let veronaApiServiceSpy: SpyObj<VeronaAPIService>;
   let afterClosed: Subject<boolean>;
   let close: Mock;
@@ -325,20 +974,17 @@ describe('UnitService - a delete whose unit is replaced while the confirmation i
     const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
     translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
     selectionService = new SelectionService();
-    messageServiceSpy = createSpyObj<MessageService>([
-      'showFixedReferencePanel', 'showReferencePanel', 'showPrompt'
-    ]);
     veronaApiServiceSpy = createSpyObj<VeronaAPIService>(['sendChanged']);
 
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      messageServiceSpy,
       new DialogService({
         open: vi.fn().mockReturnValue({ afterClosed: () => afterClosed, close })
       } as unknown as MatDialog, createSpyObj<MessageService>(['showError']), translateServiceSpy),
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
     service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('unit-to-delete-from')));
   });
@@ -405,28 +1051,20 @@ describe('UnitService - a delete whose unit is replaced while the confirmation i
     expect(confirmed).toBe(true);
   }));
 
-  /* Cancelling reports the references the deletion would have broken. Those name elements of the unit
-     that is gone, so a replaced unit must not bring up that panel. */
-  it('does not offer the references of the replaced unit', fakeAsync(() => {
+  /* The dialog lists the references with the way to each of them; cancelling leaves them as they are (#1520). */
+  it('keeps the references when the user cancels the delete herself', fakeAsync(() => {
     const references: ReferenceList[] = [{ element: { alias: 'page_1', type: 'page' }, refs: [] }];
     service.referenceManager.getPageElementsReferences = vi.fn(() => references);
-    service.prepareDelete('page', service.unit.pages[0], 0);
-
-    loadAnotherUnit();
-    tick();
-
-    expect(messageServiceSpy.showReferencePanel).not.toHaveBeenCalled();
-  }));
-
-  it('offers them when the user cancels the delete herself', fakeAsync(() => {
-    const references: ReferenceList[] = [{ element: { alias: 'page_1', type: 'page' }, refs: [] }];
-    service.referenceManager.getPageElementsReferences = vi.fn(() => references);
-    service.prepareDelete('page', service.unit.pages[0], 0);
+    const deleteReferences = vi.spyOn(ReferenceManager, 'deleteReferences');
+    let confirmed: boolean | undefined;
+    service.prepareDelete('page', service.unit.pages[0], 0).then(result => { confirmed = result; });
 
     afterClosed.next(false);
     tick();
 
-    expect(messageServiceSpy.showReferencePanel).toHaveBeenCalledWith(references);
+    expect(confirmed).toBe(false);
+    expect(deleteReferences).not.toHaveBeenCalled();
+    deleteReferences.mockRestore();
   }));
 
   /* The loss the ticket describes, through the caller that keeps the index: the page at that position
@@ -462,10 +1100,10 @@ describe('UnitService - page break (#1203)', () => {
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog']),
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
     /* Two pages, the first with three sections: the second page's button carries index 1, which names
        nothing on a page that holds one section. */
@@ -530,10 +1168,10 @@ describe('UnitService - removing a page break (#1298)', () => {
     service = new UnitService(
       selectionService,
       veronaApiServiceSpy,
-      createSpyObj<MessageService>(['showFixedReferencePanel', 'showReferencePanel', 'showPrompt']),
       createSpyObj<DialogService>(['showUnitDefErrorDialog']),
       new IDService(),
-      translateServiceSpy
+      translateServiceSpy,
+      new LoadErrorService()
     );
   });
 
@@ -567,6 +1205,157 @@ describe('UnitService - removing a page break (#1298)', () => {
 
     expect(service.unit.pages.length).toBe(2);
     expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+});
+
+/* A navigation button stores the number of the page it leads to. The steps on pages renumber them, and the button
+   has to keep leading to the page it led to (#1511). */
+describe('UnitService - navigation buttons when pages change (#1511)', () => {
+  let service: UnitService;
+  let selectionService: SelectionService;
+  let dialogServiceSpy: SpyObj<DialogService>;
+
+  const navigationButton = (id: string, target: number): Record<string, unknown> => ({
+    type: 'button',
+    id,
+    alias: id,
+    action: 'pageNav',
+    actionParam: target,
+    position: {
+      gridColumn: 1, gridColumnRange: 1, gridRow: 1, gridRowRange: 1
+    }
+  });
+
+  /** `pageCount` pages, the first with two sections and the buttons; `alwaysVisibleFirst` makes it permanently
+      visible, so the buttons count from the second page on. */
+  const load = (pageCount: number, buttons: Record<string, unknown>[], alwaysVisibleFirst = false): void => {
+    const blueprint = createUnitBlueprint('state_1');
+    const page = JSON.parse(JSON.stringify(blueprint.pages[0]));
+    blueprint.pages[0].sections.push(JSON.parse(JSON.stringify(blueprint.pages[0].sections[0])));
+    for (let i = 1; i < pageCount; i++) blueprint.pages.push(JSON.parse(JSON.stringify(page)));
+    blueprint.pages[0].alwaysVisible = alwaysVisibleFirst;
+    blueprint.pages[0].sections[0].elements.push(...buttons as unknown as PositionedUIElement[]);
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  };
+
+  const buttonOf = (id: string): ButtonElement => service.unit.getAllElements('button')
+    .find(element => element.id === id) as ButtonElement;
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation((key: string | string[]) => key as string);
+    selectionService = new SelectionService();
+    dialogServiceSpy = createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']);
+    service = new UnitService(
+      selectionService,
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      dialogServiceSpy,
+      new IDService(),
+      translateServiceSpy,
+      new LoadErrorService()
+    );
+  });
+
+  it('should follow its page when a page break inserts a page before it', () => {
+    load(3, [navigationButton('button_1', 2)]);
+
+    service.moveSectionToNewpage(0, 1);
+
+    expect(buttonOf('button_1').actionParam).toBe(3);
+  });
+
+  it('should lead to the page that took over the content of its page when the page break is removed', () => {
+    load(4, [navigationButton('button_1', 2), navigationButton('button_2', 3)]);
+
+    service.collapsePage(2);
+
+    expect(buttonOf('button_1').actionParam).toBe(1);
+    expect(buttonOf('button_2').actionParam).toBe(2);
+  });
+
+  /* A page break keeps the element selection, so the panel of a selected button would still show the old page. */
+  it('should have the properties panel refreshed when a button changed, and only then', () => {
+    load(3, [navigationButton('button_1', 1)]);
+    let refreshed = 0;
+    service.elementPropertyUpdated.subscribe(() => { refreshed += 1; });
+
+    service.keepPageNavigation(() => {});
+    expect(refreshed).toBe(0);
+
+    service.moveSectionToNewpage(0, 1);
+    expect(refreshed).toBe(1);
+  });
+
+  /* The case of the ticket: with a permanently visible page in front, deleting a page asked about the buttons
+     leading to the page after it, and those of the pages behind it led one page too far afterwards. */
+  it('should ask about the buttons of the page that is deleted, and keep the others on their pages', async () => {
+    load(4, [navigationButton('button_1', 0), navigationButton('button_2', 1), navigationButton('button_3', 2)], true);
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(true));
+    selectionService.selectedPageIndex = 1;
+
+    await new PageService(service, selectionService).deletePage(1);
+
+    const refs = dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[3] as ReferenceList[];
+    expect(refs.flatMap(refList => refList.refs)).toEqual([buttonOf('button_1')]);
+    expect(buttonOf('button_1').actionParam).toBeNull();
+    expect(buttonOf('button_2').actionParam).toBe(0);
+    expect(buttonOf('button_3').actionParam).toBe(1);
+  });
+});
+
+/* The page tabs leave a permanently visible page uncounted and show only its icon; the question before deleting a
+   page names it the same way (#1513). */
+describe('UnitService - naming the page in the delete confirmation (#1513)', () => {
+  let service: UnitService;
+  let dialogServiceSpy: SpyObj<DialogService>;
+
+  /** Three pages, the first one permanently visible if asked for. */
+  const load = (alwaysVisibleFirst: boolean): void => {
+    const blueprint = createUnitBlueprint('state_1');
+    const page = JSON.stringify(blueprint.pages[0]);
+    blueprint.pages.push(JSON.parse(page), JSON.parse(page));
+    blueprint.pages[0].alwaysVisible = alwaysVisibleFirst;
+    service.loadUnitDefinition(JSON.stringify(blueprint));
+  };
+
+  const confirmationText = async (pageIndex: number): Promise<string> => {
+    await service.prepareDelete('page', service.unit.pages[pageIndex], pageIndex);
+    return dialogServiceSpy.showDeleteConfirmDialog.mock.lastCall?.[0] as string;
+  };
+
+  beforeEach(() => {
+    const translateServiceSpy = createSpyObj<TranslateService>(['instant']);
+    translateServiceSpy.instant.mockImplementation(((key: string, params?: { page: number }) => (params ?
+      `${key}:${params.page}` : key)) as TranslateService['instant']);
+    dialogServiceSpy = createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showDeleteConfirmDialog']);
+    dialogServiceSpy.showDeleteConfirmDialog.mockReturnValue(of(false));
+    service = new UnitService(
+      new SelectionService(),
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      dialogServiceSpy,
+      new IDService(),
+      translateServiceSpy,
+      new LoadErrorService()
+    );
+  });
+
+  it('should count every page when none is permanently visible', async () => {
+    load(false);
+
+    expect(await confirmationText(1)).toBe('deletePageConfirm:2');
+  });
+
+  it('should leave a permanently visible page uncounted', async () => {
+    load(true);
+
+    expect(await confirmationText(1)).toBe('deletePageConfirm:1');
+    expect(await confirmationText(2)).toBe('deletePageConfirm:2');
+  });
+
+  it('should name the permanently visible page itself without a number', async () => {
+    load(true);
+
+    expect(await confirmationText(0)).toBe('deleteAlwaysVisiblePageConfirm');
   });
 });
 

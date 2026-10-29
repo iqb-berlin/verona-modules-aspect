@@ -1,3 +1,4 @@
+@let options = useImages ? imageOptions : textOptions;
 <h2 mat-dialog-title>{{ 'sectionTemplates.checkboxTitle' | translate }}</h2>
 <div mat-dialog-content>
   <h3>{{ 'sectionTemplates.question' | translate }}</h3>
@@ -15,10 +16,10 @@
       <mat-label>{{ 'newOption' | translate }}</mat-label>
       <textarea #newItem matInput cdkTextareaAutosize type="text"
                 (keydown.enter)="$event.stopPropagation(); $event.preventDefault();"
-                (keyup.enter)="options.push(newItem.value); newItem.select()"></textarea>
+                (keyup.enter)="textOptions.push(newItem.value); newItem.select()"></textarea>
       <button mat-icon-button matSuffix color="primary"
               [disabled]="newItem.value === ''"
-              (click)="options.push(newItem.value); newItem.select()">
+              (click)="textOptions.push(newItem.value); newItem.select()">
         <mat-icon>add</mat-icon>
       </button>
     </mat-form-field>
@@ -27,19 +28,24 @@
       {{ 'sectionTemplates.uploadImage' | translate }}
     </button>
     <input type="file" hidden accept="image/*" #imageUpload id="button-image-upload"
-           (change)="loadImage(options, imageUpload)">
+           (change)="loadImage(imageOptions, imageUpload)">
   }
   <div class="drop-list" cdkDropList [cdkDropListData]="options" (cdkDropListDropped)="drop($event)">
-    <div *ngFor="let item of options; let i = index" cdkDrag cdkDragLockAxis="y" class="drop-list-option">
-      @if (useImages) {
-        <img [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
-      } @else {
-        <div class="text-item">{{ item }}</div>
-      }
-      <button mat-icon-button color="primary" (click)="removeListItem(options, i)">
-        <mat-icon>clear</mat-icon>
-      </button>
-    </div>
+    @for (item of options; track $index; let i = $index) {
+      <div cdkDrag cdkDragLockAxis="y" class="drop-list-option">
+        @if (useImages) {
+          <img class="image-item" [src]="item" [style.object-fit]="'scale-down'" [style.height.px]="40">
+        } @else {
+          <div class="text-item">{{ item }}</div>
+          <button mat-icon-button color="primary" (click)="editItem(options, i)">
+            <mat-icon>build</mat-icon>
+          </button>
+        }
+        <button mat-icon-button color="primary" (click)="removeListItem(options, i)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    }
   </div>
 </div>
 <div mat-dialog-actions>

@@ -1,0 +1,43 @@
+:host {display: block; width: 100%; height: 100%;}
+
+.tetfolio-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  // The iframe is laid out larger than the container when it is scaled down; the transform shrinks
+  // it back, but layout still sees the unscaled size.
+  overflow: hidden;
+}
+
+// Taken out of the flow: laid out at the experiment's own width, it would otherwise push a grid
+// cell of a dynamic section to that width, and there would be nothing left to scale down to.
+.tetfolio-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  display: block;
+  transform-origin: 0 0;
+}
+
+// Covers the iframe while a saved state is replayed inside it; the iframe stays rendered
+// underneath, because the experiment has to run to restore itself.
+.tetfolio-restore-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.tetfolio-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  color: #888;
+  background: #f5f5f5;
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+}

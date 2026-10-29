@@ -1,6 +1,6 @@
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 import { InputElement } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -44,7 +44,6 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
      element.spec.ts, not the type. */
   styling: Record<never, never> = {};
 
-  static title: string = 'Bildbereiche';
   static icon: string = 'ads_click';
 
   constructor(element?: Partial<HotspotImageProperties>, idService?: AbstractIDService) {
@@ -72,13 +71,12 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'boolean',
+      type: 'BOOLEAN',
       format: '',
       multiple: true,
       nullable: false,
       values: [],
       valuePositionLabels: this.getAnswerSchemePositionLabels(),
-      page: '',
       valuesComplete: true
     }];
   }

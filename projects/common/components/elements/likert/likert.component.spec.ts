@@ -129,4 +129,16 @@ describe('LikertComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Keine Zeilen oder Spalten vorhanden');
   });
+
+  describe('startsWithText', () => {
+    it('should say yes when there is a label', () => {
+      component.elementModel.label = 'Frage';
+      expect(LikertComponent.startsWithText(component.elementModel)).toBe(true);
+    });
+
+    it('should say no when the label is empty', () => {
+      component.elementModel.label = '  ';
+      expect(LikertComponent.startsWithText(component.elementModel)).toBe(false);
+    });
+  });
 });

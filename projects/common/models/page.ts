@@ -1,6 +1,6 @@
 import { Section, SectionProperties } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { environment } from 'common/environment';
 import { DropListElement } from 'common/models/elements/drop-list';
 import { AbstractIDService } from 'common/models/id-interfaces';

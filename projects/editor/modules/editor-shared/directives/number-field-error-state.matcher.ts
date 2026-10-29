@@ -25,11 +25,18 @@ import { ErrorStateMatcher } from '@angular/material/core';
  *
  * Provided by the directive itself, on the element - MatInput reads its default matcher from the
  * same node injector, so this reaches the boxes that carry the directive and nothing else.
+ *
+ * Since #1523 the red outlasts the entry in one case: after the old value was put back, the box stays
+ * red and says why under itself until it is typed in again, beside the warning that fades. The
+ * directive says so through `refused`; the box itself is valid and pristine by then.
  */
 @Injectable()
 export class NumberFieldErrorStateMatcher implements ErrorStateMatcher {
-  // eslint-disable-next-line class-methods-use-this
+  /** Set by the directive while a refused entry has been put back and the field says why. */
+  refused: boolean = false;
+
   isErrorState(control: AbstractControl | null): boolean {
-    return !!control && control.invalid && control.dirty;
+    // A disabled control is never invalid, but `refused` is not the control's to know.
+    return !!control && !control.disabled && ((control.invalid && control.dirty) || this.refused);
   }
 }

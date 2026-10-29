@@ -1,3 +1,9 @@
+// Positioned, the word is painted after the following delimiter. Otherwise the delimiter's marking colour
+// covers what an italic last letter puts over its right edge (#1613).
+:host {
+  position: relative;
+}
+
 .is-active {
   cursor: pointer;
 }

@@ -10,11 +10,12 @@
     <legend>{{'section-menu.rows' | translate }}</legend>
     <mat-form-field appearance="outline">
       <mat-label>{{ 'section-menu.rowCount' | translate }}</mat-label>
-      <input matInput type="number" required [min]="maxRowIndex" aspectNumberField
+      <input matInput type="number" required [min]="maxRowIndex" aspectNumberField #rowCountField="aspectNumberField"
              [ngModel]="combinedProperties.gridRowSizes.length"
              (click)="$event.stopPropagation()"
              (numberChange)="commitCount('gridRowSizes', $event)"
              (numberCommit)="applyCount('gridRowSizes')">
+      <mat-error>{{ rowCountField.errorText }}</mat-error>
     </mat-form-field>
     @for (size of combinedProperties.gridRowSizes; track $index) {
       <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + ($index + 1)"
@@ -33,10 +34,12 @@
     <mat-form-field appearance="outline">
       <mat-label>{{ 'section-menu.columnCount' | translate }}</mat-label>
       <input matInput type="number" required [min]="maxColIndex" aspectNumberField
+             #columnCountField="aspectNumberField"
              [ngModel]="combinedProperties.gridColumnSizes.length"
              (click)="$event.stopPropagation()"
              (numberChange)="commitCount('gridColumnSizes', $event)"
              (numberCommit)="applyCount('gridColumnSizes')">
+      <mat-error>{{ columnCountField.errorText }}</mat-error>
     </mat-form-field>
     @for (size of combinedProperties.gridColumnSizes; track $index) {
       <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + ($index + 1)"

@@ -1,13 +1,28 @@
 .section-wrapper {
   display: flex;
+  /* Also read by `.starts-without-text` in the player's styles.scss: its invisible line has to be set
+     in the number's font to put the number at the top edge of an element. */
+  --section-number-font-size: 20px;
+}
+
+.section-number {
+  min-width: 35px;
+  font-size: var(--section-number-font-size);
 }
 
 .section-wrapper.row-align {
   flex-direction: row;
-  /* Not `baseline`: an element without a text baseline -- an image, a video -- has one synthesized
-     from its bottom margin edge, which put the section number next to the bottom of a picture in the
-     first row instead of next to its top (#1021). The editor aligns the number the same way. */
+  /* A static section places its elements out of flow and has no line to align with: at the baseline,
+     its content moved down by the height of the number. */
   align-items: flex-start;
+}
+
+/* The number stands on the baseline of the first line of text (#1618). An element without a line of
+   text at its top has one made up at its bottom edge, which put the number next to the bottom of a
+   picture (#1021) -- `StartsWithTextPipe` gives such an element an invisible first line instead. An
+   empty grid would make its baseline up the same way, so a section needs elements to be aligned so. */
+.section-wrapper.row-align.first-line-aligned {
+  align-items: baseline;
 }
 
 .section-wrapper.column-align {

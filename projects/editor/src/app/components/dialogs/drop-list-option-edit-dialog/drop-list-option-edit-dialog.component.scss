@@ -1,8 +1,7 @@
-.wrapper {
-  display:flex;
-  flex-direction: column;
-  height: 100%;
+.alias-problem-hint {
+  color: var(--mat-sys-error, #ba1a1a);
 }
+
 .content {
   display: flex;
   flex-direction: column;

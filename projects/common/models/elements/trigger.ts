@@ -23,7 +23,6 @@ export class TriggerElement extends UIElement implements TriggerProperties {
      element.spec.ts, not the type. */
   styling: Record<never, never> = {};
 
-  static title: string = 'Auslöser';
   static icon: string = 'bolt';
 
   constructor(element?: Partial<TriggerProperties>, idService?: AbstractIDService) {

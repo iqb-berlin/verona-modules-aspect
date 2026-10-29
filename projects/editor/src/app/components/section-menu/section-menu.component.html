@@ -63,79 +63,85 @@
                   (change)="updateModel('dynamicPositioning', $event.checked)">
       {{'section-menu.dynamic-positioning' | translate }}
     </mat-checkbox>
-    <ng-container *ngIf="!section.dynamicPositioning">
+    @if (!section.dynamicPositioning) {
       <mat-form-field class="section-height-input" appearance="outline">
         <mat-label>{{'section-menu.height' | translate }}</mat-label>
-        <input matInput type="number" min="0" required aspectNumberField
+        <input matInput type="number" min="0" required aspectNumberField #heightStaticField="aspectNumberField"
                [ngModel]="section.height"
                (click)="$any($event).stopPropagation()"
                (numberChange)="commitHeight($event)">
+        <mat-error>{{ heightStaticField.errorText }}</mat-error>
       </mat-form-field>
-    </ng-container>
-    <div *ngIf="section.dynamicPositioning">
-      <fieldset>
-        <legend>{{'section-menu.rows' | translate }}</legend>
-        <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
-                      (click)="$any($event).stopPropagation()"
-                      (change)="updateModel('autoRowSize', $event.checked)">
-          {{'section-menu.autoRowSize' | translate }}
-        </mat-checkbox>
-        <ng-container *ngIf="!section.autoRowSize">
-          <mat-form-field appearance="outline">
-            <mat-label>{{'section-menu.height' | translate }}</mat-label>
-            <input matInput type="number" min="0" required aspectNumberField
-                   [ngModel]="section.height"
-                   (click)="$any($event).stopPropagation()"
-                   (numberChange)="commitHeight($event)">
-          </mat-form-field>
+    } @else {
+      <div>
+        <fieldset>
+          <legend>{{'section-menu.rows' | translate }}</legend>
+          <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
+                        (click)="$any($event).stopPropagation()"
+                        (change)="updateModel('autoRowSize', $event.checked)">
+            {{'section-menu.autoRowSize' | translate }}
+          </mat-checkbox>
+          @if (!section.autoRowSize) {
+            <mat-form-field appearance="outline">
+              <mat-label>{{'section-menu.height' | translate }}</mat-label>
+              <input matInput type="number" min="0" required aspectNumberField #heightGridField="aspectNumberField"
+                     [ngModel]="section.height"
+                     (click)="$any($event).stopPropagation()"
+                     (numberChange)="commitHeight($event)">
+              <mat-error>{{ heightGridField.errorText }}</mat-error>
+            </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>{{'section-menu.rowCount' | translate }}</mat-label>
-            <input matInput type="number" min="1" required aspectNumberField
-                   [ngModel]="section.gridRowSizes.length"
-                   (click)="$any($event).stopPropagation()"
-                   (numberChange)="commitCount('gridRowSizes', $event)"
-                   (numberCommit)="applyCount('gridRowSizes')">
-          </mat-form-field>
-          <ng-container *ngFor="let size of section.gridRowSizes ; let i = index">
-            <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
-                                     [value]="size.value"
-                                     [unit]="size.unit"
-                                     [allowedUnits]="['px', 'fr']"
-                                     [min]="0"
-                                     (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
-            </aspect-size-input-panel>
-          </ng-container>
-        </ng-container>
-      </fieldset>
-      <fieldset>
-        <legend>{{'section-menu.columns' | translate }}</legend>
-        <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
-                      (click)="$any($event).stopPropagation()"
-                      (change)="updateModel('autoColumnSize', $event.checked)">
-          {{'section-menu.autoColumnSize' | translate }}
-        </mat-checkbox>
-        <ng-container *ngIf="!section.autoColumnSize">
-          <mat-form-field appearance="outline">
-            <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
-            <input matInput type="number" min="1" required aspectNumberField
-                   [ngModel]="section.gridColumnSizes.length"
-                   (click)="$any($event).stopPropagation()"
-                   (numberChange)="commitCount('gridColumnSizes', $event)"
-                   (numberCommit)="applyCount('gridColumnSizes')">
-          </mat-form-field>
-          <ng-container *ngFor="let size of section.gridColumnSizes; let i = index">
-            <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
-                                     [value]="size.value"
-                                     [unit]="size.unit"
-                                     [allowedUnits]="['px', 'fr']"
-                                     [min]="0"
-                                     (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
-            </aspect-size-input-panel>
-          </ng-container>
-        </ng-container>
-      </fieldset>
-    </div>
+            <mat-form-field appearance="outline">
+              <mat-label>{{'section-menu.rowCount' | translate }}</mat-label>
+              <input matInput type="number" min="1" required aspectNumberField #rowCountField="aspectNumberField"
+                     [ngModel]="section.gridRowSizes.length"
+                     (click)="$any($event).stopPropagation()"
+                     (numberChange)="commitCount('gridRowSizes', $event)"
+                     (numberCommit)="applyCount('gridRowSizes')">
+              <mat-error>{{ rowCountField.errorText }}</mat-error>
+            </mat-form-field>
+            @for (size of section.gridRowSizes; track $index; let i = $index) {
+              <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
+                                       [value]="size.value"
+                                       [unit]="size.unit"
+                                       [allowedUnits]="['px', 'fr']"
+                                       [min]="0"
+                                       (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
+              </aspect-size-input-panel>
+            }
+          }
+        </fieldset>
+        <fieldset>
+          <legend>{{'section-menu.columns' | translate }}</legend>
+          <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
+                        (click)="$any($event).stopPropagation()"
+                        (change)="updateModel('autoColumnSize', $event.checked)">
+            {{'section-menu.autoColumnSize' | translate }}
+          </mat-checkbox>
+          @if (!section.autoColumnSize) {
+            <mat-form-field appearance="outline">
+              <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
+              <input matInput type="number" min="1" required aspectNumberField
+                     #columnCountField="aspectNumberField"
+                     [ngModel]="section.gridColumnSizes.length"
+                     (click)="$any($event).stopPropagation()"
+                     (numberChange)="commitCount('gridColumnSizes', $event)"
+                     (numberCommit)="applyCount('gridColumnSizes')">
+              <mat-error>{{ columnCountField.errorText }}</mat-error>
+            </mat-form-field>
+            @for (size of section.gridColumnSizes; track $index; let i = $index) {
+              <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
+                                       [value]="size.value"
+                                       [unit]="size.unit"
+                                       [allowedUnits]="['px', 'fr']"
+                                       [min]="0"
+                                       (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
+              </aspect-size-input-panel>
+            }
+          }
+        </fieldset>
+      </div>
+    }
   </div>
 </mat-menu>
 

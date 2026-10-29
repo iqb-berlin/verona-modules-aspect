@@ -145,4 +145,34 @@ describe('PrintSectionComponent', () => {
     expect(fixture.debugElement.query(By.css('.section-wrapper')).nativeElement.classList)
       .toContain('column-align');
   });
+  it('should align the number with the first line of text in a dynamic section', () => {
+    component.sectionNumbering = { enableSectionNumbering: true, sectionNumberingPosition: 'left' };
+    component.section = createSection([createElement('text-field_1')], true);
+
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.css('.section-wrapper')).nativeElement.classList)
+      .toContain('first-line-aligned');
+    expect(fixture.debugElement.query(By.css('.section-number')).nativeElement.textContent).toContain('1.');
+  });
+
+  it('should keep the number at the top of a static section', () => {
+    component.sectionNumbering = { enableSectionNumbering: true, sectionNumberingPosition: 'left' };
+    component.section = createSection([createElement('text-field_1')], false);
+
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.css('.section-wrapper')).nativeElement.classList)
+      .not.toContain('first-line-aligned');
+  });
+
+  it('should keep the number at the top of an empty dynamic section', () => {
+    component.sectionNumbering = { enableSectionNumbering: true, sectionNumberingPosition: 'left' };
+    component.section = createSection([], true);
+
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.css('.section-wrapper')).nativeElement.classList)
+      .not.toContain('first-line-aligned');
+  });
 });

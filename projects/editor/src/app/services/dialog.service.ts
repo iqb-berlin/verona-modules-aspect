@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { filter, take, takeUntil } from 'rxjs/operators';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ClozeDocument } from 'common/models/elements/cloze';
+import { TEXT_EDITOR_DIALOG_CONFIG } from 'editor/modules/rich-text-editor/configs/text-editor-dialog.config';
 import { LikertRowElement } from 'common/models/elements/likert-row';
 import {
   SectionInsertDialogComponent
@@ -27,6 +28,9 @@ import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { StateVariable } from 'common/models/state-variable';
+import {
+  VariableInfoFindingsDialogComponent
+} from 'editor/src/app/components/dialogs/variable-info-findings-dialog/variable-info-findings-dialog.component';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog/unit-def-error-dialog.component';
 import { ReferenceList } from 'editor/src/app/classes/reference-manager';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -77,23 +81,37 @@ import { EditorSection } from 'editor/src/app/models/editor-section';
   providedIn: 'root'
 })
 export class DialogService {
+  private variableInfoFindingsDialog: MatDialogRef<VariableInfoFindingsDialogComponent> | undefined;
+
   constructor(private dialog: MatDialog,
               private messageService: MessageService,
               private translateService: TranslateService) { }
 
-  showLabelEditDialog(label: Label): Observable<Label> {
+  /**
+   * Closes every open dialog and then does what the author asked for, so that it happens in view: a delete dialog can
+   * stand on the element overview, and taking the author to an element under it would go unseen. Waiting for the
+   * close also lets the dialogs hand back the focus first, which would otherwise scroll back to where they were
+   * opened (#1520).
+   */
+  closeAllThen(action: () => void): void {
+    this.dialog.afterAllClosed.pipe(take(1)).subscribe(action);
+    this.dialog.closeAll();
+  }
+
+  /** `showTextAlignment` adds the alignment to the reduced editor, which a table header cell needs and
+     the labels of options do not (#1430). */
+  showLabelEditDialog(label: Label, showTextAlignment: boolean = false): Observable<Label> {
     const dialogRef = this.dialog.open(LabelEditDialogComponent, {
-      data: { label },
+      ...TEXT_EDITOR_DIALOG_CONFIG,
+      data: { label, showTextAlignment },
       autoFocus: false
     });
     return dialogRef.afterClosed();
   }
 
   /** The confirmation belongs to the unit the caller asked about, and the dialog outlives that unit as
-     soon as the host loads another one -- so a replaced unit takes the dialog with it. Narrowing the
-     result the way showSanitizationDialog does is left to the caller here: a cancelled delete still has
-     its references to report, so this one has to tell that apart from a superseded delete rather than
-     drop both. UnitService.prepareDelete does, on the unit it asked about (#1253). */
+     soon as the host loads another one -- so a replaced unit takes the dialog with it, closing it with
+     `false`. UnitService.prepareDelete checks the unit it asked about on every result (#1253). */
   showDeleteConfirmDialog(text: string, supersededBy: Observable<void>,
                           elementList?: UIElement[], refs?: ReferenceList[]): Observable<boolean> {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
@@ -105,17 +123,21 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showUnitDefErrorDialog(text: string): void {
-    this.dialog.open(UnitDefErrorDialogComponent, {
+  /** The dialog has no close option, as the unit did not load as it should. The host keeps the editor when the author
+     moves to another unit and only sends a new start command, so the next load closes it (#1581). */
+  showUnitDefErrorDialog(text: string, supersededBy: Observable<void>): void {
+    const dialogRef = this.dialog.open(UnitDefErrorDialogComponent, {
       data: { text },
       disableClose: true
     });
+    supersededBy
+      .pipe(takeUntil(dialogRef.afterClosed()))
+      .subscribe(() => dialogRef.close());
   }
 
   showDeleteReferenceDialog(refs: ReferenceList[]): Observable<boolean> {
     const dialogRef = this.dialog.open(DeleteReferenceDialogComponent, {
-      data: { refs },
-      autoFocus: 'button'
+      data: { refs }
     });
     return dialogRef.afterClosed();
   }
@@ -150,14 +172,15 @@ export class DialogService {
 
   showDropListOptionEditDialog(value: DragNDropValueObject): Observable<DragNDropValueObject> {
     const dialogRef = this.dialog.open(DropListOptionEditDialogComponent, {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
       data: { value },
-      height: '700px',
       // The rich text editor gives its text area a minimum width of 700px. Opened any narrower,
       // the dialog has a horizontal scrollbar even while empty and the right half of the toolbar
       // sits outside the visible area (#1347). 700px plus the content padding of 48px is already
       // 748, so 750 would leave two pixels and no room for the vertical scrollbar this dialog
-      // always has. Material's default `maxWidth` of 80vw would take the 800 back below a 1000px
-      // window, which is where the scrollbar came from in the first place.
+      // has whenever the window is lower than its content. Material's default `maxWidth` of 80vw
+      // would take the 800 back below a 1000px window, which is where the scrollbar came from in
+      // the first place.
       width: '800px',
       maxWidth: '95vw'
     });
@@ -172,27 +195,34 @@ export class DialogService {
   }
 
   showRichTextEditDialog(text: string, defaultFontSize: number): Observable<string> {
-    const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: {
-        content: text,
-        defaultFontSize,
-        clozeMode: false
-      },
-      autoFocus: false
-    });
+    const dialogRef = this.dialog.open(RichTextEditDialogComponent, this.richTextEditDialogConfig({
+      content: text,
+      defaultFontSize,
+      clozeMode: false
+    }));
     return dialogRef.afterClosed();
   }
 
   showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<ClozeDocument | undefined> {
-    const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: {
-        content: document,
-        defaultFontSize,
-        clozeMode: true
-      },
-      autoFocus: false
-    });
+    const dialogRef = this.dialog.open(RichTextEditDialogComponent, this.richTextEditDialogConfig({
+      content: document,
+      defaultFontSize,
+      clozeMode: true
+    }));
     return dialogRef.afterClosed();
+  }
+
+  /** The dialog is nothing but the text area, so it takes the height of the window. It has no title: that only
+     repeated the action that opens it, and took a line the text needs. It is announced by what the title said,
+     for the cloze as well (#1006). */
+  private richTextEditDialogConfig(data: RichTextEditDialogComponent['data']): MatDialogConfig {
+    return {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
+      data,
+      height: '95vh',
+      ariaLabel: this.translateService.instant('propertiesPanel.editText'),
+      autoFocus: false
+    };
   }
 
   showPlayerEditDialog(elementID: string, playerProps: PlayerProperties): Observable<PlayerProperties> {
@@ -206,6 +236,7 @@ export class DialogService {
 
   showLikertRowEditDialog(row: LikertRowElement, options: TextImageLabel[]): Observable<LikertRowElement> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
       data: { row, options },
       autoFocus: false
     });
@@ -274,6 +305,19 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
+  /** Opens the validation area, unless it is open already: it follows the findings, so a second one would only
+      show the same (#1129). */
+  showVariableInfoFindingsDialog(): void {
+    if (this.variableInfoFindingsDialog) return;
+    this.variableInfoFindingsDialog = this.dialog.open(VariableInfoFindingsDialogComponent, {
+      autoFocus: false,
+      maxWidth: '90vw'
+    });
+    this.variableInfoFindingsDialog.afterClosed().subscribe(() => {
+      this.variableInfoFindingsDialog = undefined;
+    });
+  }
+
   showStateVariablesDialog(stateVariables: StateVariable[]): Observable<StateVariable[]> {
     const dialogRef = this.dialog.open(StateVariablesDialogComponent, {
       data: { stateVariables: stateVariables },
@@ -286,6 +330,7 @@ export class DialogService {
     tooltipText: string | undefined, tooltipPosition: TooltipPosition | undefined
   ): Observable<{ tooltipText: string, tooltipPosition: TooltipPosition, action: 'save' | 'delete' }> {
     const dialogRef = this.dialog.open(TooltipPropertiesDialogComponent, {
+      ...TEXT_EDITOR_DIALOG_CONFIG,
       data: { tooltipText, tooltipPosition },
       width: '750px',
       autoFocus: false

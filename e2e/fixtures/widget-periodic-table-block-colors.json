@@ -1,0 +1,14 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [{
+    "sections": [
+      {
+        "dynamicPositioning": true,
+        "elements": [
+          { "type": "widget-periodic-table", "id": "pse_blocks", "alias": "pse_blocks", "highlightBlocks": true }
+        ]
+      }
+    ]
+  }]
+}

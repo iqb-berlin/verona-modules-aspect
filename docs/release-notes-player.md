@@ -1,5 +1,42 @@
 Player
 ======
+## 3.1.0
+### Neue Funktionen
+- Audio, Video: Während ein Audio oder Video läuft, schaltet sich der Bildschirm nicht ab, sodass ein Tablet keinen Sperrbildschirm mit eigenen Wiedergabeknöpfen zeigt ([#251](https://github.com/iqb-berlin/verona-modules-aspect/issues/251))
+
+### Änderungen
+- Audio, Video: Der Fehlercode bei zu langem Laden heißt `MEDIA_TIMEOUT` statt `audio-timeout` ([#1526](https://github.com/iqb-berlin/verona-modules-aspect/issues/1526), [#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
+- Fehlercodes: Die Fehlermeldungen an die Testumgebung tragen die Codes der Player-Spezifikation, etwa `GEOGEBRA_NOT_LOADING` statt `geogebra-not-loading` und `GEOGEBRA_TIMEOUT` statt `geometry-timeout` ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
+- GeoGebra: Das Element meldet `VALUE_CHANGED` erst, wenn in der Zeichnung etwas verändert wird — ein Objekt gezogen, gesetzt, gelöscht oder umbenannt, ein Wert eingegeben —, und nicht mehr schon beim Anklicken, Zoomen oder Verschieben der Ansicht; auch seine verfolgten Variablen ändern sich vorher nicht ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
+- Meldungen
+  - Die Meldung „Aufgabendefinition kann nicht geladen werden“ zeigt ein Fehlersymbol ([#1520](https://github.com/iqb-berlin/verona-modules-aspect/issues/1520))
+  - Die Fehlermeldungen beim Laden sprechen von „Aufgabe“ statt „Unit“ ([#1572](https://github.com/iqb-berlin/verona-modules-aspect/issues/1572))
+  - Eine nicht lesbare Aufgabendefinition meldet „Aufgabendefinition konnte nicht gelesen werden!“ statt einer technischen Meldung ([#1578](https://github.com/iqb-berlin/verona-modules-aspect/issues/1578))
+
+### Fehlerbehebungen
+- Abschnitte mit animiertem Einblenden
+  - Über dem eingeblendeten Abschnitt bleiben 100 px Abstand ([#1536](https://github.com/iqb-berlin/verona-modules-aspect/issues/1536))
+  - Der Player scrollt nur im Moment des Erscheinens zum Abschnitt, nicht bei jeder weiteren Eingabe ([#1546](https://github.com/iqb-berlin/verona-modules-aspect/issues/1546))
+- Abschnitte mit Einblendregel ohne „wieder ausblenden“: Der Abschnitt bleibt sichtbar, sobald er einmal erschienen ist. Aufgaben, die auf das bisherige Verhalten gebaut waren, verhalten sich jetzt anders ([#1547](https://github.com/iqb-berlin/verona-modules-aspect/issues/1547))
+- Abschnitte mit Einblendregel: Ein Abschnitt ohne „dynamisches Layout“ erscheint mit seinem Inhalt, statt leer zu bleiben ([#1535](https://github.com/iqb-berlin/verona-modules-aspect/issues/1535))
+- Automatische Abschnittsnummerierung links: Die Nummer steht wieder auf der Höhe der ersten Textzeile, etwa neben Lückentext, Wortkorrektur, Eingabefeld oder Text in anderer Schriftgröße; neben einem Bild bleibt sie an dessen Oberkante — in der Vorschau wie im Druck ([#1618](https://github.com/iqb-berlin/verona-modules-aspect/issues/1618))
+- Formelbereich: Beim Antippen bleibt auf Android-Tablets die Bildschirmtastatur offen, und auf dem iPad ist der Cursor zu sehen, in Zeilen ohne Formel in normaler Höhe ([#1218](https://github.com/iqb-berlin/verona-modules-aspect/issues/1218))
+- Formelfeld, Formelbereich
+  - Am iPad bleibt die Formeltastatur beim Tippen offen und auf der gewählten Belegung, statt sich nach jedem Zeichen zu schließen ([#1600](https://github.com/iqb-berlin/verona-modules-aspect/issues/1600))
+  - Am iPad bleibt die Umschalttaste (⇧) der Formeltastatur aktiv, bis ein Zeichen angetippt wurde, statt sofort zurückzuspringen ([#1607](https://github.com/iqb-berlin/verona-modules-aspect/issues/1607))
+- GeoGebra
+  - Verfolgte Variablen, die mit einem Editor vor 2.11.0 ausgewählt wurden, galten mit der ersten Meldung des Elements alle als geändert, weil zu ihnen kein Startwert gespeichert ist. Der Player vergleicht jetzt mit den Werten, die GeoGebra beim Laden berechnet ([#1460](https://github.com/iqb-berlin/verona-modules-aspect/issues/1460))
+  - Tippen in die Zeichnung verschiebt die Seite nicht mehr ([#971](https://github.com/iqb-berlin/verona-modules-aspect/issues/971))
+  - Die GeoGebra-Tastatur öffnet sich im Applet statt am Fensterrand, wo andere Elemente sie verdecken konnten. Ein GeoGebra-Element mit Eingabefeld sollte mindestens 400 Pixel hoch sein ([#1549](https://github.com/iqb-berlin/verona-modules-aspect/issues/1549))
+  - Nach „neu anfangen“ meldet das Element seinen Stand erst, wenn die Zeichnung neu geladen ist, statt bei schnell wiederholtem Zurücksetzen die schon entfernte Zeichnung abzufragen ([#1625](https://github.com/iqb-berlin/verona-modules-aspect/issues/1625))
+- GeoGebra, Bild: Kann GeoGebra oder ein Bild nicht geladen werden, nennt die Fehlermeldung an die Testumgebung, was fehlt ([#1456](https://github.com/iqb-berlin/verona-modules-aspect/issues/1456))
+- iPad: Auf Seiten nach der ersten sind Cursor und Markierung in Eingabefeldern und -bereichen wieder zu sehen (iPadOS 26) ([#1082](https://github.com/iqb-berlin/verona-modules-aspect/issues/1082))
+- Lückentext, Tabelle: Knöpfe mit der Aktion „Aufgabennavigation“ erscheinen nur, wenn die Testumgebung ihr Ziel erlaubt, statt umgekehrt ([#1583](https://github.com/iqb-berlin/verona-modules-aspect/issues/1583))
+- Meldungen: Die Meldung „Aufgabendefinition kann nicht geladen werden“ schließt sich, sobald eine andere Aufgabe geladen wird, statt über ihr stehen zu bleiben ([#1581](https://github.com/iqb-berlin/verona-modules-aspect/issues/1581))
+- Periodensystem: Eine leere Auswahl des Widgets wird als Antwort übernommen. Löschen lässt sich eine Antwort ab Widget 1.1.0 ([#1465](https://github.com/iqb-berlin/verona-modules-aspect/issues/1465))
+- Seitennavigation der Testumgebung: Der Player meldet die Seiten erst, wenn er sie gezählt hat, statt zuerst eine leere Liste zu schicken ([#1462](https://github.com/iqb-berlin/verona-modules-aspect/issues/1462))
+- Textmarkierung: Bei der Bereichsmarkierung schneidet die Markierungsfarbe den letzten Buchstaben kursiver Wörter nicht mehr an ([#1613](https://github.com/iqb-berlin/verona-modules-aspect/issues/1613))
+
 ## 3.0.1
 ### Fehlerbehebungen
 - Pflichtfelder: Wird eine Antwort wieder gelöscht oder abgewählt, meldet der Player der Testumgebung wieder eine unvollständige Aufgabe. Bisher blieb sie ab dem ersten vollständigen Stand als vollständig gemeldet — die Testumgebung ließ das Blättern zu, und die Meldung „Eingabe erforderlich" blieb aus, weil der Player sie erst nach einer verweigerten Navigation zeigt ([#1354](https://github.com/iqb-berlin/verona-modules-aspect/issues/1354))

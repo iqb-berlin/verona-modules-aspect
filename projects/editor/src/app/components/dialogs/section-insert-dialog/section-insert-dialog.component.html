@@ -1,21 +1,34 @@
-<h2 mat-dialog-title>Seitenabschnitt einfügen</h2>
+<h2 mat-dialog-title>{{ 'sectionInsert.title' | translate }}</h2>
 <mat-dialog-content>
   <mat-radio-group [style]="'display: flex; flex-direction: column'"
                    [(ngModel)]="selectedMethod">
     <mat-radio-button value="savedCode" [disabled]="!savedSectionCode">
-      Gespeicherten Abschnitt einfügen
+      {{ 'sectionInsert.fromSaved' | translate }}
     </mat-radio-button>
-    <p *ngIf="savedSectionCode" class="radio-child-item" [style.color]="'green'">
-      Gespeicherter Abschnitt gefunden.
-    </p>
-    <p *ngIf="!savedSectionCode" class="radio-child-item" [style.color]="'var(--warn)'">
-      Kein gespeicherter Abschnitt gefunden.
-    </p>
+    @if (savedSectionCode) {
+      <p class="radio-child-item status-line saved-section-status">
+        <mat-icon class="status-icon status-icon-success">check_circle</mat-icon>
+        {{ 'sectionInsert.savedFound' | translate }}
+      </p>
+    } @else {
+      <p class="radio-child-item status-line saved-section-status">{{ 'sectionInsert.savedMissing' | translate }}</p>
+    }
     <mat-radio-button value="pastedCode">
-      Abschnitt über Zwischenablage einfügen
+      {{ 'sectionInsert.fromClipboard' | translate }}
     </mat-radio-button>
-    <div class="radio-child-item message-area" [style.color]="operationStatus">
-      {{operationStatusText}}
+    <div class="radio-child-item status-line message-area">
+      @switch (operationStatus) {
+        @case ('error') {
+          <mat-icon class="status-icon message-icon-error">error</mat-icon>
+        }
+        @case ('warning') {
+          <mat-icon class="status-icon message-icon-warning">warning</mat-icon>
+        }
+        @case ('success') {
+          <mat-icon class="status-icon status-icon-success">check_circle</mat-icon>
+        }
+      }
+      {{ operationStatusKey | translate }}
     </div>
     <div class="radio-child-item paste-area" contenteditable="true"
          (click)="selectedMethod = 'pastedCode'"
@@ -26,14 +39,13 @@
   <mat-divider [style.margin-top.px]="20" [style.margin-bottom.px]="10"></mat-divider>
 
   <mat-checkbox [(ngModel)]="replaceSection">
-    Bestehenden Abschnitt ersetzen
+    {{ 'sectionInsert.replaceExisting' | translate }}
   </mat-checkbox>
 
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button *ngIf="selectedMethod == 'savedCode' || operationStatus === 'green' || operationStatus === 'orange'"
-          (click)="confirm()">
-    {{'confirm' | translate }}
-  </button>
+<mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+  @if (selectedMethod === 'savedCode' || operationStatus === 'success' || operationStatus === 'warning') {
+    <button mat-button (click)="confirm()">{{'confirm' | translate }}</button>
+  }
 </mat-dialog-actions>

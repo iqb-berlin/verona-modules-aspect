@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Response } from '@iqb/responses';
+import { Response } from '@iqbspecs/response/response.interface';
 import { GeometryVariableStateService } from './geometry-variable-state.service';
 
 describe('GeometryVariableStateService', () => {
@@ -20,6 +20,27 @@ describe('GeometryVariableStateService', () => {
     expect(service.getElementCodeById('geometry_1_area')).toEqual({
       id: 'geometry_1_area', alias: 'area', value: null, status: 'NOT_REACHED'
     });
+  });
+
+  it('should take over a start value without changing the status or announcing it', () => {
+    service.registerElementCode('geometry_1_correct', 'correct', '', 'DISPLAYED');
+    const changedElementCodes: Response[] = [];
+    service.elementCodeChanged.subscribe(elementCode => changedElementCodes.push(elementCode));
+
+    service.setStartValue('geometry_1_correct', 'correct = false');
+
+    expect(service.getElementCodeById('geometry_1_correct')).toEqual({
+      id: 'geometry_1_correct', alias: 'correct', value: 'correct = false', status: 'DISPLAYED'
+    });
+    expect(changedElementCodes.length).toBe(0);
+  });
+
+  it('should keep the value of a variable already worked on when a start value comes', () => {
+    service.registerElementCode('geometry_1_correct', 'correct', 'correct = true', 'VALUE_CHANGED');
+
+    service.setStartValue('geometry_1_correct', 'correct = false');
+
+    expect(service.getElementCodeById('geometry_1_correct')?.value).toBe('correct = true');
   });
 
   it('should register an element code with the given status', () => {

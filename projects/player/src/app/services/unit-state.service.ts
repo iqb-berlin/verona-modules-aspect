@@ -10,7 +10,7 @@ import { Observable, Subject } from 'rxjs';
 import { Progress, StatusChangeElement, ElementCodeStatusValue } from 'player/modules/verona/models/verona';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
-import { Response, ResponseStatusType, ResponseValueType } from '@iqb/responses';
+import { Response, ResponseStatusType, ResponseValueType } from '@iqbspecs/response/response.interface';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 /**

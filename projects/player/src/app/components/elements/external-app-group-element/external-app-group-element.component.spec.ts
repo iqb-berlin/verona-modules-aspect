@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { GeometryVariable } from 'common/models/geometry-interfaces';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import {
   ExternalAppGroupElementComponent
@@ -20,6 +24,7 @@ describe('ExternalAppGroupElementComponent', () => {
   class GeometryStubComponent {
     @Input() elementModel!: GeometryElement;
     @Input() appDefinition!: string;
+    @Output() appletLoaded = new EventEmitter<GeometryVariable[]>();
     domElement = document.createElement('div');
   }
 
@@ -141,7 +146,8 @@ describe('ExternalAppGroupElementComponent', () => {
         variables: [
           { id: 'var_c', value: '3' },
           { id: 'var_new', value: '4' }
-        ]
+        ],
+        edited: false
       }
     });
 
@@ -149,5 +155,113 @@ describe('ExternalAppGroupElementComponent', () => {
     const newVarCode = geometryVariableStateService.getElementCodeById(newVarId);
     expect(newVarCode).toBeTruthy();
     expect(newVarCode?.status).toBe('VALUE_CHANGED');
+  });
+
+  describe('reports of the applet', () => {
+    let unitStateService: UnitStateService;
+    let geometryVariableStateService: GeometryVariableStateService;
+    let applet: ExternalAppGroupElementComponent;
+    let appletFixture: ComponentFixture<ExternalAppGroupElementComponent>;
+
+    /** A displayed applet with two truth values, `correct` and `other`, both `false` -- or stored with
+     * the value given, as variables chosen with an editor before 2.11.0 are stored with an empty one. */
+    const createApplet = (recomputedCountsAsChanged: boolean, storedValue?: string): void => {
+      unitStateService = TestBed.inject(UnitStateService);
+      geometryVariableStateService = TestBed.inject(GeometryVariableStateService);
+      unitStateService.reset();
+      geometryVariableStateService.reset();
+      appletFixture = TestBed.createComponent(ExternalAppGroupElementComponent);
+      applet = appletFixture.componentInstance;
+      applet.elementModel = new GeometryElement({
+        type: 'geometry',
+        id: 'applet',
+        alias: 'applet',
+        appDefinition: 'start',
+        trackedVariables: [
+          { id: 'correct', value: storedValue ?? 'correct = false' },
+          { id: 'other', value: storedValue ?? 'other = false' }
+        ],
+        trackedExpectedVariables: [],
+        recomputedCountsAsChanged
+      });
+      appletFixture.detectChanges();
+      unitStateService.changeElementCodeStatus({ id: 'applet', status: 'DISPLAYED' });
+    };
+
+    const report = (edited: boolean, appDefinition: string, correct = 'correct = false'): void => {
+      const variables = [{ id: 'correct', value: correct }, { id: 'other', value: 'other = false' }];
+      applet.changeElementCodeValue({ id: 'applet', value: { appDefinition, variables, edited } });
+    };
+    const element = () => unitStateService.getElementCodeById('applet');
+    const variable = (id: string) => geometryVariableStateService.getElementCodeById(`applet_${id}`);
+
+    it('should compare with the values GeoGebra starts with, not with the empty ones a unit stores', () => {
+      createApplet(false, '');
+      const geometry = appletFixture.debugElement.query(By.directive(GeometryStubComponent))
+        .componentInstance as GeometryStubComponent;
+      const startValues = [{ id: 'correct', value: 'correct = false' }, { id: 'other', value: 'other = false' }];
+      geometry.appletLoaded.emit(startValues);
+
+      report(true, 'edited', 'correct = true');
+
+      expect(variable('correct')?.status).toBe('VALUE_CHANGED');
+      expect(variable('other')).toEqual(expect.objectContaining({ status: 'DISPLAYED', value: 'other = false' }));
+    });
+
+    it('should take over nothing before the first edit, as after a click or a zoom', () => {
+      createApplet(true);
+
+      report(false, 'zoomed', 'correct = true');
+
+      expect(element()).toEqual(expect.objectContaining({ status: 'DISPLAYED', value: 'start' }));
+      expect(variable('correct')).toEqual(expect.objectContaining({ status: 'DISPLAYED', value: 'correct = false' }));
+    });
+
+    it('should mark the element as worked on with the first edit', () => {
+      createApplet(false);
+
+      report(true, 'edited');
+
+      expect(element()).toEqual(expect.objectContaining({ status: 'VALUE_CHANGED', value: 'edited' }));
+    });
+
+    it('should take over every report once the element is worked on, as one after an undo', () => {
+      createApplet(false);
+      report(true, 'edited');
+
+      report(false, 'undone');
+
+      expect(element()).toEqual(expect.objectContaining({ status: 'VALUE_CHANGED', value: 'undone' }));
+    });
+
+    it('should leave each variable to its own value without the switch', () => {
+      createApplet(false);
+
+      report(true, 'edited', 'correct = true');
+
+      expect(variable('correct')?.status).toBe('VALUE_CHANGED');
+      expect(variable('other')?.status).toBe('DISPLAYED');
+    });
+
+    it('should hand VALUE_CHANGED down to every variable with the switch, also one whose value stayed', () => {
+      createApplet(true);
+
+      report(true, 'edited');
+
+      const changed = (value: string) => expect.objectContaining({ status: 'VALUE_CHANGED', value });
+      expect(variable('correct')).toEqual(changed('correct = false'));
+      expect(variable('other')).toEqual(changed('other = false'));
+    });
+
+    it('should announce a variable handed VALUE_CHANGED with its new value only', () => {
+      createApplet(true);
+      const announced: string[] = [];
+      geometryVariableStateService.elementCodeChanged
+        .subscribe(code => { if (code.id === 'applet_correct') announced.push(`${code.status} ${code.value}`); });
+
+      report(true, 'edited', 'correct = true');
+
+      expect(announced).toEqual(['VALUE_CHANGED correct = true']);
+    });
   });
 });

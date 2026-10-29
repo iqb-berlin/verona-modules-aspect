@@ -35,6 +35,9 @@
               (focus)="focusChanged.emit({ inputElement: input, focused: true })"
               (blur)="focusChanged.emit({ inputElement: input, focused: false })">
     </textarea>
+    @if (elementModel.showWordCount) {
+      <ng-container [ngTemplateOutlet]="wordCountStrip"></ng-container>
+    }
     <mat-error *ngIf="elementFormControl.errors">
       {{elementFormControl.errors | errorTransform: elementModel}}
     </mat-error>
@@ -74,4 +77,18 @@
             (focus)="focusChanged.emit({ inputElement: input, focused: true })"
             (blur)="focusChanged.emit({ inputElement: input, focused: false })">
     </textarea>
+  @if (elementModel.showWordCount) {
+    <ng-container [ngTemplateOutlet]="wordCountStrip"></ng-container>
+  }
 }
+
+<ng-template #wordCountStrip>
+  <div class="word-count"
+       [style.font-size.px]="elementModel.styling.fontSize"
+       [style.color]="elementModel.styling.fontColor"
+       [style.background-color]="elementModel.styling.backgroundColor">
+    <span class="word-count-text">
+      {{ (wordCount() === 1 ? 'wordCountOne' : 'wordCount') | translate: { count: wordCount() } }}
+    </span>
+  </div>
+</ng-template>

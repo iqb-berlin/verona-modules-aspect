@@ -1,2 +1,5 @@
-<h1 mat-dialog-title>Unit-Definition kann nicht geladen werden</h1>
+<h1 mat-dialog-title class="message-title">
+  <mat-icon class="message-icon-error">error</mat-icon>
+  <span>{{ 'unitDefErrorTitle' | translate }}</span>
+</h1>
 <p mat-dialog-content>{{data.text}}</p>

@@ -3,6 +3,7 @@ import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
 import { TemplateService } from 'editor/modules/section-templates/services/template.service';
 import { EditorSection } from 'editor/src/app/models/editor-section';
+import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 // Disable linting rules to have smaller code
 /* eslint-disable object-property-newline */
@@ -30,8 +31,13 @@ export function createText2Section(text1: string, showHelper: boolean, markingMo
       idService)
     );
   }
+  // The panel keeps the bottom margin of a manually added one, which a template would otherwise set to 0
   sectionElements.push(
-    TemplateService.createElement('marking-panel', { gridRow: 3, gridColumn: 1 }, {}, idService)
+    TemplateService.createElement(
+      'marking-panel',
+      { gridRow: 3, gridColumn: 1, marginBottom: ELEMENT_DEFAULTS['marking-panel'].position.marginBottom },
+      {},
+      idService)
   );
   const section = new EditorSection({
     ...showHelper && { autoColumnSize: false },

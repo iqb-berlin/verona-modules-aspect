@@ -12,6 +12,15 @@
   padding: 0 5px;
   justify-content: center;
 }
+/* The same for a word picked up from a gap, which is a line high and has no margin around its label --
+   see the drop list (#1619). */
+.drag-preview.in-gap {
+  padding: 1px 5px;
+  line-height: normal;
+}
+:host ::ng-deep .drag-preview.in-gap .text {
+  margin: 0;
+}
 .image-item {
   padding: 0;
 }

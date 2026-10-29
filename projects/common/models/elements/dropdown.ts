@@ -1,4 +1,4 @@
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   InputElement, UIElement
 } from 'common/models/elements/element';
@@ -25,7 +25,6 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
 
   styling: BasicStyles = PropertyGroupGenerators.generateBasicStyleProps();
 
-  static title: string = 'Klappliste';
   static icon: string = 'menu_open';
 
   constructor(element?: Partial<DropdownProperties>, idService?: AbstractIDService) {
@@ -45,13 +44,12 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'integer',
+      type: 'INTEGER',
       format: '',
       multiple: false,
       nullable: this.allowUnset,
       values: this.getVariableInfoValues(),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }

@@ -1,7 +1,7 @@
 import {
   InputElement
 } from 'common/models/elements/element';
-import { VariableInfo, VariableValue } from '@iqb/responses';
+import { VariableInfo, VariableValue } from '@iqbspecs/variable-info/variable-info.interface';
 import {
   BasicStyles, DimensionProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
@@ -31,7 +31,6 @@ export class SliderElement extends InputElement implements SliderProperties {
       lineHeight: ELEMENT_DEFAULTS.slider.styling.lineHeight
     };
 
-  static title: string = 'Schieberegler';
   static icon: string = 'linear_scale';
 
   constructor(element?: Partial<SliderProperties>, idService?: AbstractIDService) {
@@ -54,13 +53,12 @@ export class SliderElement extends InputElement implements SliderProperties {
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'integer',
+      type: 'INTEGER',
       format: '',
       multiple: false,
       nullable: !this.value && this.value !== 0,
       values: this.getVariableInfoValues(),
       valuePositionLabels: [],
-      page: '',
       valuesComplete: true
     }];
   }

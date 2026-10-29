@@ -1,16 +1,18 @@
 <div class="wrapper">
-  <button class="apply-button" mat-button [matTooltip]="tooltip"
+  <button class="apply-button" mat-button [matTooltip]="tooltip | translate"
           [style.background-color]="inputType === 'list' && isActive ? 'lightgrey' : 'unset'"
           (click)="applySelection.emit()">
     <mat-icon>{{icon}}</mat-icon>
   </button>
 
   <input matInput type="color" #colorInput hidden
+         [value]="selectedValue | colorPickerValue"
          (input)="selectionChanged.emit($any($event.target).value); applySelection.emit()">
 
   <mat-select panelClass="select-overlay"
               (click)="onClickSelect($event)">
-    <mat-option *ngFor="let value of availableValues"
-                (click)="selectValue(value)">{{value}}</mat-option>
+    @for (option of availableValues; track option.value) {
+      <mat-option (click)="selectValue(option.value)">{{ option.label | translate }}</mat-option>
+    }
   </mat-select>
 </div>

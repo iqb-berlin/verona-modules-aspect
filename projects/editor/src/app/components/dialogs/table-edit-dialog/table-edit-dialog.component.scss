@@ -2,7 +2,7 @@
   grid-template-columns: unset !important;
   grid-auto-columns: 300px !important;
 }
+// The buttons below the text of a header cell would otherwise touch the cell's borders
 :host ::ng-deep aspect-table .header-cell {
-  display: flex;
-  align-items: center;
+  padding-block: 4px;
 }

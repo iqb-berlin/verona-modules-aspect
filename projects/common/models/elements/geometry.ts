@@ -2,7 +2,7 @@ import { UIElement } from 'common/models/elements/element';
 import {
   PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { VariableInfo } from '@iqb/responses';
+import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { environment } from 'common/environment';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
@@ -23,6 +23,8 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   enableShiftDragZoom: boolean = ELEMENT_DEFAULTS.geometry.enableShiftDragZoom;
   showZoomButtons: boolean = ELEMENT_DEFAULTS.geometry.showZoomButtons;
   showFullscreenButton: boolean = ELEMENT_DEFAULTS.geometry.showFullscreenButton;
+  showAlgebraInput: boolean = ELEMENT_DEFAULTS.geometry.showAlgebraInput;
+  recomputedCountsAsChanged: boolean = ELEMENT_DEFAULTS.geometry.recomputedCountsAsChanged;
   customToolbar: string = ELEMENT_DEFAULTS.geometry.customToolbar;
   fileName: string = ELEMENT_DEFAULTS.geometry.fileName;
   position: PositionProperties = PropertyGroupGenerators.generatePositionProps();
@@ -41,7 +43,6 @@ export class GeometryElement extends UIElement implements GeometryProperties {
      element.spec.ts, not the type. */
   styling: Record<never, never> = {};
 
-  static title: string = 'Geometrie';
   static icon: string = 'architecture';
 
   constructor(element?: Partial<GeometryProperties>, idService?: AbstractIDService) {
@@ -56,6 +57,8 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       this.enableShiftDragZoom = element.enableShiftDragZoom;
       this.showZoomButtons = element.showZoomButtons;
       this.showFullscreenButton = element.showFullscreenButton;
+      this.showAlgebraInput = element.showAlgebraInput;
+      this.recomputedCountsAsChanged = element.recomputedCountsAsChanged;
       this.customToolbar = element.customToolbar;
       this.fileName = element.fileName;
       this.position = { ...element.position };
@@ -111,13 +114,12 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     return {
       id: this.getGeometryVariableId(variableName),
       alias: this.getGeometryVariableAlias(variableName),
-      type: 'string',
-      format: 'ggb-variable',
+      type: 'STRING',
+      format: 'GGB_VARIABLE',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     };
   }
@@ -128,13 +130,12 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     answerSchemes.push({
       id: this.id,
       alias: this.alias,
-      type: 'string',
-      format: 'ggb-file',
+      type: 'STRING',
+      format: 'GGB_FILE',
       multiple: false,
       nullable: false,
       values: [],
       valuePositionLabels: [],
-      page: '',
       valuesComplete: false
     });
     return answerSchemes;
@@ -153,6 +154,19 @@ export interface GeometryProperties extends UIElementProperties, FileNamePropert
   enableShiftDragZoom: boolean;
   showZoomButtons: boolean;
   showFullscreenButton: boolean;
+  /** GeoGebra's input bar. Where it appears, in the algebra view or below the drawing, is set by the
+   * GeoGebra file itself. */
+  showAlgebraInput: boolean;
+  /** Whether the tracked variables take over the element's `VALUE_CHANGED`: as soon as the user edits
+   * anything in the drawing, every tracked variable becomes `VALUE_CHANGED` with the element -- also a
+   * truth value that stayed `false`. Off, each variable is an answer of its own and changes status when
+   * its value does, which suits an element with several items. A file can tell untouched from wrong
+   * without the switch by a value of its own for the untouched state (0 untouched, 1 right, 2 wrong)
+   * (#1460).
+   *
+   * The name is older than this meaning: in 3.1.0-beta the switch counted the variables GeoGebra
+   * recomputed. It stays, so that units saved with the beta keep their setting. */
+  recomputedCountsAsChanged: boolean;
   customToolbar: string;
   position: PositionProperties;
   dimensions: {

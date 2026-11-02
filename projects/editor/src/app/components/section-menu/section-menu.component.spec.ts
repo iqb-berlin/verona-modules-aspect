@@ -27,6 +27,7 @@ import {
   NumberFieldBadInputDirective
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import { MoveSectionUpAllowedPipe } from 'editor/src/app/pipes/move-section-up-allowed.pipe';
 import { SectionMenuComponent } from 'editor/src/app/components/section-menu/section-menu.component';
 import { EditorPage } from 'editor/src/app/models/editor-page';
 import { EditorSection } from 'editor/src/app/models/editor-section';
@@ -83,7 +84,7 @@ describe('SectionMenuComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [
-        SectionMenuComponent, MockSizeInputPanelComponent,
+        SectionMenuComponent, MockSizeInputPanelComponent, MoveSectionUpAllowedPipe,
         NumberFieldDirective, NumberFieldBadInputDirective
       ],
       imports: [
@@ -304,6 +305,32 @@ describe('SectionMenuComponent', () => {
     component.sectionIndex = 2;
     component.moveSection('down');
     expect(sectionService.transferSection).toHaveBeenCalledWith(0, 2, 'down');
+  });
+
+  describe('move up button', () => {
+    const hasMoveUpButton = (): boolean => Array
+      .from(fixture.nativeElement.querySelectorAll('mat-icon') as NodeListOf<HTMLElement>)
+      .some(icon => icon.textContent?.trim() === 'north');
+
+    it('should offer moving the first section of a page onto a regular page before it', () => {
+      pages.unshift(new EditorPage());
+      component.pageIndex = 1;
+      fixture.detectChanges();
+
+      expect(hasMoveUpButton()).toBe(true);
+    });
+
+    /* The section would stand beside every page, and as the last section there it would offer no way back
+       down (#1634). */
+    it('should not offer moving the first section of a page onto a permanently visible page', () => {
+      const alwaysVisiblePage = new EditorPage();
+      alwaysVisiblePage.alwaysVisible = true;
+      pages.unshift(alwaysVisiblePage);
+      component.pageIndex = 1;
+      fixture.detectChanges();
+
+      expect(hasMoveUpButton()).toBe(false);
+    });
   });
 
   it('should copy the section to the clipboard and remember it in the unit service', () => {

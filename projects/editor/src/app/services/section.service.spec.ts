@@ -377,6 +377,22 @@ describe('SectionService', () => {
       expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
     });
 
+    /* A section there would stand beside every page, and could not be moved back down (#1634). */
+    it('should not move a section up onto a permanently visible page', () => {
+      const alwaysVisibleSection = createSectionMock();
+      const firstSection = createSectionMock();
+      unitServiceMock.unit.pages = [
+        createPageMock([alwaysVisibleSection], true),
+        createPageMock([firstSection])
+      ];
+
+      service.transferSection(1, 0, 'up');
+
+      expect(unitServiceMock.unit.pages[0].sections).toEqual([alwaysVisibleSection]);
+      expect(unitServiceMock.unit.pages[1].sections).toEqual([firstSection]);
+      expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+    });
+
     it('should give a page that lost its only section an empty one', () => {
       const movedSection = createSectionMock();
       unitServiceMock.unit.pages = [createPageMock([movedSection]), createPageMock([createSectionMock()])];

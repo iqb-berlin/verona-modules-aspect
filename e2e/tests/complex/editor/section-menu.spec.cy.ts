@@ -88,3 +88,28 @@ describe('Cancelling the visibility rules dialog', () => {
     cy.get('aspect-visibility-rule-editor').find('input').should('have.value', 'true');
   });
 });
+
+/* A section moved onto the permanently visible page stands beside every page, and as the last section there it is
+   offered no way back down (#1634). */
+describe('Moving the first section of a page up', () => {
+  beforeEach(() => {
+    cy.viewport(1300, 900);
+    cy.openEditor();
+    cy.sendEditorStartCommand(JSON.stringify(unit([
+      page([section()], true),
+      page([section()]),
+      page([section()])
+    ])));
+    // The list view opens on the tab of the two pages that are counted.
+    cy.contains('[role="tab"]', '2 Seiten').should('have.attr', 'aria-selected', 'true');
+  });
+
+  it('is not offered when the page before is permanently visible', () => {
+    cy.get('aspect-section-menu').should('have.length', 2);
+    cy.get('aspect-section-menu').eq(0).find('mat-icon:contains("north")').should('not.exist');
+  });
+
+  it('is offered when the page before is a regular one', () => {
+    cy.get('aspect-section-menu').eq(1).find('mat-icon:contains("north")').should('exist');
+  });
+});

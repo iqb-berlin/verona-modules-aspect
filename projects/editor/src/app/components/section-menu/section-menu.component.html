@@ -155,11 +155,13 @@
         (click)="showSectionInsertDialog()">
   <mat-icon>content_paste</mat-icon>
 </button>
-<button *ngIf="sectionIndex !== 0 || pageIndex > 0" mat-mini-fab
-        [matTooltip]="'section-menu.moveUp' | translate" [matTooltipPosition]="'left'"
-        (click)="this.moveSection('up')">
-  <mat-icon>north</mat-icon>
-</button>
+@if (sectionIndex | moveSectionUpAllowed : pageIndex : unitService.unit.pages[pageIndex - 1]?.alwaysVisible) {
+  <button mat-mini-fab
+          [matTooltip]="'section-menu.moveUp' | translate" [matTooltipPosition]="'left'"
+          (click)="this.moveSection('up')">
+    <mat-icon>north</mat-icon>
+  </button>
+}
 <button *ngIf="((sectionIndex < lastSectionIndex) ||
                (pageIndex < unitService.unit.pages.length - 1)) &&
                !(sectionIndex === lastSectionIndex && unitService.unit.pages[pageIndex].alwaysVisible)"

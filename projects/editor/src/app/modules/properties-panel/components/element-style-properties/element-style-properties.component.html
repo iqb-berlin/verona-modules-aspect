@@ -29,13 +29,13 @@
           <mat-form-field appearance="fill">
             <mat-label>{{'propertiesPanel.lineColoringColor' | translate }}</mat-label>
             <input #lineColoringColorField matInput type="text" [value]="styles.lineColoringColor"
-                   [disabled]="!styles.lineColoring || styles.lineColoringColor === undefined"
+                   [disabled]="!styles.lineColoring"
                    (input)="elementService.updateSelectedElementsStyleProperty(
                               'lineColoringColor', lineColoringColorField.value)">
             @if (styles.lineColoringColor === null) {
               <aspect-merged-marker matSuffix></aspect-merged-marker>
             }
-            <button mat-icon-button matSuffix (click)="lineColorInput.click()">
+            <button mat-icon-button matSuffix [disabled]="!styles.lineColoring" (click)="lineColorInput.click()">
               <mat-icon>edit</mat-icon>
             </button>
           </mat-form-field>
@@ -55,13 +55,13 @@
           <mat-form-field appearance="fill">
             <mat-label>{{'propertiesPanel.firstLineColoringColor' | translate }}</mat-label>
             <input #firstLineColoringColorField matInput type="text" [value]="styles.firstLineColoringColor"
-                   [disabled]="!styles.firstLineColoring || styles.firstLineColoringColor === undefined"
+                   [disabled]="!styles.firstLineColoring"
                    (input)="elementService.updateSelectedElementsStyleProperty(
                               'firstLineColoringColor', firstLineColoringColorField.value)">
             @if (styles.firstLineColoringColor === null) {
               <aspect-merged-marker matSuffix></aspect-merged-marker>
             }
-            <button mat-icon-button matSuffix (click)="firstLineColorInput.click()">
+            <button mat-icon-button matSuffix [disabled]="!styles.firstLineColoring" (click)="firstLineColorInput.click()">
               <mat-icon>edit</mat-icon>
             </button>
           </mat-form-field>

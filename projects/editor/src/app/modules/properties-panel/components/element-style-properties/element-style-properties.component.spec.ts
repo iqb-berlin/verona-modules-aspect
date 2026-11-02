@@ -198,6 +198,51 @@ describe('ElementStylePropertiesComponent', () => {
     });
   });
 
+  /* With its line colouring off, the field of a colour of the options table is locked, and so is the pen
+     beside it: the picker it opens writes on its own (#1639). A selection that disagrees about the switch
+     locks both as well. */
+  describe('the line colours', () => {
+    const field = (label: string): HTMLElement => Array.from(
+      fixture.nativeElement.querySelectorAll('mat-form-field') as NodeListOf<HTMLElement>
+    ).find(formField => formField.querySelector('mat-label')?.textContent?.includes(label)) as HTMLElement;
+    const locks = (label: string): { field: boolean; pen: boolean } => ({
+      field: (field(label).querySelector('input') as HTMLInputElement).disabled,
+      pen: (field(label).querySelector('button') as HTMLButtonElement).disabled
+    });
+
+    [
+      { switchKey: 'lineColoring', colorKey: 'lineColoringColor' },
+      { switchKey: 'firstLineColoring', colorKey: 'firstLineColoringColor' }
+    ].forEach(({ switchKey, colorKey }) => {
+      const label = `propertiesPanel.${colorKey}`;
+      const show = async (switchValue: boolean | null): Promise<void> => {
+        component.styles = {
+          ...component.styles, [switchKey]: switchValue, [colorKey]: '#c9e0e0'
+        } as unknown as Merged<Stylings>;
+        fixture.detectChanges();
+        await fixture.whenStable();
+      };
+
+      it(`should lock the ${colorKey} field and its pen while ${switchKey} is off`, async () => {
+        await show(false);
+
+        expect(locks(label)).toEqual({ field: true, pen: true });
+      });
+
+      it(`should leave the ${colorKey} field and its pen open while ${switchKey} is on`, async () => {
+        await show(true);
+
+        expect(locks(label)).toEqual({ field: false, pen: false });
+      });
+
+      it(`should lock the ${colorKey} field and its pen for a mixed ${switchKey}`, async () => {
+        await show(null);
+
+        expect(locks(label)).toEqual({ field: true, pen: true });
+      });
+    });
+  });
+
   /* The four number boxes here wrote into the ElementService straight from the template, so the
      host's guard never covered them: an emptied box sent null into a property declared `number`,
      and the `(change)` handler that patched the display back to 0 assigned into `styles` - with

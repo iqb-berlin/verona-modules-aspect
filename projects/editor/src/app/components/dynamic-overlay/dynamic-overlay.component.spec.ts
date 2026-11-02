@@ -2,6 +2,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { DynamicOverlayComponent } from 'editor/src/app/components/dynamic-overlay/dynamic-overlay.component';
+import { DragOperatorService } from 'common/services/drag-operator.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -24,7 +25,8 @@ describe('DynamicOverlayComponent', () => {
       {} as UnitService,
       {} as ElementService,
       dragNDropService,
-      { detectChanges: vi.fn() } as unknown as ChangeDetectorRef
+      { detectChanges: vi.fn() } as unknown as ChangeDetectorRef,
+      new DragOperatorService()
     );
     component.element = { type: 'text', id: 'text_1' } as unknown as PositionedUIElement;
   });

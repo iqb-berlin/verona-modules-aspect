@@ -88,6 +88,14 @@ describe('Trying out a drop list in the editor', () => {
     dragItemOnto(2, 0);
     shownItems().then(items => expect([...items].map(i => i.innerText.trim())).to.deep.equal(['C', 'A', 'B']));
 
+    // What the unit holds, not only what the canvas shows: saved while the tried order is still on screen.
+    cy.saveUnit('e2e/downloads/element-interaction.json');
+    cy.readFile('e2e/downloads/element-interaction.json')
+      .then((savedUnit: { pages: { sections: { elements: { value: { text: string }[] }[] }[] }[] }) => {
+        expect(savedUnit.pages[0].sections[0].elements[0].value.map(savedItem => savedItem.text))
+          .to.deep.equal(['A', 'B', 'C']);
+      });
+
     toggleInteraction();
     shownItems().then(items => expect([...items].map(i => i.innerText.trim())).to.deep.equal(['A', 'B', 'C']));
   });

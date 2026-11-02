@@ -16,6 +16,7 @@ import {
   SUBLIST_CLOZE_TEXT
 } from '../helpers/cloze-util';
 import { connectLists, dragTo } from '../helpers/droplist-util';
+import { checkboxInput, setCheckbox } from '../util';
 
 describe('Cloze element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -37,6 +38,28 @@ describe('Cloze element', { testIsolation: false }, () => {
 
     it('creates a cloze and inserts a toggle-button inside it', () => {
       createCloze('Lückentext4', 'Lückentext mit Optionsfeld', 'Optionsfeld');
+    });
+
+    /* Struck through both ways, every option would be struck once one is chosen, and a struck chosen
+       option has no use for the selection colour (#1637). Both boxes end unticked: the player steps
+       below read this toggle button as it was created. */
+    it('locks the contradicting strike option and the unused selection colour of the toggle-button', () => {
+      cy.get('aspect-cloze').eq(3).find('aspect-compound-child-overlay').first().click();
+      setCheckbox('Gewählte Option durchstreichen', true);
+      checkboxInput('Nicht gewählte Optionen durchstreichen').should('be.disabled');
+      cy.get('aspect-element-properties .mat-mdc-tab').contains('mat-icon', 'palette')
+        .click({ force: true });
+      cy.get('aspect-element-style-properties').contains('mat-form-field', 'Auswahlfarbe')
+        .find('input')
+        .should('be.disabled');
+      cy.get('aspect-element-properties .mat-mdc-tab').contains('mat-icon', 'build')
+        .click({ force: true });
+
+      setCheckbox('Gewählte Option durchstreichen', false);
+      setCheckbox('Nicht gewählte Optionen durchstreichen', true);
+      checkboxInput('Gewählte Option durchstreichen').should('be.disabled');
+      setCheckbox('Nicht gewählte Optionen durchstreichen', false);
+      checkboxInput('Gewählte Option durchstreichen').should('not.be.disabled');
     });
 
     it('creates a cloze and inserts a button inside it', () => {

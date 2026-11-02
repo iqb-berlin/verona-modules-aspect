@@ -12,6 +12,12 @@ import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-pr
 })
 export class ElementStylePropertiesComponent {
   @Input() styles!: Merged<Stylings> | undefined;
+  /**
+   * The toggle button paints a chosen option in its background colour rather than the selection
+   * colour while `strikeSelectedOption` is set, so the field is locked then instead of taking a value
+   * that changes nothing (#1637). The host passes `true` only when every selected element has it set.
+   */
+  @Input() selectionColorIgnored: boolean = false;
 
   constructor(public elementService: ElementService,
               private messageService: MessageService,

@@ -1,6 +1,9 @@
 Editor
 ======
 ## next
+### Änderungen
+- Optionsfeld im Lückentext: „Nicht gewählte Optionen durchstreichen“ und „Gewählte Option durchstreichen“ schließen sich aus. Ist eine der beiden gesetzt, ist die andere deaktiviert und nennt im Tooltip den Grund. Bei „Gewählte Option durchstreichen“ ist auch die Auswahlfarbe deaktiviert, die dann nicht verwendet wird ([#1637](https://github.com/iqb-berlin/verona-modules-aspect/issues/1637))
+
 ### Fehlerbehebungen
 - Abschnitte
   - Ein Abschnitt, der auf die vorige oder nächste Seite verschoben wird, gibt das Speichern im Studio frei, und die Abschnittsnummern stimmen sofort ([#1633](https://github.com/iqb-berlin/verona-modules-aspect/issues/1633))

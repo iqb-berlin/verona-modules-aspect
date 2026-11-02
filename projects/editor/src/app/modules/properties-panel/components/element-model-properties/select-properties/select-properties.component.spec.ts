@@ -28,6 +28,9 @@ import {
   PropertyDivergesPipe
 } from 'editor/src/app/modules/properties-panel/pipes/property-diverges.pipe';
 import {
+  ExclusiveOptionLockedPipe
+} from 'editor/src/app/modules/properties-panel/pipes/exclusive-option-locked.pipe';
+import {
   SelectPropertiesComponent
 } from './select-properties.component';
 
@@ -44,7 +47,7 @@ describe('SelectPropertiesComponent', () => {
       declarations: [
         SelectPropertiesComponent, MergedCheckboxComponent, MergedMarkerComponent,
         NumberFieldDirective, NumberFieldBadInputDirective,
-        LimitEnabledStatePipe, PropertyDivergesPipe
+        LimitEnabledStatePipe, PropertyDivergesPipe, ExclusiveOptionLockedPipe
       ],
       imports: [
         CommonModule,
@@ -259,15 +262,87 @@ describe('SelectPropertiesComponent', () => {
    * inline box, so the span's rect was a 17px fragment beside the checkbox. The tooltip then appeared
    * next to the box and hovering the box did nothing at all.
    */
-  it('should anchor the strikeSelectedOption tooltip on a box around its checkbox', () => {
-    const anchor = fixture.debugElement.query(By.directive(MatTooltip)).nativeElement as HTMLElement;
-    const anchorRect = anchor.getBoundingClientRect();
-    const checkboxRect = (anchor.querySelector('mat-checkbox') as HTMLElement).getBoundingClientRect();
+  it('should anchor each strike tooltip on a box around its checkbox', () => {
+    const anchors = fixture.debugElement.queryAll(By.directive(MatTooltip))
+      .map(anchor => anchor.nativeElement as HTMLElement);
+    expect(anchors.length).toBe(2);
 
-    expect(anchorRect.height).toBeGreaterThan(0);
-    expect(anchorRect.top).toBeLessThanOrEqual(checkboxRect.top);
-    expect(anchorRect.bottom).toBeGreaterThanOrEqual(checkboxRect.bottom);
-    expect(anchorRect.left).toBeLessThanOrEqual(checkboxRect.left);
-    expect(anchorRect.right).toBeGreaterThanOrEqual(checkboxRect.right);
+    anchors.forEach(anchor => {
+      const anchorRect = anchor.getBoundingClientRect();
+      const checkboxRect = (anchor.querySelector('mat-checkbox') as HTMLElement).getBoundingClientRect();
+
+      expect(anchorRect.height).toBeGreaterThan(0);
+      expect(anchorRect.top).toBeLessThanOrEqual(checkboxRect.top);
+      expect(anchorRect.bottom).toBeGreaterThanOrEqual(checkboxRect.bottom);
+      expect(anchorRect.left).toBeLessThanOrEqual(checkboxRect.left);
+      expect(anchorRect.right).toBeGreaterThanOrEqual(checkboxRect.right);
+    });
+  });
+
+  /* Struck through both ways, every option of the toggle button is struck once one is chosen, so
+     each box is locked while the other one is set (#1637). The rule itself is the pipe's spec. Here:
+     that the template asks the pipe the right way round, that it asks the pipe at all - the
+     disagreeing selection, which a plain `=== true` let through - and the tooltips. */
+  describe('the two strike options', () => {
+    const labelled = (property: string) => (element: HTMLElement): boolean => element.textContent
+      ?.includes(`propertiesPanel.${property}`) ?? false;
+    const box = (property: string): HTMLInputElement => (Array.from(
+      fixture.nativeElement.querySelectorAll('mat-checkbox') as NodeListOf<HTMLElement>
+    ).find(labelled(property)) as HTMLElement).querySelector('input') as HTMLInputElement;
+    const tooltip = (property: string): MatTooltip => fixture.debugElement
+      .queryAll(By.directive(MatTooltip))
+      .find(anchor => labelled(property)(anchor.nativeElement))
+      ?.injector.get(MatTooltip) as MatTooltip;
+    const show = (strikeOtherOptions: boolean | null, strikeSelectedOption: boolean | null): void => {
+      component.combinedProperties = { strikeOtherOptions, strikeSelectedOption };
+      fixture.detectChanges();
+    };
+
+    it('should lock striking the other options while the chosen one is struck', () => {
+      show(false, true);
+
+      expect(box('strikeOtherOptions').disabled).toBe(true);
+      expect(box('strikeSelectedOption').disabled).toBe(false);
+    });
+
+    it('should lock striking the chosen option while the others are struck', () => {
+      show(true, false);
+
+      expect(box('strikeSelectedOption').disabled).toBe(true);
+      expect(box('strikeOtherOptions').disabled).toBe(false);
+    });
+
+    /* Two toggle buttons set the opposite way: a click on either box would set both on one of them. */
+    it('should lock both boxes for a selection that disagrees on both', () => {
+      show(null, null);
+
+      expect(box('strikeOtherOptions').disabled).toBe(true);
+      expect(box('strikeSelectedOption').disabled).toBe(true);
+    });
+
+    it('should name the other option in the tooltip of a locked box', () => {
+      show(false, true);
+      expect(tooltip('strikeOtherOptions').disabled).toBe(false);
+      expect(tooltip('strikeOtherOptions').message).toBe('propertiesPanel.strikeOtherOptionsLocked');
+
+      show(true, false);
+      expect(tooltip('strikeSelectedOption').message).toBe('propertiesPanel.strikeSelectedOptionLocked');
+    });
+
+    it('should keep the tooltips as they were on open boxes', () => {
+      show(false, false);
+
+      expect(tooltip('strikeOtherOptions').disabled).toBe(true);
+      expect(tooltip('strikeSelectedOption').message).toBe('propertiesPanel.strikeSelectedOptionTooltip');
+    });
+
+    /* The box that locks it is not offered outside expert mode, so the tooltip is all that explains it. */
+    it('should lock and explain striking the chosen option in simple mode as well', () => {
+      unitServiceMock.expertMode = false;
+      show(true, false);
+
+      expect(box('strikeSelectedOption').disabled).toBe(true);
+      expect(tooltip('strikeSelectedOption').message).toBe('propertiesPanel.strikeSelectedOptionLocked');
+    });
   });
 });

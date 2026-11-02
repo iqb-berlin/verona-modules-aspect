@@ -29,7 +29,9 @@ export class VisibilityRulesDialogComponent {
     private messageService: MessageService,
     private translateService: TranslateService
   ) {
-    this.visibilityRules = [...data.visibilityRules];
+    /* Copies of the rules, not only of the list: the rule editors write into the rule they are given while the user
+       types, and a cancelled dialog left that edit in the section, unreported to the host (#1633, §15). */
+    this.visibilityRules = data.visibilityRules.map(rule => ({ ...rule }));
     this.logicalConnectiveOfRules = data.logicalConnectiveOfRules;
     this.visibilityDelay = data.visibilityDelay;
     this.animatedVisibility = data.animatedVisibility;

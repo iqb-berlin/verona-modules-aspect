@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, fakeAsync, TestBed, tick
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -106,6 +108,20 @@ describe('VisibilityRulesDialogComponent', () => {
 
       expect(fixture.nativeElement.querySelectorAll('aspect-visibility-rule-editor').length).toBe(2);
     });
+
+    /* The rule editors write into the rule they are given while the user types. With only the list copied,
+       that was the section's own rule, and a cancelled dialog left the edit in the unit (#1633). */
+    it('should edit copies of the rules, so the injected rules keep their values', fakeAsync(() => {
+      const valueInput: HTMLInputElement = fixture.nativeElement.querySelector('aspect-visibility-rule-editor input');
+
+      valueInput.value = 'false';
+      valueInput.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      tick();
+
+      expect(component.visibilityRules[0].value).toBe('false');
+      expect(visibilityRules[0]).toEqual({ id: 'checkbox_1', operator: '=', value: 'true' });
+    }));
 
     it('should add an empty rule without touching the injected array', () => {
       component.addVisibilityRule();

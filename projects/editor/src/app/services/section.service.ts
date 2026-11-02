@@ -94,6 +94,8 @@ export class SectionService {
     if (this.unitService.unit.pages[pageIndex].sections.length === 0) {
       this.unitService.unit.pages[pageIndex].addSection();
     }
+    this.unitService.updateSectionCounter();
+    this.unitService.updateUnitDefinition();
   }
 
   /** Replacing is the deletion plus the insertion, so the insertion waits for the deletion to happen:

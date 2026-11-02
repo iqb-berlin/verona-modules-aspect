@@ -324,6 +324,87 @@ describe('SectionService', () => {
     expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
   });
 
+  describe('transferSection', () => {
+    /* Adds and removes the way EditorPage does, so the test sees where a section ends up. */
+    const createPageMock = (sections: EditorSection[], alwaysVisible = false): EditorPage => ({
+      sections,
+      alwaysVisible,
+      deleteSection: (sectionIndex: number) => sections.splice(sectionIndex, 1)[0],
+      addSection: (section?: EditorSection, sectionIndex?: number) => {
+        const added = section ?? createSectionMock();
+        if (sectionIndex === undefined) sections.push(added);
+        else sections.splice(sectionIndex, 0, added);
+      }
+    } as unknown as EditorPage);
+
+    /* Moving onto the page before or after is a change like any other: reported to the host, whose save
+       button depends on it, and renumbered (#1633). */
+    it('should append the first section of a page to the previous page and report the unit', () => {
+      const previousSection = createSectionMock();
+      const movedSection = createSectionMock();
+      const remainingSection = createSectionMock();
+      unitServiceMock.unit.pages = [
+        createPageMock([previousSection]),
+        createPageMock([movedSection, remainingSection])
+      ];
+
+      service.transferSection(1, 0, 'up');
+
+      expect(unitServiceMock.unit.pages[0].sections).toEqual([previousSection, movedSection]);
+      expect(unitServiceMock.unit.pages[1].sections).toEqual([remainingSection]);
+      expect(selectionService.selectedPageIndex).toBe(0);
+      expect(selectionService.selectedSectionIndex).toBe(1);
+      expect(unitServiceMock.updateSectionCounter).toHaveBeenCalled();
+      expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
+    });
+
+    it('should put the last section of a page in front of the next page and report the unit', () => {
+      const remainingSection = createSectionMock();
+      const movedSection = createSectionMock();
+      const nextSection = createSectionMock();
+      unitServiceMock.unit.pages = [
+        createPageMock([remainingSection, movedSection]),
+        createPageMock([nextSection])
+      ];
+
+      service.transferSection(0, 1, 'down');
+
+      expect(unitServiceMock.unit.pages[0].sections).toEqual([remainingSection]);
+      expect(unitServiceMock.unit.pages[1].sections).toEqual([movedSection, nextSection]);
+      expect(selectionService.selectedPageIndex).toBe(1);
+      expect(selectionService.selectedSectionIndex).toBe(0);
+      expect(unitServiceMock.updateSectionCounter).toHaveBeenCalled();
+      expect(unitServiceMock.updateUnitDefinition).toHaveBeenCalled();
+    });
+
+    /* A section there would stand beside every page, and could not be moved back down (#1634). */
+    it('should not move a section up onto a permanently visible page', () => {
+      const alwaysVisibleSection = createSectionMock();
+      const firstSection = createSectionMock();
+      unitServiceMock.unit.pages = [
+        createPageMock([alwaysVisibleSection], true),
+        createPageMock([firstSection])
+      ];
+
+      service.transferSection(1, 0, 'up');
+
+      expect(unitServiceMock.unit.pages[0].sections).toEqual([alwaysVisibleSection]);
+      expect(unitServiceMock.unit.pages[1].sections).toEqual([firstSection]);
+      expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+    });
+
+    it('should give a page that lost its only section an empty one', () => {
+      const movedSection = createSectionMock();
+      unitServiceMock.unit.pages = [createPageMock([movedSection]), createPageMock([createSectionMock()])];
+
+      service.transferSection(0, 0, 'down');
+
+      expect(unitServiceMock.unit.pages[0].sections.length).toBe(1);
+      expect(unitServiceMock.unit.pages[0].sections[0]).not.toBe(movedSection);
+      expect(unitServiceMock.unit.pages[1].sections[0]).toBe(movedSection);
+    });
+  });
+
   it('should transfer elements between sections', () => {
     const elementToMove = createElementMock();
     const elementToKeep = createElementMock();

@@ -315,12 +315,33 @@ describe('OverviewDialogComponent', () => {
     expect(component.tableSelection).toBe('none');
   });
 
-  it('should apply the new alias returned by the ID edit dialog', () => {
+  /* Through the ElementService, which reports the unit to the host; written straight into the element, the
+     host's save button stayed off (#1633). */
+  it('should write the new alias from the ID edit dialog through the ElementService', () => {
     const [{ element }] = component.tableData.data;
 
     component.editAlias(element);
 
     expect(matDialog.open).toHaveBeenCalledWith(IDEditDialogComponent, { data: { alias: 'text_1' } });
-    expect(element.setProperty).toHaveBeenCalledWith('alias', 'neuer_alias');
+    expect(elementService.updateElementsProperty).toHaveBeenCalledWith([element], 'alias', 'neuer_alias');
+    expect(element.setProperty).not.toHaveBeenCalled();
+  });
+
+  it('should write nothing when the ID edit dialog is cancelled', () => {
+    matDialog.open.mockReturnValue({ afterClosed: () => of(undefined) });
+    const [{ element }] = component.tableData.data;
+
+    component.editAlias(element);
+
+    expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
+  });
+
+  it('should write nothing when the ID edit dialog hands back the alias unchanged', () => {
+    matDialog.open.mockReturnValue({ afterClosed: () => of('text_1') });
+    const [{ element }] = component.tableData.data;
+
+    component.editAlias(element);
+
+    expect(elementService.updateElementsProperty).not.toHaveBeenCalled();
   });
 });

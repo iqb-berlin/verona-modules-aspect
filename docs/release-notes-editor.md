@@ -1,5 +1,14 @@
 Editor
 ======
+## next
+### Fehlerbehebungen
+- Abschnitte
+  - Ein Abschnitt, der auf die vorige oder nächste Seite verschoben wird, gibt das Speichern im Studio frei, und die Abschnittsnummern stimmen sofort ([#1633](https://github.com/iqb-berlin/verona-modules-aspect/issues/1633))
+  - Der erste Abschnitt nach der dauerhaft sichtbaren Seite bietet kein „Nach oben verschieben“ mehr an. Der Abschnitt landete sonst auf dieser Seite und ließ sich nicht zurückschieben ([#1634](https://github.com/iqb-berlin/verona-modules-aspect/issues/1634))
+- Elementinteraktion: Das Ausprobieren einer Ablegeliste verändert ihre Vorbelegung nicht mehr; nach dem Ausschalten zeigt die Liste wieder die Vorbelegung ([#1635](https://github.com/iqb-berlin/verona-modules-aspect/issues/1635))
+- Elementliste (Übersicht Elemente): Eine dort geänderte ID gibt das Speichern im Studio frei ([#1633](https://github.com/iqb-berlin/verona-modules-aspect/issues/1633))
+- Sichtbarkeitsbedingungen: „Abbrechen“ verwirft auch Änderungen an bestehenden Bedingungen ([#1633](https://github.com/iqb-berlin/verona-modules-aspect/issues/1633))
+
 ## 3.1.0
 ### Neue Funktionen
 - Assistent „Kontrollkästchen“: Angelegte Optionen lassen sich wie in den anderen Assistenten über den Schraubenschlüssel bearbeiten ([#1604](https://github.com/iqb-berlin/verona-modules-aspect/issues/1604))

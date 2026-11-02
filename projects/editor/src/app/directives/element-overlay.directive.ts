@@ -19,6 +19,7 @@ import { TableComponent } from 'common/components/elements/table/table.component
 import {
   TableChildOverlay
 } from 'common/components/table-child-overlay/table-child-overlay.component';
+import { DragOperatorService } from 'common/services/drag-operator.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { Section } from 'common/models/section';
@@ -47,7 +48,8 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
               protected unitService: UnitService,
               protected elementService: ElementService,
               protected dragNDropService: DragNDropService,
-              private changeDetectorRef: ChangeDetectorRef) { }
+              private changeDetectorRef: ChangeDetectorRef,
+              private dragOperatorService: DragOperatorService) { }
 
   ngOnInit(): void {
     const componentType = ComponentRegistry.getComponent(this.element.type);
@@ -171,6 +173,27 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
       this.childComponent.instance instanceof TableComponent) {
       this.childComponent.instance.editorMode = !isEnabled;
     }
+    this.setDropListsDetached(isEnabled);
+  }
+
+  /** Trying an element out leaves the unit as it is (#1635). In the editor a drop list holds its model's own value
+     array -- that is how the canvas follows the properties panel, whose writes splice into that array -- and a drag
+     rearranges the array the list holds. So while interaction is on, the drop lists of this element, its own or
+     those of a cloze or table, work on a copy; switched off, they get the model's array back, and what was tried is
+     gone. */
+  private setDropListsDetached(isDetached: boolean): void {
+    [this.element, ...this.element.getChildElements()]
+      .map(element => this.dragOperatorService.dropLists[element.id])
+      .filter(dropList => dropList !== undefined)
+      .forEach(dropList => {
+        dropList.elementFormControl.setValue(
+          isDetached ? [...dropList.elementModel.value] : dropList.elementModel.value
+        );
+        // A copy of its own while detached: a sort list puts its placeholder into the view model during a drag.
+        if (isDetached) dropList.refreshViewModel();
+        else dropList.viewModel = dropList.elementModel.value;
+        dropList.cdr.detectChanges();
+      });
   }
 
   isInteractionEnabled(): boolean {

@@ -110,6 +110,7 @@ import {
 } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
 import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
 import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
+import { MoveSectionUpAllowedPipe } from 'editor/src/app/pipes/move-section-up-allowed.pipe';
 
 import { ReferenceListComponent } from 'editor/src/app/components/reference-list/reference-list.component';
 import { ElementListComponent } from 'editor/src/app/components/element-list/element-list.component';
@@ -189,6 +190,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ImageResizeDialogComponent,
     BytesPipe,
     SupportsQualityPipe,
+    MoveSectionUpAllowedPipe,
     IDEditDialogComponent,
     OverviewDialogComponent,
     VariableInfoFindingsDialogComponent,

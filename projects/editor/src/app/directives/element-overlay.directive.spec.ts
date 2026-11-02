@@ -1,6 +1,11 @@
+/* eslint-disable max-classes-per-file */
 import { ChangeDetectorRef, ComponentRef } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { UntypedFormControl } from '@angular/forms';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
+import { DragOperatorService } from 'common/services/drag-operator.service';
+import { DropListComponent } from 'common/components/elements/drop-list/drop-list.component';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
@@ -20,19 +25,22 @@ describe('ElementOverlay', () => {
   let selectionServiceSpy: SpyObj<SelectionService>;
   let elementServiceSpy: SpyObj<ElementService>;
   let changeDetectorMock: { detectChanges: ReturnType<typeof vi.fn> };
+  let dragOperatorService: DragOperatorService;
 
   beforeEach(() => {
     selectionServiceSpy = createSpyObj<SelectionService>(['selectElement']);
     elementServiceSpy = createSpyObj<ElementService>(['showDefaultEditDialog']);
     changeDetectorMock = { detectChanges: vi.fn() };
+    dragOperatorService = new DragOperatorService();
     overlay = new TestElementOverlay(
       selectionServiceSpy,
       {} as UnitService,
       elementServiceSpy,
       new DragNDropService(),
-      changeDetectorMock as unknown as ChangeDetectorRef
+      changeDetectorMock as unknown as ChangeDetectorRef,
+      dragOperatorService
     );
-    overlay.element = { type: 'text', id: 'text_1' } as unknown as PositionedUIElement;
+    overlay.element = { type: 'text', id: 'text_1', getChildElements: () => [] } as unknown as PositionedUIElement;
   });
 
   it('should select an unselected element without multi select and emit elementSelected', () => {
@@ -108,6 +116,83 @@ describe('ElementOverlay', () => {
     overlay.setInteractionEnabled(false);
     expect(overlay.preventInteraction).toBe(true);
     expect(overlay.isInteractionEnabled()).toBe(false);
+  });
+
+  /* A drag rearranges the array a drop list holds, and in the editor that is its model's own value array --
+     trying a list out changed the unit (#1635). */
+  describe('drop lists while interaction is on', () => {
+    const itemA = { text: 'A' } as DragNDropValueObject;
+    const itemB = { text: 'B' } as DragNDropValueObject;
+    let model: { id: string, value: DragNDropValueObject[] };
+    let dropList: DropListComponent;
+
+    /* Holds the model's array, as a drop list in the editor does, and copies it on refresh as the real one does. */
+    class FakeDropList {
+      elementFormControl: UntypedFormControl;
+      viewModel: DragNDropValueObject[];
+      cdr = { detectChanges: vi.fn() };
+
+      constructor(public elementModel: { id: string, value: DragNDropValueObject[] }) {
+        this.elementFormControl = new UntypedFormControl(elementModel.value);
+        this.viewModel = elementModel.value;
+      }
+
+      refreshViewModel(): void {
+        this.viewModel = [...this.elementFormControl.value];
+      }
+    }
+
+    const registerDropList = (id: string): void => {
+      model = { id, value: [itemA, itemB] };
+      dropList = new FakeDropList(model) as unknown as DropListComponent;
+      dragOperatorService.dropLists[id] = dropList;
+    };
+
+    beforeEach(() => {
+      overlay.childComponent =
+        { instance: {} } as unknown as ComponentRef<ElementComponent | CompoundElementComponent>;
+    });
+
+    it('should let the drop list of the element work on copies of its value', () => {
+      registerDropList('drop-list_1');
+      overlay.element = {
+        type: 'drop-list', id: 'drop-list_1', getChildElements: () => []
+      } as unknown as PositionedUIElement;
+
+      overlay.setInteractionEnabled(true);
+      dropList.elementFormControl.value.reverse();
+      dropList.viewModel.push(itemA);
+
+      expect(model.value).toEqual([itemA, itemB]);
+      expect(dropList.elementFormControl.value).toEqual([itemB, itemA]);
+    });
+
+    it('should hand the drop list its model value back and drop what was tried', () => {
+      registerDropList('drop-list_1');
+      overlay.element = {
+        type: 'drop-list', id: 'drop-list_1', getChildElements: () => []
+      } as unknown as PositionedUIElement;
+      overlay.setInteractionEnabled(true);
+      dropList.elementFormControl.value.reverse();
+
+      overlay.setInteractionEnabled(false);
+
+      expect(dropList.elementFormControl.value).toBe(model.value);
+      expect(dropList.viewModel).toBe(model.value);
+      expect(model.value).toEqual([itemA, itemB]);
+    });
+
+    it('should detach the drop lists among the children of a compound element', () => {
+      registerDropList('drop-list_gap');
+      overlay.element = {
+        type: 'cloze', id: 'cloze_1', getChildElements: () => [{ id: 'drop-list_gap' }]
+      } as unknown as PositionedUIElement;
+
+      overlay.setInteractionEnabled(true);
+
+      expect(dropList.elementFormControl.value).not.toBe(model.value);
+      expect(dropList.viewModel).not.toBe(model.value);
+    });
   });
 
   it('should delegate the edit dialog to the element service', () => {

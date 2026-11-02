@@ -7,7 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { Stylings } from 'common/models/elements/property-group-interfaces';
 import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-properties';
@@ -157,6 +158,43 @@ describe('ElementStylePropertiesComponent', () => {
 
       expect(elementService.updateSelectedElementsStyleProperty)
         .toHaveBeenCalledWith('backgroundColor', '#3366cc');
+    });
+  });
+
+  /* A toggle button that strikes the chosen option paints it in its background colour, so its
+     selection colour does nothing then (#1637). The pen is locked with the field: it opens the picker
+     after it, which writes on its own. */
+  describe('the selection colour', () => {
+    const field = (): HTMLElement => Array.from(
+      fixture.nativeElement.querySelectorAll('mat-form-field') as NodeListOf<HTMLElement>
+    ).find(formField => formField.querySelector('mat-label')?.textContent
+      ?.includes('propertiesPanel.selectionColor')) as HTMLElement;
+    const tooltip = (): MatTooltip => fixture.debugElement
+      .queryAll(By.directive(MatTooltip))
+      .find(anchor => anchor.nativeElement === field())
+      ?.injector.get(MatTooltip) as MatTooltip;
+    const show = async (selectionColorIgnored: boolean): Promise<void> => {
+      component.styles = { ...component.styles, selectionColor: '#c9e0e0' } as unknown as Merged<Stylings>;
+      component.selectionColorIgnored = selectionColorIgnored;
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('should lock the field and its pen while it is ignored, and say why', async () => {
+      await show(true);
+
+      expect((field().querySelector('input') as HTMLInputElement).disabled).toBe(true);
+      expect((field().querySelector('button') as HTMLButtonElement).disabled).toBe(true);
+      expect(tooltip().disabled).toBe(false);
+      expect(tooltip().message).toBe('propertiesPanel.selectionColorIgnored');
+    });
+
+    it('should leave the field and its pen open otherwise', async () => {
+      await show(false);
+
+      expect((field().querySelector('input') as HTMLInputElement).disabled).toBe(false);
+      expect((field().querySelector('button') as HTMLButtonElement).disabled).toBe(false);
+      expect(tooltip().disabled).toBe(true);
     });
   });
 

@@ -61,7 +61,7 @@ export function setLabelText(labelText: string): void {
     .type(labelText);
 }
 
-function checkboxInput(labelText: string): Cypress.Chainable<JQuery<HTMLElement>> {
+export function checkboxInput(labelText: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get('aspect-ui-element-properties')
     .contains('mat-checkbox', labelText)
     .find('[type="checkbox"]');

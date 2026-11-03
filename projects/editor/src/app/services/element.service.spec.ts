@@ -33,6 +33,7 @@ describe('ElementService', () => {
     geometryElementPropertyUpdated: Subject<string>;
     mathTableElementPropertyUpdated: Subject<string>;
     tablePropUpdated: Subject<string>;
+    presetValueUpdated: Subject<string>;
     updateUnitDefinition: Mock;
     prepareDelete: Mock;
     referenceManager: { getElementsReferences: Mock; getTextAnchorReferences: Mock };
@@ -91,6 +92,7 @@ describe('ElementService', () => {
       geometryElementPropertyUpdated: new Subject<string>(),
       mathTableElementPropertyUpdated: new Subject<string>(),
       tablePropUpdated: new Subject<string>(),
+      presetValueUpdated: new Subject<string>(),
       updateUnitDefinition: vi.fn(),
       prepareDelete: vi.fn(),
       referenceManager: {
@@ -405,6 +407,26 @@ describe('ElementService', () => {
     service.updateElementsProperty([element], 'trackedVariables', []);
 
     expect(updatedGeometryIDs).toEqual([]);
+  });
+
+  /* The canvas shows a preset through the element's form control, which only this report brings up to date (#1642). */
+  it('should report a written preset with the ID of every element it was written to', () => {
+    const reportedIDs: string[] = [];
+    unitServiceMock.presetValueUpdated.subscribe(elementID => reportedIDs.push(elementID));
+
+    service.updateElementsProperty(
+      [createElementMock('toggle-button'), createElementMock('checkbox')], 'value', 1);
+
+    expect(reportedIDs).toEqual(['toggle-button_1', 'checkbox_1']);
+  });
+
+  it('should not report a preset when another property is written', () => {
+    const reportedIDs: string[] = [];
+    unitServiceMock.presetValueUpdated.subscribe(elementID => reportedIDs.push(elementID));
+
+    service.updateElementsProperty([createElementMock('toggle-button')], 'options', []);
+
+    expect(reportedIDs).toEqual([]);
   });
 
   /* These assert on the elements' own position group rather than on a setProperty spy. The

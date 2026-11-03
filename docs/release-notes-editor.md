@@ -13,6 +13,7 @@ Editor
 - Elementliste (Übersicht Elemente): Eine dort geänderte ID gibt das Speichern im Studio frei ([#1633](https://github.com/iqb-berlin/verona-modules-aspect/issues/1633))
 - Optionentabelle: Ist „Zeilenfärbung“ bzw. „Färbung erster Zeile“ aus, ist auch der Stift neben der Farbe deaktiviert. Über ihn ließ sich die Farbe bisher trotzdem ändern ([#1639](https://github.com/iqb-berlin/verona-modules-aspect/issues/1639))
 - Sichtbarkeitsbedingungen: „Abbrechen“ verwirft auch Änderungen an bestehenden Bedingungen ([#1633](https://github.com/iqb-berlin/verona-modules-aspect/issues/1633))
+- Vorbelegung: Optionsfeld, Kontrollkästchen, Optionsfelder und Schieberegler zeigen eine geänderte Vorbelegung sofort auf der Arbeitsfläche an, auch im Lückentext, und nicht erst nach dem Wechsel in die Vorschau und zurück ([#1642](https://github.com/iqb-berlin/verona-modules-aspect/issues/1642))
 
 ## 3.1.0
 ### Neue Funktionen

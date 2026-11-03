@@ -14,6 +14,7 @@ import {
 import { GeometryComponent } from 'common/components/elements/geometry/geometry.component';
 import { TetfolioComponent } from 'common/components/elements/tetfolio/tetfolio.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
+import { DropListComponent } from 'common/components/elements/drop-list/drop-list.component';
 import { MathTableComponent } from 'common/components/elements/math-table/math-table.component';
 import { TableComponent } from 'common/components/elements/table/table.component';
 import {
@@ -127,6 +128,24 @@ export abstract class ElementOverlay implements OnInit, OnDestroy {
           }
         }
       );
+
+    this.unitService.presetValueUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((elementID: string) => this.showPresetValue(elementID));
+  }
+
+  /** Hands a preset written in the editor to the form control of the element, or of the child of a compound element,
+     that has this ID (#1642). The control is filled once, when the element is drawn, and some templates show the
+     value through it alone: the chosen option of a toggle button, the strike of a checkbox -- in a gap the only sign
+     that it is checked --, the struck-out options of a radio group, the thumb of a slider.
+     Drop lists are left out. They follow the panel through the array they share with their model, and while
+     interaction is on they work on a copy that has to stay one (#1635). */
+  showPresetValue(elementID: string): void {
+    const component = this.childComponent.instance;
+    [component, ...(component instanceof CompoundElementComponent ? component.getFormElementChildrenComponents() : [])]
+      .filter((formElement): formElement is FormElementComponent => formElement instanceof FormElementComponent &&
+        !(formElement instanceof DropListComponent) && formElement.elementModel.id === elementID)
+      .forEach(formElement => formElement.elementFormControl.setValue(formElement.elementModel.value));
   }
 
   setSelected(newValue: boolean): void {

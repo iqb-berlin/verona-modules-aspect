@@ -58,6 +58,11 @@ export class UnitService {
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   tablePropUpdated: Subject<string> = new Subject<string>();
   tetfolioElementPropertyUpdated: Subject<string> = new Subject<string>();
+  /** The ID of an element whose preset (`value`) was written. The canvas shows a preset through the element's form
+     control, which is filled once when the element is drawn, so it has to be told (#1642). Sent by
+     `ElementService.updateElementsProperty`; a write that goes around it, straight to `setProperty`, has to send it
+     itself. */
+  presetValueUpdated: Subject<string> = new Subject<string>();
   sectionCountUpdated: Subject<void> = new Subject<void>();
   pageOrderChanged: Subject<void> = new Subject<void>();
   /** The variables of the unit that break the Verona contract, renewed whenever the unit is reported (#1129). */

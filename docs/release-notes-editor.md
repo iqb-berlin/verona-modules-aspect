@@ -2,6 +2,7 @@ Editor
 ======
 ## next
 ### Änderungen
+- Medienoptionen: „Lautstärkeregelung anzeigen“ trägt nicht mehr den Zusatz „ungeeignet für iPad“, denn seit iPadOS 26 lässt sich die Lautstärke auch am iPad regeln ([#858](https://github.com/iqb-berlin/verona-modules-aspect/issues/858))
 - Optionsfeld im Lückentext: „Nicht gewählte Optionen durchstreichen“ und „Gewählte Option durchstreichen“ schließen sich aus. Ist eine der beiden gesetzt, ist die andere deaktiviert und nennt im Tooltip den Grund. Bei „Gewählte Option durchstreichen“ ist auch die Auswahlfarbe deaktiviert, die dann nicht verwendet wird ([#1637](https://github.com/iqb-berlin/verona-modules-aspect/issues/1637))
 
 ### Fehlerbehebungen

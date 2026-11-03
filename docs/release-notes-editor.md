@@ -1,6 +1,6 @@
 Editor
 ======
-## next
+## 3.1.1
 ### Änderungen
 - Audio, Video
   - „Lautstärkeregelung anzeigen“ trägt nicht mehr den Zusatz „ungeeignet für iPad“, denn seit iPadOS 26 lässt sich die Lautstärke auch am iPad regeln ([#858](https://github.com/iqb-berlin/verona-modules-aspect/issues/858))

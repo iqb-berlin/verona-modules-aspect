@@ -6,6 +6,7 @@ import { UIElement } from 'common/models/elements/element';
 import { PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { StaticOverlayComponent } from 'editor/src/app/components/static-overlay/static-overlay.component';
+import { DragOperatorService } from 'common/services/drag-operator.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { ElementService } from 'editor/src/app/services/element.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -56,7 +57,8 @@ describe('StaticOverlayComponent', () => {
       {} as UnitService,
       elementService,
       new DragNDropService(),
-      { detectChanges: vi.fn() } as unknown as ChangeDetectorRef
+      { detectChanges: vi.fn() } as unknown as ChangeDetectorRef,
+      new DragOperatorService()
     );
     component.element = draggedElement;
   });

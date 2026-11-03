@@ -1,10 +1,16 @@
-# Builds the editor and the player from the tag of a published release and attaches the two HTML
-# files to it. The files are what a release delivers; before #1561 they were built by hand from
-# whatever the local checkout held at the time.
+# Builds the editor and the player from a pushed release tag, attaches the two HTML files to the
+# release of that tag and then publishes it. The files are what a release delivers; before #1561
+# they were built by hand from whatever the local checkout held at the time.
 #
-# Deliberately a GitHub Actions workflow and not a GitLab job: only GitHub knows when a release is
-# published, and GITHUB_TOKEN may upload to it. GitLab sees no more than the mirrored tag and would
-# need someone's GitHub token to upload anything.
+# Started by pushing the tag, not only by publishing the release (#1631). Publishing notifies
+# everyone who watches the repository, and the files can follow only once the pipeline below is
+# green: 3.1.0 was published at 14:09 UTC and had its files at 14:56. So the release is created as a
+# draft, which notifies nobody and starts no workflow, and is published here once its files are
+# attached. A release that someone has published already, by hand, only gets its files.
+#
+# Deliberately a GitHub Actions workflow and not a GitLab job: GITHUB_TOKEN may upload to a release
+# and publish it. GitLab sees no more than the mirrored tag and would need someone's GitHub token to
+# do either.
 #
 # The files are built here rather than taken from the pipeline on `master`: same commit, same lock
 # file, same Node, and nothing has to be fetched across from GitLab. What is taken from GitLab is its
@@ -17,12 +23,20 @@
 name: Release files
 
 on:
+  push:
+    # Not `editor/*+player/*`: a `+` in a filter pattern repeats the character before it. Any other
+    # tag under `editor/` fails at the comparison with package.json below.
+    tags:
+      - 'editor/**'
+  # Still there for a release published by hand: one whose tag was pushed long before, or created
+  # only by publishing it. Publishing the draft below starts no second run - what GITHUB_TOKEN does
+  # starts no workflow.
   release:
     types: [published]
   workflow_dispatch:
     inputs:
       tag:
-        description: Tag of an existing release, e.g. editor/3.0.1+player/3.0.1
+        description: Tag to build, e.g. editor/3.0.1+player/3.0.1
         required: true
 
 permissions:
@@ -33,7 +47,7 @@ jobs:
   build-and-attach:
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      TAG: ${{ github.event_name == 'push' && github.ref_name || github.event.release.tag_name || inputs.tag }}
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
     steps:
@@ -82,12 +96,27 @@ jobs:
               *) echo "$CONTEXT: ${state:-nothing reported yet} for $sha, waiting"; sleep 60 ;;
             esac
           done
+      # The release is looked up only now, so it can be created at any time until the pipeline is
+      # green; without one, re-run this workflow once it exists.
       # --clobber, so that a re-run after a half-finished upload does not fail on its own first file.
       # Replacing is safe because the build is reproducible: run against editor/3.0.1+player/3.0.1, it
       # produced both files byte for byte as attached to that release.
-      - name: Attach the files to the release
-        if: github.event_name == 'release'
-        run: gh release upload --clobber "$TAG" "$EDITOR_FILE" "$PLAYER_FILE"
+      # Publishing comes last, so that nobody is told of a release that has no files yet. A full
+      # release is marked latest explicitly, as `gh release create --latest` did by hand; a
+      # pre-release cannot be.
+      - name: Attach the files and publish the release
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          if ! release=$(gh release view "$TAG" --json isDraft,isPrerelease --jq '"\(.isDraft) \(.isPrerelease)"'); then
+            echo "::error::Could not read the release for $TAG (gh says why above). If none exists yet, create it as a draft as scripts/release-notes.sh shows; then re-run this workflow."
+            exit 1
+          fi
+          gh release upload --clobber "$TAG" "$EDITOR_FILE" "$PLAYER_FILE"
+          case "$release" in
+            "true false") gh release edit "$TAG" --draft=false --latest ;;
+            "true true") gh release edit "$TAG" --draft=false ;;
+            *) echo "$TAG was published already, only its files were attached" ;;
+          esac
       - name: Keep the files as a workflow artifact
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7

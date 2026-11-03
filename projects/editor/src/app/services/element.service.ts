@@ -243,6 +243,7 @@ export class ElementService {
         if (element.type === 'tetfolio' && property === 'htmlContent') {
           this.unitService.tetfolioElementPropertyUpdated.next(element.id);
         }
+        if (property === 'value') this.unitService.presetValueUpdated.next(element.id);
         hasDirectWrite = true;
       }
     });

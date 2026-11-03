@@ -1,5 +1,8 @@
 Allgemein
 =========
+## editor/3.1.1+player/3.1.1
+Keine Änderungen gegenüber 3.1.0
+
 ## editor/3.1.0+player/3.1.0
 ### Neue Funktionen
 - Eingabebereich: Neue Einstellung „Wörter zählen“ zeigt unter dem Text die Zahl der geschriebenen Wörter an. Die Zahl geht nicht in die Antwort ein ([#989](https://github.com/iqb-berlin/verona-modules-aspect/issues/989))

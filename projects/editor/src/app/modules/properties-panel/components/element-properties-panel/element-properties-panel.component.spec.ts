@@ -64,6 +64,7 @@ class MockElementPositionPropertiesComponent {
 })
 class MockElementStylePropertiesComponent {
   @Input() styles!: Stylings | undefined;
+  @Input() selectionColorIgnored: boolean = false;
 }
 
 describe('ElementPropertiesPanelComponent', () => {

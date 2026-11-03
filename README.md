@@ -242,9 +242,10 @@ A branch name carries the issue it belongs to: `feature/1357-topic`.
 on the merge commit on `master`, one tag for both modules — `editor/3.0.0+player/3.0.0`. What the
 release branch carries: the two version numbers in `package.json` (`config.player_version` and
 `config.editor_version` — the version stands nowhere else) followed by an `npm install`, and the
-entries in `docs/release-notes-*.md`. The GitHub release for the tag is created with its notes only:
-once it is published, `.github/workflows/release-files.yml` builds both modules from the tag and
-attaches the two HTML files, as soon as the GitLab pipeline on the tagged commit is green.
+entries in `docs/release-notes-*.md`. The GitHub release for the tag is created as a draft with its
+notes only. Pushing the tag starts `.github/workflows/release-files.yml`, which builds both modules
+from the tag, attaches the two HTML files as soon as the GitLab pipeline on the tagged commit is
+green, and only then publishes the draft — so nobody is notified of a release without its files.
 
 Two merges out of the branch, rather than one route through `develop`, mean `master` receives exactly
 the state the release branch froze while `develop` can move on meanwhile. They also mean `master` is
@@ -275,7 +276,7 @@ of two that later have to be told apart.
    into `develop` only builds the modules, since its tree is the one the pull request just
    passed, and a tag starts no pipeline. The comment at the top of `.gitlab-ci.yml` gives the
    reasons. The two GitHub Actions workflows stay outside this flow: one publishes the
-   documentation after a merge, the other attaches the module files to a published release.
+   documentation after a merge, the other attaches the module files to a release and publishes it.
 6. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
    something else is merged, rebase onto `origin/develop` and force-push with
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after

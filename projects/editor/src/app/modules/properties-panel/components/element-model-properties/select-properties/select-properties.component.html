@@ -15,24 +15,41 @@
     }
   </mat-form-field>
 }
+<!--The two strike options of the toggle button exclude each other: with both set, every option is
+    struck once one is chosen, and the chosen one shows no selection colour either (#1637). When a
+    box is locked is the pipe's to decide, the null cases of a selection included.
+
+    The tooltips hang on a wrapper: aspect-merged-checkbox is `display: contents` and has no
+    bounding rect of its own, and MatTooltip positions its overlay from that rect - on the tag
+    itself the explanation would appear in the top left corner of the viewport.
+
+    A `div`, not a `span`: the checkbox is a block, and a block inside an inline element splits its
+    inline box - the span's own rect then covered an empty 17px fragment next to the checkbox
+    instead of the checkbox, which both misplaced the tooltip and made hovering the box do nothing.
+    The spec pins the anchor's rect around the checkbox.-->
 @if (unitService.expertMode && combinedProperties.strikeOtherOptions !== undefined) {
-  <aspect-merged-checkbox [value]="combinedProperties.strikeOtherOptions"
-                          (valueChange)="updateModel.emit({ property: 'strikeOtherOptions', value: $event })">
-    {{'propertiesPanel.strikeOtherOptions' | translate }}
-  </aspect-merged-checkbox>
+  @let strikeOtherOptionsLocked = combinedProperties.strikeOtherOptions |
+    exclusiveOptionLocked : combinedProperties.strikeSelectedOption;
+  <div [matTooltip]="'propertiesPanel.strikeOtherOptionsLocked' | translate"
+       [matTooltipDisabled]="!strikeOtherOptionsLocked">
+    <aspect-merged-checkbox
+        [value]="combinedProperties.strikeOtherOptions"
+        [disabled]="strikeOtherOptionsLocked"
+        (valueChange)="updateModel.emit({ property: 'strikeOtherOptions', value: $event })">
+      {{'propertiesPanel.strikeOtherOptions' | translate }}
+    </aspect-merged-checkbox>
+  </div>
 }
 @if (combinedProperties.strikeSelectedOption !== undefined) {
-  <!--The tooltip hangs on a wrapper: aspect-merged-checkbox is `display: contents` and has no
-      bounding rect of its own, and MatTooltip positions its overlay from that rect - on the tag
-      itself the explanation would appear in the top left corner of the viewport.
-
-      A `div`, not a `span`: the checkbox is a block, and a block inside an inline element splits its
-      inline box - the span's own rect then covered an empty 17px fragment next to the checkbox
-      instead of the checkbox, which both misplaced the tooltip and made hovering the box do nothing.
-      The spec pins the anchor's rect around the checkbox.-->
-  <div [matTooltip]="'propertiesPanel.strikeSelectedOptionTooltip' | translate">
+  <!--`strikeOtherOptions` is offered in expert mode only, so outside it this tooltip is the one place
+      that names what locks the box.-->
+  @let strikeSelectedOptionLocked = combinedProperties.strikeSelectedOption |
+    exclusiveOptionLocked : combinedProperties.strikeOtherOptions;
+  <div [matTooltip]="(strikeSelectedOptionLocked ? 'propertiesPanel.strikeSelectedOptionLocked' :
+                      'propertiesPanel.strikeSelectedOptionTooltip') | translate">
     <aspect-merged-checkbox
         [value]="combinedProperties.strikeSelectedOption"
+        [disabled]="strikeSelectedOptionLocked"
         (valueChange)="updateModel.emit({ property: 'strikeSelectedOption', value: $event })">
       {{'propertiesPanel.strikeSelectedOption' | translate }}
     </aspect-merged-checkbox>

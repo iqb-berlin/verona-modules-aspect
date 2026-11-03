@@ -168,12 +168,15 @@ export class OverviewDialogComponent implements AfterViewInit {
       .forEach(row => this.elementSelection.deselect(row));
   }
 
+  /** Written through the ElementService, as the ID field of the properties panel does: it reports the unit to the
+     host, and that report is what turns on the host's save button (#1633). An alias the dialog hands back unchanged
+     is no change and is not reported. */
   editAlias(el: UIElement) {
     const dialogRef = this.dialog.open(IDEditDialogComponent, {
       data: { alias: el.alias }
     });
     return dialogRef.afterClosed().subscribe((newAlias: string) => {
-      if (newAlias) el.setProperty('alias', newAlias);
+      if (newAlias && newAlias !== el.alias) this.elementService.updateElementsProperty([el], 'alias', newAlias);
     });
   }
 

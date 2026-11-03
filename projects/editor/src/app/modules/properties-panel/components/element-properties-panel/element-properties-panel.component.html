@@ -42,7 +42,8 @@
           <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon" [matTooltip]="'propertiesPanel.tabStyling' | translate">palette</mat-icon>
           </ng-template>
-          <aspect-element-style-properties [styles]="combinedProperties.styling">
+          <aspect-element-style-properties [styles]="combinedProperties.styling"
+                                           [selectionColorIgnored]="combinedProperties.strikeSelectedOption === true">
           </aspect-element-style-properties>
         </mat-tab>
       }

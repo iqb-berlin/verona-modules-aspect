@@ -2956,8 +2956,8 @@ button "build"
 button "clear"
 button "build"
 button "clear"
-checkbox "propertiesPanel.strikeOtherOptions" = indeterminate
-checkbox "propertiesPanel.strikeSelectedOption" = indeterminate
+checkbox "propertiesPanel.strikeOtherOptions" = indeterminate (disabled)
+checkbox "propertiesPanel.strikeSelectedOption" = indeterminate (disabled)
 checkbox "propertiesPanel.verticalOrientation" = indeterminate
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -3002,7 +3002,7 @@ button "build"
 button "clear"
 button "build"
 button "clear"
-checkbox "propertiesPanel.strikeSelectedOption" = indeterminate
+checkbox "propertiesPanel.strikeSelectedOption" = indeterminate (disabled)
 checkbox "propertiesPanel.verticalOrientation" = indeterminate
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)

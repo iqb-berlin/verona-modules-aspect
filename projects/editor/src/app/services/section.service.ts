@@ -78,8 +78,11 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
-  /** Move section (up and down) from one page to another */
+  /** Move section (up and down) from one page to another. Not onto a permanently visible page: a section there
+     stands beside every other page, and the menu offers the last section of such a page no way back down. The
+     button is hidden for that case; this guards it where the pages are written, as `collapsePage` does (#1634). */
   transferSection(pageIndex: number, sectionIndex: number, direction: 'up' | 'down'): void {
+    if (direction === 'up' && this.unitService.unit.pages[pageIndex - 1]?.alwaysVisible) return;
     const section = this.unitService.unit.pages[pageIndex].deleteSection(sectionIndex);
     if (direction === 'up') {
       this.unitService.unit.pages[pageIndex - 1].addSection(section);
@@ -94,6 +97,8 @@ export class SectionService {
     if (this.unitService.unit.pages[pageIndex].sections.length === 0) {
       this.unitService.unit.pages[pageIndex].addSection();
     }
+    this.unitService.updateSectionCounter();
+    this.unitService.updateUnitDefinition();
   }
 
   /** Replacing is the deletion plus the insertion, so the insertion waits for the deletion to happen:

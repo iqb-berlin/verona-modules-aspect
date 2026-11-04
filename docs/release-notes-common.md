@@ -7,6 +7,9 @@ Allgemein
 ### Änderungen
 - **Formelfeld, Formelbereich**
   - Die Formeleingabe verwendet MathLive 0.111.3 statt der eigenen Variante von MathLive 0.102. Markierte Teile einer Formel werden hervorgehoben; mit einem Screenreader werden Eingaben angesagt (auf Englisch) ([#1648](https://github.com/iqb-berlin/verona-modules-aspect/issues/1648))
+  - Tastatur der Formeleingabe
+    - Alle Eingabekästchen auf den Tasten sind weiß; bisher war bei Bruch, Potenz, Grad, Überstrich, Vektorpfeil und Strich das Kästchen für den Ausdruck vor dem Cursor blau gefüllt. Die Tasten verhalten sich wie bisher ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+    - Reiter „∞≠∈“: Entfernt sind ∃, ∄, ∀, ∁, ‖ ‖, abs, ←, ⇐, ↔ sowie ∑, ∫ und ∬ ohne Eingabefelder. Neu sind ∢, ≈, ℕ, ℤ, ℚ, ℝ, %, ↦, ∧ und ∨; ¬ hat einen eigenen Platz. Umschalt + log fügt einen Logarithmus mit frei wählbarer Basis ein, etwa log₂(5), statt log₁₀ ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
 
 ## editor/3.1.2+player/3.1.2
 ### Änderungen

@@ -3,6 +3,9 @@ Allgemein
 ## next
 ### Änderungen
 - Formelfeld, Formelbereich: Reiter „αβγ“ der Formeltastatur: Mit Umschalttaste tragen auch die Großbuchstaben ihren Namen ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))
+- Formelfeld, Formelbereich: Tastatur der Formeleingabe
+  - Alle Eingabekästchen auf den Tasten sind weiß; bisher war bei Bruch, Potenz, Grad, Überstrich, Vektorpfeil und Strich das Kästchen für den Ausdruck vor dem Cursor blau gefüllt. Die Tasten verhalten sich wie bisher ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+  - Reiter „∞≠∈“: Entfernt sind ∃, ∄, ∀, ∁, ‖ ‖, abs, ←, ⇐, ↔ sowie ∑, ∫ und ∬ ohne Eingabefelder. Neu sind ∢, ≈, ℕ, ℤ, ℚ, ℝ, %, ↦, ∧ und ∨; ¬ hat einen eigenen Platz. Umschalt + log fügt einen Logarithmus mit frei wählbarer Basis ein, etwa log₂(5), statt log₁₀ ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
 
 ### Fehlerbehebungen
 - Formelfeld, Formelbereich: Reiter „αβγ“ der Formeltastatur: Die Taste ψ ist mit „psi“ statt „zeta“ beschriftet ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))

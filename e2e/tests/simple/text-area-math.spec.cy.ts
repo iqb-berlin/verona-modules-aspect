@@ -88,5 +88,50 @@ describe('Text area math element', { testIsolation: false }, () => {
       });
       cy.clickOutside();
     });
+
+    it('shows the formula keyboard with empty boxes only and the reworked symbols (#1011)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Bereich').within(() => {
+        cy.get('button:contains("Formel einfügen")').click({ force: true });
+        cy.get('math-field').last().shadow().find('.ML__content').click()
+          .type('3');
+      });
+      cy.get('.math-keyboard-container .MLK__layer.is-visible .MLK__keycap').should('have.length.greaterThan', 0);
+      // mathlive draws #@ on a key as a filled blue square; no key on any tab may show one
+      cy.get('.math-keyboard-container .ML__box-placeholder').should('not.exist');
+
+      pressKeycapInserting('\\frac{#@}{#?}');
+      cy.contains('aspect-element-group-selection', 'Standard Formel Bereich')
+        .find('math-field').last()
+        .should($mathField => {
+          expect(($mathField[0] as unknown as { getValue(): string }).getValue()).to.contain('\\frac{3}');
+        });
+
+      cy.get('.math-keyboard-container .MLK__layer.is-visible [data-layer]').contains('≠')
+        .trigger('pointerdown', { button: 0 });
+      cy.get('.math-keyboard-container .MLK__layer.is-visible').within(() => {
+        const added = ['≈', '∢', '%', '∧', '∨', '↦'];
+        const removed = ['∃', '∄', '∀', '∁', '∑'];
+        added.forEach(symbol => cy.get('.MLK__keycap').should('contain', symbol));
+        removed.forEach(symbol => cy.get('.MLK__keycap').should('not.contain', symbol));
+      });
+      cy.clickOutside();
+    });
   });
 });
+
+/** Presses the key of the visible keyboard layer whose keycap inserts `insert`, the way mathlive listens for it. */
+function pressKeycapInserting(insert: string): void {
+  cy.window().then(win => {
+    const keyboard = (win as unknown as {
+      mathVirtualKeyboard: { getKeycap(id: string): { insert?: string } | undefined }
+    }).mathVirtualKeyboard;
+    const keycaps = win.document.querySelectorAll<HTMLElement>(
+      '.math-keyboard-container .MLK__layer.is-visible .MLK__keycap[id]'
+    );
+    const keycap = Array.from(keycaps).find(element => keyboard.getKeycap(element.id)?.insert === insert);
+    expect(keycap, `keycap inserting ${insert}`).not.to.equal(undefined);
+    cy.wrap(keycap as HTMLElement)
+      .trigger('pointerdown', { button: 0 })
+      .trigger('pointerup', { button: 0 });
+  });
+}

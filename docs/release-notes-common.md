@@ -1,5 +1,12 @@
 Allgemein
 =========
+## next
+### Änderungen
+- Formelfeld, Formelbereich: Reiter „αβγ“ der Formeltastatur: Mit Umschalttaste tragen auch die Großbuchstaben ihren Namen ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))
+
+### Fehlerbehebungen
+- Formelfeld, Formelbereich: Reiter „αβγ“ der Formeltastatur: Die Taste ψ ist mit „psi“ statt „zeta“ beschriftet ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))
+
 ## editor/3.1.1+player/3.1.1
 Keine Änderungen gegenüber 3.1.0
 

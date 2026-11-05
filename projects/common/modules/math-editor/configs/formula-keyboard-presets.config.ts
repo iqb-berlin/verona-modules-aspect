@@ -1,4 +1,20 @@
-import { VirtualKeyboardLayout } from '@iqb/mathlive';
+import { convertLatexToMarkup, VirtualKeyboardKeycap, VirtualKeyboardLayout } from '@iqb/mathlive';
+
+/**
+ * The shifted variant of a Greek letter key: inserts `insert` and shows the capital letter with its name
+ * below it, like the lowercase key. MathLive draws a keycap's `aside` only for the unshifted key, so the
+ * name has to be part of the label. The letter is typeset from `insert` with MathLive's public
+ * `convertLatexToMarkup`, so the key always shows the letter it inserts; how that letter is shaped in the
+ * formula is up to the formula field. This is not the internal renderer MathLive uses for a shift given as
+ * plain LaTeX; `letterShapeStyle: 'tex'` keeps the capital on the key upright whatever the locale.
+ *
+ * The same label also fills the small shift hint (`MLK__shift`) in the corner of the lowercase key;
+ * `common-styles.css` hides the `greek-capital-name` there, so the hint shows only the letter.
+ */
+const greekCapital = (insert: string, name: string): Partial<VirtualKeyboardKeycap> => ({
+  insert,
+  label: `${convertLatexToMarkup(insert, { letterShapeStyle: 'tex' })}<aside class="greek-capital-name">${name}</aside>`
+});
 
 export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
   iqbPhysics: {
@@ -676,70 +692,70 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           class: 'MLK__tex',
           insert: '\\varphi',
           aside: 'phi var.',
-          shift: '\\Phi'
+          shift: greekCapital('\\Phi', 'Phi')
         },
         {
           label: '<i>&#x03c2;</i>',
           class: 'MLK__tex',
           insert: '\\varsigma',
           aside: 'sigma var.',
-          shift: '\\Sigma'
+          shift: greekCapital('\\Sigma', 'Sigma')
         },
         {
           label: '<i>&#x03f5;</i>',
           class: 'MLK__tex',
           insert: '\\epsilon',
           aside: 'epsilon',
-          shift: '\\char"0190'
+          shift: greekCapital('\\char"0190', 'Epsilon')
         },
         {
           label: '<i>&rho;</i>',
           class: 'MLK__tex',
           insert: '\\rho',
           aside: 'rho',
-          shift: '\\char"3A1'
+          shift: greekCapital('\\char"3A1', 'Rho')
         },
         {
           label: '<i>&tau;</i>',
           class: 'MLK__tex',
           insert: '\\tau',
           aside: 'tau',
-          shift: '\\char"3A4'
+          shift: greekCapital('\\char"3A4', 'Tau')
         },
         {
           label: '<i>&upsilon;</i>',
           class: 'MLK__tex',
           insert: '\\upsilon',
           aside: 'upsilon',
-          shift: '\\Upsilon'
+          shift: greekCapital('\\Upsilon', 'Upsilon')
         },
         {
           label: '<i>&theta;</i>',
           class: 'MLK__tex',
           insert: '\\theta',
           aside: 'theta',
-          shift: '\\Theta'
+          shift: greekCapital('\\Theta', 'Theta')
         },
         {
           label: '<i>&iota;</i>',
           class: 'MLK__tex',
           insert: '\\iota',
           aside: 'iota',
-          shift: '\\char"399'
+          shift: greekCapital('\\char"399', 'Iota')
         },
         {
           label: '<i>&omicron;</i>',
           class: 'MLK__tex',
           insert: '\\omicron',
           aside: 'omicron',
-          shift: '\\char"39F'
+          shift: greekCapital('\\char"39F', 'Omicron')
         },
         {
           label: '<i>&pi;</i>',
           class: 'MLK__tex',
           insert: '\\pi',
           aside: 'pi',
-          shift: '\\Pi'
+          shift: greekCapital('\\Pi', 'Pi')
         }
       ],
       [
@@ -749,63 +765,63 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           class: 'MLK__tex',
           insert: '\\alpha',
           aside: 'alpha',
-          shift: '\\char"391'
+          shift: greekCapital('\\char"391', 'Alpha')
         },
         {
           label: '<i>&sigma;</i>',
           class: 'MLK__tex',
           insert: '\\sigma',
           aside: 'sigma',
-          shift: '\\Sigma'
+          shift: greekCapital('\\Sigma', 'Sigma')
         },
         {
           label: '<i>&delta;</i>',
           class: 'MLK__tex',
           insert: '\\delta',
           aside: 'delta',
-          shift: '\\Delta'
+          shift: greekCapital('\\Delta', 'Delta')
         },
         {
           latex: '\\phi',
           class: 'MLK__tex',
           insert: '\\phi',
           aside: 'phi',
-          shift: '\\Phi'
+          shift: greekCapital('\\Phi', 'Phi')
         },
         {
           label: '<i>&gamma;</i>',
           class: 'MLK__tex',
           insert: '\\gamma',
           aside: 'gamma',
-          shift: '\\Gamma'
+          shift: greekCapital('\\Gamma', 'Gamma')
         },
         {
           label: '<i>&eta;</i>',
           class: 'MLK__tex',
           insert: '\\eta',
           aside: 'eta',
-          shift: '\\char"397'
+          shift: greekCapital('\\char"397', 'Eta')
         },
         {
           label: '<i>&xi;</i>',
           class: 'MLK__tex',
           insert: '\\xi',
           aside: 'xi',
-          shift: '\\Xi'
+          shift: greekCapital('\\Xi', 'Xi')
         },
         {
           label: '<i>&kappa;</i>',
           class: 'MLK__tex',
           insert: '\\kappa',
           aside: 'kappa',
-          shift: '\\Kappa'
+          shift: greekCapital('\\Kappa', 'Kappa')
         },
         {
           label: '<i>&lambda;</i>',
           class: 'MLK__tex',
           insert: '\\lambda',
           aside: 'lambda',
-          shift: '\\Lambda'
+          shift: greekCapital('\\Lambda', 'Lambda')
         },
         '[separator-5]'
       ],
@@ -816,49 +832,49 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           class: 'MLK__tex',
           insert: '\\zeta',
           aside: 'zeta',
-          shift: '\\char"396'
+          shift: greekCapital('\\char"396', 'Zeta')
         },
         {
           label: '<i>&chi;</i>',
           class: 'MLK__tex',
           insert: '\\chi',
           aside: 'chi',
-          shift: '\\char"3A7'
+          shift: greekCapital('\\char"3A7', 'Chi')
         },
         {
           label: '<i>&psi;</i>',
           class: 'MLK__tex',
           insert: '\\psi',
-          aside: 'zeta',
-          shift: '\\Psi'
+          aside: 'psi',
+          shift: greekCapital('\\Psi', 'Psi')
         },
         {
           label: '<i>&omega;</i>',
           class: 'MLK__tex',
           insert: '\\omega',
           aside: 'omega',
-          shift: '\\Omega'
+          shift: greekCapital('\\Omega', 'Omega')
         },
         {
           label: '<i>&beta;</i>',
           class: 'MLK__tex',
           insert: '\\beta',
           aside: 'beta',
-          shift: '\\char"392'
+          shift: greekCapital('\\char"392', 'Beta')
         },
         {
           label: '<i>&nu;</i>',
           class: 'MLK__tex',
           insert: '\\nu',
           aside: 'nu',
-          shift: '\\char"39D'
+          shift: greekCapital('\\char"39D', 'Nu')
         },
         {
           label: '<i>&mu;</i>',
           class: 'MLK__tex',
           insert: '\\mu',
           aside: 'mu',
-          shift: '\\char"39C'
+          shift: greekCapital('\\char"39C', 'Mu')
         },
         {
           class: 'action bottom right',

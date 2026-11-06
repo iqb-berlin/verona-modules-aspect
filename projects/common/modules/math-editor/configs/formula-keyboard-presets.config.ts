@@ -307,7 +307,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
     ]
   },
   iqbSymbols: {
-    label: '&infin;≠∈',
+    label: '∞π%',
     labelClass: 'MLK__tex',
     rows: [
       [
@@ -316,17 +316,13 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           shift: '\\sin^{-1}'
         },
         '\\ln',
-        {
-          latex: '\\mathbb{N}',
-          shift: '\\mathbb{Z}'
-        },
+        '\\mathbb{N}',
         {
           latex: '\\rightarrow',
           shift: '\\Rightarrow'
         },
         '\\sphericalangle',
         { latex: '\\in', shift: '\\notin' },
-        '\\cup',
         {
           latex: '\\overrightarrow{#?}',
           insert: '\\overrightarrow{#@}',
@@ -335,6 +331,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
             insert: '\\overleftarrow{#@}'
           }
         },
+        '\\cup',
         {
           class: 'small',
           latex: '\\lim_{#?}',
@@ -350,18 +347,19 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         {
           latex: '\\log',
           shift: {
-            latex: '\\log_{#?}\\left(#?\\right)',
+            // shows only the box for the base, as #1011 asks for a "log mit Eintrag rechts darunter";
+            // the brackets for the argument are inserted but left off the label, as agreed in the ticket
+            latex: '\\log_{#?}',
             insert: '\\log_{#?}\\left(#0\\right)'
           }
         },
-        '\\left\\vert#0\\right\\vert',
+        '\\mathbb{Z}',
         '\\mapsto',
         {
           latex: '\\land',
           shift: '\\lor'
         },
         { latex: '\\ni', shift: '\\not\\owns' },
-        '\\cap',
         {
           latex: '\\overline{#?}',
           insert: '\\overline{#@}',
@@ -370,11 +368,12 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
             insert: '\\underline{#@}'
           }
         },
-        '\\%',
+        '\\cap',
         {
           latex: '\\int^{{#?}}_{#?}\\!#?\\,\\mathrm{d}x',
           class: 'small'
-        }
+        },
+        '\\%'
       ],
       [
         {
@@ -385,17 +384,10 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '\\exp',
           insert: '\\exp\\left(#0\\right)'
         },
-        {
-          latex: '\\mathbb{Q}',
-          shift: '\\mathbb{R}'
-        },
+        '\\mathbb{Q}',
         '\\lrArr',
         { latex: '\\vert', shift: '!' },
         '\\lnot',
-        {
-          latex: '\\subset',
-          shift: '\\subseteq'
-        },
         {
           latex: '#?^{\\prime}',
           insert: '#@^{\\prime}',
@@ -403,6 +395,10 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
             latex: '#?^{\\doubleprime}',
             insert: '#@^{\\doubleprime}'
           }
+        },
+        {
+          latex: '\\subset',
+          shift: '\\subseteq'
         },
         {
           latex: '\\mathrm{d}',
@@ -415,7 +411,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
       ],
       [
         { label: '[shift]', width: 2.0 },
-        '[separator-10]',
+        '\\mathbb{R}',
         {
           latex: '\\exponentialE',
           shift: '\\imaginaryI'
@@ -425,7 +421,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '\\infty',
           shift: '\\Colon'
         },
-        '[separator-10]',
+        '\\left\\vert#0\\right\\vert',
         {
           class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',

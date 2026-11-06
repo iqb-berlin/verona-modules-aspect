@@ -106,7 +106,7 @@ describe('Text area math element', { testIsolation: false }, () => {
           expect(($mathField[0] as unknown as { getValue(): string }).getValue()).to.contain('\\frac{3}');
         });
 
-      cy.get('.math-keyboard-container .MLK__layer.is-visible [data-layer]').contains('≠')
+      cy.get('.math-keyboard-container .MLK__layer.is-visible [data-layer]').contains('∞π%')
         .trigger('pointerdown', { button: 0 });
       cy.get('.math-keyboard-container .MLK__layer.is-visible').within(() => {
         const added = ['≈', '∢', '%', '∧', '∨', '↦'];

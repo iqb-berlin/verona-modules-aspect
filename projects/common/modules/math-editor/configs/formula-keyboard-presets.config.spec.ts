@@ -13,17 +13,24 @@ const shiftOf = (keycap: Partial<VirtualKeyboardKeycap>): Partial<VirtualKeyboar
   keycap.shift as Partial<VirtualKeyboardKeycap>
 );
 
+/** What the label of the shifted key shows: the capital letter, and the name written beneath it. */
+const renderedCapital = (keycap: Partial<VirtualKeyboardKeycap>): { glyph?: string; name?: string } => {
+  const label = document.createElement('div');
+  label.innerHTML = shiftOf(keycap).label ?? '';
+  const name = label.querySelector('aside.greek-capital-name');
+  name?.remove();
+  return { glyph: label.textContent?.replace(/\s/g, ''), name: name?.textContent ?? undefined };
+};
+
 /**
  * Every lowercase key with a shift layer: what it inserts, what the shifted key inserts, the name it shows
  * and the letter its label renders. Written out rather than derived from the layout, so any change to a
- * key has to be a deliberate change of this table. The table records what the keys do today, including
- * the two rows marked below as wrong.
+ * key has to be a deliberate change of this table.
  */
 const CAPITALS: Record<string, { insert: string; name: string; glyph: string }> = {
   '\\varphi': { insert: '\\Phi', name: 'Phi', glyph: 'Φ' },
   '\\varsigma': { insert: '\\Sigma', name: 'Sigma', glyph: 'Σ' },
-  /* U+0190 is the Latin open E, not Greek Ε (U+0395); this row changes when that is fixed. */
-  '\\epsilon': { insert: '\\char"0190', name: 'Epsilon', glyph: 'Ɛ' },
+  '\\epsilon': { insert: '\\char"395', name: 'Epsilon', glyph: 'Ε' },
   '\\rho': { insert: '\\char"3A1', name: 'Rho', glyph: 'Ρ' },
   '\\tau': { insert: '\\char"3A4', name: 'Tau', glyph: 'Τ' },
   '\\upsilon': { insert: '\\Upsilon', name: 'Upsilon', glyph: 'Υ' },
@@ -38,8 +45,7 @@ const CAPITALS: Record<string, { insert: string; name: string; glyph: string }> 
   '\\gamma': { insert: '\\Gamma', name: 'Gamma', glyph: 'Γ' },
   '\\eta': { insert: '\\char"397', name: 'Eta', glyph: 'Η' },
   '\\xi': { insert: '\\Xi', name: 'Xi', glyph: 'Ξ' },
-  /* MathLive renders \\Kappa as the Latin K, not Greek Κ (U+039A); this row changes when that is fixed. */
-  '\\kappa': { insert: '\\Kappa', name: 'Kappa', glyph: 'K' },
+  '\\kappa': { insert: '\\char"39A', name: 'Kappa', glyph: 'Κ' },
   '\\lambda': { insert: '\\Lambda', name: 'Lambda', glyph: 'Λ' },
   '\\zeta': { insert: '\\char"396', name: 'Zeta', glyph: 'Ζ' },
   '\\chi': { insert: '\\char"3A7', name: 'Chi', glyph: 'Χ' },
@@ -65,14 +71,16 @@ describe('FORMULA_KEYBOARD_PRESETS iqbGreek', () => {
   it('inserts the expected capital letter and shows that letter with its name', () => {
     greekLetterKeys().filter(keycap => keycap.shift !== undefined).forEach(keycap => {
       const expected = CAPITALS[keycap.insert as string];
-      const shift = shiftOf(keycap);
-      const label = document.createElement('div');
-      label.innerHTML = shift.label ?? '';
-      const name = label.querySelector('aside.greek-capital-name');
-      expect(shift.insert).toBe(expected.insert);
-      expect(name?.textContent).toBe(expected.name);
-      name?.remove();
-      expect(label.textContent?.replace(/\s/g, '')).toBe(expected.glyph);
+      const { glyph, name } = renderedCapital(keycap);
+      expect(shiftOf(keycap).insert).toBe(expected.insert);
+      expect(name).toBe(expected.name);
+      expect(glyph).toBe(expected.glyph);
+    });
+  });
+
+  it('shows a Greek capital, not a Latin look-alike, on every shifted key (#1652)', () => {
+    greekLetterKeys().filter(keycap => keycap.shift !== undefined).forEach(keycap => {
+      expect(renderedCapital(keycap).glyph, `shift of ${keycap.insert}`).toMatch(/^\p{Script=Greek}$/u);
     });
   });
 });

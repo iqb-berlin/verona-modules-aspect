@@ -6,6 +6,7 @@ Allgemein
 
 ### Fehlerbehebungen
 - Formelfeld, Formelbereich: Reiter „αβγ“ der Formeltastatur: Die Taste ψ ist mit „psi“ statt „zeta“ beschriftet ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))
+- Formelfeld, Formelbereich: Reiter „αβγ“ der Formeltastatur: Umschalt + ϵ fügt das griechische Ε statt des lateinischen Ɛ ein, Umschalt + κ das griechische Κ statt des gleich aussehenden lateinischen K. Bereits gespeicherte Antworten behalten die alten Zeichen ([#1652](https://github.com/iqb-berlin/verona-modules-aspect/issues/1652))
 
 ## editor/3.1.1+player/3.1.1
 Keine Änderungen gegenüber 3.1.0

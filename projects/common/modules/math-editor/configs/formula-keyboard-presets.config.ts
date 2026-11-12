@@ -706,7 +706,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           class: 'MLK__tex',
           insert: '\\epsilon',
           aside: 'epsilon',
-          shift: greekCapital('\\char"0190', 'Epsilon')
+          shift: greekCapital('\\char"395', 'Epsilon')
         },
         {
           label: '<i>&rho;</i>',
@@ -814,7 +814,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           class: 'MLK__tex',
           insert: '\\kappa',
           aside: 'kappa',
-          shift: greekCapital('\\Kappa', 'Kappa')
+          shift: greekCapital('\\char"39A', 'Kappa')
         },
         {
           label: '<i>&lambda;</i>',

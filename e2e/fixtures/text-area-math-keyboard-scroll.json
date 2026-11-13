@@ -1,0 +1,32 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text",
+              "id": "text_above",
+              "alias": "text_above",
+              "text": "<p>Absatz above.1: Lorem ipsum dolor sit amet.</p><p>Absatz above.2: Lorem ipsum dolor sit amet.</p><p>Absatz above.3: Lorem ipsum dolor sit amet.</p><p>Absatz above.4: Lorem ipsum dolor sit amet.</p><p>Absatz above.5: Lorem ipsum dolor sit amet.</p><p>Absatz above.6: Lorem ipsum dolor sit amet.</p><p>Absatz above.7: Lorem ipsum dolor sit amet.</p><p>Absatz above.8: Lorem ipsum dolor sit amet.</p><p>Absatz above.9: Lorem ipsum dolor sit amet.</p><p>Absatz above.10: Lorem ipsum dolor sit amet.</p><p>Absatz above.11: Lorem ipsum dolor sit amet.</p><p>Absatz above.12: Lorem ipsum dolor sit amet.</p><p>Absatz above.13: Lorem ipsum dolor sit amet.</p><p>Absatz above.14: Lorem ipsum dolor sit amet.</p><p>Absatz above.15: Lorem ipsum dolor sit amet.</p>"
+            },
+            {
+              "type": "text-area-math",
+              "id": "text-area-math_keyboard",
+              "alias": "text-area-math_keyboard",
+              "rowCount": 2
+            },
+            {
+              "type": "text",
+              "id": "text_below",
+              "alias": "text_below",
+              "text": "<p>Absatz below.1: Lorem ipsum dolor sit amet.</p><p>Absatz below.2: Lorem ipsum dolor sit amet.</p><p>Absatz below.3: Lorem ipsum dolor sit amet.</p><p>Absatz below.4: Lorem ipsum dolor sit amet.</p><p>Absatz below.5: Lorem ipsum dolor sit amet.</p><p>Absatz below.6: Lorem ipsum dolor sit amet.</p><p>Absatz below.7: Lorem ipsum dolor sit amet.</p><p>Absatz below.8: Lorem ipsum dolor sit amet.</p><p>Absatz below.9: Lorem ipsum dolor sit amet.</p><p>Absatz below.10: Lorem ipsum dolor sit amet.</p><p>Absatz below.11: Lorem ipsum dolor sit amet.</p><p>Absatz below.12: Lorem ipsum dolor sit amet.</p><p>Absatz below.13: Lorem ipsum dolor sit amet.</p><p>Absatz below.14: Lorem ipsum dolor sit amet.</p><p>Absatz below.15: Lorem ipsum dolor sit amet.</p>"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

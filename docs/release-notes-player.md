@@ -4,6 +4,7 @@ Player
 ### Fehlerbehebungen
 - Antworten
   - In Chrome und Edge kommen auch Eingaben, die kurz vor dem Verlassen einer Aufgabe gemacht wurden, bei der Testumgebung an ([#1656](https://github.com/iqb-berlin/verona-modules-aspect/issues/1656))
+- Audio, Video: In Firefox erscheinen Startknopf und Bild als Startknopf am Ende des letzten erlaubten Durchlaufs nicht mehr kurz wieder bedienbar; beim Video blitzte das Bild auf. Bei wiederholtem Abspielen (Loop) gilt das auch zwischen den Durchläufen, dort auch in Chrome und für die Startknöpfe anderer Audios und Videos ([#1655](https://github.com/iqb-berlin/verona-modules-aspect/issues/1655))
 
 ## 3.1.1
 Keine Änderungen gegenüber 3.1.0

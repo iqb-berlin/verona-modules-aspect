@@ -130,6 +130,94 @@ describe('MediaPlayerControlBarComponent', () => {
     flush();
   }));
 
+  it('should show the media as stopped when it is paused before its end', fakeAsync(() => {
+    component.ngOnInit();
+    tick();
+    player.dispatchEvent(new Event('playing'));
+    const emitSpy = vi.spyOn(component.mediaPlayStatusChanged, 'emit');
+
+    player.dispatchEvent(new Event('pause'));
+
+    expect(component.playing).toBe(false);
+    expect(emitSpy).toHaveBeenCalledExactlyOnceWith(null);
+    flush();
+  }));
+
+  // Firefox renders between `pause` and `ended`; stopping on the first would show the start controls (#1655).
+  it('should stay playing until the ended event at the end of the last run', fakeAsync(() => {
+    component.ngOnInit();
+    tick();
+    player.dispatchEvent(new Event('playing'));
+    const emitSpy = vi.spyOn(component.mediaPlayStatusChanged, 'emit');
+    Object.defineProperty(player, 'ended', { value: true, configurable: true });
+
+    player.dispatchEvent(new Event('pause'));
+
+    expect(component.playing).toBe(true);
+    expect(emitSpy).not.toHaveBeenCalled();
+
+    player.dispatchEvent(new Event('ended'));
+
+    expect(component.disabled).toBe(true);
+    expect(component.playing).toBe(false);
+    expect(emitSpy).toHaveBeenCalledExactlyOnceWith(null);
+    flush();
+  }));
+
+  it('should stay playing between the runs of a looping media', fakeAsync(() => {
+    component.playerProperties.loop = true;
+    component.playerProperties.maxRuns = 2;
+    component.ngOnInit();
+    tick();
+    player.dispatchEvent(new Event('playing'));
+    const playSpy = vi.spyOn(player, 'play').mockResolvedValue(undefined);
+    const emitSpy = vi.spyOn(component.mediaPlayStatusChanged, 'emit');
+    Object.defineProperty(player, 'ended', { value: true, configurable: true });
+
+    player.dispatchEvent(new Event('pause'));
+    player.dispatchEvent(new Event('ended'));
+
+    expect(playSpy).toHaveBeenCalled();
+    expect(component.playing).toBe(true);
+    expect(emitSpy).not.toHaveBeenCalled();
+    flush();
+  }));
+
+  it('should stop a looping media whose restart is refused', fakeAsync(() => {
+    component.playerProperties.loop = true;
+    component.playerProperties.maxRuns = 2;
+    component.ngOnInit();
+    tick();
+    player.dispatchEvent(new Event('playing'));
+    vi.spyOn(player, 'play').mockRejectedValue(new DOMException('refused', 'NotAllowedError'));
+    const emitSpy = vi.spyOn(component.mediaPlayStatusChanged, 'emit');
+    Object.defineProperty(player, 'ended', { value: true, configurable: true });
+
+    player.dispatchEvent(new Event('pause'));
+    player.dispatchEvent(new Event('ended'));
+    flush();
+
+    expect(component.playing).toBe(false);
+    expect(emitSpy).toHaveBeenCalledExactlyOnceWith(null);
+  }));
+
+  it('should show the media as stopped after a run that leaves runs over without loop', fakeAsync(() => {
+    component.playerProperties.maxRuns = 2;
+    component.ngOnInit();
+    tick();
+    player.dispatchEvent(new Event('playing'));
+    const emitSpy = vi.spyOn(component.mediaPlayStatusChanged, 'emit');
+    Object.defineProperty(player, 'ended', { value: true, configurable: true });
+
+    player.dispatchEvent(new Event('pause'));
+    player.dispatchEvent(new Event('ended'));
+
+    expect(component.disabled).toBe(false);
+    expect(component.playing).toBe(false);
+    expect(emitSpy).toHaveBeenCalledExactlyOnceWith(null);
+    flush();
+  }));
+
   it('should report the stop itself when it is destroyed while playing', () => {
     const emitSpy = vi.spyOn(component.mediaPlayStatusChanged, 'emit');
     component.playing = true;

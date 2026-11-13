@@ -93,10 +93,12 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       )
       .subscribe(() => this.sendPlaybackTime());
     this.player.onpause = () => {
-      this.playing = false;
-      this.pausing = true;
-      this.mediaPlayStatusChanged.emit(null);
-      setTimeout(() => this.setPlayerSrc(''));
+      // At the end of the media `ended` follows and decides whether it stops or loops. Firefox renders
+      // between the two events, so stopping here would show the start controls for a frame (#1655).
+      if (this.player.ended) {
+        return;
+      }
+      this.setStopped();
     };
     this.player.onplaying = () => {
       this.playing = true;
@@ -115,8 +117,10 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
         this.runCounter += 1;
         if (this.playerProperties.loop) {
           this._play();
+          return;
         }
       }
+      this.setStopped();
     };
     this.player.onvolumechange = (() => {
       this.volume = this.player.volume;
@@ -209,11 +213,22 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     }
   }
 
+  /** Shows the media as stopped and makes the other media of the unit playable again. */
+  private setStopped(): void {
+    this.playing = false;
+    this.pausing = true;
+    this.mediaPlayStatusChanged.emit(null);
+    setTimeout(() => this.setPlayerSrc(''));
+  }
+
   private _play(): void {
     this.setPlayerSrc(this.mediaSrc);
-    this.player.play().then(() => {
-      setTimeout(() => this.sendPlaybackTimeWithDelay(0));
-    });
+    this.player.play()
+      .then(() => {
+        setTimeout(() => this.sendPlaybackTimeWithDelay(0));
+      })
+      // Between the runs of a loop the media is still shown as playing; a refused restart has to stop it.
+      .catch(() => this.setStopped());
   }
 
   private sendPlaybackTimeWithDelay(delay: number): void {

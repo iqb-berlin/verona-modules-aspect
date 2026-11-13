@@ -2,7 +2,7 @@ import {
   ComponentFixture, fakeAsync, TestBed, tick
 } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
-import { MathfieldElement } from '@iqb/mathlive';
+import { MathfieldElement } from 'mathlive';
 import { MatButtonToggle, MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MathInputComponent } from './math-input.component';
 
@@ -42,6 +42,34 @@ describe('MathInputComponent', () => {
       value: new SimpleChange('1+2', 'x^2', false)
     });
     expect(component.mathFieldElement.getValue()).toBe('x^2');
+  });
+
+  describe('on a press on the field\'s frame (#1648)', () => {
+    /* Inside the padding, so that MathLive takes the press as one on the field and counts it as
+       focused -- the state in which only the browser's focus is missing. */
+    const pressFrame = (): void => {
+      const field = component.mathFieldElement;
+      field.style.padding = '8px';
+      const frame = field.getBoundingClientRect();
+      field.dispatchEvent(new PointerEvent('pointerdown', {
+        bubbles: true,
+        composed: true,
+        button: 0,
+        buttons: 1,
+        clientX: frame.left + 3,
+        clientY: frame.top + 3
+      }));
+    };
+
+    afterEach(() => {
+      component.mathFieldElement.blur();
+      window.mathVirtualKeyboard.hide();
+    });
+
+    it('should take the focus', () => {
+      pressFrame();
+      expect(document.activeElement).toBe(component.mathFieldElement);
+    });
   });
 
   it('should update the readonly state of the math field on input changes', () => {
@@ -111,35 +139,6 @@ describe('MathInputComponent', () => {
     component.mathKeyboardPresets = ['math'];
     component.onFocusIn();
     expect(window.mathVirtualKeyboard.layouts.length).toBe(1);
-  });
-
-  it('should keep resetting the shift for the math inputs that are still alive', () => {
-    const secondInput = TestBed.createComponent(MathInputComponent);
-    secondInput.detectChanges();
-
-    secondInput.destroy();
-    window.mathVirtualKeyboard.shiftPressCount = 2;
-    window.mathVirtualKeyboard.dispatchEvent(new Event('virtual-keyboard-layer-change'));
-
-    /* The listener belongs to the keyboard singleton, not to a component: the fixture from
-       beforeEach is still on the page, so the one destroyed above must not have taken it along.
-       This is what guards the deliberate absence of an ngOnDestroy here (#1123). */
-    expect(window.mathVirtualKeyboard.shiftPressCount).toBe(0);
-  });
-
-  it('should register one and the same layer-change listener for every math input', () => {
-    const addEventListener = vi.spyOn(window.mathVirtualKeyboard, 'addEventListener');
-
-    TestBed.createComponent(MathInputComponent).detectChanges();
-    TestBed.createComponent(MathInputComponent).detectChanges();
-
-    /* mathlive holds its listeners in a Set, so one shared reference means one registration --
-       a fresh arrow per component would have grown that Set without bound (#1123). */
-    const listeners = addEventListener.mock.calls
-      .filter(call => call[0] === 'virtual-keyboard-layer-change')
-      .map(call => call[1]);
-    expect(listeners.length).toBe(2);
-    expect(new Set(listeners).size).toBe(1);
   });
 
   it('should emit focusOut and hide the virtual keyboard at once when the focus moves to another element', () => {

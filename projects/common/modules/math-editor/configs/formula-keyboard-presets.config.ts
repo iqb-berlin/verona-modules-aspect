@@ -1,4 +1,4 @@
-import { convertLatexToMarkup, VirtualKeyboardKeycap, VirtualKeyboardLayout } from '@iqb/mathlive';
+import { convertLatexToMarkup, VirtualKeyboardKeycap, VirtualKeyboardLayout } from 'mathlive';
 
 /**
  * The shifted variant of a Greek letter key: inserts `insert` and shows the capital letter with its name

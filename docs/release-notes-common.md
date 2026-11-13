@@ -1,5 +1,10 @@
 Allgemein
 =========
+## next
+### Änderungen
+- **Formelfeld, Formelbereich**
+  - Die Formeleingabe verwendet MathLive 0.111.3 statt der eigenen Variante von MathLive 0.102. Markierte Teile einer Formel werden hervorgehoben; mit einem Screenreader werden Eingaben angesagt (auf Englisch) ([#1648](https://github.com/iqb-berlin/verona-modules-aspect/issues/1648))
+
 ## editor/3.1.2+player/3.1.2
 ### Änderungen
 - **Formelfeld, Formelbereich**

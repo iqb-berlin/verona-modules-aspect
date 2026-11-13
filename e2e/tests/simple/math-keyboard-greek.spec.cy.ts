@@ -55,8 +55,42 @@ describe('Greek layout of the formula keyboard', { testIsolation: false }, () =>
           expect(($mathField[0] as unknown as { getValue(): string }).getValue()).to.contain('\\Psi');
         });
     });
+
+    it('inserts the Greek capitals Epsilon and Kappa, not the Latin Ɛ and K (#1652)', () => {
+      clearMathField();
+      openGreekLayer();
+      insertShifted('\\epsilon');
+      insertShifted('\\kappa');
+      cy.contains('aspect-element-group-selection', 'Formel Feld Griechisch')
+        .find('math-field')
+        .should($mathField => {
+          // Matched by code point, not by string: how many zeros MathLive pads a \char with is its own business.
+          const value = ($mathField[0] as unknown as { getValue(): string }).getValue();
+          expect(value).to.match(/\\char"0*395\b/).and.to.match(/\\char"0*39A\b/);
+          expect(value).not.to.contain('\\char"0190').and.not.to.contain('\\Kappa');
+        });
+    });
   });
 });
+
+/** Empties the math field, so a test checks only what it typed itself. */
+function clearMathField(): void {
+  cy.contains('aspect-element-group-selection', 'Formel Feld Griechisch')
+    .find('math-field')
+    .then($mathField => {
+      ($mathField[0] as unknown as { setValue(value: string): void }).setValue('');
+    });
+}
+
+/** Presses shift on the visible layer, then the key whose unshifted keycap inserts `insert`. */
+function insertShifted(insert: string): void {
+  cy.get(`${VISIBLE_LAYER} .shift`).first().trigger('pointerdown', { button: 0 });
+  keycapInserting(insert).then($keycap => {
+    cy.wrap($keycap)
+      .trigger('pointerdown', { button: 0 })
+      .trigger('pointerup', { button: 0 });
+  });
+}
 
 /** Focuses the math field and switches the formula keyboard to the Greek layer. */
 function openGreekLayer(): void {

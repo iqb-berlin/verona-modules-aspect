@@ -2,6 +2,7 @@ Allgemein
 =========
 ## next
 ### Änderungen
+- Formelfeld, Formelbereich: Die Formeleingabe verwendet MathLive 0.111.3 statt der eigenen Variante von MathLive 0.102. Markierte Teile einer Formel werden hervorgehoben; mit einem Screenreader werden Eingaben angesagt (auf Englisch) ([#1648](https://github.com/iqb-berlin/verona-modules-aspect/issues/1648))
 - Formelfeld, Formelbereich: Reiter „αβγ“ der Formeltastatur: Mit Umschalttaste tragen auch die Großbuchstaben ihren Namen ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))
 
 ### Fehlerbehebungen

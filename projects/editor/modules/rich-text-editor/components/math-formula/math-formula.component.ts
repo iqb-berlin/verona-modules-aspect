@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { AngularNodeViewComponent } from 'ngx-tiptap';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { convertLatexToMarkup } from '@iqb/mathlive';
+import { convertLatexToMarkup } from 'mathlive';
 
 @Component({
   selector: 'aspect-nodeview-math-formula',

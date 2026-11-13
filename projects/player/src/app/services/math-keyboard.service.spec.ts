@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MathfieldElement } from '@iqb/mathlive';
+import { MathfieldElement } from 'mathlive';
 import { MathFieldComponent } from 'common/components/elements/math-field/math-field.component';
 import { MathKeyboardService } from './math-keyboard.service';
 

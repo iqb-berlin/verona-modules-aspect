@@ -56,6 +56,20 @@ describe('Greek layout of the formula keyboard', { testIsolation: false }, () =>
         });
     });
 
+    /* MathLive has no event for a change of the layer; the player resets Shift itself when a layer tab
+       is pressed. Without that, Shift pressed on one layer is still on after switching to another. */
+    it('resets shift when the layer is changed (#1648)', () => {
+      openGreekLayer();
+      cy.get(`${VISIBLE_LAYER} .shift`).first().trigger('pointerdown', { button: 0 });
+      cy.window().its('mathVirtualKeyboard.shiftPressCount').should('eq', 1);
+      cy.get(`${VISIBLE_LAYER} [data-layer]`).first().trigger('pointerdown', { button: 0 });
+      cy.get(`${VISIBLE_LAYER} .MLK__keycap`).should('not.contain', 'ψ');
+      cy.window().its('mathVirtualKeyboard.shiftPressCount').should('eq', 0);
+      cy.get(`${VISIBLE_LAYER} [data-layer]`).contains('αβγ')
+        .trigger('pointerdown', { button: 0 });
+      cy.get(`${VISIBLE_LAYER} .greek-capital-name:visible`).should('have.length', 0);
+    });
+
     it('inserts the Greek capitals Epsilon and Kappa, not the Latin Ɛ and K (#1652)', () => {
       clearMathField();
       openGreekLayer();

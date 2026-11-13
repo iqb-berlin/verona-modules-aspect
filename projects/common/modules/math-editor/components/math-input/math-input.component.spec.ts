@@ -2,8 +2,9 @@ import {
   ComponentFixture, fakeAsync, TestBed, tick
 } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
-import { MathfieldElement } from '@iqb/mathlive';
+import { MathfieldElement } from 'mathlive';
 import { MatButtonToggle, MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MathKeyboardAdapter } from 'common/modules/math-editor/utils/math-keyboard-adapter';
 import { MathInputComponent } from './math-input.component';
 
 describe('MathInputComponent', () => {
@@ -120,33 +121,18 @@ describe('MathInputComponent', () => {
     expect(window.mathVirtualKeyboard.layouts.length).toBe(1);
   });
 
-  it('should keep resetting the shift for the math inputs that are still alive', () => {
-    const secondInput = TestBed.createComponent(MathInputComponent);
-    secondInput.detectChanges();
-
-    secondInput.destroy();
-    window.mathVirtualKeyboard.shiftPressCount = 2;
-    window.mathVirtualKeyboard.dispatchEvent(new Event('virtual-keyboard-layer-change'));
-
-    /* The listener belongs to the keyboard singleton, not to a component: the fixture from
-       beforeEach is still on the page, so the one destroyed above must not have taken it along.
-       This is what guards the deliberate absence of an ngOnDestroy here (#1123). */
-    expect(window.mathVirtualKeyboard.shiftPressCount).toBe(0);
+  /* The seam to the adapter: what the keyboard needs beyond MathLive's own behaviour is the adapter's
+     work, and its spec says nothing about whether the math input asks for it. */
+  it('should open the keyboard through the adapter on focus in', () => {
+    const openSpy = vi.spyOn(MathKeyboardAdapter, 'open');
+    component.onFocusIn();
+    expect(openSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should register one and the same layer-change listener for every math input', () => {
-    const addEventListener = vi.spyOn(window.mathVirtualKeyboard, 'addEventListener');
-
+  it('should have the adapter listen at the keyboard once its view is there', () => {
+    const listenSpy = vi.spyOn(MathKeyboardAdapter, 'listen');
     TestBed.createComponent(MathInputComponent).detectChanges();
-    TestBed.createComponent(MathInputComponent).detectChanges();
-
-    /* mathlive holds its listeners in a Set, so one shared reference means one registration --
-       a fresh arrow per component would have grown that Set without bound (#1123). */
-    const listeners = addEventListener.mock.calls
-      .filter(call => call[0] === 'virtual-keyboard-layer-change')
-      .map(call => call[1]);
-    expect(listeners.length).toBe(2);
-    expect(new Set(listeners).size).toBe(1);
+    expect(listenSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should emit focusOut and hide the virtual keyboard at once when the focus moves to another element', () => {

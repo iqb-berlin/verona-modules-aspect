@@ -1,4 +1,4 @@
-import { convertLatexToMarkup } from '@iqb/mathlive';
+import { convertLatexToMarkup } from 'mathlive';
 
 /**
  * Formula markup for display, derived from the LaTeX a unit stores rather than from the HTML it stores

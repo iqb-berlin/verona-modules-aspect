@@ -9,10 +9,11 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { MathfieldElement } from '@iqb/mathlive';
+import { MathfieldElement } from 'mathlive';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { FORMULA_KEYBOARD_PRESETS } from 'common/modules/math-editor/configs/formula-keyboard-presets.config';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
+import { MathKeyboardAdapter } from 'common/modules/math-editor/utils/math-keyboard-adapter';
 
 @Component({
   selector: 'aspect-math-input',
@@ -45,7 +46,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     this.setupMathField();
-    MathInputComponent.setupMathKeyboard();
+    MathKeyboardAdapter.listen();
   }
 
   private setupMathField(): void {
@@ -56,21 +57,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     setTimeout(() => {
       this.mathFieldElement.menuItems = [];
     }); // Disable context menu
-  }
-
-  /** Static and held, so the keyboard registers it exactly once no matter how many math inputs a unit
-     has: mathlive keeps its listeners in a Set, and the fresh arrow this used to pass grew that Set by
-     one entry per component, each firing resetShift again on every layer change. No component leaked
-     with it -- the arrow calls a static and captures no `this` -- which is why this half of #1123 is
-     the harmless one. */
-  private static readonly onLayerChange = (): void => MathInputComponent.resetShift();
-
-  private static setupMathKeyboard(): void {
-    window.mathVirtualKeyboard.addEventListener('virtual-keyboard-layer-change', MathInputComponent.onLayerChange);
-  }
-
-  private static resetShift(): void {
-    window.mathVirtualKeyboard.shiftPressCount = 0;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -107,7 +93,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   onFocusIn() {
     this.updateKeyboardLayout();
     this.focusIn.emit(this.mathFieldElement);
-    window.mathVirtualKeyboard.show({ firstLayer: true, resetShift: true });
+    MathKeyboardAdapter.open();
   }
 
   /** Assigns the layouts only when they differ from the keyboard's: mathlive rebuilds the keyboard on
@@ -122,10 +108,10 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       ...(this.mathKeyboardPresets.includes('latin') ? [FORMULA_KEYBOARD_PRESETS.iqbText] : []),
       ...(this.mathKeyboardPresets.includes('greek') ? [FORMULA_KEYBOARD_PRESETS.iqbGreek] : [])
     ];
-    const currentLayouts = window.mathVirtualKeyboard.layouts;
+    const currentLayouts = MathKeyboardAdapter.keyboard.layouts;
     if (currentLayouts.length === layouts.length &&
       layouts.every((layout, index) => currentLayouts[index] === layout)) return;
-    window.mathVirtualKeyboard.layouts = layouts;
+    MathKeyboardAdapter.keyboard.layouts = layouts;
   }
 
   onFocusOut(event: FocusEvent) {
@@ -135,9 +121,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
        focused, tapping it again opened nothing (#1600). Such a focusout, and one into the keyboard
        itself, is therefore only acted on when the field has not got its focus back a moment later.
        One that names another element as the new focus is acted on at once as before. */
-    if (event.relatedTarget && !MathInputComponent.isInsideMathKeyboard(event.relatedTarget)) {
+    if (event.relatedTarget && !MathKeyboardAdapter.contains(event.relatedTarget)) {
       this.focusOut.emit(this.mathFieldElement);
-      window.mathVirtualKeyboard.hide();
+      MathKeyboardAdapter.keyboard.hide();
       return;
     }
     clearTimeout(this.focusOutTimeout);
@@ -153,16 +139,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       field left behind can arrive after it, mathlive's own focusout as well. */
   private hideKeyboardUnlessMathFieldFocused(): void {
     if (!(this.mathFieldElement.ownerDocument.activeElement instanceof MathfieldElement)) {
-      window.mathVirtualKeyboard.hide();
+      MathKeyboardAdapter.keyboard.hide();
     }
   }
-
-  private static isInsideMathKeyboard(target: EventTarget): boolean {
-    return target instanceof Element && !!target.closest('.ML__keyboard');
-  }
-
-  /* No teardown for the layer-change listener, deliberately: it belongs to the window-wide keyboard
-     singleton, not to one component, and the single shared registration means the first math input
-     destroyed would otherwise take shift-reset away from every one still on the page. It never was
-     removed -- the removeEventListener here matched nothing -- so nothing regresses by saying so. */
 }

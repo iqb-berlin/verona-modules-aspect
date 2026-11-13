@@ -2,6 +2,7 @@ import {
   AfterViewInit, Component, ElementRef, OnDestroy, ViewChild
 } from '@angular/core';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
+import { MathKeyboardAdapter } from 'common/modules/math-editor/utils/math-keyboard-adapter';
 
 @Component({
   selector: 'aspect-math-keyboard-container',
@@ -25,19 +26,19 @@ export class MathKeyboardContainerComponent implements AfterViewInit, OnDestroy 
   constructor(public mathKeyboardService: MathKeyboardService) {}
 
   ngAfterViewInit(): void {
-    window.mathVirtualKeyboard.container = this.mathKeyboard.nativeElement;
-    window.mathVirtualKeyboard.addEventListener('geometrychange', this.onGeometryChange);
+    MathKeyboardAdapter.keyboard.container = this.mathKeyboard.nativeElement;
+    MathKeyboardAdapter.keyboard.addEventListener('geometrychange', this.onGeometryChange);
   }
 
   updateKeyboard(): void {
     this.mathKeyboardService.keyboardHeight =
-      window.mathVirtualKeyboard.boundingRect.height;
+      MathKeyboardAdapter.keyboard.boundingRect.height;
     if (this.mathKeyboardService.keyboardHeight) {
       setTimeout(() => this.mathKeyboardService.scrollElement());
     }
   }
 
   ngOnDestroy(): void {
-    window.mathVirtualKeyboard.removeEventListener('geometrychange', this.onGeometryChange);
+    MathKeyboardAdapter.keyboard.removeEventListener('geometrychange', this.onGeometryChange);
   }
 }

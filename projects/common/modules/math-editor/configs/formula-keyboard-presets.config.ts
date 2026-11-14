@@ -46,13 +46,16 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         },
         '[separator-5]',
         {
-          latex: '\\frac{#@}{#?}'
+          latex: '\\frac{#?}{#?}',
+          insert: '\\frac{#@}{#?}'
         },
         {
-          latex: '#@^2}'
+          latex: '#?^2',
+          insert: '#@^2'
         },
         {
-          latex: '#@^#?'
+          latex: '#?^#?',
+          insert: '#@^#?'
         }
       ],
       [
@@ -83,11 +86,13 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '\\sqrt{#0}'
         },
         {
-          latex: '\\overline{#@}',
+          latex: '\\overline{#?}',
+          insert: '\\overline{#@}',
           shift: '\\left\\vert#0\\right\\vert'
         },
         {
-          latex: '\\overrightarrow{#@}',
+          latex: '\\overrightarrow{#?}',
+          insert: '\\overrightarrow{#@}',
           shift: {
             latex: '\\exp',
             insert: '\\exp\\left(#0\\right)'
@@ -195,13 +200,16 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         },
         '[separator-5]',
         {
-          latex: '\\frac{#@}{#?}'
+          latex: '\\frac{#?}{#?}',
+          insert: '\\frac{#@}{#?}'
         },
         {
-          latex: '#@^2}'
+          latex: '#?^2',
+          insert: '#@^2'
         },
         {
-          latex: '#@^#?'
+          latex: '#?^#?',
+          insert: '#@^#?'
         }
       ],
       [
@@ -228,7 +236,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '\\cdot'
         },
         '[separator-5]',
-        { latex: '#@\\degree' },
+        { latex: '#?\\degree', insert: '#@\\degree' },
         {
           latex: '\\sqrt{#0}'
         },
@@ -258,7 +266,8 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         },
         '[separator-5]',
         {
-          latex: '\\overline{#@}'
+          latex: '\\overline{#?}',
+          insert: '\\overline{#@}'
         },
         '\\left\\vert#0\\right\\vert',
         {
@@ -298,7 +307,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
     ]
   },
   iqbSymbols: {
-    label: '&infin;≠∈',
+    label: '∞π%',
     labelClass: 'MLK__tex',
     rows: [
       [
@@ -307,34 +316,28 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           shift: '\\sin^{-1}'
         },
         '\\ln',
-        {
-          latex: '\\mathrm{abs}',
-          insert: '\\mathrm{abs}\\left(#0\\right)'
-        },
+        '\\mathbb{N}',
         {
           latex: '\\rightarrow',
           shift: '\\Rightarrow'
         },
-        {
-          latex: '\\exists',
-          shift: '\\nexists'
-        },
+        '\\sphericalangle',
         { latex: '\\in', shift: '\\notin' },
-        '\\cup',
         {
-          latex: '\\overrightarrow{#@}',
-          shift: '\\overleftarrow{#@}'
+          latex: '\\overrightarrow{#?}',
+          insert: '\\overrightarrow{#@}',
+          shift: {
+            latex: '\\overleftarrow{#?}',
+            insert: '\\overleftarrow{#@}'
+          }
         },
+        '\\cup',
         {
           class: 'small',
           latex: '\\lim_{#?}',
           shift: '\\lim_{x\\to\\infty}'
         },
-        {
-          class: 'small',
-          latex: '\\sum',
-          insert: '\\sum'
-        }
+        '\\approx'
       ],
       [
         {
@@ -343,32 +346,34 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         },
         {
           latex: '\\log',
-          shift: '\\log_{10}'
+          shift: {
+            // shows only the box for the base, as #1011 asks for a "log mit Eintrag rechts darunter";
+            // the brackets for the argument are inserted but left off the label, as agreed in the ticket
+            latex: '\\log_{#?}',
+            insert: '\\log_{#?}\\left(#0\\right)'
+          }
         },
-        '\\left\\vert#0\\right\\vert',
+        '\\mathbb{Z}',
+        '\\mapsto',
         {
-          latex: '\\larr',
-          shift: '\\lArr'
-        },
-        {
-          latex: '\\forall',
-          shift: '\\lnot'
+          latex: '\\land',
+          shift: '\\lor'
         },
         { latex: '\\ni', shift: '\\not\\owns' },
+        {
+          latex: '\\overline{#?}',
+          insert: '\\overline{#@}',
+          shift: {
+            latex: '\\underline{#?}',
+            insert: '\\underline{#@}'
+          }
+        },
         '\\cap',
-        {
-          latex: '\\overline{#@}',
-          shift: '\\underline{#@}'
-        },
-        {
-          class: 'small',
-          latex: '\\int',
-          shift: '\\iint'
-        },
         {
           latex: '\\int^{{#?}}_{#?}\\!#?\\,\\mathrm{d}x',
           class: 'small'
-        }
+        },
+        '\\%'
       ],
       [
         {
@@ -379,23 +384,21 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '\\exp',
           insert: '\\exp\\left(#0\\right)'
         },
-        '\\left\\Vert#0\\right\\Vert',
-        {
-          latex: '\\lrArr',
-          shift: '\\leftrightarrow'
-        },
+        '\\mathbb{Q}',
+        '\\lrArr',
         { latex: '\\vert', shift: '!' },
+        '\\lnot',
         {
-          latex: '#@^{\\complement}',
-          aside: 'complement'
+          latex: '#?^{\\prime}',
+          insert: '#@^{\\prime}',
+          shift: {
+            latex: '#?^{\\doubleprime}',
+            insert: '#@^{\\doubleprime}'
+          }
         },
         {
           latex: '\\subset',
           shift: '\\subseteq'
-        },
-        {
-          latex: '#@^{\\prime}',
-          shift: '#@^{\\doubleprime}'
         },
         {
           latex: '\\mathrm{d}',
@@ -408,7 +411,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
       ],
       [
         { label: '[shift]', width: 2.0 },
-        '[separator-10]',
+        '\\mathbb{R}',
         {
           latex: '\\exponentialE',
           shift: '\\imaginaryI'
@@ -418,7 +421,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '\\infty',
           shift: '\\Colon'
         },
-        '[separator-10]',
+        '\\left\\vert#0\\right\\vert',
         {
           class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',

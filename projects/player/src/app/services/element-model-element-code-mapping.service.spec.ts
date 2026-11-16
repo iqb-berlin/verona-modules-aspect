@@ -77,14 +77,10 @@ describe('ElementModelElementCodeMappingService', () => {
       .toEqual(2);
   });
 
-  it('should map the value true of an image elementModel to its elementCode value', () => {
+  /* Pins that an image stays out of the single-choice group, which would store true as 2. */
+  it('should map the value of an image elementModel to its elementCode value', () => {
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(true, 'image'))
       .toEqual(true);
-  });
-
-  it('should map the value false of an image elementModel to its elementCode value', () => {
-    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(false, 'image'))
-      .toEqual(false);
   });
 
   it('should map the value of a radio elementModel to its elementCode value', () => {

@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, TestBed, fakeAsync, tick
+} from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { TextFieldComponent } from 'common/components/elements/text-field/text-field.component';
@@ -47,33 +49,50 @@ describe('KeyboardService', () => {
 
   // One element type is enough: the service reads the element model and does not tell the types apart.
 
-  it('should toggle keyboard to open', async () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    await service.toggleAsync(input, textFieldComponent, true);
-    expect(service.isOpen).toBeTruthy();
-  });
+  /** Toggles for the text field, lets the service's 100 ms pause pass and answers what it resolved with. */
+  const toggle = (focused: boolean, isMobileWithoutHardwareKeyboard: boolean): boolean | undefined => {
+    const inputElement = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    let result: boolean | undefined;
+    service.toggleAsync({ inputElement, focused }, textFieldComponent, isMobileWithoutHardwareKeyboard)
+      .then(value => { result = value; });
+    tick(100);
+    return result;
+  };
 
-  it('should toggle keyboard to close', async () => {
+  it('should toggle keyboard to open', fakeAsync(() => {
+    expect(toggle(true, true)).toBe(true);
+    expect(service.isOpen).toBe(true);
+  }));
+
+  /* Moving from one field to the next closes and reopens the keyboard at once; the pause is what keeps
+     that from flickering, and it must not be shortened (63add4cd, #1143). */
+  it('should wait 100 ms before it toggles', fakeAsync(() => {
+    const inputElement = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    service.toggleAsync({ inputElement, focused: true }, textFieldComponent, true);
+
+    tick(99);
+    expect(service.isOpen).toBe(false);
+    tick(1);
+    expect(service.isOpen).toBe(true);
+  }));
+
+  it('should toggle keyboard to close', fakeAsync(() => {
     service.isOpen = true;
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: false };
-    await service.toggleAsync(input, textFieldComponent, true);
+    toggle(false, true);
     expect(service.isOpen).toBe(false);
-  });
+  }));
 
-  it('should not toggle keyboard to open', async () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    await service.toggleAsync(input, textFieldComponent, false);
+  it('should close the keyboard for a focused field on a device with a hardware keyboard', fakeAsync(() => {
+    service.isOpen = true;
+    toggle(true, false);
     expect(service.isOpen).toBe(false);
-  });
+  }));
 
-  it('should take addInputAssistanceToKeyboard from the element', async () => {
+  it('should take the key set and the height without the assistance row from the element', fakeAsync(() => {
     service.addInputAssistanceToKeyboard = true;
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    await service.toggleAsync(input, textFieldComponent, true);
+    toggle(true, true);
     expect(service.addInputAssistanceToKeyboard).toBe(false);
-  });
+    expect(service.preset).toBe('french');
+    expect(service.keyboardHeight).toBe(280);
+  }));
 });

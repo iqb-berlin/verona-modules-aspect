@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, TestBed, fakeAsync, tick
+} from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { TextFieldComponent } from 'common/components/elements/text-field/text-field.component';
@@ -47,34 +49,44 @@ describe('KeypadService', () => {
 
   // One element type is enough: the service reads the element model and does not tell the types apart.
 
-  it('should toggle keypad to open', async () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    await service.toggleAsync(input, textFieldComponent).then(value => {
-      expect(value).toBeTruthy();
-    });
-    expect(service.isOpen).toBeTruthy();
-  });
+  /** Toggles for the text field, lets the service's 100 ms pause pass and answers what it resolved with. */
+  const toggle = (focused: boolean): boolean | undefined => {
+    const inputElement = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    let result: boolean | undefined;
+    service.toggleAsync({ inputElement, focused }, textFieldComponent).then(value => { result = value; });
+    tick(100);
+    return result;
+  };
 
-  it('should toggle keypad to close', async () => {
-    service.isOpen = true;
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: false };
-    await service.toggleAsync(input, textFieldComponent);
+  it('should toggle keypad to open', fakeAsync(() => {
+    expect(toggle(true)).toBe(true);
+    expect(service.isOpen).toBe(true);
+  }));
+
+  /* The same pause as the keyboard's, which must not be shortened either (#1143). */
+  it('should wait 100 ms before it toggles', fakeAsync(() => {
+    const inputElement = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    service.toggleAsync({ inputElement, focused: true }, textFieldComponent);
+
+    tick(99);
     expect(service.isOpen).toBe(false);
-  });
+    tick(1);
+    expect(service.isOpen).toBe(true);
+  }));
 
-  it('preset should be set to "french"', async () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    await service.toggleAsync(input, textFieldComponent);
+  it('should toggle keypad to close', fakeAsync(() => {
+    service.isOpen = true;
+    toggle(false);
+    expect(service.isOpen).toBe(false);
+  }));
+
+  it('preset should be set to "french"', fakeAsync(() => {
+    toggle(true);
     expect(service.preset).toEqual('french');
-  });
+  }));
 
-  it('position should be set to "right"', async () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    await service.toggleAsync(input, textFieldComponent);
+  it('position should be set to "right"', fakeAsync(() => {
+    toggle(true);
     expect(service.position).toEqual('right');
-  });
+  }));
 });

@@ -105,6 +105,36 @@
             "off"
           ]
         }
+      },
+      {
+        "files": [
+          "projects/**/*.spec.ts"
+        ],
+        "rules": {
+          "no-restricted-syntax": [
+            "error",
+            {
+              "selector": "ForInStatement",
+              "message": "for..in loops iterate over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries}, and iterate over the resulting array."
+            },
+            {
+              "selector": "ForOfStatement",
+              "message": "iterators/generators require regenerator-runtime, which is too heavyweight for this guide to allow them. Separately, loops should be avoided in favor of array iterations."
+            },
+            {
+              "selector": "LabeledStatement",
+              "message": "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand."
+            },
+            {
+              "selector": "WithStatement",
+              "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
+            },
+            {
+              "selector": "Program:has(CallExpression:matches([callee.name=/^(it|test)$/], [callee.callee.object.name=/^(it|test)$/], [callee.tag.object.name=/^(it|test)$/]):not(:matches([arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/])):not(CallExpression[callee.object.name='describe'][callee.property.name='skip'] CallExpression)) CallExpression[callee.name=/^(it|test)$/]:matches([arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/])",
+              "message": "This test only checks that the instance exists, beside other tests that create it anyway. Remove it (rules.md §11)."
+            }
+          ]
+        }
       }
     ]
   },

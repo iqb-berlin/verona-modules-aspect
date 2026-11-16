@@ -46,9 +46,29 @@ export class ${className} extends UnitTraversalMigration {
 }
 `;
 
+/** `toVersion` decides which units the step reaches and `fromVersion` where it stands among the steps, so
+    their test stays even though it reads constants back (rules.md, §11). */
+const specFileName = `v${from}-to-v${to}.migration.spec.ts`;
+const specTemplate = `import { ${className} } from './v${from}-to-v${to}.migration';
+
+describe('${className}', () => {
+  let migration: ${className};
+
+  beforeEach(() => {
+    migration = new ${className}();
+  });
+
+  it('should have the versions of the step it is', () => {
+    expect(migration.fromVersion).toBe('${from}');
+    expect(migration.toVersion).toBe('${to}');
+  });
+});
+`;
+
 const projectRoot = path.join(__dirname, '..');
 const migrationsDir = path.join(projectRoot, 'projects/common/migrations');
 const filePath = path.join(migrationsDir, fileName);
+const specFilePath = path.join(migrationsDir, specFileName);
 
 if (fs.existsSync(filePath)) {
   console.error(`Error: File ${fileName} already exists.`);
@@ -57,6 +77,14 @@ if (fs.existsSync(filePath)) {
 
 fs.writeFileSync(filePath, template);
 console.log(`Success: Created ${fileName} in projects/common/migrations/`);
+/* A spec written before the step - a test that fails without it - is kept as it is. */
+if (fs.existsSync(specFilePath)) {
+  console.log(`Kept the existing ${specFileName}; add the test of the step's versions to it`);
+} else {
+  fs.writeFileSync(specFilePath, specTemplate);
+  console.log(`Success: Created ${specFileName}`);
+}
+console.log(`Test what the step transforms in ${specFileName}, next to the test of its versions`);
 console.log(`Also: raise unit_definition_version to ${to} in package.json and describe the change in
 docs/unit_definition_changelog.txt`);
 console.log(`Don't forget to register it in projects/common/services/migration-manager.ts`);

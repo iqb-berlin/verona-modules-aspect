@@ -153,6 +153,12 @@ behaviour of its own.
 
 Like §12, this applies to new and changed code: it is no demand to add specs where there are none.
 
+Of the building blocks, `ng generate` writes a spec for a component only (`skipTests` in
+`angular.json`); for the others the spec is written once there is behaviour to test, so that no
+generated existence test is left standing beside it. The component's generated `should create` goes
+as soon as the component has a test of its own. `npm run generate-migration` writes the step's spec
+with the test of its versions.
+
 Not this:
 
 - a test that only checks that the instance exists (`should create`, `should be created`,
@@ -180,7 +186,8 @@ Still this, although it can look like constants or wiring:
   the options a select offers, as in `action-properties.component.spec.ts`, and CSS
 - what the `AppModule` of editor and player provides, in their `app.module.spec.ts`: only the
   end-to-end tests would see it missing otherwise, and they do not run in `npm test`
-- the versions of a migration step: they decide which units the step reaches (§14)
+- the versions of a migration step: `toVersion` decides which units the step reaches, `fromVersion`
+  the order of the steps (§14)
 - a method that passes something on but adds to it first — the selected elements, its own
   section — tested for what it adds
 - the seam tests of §17: one for each direction in which the caller decides, as §17 describes

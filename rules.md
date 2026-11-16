@@ -260,7 +260,7 @@ change belongs to depends on what the change does — the long version is the cl
   `unit_definition_version` and note it in `docs/unit_definition_changelog.txt`, but do not add
   a migration step.
 - **Existing values have to be transformed** (rename, changed unit, restructured group) → a
-  migration step via `npm run generate-migration <from> <to>`, registered in `MigrationManager`.
+  migration step via `npm run generate-migration <from> <to>`, which registers it in `MigrationManager`.
 - **Wrong values have to be repaired** → mind the reach: a step only touches units **older** than
   its `toVersion`, so data written by the version being migrated to is out of its reach. Either
   migrate to a newer version, or handle it in `ModelNormalizer` — and only if the data is worth a

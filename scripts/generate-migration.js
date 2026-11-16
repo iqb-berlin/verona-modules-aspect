@@ -85,6 +85,30 @@ if (fs.existsSync(specFilePath)) {
   console.log(`Success: Created ${specFileName}`);
 }
 console.log(`Test what the step transforms in ${specFileName}, next to the test of its versions`);
+
+/* Registers the step in MigrationManager: a step that is not in its list never runs, and no test sees
+   that - the specs run in a browser and cannot list the migrations directory. */
+const managerPath = path.join(projectRoot, 'projects/common/services/migration-manager.ts');
+const manager = fs.readFileSync(managerPath, 'utf8');
+const lastImport = [...manager.matchAll(/^import \{ Migration\w+ \} from '\.\.\/migrations\/v[^']+\.migration';$/gm)]
+  .pop();
+const lastStep = manager.match(/private static steps: MigrationStep\[\] = \[[^\]]*new \w+\(\)(?=\n {2}\];)/);
+if (new RegExp(`\\b${className}\\b`).test(manager)) {
+  console.log(`${className} is already registered in MigrationManager`);
+} else if (lastImport && lastStep) {
+  const importLine = `\nimport { ${className} } from '../migrations/${fileName.replace(/\.ts$/, '')}';`;
+  const afterImport = lastImport.index + lastImport[0].length;
+  const afterLastStep = lastStep.index + lastStep[0].length;
+  fs.writeFileSync(managerPath, [
+    manager.slice(0, afterImport), importLine,
+    manager.slice(afterImport, afterLastStep), `,\n    new ${className}()`,
+    manager.slice(afterLastStep)
+  ].join(''));
+  console.log(`Registered ${className} in projects/common/services/migration-manager.ts`);
+} else {
+  console.error('Could not find where to register the step: add it to MigrationManager.steps by hand');
+  process.exitCode = 1;
+}
+
 console.log(`Also: raise unit_definition_version to ${to} in package.json and describe the change in
 docs/unit_definition_changelog.txt`);
-console.log(`Don't forget to register it in projects/common/services/migration-manager.ts`);

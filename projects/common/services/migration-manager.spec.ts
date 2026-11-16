@@ -1,4 +1,6 @@
 import { MigrationManager } from 'common/services/migration-manager';
+import { VersionManager } from 'common/services/version-manager';
+import { MigrationStep } from 'common/migrations/migration-step.interface';
 import { UnitProperties } from 'common/models/unit';
 import { TextProperties } from 'common/models/elements/text';
 import { ClozeProperties, CustomDocumentNode } from 'common/models/elements/cloze';
@@ -181,6 +183,21 @@ describe('MigrationManager', () => {
 
     const migratedUnit = MigrationManager.migrate(unit, '4.12.0');
     expect(migratedUnit.version).toBe('4.12.0');
+  });
+
+  /* Editor and player migrate to unit_definition_version, and migrate runs no step beyond the version
+     it migrates to. A step aiming further never runs, which is what a forgotten version raise leaves
+     behind (#1669). */
+  it('should register no step beyond the current unit definition version', () => {
+    const manager = MigrationManager as unknown as {
+      steps: MigrationStep[];
+      compareVersions(v1: string, v2: string): number;
+    };
+    const current = VersionManager.getCurrentVersion();
+
+    expect(manager.steps
+      .map(step => step.toVersion)
+      .filter(toVersion => manager.compareVersions(toVersion, current) > 0)).toEqual([]);
   });
 
   /* Which units a step reaches, and which it cannot. Both directions matter when deciding whether a

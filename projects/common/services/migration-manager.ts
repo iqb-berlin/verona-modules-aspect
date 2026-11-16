@@ -69,6 +69,8 @@ import { UnitProperties } from '../models/unit';
  *   was.
  */
 export class MigrationManager {
+  /** `npm run generate-migration` appends new steps to this list and reads its text to do so: the
+      last entry stands without a trailing comma, before `];` on a line of its own. */
   private static steps: MigrationStep[] = [
     new MigrationLegacy(),
     new Migration4m10To4m11(),

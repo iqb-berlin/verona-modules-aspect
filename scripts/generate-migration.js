@@ -5,6 +5,8 @@ const from = process.argv[2];
 const to = process.argv[3];
 
 const isVersion = version => /^(0|[1-9]\d*)\.(0|[1-9]\d*)(\.(0|[1-9]\d*))?$/.test(version || '');
+/* Compares as UnitVersion in projects/common/utils does, which the script cannot import: a missing part
+   is 0. Keep the two in step. */
 const partsOf = version => [...version.split('.').map(Number), 0].slice(0, 3);
 const isAfter = (a, b) => partsOf(a).reduce((order, part, i) => order || Math.sign(part - partsOf(b)[i]), 0) > 0;
 if (!isVersion(from) || !isVersion(to) || !isAfter(to, from)) {
@@ -21,11 +23,10 @@ console.log('  - existing values have to change       -> yes, a step (rename, un
 console.log('  - wrong values have to be repaired     -> a step only reaches units OLDER than its');
 console.log('    toVersion, so data written by the version you are migrating to is out of reach\n');
 
-/* The target version has three parts, as unit_definition_version does, which it is raised to:
-   VersionManager reads a missing third part as undefined, and a unit stamped x.y.0 then counts as newer
-   than the editor. Names and fromVersion drop a closing .0, as the steps in the repository do (4.12,
-   v4.12-to-v4.13), and keep any other patch part, so that two steps within one minor version stay
-   apart (#1670). */
+/* The target version has three parts, as unit_definition_version, which it is raised to, and every
+   step in the repository have it (#1670). Names and fromVersion drop a closing .0, as the steps in the
+   repository do (4.12, v4.12-to-v4.13), and keep any other patch part, so that two steps within one
+   minor version stay apart. */
 const toVersion = to.split('.').length === 2 ? `${to}.0` : to;
 const withoutClosingZero = version => version.replace(/^(\d+\.\d+)\.0$/, '$1');
 const fromName = withoutClosingZero(from);

@@ -1,6 +1,7 @@
 import { MigrationManager } from 'common/services/migration-manager';
 import { VersionManager } from 'common/services/version-manager';
 import { MigrationStep } from 'common/migrations/migration-step.interface';
+import { UnitVersion } from 'common/utils/unit-version';
 import { UnitProperties } from 'common/models/unit';
 import { TextProperties } from 'common/models/elements/text';
 import { ClozeProperties, CustomDocumentNode } from 'common/models/elements/cloze';
@@ -189,15 +190,47 @@ describe('MigrationManager', () => {
      it migrates to. A step aiming further never runs, which is what a forgotten version raise leaves
      behind (#1669). */
   it('should register no step beyond the current unit definition version', () => {
-    const manager = MigrationManager as unknown as {
-      steps: MigrationStep[];
-      compareVersions(v1: string, v2: string): number;
-    };
+    const { steps } = MigrationManager as unknown as { steps: MigrationStep[] };
     const current = VersionManager.getCurrentVersion();
 
-    expect(manager.steps
+    expect(steps
       .map(step => step.toVersion)
-      .filter(toVersion => manager.compareVersions(toVersion, current) > 0)).toEqual([]);
+      .filter(toVersion => UnitVersion.compare(toVersion, current) > 0)).toEqual([]);
+  });
+
+  /* A version that cannot be read counts as newer than any: as toVersion the step would never run, as
+     fromVersion it would run after every other (#1679). */
+  it('should register no step with a version that cannot be read', () => {
+    const { steps } = MigrationManager as unknown as { steps: MigrationStep[] };
+
+    expect(steps
+      .flatMap(step => [step.fromVersion, step.toVersion])
+      .filter(version => UnitVersion.parse(version) === null)).toEqual([]);
+  });
+
+  /* A hotfix step registered after the step to the next minor version shares its fromVersion; it has
+     to run first all the same, or the older transformation meets data already in the newer shape
+     (#1679). */
+  it('should run two steps with the same fromVersion in the order of their toVersion', () => {
+    const manager = MigrationManager as unknown as { steps: MigrationStep[] };
+    const registered = manager.steps;
+    const ran: string[] = [];
+    const step = (fromVersion: string, toVersion: string): MigrationStep => ({
+      fromVersion,
+      toVersion,
+      execute: unit => {
+        ran.push(toVersion);
+        return unit;
+      }
+    });
+    manager.steps = [step('90.0', '91.0.0'), step('90.0', '90.0.1')];
+    try {
+      MigrationManager.migrate({ type: 'aspect-unit-definition', version: '90.0.0', pages: [] }, '91.0.0');
+    } finally {
+      manager.steps = registered;
+    }
+
+    expect(ran).toEqual(['90.0.1', '91.0.0']);
   });
 
   /* Which units a step reaches, and which it cannot. Both directions matter when deciding whether a

@@ -95,4 +95,10 @@ describe('KeyboardService', () => {
     expect(service.preset).toBe('french');
     expect(service.keyboardHeight).toBe(280);
   }));
+
+  it('should keep room for the assistance row when the element adds it', fakeAsync(() => {
+    textFieldComponent.elementModel.addInputAssistanceToKeyboard = true;
+    toggle(true, true);
+    expect(service.keyboardHeight).toBe(380);
+  }));
 });

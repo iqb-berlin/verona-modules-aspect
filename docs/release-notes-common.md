@@ -2,11 +2,11 @@ Allgemein
 =========
 ## editor/3.1.2+player/3.1.2
 ### Änderungen
-- Formelfeld, Formelbereich
+- **Formelfeld, Formelbereich**
   - Im Reiter „αβγ“ der Formeltastatur tragen mit Umschalttaste auch die Großbuchstaben ihren Namen ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))
 
 ### Fehlerbehebungen
-- Formelfeld, Formelbereich
+- **Formelfeld, Formelbereich**
   - Im Reiter „αβγ“ der Formeltastatur ist die Taste ψ mit „psi“ statt „zeta“ beschriftet ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))
   - Im Reiter „αβγ“ der Formeltastatur fügt Umschalt + ϵ das griechische Ε statt des lateinischen Ɛ ein, Umschalt + κ das griechische Κ statt des gleich aussehenden lateinischen K ([#1652](https://github.com/iqb-berlin/verona-modules-aspect/issues/1652))
 

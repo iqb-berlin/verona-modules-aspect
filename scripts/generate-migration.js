@@ -70,16 +70,16 @@ const migrationsDir = path.join(projectRoot, 'projects/common/migrations');
 const filePath = path.join(migrationsDir, fileName);
 const specFilePath = path.join(migrationsDir, specFileName);
 
+/* A step that is already there is kept, so that a run whose registration failed can be repeated. */
 if (fs.existsSync(filePath)) {
-  console.error(`Error: File ${fileName} already exists.`);
-  process.exit(1);
+  console.log(`Kept the existing ${fileName}`);
+} else {
+  fs.writeFileSync(filePath, template);
+  console.log(`Success: Created ${fileName} in projects/common/migrations/`);
 }
-
-fs.writeFileSync(filePath, template);
-console.log(`Success: Created ${fileName} in projects/common/migrations/`);
 /* A spec written before the step - a test that fails without it - is kept as it is. */
 if (fs.existsSync(specFilePath)) {
-  console.log(`Kept the existing ${specFileName}; add the test of the step's versions to it`);
+  console.log(`Kept the existing ${specFileName}; it should hold the test of the step's versions`);
 } else {
   fs.writeFileSync(specFilePath, specTemplate);
   console.log(`Success: Created ${specFileName}`);
@@ -93,7 +93,7 @@ const manager = fs.readFileSync(managerPath, 'utf8');
 const lastImport = [...manager.matchAll(/^import \{ Migration\w+ \} from '\.\.\/migrations\/v[^']+\.migration';$/gm)]
   .pop();
 const lastStep = manager.match(/private static steps: MigrationStep\[\] = \[[^\]]*new \w+\(\)(?=\n {2}\];)/);
-if (new RegExp(`\\b${className}\\b`).test(manager)) {
+if (new RegExp(`new ${className}\\(\\)`).test(manager)) {
   console.log(`${className} is already registered in MigrationManager`);
 } else if (lastImport && lastStep) {
   const importLine = `\nimport { ${className} } from '../migrations/${fileName.replace(/\.ts$/, '')}';`;

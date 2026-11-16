@@ -77,13 +77,13 @@ describe('ElementModelElementCodeMappingService', () => {
       .toEqual(2);
   });
 
-  it('should map the value of a iamge elementModel to its elementCode value', () => {
-    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(true, 'audio'))
+  it('should map the value true of an image elementModel to its elementCode value', () => {
+    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(true, 'image'))
       .toEqual(true);
   });
 
-  it('should map the value of a image elementModel to its elementCode value', () => {
-    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(false, 'audio'))
+  it('should map the value false of an image elementModel to its elementCode value', () => {
+    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(false, 'image'))
       .toEqual(false);
   });
 
@@ -146,21 +146,11 @@ describe('ElementModelElementCodeMappingService', () => {
     }
   });
 
-  it('should map the value null of a radio-group-images elementModel to null', () => {
-    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(null, 'radio'))
-      .toBe(null);
-  });
-
   it('should map the value of a dropdown elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
       expect(ElementModelElementCodeMappingService.mapToElementCodeValue(i, 'dropdown'))
         .toEqual(i + 1);
     }
-  });
-
-  it('should map the value null of a dropdown elementModel to null', () => {
-    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(null, 'radio'))
-      .toBe(null);
   });
 
   it('should map the value of a toggle-button elementModel to its elementCode value', () => {
@@ -170,21 +160,11 @@ describe('ElementModelElementCodeMappingService', () => {
     }
   });
 
-  it('should map the value null of a toggle-button elementModel to null', () => {
-    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(null, 'radio'))
-      .toBe(null);
-  });
-
   it('should map the value of a likert-row elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
       expect(ElementModelElementCodeMappingService.mapToElementCodeValue(i, 'likert-row'))
         .toEqual(i + 1);
     }
-  });
-
-  it('should map the value null of a likert-row  elementModel to null', () => {
-    expect(ElementModelElementCodeMappingService.mapToElementCodeValue(null, 'radio'))
-      .toBe(null);
   });
 
   it('should map the value of a text-field elementModel to its elementCode value', () => {

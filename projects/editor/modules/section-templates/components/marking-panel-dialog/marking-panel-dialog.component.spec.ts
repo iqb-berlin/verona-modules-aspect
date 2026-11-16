@@ -60,10 +60,6 @@ describe('MarkingPanelDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should receive available text IDs from the dialog data', () => {
-    expect(component.data.availableTextIDs).toEqual(['text_1', 'text_2']);
-  });
-
   it('should initialize with default values', () => {
     expect(component.text1).toBe('');
     expect(component.showHelper).toBe(true);

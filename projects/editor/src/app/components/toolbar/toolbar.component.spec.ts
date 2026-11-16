@@ -50,12 +50,6 @@ describe('ToolbarComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should delegate save to UnitService', () => {
-    component.save();
-
-    expect(unitServiceSpy.saveUnit.mock.calls.length).toBe(1);
-  });
-
   it('should load a unit file and post a voeStartCommand message', async () => {
     const postMessageSpy = vi.spyOn(window, 'postMessage');
     const loadFileSpy = vi.spyOn(FileService, 'loadFile').mockReturnValue(

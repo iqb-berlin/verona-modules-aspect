@@ -164,12 +164,6 @@ describe('ElementGroupSelectionComponent', () => {
     expect(component.selectedGroup).toEqual('inputGroup');
   });
 
-  it('should select inputGroup', () => {
-    component.elementModel = new RadioButtonGroupElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('inputGroup');
-  });
-
   it('should select textInputGroup', () => {
     component.elementModel = new TextFieldElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
@@ -206,7 +200,7 @@ describe('ElementGroupSelectionComponent', () => {
     expect(component.selectedGroup).toEqual('compoundGroup');
   });
 
-  it('should select mediaPlayerGroup', () => {
+  it('should select compoundGroup', () => {
     component.elementModel = new ClozeElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('compoundGroup');

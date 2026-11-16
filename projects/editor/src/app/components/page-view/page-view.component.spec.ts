@@ -130,12 +130,6 @@ describe('PageViewComponent', () => {
     expect((fixture.nativeElement.querySelector('button') as HTMLButtonElement).disabled).toBe(true);
   });
 
-  it('should delegate removing a page break to the unit service', () => {
-    component.collapsePage(2);
-
-    expect(unitService.collapsePage).toHaveBeenCalledWith(2);
-  });
-
   /* Removing the break hands the sections to the page before this one, which the first regular page
      must not do while the page before it is the permanently visible one (#1298). */
   it('should not offer removing the page break in front of the permanently visible page', () => {

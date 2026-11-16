@@ -7,7 +7,7 @@ Player
 - **Formelbereich**
   - Beim Tippen mit der Bildschirmtastatur oder der Eingabehilfe springt die Seite nicht mehr zurück, und die Zeile mit dem Cursor bleibt ganz sichtbar ([#1661](https://github.com/iqb-berlin/verona-modules-aspect/issues/1661))
 - **Zustandsmeldung an die Testumgebung (`vopStateChangedNotification`)**
-  - Chrome und Edge führen das Browser-Ereignis `unload` nicht mehr aus, bei dem der Player seine letzte Zustandsmeldung schickte. Er schickt sie jetzt bei `pagehide`, sodass auch Eingaben unmittelbar vor dem Verlassen einer Aufgabe wieder bei der Testumgebung ankommen ([#1656](https://github.com/iqb-berlin/verona-modules-aspect/issues/1656))
+  - Chrome und Edge führen das Browser-Ereignis `unload` nicht mehr aus, bei dem der Player seine letzte Zustandsmeldung schickte. Er schickt sie jetzt bei `pagehide`, sodass auch Änderungen unmittelbar vor dem Verlassen einer Aufgabe wieder bei der Testumgebung ankommen ([#1656](https://github.com/iqb-berlin/verona-modules-aspect/issues/1656))
 
 ## 3.1.1
 Keine Änderungen gegenüber 3.1.0

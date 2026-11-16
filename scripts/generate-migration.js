@@ -4,9 +4,12 @@ const path = require('path');
 const from = process.argv[2];
 const to = process.argv[3];
 
-if (!from || !to) {
-  console.error('Usage: npm run generate-migration <fromVersion> <toVersion>');
-  console.error('Example: npm run generate-migration 4.11 4.12');
+const isVersion = version => /^(0|[1-9]\d*)\.(0|[1-9]\d*)(\.(0|[1-9]\d*))?$/.test(version || '');
+const partsOf = version => [...version.split('.').map(Number), 0].slice(0, 3);
+const isAfter = (a, b) => partsOf(a).reduce((order, part, i) => order || Math.sign(part - partsOf(b)[i]), 0) > 0;
+if (!isVersion(from) || !isVersion(to) || !isAfter(to, from)) {
+  console.error('Usage: npm run generate-migration <fromVersion> <toVersion>, the second after the first');
+  console.error('Example: npm run generate-migration 4.11 4.12 - the step then targets 4.12.0');
   process.exit(1);
 }
 
@@ -18,9 +21,18 @@ console.log('  - existing values have to change       -> yes, a step (rename, un
 console.log('  - wrong values have to be repaired     -> a step only reaches units OLDER than its');
 console.log('    toVersion, so data written by the version you are migrating to is out of reach\n');
 
-const fromSafe = from.replace(/\./g, 'm');
-const toSafe = to.replace(/\./g, 'm');
-const fileName = `v${from}-to-v${to}.migration.ts`;
+/* The target version has three parts, as unit_definition_version does, which it is raised to:
+   VersionManager reads a missing third part as undefined, and a unit stamped x.y.0 then counts as newer
+   than the editor. Names and fromVersion drop a closing .0, as the steps in the repository do (4.12,
+   v4.12-to-v4.13), and keep any other patch part, so that two steps within one minor version stay
+   apart (#1670). */
+const toVersion = to.split('.').length === 2 ? `${to}.0` : to;
+const withoutClosingZero = version => version.replace(/^(\d+\.\d+)\.0$/, '$1');
+const fromName = withoutClosingZero(from);
+const toName = withoutClosingZero(to);
+const fromSafe = fromName.replace(/\./g, 'm');
+const toSafe = toName.replace(/\./g, 'm');
+const fileName = `v${fromName}-to-v${toName}.migration.ts`;
 const className = `Migration${fromSafe}To${toSafe}`;
 
 const template = `/* eslint-disable @typescript-eslint/dot-notation */
@@ -29,14 +41,14 @@ const template = `/* eslint-disable @typescript-eslint/dot-notation */
 import { UnitTraversalMigration } from './unit-traversal-migration';
 
 /**
- * Transforms values that ${to} changes. Properties this version only *adds* do not belong here -
+ * Transforms values that ${toVersion} changes. Properties this version only *adds* do not belong here -
  * ModelNormalizer fills those in from ELEMENT_DEFAULTS on every load, whatever the version.
  *
- * Reaches units older than ${to} only. See MigrationManager for why that matters.
+ * Reaches units older than ${toVersion} only. See MigrationManager for why that matters.
  */
 export class ${className} extends UnitTraversalMigration {
-  fromVersion = '${from}';
-  toVersion = '${to}';
+  fromVersion = '${fromName}';
+  toVersion = '${toVersion}';
 
   protected override migrateElement(element: Record<string, unknown>): Record<string, unknown> {
     const newElement = { ...element };
@@ -48,8 +60,8 @@ export class ${className} extends UnitTraversalMigration {
 
 /** `toVersion` decides which units the step reaches and `fromVersion` where it stands among the steps, so
     their test stays even though it reads constants back (rules.md, §11). */
-const specFileName = `v${from}-to-v${to}.migration.spec.ts`;
-const specTemplate = `import { ${className} } from './v${from}-to-v${to}.migration';
+const specFileName = `v${fromName}-to-v${toName}.migration.spec.ts`;
+const specTemplate = `import { ${className} } from './v${fromName}-to-v${toName}.migration';
 
 describe('${className}', () => {
   let migration: ${className};
@@ -59,8 +71,8 @@ describe('${className}', () => {
   });
 
   it('should have the versions of the step it is', () => {
-    expect(migration.fromVersion).toBe('${from}');
-    expect(migration.toVersion).toBe('${to}');
+    expect(migration.fromVersion).toBe('${fromName}');
+    expect(migration.toVersion).toBe('${toVersion}');
   });
 });
 `;
@@ -116,5 +128,5 @@ if (new RegExp(`new ${className}\\(\\)`).test(manager)) {
   process.exitCode = 1;
 }
 
-console.log(`Also: raise unit_definition_version to ${to} in package.json and describe the change in
+console.log(`Also: raise unit_definition_version to ${toVersion} in package.json and describe the change in
 docs/unit_definition_changelog.txt`);

@@ -1,6 +1,6 @@
 Allgemein
 =========
-## next
+## editor/3.1.2+player/3.1.2
 ### Änderungen
 - Formelfeld, Formelbereich: Reiter „αβγ“ der Formeltastatur: Mit Umschalttaste tragen auch die Großbuchstaben ihren Namen ([#1644](https://github.com/iqb-berlin/verona-modules-aspect/issues/1644))
 

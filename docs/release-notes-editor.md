@@ -1,5 +1,8 @@
 Editor
 ======
+## 3.1.2
+Keine eigenen Änderungen gegenüber 3.1.1; die Änderungen an der Formeltastatur stehen unter „Allgemein“
+
 ## 3.1.1
 ### Änderungen
 - Audio, Video

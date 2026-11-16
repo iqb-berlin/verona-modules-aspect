@@ -1,6 +1,6 @@
 Player
 ======
-## next
+## 3.1.2
 ### Fehlerbehebungen
 - Antworten
   - In Chrome und Edge kommen auch Eingaben, die kurz vor dem Verlassen einer Aufgabe gemacht wurden, bei der Testumgebung an ([#1656](https://github.com/iqb-berlin/verona-modules-aspect/issues/1656))

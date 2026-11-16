@@ -43,10 +43,6 @@ describe('FirstColumnRatioPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the current ratio', () => {
     expect(fixture.debugElement.query(By.css('input')).nativeElement.value).toBe('3');
   });

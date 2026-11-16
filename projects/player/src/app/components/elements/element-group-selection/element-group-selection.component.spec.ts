@@ -128,11 +128,6 @@ describe('ElementGroupSelectionComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    component.elementModel = new CheckboxElement({ id: 'id', alias: 'alias' });
-    expect(component).toBeTruthy();
-  });
-
   it('should select textGroup', () => {
     component.elementModel = new TextElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();

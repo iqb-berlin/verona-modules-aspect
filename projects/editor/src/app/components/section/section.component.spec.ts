@@ -123,10 +123,6 @@ describe('SectionComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the dynamic section for dynamically positioned sections', () => {
     expect(fixture.nativeElement.querySelector('aspect-editor-dynamic-section')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('aspect-editor-static-section')).toBeFalsy();

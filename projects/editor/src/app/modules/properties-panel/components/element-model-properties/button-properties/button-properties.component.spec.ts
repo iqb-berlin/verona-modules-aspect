@@ -73,10 +73,6 @@ describe('ButtonPropertiesComponent', () => {
     expect(fixture.nativeElement.querySelector('textarea')).toBeNull();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the edit tooltip button', () => {
     const buttons = Array.from(fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>);
     expect(buttons.some(button => button.textContent?.includes('propertiesPanel.editTooltip'))).toBe(true);

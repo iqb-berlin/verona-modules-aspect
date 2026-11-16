@@ -64,10 +64,6 @@ describe('TextRadioComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with default options', () => {
     expect(component.options.label1).toBe('');
     expect(component.options.options).toEqual([]);

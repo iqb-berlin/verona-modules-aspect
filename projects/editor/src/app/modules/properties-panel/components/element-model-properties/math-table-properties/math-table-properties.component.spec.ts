@@ -68,10 +68,6 @@ describe('MathTablePropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render an input for every term', () => {
     const termInputs = Array.from(
       fixture.nativeElement.querySelectorAll('.term-list input') as NodeListOf<HTMLInputElement>

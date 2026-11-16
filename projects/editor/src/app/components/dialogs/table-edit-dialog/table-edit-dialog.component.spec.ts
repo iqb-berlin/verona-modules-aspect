@@ -103,10 +103,6 @@ describe('TableEditDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* The dialog edits a copy, so that cancelling can leave the table as it was (#1270). The copy is
      not a duplicate: the cells in it are the very same objects, which is what keeps the selection and
      the references pointing at what the unit holds. */

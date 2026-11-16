@@ -7,10 +7,6 @@ describe('MarkListPipe', () => {
     pipe = new MarkListPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should extract the type of every mark', () => {
     expect(pipe.transform([{ type: 'bold' }, { type: 'italic' }])).toEqual(['bold', 'italic']);
   });

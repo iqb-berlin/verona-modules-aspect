@@ -111,10 +111,6 @@ describe('PageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show a section per page section', () => {
     expect(fixture.debugElement.queryAll(By.directive(MockSectionComponent)).length)
       .toBe(component.page.sections.length);

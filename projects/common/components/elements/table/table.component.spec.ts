@@ -52,10 +52,9 @@ describe('TableComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create without a header', () => {
+  it('should render no header cells without a header', () => {
     component.elementModel = createTableElement();
     fixture.detectChanges();
-    expect(component).toBeTruthy();
     expect(fixture.nativeElement.querySelectorAll('.header-cell').length).toBe(0);
   });
 

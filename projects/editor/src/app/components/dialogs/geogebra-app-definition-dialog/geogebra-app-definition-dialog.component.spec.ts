@@ -34,10 +34,6 @@ describe('GeogebraAppDefinitionDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should hide the status area as long as there is no message', () => {
     const statusArea = fixture.nativeElement.querySelector('.status-area') as HTMLElement;
     expect(statusArea.hidden).toBe(true);

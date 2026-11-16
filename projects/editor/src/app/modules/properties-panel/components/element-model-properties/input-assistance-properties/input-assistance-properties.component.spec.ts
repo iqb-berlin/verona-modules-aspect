@@ -50,10 +50,6 @@ describe('InputAssistancePropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the keyboard fieldset only for elements with a software keyboard', () => {
     expect(fixture.nativeElement.querySelectorAll('fieldset').length).toBe(2);
 

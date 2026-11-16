@@ -25,10 +25,6 @@ describe('KeyboardKeyComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show a single character key', () => {
     expect(fixture.debugElement.query(By.css('.character')).nativeElement.textContent.trim()).toBe('a');
     expect(keyButton().classList).not.toContain('control');

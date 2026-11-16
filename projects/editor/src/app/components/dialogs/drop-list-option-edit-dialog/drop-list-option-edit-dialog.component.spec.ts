@@ -105,10 +105,6 @@ describe('DropListOptionEditDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should work on a copy of the injected value', () => {
     expect(component.newLabel).toEqual(value);
     expect(component.newLabel).not.toBe(value);

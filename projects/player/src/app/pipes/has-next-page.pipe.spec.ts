@@ -14,10 +14,6 @@ describe('HasNextPagePipe', () => {
     ];
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should report a following visible page', () => {
     expect(pipe.transform(0, pages)).toBe(true);
   });

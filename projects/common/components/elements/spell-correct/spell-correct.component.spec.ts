@@ -48,10 +48,6 @@ describe('SpellCorrectComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display the label on the button', () => {
     const button = fixture.nativeElement.querySelector('.spell-correct-button');
     expect(button.textContent).toContain('Testwort');

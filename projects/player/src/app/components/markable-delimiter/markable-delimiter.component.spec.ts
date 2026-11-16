@@ -26,10 +26,6 @@ describe('MarkableDelimiterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show its text', () => {
     component.text = ', ';
 

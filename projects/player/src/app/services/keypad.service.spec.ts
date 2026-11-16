@@ -79,10 +79,6 @@ describe('KeypadService', () => {
     spellCorrectComponentFixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   // textField
 
   it('should toggle keypad to open', async () => {

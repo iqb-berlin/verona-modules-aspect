@@ -71,10 +71,6 @@ describe('TooltipPropertiesDialogComponent', () => {
       await configureTestBed({ tooltipText: undefined, tooltipPosition: undefined });
     });
 
-    it('should create', () => {
-      expect(component).toBeTruthy();
-    });
-
     it('should initialize with defaults and without delete button', () => {
       expect(component.tooltipText).toBe('');
       expect(component.tooltipPosition).toBe('below');

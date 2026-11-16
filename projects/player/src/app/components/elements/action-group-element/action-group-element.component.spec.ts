@@ -110,12 +110,6 @@ describe('ActionGroupElementComponent', () => {
       .compileComponents();
   });
 
-  it('should create', () => {
-    initComponent(createButton());
-
-    expect(component).toBeTruthy();
-  });
-
   it('should show a button for a button element', () => {
     initComponent(createButton());
 

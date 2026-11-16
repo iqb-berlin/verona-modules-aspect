@@ -30,10 +30,6 @@ describe('WidgetMoleculeEditorPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the bonding type field', () => {
     expect(fixture.nativeElement.textContent).toContain('propertiesPanel.bondingType');
     expect(fixture.debugElement.query(By.css('mat-select'))).not.toBeNull();

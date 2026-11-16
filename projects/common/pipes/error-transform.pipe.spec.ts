@@ -15,10 +15,6 @@ describe('ErrorTransformPipe', () => {
     pipe = new ErrorTransformPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return the warn message for a single validation error', () => {
     expect(pipe.transform({ required: true }, elementModel)).toBe('Eingabe erforderlich');
   });

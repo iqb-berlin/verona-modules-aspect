@@ -11,10 +11,6 @@ describe('MarkingPanelService', () => {
     service = TestBed.inject(MarkingPanelService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should broadcast marking data', () => {
     const received: MarkingPanelMarkingData[] = [];
     service.markingPanelMarkingDataChanged.subscribe(data => received.push(data));

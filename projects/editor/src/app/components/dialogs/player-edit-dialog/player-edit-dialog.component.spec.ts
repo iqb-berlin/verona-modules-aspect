@@ -81,10 +81,6 @@ describe('PlayerEditDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should edit a copy of the injected player properties', () => {
     expect(component.newPlayerConfig).toEqual(playerProps);
     expect(component.newPlayerConfig).not.toBe(playerProps);

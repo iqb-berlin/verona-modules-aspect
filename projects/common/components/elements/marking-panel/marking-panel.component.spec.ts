@@ -52,10 +52,6 @@ describe('MarkingPanelComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should pass "none" to the marking bar when no color is selected', () => {
     expect(getMarkingBar().selectedColor).toBe('none');
   });

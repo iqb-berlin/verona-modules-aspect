@@ -9,10 +9,6 @@ describe('DragNDropService', () => {
     service = TestBed.inject(DragNDropService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should not have a drag in progress initially', () => {
     expect(service.isDragInProgress).toBe(false);
   });

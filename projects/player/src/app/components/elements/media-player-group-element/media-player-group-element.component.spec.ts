@@ -116,12 +116,6 @@ describe('MediaPlayerGroupElementComponent', () => {
     component.ngOnDestroy();
   });
 
-  it('should create', () => {
-    initComponent(createAudio());
-
-    expect(component).toBeTruthy();
-  });
-
   it('should show an audio player for an audio element', () => {
     initComponent(createAudio());
 

@@ -78,10 +78,6 @@ describe('DeleteReferenceDialogComponent', () => {
   const getActionButtons = (): HTMLButtonElement[] => Array
     .from(fixture.nativeElement.querySelectorAll('.mat-mdc-dialog-actions button') as NodeListOf<HTMLButtonElement>);
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should expose the injected references', () => {
     expect(component.data.refs).toBe(refs);
   });

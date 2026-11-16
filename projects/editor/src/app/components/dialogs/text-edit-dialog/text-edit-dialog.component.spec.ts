@@ -39,10 +39,6 @@ describe('TextEditDialogComponent', () => {
   const getActionButtons = (): HTMLButtonElement[] => Array
     .from(fixture.nativeElement.querySelectorAll('.mat-mdc-dialog-actions button') as NodeListOf<HTMLButtonElement>);
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should prefill the input with the injected text', () => {
     expect(component.data.text).toBe('Ausgangstext');
     expect(getInput().value).toBe('Ausgangstext');

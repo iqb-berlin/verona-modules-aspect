@@ -23,10 +23,6 @@ describe('DeviceService', () => {
     vi.unstubAllGlobals();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should not assume a hardware keyboard by default', () => {
     expect(service.hasHardwareKeyboard).toBe(false);
   });

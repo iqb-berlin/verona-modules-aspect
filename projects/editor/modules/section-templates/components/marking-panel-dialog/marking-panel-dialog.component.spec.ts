@@ -60,10 +60,6 @@ describe('MarkingPanelDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should receive available text IDs from the dialog data', () => {
     expect(component.data.availableTextIDs).toEqual(['text_1', 'text_2']);
   });

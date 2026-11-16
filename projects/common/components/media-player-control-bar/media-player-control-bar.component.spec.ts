@@ -50,10 +50,9 @@ describe('MediaPlayerControlBarComponent', () => {
   // Tests that depend on the delayed init() call ngOnInit directly:
   // its setTimeout is otherwise scheduled through the fixture's NgZone,
   // which is outside the test ProxyZone — fakeAsync/tick cannot flush it.
-  it('should create and initialize with the default volume', fakeAsync(() => {
+  it('should initialize with the default volume', fakeAsync(() => {
     component.ngOnInit();
     tick(); // flush delayed init
-    expect(component).toBeTruthy();
     expect(component.volume).toBe(component.playerProperties.defaultVolume);
     expect(player.volume).toBe(component.playerProperties.defaultVolume);
   }));

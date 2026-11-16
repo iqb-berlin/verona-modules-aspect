@@ -10,10 +10,6 @@ describe('InputAssistanceCustomStylePipe', () => {
     pipe = new InputAssistanceCustomStylePipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   /* The pipe only narrows the type of a template value, so the value passes through untouched. */
   it('should pass the custom style through unchanged', () => {
     INPUT_ASSISTANCE_CUSTOM_STYLES.forEach((customStyle: InputAssistanceCustomStyle) => {

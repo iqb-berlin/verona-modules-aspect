@@ -60,10 +60,6 @@ describe('WidgetPeriodicTablePropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should reflect the current info settings', () => {
     const inputs = Array.from(
       fixture.nativeElement.querySelectorAll('mat-checkbox input') as NodeListOf<HTMLInputElement>

@@ -72,10 +72,6 @@ describe('ActionPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should collect anchor ids from all text elements', () => {
     expect(component.anchorIds).toEqual(['anchor-1', 'anchor-2']);
   });

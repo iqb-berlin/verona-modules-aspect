@@ -121,10 +121,6 @@ describe('TextAreaMathComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should add segments when addFormula is called', fakeAsync(() => {
     const dummyRange = document.createRange();
     const div = document.createElement('div');

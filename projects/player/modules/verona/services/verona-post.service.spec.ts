@@ -15,10 +15,6 @@ describe('VeronaPostService', () => {
     service.sessionID = 'test';
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should post a VopStateChangedNotification', () => new Promise<void>(done => {
     const expectedStateChangedNotification: VopStateChangedNotification = {
       type: 'vopStateChangedNotification',

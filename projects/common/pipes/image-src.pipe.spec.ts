@@ -7,10 +7,6 @@ describe('ImageSrcPipe', () => {
     pipe = new ImageSrcPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return null if state is null or undefined', () => {
     expect(pipe.transform(null)).toBeNull();
     expect(pipe.transform(undefined)).toBeNull();

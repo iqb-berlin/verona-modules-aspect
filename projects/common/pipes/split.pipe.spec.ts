@@ -7,10 +7,6 @@ describe('SplitPipe', () => {
     pipe = new SplitPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should split string by space by default', () => {
     expect(pipe.transform('H He Li')).toEqual(['H', 'He', 'Li']);
   });

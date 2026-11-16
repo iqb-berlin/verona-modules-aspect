@@ -21,10 +21,6 @@ describe('ErrorService', () => {
     service = TestBed.inject(ErrorService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should notify the host about an aspect error', () => {
     const error = new AspectError('unit-load-error', 'Unit konnte nicht geladen werden');
 

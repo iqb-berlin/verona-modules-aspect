@@ -12,10 +12,6 @@ describe('SafeResourceHTMLPipe', () => {
     pipe = new SafeResourceHTMLPipe(sanitizer);
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should bypass security with the given HTML', () => {
     const bypassSpy = vi.spyOn(sanitizer, 'bypassSecurityTrustHtml');
     pipe.transform('<b>fett</b>');

@@ -7,10 +7,6 @@ describe('AreaRowHeightPipe', () => {
     pipe = new AreaRowHeightPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should calculate the height for a single row', () => {
     // fontSize 20 -> content 24 -> container 36 -> math element 54
     expect(pipe.transform(1, 20, 100)).toBe(54);

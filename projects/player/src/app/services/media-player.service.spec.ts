@@ -8,10 +8,6 @@ describe('MediaPlayerService', () => {
     service = TestBed.inject(MediaPlayerService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('mediaStatus of audio_1 should be changed', () => new Promise<void>(done => {
     const mediaId = 'audio_1';
     service.registerMediaElement(mediaId, false);

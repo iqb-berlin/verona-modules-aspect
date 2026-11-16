@@ -51,10 +51,6 @@ describe('ElementModelElementCodeMappingService', () => {
     service = TestBed.inject(ElementModelElementCodeMappingService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   // mapToElementCodeValue
 
   it('should map the value of a drop-list elementModel to its elementCode value', () => {

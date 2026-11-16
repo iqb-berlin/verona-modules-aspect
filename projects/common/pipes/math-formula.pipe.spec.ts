@@ -15,10 +15,6 @@ describe('MathFormulaPipe', () => {
     pipe = new MathFormulaPipe(sanitizer);
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   /* The cloze renders its formula nodes as data rather than as a markup string, so it needs the LaTeX
      read off the node itself -- same reason as in SafeResourceHTMLPipe (#1105). */
   it('should build the markup from the LaTeX on the node', () => {

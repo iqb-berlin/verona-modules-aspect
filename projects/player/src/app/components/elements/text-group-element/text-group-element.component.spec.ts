@@ -84,12 +84,6 @@ describe('TextGroupElementComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    initComponent(createText());
-
-    expect(component).toBeTruthy();
-  });
-
   it('should take over the stored markings', () => {
     unitStateService.getElementCodeById
       .mockReturnValue({ id: 'text_1', alias: 'text_1', value: ['1-3-yellow'] });

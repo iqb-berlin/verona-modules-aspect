@@ -50,10 +50,6 @@ describe('ToolbarComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should delegate save to UnitService', () => {
     component.save();
 

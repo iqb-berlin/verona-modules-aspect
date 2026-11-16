@@ -100,10 +100,6 @@ describe('DimensionFieldSetComponent', () => {
     selectionServiceMock.onlyCompoundChildrenSelected = false;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the fixed width checkbox in dynamic positioning mode', () => {
     expect(hasFixedWidthCheckbox()).toBe(true);
   });

@@ -46,10 +46,6 @@ describe('IDEditDialogComponent', () => {
   const getSaveButton = (): HTMLButtonElement => fixture.nativeElement
     .querySelector('.mat-mdc-dialog-actions button') as HTMLButtonElement;
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize the control with the injected alias', () => {
     expect(component.aliasControl.value).toBe('text_1');
     expect(component.aliasControl.valid).toBe(true);

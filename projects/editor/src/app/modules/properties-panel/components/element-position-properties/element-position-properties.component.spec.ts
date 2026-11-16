@@ -84,10 +84,6 @@ describe('ElementPositionPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should not show alignment buttons for a single selected element', () => {
     expect(fixture.nativeElement.querySelector('.alignment-button-group')).toBeNull();
   });

@@ -53,10 +53,6 @@ describe('ExternalAppGroupElementComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize geometry variables with parent status NOT_REACHED', () => {
     const unitStateService = TestBed.inject(UnitStateService);
     const geometryVariableStateService = TestBed.inject(GeometryVariableStateService);

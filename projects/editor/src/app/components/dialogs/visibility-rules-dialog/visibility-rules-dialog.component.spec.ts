@@ -86,10 +86,6 @@ describe('VisibilityRulesDialogComponent', () => {
       });
     });
 
-    it('should create', () => {
-      expect(component).toBeTruthy();
-    });
-
     it('should initialize from the injected data with a detached rules array', () => {
       expect(component.visibilityRules).toEqual(visibilityRules);
       expect(component.visibilityRules).not.toBe(visibilityRules);

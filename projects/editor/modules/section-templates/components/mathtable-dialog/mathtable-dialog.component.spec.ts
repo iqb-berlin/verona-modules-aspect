@@ -46,10 +46,6 @@ describe('MathTableWizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with two empty terms and no operation', () => {
     expect(component.operation).toBeUndefined();
     expect(component.terms).toEqual(['', '']);

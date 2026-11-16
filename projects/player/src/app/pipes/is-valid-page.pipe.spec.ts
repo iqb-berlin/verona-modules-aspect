@@ -14,10 +14,6 @@ describe('IsValidPagePipe', () => {
     ];
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should accept a visible page index', () => {
     expect(pipe.transform(0, pages)).toBe(true);
     expect(pipe.transform(2, pages)).toBe(true);

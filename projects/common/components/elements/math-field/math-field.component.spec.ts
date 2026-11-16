@@ -78,10 +78,6 @@ describe('MathFieldComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should mark control as touched on focusOut', () => {
     const control = component.elementFormControl;
     expect(control.touched).toBe(false);

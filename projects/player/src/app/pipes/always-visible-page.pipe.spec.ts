@@ -14,10 +14,6 @@ describe('AlwaysVisiblePagePipe', () => {
     pipe = new AlwaysVisiblePagePipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should transform an array of pages to the always visible page of the array', () => {
     const alwaysVisiblePage = createPage(true);
 

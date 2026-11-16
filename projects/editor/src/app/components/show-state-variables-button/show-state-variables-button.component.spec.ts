@@ -33,10 +33,6 @@ describe('ShowStateVariablesButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* The validation area opens the same editing, so what happens with its result lives in the unit service. */
   it('should leave the editing of the state variables to the unit service', () => {
     component.showStateVariablesDialog();

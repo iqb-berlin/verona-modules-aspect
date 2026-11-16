@@ -72,11 +72,6 @@ describe('AudioComponent', () => {
     } as Partial<AudioProperties>);
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should render the control bar when src is set', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('aspect-media-player-control-bar')).not.toBeNull();

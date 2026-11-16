@@ -48,10 +48,6 @@ describe('InputElementPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the current label', () => {
     const labelInput = fixture.nativeElement.querySelector('textarea') as HTMLTextAreaElement;
     expect(labelInput.value).toBe('Frage 1');

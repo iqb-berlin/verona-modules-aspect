@@ -11,10 +11,6 @@ describe('VeronaSubscriptionService', () => {
     service = TestBed.inject(VeronaSubscriptionService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should get a vopStartCommand', () => new Promise<void>(done => {
     const startMessage: VopStartCommand = {
       type: 'vopStartCommand',

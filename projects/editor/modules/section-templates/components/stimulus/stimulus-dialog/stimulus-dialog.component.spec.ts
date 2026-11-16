@@ -89,10 +89,6 @@ describe('StimulusWizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should offer five variants and mark reading stimuli as valid on selection', () => {
     const variantButtons = fixture.nativeElement.querySelectorAll('mat-action-list button');
     expect(variantButtons.length).toBe(5);

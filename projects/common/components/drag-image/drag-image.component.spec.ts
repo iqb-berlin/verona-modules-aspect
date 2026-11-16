@@ -62,10 +62,6 @@ describe('DragImageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should not render a drag preview initially', () => {
     expect(fixture.nativeElement.querySelector('.drag-preview')).toBeNull();
   });

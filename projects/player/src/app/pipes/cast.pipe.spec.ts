@@ -10,10 +10,6 @@ describe('CastPipe', () => {
     pipe = new CastPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return the very same object reference', () => {
     const dog: Dog = { name: 'Rex', breed: 'collie' };
 

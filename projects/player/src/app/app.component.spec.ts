@@ -83,10 +83,6 @@ describe('AppComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should run standalone outside an iframe', () => {
     expect(component.isStandalone).toBe(window === window.parent);
   });

@@ -25,10 +25,6 @@ describe('EmailStimulusComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with German placeholder options', () => {
     expect(component.options.lang).toBe('de');
     expect(component.options.instruction).toBe('Instruktion');

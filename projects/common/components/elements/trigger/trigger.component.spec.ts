@@ -25,10 +25,6 @@ describe('TriggerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit triggerActionEvent with action and param on emitEvent', () => {
     const emitSpy = vi.spyOn(component.triggerActionEvent, 'emit');
     component.emitEvent();

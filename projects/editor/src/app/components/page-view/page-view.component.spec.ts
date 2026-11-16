@@ -88,10 +88,6 @@ describe('PageViewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render one section view per page section', () => {
     expect(fixture.nativeElement.querySelectorAll('aspect-editor-section-view').length).toBe(2);
   });

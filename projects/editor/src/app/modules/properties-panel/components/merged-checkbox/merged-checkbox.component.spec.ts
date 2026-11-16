@@ -40,12 +40,6 @@ describe('MergedCheckboxComponent', () => {
     component.valueChange.subscribe(value => emitted.push(value));
   });
 
-  it('should create', () => {
-    setValue(false);
-
-    expect(fixture.nativeElement.querySelector('mat-checkbox')).toBeTruthy();
-  });
-
   it('should be unchecked for false', () => {
     setValue(false);
 

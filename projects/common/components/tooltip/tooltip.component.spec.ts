@@ -15,10 +15,6 @@ describe('TooltipComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render plain text tooltips', () => {
     component.tooltipText = 'some text';
     fixture.detectChanges();

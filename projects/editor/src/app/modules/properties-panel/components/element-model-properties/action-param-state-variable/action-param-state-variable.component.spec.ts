@@ -38,10 +38,6 @@ describe('ActionParamStateVariableComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render fields for id and value', () => {
     const labels = Array.from(
       fixture.nativeElement.querySelectorAll('mat-label') as NodeListOf<HTMLElement>

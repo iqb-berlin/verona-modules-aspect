@@ -117,10 +117,6 @@ describe('DropListPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   // A selection of drop lists whose preset items disagree merges `value` to null. An empty list with
   // an active add button would claim both lists are empty, and adding one item would replace both.
   it('should offer no preset list when the item lists diverge', () => {

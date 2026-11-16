@@ -68,11 +68,6 @@ describe('TableChildOverlay', () => {
     component.element = createTextElement();
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should render the matching child component for a text element', () => {
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.directive(MockTextComponent))).not.toBeNull();

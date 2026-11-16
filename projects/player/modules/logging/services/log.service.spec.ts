@@ -1,18 +1,6 @@
-import { TestBed } from '@angular/core/testing';
 import { LogLevel, LogService } from './log.service';
 
 describe('LoggerService', () => {
-  let service: LogService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(LogService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should call LogService.debug', () => {
     vi.spyOn(LogService, 'debug');
     LogService.debug('test', 'test2');

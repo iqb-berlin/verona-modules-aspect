@@ -28,10 +28,6 @@ describe('ClozePropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* The button used to sit in the panel's flex column, which is what made `align-self: center` work.
      Moving it here took that context away, and no test could have seen it: the characterization
      baseline records no CSS. The component's own SCSS restores it, and this pins it. */

@@ -7,10 +7,6 @@ describe('InputAssistanceCustomKeysPipe', () => {
     pipe = new InputAssistanceCustomKeysPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   /* The pipe only narrows the type of a template value, so the value passes through untouched. */
   it('should pass the custom keys through unchanged', () => {
     expect(pipe.transform('abc')).toBe('abc');

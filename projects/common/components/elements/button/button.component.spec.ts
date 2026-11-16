@@ -51,10 +51,6 @@ describe('ButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render a button with its label', () => {
     const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
     expect(button).not.toBeNull();

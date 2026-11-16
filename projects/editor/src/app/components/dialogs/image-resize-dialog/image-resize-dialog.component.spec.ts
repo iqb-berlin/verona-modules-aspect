@@ -71,10 +71,6 @@ describe('ImageResizeDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with provided data', () => {
     expect(component.data.options.maxWidth).toBe(500);
     expect(component.data.options.quality).toBe(0.8);

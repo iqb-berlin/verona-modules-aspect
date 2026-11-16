@@ -124,12 +124,6 @@ describe('InteractiveGroupElementComponent', () => {
     fixture.destroy();
   });
 
-  it('should create', () => {
-    initComponent(new ImageElement({ id: 'image_1', alias: 'image_1' }));
-
-    expect(component).toBeTruthy();
-  });
-
   it('should show the component matching the element type', () => {
     initComponent(new ImageElement({ id: 'image_1', alias: 'image_1' }));
     expect(fixture.debugElement.query(By.directive(ImageStubComponent))).toBeTruthy();

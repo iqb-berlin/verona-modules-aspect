@@ -65,10 +65,6 @@ describe('RadioWizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the variant choice until a variant is selected', () => {
     const variantButtons = fixture.nativeElement.querySelectorAll('mat-action-list button');
     expect(variantButtons.length).toBe(2);

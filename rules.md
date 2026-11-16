@@ -157,9 +157,10 @@ Of the building blocks, `ng generate` writes a spec for a component only (`skipT
 `angular.json`); for the others the spec is written once there is behaviour to test, so that no
 generated existence test is left standing beside it. The component's generated `should create` goes
 as soon as the component has a test of its own. ESLint rejects such a test beside other running
-tests — titled `should create`, `should create the component`, `should create an instance`,
-`should be created`, `create an instance` or `should be defined`, and checking `toBeTruthy` or
-`toBeDefined` (`no-restricted-syntax` for `projects/**/*.spec.ts` in `package.json`).
+tests of its `describe` — titled `should create`, `should create the component`,
+`should create an instance`, `should be created`, `create an instance` or `should be defined`, and
+checking nothing but `toBeTruthy` or `toBeDefined` (`no-restricted-syntax` for
+`projects/**/*.spec.ts` in `package.json`).
 `npm run generate-migration` writes the step's spec with the test of its versions.
 
 Not this:

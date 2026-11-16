@@ -6,8 +6,8 @@ Player
   - In Firefox erscheinen Startknopf und Bild als Startknopf am Ende des letzten erlaubten Durchlaufs nicht mehr kurz wieder bedienbar; beim Video blitzte das Bild auf. Bei wiederholtem Abspielen (Loop) gilt das auch zwischen den Durchläufen, dort auch in Chrome und für die Startknöpfe anderer Audios und Videos ([#1655](https://github.com/iqb-berlin/verona-modules-aspect/issues/1655))
 - **Formelbereich**
   - Beim Tippen mit der Bildschirmtastatur oder der Eingabehilfe springt die Seite nicht mehr zurück, und die Zeile mit dem Cursor bleibt ganz sichtbar ([#1661](https://github.com/iqb-berlin/verona-modules-aspect/issues/1661))
-- **Letzte Eingaben beim Verlassen einer Aufgabe**
-  - Chrome und Edge führen das Browser-Ereignis `unload` nicht mehr aus, bei dem der Player seinen letzten Stand an die Testumgebung meldete. Er meldet ihn jetzt bei `pagehide`, sodass auch Eingaben unmittelbar vor dem Verlassen einer Aufgabe wieder ankommen ([#1656](https://github.com/iqb-berlin/verona-modules-aspect/issues/1656))
+- **Zustandsmeldung an die Testumgebung (`vopStateChangedNotification`)**
+  - Chrome und Edge führen das Browser-Ereignis `unload` nicht mehr aus, bei dem der Player seine letzte Zustandsmeldung schickte. Er schickt sie jetzt bei `pagehide`, sodass auch Eingaben unmittelbar vor dem Verlassen einer Aufgabe wieder bei der Testumgebung ankommen ([#1656](https://github.com/iqb-berlin/verona-modules-aspect/issues/1656))
 
 ## 3.1.1
 Keine Änderungen gegenüber 3.1.0

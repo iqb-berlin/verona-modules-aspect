@@ -2,22 +2,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
-import { CheckboxElement } from 'common/models/elements/checkbox';
-import { TextElement } from 'common/models/elements/text';
-import { RadioButtonGroupElement } from 'common/models/elements/radio-button-group';
-import { DropdownElement } from 'common/models/elements/dropdown';
-import { DropListElement } from 'common/models/elements/drop-list';
-import { SliderElement } from 'common/models/elements/slider';
-import { TextFieldElement } from 'common/models/elements/text-field';
-import { TextAreaElement } from 'common/models/elements/text-area';
-import { SpellCorrectElement } from 'common/models/elements/spell-correct';
-import { AudioElement } from 'common/models/elements/audio';
-import { VideoElement } from 'common/models/elements/video';
-import { LikertElement } from 'common/models/elements/likert';
 import { ClozeElement } from 'common/models/elements/cloze';
-import { FrameElement } from 'common/models/elements/frame';
 import { ImageElement } from 'common/models/elements/image';
-import { ButtonElement } from 'common/models/elements/button';
+import { UIElementType } from 'common/models/ui-element-interfaces';
+import { ElementFactory } from 'common/utils/element-factory';
+import { ElementGroupName } from 'player/src/app/models/element-group.interface';
 import { StartsWithTextPipe } from 'player/modules/print/pipes/starts-with-text.pipe';
 import { ElementGroupSelectionComponent } from './element-group-selection.component';
 
@@ -128,101 +117,36 @@ describe('ElementGroupSelectionComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should select textGroup', () => {
-    component.elementModel = new TextElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('textGroup');
-  });
+  /* One row per case, named by the element type, so that a failure says which type went to the wrong
+     group. A type no group claims gets none and is played by the base group. */
+  const groupOfType: [UIElementType, ElementGroupName | undefined][] = [
+    ['text', 'textGroup'],
+    ['checkbox', 'inputGroup'],
+    ['radio', 'inputGroup'],
+    ['dropdown', 'inputGroup'],
+    ['drop-list', 'inputGroup'],
+    ['slider', 'inputGroup'],
+    ['text-field', 'textInputGroup'],
+    ['text-area', 'textInputGroup'],
+    ['spell-correct', 'textInputGroup'],
+    ['audio', 'mediaPlayerGroup'],
+    ['video', 'mediaPlayerGroup'],
+    ['likert', 'compoundGroup'],
+    ['cloze', 'compoundGroup'],
+    ['image', 'interactiveGroup'],
+    ['button', 'actionGroup'],
+    ['frame', undefined]
+  ];
 
-  it('should select inputGroup', () => {
-    component.elementModel = new CheckboxElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('inputGroup');
-  });
+  it.each(groupOfType.map(([type, group]) => [type, group ?? 'no group', group] as const))(
+    'should give an element of type %s %s',
+    (type, _, group) => {
+      component.elementModel = ElementFactory.createElement({ type, id: 'id', alias: 'alias' });
+      fixture.detectChanges();
+      expect(component.selectedGroup).toEqual(group);
+    }
+  );
 
-  it('should select inputGroup', () => {
-    component.elementModel = new RadioButtonGroupElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('inputGroup');
-  });
-
-  it('should select inputGroup', () => {
-    component.elementModel = new DropdownElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('inputGroup');
-  });
-
-  it('should select inputGroup', () => {
-    component.elementModel = new DropListElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('inputGroup');
-  });
-
-  it('should select inputGroup', () => {
-    component.elementModel = new SliderElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('inputGroup');
-  });
-
-  it('should select textInputGroup', () => {
-    component.elementModel = new TextFieldElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('textInputGroup');
-  });
-
-  it('should select textInputGroup', () => {
-    component.elementModel = new TextAreaElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('textInputGroup');
-  });
-
-  it('should select textInputGroup', () => {
-    component.elementModel = new SpellCorrectElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('textInputGroup');
-  });
-
-  it('should select mediaPlayerGroup', () => {
-    component.elementModel = new AudioElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('mediaPlayerGroup');
-  });
-
-  it('should select mediaPlayerGroup', () => {
-    component.elementModel = new VideoElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('mediaPlayerGroup');
-  });
-
-  it('should select compoundGroup', () => {
-    component.elementModel = new LikertElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('compoundGroup');
-  });
-
-  it('should select compoundGroup', () => {
-    component.elementModel = new ClozeElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('compoundGroup');
-  });
-
-  it('should select no group (undefined)', () => {
-    component.elementModel = new FrameElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual(undefined);
-  });
-
-  it('should select interactiveGroup', () => {
-    component.elementModel = new ImageElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('interactiveGroup');
-  });
-
-  it('should select actionGroup', () => {
-    component.elementModel = new ButtonElement({ id: 'id', alias: 'alias' });
-    fixture.detectChanges();
-    expect(component.selectedGroup).toEqual('actionGroup');
-  });
   it('should give an element without a line of text at its top an invisible first line', () => {
     component.elementModel = new ImageElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();

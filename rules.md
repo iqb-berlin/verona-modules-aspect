@@ -135,17 +135,72 @@ Rationale:
 - applies to new code; pre-existing `any`/`$any()` usage is out of scope here but
   should be reduced opportunistically when touched
 
-## 11) Unit tests for new code
+## 11) Unit tests check behaviour that can be wrong
 
-- New Angular classes (Components, Pipes, Services, Guards, Directives) MUST ship with
-  a corresponding `.spec.ts` and meaningful unit tests.
-- Changes to existing business logic MUST update the corresponding tests to cover the
-  new behavior and guard against regressions.
-- Adding or changing a public method/property MUST be covered by tests.
+A unit test checks behaviour that can be wrong: a decision (a branch, a calculation, a mapping), an
+error path, or a bug that has already happened. It is written from what a caller can observe — what
+is returned, emitted or rendered, what reaches the host or another service — not from the lines of
+the implementation. What the code only copies from its own source, such as a fixed list, is no
+behaviour of its own.
+
+- A change to business logic comes with a test that fails without the change: a unit test, or an
+  end-to-end test under `e2e/` where only the running editor or player shows the change. A fixed
+  bug gets a test that names its issue (`#1357`).
+- A new class with behaviour of its own (component, directive, pipe, service, a class in `utils/`
+  or `classes/`) gets a `.spec.ts` that tests that behaviour; where nothing could be wrong, there
+  is no spec. A new component always gets its spec, as it gets its `.scss` (§12); without
+  behaviour of its own, `it('should create')` is its only test.
+
+Like §12, this applies to new and changed code: it is no demand to add specs where there are none.
+
+Not this:
+
+- a test that only checks that the instance exists (`should create`, `should be created`,
+  `create an instance`) beside other tests of the same file — each of them creates it anyway
+- a test without an assertion. The skipped `baseline regeneration` block in
+  `properties-panel.characterization.spec.ts` is not one: it is the tool that writes the panel's
+  baseline, run by hand
+- a test that restates the implementation: a method replaced by a spy, called and found called; a
+  property set and read back; a method of one line that hands its own arguments to a service,
+  checked for handing them on
+- constants and framework wiring: a list the test copies from the source, dialog data that was
+  injected and is read back as it came, that an injected service is defined
+- the same call with the same assertions in a second test — also as one block per element type
+  when the code does not tell the types apart
+
+Still this, although it can look like constants or wiring:
+
+- the defaults and their identity (§14) and the copies at the properties panel's junction (§15):
+  `model-normalizer.spec.ts`, `element.spec.ts`, `property-group-interfaces.spec.ts`,
+  `copy-plain-data.spec.ts`, and the tests in `element.service.spec.ts` that every selected
+  element gets its own copy
+- that a dialog which can be cancelled edits a copy of what it was handed (#1270): the data is read
+  back, but the test is about it not being the same object
+- the properties panel's characterization net, and the tests for what its baseline cannot see —
+  the options a select offers, as in `action-properties.component.spec.ts`, and CSS
+- what the `AppModule` of editor and player provides, in their `app.module.spec.ts`: only the
+  end-to-end tests would see it missing otherwise, and they do not run in `npm test`
+- the versions of a migration step: they decide which units the step reaches (§14)
+- a method that passes something on but adds to it first — the selected elements, its own
+  section — tested for what it adds
+- the seam tests of §17: one for each direction in which the caller decides, as §17 describes
+  them for `file.service.spec.ts`
+
+A comment above a test that says why it stays holds for as long as it is true. In doubt, the test
+stays.
+
+Coverage shows what no test reaches; whether that needs a test, this section decides. A test
+written only to reach a line is the test it excludes.
 
 Rationale:
-- protects behavior as the codebase evolves
-- applies to new/changed code, not as a retroactive requirement for untested files
+- a test that restates the code doubles the cost of every change to it and catches nothing. Until
+  #1628 this section demanded a spec for every new class and a test for every new or changed public
+  member, and #1114 named a creation test plus tests for the public API as the minimum when specs
+  were added afterwards. The result was 258 tests that only checked that an instance exists, beside
+  tests that created it anyway, and blocks repeated for element types the code does not tell apart
+- studio-lite limited its tests in the same way (studio-lite#1939). This section follows it except
+  where aspect differs — no backend, the exceptions above, a seam test for each direction rather
+  than one for each seam
 
 ## 12) Component, pipe and directive file structure
 
@@ -158,6 +213,9 @@ New components MUST be split into four files in their own directory:
 - `[name].component.html` (template)
 - `[name].component.scss` (styles — SCSS is preferred over CSS)
 - `[name].component.spec.ts` (unit tests)
+
+The `.scss` and the `.spec.ts` exist even when there is nothing to style or to test: the
+stylesheet stays empty, and the spec holds `it('should create')` alone (§11).
 
 Place building blocks in the conventional folder of the respective project/module:
 
@@ -340,7 +398,8 @@ Three questions decide it, and any one of them is enough:
 This is not "one method per class": a helper of a few lines that reads the state around it stays
 where it is. What the rule is aimed at is the body that grew until it needs explaining.
 
-Where the new unit goes — §12 for the file layout, §11 for its spec, which it always gets:
+Where the new unit goes — §12 for the file layout, §11 for whether it gets a spec and what that
+tests:
 
 - computation without DI and without state → `utils/`, a class with static methods
   (`ImageResampler`, `DropLogic`, `SectionCounter`)

@@ -19,6 +19,7 @@ import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { MathFieldComponent } from 'common/components/elements/math-field/math-field.component';
 import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
 import { WordCounter } from 'player/src/app/classes/word-counter';
+import { CaretScroller } from 'player/src/app/classes/caret-scroller';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 @Directive()
@@ -379,39 +380,8 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
       requestAnimationFrame(() => {
         RangeSelectionService.setSelectionRange(this.inputElement, start, end);
         const range = RangeSelectionService.getRange();
-        if (range) TextInputGroupDirective.scrollToSelectedRange(range);
+        if (range) CaretScroller.scrollIntoView(range);
       });
-    }
-  }
-
-  private static createSpanElement(): HTMLElement {
-    const spanElement = document.createElement('span');
-    spanElement.textContent = '\u200b'; // Zero-width space
-    spanElement.style.display = 'inline-block';
-    spanElement.style.width = '1px';
-    spanElement.style.height = '1em';
-    spanElement.style.verticalAlign = 'baseline';
-    spanElement.style.pointerEvents = 'none';
-    return spanElement;
-  }
-
-  private static scrollToSelectedRange(range: Range): void {
-    // Create a temporary marker at the caret position
-    const helperElement = TextInputGroupDirective.createSpanElement();
-
-    try {
-      const r = range.cloneRange();
-      r.collapse(true);
-      r.insertNode(helperElement);
-      helperElement.scrollIntoView(false);
-      helperElement.remove();
-      RangeSelectionService.addRange(range);
-    } catch {
-      try {
-        helperElement.remove();
-      } catch {
-        // Ignore cleanup errors
-      }
     }
   }
 

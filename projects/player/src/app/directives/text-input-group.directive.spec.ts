@@ -1,10 +1,14 @@
-import { Directive, signal } from '@angular/core';
+import { Directive, EventEmitter, signal } from '@angular/core';
+import { fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
 import { UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { UIElement } from 'common/models/elements/element';
 import { TextFieldElement } from 'common/models/elements/text-field';
 import { TextAreaElement } from 'common/models/elements/text-area';
+import { TextAreaMathElement } from 'common/models/elements/text-area-math';
 import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
 import { WordCounter } from 'player/src/app/classes/word-counter';
+import { CaretScroller } from 'player/src/app/classes/caret-scroller';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
@@ -229,6 +233,77 @@ describe('TextInputGroupDirective', () => {
 
     expect(deviceService.hasHardwareKeyboard).toBe(false);
     expect(keyboardService.close).not.toHaveBeenCalled();
+  });
+
+  /* Only the formula area's text is typed into through a selection range; text fields and text areas set
+     their caret with setSelectionRange. The scrolling for #1661 must reach the first and none of the others. */
+  describe('caret after a key of the on-screen keyboard', () => {
+    let keyboardEvents: { enterKey: EventEmitter<string> };
+    let scrollCaretIntoView: ReturnType<typeof vi.spyOn>;
+    const fields: HTMLElement[] = [];
+
+    const typeOnKeyboard = (elementModel: UIElement, field: HTMLElement): void => {
+      fields.push(field);
+      document.body.appendChild(field);
+      directive.elementModel = elementModel;
+      directive.toggleKeyInput({ inputElement: field, focused: true }, {
+        elementModel,
+        setElementValue: (value: string) => {
+          if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) field.value = value;
+          else field.textContent = value;
+        }
+      } as unknown as TextInputComponentType);
+      flushMicrotasks();
+      keyboardEvents.enterKey.emit('x');
+      // The caret of an editable text is set in the next frame
+      tick(16);
+    };
+
+    beforeEach(() => {
+      keyboardEvents = { enterKey: new EventEmitter<string>() };
+      directive.keyboardService = {
+        ...keyboardEvents,
+        deleteCharacters: new EventEmitter<boolean>(),
+        isOpen: true,
+        toggleAsync: vi.fn().mockResolvedValue(true),
+        close: vi.fn()
+      } as unknown as KeyboardService;
+      scrollCaretIntoView = vi.spyOn(CaretScroller, 'scrollIntoView').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      fields.splice(0).forEach(field => field.remove());
+      vi.restoreAllMocks();
+    });
+
+    it('should keep the caret of a formula area in sight through the CaretScroller', fakeAsync(() => {
+      const segment = document.createElement('span');
+      segment.contentEditable = 'true';
+      segment.textContent = 'abc';
+
+      typeOnKeyboard(new TextAreaMathElement({ type: 'text-area-math', id: 'text-area-math_1' }), segment);
+
+      expect(segment.textContent).toBe('xabc');
+      expect(scrollCaretIntoView).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should leave the caret of a text field to the field', fakeAsync(() => {
+      const textField = document.createElement('input');
+
+      typeOnKeyboard(createTextField(5, false), textField);
+
+      expect(textField.value).toBe('x');
+      expect(scrollCaretIntoView).not.toHaveBeenCalled();
+    }));
+
+    it('should leave the caret of a text area to the area', fakeAsync(() => {
+      const textArea = document.createElement('textarea');
+
+      typeOnKeyboard(new TextAreaElement({ type: 'text-area', id: 'text-area_1' }), textArea);
+
+      expect(textArea.value).toBe('x');
+      expect(scrollCaretIntoView).not.toHaveBeenCalled();
+    }));
   });
 
   describe('word count', () => {

@@ -163,3 +163,9 @@ blockquote > p:empty:last-child:after {
 .ML__edit-toolbar.right {
   display: none !important;
 }
+
+/* The shifted Greek keys carry their name in the label (greekCapital in formula-keyboard-presets.config.ts).
+   In the small shift hint in the corner of the lowercase key, only the letter is shown. */
+.MLK__shift .greek-capital-name {
+  display: none;
+}

@@ -1,4 +1,6 @@
-import { fakeAsync, tick } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Response } from '@iqbspecs/response/response.interface';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
@@ -12,10 +14,22 @@ import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { ValidationService } from 'player/src/app/services/validation.service';
 import { UnitStateDirective } from './unit-state.directive';
 
+/**
+ * The directive is declared by the app module, so the host cannot bind its input in the template
+ * (a spec local NgModule would break the AOT build, NG6007). The input is set on the directive
+ * instance before the first change detection run instead.
+ */
+@Component({
+  template: '<div aspectUnitState></div>',
+  standalone: false
+})
+class TestHostComponent {}
+
 /*
  * The directive has no template of its own. It is instantiated directly instead of through a
  * host component, so that the debounced state subscriptions are set up inside the test's
- * fakeAsync zone and stay visible for tick().
+ * fakeAsync zone and stay visible for tick(). Only the window listener is tested through
+ * TestHostComponent, because Angular binds a @HostListener only for a directive it creates.
  */
 describe('UnitStateDirective', () => {
   let directive: UnitStateDirective;
@@ -147,11 +161,25 @@ describe('UnitStateDirective', () => {
     directive.ngOnDestroy();
   }));
 
-  it('should send the unit state when the host window is unloaded', () => {
-    initDirective();
+  it('should send the unit state when the page is hidden', () => {
+    const fixture = TestBed.configureTestingModule({
+      declarations: [TestHostComponent, UnitStateDirective],
+      providers: [
+        { provide: UnitStateService, useValue: unitStateService },
+        { provide: StateVariableStateService, useValue: stateVariableStateService },
+        { provide: GeometryVariableStateService, useValue: geometryVariableStateService },
+        { provide: MediaPlayerService, useValue: mediaPlayerService },
+        { provide: VeronaSubscriptionService, useValue: {} },
+        { provide: VeronaPostService, useValue: veronaPostService },
+        { provide: ValidationService, useValue: validationService }
+      ]
+    }).createComponent(TestHostComponent);
+    fixture.debugElement.query(By.directive(UnitStateDirective)).injector.get(UnitStateDirective)
+      .presentationProgressStatus = new BehaviorSubject<Progress>('none');
+    fixture.detectChanges();
     veronaPostService.sendVopStateChangedNotification.mockClear();
 
-    directive.onUnload();
+    window.dispatchEvent(new Event('pagehide'));
 
     expect(veronaPostService.sendVopStateChangedNotification).toHaveBeenCalledTimes(1);
   });

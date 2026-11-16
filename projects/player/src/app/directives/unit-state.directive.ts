@@ -20,8 +20,14 @@ import { ValidationService } from '../services/validation.service';
   standalone: false
 })
 export class UnitStateDirective implements OnInit, OnDestroy {
-  @HostListener('window:unload')
-  onUnload(): void {
+  /**
+   * Sends the state once more when the page goes away, so that changes still inside the debounce
+   * reach the host. `pagehide` rather than `unload`: Chrome no longer runs `unload` handlers, and
+   * `pagehide` also fires when the host removes the player's iframe, as the test center does on
+   * every unit change.
+   */
+  @HostListener('window:pagehide')
+  onPageHide(): void {
     this.sendVopStateChangedNotification();
   }
 

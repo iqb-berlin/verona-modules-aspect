@@ -20,7 +20,7 @@
     "test:player-modules": "ng test playerModules --watch=false",
     "test:editor": "ng test editor --watch=false",
     "test:player": "ng test player --watch=false",
-    "lint": "eslint .",
+    "lint": "node scripts/check-migrations-registered.js && eslint .",
     "e2e": "npx cypress open",
     "e2e-headless": "npx cypress run",
     "e2e-headless-simple": "npx cypress run --spec 'e2e/tests/simple/**/*.spec.cy.ts'",

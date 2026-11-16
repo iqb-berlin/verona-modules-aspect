@@ -159,7 +159,9 @@ build-modules:
 # next to the two ng serve builds of test-e2e-* on the shared runner is the startup timeout the
 # comment above the workflow describes. The price is the second npm ci on the critical path; the
 # jobs have no shared npm cache, so --prefer-offline saves little.
-# The scope is `eslint .` (see package.json): everything ignorePatterns does not exclude, so
+# `npm run lint` first checks that every migration step is registered in MigrationManager
+# (scripts/check-migrations-registered.js, milliseconds), then runs `eslint .` (see package.json).
+# The scope of ESLint is everything ignorePatterns does not exclude, so
 # projects/, e2e/ and the root configs, without any assets/ tree, dist/, coverage/, scripts/
 # and test-data/. Those last three do not exist in a fresh checkout, which is what this job
 # gets - they are here so a local run lints the same set as the pipeline.

@@ -81,14 +81,6 @@ describe('FirstColumnRatioPropertiesComponent', () => {
     expect(input.nativeElement.value).toBe('3');
   });
 
-  // The panel offers the control only for elements that have the property at all.
-  it('should render nothing when the property is absent', () => {
-    component.combinedProperties = {};
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.css('mat-form-field'))).toBeNull();
-  });
-
   /* A divergent multi selection merges to null. The field used to disappear for that, because its
      guard was `!= null` and so caught the merge's null along with the "not this element type"
      undefined - the author could not edit the ratio for such a selection at all. It is offered

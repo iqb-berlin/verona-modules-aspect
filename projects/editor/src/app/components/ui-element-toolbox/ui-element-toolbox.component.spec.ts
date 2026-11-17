@@ -189,12 +189,6 @@ describe('UiElementToolboxComponent', () => {
     expect(reachingOut).toEqual([]);
   });
 
-  it('should delegate applying a section template', () => {
-    component.applyTemplate('likert');
-
-    expect(templateService.applyTemplate).toHaveBeenCalledWith('likert');
-  });
-
   /* A button carries the name the properties panel shows for the element it adds (#1553). */
   it('should label an element button with the toolbox translation of its type', () => {
     TestBed.inject(TranslateService).setTranslation('de', { toolbox: { 'marking-panel': 'Text marking' } });

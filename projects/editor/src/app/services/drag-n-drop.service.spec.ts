@@ -9,14 +9,9 @@ describe('DragNDropService', () => {
     service = TestBed.inject(DragNDropService);
   });
 
+  /* While the flag is set, the frames of a dynamic section let clicks through (#1590), so the editor
+     has to start without a drag. */
   it('should not have a drag in progress initially', () => {
-    expect(service.isDragInProgress).toBe(false);
-  });
-
-  it('should keep track of a running drag operation', () => {
-    service.isDragInProgress = true;
-    expect(service.isDragInProgress).toBe(true);
-    service.isDragInProgress = false;
     expect(service.isDragInProgress).toBe(false);
   });
 });

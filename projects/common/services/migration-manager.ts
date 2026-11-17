@@ -5,6 +5,7 @@ import { Migration4m12To4m13 } from '../migrations/v4.12-to-v4.13.migration';
 import { MigrationStep } from '../migrations/migration-step.interface';
 import { NormalizationMigration } from '../migrations/normalization';
 import { UnitProperties } from '../models/unit';
+import { UnitVersion } from '../utils/unit-version';
 
 /**
  * Brings a stored unit definition up to the current model, on every load in editor and player.
@@ -30,18 +31,21 @@ import { UnitProperties } from '../models/unit';
  *   cause and leave the data alone (#1139).
  *
  * **What the two version fields mean.** `toVersion` is the reach filter: *from this version on my
- * transformation is no longer needed* - the version that introduced the new shape. `fromVersion` only
- * orders the steps; it gates nothing, and reading it as a lower bound is the mistake this paragraph
- * exists to prevent. So a 4.5 unit migrating to 4.12 skips {@link MigrationLegacy} (4.5 is not below
- * its 4.0 target, the conversion happened long ago) and picks up {@link Migration4m10To4m11}, then
- * gets everything additive from the normalizer and the target version stamped at the end.
+ * transformation is no longer needed* - the version that introduced the new shape. The steps also run
+ * in the order of their `toVersion`, the order in which their shapes came about, so a hotfix to 4.13.1
+ * registered after the step to 4.14.0 still runs before it (#1679). `fromVersion` says where a step
+ * starts and only breaks a tie between two steps with the same `toVersion`; it gates nothing, and
+ * reading it as a lower bound is the mistake this paragraph exists to prevent. So a 4.5 unit migrating
+ * to 4.12 skips {@link MigrationLegacy} (4.5 is not below its 4.0 target, the conversion happened long
+ * ago) and picks up {@link Migration4m10To4m11}, then gets everything additive from the normalizer and the
+ * target version stamped at the end.
  *
  * **Therefore: a step must survive being handed any unit below its `toVersion`** - not just one from
  * the version before it. A transformation that assumes the old shape has to test for it rather than
  * expect it. Two of the five transformations in {@link MigrationLegacy} do (`typeof === 'string'`,
  * `typeof === 'number'`); the three that did not were #1190.
  *
- * **The trap:** steps are filtered by `compareVersions(currentVersion, step.toVersion) < 0`, so a step
+ * **The trap:** steps are filtered by `UnitVersion.compare(currentVersion, step.toVersion) < 0`, so a step
  * never touches a unit that already carries its target version. Data written by an unreleased version
  * is therefore out of reach of a step for that version - repairing it needs a *newer* version to
  * migrate to, or the normalizer. Both directions of this are pinned in the spec.
@@ -69,6 +73,8 @@ import { UnitProperties } from '../models/unit';
  *   was.
  */
 export class MigrationManager {
+  /** `npm run generate-migration` appends new steps to this list and reads its text to do so: the
+      last entry stands without a trailing comma, before `];` on a line of its own. */
   private static steps: MigrationStep[] = [
     new MigrationLegacy(),
     new Migration4m10To4m11(),
@@ -82,15 +88,24 @@ export class MigrationManager {
   static migrate(unitDefinition: Record<string, unknown>, targetVersion: string): UnitProperties {
     const currentDefinition = { ...unitDefinition };
     const currentVersion = currentDefinition.version as string;
+    // Unreadable, every step would count as applied, and the unit would be stamped current unmigrated.
+    if (UnitVersion.parse(currentVersion) === null) {
+      throw new TypeError(`Cannot migrate a unit definition whose version cannot be read: ${currentVersion}`);
+    }
+    // Unreadable, every step would count as due, and the unreadable target would be stamped on the unit.
+    if (UnitVersion.parse(targetVersion) === null) {
+      throw new TypeError(`Cannot migrate to a version that cannot be read: ${targetVersion}`);
+    }
 
     // Filter and sort steps based on versions
     const applicableSteps = this.steps
-      .filter(step => this.compareVersions(currentVersion, step.toVersion) < 0)
-      .sort((a, b) => this.compareVersions(a.fromVersion, b.fromVersion));
+      .filter(step => UnitVersion.compare(currentVersion, step.toVersion) < 0)
+      .sort((a, b) => UnitVersion.compare(a.toVersion, b.toVersion) ||
+        UnitVersion.compare(a.fromVersion, b.fromVersion));
 
     let currentResult = currentDefinition;
     applicableSteps.forEach(step => {
-      if (this.compareVersions(step.toVersion, targetVersion) <= 0) {
+      if (UnitVersion.compare(step.toVersion, targetVersion) <= 0) {
         currentResult = step.execute(currentResult);
       }
     });
@@ -98,17 +113,5 @@ export class MigrationManager {
     const migratedUnit = new NormalizationMigration().execute(currentResult);
     migratedUnit.version = targetVersion;
     return migratedUnit;
-  }
-
-  private static compareVersions(v1: string, v2: string): number {
-    const parts1 = v1.split('.').map(Number);
-    const parts2 = v2.split('.').map(Number);
-    for (let i = 0; i < 3; i++) {
-      const p1 = parts1[i] || 0;
-      const p2 = parts2[i] || 0;
-      if (p1 > p2) return 1;
-      if (p1 < p2) return -1;
-    }
-    return 0;
   }
 }

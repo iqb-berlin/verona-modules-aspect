@@ -34,6 +34,12 @@ describe('GeogebraAppDefinitionDialogComponent', () => {
     fixture.detectChanges();
   });
 
+  /* The specs share one browser context, so a spy left on a static method counts the calls of the
+     next spec that spies on it. */
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('should hide the status area as long as there is no message', () => {
     const statusArea = fixture.nativeElement.querySelector('.status-area') as HTMLElement;
     expect(statusArea.hidden).toBe(true);

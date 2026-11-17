@@ -1,4 +1,5 @@
 import packageJSON from '../../../package.json';
+import { UnitVersion } from '../utils/unit-version';
 
 /** General version strategy:
   Player + Editor:
@@ -6,63 +7,43 @@ import packageJSON from '../../../package.json';
   - isOlder -> wunderbar
 
   - isLesserMajor is accepted by Editor and migrated
+
+  Versions are compared by {@link UnitVersion}: 4.13 is 4.13.0, and a version that cannot be read
+  counts as newer, so it is refused.
  */
 export class VersionManager {
-  private static acceptedLesserMajor = [3, 10, 0];
-  private static currentVersion: [number, number, number] =
-    packageJSON.config.unit_definition_version.split('.').map(Number) as [number, number, number];
+  private static acceptedLesserMajor = '3.10.0';
+  private static currentVersion: string = packageJSON.config.unit_definition_version;
+  private static currentMajor = UnitVersion.parse(VersionManager.currentVersion)?.[0];
 
   static getCurrentVersion(): string {
-    return VersionManager.currentVersion.join('.');
+    return VersionManager.currentVersion;
   }
 
   static hasCompatibleVersion(unitDefinition: Record<string, unknown>): boolean {
-    const unitDefinitionVersion = VersionManager.getUnitDefinitionVersion(unitDefinition);
-    return !VersionManager.isNewer(unitDefinition) &&
-      VersionManager.isSameMajor(unitDefinitionVersion);
+    const major = UnitVersion.parse(VersionManager.versionOf(unitDefinition))?.[0];
+    return !VersionManager.isNewer(unitDefinition) && major !== undefined && major === VersionManager.currentMajor;
   }
 
   static isNewer(unitDefinition: Record<string, unknown>): boolean {
-    return VersionManager.compare(VersionManager.getUnitDefinitionVersion(unitDefinition)) === 1;
+    return UnitVersion.compare(VersionManager.versionOf(unitDefinition), VersionManager.currentVersion) > 0;
   }
 
   static needsMigration(unitDefinition: Record<string, unknown>): boolean {
-    const unitDefinitionVersion = VersionManager.getUnitDefinitionVersion(unitDefinition);
-    return VersionManager.compare(unitDefinitionVersion) === -1 &&
-      VersionManager
-        .compareVersions(unitDefinitionVersion, VersionManager.acceptedLesserMajor as [number, number, number]) >= 0;
+    const version = VersionManager.versionOf(unitDefinition);
+    return UnitVersion.compare(version, VersionManager.currentVersion) < 0 &&
+      UnitVersion.compare(version, VersionManager.acceptedLesserMajor) >= 0;
   }
 
-  private static compareVersions(v1: [number, number, number], v2: [number, number, number]): number {
-    for (let i = 0; i < 3; i++) {
-      if (v1[i] > v2[i]) return 1;
-      if (v1[i] < v2[i]) return -1;
+  /**
+   * A unit without a version is as old as can be. A version that is no string throws, as it did before
+   * #1679, so that editor and player report the definition as unreadable rather than as newer.
+   */
+  private static versionOf(unitDefinition: Record<string, unknown>): string {
+    if (!unitDefinition.version) return '0.0.0';
+    if (typeof unitDefinition.version !== 'string') {
+      throw new TypeError(`The version of the unit definition is no string: ${unitDefinition.version}`);
     }
-    return 0;
-  }
-
-  private static getUnitDefinitionVersion(unitDefinition: Record<string, unknown>): [number, number, number] {
-    if (!unitDefinition.version) return [0, 0, 0];
-    return (unitDefinition.version as string).split('.').map(Number) as [number, number, number];
-  }
-
-  private static compare(unitDefinitionVersion: [number, number, number]): number {
-    let i = 0;
-    let result = 0;
-    while (result === 0 && i < 3) {
-      result = VersionManager.compareVersionDigit(unitDefinitionVersion[i], VersionManager.currentVersion[i]);
-      i += 1;
-    }
-    return result;
-  }
-
-  /** -1 for older */
-  private static compareVersionDigit(a: number, b: number): number {
-    if (a === b) return 0;
-    return a < b ? -1 : 1;
-  }
-
-  private static isSameMajor(unitDefinitionVersion: [number, number, number]): boolean {
-    return VersionManager.compareVersionDigit(unitDefinitionVersion[0], VersionManager.currentVersion[0]) === 0;
+    return unitDefinition.version;
   }
 }

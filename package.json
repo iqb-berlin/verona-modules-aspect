@@ -105,6 +105,40 @@
             "off"
           ]
         }
+      },
+      {
+        "files": [
+          "projects/**/*.spec.ts"
+        ],
+        "rules": {
+          "no-restricted-syntax": [
+            "error",
+            {
+              "selector": "ForInStatement",
+              "message": "for..in loops iterate over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries}, and iterate over the resulting array."
+            },
+            {
+              "selector": "ForOfStatement",
+              "message": "iterators/generators require regenerator-runtime, which is too heavyweight for this guide to allow them. Separately, loops should be avoided in favor of array iterations."
+            },
+            {
+              "selector": "LabeledStatement",
+              "message": "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand."
+            },
+            {
+              "selector": "WithStatement",
+              "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
+            },
+            {
+              "selector": ":matches(Program, BlockStatement):has(CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|fails|concurrent)$/], [callee.callee.object.name=/^(it|test)$/][callee.callee.property.name=/^(each|for)$/], [callee.tag.object.name=/^(it|test)$/]):not(CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|concurrent)$/]):matches([arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/]))):not(CallExpression:matches([callee.object.name='describe'][callee.property.name=/^(skip|todo)$/], [callee.callee.object.name='describe'][callee.callee.property.name=/^(skipIf|runIf)$/]) CallExpression)) > ExpressionStatement > CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|concurrent)$/]):matches([arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/]))",
+              "message": "This test only checks that the instance exists, beside other tests that create it anyway. Remove it (rules.md §11)."
+            },
+            {
+              "selector": ":matches(Program, BlockStatement):not(:has(CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|fails|concurrent)$/], [callee.callee.object.name=/^(it|test)$/][callee.callee.property.name=/^(each|for)$/], [callee.tag.object.name=/^(it|test)$/]):not(CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|concurrent)$/]):matches([arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/]))):not(CallExpression:matches([callee.object.name='describe'][callee.property.name=/^(skip|todo)$/], [callee.callee.object.name='describe'][callee.callee.property.name=/^(skipIf|runIf)$/]) CallExpression))) > ExpressionStatement:matches([expression.callee.name=/^(it|test)$/], [expression.callee.object.name=/^(it|test)$/][expression.callee.property.name=/^(only|concurrent)$/]):matches([expression.arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [expression.arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/])) ~ ExpressionStatement:matches([expression.callee.name=/^(it|test)$/], [expression.callee.object.name=/^(it|test)$/][expression.callee.property.name=/^(only|concurrent)$/]):matches([expression.arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [expression.arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/]))",
+              "message": "This test only checks that the instance exists, as a test before it does. Remove it (rules.md §11)."
+            }
+          ]
+        }
       }
     ]
   },

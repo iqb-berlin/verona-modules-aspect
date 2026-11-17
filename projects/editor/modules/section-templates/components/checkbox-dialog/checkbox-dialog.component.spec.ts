@@ -76,10 +76,6 @@ describe('CheckboxWizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should remove an option from the list', () => {
     component.textOptions = ['a', 'b', 'c'];
     component.removeListItem(component.textOptions, 1);

@@ -350,10 +350,6 @@ describe('ImageResizeDialogComponent', () => {
      is around 90 ms of the main thread. Typing a width is a burst of those, and only the last one is
      ever read (#1434). */
   describe('the estimate', () => {
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
-
     /* The widths are taken down as the calls come in rather than read off the recorded arguments
        afterwards: those hold the options object itself, which the dialog keeps editing in place. */
     it('should scale once for a burst of edits, with the last of them', fakeAsync(() => {

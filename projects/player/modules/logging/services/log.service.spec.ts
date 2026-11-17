@@ -13,7 +13,6 @@ describe('LogService', () => {
 
   afterEach(() => {
     LogService.level = initialLevel;
-    vi.restoreAllMocks();
   });
 
   const cases: [LogLevel, unknown[][]][] = [

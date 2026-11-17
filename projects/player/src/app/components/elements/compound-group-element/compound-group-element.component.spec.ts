@@ -171,10 +171,6 @@ describe('CompoundGroupElementComponent', () => {
     markingPanelService = TestBed.inject(MarkingPanelService);
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should show the component matching the element type', () => {
     initComponent(new LikertElement({ id: 'likert_1', alias: 'likert_1' }));
     expect(fixture.debugElement.query(By.directive(LikertStubComponent))).toBeTruthy();

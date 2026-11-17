@@ -64,10 +64,6 @@ describe('GeometryWizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should initialize with helper enabled and no app definition', () => {
     expect(component.showHelper).toBe(true);
     expect(component.geometryAppDefinition).toBeUndefined();

@@ -182,10 +182,6 @@ describe('ImageResampler', () => {
        promise neither resolved nor rejected -- a size estimate in the dialog that never arrives and
        a `compressEmbeddedImage` that never returns (#1434). */
     describe('giving up', () => {
-      afterEach(() => {
-        vi.restoreAllMocks();
-      });
-
       // What a device refuses is the buffer: reading twelve megapixels out is the expensive part.
       it('should give up rather than throw when the pixels cannot be read', async () => {
         const img = await image(120, 60);

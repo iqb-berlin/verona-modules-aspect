@@ -75,10 +75,6 @@ describe('PrintElementComponent', () => {
     component.printMode = 'on';
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should create the registered component for the element type', () => {
     fixture.detectChanges();
 

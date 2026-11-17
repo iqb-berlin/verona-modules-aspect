@@ -46,9 +46,6 @@ describe('ToolbarComponent', () => {
   // Two tests below spy on the same window.postMessage. Spying on an already spied method
   // hands back the existing spy, so without this the second one starts with the call the
   // first one recorded.
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('should load a unit file and post a voeStartCommand message', async () => {
     const postMessageSpy = vi.spyOn(window, 'postMessage');

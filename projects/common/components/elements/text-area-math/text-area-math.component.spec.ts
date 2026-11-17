@@ -117,9 +117,6 @@ describe('TextAreaMathComponent', () => {
      range-selection.service.spec.ts into the same worker after this file, six of its tests read this
      file's mocked values ('test' for the range, true for isRangeInside, {4, 4} for the offsets)
      instead of the browser's. It was blamed on a leaked selection before -- it is a leaked spy. */
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('should add segments when addFormula is called', fakeAsync(() => {
     const dummyRange = document.createRange();

@@ -110,10 +110,6 @@ describe('UnitComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should take over the pages of a started unit', fakeAsync(() => {
     startUnit({ unitDefinition: createUnitDefinition({ pages: [{ sections: [] }, { sections: [] }] }) });
 

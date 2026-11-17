@@ -132,10 +132,6 @@ describe('UnitService - rapid load handling', () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
-
     it('names a definition it cannot parse by its code', () => {
       service.loadUnitDefinition('no json');
 
@@ -953,10 +949,6 @@ describe('UnitService - a load error dialog superseded by the next load (#1581)'
       translateServiceSpy,
       new LoadErrorService()
     );
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   const loadNewerUnit = (): void => {

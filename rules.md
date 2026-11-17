@@ -190,8 +190,8 @@ Still this, although it can look like constants or wiring:
   the options a select offers, as in `action-properties.component.spec.ts`, and CSS
 - what the `AppModule` of editor and player provides, in their `app.module.spec.ts`: only the
   end-to-end tests would see it missing otherwise, and they do not run in `npm test`
-- the versions of a migration step: `toVersion` decides which units the step reaches, `fromVersion`
-  the order of the steps (§14)
+- the target version of a migration step: it decides which units the step reaches and in which order
+  the steps run (§14, and the class comment on `MigrationManager`)
 - a method that passes something on but adds to it first — the selected elements, its own
   section — tested for what it adds
 - the seam tests of §17: one for each direction in which the caller decides, as §17 describes
@@ -264,7 +264,7 @@ change belongs to depends on what the change does — the long version is the cl
   `unit_definition_version` and note it in `docs/unit_definition_changelog.txt`, but do not add
   a migration step.
 - **Existing values have to be transformed** (rename, changed unit, restructured group) → a
-  migration step via `npm run generate-migration <from> <to>`, registered in `MigrationManager`.
+  migration step via `npm run generate-migration <from> <to>`, which registers it in `MigrationManager`.
 - **Wrong values have to be repaired** → mind the reach: a step only touches units **older** than
   its `toVersion`, so data written by the version being migrated to is out of its reach. Either
   migrate to a newer version, or handle it in `ModelNormalizer` — and only if the data is worth a

@@ -214,9 +214,9 @@ export class UnitService {
 
     const repaired = this.referenceManager.repairInvalidReferences();
     this.loadRepairs.next(repaired);
-    if (repaired.length > 0) this.updateUnitDefinition();
-    // The unit constructor updated the version. Therefore the unit has changed and notifies the  host.
-    if (migratedUnitDefinition.version !== VersionManager.getCurrentVersion()) {
+    /* The unit constructor stamped the current version. Compared as text on purpose: a unit stored as 4.13
+       is taken for 4.13.0 and reported, so that the host stores the form every player reads (#1679). */
+    if (repaired.length > 0 || migratedUnitDefinition.version !== VersionManager.getCurrentVersion()) {
       this.updateUnitDefinition();
     }
     this.updateSectionCounter();

@@ -2,6 +2,7 @@ import * as twoSections from 'test-data/unit-definitions/reference-testing/secti
 import { MigrationManager } from 'common/services/migration-manager';
 import { VersionManager } from 'common/services/version-manager';
 import { Unit } from 'common/models/unit';
+import { environment } from 'common/environment';
 
 /* Built from a stored definition the way the app builds one -- migrated, then constructed. The stored
    definition is loose and what the migration answers with is not: since #1198 it is a `UnitProperties`,
@@ -28,5 +29,23 @@ describe('Unit', () => {
 
       expect(unit.getSectionOfElement(foreign)).toBeUndefined();
     });
+  });
+
+  /* 4.13 is 4.13.0, and the unit carries it in three parts, the form a player released before #1679 reads.
+     Compared as text, strict instantiation refused the unit. */
+  it('should take a unit at the current version written with two parts and carry it in three', () => {
+    const [major, minor] = VersionManager.getCurrentVersion().split('.');
+    const definition = MigrationManager.migrate(JSON.parse(JSON.stringify(twoSections)),
+                                                VersionManager.getCurrentVersion());
+    // Set here and restored: other specs switch it off, and only strict instantiation refuses the unit.
+    const strict = environment.strictInstantiation;
+    environment.strictInstantiation = true;
+    try {
+      const unit = new Unit({ ...definition, version: `${major}.${minor}` });
+
+      expect(unit.version).toBe(VersionManager.getCurrentVersion());
+    } finally {
+      environment.strictInstantiation = strict;
+    }
   });
 });

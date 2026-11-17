@@ -151,7 +151,8 @@ and a test run cannot take the port from each other (#1423).
 
 | Command | What it does |
 | --- | --- |
-| `npm test` | All unit tests: the five Vitest projects below, in this order |
+| `npm test` | All unit tests: the script tests first, they take seconds, then the five Vitest projects below, in this order |
+| `npm run test:scripts` | `scripts/migration-steps.test.js` — the migration scripts, with Node's own test runner |
 | `npm run test:common` | `projects/common` — element models, migration, normalizer |
 | `npm run test:player-modules` | `projects/player/modules` |
 | `npm run test:editor` | `projects/editor/src` — editor application |

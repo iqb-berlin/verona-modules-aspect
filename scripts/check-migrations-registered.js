@@ -82,6 +82,7 @@ if (!steps.length) {
 steps
   .filter(({ className }) => !registered.has(className))
   .forEach(({ file, className }) => {
-    console.error(`${className} (${file}) is not registered in MigrationManager.steps in ${managerPath}`);
+    console.error(`${className} (${file}) is not registered in MigrationManager.steps in ${managerPath}`
+      + ' - register it, or declare it abstract if it is a base for other steps');
     process.exitCode = 1;
   });

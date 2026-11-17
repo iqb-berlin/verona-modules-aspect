@@ -44,10 +44,6 @@ describe('AreaSegmentComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render aspect-area-input when type is text', () => {
     const areaInput = fixture.nativeElement.querySelector('aspect-area-input');
     expect(areaInput).toBeTruthy();

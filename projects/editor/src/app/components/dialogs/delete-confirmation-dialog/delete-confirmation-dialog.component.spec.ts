@@ -41,7 +41,6 @@ class MockReferenceListComponent {
 }
 
 describe('DeleteConfirmationDialogComponent', () => {
-  let component: DeleteConfirmationDialogComponent;
   let fixture: ComponentFixture<DeleteConfirmationDialogComponent>;
   let dialogRefMock: { close: Mock };
   let unitServiceMock: { revealElement: Mock, revealSection: Mock };
@@ -81,7 +80,6 @@ describe('DeleteConfirmationDialogComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DeleteConfirmationDialogComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   };
 
@@ -92,10 +90,6 @@ describe('DeleteConfirmationDialogComponent', () => {
   describe('without elements and references', () => {
     beforeEach(async () => {
       await configureTestBed({ text: 'Seite 2 löschen?' });
-    });
-
-    it('should create', () => {
-      expect(component).toBeTruthy();
     });
 
     /* The question is the title; a general "confirm deletion" above it said nothing the question does not (#1520). */

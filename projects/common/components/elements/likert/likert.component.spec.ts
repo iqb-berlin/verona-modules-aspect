@@ -91,11 +91,6 @@ describe('LikertComponent', () => {
     });
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should render one radio button group per row', () => {
     fixture.detectChanges();
     const rowGroups = fixture.nativeElement.querySelectorAll('aspect-likert-radio-button-group');

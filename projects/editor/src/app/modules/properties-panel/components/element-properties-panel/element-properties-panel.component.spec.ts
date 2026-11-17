@@ -137,10 +137,6 @@ describe('ElementPropertiesPanelComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show a placeholder message when no element is selected', () => {
     expect(fixture.nativeElement.querySelector('.no-selection')?.textContent)
       .toContain('propertiesPanel.noElementSelected');

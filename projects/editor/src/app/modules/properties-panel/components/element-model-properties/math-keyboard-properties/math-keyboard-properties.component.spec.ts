@@ -29,10 +29,6 @@ describe('MathKeyboardPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit the selected presets', () => {
     const emitted: { property: string; value: unknown }[] = [];
     component.updateModel.subscribe(update => emitted.push(update));

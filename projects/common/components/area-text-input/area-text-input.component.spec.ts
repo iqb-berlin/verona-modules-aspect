@@ -16,10 +16,6 @@ describe('AreaTextInputComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit valueChanged on input', () => {
     vi.spyOn(component.valueChanged, 'emit');
     const span = fixture.nativeElement.querySelector('span');

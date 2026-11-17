@@ -36,10 +36,6 @@ describe('CheckboxNodeviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should pass the element model to the checkbox component', () => {
     const child = fixture.debugElement.query(By.directive(MockCheckboxComponent));
     expect(child.injector.get(MockCheckboxComponent).elementModel).toBe(model);

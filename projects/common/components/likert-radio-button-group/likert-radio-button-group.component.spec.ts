@@ -56,11 +56,6 @@ describe('LikertRadioButtonGroupComponent', () => {
     });
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should use the form control of the parent form', () => {
     fixture.detectChanges();
     expect(component.elementFormControl).toBe(component.parentForm.controls['test-id']);

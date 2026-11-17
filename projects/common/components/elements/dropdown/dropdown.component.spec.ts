@@ -44,10 +44,6 @@ describe('DropdownComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display label if not in clozeContext', () => {
     component.clozeContext = false;
     component.elementModel.label = 'Test Label';

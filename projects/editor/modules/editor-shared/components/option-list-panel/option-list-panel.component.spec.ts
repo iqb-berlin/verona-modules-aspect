@@ -50,10 +50,6 @@ describe('OptionListPanelComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the given items', () => {
     const items = fixture.nativeElement.querySelectorAll('.option-draggable');
     expect(items.length).toBe(2);

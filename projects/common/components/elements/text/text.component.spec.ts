@@ -61,11 +61,6 @@ describe('TextComponent', () => {
     component.elementModel = createTextElement();
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should render the text of the element model', () => {
     fixture.detectChanges();
     const textContainer: HTMLElement = fixture.nativeElement.querySelector('.text-container');

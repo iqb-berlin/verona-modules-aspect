@@ -47,10 +47,6 @@ describe('TextStimulusComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with the placeholder text and marking disabled', () => {
     expect(component.options.text1).toBe(CONSTANTS.textStimulus);
     expect(component.options.text2).toBe('');

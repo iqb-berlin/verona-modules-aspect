@@ -36,8 +36,7 @@ describe('DynamicOverlayComponent', () => {
     document.body.style.cursor = '';
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should start with the document body as the element for the cursor fix', () => {
     expect(component.bodyElement).toBe(document.body);
   });
 

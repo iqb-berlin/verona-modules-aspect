@@ -16,10 +16,6 @@ describe('HasReturnKeyPipe', () => {
     pipe = new HasReturnKeyPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should report the return key setting of a text area', () => {
     expect(pipe.transform(createTextArea(true))).toBe(true);
     expect(pipe.transform(createTextArea(false))).toBe(false);

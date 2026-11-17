@@ -192,7 +192,7 @@ build if either substitution did not land.
 
 | Command | What it does |
 | --- | --- |
-| `npm run generate-migration <from> <to>` | Scaffolds a migration step and its spec |
+| `npm run generate-migration <from> <to>` | Scaffolds a migration step and its spec, and registers the step in `MigrationManager` |
 
 Whether a change needs a migration step at all is decided by `rules.md` §14 — a new property
 with a default needs none, because the normalizer fills it in on load. Every change to the

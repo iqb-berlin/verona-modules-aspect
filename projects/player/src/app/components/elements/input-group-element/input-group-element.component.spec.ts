@@ -113,12 +113,6 @@ describe('InputGroupElementComponent', () => {
       .compileComponents();
   });
 
-  it('should create', () => {
-    initComponent(new RadioButtonGroupElement({ id: 'radio_1', alias: 'radio_1' }));
-
-    expect(component).toBeTruthy();
-  });
-
   it('should add a form control for the element', () => {
     initComponent(new RadioButtonGroupElement({ id: 'radio_1', alias: 'radio_1' }));
 

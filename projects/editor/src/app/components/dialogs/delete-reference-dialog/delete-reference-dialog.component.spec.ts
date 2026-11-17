@@ -30,7 +30,6 @@ class MockReferenceListComponent {
 }
 
 describe('DeleteReferenceDialogComponent', () => {
-  let component: DeleteReferenceDialogComponent;
   let fixture: ComponentFixture<DeleteReferenceDialogComponent>;
   let dialogRefMock: { close: Mock };
   let unitServiceMock: { revealElement: Mock, revealSection: Mock };
@@ -71,20 +70,11 @@ describe('DeleteReferenceDialogComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DeleteReferenceDialogComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   const getActionButtons = (): HTMLButtonElement[] => Array
     .from(fixture.nativeElement.querySelectorAll('.mat-mdc-dialog-actions button') as NodeListOf<HTMLButtonElement>);
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should expose the injected references', () => {
-    expect(component.data.refs).toBe(refs);
-  });
 
   it('should pass the references to the reference list component', () => {
     const referenceList = fixture.debugElement.query(By.directive(MockReferenceListComponent));

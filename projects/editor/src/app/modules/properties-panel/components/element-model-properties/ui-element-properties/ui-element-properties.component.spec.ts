@@ -368,10 +368,6 @@ describe('UIElementPropertiesComponent', () => {
     });
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit the alias when the id field is edited', () => {
     const aliasInput = fixture.nativeElement.querySelector('input') as HTMLInputElement;
     expect(aliasInput.value).toBe('Btn1');

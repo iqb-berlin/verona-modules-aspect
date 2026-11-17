@@ -65,10 +65,6 @@ describe('UnitMenuComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should load a unit definition and start it in the given paging mode', async () => {
     vi.spyOn(FileService, 'loadFile').mockResolvedValue({ name: 'unit.json', content: '{"type":"aspect-unit"}' });
 

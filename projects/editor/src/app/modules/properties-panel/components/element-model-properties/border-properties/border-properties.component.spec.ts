@@ -32,10 +32,6 @@ describe('BorderPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render a checkbox for every border side', () => {
     const checkboxLabels = Array.from(
       fixture.nativeElement.querySelectorAll('mat-checkbox') as NodeListOf<HTMLElement>

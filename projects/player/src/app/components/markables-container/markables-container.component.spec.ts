@@ -43,10 +43,6 @@ describe('MarkablesContainerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show a word per markable', () => {
     component.markables = [createMarkable(0, 'Lorem'), createMarkable(1, 'ipsum')];
     component.allMarkables = component.markables;

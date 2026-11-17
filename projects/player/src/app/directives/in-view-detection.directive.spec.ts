@@ -35,12 +35,6 @@ describe('InViewDetectionDirective', () => {
       .createComponent(TestComponent);
   });
 
-  it('should create an instance', () => {
-    initDirective();
-
-    expect(directive).toBeTruthy();
-  });
-
   it('should observe the host element within the document', () => {
     initDirective();
 

@@ -8,10 +8,6 @@ describe('NavigationService', () => {
     service = TestBed.inject(NavigationService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('pageIndex should be 2', () => new Promise<void>(done => {
     service.pageIndex
       .subscribe(pageIndex => {

@@ -56,10 +56,6 @@ describe('TetfolioPropertiesComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should pack a valid zip and emit the html content', async () => {
     await selectZip(zipFileOf({
       'tetfolio.fu-berlin.de/web/123.html': '<html><body><p>unit</p></body></html>'

@@ -89,10 +89,6 @@ describe('StandardDimensionPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* The maximum width has no section of its own because every element type has dimensions and
      `maxWidth` defaults to null rather than being absent - so it is the one pair that shows up
      whatever is selected. */

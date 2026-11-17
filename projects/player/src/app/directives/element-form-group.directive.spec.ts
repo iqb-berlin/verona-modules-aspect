@@ -56,10 +56,6 @@ describe('ElementFormGroupDirective', () => {
     directive.ngOnDestroy();
   });
 
-  it('should create an instance', () => {
-    expect(directive).toBeTruthy();
-  });
-
   it('should add a form control per element model', () => {
     directive.createForm([createTextField(), createTextField({ id: 'text-field_2' })]);
 

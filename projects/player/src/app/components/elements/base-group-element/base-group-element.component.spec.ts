@@ -63,12 +63,6 @@ describe('BaseGroupElementComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-
-    expect(component).toBeTruthy();
-  });
-
   it('should create the registered component for the element type', () => {
     fixture.detectChanges();
 

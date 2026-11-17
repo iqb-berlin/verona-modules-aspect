@@ -114,10 +114,6 @@ describe('UnitComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should take over the pages of a started unit', fakeAsync(() => {
     startUnit({ unitDefinition: createUnitDefinition({ pages: [{ sections: [] }, { sections: [] }] }) });
 

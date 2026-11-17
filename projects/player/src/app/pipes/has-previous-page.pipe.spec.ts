@@ -14,10 +14,6 @@ describe('HasPreviousPagePipe', () => {
     ];
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should report a preceding visible page', () => {
     expect(pipe.transform(2, pages)).toBe(true);
   });

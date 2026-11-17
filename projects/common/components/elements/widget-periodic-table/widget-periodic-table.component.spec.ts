@@ -30,10 +30,6 @@ describe('WidgetPeriodicTableComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* The answer next to the button looks like the selection in the widget: white on its purple, or a
      neutral dark grey when the widget colours the fields by block (#1369). */
   describe('the selected elements', () => {

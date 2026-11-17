@@ -74,11 +74,6 @@ describe('VideoComponent', () => {
     } as Partial<VideoProperties>);
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should not render the control bar when src is empty', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('aspect-media-player-control-bar')).toBeNull();

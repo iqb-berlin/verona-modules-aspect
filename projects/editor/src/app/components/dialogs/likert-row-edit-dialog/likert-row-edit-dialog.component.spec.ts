@@ -112,10 +112,6 @@ describe('LikertRowEditDialogComponent', () => {
   const getSaveButton = (): HTMLButtonElement => fixture.nativeElement
     .querySelector('.mat-mdc-dialog-actions button') as HTMLButtonElement;
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should edit a detached copy of the injected row', () => {
     expect(component.newLikertRow).toBeInstanceOf(LikertRowElement);
     expect(component.newLikertRow).not.toBe(row);

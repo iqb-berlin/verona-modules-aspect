@@ -7,10 +7,6 @@ describe('MeasurePipe', () => {
     pipe = new MeasurePipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should concatenate value and unit of a single measurement', () => {
     expect(pipe.transform([{ value: 50, unit: 'px' }])).toBe('50px');
   });

@@ -1,64 +1,40 @@
-import { TestBed } from '@angular/core/testing';
 import { LogLevel, LogService } from './log.service';
 
-describe('LoggerService', () => {
-  let service: LogService;
+describe('LogService', () => {
+  const initialLevel = LogService.level;
+  let reached: unknown[][];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(LogService);
+    reached = [];
+    (['error', 'warn', 'info', 'log'] as const).forEach(method => {
+      vi.spyOn(console, method).mockImplementation((...args: unknown[]) => { reached.push([method, ...args]); });
+    });
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => {
+    LogService.level = initialLevel;
+    vi.restoreAllMocks();
   });
 
-  it('should call LogService.debug', () => {
-    vi.spyOn(LogService, 'debug');
-    LogService.debug('test', 'test2');
-    expect(LogService.debug).toHaveBeenCalled();
-    expect(LogService.debug).toHaveBeenCalledWith('test', 'test2');
-  });
+  const cases: [LogLevel, unknown[][]][] = [
+    [LogLevel.NONE, []],
+    [LogLevel.ERROR, [['error', 'e', 1]]],
+    [LogLevel.WARN, [['error', 'e', 1], ['warn', 'w', 2]]],
+    [LogLevel.INFO, [['error', 'e', 1], ['warn', 'w', 2], ['info', 'i', 3]]],
+    [LogLevel.DEBUG, [['error', 'e', 1], ['warn', 'w', 2], ['info', 'i', 3], ['log', 'd', 4]]]
+  ];
 
-  it('should call LogService.info', () => {
-    vi.spyOn(LogService, 'info');
-    LogService.info('test', 'test2');
-    expect(LogService.info).toHaveBeenCalled();
-    expect(LogService.info).toHaveBeenCalledWith('test', 'test2');
-  });
+  it.each(cases.map(([level, expected]) => [LogLevel[level], level, expected] as const))(
+    'should log at level %s only what is at least as severe',
+    (_, level, expected) => {
+      LogService.level = level;
 
-  it('should call LogService.warn', () => {
-    vi.spyOn(LogService, 'warn');
-    LogService.warn('test', 'test2');
-    expect(LogService.warn).toHaveBeenCalled();
-    expect(LogService.warn).toHaveBeenCalledWith('test', 'test2');
-  });
+      LogService.error('e', 1);
+      LogService.warn('w', 2);
+      LogService.info('i', 3);
+      LogService.debug('d', 4);
 
-  it('should call LogService.error', () => {
-    vi.spyOn(LogService, 'error');
-    LogService.error('test', 'test2');
-    expect(LogService.error).toHaveBeenCalled();
-    expect(LogService.error).toHaveBeenCalledWith('test', 'test2');
-  });
-
-  it('should set LogService.level to "NONE"', () => {
-    LogService.level = 0;
-    expect(LogService.level).toEqual(LogLevel.NONE);
-  });
-  it('should set LogService.level to "ERROR"', () => {
-    LogService.level = 1;
-    expect(LogService.level).toEqual(LogLevel.ERROR);
-  });
-  it('should set LogService.level to "WARN"', () => {
-    LogService.level = 2;
-    expect(LogService.level).toEqual(LogLevel.WARN);
-  });
-  it('should set LogService.level to "INFO"', () => {
-    LogService.level = 3;
-    expect(LogService.level).toEqual(LogLevel.INFO);
-  });
-  it('should set LogService.level to "DEBUG"', () => {
-    LogService.level = 4;
-    expect(LogService.level).toEqual(LogLevel.DEBUG);
-  });
+      expect(reached).toEqual(expected);
+    }
+  );
 });

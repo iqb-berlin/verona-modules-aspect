@@ -34,10 +34,6 @@ describe('RichTextEditorComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* Without a loader the translate pipe shows the key, so a text written into the template stands out. */
   describe('toolbar texts', () => {
     const texts = (selector: string): string[] => Array.from<HTMLElement>(

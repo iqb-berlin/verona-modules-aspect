@@ -44,10 +44,6 @@ describe('AudioRowComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the audio element semi-transparent without a source', () => {
     const audio = fixture.nativeElement.querySelector('audio') as HTMLAudioElement;
     expect(audio.style.opacity).toBe('0.5');

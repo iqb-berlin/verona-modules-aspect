@@ -85,10 +85,6 @@ describe('ToggleButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render one toggle per option with its text', () => {
     const toggles: NodeListOf<HTMLElement> = fixture.nativeElement.querySelectorAll('mat-button-toggle');
     expect(toggles.length).toBe(2);

@@ -34,10 +34,6 @@ describe('FrameComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should apply border styles only to activated sides', () => {
     const frameDiv = fixture.nativeElement.querySelector('div') as HTMLDivElement;
     expect(frameDiv.style.borderTopStyle).toBe('dotted');

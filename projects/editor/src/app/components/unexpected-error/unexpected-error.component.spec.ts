@@ -46,10 +46,6 @@ describe('UnexpectedErrorComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* Without it the author cannot tell one error from another without filing a report (#1537). */
   it('should show the error message as a technical detail', () => {
     expect(fixture.nativeElement.querySelector('.technical-detail')?.textContent)

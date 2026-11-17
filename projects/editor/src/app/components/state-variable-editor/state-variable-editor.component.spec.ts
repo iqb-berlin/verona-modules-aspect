@@ -42,10 +42,6 @@ describe('StateVariableEditorComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should update alias if available', () => {
     const spy = vi.spyOn(component.stateVariableChange, 'emit');
     component.checkId('new_v1');

@@ -67,12 +67,6 @@ describe('SectionComponent', () => {
     component.section = createSection([createElement('text-field_1')], true);
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-
-    expect(component).toBeTruthy();
-  });
-
   it('should show the elements of a dynamic section in a grid', () => {
     fixture.detectChanges();
 

@@ -127,10 +127,6 @@ describe('DropListComponent', () => {
     document.body.classList.remove('dragging-active');
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should register itself at the DragOperatorService', () => {
     expect(dragOpServiceMock.registerComponent).toHaveBeenCalledWith(component);
   });

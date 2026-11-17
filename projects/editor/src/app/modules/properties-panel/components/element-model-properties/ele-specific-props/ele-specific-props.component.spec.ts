@@ -128,10 +128,6 @@ describe('EleSpecificPropsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the border properties for frame elements only', () => {
     expect(fixture.debugElement.query(By.css('aspect-border-properties'))).not.toBeNull();
     expect(fixture.debugElement.query(By.css('aspect-button-properties'))).toBeNull();

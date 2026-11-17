@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UnitDefErrorDialogComponent } from './unit-def-error-dialog.component';
 
 describe('UnitDefErrorDialogComponent', () => {
-  let component: UnitDefErrorDialogComponent;
   let fixture: ComponentFixture<UnitDefErrorDialogComponent>;
 
   beforeEach(async () => {
@@ -18,12 +17,7 @@ describe('UnitDefErrorDialogComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(UnitDefErrorDialogComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   /* An error by its symbol in front of the title, as in every message of the editor (#1520). */

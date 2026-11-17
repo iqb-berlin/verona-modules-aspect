@@ -32,10 +32,6 @@ describe('ScrollToInputService', () => {
     service.isOpen = true;
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should center an element that is hidden by the keyboard', () => {
     setElementBounds(viewportHeight - keyboardHeight + 10, 10);
 

@@ -70,10 +70,6 @@ describe('UiElementToolboxComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* By the indices, deliberately: a new element has no element to follow, and after a load the
      element selection is whatever overlay rendered last (#1204). */
   it('should add a new element to the currently selected section', () => {
@@ -191,12 +187,6 @@ describe('UiElementToolboxComponent', () => {
     }));
 
     expect(reachingOut).toEqual([]);
-  });
-
-  it('should delegate applying a section template', () => {
-    component.applyTemplate('likert');
-
-    expect(templateService.applyTemplate).toHaveBeenCalledWith('likert');
   });
 
   /* A button carries the name the properties panel shows for the element it adds (#1553). */

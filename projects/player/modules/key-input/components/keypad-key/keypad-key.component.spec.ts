@@ -39,10 +39,6 @@ describe('KeypadKeyComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit keyClicked event when button is clicked', () => {
     vi.spyOn(component.keyClicked, 'emit');
     const button = fixture.debugElement.query(By.css('button'));

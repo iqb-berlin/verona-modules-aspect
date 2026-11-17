@@ -12,10 +12,6 @@ describe('IsEnabledNavigationTargetPipe', () => {
     vi.restoreAllMocks();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should answer with the navigation target rule', () => {
     const isEnabled = vi.spyOn(NavigationTargetRule, 'isEnabled').mockReturnValue(false);
 

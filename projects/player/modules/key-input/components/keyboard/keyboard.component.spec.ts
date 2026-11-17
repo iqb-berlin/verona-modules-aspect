@@ -47,10 +47,6 @@ describe('KeyboardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should start with the default keyboard layout', () => {
     expect(component.shift).toBe(false);
     expect(component.rows).toEqual(KeyLayout.get('keyboard').default);

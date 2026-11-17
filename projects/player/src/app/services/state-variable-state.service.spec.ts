@@ -10,10 +10,6 @@ describe('StateVariableStateService', () => {
     service = TestBed.inject(StateVariableStateService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should register an element code as unset', () => {
     service.registerElementCode('section-0-1', 'section-0-1', 0);
 

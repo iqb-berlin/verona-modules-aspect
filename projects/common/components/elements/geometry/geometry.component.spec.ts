@@ -101,10 +101,6 @@ describe('GeometryComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should keep GeoGebra\'s keyboard inside the applet (#1549)', () => {
     component.refresh();
 

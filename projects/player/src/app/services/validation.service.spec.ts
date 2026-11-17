@@ -13,10 +13,6 @@ describe('ValidationService', () => {
      the progress -- and only such controls are registered here (`needsValidation`). */
   const requiredControl = (value: string) => new UntypedFormControl(value, Validators.required);
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should report complete when nothing is registered', () => {
     expect(service.responseProgress).toEqual('complete');
   });

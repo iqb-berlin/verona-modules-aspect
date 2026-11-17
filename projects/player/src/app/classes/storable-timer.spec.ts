@@ -19,8 +19,7 @@ describe('StorableTimer', () => {
     timer.stop();
   });
 
-  it('should create an instance', () => {
-    expect(timer).toBeTruthy();
+  it('should start with the whole duration left', () => {
     expect(timer.duration).toBe(3000);
     expect(timer.restTime).toBe(3000);
   });

@@ -20,11 +20,6 @@ describe('SpinnerComponent', () => {
     component.isLoaded = new BehaviorSubject<boolean>(false);
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should show the spinner while not loaded', () => {
     fixture.detectChanges();
     expect(component.isLoading).toBe(true);

@@ -123,12 +123,6 @@ describe('TextInputGroupElementComponent', () => {
       .compileComponents();
   });
 
-  it('should create', () => {
-    initComponent(createTextField());
-
-    expect(component).toBeTruthy();
-  });
-
   it('should add a form control for the element', () => {
     initComponent(createTextField());
 

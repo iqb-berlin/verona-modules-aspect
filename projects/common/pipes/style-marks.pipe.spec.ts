@@ -7,10 +7,6 @@ describe('StyleMarksPipe', () => {
     pipe = new StyleMarksPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return an empty object for undefined items', () => {
     expect(pipe.transform(undefined)).toEqual({});
   });

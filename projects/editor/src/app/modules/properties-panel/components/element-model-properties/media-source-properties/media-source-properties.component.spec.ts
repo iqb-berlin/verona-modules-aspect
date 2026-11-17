@@ -52,10 +52,6 @@ describe('MediaSourcePropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the file name and the source button for a media element', () => {
     expect(fileName().nativeElement.textContent).toContain('ton.mp3');
     expect(sourceButton()).not.toBeNull();

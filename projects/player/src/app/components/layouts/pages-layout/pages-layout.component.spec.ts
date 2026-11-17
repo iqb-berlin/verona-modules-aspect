@@ -62,12 +62,6 @@ describe('PagesLayoutComponent', () => {
     component.ngOnDestroy();
   });
 
-  it('should create', () => {
-    initComponent();
-
-    expect(component).toBeTruthy();
-  });
-
   it('should start at the first page', () => {
     initComponent();
 

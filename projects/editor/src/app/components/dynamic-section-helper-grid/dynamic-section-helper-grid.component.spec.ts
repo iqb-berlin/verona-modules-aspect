@@ -60,10 +60,6 @@ describe('DynamicSectionHelperGridComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should derive the grid size from the element positions when sizing is automatic', () => {
     expect(component.columnCountArray.length).toBe(2);
     expect(component.rowCountArray.length).toBe(3);

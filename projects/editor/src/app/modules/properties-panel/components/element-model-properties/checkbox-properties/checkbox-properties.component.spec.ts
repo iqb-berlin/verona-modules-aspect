@@ -66,10 +66,6 @@ describe('CheckboxPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show all three controls for a checkbox in expert mode', () => {
     expect(imageButton()).not.toBeNull();
     expect(toggleGroup()).not.toBeNull();

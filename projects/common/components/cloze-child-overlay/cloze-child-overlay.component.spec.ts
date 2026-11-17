@@ -47,10 +47,6 @@ describe('ClozeChildOverlayComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should set selected state', () => {
     component.setSelected(true);
     expect(component.isSelected).toBe(true);

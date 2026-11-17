@@ -7,10 +7,6 @@ describe('HasTextContentPipe', () => {
     pipe = new HasTextContentPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return false for undefined, null and empty string', () => {
     expect(pipe.transform(undefined)).toBe(false);
     expect(pipe.transform(null)).toBe(false);

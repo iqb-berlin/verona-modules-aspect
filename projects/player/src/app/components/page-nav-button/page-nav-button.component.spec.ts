@@ -16,10 +16,6 @@ describe('PageNavButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should mark itself with its direction', () => {
     expect(fixture.debugElement.query(By.css('.next'))).toBeTruthy();
     expect(fixture.debugElement.query(By.css('.previous'))).toBeNull();

@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { ImageFullscreenDialog } from './image-fullscreen-dialog.component';
 
 describe('ImageFullscreenDialog', () => {
-  let component: ImageFullscreenDialog;
   let fixture: ComponentFixture<ImageFullscreenDialog>;
   const dialogRefMock: Pick<MatDialogRef<ImageFullscreenDialog>, 'close'> = {
     close: vi.fn()
@@ -21,12 +20,7 @@ describe('ImageFullscreenDialog', () => {
 
     vi.mocked(dialogRefMock.close).mockClear();
     fixture = TestBed.createComponent(ImageFullscreenDialog);
-    component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should render the image with the given src and alt text', () => {

@@ -42,11 +42,6 @@ describe('TetfolioGroupElementComponent', () => {
     unitStateService = TestBed.inject(UnitStateService);
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should hand the stored state to the iframe for restoring', () => {
     vi.spyOn(unitStateService, 'getElementCodeById')
       .mockReturnValue({

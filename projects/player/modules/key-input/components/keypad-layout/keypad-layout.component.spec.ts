@@ -54,10 +54,6 @@ describe('KeypadLayoutComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize rows in ngOnInit', () => {
     component.ngOnInit();
     expect(component.rows).toEqual(mockLayout.default);

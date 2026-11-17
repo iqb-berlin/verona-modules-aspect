@@ -16,10 +16,6 @@ describe('ClozeLinePartsPipe', () => {
     pipe = new ClozeLinePartsPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return nothing for empty content', () => {
     expect(pipe.transform(null)).toEqual([]);
     expect(pipe.transform(undefined)).toEqual([]);

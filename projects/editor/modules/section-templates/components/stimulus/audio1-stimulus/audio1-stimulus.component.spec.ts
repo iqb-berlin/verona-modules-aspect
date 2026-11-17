@@ -59,10 +59,6 @@ describe('Audio1StimulusComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize without audio source and one allowed run', () => {
     expect(component.options.src1).toBeUndefined();
     expect(component.options.fileName1).toBeUndefined();

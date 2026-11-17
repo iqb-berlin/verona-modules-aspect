@@ -14,10 +14,6 @@ describe('CharacterIconComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should size itself with the default size', () => {
     expect(component.size).toBe(24);
     expect(fixture.nativeElement.style.fontSize).toBe('24px');

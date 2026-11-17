@@ -58,12 +58,6 @@ describe('PrintPageComponent', () => {
     component.pageIndex = 1;
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-
-    expect(component).toBeTruthy();
-  });
-
   it('should print nothing without a page', () => {
     fixture.detectChanges();
 

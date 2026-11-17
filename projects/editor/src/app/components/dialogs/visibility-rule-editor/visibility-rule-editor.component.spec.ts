@@ -45,10 +45,6 @@ describe('VisibilityRuleEditorComponent', () => {
     .queryAll(By.directive(NgModel))
     .map(debugElement => debugElement.injector.get(NgModel));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should bind the given rule to the three form fields', () => {
     expect(fixture.nativeElement.querySelectorAll('mat-form-field').length).toBe(3);
     const [idModel, operatorModel, valueModel] = getNgModels();

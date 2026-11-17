@@ -15,10 +15,6 @@ describe('UnitNavNextComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit navigate when the navigation button is clicked', () => {
     const emitSpy = vi.spyOn(component.navigate, 'emit');
     const navButton: HTMLElement = fixture.nativeElement.querySelector('.svg-container');

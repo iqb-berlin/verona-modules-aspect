@@ -65,10 +65,6 @@ describe('SectionVisibilityHandlingDirective', () => {
     directive.ngOnDestroy();
   });
 
-  it('should create an instance', () => {
-    expect(directive).toBeTruthy();
-  });
-
   it('should show a section without visibility rules', fakeAsync(() => {
     initDirective(createSection([]));
 

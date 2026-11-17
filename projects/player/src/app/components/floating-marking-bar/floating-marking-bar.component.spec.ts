@@ -76,10 +76,6 @@ describe('FloatingMarkingBarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should start at the origin of the text element', () => {
     expect(component.overlayPositions).toEqual([{
       originX: 'start',

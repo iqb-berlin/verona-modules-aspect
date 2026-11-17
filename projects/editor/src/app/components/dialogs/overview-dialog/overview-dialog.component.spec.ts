@@ -98,10 +98,6 @@ describe('OverviewDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should collect all elements of all pages and sections with their indices', () => {
     expect(component.tableData.data.length).toBe(5);
     expect(component.tableData.data.map(row => row.element.alias))

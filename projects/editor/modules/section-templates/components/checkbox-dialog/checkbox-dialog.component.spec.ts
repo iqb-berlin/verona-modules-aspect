@@ -80,10 +80,6 @@ describe('CheckboxWizardDialogComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should remove an option from the list', () => {
     component.textOptions = ['a', 'b', 'c'];
     component.removeListItem(component.textOptions, 1);

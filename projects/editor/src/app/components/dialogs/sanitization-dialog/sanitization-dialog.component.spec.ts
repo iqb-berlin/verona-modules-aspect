@@ -9,7 +9,6 @@ import {
 } from 'editor/src/app/components/dialogs/sanitization-dialog/sanitization-dialog.component';
 
 describe('SanitizationDialogComponent', () => {
-  let component: SanitizationDialogComponent;
   let fixture: ComponentFixture<SanitizationDialogComponent>;
   let dialogRefMock: { close: Mock };
 
@@ -29,12 +28,7 @@ describe('SanitizationDialogComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(SanitizationDialogComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   /* Saving makes the unit unreadable for older versions, which the warning symbol stands for (#1520). */

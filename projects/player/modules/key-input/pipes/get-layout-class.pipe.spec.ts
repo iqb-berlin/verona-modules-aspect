@@ -7,10 +7,6 @@ describe('getLayoutClass', () => {
     pipe = new GetLayoutClassPipe();
   });
 
-  it('should create', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should use big rows for wide presets in the right hand position', () => {
     expect(pipe.transform('right', 'french', 'square', 'medium')).toBe('fixed-big-row-container');
     expect(pipe.transform('right', 'custom', 'square', 'medium')).toBe('fixed-big-row-container');

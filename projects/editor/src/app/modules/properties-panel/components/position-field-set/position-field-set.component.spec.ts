@@ -78,10 +78,6 @@ describe('PositionFieldSetComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show x/y position fields for static positioning', () => {
     const labels = Array.from(
       fixture.nativeElement.querySelectorAll('mat-label') as NodeListOf<HTMLElement>

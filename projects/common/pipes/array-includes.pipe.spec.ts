@@ -7,10 +7,6 @@ describe('ArrayIncludesPipe', () => {
     pipe = new ArrayIncludesPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return true if the value is included', () => {
     expect(pipe.transform(['a', 'b', 'c'], 'b')).toBe(true);
   });

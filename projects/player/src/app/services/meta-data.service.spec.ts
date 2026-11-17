@@ -24,10 +24,6 @@ describe('MetaDataService', () => {
     return TestBed.inject(MetaDataService);
   };
 
-  it('should be created', () => {
-    expect(createService(null)).toBeTruthy();
-  });
-
   it('should read the player metadata from the document', () => {
     const service = createService('{ "id": "aspect-player", "version": "1.0.0" }');
 

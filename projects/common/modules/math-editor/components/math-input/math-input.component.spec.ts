@@ -32,10 +32,6 @@ describe('MathInputComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should append the math field element to the input container', () => {
     expect(fixture.nativeElement.querySelector('math-field')).toBeTruthy();
   });

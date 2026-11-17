@@ -47,10 +47,6 @@ describe('WidgetGroupElementComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should call sendVopWidgetCall with mapped parameters when applyWidgetCall is triggered', () => {
     const veronaPostService = TestBed.inject(VeronaPostService);
     vi.spyOn(veronaPostService, 'sendVopWidgetCall');

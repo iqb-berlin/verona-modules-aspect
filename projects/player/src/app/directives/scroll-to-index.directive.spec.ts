@@ -42,12 +42,6 @@ describe('ScrollToIndexDirective', () => {
       .createComponent(TestComponent);
   });
 
-  it('should create an instance', () => {
-    initDirective();
-
-    expect(directive).toBeTruthy();
-  });
-
   it('should scroll the host element into view when its index is selected', fakeAsync(() => {
     initDirective();
 

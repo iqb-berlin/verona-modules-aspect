@@ -69,10 +69,6 @@ describe('HotspotEditDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should edit a copy of the injected hotspot', () => {
     expect(component.newHotspot).toEqual(hotspot);
     expect(component.newHotspot).not.toBe(hotspot);

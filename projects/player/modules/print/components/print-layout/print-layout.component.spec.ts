@@ -54,10 +54,6 @@ describe('PrintLayoutComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should print nothing without pages', () => {
     expect(printPages()).toEqual([]);
   });

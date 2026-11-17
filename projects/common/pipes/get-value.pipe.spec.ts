@@ -10,10 +10,6 @@ describe('GetValuePipe', () => {
     pipe = new GetValuePipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return the form control value when a parent form is given', () => {
     expect(pipe.transform('model-value', 'control-value', parentForm)).toBe('control-value');
   });

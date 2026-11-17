@@ -7,10 +7,6 @@ describe('getAlternativeKey', () => {
     pipe = new GetAlternativeKeyPipe();
   });
 
-  it('should create', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should transform values to null', () => {
     const key = 'a';
     const shiftedKey = 'A';

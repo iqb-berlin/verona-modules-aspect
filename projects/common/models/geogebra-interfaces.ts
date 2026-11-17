@@ -2,7 +2,8 @@
    the geometry component uses; anything else the library offers is deliberately absent. */
 
 export interface GeoGebraApi {
-  getBase64(): string;
+  /** The construction alone, the `geogebra.xml` of the file. */
+  getXML(): string;
   /** Resizes the running applet. The drawing keeps its scale and position and shows more or less of the
    * plane, as a new applet of that size would. */
   setSize(width: number, height: number): void;

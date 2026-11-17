@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { GeometryVariable } from 'common/models/geometry-interfaces';
+import { ResponseStatusType } from '@iqbspecs/response/response.interface';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import {
   ExternalAppGroupElementComponent
@@ -11,6 +12,11 @@ import {
 import { GeometryElement } from 'common/models/elements/geometry';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
+// 'fflate/browser', not 'fflate': the bare specifier resolves to the Node ESM build under
+// Vitest browser mode and crashes at import time on createRequire.
+import {
+  strFromU8, strToU8, unzipSync, zipSync
+} from 'fflate/browser';
 
 describe('ExternalAppGroupElementComponent', () => {
   let component: ExternalAppGroupElementComponent;
@@ -23,7 +29,7 @@ describe('ExternalAppGroupElementComponent', () => {
   })
   class GeometryStubComponent {
     @Input() elementModel!: GeometryElement;
-    @Input() appDefinition!: string;
+    @Input() response: string | undefined;
     @Output() appletLoaded = new EventEmitter<GeometryVariable[]>();
     domElement = document.createElement('div');
   }
@@ -138,7 +144,7 @@ describe('ExternalAppGroupElementComponent', () => {
     testComponent.changeElementCodeValue({
       id: 'geogebra_test3',
       value: {
-        appDefinition: 'new_def',
+        response: 'new_def',
         variables: [
           { id: 'var_c', value: '3' },
           { id: 'var_new', value: '4' }
@@ -184,9 +190,9 @@ describe('ExternalAppGroupElementComponent', () => {
       unitStateService.changeElementCodeStatus({ id: 'applet', status: 'DISPLAYED' });
     };
 
-    const report = (edited: boolean, appDefinition: string, correct = 'correct = false'): void => {
+    const report = (edited: boolean, response: string, correct = 'correct = false'): void => {
       const variables = [{ id: 'correct', value: correct }, { id: 'other', value: 'other = false' }];
-      applet.changeElementCodeValue({ id: 'applet', value: { appDefinition, variables, edited } });
+      applet.changeElementCodeValue({ id: 'applet', value: { response, variables, edited } });
     };
     const element = () => unitStateService.getElementCodeById('applet');
     const variable = (id: string) => geometryVariableStateService.getElementCodeById(`applet_${id}`);
@@ -206,10 +212,11 @@ describe('ExternalAppGroupElementComponent', () => {
 
     it('should take over nothing before the first edit, as after a click or a zoom', () => {
       createApplet(true);
+      const startValue = element()?.value;
 
       report(false, 'zoomed', 'correct = true');
 
-      expect(element()).toEqual(expect.objectContaining({ status: 'DISPLAYED', value: 'start' }));
+      expect(element()).toEqual(expect.objectContaining({ status: 'DISPLAYED', value: startValue }));
       expect(variable('correct')).toEqual(expect.objectContaining({ status: 'DISPLAYED', value: 'correct = false' }));
     });
 
@@ -258,6 +265,68 @@ describe('ExternalAppGroupElementComponent', () => {
       report(true, 'edited', 'correct = true');
 
       expect(announced).toEqual(['VALUE_CHANGED correct = true']);
+    });
+  });
+
+  describe('the answer (#1650)', () => {
+    const construction = '<geogebra><construction/></geogebra>';
+    const unitFile = btoa(String.fromCharCode(...zipSync({
+      'geogebra.xml': strToU8(construction),
+      'geogebra_javascript.js': strToU8('function ggbOnInit() {}'),
+      'xx/picture.png': strToU8('picture')
+    })));
+
+    let unitStateService: UnitStateService;
+
+    /** An applet of the unit, with the answer the host restored, if any. */
+    const createApplet = (stored?: { status: ResponseStatusType; value: string }): GeometryStubComponent => {
+      unitStateService = TestBed.inject(UnitStateService);
+      unitStateService.reset();
+      TestBed.inject(GeometryVariableStateService).reset();
+      if (stored) unitStateService.setElementCodes([{ id: 'alias', ...stored }], [{ id: 'applet', alias: 'alias' }]);
+      const appletFixture = TestBed.createComponent(ExternalAppGroupElementComponent);
+      appletFixture.componentInstance.elementModel = new GeometryElement({
+        type: 'geometry',
+        id: 'applet',
+        alias: 'alias',
+        appDefinition: unitFile,
+        trackedVariables: [],
+        trackedExpectedVariables: []
+      });
+      appletFixture.detectChanges();
+      return appletFixture.debugElement.query(By.directive(GeometryStubComponent))
+        .componentInstance as GeometryStubComponent;
+    };
+
+    it('should start out with the construction of the unit\'s file, not with the whole file', () => {
+      createApplet();
+
+      const answer = unitStateService.getElementCodeById('applet')?.value as string;
+      const files = unzipSync(Uint8Array.from(atob(answer), character => character.charCodeAt(0)));
+      expect(Object.keys(files)).toEqual(['geogebra.xml']);
+      expect(strFromU8(files['geogebra.xml'])).toBe(construction);
+    });
+
+    it('should keep the answer the host restored and hand it to the applet', () => {
+      const geometry = createApplet({ status: 'VALUE_CHANGED', value: 'stored' });
+
+      expect(unitStateService.getElementCodeById('applet')?.value).toBe('stored');
+      expect(geometry.response).toBe('stored');
+    });
+
+    /* An element nobody has worked on holds the unit's own construction, which shows the same. The replay
+       of coding-box hands the statuses over as the numbers it stores them as, `VALUE_CHANGED` as 3. */
+    it('should hand the applet the answer the host gave back, whatever its status', () => {
+      ['NOT_REACHED', 'DISPLAYED', 'VALUE_CHANGED', 3, 2].forEach(status => {
+        const geometry = createApplet({ status: status as ResponseStatusType, value: 'stored' });
+
+        expect(geometry.response).toBe('stored');
+      });
+    });
+
+    it('should hand the applet no answer to restore when the host gave none back', () => {
+      expect(createApplet().response).toBeUndefined();
+      expect(createApplet({ status: 'VALUE_CHANGED', value: null as unknown as string }).response).toBeUndefined();
     });
   });
 });

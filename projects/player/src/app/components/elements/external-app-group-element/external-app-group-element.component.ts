@@ -8,6 +8,7 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { GeometryElement } from 'common/models/elements/geometry';
 import { GeometryComponent } from 'common/components/elements/geometry/geometry.component';
+import { GeoGebraResponse } from 'common/utils/geogebra-response';
 import { GeometryValue, GeometryVariable } from 'common/models/geometry-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
@@ -24,20 +25,26 @@ export class ExternalAppGroupElementComponent
   extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: GeometryComponent;
   GeometryElement!: GeometryElement;
-  appDefinition: string = '';
+  /** The answer the host gave back, for the applet to restore. */
+  response: string | undefined;
 
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitStateService: UnitStateService,
-              private geometryVariableStateService: GeometryVariableStateService,
-              private elementModelElementCodeMappingService: ElementModelElementCodeMappingService) {
+              private geometryVariableStateService: GeometryVariableStateService) {
     super();
   }
 
+  /**
+   * Takes over whatever answer the host gave back, whatever its status, as the player did before #1650.
+   * An element nobody has worked on holds the construction it started with, the unit's own, and restoring
+   * that shows the unit's file as it is -- once the unit's file has been replaced, the old construction,
+   * as with an answer worked on. The status is not asked: hosts do not all hand it over by its name, the
+   * replay of coding-box hands over the number it stores it as.
+   */
   ngOnInit(): void {
-    this.appDefinition = this.elementModelElementCodeMappingService.mapToElementModelValue(
-      this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
-    ) as string;
+    const stored = this.unitStateService.getElementCodeById(this.elementModel.id)?.value;
+    if (typeof stored === 'string') this.response = stored;
 
     this.subscribeToParentStateChanges();
   }
@@ -76,14 +83,16 @@ export class ExternalAppGroupElementComponent
     });
   }
 
+  /** Starts out with the construction of the unit's file rather than the whole file (#1650): every state
+   * the player sends holds the answer, also before the element has been worked on. A stored answer is
+   * kept, so the unit's file is only read for an element that has none. */
   ngAfterViewInit(): void {
+    const elementCode = this.unitStateService.getElementCodeById(this.elementModel.id);
+    const element = this.elementModel as GeometryElement;
     this.registerAtUnitStateService(
-      this.elementModel.id,
-      this.elementModel.alias,
-      ElementModelElementCodeMappingService.mapToElementCodeValue(
-        this.appDefinition,
-        this.elementModel.type
-      ),
+      element.id,
+      element.alias,
+      elementCode ? elementCode.value : GeoGebraResponse.fromDefinition(element.appDefinition),
       this.elementComponent,
       this.pageIndex);
     this.registerGeometryVariables();
@@ -151,7 +160,7 @@ export class ExternalAppGroupElementComponent
     this.unitStateService.changeElementCodeValue({
       id: value.id,
       value: ElementModelElementCodeMappingService
-        .mapToElementCodeValue(geometryValue.appDefinition, this.elementModel.type)
+        .mapToElementCodeValue(geometryValue.response, this.elementModel.type)
     });
   }
 

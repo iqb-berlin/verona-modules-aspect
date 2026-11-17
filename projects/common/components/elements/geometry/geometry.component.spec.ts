@@ -7,10 +7,16 @@ import { ExternalResourceService } from 'common/services/external-resource.servi
 import { of, Subject } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { Mock, MockInstance } from 'vitest';
+// 'fflate/browser', not 'fflate': the bare specifier resolves to the Node ESM build under
+// Vitest browser mode and crashes at import time on createRequire.
+import {
+  strFromU8, strToU8, unzipSync, zipSync
+} from 'fflate/browser';
 import { GeometryElement } from 'common/models/elements/geometry';
 import {
   GeoGebraApi, GeoGebraApplet, GeoGebraAppletConstructor, GeoGebraAppletParameters
 } from 'common/models/geogebra-interfaces';
+import { GeometryValue } from 'common/models/geometry-interfaces';
 import { GeometryComponent } from './geometry.component';
 
 describe('GeometryComponent', () => {
@@ -34,8 +40,16 @@ describe('GeometryComponent', () => {
     (component as unknown as { isAppletStartedUp: boolean }).isAppletStartedUp = true;
   };
 
-  const createGeoGebraApi = (base64: string): GeoGebraApi => ({
-    getBase64: vi.fn().mockReturnValue(base64),
+  /** Each applet shows a construction of its own, named, so that a test can tell whose answer it got. */
+  const constructionOfApplet = (name: string): string => `<geogebra applet="${name}"/>`;
+
+  /** The construction an answer holds. */
+  const constructionOf = (answer: string): string => strFromU8(
+    unzipSync(Uint8Array.from(atob(answer), character => character.charCodeAt(0)))['geogebra.xml']
+  );
+
+  const createGeoGebraApi = (name: string): GeoGebraApi => ({
+    getXML: vi.fn().mockReturnValue(constructionOfApplet(name)),
     setSize: vi.fn(),
     getAllObjectNames: vi.fn().mockReturnValue([]),
     getValueString: vi.fn(),
@@ -59,7 +73,7 @@ describe('GeometryComponent', () => {
       getGeoGebraHTML5URL: vi.fn().mockReturnValue('http://geogebra.url')
     };
 
-    mockGeoGebraAPI = createGeoGebraApi('mockBase64');
+    mockGeoGebraAPI = createGeoGebraApi('mock');
     heldBackLoads = undefined;
 
     // Global Mock for GGBApplet with named function to satisfy ESLint and constructor requirements
@@ -130,12 +144,7 @@ describe('GeometryComponent', () => {
     geometryUpdated().next();
     tick(200);
 
-    expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({
-      id: 'test-id',
-      value: expect.objectContaining({
-        appDefinition: 'mockBase64'
-      })
-    }));
+    expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({ id: 'test-id' }));
   }));
 
   it('should emit valuechanged after reset() is called', fakeAsync(() => {
@@ -203,7 +212,7 @@ describe('GeometryComponent', () => {
       listener('registerClientListener')();
       tick(200);
 
-      expect(reported()).toEqual(expect.objectContaining({ appDefinition: 'mockBase64', edited: false }));
+      expect(reported()).toEqual(expect.objectContaining({ response: expect.any(String), edited: false }));
     }));
 
     it('should report a reset as no edit', fakeAsync(() => {
@@ -252,6 +261,55 @@ describe('GeometryComponent', () => {
         variables: [{ id: 'A', value: 'A = 0' }, { id: 'B', value: 'B = 0' }]
       }));
     }));
+  });
+
+  describe('the answer (#1650)', () => {
+    const archiveOf = (files: Record<string, string>): string => btoa(String.fromCharCode(...zipSync(
+      Object.fromEntries(Object.entries(files).map(([name, content]) => [name, strToU8(content)]))
+    )));
+    const builtFrom = (): string => vi.mocked(ggbApplet).mock.lastCall?.[0].ggbBase64;
+    const restored = '<geogebra><construction><element type="point" label="A"/></construction></geogebra>';
+
+    it('should report the construction alone', fakeAsync(() => {
+      vi.spyOn(component.elementValueChanged, 'emit');
+      component.refresh();
+      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+
+      geometryUpdated().next();
+      tick(200);
+
+      const { response } = vi.mocked(component.elementValueChanged.emit).mock.lastCall?.[0]?.value as GeometryValue;
+      expect(constructionOf(response)).toBe(constructionOfApplet('mock'));
+    }));
+
+    it('should build the applet from the unit\'s file with the answer\'s construction put in', () => {
+      component.elementModel.appDefinition = archiveOf({ 'geogebra.xml': '<geogebra/>', 'unit.png': 'picture' });
+      component.response = archiveOf({ 'geogebra.xml': restored });
+
+      component.refresh();
+
+      expect(Object.keys(unzipSync(Uint8Array.from(atob(builtFrom()), c => c.charCodeAt(0)))).sort())
+        .toEqual(['geogebra.xml', 'unit.png']);
+      expect(constructionOf(builtFrom())).toBe(restored);
+    });
+
+    it('should show the unit\'s file after a reset, without the answer', () => {
+      component.response = archiveOf({ 'geogebra.xml': restored });
+      component.refresh();
+      startUp();
+
+      component.reset();
+
+      expect(builtFrom()).toBe('initial-def');
+    });
+
+    it('should show the unit\'s file for an answer that cannot be read', () => {
+      component.response = 'no answer';
+
+      component.refresh();
+
+      expect(builtFrom()).toBe('initial-def');
+    });
   });
 
   describe('replacing the applet (#1625)', () => {
@@ -349,15 +407,14 @@ describe('GeometryComponent', () => {
       geometryUpdated().next();
       tick(200);
 
-      expect(mockGeoGebraAPI.getBase64).not.toHaveBeenCalled();
+      expect(mockGeoGebraAPI.getXML).not.toHaveBeenCalled();
       expect(component.elementValueChanged.emit).not.toHaveBeenCalled();
 
       loads[0].appletOnLoad(createGeoGebraApi('after reset'));
       tick(200);
 
-      expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({
-        value: expect.objectContaining({ appDefinition: 'after reset' })
-      }));
+      const { response } = vi.mocked(component.elementValueChanged.emit).mock.lastCall?.[0]?.value as GeometryValue;
+      expect(constructionOf(response)).toBe(constructionOfApplet('after reset'));
     }));
   });
 

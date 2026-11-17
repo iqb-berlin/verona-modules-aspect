@@ -14,6 +14,7 @@ import {
   GeoGebraApi, GeoGebraAppletConstructor, GeoGebraAppletParameters
 } from 'common/models/geogebra-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
+import { GeoGebraResponse } from 'common/utils/geogebra-response';
 
 declare const GGBApplet: GeoGebraAppletConstructor;
 
@@ -25,7 +26,8 @@ declare const GGBApplet: GeoGebraAppletConstructor;
 })
 export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {
   @Input() elementModel!: GeometryElement;
-  @Input() appDefinition: string | undefined;
+  /** A stored answer to restore: the applet is built from the unit's file with the answer put in (#1650). */
+  @Input() response: string | undefined;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   /** The tracked variables with the values GeoGebra computed on loading the applet, each time it loads,
    * the reset included. They can differ from the values stored in the unit, which are empty for variables
@@ -64,6 +66,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private startUpTimeout?: ReturnType<typeof setTimeout>;
   /** A new applet asked for while the current one was starting up, built once it has. */
   private isBuildDue = false;
+  /** The file that restores the answer, put together once: `refresh` compares what an applet is built
+   * from with what the current one was built from. */
+  private restoredDefinition?: { response: string; appDefinition: string; restored: string | undefined };
 
   get timeoutMsg(): string {
     // eslint-disable-next-line max-len
@@ -106,7 +111,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
           this.elementValueChanged.emit({
             id: this.elementModel.id,
             value: {
-              appDefinition: this.geoGebraAPI.getBase64(),
+              response: GeoGebraResponse.fromConstruction(this.geoGebraAPI.getXML()),
               variables: this.getVariablesToEmit(),
               edited: this.isEditedSinceReport
             }
@@ -154,7 +159,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   reset(): void {
-    this.appDefinition = this.elementModel.appDefinition;
+    this.response = undefined;
+    // Not for the next build, which asks for no restored file without an answer: the file, some MB with a
+    // large picture in the unit, is no longer kept once nothing needs it.
+    this.restoredDefinition = undefined;
     this.hasUserInteracted = true;
     this.isReportDue = true;
     this.initApplet();
@@ -274,8 +282,22 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       // probability view, or under some conditions the algebra view, is shown. It stays in the section's
       // stacking context there, so every element after the section covers it (#1549).
       detachKeyboard: false,
-      ggbBase64: this.appDefinition || this.elementModel.appDefinition
+      ggbBase64: this.getRestoredDefinition() ?? this.elementModel.appDefinition
     };
+  }
+
+  private getRestoredDefinition(): string | undefined {
+    if (!this.response) return undefined;
+    const { appDefinition } = this.elementModel;
+    if (this.restoredDefinition?.response !== this.response ||
+      this.restoredDefinition.appDefinition !== appDefinition) {
+      this.restoredDefinition = {
+        response: this.response,
+        appDefinition,
+        restored: GeoGebraResponse.restoredDefinition(this.response, appDefinition)
+      };
+    }
+    return this.restoredDefinition.restored;
   }
 
   /**

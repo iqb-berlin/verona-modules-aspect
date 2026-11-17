@@ -8,7 +8,6 @@ import { AudioElement } from 'common/models/elements/audio';
 import { TextElement } from 'common/models/elements/text';
 import { VideoElement } from 'common/models/elements/video';
 import { ImageElement } from 'common/models/elements/image';
-import { GeometryElement } from 'common/models/elements/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { InputElementValue } from 'common/models/input-element-interfaces';
@@ -111,9 +110,6 @@ export class ElementModelElementCodeMappingService {
       case 'likert-row':
         return elementCodeValue !== undefined && elementCodeValue !== null ?
           elementCodeValue as number - 1 : (elementModel as InputElement).value;
-      case 'geometry':
-        return elementCodeValue !== undefined ?
-          elementCodeValue as string : (elementModel as GeometryElement).appDefinition;
       default:
         return elementCodeValue !== undefined ?
           elementCodeValue as InputElementValue : (elementModel as InputElement).value;

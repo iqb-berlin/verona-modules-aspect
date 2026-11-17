@@ -107,6 +107,25 @@ describe('UnitService - rapid load handling', () => {
     expect(veronaApiServiceSpy.sendChanged).toHaveBeenCalled();
   });
 
+  /* Migrated without a question, the unit carries the current version afterwards; it is what it carried
+     before that decides whether the host has to store it anew (#1683). At a x.0.0 version no earlier minor
+     version of the same major exists, and an older unit takes the sanitization dialog, tested further down. */
+  const [currentMajor, currentMinor] = VersionManager.getCurrentVersion().split('.').map(Number);
+  it.runIf(currentMinor > 0)('reports a unit of an earlier minor version it migrated on load (#1683)', () => {
+    service.loadUnitDefinition(
+      JSON.stringify(createUnitBlueprint('older', `${currentMajor}.${currentMinor - 1}.0`))
+    );
+
+    expect(service.unit.stateVariables[0].id).toBe('older');
+    expect(veronaApiServiceSpy.sendChanged).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not report a unit at the current version that it only opened', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('current')));
+
+    expect(veronaApiServiceSpy.sendChanged).not.toHaveBeenCalled();
+  });
+
   /* Until #1578 the dialog showed the parser's English message; it is left to the console now, under the code. */
   describe('a definition that fails', () => {
     beforeEach(() => {
@@ -863,6 +882,7 @@ describe('UnitService - a load superseded while its sanitization dialog is open 
 
     expect(service.unit.stateVariables[0].id).toBe('outdated-unit');
     expect(service.unit.version).toBe(VersionManager.getCurrentVersion());
+    expect(veronaApiServiceSpy.sendChanged).toHaveBeenCalledTimes(1);
   });
 
   it('takes the dialog away with the load it belongs to', () => {

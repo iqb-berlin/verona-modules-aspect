@@ -126,9 +126,10 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     this.loadSuperseded.next();
     if (unitDefinition) {
-      let loadedDefinition: UnitProperties;
+      let storedVersion: unknown;
       try {
         let unitDef = JSON.parse(unitDefinition);
+        storedVersion = unitDef.version;
         if (!VersionManager.hasCompatibleVersion(unitDef)) {
           if (VersionManager.isNewer(unitDef)) {
             this.refuseUnitDefinition('UNIT_DEFINITION_NEWER');
@@ -141,8 +142,7 @@ export class UnitService {
           this.dialogService.showSanitizationDialog(this.loadSuperseded).subscribe(() => {
             unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
             this.replaceUnit(unitDef);
-            this.settleUnit(unitDef);
-            this.updateUnitDefinition();
+            this.settleUnit(storedVersion);
           });
           return;
         }
@@ -150,13 +150,12 @@ export class UnitService {
           unitDef = MigrationManager.migrate(unitDef, VersionManager.getCurrentVersion());
         }
         this.replaceUnit(unitDef);
-        loadedDefinition = unitDef;
       } catch (e) {
         this.refuseUnitDefinition('UNIT_DEFINITION_NOT_READABLE', e);
         return;
       }
       try {
-        this.settleUnit(loadedDefinition);
+        this.settleUnit(storedVersion);
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);
@@ -201,8 +200,11 @@ export class UnitService {
     this.unit = new EditorUnit(migratedUnitDefinition, this.idService);
   }
 
-  /** What a unit needs once it is swapped in. What throws from here on is no longer the definition's fault (#1578). */
-  private settleUnit(migratedUnitDefinition: UnitProperties): void {
+  /**
+   * What a unit needs once it is swapped in. What throws from here on is no longer the definition's fault (#1578).
+   * `storedVersion` is the version the definition carried before any migration: a migration stamps the current one.
+   */
+  private settleUnit(storedVersion: unknown): void {
     /* What the previous unit could not load is no concern of this one, whose elements report once they render. As
        soon as the unit is swapped, so that nothing below can throw past it and leave the old errors standing. */
     this.loadErrorService.clearElementErrors();
@@ -214,9 +216,11 @@ export class UnitService {
 
     const repaired = this.referenceManager.repairInvalidReferences();
     this.loadRepairs.next(repaired);
-    /* The unit constructor stamped the current version. Compared as text on purpose: a unit stored as 4.13
-       is taken for 4.13.0 and reported, so that the host stores the form every player reads (#1679). */
-    if (repaired.length > 0 || migratedUnitDefinition.version !== VersionManager.getCurrentVersion()) {
+    /* A unit stored at another version than the current one now differs from what the host holds: migrated,
+       whether silently or after the sanitization dialog (#1683), or stamped anew by the unit constructor.
+       Compared as text on purpose: a unit stored as 4.13 is taken for 4.13.0 and reported, so that the host
+       stores the form every player reads (#1679). */
+    if (repaired.length > 0 || storedVersion !== VersionManager.getCurrentVersion()) {
       this.updateUnitDefinition();
     }
     this.updateSectionCounter();

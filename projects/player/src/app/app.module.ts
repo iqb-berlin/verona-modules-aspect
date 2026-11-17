@@ -25,9 +25,6 @@ import {
   MarkableDelimiterComponent
 } from 'player/src/app/components/markable-delimiter/markable-delimiter.component';
 import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
-import {
-  MarkingPanelComponent
-} from 'common/components/elements/marking-panel/marking-panel.component';
 import { ErrorService } from 'player/src/app/services/error.service';
 import {
   MathKeyboardContainerComponent
@@ -43,7 +40,6 @@ import {
 import {
   TetfolioGroupElementComponent
 } from 'player/src/app/components/elements/tetfolio-group-element/tetfolio-group-element.component';
-import { ComponentRegistry } from 'common/utils/component-registry';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -164,9 +160,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
 })
 
 export class AppModule implements DoBootstrap {
-  constructor(private injector: Injector) {
-    ComponentRegistry.registerComponent('marking-panel', MarkingPanelComponent);
-  }
+  constructor(private injector: Injector) {}
 
   ngDoBootstrap(): void {
     const playerElement = createCustomElement(AppComponent, { injector: this.injector });

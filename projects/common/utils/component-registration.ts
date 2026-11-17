@@ -1,4 +1,5 @@
-import { ComponentRegistry } from 'common/utils/component-registry';
+import { ComponentRegistry, ElementComponentClass } from 'common/utils/component-registry';
+import { UIElementType } from 'common/models/ui-element-interfaces';
 import { TextComponent } from 'common/components/elements/text/text.component';
 import { ButtonComponent } from 'common/components/elements/button/button.component';
 import { TextFieldComponent } from 'common/components/elements/text-field/text-field.component';
@@ -47,6 +48,7 @@ import {
   WidgetPeriodicTableComponent
 } from 'common/components/elements/widget-periodic-table/widget-periodic-table.component';
 import { TetfolioComponent } from 'common/components/elements/tetfolio/tetfolio.component';
+import { MarkingPanelComponent } from 'common/components/elements/marking-panel/marking-panel.component';
 
 /**
  * Registers the component that draws each element type, which is what lets a renderer go from a stored
@@ -56,11 +58,10 @@ import { TetfolioComponent } from 'common/components/elements/tetfolio/tetfolio.
  * unit tests call it from their `vitest-providers.ts` because they build components without it.
  * Registering twice is harmless: each type is simply written again.
  *
- * Not quite every type: `marking-panel` is missing here and is registered by the two `AppModule`s
- * themselves, which is why a test bed that only calls this function has no component for it.
+ * The table names every element type: one without a component does not compile (#1685).
  */
 export function registerComponents(): void {
-  ComponentRegistry.registerComponents({
+  const components: Record<UIElementType, ElementComponentClass> = {
     text: TextComponent,
     button: ButtonComponent,
     'text-field': TextFieldComponent,
@@ -90,6 +91,8 @@ export function registerComponents(): void {
     trigger: TriggerComponent,
     'widget-molecule-editor': WidgetMoleculeEditorComponent,
     'widget-periodic-table': WidgetPeriodicTableComponent,
-    tetfolio: TetfolioComponent
-  });
+    tetfolio: TetfolioComponent,
+    'marking-panel': MarkingPanelComponent
+  };
+  ComponentRegistry.registerComponents(components);
 }

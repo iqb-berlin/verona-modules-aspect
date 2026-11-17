@@ -6,9 +6,8 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 export type ElementComponentClass = Type<ElementComponent> & Pick<typeof ElementComponent, 'startsWithText'>;
 
 /**
- * Which component draws an element of a given type. Filled at startup -- `registerComponents`
- * (`component-registration.ts`) for the element types, the two `AppModule`s for `marking-panel` -- and
- * read wherever an element is rendered from its model alone.
+ * Which component draws an element of a given type. Filled at startup by `registerComponents`
+ * (`component-registration.ts`) and read wherever an element is rendered from its model alone.
  */
 export abstract class ComponentRegistry {
   private static components: { [type in UIElementType]?: ElementComponentClass } = {};

@@ -43,10 +43,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import {
-  MarkingPanelComponent
-} from 'common/components/elements/marking-panel/marking-panel.component';
-import { ComponentRegistry } from 'common/utils/component-registry';
-import {
   StateVariablesDialogComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
 import {
@@ -271,9 +267,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
 })
 
 export class AppModule implements DoBootstrap {
-  constructor(private injector: Injector) {
-    ComponentRegistry.registerComponent('marking-panel', MarkingPanelComponent);
-  }
+  constructor(private injector: Injector) {}
 
   ngDoBootstrap(): void {
     const editorElement = createCustomElement(AppComponent, { injector: this.injector });

@@ -6,8 +6,6 @@ import { ClozeElement } from 'common/models/elements/cloze';
 import { ImageElement } from 'common/models/elements/image';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
-import { ComponentRegistry } from 'common/utils/component-registry';
-import { MarkingPanelComponent } from 'common/components/elements/marking-panel/marking-panel.component';
 import { ElementGroupName } from 'player/src/app/models/element-group.interface';
 import { StartsWithTextPipe } from 'player/modules/print/pipes/starts-with-text.pipe';
 import { ElementGroupSelectionComponent } from './element-group-selection.component';
@@ -125,19 +123,6 @@ describe('ElementGroupSelectionComponent', () => {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
-
-  /* StartsWithTextPipe on the wrapper asks the registry about every element, and the marking panel is
-     registered by the player's AppModule, which this spec does not load. A spy rather than a
-     registration, because the registry is shared with every spec that runs after this one. */
-  beforeEach(() => {
-    const getComponent = ComponentRegistry.getComponent;
-    vi.spyOn(ComponentRegistry, 'getComponent')
-      .mockImplementation(type => (type === 'marking-panel' ? MarkingPanelComponent : getComponent(type)));
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

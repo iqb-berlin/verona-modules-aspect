@@ -1,8 +1,9 @@
 import { UnitVersion } from './unit-version';
 
 describe('UnitVersion', () => {
-  /* As the VersionManager read versions before #1679, apart from the missing third part: a stray blank, a
-     fourth part or an empty part never made a version unreadable, a part that is no number did. */
+  /* A stray blank, a fourth part or an empty part never made a version unreadable, as before #1679. Two
+     things changed: a missing third part is 0 rather than undefined, and a part has to be digits, where
+     Number() read 0x0d, 1e1 and -1 as numbers. */
   it.each<[unknown, [number, number, number] | null]>([
     ['4.13.1', [4, 13, 1]],
     ['4.13', [4, 13, 0]],
@@ -11,6 +12,9 @@ describe('UnitVersion', () => {
     ['4.13.0.1', [4, 13, 0]],
     ['4..0', [4, 0, 0]],
     ['4.1x.0', null],
+    ['4.0x0d.0', null],
+    ['4.1e1', null],
+    ['4.-1.0', null],
     [4.13, null],
     [undefined, null]
   ])('should read %j as %j', (version, parts) => {

@@ -186,8 +186,8 @@ Still this, although it can look like constants or wiring:
   the options a select offers, as in `action-properties.component.spec.ts`, and CSS
 - what the `AppModule` of editor and player provides, in their `app.module.spec.ts`: only the
   end-to-end tests would see it missing otherwise, and they do not run in `npm test`
-- the versions of a migration step: `toVersion` decides which units the step reaches, `fromVersion`
-  the order of the steps (§14)
+- the target version of a migration step: it decides which units the step reaches and in which order
+  the steps run (§14, and the class comment on `MigrationManager`)
 - a method that passes something on but adds to it first — the selected elements, its own
   section — tested for what it adds
 - the seam tests of §17: one for each direction in which the caller decides, as §17 describes

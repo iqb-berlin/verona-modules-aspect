@@ -31,12 +31,14 @@ import { UnitVersion } from '../utils/unit-version';
  *   cause and leave the data alone (#1139).
  *
  * **What the two version fields mean.** `toVersion` is the reach filter: *from this version on my
- * transformation is no longer needed* - the version that introduced the new shape. `fromVersion` only
- * orders the steps, and two steps with the same `fromVersion` run in the order of their `toVersion`; it
- * gates nothing, and reading it as a lower bound is the mistake this paragraph exists to prevent. So a
- * 4.5 unit migrating to 4.12 skips {@link MigrationLegacy} (4.5 is not below its 4.0 target, the
- * conversion happened long ago) and picks up {@link Migration4m10To4m11}, then gets everything additive
- * from the normalizer and the target version stamped at the end.
+ * transformation is no longer needed* - the version that introduced the new shape. The steps also run
+ * in the order of their `toVersion`, the order in which their shapes came about, so a hotfix to 4.13.1
+ * registered after the step to 4.14.0 still runs before it (#1679). `fromVersion` says where a step
+ * starts and only breaks a tie between two steps with the same `toVersion`; it gates nothing, and
+ * reading it as a lower bound is the mistake this paragraph exists to prevent. So a 4.5 unit migrating
+ * to 4.12 skips {@link MigrationLegacy} (4.5 is not below its 4.0 target, the conversion happened long
+ * ago) and picks up {@link Migration4m10To4m11}, then gets everything additive from the normalizer and the
+ * target version stamped at the end.
  *
  * **Therefore: a step must survive being handed any unit below its `toVersion`** - not just one from
  * the version before it. A transformation that assumes the old shape has to test for it rather than
@@ -86,16 +88,20 @@ export class MigrationManager {
   static migrate(unitDefinition: Record<string, unknown>, targetVersion: string): UnitProperties {
     const currentDefinition = { ...unitDefinition };
     const currentVersion = currentDefinition.version as string;
-    /* Unreadable, every step would count as already applied and the unit be stamped current unmigrated. */
+    // Unreadable, every step would count as applied, and the unit would be stamped current unmigrated.
     if (UnitVersion.parse(currentVersion) === null) {
       throw new TypeError(`Cannot migrate a unit definition whose version cannot be read: ${currentVersion}`);
+    }
+    // Unreadable, every step would count as due, and the unreadable target would be stamped on the unit.
+    if (UnitVersion.parse(targetVersion) === null) {
+      throw new TypeError(`Cannot migrate to a version that cannot be read: ${targetVersion}`);
     }
 
     // Filter and sort steps based on versions
     const applicableSteps = this.steps
       .filter(step => UnitVersion.compare(currentVersion, step.toVersion) < 0)
-      .sort((a, b) => UnitVersion.compare(a.fromVersion, b.fromVersion) ||
-        UnitVersion.compare(a.toVersion, b.toVersion));
+      .sort((a, b) => UnitVersion.compare(a.toVersion, b.toVersion) ||
+        UnitVersion.compare(a.fromVersion, b.fromVersion));
 
     let currentResult = currentDefinition;
     applicableSteps.forEach(step => {

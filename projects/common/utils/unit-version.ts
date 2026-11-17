@@ -8,12 +8,14 @@ export class UnitVersion {
    * The first three numbers of a version. A missing second or third part is 0; the VersionManager read it
    * as undefined before #1679, which made 4.13 newer than 4.13.0. Otherwise as it read versions: an empty
    * part is 0, a stray blank or a fourth part changes nothing. Null for anything that is not a string or
-   * has a part that is not a number.
+   * has a part that is not digits - `0x0d`, `1e1` or `-1` would be numbers to `Number()`.
    */
   static parse(version: unknown): [number, number, number] | null {
     if (typeof version !== 'string') return null;
-    const [major, minor = 0, patch = 0] = version.split('.').slice(0, 3).map(Number);
-    return [major, minor, patch].some(Number.isNaN) ? null : [major, minor, patch];
+    const parts = version.split('.').slice(0, 3);
+    if (!parts.every(part => /^\d*$/.test(part.trim()))) return null;
+    const [major, minor = 0, patch = 0] = parts.map(Number);
+    return [major, minor, patch];
   }
 
   /**

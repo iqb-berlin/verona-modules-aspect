@@ -90,18 +90,24 @@ console.log(`Test what the step transforms in ${specFileName}, next to the test 
    that - the specs run in a browser and cannot list the migrations directory. */
 const managerPath = path.join(projectRoot, 'projects/common/services/migration-manager.ts');
 const manager = fs.readFileSync(managerPath, 'utf8');
-const lastImport = [...manager.matchAll(/^import \{ Migration\w+ \} from '\.\.\/migrations\/v[^']+\.migration';$/gm)]
-  .pop();
-const lastStep = manager.match(/private static steps: MigrationStep\[\] = \[[^\]]*new \w+\(\)(?=\n {2}\];)/);
+/* A checkout with core.autocrlf ends its lines with \r\n: they are matched and written that way. */
+const eol = manager.includes('\r\n') ? '\r\n' : '\n';
+const lastImport = [
+  ...manager.matchAll(/^import \{ Migration\w+ \} from '\.\.\/migrations\/v[^']+\.migration';(?=\r?$)/gm)
+].pop();
+const lastStep = manager.match(/private static steps: MigrationStep\[\] = \[[^\]]*new \w+\(\)(?=\r?\n {2}\];)/);
+/* The import may be there without the step, if the step was taken out of the list by hand. */
+const isImported = new RegExp(`^import \\{[^}]*\\b${className}\\b[^}]*\\} from`, 'm').test(manager);
 if (new RegExp(`new ${className}\\(\\)`).test(manager)) {
   console.log(`${className} is already registered in MigrationManager`);
 } else if (lastImport && lastStep) {
-  const importLine = `\nimport { ${className} } from '../migrations/${fileName.replace(/\.ts$/, '')}';`;
+  const importPath = `../migrations/${fileName.replace(/\.ts$/, '')}`;
+  const importLine = isImported ? '' : `${eol}import { ${className} } from '${importPath}';`;
   const afterImport = lastImport.index + lastImport[0].length;
   const afterLastStep = lastStep.index + lastStep[0].length;
   fs.writeFileSync(managerPath, [
     manager.slice(0, afterImport), importLine,
-    manager.slice(afterImport, afterLastStep), `,\n    new ${className}()`,
+    manager.slice(afterImport, afterLastStep), `,${eol}    new ${className}()`,
     manager.slice(afterLastStep)
   ].join(''));
   console.log(`Registered ${className} in projects/common/services/migration-manager.ts`);

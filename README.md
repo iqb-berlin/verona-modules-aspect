@@ -157,7 +157,7 @@ and a test run cannot take the port from each other (#1423).
 | `npm run test:editor` | `projects/editor/src` — editor application |
 | `npm run test:editor-modules` | `projects/editor/modules` |
 | `npm run test:player` | `projects/player/src` — player application |
-| `npm run lint` | ESLint over `projects/`, `e2e/` and the root configs |
+| `npm run lint` | A check that every migration step is registered in `MigrationManager`, then ESLint over `projects/`, `e2e/` and the root configs |
 | `npm run e2e` | Opens the Cypress UI for the end-to-end specs in `e2e/tests/` |
 | `npm run e2e-headless` | Runs all specs headless |
 | `npm run e2e-headless-simple` | Runs simple specs headless (`e2e/tests/simple/`) |
@@ -269,14 +269,15 @@ of two that later have to be told apart.
 4. **Open a pull request against `develop`.** A branch without an open pull request gets no
    pipeline at all — that is deliberate, see the comment in `.gitlab-ci.yml`.
 5. **The pipeline runs on GitLab**, mirrored from GitHub. A pull request gets five jobs in two
-   stages: `lint` (type-aware ESLint) and `build-modules` (`build-editor` and `build-player`,
-   through `scripts/build.sh`) side by side, then `test-unit` (`npm test`), `test-e2e-simple` and
-   `test-e2e-complex` (both dev servers plus headless Cypress). A change to `scripts/Dockerfile` or
-   `.gitlab-ci.yml` first rebuilds the image the jobs run in. `master` runs the same. A merge
-   into `develop` only builds the modules, since its tree is the one the pull request just
-   passed, and a tag starts no pipeline. The comment at the top of `.gitlab-ci.yml` gives the
-   reasons. The two GitHub Actions workflows stay outside this flow: one publishes the
-   documentation after a merge, the other attaches the module files to a release and publishes it.
+   stages: `lint` (the migration registration check and type-aware ESLint) and `build-modules`
+   (`build-editor` and `build-player`, through `scripts/build.sh`) side by side, then
+   `test-unit` (`npm test`), `test-e2e-simple` and `test-e2e-complex` (both dev servers plus
+   headless Cypress). A change to `scripts/Dockerfile` or `.gitlab-ci.yml` first rebuilds the
+   image the jobs run in. `master` runs the same. A merge into `develop` only builds the
+   modules, since its tree is the one the pull request just passed, and a tag starts no
+   pipeline. The comment at the top of `.gitlab-ci.yml` gives the reasons. The two GitHub
+   Actions workflows stay outside this flow: one publishes the documentation after a merge, the
+   other attaches the module files to a release and publishes it.
 6. **Rebase when `develop` moves.** Branch protection requires an up-to-date branch, so once
    something else is merged, rebase onto `origin/develop` and force-push with
    `--force-with-lease`. A pipeline result belongs to a commit, not to a pull request: after

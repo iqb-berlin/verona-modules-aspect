@@ -55,10 +55,6 @@ describe('Audio1StimulusComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should initialize without audio source and one allowed run', () => {
     expect(component.options.src1).toBeUndefined();
     expect(component.options.fileName1).toBeUndefined();

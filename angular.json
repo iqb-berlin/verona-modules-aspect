@@ -141,7 +141,8 @@
               "ChromiumHeadless"
             ],
             "setupFiles": [
-              "projects/vitest-proxy-zone.setup.ts"
+              "projects/vitest-proxy-zone.setup.ts",
+              "projects/vitest-restore-mocks.setup.ts"
             ],
             "providersFile": "projects/editor/src/vitest-providers.ts",
             "coverage": false,
@@ -332,7 +333,8 @@
               "ChromiumHeadless"
             ],
             "setupFiles": [
-              "projects/vitest-proxy-zone.setup.ts"
+              "projects/vitest-proxy-zone.setup.ts",
+              "projects/vitest-restore-mocks.setup.ts"
             ],
             "providersFile": "projects/player/src/vitest-providers.ts",
             "coverage": false,
@@ -414,7 +416,8 @@
               "ChromiumHeadless"
             ],
             "setupFiles": [
-              "projects/vitest-proxy-zone.setup.ts"
+              "projects/vitest-proxy-zone.setup.ts",
+              "projects/vitest-restore-mocks.setup.ts"
             ],
             "coverage": false,
             "coverageReporters": [
@@ -455,7 +458,8 @@
               "ChromiumHeadless"
             ],
             "setupFiles": [
-              "projects/vitest-proxy-zone.setup.ts"
+              "projects/vitest-proxy-zone.setup.ts",
+              "projects/vitest-restore-mocks.setup.ts"
             ],
             "coverage": false,
             "coverageReporters": [
@@ -503,7 +507,8 @@
               "ChromiumHeadless"
             ],
             "setupFiles": [
-              "projects/vitest-proxy-zone.setup.ts"
+              "projects/vitest-proxy-zone.setup.ts",
+              "projects/vitest-restore-mocks.setup.ts"
             ],
             "coverage": false,
             "coverageReporters": [

@@ -234,10 +234,6 @@ describe('DroplistWizardDialogComponent', () => {
       fixture.detectChanges();
     });
 
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
-
     it('should keep text elements out of the images and bring them back when switched off', fakeAsync(() => {
       addTextItem(ELEMENTS, 'Apfel');
       toggleImages(ELEMENTS);

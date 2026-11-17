@@ -19,10 +19,6 @@ describe('VeronaAPIService', () => {
     service = new VeronaAPIService();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should store session data from a voeStartCommand message and emit the command', () => {
     const receivedCommands: StartCommand[] = [];
     service.startCommand.subscribe(command => {

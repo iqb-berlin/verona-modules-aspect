@@ -62,10 +62,6 @@ describe('Audio2StimulusComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should initialize without audio sources and German language', () => {
     expect(component.options.src1).toBeUndefined();
     expect(component.options.src2).toBeUndefined();

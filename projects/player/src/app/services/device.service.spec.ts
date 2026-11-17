@@ -19,7 +19,6 @@ describe('DeviceService', () => {
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 

@@ -5,10 +5,6 @@ import { TextFieldComponent } from 'common/components/elements/text-field/text-f
 import { StartsWithTextPipe } from './starts-with-text.pipe';
 
 describe('StartsWithTextPipe', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   /* The answer is the component's own (`ElementComponent.startsWithText`); its specs say what it is. */
   it('should ask the component registered for the element type', () => {
     const pipe = new StartsWithTextPipe();

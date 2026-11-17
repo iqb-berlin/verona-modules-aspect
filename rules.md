@@ -460,7 +460,7 @@ too much, and they are meant to be used in this order:
 
 The four are not alternatives, and `player/src/app/components/elements/` is what they look like
 together. `ElementGroupSelectionComponent` holds only the frame — the element's dimensions and its
-`data-element-id` — and picks a group component from the element's type: nine named groups and a base
+`data-element-id` — and picks a group component from the element's type: ten named groups and a base
 group for the types no group claims. Its `groups` table is the single place where a type is assigned
 to a group. Each group component then holds what
 its own group needs of the player and nothing of what the others need: a form and the value it

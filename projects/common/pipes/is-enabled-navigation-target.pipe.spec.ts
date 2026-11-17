@@ -8,10 +8,6 @@ describe('IsEnabledNavigationTargetPipe', () => {
     pipe = new IsEnabledNavigationTargetPipe();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should answer with the navigation target rule', () => {
     const isEnabled = vi.spyOn(NavigationTargetRule, 'isEnabled').mockReturnValue(false);
 

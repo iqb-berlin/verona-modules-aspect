@@ -9,10 +9,6 @@ describe('AudioPlayerService', () => {
     vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should create an audio element with the given source on init', () => {
     service.init('test.mp3');
     expect(service.audio).toBeInstanceOf(HTMLAudioElement);

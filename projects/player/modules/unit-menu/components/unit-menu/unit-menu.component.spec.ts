@@ -61,10 +61,6 @@ describe('UnitMenuComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should load a unit definition and start it in the given paging mode', async () => {
     vi.spyOn(FileService, 'loadFile').mockResolvedValue({ name: 'unit.json', content: '{"type":"aspect-unit"}' });
 

@@ -52,9 +52,6 @@ describe('TetfolioPropertiesComponent', () => {
   });
 
   // The spies sit on a static method, so a failed expectation must not leave one in place.
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('should pack a valid zip and emit the html content', async () => {
     await selectZip(zipFileOf({

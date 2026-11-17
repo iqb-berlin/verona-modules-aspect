@@ -65,10 +65,6 @@ describe('ErrorService', () => {
     );
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   /** The reset ignores the payload, so an empty command stands in for any unit the host loads. */
   const startNextUnit = (): void => startCommand.next({} as StartCommand);
 

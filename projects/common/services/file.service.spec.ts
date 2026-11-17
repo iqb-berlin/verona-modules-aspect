@@ -119,10 +119,6 @@ describe('FileService', () => {
      because the headless browser this suite runs in resamples well enough by itself that the two
      cases are not to be told apart from the picture that comes out. */
   describe('scaleImage and the resampler', () => {
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
-
     it('should resample a picture it makes smaller', async () => {
       const resampling = vi.spyOn(ImageResampler, 'scaleDown');
 

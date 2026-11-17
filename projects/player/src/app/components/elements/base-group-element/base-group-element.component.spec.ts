@@ -59,10 +59,6 @@ describe('BaseGroupElementComponent', () => {
     component.pageIndex = 2;
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should create the registered component for the element type', () => {
     fixture.detectChanges();
 

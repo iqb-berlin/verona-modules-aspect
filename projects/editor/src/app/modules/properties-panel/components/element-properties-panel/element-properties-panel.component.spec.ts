@@ -133,9 +133,6 @@ describe('ElementPropertiesPanelComponent', () => {
 
   /* Two tests below stub `console.error`. Without this the stub outlives them and swallows what
      Angular reports in every test declared after them - vitest does not restore mocks by default. */
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('should show a placeholder message when no element is selected', () => {
     expect(fixture.nativeElement.querySelector('.no-selection')?.textContent)

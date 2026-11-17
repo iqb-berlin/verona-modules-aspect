@@ -162,9 +162,6 @@ describe('ElementService', () => {
 
   /* One test replaces a FileService static to make the import fail; the spy would otherwise stay
      installed and let every later audio import fail for a reason invisible at its own site. */
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   /* Deleting elements takes exactly the selected ones, and no overlay is left to re-select and take
      them out of the selection -- the properties panel would go on offering their controls (#1258). */

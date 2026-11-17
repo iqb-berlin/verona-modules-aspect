@@ -48,7 +48,6 @@ describe('WakeLockService', () => {
     service.ngOnDestroy();
     // Removes the own property again, which uncovers the browser's own `wakeLock`, if it has one.
     delete (navigator as { wakeLock?: WakeLock }).wakeLock;
-    vi.restoreAllMocks();
   });
 
   it('should ask for a screen wake lock when a media element starts playing', fakeAsync(() => {

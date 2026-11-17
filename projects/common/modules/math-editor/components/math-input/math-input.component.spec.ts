@@ -28,9 +28,6 @@ describe('MathInputComponent', () => {
 
   /* window.mathVirtualKeyboard is a page-wide singleton, so a spy left on it outlives the test and
      hands its recorded calls to the next spy on the same method. */
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('should append the math field element to the input container', () => {
     expect(fixture.nativeElement.querySelector('math-field')).toBeTruthy();

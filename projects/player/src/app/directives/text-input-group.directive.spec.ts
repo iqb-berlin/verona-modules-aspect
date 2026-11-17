@@ -269,7 +269,6 @@ describe('TextInputGroupDirective', () => {
 
     afterEach(() => {
       fields.splice(0).forEach(field => field.remove());
-      vi.restoreAllMocks();
     });
 
     it('should keep the caret of a formula area in sight through the CaretScroller', fakeAsync(() => {
@@ -310,8 +309,6 @@ describe('TextInputGroupDirective', () => {
       elementFormControl: new UntypedFormControl(value),
       wordCount: signal<number>(0)
     }) as unknown as TextAreaComponent;
-
-    afterEach(() => vi.restoreAllMocks());
 
     it('should count the value the text area starts with', () => {
       const textArea = createTextArea(true, 'eins zwei drei');

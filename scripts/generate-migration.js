@@ -1,15 +1,17 @@
 const fs = require('fs');
 const path = require('path');
+const {
+  findStepClasses, registeredSteps, registerStep, loadUnitVersion
+} = require('./migration-steps');
 
 const from = process.argv[2];
 const to = process.argv[3];
 
+/* Stricter than UnitVersion, because the versions become file and class names: digits only, no
+   leading zeros, at most three parts. Which one comes first is UnitVersion's to say, as in the apps. */
 const isVersion = version => /^(0|[1-9]\d*)\.(0|[1-9]\d*)(\.(0|[1-9]\d*))?$/.test(version || '');
-/* Compares as UnitVersion in projects/common/utils does, which the script cannot import: a missing part
-   is 0. Keep the two in step. */
-const partsOf = version => [...version.split('.').map(Number), 0].slice(0, 3);
-const isAfter = (a, b) => partsOf(a).reduce((order, part, i) => order || Math.sign(part - partsOf(b)[i]), 0) > 0;
-if (!isVersion(from) || !isVersion(to) || !isAfter(to, from)) {
+const UnitVersion = loadUnitVersion();
+if (!isVersion(from) || !isVersion(to) || UnitVersion.compare(to, from) <= 0) {
   console.error('Usage: npm run generate-migration <fromVersion> <toVersion>, the second after the first');
   console.error('Example: npm run generate-migration 4.11 4.12 - the step then targets 4.12.0');
   process.exit(1);
@@ -99,33 +101,26 @@ if (fs.existsSync(specFilePath)) {
 console.log(`Test what the step transforms in ${specFileName}, next to the test of its target version`);
 
 /* Registers the step in MigrationManager: a step that is not in its list never runs, and no test sees
-   that - the specs run in a browser and cannot list the migrations directory. */
+   that - the specs run in a browser and cannot list the migrations directory. A kept step file is
+   registered under the name it exports, whatever this run would have called it. */
 const managerPath = path.join(projectRoot, 'projects/common/services/migration-manager.ts');
 const manager = fs.readFileSync(managerPath, 'utf8');
-/* A checkout with core.autocrlf ends its lines with \r\n: they are matched and written that way. */
-const eol = manager.includes('\r\n') ? '\r\n' : '\n';
-const lastImport = [
-  ...manager.matchAll(/^import \{ Migration\w+ \} from '\.\.\/migrations\/v[^']+\.migration';(?=\r?$)/gm)
-].pop();
-const lastStep = manager.match(/private static steps: MigrationStep\[\] = \[[^\]]*new \w+\(\)(?=\r?\n {2}\];)/);
-/* The import may be there without the step, if the step was taken out of the list by hand. */
-const isImported = new RegExp(`^import \\{[^}]*\\b${className}\\b[^}]*\\} from`, 'm').test(manager);
-if (new RegExp(`new ${className}\\(\\)`).test(manager)) {
-  console.log(`${className} is already registered in MigrationManager`);
-} else if (lastImport && lastStep) {
-  const importPath = `../migrations/${fileName.replace(/\.ts$/, '')}`;
-  const importLine = isImported ? '' : `${eol}import { ${className} } from '${importPath}';`;
-  const afterImport = lastImport.index + lastImport[0].length;
-  const afterLastStep = lastStep.index + lastStep[0].length;
-  fs.writeFileSync(managerPath, [
-    manager.slice(0, afterImport), importLine,
-    manager.slice(afterImport, afterLastStep), `,${eol}    new ${className}()`,
-    manager.slice(afterLastStep)
-  ].join(''));
-  console.log(`Registered ${className} in projects/common/services/migration-manager.ts`);
-} else {
-  console.error('Could not find where to register the step: add it to MigrationManager.steps by hand');
+const stepsInFile = findStepClasses().filter(step => step.file === fileName);
+const stepName = stepsInFile.length === 1 ? stepsInFile[0].exportedAs[0] : undefined;
+if (!stepName) {
+  console.error(`Found ${stepsInFile.length} step classes in ${fileName}: register the step in`
+    + ' MigrationManager.steps by hand');
   process.exitCode = 1;
+} else if (registeredSteps(manager).has(stepName)) {
+  console.log(`${stepName} is already registered in MigrationManager`);
+} else {
+  try {
+    fs.writeFileSync(managerPath, registerStep(manager, stepName, `../migrations/${fileName.replace(/\.ts$/, '')}`));
+    console.log(`Registered ${stepName} in projects/common/services/migration-manager.ts`);
+  } catch (error) {
+    console.error(`${error.message}: add ${stepName} to MigrationManager.steps by hand`);
+    process.exitCode = 1;
+  }
 }
 
 console.log(`Also: raise unit_definition_version to ${toVersion} in package.json and describe the change in

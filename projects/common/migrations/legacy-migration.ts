@@ -3,6 +3,13 @@
 /* eslint-disable class-methods-use-this */
 import { UnitTraversalMigration } from './unit-traversal-migration';
 
+/**
+ * Brings a unit of the 3.x model, from 3.10.0 on, to the shape of 4.0.0: what the sanitizer did on every
+ * load until the MigrationManager replaced it. It is the one step not named after its versions, as
+ * `npm run generate-migration` names the others (`Migration4m12To4m13` in `v4.12-to-v4.13.migration.ts`):
+ * it is older than that scheme and spans a major version rather than one minor step. The generator never
+ * writes or keeps this file, so the rule it holds to (#1693) does not reach it.
+ */
 export class MigrationLegacy extends UnitTraversalMigration {
   fromVersion = '3.10.0';
   /** 4.0.0, not 4.10.0: these transformations ARE the 4.0.0 changelog entries -- flat width/height to

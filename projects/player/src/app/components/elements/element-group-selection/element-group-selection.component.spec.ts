@@ -6,6 +6,8 @@ import { ClozeElement } from 'common/models/elements/cloze';
 import { ImageElement } from 'common/models/elements/image';
 import { UIElementType } from 'common/models/ui-element-interfaces';
 import { ElementFactory } from 'common/utils/element-factory';
+import { ComponentRegistry } from 'common/utils/component-registry';
+import { MarkingPanelComponent } from 'common/components/elements/marking-panel/marking-panel.component';
 import { ElementGroupName } from 'player/src/app/models/element-group.interface';
 import { StartsWithTextPipe } from 'player/modules/print/pipes/starts-with-text.pipe';
 import { ElementGroupSelectionComponent } from './element-group-selection.component';
@@ -94,6 +96,49 @@ describe('ElementGroupSelectionComponent', () => {
     @Input() pageIndex!: number;
   }
 
+  @Component({
+    selector: 'aspect-external-app-group-element',
+    template: '',
+    standalone: false
+  })
+  class ElementExternalAppGroupStubComponent {
+    @Input() elementModel!: UIElement;
+    @Input() pageIndex!: number;
+  }
+
+  @Component({
+    selector: 'aspect-widget-group-element',
+    template: '',
+    standalone: false
+  })
+  class ElementWidgetGroupStubComponent {
+    @Input() elementModel!: UIElement;
+    @Input() pageIndex!: number;
+  }
+
+  @Component({
+    selector: 'aspect-tetfolio-group-element',
+    template: '',
+    standalone: false
+  })
+  class ElementTetfolioGroupStubComponent {
+    @Input() elementModel!: UIElement;
+    @Input() pageIndex!: number;
+  }
+
+  /* StartsWithTextPipe on the wrapper asks the registry about every element, and the marking panel is
+     registered by the player's AppModule, which this spec does not load. A spy rather than a
+     registration, because the registry is shared with every spec that runs after this one. */
+  beforeEach(() => {
+    const getComponent = ComponentRegistry.getComponent;
+    vi.spyOn(ComponentRegistry, 'getComponent')
+      .mockImplementation(type => (type === 'marking-panel' ? MarkingPanelComponent : getComponent(type)));
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -106,6 +151,9 @@ describe('ElementGroupSelectionComponent', () => {
         ElementBaseGroupComponent,
         ElementInteractiveGroupComponent,
         ElementActionGroupComponent,
+        ElementExternalAppGroupStubComponent,
+        ElementWidgetGroupStubComponent,
+        ElementTetfolioGroupStubComponent,
         StartsWithTextPipe
       ]
     })
@@ -117,33 +165,69 @@ describe('ElementGroupSelectionComponent', () => {
     component = fixture.componentInstance;
   });
 
-  /* One row per case, named by the element type, so that a failure says which type went to the wrong
-     group. A type no group claims gets none and is played by the base group. */
-  const groupOfType: [UIElementType, ElementGroupName | undefined][] = [
-    ['text', 'textGroup'],
-    ['checkbox', 'inputGroup'],
-    ['radio', 'inputGroup'],
-    ['dropdown', 'inputGroup'],
-    ['drop-list', 'inputGroup'],
-    ['slider', 'inputGroup'],
-    ['text-field', 'textInputGroup'],
-    ['text-area', 'textInputGroup'],
-    ['spell-correct', 'textInputGroup'],
-    ['audio', 'mediaPlayerGroup'],
-    ['video', 'mediaPlayerGroup'],
-    ['likert', 'compoundGroup'],
-    ['cloze', 'compoundGroup'],
-    ['image', 'interactiveGroup'],
-    ['button', 'actionGroup'],
-    ['frame', undefined]
-  ];
+  /* Every element type, so that a new one is a compile error until this table says where it belongs.
+     A type no group claims - the children of a compound and the frame - is played by the base group. */
+  const groupOfType: Record<UIElementType, ElementGroupName | undefined> = {
+    text: 'textGroup',
+    button: 'actionGroup',
+    trigger: 'actionGroup',
+    'text-field': 'textInputGroup',
+    'text-area': 'textInputGroup',
+    'spell-correct': 'textInputGroup',
+    'text-area-math': 'textInputGroup',
+    'math-field': 'textInputGroup',
+    checkbox: 'inputGroup',
+    dropdown: 'inputGroup',
+    radio: 'inputGroup',
+    'radio-group-images': 'inputGroup',
+    'hotspot-image': 'inputGroup',
+    'drop-list': 'inputGroup',
+    slider: 'inputGroup',
+    audio: 'mediaPlayerGroup',
+    video: 'mediaPlayerGroup',
+    likert: 'compoundGroup',
+    cloze: 'compoundGroup',
+    table: 'compoundGroup',
+    image: 'interactiveGroup',
+    'math-table': 'interactiveGroup',
+    'marking-panel': 'interactiveGroup',
+    geometry: 'externalAppGroup',
+    'widget-periodic-table': 'widgetGroup',
+    'widget-molecule-editor': 'widgetGroup',
+    tetfolio: 'tetfolioGroup',
+    'text-field-simple': undefined,
+    'toggle-button': undefined,
+    'likert-row': undefined,
+    frame: undefined
+  };
 
-  it.each(groupOfType.map(([type, group]) => [type, group ?? 'no group', group] as const))(
-    'should give an element of type %s %s',
+  /* What the template renders for each group; the group decides which component plays the element.
+     textAreaMathGroup is a name no group in the component carries. */
+  const componentOfGroup: Record<Exclude<ElementGroupName, 'textAreaMathGroup'>, string> = {
+    textGroup: 'aspect-text-group-element',
+    actionGroup: 'aspect-action-group-element',
+    textInputGroup: 'aspect-text-input-group-element',
+    inputGroup: 'aspect-input-group-element',
+    mediaPlayerGroup: 'aspect-media-player-group-element',
+    compoundGroup: 'aspect-compound-group-element',
+    interactiveGroup: 'aspect-interactive-group-element',
+    externalAppGroup: 'aspect-external-app-group-element',
+    widgetGroup: 'aspect-widget-group-element',
+    tetfolioGroup: 'aspect-tetfolio-group-element'
+  };
+
+  const renderedChildren = (): string[] => Array
+    .from((fixture.nativeElement.querySelector('[data-element-id]') as HTMLElement).children)
+    .map(element => element.tagName.toLowerCase());
+
+  it.each((Object.keys(groupOfType) as UIElementType[])
+    .map(type => [type, groupOfType[type] ?? 'no group', groupOfType[type]] as const))(
+    'should give an element of type %s %s and render its component alone',
     (type, _, group) => {
       component.elementModel = ElementFactory.createElement({ type, id: 'id', alias: 'alias' });
       fixture.detectChanges();
-      expect(component.selectedGroup).toEqual(group);
+      expect(renderedChildren())
+        .toEqual([group && group !== 'textAreaMathGroup' ? componentOfGroup[group] : 'aspect-base-group-element']);
     }
   );
 

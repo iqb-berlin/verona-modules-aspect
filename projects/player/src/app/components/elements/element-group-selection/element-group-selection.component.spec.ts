@@ -201,9 +201,8 @@ describe('ElementGroupSelectionComponent', () => {
     frame: undefined
   };
 
-  /* What the template renders for each group; the group decides which component plays the element.
-     textAreaMathGroup is a name no group in the component carries. */
-  const componentOfGroup: Record<Exclude<ElementGroupName, 'textAreaMathGroup'>, string> = {
+  /* What the template renders for each group; the group decides which component plays the element. */
+  const componentOfGroup: Record<ElementGroupName, string> = {
     textGroup: 'aspect-text-group-element',
     actionGroup: 'aspect-action-group-element',
     textInputGroup: 'aspect-text-input-group-element',
@@ -227,7 +226,7 @@ describe('ElementGroupSelectionComponent', () => {
       component.elementModel = ElementFactory.createElement({ type, id: 'id', alias: 'alias' });
       fixture.detectChanges();
       expect(renderedChildren())
-        .toEqual([group && group !== 'textAreaMathGroup' ? componentOfGroup[group] : 'aspect-base-group-element']);
+        .toEqual([group ? componentOfGroup[group] : 'aspect-base-group-element']);
     }
   );
 

@@ -6,6 +6,7 @@ import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
 import { StateVariable, StateVariableProperties } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
+import { UnitVersion } from 'common/utils/unit-version';
 import { DropListElement } from 'common/models/elements/drop-list';
 import { AbstractIDService } from 'common/models/id-interfaces';
 import { InstantiationEror } from 'common/classes/instantiation-error';
@@ -21,7 +22,9 @@ export class Unit implements UnitProperties {
 
   constructor(unit?: UnitProperties, idService?: AbstractIDService) {
     if (unit && isValid(unit)) {
-      this.version = unit.version;
+      /* The current version rather than the unit's own: isValid takes 4.13 for 4.13.0, and a player
+         released before #1679 refuses 4.13 as newer, so it is saved in the form every player reads. */
+      this.version = VersionManager.getCurrentVersion();
       this.stateVariables = unit.stateVariables
         .map(variable => new StateVariable(variable.id, variable.alias ?? variable.id, variable.value));
       this.pages = this.createPages(unit, idService);
@@ -102,7 +105,7 @@ function isValid(blueprint?: UnitProperties): boolean {
       blueprint.stateVariables[0].alias === undefined) {
     return false;
   }
-  return blueprint.version === VersionManager.getCurrentVersion() &&
+  return UnitVersion.equals(blueprint.version, VersionManager.getCurrentVersion()) &&
     blueprint.stateVariables !== undefined &&
     blueprint.type !== undefined &&
     blueprint.pages !== undefined &&

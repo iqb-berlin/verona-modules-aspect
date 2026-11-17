@@ -53,10 +53,6 @@ describe('StateVariablesDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should add a state variable', () => {
     component.addStateVariable();
     expect(component.stateVariables.length).toBe(2);

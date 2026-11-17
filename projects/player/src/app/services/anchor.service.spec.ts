@@ -13,10 +13,6 @@ describe('AnchorService', () => {
     service.reset();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('toggleAnchorRendering', () => {
     let anchor: HTMLElement;
     let nestedAnchor: HTMLElement;

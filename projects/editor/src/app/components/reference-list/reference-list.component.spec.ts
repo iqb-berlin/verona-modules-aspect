@@ -42,10 +42,6 @@ describe('ReferenceListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the given references', () => {
     component.refs = [createReferenceList('from_input', ['ref_b', 'ref_c'])];
     fixture.detectChanges();

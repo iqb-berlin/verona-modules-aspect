@@ -46,10 +46,6 @@ describe('SliderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display the label only if it is set', () => {
     component.elementModel.label = '';
     fixture.detectChanges();

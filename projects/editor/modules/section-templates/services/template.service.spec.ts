@@ -74,10 +74,6 @@ describe('TemplateService', () => {
     service = TestBed.inject(TemplateService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should replace the empty selected section with the created template section', async () => {
     mockDialogResult(text3Result);
 

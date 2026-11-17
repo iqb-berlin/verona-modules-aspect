@@ -44,10 +44,6 @@ describe('ElementListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render no list item for an empty element list', () => {
     expect(fixture.nativeElement.querySelectorAll('mat-list-item').length).toBe(0);
   });

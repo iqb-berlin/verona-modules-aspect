@@ -77,10 +77,6 @@ describe('InputWizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with default values', () => {
     expect(component.answerCount).toBe(1);
     expect(component.numbering).toBe('latin');

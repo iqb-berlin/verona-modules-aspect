@@ -37,10 +37,6 @@ describe('ClozeChildErrorMessageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display error message when form control has errors', () => {
     component.elementFormControl.setErrors({ required: true });
     fixture.detectChanges();

@@ -43,10 +43,6 @@ describe('UnitStateService', () => {
     service = TestBed.inject(UnitStateService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should get element by id', () => {
     const element1: Response & { alias: string } = {
       id: 'element_1', alias: 'element_1_alias', status: 'DISPLAYED', value: 'TEST1'

@@ -75,10 +75,6 @@ describe('SelectionService', () => {
     expect(service.isSelectionDynamicallyPositioned).toBe(false);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   const setSelected = vi.fn();
 
   const selectAnElement = (multiSelect: boolean = false, section: Section = new Section()): void => {

@@ -62,10 +62,6 @@ describe('TextFieldComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should use the form control of the parent form', () => {
     expect(component.elementFormControl).toBe(component.parentForm.controls['test-id']);
   });

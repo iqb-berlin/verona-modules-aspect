@@ -155,10 +155,6 @@ describe('TextInputGroupDirective', () => {
     expect(keyInputRestrictionService.detachFrom).toHaveBeenCalled();
   });
 
-  it('should create an instance', () => {
-    expect(directive).toBeTruthy();
-  });
-
   it('should allow a paste that fits into the maximum length', () => {
     inputElement.value = 'ab';
 

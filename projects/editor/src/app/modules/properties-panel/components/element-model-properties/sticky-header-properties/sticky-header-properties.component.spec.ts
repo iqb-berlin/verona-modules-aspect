@@ -40,10 +40,6 @@ describe('StickyHeaderPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit the new value', () => {
     const emitted: { property: string; value: boolean }[] = [];
     component.updateModel.subscribe(update => emitted.push(update));

@@ -36,10 +36,6 @@ describe('TextFieldNodeviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should pass the element model to the text field component', () => {
     const child = fixture.debugElement.query(By.directive(MockTextFieldSimpleComponent));
     expect(child.injector.get(MockTextFieldSimpleComponent).elementModel).toBe(model);

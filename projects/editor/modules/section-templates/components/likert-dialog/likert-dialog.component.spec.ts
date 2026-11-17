@@ -75,10 +75,6 @@ describe('LikertWizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with empty texts, options and rows', () => {
     expect(component.text1).toBe('');
     expect(component.text2).toBe('');

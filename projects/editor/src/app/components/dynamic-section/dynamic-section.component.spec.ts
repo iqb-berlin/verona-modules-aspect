@@ -95,10 +95,6 @@ describe('DynamicSectionComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render one overlay per section element and hand the element down', () => {
     const overlays = fixture.debugElement.queryAll(By.directive(MockDynamicOverlayComponent));
 

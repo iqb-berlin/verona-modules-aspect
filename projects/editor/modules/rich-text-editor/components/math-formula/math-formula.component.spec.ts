@@ -31,10 +31,6 @@ describe('MathFormulaNodeviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render formula on init', () => {
     expect(component.formula).toBe('\\frac{1}{2}');
     expect(component.sanitizedFormula).toBeTruthy();

@@ -1,17 +1,6 @@
-import { TestBed } from '@angular/core/testing';
 import { TextMarkingUtils } from './text-marking-utils';
 
 describe('TextMarkingUtils', () => {
-  let utils: TextMarkingUtils;
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    utils = TestBed.inject(TextMarkingUtils);
-  });
-
-  it('should be created', () => {
-    expect(utils).toBeTruthy();
-  });
-
   it('should get an array with selections ', () => {
     const text =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';

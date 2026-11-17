@@ -50,10 +50,6 @@ describe('MarkingPanelPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the highlight properties for marking panels', () => {
     const highlightProperties = fixture.debugElement.query(By.directive(MockHighlightPropertiesComponent));
     expect(highlightProperties).not.toBeNull();

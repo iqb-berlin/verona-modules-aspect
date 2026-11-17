@@ -44,12 +44,6 @@ describe('MarkableWordComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    initComponent(undefined);
-
-    expect(component).toBeTruthy();
-  });
-
   it('should show its text', () => {
     initComponent(undefined);
 

@@ -12,10 +12,6 @@ describe('SafeResourceUrlPipe', () => {
     pipe = new SafeResourceUrlPipe(sanitizer);
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should bypass security with the given URL', () => {
     const bypassSpy = vi.spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
     pipe.transform('data:image/png;base64,abc');

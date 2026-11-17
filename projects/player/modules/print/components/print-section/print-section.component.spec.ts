@@ -76,12 +76,6 @@ describe('PrintSectionComponent', () => {
     component.section = createSection([createElement('text-field_1')], false);
   });
 
-  it('should create', () => {
-    fixture.detectChanges();
-
-    expect(component).toBeTruthy();
-  });
-
   it('should print every element of a static section', () => {
     component.section = createSection([createElement('text-field_1'), createElement('text-field_2')], false);
 

@@ -55,10 +55,6 @@ describe('SizeInputPanelComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the given label', () => {
     expect(fixture.nativeElement.textContent).toContain('Breite 1');
   });

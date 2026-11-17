@@ -50,10 +50,6 @@ describe('PlayerStateDirective', () => {
     );
   });
 
-  it('should create an instance', () => {
-    expect(directive).toBeTruthy();
-  });
-
   it('should report the visible pages as valid pages', fakeAsync(() => {
     initDirective();
 

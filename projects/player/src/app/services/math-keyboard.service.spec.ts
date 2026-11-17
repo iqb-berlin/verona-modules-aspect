@@ -15,10 +15,6 @@ describe('MathKeyboardService', () => {
     elementComponent = { domElement: document.createElement('div') } as unknown as MathFieldComponent;
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should open for a focused math input', () => {
     const isOpen = service.toggle({ inputElement, focused: true }, elementComponent);
 

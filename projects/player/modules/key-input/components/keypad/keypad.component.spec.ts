@@ -40,10 +40,6 @@ describe('KeypadComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize layout in ngOnInit', () => {
     const expectedLayout = KeyLayout.get('numbers', '', false);
     component.ngOnInit();

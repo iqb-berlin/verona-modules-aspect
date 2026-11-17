@@ -121,10 +121,6 @@ describe('OptionsFieldSetComponent', () => {
     });
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* The two captions came from the grab bag. They belong to the likert - `label` is the caption of
      the options table, `label2` the caption of its first column - and this component already read
      Merged<LikertProperties>, so they came home rather than into another catch-all. The dropdown and

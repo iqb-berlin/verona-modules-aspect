@@ -58,10 +58,6 @@ describe('ImagePropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* The alternative text moved here from the grab bag when this component was renamed from
      scale-and-zoom to image: it is ImageProperties.alt, the HTML alt attribute of the <img>, shown
      when the image fails to load and read by screen readers. */

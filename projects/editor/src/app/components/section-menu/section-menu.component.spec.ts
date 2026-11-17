@@ -120,10 +120,6 @@ describe('SectionMenuComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should delegate property changes to the section service', () => {
     component.updateModel('backgroundColor', '#000000');
 

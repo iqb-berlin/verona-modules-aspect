@@ -65,10 +65,6 @@ describe('CheckboxComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* In a gap the message belongs to the gap, and only the shared one carries a border and a background
      of its own; `mat-error` would print red letters onto the running text (#1052). */
   describe('required message', () => {

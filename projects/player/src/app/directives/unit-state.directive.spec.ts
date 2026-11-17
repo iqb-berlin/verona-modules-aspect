@@ -94,10 +94,6 @@ describe('UnitStateDirective', () => {
     );
   });
 
-  it('should create an instance', () => {
-    expect(directive).toBeTruthy();
-  });
-
   it('should send the collected responses as unit state', fakeAsync(() => {
     initDirective();
 

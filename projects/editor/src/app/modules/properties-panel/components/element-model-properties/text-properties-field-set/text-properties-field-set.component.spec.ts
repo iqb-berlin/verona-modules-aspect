@@ -109,10 +109,6 @@ describe('TextPropsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should collect the ids and aliases of all marking panels', () => {
     expect(component.markingPanelIDs).toEqual([['marking_panel_1', 'Panel 1']]);
   });

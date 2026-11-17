@@ -85,10 +85,6 @@ describe('DroplistWizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with default options and no variant', () => {
     expect(component.templateVariant).toBeUndefined();
     expect(component.options.optionWidth).toBe('short');

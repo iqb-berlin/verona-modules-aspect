@@ -55,10 +55,6 @@ describe('SectionInsertDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* The state of reading is a symbol in front of the status line, the text keeps the colour of the dialog (#1520). */
   describe('status line', () => {
     const statusLine = (): HTMLElement => fixture.nativeElement.querySelector('.message-area');

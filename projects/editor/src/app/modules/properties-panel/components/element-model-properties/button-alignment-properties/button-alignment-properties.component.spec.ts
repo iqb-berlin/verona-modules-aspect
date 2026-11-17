@@ -35,10 +35,6 @@ describe('ButtonAlignmentPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should offer both alignments', async () => {
     select().nativeElement.click();
     fixture.detectChanges();

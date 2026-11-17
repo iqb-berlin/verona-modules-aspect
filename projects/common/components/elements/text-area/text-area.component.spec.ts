@@ -76,10 +76,6 @@ describe('TextAreaComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display the label', () => {
     component.elementModel.label = 'Test Label';
     fixture.detectChanges();

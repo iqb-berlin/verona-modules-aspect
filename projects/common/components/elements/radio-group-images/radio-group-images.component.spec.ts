@@ -70,10 +70,6 @@ describe('RadioGroupImagesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render one radio button with a text image panel per option', () => {
     const radioButtons = fixture.nativeElement.querySelectorAll('mat-radio-button');
     expect(radioButtons.length).toBe(3);

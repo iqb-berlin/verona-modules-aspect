@@ -132,8 +132,7 @@ describe('UnitViewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should start with the pages loaded and shown as a list', () => {
     expect(component.pagesLoaded).toBe(true);
     expect(component.showPagesAsList).toBe(true);
   });

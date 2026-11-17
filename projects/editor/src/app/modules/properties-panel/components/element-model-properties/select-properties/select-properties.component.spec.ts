@@ -77,10 +77,6 @@ describe('SelectPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   /* alignment and verticalOrientation moved here from the grab bag: they belong to the radio group
      and the toggle button, both of which this component already served. The baseline says the move
      is order-neutral - alignment renders directly before strikeOtherOptions for the radio group,

@@ -29,10 +29,6 @@ describe('WidgetMoleculeEditorComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit widget call event', () => {
     vi.spyOn(component.widgetCallEvent, 'emit');
     component.emitWidgetCall();

@@ -7,10 +7,6 @@ describe('MediaPlayerTimeFormatPipe', () => {
     pipe = new MediaPlayerTimeFormatPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should format zero as 00:00', () => {
     expect(pipe.transform(0)).toBe('00:00');
   });

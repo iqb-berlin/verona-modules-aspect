@@ -32,10 +32,6 @@ describe('TimerManager', () => {
     manager = new TimerManager(stateVariableStateService);
   });
 
-  it('should create an instance', () => {
-    expect(manager).toBeTruthy();
-  });
-
   it('should write the value into the state variable every second', fakeAsync(() => {
     manager.initTimer('timer-1', 3000);
     manager.runTimer();

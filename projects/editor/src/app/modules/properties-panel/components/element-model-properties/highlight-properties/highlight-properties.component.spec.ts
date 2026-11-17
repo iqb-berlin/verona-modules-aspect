@@ -37,10 +37,6 @@ describe('HighlightPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render a checkbox for every highlight color', () => {
     const labels = Array.from(
       fixture.nativeElement.querySelectorAll('mat-checkbox') as NodeListOf<HTMLElement>

@@ -10,10 +10,6 @@ describe('GeometryVariableStateService', () => {
     service = TestBed.inject(GeometryVariableStateService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should register an element code with NOT_REACHED as default status', () => {
     service.registerElementCode('geometry_1_area', 'area', null);
 

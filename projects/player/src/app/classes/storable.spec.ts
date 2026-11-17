@@ -11,8 +11,7 @@ describe('Storable', () => {
     storable.valueChanged.subscribe(change => valueChanges.push(change));
   });
 
-  it('should create an instance', () => {
-    expect(storable).toBeTruthy();
+  it('should take its id and value from the constructor', () => {
     expect(storable.id).toBe('section-0-1');
     expect(storable.value).toBe(0);
   });

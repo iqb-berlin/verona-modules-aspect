@@ -175,12 +175,6 @@ describe('CompoundGroupElementComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    initComponent(new LikertElement({ id: 'likert_1', alias: 'likert_1' }));
-
-    expect(component).toBeTruthy();
-  });
-
   it('should show the component matching the element type', () => {
     initComponent(new LikertElement({ id: 'likert_1', alias: 'likert_1' }));
     expect(fixture.debugElement.query(By.directive(LikertStubComponent))).toBeTruthy();

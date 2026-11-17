@@ -69,10 +69,6 @@ describe('MultiLineTextPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the row count and hide the expected characters while the row count is fixed', () => {
     expect(inputs().length).toBe(1);
     expect(inputs()[0].nativeElement.value).toBe('3');

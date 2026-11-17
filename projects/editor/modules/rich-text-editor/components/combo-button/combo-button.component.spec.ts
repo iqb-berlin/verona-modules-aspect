@@ -46,10 +46,6 @@ describe('ComboButtonComponent', () => {
     return Array.from(document.querySelectorAll<HTMLElement>('mat-option'));
   };
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the icon', () => {
     expect(fixture.nativeElement.querySelector('mat-icon').textContent).toContain('format_size');
   });

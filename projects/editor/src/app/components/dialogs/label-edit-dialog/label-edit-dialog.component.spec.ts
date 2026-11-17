@@ -96,10 +96,6 @@ describe('LabelEditDialogComponent', () => {
       await configureTestBed(label);
     });
 
-    it('should create', () => {
-      expect(component).toBeTruthy();
-    });
-
     it('should edit a copy of the injected label', () => {
       expect(component.newLabel).toEqual(label);
       expect(component.newLabel).not.toBe(label);

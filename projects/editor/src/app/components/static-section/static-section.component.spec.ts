@@ -54,10 +54,6 @@ describe('StaticSectionComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render one overlay per section element', () => {
     expect(fixture.nativeElement.querySelectorAll('aspect-editor-static-overlay').length).toBe(2);
   });

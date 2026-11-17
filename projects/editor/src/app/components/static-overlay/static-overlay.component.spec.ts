@@ -63,10 +63,6 @@ describe('StaticOverlayComponent', () => {
     component.element = draggedElement;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should resize the element relative to the size at drag start', () => {
     component.resizeDragStart();
 

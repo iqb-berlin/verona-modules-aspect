@@ -36,10 +36,6 @@ describe('ButtonNodeviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should pass the element model to the button component', () => {
     const child = fixture.debugElement.query(By.directive(MockButtonComponent));
     expect(child.injector.get(MockButtonComponent).elementModel).toBe(model);

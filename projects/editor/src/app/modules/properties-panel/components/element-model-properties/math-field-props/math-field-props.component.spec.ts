@@ -30,10 +30,6 @@ describe('MathFieldPropsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the mode switch checkbox unchecked', () => {
     const checkbox = fixture.nativeElement.querySelector('mat-checkbox') as HTMLElement;
     expect(checkbox.textContent).toContain('propertiesPanel.enableModeSwitch');

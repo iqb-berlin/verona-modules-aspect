@@ -68,10 +68,6 @@ describe('TextFieldElementPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize the pattern form control with the current pattern', () => {
     expect(component.regexPatternFormControl.value).toBe('[a-z]+');
   });

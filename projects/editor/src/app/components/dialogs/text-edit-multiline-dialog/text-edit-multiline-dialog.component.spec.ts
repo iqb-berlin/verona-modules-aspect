@@ -42,10 +42,6 @@ describe('TextEditMultilineDialogComponent', () => {
   const getActionButtons = (): HTMLButtonElement[] => Array
     .from(fixture.nativeElement.querySelectorAll('.mat-mdc-dialog-actions button') as NodeListOf<HTMLButtonElement>);
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should prefill the textarea with the injected multiline text', () => {
     expect(getTextarea().value).toBe('Zeile 1\nZeile 2');
   });

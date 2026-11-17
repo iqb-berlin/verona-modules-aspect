@@ -67,10 +67,6 @@ describe('ClozeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the document content', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('p')?.textContent).toContain('Test text');

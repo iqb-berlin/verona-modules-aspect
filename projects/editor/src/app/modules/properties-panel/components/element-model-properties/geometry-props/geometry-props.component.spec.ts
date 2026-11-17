@@ -108,10 +108,6 @@ describe('GeometryPropsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the input bar setting and emit it when toggled', () => {
     const checkbox = Array.from(
       fixture.nativeElement.querySelectorAll('aspect-merged-checkbox') as NodeListOf<HTMLElement>

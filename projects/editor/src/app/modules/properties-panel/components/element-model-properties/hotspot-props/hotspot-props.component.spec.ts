@@ -60,10 +60,6 @@ describe('HotspotPropsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render a row for every hotspot', () => {
     const rows = fixture.nativeElement.querySelectorAll('.option-draggable');
     expect(rows.length).toBe(2);

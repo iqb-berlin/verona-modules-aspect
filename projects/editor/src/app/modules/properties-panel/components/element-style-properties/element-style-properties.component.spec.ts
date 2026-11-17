@@ -77,10 +77,6 @@ describe('ElementStylePropertiesComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render fields for the given style properties only', () => {
     const labels = Array.from(
       fixture.nativeElement.querySelectorAll('mat-label') as NodeListOf<HTMLElement>

@@ -27,10 +27,6 @@ describe('TextMarkingButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should toggle the selection state and emit it on selectMarking', () => {
     const emitSpy = vi.spyOn(component.selectedMarkingChanged, 'emit');
     component.selectMarking();

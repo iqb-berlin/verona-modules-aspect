@@ -95,6 +95,18 @@ describe('UnitService - rapid load handling', () => {
       .toHaveBeenCalledWith('unitDefError.UNIT_DEFINITION_OUTDATED', expect.anything());
   });
 
+  /* 4.13 is the current 4.13.0: the unit loads instead of being refused as newer, and it goes back to the
+     host as 4.13.0, the form a player released before #1679 reads too. */
+  it('loads a unit at the current version written with two parts and reports it in three', () => {
+    const [major, minor] = VersionManager.getCurrentVersion().split('.');
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('short', `${major}.${minor}`)));
+
+    expect(dialogServiceSpy.showUnitDefErrorDialog).not.toHaveBeenCalled();
+    expect(service.unit.stateVariables[0].id).toBe('short');
+    expect(service.unit.version).toBe(VersionManager.getCurrentVersion());
+    expect(veronaApiServiceSpy.sendChanged).toHaveBeenCalled();
+  });
+
   /* Until #1578 the dialog showed the parser's English message; it is left to the console now, under the code. */
   describe('a definition that fails', () => {
     beforeEach(() => {

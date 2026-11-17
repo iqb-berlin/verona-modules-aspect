@@ -42,10 +42,6 @@ describe('FloatingKeypadComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should start without overlay positions', () => {
     expect(component.overlayPositions).toEqual([]);
   });

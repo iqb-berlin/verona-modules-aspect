@@ -45,10 +45,6 @@ describe('MathTableComponent', () => {
     fixture.detectChanges();
   };
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should create an addition model with term, helper and result rows', () => {
     expect(component.tableModel.length).toBe(4);
     expect(component.tableModel[0].rowType).toBe('normal');

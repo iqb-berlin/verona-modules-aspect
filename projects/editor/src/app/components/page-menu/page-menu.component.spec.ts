@@ -84,10 +84,6 @@ describe('PageMenu', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should move the selected page and announce the new page order', () => {
     selectionService.selectedPageIndex = 1;
     let orderChanged = false;

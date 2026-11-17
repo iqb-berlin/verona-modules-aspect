@@ -30,10 +30,6 @@ describe('ElementGroupDirective', () => {
     domElement = document.createElement('div');
   });
 
-  it('should create an instance', () => {
-    expect(directive).toBeTruthy();
-  });
-
   it('should register an element code together with its page index', () => {
     directive.registerAtUnitStateService(
       'text-field_1', 'alias_1', 'value', createElementComponent(true), 3

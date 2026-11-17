@@ -83,10 +83,6 @@ describe('PlayerLayoutComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should animate a single keypad toggle', fakeAsync(() => {
     keypadService.willToggle.emit(true);
 

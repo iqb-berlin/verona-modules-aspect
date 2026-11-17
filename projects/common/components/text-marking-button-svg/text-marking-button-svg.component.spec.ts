@@ -16,12 +16,6 @@ describe('TextMarkingButtonSvgComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    component.buttonType = 'selection';
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should render exactly one icon for every button type', () => {
     const buttonTypes: ('selection' | 'word' | 'range' | 'delete')[] = ['selection', 'word', 'range', 'delete'];
     buttonTypes.forEach(buttonType => {

@@ -76,10 +76,6 @@ describe('PageScrollButtonComponent', () => {
     expect(host.scrollTop).toBe(0);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show itself while there is content below the visible area', () => {
     component.onScroll(scrollableElement(0));
 

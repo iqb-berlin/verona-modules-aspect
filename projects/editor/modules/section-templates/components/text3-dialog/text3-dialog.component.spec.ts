@@ -52,10 +52,6 @@ describe('Text3WizardDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render five text editors', () => {
     const editors = fixture.debugElement.queryAll(By.directive(MockRichTextEditorComponent));
     expect(editors.length).toBe(5);

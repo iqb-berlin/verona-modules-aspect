@@ -42,10 +42,6 @@ describe('MathKeyboardContainerComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should offer its container element to the math virtual keyboard', () => {
     expect(window.mathVirtualKeyboard.container)
       .toBe(fixture.debugElement.query(By.css('.math-keyboard-container')).nativeElement);

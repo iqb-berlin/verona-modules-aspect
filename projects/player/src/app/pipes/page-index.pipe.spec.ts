@@ -10,10 +10,6 @@ describe('PageIndexPipe', () => {
     pages = [new Page(), new Page(), new Page()];
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should transform pages to the index of the given page', () => {
     expect(pipe.transform(pages, pages[0])).toBe(0);
     expect(pipe.transform(pages, pages[1])).toBe(1);

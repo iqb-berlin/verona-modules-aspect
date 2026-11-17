@@ -55,11 +55,6 @@ describe('TetfolioComponent', () => {
     }).compileComponents();
   });
 
-  it('should create', () => {
-    createComponent('');
-    expect(component).toBeTruthy();
-  });
-
   it('should show the placeholder and no iframe without content', () => {
     createComponent('');
     expect(component.iframeContent).toBeNull();

@@ -91,10 +91,6 @@ describe('TablePropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should derive the minimum row and column count from the child elements', () => {
     expect(component.maxRowIndex).toBe(2);
     expect(component.maxColIndex).toBe(3);

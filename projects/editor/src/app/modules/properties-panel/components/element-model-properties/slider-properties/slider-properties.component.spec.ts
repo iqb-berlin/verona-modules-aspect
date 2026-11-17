@@ -65,10 +65,6 @@ describe('SliderPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the current min and max values and the preset', () => {
     const inputs = Array.from(
       fixture.nativeElement.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>

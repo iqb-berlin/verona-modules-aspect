@@ -52,10 +52,6 @@ describe('ImageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the image when src is set', () => {
     const image = fixture.nativeElement.querySelector('img') as HTMLImageElement;
     expect(image).not.toBeNull();

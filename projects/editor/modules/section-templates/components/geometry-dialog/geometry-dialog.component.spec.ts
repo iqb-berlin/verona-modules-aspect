@@ -68,10 +68,6 @@ describe('GeometryWizardDialogComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize with helper enabled and no app definition', () => {
     expect(component.showHelper).toBe(true);
     expect(component.geometryAppDefinition).toBeUndefined();

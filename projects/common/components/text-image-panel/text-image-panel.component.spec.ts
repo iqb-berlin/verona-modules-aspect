@@ -46,10 +46,6 @@ describe('TextImagePanelComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render the label text as HTML', () => {
     const textElement: HTMLElement = fixture.nativeElement.querySelector('.text');
     expect(textElement).toBeTruthy();

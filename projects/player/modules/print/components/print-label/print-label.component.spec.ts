@@ -28,10 +28,6 @@ describe('PrintLabelComponent', () => {
     fixture.destroy();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the alias of the element in an overlay', () => {
     const label = document.querySelector('.print-label-overlay .element-label');
 

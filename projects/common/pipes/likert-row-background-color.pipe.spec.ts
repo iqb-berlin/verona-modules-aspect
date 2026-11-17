@@ -7,10 +7,6 @@ describe('LikertRowBackgroundColorPipe', () => {
     pipe = new LikertRowBackgroundColorPipe();
   });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should return the first line color for the first row with first line coloring', () => {
     expect(pipe.transform(true, 'lightblue', true, 'yellow', 0)).toBe('yellow');
     expect(pipe.transform(false, 'lightblue', true, 'yellow', 0)).toBe('yellow');

@@ -57,10 +57,6 @@ describe('TextMarkingBarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should render one button per enabled color plus a delete button', () => {
     const buttons = fixture.debugElement.queryAll(By.directive(MockTextMarkingButtonComponent));
     expect(buttons.length).toBe(3);

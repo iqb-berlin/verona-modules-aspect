@@ -29,10 +29,6 @@ describe('ImageMagnifierComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should emit elementValueChanged on first mousemove only', () => {
     const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
     component.onMousemove({ offsetX: 10, offsetY: 10 } as MouseEvent);

@@ -17,10 +17,6 @@ describe('NativeEventService', () => {
     service = TestBed.inject(NativeEventService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should report the focus state on window focus and blur', () => {
     const focusStates: boolean[] = [];
     service.focus.subscribe(state => focusStates.push(state));

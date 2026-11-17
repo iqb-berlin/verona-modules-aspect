@@ -67,10 +67,6 @@ describe('HotspotImageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should not render anything without src', () => {
     component.elementModel.src = null;
     fixture.detectChanges();

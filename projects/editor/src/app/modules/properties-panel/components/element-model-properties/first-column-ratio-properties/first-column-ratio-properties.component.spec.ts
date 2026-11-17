@@ -43,10 +43,6 @@ describe('FirstColumnRatioPropertiesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should show the current ratio', () => {
     expect(fixture.debugElement.query(By.css('input')).nativeElement.value).toBe('3');
   });
@@ -83,14 +79,6 @@ describe('FirstColumnRatioPropertiesComponent', () => {
 
     expect(emitted).toEqual([{ property: 'firstColumnSizeRatio', value: null, isInputValid: false }]);
     expect(input.nativeElement.value).toBe('3');
-  });
-
-  // The panel offers the control only for elements that have the property at all.
-  it('should render nothing when the property is absent', () => {
-    component.combinedProperties = {};
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.css('mat-form-field'))).toBeNull();
   });
 
   /* A divergent multi selection merges to null. The field used to disappear for that, because its

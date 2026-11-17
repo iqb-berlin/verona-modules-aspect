@@ -26,10 +26,6 @@ describe('ScrollPagesPipe', () => {
 
   const pipe = new ScrollPagesPipe();
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should transform 3 pages to 2 scroll pages', () => {
     const pages = [page, page, { ...page, alwaysVisible: true } as Page];
     expect(pipe.transform(pages).length).toBe(2);

@@ -31,10 +31,6 @@ describe('KeyInputRestrictionService', () => {
     inputElement.remove();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should allow an allowed key', () => {
     attach();
 

@@ -9,7 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  root, migrationsDir, managerPath, findStepClasses, registeredSteps
+  root, migrationsDir, managerPath, findStepClasses, stepProblems, registeredSteps
 } = require('./migration-steps');
 
 const steps = findStepClasses();
@@ -19,8 +19,12 @@ if (!steps.length) {
   console.error(`Found no migration step in ${migrationsDir}: has the way a step is declared changed?`);
   process.exitCode = 1;
 }
+stepProblems(steps).forEach(({ message }) => {
+  console.error(message);
+  process.exitCode = 1;
+});
 steps
-  .filter(({ exportedAs }) => !exportedAs.some(name => registered.has(name)))
+  .filter(({ exportedAs }) => exportedAs.length > 0 && !exportedAs.some(name => registered.has(name)))
   .forEach(({ file, className }) => {
     console.error(`${className} (${file}) is not registered in MigrationManager.steps in ${managerPath}`
       + ' - register it, or declare it abstract if it is a base for other steps');

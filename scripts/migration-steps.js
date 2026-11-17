@@ -8,6 +8,10 @@
  * directory, or under a name it was imported as. It is exported by `export class` or by an
  * `export { … }` list, under its own name or an alias. Registered is what the `steps` array of
  * MigrationManager constructs, again under any imported name.
+ *
+ * Steps are matched by name, so a step has to be a named export, and no two steps may share a name.
+ * `stepProblems` names the steps that break this, so that the check says so instead of calling them
+ * unregistered or passing them unseen (#1693).
  */
 const fs = require('fs');
 const path = require('path');
@@ -17,6 +21,9 @@ const root = path.join(__dirname, '..');
 const migrationsDir = 'projects/common/migrations';
 const managerPath = 'projects/common/services/migration-manager.ts';
 const stepBases = ['UnitTraversalMigration', 'MigrationStep'];
+
+/** What a class is called that a default export leaves without a name. */
+const NAMELESS = '(nameless class)';
 
 const parse = (fileName, text) => ts.createSourceFile(fileName, text, ts.ScriptTarget.Latest, true);
 const hasModifier = (node, flag) => (ts.getCombinedModifierFlags(node) & flag) !== 0;
@@ -28,12 +35,20 @@ const importedNames = sourceFile => new Map(sourceFile.statements
   .flatMap(node => node.importClause.namedBindings.elements
     .map(element => [element.name.text, (element.propertyName || element.name).text])));
 
-/** The names `export { … }` lists without a module export a local name under: `export { A as B }` gives A → B. */
-const listedExports = sourceFile => sourceFile.statements
-  .filter(node => ts.isExportDeclaration(node) && !node.moduleSpecifier && node.exportClause &&
-    ts.isNamedExports(node.exportClause))
-  .flatMap(node => node.exportClause.elements
-    .map(element => [(element.propertyName || element.name).text, element.name.text]));
+/**
+ * The names a file exports a local name under apart from its declaration: `export { A as B }` gives
+ * A → B, `export default A` gives A → default.
+ */
+const listedExports = sourceFile => sourceFile.statements.flatMap(node => {
+  if (ts.isExportDeclaration(node) && !node.moduleSpecifier && node.exportClause &&
+      ts.isNamedExports(node.exportClause)) {
+    return node.exportClause.elements.map(element => [(element.propertyName || element.name).text, element.name.text]);
+  }
+  if (ts.isExportAssignment(node) && !node.isExportEquals && ts.isIdentifier(node.expression)) {
+    return [[node.expression.text, 'default']];
+  }
+  return [];
+});
 
 /** Every source file below a directory, specs left out, as a path relative to that directory. */
 const sourceFilesBelow = (dir, prefix = '') => fs.readdirSync(dir, { withFileTypes: true })
@@ -44,8 +59,9 @@ const sourceFilesBelow = (dir, prefix = '') => fs.readdirSync(dir, { withFileTyp
   });
 
 /**
- * The step classes below the migrations directory: their file (relative to it), their name and the
- * names they are exported under.
+ * The step classes below the migrations directory, exported or not: their file (relative to it), their
+ * name, the names they are exported under, and whether they are a default export, which is no name to
+ * match.
  */
 function findStepClasses() {
   const dir = path.join(root, migrationsDir);
@@ -54,18 +70,26 @@ function findStepClasses() {
     const imported = importedNames(sourceFile);
     const listed = listedExports(sourceFile);
     return sourceFile.statements
-      .filter(node => ts.isClassDeclaration(node) && node.name)
-      .map(node => ({
-        file,
-        className: node.name.text,
-        exportedAs: [
-          ...(hasModifier(node, ts.ModifierFlags.Export) ? [node.name.text] : []),
-          ...listed.filter(([local]) => local === node.name.text).map(([, exported]) => exported)
-        ],
-        abstract: hasModifier(node, ts.ModifierFlags.Abstract),
-        bases: (node.heritageClauses || []).flatMap(clause => clause.types
-          .map(type => imported.get(type.expression.getText()) || type.expression.getText()))
-      }));
+      .filter(node => ts.isClassDeclaration(node))
+      .map(node => {
+        /* Only a default export may leave its class without a name. */
+        const className = node.name ? node.name.text : NAMELESS;
+        const exportModifier = hasModifier(node, ts.ModifierFlags.Export);
+        const defaultModifier = hasModifier(node, ts.ModifierFlags.Default);
+        const listedNames = listed.filter(([local]) => local === className).map(([, name]) => name);
+        return {
+          file,
+          className,
+          exportedAs: [
+            ...(exportModifier && !defaultModifier ? [className] : []),
+            ...listedNames.filter(name => name !== 'default')
+          ],
+          defaultExport: (exportModifier && defaultModifier) || listedNames.includes('default'),
+          abstract: hasModifier(node, ts.ModifierFlags.Abstract),
+          bases: (node.heritageClauses || []).flatMap(clause => clause.types
+            .map(type => imported.get(type.expression.getText()) || type.expression.getText()))
+        };
+      });
   });
 
   /* A class is a step once one of its bases is: repeated until no class is added, for chains of any length. */
@@ -81,9 +105,33 @@ function findStepClasses() {
       });
   }
   return classes
-    .filter(({ className, exportedAs, abstract }) => exportedAs.length > 0 && !abstract &&
-      stepKinds.has(className) && !stepBases.includes(className))
-    .map(({ file, className, exportedAs }) => ({ file, className, exportedAs }));
+    .filter(({ className, abstract }) => !abstract && stepKinds.has(className) && !stepBases.includes(className))
+    .map(({
+      file, className, exportedAs, defaultExport
+    }) => ({
+      file, className, exportedAs, defaultExport
+    }));
+}
+
+/**
+ * What keeps steps from being matched against MigrationManager, which goes by name: a step not
+ * exported by name, and a name two steps share. Each with the files it concerns (#1693).
+ */
+function stepProblems(steps) {
+  const filesByName = new Map();
+  steps.forEach(({ file, exportedAs }) => exportedAs
+    .forEach(name => filesByName.set(name, [...(filesByName.get(name) || []), file])));
+  return [
+    ...steps.filter(({ exportedAs }) => exportedAs.length === 0).map(({ file, className, defaultExport }) => ({
+      files: [file],
+      message: `${className} (${file}) is ${defaultExport ? 'a default export' : 'not exported'} - write it as`
+        + ` \`export class ${className === NAMELESS ? '<name>' : className}\``
+    })),
+    ...[...filesByName].filter(([, files]) => files.length > 1).map(([name, files]) => ({
+      files,
+      message: `${name} is the name of a step in ${files.join(' and ')} - give each step a name of its own`
+    }))
+  ];
 }
 
 /** The array literal of `MigrationManager.steps`, or undefined. */
@@ -123,9 +171,12 @@ function registerStep(managerText, exportedName, importPath) {
     throw new Error(`Found no entry in MigrationManager.steps in ${managerPath} to append to`);
   }
   const eol = managerText.includes('\r\n') ? '\r\n' : '\n';
-  /* An import of the step that is there already, from its own file, possibly under another name. */
+  /* An import of the step that is there already, from its own file, possibly under another name and
+     through a path alias: `common/migrations/x` names the same file as `../migrations/x`. */
+  const fileInMigrations = importPath.replace(/^\.\.\//, '/');
   const localName = manager.statements
-    .filter(node => ts.isImportDeclaration(node) && node.moduleSpecifier.text === importPath &&
+    .filter(node => ts.isImportDeclaration(node) && (node.moduleSpecifier.text === importPath ||
+      node.moduleSpecifier.text.endsWith(fileInMigrations)) &&
       node.importClause && node.importClause.namedBindings && ts.isNamedImports(node.importClause.namedBindings))
     .flatMap(node => node.importClause.namedBindings.elements)
     .find(element => (element.propertyName || element.name).text === exportedName)?.name.text;
@@ -173,5 +224,5 @@ function loadUnitVersion() {
 }
 
 module.exports = {
-  root, migrationsDir, managerPath, findStepClasses, registeredSteps, registerStep, loadUnitVersion
+  root, migrationsDir, managerPath, findStepClasses, stepProblems, registeredSteps, registerStep, loadUnitVersion
 };

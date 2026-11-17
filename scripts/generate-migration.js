@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  findStepClasses, registeredSteps, registerStep, loadUnitVersion
+  findStepClasses, stepProblems, registeredSteps, registerStep, loadUnitVersion
 } = require('./migration-steps');
 
 const from = process.argv[2];
@@ -91,6 +91,28 @@ if (fs.existsSync(filePath)) {
   fs.writeFileSync(filePath, template);
   console.log(`Success: Created ${fileName} in projects/common/migrations/`);
 }
+
+/**
+ * A step is called after its versions, and the spec and the registration below name it so. A kept file
+ * that declares its step otherwise is not followed: it is reported, and nothing more is written (#1693).
+ */
+const steps = findStepClasses();
+const stepsInFile = steps.filter(step => step.file === fileName);
+const problems = stepProblems(steps).filter(({ files }) => files.includes(fileName));
+const isNamedAfterVersions = stepsInFile.length === 1 && stepsInFile[0].exportedAs.includes(className);
+if (problems.length || !isNamedAfterVersions) {
+  if (problems.length) {
+    problems.forEach(({ message }) => console.error(message));
+  } else if (stepsInFile.length !== 1) {
+    console.error(`Found ${stepsInFile.length} step classes in ${fileName}, where ${className} belongs`);
+  } else if (stepsInFile[0].className !== className) {
+    console.error(`${fileName} declares ${stepsInFile[0].className}: rename the class to ${className}`);
+  } else {
+    console.error(`${fileName} does not export ${className} by name: write it as \`export class ${className}\``);
+  }
+  process.exit(1);
+}
+
 /* A spec written before the step - a test that fails without it - is kept as it is. */
 if (fs.existsSync(specFilePath)) {
   console.log(`Kept the existing ${specFileName}; it should hold the test of the step's target version`);
@@ -101,24 +123,17 @@ if (fs.existsSync(specFilePath)) {
 console.log(`Test what the step transforms in ${specFileName}, next to the test of its target version`);
 
 /* Registers the step in MigrationManager: a step that is not in its list never runs, and no test sees
-   that - the specs run in a browser and cannot list the migrations directory. A kept step file is
-   registered under the name it exports, whatever this run would have called it. */
+   that - the specs run in a browser and cannot list the migrations directory. */
 const managerPath = path.join(projectRoot, 'projects/common/services/migration-manager.ts');
 const manager = fs.readFileSync(managerPath, 'utf8');
-const stepsInFile = findStepClasses().filter(step => step.file === fileName);
-const stepName = stepsInFile.length === 1 ? stepsInFile[0].exportedAs[0] : undefined;
-if (!stepName) {
-  console.error(`Found ${stepsInFile.length} step classes in ${fileName}: register the step in`
-    + ' MigrationManager.steps by hand');
-  process.exitCode = 1;
-} else if (registeredSteps(manager).has(stepName)) {
-  console.log(`${stepName} is already registered in MigrationManager`);
+if (registeredSteps(manager).has(className)) {
+  console.log(`${className} is already registered in MigrationManager`);
 } else {
   try {
-    fs.writeFileSync(managerPath, registerStep(manager, stepName, `../migrations/${fileName.replace(/\.ts$/, '')}`));
-    console.log(`Registered ${stepName} in projects/common/services/migration-manager.ts`);
+    fs.writeFileSync(managerPath, registerStep(manager, className, `../migrations/${fileName.replace(/\.ts$/, '')}`));
+    console.log(`Registered ${className} in projects/common/services/migration-manager.ts`);
   } catch (error) {
-    console.error(`${error.message}: add ${stepName} to MigrationManager.steps by hand`);
+    console.error(`${error.message}: add ${className} to MigrationManager.steps by hand`);
     process.exitCode = 1;
   }
 }

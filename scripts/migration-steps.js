@@ -12,6 +12,13 @@
  * Steps are matched by name, so a step has to be a named export, and no two steps may share a name.
  * `stepProblems` names the steps that break this, so that the check says so instead of calling them
  * unregistered or passing them unseen (#1693).
+ *
+ * Bases are followed by name as well, and so is what MigrationManager constructs. What that cannot tell
+ * apart is left as it is (#1697): a class that extends a class of the same name as a step base from
+ * another file; a base imported as a default, or reached through an index file or a namespace import; and
+ * a class that MigrationManager constructs from elsewhere under a step's name, which passes that step as
+ * registered in the check. None of them occurs in the repository, and the last one does not mislead the
+ * generator, which goes by the import of the step's own file.
  */
 const fs = require('fs');
 const path = require('path');
@@ -28,12 +35,70 @@ const NAMELESS = '(nameless class)';
 const parse = (fileName, text) => ts.createSourceFile(fileName, text, ts.ScriptTarget.Latest, true);
 const hasModifier = (node, flag) => (ts.getCombinedModifierFlags(node) & flag) !== 0;
 
-/** The name each local name of a file was exported under: `import { A as B }` maps B to A. */
-const importedNames = sourceFile => new Map(sourceFile.statements
-  .filter(node => ts.isImportDeclaration(node) && node.importClause && node.importClause.namedBindings &&
-    ts.isNamedImports(node.importClause.namedBindings))
-  .flatMap(node => node.importClause.namedBindings.elements
-    .map(element => [element.name.text, (element.propertyName || element.name).text])));
+/**
+ * What each local name of a file was imported as: its module, the name that module exports it under, and
+ * whether it is a type only. `import { A as B } from 'm'` maps B to { module: 'm', exported: 'A' },
+ * `import C from 'm'` maps C to { module: 'm', exported: 'default' }, and `import * as D from 'm'` maps D
+ * to { module: 'm', exported: '*' }.
+ */
+const imports = sourceFile => new Map(sourceFile.statements
+  .filter(node => ts.isImportDeclaration(node) && node.importClause)
+  .flatMap(node => {
+    const module = node.moduleSpecifier.text;
+    const { name, namedBindings, isTypeOnly } = node.importClause;
+    const bound = [];
+    if (name) bound.push([name.text, { module, exported: 'default', typeOnly: isTypeOnly }]);
+    if (namedBindings && ts.isNamespaceImport(namedBindings)) {
+      bound.push([namedBindings.name.text, { module, exported: '*', typeOnly: isTypeOnly }]);
+    }
+    if (namedBindings && ts.isNamedImports(namedBindings)) {
+      namedBindings.elements.forEach(element => bound.push([element.name.text, {
+        module, exported: (element.propertyName || element.name).text, typeOnly: isTypeOnly || element.isTypeOnly
+      }]));
+    }
+    return bound;
+  }));
+
+/** The name each local name of a file was exported under, for named imports: `import { A as B }` maps B to A. */
+const importedNames = sourceFile => new Map([...imports(sourceFile)]
+  .filter(([, { exported }]) => exported !== 'default' && exported !== '*')
+  .map(([local, { exported }]) => [local, exported]));
+
+/** The names a variable binds, also where it destructures: `const { A, b: [B] } = x` binds A and B. */
+const boundNames = name => (ts.isIdentifier(name) ? [name.text] : name.elements
+  .filter(element => !ts.isOmittedExpression(element))
+  .flatMap(element => boundNames(element.name)));
+
+/**
+ * The names that the top-level declarations of a file bind: classes, functions, variables, types.
+ * `import X = require()` is left out: the projects are ES modules, where TypeScript does not allow it.
+ */
+const declaredNames = sourceFile => sourceFile.statements.flatMap(node => {
+  if (ts.isVariableStatement(node)) {
+    return node.declarationList.declarations.flatMap(declaration => boundNames(declaration.name));
+  }
+  return (ts.isClassDeclaration(node) || ts.isFunctionDeclaration(node) || ts.isEnumDeclaration(node) ||
+    ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isModuleDeclaration(node)) &&
+    node.name && ts.isIdentifier(node.name) ? [node.name.text] : [];
+});
+
+/**
+ * The file below the migrations directory that a module specifier of MigrationManager names, relative
+ * to that directory and with `.ts`, or undefined. The specifier is relative or goes through the
+ * `common/` alias, the two forms the projects use.
+ */
+function migrationFileOf(specifier) {
+  let target;
+  if (specifier.startsWith('.')) {
+    target = path.posix.normalize(path.posix.join(path.posix.dirname(managerPath), specifier));
+  } else if (specifier.startsWith('common/')) {
+    target = `projects/${specifier}`;
+  } else {
+    return undefined;
+  }
+  const prefix = `${migrationsDir}/`;
+  return target.startsWith(prefix) ? `${target.slice(prefix.length).replace(/\.[jt]s$/, '')}.ts` : undefined;
+}
 
 /**
  * The names a file exports a local name under apart from its declaration: `export { A as B }` gives
@@ -60,8 +125,9 @@ const sourceFilesBelow = (dir, prefix = '') => fs.readdirSync(dir, { withFileTyp
 
 /**
  * The step classes below the migrations directory, exported or not: their file (relative to it), their
- * name, the names they are exported under, and whether they are a default export, which is no name to
- * match.
+ * name, the names they are exported under, whether they are a default export, which is no name to
+ * match, and whether a class of their own file extends them - only there can one extend a class that is
+ * not exported by name.
  */
 function findStepClasses() {
   const dir = path.join(root, migrationsDir);
@@ -92,26 +158,38 @@ function findStepClasses() {
       });
   });
 
-  /* A class is a step once one of its bases is: repeated until no class is added, for chains of any length. */
+  /* A class is a step once one of its bases is: repeated until no class is added, for chains of any
+     length. It is the class that is a step, not its name, so neither a class that only shares a step's
+     name nor every nameless class becomes one (#1697); a nameless class cannot be a base anyway. */
+  const stepClasses = new Set();
   const stepKinds = new Set(stepBases);
   let grown = true;
   while (grown) {
     grown = false;
     classes
-      .filter(({ className, bases }) => !stepKinds.has(className) && bases.some(base => stepKinds.has(base)))
-      .forEach(({ className, exportedAs }) => {
-        [className, ...exportedAs].forEach(name => stepKinds.add(name));
+      .filter(cls => !stepClasses.has(cls) && cls.bases.some(base => stepKinds.has(base)))
+      .forEach(cls => {
+        stepClasses.add(cls);
+        [cls.className, ...cls.exportedAs].filter(name => name !== NAMELESS).forEach(name => stepKinds.add(name));
         grown = true;
       });
   }
   return classes
-    .filter(({ className, abstract }) => !abstract && stepKinds.has(className) && !stepBases.includes(className))
-    .map(({
-      file, className, exportedAs, defaultExport
-    }) => ({
-      file, className, exportedAs, defaultExport
+    .filter(cls => stepClasses.has(cls) && !cls.abstract && !stepBases.includes(cls.className))
+    .map(({ abstract, bases, ...step }) => ({
+      ...step,
+      isBase: classes.some(other => other.file === step.file && other.bases.includes(step.className))
     }));
 }
+
+/**
+ * The names a step is matched by: those it is exported under, or, exported under none, its class name,
+ * which the check asks it to be exported under (#1697).
+ */
+const namesOf = ({ className, exportedAs }) => {
+  if (exportedAs.length) return exportedAs;
+  return className === NAMELESS ? [] : [className];
+};
 
 /**
  * What keeps steps from being matched against MigrationManager, which goes by name: a step not
@@ -119,13 +197,16 @@ function findStepClasses() {
  */
 function stepProblems(steps) {
   const filesByName = new Map();
-  steps.forEach(({ file, exportedAs }) => exportedAs
-    .forEach(name => filesByName.set(name, [...(filesByName.get(name) || []), file])));
+  steps.forEach(step => namesOf(step)
+    .forEach(name => filesByName.set(name, [...(filesByName.get(name) || []), step.file])));
   return [
-    ...steps.filter(({ exportedAs }) => exportedAs.length === 0).map(({ file, className, defaultExport }) => ({
+    ...steps.filter(({ exportedAs }) => exportedAs.length === 0).map(({
+      file, className, defaultExport, isBase
+    }) => ({
       files: [file],
-      message: `${className} (${file}) is ${defaultExport ? 'a default export' : 'not exported'} - write it as`
-        + ` \`export class ${className === NAMELESS ? '<name>' : className}\``
+      message: `${className} (${file}) is ${defaultExport ? 'a default export' : 'not exported'} - ${isBase ?
+        'other steps extend it: declare it abstract if it is only their base, or export it by name' :
+        `write it as \`export class ${className === NAMELESS ? '<name>' : className}\``}`
     })),
     ...[...filesByName].filter(([, files]) => files.length > 1).map(([name, files]) => ({
       files,
@@ -159,10 +240,45 @@ function registeredSteps(managerText) {
 }
 
 /**
+ * How the parsed MigrationManager holds the step `exportedName` of `importPath`: `localName` if it imports
+ * it already, from its own file, possibly under another name and through the path alias -
+ * `common/migrations/x` names the same file as `../migrations/x`. Otherwise `clash` says what holds the
+ * name, if anything does: an import from another module or a declaration of the manager itself, beside
+ * which a second import would not compile (#1697). An import as a type is no import of the step: `new`
+ * needs a value. Throws if `importPath` is no file below the migrations directory.
+ */
+function stepBinding(manager, exportedName, importPath) {
+  const stepFile = migrationFileOf(importPath);
+  if (!stepFile) throw new Error(`${importPath} is no file below ${migrationsDir}`);
+  const imported = [...imports(manager)];
+  const localName = imported.find(([, { module, exported, typeOnly }]) => exported === exportedName &&
+    !typeOnly && migrationFileOf(module) === stepFile)?.[0];
+  if (localName) return { localName };
+  const other = imported.find(([local]) => local === exportedName);
+  if (other) {
+    const { module, typeOnly } = other[1];
+    return { clash: `MigrationManager already imports ${exportedName} from ${module}${typeOnly ? ' as a type' : ''}` };
+  }
+  if (declaredNames(manager).includes(exportedName)) {
+    return { clash: `MigrationManager declares ${exportedName} itself` };
+  }
+  return {};
+}
+
+/**
+ * What keeps MigrationManager from importing the step `exportedName` of `importPath` under that name, or
+ * undefined - asked by the generator before it writes anything.
+ */
+const registrationClash = (managerText, exportedName, importPath) => stepBinding(
+  parse(managerPath, managerText), exportedName, importPath
+).clash;
+
+/**
  * MigrationManager with the step `exportedName` from `importPath` appended to `steps`, its import
  * added unless it is there already. The places come from the syntax tree, so a trailing comma, a
- * multi-line import or the indentation do not matter; the line ending is taken from the file.
- * Throws if there is no `steps` array with an entry to append to.
+ * multi-line import or the indentation do not matter; the line ending is taken from the file. The text
+ * comes back as it is if `steps` constructs the step already, through the import of its own file.
+ * Throws if there is no `steps` array with an entry to append to, or if the name is taken.
  */
 function registerStep(managerText, exportedName, importPath) {
   const manager = parse(managerPath, managerText);
@@ -171,15 +287,12 @@ function registerStep(managerText, exportedName, importPath) {
     throw new Error(`Found no entry in MigrationManager.steps in ${managerPath} to append to`);
   }
   const eol = managerText.includes('\r\n') ? '\r\n' : '\n';
-  /* An import of the step that is there already, from its own file, possibly under another name and
-     through a path alias: `common/migrations/x` names the same file as `../migrations/x`. */
-  const fileInMigrations = importPath.replace(/^\.\.\//, '/');
-  const localName = manager.statements
-    .filter(node => ts.isImportDeclaration(node) && (node.moduleSpecifier.text === importPath ||
-      node.moduleSpecifier.text.endsWith(fileInMigrations)) &&
-      node.importClause && node.importClause.namedBindings && ts.isNamedImports(node.importClause.namedBindings))
-    .flatMap(node => node.importClause.namedBindings.elements)
-    .find(element => (element.propertyName || element.name).text === exportedName)?.name.text;
+  const { localName, clash } = stepBinding(manager, exportedName, importPath);
+  if (clash) throw new Error(clash);
+  const constructed = new Set(steps.elements
+    .filter(element => ts.isNewExpression(element))
+    .map(element => element.expression.getText()));
+  if (localName && constructed.has(localName)) return managerText;
 
   const lastStep = steps.elements[steps.elements.length - 1];
   const lineStart = managerText.lastIndexOf('\n', lastStep.getStart(manager)) + 1;
@@ -189,14 +302,11 @@ function registerStep(managerText, exportedName, importPath) {
 
   if (!localName) {
     /* After the import of the last registered step, so that the step imports stay together. */
-    const constructed = new Set(steps.elements
-      .filter(element => ts.isNewExpression(element))
-      .map(element => element.expression.getText()));
-    const imports = manager.statements.filter(node => ts.isImportDeclaration(node));
-    const stepImports = imports.filter(node => node.importClause && node.importClause.namedBindings &&
+    const importDeclarations = manager.statements.filter(node => ts.isImportDeclaration(node));
+    const stepImports = importDeclarations.filter(node => node.importClause && node.importClause.namedBindings &&
       ts.isNamedImports(node.importClause.namedBindings) &&
       node.importClause.namedBindings.elements.some(element => constructed.has(element.name.text)));
-    const after = (stepImports.length ? stepImports : imports).pop();
+    const after = (stepImports.length ? stepImports : importDeclarations).pop();
     edits.push({
       at: after ? after.getEnd() : 0,
       text: `${after ? eol : ''}import { ${exportedName} } from '${importPath}';${after ? '' : eol}`
@@ -224,5 +334,13 @@ function loadUnitVersion() {
 }
 
 module.exports = {
-  root, migrationsDir, managerPath, findStepClasses, stepProblems, registeredSteps, registerStep, loadUnitVersion
+  root,
+  migrationsDir,
+  managerPath,
+  findStepClasses,
+  stepProblems,
+  registeredSteps,
+  registrationClash,
+  registerStep,
+  loadUnitVersion
 };

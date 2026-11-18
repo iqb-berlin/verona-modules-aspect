@@ -110,6 +110,44 @@ describe('registerStep', () => {
   });
 });
 
+describe('registerStep and imports from elsewhere', () => {
+  it('takes no import of the same file name from another directory for the step (#1697)', () => {
+    const other = "import { Migration4m13To4m14 } from '../../legacy/migrations/v4.13-to-v4.14.migration';";
+
+    assert.throws(
+      () => registerStep(MANAGER.replace('import { MigrationStep }', `${other}\nimport { MigrationStep }`),
+                         'Migration4m13To4m14', '../migrations/v4.13-to-v4.14.migration'),
+      /already imports Migration4m13To4m14 from \.\.\/\.\.\/legacy\/migrations/
+    );
+  });
+
+  it('refuses a name that MigrationManager declares itself, also by destructuring (#1697)', () => {
+    ['class Migration4m13To4m14 {}', 'const { a: [Migration4m13To4m14] } = legacy;'].forEach(declaration => {
+      assert.throws(
+        () => registerStep(`${MANAGER}\n${declaration}\n`,
+                           'Migration4m13To4m14', '../migrations/v4.13-to-v4.14.migration'),
+        /MigrationManager declares Migration4m13To4m14 itself/,
+        declaration
+      );
+    });
+  });
+
+  it('takes an import of the step as a type for no import of it, since `new` needs a value (#1697)', () => {
+    const typeImport = "import type { Migration4m13To4m14 } from '../migrations/v4.13-to-v4.14.migration';";
+
+    assert.throws(
+      () => registerStep(MANAGER.replace('import { MigrationStep }', `${typeImport}\nimport { MigrationStep }`),
+                         'Migration4m13To4m14', '../migrations/v4.13-to-v4.14.migration'),
+      /already imports Migration4m13To4m14 from \.\.\/migrations\/v4\.13-to-v4\.14\.migration as a type/
+    );
+  });
+
+  it('refuses a step that is no file below the migrations directory (#1697)', () => {
+    assert.throws(() => registerStep(MANAGER, 'Foo', 'common/models/foo'),
+                  /is no file below projects\/common\/migrations/);
+  });
+});
+
 describe('check-migrations-registered', () => {
   const check = files => project(files).run('check-migrations-registered.js');
 
@@ -139,6 +177,56 @@ describe('check-migrations-registered', () => {
     assert.match(result.stderr, /Migration4m13To4m14 \(v4\.13-to-v4\.14\.migration\.ts\) is not exported/);
   });
 
+  it('takes a nameless class for no step beside a nameless step, nor two nameless steps for one name (#1697)', () => {
+    const result = check({
+      [`${migrations}/n1.migration.ts`]: step('export default class'),
+      [`${migrations}/n3.migration.ts`]: step('export default class'),
+      [`${migrations}/sub/n2.ts`]: 'export default class {\n  x = 1;\n}\n'
+    });
+
+    assert.match(result.stderr, /n1\.migration\.ts\) is a default export/);
+    assert.doesNotMatch(result.stderr, /n2\.ts/);
+    assert.doesNotMatch(result.stderr, /is the name of a step/);
+  });
+
+  it('takes a class without a step base for no step, though a step of the same name exists (#1697)', () => {
+    const result = check({ [`${migrations}/other/plain.ts`]: 'export class Migration4m12To4m13 {}\n' });
+
+    assert.equal(result.status, 0, result.stderr);
+  });
+
+  it('advises an unexported base to be declared abstract, and an unexported step to be exported (#1697)', () => {
+    const result = check({
+      [`${migrations}/v4.13-to-v4.14.migration.ts`]: [
+        "import { UnitTraversalMigration } from './unit-traversal-migration';",
+        '',
+        'class Helper extends UnitTraversalMigration {}',
+        '',
+        'export class Migration4m13To4m14 extends Helper {}',
+        ''
+      ].join('\n')
+    });
+
+    assert.match(result.stderr, /Helper \(v4\.13-to-v4\.14\.migration\.ts\) is not exported - other steps extend it:/);
+    assert.match(check({ [`${migrations}/v4.13-to-v4.14.migration.ts`]: step('class Migration4m13To4m14') }).stderr,
+                 /is not exported - write it as `export class Migration4m13To4m14`/);
+  });
+
+  it('advises the export when only a class of another file extends a class of that name (#1697)', () => {
+    const result = check({
+      [`${migrations}/v4.13-to-v4.14.migration.ts`]: step('class Migration4m13To4m14'),
+      [`${migrations}/sub/other.ts`]: [
+        "import { Migration4m13To4m14 } from '../../legacy/base';",
+        '',
+        'export class Other extends Migration4m13To4m14 {}',
+        ''
+      ].join('\n')
+    });
+
+    assert.match(result.stderr,
+                 /Migration4m13To4m14 \(v4\.13-to-v4\.14\.migration\.ts\) is not exported - write it as/);
+  });
+
   it('reports a name two steps share, which would pass one of them as registered (#1693)', () => {
     const result = check({ [`${migrations}/hotfix.migration.ts`]: step('export class Migration4m12To4m13') });
 
@@ -159,14 +247,77 @@ describe('generate-migration', () => {
     assert.equal(files.read(manager), MANAGER);
   });
 
+  it('refuses a name another step file uses, exported or not, before it writes the step file (#1697)', () => {
+    ['export class', 'class'].forEach(declaration => {
+      const files = project({ [`${migrations}/hotfix.migration.ts`]: step(`${declaration} Migration4m13To4m14`) });
+
+      const result = files.run('generate-migration.js', '4.13', '4.14');
+
+      assert.equal(result.status, 1, declaration);
+      assert.match(result.stderr, /Migration4m13To4m14 is the name of a step in hotfix\.migration\.ts/, declaration);
+      assert.equal(files.exists(`${migrations}/v4.13-to-v4.14.migration.ts`), false, declaration);
+    });
+  });
+
+  it('takes a name that another step has as its class name only, exported under another (#1697)', () => {
+    const files = project({
+      [`${migrations}/hotfix.migration.ts`]:
+        step('class Migration4m13To4m14', 'export { Migration4m13To4m14 as Hotfix };\n')
+    });
+
+    const result = files.run('generate-migration.js', '4.13', '4.14');
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(files.read(manager), /new Migration4m13To4m14\(\)\n {2}\];/);
+  });
+
+  it('refuses a name MigrationManager imports from elsewhere or declares, before writing anything (#1697)', () => {
+    [
+      [MANAGER.replace('import { MigrationStep }',
+                       "import { Migration4m13To4m14 } from '../../legacy/base';\nimport { MigrationStep }"),
+        /MigrationManager already imports Migration4m13To4m14 from \.\.\/\.\.\/legacy\/base/],
+      [`${MANAGER}\nclass Migration4m13To4m14 {}\n`, /MigrationManager declares Migration4m13To4m14 itself/]
+    ].forEach(([text, message]) => {
+      const files = project({ [manager]: text });
+
+      const result = files.run('generate-migration.js', '4.13', '4.14');
+
+      assert.equal(result.status, 1, text);
+      assert.match(result.stderr, message);
+      assert.equal(files.exists(`${migrations}/v4.13-to-v4.14.migration.ts`), false);
+      assert.equal(files.exists(`${migrations}/v4.13-to-v4.14.migration.spec.ts`), false);
+      assert.equal(files.read(manager), text);
+    });
+  });
+
+  it('registers the step beside a class of its name that MigrationManager imports from elsewhere (#1697)', () => {
+    const files = project({
+      [manager]: MANAGER
+        .replace('import { MigrationStep }',
+                 "import { Migration4m13To4m14 as Legacy } from '../../legacy/base';\nimport { MigrationStep }")
+        .replace('new Migration4m12To4m13()', 'new Migration4m12To4m13(),\n    new Legacy()')
+    });
+
+    const result = files.run('generate-migration.js', '4.13', '4.14');
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(files.read(manager),
+                 /import \{ Migration4m13To4m14 \} from '\.\.\/migrations\/v4\.13-to-v4\.14\.migration';/);
+    assert.match(files.read(manager), /new Legacy\(\),\n {4}new Migration4m13To4m14\(\)/);
+  });
+
   it('stops at a kept step file with two steps or with the step only under another name (#1693)', () => {
     [
-      step('export class Migration4m13To4m14', `${step('export class Another').split('\n').slice(2).join('\n')}`),
-      step('class Migration4m13To4m14', 'export { Migration4m13To4m14 as Other };\n')
-    ].forEach(text => {
+      [step('export class Migration4m13To4m14', step('export class Another').split('\n').slice(2).join('\n')),
+        /Found 2 step classes in v4\.13-to-v4\.14\.migration\.ts/],
+      [step('class Migration4m13To4m14', 'export { Migration4m13To4m14 as Other };\n'),
+        /does not export Migration4m13To4m14 by name/]
+    ].forEach(([text, message]) => {
       const files = project({ [`${migrations}/v4.13-to-v4.14.migration.ts`]: text });
+      const result = files.run('generate-migration.js', '4.13', '4.14');
 
-      assert.equal(files.run('generate-migration.js', '4.13', '4.14').status, 1, text);
+      assert.equal(result.status, 1, text);
+      assert.match(result.stderr, message);
       assert.equal(files.exists(`${migrations}/v4.13-to-v4.14.migration.spec.ts`), false);
       assert.equal(files.read(manager), MANAGER);
     });
@@ -190,7 +341,9 @@ describe('generate-migration', () => {
     const files = project();
 
     ['4.14 4.13', '4.13 4.13.0', '4.13 04.14'].forEach(versions => {
-      assert.equal(files.run('generate-migration.js', ...versions.split(' ')).status, 1, versions);
+      const result = files.run('generate-migration.js', ...versions.split(' '));
+      assert.equal(result.status, 1, versions);
+      assert.match(result.stderr, /Usage: npm run generate-migration/, versions);
     });
     assert.equal(files.read(manager), MANAGER);
     assert.deepEqual(fs.readdirSync(files.path(migrations)).filter(file => file.startsWith('v4.1')).sort(),

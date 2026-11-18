@@ -338,6 +338,7 @@
     "enableShiftDragZoom": "Bewegen und Zoom erlauben",
     "customToolbar": "Anpassung Werkzeugleiste",
     "customToolbarHelp": "Hier kann definiert werden, welche Elemente auf der Werkzeigleiste angezeigt werden sollen. Für Details bitte die Dokumentation konsultieren.",
+    "customToolbarImageTool": "Das Werkzeug „Bild“ (26) wird nicht angeboten.",
     "hotspots": "Bereiche",
     "newHotspot": "Neuer Bereich",
     "hasDynamicRowCount": "Dynamische Zeilen",

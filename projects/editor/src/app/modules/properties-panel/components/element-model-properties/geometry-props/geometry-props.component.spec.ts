@@ -34,6 +34,9 @@ import {
   GeometryVariableOptionsPipe
 } from 'editor/src/app/modules/properties-panel/pipes/geometry-variable-options.pipe';
 import {
+  GeoGebraImageToolPipe
+} from 'editor/src/app/modules/properties-panel/pipes/geogebra-image-tool.pipe';
+import {
   GeometryPropsComponent
 } from './geometry-props.component';
 
@@ -62,7 +65,7 @@ describe('GeometryPropsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         GeometryPropsComponent, MergedCheckboxComponent, MergedMarkerComponent,
-        GeometryVariableCheckPipe, GeometryVariableOptionsPipe
+        GeometryVariableCheckPipe, GeometryVariableOptionsPipe, GeoGebraImageToolPipe
       ],
       imports: [
         CommonModule,
@@ -132,6 +135,23 @@ describe('GeometryPropsComponent', () => {
     input.click();
 
     expect(emitted).toEqual([{ property: 'recomputedCountsAsChanged', value: true }]);
+  });
+
+  describe('the custom toolbar (#1700)', () => {
+    const hint = (customToolbar: string | null): HTMLElement | null => {
+      component.combinedProperties = { ...component.combinedProperties, customToolbar };
+      fixture.detectChanges();
+      return fixture.nativeElement.querySelector('.image-tool-hint');
+    };
+
+    it('should point out that the tool "Bild" is not offered', () => {
+      expect(hint('0 | 26')?.textContent).toContain('propertiesPanel.customToolbarImageTool');
+    });
+
+    it('should not point it out for a tool whose number only holds 26, or a mixed selection', () => {
+      expect(hint('0 | 260')).toBeNull();
+      expect(hint(null)).toBeNull();
+    });
   });
 
   it('should render the current app definition', () => {

@@ -1,5 +1,10 @@
 Editor
 ======
+## next
+### Änderungen
+- **GeoGebra**
+  - Das Werkzeug „Bild“ wird auch in der Vorschau nicht mehr angeboten, wie im Player. Steht es im Feld „Anpassung Werkzeugleiste“ (26), weist ein Hinweis am Feld darauf hin ([#1700](https://github.com/iqb-berlin/verona-modules-aspect/issues/1700))
+
 ## 3.1.2
 Keine eigenen Änderungen gegenüber 3.1.1
 

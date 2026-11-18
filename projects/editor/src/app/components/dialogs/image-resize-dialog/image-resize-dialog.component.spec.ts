@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { ImageResizeDialogData } from 'common/models/image-interfaces';
 import { FileService } from 'common/services/file.service';
-import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
+import { BytesPipe } from 'editor/modules/editor-shared/pipes/bytes.pipe';
 import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
 import {
   ImageResizeDialogComponent

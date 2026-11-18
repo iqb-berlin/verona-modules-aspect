@@ -1,4 +1,4 @@
-import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
+import { BytesPipe } from 'editor/modules/editor-shared/pipes/bytes.pipe';
 
 describe('BytesPipe', () => {
   const pipe = new BytesPipe();

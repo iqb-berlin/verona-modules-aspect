@@ -104,7 +104,6 @@ import { PageMenu } from 'editor/src/app/components/page-menu/page-menu.componen
 import {
   ImageResizeDialogComponent
 } from 'editor/src/app/components/dialogs/image-resize-dialog/image-resize-dialog.component';
-import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
 import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
 import { MoveSectionUpAllowedPipe } from 'editor/src/app/pipes/move-section-up-allowed.pipe';
 
@@ -184,7 +183,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoAliasAndIDsPipe,
     ImageResizeDialogComponent,
-    BytesPipe,
     SupportsQualityPipe,
     MoveSectionUpAllowedPipe,
     IDEditDialogComponent,

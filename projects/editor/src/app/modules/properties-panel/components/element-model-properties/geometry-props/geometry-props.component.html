@@ -45,9 +45,13 @@
                           (valueChange)="updateModel.emit({ property: 'showToolbar', value: $event })">
     {{ 'propertiesPanel.showToolbar' | translate }}
   </aspect-merged-checkbox>
+  @let offersImageTool = combinedProperties.customToolbar | geoGebraImageTool;
+  <!-- `dynamic` while the hint is shown: it takes two lines, which the fixed subscript would lay over the
+       fieldset's border. -->
   <mat-form-field *ngIf="unitService.expertMode"
                   class="wide-form-field"
                   matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
+                  [subscriptSizing]="offersImageTool ? 'dynamic' : 'fixed'"
                   appearance="fill">
     <mat-label>{{ 'propertiesPanel.customToolbar' | translate }}</mat-label>
     <input #customToolbarField matInput [disabled]="!combinedProperties.showToolbar"
@@ -55,6 +59,9 @@
            (input)="updateModel.emit({ property: 'customToolbar', value: customToolbarField.value })">
     @if (combinedProperties.customToolbar === null) {
       <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+    @if (offersImageTool) {
+      <mat-hint class="image-tool-hint">{{ 'propertiesPanel.customToolbarImageTool' | translate }}</mat-hint>
     }
   </mat-form-field>
 </fieldset>

@@ -7,10 +7,16 @@ import { ExternalResourceService } from 'common/services/external-resource.servi
 import { of, Subject } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { Mock, MockInstance } from 'vitest';
+// 'fflate/browser', not 'fflate': the bare specifier resolves to the Node ESM build under
+// Vitest browser mode and crashes at import time on createRequire.
+import {
+  strFromU8, strToU8, unzipSync, zipSync
+} from 'fflate/browser';
 import { GeometryElement } from 'common/models/elements/geometry';
 import {
   GeoGebraApi, GeoGebraApplet, GeoGebraAppletConstructor, GeoGebraAppletParameters
 } from 'common/models/geogebra-interfaces';
+import { GeometryValue } from 'common/models/geometry-interfaces';
 import { GeometryComponent } from './geometry.component';
 
 describe('GeometryComponent', () => {
@@ -34,9 +40,19 @@ describe('GeometryComponent', () => {
     (component as unknown as { isAppletStartedUp: boolean }).isAppletStartedUp = true;
   };
 
-  const createGeoGebraApi = (base64: string): GeoGebraApi => ({
-    getBase64: vi.fn().mockReturnValue(base64),
+  /** Each applet shows a construction of its own, named, so that a test can tell whose answer it got. */
+  const constructionOfApplet = (name: string): string => `<geogebra applet="${name}"/>`;
+
+  /** The construction an answer holds. */
+  const constructionOf = (answer: string): string => strFromU8(
+    unzipSync(Uint8Array.from(atob(answer), character => character.charCodeAt(0)))['geogebra.xml']
+  );
+
+  const createGeoGebraApi = (name: string): GeoGebraApi => ({
+    getXML: vi.fn().mockReturnValue(constructionOfApplet(name)),
     setSize: vi.fn(),
+    getPerspectiveXML: vi.fn().mockReturnValue('<perspective><toolbar show="true" items="0 | 1 , 5"/></perspective>'),
+    setCustomToolBar: vi.fn(),
     getAllObjectNames: vi.fn().mockReturnValue([]),
     getValueString: vi.fn(),
     isMoveable: vi.fn().mockReturnValue(true),
@@ -59,7 +75,7 @@ describe('GeometryComponent', () => {
       getGeoGebraHTML5URL: vi.fn().mockReturnValue('http://geogebra.url')
     };
 
-    mockGeoGebraAPI = createGeoGebraApi('mockBase64');
+    mockGeoGebraAPI = createGeoGebraApi('mock');
     heldBackLoads = undefined;
 
     // Global Mock for GGBApplet with named function to satisfy ESLint and constructor requirements
@@ -130,12 +146,7 @@ describe('GeometryComponent', () => {
     geometryUpdated().next();
     tick(200);
 
-    expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({
-      id: 'test-id',
-      value: expect.objectContaining({
-        appDefinition: 'mockBase64'
-      })
-    }));
+    expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({ id: 'test-id' }));
   }));
 
   it('should emit valuechanged after reset() is called', fakeAsync(() => {
@@ -203,7 +214,7 @@ describe('GeometryComponent', () => {
       listener('registerClientListener')();
       tick(200);
 
-      expect(reported()).toEqual(expect.objectContaining({ appDefinition: 'mockBase64', edited: false }));
+      expect(reported()).toEqual(expect.objectContaining({ response: expect.any(String), edited: false }));
     }));
 
     it('should report a reset as no edit', fakeAsync(() => {
@@ -252,6 +263,166 @@ describe('GeometryComponent', () => {
         variables: [{ id: 'A', value: 'A = 0' }, { id: 'B', value: 'B = 0' }]
       }));
     }));
+  });
+
+  describe('pictures from the person\'s device (#1700)', () => {
+    const showToolbar = (items: string): void => {
+      vi.mocked(mockGeoGebraAPI.getPerspectiveXML)
+        .mockReturnValue(`<perspective><toolbar show="true" items="${items}" position="1"/></perspective>`);
+    };
+    /** A new applet, which reads the toolbar anew as it loads. */
+    // The element of the outer setup leaves the switch unset, which a unit's element never does.
+    beforeEach(() => {
+      component.elementModel.showToolbar = true;
+    });
+
+    const buildApplet = (): void => {
+      vi.mocked(mockGeoGebraAPI.setCustomToolBar).mockClear();
+      vi.mocked(mockGeoGebraAPI.registerAddListener).mockClear();
+      startUp();
+      component.reset();
+    };
+
+    it('should take the tool "Bild" out of the toolbar the applet shows', () => {
+      showToolbar('0 | 26 | 1');
+
+      buildApplet();
+
+      expect(mockGeoGebraAPI.setCustomToolBar).toHaveBeenCalledWith('0 | 1');
+    });
+
+    it('should leave a toolbar without the tool as it is', () => {
+      showToolbar('0 | 126');
+
+      buildApplet();
+
+      expect(mockGeoGebraAPI.setCustomToolBar).not.toHaveBeenCalled();
+    });
+
+    it('should leave a hidden toolbar alone', () => {
+      showToolbar('0 | 26');
+      component.elementModel.showToolbar = false;
+
+      buildApplet();
+
+      expect(mockGeoGebraAPI.setCustomToolBar).not.toHaveBeenCalled();
+    });
+
+    it('should change the toolbar before GeoGebra can report anything', () => {
+      showToolbar('0 | 26');
+
+      buildApplet();
+
+      expect(vi.mocked(mockGeoGebraAPI.setCustomToolBar).mock.invocationCallOrder[0])
+        .toBeLessThan(vi.mocked(mockGeoGebraAPI.registerAddListener).mock.invocationCallOrder[0]);
+    });
+
+    describe('dropped or pasted', () => {
+      /** Stands in for GeoGebra's drawing: what reaches it, GeoGebra would take. */
+      let drawing: HTMLElement;
+      let reachedGeoGebra: string[];
+
+      beforeEach(() => {
+        drawing = document.createElement('canvas');
+        fixture.nativeElement.appendChild(drawing);
+        reachedGeoGebra = [];
+        ['dragenter', 'dragover', 'drop', 'paste'].forEach(type => drawing
+          .addEventListener(type, () => reachedGeoGebra.push(type)));
+      });
+
+      const transferOf = (content: File | string): DataTransfer => {
+        const transfer = new DataTransfer();
+        if (typeof content === 'string') transfer.setData('text/plain', content);
+        else transfer.items.add(content);
+        return transfer;
+      };
+      const picture = (): File => new File(['png'], 'picture.png', { type: 'image/png' });
+
+      it('should keep a picture from the drawing', () => {
+        const init = { bubbles: true, cancelable: true };
+        const dragenter = new DragEvent('dragenter', { ...init, dataTransfer: transferOf(picture()) });
+        const dragover = new DragEvent('dragover', { ...init, dataTransfer: transferOf(picture()) });
+        const drop = new DragEvent('drop', { ...init, dataTransfer: transferOf(picture()) });
+        const paste = new ClipboardEvent('paste', { ...init, clipboardData: transferOf(picture()) });
+
+        [dragenter, dragover, drop, paste].forEach(event => drawing.dispatchEvent(event));
+
+        expect(reachedGeoGebra).toEqual([]);
+        expect(dragenter.defaultPrevented).toBe(true);
+        // Otherwise the browser opens the dropped file in place of the unit.
+        expect(drop.defaultPrevented).toBe(true);
+      });
+
+      it('should let text pasted into an input through', () => {
+        drawing.dispatchEvent(new ClipboardEvent('paste', { bubbles: true, clipboardData: transferOf('Q=(2,3)') }));
+
+        expect(reachedGeoGebra).toEqual(['paste']);
+      });
+
+      /* An office program puts a picture of what was copied beside the text. Into a text field GeoGebra
+         pastes only the text. */
+      it('should let a paste into a text field through, also with a picture beside the text', () => {
+        const inputBar = document.createElement('textarea');
+        fixture.nativeElement.appendChild(inputBar);
+        const pasted: string[] = [];
+        inputBar.addEventListener('paste', () => pasted.push('paste'));
+        const clipboard = transferOf('Q=(2,3)');
+        clipboard.items.add(picture());
+
+        inputBar.dispatchEvent(new ClipboardEvent('paste', { bubbles: true, clipboardData: clipboard }));
+
+        expect(pasted).toEqual(['paste']);
+      });
+    });
+  });
+
+  describe('the answer (#1650)', () => {
+    const archiveOf = (files: Record<string, string>): string => btoa(String.fromCharCode(...zipSync(
+      Object.fromEntries(Object.entries(files).map(([name, content]) => [name, strToU8(content)]))
+    )));
+    const builtFrom = (): string => vi.mocked(ggbApplet).mock.lastCall?.[0].ggbBase64;
+    const restored = '<geogebra><construction><element type="point" label="A"/></construction></geogebra>';
+
+    it('should report the construction alone', fakeAsync(() => {
+      vi.spyOn(component.elementValueChanged, 'emit');
+      component.refresh();
+      fixture.nativeElement.dispatchEvent(new PointerEvent('pointerdown'));
+
+      geometryUpdated().next();
+      tick(200);
+
+      const { response } = vi.mocked(component.elementValueChanged.emit).mock.lastCall?.[0]?.value as GeometryValue;
+      expect(constructionOf(response)).toBe(constructionOfApplet('mock'));
+    }));
+
+    it('should build the applet from the unit\'s file with the answer\'s construction put in', () => {
+      component.elementModel.appDefinition = archiveOf({ 'geogebra.xml': '<geogebra/>', 'unit.png': 'picture' });
+      component.response = archiveOf({ 'geogebra.xml': restored });
+
+      component.refresh();
+
+      expect(Object.keys(unzipSync(Uint8Array.from(atob(builtFrom()), c => c.charCodeAt(0)))).sort())
+        .toEqual(['geogebra.xml', 'unit.png']);
+      expect(constructionOf(builtFrom())).toBe(restored);
+    });
+
+    it('should show the unit\'s file after a reset, without the answer', () => {
+      component.response = archiveOf({ 'geogebra.xml': restored });
+      component.refresh();
+      startUp();
+
+      component.reset();
+
+      expect(builtFrom()).toBe('initial-def');
+    });
+
+    it('should show the unit\'s file for an answer that cannot be read', () => {
+      component.response = 'no answer';
+
+      component.refresh();
+
+      expect(builtFrom()).toBe('initial-def');
+    });
   });
 
   describe('replacing the applet (#1625)', () => {
@@ -349,15 +520,14 @@ describe('GeometryComponent', () => {
       geometryUpdated().next();
       tick(200);
 
-      expect(mockGeoGebraAPI.getBase64).not.toHaveBeenCalled();
+      expect(mockGeoGebraAPI.getXML).not.toHaveBeenCalled();
       expect(component.elementValueChanged.emit).not.toHaveBeenCalled();
 
       loads[0].appletOnLoad(createGeoGebraApi('after reset'));
       tick(200);
 
-      expect(component.elementValueChanged.emit).toHaveBeenCalledWith(expect.objectContaining({
-        value: expect.objectContaining({ appDefinition: 'after reset' })
-      }));
+      const { response } = vi.mocked(component.elementValueChanged.emit).mock.lastCall?.[0]?.value as GeometryValue;
+      expect(constructionOf(response)).toBe(constructionOfApplet('after reset'));
     }));
   });
 

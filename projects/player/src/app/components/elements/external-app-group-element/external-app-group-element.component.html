@@ -1,7 +1,7 @@
 <aspect-geometry
   #elementComponent
   [elementModel]="elementModel | cast: GeometryElement"
-  [appDefinition]="appDefinition"
+  [response]="response"
   (elementValueChanged)="changeElementCodeValue($event)"
   (appletLoaded)="takeOverStartValues($event)">
 </aspect-geometry>

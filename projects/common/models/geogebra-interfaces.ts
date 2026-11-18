@@ -2,10 +2,16 @@
    the geometry component uses; anything else the library offers is deliberately absent. */
 
 export interface GeoGebraApi {
-  getBase64(): string;
+  /** The construction alone, the `geogebra.xml` of the file. */
+  getXML(): string;
   /** Resizes the running applet. The drawing keeps its scale and position and shows more or less of the
    * plane, as a new applet of that size would. */
   setSize(width: number, height: number): void;
+  /** The layout of the views as XML, with the toolbar the applet shows (`<toolbar items="…">`), also
+   * when that is GeoGebra's default one. */
+  getPerspectiveXML(): string;
+  /** Replaces the running applet's toolbar, given as tool numbers like the parameter `customToolBar`. */
+  setCustomToolBar(items: string): void;
   getAllObjectNames(): string[];
   getValueString(objectName: string): string;
   /** Whether the user can change the object directly: a free point, a point on a path, a slider, a

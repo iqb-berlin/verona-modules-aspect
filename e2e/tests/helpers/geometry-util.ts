@@ -58,7 +58,9 @@ export function interceptDeployGGB() {
                 registerRenameListener: listener => { listeners.rename = listener; },
                 registerClearListener: () => {},
                 registerClientListener: listener => { listeners.client = listener; },
-                getBase64: () => "",
+                getXML: () => '<geogebra><construction></construction></geogebra>',
+                getPerspectiveXML: () => '<perspective><toolbar show="true" items="0"/></perspective>',
+                setCustomToolBar: () => {},
                 setSize: (width, height) => {
                   (window.ggbAppletSizes = window.ggbAppletSizes || []).push({ id: containerId, width, height });
                   const applet = container && container.firstElementChild;

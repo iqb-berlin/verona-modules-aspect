@@ -14,6 +14,8 @@ import {
   GeoGebraApi, GeoGebraAppletConstructor, GeoGebraAppletParameters
 } from 'common/models/geogebra-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
+import { GeoGebraResponse } from 'common/utils/geogebra-response';
+import { GeoGebraToolbar } from 'common/utils/geogebra-toolbar';
 
 declare const GGBApplet: GeoGebraAppletConstructor;
 
@@ -25,7 +27,8 @@ declare const GGBApplet: GeoGebraAppletConstructor;
 })
 export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {
   @Input() elementModel!: GeometryElement;
-  @Input() appDefinition: string | undefined;
+  /** A stored answer to restore: the applet is built from the unit's file with the answer put in (#1650). */
+  @Input() response: string | undefined;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   /** The tracked variables with the values GeoGebra computed on loading the applet, each time it loads,
    * the reset included. They can differ from the values stored in the unit, which are empty for variables
@@ -64,6 +67,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private startUpTimeout?: ReturnType<typeof setTimeout>;
   /** A new applet asked for while the current one was starting up, built once it has. */
   private isBuildDue = false;
+  /** The file that restores the answer, put together once: `refresh` compares what an applet is built
+   * from with what the current one was built from. */
+  private restoredDefinition?: { response: string; appDefinition: string; restored: string | undefined };
 
   get timeoutMsg(): string {
     // eslint-disable-next-line max-len
@@ -94,6 +100,20 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     fromEvent(this.elementRef.nativeElement, 'wheel', { capture: true })
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => { this.hasUserInteracted = true; });
+    // Before GeoGebra sees them: it puts a picture dropped on the drawing or pasted into it into the
+    // construction, as the tool "Bild" does (#1700).
+    ['dragenter', 'dragover', 'drop'].forEach(type => fromEvent<DragEvent>(
+      this.elementRef.nativeElement, type, { capture: true }
+    )
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(event => GeometryComponent.refuseFiles(event, event.dataTransfer)));
+    // Into a text field GeoGebra pastes only the text, also when the clipboard holds a picture beside it,
+    // as one copied from an office program does (measured in GeoGebra 5.0.791).
+    fromEvent<ClipboardEvent>(this.elementRef.nativeElement, 'paste', { capture: true })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(event => {
+        if (!GeometryComponent.isTextField(event.target)) GeometryComponent.refuseFiles(event, event.clipboardData);
+      });
 
     this.geometryUpdated
       .pipe(debounceTime(100), takeUntil(this.ngUnsubscribe))
@@ -106,7 +126,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
           this.elementValueChanged.emit({
             id: this.elementModel.id,
             value: {
-              appDefinition: this.geoGebraAPI.getBase64(),
+              response: GeoGebraResponse.fromConstruction(this.geoGebraAPI.getXML()),
               variables: this.getVariablesToEmit(),
               edited: this.isEditedSinceReport
             }
@@ -154,7 +174,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   reset(): void {
-    this.appDefinition = this.elementModel.appDefinition;
+    this.response = undefined;
+    // Not for the next build, which asks for no restored file without an answer: the file, some MB with a
+    // large picture in the unit, is no longer kept once nothing needs it.
+    this.restoredDefinition = undefined;
     this.hasUserInteracted = true;
     this.isReportDue = true;
     this.initApplet();
@@ -203,6 +226,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         // Replaced before it had loaded, so no longer shown: neither its API nor its events are wanted.
         if (appletNumber !== this.appletCount) return;
         this.geoGebraAPI = geoGebraApi;
+        // Before the listeners, so that changing the toolbar can never count as the user's work.
+        this.removeImageTool();
         this.isAppletLoaded = true;
         this.isLoaded.next(true);
         this.preventFocusScrolling();
@@ -274,8 +299,56 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       // probability view, or under some conditions the algebra view, is shown. It stays in the section's
       // stacking context there, so every element after the section covers it (#1549).
       detachKeyboard: false,
-      ggbBase64: this.appDefinition || this.elementModel.appDefinition
+      ggbBase64: this.getRestoredDefinition() ?? this.elementModel.appDefinition
     };
+  }
+
+  private getRestoredDefinition(): string | undefined {
+    if (!this.response) return undefined;
+    const { appDefinition } = this.elementModel;
+    if (this.restoredDefinition?.response !== this.response ||
+      this.restoredDefinition.appDefinition !== appDefinition) {
+      this.restoredDefinition = {
+        response: this.response,
+        appDefinition,
+        restored: GeoGebraResponse.restoredDefinition(this.response, appDefinition)
+      };
+    }
+    return this.restoredDefinition.restored;
+  }
+
+  /**
+   * Takes the tool "Bild" out of the toolbar the applet shows (#1700). With it a person could upload a
+   * file from their device or take a photo with the camera, which a test does not provide for, and the
+   * picture would not be part of the answer either (#1650).
+   *
+   * The toolbar is read from the running applet rather than from the element or the file: without an
+   * entry in either, GeoGebra shows its default toolbar, which has the tool in the menu of the slider.
+   * Changing it adds no step to undo (measured in GeoGebra 5.0.791).
+   */
+  private removeImageTool(): void {
+    if (!this.elementModel.showToolbar) return;
+    const items = GeoGebraToolbar.itemsOf(this.geoGebraAPI.getPerspectiveXML());
+    if (items && GeoGebraToolbar.hasImageTool(items)) {
+      this.geoGebraAPI.setCustomToolBar(GeoGebraToolbar.withoutImageTool(items));
+    }
+  }
+
+  /** GeoGebra's input bar, an input box in the drawing and the like: GeoGebra takes their keyboard input,
+   * and pastes, through a text area. */
+  private static isTextField(target: EventTarget | null): boolean {
+    return target instanceof HTMLTextAreaElement || target instanceof HTMLInputElement ||
+      (target instanceof HTMLElement && target.isContentEditable);
+  }
+
+  /** Keeps a file from reaching GeoGebra. Text pasted without a picture and a drag inside the drawing
+   * carry none and pass. A refused drag shows that nothing can be dropped, and the browser does not open the
+   * file in place of the unit. */
+  private static refuseFiles(event: Event, transfer: DataTransfer | null): void {
+    if (!transfer || !Array.from(transfer.types).includes('Files')) return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.type !== 'paste') transfer.dropEffect = 'none';
   }
 
   /**

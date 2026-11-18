@@ -11,10 +11,10 @@ import {
  * whole file as the answer, a file with a picture of 1.4 MB made each of them 1.9 MB, whichever element
  * had changed.
  *
- * A picture the person inserts with GeoGebra's tool "Bild" is not part of the answer either. It stays
- * while the unit is shown and is missing once the answer is restored, as when the person comes back to
- * the unit. No test has used that tool so far; carrying such pictures would mean asking GeoGebra for its
- * whole file again, which takes about 70 ms with a picture of 1.4 MB.
+ * A picture inserted into the drawing would not be part of the answer either; carrying it would mean
+ * asking GeoGebra for its whole file again, which takes about 70 ms with a picture of 1.4 MB. The applet
+ * offers no way to insert one (#1700): it has no tool "Bild", and files dropped or pasted onto it are
+ * refused.
  *
  * The answer stays a ggb archive rather than the XML as text. Hosts and coding tools recognize a
  * GeoGebra answer by the zip header (`UEsD` in base64), the variable info calls it `GGB_FILE`, and packed

@@ -51,6 +51,8 @@ describe('GeometryComponent', () => {
   const createGeoGebraApi = (name: string): GeoGebraApi => ({
     getXML: vi.fn().mockReturnValue(constructionOfApplet(name)),
     setSize: vi.fn(),
+    getPerspectiveXML: vi.fn().mockReturnValue('<perspective><toolbar show="true" items="0 | 1 , 5"/></perspective>'),
+    setCustomToolBar: vi.fn(),
     getAllObjectNames: vi.fn().mockReturnValue([]),
     getValueString: vi.fn(),
     isMoveable: vi.fn().mockReturnValue(true),
@@ -261,6 +263,117 @@ describe('GeometryComponent', () => {
         variables: [{ id: 'A', value: 'A = 0' }, { id: 'B', value: 'B = 0' }]
       }));
     }));
+  });
+
+  describe('pictures from the person\'s device (#1700)', () => {
+    const showToolbar = (items: string): void => {
+      vi.mocked(mockGeoGebraAPI.getPerspectiveXML)
+        .mockReturnValue(`<perspective><toolbar show="true" items="${items}" position="1"/></perspective>`);
+    };
+    /** A new applet, which reads the toolbar anew as it loads. */
+    // The element of the outer setup leaves the switch unset, which a unit's element never does.
+    beforeEach(() => {
+      component.elementModel.showToolbar = true;
+    });
+
+    const buildApplet = (): void => {
+      vi.mocked(mockGeoGebraAPI.setCustomToolBar).mockClear();
+      vi.mocked(mockGeoGebraAPI.registerAddListener).mockClear();
+      startUp();
+      component.reset();
+    };
+
+    it('should take the tool "Bild" out of the toolbar the applet shows', () => {
+      showToolbar('0 | 26 | 1');
+
+      buildApplet();
+
+      expect(mockGeoGebraAPI.setCustomToolBar).toHaveBeenCalledWith('0 | 1');
+    });
+
+    it('should leave a toolbar without the tool as it is', () => {
+      showToolbar('0 | 126');
+
+      buildApplet();
+
+      expect(mockGeoGebraAPI.setCustomToolBar).not.toHaveBeenCalled();
+    });
+
+    it('should leave a hidden toolbar alone', () => {
+      showToolbar('0 | 26');
+      component.elementModel.showToolbar = false;
+
+      buildApplet();
+
+      expect(mockGeoGebraAPI.setCustomToolBar).not.toHaveBeenCalled();
+    });
+
+    it('should change the toolbar before GeoGebra can report anything', () => {
+      showToolbar('0 | 26');
+
+      buildApplet();
+
+      expect(vi.mocked(mockGeoGebraAPI.setCustomToolBar).mock.invocationCallOrder[0])
+        .toBeLessThan(vi.mocked(mockGeoGebraAPI.registerAddListener).mock.invocationCallOrder[0]);
+    });
+
+    describe('dropped or pasted', () => {
+      /** Stands in for GeoGebra's drawing: what reaches it, GeoGebra would take. */
+      let drawing: HTMLElement;
+      let reachedGeoGebra: string[];
+
+      beforeEach(() => {
+        drawing = document.createElement('canvas');
+        fixture.nativeElement.appendChild(drawing);
+        reachedGeoGebra = [];
+        ['dragenter', 'dragover', 'drop', 'paste'].forEach(type => drawing
+          .addEventListener(type, () => reachedGeoGebra.push(type)));
+      });
+
+      const transferOf = (content: File | string): DataTransfer => {
+        const transfer = new DataTransfer();
+        if (typeof content === 'string') transfer.setData('text/plain', content);
+        else transfer.items.add(content);
+        return transfer;
+      };
+      const picture = (): File => new File(['png'], 'picture.png', { type: 'image/png' });
+
+      it('should keep a picture from the drawing', () => {
+        const init = { bubbles: true, cancelable: true };
+        const dragenter = new DragEvent('dragenter', { ...init, dataTransfer: transferOf(picture()) });
+        const dragover = new DragEvent('dragover', { ...init, dataTransfer: transferOf(picture()) });
+        const drop = new DragEvent('drop', { ...init, dataTransfer: transferOf(picture()) });
+        const paste = new ClipboardEvent('paste', { ...init, clipboardData: transferOf(picture()) });
+
+        [dragenter, dragover, drop, paste].forEach(event => drawing.dispatchEvent(event));
+
+        expect(reachedGeoGebra).toEqual([]);
+        expect(dragenter.defaultPrevented).toBe(true);
+        // Otherwise the browser opens the dropped file in place of the unit.
+        expect(drop.defaultPrevented).toBe(true);
+      });
+
+      it('should let text pasted into an input through', () => {
+        drawing.dispatchEvent(new ClipboardEvent('paste', { bubbles: true, clipboardData: transferOf('Q=(2,3)') }));
+
+        expect(reachedGeoGebra).toEqual(['paste']);
+      });
+
+      /* An office program puts a picture of what was copied beside the text. Into a text field GeoGebra
+         pastes only the text. */
+      it('should let a paste into a text field through, also with a picture beside the text', () => {
+        const inputBar = document.createElement('textarea');
+        fixture.nativeElement.appendChild(inputBar);
+        const pasted: string[] = [];
+        inputBar.addEventListener('paste', () => pasted.push('paste'));
+        const clipboard = transferOf('Q=(2,3)');
+        clipboard.items.add(picture());
+
+        inputBar.dispatchEvent(new ClipboardEvent('paste', { bubbles: true, clipboardData: clipboard }));
+
+        expect(pasted).toEqual(['paste']);
+      });
+    });
   });
 
   describe('the answer (#1650)', () => {

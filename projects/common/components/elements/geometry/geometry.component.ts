@@ -15,6 +15,7 @@ import {
 } from 'common/models/geogebra-interfaces';
 import { ValueChangeElement } from 'common/models/input-element-interfaces';
 import { GeoGebraResponse } from 'common/utils/geogebra-response';
+import { GeoGebraToolbar } from 'common/utils/geogebra-toolbar';
 
 declare const GGBApplet: GeoGebraAppletConstructor;
 
@@ -99,6 +100,20 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     fromEvent(this.elementRef.nativeElement, 'wheel', { capture: true })
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => { this.hasUserInteracted = true; });
+    // Before GeoGebra sees them: it puts a picture dropped on the drawing or pasted into it into the
+    // construction, as the tool "Bild" does (#1700).
+    ['dragenter', 'dragover', 'drop'].forEach(type => fromEvent<DragEvent>(
+      this.elementRef.nativeElement, type, { capture: true }
+    )
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(event => GeometryComponent.refuseFiles(event, event.dataTransfer)));
+    // Into a text field GeoGebra pastes only the text, also when the clipboard holds a picture beside it,
+    // as one copied from an office program does (measured in GeoGebra 5.0.791).
+    fromEvent<ClipboardEvent>(this.elementRef.nativeElement, 'paste', { capture: true })
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(event => {
+        if (!GeometryComponent.isTextField(event.target)) GeometryComponent.refuseFiles(event, event.clipboardData);
+      });
 
     this.geometryUpdated
       .pipe(debounceTime(100), takeUntil(this.ngUnsubscribe))
@@ -211,6 +226,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         // Replaced before it had loaded, so no longer shown: neither its API nor its events are wanted.
         if (appletNumber !== this.appletCount) return;
         this.geoGebraAPI = geoGebraApi;
+        // Before the listeners, so that changing the toolbar can never count as the user's work.
+        this.removeImageTool();
         this.isAppletLoaded = true;
         this.isLoaded.next(true);
         this.preventFocusScrolling();
@@ -298,6 +315,40 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       };
     }
     return this.restoredDefinition.restored;
+  }
+
+  /**
+   * Takes the tool "Bild" out of the toolbar the applet shows (#1700). With it a person could upload a
+   * file from their device or take a photo with the camera, which a test does not provide for, and the
+   * picture would not be part of the answer either (#1650).
+   *
+   * The toolbar is read from the running applet rather than from the element or the file: without an
+   * entry in either, GeoGebra shows its default toolbar, which has the tool in the menu of the slider.
+   * Changing it adds no step to undo (measured in GeoGebra 5.0.791).
+   */
+  private removeImageTool(): void {
+    if (!this.elementModel.showToolbar) return;
+    const items = GeoGebraToolbar.itemsOf(this.geoGebraAPI.getPerspectiveXML());
+    if (items && GeoGebraToolbar.hasImageTool(items)) {
+      this.geoGebraAPI.setCustomToolBar(GeoGebraToolbar.withoutImageTool(items));
+    }
+  }
+
+  /** GeoGebra's input bar, an input box in the drawing and the like: GeoGebra takes their keyboard input,
+   * and pastes, through a text area. */
+  private static isTextField(target: EventTarget | null): boolean {
+    return target instanceof HTMLTextAreaElement || target instanceof HTMLInputElement ||
+      (target instanceof HTMLElement && target.isContentEditable);
+  }
+
+  /** Keeps a file from reaching GeoGebra. Text pasted without a picture and a drag inside the drawing
+   * carry none and pass. A refused drag shows that nothing can be dropped, and the browser does not open the
+   * file in place of the unit. */
+  private static refuseFiles(event: Event, transfer: DataTransfer | null): void {
+    if (!transfer || !Array.from(transfer.types).includes('Files')) return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.type !== 'paste') transfer.dropEffect = 'none';
   }
 
   /**

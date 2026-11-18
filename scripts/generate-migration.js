@@ -39,7 +39,6 @@ const fileName = `v${fromName}-to-v${toName}.migration.ts`;
 const className = `Migration${fromSafe}To${toSafe}`;
 
 const template = `/* eslint-disable @typescript-eslint/dot-notation */
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable class-methods-use-this */
 import { UnitTraversalMigration } from './unit-traversal-migration';
 

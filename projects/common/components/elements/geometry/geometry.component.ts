@@ -72,7 +72,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private restoredDefinition?: { response: string; appDefinition: string; restored: string | undefined };
 
   get timeoutMsg(): string {
-    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @stylistic/max-len
     return `Failed to load geogebra element with alias "${this.elementModel.alias}" in time`;
   }
 

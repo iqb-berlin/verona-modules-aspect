@@ -19,7 +19,7 @@ export class ImageComponent extends ElementComponent {
   /** What the host is told when the picture does not load. The file is named by `fileName`, because
    * `src` usually is the picture itself, embedded as a data URI. */
   get loadErrorMsg(): string {
-    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @stylistic/max-len
     return `Failed to load image element with alias "${this.elementModel.alias}" and filename "${this.elementModel.fileName}"`;
   }
 }

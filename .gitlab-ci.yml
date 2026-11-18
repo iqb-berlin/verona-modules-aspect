@@ -161,10 +161,10 @@ build-modules:
 # jobs have no shared npm cache, so --prefer-offline saves little.
 # `npm run lint` first checks that every migration step is registered in MigrationManager
 # (scripts/check-migrations-registered.js, milliseconds), then runs `eslint .` (see package.json).
-# The scope of ESLint is everything ignorePatterns does not exclude, so
-# projects/, e2e/ and the root configs, without any assets/ tree, dist/, coverage/, scripts/
-# and test-data/. dist/ and coverage/ do not exist in a fresh checkout, which is what this job
-# gets - they are listed so a local run lints the same set as the pipeline. scripts/ and
+# The scope of ESLint is everything the ignores in eslint.config.mjs do not exclude, so
+# projects/, e2e/ and the root configs, without any assets/ tree, dist/, coverage/, scripts/,
+# test-data/ and dot-directories. dist/ and coverage/ do not exist in a fresh checkout, which is
+# what this job gets - they are listed so a local run lints the same set as the pipeline. scripts/ and
 # test-data/ are in the checkout and stay excluded, so ESLint does not read the check script
 # either.
 # No --max-warnings: the repository lints clean of errors, and the warnings that remain are

@@ -83,7 +83,7 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
 
   private getAnswerSchemePositionLabels(): string[] {
     return this.value
-      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @stylistic/max-len
       .map((hotspot, index) => `${hotspot.shape}(${index})`
         .charAt(0).toUpperCase() + `${hotspot.shape}(${index})`.slice(1));
   }

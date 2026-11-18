@@ -124,7 +124,7 @@ import {
 } from './components/element-model-properties/slider-properties/slider-properties.component';
 import {
   StandardDimensionPropertiesComponent
-  // eslint-disable-next-line max-len -- longest component name in the deepest folder, two chars over
+  // eslint-disable-next-line @stylistic/max-len -- longest component name in the deepest folder, two chars over
 } from './components/element-model-properties/standard-dimension-properties/standard-dimension-properties.component';
 import {
   StickyHeaderPropertiesComponent
@@ -140,11 +140,11 @@ import {
 } from './components/element-model-properties/text-properties-field-set/text-properties-field-set.component';
 import {
   WidgetMoleculeEditorPropertiesComponent
-  // eslint-disable-next-line max-len -- the longest component name in the deepest folder, one char over
+  // eslint-disable-next-line @stylistic/max-len -- the longest component name in the deepest folder, one char over
 } from './components/element-model-properties/widget-molecule-editor-properties/widget-molecule-editor-properties.component';
 import {
   WidgetPeriodicTablePropertiesComponent
-  // eslint-disable-next-line max-len -- deepest folder plus longest component name, three chars over
+  // eslint-disable-next-line @stylistic/max-len -- deepest folder plus longest component name, three chars over
 } from './components/element-model-properties/widget-periodic-table-properties/widget-periodic-table-properties.component';
 import {
   TetfolioPropertiesComponent

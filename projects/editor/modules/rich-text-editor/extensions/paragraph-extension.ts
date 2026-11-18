@@ -1,6 +1,6 @@
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Command } from '@tiptap/core';
-import { Node as ProseMirrorNode } from 'prosemirror-model';
+import { Node as ProseMirrorNode } from '@tiptap/pm/model';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {

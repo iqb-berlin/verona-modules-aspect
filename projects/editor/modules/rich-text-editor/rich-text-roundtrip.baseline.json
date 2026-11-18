@@ -1,0 +1,705 @@
+{
+  "texts": {
+    "whitespace": {
+      "<p>Einfacher Text</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Einfacher Text</p>",
+      "Text ohne Absatz": "<p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Text ohne Absatz</p>",
+      "<p>zwei  Leerzeichen und&nbsp;geschützt und schmal</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">zwei Leerzeichen und&nbsp;geschützt und schmal</p>",
+      "<p> führend und folgend </p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">führend und folgend</p>",
+      "<p>Zeile eins<br>Zeile zwei</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Zeile eins Zeile zwei</p>",
+      "<p>a</p>\n<p>b</p>\n\n<p>c</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">a</p><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">b</p><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">c</p>",
+      "<p></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"></p>",
+      "<p></p><p></p><p>nach zwei leeren</p><p></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"></p><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"></p><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">nach zwei leeren</p><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"></p>",
+      "<p style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0\" indent=\"0\" indentsize=\"20\"></p>": "<p indent=\"0\" indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"></p>",
+      "<p>a &lt; b &amp; c &gt; d \"Anführung\" 'einfach' ä ö ü ß € 😀</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">a &lt; b &amp; c &gt; d \"Anführung\" 'einfach' ä ö ü ß € 😀</p>"
+    },
+    "foreign markup": {
+      "<div>Block im div</div>": "<p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Block im div</p>",
+      "<div><p>Absatz im div</p></div>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Absatz im div</p>",
+      "<p>mit <a href=\"https://example.org\">Link</a> und <code>Code</code></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">mit Link und Code</p>",
+      "<pre>vorformatiert\n  eingerückt</pre>": "<p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">vorformatiert   eingerückt</p>",
+      "<table><tr><td>Zelle 1</td><td>Zelle 2</td></tr></table>": "<p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Zelle 1Zelle 2</p>",
+      "<p>Lücke <aspect-nodeview-text-field></aspect-nodeview-text-field> im Text</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Lücke im Text</p>"
+    },
+    "paragraph attributes": {
+      "<p style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0\" indent=\"0\" indentsize=\"20\">Standardabsatz</p>": "<p indent=\"0\" indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Standardabsatz</p>",
+      "<p style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0\" indentsize=\"20\">ohne indent</p>": "<p indent=\"0\" indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">ohne indent</p>",
+      "<p style=\"padding-left: 20px; text-indent: 0px; margin-bottom: 10px; margin-top: 0\" indent=\"1\" indentsize=\"20\">eingerückt</p>": "<p indent=\"1\" indentsize=\"20\" style=\"padding-left: 20px; text-indent: 0px; margin-bottom: 10px; margin-top: 0px;\">eingerückt</p>",
+      "<p style=\"padding-left: 60px; text-indent: 0px; margin-bottom: 0px; margin-top: 0\" indent=\"2\" indentsize=\"30\">eingerückt 2x30</p>": "<p indent=\"2\" indentsize=\"30\" style=\"padding-left: 60px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">eingerückt 2x30</p>",
+      "<p style=\"padding-left: 20px; text-indent: -20px; margin-bottom: 0px; margin-top: 0\" indent=\"1\" indentsize=\"20\">hängend</p>": "<p indent=\"1\" indentsize=\"20\" style=\"padding-left: 20px; text-indent: -20px; margin-bottom: 0px; margin-top: 0px;\">hängend</p>",
+      "<p style=\"padding-left: 20px; text-indent: -20px; margin-bottom: 0px; margin-top: 0\" indent=\"1\">hängend ohne indentsize</p>": "<p indent=\"1\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">hängend ohne indentsize</p>",
+      "<p style=\"text-indent: -20px\">nur text-indent</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">nur text-indent</p>",
+      "<p style=\"padding-left: 40px\">nur padding</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">nur padding</p>",
+      "<p indent=\"3\">nur indent</p>": "<p indent=\"3\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">nur indent</p>",
+      "<p style=\"margin-bottom: 15px; margin-top: 0\">nur Abstand</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 15px; margin-top: 0px;\">nur Abstand</p>"
+    },
+    "alignment": {
+      "<p style=\"margin-bottom: 0px; margin-top: 0; text-align: center\">a &lt; b</p>": "<p indent=\"0\" indentsize=\"0\" style=\"text-align: center; padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">a &lt; b</p>",
+      "<p style=\"text-align: left\">links</p>": "<p indent=\"0\" indentsize=\"0\" style=\"text-align: left; padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">links</p>",
+      "<p style=\"text-align: right\">rechts</p>": "<p indent=\"0\" indentsize=\"0\" style=\"text-align: right; padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">rechts</p>",
+      "<p style=\"text-align: center\">mittig</p>": "<p indent=\"0\" indentsize=\"0\" style=\"text-align: center; padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">mittig</p>",
+      "<p style=\"text-align: justify\">Blocksatz</p>": "<p indent=\"0\" indentsize=\"0\" style=\"text-align: justify; padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Blocksatz</p>",
+      "<p style=\"text-align: start\">start</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">start</p>",
+      "<p style=\"text-align: right; padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0\" indent=\"0\" indentsize=\"20\">rechts mit allem</p>": "<p indent=\"0\" indentsize=\"20\" style=\"text-align: right; padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">rechts mit allem</p>",
+      "<p align=\"center\">altes align-Attribut</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">altes align-Attribut</p>"
+    },
+    "headings": {
+      "<h1>Eins</h1><h2>Zwei</h2><h3>Drei</h3><h4>Vier</h4><h5>Fünf</h5><h6>Sechs</h6>": "<h1>Eins</h1><h2>Zwei</h2><h3>Drei</h3><h4>Vier</h4><p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Fünf</p><p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Sechs</p>",
+      "<h2 style=\"text-align: center\">mittige Überschrift</h2>": "<h2 style=\"text-align: center;\">mittige Überschrift</h2>",
+      "<h1 style=\"padding-left: 20px\" indent=\"1\" indentsize=\"20\">eingerückte Überschrift</h1>": "<h1>eingerückte Überschrift</h1>"
+    },
+    "marks": {
+      "<p><strong>fett</strong> <b>b</b> <em>kursiv</em> <i>i</i> <u>unter</u> <s>durch</s> <del>del</del> <strike>strike</strike></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><strong>fett</strong> <strong>b</strong> <em>kursiv</em> <em>i</em> <u>unter</u> <s>durch</s> <s>del</s> <s>strike</s></p>",
+      "<p>H<sub>2</sub>O und x<sup>2</sup> und <sup><sub>beides</sub></sup></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">H<sub>2</sub>O und x<sup>2</sup> und <sup><sub>beides</sub></sup></p>",
+      "<p><span style=\"font-weight: bold\">span fett</span> <span style=\"font-style: italic\">span kursiv</span> <span style=\"text-decoration: underline\">span unter</span> <span style=\"text-decoration: line-through\">span durch</span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"\"><strong>span fett</strong></span> <span style=\"\"><em>span kursiv</em></span> <span style=\"\"><u>span unter</u></span> <span style=\"\"><s>span durch</s></span></p>",
+      "<p><span style=\"font-weight: 700\">700</span> <span style=\"font-weight: normal\">normal</span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"\"><strong>700</strong></span> <span style=\"\">normal</span></p>",
+      "<p><strong><em><u><s>vier Marken</s></u></em></strong></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><u><strong><em><s>vier Marken</s></em></strong></u></p>",
+      "<p><u><em><strong>andere Reihenfolge</strong></em></u></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><u><strong><em>andere Reihenfolge</em></strong></u></p>",
+      "<p><strong>fett <em>und kursiv</em> weiter fett</strong> normal <em>kursiv <strong>und fett</strong></em></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><strong>fett <em>und kursiv</em> weiter fett</strong> normal <em>kursiv </em><strong><em>und fett</em></strong></p>"
+    },
+    "text style": {
+      "<p><span style=\"font-size: 24px\">groß</span> <span style=\"color: #ff0000\">rot</span> <span style=\"color: rgb(255, 0, 0)\">rgb</span> <span style=\"color: red; font-size: 30px\">beides</span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"font-size: 24px;\">groß</span> <span style=\"color: rgb(255, 0, 0);\">rot</span> <span style=\"color: rgb(255, 0, 0);\">rgb</span> <span style=\"color: red; font-size: 30px;\">beides</span></p>",
+      "<p><span style=\"font-size: 24px;\">mit Semikolon</span> <span style=\"font-size:24px\">ohne Leerzeichen</span> <span style=\"font-size: 1.5em\">em</span> <span style=\"font-size: large\">large</span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"font-size: 24px;\">mit Semikolon</span> <span style=\"font-size: 24px;\">ohne Leerzeichen</span> <span style=\"font-size: 1.5em;\">em</span> <span style=\"font-size: large;\">large</span></p>",
+      "<p><span>span ohne Stil</span> <span class=\"x\">span mit Klasse</span> <span style=\"\">leerer Stil</span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">span ohne Stil span mit Klasse <span style=\"\">leerer Stil</span></p>",
+      "<p><span style=\"font-family: Arial\">Schriftart</span> <span style=\"font-family: Arial; font-size: 20px\">Schriftart und Größe</span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"\">Schriftart</span> <span style=\"font-size: 20px;\">Schriftart und Größe</span></p>",
+      "<p><span style=\"line-height: 2\">Zeilenhöhe</span> <span style=\"background-color: yellow\">Hintergrund am span</span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"\">Zeilenhöhe</span> <span style=\"\">Hintergrund am span</span></p>",
+      "<p><span style=\"font-size: 24px\"><sup>hoch groß</sup></span><sub><span style=\"color: red\">tief rot</span></sub></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"font-size: 24px;\"><sup>hoch groß</sup></span><span style=\"color: red;\"><sub>tief rot</sub></span></p>"
+    },
+    "nested text style": {
+      "<p><span style=\"color: red\"><span style=\"font-size: 24px\">verschachtelt</span></span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"font-size: 24px;\">verschachtelt</span></p>",
+      "<p><span style=\"color: red\">außen <span style=\"font-size: 24px\">innen</span> außen</span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"color: red;\">außen </span><span style=\"font-size: 24px;\">innen</span><span style=\"color: red;\"> außen</span></p>",
+      "<p><span style=\"color: red\"><span style=\"color: blue\">Farbe überschrieben</span></span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"color: blue;\">Farbe überschrieben</span></p>",
+      "<p><span style=\"font-size: 24px\"><span style=\"color: red\"><strong>drei Ebenen</strong></span></span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"color: red;\"><strong>drei Ebenen</strong></span></p>"
+    },
+    "highlight": {
+      "<p><mark>markiert</mark> <mark data-color=\"#ffff00\" style=\"background-color: #ffff00\">mit Farbe alt</mark> <mark data-color=\"#ffff00\" style=\"background-color: #ffff00; color: inherit\">mit Farbe neu</mark> <mark style=\"background-color: lightgrey\">nur Stil</mark></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><mark>markiert</mark> <mark data-color=\"#ffff00\" style=\"background-color: rgb(255, 255, 0); color: inherit;\">mit Farbe alt</mark> <mark data-color=\"#ffff00\" style=\"background-color: rgb(255, 255, 0); color: inherit;\">mit Farbe neu</mark> <mark data-color=\"lightgrey\" style=\"background-color: lightgrey; color: inherit;\">nur Stil</mark></p>",
+      "<p><mark data-color=\"lightgrey\" style=\"background-color: lightgrey; color: inherit\"><span style=\"color: red; font-size: 24px\"><strong><em><u>alles zusammen</u></em></strong></span></mark></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"color: red; font-size: 24px;\"><u><strong><em><mark data-color=\"lightgrey\" style=\"background-color: lightgrey; color: inherit;\">alles zusammen</mark></em></strong></u></span></p>"
+    },
+    "lists": {
+      "<ul><li><p>eins</p></li><li><p>zwei</p></li></ul>": "<ul style=\"\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">eins</p></li><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">zwei</p></li></ul>",
+      "<ul><li>ohne p</li><li>zwei</li></ul>": "<ul style=\"\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">ohne p</p></li><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">zwei</p></li></ul>",
+      "<ul style=\"list-style: square;\"><li><p>quadrat</p></li></ul>": "<ul style=\"list-style: square;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">quadrat</p></li></ul>",
+      "<ul style=\"list-style: circle\"><li><p>kreis</p></li></ul>": "<ul style=\"list-style: circle;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">kreis</p></li></ul>",
+      "<ul style=\"list-style-type: square\"><li><p>list-style-type</p></li></ul>": "<ul style=\"list-style: square;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">list-style-type</p></li></ul>",
+      "<ol><li><p>eins</p></li><li><p>zwei</p></li></ol>": "<ol style=\"\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">eins</p></li><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">zwei</p></li></ol>",
+      "<ol style=\"list-style: lower-latin; font-size: 24px\"><li><p>a</p></li><li><p>b</p></li></ol>": "<ol style=\"list-style: lower-latin; font-size: 24px;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">a</p></li><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">b</p></li></ol>",
+      "<ol style=\"list-style: upper-roman; font-size: 20px\"><li><p>I</p></li></ol>": "<ol style=\"list-style: upper-roman; font-size: 20px;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">I</p></li></ol>",
+      "<ol style=\"list-style: decimal\"><li><p>ohne Schriftgröße</p></li></ol>": "<ol style=\"list-style: decimal;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">ohne Schriftgröße</p></li></ol>",
+      "<ol start=\"3\"><li><p>drei</p></li></ol>": "<ol style=\"\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">drei</p></li></ol>",
+      "<ol type=\"a\"><li><p>type a</p></li></ol>": "<ol style=\"\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">type a</p></li></ol>",
+      "<ul style=\"list-style: disc;\"><li><p>außen</p><ul style=\"list-style: circle;\"><li><p>innen</p><ul style=\"list-style: square;\"><li><p>ganz innen</p></li></ul></li></ul></li><li><p>außen 2</p></li></ul>": "<ul style=\"list-style: disc;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">außen</p><ul style=\"list-style: circle;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">innen</p><ul style=\"list-style: square;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">ganz innen</p></li></ul></li></ul></li><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">außen 2</p></li></ul>",
+      "<ol style=\"list-style: decimal; font-size: 20px\"><li><p>eins</p><ol style=\"list-style: lower-latin; font-size: 20px\"><li><p>a</p></li></ol></li></ol>": "<ol style=\"list-style: decimal; font-size: 20px;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">eins</p><ol style=\"list-style: lower-latin; font-size: 20px;\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">a</p></li></ol></li></ol>",
+      "<ul><li style=\"padding-left: 20px\" indent=\"1\" indentsize=\"20\"><p>Punkt mit altem Tab-Einzug</p></li></ul>": "<ul style=\"\"><li indent=\"1\" indentsize=\"20\" style=\"padding-left: 20px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Punkt mit altem Tab-Einzug</p></li></ul>",
+      "<ul><li indent=\"0\" indentsize=\"20\"><p style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0\" indent=\"0\" indentsize=\"20\">Punkt mit Absatzattributen</p></li></ul>": "<ul style=\"\"><li indent=\"0\" indentsize=\"20\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Punkt mit Absatzattributen</p></li></ul>",
+      "<ul><li><p>eins</p><p>zweiter Absatz im Punkt</p></li></ul>": "<ul style=\"\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">eins</p><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">zweiter Absatz im Punkt</p></li></ul>",
+      "<ol><li><p><strong>fett</strong> im Punkt</p></li><li><p><span style=\"font-size: 24px\">groß</span></p></li></ol>": "<ol style=\"\"><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><strong>fett</strong> im Punkt</p></li><li indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px;\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"font-size: 24px;\">groß</span></p></li></ol>"
+    },
+    "quotes and lines": {
+      "<blockquote><p>Zitat</p></blockquote>": "<blockquote><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Zitat</p></blockquote>",
+      "<blockquote><p>Zitat eins</p><p>Zitat zwei</p></blockquote>": "<blockquote><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Zitat eins</p><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Zitat zwei</p></blockquote>",
+      "<blockquote>Zitat ohne p</blockquote>": "<blockquote><p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Zitat ohne p</p></blockquote>",
+      "<p>davor</p><hr><p>danach</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">davor</p><hr short=\"false\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">danach</p>",
+      "<hr short=\"false\">": "<hr short=\"false\" style=\"width: 20%; margin-left: 0px;\">",
+      "<hr style=\"width: 20%; margin-left: 0;\" short=\"true\">": "<hr short=\"true\" style=\"width: 20%; margin-left: 0px;\">",
+      "<hr short=\"true\">": "<hr short=\"true\" style=\"width: 20%; margin-left: 0px;\">"
+    },
+    "images": {
+      "<p><img style=\"display: inline-block; height: 1em; vertical-align: middle\" src=\"data:image/png;base64,AAAA\"></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><img src=\"data:image/png;base64,AAAA\" style=\"display: inline-block; height: 1em; vertical-align: middle;\"></p>",
+      "<p>Text <img style=\"display: inline-block; height: 1em; vertical-align: middle\" src=\"data:image/png;base64,AAAA\" alt=\"Alt\" title=\"Titel\"> Text</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Text <img src=\"data:image/png;base64,AAAA\" alt=\"Alt\" title=\"Titel\" style=\"display: inline-block; height: 1em; vertical-align: middle;\"> Text</p>",
+      "<img src=\"data:image/png;base64,AAAA\">": "<img src=\"data:image/png;base64,AAAA\">",
+      "<img src=\"data:image/png;base64,AAAA\" data-style=\"float: left; margin-right: 10px;\" style=\"float: left; margin-right: 10px;\">": "<img src=\"data:image/png;base64,AAAA\" data-style=\"float: left; margin-right: 10px;\" style=\"float: left; margin-right: 10px;\">",
+      "<img src=\"data:image/png;base64,AAAA\" data-style=\"float: right; margin-left: 10px;\" style=\"float: right; margin-left: 10px;\">": "<img src=\"data:image/png;base64,AAAA\" data-style=\"float: right; margin-left: 10px;\" style=\"float: right; margin-left: 10px;\">",
+      "<img src=\"data:image/png;base64,AAAA\" style=\"float: right; margin-left: 10px;\">": "<img src=\"data:image/png;base64,AAAA\" data-style=\"float: right; margin-left: 10px;\" style=\"float: right; margin-left: 10px;\">",
+      "<img src=\"data:image/png;base64,AAAA\" alt=\"Alt\" title=\"Titel\" width=\"100\" height=\"50\">": "<img src=\"data:image/png;base64,AAAA\" alt=\"Alt\" title=\"Titel\">",
+      "<img src=\"https://example.org/bild.png\" alt=\"extern\">": "<img src=\"https://example.org/bild.png\" alt=\"extern\">",
+      "<p><img src=\"data:image/png;base64,AAAA\"></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"></p><img src=\"data:image/png;base64,AAAA\">",
+      "<p>Text <img src=\"data:image/png;base64,AAAA\"> Text</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Text</p><img src=\"data:image/png;base64,AAAA\"><p indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"> Text</p>",
+      "<img src=\"data:image/png;base64,AAAA\"><p>Text nach Bild</p>": "<img src=\"data:image/png;base64,AAAA\"><p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Text nach Bild</p>"
+    },
+    "tooltips": {
+      "<p><tooltip data-tooltip-text=\"Hinweis\" data-tooltip-position=\"above\" onpointerdown=\"x\" onpointerenter=\"x\" onpointerleave=\"x\" onmouseleave=\"x\" style=\"cursor: pointer;\">Wort</tooltip></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><tooltip onpointerdown=\"this.dispatchEvent(new CustomEvent(&quot;pointerDownTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerenter=\"this.dispatchEvent(new CustomEvent(&quot;pointerEnterTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerleave=\"this.dispatchEvent(new CustomEvent(&quot;pointerLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" onmouseleave=\"this.dispatchEvent(new CustomEvent(&quot;mouseLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" data-tooltip-text=\"Hinweis\" data-tooltip-position=\"above\" style=\"cursor: pointer;\">Wort</tooltip></p>",
+      "<p><tooltip data-tooltip-text=\"Hinweis\" data-tooltip-position=\"below\">Wort ohne Handler</tooltip></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><tooltip onpointerdown=\"this.dispatchEvent(new CustomEvent(&quot;pointerDownTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerenter=\"this.dispatchEvent(new CustomEvent(&quot;pointerEnterTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerleave=\"this.dispatchEvent(new CustomEvent(&quot;pointerLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" onmouseleave=\"this.dispatchEvent(new CustomEvent(&quot;mouseLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" data-tooltip-text=\"Hinweis\" data-tooltip-position=\"below\" style=\"cursor: pointer;\">Wort ohne Handler</tooltip></p>",
+      "<p><tooltip data-tooltip-text=\"Hinweis\">ohne Position</tooltip></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><tooltip onpointerdown=\"this.dispatchEvent(new CustomEvent(&quot;pointerDownTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerenter=\"this.dispatchEvent(new CustomEvent(&quot;pointerEnterTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerleave=\"this.dispatchEvent(new CustomEvent(&quot;pointerLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" onmouseleave=\"this.dispatchEvent(new CustomEvent(&quot;mouseLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" data-tooltip-text=\"Hinweis\" data-tooltip-position=\"below\" style=\"cursor: pointer;\">ohne Position</tooltip></p>",
+      "<p><strong><tooltip data-tooltip-text=\"Hinweis\" data-tooltip-position=\"left\">fett im Tooltip</tooltip></strong> <tooltip data-tooltip-text=\"H\" data-tooltip-position=\"right\"><span style=\"font-size: 24px\">groß im Tooltip</span></tooltip></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><strong><tooltip onpointerdown=\"this.dispatchEvent(new CustomEvent(&quot;pointerDownTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerenter=\"this.dispatchEvent(new CustomEvent(&quot;pointerEnterTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerleave=\"this.dispatchEvent(new CustomEvent(&quot;pointerLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" onmouseleave=\"this.dispatchEvent(new CustomEvent(&quot;mouseLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" data-tooltip-text=\"Hinweis\" data-tooltip-position=\"left\" style=\"cursor: pointer;\">fett im Tooltip</tooltip></strong> <span style=\"font-size: 24px;\"><tooltip onpointerdown=\"this.dispatchEvent(new CustomEvent(&quot;pointerDownTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerenter=\"this.dispatchEvent(new CustomEvent(&quot;pointerEnterTooltip&quot;,{bubbles: true, detail: {tooltipText: this.getAttribute(&quot;data-tooltip-text&quot;),tooltipPosition: this.getAttribute(&quot;data-tooltip-position&quot;)}}))\" onpointerleave=\"this.dispatchEvent(new CustomEvent(&quot;pointerLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" onmouseleave=\"this.dispatchEvent(new CustomEvent(&quot;mouseLeaveTooltip&quot;, {bubbles: true, detail: {}}))\" data-tooltip-text=\"H\" data-tooltip-position=\"right\" style=\"cursor: pointer;\">groß im Tooltip</tooltip></span></p>"
+    },
+    "anchors": {
+      "<p><aspect-anchor data-anchor-id=\"Wort\" data-anchor-color=\"#dccce6\" style=\"background-color: #dccce6;\">Wort</aspect-anchor></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><aspect-anchor data-anchor-id=\"Wort\" data-anchor-color=\"#dccce6\" style=\"background-color: rgb(220, 204, 230);\">Wort</aspect-anchor></p>",
+      "<p><aspect-anchor data-anchor-id=\"Wort\" style=\"background-color: rgb(220, 204, 230);\">Wort ohne Farbattribut</aspect-anchor></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><aspect-anchor data-anchor-id=\"Wort\" data-anchor-color=\"rgb(220, 204, 230)\" style=\"background-color: rgb(220, 204, 230);\">Wort ohne Farbattribut</aspect-anchor></p>",
+      "<p><aspect-anchor data-anchor-id=\"innen\" data-parent-anchor-id=\"aussen\" data-anchor-color=\"#aaaaaa\" data-parent-anchor-color=\"#dccce6\" style=\"background-color: #aaaaaa;\">verschachtelt</aspect-anchor></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><aspect-anchor data-anchor-id=\"innen\" data-parent-anchor-id=\"aussen\" data-anchor-color=\"#aaaaaa\" data-parent-anchor-color=\"#dccce6\" style=\"background-color: rgb(170, 170, 170);\">verschachtelt</aspect-anchor></p>",
+      "<p><aspect-anchor data-anchor-id=\"aussen\" data-anchor-color=\"#dccce6\" style=\"background-color: #dccce6;\">außen </aspect-anchor><aspect-anchor data-anchor-id=\"innen\" data-parent-anchor-id=\"aussen\" data-anchor-color=\"#aaaaaa\" data-parent-anchor-color=\"#dccce6\" style=\"background-color: #aaaaaa;\">innen</aspect-anchor><aspect-anchor data-anchor-id=\"aussen\" data-anchor-color=\"#dccce6\" style=\"background-color: #dccce6;\"> außen</aspect-anchor></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><aspect-anchor data-anchor-id=\"aussen\" data-anchor-color=\"#dccce6\" style=\"background-color: rgb(220, 204, 230);\">außen </aspect-anchor><aspect-anchor data-anchor-id=\"innen\" data-parent-anchor-id=\"aussen\" data-anchor-color=\"#aaaaaa\" data-parent-anchor-color=\"#dccce6\" style=\"background-color: rgb(170, 170, 170);\">innen</aspect-anchor><aspect-anchor data-anchor-id=\"aussen\" data-anchor-color=\"#dccce6\" style=\"background-color: rgb(220, 204, 230);\"> außen</aspect-anchor></p>",
+      "<p><aspect-anchor data-anchor-id=\"fett\" data-anchor-color=\"#dccce6\" style=\"background-color: #dccce6;\"><strong>fett</strong> und <span style=\"color: red\">rot</span></aspect-anchor></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><strong><aspect-anchor data-anchor-id=\"fett\" data-anchor-color=\"#dccce6\" style=\"background-color: rgb(220, 204, 230);\">fett</aspect-anchor></strong><aspect-anchor data-anchor-id=\"fett\" data-anchor-color=\"#dccce6\" style=\"background-color: rgb(220, 204, 230);\"> und </aspect-anchor><span style=\"color: red;\"><aspect-anchor data-anchor-id=\"fett\" data-anchor-color=\"#dccce6\" style=\"background-color: rgb(220, 204, 230);\">rot</aspect-anchor></span></p>",
+      "<p><strong><aspect-anchor data-anchor-id=\"fett2\" data-anchor-color=\"#dccce6\" style=\"background-color: #dccce6;\">Anker im Fett</aspect-anchor></strong></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><strong><aspect-anchor data-anchor-id=\"fett2\" data-anchor-color=\"#dccce6\" style=\"background-color: rgb(220, 204, 230);\">Anker im Fett</aspect-anchor></strong></p>"
+    },
+    "formulas": {
+      "<p>Formel <aspect-nodeview-math-formula formula=\"\\frac{1}{2}\" formulahtml=\"<span class=&quot;ML__latex&quot;>x</span>\"><span><span class=\"ML__latex\">x</span></span></aspect-nodeview-math-formula> im Text</p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\">Formel <aspect-nodeview-math-formula formula=\"\\frac{1}{2}\" formulahtml=\"&lt;span class=&quot;ML__latex&quot;&gt;x&lt;/span&gt;\"><span><span class=\"ML__latex\">x</span></span></aspect-nodeview-math-formula> im Text</p>",
+      "<p><aspect-nodeview-math-formula formula=\"x^2\"></aspect-nodeview-math-formula></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><aspect-nodeview-math-formula formula=\"x^2\" formulahtml=\"\"><span></span></aspect-nodeview-math-formula></p>",
+      "<p><aspect-nodeview-math-formula formula=\"\" formulahtml=\"\"><span></span></aspect-nodeview-math-formula></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><aspect-nodeview-math-formula formula=\"\" formulahtml=\"\"><span></span></aspect-nodeview-math-formula></p>",
+      "<p><aspect-nodeview-math-formula formula=\"a &lt; b\" formulahtml=\"<math><mi>a</mi><mo>&lt;</mo><mi>b</mi></math>\"><span><math><mi>a</mi><mo>&lt;</mo><mi>b</mi></math></span></aspect-nodeview-math-formula></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><aspect-nodeview-math-formula formula=\"a &lt; b\" formulahtml=\"&lt;math&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mo&gt;&lt;&lt;/mo&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;/math&gt;\"><span><math><mi>a</mi><mo>&lt;</mo><mi>b</mi></math></span></aspect-nodeview-math-formula></p>",
+      "<p><strong><aspect-nodeview-math-formula formula=\"x\"></aspect-nodeview-math-formula></strong> <span style=\"font-size: 30px\"><aspect-nodeview-math-formula formula=\"y\"></aspect-nodeview-math-formula></span></p>": "<p indent=\"0\" indentsize=\"0\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><strong><aspect-nodeview-math-formula formula=\"x\" formulahtml=\"\"><span></span></aspect-nodeview-math-formula></strong> <span style=\"font-size: 30px;\"><aspect-nodeview-math-formula formula=\"y\" formulahtml=\"\"><span></span></aspect-nodeview-math-formula></span></p>"
+    },
+    "section templates": {
+      "<p style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0\" indent=\"0\" indentsize=\"20\"><span style=\"font-size: 24px\"><strong>Überschrift</strong></span></p><p style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0\" indent=\"0\" indentsize=\"20\"><span style=\"color: black; font-size: 20px\">Hier steht die Situierung.</span></p>": "<p indent=\"0\" indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"font-size: 24px;\"><strong>Überschrift</strong></span></p><p indent=\"0\" indentsize=\"20\" style=\"padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0px;\"><span style=\"color: black; font-size: 20px;\">Hier steht die Situierung.</span></p>"
+    }
+  },
+  "cloze": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": {
+          "textAlign": "center",
+          "level": 2
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Überschrift"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "attrs": {
+          "textAlign": "left",
+          "indent": null,
+          "indentSize": 20,
+          "hangingIndent": false,
+          "margin": 0
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "Ein Feld "
+          },
+          {
+            "type": "TextField",
+            "attrs": {
+              "model": "model text-field-simple text-field-simple_1"
+            }
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "underline"
+              },
+              {
+                "type": "bold"
+              },
+              {
+                "type": "italic"
+              }
+            ],
+            "text": " fett"
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "textStyle",
+                "attrs": {
+                  "color": "#ff0000",
+                  "fontSize": "24px"
+                }
+              },
+              {
+                "type": "highlight",
+                "attrs": {
+                  "color": "#ffff00"
+                }
+              }
+            ],
+            "text": " farbig"
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "superscript"
+              }
+            ],
+            "text": "hoch"
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "subscript"
+              }
+            ],
+            "text": "tief"
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "strike"
+              }
+            ],
+            "text": "durch"
+          }
+        ]
+      },
+      {
+        "type": "bulletList",
+        "attrs": {
+          "listStyle": "square"
+        },
+        "content": [
+          {
+            "type": "listItem",
+            "attrs": {
+              "indent": null,
+              "indentSize": 20
+            },
+            "content": [
+              {
+                "type": "paragraph",
+                "attrs": {
+                  "textAlign": "left",
+                  "indent": null,
+                  "indentSize": 20,
+                  "hangingIndent": false,
+                  "margin": 0
+                },
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Liste "
+                  },
+                  {
+                    "type": "DropList",
+                    "attrs": {
+                      "model": "model drop-list drop-list_1"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "orderedList",
+                "attrs": {
+                  "listStyle": "lower-latin",
+                  "fontSize": "20px"
+                },
+                "content": [
+                  {
+                    "type": "listItem",
+                    "attrs": {
+                      "indent": null,
+                      "indentSize": 20
+                    },
+                    "content": [
+                      {
+                        "type": "paragraph",
+                        "attrs": {
+                          "textAlign": "left",
+                          "indent": null,
+                          "indentSize": 20,
+                          "hangingIndent": false,
+                          "margin": 0
+                        },
+                        "content": [
+                          {
+                            "type": "text",
+                            "text": "Unterpunkt "
+                          },
+                          {
+                            "type": "ToggleButton",
+                            "attrs": {
+                              "model": "model toggle-button toggle-button_1"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": "left",
+              "indent": 1,
+              "indentSize": 20,
+              "hangingIndent": true,
+              "margin": 10
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Zitat "
+              },
+              {
+                "type": "Button",
+                "attrs": {
+                  "model": "model button button_1"
+                }
+              },
+              {
+                "type": "Checkbox",
+                "attrs": {
+                  "model": "model checkbox checkbox_1"
+                }
+              },
+              {
+                "type": "Dropdown",
+                "attrs": {
+                  "model": "model dropdown dropdown_1"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "horizontalRule",
+        "attrs": {
+          "short": true
+        }
+      },
+      {
+        "type": "blockImage",
+        "attrs": {
+          "src": "data:image/png;base64,AAAA",
+          "alt": "Bild",
+          "title": null,
+          "style": "float: left; margin-right: 10px;"
+        }
+      },
+      {
+        "type": "paragraph",
+        "attrs": {
+          "textAlign": "left",
+          "indent": null,
+          "indentSize": 20,
+          "hangingIndent": false,
+          "margin": 0
+        },
+        "content": [
+          {
+            "type": "inlineImage",
+            "attrs": {
+              "src": "data:image/png;base64,AAAA",
+              "alt": null,
+              "title": null
+            }
+          },
+          {
+            "type": "math-formula",
+            "attrs": {
+              "formula": "x^2",
+              "formulaHTML": "<span>x</span>"
+            }
+          },
+          {
+            "type": "text",
+            "marks": [
+              {
+                "type": "anchorId",
+                "attrs": {
+                  "anchorId": "Anker",
+                  "parentAnchorId": "",
+                  "anchorColor": "#dccce6",
+                  "parentAnchorColor": ""
+                }
+              },
+              {
+                "type": "tooltip",
+                "attrs": {
+                  "tooltipText": "Hinweis",
+                  "tooltipPosition": "above"
+                }
+              }
+            ],
+            "text": "Anker"
+          },
+          {
+            "type": "TextField",
+            "attrs": {
+              "model": "model text-field-simple text-field-simple_2"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "unit": [
+    {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "textAlign": "left",
+            "indent": null,
+            "indentSize": 20,
+            "hangingIndent": false,
+            "margin": 0
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Lorem Ipsum"
+            },
+            {
+              "type": "DropList",
+              "attrs": {
+                "model": "model drop-list drop-list_1731319370946_1"
+              }
+            },
+            {
+              "type": "DropList",
+              "attrs": {
+                "model": "model drop-list drop-list_1731319370946_2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "nodes": [
+      {
+        "name": "paragraph",
+        "content": "inline*",
+        "group": "block",
+        "inline": false,
+        "attributes": {
+          "textAlign": null,
+          "indent": null,
+          "indentSize": 20,
+          "hangingIndent": false,
+          "margin": 0
+        }
+      },
+      {
+        "name": "listItem",
+        "content": "paragraph block*",
+        "group": null,
+        "inline": false,
+        "attributes": {
+          "indent": null,
+          "indentSize": 20
+        }
+      },
+      {
+        "name": "doc",
+        "content": "block+",
+        "group": null,
+        "inline": false,
+        "attributes": {}
+      },
+      {
+        "name": "text",
+        "content": null,
+        "group": "inline",
+        "inline": false,
+        "attributes": {}
+      },
+      {
+        "name": "heading",
+        "content": "inline*",
+        "group": "block",
+        "inline": false,
+        "attributes": {
+          "textAlign": null,
+          "level": 1
+        }
+      },
+      {
+        "name": "bulletList",
+        "content": "listItem+",
+        "group": "block list",
+        "inline": false,
+        "attributes": {
+          "listStyle": "disc"
+        }
+      },
+      {
+        "name": "orderedList",
+        "content": "listItem+",
+        "group": "block list",
+        "inline": false,
+        "attributes": {
+          "listStyle": "upper-roman",
+          "fontSize": "20px"
+        }
+      },
+      {
+        "name": "inlineImage",
+        "content": null,
+        "group": "inline",
+        "inline": true,
+        "attributes": {
+          "src": null,
+          "alt": null,
+          "title": null
+        }
+      },
+      {
+        "name": "blockImage",
+        "content": null,
+        "group": "block",
+        "inline": false,
+        "attributes": {
+          "src": null,
+          "alt": null,
+          "title": null,
+          "style": null
+        }
+      },
+      {
+        "name": "blockquote",
+        "content": "block+",
+        "group": "block",
+        "inline": false,
+        "attributes": {}
+      },
+      {
+        "name": "horizontalRule",
+        "content": null,
+        "group": "block",
+        "inline": false,
+        "attributes": {
+          "short": false
+        }
+      },
+      {
+        "name": "math-formula",
+        "content": null,
+        "group": "inline",
+        "inline": true,
+        "attributes": {
+          "formula": "",
+          "formulaHTML": ""
+        }
+      },
+      {
+        "name": "ToggleButton",
+        "content": null,
+        "group": "inline",
+        "inline": true,
+        "attributes": {
+          "model": "model toggle-button"
+        }
+      },
+      {
+        "name": "DropList",
+        "content": null,
+        "group": "inline",
+        "inline": true,
+        "attributes": {
+          "model": "model drop-list"
+        }
+      },
+      {
+        "name": "TextField",
+        "content": null,
+        "group": "inline",
+        "inline": true,
+        "attributes": {
+          "model": "model text-field-simple"
+        }
+      },
+      {
+        "name": "Button",
+        "content": null,
+        "group": "inline",
+        "inline": true,
+        "attributes": {
+          "model": "model button"
+        }
+      },
+      {
+        "name": "Checkbox",
+        "content": null,
+        "group": "inline",
+        "inline": true,
+        "attributes": {
+          "model": "model checkbox"
+        }
+      },
+      {
+        "name": "Dropdown",
+        "content": null,
+        "group": "inline",
+        "inline": true,
+        "attributes": {
+          "model": "model dropdown"
+        }
+      }
+    ],
+    "marks": [
+      {
+        "name": "textStyle",
+        "excludes": null,
+        "attributes": {
+          "color": null,
+          "fontSize": null
+        }
+      },
+      {
+        "name": "underline",
+        "excludes": null,
+        "attributes": {}
+      },
+      {
+        "name": "superscript",
+        "excludes": null,
+        "attributes": {}
+      },
+      {
+        "name": "subscript",
+        "excludes": null,
+        "attributes": {}
+      },
+      {
+        "name": "bold",
+        "excludes": null,
+        "attributes": {}
+      },
+      {
+        "name": "italic",
+        "excludes": null,
+        "attributes": {}
+      },
+      {
+        "name": "strike",
+        "excludes": null,
+        "attributes": {}
+      },
+      {
+        "name": "highlight",
+        "excludes": null,
+        "attributes": {
+          "color": null
+        }
+      },
+      {
+        "name": "anchorId",
+        "excludes": null,
+        "attributes": {
+          "anchorId": "",
+          "parentAnchorId": "",
+          "anchorColor": "",
+          "parentAnchorColor": ""
+        }
+      },
+      {
+        "name": "tooltip",
+        "excludes": null,
+        "attributes": {
+          "tooltipText": "",
+          "tooltipPosition": "below"
+        }
+      }
+    ]
+  }
+}

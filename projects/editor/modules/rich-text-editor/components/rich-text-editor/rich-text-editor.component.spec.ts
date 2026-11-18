@@ -193,6 +193,21 @@ describe('RichTextEditorComponent', () => {
     expect(doc.child(2).textContent).toBe('Zeile 3');
   });
 
+  /* Tiptap 3 turns pasted lines that begin with a number into a numbered list, which here would get the
+     defaults of the list rather than the ones chosen in the toolbar. The editor's own paste handling is
+     asked first and keeps them as the lines they are (#1624). */
+  it('should paste numbered lines as paragraphs', () => {
+    component.editor.view.dom.dispatchEvent(createClipboardEvent({
+      'text/plain': '1. eins\n2. zwei'
+    }));
+
+    const doc = component.editor.state.doc;
+    expect(doc.childCount).toBe(2);
+    expect(doc.child(0).type.name).toBe('paragraph');
+    expect(doc.child(0).textContent).toBe('1. eins');
+    expect(doc.child(1).textContent).toBe('2. zwei');
+  });
+
   it('should paste HTML-only clipboard content as plain text', () => {
     component.editor.view.dom.dispatchEvent(createClipboardEvent({
       'text/html': '<h1>Titel</h1><p>Erster Absatz<br>mit Umbruch</p>'

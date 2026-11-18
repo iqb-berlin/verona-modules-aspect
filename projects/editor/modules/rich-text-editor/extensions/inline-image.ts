@@ -16,7 +16,16 @@ export const InlineImage = Image.extend({
       allowBase64: true,
       HTMLAttributes: {
         style: 'display: inline-block; height: 1em; vertical-align: middle'
-      }
+      },
+      resize: false
+    };
+  },
+  /** Named here rather than taken from `Image`, for the reason given at `BlockImage`. */
+  addAttributes() {
+    return {
+      src: { default: null },
+      alt: { default: null },
+      title: { default: null }
     };
   },
   parseHTML() {

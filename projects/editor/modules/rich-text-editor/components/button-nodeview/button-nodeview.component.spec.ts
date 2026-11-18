@@ -21,7 +21,6 @@ class MockMatTooltipDirective {
 }
 
 describe('ButtonNodeviewComponent', () => {
-  let component: ButtonNodeviewComponent;
   let fixture: ComponentFixture<ButtonNodeviewComponent>;
   const model: StubElementModel = { id: 'button-1' };
 
@@ -31,8 +30,7 @@ describe('ButtonNodeviewComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ButtonNodeviewComponent);
-    component = fixture.componentInstance;
-    component.node = { attrs: { model } } as unknown as ButtonNodeviewComponent['node'];
+    fixture.componentRef.setInput('node', { attrs: { model } });
     fixture.detectChanges();
   });
 

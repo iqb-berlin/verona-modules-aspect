@@ -23,7 +23,6 @@ class MockMatTooltipDirective {
 }
 
 describe('DropListNodeviewComponent', () => {
-  let component: DropListNodeviewComponent;
   let fixture: ComponentFixture<DropListNodeviewComponent>;
   const model: StubElementModel = { id: 'drop-list-1', dimensions: { width: 150, height: 30 } };
 
@@ -33,8 +32,7 @@ describe('DropListNodeviewComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DropListNodeviewComponent);
-    component = fixture.componentInstance;
-    component.node = { attrs: { model } } as unknown as DropListNodeviewComponent['node'];
+    fixture.componentRef.setInput('node', { attrs: { model } });
     fixture.detectChanges();
   });
 

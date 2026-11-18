@@ -21,7 +21,6 @@ class MockMatTooltipDirective {
 }
 
 describe('CheckboxNodeviewComponent', () => {
-  let component: CheckboxNodeviewComponent;
   let fixture: ComponentFixture<CheckboxNodeviewComponent>;
   const model: StubElementModel = { id: 'checkbox-1' };
 
@@ -31,8 +30,7 @@ describe('CheckboxNodeviewComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(CheckboxNodeviewComponent);
-    component = fixture.componentInstance;
-    component.node = { attrs: { model } } as unknown as CheckboxNodeviewComponent['node'];
+    fixture.componentRef.setInput('node', { attrs: { model } });
     fixture.detectChanges();
   });
 

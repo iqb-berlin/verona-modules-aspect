@@ -10,15 +10,14 @@ declare module '@tiptap/core' {
 
 export const BlockImage = Image.extend({
   name: 'blockImage',
-  addOptions() {
-    return {
-      ...this.parent?.(),
-      allowBase64: true
-    };
-  },
+  /** Named here rather than taken from `Image`, which has gained `width` and `height` with Tiptap 3:
+      every cloze document holding a picture would be saved with two more keys, and a text would keep
+      sizes the editor offers no control for (#1624). */
   addAttributes() {
     return {
-      ...this.parent?.(),
+      src: { default: null },
+      alt: { default: null },
+      title: { default: null },
       style: {
         default: null,
         renderHTML: attributes => {
@@ -48,4 +47,4 @@ export const BlockImage = Image.extend({
       ) => ({ commands }) => commands.insertContent({ type: this.name, attrs: options })
     };
   }
-});
+}).configure({ allowBase64: true });

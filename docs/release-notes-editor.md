@@ -4,6 +4,9 @@ Editor
 ### Änderungen
 - **GeoGebra**
   - Das Werkzeug „Bild“ wird auch in der Vorschau nicht mehr angeboten, wie im Player. Steht es im Feld „Anpassung Werkzeugleiste“ (26), weist ein Hinweis am Feld darauf hin ([#1700](https://github.com/iqb-berlin/verona-modules-aspect/issues/1700))
+- **Texteditor**
+  - Der Texteditor läuft auf Tiptap 3. Gespeicherte Texte und Lückentexte liest und schreibt er wie bisher ([#1624](https://github.com/iqb-berlin/verona-modules-aspect/issues/1624))
+  - Am Anfang eines Absatzes eingefügt, hinterlässt eine kurze Linie oder ein Bild (in eigenem Absatz, links, rechts) davor keinen leeren Absatz mehr ([#1624](https://github.com/iqb-berlin/verona-modules-aspect/issues/1624))
 
 ## 3.1.2
 Keine eigenen Änderungen gegenüber 3.1.1

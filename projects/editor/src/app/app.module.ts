@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { NgxTiptapModule } from 'ngx-tiptap';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSliderModule } from '@angular/material/slider';
@@ -220,7 +219,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     MatExpansionModule,
     MatSidenavModule,
     MatDividerModule,
-    NgxTiptapModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

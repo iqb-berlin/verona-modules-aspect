@@ -3,6 +3,7 @@ import {
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ElementRef } from '@angular/core';
+import { Mock } from 'vitest';
 import {
   MathFormulaNodeviewComponent
 } from 'editor/modules/rich-text-editor/components/math-formula/math-formula.component';
@@ -10,6 +11,7 @@ import {
 describe('MathFormulaNodeviewComponent', () => {
   let component: MathFormulaNodeviewComponent;
   let fixture: ComponentFixture<MathFormulaNodeviewComponent>;
+  let updateAttributes: Mock;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,12 +23,9 @@ describe('MathFormulaNodeviewComponent', () => {
     component = fixture.componentInstance;
 
     // Mock Tiptap node and method
-    component.node = {
-      attrs: {
-        formula: '\\frac{1}{2}'
-      }
-    } as unknown as MathFormulaNodeviewComponent['node'];
-    component.updateAttributes = vi.fn();
+    fixture.componentRef.setInput('node', { attrs: { formula: '\\frac{1}{2}' } });
+    updateAttributes = vi.fn();
+    fixture.componentRef.setInput('updateAttributes', updateAttributes);
 
     fixture.detectChanges();
   });
@@ -58,7 +57,7 @@ describe('MathFormulaNodeviewComponent', () => {
     expect(component.editMode).toBe(false);
 
     tick(); // for setTimeout in updateFormula
-    expect(component.updateAttributes).toHaveBeenCalledWith(expect.objectContaining({
+    expect(updateAttributes).toHaveBeenCalledWith(expect.objectContaining({
       formula: '\\sqrt{x}'
     }));
   }));

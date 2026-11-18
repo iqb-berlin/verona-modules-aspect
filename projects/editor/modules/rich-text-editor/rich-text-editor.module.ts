@@ -9,7 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NgxTiptapModule } from 'ngx-tiptap';
+import { TiptapEditorDirective } from 'ngx-tiptap';
 import { SharedModule } from 'common/shared.module';
 import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
 import { RichTextEditorComponent } from './components/rich-text-editor/rich-text-editor.component';
@@ -47,7 +47,7 @@ import {
     MatSelectModule,
     MatSlideToggleModule,
     MatTooltipModule,
-    NgxTiptapModule,
+    TiptapEditorDirective,
     SharedModule,
     EditorSharedModule
   ],

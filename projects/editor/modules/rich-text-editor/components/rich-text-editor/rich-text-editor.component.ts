@@ -27,8 +27,8 @@ import { InlineImage } from 'editor/modules/rich-text-editor/extensions/inline-i
 import { Tooltip } from 'editor/modules/rich-text-editor/extensions/tooltip';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { CharacterCount } from '@tiptap/extension-character-count';
-import { EditorView } from 'prosemirror-view';
-import { Fragment, Slice } from 'prosemirror-model';
+import { EditorView } from '@tiptap/pm/view';
+import { Fragment, Slice } from '@tiptap/pm/model';
 import { AnchorId } from 'editor/modules/rich-text-editor/extensions/anchorId';
 import { Indent } from 'editor/modules/rich-text-editor/extensions/indent';
 import { HangingIndent } from 'editor/modules/rich-text-editor/extensions/hanging-indent';
@@ -116,7 +116,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit, OnDestroy
     this.defaultExtensions = [
       Document, Text, ListItemExtension,
       Underline, Superscript, Subscript,
-      TextStyle, Color,
+      /* Tiptap 3 would merge the styles of nested spans into the innermost one. The editor writes one
+         span per run, so nested ones only reach it from outside, and of those the innermost one counted
+         so far; a text opened and saved again comes out as it did before (#1624). */
+      TextStyle.configure({ mergeNestedSpanStyles: false }), Color,
       Bold, Italic, Strike, History,
       Highlight.configure({
         multicolor: true

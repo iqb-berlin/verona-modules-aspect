@@ -3,7 +3,10 @@ import '@tiptap/extension-text-style';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
-    fontSize: {
+    /** Not `fontSize`: since Tiptap 3 `@tiptap/extension-text-style` declares that key for a font size
+        extension of its own, whose `setFontSize` takes no `null`. This one stays in use, because it reads
+        and writes the font size the way units hold it. */
+    aspectFontSize: {
       setFontSize: (fontSize: string | null) => ReturnType
     };
   }

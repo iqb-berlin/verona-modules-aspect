@@ -8,7 +8,6 @@ import { GeoGebraToolbar } from 'common/utils/geogebra-toolbar';
   standalone: false
 })
 export class GeoGebraImageToolPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(customToolbar: string | null | undefined): boolean {
     return GeoGebraToolbar.hasImageTool(customToolbar);
   }

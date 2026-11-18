@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/label-interfaces';

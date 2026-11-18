@@ -287,7 +287,6 @@ describe('DragOperatorService', () => {
     const second = createDropList('second');
     [source, first, second].forEach(register);
     [first, second].forEach(list => {
-      // eslint-disable-next-line no-param-reassign
       list.dragEnter = vi.fn(() => service.setTargetList(list.elementModel.id));
     });
     startDrag(source, item);

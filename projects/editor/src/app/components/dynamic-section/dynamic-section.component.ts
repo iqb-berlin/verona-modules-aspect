@@ -21,8 +21,7 @@ export class DynamicSectionComponent {
   @Input() dropListList!: string[];
   @Input() isSelected!: boolean;
   @Output() elementSelected = new EventEmitter();
-  @Output() transferElement = new EventEmitter<{
-    sourcePageIndex: number,
+  @Output() transferElement = new EventEmitter<{ sourcePageIndex: number,
     sourceSectionIndex: number,
     targetPageIndex: number,
     targetSectionIndex: number }>();

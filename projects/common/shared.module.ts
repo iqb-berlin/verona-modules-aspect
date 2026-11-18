@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { registerComponents } from 'common/utils/component-registration';

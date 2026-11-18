@@ -28,9 +28,9 @@ export class TextElement extends UIElement implements TextProperties {
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.text.styling),
-      lineHeight: ELEMENT_DEFAULTS.text.styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.text.styling),
+    lineHeight: ELEMENT_DEFAULTS.text.styling.lineHeight
+  };
 
   static icon: string = 'text_snippet';
   static selectionColors: Record<string, string> = {

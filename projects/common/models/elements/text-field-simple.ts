@@ -29,9 +29,9 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field-simple'].styling),
-      lineHeight: ELEMENT_DEFAULTS['text-field-simple'].styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field-simple'].styling),
+    lineHeight: ELEMENT_DEFAULTS['text-field-simple'].styling.lineHeight
+  };
 
   position: PositionProperties = PropertyGroupGenerators
     .generatePositionProps();
@@ -93,7 +93,7 @@ export interface TextFieldSimpleProperties extends TextInputElementProperties {
 }
 
 function isTextFieldSimpleProperties(blueprint?: Partial<TextFieldSimpleProperties>)
-  : blueprint is TextFieldSimpleProperties {
+: blueprint is TextFieldSimpleProperties {
   if (!blueprint) return false;
   return blueprint.minLength !== undefined &&
     blueprint.type === 'text-field-simple';

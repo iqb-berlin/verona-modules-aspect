@@ -22,8 +22,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() pageIndex!: number;
-  @Output() transferElement = new EventEmitter<{
-    sourcePageIndex: number,
+  @Output() transferElement = new EventEmitter<{ sourcePageIndex: number,
     sourceSectionIndex: number,
     targetPageIndex: number,
     targetSectionIndex: number }>();

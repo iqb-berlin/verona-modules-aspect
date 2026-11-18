@@ -91,7 +91,7 @@ export abstract class ElementFactory {
    * application can build, and the call fails at the `new`.
    */
   static createElement(element: UIElementDraft, idService?: AbstractIDService)
-    : UIElement {
+  : UIElement {
     /* The id the normalizer takes on trust is minted here: a draft on its way in need not carry one,
        and everything past this point does (#1308). */
     const normalizedElement = ModelNormalizer.normalizeElement(element);

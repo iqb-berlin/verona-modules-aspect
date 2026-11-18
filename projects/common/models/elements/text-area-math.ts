@@ -32,9 +32,9 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area-math'].styling),
-      lineHeight: ELEMENT_DEFAULTS['text-area-math'].styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area-math'].styling),
+    lineHeight: ELEMENT_DEFAULTS['text-area-math'].styling.lineHeight
+  };
 
   static icon: string = 'calculate';
 

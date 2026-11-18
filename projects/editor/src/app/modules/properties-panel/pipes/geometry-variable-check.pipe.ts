@@ -15,7 +15,6 @@ export interface GeometryVariableCheck {
   standalone: false
 })
 export class GeometryVariableCheckPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(name: string,
             trackedVariables: GeometryVariable[] | null | undefined,
             trackedExpectedVariables: GeometryVariable[] | null | undefined): GeometryVariableCheck {

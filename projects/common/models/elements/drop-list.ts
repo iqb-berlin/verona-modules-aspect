@@ -37,9 +37,9 @@ export class DropListElement extends InputElement implements DropListProperties 
   styling: BasicStyles & {
     itemBackgroundColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['drop-list'].styling),
-      itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].styling.itemBackgroundColor
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['drop-list'].styling),
+    itemBackgroundColor: ELEMENT_DEFAULTS['drop-list'].styling.itemBackgroundColor
+  };
 
   static icon: string = 'drag_indicator';
 

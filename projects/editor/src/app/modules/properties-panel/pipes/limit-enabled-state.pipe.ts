@@ -23,7 +23,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false
 })
 export class LimitEnabledStatePipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(divergingProperties: ReadonlySet<string> | undefined,
             path: string,
             value: number | null | undefined): boolean | null {

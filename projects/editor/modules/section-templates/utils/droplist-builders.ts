@@ -117,7 +117,7 @@ function getWidth(width: 'long' | 'medium' | 'short' | 'very-short'): number {
 
 function getDrolistColSizesVertical(optionLength: 'long' | 'medium' | 'short' | 'very-short',
                                     targetLength: 'long' | 'medium' | 'short' | 'very-short')
-  : [ { value: number; unit: string }, { value: number; unit: string } ] {
+: [ { value: number; unit: string }, { value: number; unit: string } ] {
   switch (optionLength) {
     case 'long':
       switch (targetLength) {
@@ -162,7 +162,7 @@ function getDrolistColSizesVertical(optionLength: 'long' | 'medium' | 'short' | 
 
 function getDrolistColSizesHorizontal(optionLength: 'medium' | 'short' | 'very-short',
                                       targetLength: 'medium' | 'short' | 'very-short')
-  : { value: number; unit: string }[] {
+: { value: number; unit: string }[] {
   switch (optionLength) {
     case 'medium':
       switch (targetLength) {

@@ -148,7 +148,6 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       if (this.mergeFailureReported) return;
       this.mergeFailureReported = true;
       this.messageService.showError(this.translateService.instant('propertiesPanel.combineFailed'));
-      // eslint-disable-next-line no-console -- the message above cannot carry the cause
       console.error('Merging the selected elements failed', error);
     }
   }

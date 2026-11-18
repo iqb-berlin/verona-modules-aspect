@@ -24,7 +24,6 @@ import { TextLabel } from 'common/models/label-interfaces';
   standalone: false
 })
 export class PresetOptionTextPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(options: TextLabel[] | null | undefined, value: InputElementValue | undefined): string {
     if (options == null || typeof value !== 'number') return '';
     return options[value]?.text ?? '';

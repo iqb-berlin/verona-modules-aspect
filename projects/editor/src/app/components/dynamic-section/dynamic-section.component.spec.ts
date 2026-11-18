@@ -23,7 +23,6 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Pipe({ name: 'measure', standalone: false })
 class MockMeasurePipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(): string {
     return '';
   }

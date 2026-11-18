@@ -124,7 +124,6 @@ import {
 } from './components/element-model-properties/slider-properties/slider-properties.component';
 import {
   StandardDimensionPropertiesComponent
-  // eslint-disable-next-line @stylistic/max-len -- longest component name in the deepest folder, two chars over
 } from './components/element-model-properties/standard-dimension-properties/standard-dimension-properties.component';
 import {
   StickyHeaderPropertiesComponent

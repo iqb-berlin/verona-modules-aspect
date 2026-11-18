@@ -9,8 +9,7 @@ import { ClozeDocument } from 'common/models/elements/cloze';
   standalone: false
 })
 export class RichTextEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {
-    content: string | ClozeDocument,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { content: string | ClozeDocument,
     defaultFontSize: number,
     clozeMode: boolean }) { }
 }

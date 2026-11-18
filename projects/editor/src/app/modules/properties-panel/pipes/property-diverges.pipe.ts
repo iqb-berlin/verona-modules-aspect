@@ -16,7 +16,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false
 })
 export class PropertyDivergesPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(divergingProperties: ReadonlySet<string> | undefined, path: string): boolean {
     return divergingProperties?.has(path) ?? false;
   }

@@ -32,7 +32,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     width: number;
     height: number;
   } = PropertyGroupGenerators
-      .generateDimensionProps(ELEMENT_DEFAULTS.geometry.dimensions);
+    .generateDimensionProps(ELEMENT_DEFAULTS.geometry.dimensions);
 
   /** No styling at all: not one of this element's templates reads a styling value, and the group it
      used to get came from the base class rather than from any declaration (#1226). Declared here so
@@ -100,9 +100,9 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   getAllCleanedTrackedVariables(): GeometryVariable[] {
     const variablesById = [...this.trackedExpectedVariables, ...this.trackedVariables]
       .reduce<Map<string, GeometryVariable>>((acc, v) => {
-      acc.set(v.id, v);
-      return acc;
-    }, new Map());
+        acc.set(v.id, v);
+        return acc;
+      }, new Map());
     return Array.from(variablesById.values());
   }
 

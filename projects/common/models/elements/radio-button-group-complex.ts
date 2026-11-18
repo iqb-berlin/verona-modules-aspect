@@ -85,7 +85,7 @@ export interface RadioButtonGroupComplexProperties extends InputElementPropertie
 }
 
 function isRadioButtonGroupComplexProperties(blueprint?: Partial<RadioButtonGroupComplexProperties>)
-  : blueprint is RadioButtonGroupComplexProperties {
+: blueprint is RadioButtonGroupComplexProperties {
   if (!blueprint) return false;
   return blueprint.options !== undefined &&
     blueprint.type === 'radio-group-images';

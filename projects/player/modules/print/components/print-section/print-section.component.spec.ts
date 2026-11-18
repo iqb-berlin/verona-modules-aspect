@@ -26,7 +26,6 @@ class MockPrintElementComponent {
 
 @Pipe({ name: 'measure', standalone: false })
 class MockMeasurePipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(): string {
     return 'auto';
   }

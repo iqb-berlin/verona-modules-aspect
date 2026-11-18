@@ -27,9 +27,9 @@
  * leaves typed as if they could never be `null` — the exact opposite of what this type is for.
  */
 export type Merged<T> = {
-  [K in keyof T]?: NonNullable<T[K]> extends readonly unknown[] ? T[K] | null
-    : NonNullable<T[K]> extends object ? Merged<NonNullable<T[K]>> | null
-      : T[K] | null;
+  [K in keyof T]?: NonNullable<T[K]> extends readonly unknown[] ? T[K] | null :
+    NonNullable<T[K]> extends object ? Merged<NonNullable<T[K]>> | null :
+      T[K] | null;
 };
 
 /**

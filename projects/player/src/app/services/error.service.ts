@@ -23,7 +23,6 @@ export class ErrorService implements ErrorHandler {
     if (error.name === AspectError.name) {
       this.veronaPostService.sendVopRuntimeErrorNotification(error);
     }
-    // eslint-disable-next-line no-console
     console.error(error);
   }
 }

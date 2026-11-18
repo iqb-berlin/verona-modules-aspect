@@ -227,7 +227,11 @@ export class TemplateService {
         case 'likert':
           this.dialog.open(LikertWizardDialogComponent, TEXT_EDITOR_DIALOG_CONFIG)
             .afterClosed().subscribe((result: {
-              text1: string, text2: string, options: TextImageLabel[], rows: TextImageLabel[] }) => {
+              text1: string,
+              text2: string,
+              options: TextImageLabel[],
+              rows: TextImageLabel[]
+            }) => {
               if (result) {
                 resolve(RadioBuilders.createLikertSection(result.text1, result.text2, result.options, result.rows,
                                                           this.idService));
@@ -245,8 +249,12 @@ export class TemplateService {
           break;
         case 'geometry':
           this.dialog.open(GeometryWizardDialogComponent, TEXT_EDITOR_DIALOG_CONFIG)
-            .afterClosed().subscribe((result: { text: string, geometryAppDefinition: string, geometryFileName: string,
-              showHelper: boolean }) => {
+            .afterClosed().subscribe((result: {
+              text: string,
+              geometryAppDefinition: string,
+              geometryFileName: string,
+              showHelper: boolean
+            }) => {
               if (result) {
                 resolve(GeometryBuilders.createGeometrySection(result.text, result.geometryAppDefinition,
                                                                result.geometryFileName, result.showHelper,
@@ -259,7 +267,9 @@ export class TemplateService {
         case 'mathtable':
           this.dialog.open(MathTableWizardDialogComponent, {})
             .afterClosed().subscribe((result: {
-              operation: 'addition' | 'subtraction' | 'multiplication', terms: string[] }) => {
+              operation: 'addition' | 'subtraction' | 'multiplication',
+              terms: string[]
+            }) => {
               if (result) {
                 resolve(MathtableBuilders.createMathTableSection(result.operation, result.terms, this.idService));
               }

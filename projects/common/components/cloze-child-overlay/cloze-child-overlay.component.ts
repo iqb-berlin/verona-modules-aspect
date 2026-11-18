@@ -21,8 +21,8 @@ import { ValueChangeElement } from 'common/models/input-element-interfaces';
   standalone: false
 })
 export class ClozeChildOverlayComponent {
-  @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement | DropdownElement
-  | ButtonElement | CheckboxElement;
+  @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement | DropdownElement |
+  ButtonElement | CheckboxElement;
 
   @Input() parentForm!: UntypedFormGroup;
   @Input() editorMode: boolean = false;

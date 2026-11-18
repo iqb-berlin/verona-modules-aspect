@@ -28,9 +28,9 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field'].styling),
-      lineHeight: ELEMENT_DEFAULTS['text-field'].styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-field'].styling),
+    lineHeight: ELEMENT_DEFAULTS['text-field'].styling.lineHeight
+  };
 
   static icon: string = 'edit';
 

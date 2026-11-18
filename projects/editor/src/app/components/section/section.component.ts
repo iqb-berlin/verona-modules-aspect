@@ -35,7 +35,7 @@ export class SectionComponent implements AfterViewInit, OnDestroy {
   @Output() sectionSelected = new EventEmitter();
 
   @ViewChildren('sectionComponent')
-    sectionComponents!: QueryList<StaticSectionComponent | DynamicSectionComponent>;
+  sectionComponents!: QueryList<StaticSectionComponent | DynamicSectionComponent>;
 
   sectionCounter: number | undefined;
   highlightedElementComponent: ElementOverlay | undefined;

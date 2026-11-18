@@ -16,37 +16,37 @@ import { GeometryVariable } from 'common/models/geometry-interfaces';
 import { InputElementValue } from 'common/models/input-element-interfaces';
 
 export type UIElementType =
-  'text'
-  | 'button'
-  | 'text-field'
-  | 'text-field-simple'
-  | 'text-area'
-  | 'checkbox'
-  | 'dropdown'
-  | 'radio'
-  | 'image'
-  | 'audio'
-  | 'video'
-  | 'likert'
-  | 'likert-row'
-  | 'radio-group-images'
-  | 'hotspot-image'
-  | 'drop-list'
-  | 'cloze'
-  | 'spell-correct'
-  | 'slider'
-  | 'frame'
-  | 'toggle-button'
-  | 'geometry'
-  | 'math-field'
-  | 'math-table'
-  | 'text-area-math'
-  | 'trigger'
-  | 'table'
-  | 'marking-panel'
-  | 'widget-periodic-table'
-  | 'widget-molecule-editor'
-  | 'tetfolio';
+  'text' |
+  'button' |
+  'text-field' |
+  'text-field-simple' |
+  'text-area' |
+  'checkbox' |
+  'dropdown' |
+  'radio' |
+  'image' |
+  'audio' |
+  'video' |
+  'likert' |
+  'likert-row' |
+  'radio-group-images' |
+  'hotspot-image' |
+  'drop-list' |
+  'cloze' |
+  'spell-correct' |
+  'slider' |
+  'frame' |
+  'toggle-button' |
+  'geometry' |
+  'math-field' |
+  'math-table' |
+  'text-area-math' |
+  'trigger' |
+  'table' |
+  'marking-panel' |
+  'widget-periodic-table' |
+  'widget-molecule-editor' |
+  'tetfolio';
 
 export interface OptionElement extends UIElement {
   getNewOptionLabel(optionText: string): Label;

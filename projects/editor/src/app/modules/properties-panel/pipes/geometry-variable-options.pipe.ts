@@ -20,7 +20,6 @@ export interface GeometryVariableOption {
 })
 export class GeometryVariableOptionsPipe implements PipeTransform {
   /** `objects` is `null` until the applet has loaded; until then nothing can be told missing. */
-  // eslint-disable-next-line class-methods-use-this
   transform(objects: GeometryVariable[] | null,
             trackedVariables: GeometryVariable[] | null | undefined): GeometryVariableOption[] {
     if (!objects) return [];

@@ -17,7 +17,6 @@ import { SectionComponent } from './section.component';
   standalone: false
 })
 class MockMeasurePipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(): string {
     return '';
   }

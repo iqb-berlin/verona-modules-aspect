@@ -11,7 +11,6 @@
  *
  * Regenerate: see the doc comment on the `baseline regeneration` group in the spec.
  */
-/* eslint-disable @stylistic/max-len */
 export const PANEL_BASELINE: Record<string, string> = {
   'audio|expert': `--- tabs --- element properties, position and size, styling
 

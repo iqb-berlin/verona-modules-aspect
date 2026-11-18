@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable class-methods-use-this */
 import { UnitTraversalMigration } from './unit-traversal-migration';
 

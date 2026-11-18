@@ -63,9 +63,9 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   styling: BasicStyles & {
     helperRowColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-table'].styling),
-      helperRowColor: ELEMENT_DEFAULTS['math-table'].styling.helperRowColor
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-table'].styling),
+    helperRowColor: ELEMENT_DEFAULTS['math-table'].styling.helperRowColor
+  };
 
   static icon: string = 'apps';
 

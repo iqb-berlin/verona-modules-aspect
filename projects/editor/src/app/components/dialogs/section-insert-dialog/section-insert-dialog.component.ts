@@ -56,7 +56,7 @@ export class SectionInsertDialogComponent implements OnInit, OnDestroy {
     try {
       this.newSection = new Section(JSON.parse(pastedText));
       this.checkDuplicates();
-    } catch (e) {
+    } catch {
       this.newSection = null;
       this.operationStatusKey = 'sectionInsert.readError';
       this.operationStatus = 'error';

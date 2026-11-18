@@ -40,7 +40,7 @@ export class TextFieldElementPropertiesComponent implements OnInit, OnChanges {
       // eslint-disable-next-line no-new
       new RegExp(value);
       this.updateModel.emit({ property: 'pattern', value: value });
-    } catch (e) {
+    } catch {
       this.regexPatternFormControl.setErrors({ invalidPattern: true });
     }
   }

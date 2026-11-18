@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';

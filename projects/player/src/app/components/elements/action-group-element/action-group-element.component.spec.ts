@@ -25,7 +25,6 @@ import { ActionGroupElementComponent } from './action-group-element.component';
   standalone: false
 })
 class MockIsEnabledNavigationTarget implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(): boolean {
     return true;
   }

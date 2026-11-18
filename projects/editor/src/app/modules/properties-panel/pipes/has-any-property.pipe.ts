@@ -14,7 +14,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false
 })
 export class HasAnyPropertyPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(group: object | undefined | null): boolean {
     return !!group && Object.keys(group).length > 0;
   }

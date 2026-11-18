@@ -5,7 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false
 })
 export class MediaPlayerTimeFormatPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   /**
    * A playing time as `mm:ss`. The value is counted in **minutes**, not seconds: the whole part is the
    * minutes, the fraction becomes the seconds, so `1.5` reads as `01:30`. Both parts are padded to two

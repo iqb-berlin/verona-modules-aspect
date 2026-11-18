@@ -22,9 +22,9 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.cloze.styling),
-      lineHeight: ELEMENT_DEFAULTS.cloze.styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.cloze.styling),
+    lineHeight: ELEMENT_DEFAULTS.cloze.styling.lineHeight
+  };
 
   static icon: string = 'vertical_split';
 
@@ -106,7 +106,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
   }
 
   private static createChildElement(elementModel: Partial<UIElement>, idService?: AbstractIDService)
-    : InputElement | ButtonElement {
+  : InputElement | ButtonElement {
     const newElement = ModelRegistry.createElement(
       elementModel as { type: UIElementType } & Partial<UIElementProperties>, idService
     ) as InputElement | ButtonElement;

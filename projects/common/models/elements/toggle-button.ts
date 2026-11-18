@@ -30,10 +30,10 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     lineHeight: number;
     selectionColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['toggle-button'].styling),
-      lineHeight: ELEMENT_DEFAULTS['toggle-button'].styling.lineHeight,
-      selectionColor: ELEMENT_DEFAULTS['toggle-button'].styling.selectionColor
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['toggle-button'].styling),
+    lineHeight: ELEMENT_DEFAULTS['toggle-button'].styling.lineHeight,
+    selectionColor: ELEMENT_DEFAULTS['toggle-button'].styling.selectionColor
+  };
 
   static icon: string = 'radio_button_checked';
 

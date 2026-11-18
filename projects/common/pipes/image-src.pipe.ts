@@ -21,7 +21,7 @@ export class ImageSrcPipe implements PipeTransform {
             stateObj.asImage :
             `data:image/png;base64,${stateObj.asImage}`;
         }
-      } catch (e) {
+      } catch {
         // ignore invalid JSON
       }
     }

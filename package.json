@@ -38,111 +38,6 @@
     "node": "24.20.0",
     "npm": "11.19.0"
   },
-  "eslintConfig": {
-    "extends": "@iqb/eslint-config",
-    "parserOptions": {
-      "project": "./tsconfig.json"
-    },
-    "ignorePatterns": [
-      "**/assets/**",
-      "**/coverage/**",
-      "**/dist/**",
-      "**/scripts/**",
-      "**/test-data/**",
-      "**/node_modules/**"
-    ],
-    "rules": {
-      "function-call-argument-newline": "OFF",
-      "@typescript-eslint/indent": [
-        "error",
-        2,
-        {
-          "SwitchCase": 1,
-          "FunctionDeclaration": {
-            "parameters": "first"
-          },
-          "FunctionExpression": {
-            "parameters": "first"
-          },
-          "CallExpression": {
-            "arguments": "first"
-          }
-        }
-      ],
-      "class-methods-use-this": [
-        "error",
-        {
-          "exceptMethods": [
-            "getElementComponent",
-            "getNewOptionLabel",
-            "getTranslation",
-            "transform"
-          ]
-        }
-      ],
-      "no-console": [
-        "error",
-        {
-          "allow": [
-            "warn",
-            "error"
-          ]
-        }
-      ]
-    },
-    "overrides": [
-      {
-        "files": [
-          "e2e/**/*.ts"
-        ],
-        "rules": {
-          "@typescript-eslint/no-unused-expressions": [
-            "error",
-            {
-              "allowTaggedTemplates": true
-            }
-          ],
-          "newline-per-chained-call": [
-            "off"
-          ]
-        }
-      },
-      {
-        "files": [
-          "projects/**/*.spec.ts"
-        ],
-        "rules": {
-          "no-restricted-syntax": [
-            "error",
-            {
-              "selector": "ForInStatement",
-              "message": "for..in loops iterate over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries}, and iterate over the resulting array."
-            },
-            {
-              "selector": "ForOfStatement",
-              "message": "iterators/generators require regenerator-runtime, which is too heavyweight for this guide to allow them. Separately, loops should be avoided in favor of array iterations."
-            },
-            {
-              "selector": "LabeledStatement",
-              "message": "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand."
-            },
-            {
-              "selector": "WithStatement",
-              "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
-            },
-            {
-              "selector": ":matches(Program, BlockStatement):has(CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|fails|concurrent)$/], [callee.callee.object.name=/^(it|test)$/][callee.callee.property.name=/^(each|for)$/], [callee.tag.object.name=/^(it|test)$/]):not(CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|concurrent)$/]):matches([arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/]))):not(CallExpression:matches([callee.object.name='describe'][callee.property.name=/^(skip|todo)$/], [callee.callee.object.name='describe'][callee.callee.property.name=/^(skipIf|runIf)$/]) CallExpression)) > ExpressionStatement > CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|concurrent)$/]):matches([arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/]))",
-              "message": "This test only checks that the instance exists, beside other tests that create it anyway. Remove it (rules.md §11)."
-            },
-            {
-              "selector": ":matches(Program, BlockStatement):not(:has(CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|fails|concurrent)$/], [callee.callee.object.name=/^(it|test)$/][callee.callee.property.name=/^(each|for)$/], [callee.tag.object.name=/^(it|test)$/]):not(CallExpression:matches([callee.name=/^(it|test)$/], [callee.object.name=/^(it|test)$/][callee.property.name=/^(only|concurrent)$/]):matches([arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/]))):not(CallExpression:matches([callee.object.name='describe'][callee.property.name=/^(skip|todo)$/], [callee.callee.object.name='describe'][callee.callee.property.name=/^(skipIf|runIf)$/]) CallExpression))) > ExpressionStatement:matches([expression.callee.name=/^(it|test)$/], [expression.callee.object.name=/^(it|test)$/][expression.callee.property.name=/^(only|concurrent)$/]):matches([expression.arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [expression.arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/])) ~ ExpressionStatement:matches([expression.callee.name=/^(it|test)$/], [expression.callee.object.name=/^(it|test)$/][expression.callee.property.name=/^(only|concurrent)$/]):matches([expression.arguments.0.value=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/], [expression.arguments.0.quasis.0.value.cooked=/^(should create( an instance| the component)?|should be created|create an instance|should be defined)$/]):has(CallExpression[callee.property.name=/^(toBeTruthy|toBeDefined)$/]):not(:has(CallExpression[callee.property.name=/^to(?!BeTruthy$|BeDefined$)/]))",
-              "message": "This test only checks that the instance exists, as a test before it does. Remove it (rules.md §11)."
-            }
-          ]
-        }
-      }
-    ]
-  },
   "dependencies": {
     "@angular/animations": "^21.2.9",
     "@angular/cdk": "^21.2.14",
@@ -206,7 +101,8 @@
     "@angular/compiler-cli": "^21.2.9",
     "@compodoc/compodoc": "^2.0.0",
     "@cypress/code-coverage": "^4.0.3",
-    "@iqb/eslint-config": "^2.1.1",
+    "@eslint/js": "^10.0.1",
+    "@iqb/eslint-config": "^3.0.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.0",
     "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
     "@types/katex": "^0.16.7",
@@ -215,11 +111,26 @@
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
     "cypress": "^15.10.0",
-    "eslint": "^8.57.1",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
     "iqb-dev-components": "^1.4.1",
     "nyc": "^18.0.0",
     "playwright": "^1.61.1",
     "typescript": "~5.9.3",
     "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "eslint": {
+      "minimatch": "^11.0.4"
+    },
+    "@eslint/config-array": {
+      "minimatch": "^11.0.4"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.4"
+    },
+    "eslint-plugin-sonarjs": {
+      "minimatch": "^11.0.4"
+    }
   }
 }

@@ -31,7 +31,7 @@ describe('ImageResizeDialogComponent', () => {
 
   beforeEach(async () => {
     mockDialogData = {
-      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @stylistic/max-len
       base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
       options: {
         maxWidth: 500,

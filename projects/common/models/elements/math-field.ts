@@ -27,9 +27,9 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-field'].styling),
-      lineHeight: ELEMENT_DEFAULTS['math-field'].styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['math-field'].styling),
+    lineHeight: ELEMENT_DEFAULTS['math-field'].styling.lineHeight
+  };
 
   static icon: string = 'calculate';
 

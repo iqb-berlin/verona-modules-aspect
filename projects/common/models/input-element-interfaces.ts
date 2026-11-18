@@ -7,19 +7,19 @@ import { GeometryValue } from 'common/models/geometry-interfaces';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 
 export type InputElementValue =
-  Markable[]
-  | TextLabel[]
-  | Hotspot[]
-  | MathTableRow[]
-  | TextAreaMath[]
-  | GeometryValue
-  | string[]
-  | string
-  | number[]
-  | number
-  | boolean[]
-  | boolean
-  | null;
+  Markable[] |
+  TextLabel[] |
+  Hotspot[] |
+  MathTableRow[] |
+  TextAreaMath[] |
+  GeometryValue |
+  string[] |
+  string |
+  number[] |
+  number |
+  boolean[] |
+  boolean |
+  null;
 
 /** Text inputs spanning several lines: text area, math text area. */
 export interface MultiLineTextProperties {

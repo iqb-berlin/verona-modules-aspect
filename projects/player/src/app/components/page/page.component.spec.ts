@@ -67,7 +67,6 @@ describe('PageComponent', () => {
     standalone: false
   })
   class MockIsEnabledNavigationTargetPipe implements PipeTransform {
-    // eslint-disable-next-line class-methods-use-this
     transform(): boolean {
       return true;
     }

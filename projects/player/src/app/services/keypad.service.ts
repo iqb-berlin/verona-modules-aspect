@@ -43,7 +43,7 @@ export class KeypadService extends InputService {
       edge -- the element's model asks for. */
   open(inputElement: HTMLElement,
        elementComponent: TextInputComponentType | MathTableComponent | TextAreaMathComponent):
-    void {
+  void {
     this.preset = elementComponent.elementModel.inputAssistancePreset;
     this.position = elementComponent.elementModel.inputAssistancePosition;
     this.setCurrentKeyInputElement(inputElement, elementComponent);

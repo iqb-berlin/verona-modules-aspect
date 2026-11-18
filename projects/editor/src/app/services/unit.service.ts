@@ -157,7 +157,6 @@ export class UnitService {
       try {
         this.settleUnit(storedVersion);
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.error(e);
         if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message, this.loadSuperseded);
       }
@@ -187,7 +186,6 @@ export class UnitService {
   }
 
   private refuseUnitDefinition(code: UnitDefinitionErrorCode, ...details: unknown[]): void {
-    // eslint-disable-next-line no-console
     console.error(code, ...details);
     this.dialogService
       .showUnitDefErrorDialog(this.translateService.instant(`unitDefError.${code}`), this.loadSuperseded);

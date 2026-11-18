@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeyboardComponent } from 'player/modules/key-input/components/keyboard/keyboard.component';
 import { Component, Input } from '@angular/core';

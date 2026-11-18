@@ -28,7 +28,7 @@ export class MarkableSupport {
   private ngUnsubscribe = new Subject<void>();
   private componentRefs: ComponentRef<MarkablesContainerComponent>[] = [];
 
-  // eslint-disable-next-line max-len
+  // eslint-disable-next-line @stylistic/max-len
   private static markables: RegExp = /[^\p{L}\d\-']*[\p{L}\d\-']+[^\p{L}\d\-']*|[^\p{L}\d\-']+[\p{L}\d\-']*[^\p{L}\d\-']*|[^\p{L}\d\-']*[\p{L}\d\-']*[^\p{L}\d\-']+/gu;
   private static prefix: RegExp = /[^\p{L}\d\-']+(?=[\p{L}\d\-']+)/u;
   private static word: RegExp = /[\p{L}\d\-']+/u;

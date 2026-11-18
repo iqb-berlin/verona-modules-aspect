@@ -13,7 +13,6 @@ import { VariableInfoIssueCode } from 'editor/src/app/utils/variable-info-valida
   standalone: false
 })
 export class AliasIssuesPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(findings: VariableInfoFinding[] | null, elementID: string | undefined): VariableInfoIssueCode[] {
     const codes = (findings ?? [])
       .filter(finding => finding.origin.location?.element.id === elementID && finding.origin.subValue === undefined)

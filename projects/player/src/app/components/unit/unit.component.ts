@@ -118,7 +118,6 @@ export class UnitComponent implements OnInit, OnDestroy {
             .flat();
           this.setStartPage();
         } catch (e: unknown) {
-          // eslint-disable-next-line no-console
           console.error(e);
           this.showErrorDialog(e instanceof Error ?
             e.message :
@@ -152,7 +151,6 @@ export class UnitComponent implements OnInit, OnDestroy {
     } catch (e: unknown) {
       this.refuseUnitDefinition('UNIT_DEFINITION_NOT_READABLE', e);
       if (e instanceof InstantiationEror) {
-        // eslint-disable-next-line no-console
         console.error('Failing element blueprint: ', e.faultyBlueprint);
       }
       return null;
@@ -160,7 +158,6 @@ export class UnitComponent implements OnInit, OnDestroy {
   }
 
   private refuseUnitDefinition(code: UnitDefinitionErrorCode, ...details: unknown[]): void {
-    // eslint-disable-next-line no-console
     console.error(code, ...details);
     this.showErrorDialog(this.translateService.instant(`errorMessage.${code}`));
   }

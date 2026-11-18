@@ -27,9 +27,9 @@ export class SliderElement extends InputElement implements SliderProperties {
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.slider.styling),
-      lineHeight: ELEMENT_DEFAULTS.slider.styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.slider.styling),
+    lineHeight: ELEMENT_DEFAULTS.slider.styling.lineHeight
+  };
 
   static icon: string = 'linear_scale';
 

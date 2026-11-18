@@ -44,13 +44,13 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     firstLineColoring: boolean;
     firstLineColoringColor: string;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.likert.styling),
-      lineHeight: ELEMENT_DEFAULTS.likert.styling.lineHeight,
-      lineColoring: ELEMENT_DEFAULTS.likert.styling.lineColoring,
-      lineColoringColor: ELEMENT_DEFAULTS.likert.styling.lineColoringColor,
-      firstLineColoring: ELEMENT_DEFAULTS.likert.styling.firstLineColoring,
-      firstLineColoringColor: ELEMENT_DEFAULTS.likert.styling.firstLineColoringColor
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.likert.styling),
+    lineHeight: ELEMENT_DEFAULTS.likert.styling.lineHeight,
+    lineColoring: ELEMENT_DEFAULTS.likert.styling.lineColoring,
+    lineColoringColor: ELEMENT_DEFAULTS.likert.styling.lineColoringColor,
+    firstLineColoring: ELEMENT_DEFAULTS.likert.styling.firstLineColoring,
+    firstLineColoringColor: ELEMENT_DEFAULTS.likert.styling.firstLineColoringColor
+  };
 
   static icon: string = 'margin';
 

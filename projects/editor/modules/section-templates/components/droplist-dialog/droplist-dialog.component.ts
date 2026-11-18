@@ -44,7 +44,6 @@ export class DroplistWizardDialogComponent {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async loadImage(list: string[], eventTarget: HTMLInputElement): Promise<void> {
     const file = eventTarget.files?.[0];
     if (file) {

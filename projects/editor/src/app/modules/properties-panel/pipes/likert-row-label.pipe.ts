@@ -8,7 +8,6 @@ import { TextImageLabel } from 'common/models/label-interfaces';
   standalone: false
 })
 export class LikertRowLabelPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(rows: LikertRowElement[]): (TextImageLabel & { alias: string })[] {
     return rows.map(row => ({ ...row.rowLabel, alias: row.alias }));
   }

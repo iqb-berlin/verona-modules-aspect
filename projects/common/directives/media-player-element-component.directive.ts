@@ -24,12 +24,12 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
   private ngUnsubscribe = new Subject<void>();
 
   get timeoutMsg(): string {
-    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @stylistic/max-len
     return `Failed to load media element with alias "${this.elementModel.alias}" and filename "${this.elementModel.fileName}" in time`;
   }
 
   get mediaDurationNotAvailableMsg(): string {
-    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @stylistic/max-len
     return `Media duration of element with alias "${this.elementModel.alias}" and filename "${this.elementModel.fileName}" is not available`;
   }
 

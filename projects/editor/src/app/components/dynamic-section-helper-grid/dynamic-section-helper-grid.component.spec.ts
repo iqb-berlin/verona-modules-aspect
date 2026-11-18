@@ -101,8 +101,10 @@ describe('DynamicSectionHelperGridComponent', () => {
   });
 
   it('should emit transferElement when the element is dropped in another section', () => {
-    let transfer: { sourcePageIndex: number, sourceSectionIndex: number,
-      targetPageIndex: number, targetSectionIndex: number } | undefined;
+    let transfer: { sourcePageIndex: number,
+      sourceSectionIndex: number,
+      targetPageIndex: number,
+      targetSectionIndex: number } | undefined;
     component.transferElement.subscribe(event => {
       transfer = event;
     });

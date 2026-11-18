@@ -28,9 +28,9 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.radio.styling),
-      lineHeight: ELEMENT_DEFAULTS.radio.styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS.radio.styling),
+    lineHeight: ELEMENT_DEFAULTS.radio.styling.lineHeight
+  };
 
   static icon: string = 'radio_button_checked';
 
@@ -92,7 +92,7 @@ export interface RadioButtonGroupProperties extends
 }
 
 function isRadioButtonGroupProperties(blueprint?: Partial<RadioButtonGroupProperties>)
-  : blueprint is RadioButtonGroupProperties {
+: blueprint is RadioButtonGroupProperties {
   if (!blueprint) return false;
   return blueprint.options !== undefined &&
     blueprint.type === 'radio';

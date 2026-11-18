@@ -33,9 +33,9 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   styling: BasicStyles & {
     lineHeight: number;
   } = {
-      ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area'].styling),
-      lineHeight: ELEMENT_DEFAULTS['text-area'].styling.lineHeight
-    };
+    ...PropertyGroupGenerators.generateBasicStyleProps(ELEMENT_DEFAULTS['text-area'].styling),
+    lineHeight: ELEMENT_DEFAULTS['text-area'].styling.lineHeight
+  };
 
   static icon: string = 'edit_note';
 

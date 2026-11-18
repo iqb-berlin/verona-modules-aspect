@@ -85,7 +85,6 @@ export class ErrorService implements ErrorHandler {
     const isNew = this.loadErrorService
       .report({ code: error.code, message: error.message, elementId: error.elementId });
     if (!isNew) return;
-    // eslint-disable-next-line no-console
     console.error(error);
     this.messageService
       .showWarningWithAction(
@@ -98,7 +97,6 @@ export class ErrorService implements ErrorHandler {
     const signature = ErrorService.getSignature(error);
     if (!this.loggedSignatures.has(signature)) {
       this.loggedSignatures.add(signature);
-      // eslint-disable-next-line no-console
       console.error(error);
     }
     if (this.errorPromptOpen || this.promptedSignatures.has(signature)) return;
@@ -112,7 +110,6 @@ export class ErrorService implements ErrorHandler {
     } catch (dialogError) {
       // a dialog that cannot open must not silence every error that follows
       this.errorPromptOpen = false;
-      // eslint-disable-next-line no-console
       console.error(dialogError);
     }
   }

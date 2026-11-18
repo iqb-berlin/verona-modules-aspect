@@ -126,7 +126,6 @@ describe('ErrorService', () => {
     service.handleError(error);
 
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledWith(error);
-    // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledWith(error);
   });
 
@@ -149,7 +148,6 @@ describe('ErrorService', () => {
     service.handleError(errorFrom('Erster Fehler', 'SectionComponent.template'));
     service.handleError(second);
 
-    // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledWith(second);
   });
 
@@ -157,7 +155,6 @@ describe('ErrorService', () => {
     service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
     service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
 
-    // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledTimes(1);
   });
 
@@ -178,7 +175,6 @@ describe('ErrorService', () => {
     expect(reentered).toBe(true);
     expect(messageServiceSpy.showErrorPrompt).toHaveBeenCalledTimes(1);
     // the follow-up error gets no dialog, but it does reach the console
-    // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledTimes(2);
 
     // and the gate opens again once the dialog is gone
@@ -309,7 +305,6 @@ describe('ErrorService', () => {
     startNextUnit();
     service.handleError(errorFrom('Immer derselbe Fehler', 'SectionComponent.template'));
 
-    // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledTimes(2);
   });
 

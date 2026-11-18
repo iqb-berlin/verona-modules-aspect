@@ -162,7 +162,6 @@ export class NumberFieldDirective implements OnInit, DoCheck, OnDestroy {
       const misuse = 'aspectNumberField needs a one-way [ngModel] and reports through (numberChange): ' +
         'with [(ngModel)] or (ngModelChange) a refused value has already reached the caller.';
       if (isDevMode()) throw new Error(misuse);
-      // eslint-disable-next-line no-console -- a built editor has nowhere else to say this
       console.error(misuse);
       this.isMisused = true;
       return;

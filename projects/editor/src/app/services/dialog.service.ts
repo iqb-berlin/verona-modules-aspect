@@ -284,12 +284,12 @@ export class DialogService {
                             animatedVisibility: boolean,
                             enableReHide: boolean
   ): Observable<{
-      visibilityRules: VisibilityRule[],
-      logicalConnectiveOfRules: 'disjunction' | 'conjunction',
-      visibilityDelay: number,
-      animatedVisibility: boolean,
-      enableReHide: boolean
-    }> {
+    visibilityRules: VisibilityRule[],
+    logicalConnectiveOfRules: 'disjunction' | 'conjunction',
+    visibilityDelay: number,
+    animatedVisibility: boolean,
+    enableReHide: boolean
+  }> {
     const dialogRef = this.dialog
       .open(VisibilityRulesDialogComponent, {
         data: {

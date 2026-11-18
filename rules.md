@@ -160,7 +160,7 @@ as soon as the component has a test of its own. ESLint rejects such a test besid
 tests of its `describe` — titled `should create`, `should create the component`,
 `should create an instance`, `should be created`, `create an instance` or `should be defined`, and
 checking nothing but `toBeTruthy` or `toBeDefined` (`no-restricted-syntax` for
-`projects/**/*.spec.ts` in `package.json`).
+`projects/**/*.spec.ts` in `eslint.config.mjs`).
 `npm run generate-migration` writes the step's spec with the test of its target version.
 
 Not this:

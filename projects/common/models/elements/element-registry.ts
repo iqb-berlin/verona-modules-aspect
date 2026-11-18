@@ -825,7 +825,7 @@ type MissingDefaultsOf<Declared, K extends UIElementType> =
 
 type InputTypeMissingADefault = {
   [K in UIElementType]: MissingDefaultsOf<
-  Pick<InputElementProperties, 'required' | 'requiredWarnMessage' | 'readOnly'>, K>
+    Pick<InputElementProperties, 'required' | 'requiredWarnMessage' | 'readOnly'>, K>
 }[UIElementType];
 export type InputDefaultsAreComplete = AssertNever<InputTypeMissingADefault>;
 

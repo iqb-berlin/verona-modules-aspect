@@ -19,7 +19,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false
 })
 export class ExclusiveOptionLockedPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
   transform(own: boolean | null | undefined, other: boolean | null | undefined): boolean {
     return own !== true && (other === true || other === null);
   }

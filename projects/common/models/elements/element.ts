@@ -155,7 +155,7 @@ export abstract class UIElement implements UIElementProperties {
     return [];
   }
 
-  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getVariableInfos(options?: unknown): VariableInfo[] {
     return [{
       id: this.id,
@@ -219,7 +219,7 @@ export abstract class UIElement implements UIElementProperties {
 }
 
 export function isInputElementProperties(blueprint: Partial<InputElementProperties>)
-  : blueprint is InputElementProperties {
+: blueprint is InputElementProperties {
   return blueprint !== undefined && blueprint !== null;
 }
 

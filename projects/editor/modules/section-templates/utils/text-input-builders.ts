@@ -5,9 +5,15 @@ import { TemplateService } from 'editor/modules/section-templates/services/templ
 import { IDService } from 'editor/src/app/services/id.service';
 import { EditorSection } from 'editor/src/app/models/editor-section';
 
-export function createInputSection(config: { text: string, answerCount: number, multilineInputs: boolean,
-  numbering: 'latin' | 'decimal' | 'bullets' | 'none', fieldLength: 'very-small' | 'small' | 'medium' | 'large',
-  expectedCharsCount: number, useMathFields: boolean, numberingWithText: boolean, subQuestions: string[] },
+export function createInputSection(config: { text: string,
+  answerCount: number,
+  multilineInputs: boolean,
+  numbering: 'latin' | 'decimal' | 'bullets' | 'none',
+  fieldLength: 'very-small' | 'small' | 'medium' | 'large',
+  expectedCharsCount: number,
+  useMathFields: boolean,
+  numberingWithText: boolean,
+  subQuestions: string[] },
                                    idService: IDService): EditorSection {
   const useNumbering = config.answerCount > 1 && config.numbering !== 'none';
 

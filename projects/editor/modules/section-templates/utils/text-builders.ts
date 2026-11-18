@@ -6,8 +6,8 @@ import { EditorSection } from 'editor/src/app/models/editor-section';
 import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 
 // Disable linting rules to have smaller code
-/* eslint-disable object-property-newline */
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/object-property-newline */
+/* eslint-disable @stylistic/indent */
 // Markieren
 export function createText2Section(text1: string, showHelper: boolean, markingMode: 'word' | 'range',
                                    idService: IDService): EditorSection {

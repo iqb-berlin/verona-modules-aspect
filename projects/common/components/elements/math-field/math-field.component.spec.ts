@@ -21,6 +21,7 @@ class MockMathInputComponent {
   @Input() readonly!: boolean;
   @Input() mathKeyboardPresets!: string[];
   @Input() enableModeSwitch!: boolean;
+  @Input() multiline!: boolean;
   @Output() valueChange = new EventEmitter<string>();
   @Output() focusIn = new EventEmitter<MathfieldElement>();
   @Output() focusOut = new EventEmitter<MathfieldElement>();

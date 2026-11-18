@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { MathfieldElement } from 'mathlive';
+import { MathfieldElement, ParseMode } from 'mathlive';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { FORMULA_KEYBOARD_PRESETS } from 'common/modules/math-editor/configs/formula-keyboard-presets.config';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
@@ -28,6 +28,11 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   @Input() enableModeSwitch: boolean = false;
   @Input() mathKeyboardPresets: MathKeyboardPreset[] = [];
   @Input() placeholder: string = '';
+  /** Lets Enter start a new line and wraps what is too long for one. MathLive adds a row only inside
+      a multi-line environment, so the field gets its value wrapped in `\displaylines{}`; MathLive drops
+      the wrapper again from a value of one line, which is therefore stored as before. Wrapping is
+      display only: it changes nothing in the value. */
+  @Input() multiline: boolean = false;
   @Output() valueChange: EventEmitter<string> = new EventEmitter();
   @Output() focusIn: EventEmitter<MathfieldElement> = new EventEmitter();
   @Output() focusOut: EventEmitter<MathfieldElement> = new EventEmitter();
@@ -35,9 +40,27 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   protected readonly window = window;
 
+  /** MathLive keeps a formula on one line (`nowrap`, `width: min-content`) and lets it scroll sideways.
+      These rules let the browser wrap it at the field's width instead. They rest on MathLive's internal
+      classes and markup and go into its shadow root, which no stylesheet outside reaches.
+      The rows of `\displaylines` (the lines made with Enter) are boxes of a height MathLive measured for
+      one line, hung from their baseline; a wrapped row would grow upwards out of the field and over the
+      row above. So those rows -- and only they, by child selectors, not the fractions or exponents
+      inside them, which are built the same way -- are laid out as plain blocks of their own height.
+      The two struts beside the block are left out as well: MathLive sizes them for unwrapped rows, and
+      below the last row they added most of a line of empty space. */
+  private static readonly WRAP_STYLE = MathInputComponent.createWrapStyle();
+
   mathFieldElement: MathfieldElement = new MathfieldElement({
     mathVirtualKeyboardPolicy: 'manual'
   });
+
+  /** The mode the field was in when Enter was pressed. MathLive starts every new line in math mode,
+      where a space is not typed at all; a line of text is to be followed by another one. */
+  private modeBeforeEnter?: ParseMode;
+
+  /** Whether MathLive has built the field before, see `onMount`. */
+  private mountedBefore = false;
 
   /** Held so that the two focusout events of one blur -- the browser's and mathlive's own -- are acted on once. */
   private focusOutTimeout?: ReturnType<typeof setTimeout>;
@@ -50,33 +73,60 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   private setupMathField(): void {
+    // Before the field joins the page, so that its first mount is heard as well.
+    this.mathFieldElement.addEventListener('mount', this.onMount);
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.readOnly = this.readonly;
     this.mathFieldElement.placeholder = this.placeholder;
-    this.mathFieldElement.setValue(this.value || '', { format: 'latex' });
+    if (this.multiline) {
+      this.addWrapStyle();
+      // Captured before MathLive adds the line, and back here after it, in the same keydown: the
+      // next character may follow at once.
+      this.mathFieldElement.addEventListener('keydown', event => {
+        if (event.key === 'Enter') this.modeBeforeEnter = this.mathFieldElement.mode;
+      }, { capture: true });
+      this.mathFieldElement.addEventListener('keydown', event => {
+        if (event.key === 'Enter' && this.modeBeforeEnter === 'text') this.mathFieldElement.mode = 'text';
+      });
+    }
+    this.mathFieldElement.setValue(this.toFieldValue(this.value), { format: 'latex' });
     this.mathFieldElement.addEventListener('pointerdown', this.onFramePointerDown);
-    setTimeout(() => {
-      this.mathFieldElement.menuItems = [];
-    }); // Disable context menu
   }
 
-  /** A press on the field's own frame -- its padding and border, outside MathLive's shadow content --
-      reaches MathLive, which counts the field as focused but leaves the browser's focus where it was:
-      no cursor, no keyboard. The fork (`@iqb/mathlive`) focused the field there (#1648). So the focus
-      is moved here, on the element itself, which hands it on into the field (`delegatesFocus`);
-      `MathfieldElement.focus()` would do nothing, as MathLive already counts the field as focused.
-      The frame is told by the element first hit: `target` names the field for a press on its shadow
-      content as well. */
+  /** MathLive builds the field each time it joins the page: the first time, possibly later than the
+      setup, and anew after every move in the page, as in a drag in the editor. Its context menu is
+      switched off then, as the menu exists only while the field is on the page and setting it before
+      throws. A field built anew comes from what MathLive kept of the old one, which is the value as
+      text, and the text of one line has no `\displaylines`: a multi-line field gets it back, or Enter
+      starts no new line. The first build keeps the value the setup gave it. */
+  private readonly onMount = (): void => {
+    this.mathFieldElement.menuItems = [];
+    if (this.multiline && this.mountedBefore) {
+      this.mathFieldElement.setValue(this.toFieldValue(this.mathFieldElement.getValue()), { format: 'latex' });
+    }
+    this.mountedBefore = true;
+  };
+
+  /** A press on the field's own frame -- its padding and border -- or on MathLive's container around
+      its content reaches MathLive, which counts the field as focused but leaves the browser's focus
+      where it was: no cursor, no keyboard. The fork (`@iqb/mathlive`) focused the field there (#1648).
+      So the focus is moved here, on the element itself, which hands it on into the field
+      (`delegatesFocus`); `MathfieldElement.focus()` would do nothing, as MathLive already counts the
+      field as focused. The place is told by the element first hit: `target` names the field for a
+      press anywhere in it. The container matters for a multi-line field, whose container reaches up to
+      where a single-line field has its frame. */
   private readonly onFramePointerDown = (event: PointerEvent): void => {
     const field = this.mathFieldElement;
-    if (event.composedPath()[0] !== field || field.ownerDocument.activeElement === field) return;
+    const pressed = event.composedPath()[0];
+    const outsideContent = pressed === field || (pressed instanceof Element && pressed.matches('[part=container]'));
+    if (!outsideContent || field.ownerDocument.activeElement === field) return;
     HTMLElement.prototype.focus.call(field, { preventScroll: true });
   };
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange &&
       changes.value.currentValue !== this.mathFieldElement.getValue()) {
-      this.mathFieldElement.setValue(changes.value.currentValue, { format: 'latex' });
+      this.mathFieldElement.setValue(this.toFieldValue(changes.value.currentValue), { format: 'latex' });
     }
     if (changes.placeholder && this.mathFieldElement) {
       this.mathFieldElement.placeholder = changes.placeholder.currentValue;
@@ -84,6 +134,34 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     if (changes.readonly && this.mathFieldElement) {
       this.mathFieldElement.readOnly = changes.readonly.currentValue;
     }
+  }
+
+  private static createWrapStyle(): string {
+    const row = '.ML__multiline_environment > .col-align-l > .ML__vlist-t > .ML__vlist-r';
+    const struts = '.ML__latex:has(> .ML__multiline_environment) > :is(.ML__strut, .ML__strut--bottom)';
+    return `
+      .ML__latex, .ML__base { white-space: normal !important; width: auto !important; }
+      .ML__text { white-space: pre-wrap !important; }
+      ${row} > .ML__vlist { height: auto !important; }
+      ${row} > .ML__vlist > span { position: static !important; display: block !important; height: auto !important; }
+      ${row} > .ML__vlist > span + span { margin-top: 0.2em; }
+      ${row} > .ML__vlist > span > .ML__pstrut { display: none !important; }
+      ${row} > .ML__vlist > span > span { height: auto !important; }
+      ${row}:not(:first-child) { display: none !important; }
+      ${struts} { display: none !important; }`;
+  }
+
+  /** A `<style>` of its own per field rather than one shared constructed sheet: `new CSSStyleSheet()`
+      throws in Safari before 16.4, and would take every math input down with it. */
+  private addWrapStyle(): void {
+    const style = this.mathFieldElement.ownerDocument.createElement('style');
+    style.textContent = MathInputComponent.WRAP_STYLE;
+    this.mathFieldElement.shadowRoot?.appendChild(style);
+  }
+
+  private toFieldValue(value: string | undefined): string {
+    if (!this.multiline || value?.startsWith('\\displaylines{')) return value || '';
+    return `\\displaylines{${value || ''}}`;
   }
 
   // eslint-disable-next-line

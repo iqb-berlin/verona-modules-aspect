@@ -72,6 +72,28 @@ describe('MathInputComponent', () => {
     });
   });
 
+  /* A view can reach the page after its setup, and MathLive has a context menu only while the field is
+     on the page. Until #1648 a timer switched it off one turn of the event loop after setup, too early
+     for such a field; this one joins the page after that turn. Not fakeAsync (§7): MathLive announces
+     the mount in a microtask of its own, which flushMicrotasks() does not reach. */
+  it('should switch off the context menu of a field that joins the page after its setup', async () => {
+    const lateFixture = TestBed.createComponent(MathInputComponent);
+    const host = lateFixture.nativeElement as HTMLElement;
+    const page = host.parentElement as HTMLElement;
+    host.remove();
+    lateFixture.detectChanges();
+    await new Promise(resolve => {
+      setTimeout(resolve);
+    });
+    const field = lateFixture.componentInstance.mathFieldElement;
+    const mounted = new Promise(resolve => {
+      field.addEventListener('mount', resolve, { once: true });
+    });
+    page.appendChild(host);
+    await mounted;
+    expect(field.menuItems).toEqual([]);
+  });
+
   it('should update the readonly state of the math field on input changes', () => {
     expect(component.mathFieldElement.readOnly).toBe(false);
     component.ngOnChanges({
@@ -85,6 +107,153 @@ describe('MathInputComponent', () => {
     component.mathFieldElement.setValue('a+b', { format: 'latex' });
     component.onInput();
     expect(emitSpy).toHaveBeenCalledWith('a+b');
+  });
+
+  describe('as a multi-line field', () => {
+    const createMultilineField = (value: string): MathInputComponent => {
+      const multilineFixture = TestBed.createComponent(MathInputComponent);
+      multilineFixture.componentInstance.value = value;
+      multilineFixture.componentInstance.multiline = true;
+      multilineFixture.detectChanges();
+      return multilineFixture.componentInstance;
+    };
+
+    // The tests focus their fields, which opens the page-wide keyboard; it would stay open into the next.
+    afterEach(() => {
+      (document.activeElement as HTMLElement | null)?.blur();
+      window.mathVirtualKeyboard.hide();
+    });
+
+    const pressEnter = (field: MathfieldElement, mode?: 'math' | 'text'): void => {
+      field.focus();
+      field.executeCommand('moveToMathfieldEnd');
+      if (mode) field.mode = mode;
+      // MathLive listens on its own input element in the shadow root, not on the host.
+      const enter = new KeyboardEvent('keydown', {
+        key: 'Enter', code: 'Enter', bubbles: true, composed: true
+      });
+      field.shadowRoot?.querySelector('[part=keyboard-sink]')?.dispatchEvent(enter);
+    };
+
+    const lineCount = (field: MathfieldElement): number => {
+      const characters = [...(field.shadowRoot?.querySelectorAll('.ML__text') ?? [])];
+      return new Set(characters.map(character => Math.round(character.getBoundingClientRect().top))).size;
+    };
+    const longText = '\\text{Das ist ein sehr langer Satz, der nicht in eine Zeile passt}';
+    /* These tests wait for the browser's layout rather than for timers of their own, which is why they
+       do not use fakeAsync (§7): MathLive renders only once its fonts are loaded (document.fonts.ready),
+       and tick() cannot advance that. They wait for the rendered state instead of a fixed time, with
+       room for the first loading of the fonts on a slow machine; vi.waitFor gives up after 1 s. */
+    const layout = { timeout: 5000 };
+    const rendered = (field: MathfieldElement): Promise<void> => vi.waitFor(() => {
+      expect(lineCount(field)).toBeGreaterThan(0);
+    }, layout);
+
+    it('should wrap what is too long for one line', async () => {
+      const multiline = createMultilineField(longText);
+      multiline.elementRef.nativeElement.style.cssText = 'display: block; width: 200px';
+      await vi.waitFor(() => {
+        expect(lineCount(multiline.mathFieldElement)).toBeGreaterThan(1);
+      }, layout);
+    });
+
+    it('should keep a wrapped line inside the field when there are several lines', async () => {
+      const multiline = createMultilineField(`\\displaylines{${longText}\\\\ \\frac{1}{2}\\\\ ${longText}}`);
+      multiline.elementRef.nativeElement.style.cssText = 'display: block; width: 200px';
+      const field = multiline.mathFieldElement;
+      await rendered(field);
+      const fieldTop = field.getBoundingClientRect().top;
+      const characters = [...(field.shadowRoot?.querySelectorAll('.ML__text') ?? [])];
+      const firstTop = Math.min(...characters.map(character => character.getBoundingClientRect().top));
+      const fraction = field.shadowRoot?.querySelector('.ML__mfrac')?.getBoundingClientRect();
+      const secondText = characters.slice(characters.length / 2).map(character => character.getBoundingClientRect());
+      expect(firstTop).toBeGreaterThanOrEqual(fieldTop);
+      expect(Math.min(...secondText.map(rect => rect.top))).toBeGreaterThanOrEqual(fraction?.bottom ?? Infinity);
+    });
+
+    it('should grow by one line on Enter after a wrapped line', async () => {
+      const multiline = createMultilineField('');
+      // As in the Formelfeld: the font size and line height of its wrapper, and the text typed in.
+      multiline.elementRef.nativeElement.style.cssText =
+        'display: block; width: 200px; font-size: 20px; line-height: 135%';
+      const field = multiline.mathFieldElement;
+      field.focus();
+      field.mode = 'text';
+      [...'Das ist ein sehr langer Satz, der nicht in eine Zeile passt'].forEach(character => {
+        field.insert(character, { mode: 'text', format: 'latex' });
+      });
+      await vi.waitFor(() => {
+        expect(lineCount(field)).toBeGreaterThan(1);
+      }, layout);
+      const heightBefore = field.getBoundingClientRect().height;
+      const lineHeight = field.shadowRoot?.querySelector('.ML__text')?.getBoundingClientRect().height ?? 0;
+      pressEnter(field);
+      await vi.waitFor(() => {
+        expect(field.getBoundingClientRect().height).toBeGreaterThan(heightBefore);
+      }, layout);
+      expect(field.getBoundingClientRect().height - heightBefore).toBeLessThan(lineHeight * 1.3);
+    });
+
+    it('should not wrap when single-line', async () => {
+      component.elementRef.nativeElement.style.cssText = 'display: block; width: 200px';
+      component.ngOnChanges({ value: new SimpleChange('1+2', longText, false) });
+      await rendered(component.mathFieldElement);
+      expect(lineCount(component.mathFieldElement)).toBe(1);
+    });
+
+    it('should start a new line on Enter', () => {
+      const multiline = createMultilineField('a+b');
+      pressEnter(multiline.mathFieldElement);
+      multiline.mathFieldElement.insert('c');
+      expect(multiline.mathFieldElement.getValue()).toBe('\\displaylines{a+b\\\\ c}');
+    });
+
+    it('should stay in text mode on Enter in text mode', () => {
+      const multiline = createMultilineField('\\text{ab}');
+      pressEnter(multiline.mathFieldElement, 'text');
+      expect(multiline.mathFieldElement.mode).toBe('text');
+    });
+
+    it('should stay in math mode on Enter in math mode', () => {
+      const multiline = createMultilineField('a+b');
+      pressEnter(multiline.mathFieldElement, 'math');
+      expect(multiline.mathFieldElement.mode).toBe('math');
+    });
+
+    it('should not start a new line on Enter when single-line', () => {
+      pressEnter(component.mathFieldElement);
+      expect(component.mathFieldElement.getValue()).toBe('1+2');
+    });
+
+    it('should hand on a value of one line as it was stored', () => {
+      const multiline = createMultilineField('x^2');
+      expect(multiline.mathFieldElement.getValue()).toBe('x^2');
+    });
+
+    it('should show a stored multi-line value line by line, not wrapped twice', () => {
+      const multiline = createMultilineField('\\displaylines{a\\\\ b}');
+      expect(multiline.mathFieldElement.getValue()).toBe('\\displaylines{a\\\\ b}');
+    });
+
+    it('should wrap a value that arrives later as well', () => {
+      const multiline = createMultilineField('');
+      multiline.ngOnChanges({ value: new SimpleChange('', 'y', false) });
+      pressEnter(multiline.mathFieldElement);
+      expect(multiline.mathFieldElement.getValue()).toBe('\\displaylines{y\\\\ }');
+    });
+
+    /* Moved in the page, as by a drag in the editor, MathLive builds the field anew from a value of one
+       line that it keeps without `\displaylines`. */
+    it('should start a new line on Enter after the field was moved in the page', async () => {
+      const field = createMultilineField('a').mathFieldElement;
+      const mounted = new Promise(resolve => {
+        field.addEventListener('mount', resolve, { once: true });
+      });
+      field.parentElement?.appendChild(field);
+      await mounted;
+      pressEnter(field);
+      expect(field.getValue()).toBe('\\displaylines{a\\\\ }');
+    });
   });
 
   it('should not show the mode switch by default', () => {

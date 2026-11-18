@@ -23,7 +23,7 @@ export class MathFormulaNodeviewComponent extends AngularNodeViewComponent imple
   }
 
   ngOnInit(): void {
-    this.updateFormula(this.node.attrs.formula);
+    this.updateFormula(this.node().attrs.formula);
   }
 
   toggleEditMode(): void {
@@ -38,7 +38,7 @@ export class MathFormulaNodeviewComponent extends AngularNodeViewComponent imple
     this.editMode = false;
 
     // Fix Angular change detection, when TipTap re-renders the something(?)
-    setTimeout(() => this.updateAttributes({
+    setTimeout(() => this.updateAttributes()({
       formula: formula,
       formulaHTML: markup
     }), 0);

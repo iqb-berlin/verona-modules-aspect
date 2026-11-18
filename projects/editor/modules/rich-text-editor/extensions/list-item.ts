@@ -1,7 +1,7 @@
 import { findParentNode } from '@tiptap/core';
 import { ListItem } from '@tiptap/extension-list-item';
-import { Node as ProseMirrorNode, NodeRange, ResolvedPos } from 'prosemirror-model';
-import { Transaction } from 'prosemirror-state';
+import { Node as ProseMirrorNode, NodeRange, ResolvedPos } from '@tiptap/pm/model';
+import { Transaction } from '@tiptap/pm/state';
 
 /**
  * The markers a sublist steps through, as Word does: a list nested one level deeper takes the one after

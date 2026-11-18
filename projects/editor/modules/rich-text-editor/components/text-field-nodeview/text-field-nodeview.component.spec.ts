@@ -21,7 +21,6 @@ class MockMatTooltipDirective {
 }
 
 describe('TextFieldNodeviewComponent', () => {
-  let component: TextFieldNodeviewComponent;
   let fixture: ComponentFixture<TextFieldNodeviewComponent>;
   const model: StubElementModel = { id: 'text-field-1' };
 
@@ -31,8 +30,7 @@ describe('TextFieldNodeviewComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TextFieldNodeviewComponent);
-    component = fixture.componentInstance;
-    component.node = { attrs: { model } } as unknown as TextFieldNodeviewComponent['node'];
+    fixture.componentRef.setInput('node', { attrs: { model } });
     fixture.detectChanges();
   });
 

@@ -1,5 +1,5 @@
 import { Command, Extension } from '@tiptap/core';
-import { TextSelection, Transaction } from 'prosemirror-state';
+import { TextSelection, Transaction } from '@tiptap/pm/state';
 
 export interface IndentOptions {
   types: string[];

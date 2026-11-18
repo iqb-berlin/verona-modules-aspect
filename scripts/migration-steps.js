@@ -17,8 +17,10 @@
  * apart is left as it is (#1697): a class that extends a class of the same name as a step base from
  * another file; a base imported as a default, or reached through an index file or a namespace import; and
  * a class that MigrationManager constructs from elsewhere under a step's name, which passes that step as
- * registered in the check. None of them occurs in the repository, and the last one does not mislead the
- * generator, which goes by the import of the step's own file.
+ * registered in the check. The generator goes by the import of the step's own file and is not misled by
+ * that. It does not know the step's own import through an index file, though, and refuses it as another
+ * module's, nor a step that MigrationManager constructs through a namespace import (#1701). None of them
+ * occurs in the repository.
  */
 const fs = require('fs');
 const path = require('path');
@@ -184,11 +186,12 @@ function findStepClasses() {
 
 /**
  * The names a step is matched by: those it is exported under, or, exported under none, its class name,
- * which the check asks it to be exported under (#1697).
+ * which the check asks it to be exported under (#1697). A base is asked to be declared abstract as well,
+ * which ends its being a step, so it holds no name until it is exported (#1701).
  */
-const namesOf = ({ className, exportedAs }) => {
+const namesOf = ({ className, exportedAs, isBase }) => {
   if (exportedAs.length) return exportedAs;
-  return className === NAMELESS ? [] : [className];
+  return className === NAMELESS || isBase ? [] : [className];
 };
 
 /**
@@ -257,21 +260,18 @@ function stepBinding(manager, exportedName, importPath) {
   const other = imported.find(([local]) => local === exportedName);
   if (other) {
     const { module, typeOnly } = other[1];
-    return { clash: `MigrationManager already imports ${exportedName} from ${module}${typeOnly ? ' as a type' : ''}` };
+    return {
+      clash: `MigrationManager already imports ${exportedName} from ${module}${typeOnly ? ' as a type' : ''}`
+        + ` - the step is named after its versions, so ${typeOnly ? 'import it as a value' : 'rename that import'}`
+    };
   }
   if (declaredNames(manager).includes(exportedName)) {
-    return { clash: `MigrationManager declares ${exportedName} itself` };
+    return {
+      clash: `MigrationManager declares ${exportedName} itself - the step is named after its versions, so rename that`
+    };
   }
   return {};
 }
-
-/**
- * What keeps MigrationManager from importing the step `exportedName` of `importPath` under that name, or
- * undefined - asked by the generator before it writes anything.
- */
-const registrationClash = (managerText, exportedName, importPath) => stepBinding(
-  parse(managerPath, managerText), exportedName, importPath
-).clash;
 
 /**
  * MigrationManager with the step `exportedName` from `importPath` appended to `steps`, its import
@@ -340,7 +340,6 @@ module.exports = {
   findStepClasses,
   stepProblems,
   registeredSteps,
-  registrationClash,
   registerStep,
   loadUnitVersion
 };

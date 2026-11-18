@@ -227,6 +227,24 @@ describe('check-migrations-registered', () => {
                  /Migration4m13To4m14 \(v4\.13-to-v4\.14\.migration\.ts\) is not exported - write it as/);
   });
 
+  it('takes bases of one name in two files for no shared step name: they are to be declared abstract (#1701)', () => {
+    const withBase = name => [
+      "import { UnitTraversalMigration } from './unit-traversal-migration';",
+      '',
+      'class Base extends UnitTraversalMigration {}',
+      '',
+      `export class ${name} extends Base {}`,
+      ''
+    ].join('\n');
+    const result = check({
+      [`${migrations}/a.migration.ts`]: withBase('StepA'),
+      [`${migrations}/b.migration.ts`]: withBase('StepB')
+    });
+
+    assert.match(result.stderr, /Base \(a\.migration\.ts\) is not exported - other steps extend it:/);
+    assert.doesNotMatch(result.stderr, /is the name of a step/);
+  });
+
   it('reports a name two steps share, which would pass one of them as registered (#1693)', () => {
     const result = check({ [`${migrations}/hotfix.migration.ts`]: step('export class Migration4m12To4m13') });
 
@@ -271,12 +289,13 @@ describe('generate-migration', () => {
     assert.match(files.read(manager), /new Migration4m13To4m14\(\)\n {2}\];/);
   });
 
-  it('refuses a name MigrationManager imports from elsewhere or declares, before writing anything (#1697)', () => {
+  it('refuses a name MigrationManager holds, or no steps to append to, before writing (#1697, #1701)', () => {
     [
       [MANAGER.replace('import { MigrationStep }',
                        "import { Migration4m13To4m14 } from '../../legacy/base';\nimport { MigrationStep }"),
         /MigrationManager already imports Migration4m13To4m14 from \.\.\/\.\.\/legacy\/base/],
-      [`${MANAGER}\nclass Migration4m13To4m14 {}\n`, /MigrationManager declares Migration4m13To4m14 itself/]
+      [`${MANAGER}\nclass Migration4m13To4m14 {}\n`, /MigrationManager declares Migration4m13To4m14 itself/],
+      [MANAGER.replace(/= \[[^\]]*\]/, '= []'), /Found no entry in MigrationManager\.steps .*; nothing was written/]
     ].forEach(([text, message]) => {
       const files = project({ [manager]: text });
 
@@ -321,6 +340,24 @@ describe('generate-migration', () => {
       assert.equal(files.exists(`${migrations}/v4.13-to-v4.14.migration.spec.ts`), false);
       assert.equal(files.read(manager), MANAGER);
     });
+  });
+
+  it('takes a step that MigrationManager constructs through the common/ alias as registered (#1701)', () => {
+    const text = MANAGER
+      .replace('import { MigrationStep }',
+               "import { Migration4m13To4m14 } from 'common/migrations/v4.13-to-v4.14.migration';\n"
+                 + 'import { MigrationStep }')
+      .replace('new Migration4m12To4m13()', 'new Migration4m12To4m13(),\n    new Migration4m13To4m14()');
+    const files = project({
+      [manager]: text,
+      [`${migrations}/v4.13-to-v4.14.migration.ts`]: step('export class Migration4m13To4m14')
+    });
+
+    const result = files.run('generate-migration.js', '4.13', '4.14');
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /Migration4m13To4m14 is already registered/);
+    assert.equal(files.read(manager), text);
   });
 
   it('registers the step once when it runs twice (#1669)', () => {

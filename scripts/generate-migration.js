@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  findStepClasses, stepProblems, registrationClash, registerStep, loadUnitVersion
+  findStepClasses, stepProblems, registerStep, loadUnitVersion
 } = require('./migration-steps');
 
 const from = process.argv[2];
@@ -87,10 +87,9 @@ const specFilePath = path.join(migrationsDir, specFileName);
 /** The steps as they are before this run writes anything. */
 const steps = findStepClasses();
 
-/* A name that another step holds, or that MigrationManager cannot import the step under, is refused before
-   anything is written, or the new file would be left behind without spec and registration and fail the
-   check (#1697). The other steps are asked beside the step as the template writes it, with the check's own
-   rule. */
+/* A name that another step holds is refused before anything is written, or the new file would be left
+   behind without spec and registration and fail the check (#1697). The other steps are asked beside the
+   step as the template writes it, with the check's own rule. */
 const written = { file: fileName, className, exportedAs: [className] };
 const nameTaken = stepProblems([...steps.filter(step => step.file !== fileName), written])
   .filter(({ files }) => files.includes(fileName));
@@ -98,16 +97,22 @@ if (nameTaken.length) {
   nameTaken.forEach(({ message }) => console.error(message));
   process.exit(1);
 }
+
+/* MigrationManager with the step registered: a step that is not in its list never runs, and no test sees
+   that - the specs run in a browser and cannot list the migrations directory. It is worked out here and
+   written last, so that what keeps the step from being registered - a name the manager holds already, a
+   `steps` list it cannot find - stops the run before any file is written (#1701). */
 const managerPath = path.join(projectRoot, 'projects/common/services/migration-manager.ts');
 const manager = fs.readFileSync(managerPath, 'utf8');
-const importPath = `../migrations/${fileName.replace(/\.ts$/, '')}`;
-const clash = registrationClash(manager, className, importPath);
-if (clash) {
-  console.error(`${clash} - nothing was written: the step is named after its versions, so that name has to be free`);
+let registered;
+try {
+  registered = registerStep(manager, className, `../migrations/${fileName.replace(/\.ts$/, '')}`);
+} catch (error) {
+  console.error(`${error.message}; nothing was written`);
   process.exit(1);
 }
 
-/* A step that is already there is kept, so that a run whose registration failed can be repeated. */
+/* A step that is already there is kept: it may have been written before the generator ran. */
 const isKept = fs.existsSync(filePath);
 if (isKept) {
   console.log(`Kept the existing ${fileName}`);
@@ -144,19 +149,16 @@ if (fs.existsSync(specFilePath)) {
 }
 console.log(`Test what the step transforms in ${specFileName}, next to the test of its target version`);
 
-/* Registers the step in MigrationManager: a step that is not in its list never runs, and no test sees
-   that - the specs run in a browser and cannot list the migrations directory. */
-try {
-  const registered = registerStep(manager, className, importPath);
-  if (registered === manager) {
-    console.log(`${className} is already registered in MigrationManager`);
-  } else {
+if (registered === manager) {
+  console.log(`${className} is already registered in MigrationManager`);
+} else {
+  try {
     fs.writeFileSync(managerPath, registered);
     console.log(`Registered ${className} in projects/common/services/migration-manager.ts`);
+  } catch (error) {
+    console.error(`${error.message}: add ${className} to MigrationManager.steps by hand`);
+    process.exitCode = 1;
   }
-} catch (error) {
-  console.error(`${error.message}: add ${className} to MigrationManager.steps by hand`);
-  process.exitCode = 1;
 }
 
 console.log(`Also: raise unit_definition_version to ${toVersion} in package.json and describe the change in

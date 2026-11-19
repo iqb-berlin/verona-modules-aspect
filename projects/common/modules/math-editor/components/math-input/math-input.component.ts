@@ -28,10 +28,10 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   @Input() enableModeSwitch: boolean = false;
   @Input() mathKeyboardPresets: MathKeyboardPreset[] = [];
   @Input() placeholder: string = '';
-  /** Lets Enter start a new line and wraps what is too long for one. MathLive adds a row only inside
-      a multi-line environment, so the field gets its value wrapped in `\displaylines{}`; MathLive drops
-      the wrapper again from a value of one line, which is therefore stored as before. Wrapping is
-      display only: it changes nothing in the value. */
+  /** Lets Enter start a new line and wraps text that is too long for one; a formula stays on one line.
+      MathLive adds a row only inside a multi-line environment, so the field gets its value wrapped in
+      `\displaylines{}`; MathLive drops the wrapper again from a value of one line, which is therefore
+      stored as before. Wrapping is display only: it changes nothing in the value. */
   @Input() multiline: boolean = false;
   @Output() valueChange: EventEmitter<string> = new EventEmitter();
   @Output() focusIn: EventEmitter<MathfieldElement> = new EventEmitter();
@@ -40,9 +40,17 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   protected readonly window = window;
 
-  /** MathLive keeps a formula on one line (`nowrap`, `width: min-content`) and lets it scroll sideways.
-      These rules let the browser wrap it at the field's width instead. They rest on MathLive's internal
-      classes and markup and go into its shadow root, which no stylesheet outside reaches.
+  /** MathLive keeps its content on one line (`nowrap`, `width: min-content`) and lets it scroll sideways.
+      These rules let text wrap at its spaces, at the field's width (`width: auto`). A formula stays in
+      one piece: a break between the boxes MathLive builds it from would part an exponent from its base,
+      a unit from its number, and the inside of a root or a fraction. For the same reason only text
+      directly in a line wraps, not text inside a fraction or a root. A formula wider than the field runs
+      out of it sideways, and the field then scrolls sideways as a whole, with all its lines.
+      Each line is capped at the field's width (`100cqw` of the content, which is made the container):
+      the boxes MathLive lays around the lines grow to their widest content, so a formula that does not
+      fit would widen them all, and text beside or below it would wrap only past the field's edge.
+      The rules rest on MathLive's internal classes and markup and go into its shadow root, which no
+      stylesheet outside reaches.
       The rows of `\displaylines` (the lines made with Enter) are boxes of a height MathLive measured for
       one line, hung from their baseline; a wrapped row would grow upwards out of the field and over the
       row above. So those rows -- and only they, by child selectors, not the fractions or exponents
@@ -138,15 +146,17 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   private static createWrapStyle(): string {
     const row = '.ML__multiline_environment > .col-align-l > .ML__vlist-t > .ML__vlist-r';
+    const line = `${row} > .ML__vlist > span > span`;
     const struts = '.ML__latex:has(> .ML__multiline_environment) > :is(.ML__strut, .ML__strut--bottom)';
     return `
-      .ML__latex, .ML__base { white-space: normal !important; width: auto !important; }
-      .ML__text { white-space: pre-wrap !important; }
+      .ML__latex, .ML__base { width: auto !important; }
+      .ML__content { container-type: inline-size; }
+      ${line} > .ML__text { white-space: pre-wrap !important; }
       ${row} > .ML__vlist { height: auto !important; }
       ${row} > .ML__vlist > span { position: static !important; display: block !important; height: auto !important; }
       ${row} > .ML__vlist > span + span { margin-top: 0.2em; }
       ${row} > .ML__vlist > span > .ML__pstrut { display: none !important; }
-      ${row} > .ML__vlist > span > span { height: auto !important; }
+      ${line} { height: auto !important; max-width: 100cqw; }
       ${row}:not(:first-child) { display: none !important; }
       ${struts} { display: none !important; }`;
   }

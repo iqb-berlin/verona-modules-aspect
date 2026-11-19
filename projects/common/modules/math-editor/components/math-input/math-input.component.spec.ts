@@ -135,8 +135,8 @@ describe('MathInputComponent', () => {
       field.shadowRoot?.querySelector('[part=keyboard-sink]')?.dispatchEvent(enter);
     };
 
-    const lineCount = (field: MathfieldElement): number => {
-      const characters = [...(field.shadowRoot?.querySelectorAll('.ML__text') ?? [])];
+    const lineCount = (field: MathfieldElement, selector = '.ML__text'): number => {
+      const characters = [...(field.shadowRoot?.querySelectorAll(selector) ?? [])];
       return new Set(characters.map(character => Math.round(character.getBoundingClientRect().top))).size;
     };
     const longText = '\\text{Das ist ein sehr langer Satz, der nicht in eine Zeile passt}';
@@ -145,16 +145,48 @@ describe('MathInputComponent', () => {
        and tick() cannot advance that. They wait for the rendered state instead of a fixed time, with
        room for the first loading of the fonts on a slow machine; vi.waitFor gives up after 1 s. */
     const layout = { timeout: 5000 };
-    const rendered = (field: MathfieldElement): Promise<void> => vi.waitFor(() => {
-      expect(lineCount(field)).toBeGreaterThan(0);
+    const rendered = (field: MathfieldElement, selector = '.ML__text'): Promise<void> => vi.waitFor(() => {
+      expect(lineCount(field, selector)).toBeGreaterThan(0);
     }, layout);
+    const longFormula = 'x^2+y^2+z^2+a^2+b^2+c^2+d^2+e^2=r^2';
 
-    it('should wrap what is too long for one line', async () => {
+    it('should wrap text that is too long for one line', async () => {
       const multiline = createMultilineField(longText);
       multiline.elementRef.nativeElement.style.cssText = 'display: block; width: 200px';
       await vi.waitFor(() => {
         expect(lineCount(multiline.mathFieldElement)).toBeGreaterThan(1);
       }, layout);
+    });
+
+    it('should keep a formula that is too long for one line in one piece', async () => {
+      const multiline = createMultilineField(longFormula);
+      multiline.elementRef.nativeElement.style.cssText = 'display: block; width: 200px';
+      const field = multiline.mathFieldElement;
+      await rendered(field, '.ML__mathit');
+      const variables = [...(field.shadowRoot?.querySelectorAll('.ML__mathit') ?? [])];
+      // Too long indeed: a formula that fits would stay on one line under any rule.
+      expect(variables[variables.length - 1].getBoundingClientRect().right)
+        .toBeGreaterThan(field.getBoundingClientRect().right);
+      expect(lineCount(field, '.ML__mathit')).toBe(1);
+    });
+
+    it('should wrap text at the edge of the field beside a formula that is too long for one line', async () => {
+      const multiline = createMultilineField(`\\text{Ein Satz }${longFormula}\\text{ und noch ein langer Satz danach}`);
+      multiline.elementRef.nativeElement.style.cssText = 'display: block; width: 200px';
+      const field = multiline.mathFieldElement;
+      await rendered(field);
+      const contentRight = field.shadowRoot?.querySelector('[part=content]')?.getBoundingClientRect().right;
+      const characters = [...(field.shadowRoot?.querySelectorAll('.ML__text') ?? [])]
+        .filter(character => character.textContent?.trim());
+      const textRight = Math.max(...characters.map(character => character.getBoundingClientRect().right));
+      expect(textRight).toBeLessThanOrEqual(contentRight ?? 0);
+    });
+
+    it('should not wrap text inside a fraction', async () => {
+      const multiline = createMultilineField(`\\frac{${longText}}{2}`);
+      multiline.elementRef.nativeElement.style.cssText = 'display: block; width: 200px';
+      await rendered(multiline.mathFieldElement);
+      expect(lineCount(multiline.mathFieldElement)).toBe(1);
     });
 
     it('should keep a wrapped line inside the field when there are several lines', async () => {

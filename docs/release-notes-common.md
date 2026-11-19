@@ -2,7 +2,7 @@ Allgemein
 =========
 ## next
 ### Neue Funktionen
-- Formelfeld: Return beginnt eine neue Zeile, und zu lange Zeilen brechen am Rand des Feldes um ([#1648](https://github.com/iqb-berlin/verona-modules-aspect/issues/1648))
+- Formelfeld: Return beginnt eine neue Zeile, und zu langer Text bricht am Rand des Feldes um; eine Formel bleibt in einer Zeile ([#1648](https://github.com/iqb-berlin/verona-modules-aspect/issues/1648))
 
 ### Änderungen
 - **Formelfeld, Formelbereich**

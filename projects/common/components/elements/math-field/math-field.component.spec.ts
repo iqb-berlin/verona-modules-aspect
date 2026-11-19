@@ -7,7 +7,7 @@ import {
   Component, Input, Output, EventEmitter, Pipe, PipeTransform
 } from '@angular/core';
 import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
-import { MathfieldElement } from '@iqb/mathlive';
+import { MathfieldElement } from 'mathlive';
 import { GetValuePipe } from 'common/pipes/get-value.pipe';
 import { MathFieldComponent } from './math-field.component';
 
@@ -21,6 +21,7 @@ class MockMathInputComponent {
   @Input() readonly!: boolean;
   @Input() mathKeyboardPresets!: string[];
   @Input() enableModeSwitch!: boolean;
+  @Input() multiline!: boolean;
   @Output() valueChange = new EventEmitter<string>();
   @Output() focusIn = new EventEmitter<MathfieldElement>();
   @Output() focusOut = new EventEmitter<MathfieldElement>();

@@ -12,13 +12,15 @@
                      [readonly]="elementModel.readOnly"
                      [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
                      [enableModeSwitch]="elementModel.enableModeSwitch"
+                     [multiline]="true"
                      (valueChange)="elementFormControl.setValue($event)"
                      (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
                      (focusOut)="elementFormControl.markAsTouched();
                                  focusChanged.emit({ inputElement: $event, focused: false })">
   </aspect-math-input>
-  <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-             class="error-message">
-    {{elementFormControl.errors | errorTransform: elementModel}}
-  </mat-error>
+  @if (elementFormControl.errors && elementFormControl.touched) {
+    <mat-error class="error-message">
+      {{elementFormControl.errors | errorTransform: elementModel}}
+    </mat-error>
+  }
 </div>

@@ -63,10 +63,10 @@ describe('Math-field element', { testIsolation: false }, () => {
       cy.contains('aspect-element-group-selection', 'Standard Formel Feld').within(() => {
         cy.get('math-field').shadow().find('.ML__content').click()
           .type('1+x=2');
-        cy.get('math-field').shadow().find('.ML__base').should('contain', '1');
-        cy.get('math-field').shadow().find('.ML__base').should('contain', '+');
-        cy.get('math-field').shadow().find('.ML__base').should('contain', '2');
-        cy.get('math-field').shadow().find('.ML__base').should('not.contain', '7');
+        cy.get('math-field').shadow().find('.ML__latex').should('contain', '1');
+        cy.get('math-field').shadow().find('.ML__latex').should('contain', '+');
+        cy.get('math-field').shadow().find('.ML__latex').should('contain', '2');
+        cy.get('math-field').shadow().find('.ML__latex').should('not.contain', '7');
       });
     });
 
@@ -74,9 +74,9 @@ describe('Math-field element', { testIsolation: false }, () => {
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Schreibschutz').within(() => {
         cy.get('math-field').shadow().find('.ML__content').click()
           .type('x+y=4');
-        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'x');
-        cy.get('math-field').shadow().find('.ML__base').should('not.contain', '+');
-        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'y');
+        cy.get('math-field').shadow().find('.ML__latex').should('not.contain', 'x');
+        cy.get('math-field').shadow().find('.ML__latex').should('not.contain', '+');
+        cy.get('math-field').shadow().find('.ML__latex').should('not.contain', 'y');
       });
     });
 
@@ -89,16 +89,16 @@ describe('Math-field element', { testIsolation: false }, () => {
 
     it('checks that the math-field has a preset value', () => {
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Vorbelegung').within(() => {
-        cy.get('math-field').shadow().find('.ML__base').should('contain', 'a');
-        cy.get('math-field').shadow().find('.ML__base').should('contain', 'b');
-        cy.get('math-field').shadow().find('.ML__base').should('contain', 'c');
+        cy.get('math-field').shadow().find('.ML__latex').should('contain', 'a');
+        cy.get('math-field').shadow().find('.ML__latex').should('contain', 'b');
+        cy.get('math-field').shadow().find('.ML__latex').should('contain', 'c');
       });
     });
 
     it('checks that the math-field has an union and overline formel value', () => {
       cy.contains('aspect-element-group-selection', 'Formel Feld mit Union Vorbelegung').within(() => {
-        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'o');
-        cy.get('math-field').shadow().find('.ML__base').should('not.contain', 'v');
+        cy.get('math-field').shadow().find('.ML__latex').should('not.contain', 'o');
+        cy.get('math-field').shadow().find('.ML__latex').should('not.contain', 'v');
       });
     });
 
@@ -125,6 +125,19 @@ describe('Math-field element', { testIsolation: false }, () => {
           expect($content[0].scrollWidth).to.be.greaterThan($content[0].clientWidth);
         });
       });
+      cy.clickOutside();
+    });
+
+    it('checks that Enter starts a new line in the math-field (#1648)', () => {
+      cy.contains('aspect-element-group-selection', 'Formel Feld mit Vorbelegung').find('math-field')
+        .then($mathField => {
+          cy.wrap($mathField).shadow().find('.ML__content').click()
+            .type('{end}{enter}d');
+          cy.wrap($mathField).should($el => {
+            const field = $el[0] as HTMLElement & { getValue(): string };
+            expect(field.getValue()).to.equal('\\displaylines{abc\\\\ d}');
+          });
+        });
       cy.clickOutside();
     });
   });

@@ -1,4 +1,4 @@
-import { VirtualKeyboardKeycap } from '@iqb/mathlive';
+import { VirtualKeyboardKeycap } from 'mathlive';
 import { FORMULA_KEYBOARD_PRESETS } from './formula-keyboard-presets.config';
 
 /** The letter keys of the Greek layout: every keycap written as an object that inserts something. */

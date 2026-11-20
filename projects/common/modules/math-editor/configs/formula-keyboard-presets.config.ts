@@ -241,7 +241,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '\\sqrt{#0}'
         },
         {
-          latex: '\\sqrt[#0]{#?}}'
+          latex: '\\sqrt[#0]{#?}'
         }
       ],
       [

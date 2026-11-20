@@ -9,10 +9,10 @@ import { RangeSelectionService } from 'common/services/range-selection.service';
  * area -- the field's own and the page's -- moves only when the line is not completely visible, and only as
  * far as it has to. Aligning the caret to the bottom after every key pulled the page back at the first key,
  * away from the position the keyboard had scrolled the field to, and left the field below the visible part
- * (#1661). The marker is one line of text high, which a line holding a formula, or the first line of a
- * formula area, exceeds. So it is scrolled to three times: aligned to the bottom of the line, to its top, and
- * last on the baseline, where it covers the text around the caret. A line that fits comes into view whole;
- * of a line higher than the area, at least the caret does. One em high on the baseline and scrolled to once,
+ * (#1661). The marker is one line of text high, which a line holding a formula exceeds. So it is scrolled
+ * to three times: aligned to the bottom of the line, to its top, and last on the baseline, where it covers
+ * the text around the caret. A line that fits comes into view whole; of a line higher than the area, at
+ * least the caret does. One em high on the baseline and scrolled to once,
  * as it was, the marker left the lower part of the line beyond the edge.
  */
 export class CaretScroller {

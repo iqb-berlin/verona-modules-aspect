@@ -43,7 +43,8 @@ describe('Text area math element, typed on the on-screen keyboard (#1661)', { te
   });
 
   it('shows the whole line of the caret once the text runs past the bottom of the area', () => {
-    Cypress._.times(4, () => {
+    // Seven lines of text: since #1011 the first line is no higher than the others, and five still fit
+    Cypress._.times(6, () => {
       pressKey('keyboard_return');
       pressKey('g');
     });

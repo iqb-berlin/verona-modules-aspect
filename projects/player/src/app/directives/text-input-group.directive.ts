@@ -20,6 +20,7 @@ import { MathFieldComponent } from 'common/components/elements/math-field/math-f
 import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
 import { WordCounter } from 'player/src/app/classes/word-counter';
 import { CaretScroller } from 'player/src/app/classes/caret-scroller';
+import { EditableLineBreak } from 'common/utils/editable-line-break';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 @Directive()
@@ -285,6 +286,9 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
         newSelection = selectionStart;
       }
     }
+    if (this.isLastEditablePart()) {
+      newSelection = Math.min(newSelection, EditableLineBreak.lastCaretOffset(this.getInputElementValue()));
+    }
     this.setSelection(newSelection, newSelection);
   }
 
@@ -301,8 +305,20 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     const selectionEnd = this.getSelection().end;
     const newSelection = selectionStart ? selectionStart + 1 : 1;
     this.insert({
-      selectionStart, selectionEnd, newSelection, key
+      selectionStart,
+      selectionEnd,
+      newSelection,
+      key: this.isLastEditablePart() ?
+        EditableLineBreak.keyToInsert(key, this.getEndText(selectionEnd) === '') :
+        key
     }, elementComponent);
+  }
+
+  /** Whether the field is the last text part of a formula area. Only there a line break at the end has
+      nothing after it that would open its line: an input and a text area show such a line themselves. */
+  private isLastEditablePart(): boolean {
+    return !(this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) &&
+      EditableLineBreak.isLastPart(this.inputElement);
   }
 
   private deleteCharacters(backspace: boolean, elementComponent: ElementComponent): void {
@@ -326,11 +342,18 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     }
   }
 
+  /** Where the keys act. In the last part of a formula area a caret behind the line break that keeps the
+      last line open stands, as far as the keys are concerned, in front of it: that is the line it is drawn
+      on. The arrow keys stop there, but removing a formula focuses the merged text at its end, and a key
+      there added a line nobody saw the caret on (#1011). */
   private getSelection(): { start: number; end: number } {
     if (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) {
       return { start: this.inputElement.selectionStart || 0, end: this.inputElement.selectionEnd || 0 };
     }
-    return this.getSelectionRange();
+    const selection = this.getSelectionRange();
+    if (!EditableLineBreak.isLastPart(this.inputElement)) return selection;
+    const lastOffset = EditableLineBreak.lastCaretOffset(this.getInputElementValue());
+    return { start: Math.min(selection.start, lastOffset), end: Math.min(selection.end, lastOffset) };
   }
 
   private getSelectionRange(): { start: number; end: number } {
@@ -358,9 +381,12 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }, elementComponent: ElementComponent, backSpaceAtFirstPosition?: boolean): void {
     const startText = this.getStartText(keyAtPosition.selectionStart);
     const endText = this.getEndText(keyAtPosition.selectionEnd);
+    let value = startText + keyAtPosition.key + endText;
+    if (this.isLastEditablePart()) value = EditableLineBreak.withoutHiddenLineBreak(value);
+    const newSelection = Math.min(keyAtPosition.newSelection, value.length);
     (elementComponent as FormElementComponent)
-      .setElementValue(startText + keyAtPosition.key + endText, backSpaceAtFirstPosition || undefined);
-    this.setSelection(keyAtPosition.newSelection, keyAtPosition.newSelection, backSpaceAtFirstPosition || undefined);
+      .setElementValue(value, backSpaceAtFirstPosition || undefined);
+    this.setSelection(newSelection, newSelection, backSpaceAtFirstPosition || undefined);
   }
 
   private getStartText(startPosition: number): string {
@@ -381,6 +407,8 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
         RangeSelectionService.setSelectionRange(this.inputElement, start, end);
         const range = RangeSelectionService.getRange();
         if (range) CaretScroller.scrollIntoView(range);
+        // Last: the scroller puts the range it was given back as the selection
+        EditableLineBreak.moveCaretToNextLine(this.inputElement);
       });
     }
   }

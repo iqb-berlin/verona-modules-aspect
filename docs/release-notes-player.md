@@ -6,6 +6,12 @@ Player
   - Die Antwort enthält nur noch die Konstruktion, nicht mehr die ganze GeoGebra-Datei. Bilder, Einstellungen und Skript kommen beim Wiederherstellen aus der Aufgabe; eine Antwort eines früheren Players bringt sie weiter selbst mit. Jede Zustandsmeldung an die Testumgebung wird dadurch kleiner, bei einer Datei mit einem Bild von 1,4 MB von 1,9 MB auf wenige KB. Eine in coding-box heruntergeladene `.ggb`-Datei der Antwort enthält dadurch nur die Konstruktion, ohne die Bilder der Aufgabe ([#1650](https://github.com/iqb-berlin/verona-modules-aspect/issues/1650))
   - Das Werkzeug „Bild“ wird nicht mehr angeboten, auch nicht in der Standard-Werkzeugleiste, und ein Bild lässt sich nicht mehr in die Zeichnung ziehen oder einfügen. So gelangen keine Dateien vom Gerät und keine Kamerafotos in die Aufgabe ([#1700](https://github.com/iqb-berlin/verona-modules-aspect/issues/1700))
 
+### Fehlerbehebungen
+- **Formelbereich**
+  - Return auf der Bildschirmtastatur beginnt die neue Zeile sofort, und der Cursor steht darin; bisher erschien die Zeile erst mit der nächsten Taste ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+  - In Firefox steht der Cursor nach Enter in der neuen Zeile statt am Ende der vorigen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+  - Die Rücktaste am Anfang einer weiteren Zeile in einem Text hinter einer Formel löscht nicht mehr auch die Formel ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+
 ## 3.1.2
 ### Fehlerbehebungen
 - **Audio, Video**

@@ -4,6 +4,7 @@
       autocorrect="off"
       spellcheck="false"
       [style.display]="displayType"
+      [class.empty]="displayType === 'inline-block'"
       [attr.inputmode]="showSoftwareKeyboard || hideNativeKeyboard ? 'none' : 'text'"
       [contentEditable]="!readonly"
       [textContent]="value"
@@ -12,5 +13,5 @@
       (blur)="onFocusOut(inputRef)"
       (keydown)="keyDown($event)"
       (keyup)="keyUp($event)"
-      (input)="onInput()">
+      (input)="onInput($event)">
 </span>

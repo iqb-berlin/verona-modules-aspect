@@ -10,6 +10,10 @@ mat-button-toggle-group {
   /* Formel-Segmente nie breiter als der umgebende Bereich werden lassen;
      überlange Formeln scrollen dann intern (#1076) */
   max-width: 100%;
+  /* Only the formula area shows a formula inline. Its line grows by the formula and by this margin,
+     which keeps the formula's border clear of the lines of text, or of another formula, above and
+     below (#1011). */
+  margin-block: 4px;
 }
 
 :host ::ng-deep math-field {

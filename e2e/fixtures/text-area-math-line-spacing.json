@@ -1,0 +1,20 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text-area-math",
+              "id": "text-area-math_spacing",
+              "alias": "text-area-math_spacing",
+              "rowCount": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

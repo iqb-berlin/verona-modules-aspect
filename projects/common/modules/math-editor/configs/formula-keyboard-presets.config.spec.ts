@@ -84,3 +84,112 @@ describe('FORMULA_KEYBOARD_PRESETS iqbGreek', () => {
     });
   });
 });
+
+/** The parts of a keycap these tests read; the rest of mathlive's keycap type does not matter here. */
+interface KeycapFields {
+  latex?: string;
+  insert?: string;
+  command?: string;
+  shift?: string | KeycapFields;
+}
+
+/** A keycap written as a string (`'\\cup'`) as the object mathlive makes of it. */
+const asKeycap = (keycap: unknown): KeycapFields => (
+  typeof keycap === 'string' ? { latex: keycap } : keycap as KeycapFields);
+
+/** All keycaps of a layout, from its rows or from the rows of its layers, written as objects. */
+const keycapsOf = (layoutName: string): KeycapFields[] => {
+  const layout = FORMULA_KEYBOARD_PRESETS[layoutName] as unknown as {
+    rows?: unknown[][];
+    layers?: { rows?: unknown[][] }[];
+  };
+  const rows = layout.rows ?? (layout.layers ?? []).flatMap(layer => layer.rows ?? []);
+  return rows.flat().map(asKeycap);
+};
+
+/** A keycap and its shift layer as two keycaps; mathlive treats an object shift layer as a keycap of its own. */
+const withShift = (keycap: KeycapFields): KeycapFields[] => {
+  if (keycap.shift === undefined) return [keycap];
+  return [keycap, typeof keycap.shift === 'string' ? { latex: keycap.shift } : keycap.shift];
+};
+
+/* shownBy and insertedLatex read the fields in mathlive's order and with its `||`, so an empty string
+   falls through as it does there (renderKeycap and executeKeycapCommand). */
+/** The LaTeX one layer of a keycap shows, without its shift layer. */
+const shownBy = (layer: KeycapFields): string | undefined => layer.latex || layer.insert;
+
+/** Every LaTeX fragment a keycap shows, its own and that of its shift layer. */
+const shownLatex = (keycap: KeycapFields): string[] => withShift(keycap)
+  .map(shownBy)
+  .filter((latex): latex is string => !!latex);
+
+/** Every LaTeX fragment a keycap inserts when pressed, with and without shift. */
+const insertedLatex = (keycap: KeycapFields): string[] => withShift(keycap)
+  .map(layer => layer.insert || layer.latex)
+  .filter((latex): latex is string => !!latex);
+
+/** Whether every brace of the LaTeX is closed, and none closes before it opened. `\{` and `\}` are
+    characters, not braces. */
+const hasBalancedBraces = (latex: string): boolean => {
+  let depth = 0;
+  return latex.replace(/\\[{}]/g, '').split('').every(character => {
+    if (character === '{') depth += 1;
+    if (character === '}') depth -= 1;
+    return depth >= 0;
+  }) && depth === 0;
+};
+
+describe('FORMULA_KEYBOARD_PRESETS', () => {
+  const layoutNames = Object.keys(FORMULA_KEYBOARD_PRESETS);
+
+  describe('key labels (#1011)', () => {
+    it.each(layoutNames)('%s shows no key with a filled box', layoutName => {
+      // mathlive draws #@ on a key as a filled blue square, #? and #0 as an empty box
+      const filled = keycapsOf(layoutName).flatMap(shownLatex).filter(latex => latex.includes('#@'));
+      expect(filled).toEqual([]);
+    });
+
+    // Only the layouts with such keys: in the others there would be nothing to compare
+    it.each(['iqbPhysics', 'iqbNumeric', 'iqbSymbols'])(
+      '%s labels each key that takes the preceding term as what it inserts',
+      layoutName => {
+        // the label is the inserted template with an empty box in place of the preceding term
+        const pairs = keycapsOf(layoutName).flatMap(withShift)
+          .filter(layer => layer.insert?.includes('#@') && layer.latex !== undefined)
+          .map(layer => [layer.latex, layer.insert?.replace(/#@/g, '#?')]);
+        expect(pairs.length, 'keys that take the preceding term').toBeGreaterThan(0);
+        pairs.forEach(([label, expected]) => expect(label).toBe(expected));
+      }
+    );
+
+    /* A stray closing brace stood on the power key and on the nth root (#1011): mathlive reports
+       unbalanced-braces and drops it, so nothing visible gives it away. */
+    it.each(layoutNames)('%s shows and inserts LaTeX whose braces are balanced', layoutName => {
+      const unbalanced = keycapsOf(layoutName)
+        .flatMap(keycap => [...shownLatex(keycap), ...insertedLatex(keycap)])
+        .filter(latex => !hasBalancedBraces(latex));
+      expect(unbalanced).toEqual([]);
+    });
+  });
+
+  describe('iqbSymbols arrangement (#1011)', () => {
+    const rows = (FORMULA_KEYBOARD_PRESETS.iqbSymbols as unknown as { rows: unknown[][] }).rows;
+
+    /** Width of a keycap in key widths, as mathlive lays it out; `[separator-5]` is half a key. Any other
+        bracketed shortcut (`[shift]`, `[left]`, ...) has a width of mathlive's own and counts as NaN, so the
+        width test fails instead of miscounting. */
+    const widthOf = (keycap: unknown): number => {
+      if (typeof keycap === 'string') {
+        const separator = /^\[separator-(\d+)\]$/.exec(keycap);
+        if (separator) return Number(separator[1]) / 10;
+        return keycap.startsWith('[') ? NaN : 1;
+      }
+      return (keycap as { width?: number }).width ?? 1;
+    };
+
+    it('keeps every row ten keys wide', () => {
+      expect(rows.map(row => row.reduce((width: number, keycap) => width + widthOf(keycap), 0)))
+        .toEqual([10, 10, 10, 10]);
+    });
+  });
+});

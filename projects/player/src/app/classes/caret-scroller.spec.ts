@@ -51,8 +51,8 @@ describe('CaretScroller', () => {
     expect(Math.abs(scrollArea.scrollTop - (8 * lineHeight - scrollArea.clientHeight))).toBeLessThanOrEqual(1);
   });
 
-  it('should show all of a line that is higher than the text, as the first line of a formula area is', () => {
-    // The formula area raises its first line by 28 px with an empty span of a larger line height
+  it('should show all of a line above the edge that is higher than the text', () => {
+    // 28 px higher than the text, as a line with a formula is, through an empty span of a larger line height
     const strut = document.createElement('span');
     strut.style.lineHeight = `${lineHeight + 28}px`;
     editable.prepend(strut);

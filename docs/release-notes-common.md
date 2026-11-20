@@ -10,6 +10,9 @@ Allgemein
   - Tastatur der Formeleingabe
     - Alle Eingabekästchen auf den Tasten sind weiß; bisher war bei Bruch, Potenz, Grad, Überstrich, Vektorpfeil und Strich das Kästchen für den Ausdruck vor dem Cursor blau gefüllt. Die Tasten verhalten sich wie bisher ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
     - Reiter „∞≠∈“ heißt jetzt „∞π%“, da „≠“ nicht auf diesem Reiter liegt. Entfernt sind ∃, ∄, ∀, ∁, ‖ ‖, abs, ←, ⇐, ↔ sowie ∑, ∫ und ∬ ohne Eingabefelder. Neu sind ∢, ≈, %, ↦, ∧ und ∨ sowie ℕ, ℤ, ℚ und ℝ, jedes auf einer eigenen Taste untereinander; ¬ hat eine eigene Taste, |x| steht jetzt in der unteren Reihe neben ∞, Vektorpfeil, Überstrich und Strich stehen vor ∪, ∩ und ⊂, das bestimmte Integral vor %. Umschalt + log fügt einen Logarithmus mit frei wählbarer Basis ein, etwa log₂(5), statt log₁₀ ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+- **Formelbereich**
+  - Alle Zeilen haben denselben Zeilenabstand wie ein Eingabebereich, auch die erste. Bisher war die erste Zeile für eine Formel um 28 px höher, auch wenn keine Formel darin stand. Eine Zeile mit Formel wird um die Formel höher und hält oben und unten 4 px Abstand zu den Nachbarzeilen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+  - Jede Zeile beginnt 8 px vom linken Rand, auch die erste und eine, die mit einer Formel beginnt. Bisher war die erste Textzeile um 14 px weiter eingerückt als die übrigen und eine Formel am Anfang um 28 px. Ein Klick in den Streifen vor der ersten Formel setzt den Cursor davor, statt ans Ende des Textes ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
 
 ## editor/3.1.2+player/3.1.2
 ### Änderungen

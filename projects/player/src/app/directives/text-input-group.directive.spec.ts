@@ -9,6 +9,7 @@ import { TextAreaMathElement } from 'common/models/elements/text-area-math';
 import { TextAreaComponent } from 'common/components/elements/text-area/text-area.component';
 import { WordCounter } from 'player/src/app/classes/word-counter';
 import { CaretScroller } from 'player/src/app/classes/caret-scroller';
+import { RangeSelectionService } from 'common/services/range-selection.service';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
@@ -106,6 +107,20 @@ describe('TextInputGroupDirective', () => {
     inputElement.remove();
     directive.ngOnDestroy();
   });
+
+  /** A formula area as the template renders it: the text part, a formula, and an empty last text part. */
+  const createFormulaArea = (text: string): { container: HTMLElement; firstPart: HTMLElement } => {
+    const container = document.createElement('div');
+    const parts = ['text', 'math', 'text'].map(() => document.createElement('aspect-text-area-math-segment'));
+    const firstPart = document.createElement('span');
+    firstPart.contentEditable = 'true';
+    firstPart.style.whiteSpace = 'pre-wrap';
+    firstPart.textContent = text;
+    parts[0].appendChild(firstPart);
+    container.append(...parts);
+    document.body.appendChild(container);
+    return { container, firstPart };
+  };
 
   /* The keypad opens 100 ms after the focus, so a restriction that waited for its view left the
      field unchecked long enough to type into it (#1143). Asserted without awaiting on purpose:
@@ -234,13 +249,14 @@ describe('TextInputGroupDirective', () => {
   /* Only the formula area's text is typed into through a selection range; text fields and text areas set
      their caret with setSelectionRange. The scrolling for #1661 must reach the first and none of the others. */
   describe('caret after a key of the on-screen keyboard', () => {
-    let keyboardEvents: { enterKey: EventEmitter<string> };
+    let keyboardEvents: { enterKey: EventEmitter<string>; deleteCharacters: EventEmitter<boolean> };
     let scrollCaretIntoView: ReturnType<typeof vi.spyOn>;
     const fields: HTMLElement[] = [];
 
-    const typeOnKeyboard = (elementModel: UIElement, field: HTMLElement): void => {
+    /** Types the key on the keyboard into the field, with the caret at the given offset. */
+    const typeOnKeyboard = (elementModel: UIElement, field: HTMLElement, key = 'x', caret = 0): void => {
       fields.push(field);
-      document.body.appendChild(field);
+      if (!field.isConnected) document.body.appendChild(field);
       directive.elementModel = elementModel;
       directive.toggleKeyInput({ inputElement: field, focused: true }, {
         elementModel,
@@ -250,16 +266,20 @@ describe('TextInputGroupDirective', () => {
         }
       } as unknown as TextInputComponentType);
       flushMicrotasks();
-      keyboardEvents.enterKey.emit('x');
+      if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) {
+        field.setSelectionRange(caret, caret);
+      } else {
+        RangeSelectionService.setSelectionRange(field, caret, caret);
+      }
+      keyboardEvents.enterKey.emit(key);
       // The caret of an editable text is set in the next frame
       tick(16);
     };
 
     beforeEach(() => {
-      keyboardEvents = { enterKey: new EventEmitter<string>() };
+      keyboardEvents = { enterKey: new EventEmitter<string>(), deleteCharacters: new EventEmitter<boolean>() };
       directive.keyboardService = {
         ...keyboardEvents,
-        deleteCharacters: new EventEmitter<boolean>(),
         isOpen: true,
         toggleAsync: vi.fn().mockResolvedValue(true),
         close: vi.fn()
@@ -298,6 +318,137 @@ describe('TextInputGroupDirective', () => {
 
       expect(textArea.value).toBe('x');
       expect(scrollCaretIntoView).not.toHaveBeenCalled();
+    }));
+
+    /* A line break at the end of an editable text gets no line of its own until something follows it, so
+       the new line appeared only with the next key (#1011). */
+    it('should open the new line at once when Return ends the text of a formula area (#1011)', fakeAsync(() => {
+      const segment = document.createElement('span');
+      segment.contentEditable = 'true';
+      segment.style.whiteSpace = 'pre-wrap';
+      segment.textContent = 'abc';
+
+      typeOnKeyboard(new TextAreaMathElement({ type: 'text-area-math', id: 'text-area-math_1' }), segment, '\n', 3);
+
+      expect(segment.textContent).toBe('abc\n\n');
+      const caret = RangeSelectionService.getRange() as Range;
+      expect(caret.startContainer.textContent).toBe('\n');
+      expect(caret.startOffset).toBe(0);
+    }));
+
+    /* Backspace took back only the first of the two line breaks, and the answer kept the other one, which
+       nobody could see or delete (#1011). */
+    it('should keep no line break when Backspace takes back Return at the end of a formula area', fakeAsync(() => {
+      const segment = document.createElement('span');
+      segment.contentEditable = 'true';
+      segment.style.whiteSpace = 'pre-wrap';
+      segment.textContent = 'abc';
+      typeOnKeyboard(new TextAreaMathElement({ type: 'text-area-math', id: 'text-area-math_1' }), segment, '\n', 3);
+
+      keyboardEvents.deleteCharacters.emit(true);
+      tick(16);
+
+      expect(segment.textContent).toBe('abc');
+    }));
+
+    /* Removing a formula focuses the merged text at its end, behind the line break that keeps the last line
+       open. Return there counted as one at the very end and added two line breaks more (#1011). */
+    it('should take a caret behind the line that is kept open for one in front of it', fakeAsync(() => {
+      const segment = document.createElement('span');
+      segment.contentEditable = 'true';
+      segment.style.whiteSpace = 'pre-wrap';
+      segment.textContent = 'abc\n\n';
+
+      typeOnKeyboard(new TextAreaMathElement({ type: 'text-area-math', id: 'text-area-math_1' }), segment, '\n', 5);
+
+      expect(segment.textContent).toBe('abc\n\n\n');
+    }));
+
+    it('should leave a line break at the end of a text area to the area', fakeAsync(() => {
+      const textArea = document.createElement('textarea');
+      textArea.value = 'abc';
+
+      typeOnKeyboard(new TextAreaElement({ type: 'text-area', id: 'text-area_1' }), textArea, '\n', 3);
+
+      expect(textArea.value).toBe('abc\n');
+    }));
+
+    /* Before a formula the formula itself opens the new line; a second line break would add an empty one. */
+    it('should insert a single line break at the end of a text part that a formula follows', fakeAsync(() => {
+      const area = createFormulaArea('abc');
+      fields.push(area.container);
+
+      typeOnKeyboard(
+        new TextAreaMathElement({ type: 'text-area-math', id: 'text-area-math_1' }), area.firstPart, '\n', 3
+      );
+
+      expect(area.firstPart.textContent).toBe('abc\n');
+    }));
+  });
+
+  describe('caret after an arrow key of the keypad', () => {
+    let keypadEvents: { select: EventEmitter<string> };
+    const fields: HTMLElement[] = [];
+
+    /** Opens the keypad for the text part, puts the caret at the offset and presses the arrow key. */
+    const pressArrow = (field: HTMLElement, caret: number, key: string): void => {
+      fields.push(field);
+      if (!field.isConnected) document.body.appendChild(field);
+      const elementModel = new TextAreaMathElement({ type: 'text-area-math', id: 'text-area-math_1' });
+      elementModel.inputAssistancePreset = 'numbers';
+      elementModel.hasArrowKeys = true;
+      elementModel.showSoftwareKeyboard = false;
+      directive.elementModel = elementModel;
+      directive.toggleKeyInput({ inputElement: field, focused: true }, {
+        elementModel,
+        setElementValue: (value: string) => { field.textContent = value; }
+      } as unknown as TextInputComponentType);
+      flushMicrotasks();
+      RangeSelectionService.setSelectionRange(field, caret, caret);
+      keypadEvents.select.emit(key);
+      // The caret of an editable text is set in the next frame
+      tick(16);
+    };
+
+    const caretOffset = (field: HTMLElement): number => RangeSelectionService
+      .getSelectionRange(RangeSelectionService.getRange() as Range, field).start;
+
+    beforeEach(() => {
+      keypadEvents = { select: new EventEmitter<string>() };
+      directive.keypadService = {
+        ...keypadEvents,
+        enterKey: new EventEmitter<string>(),
+        deleteCharacters: new EventEmitter<boolean>(),
+        isOpen: true,
+        toggleAsync: vi.fn().mockResolvedValue(true),
+        close: vi.fn()
+      } as unknown as KeypadService;
+      vi.spyOn(CaretScroller, 'scrollIntoView').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      fields.splice(0).forEach(field => field.remove());
+    });
+
+    /* Behind the line break that keeps the area's last line open there is no line: the next character
+       would open a second one (#1011). */
+    it('should stop in front of the line break that keeps the last line open (#1011)', fakeAsync(() => {
+      const segment = document.createElement('span');
+      segment.contentEditable = 'true';
+      segment.textContent = 'qw\n\n';
+
+      pressArrow(segment, 3, 'ArrowDown');
+
+      expect(caretOffset(segment)).toBe(3);
+    }));
+
+    it('should reach the end of a text part that a formula follows', fakeAsync(() => {
+      const area = createFormulaArea('qw\n\n');
+      fields.push(area.container);
+
+      pressArrow(area.firstPart, 3, 'ArrowDown');
+
+      expect(caretOffset(area.firstPart)).toBe(4);
     }));
   });
 

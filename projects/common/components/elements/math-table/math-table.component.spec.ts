@@ -78,13 +78,19 @@ describe('MathTableComponent', () => {
     expect(emitSpy).not.toHaveBeenCalled();
   });
 
-  it('should clear the cell value on Backspace', () => {
+  it.each(['Backspace', 'Delete'])('should report the cleared cell once on %s', key => {
     const helperRow = component.tableModel[2];
     const cell = helperRow.cells[0];
     component.setCellValue('7', cell, helperRow);
-    component.setCellValue('Backspace', cell, helperRow);
+    const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
+
+    component.setCellValue(key, cell, helperRow);
     expect(cell.value).toBe('');
     expect(cell.isCrossedOut).toBe(false);
+    expect(emitSpy).toHaveBeenCalledExactlyOnceWith({ id: 'test-id', value: component.tableModel });
+
+    component.setCellValue(key, cell, helperRow);
+    expect(emitSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should replace "*" with "•" in multiplication rows', () => {

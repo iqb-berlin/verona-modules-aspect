@@ -270,8 +270,11 @@ export class MathTableComponent extends ElementComponent implements OnInit {
 
   setCellValue(char: string, cell: MathTableCell, row: MathTableRow): void {
     if (['Backspace', 'Delete'].includes(char)) {
+      if (cell.value === '' && !cell.isCrossedOut) return;
       cell.value = '';
       cell.isCrossedOut = false;
+      this.emitModel();
+      return;
     }
     if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(char)) {
       const currentRowIndex = this.tableModel.findIndex(tableRow => row === tableRow);

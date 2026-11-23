@@ -270,7 +270,8 @@ export class MathTableComponent extends ElementComponent implements OnInit {
 
   setCellValue(char: string, cell: MathTableCell, row: MathTableRow): void {
     if (['Backspace', 'Delete'].includes(char)) {
-      if (cell.value === '' && !cell.isCrossedOut) return;
+      // A blank cell of a given term holds a space; clearing it would change nothing on screen
+      if (!cell.value.trim() && !cell.isCrossedOut) return;
       cell.value = '';
       cell.isCrossedOut = false;
       this.emitModel();

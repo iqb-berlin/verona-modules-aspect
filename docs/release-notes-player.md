@@ -11,6 +11,8 @@ Player
   - Return auf der Bildschirmtastatur beginnt die neue Zeile sofort, und der Cursor steht darin; bisher erschien die Zeile erst mit der nächsten Taste ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - In Firefox steht der Cursor nach Enter in der neuen Zeile statt am Ende der vorigen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - Die Rücktaste am Anfang einer weiteren Zeile in einem Text hinter einer Formel löscht nicht mehr auch die Formel ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+- **Rechenkästchen**
+  - Eine gelöschte Eingabe wird sofort an die Testumgebung gemeldet, auch beim Löschen über die Bildschirmtastatur; bisher erschien sie beim erneuten Öffnen der Aufgabe wieder, wenn danach nichts mehr eingegeben wurde ([#1712](https://github.com/iqb-berlin/verona-modules-aspect/pull/1712))
 
 ## 3.1.2
 ### Fehlerbehebungen

@@ -39,6 +39,8 @@
     "invalid": "Eingabe ungültig – letzter gültiger Wert wiederhergestellt"
   },
   "elementNotAddedFileFailed": "Die Datei konnte nicht geladen werden. Es wurde kein Element angelegt.",
+  "audioImportUnsupported": "Dieser Browser kann Audiodateien nicht umwandeln. Bitte einen aktuellen Chrome, Edge oder Firefox verwenden.",
+  "audioImportDecodeFailed": "Diese Audiodatei lässt sich nicht lesen.",
   "outdatedUnit": "Unit Definition aktualisiert",
   "sectionNotReplaced": "Der Abschnitt wurde nicht ersetzt. Der einzufügende Abschnitt wurde verworfen.",
   "deleteStateVariablesConfirm": "Zustandsvariablen löschen?",
@@ -908,6 +910,22 @@
     "newSizeLarger": "— größer als bisher",
     "recompressionHint": "Dieses Bild steckt schon in der Aufgabe. Beim Verkleinern wird es neu berechnet: Ein JPEG und ein WebP verlieren dabei ein zweites Mal an Qualität, ein GIF seine Animation.",
     "fixedOverlaysWarning": "Achtung: Die Bildbereiche dieses Elements liegen an festen Positionen im Bild. Wird das Bild kleiner, wandern sie nicht mit und müssen danach neu gesetzt werden. Nur die Dateigröße zu senken, ohne die Maße zu ändern, lässt sie unberührt."
+  },
+  "audioImportDialog": {
+    "title": "Audio importieren",
+    "originalSize": "Originaldatei",
+    "newSize": "Größe nach dem Import",
+    "encoding": "Audio wird umgewandelt",
+    "encodingFailed": "Das Audio konnte nicht umgewandelt werden.",
+    "noiseFloor": "Leises Grundrauschen hinzufügen",
+    "noiseFloorHint": "Ein kaum hörbares Rauschen unter dem ganzen Audio und ein kurzer Vorlauf davor verhindern, dass manche Lautsprecher in Pausen abschalten und den nächsten Wortanfang verschlucken. Ausschalten, wenn die Datei bereits einen solchen Vorlauf hat.",
+    "quality": "Qualität",
+    "qualityStandard": "Standard",
+    "qualityHigh": "Hoch",
+    "channels": "Kanäle",
+    "channelsAuto": "Automatisch",
+    "channelsMono": "Mono",
+    "channelsStereo": "Stereo"
   },
   "dropListOptionEditDialog": {
     "title": "Ablegelistenoption anpassen",

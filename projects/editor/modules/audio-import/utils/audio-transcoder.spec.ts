@@ -1,3 +1,4 @@
+import { AudioBufferSource, Output } from 'mediabunny';
 import { AudioImportOptions } from 'editor/modules/audio-import/models/audio-import';
 import { AudioTranscoder } from './audio-transcoder';
 import { AudioNoiseFloor } from './audio-noise-floor';
@@ -184,6 +185,36 @@ describe('AudioTranscoder', () => {
       const high = await AudioTranscoder.encode(toneSilenceTone(1), options({ quality: 'high' }));
 
       expect(high.size).toBeGreaterThan(standard.size * 1.2);
+    });
+
+    /* Aborted while the encoder has the audio: the moment the import dialog drops an encoding is
+       usually this one, since `add` takes nearly all of the time. Cancelling the output is what closes
+       the encoder; rejecting alone would leave it working through the rest. */
+    it('should cancel the output while encoding and reject when aborted during encoding', async () => {
+      const abort = new AbortController();
+      let adding = false;
+      const add = AudioBufferSource.prototype.add;
+      vi.spyOn(AudioBufferSource.prototype, 'add').mockImplementation(
+        async function addAfterAbort(this: AudioBufferSource, audioBuffer: AudioBuffer) {
+          adding = true;
+          abort.abort();
+          try {
+            return await add.call(this, audioBuffer);
+          } finally {
+            adding = false;
+          }
+        }
+      );
+      const cancelledWhileAdding: boolean[] = [];
+      const cancel = Output.prototype.cancel;
+      vi.spyOn(Output.prototype, 'cancel').mockImplementation(function recordCancel(this: Output) {
+        cancelledWhileAdding.push(adding);
+        return cancel.call(this);
+      });
+
+      await expect(AudioTranscoder.encode(toneSilenceTone(1), options(), abort.signal))
+        .rejects.toHaveProperty('name', 'AbortError');
+      expect(cancelledWhileAdding[0]).toBe(true);
     });
   });
 });

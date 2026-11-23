@@ -1,7 +1,7 @@
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subject } from 'rxjs';
-import { Mock } from 'vitest';
+import { Mock, MockInstance } from 'vitest';
 import { ClozeDocument } from 'common/models/elements/cloze';
 import { LikertRowElement } from 'common/models/elements/likert-row';
 import { DragNDropValueObject, Label } from 'common/models/label-interfaces';
@@ -41,6 +41,11 @@ import {
 import {
   TooltipPropertiesDialogComponent
 } from 'editor/src/app/components/dialogs/tooltip-properties-dialog/tooltip-properties-dialog.component';
+
+import {
+  AudioImportDialogComponent
+} from 'editor/modules/audio-import/components/audio-import-dialog/audio-import-dialog.component';
+import { AudioTranscoder } from 'editor/modules/audio-import/utils/audio-transcoder';
 
 describe('DialogService', () => {
   let service: DialogService;
@@ -425,6 +430,94 @@ describe('DialogService', () => {
         autoFocus: false
       }
     );
+  });
+
+  describe('importAudio', () => {
+    const file = new File([new Uint8Array(1234)], 'hoertext.mp3', { type: 'audio/mpeg' });
+    const decoded = new AudioBuffer({ numberOfChannels: 1, length: 480, sampleRate: 48000 });
+    let getRawFile: MockInstance<typeof FileService.getRawFile>;
+    let decode: MockInstance<typeof AudioTranscoder.decode>;
+
+    beforeEach(() => {
+      vi.spyOn(AudioTranscoder, 'isSupported').mockResolvedValue(true);
+      decode = vi.spyOn(AudioTranscoder, 'decode').mockResolvedValue(decoded);
+      getRawFile = vi.spyOn(FileService, 'getRawFile').mockResolvedValue(file);
+    });
+
+    /* A browser opens the picker only within the click that asked for it, and Safari takes an
+       `await` in between for leaving it -- so the picker must not wait for the support check. */
+    it('should open the file picker before the support check has answered', () => {
+      vi.spyOn(AudioTranscoder, 'isSupported').mockReturnValue(new Promise(() => {}));
+
+      service.importAudio(false);
+
+      expect(getRawFile).toHaveBeenCalledWith('audio/*');
+    });
+
+    it('should refuse a browser that cannot encode without decoding the file', async () => {
+      vi.spyOn(AudioTranscoder, 'isSupported').mockResolvedValue(false);
+
+      const result = await service.importAudio(false);
+
+      expect(result).toBeNull();
+      expect(messageService.showError).toHaveBeenCalledWith('audioImportUnsupported');
+      expect(decode).not.toHaveBeenCalled();
+      expect(dialogMock.open).not.toHaveBeenCalled();
+    });
+
+    it('should ask the browser whether it can encode only once', async () => {
+      const isSupported = vi.spyOn(AudioTranscoder, 'isSupported').mockResolvedValue(true);
+      mockDialogResult(undefined);
+
+      await service.importAudio(false);
+      await service.importAudio(false);
+
+      expect(isSupported).toHaveBeenCalledTimes(1);
+    });
+
+    it('should report a file that cannot be decoded without opening the dialog', async () => {
+      vi.spyOn(AudioTranscoder, 'decode').mockRejectedValue(new Error('not audio'));
+
+      const result = await service.importAudio(false);
+
+      expect(result).toBeNull();
+      expect(messageService.showError).toHaveBeenCalledWith('audioImportDecodeFailed');
+      expect(dialogMock.open).not.toHaveBeenCalled();
+    });
+
+    it('should open the dialog with the decoded audio, the size of the file and the mode', async () => {
+      mockDialogResult(undefined);
+
+      await service.importAudio(true);
+
+      expect(dialogMock.open).toHaveBeenCalledWith(
+        AudioImportDialogComponent,
+        {
+          data: { decoded, originalSize: 1234, expertMode: true },
+          width: '500px',
+          autoFocus: false
+        }
+      );
+    });
+
+    /* `undefined` is what every way out without saving closes the dialog with: its cancel button,
+       Escape and the backdrop. */
+    it('should return null without a message when the dialog is left without saving', async () => {
+      mockDialogResult(undefined);
+
+      const result = await service.importAudio(false);
+
+      expect(result).toBeNull();
+      expect(messageService.showError).not.toHaveBeenCalled();
+    });
+
+    it('should return the encoded audio under the name of the picked file', async () => {
+      mockDialogResult({ content: 'data:audio/webm;base64,AAAA', size: 3, channelCount: 1 });
+
+      const result = await service.importAudio(false);
+
+      expect(result).toEqual({ name: 'hoertext.mp3', content: 'data:audio/webm;base64,AAAA' });
+    });
   });
 
   /* The validation area follows the findings, so a second one would only show the same; a host replaying loads

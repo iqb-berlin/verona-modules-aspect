@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>{{ 'audioImportDialog.title' | translate }}</h2>
+<mat-dialog-content>
+  <div class="main-container">
+    <div class="preview-container">
+      <!--The last result stays while the next one is encoded, dimmed rather than removed: taking the
+          player away would move everything below it on every click.-->
+      @if (encoded) {
+        <audio controls class="preview-audio" [class.preview-pending]="encodePending"
+               [src]="encoded.content"></audio>
+      }
+      <mat-progress-bar class="encode-progress" [class.encode-progress-idle]="!encodePending"
+                        mode="indeterminate" [attr.aria-label]="'audioImportDialog.encoding' | translate">
+      </mat-progress-bar>
+      <div class="audio-info">
+        <div>{{ 'audioImportDialog.originalSize' | translate }}: {{ data.originalSize | bytes }}</div>
+        @if (encoded) {
+          <div class="new-size" [class.preview-pending]="encodePending">
+            {{ 'audioImportDialog.newSize' | translate }}: <strong>{{ encoded.size | bytes }}</strong>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="option-block">
+      <mat-checkbox class="noise-floor-checkbox" [(ngModel)]="options.noiseFloor" (ngModelChange)="onOptionsChange()">
+        {{ 'audioImportDialog.noiseFloor' | translate }}
+      </mat-checkbox>
+      <div class="noise-floor-hint">
+        <mat-icon class="hint-icon">info</mat-icon>
+        <span>{{ 'audioImportDialog.noiseFloorHint' | translate }}</span>
+      </div>
+    </div>
+
+    @if (data.expertMode) {
+      <div class="option-block">
+        <label class="option-label" id="audio-import-quality-label">{{ 'audioImportDialog.quality' | translate }}</label>
+        <mat-button-toggle-group class="quality-toggle" aria-labelledby="audio-import-quality-label"
+                                 [(ngModel)]="options.quality" (ngModelChange)="onOptionsChange()">
+          <mat-button-toggle class="quality-standard" value="standard">
+            {{ 'audioImportDialog.qualityStandard' | translate }}
+          </mat-button-toggle>
+          <mat-button-toggle class="quality-high" value="high">
+            {{ 'audioImportDialog.qualityHigh' | translate }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="option-block">
+        <label class="option-label" id="audio-import-channels-label">{{ 'audioImportDialog.channels' | translate }}</label>
+        <mat-button-toggle-group class="channels-toggle" aria-labelledby="audio-import-channels-label"
+                                 [(ngModel)]="options.channelMode" (ngModelChange)="onOptionsChange()">
+          <mat-button-toggle class="channels-auto" value="auto">
+            {{ 'audioImportDialog.channelsAuto' | translate }}
+          </mat-button-toggle>
+          <mat-button-toggle class="channels-mono" value="mono">
+            {{ 'audioImportDialog.channelsMono' | translate }}
+          </mat-button-toggle>
+          <mat-button-toggle class="channels-stereo" value="stereo">
+            {{ 'audioImportDialog.channelsStereo' | translate }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    }
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="save-button" [disabled]="encodePending || !encoded" [mat-dialog-close]="encoded">
+    {{ 'save' | translate }}
+  </button>
+  <button mat-button class="cancel-button" [mat-dialog-close]="undefined">{{ 'cancel' | translate }}</button>
+</mat-dialog-actions>

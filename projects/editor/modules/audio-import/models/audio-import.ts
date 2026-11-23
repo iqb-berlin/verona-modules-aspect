@@ -15,6 +15,16 @@ export interface AudioImportOptions {
   channelMode: AudioChannelMode;
 }
 
+/** What the import dialog is opened with. */
+export interface AudioImportDialogData {
+  /** The file as the browser decoded it, at the sample rate of the target format. */
+  decoded: AudioBuffer;
+  /** Size of the file the author picked, in bytes. */
+  originalSize: number;
+  /** Whether quality and channels are offered, which only the expert mode of the editor does. */
+  expertMode: boolean;
+}
+
 /** An imported audio after encoding. */
 export interface EncodedAudio {
   /** The audio as a base64 data URL, which is what the unit stores as `src`. */

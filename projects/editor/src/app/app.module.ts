@@ -31,6 +31,7 @@ import { MathEditorModule } from 'common/modules/math-editor/math-editor.module'
 import { RichTextEditorModule } from 'editor/modules/rich-text-editor/rich-text-editor.module';
 import { SectionTemplatesModule } from 'editor/modules/section-templates/section-templates.module';
 import { EditorSharedModule } from 'editor/modules/editor-shared/editor-shared.module';
+import { AudioImportModule } from 'editor/modules/audio-import/audio-import.module';
 import {
   PropertiesPanelModule
 } from 'editor/src/app/modules/properties-panel/properties-panel.module';
@@ -231,6 +232,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     RichTextEditorModule,
     SectionTemplatesModule,
     EditorSharedModule,
+    AudioImportModule,
     PropertiesPanelModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,

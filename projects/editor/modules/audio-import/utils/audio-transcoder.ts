@@ -41,21 +41,29 @@ export abstract class AudioTranscoder {
     return decoded;
   }
 
-  /** The decoded audio encoded with the options of the import dialog. */
-  static async encode(decoded: AudioBuffer, options: AudioImportOptions): Promise<EncodedAudio> {
+  /**
+   * The decoded audio encoded with the options of the import dialog.
+   *
+   * `signal` stops an encoding nobody waits for any more, and with it the encoder: the import dialog
+   * starts a new one on every change of its options and must not leave the old ones running. An
+   * aborted encoding rejects with the signal's reason.
+   */
+  static async encode(decoded: AudioBuffer, options: AudioImportOptions, signal?: AbortSignal): Promise<EncodedAudio> {
     const { format, noiseFloor, monoThresholdDb } = AUDIO_IMPORT_CONFIG;
+    signal?.throwIfAborted();
     const channelCount = AudioTranscoder.hasSpeakerLayout(decoded) ?
       AudioChannelCount.resolve(AudioTranscoder.channelData(decoded), options.channelMode, monoThresholdDb) :
       1;
     /* Mixed before the noise is added: averaging two channels of noise of their own would leave the
        noise 3 dB below the level it was made for. */
     const mixed = await AudioTranscoder.mix(decoded, channelCount);
+    signal?.throwIfAborted();
     const audio = options.noiseFloor ?
       AudioTranscoder.toAudioBuffer(AudioNoiseFloor.apply(
         AudioTranscoder.channelData(mixed), mixed.sampleRate, noiseFloor.leadInSeconds, noiseFloor.levelDb
       ), mixed.sampleRate) :
       mixed;
-    const file = await AudioTranscoder.write(audio, channelCount, options.quality);
+    const file = await AudioTranscoder.write(audio, channelCount, options.quality, signal);
     const content = await FileService.readFileAsText(new File([file], 'audio', { type: format.mimeType }), true);
     return { content, size: file.byteLength, channelCount };
   }
@@ -96,8 +104,14 @@ export abstract class AudioTranscoder {
     return mono;
   }
 
-  /** The encoded file. A failed encoding cancels the output, which releases the encoder. */
-  private static async write(audio: AudioBuffer, channelCount: 1 | 2, quality: AudioQuality): Promise<ArrayBuffer> {
+  /**
+   * The encoded file. A failed encoding cancels the output, which releases the encoder.
+   *
+   * An abort cancels the output at once rather than at the next check: `add` hands the whole audio to
+   * the encoder in one call, and a cancelled output closes the encoder, which then skips the rest.
+   */
+  private static async write(audio: AudioBuffer, channelCount: 1 | 2, quality: AudioQuality,
+                             signal?: AbortSignal): Promise<ArrayBuffer> {
     const { format } = AUDIO_IMPORT_CONFIG;
     const target = new BufferTarget();
     const output = new Output({ format: format.createOutputFormat(), target });
@@ -106,13 +120,18 @@ export abstract class AudioTranscoder {
       quality: new Quality({ bitrate: format.bitrates[quality][channelCount], bitrateMode: 'variable' })
     });
     output.addAudioTrack(source);
+    const cancel = () => output.cancel();
+    signal?.addEventListener('abort', cancel, { once: true });
     try {
       await output.start();
       await source.add(audio);
+      signal?.throwIfAborted();
       await output.finalize();
     } catch (error) {
       await output.cancel();
-      throw error;
+      throw signal?.aborted ? signal.reason : error;
+    } finally {
+      signal?.removeEventListener('abort', cancel);
     }
     if (!target.buffer) throw new Error('The encoded audio is missing after finalizing.');
     return target.buffer;

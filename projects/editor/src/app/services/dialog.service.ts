@@ -76,12 +76,20 @@ import {
   DeleteReferenceDialogComponent
 } from 'editor/src/app/components/dialogs/delete-reference-dialog/delete-reference-dialog.component';
 import { EditorSection } from 'editor/src/app/models/editor-section';
+import {
+  AudioImportDialogComponent
+} from 'editor/modules/audio-import/components/audio-import-dialog/audio-import-dialog.component';
+import { AudioImportDialogData, EncodedAudio } from 'editor/modules/audio-import/models/audio-import';
+import { AudioTranscoder } from 'editor/modules/audio-import/utils/audio-transcoder';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DialogService {
   private variableInfoFindingsDialog: MatDialogRef<VariableInfoFindingsDialogComponent> | undefined;
+
+  /** Whether this browser can encode imported audio, asked on the first import and kept, see `importAudio`. */
+  private audioEncodingSupported: Promise<boolean> | undefined;
 
   constructor(private dialog: MatDialog,
               private messageService: MessageService,
@@ -394,5 +402,49 @@ export class DialogService {
       }
     }
     return { name: file.name, content };
+  }
+
+  /**
+   * An audio file picked from disk, decoded, heard and encoded in the import dialog, and handed back in
+   * the one format units store. The counterpart to `importImage`.
+   *
+   * `null` means there is nothing to write: the browser cannot encode the format, the file cannot be
+   * decoded, or the dialog was left without saving. The first two have been said to the author here
+   * already, so a caller says nothing more.
+   *
+   * The file picker opens before anything is awaited: a browser opens it only within the click that
+   * asked for it, and Safari counts an `await` in between as leaving that click. Whether the browser
+   * can encode is asked meanwhile and read once the file is there, and asked once per session, since
+   * the answer cannot change.
+   *
+   * `expertMode` is passed in rather than read from `UnitService`, which injects this service and so
+   * cannot be injected here. The name stays the file's own: it is only shown in the properties panel,
+   * the file itself is in `content`.
+   */
+  async importAudio(expertMode: boolean): Promise<FileInformation | null> {
+    this.audioEncodingSupported ??= AudioTranscoder.isSupported().catch(() => false);
+    const supported = this.audioEncodingSupported;
+    const file = await FileService.getRawFile('audio/*');
+    if (!await supported) {
+      this.messageService.showError(this.translateService.instant('audioImportUnsupported'));
+      return null;
+    }
+    let decoded: AudioBuffer;
+    try {
+      decoded = await AudioTranscoder.decode(await file.arrayBuffer());
+    } catch {
+      this.messageService.showError(this.translateService.instant('audioImportDecodeFailed'));
+      return null;
+    }
+    const dialogRef = this.dialog.open<AudioImportDialogComponent, AudioImportDialogData, EncodedAudio>(
+      AudioImportDialogComponent,
+      {
+        data: { decoded, originalSize: file.size, expertMode },
+        width: '500px',
+        autoFocus: false
+      }
+    );
+    const encoded = await firstValueFrom(dialogRef.afterClosed());
+    return encoded ? { name: file.name, content: encoded.content } : null;
   }
 }

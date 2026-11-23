@@ -129,12 +129,15 @@ export class ElementService {
         (newElementProperties as GeometryProperties).fileName = geogebraInfo.name;
         break;
       }
-      case 'audio':
-        await FileService.loadAudio().then(audio => {
-          (newElementProperties as AudioProperties).src = audio.content;
-          (newElementProperties as AudioProperties).fileName = audio.name;
-        });
+      case 'audio': {
+        /* `null` is a cancelled dialog or a failure `importAudio` has already reported, so neither
+           gets a second message. */
+        const audio = await this.dialogService.importAudio(this.unitService.expertMode);
+        if (!audio) return Promise.reject(new DialogCanceledError());
+        (newElementProperties as AudioProperties).src = audio.content;
+        (newElementProperties as AudioProperties).fileName = audio.name;
         break;
+      }
       case 'video':
         await FileService.loadVideo().then(video => {
           (newElementProperties as VideoProperties).src = video.content;

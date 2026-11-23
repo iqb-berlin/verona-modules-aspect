@@ -37,6 +37,7 @@ describe('ElementService', () => {
     updateUnitDefinition: Mock;
     prepareDelete: Mock;
     referenceManager: { getElementsReferences: Mock; getTextAnchorReferences: Mock };
+    expertMode: boolean;
     // One page with one section, which the tests about deleting and about position writes extend.
     unit: {
       pages: { sections: { elements: UIElement[]; dynamicPositioning: boolean }[] }[];
@@ -95,6 +96,7 @@ describe('ElementService', () => {
       presetValueUpdated: new Subject<string>(),
       updateUnitDefinition: vi.fn(),
       prepareDelete: vi.fn(),
+      expertMode: true,
       referenceManager: {
         getElementsReferences: vi.fn(() => []),
         getTextAnchorReferences: vi.fn(() => [])
@@ -112,7 +114,7 @@ describe('ElementService', () => {
     };
     dialogServiceSpy = createSpyObj<DialogService>([
       'showTextEditDialog', 'showDeleteReferenceDialog', 'showGeogebraAppDefinitionDialog',
-      'showRichTextEditDialog', 'showClozeTextEditDialog'
+      'showRichTextEditDialog', 'showClozeTextEditDialog', 'importAudio'
     ]);
     selectionService = new SelectionService();
     idService = new IDService();
@@ -507,9 +509,9 @@ describe('ElementService', () => {
      went with the element it was about, and the margins a new element brings are held above. */
   it('should not add an element when the file import fails', async () => {
     const section = new EditorSection(undefined, idService);
-    vi.spyOn(FileService, 'loadAudio').mockRejectedValue(new Error('read failed'));
+    vi.spyOn(FileService, 'loadVideo').mockRejectedValue(new Error('read failed'));
 
-    await service.addElementToSection('audio', section);
+    await service.addElementToSection('video', section);
 
     expect(section.elements.length).toBe(0);
     expect(messageServiceSpy.showError).toHaveBeenCalledWith('elementNotAddedFileFailed');
@@ -525,6 +527,34 @@ describe('ElementService', () => {
     dialogServiceSpy.showGeogebraAppDefinitionDialog.mockReturnValue(of(undefined));
 
     await service.addElementToSection('geometry', section);
+
+    expect(section.elements.length).toBe(0);
+    expect(messageServiceSpy.showError).not.toHaveBeenCalled();
+    expect(unitServiceMock.updateUnitDefinition).not.toHaveBeenCalled();
+  });
+
+  /* The audio comes from the import dialog, which only the expert mode lets choose quality and
+     channels -- so the mode has to reach it from here. */
+  it('should add an audio with what the import hands back, asked in the current mode', async () => {
+    const section = new EditorSection(undefined, idService);
+    unitServiceMock.expertMode = false;
+    dialogServiceSpy.importAudio.mockResolvedValue({ name: 'hoertext.mp3', content: 'data:audio/webm;base64,AAAA' });
+
+    await service.addElementToSection('audio', section);
+
+    expect(dialogServiceSpy.importAudio).toHaveBeenCalledWith(false);
+    const audio = section.elements[0] as UIElement & { src: string; fileName: string };
+    expect(audio.src).toBe('data:audio/webm;base64,AAAA');
+    expect(audio.fileName).toBe('hoertext.mp3');
+  });
+
+  /* `null` from the import is a cancelled dialog or a failure it has already reported itself, so a
+     second message here would say the same thing twice. */
+  it('should add nothing and say nothing when the audio import hands back nothing', async () => {
+    const section = new EditorSection(undefined, idService);
+    dialogServiceSpy.importAudio.mockResolvedValue(null);
+
+    await service.addElementToSection('audio', section);
 
     expect(section.elements.length).toBe(0);
     expect(messageServiceSpy.showError).not.toHaveBeenCalled();

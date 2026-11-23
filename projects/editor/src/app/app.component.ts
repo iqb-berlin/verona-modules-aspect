@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: StartCommand): void => {
         this.unitService.loadUnitDefinition(message.unitDefinition);
-        if (message.editorConfig.role === 'developer') {
+        if (message.editorConfig?.role?.toUpperCase() === 'DEVELOPER') {
           this.unitService.expertMode = false;
           this.unitService.allowExpertMode = false;
         }

@@ -299,6 +299,20 @@ describe('UnitService - variable info validation (#1043, #1129)', () => {
     ]);
     expect(reportedVariableInfos.filter(info => 'page' in info)).toEqual([]);
   });
+
+  /* The host learns from this report which packages and widgets the unit needs; no end-to-end test can see it,
+     for the reason above (#1709). */
+  it('reports what the unit needs to be played and edited', () => {
+    service.loadUnitDefinition(JSON.stringify(createUnitBlueprint('state_1')));
+    service.unit.pages[0].sections[0].addElement(
+      new GeometryElement({ type: 'geometry', id: 'geometry_1', alias: 'geometry_1' }) as unknown as PositionedUIElement
+    );
+    service.updateUnitDefinition();
+
+    const geoGebra = { id: 'GeoGebra.itcr.zip', type: 'FILE_TO_UNPACK' };
+    expect(veronaApiServiceSpy.sendChanged.mock.lastCall?.[3])
+      .toEqual({ dependenciesToPlay: [geoGebra], dependenciesToEdit: [geoGebra] });
+  });
 });
 
 /* Loading empties the registry and registers every element again. A drop-list registered its options only in its

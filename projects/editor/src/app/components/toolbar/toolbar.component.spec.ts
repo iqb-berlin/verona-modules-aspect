@@ -66,7 +66,7 @@ describe('ToolbarComponent', () => {
         unitDefinitionType: 'aspect-unit-definition',
         editorConfig: {
           directDownloadUrl: 'https://example.test/assets',
-          role: 'maintainer'
+          role: 'MAINTAINER'
         }
       }, '*'
     ]);
@@ -92,7 +92,7 @@ describe('ToolbarComponent', () => {
         unitDefinitionType: 'aspect-unit-definition',
         editorConfig: {
           directDownloadUrl: 'assets',
-          role: 'maintainer'
+          role: 'MAINTAINER'
         }
       }, '*'
     ]);

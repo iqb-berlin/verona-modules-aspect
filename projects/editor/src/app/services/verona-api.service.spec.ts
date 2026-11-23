@@ -92,11 +92,14 @@ describe('VeronaAPIService', () => {
     );
   });
 
-  it('should post a voeDefinitionChangedNotification with the unit definition to the host', () => {
+  it('should post a voeDefinitionChangedNotification with the unit definition and its dependencies to the host', () => {
     const parentWindowMock = mockParentWindow();
     service.sessionID = 'session-1';
 
-    service.sendChanged('unit-def', 'aspect-unit-definition', []);
+    service.sendChanged('unit-def', 'aspect-unit-definition', [], {
+      dependenciesToPlay: [{ id: 'PERIODIC_TABLE', type: 'WIDGET' }],
+      dependenciesToEdit: []
+    });
 
     expect(parentWindowMock.postMessage).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -106,7 +109,9 @@ describe('VeronaAPIService', () => {
         timeStamp: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/),
         unitDefinition: 'unit-def',
         unitDefinitionType: 'aspect-unit-definition',
-        variables: []
+        variables: [],
+        dependenciesToPlay: [{ id: 'PERIODIC_TABLE', type: 'WIDGET' }],
+        dependenciesToEdit: []
       }),
       '*'
     );
@@ -117,7 +122,8 @@ describe('VeronaAPIService', () => {
   it('should leave out the variables when no list is given', () => {
     const parentWindowMock = mockParentWindow();
 
-    service.sendChanged('unit-def', 'aspect-unit-definition');
+    const noDependencies = { dependenciesToPlay: [], dependenciesToEdit: [] };
+    service.sendChanged('unit-def', 'aspect-unit-definition', undefined, noDependencies);
 
     const message = parentWindowMock.postMessage.mock.lastCall?.[0];
     expect(message.unitDefinition).toBe('unit-def');

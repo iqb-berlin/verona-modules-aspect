@@ -27,6 +27,7 @@ import {
   VariableInfoLocation, VariableInfoOrigin, VariableInfoOrigins
 } from 'editor/src/app/utils/variable-info-origins';
 import { VariableInfoIssue, VariableInfoValidator } from 'editor/src/app/utils/variable-info-validator';
+import { UnitDependencyCollector } from 'editor/src/app/utils/unit-dependency-collector';
 import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
 import { IdReplacement, IdReplacementTarget } from 'editor/src/app/utils/id-replacement';
 import { DropListElement } from 'common/models/elements/drop-list';
@@ -236,6 +237,7 @@ export class UnitService {
    * Reports the unit to the host together with its variables -- all of them, or none while the author still has
    * something to correct. A partial list is worse than none: the host stores it, and studio drops the codings and
    * the metadata of every variable missing from it. Sent without a list, studio keeps the one it has (#1129).
+   * What the unit needs to be played and edited goes along every time (#1709).
    */
   updateUnitDefinition(): void {
     const origins = VariableInfoOrigins.collect(this.unit);
@@ -243,7 +245,8 @@ export class UnitService {
     this.veronaApiService.sendChanged(
       UnitService.createUnitDefinition(this.unit),
       `${this.unit.type}@${this.unit.version}`,
-      findings.some(finding => finding.holdsBackList) ? undefined : origins.map(origin => origin.info));
+      findings.some(finding => finding.holdsBackList) ? undefined : origins.map(origin => origin.info),
+      UnitDependencyCollector.collect(this.unit));
   }
 
   /** Renews what the hints area shows of the unit as it is now, and returns the findings about its variables. */

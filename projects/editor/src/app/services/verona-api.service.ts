@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { VariableInfo } from '@iqbspecs/variable-info/variable-info.interface';
+import { Dependency, UnitDependencies } from 'editor/src/app/models/dependency';
 
 /**
  * The editor's half of the Verona editor API: it listens on `window` for the host's messages and posts
@@ -41,7 +42,7 @@ export class VeronaAPIService {
   // Static would read better here, but it would only move the rule one level up: sendReady holds
   // no state of its own either and passes solely because it calls this.send.
   // eslint-disable-next-line class-methods-use-this
-  private send(message: Record<string, string | VariableInfo[]>): void {
+  private send(message: Record<string, string | VariableInfo[] | Dependency[]>): void {
     // prevent posts in local (dev) mode
     const isStandalone = window === window.parent;
     if (!isStandalone) {
@@ -61,20 +62,23 @@ export class VeronaAPIService {
   }
 
   /**
-   * Hands the host the current unit and the variables it declares -- what the studio saves. Sent on
-   * every change the editor considers worth saving, not on request.
+   * Hands the host the current unit, the variables it declares and what it needs to be played and edited -- what
+   * the studio saves. Sent on every change the editor considers worth saving, not on request.
    *
    * Without `variableInfos` the message carries no `variables` at all, which the editor API allows: the
-   * host then keeps the list it has (#1129).
+   * host then keeps the list it has (#1129). The dependencies always go along, empty lists included: for them a
+   * missing list would say "none", and an empty one says so to every host (#1709).
    */
-  sendChanged(unitDefinition: string, unitDefinitionType: string, variableInfos?: VariableInfo[]): void {
+  sendChanged(unitDefinition: string, unitDefinitionType: string, variableInfos: VariableInfo[] | undefined,
+              dependencies: UnitDependencies): void {
     this.send({
       type: 'voeDefinitionChangedNotification',
       sessionId: this.sessionID as string,
       timeStamp: new Date().toISOString(),
       unitDefinition: unitDefinition,
       unitDefinitionType: unitDefinitionType,
-      ...(variableInfos ? { variables: variableInfos } : {})
+      ...(variableInfos ? { variables: variableInfos } : {}),
+      ...dependencies
     });
   }
 }

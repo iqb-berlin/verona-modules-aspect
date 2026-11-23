@@ -1,6 +1,10 @@
 Editor
 ======
 ## next
+### Neue Funktionen
+- **Studio**
+  - Der Editor meldet dem Studio, welche Pakete und Widgets eine Aufgabe braucht: GeoGebra für das Geometrie-Element (zum Abspielen und zum Bearbeiten), das Periodensystem und den Moleküleditor (zum Abspielen). Bei bestehenden Aufgaben geschieht das mit der nächsten Änderung ([#1709](https://github.com/iqb-berlin/verona-modules-aspect/issues/1709))
+
 ### Änderungen
 - **GeoGebra**
   - Das Werkzeug „Bild“ wird auch in der Vorschau nicht mehr angeboten, wie im Player. Steht es im Feld „Anpassung Werkzeugleiste“ (26), weist ein Hinweis am Feld darauf hin ([#1700](https://github.com/iqb-berlin/verona-modules-aspect/issues/1700))

@@ -78,13 +78,43 @@ describe('MathTableComponent', () => {
     expect(emitSpy).not.toHaveBeenCalled();
   });
 
-  it('should clear the cell value on Backspace', () => {
+  it.each(['Backspace', 'Delete'])('should report the cleared cell once on %s (#1712)', key => {
     const helperRow = component.tableModel[2];
     const cell = helperRow.cells[0];
     component.setCellValue('7', cell, helperRow);
-    component.setCellValue('Backspace', cell, helperRow);
+    const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
+
+    component.setCellValue(key, cell, helperRow);
     expect(cell.value).toBe('');
     expect(cell.isCrossedOut).toBe(false);
+    expect(emitSpy).toHaveBeenCalledExactlyOnceWith({ id: 'test-id', value: component.tableModel });
+
+    component.setCellValue(key, cell, helperRow);
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not report Backspace in an untouched blank cell of a term (#1712)', () => {
+    setOperation('addition', ['1_', '34']);
+    const termRow = component.tableModel[0];
+    const blankCell = termRow.cells[termRow.cells.length - 1];
+    expect(blankCell).toEqual({ value: ' ', isEditable: true });
+    const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
+
+    component.setCellValue('Backspace', blankCell, termRow);
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should clear and report a crossed-out blank cell of a term on Backspace (#1712)', () => {
+    setOperation('subtraction', ['4_', '12']);
+    const termRow = component.tableModel[2];
+    const blankCell = termRow.cells[termRow.cells.length - 1];
+    component.toggleStrikeThrough(termRow, blankCell);
+    expect(blankCell.isCrossedOut).toBe(true);
+    const emitSpy = vi.spyOn(component.elementValueChanged, 'emit');
+
+    component.setCellValue('Backspace', blankCell, termRow);
+    expect(blankCell.isCrossedOut).toBe(false);
+    expect(emitSpy).toHaveBeenCalledOnce();
   });
 
   it('should replace "*" with "•" in multiplication rows', () => {

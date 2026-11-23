@@ -12,21 +12,32 @@
   margin-bottom: 15px;
 }
 
-// Makes the first line about as high as one with a formula: 28px more than the area's line height,
-// 14px above and below the text. The height comes from the line height of an empty span, not from a
-// box of its own, because WebKit draws the text caret as high as the boxes in the line, without the
-// leading of line-height (#1218).
-.alignment-fix {
-  line-height: calc(var(--text-area-line-height) + 28px);
-}
-
+// Every line has the area's line height, the first one too, as in a plain text area. A line with a
+// formula grows by the formula alone (`.inline-block` in the math input). Until #1011 an empty span
+// raised the first line to the height of one with a formula, also where no formula was ever written.
+// Every line starts 8px from the left edge: the padding places every line after the first, and the
+// first text part (`.first-part` below) the first one (#1011).
 .text-area {
   border: 1px solid black;
   border-radius: 3px;
-  padding: 10px 5px;
+  padding: 10px 5px 10px 8px;
   line-height: var(--text-area-line-height);
   // Buchstabenketten ohne Leerzeichen in Text-Segmenten umbrechen (#1076)
   overflow-wrap: anywhere;
+}
+
+// The first text part reaches back over the 8px of padding and pads its text by as much: the text
+// starts where the later lines do, and a click into the strip in front of it reaches the part instead
+// of the area, which would put the caret into the last part. Empty, the part is that strip alone, so a
+// formula at the start of the area starts there as well; its 14px on either side had put it 28px in
+// (#1011). Text parts after a formula keep their gaps beside it.
+.first-part ::ng-deep .input {
+  margin-left: -8px;
+  padding-left: 8px;
+}
+
+.first-part ::ng-deep .input.empty {
+  padding-right: 0;
 }
 
 .insert-formula-button {

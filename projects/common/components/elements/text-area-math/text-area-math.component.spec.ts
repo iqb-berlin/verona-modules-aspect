@@ -207,20 +207,6 @@ describe('TextAreaMathComponent', () => {
     }));
   });
 
-  /* WebKit draws the text caret as high as what the line holds: an inline-block counts in full, the
-     leading of line-height does not (#1218) */
-  it('gives the first line its height through line-height, not through a box', () => {
-    const area: HTMLElement = fixture.nativeElement.querySelector('.text-area');
-    const spacer = getComputedStyle(fixture.nativeElement.querySelector('.alignment-fix'));
-
-    // the area's own line height arrives through the custom property the spacer builds on
-    const { fontSize, lineHeight } = component.elementModel.styling;
-    expect(parseFloat(getComputedStyle(area).lineHeight)).toBeCloseTo((fontSize * lineHeight) / 100, 1);
-    expect(spacer.display).toBe('inline');
-    // calc() resolves to whole 1/64 px, the unit of layout
-    expect(parseFloat(spacer.lineHeight)).toBeCloseTo(parseFloat(getComputedStyle(area).lineHeight) + 28, 1);
-  });
-
   it('should be disabled when readonly', () => {
     component.elementModel.readOnly = true;
     fixture.detectChanges();

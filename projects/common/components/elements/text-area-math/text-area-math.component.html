@@ -23,9 +23,9 @@
      [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
      (pointerdown)="selectLastSegment($event)"
      (mousedown)="keepFocusAfterTouch($event)">
-  <span class="alignment-fix"></span>
   @for (segment of segments; track segment; let i = $index) {
     <aspect-text-area-math-segment #segment
+      [class.first-part]="$first"
       [style.display]="'inline'"
       [index]="i"
       [type]="segment.type"
@@ -45,6 +45,8 @@
     </aspect-text-area-math-segment>
   }
 </div>
-<mat-error *ngIf="elementFormControl.errors && elementFormControl.touched">
-  {{ elementFormControl.errors | errorTransform: elementModel }}
-</mat-error>
+@if (elementFormControl.errors && elementFormControl.touched) {
+  <mat-error>
+    {{ elementFormControl.errors | errorTransform: elementModel }}
+  </mat-error>
+}

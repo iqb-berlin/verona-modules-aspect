@@ -27,7 +27,7 @@ export class VeronaAPIService {
   private handleMessage(messageData: GetDefinitionCommand | StartCommand): void {
     if (messageData.type === 'voeStartCommand') {
       this.sessionID = messageData.sessionId;
-      this.resourceURL = (messageData as StartCommand).editorConfig.directDownloadUrl;
+      this.resourceURL = (messageData as StartCommand).editorConfig?.directDownloadUrl;
       this.startCommand.next(messageData as StartCommand);
     }
   }
@@ -49,13 +49,14 @@ export class VeronaAPIService {
     }
   }
 
-  /** Tells the host that the editor is there, together with the module metadata from the HTML file.
-      Without a metadata block an empty object is sent rather than nothing. */
+  /** Tells the host that the editor is there, together with the module metadata from the HTML file. The editor API
+      wants them as the text of the metadata block, not as the object it describes; studio reads both since 22.0.0,
+      an older studio only the object (#1623). Without a metadata block the text of an empty object is sent. */
   sendReady(): void {
     const metadata: string | null | undefined = document.getElementById('verona-metadata')?.textContent;
     this.send({
       type: 'voeReadyNotification',
-      metadata: metadata ? JSON.parse(metadata) : {}
+      metadata: metadata || '{}'
     });
   }
 
@@ -70,7 +71,7 @@ export class VeronaAPIService {
     this.send({
       type: 'voeDefinitionChangedNotification',
       sessionId: this.sessionID as string,
-      timeStamp: String(Date.now()),
+      timeStamp: new Date().toISOString(),
       unitDefinition: unitDefinition,
       unitDefinitionType: unitDefinitionType,
       ...(variableInfos ? { variables: variableInfos } : {})
@@ -82,9 +83,12 @@ export interface StartCommand extends MessageEvent {
   sessionId: string,
   unitDefinition: string,
   unitDefinitionType: string,
-  editorConfig: {
+  /** The editor API requires only the session id, so a host may leave the config out. */
+  editorConfig?: {
     directDownloadUrl: string,
-    role: 'guest' | 'commenter' | 'developer' | 'maintainer' | 'super'; // only developer is non-expert
+    /** Editor API 5.0 writes the role in capitals (`DEVELOPER`, `MAINTAINER` …), hosts of the older APIs in small
+        letters. Only a developer works without expert mode. */
+    role?: string;
   }
 }
 

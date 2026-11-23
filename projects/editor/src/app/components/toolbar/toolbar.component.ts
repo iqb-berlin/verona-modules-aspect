@@ -27,7 +27,7 @@ export class ToolbarComponent {
       unitDefinitionType: 'aspect-unit-definition',
       editorConfig: {
         directDownloadUrl: this.veronaApiService.resourceURL || 'assets',
-        role: 'maintainer'
+        role: 'MAINTAINER'
       }
     }, '*');
   }

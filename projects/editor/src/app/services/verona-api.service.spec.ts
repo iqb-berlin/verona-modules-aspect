@@ -37,6 +37,19 @@ describe('VeronaAPIService', () => {
     expect(receivedCommands[0].sessionId).toBe('session-1');
   });
 
+  /* The editor API requires only the session id; the config may be missing (#1623). */
+  it('should take a voeStartCommand without editorConfig', () => {
+    const receivedCommands: StartCommand[] = [];
+    service.startCommand.subscribe(command => {
+      receivedCommands.push(command);
+    });
+
+    dispatchMessage({ type: 'voeStartCommand', sessionId: 'session-1' });
+
+    expect(receivedCommands.length).toBe(1);
+    expect(service.getResourceURL()).toBe('assets');
+  });
+
   it('should ignore messages of other types', () => {
     dispatchMessage({ type: 'vopStateChangedNotification', sessionId: 'other-session' });
 
@@ -47,13 +60,34 @@ describe('VeronaAPIService', () => {
     expect(service.getResourceURL()).toBe('assets');
   });
 
-  it('should post a voeReadyNotification with empty metadata to the host', () => {
+  it('should post a voeReadyNotification with the text of an empty object when there is no metadata block', () => {
     const parentWindowMock = mockParentWindow();
 
     service.sendReady();
 
     expect(parentWindowMock.postMessage).toHaveBeenCalledWith(
-      { type: 'voeReadyNotification', metadata: {} },
+      { type: 'voeReadyNotification', metadata: '{}' },
+      '*'
+    );
+  });
+
+  /* The editor API wants the metadata as text; an object is what a studio before 22.0.0 read (#1623). */
+  it('should post the metadata block as text, not as the object it describes', () => {
+    const parentWindowMock = mockParentWindow();
+    const block = document.createElement('script');
+    block.id = 'verona-metadata';
+    block.type = 'application/ld+json';
+    block.textContent = '{ "specVersion": "5.0" }';
+    document.body.appendChild(block);
+
+    try {
+      service.sendReady();
+    } finally {
+      block.remove();
+    }
+
+    expect(parentWindowMock.postMessage).toHaveBeenCalledWith(
+      { type: 'voeReadyNotification', metadata: '{ "specVersion": "5.0" }' },
       '*'
     );
   });
@@ -68,6 +102,8 @@ describe('VeronaAPIService', () => {
       expect.objectContaining({
         type: 'voeDefinitionChangedNotification',
         sessionId: 'session-1',
+        // the editor API declares the time stamp as `date-time`
+        timeStamp: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/),
         unitDefinition: 'unit-def',
         unitDefinitionType: 'aspect-unit-definition',
         variables: []

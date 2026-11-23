@@ -131,6 +131,42 @@ describe('AppComponent startCommand loading', () => {
 
     expect(loadUnitDefinition).not.toHaveBeenCalled();
   }));
+
+  /* Editor API 5.0 writes the role in capitals, the hosts of older APIs and the e2e helpers in small letters
+     (#1623). */
+  it.each(['DEVELOPER', 'developer'])('takes expert mode away from the role %s', role => {
+    const appComponent = new AppComponent(
+      unitService,
+      translateServiceMock as TranslateService,
+      veronaApiServiceMock as VeronaAPIService
+    );
+    appComponent.ngOnInit();
+
+    startCommand$.next({
+      ...createStartCommand('role', 'Checkbox'),
+      editorConfig: { directDownloadUrl: 'assets', role }
+    } as StartCommand);
+
+    expect(unitService.expertMode).toBe(false);
+    expect(unitService.allowExpertMode).toBe(false);
+  });
+
+  it('leaves expert mode to any other role', () => {
+    const appComponent = new AppComponent(
+      unitService,
+      translateServiceMock as TranslateService,
+      veronaApiServiceMock as VeronaAPIService
+    );
+    appComponent.ngOnInit();
+
+    startCommand$.next({
+      ...createStartCommand('role', 'Checkbox'),
+      editorConfig: { directDownloadUrl: 'assets', role: 'MAINTAINER' }
+    } as StartCommand);
+
+    expect(unitService.expertMode).toBe(true);
+    expect(unitService.allowExpertMode).toBe(true);
+  });
 });
 
 function createStartCommand(marker: string, label: string): StartCommand {

@@ -169,3 +169,18 @@ blockquote > p:empty:last-child:after {
 .MLK__shift .greek-capital-name {
   display: none;
 }
+
+/* Labels that are taller than a key of 42px at MathLive's font size of 24px: the fraction with its two
+   boxes and the integral with its bounds (`tall-label` in formula-keyboard-presets.config.ts). Their
+   size follows the height of the keys, which MathLive sets per window size in its variable
+   `--_keycap-height`: 60px keys get about 22px, 42px keys about 15px. Before, the fraction stuck out
+   of a 42px key above and below, was cut off there, and covered the key below while pressed (#760).
+   The integral is taller for its size than the fraction and gets less. The selectors outweigh
+   MathLive's `.MLK__rows > .MLK__row > div.small`. */
+.MLK__rows > .MLK__row > .MLK__keycap.tall-label {
+  font-size: calc(var(--_keycap-height) * 0.36);
+}
+
+.MLK__rows > .MLK__row > .MLK__keycap.small.tall-label {
+  font-size: calc(var(--_keycap-height) * 0.32);
+}

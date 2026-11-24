@@ -46,6 +46,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         },
         '[separator-5]',
         {
+          class: 'tall-label',
           latex: '\\frac{#?}{#?}',
           insert: '\\frac{#@}{#?}'
         },
@@ -200,6 +201,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         },
         '[separator-5]',
         {
+          class: 'tall-label',
           latex: '\\frac{#?}{#?}',
           insert: '\\frac{#@}{#?}'
         },
@@ -371,7 +373,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         '\\cap',
         {
           latex: '\\int^{{#?}}_{#?}\\!#?\\,\\mathrm{d}x',
-          class: 'small'
+          class: 'small tall-label'
         },
         '\\%'
       ],

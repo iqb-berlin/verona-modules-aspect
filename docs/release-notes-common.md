@@ -14,6 +14,11 @@ Allgemein
   - Alle Zeilen haben denselben Zeilenabstand wie ein Eingabebereich, auch die erste. Bisher war die erste Zeile für eine Formel um 28 px höher, auch wenn keine Formel darin stand. Eine Zeile mit Formel wird um die Formel höher und hält oben und unten 4 px Abstand zu den Nachbarzeilen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - Jede Zeile beginnt 8 px vom linken Rand, auch die erste und eine, die mit einer Formel beginnt. Bisher war die erste Textzeile um 14 px weiter eingerückt als die übrigen und eine Formel am Anfang um 28 px. Ein Klick in den Streifen vor der ersten Formel setzt den Cursor davor, statt ans Ende des Textes ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
 
+### Fehlerbehebungen
+- **Formelfeld, Formelbereich**
+  - Tastatur der Formeleingabe
+    - Die Beschriftung der Bruch-Taste und der Taste für das Integral mit Grenzen passt auf die Taste, auch auf den niedrigeren Tasten in Fenstern bis 768 px Höhe und auf einer schmalen Tastatur wie beim iPad im Hochformat. Bisher ragte der Bruch dort oben und unten über die Taste hinaus, war abgeschnitten und überdeckte beim Drücken die Taste darunter ([#760](https://github.com/iqb-berlin/verona-modules-aspect/issues/760))
+
 ## editor/3.1.2+player/3.1.2
 ### Änderungen
 - **Formelfeld, Formelbereich**

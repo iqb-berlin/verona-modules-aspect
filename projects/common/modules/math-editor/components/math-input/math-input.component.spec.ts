@@ -4,6 +4,7 @@ import {
 import { SimpleChange } from '@angular/core';
 import { MathfieldElement } from 'mathlive';
 import { MatButtonToggle, MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { userEvent } from 'vitest/browser';
 import { EmptyBoxRestorer } from 'common/modules/math-editor/utils/empty-box-restorer';
 import { MathInputComponent } from './math-input.component';
 
@@ -108,6 +109,45 @@ describe('MathInputComponent', () => {
     component.mathFieldElement.setValue('a+b', { format: 'latex' });
     component.onInput(new InputEvent('input', { inputType: 'insertText', data: 'b' }));
     expect(emitSpy).toHaveBeenCalledWith('a+b');
+  });
+
+  /* With real key presses: the shortcuts are applied only to keys typed on a physical keyboard, which
+     MathLive collects across key presses, and not to `insert` or `executeCommand`. */
+  describe('typed on a physical keyboard (#760)', () => {
+    const typeInto = async (keys: string): Promise<string> => {
+      const field = component.mathFieldElement;
+      field.setValue('');
+      // The browser's focus, which the keys go to. In the test page MathfieldElement.focus() only makes
+      // MathLive count the field as focused and leaves the browser's focus on the body.
+      HTMLElement.prototype.focus.call(field);
+      await userEvent.keyboard(keys);
+      return field.getValue();
+    };
+
+    afterEach(() => {
+      component.mathFieldElement.blur();
+      window.mathVirtualKeyboard.hide();
+    });
+
+    it('should keep letters and signs as typed', async () => {
+      expect(await typeInto('nnnn5mm<=sin')).toBe('nnnn5mm<=sin');
+    });
+
+    it('should give * the multiplication sign of the formula keyboard', async () => {
+      expect(await typeInto('3*4')).toBe('3\\cdot4');
+    });
+
+    /* MathLive builds the field anew after a move, as in a drag in the editor, and keeps only the options
+       it has an attribute for -- the shortcuts are not one of them. */
+    it('should keep letters and signs as typed after the field was moved in the page', async () => {
+      const field = component.mathFieldElement;
+      const mounted = new Promise(resolve => {
+        field.addEventListener('mount', resolve, { once: true });
+      });
+      field.parentElement?.appendChild(field);
+      await mounted;
+      expect(await typeInto('nnnn5mm<=sin')).toBe('nnnn5mm<=sin');
+    });
   });
 
   describe('on a deletion (#760)', () => {

@@ -170,5 +170,19 @@ describe('Math-field element', { testIsolation: false }, () => {
         });
       cy.clickOutside();
     });
+
+    it('keeps letters and signs typed on a physical keyboard as they were typed (#760)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
+        .then($mathField => {
+          const field = $mathField[0] as HTMLElement & { getValue(): string; setValue(value: string): void };
+          field.setValue('');
+          cy.wrap($mathField).shadow().find('.ML__content').click()
+            .type('nn5mm<=3*4');
+          cy.wrap($mathField).should($el => {
+            expect(($el[0] as typeof field).getValue()).to.equal('nn5mm<=3\\cdot4');
+          });
+        });
+      cy.clickOutside();
+    });
   });
 });

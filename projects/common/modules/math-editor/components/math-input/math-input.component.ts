@@ -60,6 +60,13 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       below the last row they added most of a line of empty space. */
   private static readonly WRAP_STYLE = MathInputComponent.createWrapStyle();
 
+  /** The input shortcuts of the field, in place of MathLive's own table of 259, which turned what was
+      typed on a physical keyboard into something else: nn into ∩, mm into the unit millimetre, sin into
+      the function, <= into ≤ (#760). The formula keyboard never triggered them, as MathLive clears the
+      keys it collects for a shortcut after every key pressed on it; typed keys now stay as typed as well.
+      The one shortcut kept gives `*` the multiplication sign of the formula keyboard's × key. */
+  private static readonly INLINE_SHORTCUTS = { '*': '\\cdot' };
+
   mathFieldElement: MathfieldElement = new MathfieldElement({
     mathVirtualKeyboardPolicy: 'manual'
   });
@@ -108,12 +115,15 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   /** MathLive builds the field each time it joins the page: the first time, possibly later than the
       setup, and anew after every move in the page, as in a drag in the editor. Its context menu is
-      switched off then, as the menu exists only while the field is on the page and setting it before
-      throws. A field built anew comes from what MathLive kept of the old one, which is the value as
-      text, and the text of one line has no `\displaylines`: a multi-line field gets it back, or Enter
-      starts no new line. The first build keeps the value the setup gave it. */
+      switched off then and its input shortcuts are replaced, as both exist only while the field is on
+      the page and setting them before throws; MathLive keeps neither across a move, and takes the
+      shortcuts as a constructor option only with a warning. A field built anew comes from what
+      MathLive kept of the old one, which is the value as text, and the text of one line has no
+      `\displaylines`: a multi-line field gets it back, or Enter starts no new line. The first build
+      keeps the value the setup gave it. */
   private readonly onMount = (): void => {
     this.mathFieldElement.menuItems = [];
+    this.mathFieldElement.inlineShortcuts = MathInputComponent.INLINE_SHORTCUTS;
     if (this.multiline && this.mountedBefore) {
       this.mathFieldElement.setValue(this.toFieldValue(this.mathFieldElement.getValue()), { format: 'latex' });
     }

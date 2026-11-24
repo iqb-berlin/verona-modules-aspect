@@ -1,15 +1,16 @@
 import { keycapWith, VISIBLE_KEYBOARD_LAYER as VISIBLE_LAYER } from '../util';
 
-/* The labels of the formula keyboard at the window sizes for which MathLive gives its keys another size:
-   42px high in a window up to 768px high or on a keyboard up to 768px wide, as on an upright iPad, and 60px
-   high otherwise. At 42px the label of the fraction stuck out of its key above and below (#760). */
+/* The labels and shift hints of the formula keyboard at the window sizes for which MathLive gives its keys
+   another size: 42px high in a window up to 768px high or on a keyboard up to 768px wide, as on an upright
+   iPad, and 60px high otherwise. At 42px the label of the fraction stuck out of its key above and below,
+   and the shift hints of sin, cos, tan and log ran into the labels (#760). */
 
 const FIELD = '[data-element-id="math-field_keyboard"] math-field';
 
 const FRACTION = '\\frac{#@}{#?}';
 const INTEGRAL = '\\int^{{#?}}_{#?}\\!#?\\,\\mathrm{d}x';
 
-describe('Formula keyboard, labels (#760)', () => {
+describe('Formula keyboard, labels and shift hints (#760)', () => {
   context('in a window of 1366×768, with keys of 42px height', () => {
     beforeEach('opens the unit', () => {
       openUnit(1366, 768);
@@ -17,6 +18,10 @@ describe('Formula keyboard, labels (#760)', () => {
 
     it('keeps the labels of the fraction and of the integral with bounds inside their keys', () => {
       expectLabelsInsideTheirKeys();
+    });
+
+    it('keeps the shift hints of sin, cos, tan and log above the letters of their labels', () => {
+      expectHintsAboveTheLetters();
     });
   });
 
@@ -28,9 +33,14 @@ describe('Formula keyboard, labels (#760)', () => {
     it('keeps the labels of the fraction and of the integral with bounds inside their keys', () => {
       expectLabelsInsideTheirKeys();
     });
+
+    it('keeps the shift hints of sin, cos, tan and log above the letters of their labels', () => {
+      expectHintsAboveTheLetters();
+    });
   });
 
-  /* On keys of 60px height the fraction touched the upper edge by 1px. */
+  /* On keys of 60px height the fraction touched the upper edge by 1px; the hints did not reach the letters
+     there before either. */
   context('in a window of 1280×800, with keys of 60px height', () => {
     beforeEach('opens the unit', () => {
       openUnit(1280, 800);
@@ -89,4 +99,22 @@ function expectLabelInside(keycap: HTMLElement, name: string): void {
   expect(boxes, `visible parts of the ${name}`).not.to.have.length(0);
   expect(Math.min(...boxes.map(box => box.top)), `top of the ${name}`).to.be.at.least(key.top);
   expect(Math.max(...boxes.map(box => box.bottom)), `bottom of the ${name}`).to.be.at.most(key.bottom);
+}
+
+/** Measured from the line of the label's first character down to the bottom of the hint's first character,
+   the base of the hint without its exponent or index: the lowercase letters of a label begin a little below
+   40% of its line. The hints reached down to 57% of it on keys of 42px height before #760. */
+function expectHintsAboveTheLetters(): void {
+  openKeyboard();
+  switchToSymbols();
+  ['\\sin', '\\cos', '\\tan', '\\log'].forEach(latex => {
+    keycapWith(`the key of ${latex}`, definition => definition.latex === latex).should($keycap => {
+      const hint = $keycap[0].querySelector('.MLK__shift') as HTMLElement;
+      const label = Array.from($keycap[0].children).find(child => child !== hint) as HTMLElement;
+      const [hintBase] = visibleBoxes(hint);
+      const [labelStart] = visibleBoxes(label);
+      expect((hintBase.bottom - labelStart.top) / labelStart.height, `hint of ${latex}, share of the label's line`)
+        .to.be.below(0.4);
+    });
+  });
 }

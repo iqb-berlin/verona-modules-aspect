@@ -170,6 +170,30 @@ blockquote > p:empty:last-child:after {
   display: none;
 }
 
+/* The shift hint in the corner of a key is drawn at 16px by MathLive, at 4px from the corner. On the
+   keys of 42px height that MathLive uses in windows up to 768px high, the long hints (sin⁻¹, cos⁻¹,
+   tan⁻¹, log with its base) reached into the label of the key (#760). `--keycap-shift-font-size` is
+   MathLive's own setting for the hint; the position has no setting of its own. */
+.ML__keyboard {
+  --keycap-shift-font-size: 12px;
+}
+
+.ML__keyboard .MLK__shift {
+  top: 2px;
+  right: 3px;
+}
+
+/* A keyboard up to 768px wide, as on an iPad upright, has keys of 69px width and 42px height: there
+   even the 12px hints touched sin, cos, tan and log. The container is MathLive's `.MLK__plate`, which
+   its own breakpoints for the key sizes ask as well. */
+@container (max-width: 768px) {
+  .ML__keyboard .MLK__shift {
+    font-size: 10px;
+    top: 1px;
+    right: 2px;
+  }
+}
+
 /* Labels that are taller than a key of 42px at MathLive's font size of 24px: the fraction with its two
    boxes and the integral with its bounds (`tall-label` in formula-keyboard-presets.config.ts). Their
    size follows the height of the keys, which MathLive sets per window size in its variable

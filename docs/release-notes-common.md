@@ -18,6 +18,7 @@ Allgemein
 - **Formelfeld, Formelbereich**
   - Tastatur der Formeleingabe
     - Die Beschriftung der Bruch-Taste und der Taste für das Integral mit Grenzen passt auf die Taste, auch auf den niedrigeren Tasten in Fenstern bis 768 px Höhe und auf einer schmalen Tastatur wie beim iPad im Hochformat. Bisher ragte der Bruch dort oben und unten über die Taste hinaus, war abgeschnitten und überdeckte beim Drücken die Taste darunter ([#760](https://github.com/iqb-berlin/verona-modules-aspect/issues/760))
+    - Die Umschalt-Beschriftungen in der Ecke der Tasten sind kleiner und überdecken die Beschriftung von sin, cos, tan und log nicht mehr ([#760](https://github.com/iqb-berlin/verona-modules-aspect/issues/760))
 
 ## editor/3.1.2+player/3.1.2
 ### Änderungen

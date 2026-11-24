@@ -60,6 +60,14 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       below the last row they added most of a line of empty space. */
   private static readonly WRAP_STYLE = MathInputComponent.createWrapStyle();
 
+  /** + and − of a formula from the bold KaTeX font, every other character as before (#760). The regular
+      font draws them with strokes thinner than those of the digits beside them, so they looked grey;
+      on a screen of high pixel density, as on the iPad, the bold minus is as black as a digit. Only these
+      two characters are in the family (`unicode-range` in mathlive-fonts.css); all others come from
+      KaTeX_Main. MathLive's stylesheets are adopted ones, which come after a `<style>` in the shadow
+      root, so the rule wins by its stronger selector, not by its place. */
+  private static readonly SIGN_STYLE = '.ML__latex .ML__cmr { font-family: AspectBoldSigns, KaTeX_Main; }';
+
   /** The input shortcuts of the field, in place of MathLive's own table of 259, which turned what was
       typed on a physical keyboard into something else: nn into ∩, mm into the unit millimetre, sin into
       the function, <= into ≤ (#760). The formula keyboard never triggered them, as MathLive clears the
@@ -98,8 +106,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.readOnly = this.readonly;
     this.mathFieldElement.placeholder = this.placeholder;
+    this.addShadowStyle(MathInputComponent.SIGN_STYLE);
     if (this.multiline) {
-      this.addWrapStyle();
+      this.addShadowStyle(MathInputComponent.WRAP_STYLE);
       // Captured before MathLive adds the line, and back here after it, in the same keydown: the
       // next character may follow at once.
       this.mathFieldElement.addEventListener('keydown', event => {
@@ -176,11 +185,12 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       ${struts} { display: none !important; }`;
   }
 
-  /** A `<style>` of its own per field rather than one shared constructed sheet: `new CSSStyleSheet()`
-      throws in Safari before 16.4, and would take every math input down with it. */
-  private addWrapStyle(): void {
+  /** Rules for MathLive's shadow root, which no stylesheet outside reaches. A `<style>` of its own per field
+      rather than one shared constructed sheet: `new CSSStyleSheet()` throws in Safari before 16.4, and
+      would take every math input down with it. */
+  private addShadowStyle(rules: string): void {
     const style = this.mathFieldElement.ownerDocument.createElement('style');
-    style.textContent = MathInputComponent.WRAP_STYLE;
+    style.textContent = rules;
     this.mathFieldElement.shadowRoot?.appendChild(style);
   }
 

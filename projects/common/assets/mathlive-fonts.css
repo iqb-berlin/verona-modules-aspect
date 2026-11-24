@@ -159,6 +159,20 @@
   src: url(fonts/mathlive/KaTeX_Typewriter-Regular.woff2) format("woff2")
 }
 
+/* Not MathLive's: + and − of a formula from the bold font (#760, `SIGN_STYLE` in math-input.component.ts).
+   The browser takes from this family only the characters in its unicode-range and every other one from
+   the next family named, KaTeX_Main. Declared here, as a font face inside a shadow root is not used.
+   For every weight: declared for 400 alone, a field styled bold would leave the browser free to draw a
+   bold of its own on top of the bold glyph. */
+@font-face {
+  font-display: swap;
+  font-family: AspectBoldSigns;
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(fonts/mathlive/KaTeX_Main-Bold.woff2) format("woff2");
+  unicode-range: U+002B, U+2212;
+}
+
 :root {
   --ML__static-fonts: true;
   --mathlive-fonts-directory: "assets/fonts/mathlive";

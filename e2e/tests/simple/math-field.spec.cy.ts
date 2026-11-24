@@ -184,5 +184,32 @@ describe('Math-field element', { testIsolation: false }, () => {
         });
       cy.clickOutside();
     });
+
+    it('draws + and − of a formula from the bold font and the digits from the regular one (#760)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
+        .then($mathField => {
+          ($mathField[0] as HTMLElement & { setValue(value: string): void }).setValue('1+1-1');
+        });
+      // Both weights loaded, so that a canvas measures a character in the font it names
+      cy.document().then(doc => Promise.all(['400', '700']
+        .map(weight => doc.fonts.load(`${weight} 20px KaTeX_Main`, '+−1'))));
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
+        .should($mathField => {
+          const doc = $mathField[0].ownerDocument;
+          const glyph = (character: string): HTMLElement => Array.from(
+            ($mathField[0].shadowRoot as ShadowRoot).querySelectorAll<HTMLElement>('.ML__cmr')
+          ).find(span => span.textContent === character) as HTMLElement;
+          const context = doc.createElement('canvas').getContext('2d') as CanvasRenderingContext2D;
+          // The width of a character in KaTeX_Main of the given weight, at the size the field draws it
+          const advance = (character: string, weight: string): number => {
+            const size = (doc.defaultView as Window).getComputedStyle(glyph(character)).fontSize;
+            context.font = `${weight} ${size} KaTeX_Main`;
+            return context.measureText(character).width;
+          };
+          expect(glyph('+').getBoundingClientRect().width, '+').to.be.closeTo(advance('+', '700'), 0.1);
+          expect(glyph('−').getBoundingClientRect().width, '−').to.be.closeTo(advance('−', '700'), 0.1);
+          expect(glyph('1').getBoundingClientRect().width, '1').to.be.closeTo(advance('1', '400'), 0.1);
+        });
+    });
   });
 });

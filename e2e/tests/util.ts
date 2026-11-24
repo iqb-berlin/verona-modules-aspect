@@ -375,11 +375,13 @@ export const VISIBLE_KEYBOARD_LAYER = '.math-keyboard-container .MLK__layer.is-v
 export interface KeycapDefinition {
   latex?: string;
   insert?: string;
+  command?: unknown;
 }
 
 /**
  * The key of the visible layer of the formula keyboard whose definition matches, waited for like any other
  * element. Found through mathlive's keycap definitions, because the rendered key carries only a generated id.
+ * Keys with a command, such as backspace, are drawn as `.action`, the others as `.MLK__keycap`.
  */
 export function keycapWith(
   description: string, matches: (definition: KeycapDefinition) => boolean
@@ -392,10 +394,17 @@ export function keycapWith(
       const definition = keyboard.getKeycap(element.id);
       return definition !== undefined && matches(definition);
     };
-    return cy.get<HTMLElement>(`${VISIBLE_KEYBOARD_LAYER} .MLK__keycap[id]`)
+    return cy.get<HTMLElement>(`${VISIBLE_KEYBOARD_LAYER} :is(.MLK__keycap, .action)[id]`)
       .should($keycaps => {
         expect(Array.from($keycaps).some(isMatch), description).to.equal(true);
       })
       .then($keycaps => Cypress.$(Array.from($keycaps).find(isMatch) as HTMLElement));
   });
+}
+
+/** Presses a key of the formula keyboard as a finger or the mouse does. */
+export function pressKeycap(keycap: Cypress.Chainable<JQuery<HTMLElement>>): void {
+  keycap
+    .trigger('pointerdown', { button: 0 })
+    .trigger('pointerup', { button: 0 });
 }

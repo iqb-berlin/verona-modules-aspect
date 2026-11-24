@@ -1,5 +1,5 @@
 import {
-  addElementHover, addNewSection, setPreferencesElement, setCheckbox
+  addElementHover, addNewSection, keycapWith, pressKeycap, setPreferencesElement, setCheckbox
 } from '../util';
 
 describe('Math-field element', { testIsolation: false }, () => {
@@ -136,6 +136,36 @@ describe('Math-field element', { testIsolation: false }, () => {
           cy.wrap($mathField).should($el => {
             const field = $el[0] as HTMLElement & { getValue(): string };
             expect(field.getValue()).to.equal('\\displaylines{abc\\\\ d}');
+          });
+        });
+      cy.clickOutside();
+    });
+
+    /* Emptied, the root used to lose its box and to drop by about 5px, as MathLive lays out an empty part
+       lower than one with a box in it (#760). */
+    it('keeps the root sign where it was when the content of the root is deleted (#760)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
+        .then($mathField => {
+          const field = $mathField[0] as HTMLElement & { getValue(): string; setValue(value: string): void };
+          field.setValue('');
+          cy.wrap($mathField).shadow().find('.ML__content').click();
+          pressKeycap(keycapWith('the root key', definition => definition.latex === '\\sqrt{#0}'));
+          // From the top of the field, so that a scroll of the page between the readings does not count
+          const signFromFieldTop = (fieldElement: HTMLElement): number => {
+            const sign = fieldElement.shadowRoot?.querySelector('.ML__sqrt-sign') as HTMLElement;
+            return sign.getBoundingClientRect().top - fieldElement.getBoundingClientRect().top;
+          };
+          cy.wrap($mathField).shadow().find('.ML__sqrt-sign').then(() => {
+            const freshTop = signFromFieldTop($mathField[0]);
+            pressKeycap(keycapWith('the key 2', definition => definition.latex === '2'));
+            cy.wrap($mathField).should($el => {
+              expect(($el[0] as typeof field).getValue()).to.equal('\\sqrt2');
+            });
+            pressKeycap(keycapWith('the backspace key', ({ command }) => String(command).includes('deleteBackward')));
+            cy.wrap($mathField).should($el => {
+              expect(($el[0] as typeof field).getValue()).to.equal('\\sqrt{\\placeholder{}}');
+              expect(signFromFieldTop($el[0]), 'top of the root sign').to.be.closeTo(freshTop, 0.5);
+            });
           });
         });
       cy.clickOutside();

@@ -14,6 +14,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { FORMULA_KEYBOARD_PRESETS } from 'common/modules/math-editor/configs/formula-keyboard-presets.config';
 import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
 import { MathKeyboardAdapter } from 'common/modules/math-editor/utils/math-keyboard-adapter';
+import { EmptyBoxRestorer } from 'common/modules/math-editor/utils/empty-box-restorer';
 
 @Component({
   selector: 'aspect-math-input',
@@ -69,6 +70,10 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   /** Whether MathLive has built the field before, see `onMount`. */
   private mountedBefore = false;
+
+  /** How many boxes the field held before the change under way, see `onInput`. MathLive announces a change
+      before it makes it (`beforeinput`) and after it only one turn of the event loop later (`input`). */
+  private boxesBeforeInput = 0;
 
   /** Held so that the two focusout events of one blur -- the browser's and mathlive's own -- are acted on once. */
   private focusOutTimeout?: ReturnType<typeof setTimeout>;
@@ -188,7 +193,16 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  onInput() {
+  onBeforeInput() {
+    this.boxesBeforeInput = EmptyBoxRestorer.countBoxes(this.mathFieldElement);
+  }
+
+  /** After a deletion, a root or fraction that was emptied gets its box back before the value goes out
+      (#760). Safari strips `inputType` from MathLive's event, so MathLive also hands it on as `data`. */
+  onInput(event: Event) {
+    if (event instanceof InputEvent && (event.inputType || event.data || '').startsWith('delete')) {
+      EmptyBoxRestorer.restore(this.mathFieldElement, this.boxesBeforeInput);
+    }
     this.valueChange.emit(this.mathFieldElement.getValue());
   }
 

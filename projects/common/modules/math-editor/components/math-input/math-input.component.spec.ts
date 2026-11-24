@@ -4,6 +4,7 @@ import {
 import { SimpleChange } from '@angular/core';
 import { MathfieldElement } from 'mathlive';
 import { MatButtonToggle, MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { EmptyBoxRestorer } from 'common/modules/math-editor/utils/empty-box-restorer';
 import { MathInputComponent } from './math-input.component';
 
 describe('MathInputComponent', () => {
@@ -105,8 +106,62 @@ describe('MathInputComponent', () => {
   it('should emit the current math field value on input', () => {
     const emitSpy = vi.spyOn(component.valueChange, 'emit');
     component.mathFieldElement.setValue('a+b', { format: 'latex' });
-    component.onInput();
+    component.onInput(new InputEvent('input', { inputType: 'insertText', data: 'b' }));
     expect(emitSpy).toHaveBeenCalledWith('a+b');
+  });
+
+  describe('on a deletion (#760)', () => {
+    afterEach(() => {
+      component.mathFieldElement.blur();
+      window.mathVirtualKeyboard.hide();
+    });
+
+    it('should give an emptied root its box back before it emits the value', fakeAsync(() => {
+      const field = component.mathFieldElement;
+      field.focus();
+      field.setValue('');
+      field.insert('\\sqrt{\\placeholder{}}', { selectionMode: 'placeholder' });
+      field.insert('2');
+      tick();
+      const emitSpy = vi.spyOn(component.valueChange, 'emit');
+      field.executeCommand('deleteBackward');
+      // MathLive announces the change one turn of the event loop later
+      tick();
+      expect(field.getValue()).toBe('\\sqrt{\\placeholder{}}');
+      expect(emitSpy).toHaveBeenLastCalledWith('\\sqrt{\\placeholder{}}');
+    }));
+
+    /* The boxes are counted on `beforeinput`, before MathLive deletes. Deleted alone, as in a root with an
+       index, the box must not come back, or the root cannot be deleted at all. */
+    it('should let a root with an index be deleted to the end', fakeAsync(() => {
+      const field = component.mathFieldElement;
+      field.focus();
+      field.setValue('');
+      field.insert('\\sqrt[3]{\\placeholder{}}', { selectionMode: 'placeholder' });
+      field.insert('5');
+      tick();
+      const values = [1, 2, 3].map(() => {
+        field.executeCommand('deleteBackward');
+        tick();
+        return field.getValue();
+      });
+      expect(values).toEqual(['\\sqrt[3]{\\placeholder{}}', '\\sqrt[3]{}', '']);
+    }));
+
+    it('should ask for the box on a deletion only', () => {
+      const restoreSpy = vi.spyOn(EmptyBoxRestorer, 'restore');
+      component.onInput(new InputEvent('input', { inputType: 'insertText', data: '2' }));
+      expect(restoreSpy).not.toHaveBeenCalled();
+      component.onInput(new InputEvent('input', { inputType: 'deleteContentBackward' }));
+      expect(restoreSpy).toHaveBeenCalledWith(component.mathFieldElement, expect.any(Number));
+    });
+
+    // MathLive hands the type on as `data` too, as WebKit strips `inputType` from the event
+    it('should recognise a deletion by the data of the event, as Safari reports it', () => {
+      const restoreSpy = vi.spyOn(EmptyBoxRestorer, 'restore');
+      component.onInput(new InputEvent('input', { data: 'deleteContentBackward' }));
+      expect(restoreSpy).toHaveBeenCalledWith(component.mathFieldElement, expect.any(Number));
+    });
   });
 
   describe('as a multi-line field', () => {

@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { Mock } from 'vitest';
 import { VisibilityRule } from 'common/models/visibility-rule';
@@ -24,6 +25,13 @@ import {
   NumberFieldBadInputDirective
 } from 'editor/modules/editor-shared/directives/number-field-bad-input.directive';
 import { NumberFieldDirective } from 'editor/modules/editor-shared/directives/number-field.directive';
+import {
+  VisibilityRulesHelpComponent
+} from 'editor/src/app/components/dialogs/visibility-rules-help/visibility-rules-help.component';
+import { VisibilityRuleKindPipe } from 'editor/src/app/pipes/visibility-rule-kind.pipe';
+import { VisibilityRuleOperatorOfferedPipe } from 'editor/src/app/pipes/visibility-rule-operator-offered.pipe';
+import { VisibilityRuleTakesValuePipe } from 'editor/src/app/pipes/visibility-rule-takes-value.pipe';
+import { VisibilityRuleTarget } from 'editor/src/app/utils/visibility-rule-targets';
 
 describe('VisibilityRulesDialogComponent', () => {
   let component: VisibilityRulesDialogComponent;
@@ -36,7 +44,7 @@ describe('VisibilityRulesDialogComponent', () => {
     logicalConnectiveOfRules: 'disjunction' | 'conjunction',
     visibilityDelay: number,
     animatedVisibility: boolean,
-    controlIds: { id: string, alias: string }[],
+    controlIds: VisibilityRuleTarget[],
     enableReHide: boolean
   }): Promise<void> => {
     dialogRefMock = { close: vi.fn() };
@@ -44,6 +52,8 @@ describe('VisibilityRulesDialogComponent', () => {
       declarations: [
         VisibilityRulesDialogComponent,
         VisibilityRuleEditorComponent,
+        VisibilityRulesHelpComponent,
+        VisibilityRuleKindPipe, VisibilityRuleOperatorOfferedPipe, VisibilityRuleTakesValuePipe,
         NumberFieldDirective, NumberFieldBadInputDirective
       ],
       imports: [
@@ -57,6 +67,7 @@ describe('VisibilityRulesDialogComponent', () => {
         MatInputModule,
         MatRadioModule,
         MatSelectModule,
+        MatTooltipModule,
         TranslateModule.forRoot()
       ],
       providers: [
@@ -119,10 +130,10 @@ describe('VisibilityRulesDialogComponent', () => {
       expect(visibilityRules[0]).toEqual({ id: 'checkbox_1', operator: '=', value: 'true' });
     }));
 
-    it('should add an empty rule without touching the injected array', () => {
+    it('should add a rule asking for an answer, without touching the injected array (#1718)', () => {
       component.addVisibilityRule();
 
-      expect(component.visibilityRules[1]).toEqual({ id: '', operator: '=', value: '' });
+      expect(component.visibilityRules[1]).toEqual({ id: '', operator: 'answered', value: '' });
       expect(visibilityRules.length).toBe(1);
     });
 
@@ -131,7 +142,19 @@ describe('VisibilityRulesDialogComponent', () => {
 
       component.deleteVisibilityRule(0);
 
-      expect(component.visibilityRules).toEqual([{ id: '', operator: '=', value: '' }]);
+      expect(component.visibilityRules).toEqual([{ id: '', operator: 'answered', value: '' }]);
+    });
+
+    it('should open and close the help with its button (#1718)', () => {
+      const helpButton: HTMLButtonElement = fixture.nativeElement.querySelector('.help-button');
+
+      helpButton.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('aspect-visibility-rules-help')).not.toBeNull();
+
+      helpButton.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('aspect-visibility-rules-help')).toBeNull();
     });
 
     it('should close with all edited visibility settings', () => {

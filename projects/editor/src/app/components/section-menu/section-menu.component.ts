@@ -14,6 +14,7 @@ import { EditorSection } from 'editor/src/app/models/editor-section';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
+import { VisibilityRuleTarget, VisibilityRuleTargets } from 'editor/src/app/utils/visibility-rule-targets';
 
 /**
  * One row of the element list.
@@ -238,12 +239,19 @@ export class SectionMenuComponent implements OnDestroy {
       });
   }
 
-  private getControlIds(): { id: string, alias: string }[] {
+  /**
+   * What a rule of this section can refer to: the elements that report an answer, and the state variables
+   * (#1718). An element a rule of the section already refers to stays in the list, so that opening the dialog
+   * changes no rule.
+   */
+  private getControlIds(): VisibilityRuleTarget[] {
+    const referenced = this.section.visibilityRules.map(rule => rule.id);
     return this.unitService.unit.getAllElements()
       .filter(element => !(element instanceof CompoundElement))
-      .map(element => ({ id: element.id, alias: element.alias }))
+      .filter(element => VisibilityRuleTargets.isOffered(element) || referenced.includes(element.id))
+      .map((element): VisibilityRuleTarget => ({ id: element.id, alias: element.alias, type: element.type }))
       .concat(this.unitService.unit.stateVariables
-        .map(element => ({ id: element.id, alias: element.alias })));
+        .map((element): VisibilityRuleTarget => ({ id: element.id, alias: element.alias, type: 'state-variable' })));
   }
 
   ignoreNumbering() {

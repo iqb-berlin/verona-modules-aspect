@@ -1,58 +1,77 @@
-<h1 mat-dialog-title>{{'section.manageVisibilityRules' | translate}}</h1>
-<div mat-dialog-content class="fx-column-start-stretch fx-gap-20">
-  <div *ngIf="controlIds.length && visibilityRules.length"
-       class="fx-column-start-start">
-    <label>{{'section.logicalConnectiveOfRules' | translate}}</label>
-    <mat-radio-group [(ngModel)]="logicalConnectiveOfRules">
-      <mat-radio-button value="disjunction">{{'section.rulesDisjunction' | translate}}</mat-radio-button>
-      <mat-radio-button value="conjunction">{{'section.rulesConjunction' | translate}}</mat-radio-button>
-    </mat-radio-group>
-    <mat-checkbox
-      [(ngModel)]="enableReHide">
-      {{'section.enableReHide' | translate}}
-    </mat-checkbox>
-    <mat-checkbox
-      [(ngModel)]="animatedVisibility">
-      {{'section.animatedVisibility' | translate}}
-    </mat-checkbox>
-    <mat-form-field class="visibility-delay">
-      <mat-label>{{'section.visibilityDelay' | translate}}</mat-label>
-      <input matInput
-             type="number"
-             step="1000"
-             min="0"
-             required
-             aspectNumberField
-             #visibilityDelayField="aspectNumberField"
-             [disabled]="enableReHide"
-             [placeholder]="'section.visibilityDelay' | translate"
-             [ngModel]="visibilityDelay"
-             (numberChange)="commitDelay($event)">
-      <mat-error>{{ visibilityDelayField.errorText }}</mat-error>
-    </mat-form-field>
-  </div>
-
-  <p *ngIf="!controlIds.length">{{'section.addElementsOrStateVariables' | translate}}</p>
-
-  <div *ngFor="let rule of visibilityRules; let i = index"
-       class="fx-row-start-stretch fx-gap-10">
-    <aspect-visibility-rule-editor [controlIds]="controlIds"
-                                   [(visibilityRule)]="visibilityRules[i]">
-    </aspect-visibility-rule-editor>
-    <button mat-icon-button matSuffix color="warn" (click)="deleteVisibilityRule(i)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </div>
-  <button *ngIf="controlIds.length" mat-button class="add-button" (click)="addVisibilityRule()">
-    <mat-icon class="add-icon">add</mat-icon>
+<div class="dialog-title fx-row-space-between-center">
+  <h1 mat-dialog-title>{{'section.manageVisibilityRules' | translate}}</h1>
+  <button mat-icon-button class="help-button"
+          [matTooltip]="'visibilityRule.help.toggle' | translate"
+          (click)="showHelp = !showHelp">
+    <mat-icon>help_outline</mat-icon>
   </button>
 </div>
+<div mat-dialog-content class="fx-column-start-stretch fx-gap-20">
+  @if (showHelp) {
+    <aspect-visibility-rules-help></aspect-visibility-rules-help>
+  }
+
+  @if (controlIds.length && visibilityRules.length) {
+    <div class="fx-column-start-start">
+      <label>{{'section.logicalConnectiveOfRules' | translate}}</label>
+      <mat-radio-group [(ngModel)]="logicalConnectiveOfRules">
+        <mat-radio-button value="disjunction">{{'section.rulesDisjunction' | translate}}</mat-radio-button>
+        <mat-radio-button value="conjunction">{{'section.rulesConjunction' | translate}}</mat-radio-button>
+      </mat-radio-group>
+      <mat-checkbox
+        [(ngModel)]="enableReHide">
+        {{'section.enableReHide' | translate}}
+      </mat-checkbox>
+      <mat-checkbox
+        [(ngModel)]="animatedVisibility">
+        {{'section.animatedVisibility' | translate}}
+      </mat-checkbox>
+      <mat-form-field class="visibility-delay">
+        <mat-label>{{'section.visibilityDelay' | translate}}</mat-label>
+        <input matInput
+               type="number"
+               step="1000"
+               min="0"
+               required
+               aspectNumberField
+               #visibilityDelayField="aspectNumberField"
+               [disabled]="enableReHide"
+               [placeholder]="'section.visibilityDelay' | translate"
+               [ngModel]="visibilityDelay"
+               (numberChange)="commitDelay($event)">
+        <mat-error>{{ visibilityDelayField.errorText }}</mat-error>
+      </mat-form-field>
+    </div>
+  }
+
+  @if (!controlIds.length) {
+    <p>{{'section.addElementsOrStateVariables' | translate}}</p>
+  }
+
+  @for (rule of visibilityRules; track $index; let i = $index) {
+    <div class="fx-row-start-stretch fx-gap-10">
+      <aspect-visibility-rule-editor [controlIds]="controlIds"
+                                     [(visibilityRule)]="visibilityRules[i]">
+      </aspect-visibility-rule-editor>
+      <button mat-icon-button matSuffix color="warn" (click)="deleteVisibilityRule(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  }
+  @if (controlIds.length) {
+    <button mat-button class="add-button" (click)="addVisibilityRule()">
+      <mat-icon class="add-icon">add</mat-icon>
+    </button>
+  }
+</div>
 <div mat-dialog-actions>
-  <button *ngIf="controlIds.length" mat-button
-          [mat-dialog-close]="{
-            visibilityRules, logicalConnectiveOfRules, visibilityDelay, animatedVisibility, enableReHide
-          }">
-    {{'save' | translate}}
-  </button>
+  @if (controlIds.length) {
+    <button mat-button
+            [mat-dialog-close]="{
+              visibilityRules, logicalConnectiveOfRules, visibilityDelay, animatedVisibility, enableReHide
+            }">
+      {{'save' | translate}}
+    </button>
+  }
   <button mat-button mat-dialog-close>{{'cancel' | translate}}</button>
 </div>

@@ -10,6 +10,9 @@ import { VisibilityRule } from 'common/models/visibility-rule';
 import {
   VisibilityRuleEditorComponent
 } from 'editor/src/app/components/dialogs/visibility-rule-editor/visibility-rule-editor.component';
+import { VisibilityRuleKindPipe } from 'editor/src/app/pipes/visibility-rule-kind.pipe';
+import { VisibilityRuleOperatorOfferedPipe } from 'editor/src/app/pipes/visibility-rule-operator-offered.pipe';
+import { VisibilityRuleTakesValuePipe } from 'editor/src/app/pipes/visibility-rule-takes-value.pipe';
 
 describe('VisibilityRuleEditorComponent', () => {
   let component: VisibilityRuleEditorComponent;
@@ -18,7 +21,10 @@ describe('VisibilityRuleEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VisibilityRuleEditorComponent],
+      declarations: [
+        VisibilityRuleEditorComponent,
+        VisibilityRuleKindPipe, VisibilityRuleOperatorOfferedPipe, VisibilityRuleTakesValuePipe
+      ],
       imports: [
         CommonModule,
         FormsModule,
@@ -80,5 +86,60 @@ describe('VisibilityRuleEditorComponent', () => {
     getNgModels()[0].viewToModelUpdate('text-field_1');
 
     expect(emittedRules[0]).toBe(component.visibilityRule);
+  });
+
+  describe('with the types of the elements (#1718)', () => {
+    beforeEach(() => {
+      component.controlIds = [
+        { id: 'checkbox_1', alias: 'Kontrollkästchen', type: 'checkbox' },
+        { id: 'geometry_1', alias: 'Geometrie', type: 'geometry' }
+      ];
+      fixture.detectChanges();
+    });
+
+    const openOperators = (): HTMLElement[] => {
+      (fixture.nativeElement.querySelectorAll('mat-select')[1] as HTMLElement).click();
+      fixture.detectChanges();
+      return Array.from(document.querySelectorAll('mat-option'));
+    };
+
+    it('should list every operator and grey out those that do not suit the element', () => {
+      const options = openOperators();
+
+      expect(options.length).toBe(14);
+      const greyedOut = options
+        .filter(option => option.getAttribute('aria-disabled') === 'true')
+        .map(option => option.textContent?.trim());
+      expect(greyedOut).toEqual(['<', '≤', '>', '≥', 'visibilityRule.contains', 'visibilityRule.pattern',
+        'visibilityRule.minLength', 'visibilityRule.maxLength']);
+    });
+
+    it('should keep an operator that suits the new element, with its value', () => {
+      component.visibilityRule = { id: 'geometry_1', operator: 'changed', value: '' };
+      fixture.detectChanges();
+
+      getNgModels()[0].viewToModelUpdate('checkbox_1');
+
+      expect(component.visibilityRule).toEqual({ id: 'checkbox_1', operator: 'changed', value: '' });
+    });
+
+    it('should switch to the first operator of the new element when the old one does not suit it', () => {
+      getNgModels()[0].viewToModelUpdate('geometry_1');
+
+      expect(component.visibilityRule).toEqual({ id: 'geometry_1', operator: 'changed', value: '' });
+      expect(emittedRules).toEqual([component.visibilityRule]);
+    });
+
+    it('should clear the value and hide its field for an operator that compares nothing', () => {
+      getNgModels()[1].viewToModelUpdate('answered');
+      fixture.detectChanges();
+
+      expect(component.visibilityRule.value).toBe('');
+      expect(fixture.nativeElement.querySelector('input')).toBeNull();
+    });
+
+    it('should explain what the element is compared by', () => {
+      expect(fixture.nativeElement.querySelector('.rule-hint').textContent).toContain('visibilityRule.hint.checkbox');
+    });
   });
 });

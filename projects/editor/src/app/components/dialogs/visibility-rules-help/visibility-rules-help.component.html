@@ -1,0 +1,48 @@
+<div class="help">
+  <p class="help-text">{{'visibilityRule.help.intro' | translate}}</p>
+  <table class="help-table">
+    <thead>
+      <tr>
+        <th class="help-cell">{{'visibilityRule.help.elements' | translate}}</th>
+        <th class="help-cell">{{'visibilityRule.help.compared' | translate}}</th>
+        <th class="help-cell">{{'visibilityRule.help.answered' | translate}}</th>
+        <th class="help-cell">{{'visibilityRule.help.operators' | translate}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows; track row.kind) {
+        <tr>
+          <td class="help-cell">{{'visibilityRule.help.kind.' + row.kind + '.elements' | translate}}</td>
+          <td class="help-cell">{{'visibilityRule.help.kind.' + row.kind + '.compared' | translate}}</td>
+          <td class="help-cell">
+            @if (row.canBeAnswered) {
+              {{'visibilityRule.help.kind.' + row.kind + '.answered' | translate}}
+            } @else {
+              {{'visibilityRule.help.onlyChanged' | translate}}
+            }
+          </td>
+          <td class="help-cell">
+            @if (row.comparesAll) {
+              {{'visibilityRule.help.allOperators' | translate}}
+            } @else if (!row.comparing.length) {
+              {{'visibilityRule.help.none' | translate}}
+            } @else {
+              @for (operator of row.comparing; track operator; let last = $last) {
+                {{operator.length > 1 ? ('visibilityRule.' + operator | translate) : operator}}{{last ? '' : ', '}}
+              }
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  <p class="help-text">{{'visibilityRule.help.notes' | translate}}</p>
+  <h3 class="help-heading">{{'visibilityRule.help.examplesTitle' | translate}}</h3>
+  <ul class="help-examples">
+    <li>{{'visibilityRule.help.exampleAnswered' | translate}}</li>
+    <li>{{'visibilityRule.help.exampleOption' | translate}}</li>
+    <li>{{'visibilityRule.help.exampleContains' | translate}}</li>
+  </ul>
+  <p class="help-text">{{'visibilityRule.help.connective' | translate}}</p>
+  <p class="help-text">{{'visibilityRule.help.delay' | translate}}</p>
+</div>

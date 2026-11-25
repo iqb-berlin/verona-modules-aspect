@@ -1,29 +1,37 @@
+@let kind = visibilityRule.id | visibilityRuleKind : controlIds;
 <div class="fx-row-start-stretch fx-gap-10">
   <mat-form-field>
     <mat-label>{{'section.controlId' | translate}}</mat-label>
-    <mat-select [(ngModel)]="visibilityRule.id"
-                (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
-      <mat-option *ngFor="let idPair of controlIds" [value]="idPair.id">
-        {{idPair.alias}}
-      </mat-option>
+    <mat-select [ngModel]="visibilityRule.id"
+                (ngModelChange)="selectTarget($event)">
+      @for (idPair of controlIds; track idPair.id) {
+        <mat-option [value]="idPair.id">{{idPair.alias}}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>{{'section.operator' | translate}}</mat-label>
-    <mat-select [(ngModel)]="visibilityRule.operator"
-                (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
-      <mat-option *ngFor="let operator of VisibilityRuleOperators"
-                  [value]="operator">
-        {{operator.length > 1 ? ('visibilityRule.' + operator | translate) : operator}}
-      </mat-option>
+    <mat-select [ngModel]="visibilityRule.operator"
+                (ngModelChange)="selectOperator($event)">
+      @for (operator of VisibilityRuleOperators; track operator) {
+        <mat-option [value]="operator"
+                    [disabled]="!(operator | visibilityRuleOperatorOffered : kind)">
+          {{operator.length > 1 ? ('visibilityRule.' + operator | translate) : operator}}
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>{{'section.value' | translate}}</mat-label>
-    <input matInput
-           [(ngModel)]="visibilityRule.value"
-           (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
-  </mat-form-field>
+  @if (visibilityRule.operator | visibilityRuleTakesValue) {
+    <mat-form-field>
+      <mat-label>{{'section.value' | translate}}</mat-label>
+      <input matInput
+             [(ngModel)]="visibilityRule.value"
+             (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
+    </mat-form-field>
+  }
 </div>
+@if (kind) {
+  <p class="rule-hint">{{'visibilityRule.hint.' + kind | translate}}</p>
+}

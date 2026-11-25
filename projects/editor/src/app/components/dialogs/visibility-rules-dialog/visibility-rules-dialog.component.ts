@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { MessageService } from 'editor/src/app/services/message.service';
+import { VisibilityRuleTarget } from 'editor/src/app/utils/visibility-rule-targets';
 
 @Component({
   templateUrl: './visibility-rules-dialog.component.html',
@@ -12,10 +13,12 @@ import { MessageService } from 'editor/src/app/services/message.service';
 export class VisibilityRulesDialogComponent {
   visibilityRules!: VisibilityRule[];
   logicalConnectiveOfRules!: 'disjunction' | 'conjunction';
-  controlIds!: { id: string, alias: string }[];
+  controlIds!: VisibilityRuleTarget[];
   visibilityDelay!: number;
   animatedVisibility!: boolean;
   enableReHide!: boolean;
+  /** Whether the help with what each element is compared by is open (#1718). */
+  showHelp: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: {
@@ -23,7 +26,7 @@ export class VisibilityRulesDialogComponent {
       logicalConnectiveOfRules: 'disjunction' | 'conjunction',
       visibilityDelay: number,
       animatedVisibility: boolean,
-      controlIds: { id: string, alias: string }[],
+      controlIds: VisibilityRuleTarget[],
       enableReHide: boolean,
     },
     private messageService: MessageService,
@@ -54,8 +57,9 @@ export class VisibilityRulesDialogComponent {
     this.visibilityDelay = update.value;
   }
 
+  /** A new rule starts out asking whether there is an answer at all, which needs no value (#1718). */
   addVisibilityRule(): void {
-    this.visibilityRules.push({ id: '', operator: '=', value: '' });
+    this.visibilityRules.push({ id: '', operator: 'answered', value: '' });
   }
 
   deleteVisibilityRule(index: number): void {

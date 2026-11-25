@@ -21,6 +21,9 @@ import {
   LikertRowElement
 } from 'common/models/elements/likert-row';
 import { TextElement } from 'common/models/elements/text';
+import { CheckboxElement } from 'common/models/elements/checkbox';
+import { ButtonElement } from 'common/models/elements/button';
+import { UIElement } from 'common/models/elements/element';
 import { Measurement, PositionedUIElement } from 'common/models/ui-element-interfaces';
 import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import {
@@ -412,6 +415,24 @@ describe('SectionMenuComponent', () => {
       .toHaveBeenCalledWith(component.section, 'logicalConnectiveOfRules', 'conjunction');
     expect(sectionService.updateSectionProperty)
       .toHaveBeenCalledWith(component.section, 'enableReHide', true);
+  });
+
+  it('should offer the elements with an answer, and keep one a rule of the section refers to (#1718)', () => {
+    const elements: UIElement[] = [
+      new CheckboxElement({ type: 'checkbox', id: 'checkbox_1', alias: 'Kontrollkästchen' }),
+      new ButtonElement({ type: 'button', id: 'button_1', alias: 'Knopf 1' }),
+      new ButtonElement({ type: 'button', id: 'button_2', alias: 'Knopf 2' })
+    ];
+    unitServiceMock.unit.getAllElements = () => elements;
+    component.section.visibilityRules = [{ id: 'button_2', operator: '=', value: '' }];
+    dialogService.showVisibilityRulesDialog.mockReturnValue(of(undefined));
+
+    component.showVisibilityRulesDialog();
+
+    expect(dialogService.showVisibilityRulesDialog.mock.calls[0][2]).toEqual([
+      { id: 'checkbox_1', alias: 'Kontrollkästchen', type: 'checkbox' },
+      { id: 'button_2', alias: 'Knopf 2', type: 'button' }
+    ]);
   });
 
   it('should duplicate the section', () => {

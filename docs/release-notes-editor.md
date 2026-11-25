@@ -2,10 +2,16 @@ Editor
 ======
 ## next
 ### Neue Funktionen
+- **Bedingungen zur Sichtbarkeit**
+  - Neue Bedingungen ohne Wert: „ist beantwortet“, „ist nicht beantwortet“, „wurde bearbeitet“ und „wurde nicht bearbeitet“. Eine neue Bedingung beginnt mit „ist beantwortet“ ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+  - Ein ?-Knopf im Dialog öffnet eine Hilfe: was bei jedem Element verglichen wird, welche Vergleiche es gibt, Beispiele und was ODER, UND und die Verzögerung bewirken. Unter jeder Bedingung steht in einer Zeile, womit verglichen wird ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
 - **Studio**
   - Der Editor meldet dem Studio, welche Pakete und Widgets eine Aufgabe braucht: GeoGebra für das Geometrie-Element (zum Abspielen und zum Bearbeiten), das Periodensystem und den Moleküleditor (zum Abspielen). Bei bestehenden Aufgaben geschieht das mit der nächsten Änderung ([#1709](https://github.com/iqb-berlin/verona-modules-aspect/issues/1709))
 
 ### Änderungen
+- **Bedingungen zur Sichtbarkeit**
+  - Operatoren, die nicht zum gewählten Element passen, sind ausgegraut. Passt der Operator nach einem Elementwechsel nicht mehr, springt er auf den ersten passenden. Eine gespeicherte Bedingung behält ihren Operator, auch wenn er ausgegraut ist ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+  - Die Elementauswahl bietet Knopf, Auslöser, Rahmen und Textmarkierung nicht mehr an, Text nur mit Markiermöglichkeit und Bild nur mit Lupe. Ein Element, auf das eine Bedingung des Abschnitts schon zeigt, bleibt wählbar ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
 - **GeoGebra**
   - Das Werkzeug „Bild“ wird auch in der Vorschau nicht mehr angeboten, wie im Player. Steht es im Feld „Anpassung Werkzeugleiste“ (26), weist ein Hinweis am Feld darauf hin ([#1700](https://github.com/iqb-berlin/verona-modules-aspect/issues/1700))
 - **Studio**

@@ -1,12 +1,23 @@
 Player
 ======
 ## next
+### Neue Funktionen
+- **Bedingungen zur Sichtbarkeit**
+  - Ein Abschnitt kann davon abhängen, ob ein Element beantwortet ist oder ob es bearbeitet wurde, ohne dass man dafür einen Wert kennen muss: „ist beantwortet“, „ist nicht beantwortet“, „wurde bearbeitet“ und „wurde nicht bearbeitet“ ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+
 ### Änderungen
 - **GeoGebra**
   - Die Antwort enthält nur noch die Konstruktion, nicht mehr die ganze GeoGebra-Datei. Bilder, Einstellungen und Skript kommen beim Wiederherstellen aus der Aufgabe; eine Antwort eines früheren Players bringt sie weiter selbst mit. Jede Zustandsmeldung an die Testumgebung wird dadurch kleiner, bei einer Datei mit einem Bild von 1,4 MB von 1,9 MB auf wenige KB. Eine in coding-box heruntergeladene `.ggb`-Datei der Antwort enthält dadurch nur die Konstruktion, ohne die Bilder der Aufgabe ([#1650](https://github.com/iqb-berlin/verona-modules-aspect/issues/1650))
   - Das Werkzeug „Bild“ wird nicht mehr angeboten, auch nicht in der Standard-Werkzeugleiste, und ein Bild lässt sich nicht mehr in die Zeichnung ziehen oder einfügen. So gelangen keine Dateien vom Gerät und keine Kamerafotos in die Aufgabe ([#1700](https://github.com/iqb-berlin/verona-modules-aspect/issues/1700))
 
 ### Fehlerbehebungen
+- **Bedingungen zur Sichtbarkeit**
+  - Am Formelbereich prüft eine Bedingung den Text und die Formeln, wie sie dastehen, statt des gespeicherten Formats. „Minimale Länge 1“ ist erst nach einer Eingabe erfüllt statt sofort, „Enthält“ findet nur, was eingegeben ist, und steht nur eine Zahl da, greifen auch Größenvergleiche; „< 3“ ist wie beim Eingabefeld schon erfüllt, solange nichts eingegeben ist. Eine Bedingung, deren Wert `"value":` enthält (die Umgehung aus [#1716](https://github.com/iqb-berlin/verona-modules-aspect/issues/1716)), prüft weiter das gespeicherte Format ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+  - Am Rechenkästchen prüft eine Bedingung die Ergebniszeile, wie sie dasteht, statt des gespeicherten Formats; auch hier bleibt eine Bedingung mit `"value":` beim gespeicherten Format ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+  - Am Formelfeld zählen mehrere Zeilen als ein Text, durch Leerzeichen getrennt; ein Return nach der Antwort ändert am Vergleich nichts ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+  - „= false“ am Kontrollkästchen ist erfüllt, solange es nicht angekreuzt ist, und „≠ false“, sobald es angekreuzt ist; am Bild entsprechend für die Lupe. Bisher war „= false“ nie und „≠ false“ immer erfüllt ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+  - An der Ablegeliste zählen „Minimale Länge“ und „Maximale Länge“ die abgelegten Elemente statt der Zeichen ihrer IDs ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+  - Bei Größenvergleichen gilt ein Komma als Dezimaltrenner, in der Antwort wie in der Bedingung: „2,5“ ist größer als 2 ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
 - **Formelbereich**
   - Return auf der Bildschirmtastatur beginnt die neue Zeile sofort, und der Cursor steht darin; bisher erschien die Zeile erst mit der nächsten Taste ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - In Firefox steht der Cursor nach Enter in der neuen Zeile statt am Ende der vorigen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))

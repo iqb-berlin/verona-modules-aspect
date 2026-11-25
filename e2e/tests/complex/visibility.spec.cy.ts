@@ -131,6 +131,32 @@ describe('Section Visibility Handling', { testIsolation: false }, () => {
     });
   });
 
+  /* A formula area stores its answer as JSON, and rules compared with that: an empty one is "[]", two characters
+     long, so "Minimale Länge 1" held from the start (#1716). Rules now read the text and formulas as they stand, and
+     "ist beantwortet" asks for content without a value (#1718). */
+  context('player: rules on a formula area', () => {
+    before('opens a player with two sections that depend on a formula area', () => {
+      cy.openPlayer();
+      cy.loadUnit('section-visibility-answered.json');
+    });
+
+    it('hides both sections while nothing is entered, also after a click into the area', () => {
+      cy.get('aspect-section').eq(1).should('not.be.visible');
+      cy.get('aspect-section').eq(2).should('not.be.visible');
+      cy.get('aspect-text-area-math .text-area').click();
+      cy.get('aspect-text-area-math').contains('button', 'Formel einfügen').click({ force: true });
+      cy.get('aspect-section').eq(1).should('not.be.visible');
+      cy.get('aspect-section').eq(2).should('not.be.visible');
+    });
+
+    it('shows both sections once something is entered', () => {
+      cy.get('aspect-text-area-math math-field').shadow().find('.ML__content').click()
+        .type('2');
+      cy.get('aspect-section').eq(1).should('be.visible').and('contain.text', 'Beantwortet');
+      cy.get('aspect-section').eq(2).should('be.visible').and('contain.text', 'Mindestens ein Zeichen');
+    });
+  });
+
   /** The element the player scrolls in, found from a section. */
   const scrollContainerOf = (section: HTMLElement): HTMLElement => {
     const scrolls = (element: HTMLElement): boolean => element.scrollHeight > element.clientHeight &&

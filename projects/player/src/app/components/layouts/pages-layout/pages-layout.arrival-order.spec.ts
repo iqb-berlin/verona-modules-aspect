@@ -14,6 +14,7 @@ import { NativeEventService } from 'player/src/app/services/native-event.service
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
+import { ElementTypeService } from 'player/src/app/services/element-type.service';
 import { PageComponent } from 'player/src/app/components/page/page.component';
 import {
   SectionVisibilityHandlingDirective
@@ -68,7 +69,8 @@ describe('Pages reporting their visibility (#1383)', () => {
     const directive = new SectionVisibilityHandlingDirective(
       new ElementRef(document.createElement('div')),
       unitStateService,
-      stateVariableStateService
+      stateVariableStateService,
+      new ElementTypeService()
     );
     directive.section = createSection(withRule);
     directive.pageIndex = scrollPageIndex;

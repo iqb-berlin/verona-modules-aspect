@@ -1,0 +1,28 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.14.0",
+  "pages": [{
+    "sections": [
+      {
+        "dynamicPositioning": true,
+        "elements": [
+          { "type": "text-area-math", "id": "area", "alias": "area" }
+        ]
+      },
+      {
+        "dynamicPositioning": true,
+        "visibilityRules": [{ "id": "area", "operator": "answered", "value": "" }],
+        "elements": [
+          { "type": "text", "id": "answered_text", "alias": "answered_text", "text": "<p>Beantwortet</p>" }
+        ]
+      },
+      {
+        "dynamicPositioning": true,
+        "visibilityRules": [{ "id": "area", "operator": "minLength", "value": "1" }],
+        "elements": [
+          { "type": "text", "id": "length_text", "alias": "length_text", "text": "<p>Mindestens ein Zeichen</p>" }
+        ]
+      }
+    ]
+  }]
+}

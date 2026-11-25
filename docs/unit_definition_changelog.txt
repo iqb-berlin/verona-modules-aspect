@@ -285,3 +285,7 @@ iqb-aspect-definition@1.0.0
   - new property: showInfoName: boolean (default true) (#1420)
   - new property: showInfoSymbol: boolean (default true) (#1420)
   - new property: highlightBlocks: boolean (default false) (#1420)
+
+4.14.0
+- Section:
+  - visibilityRules[].operator: new values 'answered', 'notAnswered', 'changed', 'notChanged' (#1718)

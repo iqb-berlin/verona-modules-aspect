@@ -275,6 +275,9 @@ describe('Editor menu tests', { testIsolation: false }, () => {
       cy.get('aspect-visibility-rule-editor').find('mat-select').first().click();
 
       cy.get('.cdk-overlay-pane').contains('mat-option', 'state-variable_1').click();
+      // A new rule asks whether there is an answer, without a value (#1718)
+      cy.get('aspect-visibility-rule-editor').find('mat-select').eq(1).click();
+      cy.get('.cdk-overlay-pane').contains('mat-option', '=').click();
       cy.get('aspect-visibility-rule-editor').contains('mat-form-field', 'Wert').find('input').clear().type('0');
 
       cy.get('mat-dialog-container').contains('button', 'Speichern').click();

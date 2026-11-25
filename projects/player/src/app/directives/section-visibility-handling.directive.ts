@@ -11,6 +11,8 @@ import { VisibilityRule } from 'common/models/visibility-rule';
 import { Response } from '@iqbspecs/response/response.interface';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 import { TimerManager } from 'player/src/app/classes/timer.manager';
+import { VisibilityRuleEvaluator } from 'player/src/app/classes/visibility-rule-evaluator';
+import { ElementTypeService } from 'player/src/app/services/element-type.service';
 
 @Directive({
   selector: '[aspectSectionVisibilityHandling]',
@@ -32,7 +34,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private unitStateService: UnitStateService,
-    private stateVariableStateService: StateVariableStateService
+    private stateVariableStateService: StateVariableStateService,
+    private elementTypeService: ElementTypeService
   ) {}
 
   ngOnInit(): void {
@@ -174,61 +177,13 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   private areVisibilityRulesFulfilled(): boolean {
     const methodName = this.section.logicalConnectiveOfRules === 'disjunction' ? 'some' : 'every';
-    return this.section.visibilityRules[methodName](rule => {
-      if (this.getAnyElementCodeById(rule.id)) {
-        return this.isRuleFullFilled(rule);
-      }
-      return false;
-    });
+    return this.section.visibilityRules[methodName](rule => this.isRuleFullFilled(rule));
   }
 
+  /** A rule on an element without an answer is never fulfilled, whatever it asks -- also `notAnswered`. */
   private isRuleFullFilled(rule: VisibilityRule): boolean {
-    let isFullFilled;
-    const codeValue = this.getAnyElementCodeById(rule.id)?.value;
-    const value = codeValue || codeValue === 0 ? codeValue : '';
-    switch (rule.operator) {
-      case '=':
-        isFullFilled = value.toString() === rule.value;
-        break;
-      case '≠':
-        isFullFilled = value.toString() !== rule.value;
-        break;
-      case '>':
-        isFullFilled = Number(value) > Number(rule.value);
-        break;
-      case '<':
-        isFullFilled = Number(value) < Number(rule.value);
-        break;
-      case '≥':
-        isFullFilled = Number(value) >= Number(rule.value);
-        break;
-      case '≤':
-        isFullFilled = Number(value) <= Number(rule.value);
-        break;
-      case 'contains':
-        isFullFilled = value.toString().includes(rule.value);
-        break;
-      case 'pattern':
-        isFullFilled = SectionVisibilityHandlingDirective.isPatternMatching(value.toString(), rule.value);
-        break;
-      case 'minLength':
-        isFullFilled = value.toString().length >= Number(rule.value);
-        break;
-      case 'maxLength':
-        isFullFilled = value.toString().length <= Number(rule.value);
-        break;
-      default:
-        isFullFilled = false;
-    }
-    return isFullFilled;
-  }
-
-  private static isPatternMatching(value: string, ruleValue: string): boolean {
-    // We use a similar implementation to Angular's PatternValidator
-    let regexStr = (ruleValue.charAt(0) !== '^') ? `^${ruleValue}` : ruleValue;
-    if (ruleValue.charAt(ruleValue.length - 1) !== '$') regexStr += '$';
-    const regex = new RegExp(regexStr);
-    return regex.test(value.toString());
+    const code = this.getAnyElementCodeById(rule.id);
+    return !!code && VisibilityRuleEvaluator.isFulfilled(rule, code, this.elementTypeService.getType(rule.id));
   }
 
   ngOnDestroy(): void {

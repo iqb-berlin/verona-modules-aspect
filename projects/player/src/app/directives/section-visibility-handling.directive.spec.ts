@@ -8,6 +8,8 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
+import { ElementTypeService } from 'player/src/app/services/element-type.service';
+import { Unit } from 'common/models/unit';
 import { SectionVisibilityHandlingDirective } from './section-visibility-handling.directive';
 
 /*
@@ -19,6 +21,7 @@ describe('SectionVisibilityHandlingDirective', () => {
   let hostElement: HTMLElement;
   let unitStateService: SpyObj<UnitStateService> & { elementCodeChanged: Subject<Response> };
   let stateVariableStateService: SpyObj<StateVariableStateService> & { elementCodeChanged: Subject<Response> };
+  let elementTypeService: ElementTypeService;
   let emittedVisibilities: IsVisibleIndex[];
   let elementCodes: Record<string, Response>;
 
@@ -54,10 +57,12 @@ describe('SectionVisibilityHandlingDirective', () => {
     );
     stateVariableStateService.getElementCodeById.mockReturnValue(undefined);
 
+    elementTypeService = new ElementTypeService();
     directive = new SectionVisibilityHandlingDirective(
       new ElementRef(hostElement),
       unitStateService,
-      stateVariableStateService
+      stateVariableStateService,
+      elementTypeService
     );
   });
 
@@ -240,33 +245,16 @@ describe('SectionVisibilityHandlingDirective', () => {
     expect(emittedVisibilities.length).toBe(1);
   });
 
-  it('should evaluate all rule operators', () => {
-    const isFulfilled = (rule: VisibilityRule, value: string | number): boolean => {
-      emittedVisibilities = [];
-      elementCodes[rule.id] = { id: rule.id, status: 'VALUE_CHANGED', value };
-      const ruleDirective = new SectionVisibilityHandlingDirective(
-        new ElementRef(document.createElement('div')), unitStateService, stateVariableStateService
-      );
-      ruleDirective.section = createSection([rule], { enableReHide: true });
-      ruleDirective.pageIndex = 0;
-      ruleDirective.sectionIndex = 1;
-      ruleDirective.isVisibleIndexChange.subscribe(event => emittedVisibilities.push(event));
-      ruleDirective.ngOnInit();
-      ruleDirective.ngOnDestroy();
-      return emittedVisibilities[0].isVisible;
-    };
+  // The rules are decided by VisibilityRuleEvaluator; what the directive adds is the type of the element (#1718).
+  it('should read the answer by the type of its element', () => {
+    elementTypeService.setUnit({
+      getAllElements: () => [{ id: 'area', type: 'text-area-math' }],
+      stateVariables: []
+    } as unknown as Unit);
+    elementCodes.area = { id: 'area', status: 'DISPLAYED', value: '[]' };
+    initDirective(createSection([{ id: 'area', operator: 'minLength', value: '1' }]));
 
-    expect(isFulfilled({ id: 'e', operator: '=', value: '3' }, 3)).toBe(true);
-    expect(isFulfilled({ id: 'e', operator: '≠', value: '3' }, 4)).toBe(true);
-    expect(isFulfilled({ id: 'e', operator: '>', value: '3' }, 4)).toBe(true);
-    expect(isFulfilled({ id: 'e', operator: '<', value: '3' }, 4)).toBe(false);
-    expect(isFulfilled({ id: 'e', operator: '≥', value: '3' }, 3)).toBe(true);
-    expect(isFulfilled({ id: 'e', operator: '≤', value: '3' }, 4)).toBe(false);
-    expect(isFulfilled({ id: 'e', operator: 'contains', value: 'ei' }, 'Meine Antwort')).toBe(true);
-    expect(isFulfilled({ id: 'e', operator: 'pattern', value: '[0-9]+' }, '123')).toBe(true);
-    expect(isFulfilled({ id: 'e', operator: 'pattern', value: '[0-9]+' }, '12a')).toBe(false);
-    expect(isFulfilled({ id: 'e', operator: 'minLength', value: '3' }, 'abc')).toBe(true);
-    expect(isFulfilled({ id: 'e', operator: 'maxLength', value: '3' }, 'abcd')).toBe(false);
+    expect(hostElement.style.display).toBe('none');
   });
 
   it('should require all rules for a conjunction', () => {

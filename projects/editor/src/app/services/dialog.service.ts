@@ -24,6 +24,7 @@ import {
   StateVariablesDialogComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
 import { VisibilityRule } from 'common/models/visibility-rule';
+import { VisibilityRuleTarget } from 'editor/src/app/utils/visibility-rule-targets';
 import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
@@ -279,7 +280,7 @@ export class DialogService {
 
   showVisibilityRulesDialog(visibilityRules: VisibilityRule[],
                             logicalConnectiveOfRules: 'disjunction' | 'conjunction',
-                            controlIds: { id: string, alias: string }[],
+                            controlIds: VisibilityRuleTarget[],
                             visibilityDelay: number,
                             animatedVisibility: boolean,
                             enableReHide: boolean

@@ -56,7 +56,8 @@ export class TextElement extends UIElement implements TextProperties {
     }
   }
 
-  private isSelectable(): boolean {
+  /** Whether the text can be marked: through a marking panel or with one of its own colours. */
+  isSelectable(): boolean {
     return this.markingPanels.length > 0 ||
         (this.highlightableYellow ||
         this.highlightableTurquoise ||

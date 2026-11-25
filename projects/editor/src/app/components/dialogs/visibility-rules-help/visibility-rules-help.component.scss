@@ -1,0 +1,27 @@
+/* Laid out like the hints dialog (variable-info-findings-dialog): text kept to a readable width, the table with
+   the same cells, the headings with the same weight. */
+.help-text {
+  max-width: 70ch;
+}
+
+.help-heading {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.help-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.help-cell {
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.help-examples {
+  margin-top: 0;
+}

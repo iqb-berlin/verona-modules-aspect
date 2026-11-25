@@ -106,6 +106,12 @@ import {
 import { BytesPipe } from 'editor/src/app/pipes/bytes.pipe';
 import { SupportsQualityPipe } from 'editor/src/app/pipes/supports-quality.pipe';
 import { MoveSectionUpAllowedPipe } from 'editor/src/app/pipes/move-section-up-allowed.pipe';
+import { VisibilityRuleKindPipe } from 'editor/src/app/pipes/visibility-rule-kind.pipe';
+import { VisibilityRuleOperatorOfferedPipe } from 'editor/src/app/pipes/visibility-rule-operator-offered.pipe';
+import { VisibilityRuleTakesValuePipe } from 'editor/src/app/pipes/visibility-rule-takes-value.pipe';
+import {
+  VisibilityRulesHelpComponent
+} from 'editor/src/app/components/dialogs/visibility-rules-help/visibility-rules-help.component';
 
 import { ReferenceListComponent } from 'editor/src/app/components/reference-list/reference-list.component';
 import { ElementListComponent } from 'editor/src/app/components/element-list/element-list.component';
@@ -186,6 +192,10 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     BytesPipe,
     SupportsQualityPipe,
     MoveSectionUpAllowedPipe,
+    VisibilityRuleKindPipe,
+    VisibilityRuleOperatorOfferedPipe,
+    VisibilityRuleTakesValuePipe,
+    VisibilityRulesHelpComponent,
     IDEditDialogComponent,
     OverviewDialogComponent,
     VariableInfoFindingsDialogComponent,

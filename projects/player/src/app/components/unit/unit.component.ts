@@ -34,6 +34,7 @@ import { InstantiationEror } from 'common/classes/instantiation-error';
 import { GeometryVariableStateService } from 'player/src/app/services/geometry-variable-state.service';
 import { GeometryElement } from 'common/models/elements/geometry';
 import { Response } from '@iqbspecs/response/response.interface';
+import { ElementTypeService } from 'player/src/app/services/element-type.service';
 
 @Component({
   selector: 'aspect-unit',
@@ -71,7 +72,8 @@ export class UnitComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,
               private changeDetectorRef: ChangeDetectorRef,
               private translateService: TranslateService,
-              private navigationService: NavigationService) {
+              private navigationService: NavigationService,
+              private elementTypeService: ElementTypeService) {
   }
 
   ngOnInit(): void {
@@ -111,6 +113,7 @@ export class UnitComponent implements OnInit, OnDestroy {
           this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
           this.veronaPostService.sessionID = message.sessionId;
           this.initElementCodes(message, unit);
+          this.elementTypeService.setUnit(unit);
           this.elementModelElementCodeMappingService.dragNDropValueObjects = [
             ...unit.getAllElements('drop-list'),
             ...unit.getAllElements('drop-list-simple')]

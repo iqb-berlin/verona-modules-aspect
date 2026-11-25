@@ -16,6 +16,15 @@ const greekCapital = (insert: string, name: string): Partial<VirtualKeyboardKeyc
   label: `${convertLatexToMarkup(insert, { letterShapeStyle: 'tex' })}<aside class="greek-capital-name">${name}</aside>`
 });
 
+/** The label of the ÷ key, typeset by MathLive like the labels of the + and − keys beside it, so that it
+    comes in their font and is drawn bold with them (`.MLK__keycap .ML__cmr` in common-styles.css). As
+    plain text it came in the system font, which draws it far smaller than + and − (#760). The key inserts
+    `\colon`, not this sign. */
+const DIVIDE_LABEL = convertLatexToMarkup('\\div');
+
+/** The label of the × key, typeset like `DIVIDE_LABEL` and for the same reason. The key inserts `\cdot`. */
+const TIMES_LABEL = convertLatexToMarkup('\\times');
+
 export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
   iqbPhysics: {
     label: '123',
@@ -41,11 +50,12 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '9'
         },
         {
-          label: '÷',
+          label: DIVIDE_LABEL,
           latex: '\\colon'
         },
         '[separator-5]',
         {
+          class: 'tall-label',
           latex: '\\frac{#?}{#?}',
           insert: '\\frac{#@}{#?}'
         },
@@ -78,7 +88,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '6'
         },
         {
-          label: '×',
+          label: TIMES_LABEL,
           latex: '\\cdot'
         },
         '[separator-5]',
@@ -195,11 +205,12 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '9'
         },
         {
-          label: '÷',
+          label: DIVIDE_LABEL,
           latex: '\\colon'
         },
         '[separator-5]',
         {
+          class: 'tall-label',
           latex: '\\frac{#?}{#?}',
           insert: '\\frac{#@}{#?}'
         },
@@ -232,7 +243,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
           latex: '6'
         },
         {
-          label: '×',
+          label: TIMES_LABEL,
           latex: '\\cdot'
         },
         '[separator-5]',
@@ -371,7 +382,7 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
         '\\cap',
         {
           latex: '\\int^{{#?}}_{#?}\\!#?\\,\\mathrm{d}x',
-          class: 'small'
+          class: 'small tall-label'
         },
         '\\%'
       ],

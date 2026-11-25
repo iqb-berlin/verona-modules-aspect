@@ -169,3 +169,53 @@ blockquote > p:empty:last-child:after {
 .MLK__shift .greek-capital-name {
   display: none;
 }
+
+/* The shift hint in the corner of a key is drawn at 16px by MathLive, at 4px from the corner. On the
+   keys of 42px height that MathLive uses in windows up to 768px high, the long hints (sin⁻¹, cos⁻¹,
+   tan⁻¹, log with its base) reached into the label of the key (#760). `--keycap-shift-font-size` is
+   MathLive's own setting for the hint; the position has no setting of its own. */
+.ML__keyboard {
+  --keycap-shift-font-size: 12px;
+}
+
+.ML__keyboard .MLK__shift {
+  top: 2px;
+  right: 3px;
+}
+
+/* A keyboard up to 768px wide, as on an iPad upright, has keys of 69px width and 42px height: there
+   even the 12px hints touched sin, cos, tan and log. The container is MathLive's `.MLK__plate`, which
+   its own breakpoints for the key sizes ask as well. */
+@container (max-width: 768px) {
+  .ML__keyboard .MLK__shift {
+    font-size: 10px;
+    top: 1px;
+    right: 2px;
+  }
+}
+
+/* Labels that are taller than a key of 42px at MathLive's font size of 24px: the fraction with its two
+   boxes and the integral with its bounds (`tall-label` in formula-keyboard-presets.config.ts). Their
+   size follows the height of the keys, which MathLive sets per window size in its variable
+   `--_keycap-height`: 60px keys get about 22px, 42px keys about 15px. Before, the fraction stuck out
+   of a 42px key above and below, was cut off there, and covered the key below while pressed (#760).
+   The integral is taller for its size than the fraction and gets less. The selectors outweigh
+   MathLive's `.MLK__rows > .MLK__row > div.small`. */
+.MLK__rows > .MLK__row > .MLK__keycap.tall-label {
+  font-size: calc(var(--_keycap-height) * 0.36);
+}
+
+.MLK__rows > .MLK__row > .MLK__keycap.small.tall-label {
+  font-size: calc(var(--_keycap-height) * 0.32);
+}
+
+/* +, −, × and ÷ on the formula keys from the bold KaTeX font, every other character of a key as before
+   (#760). The regular font draws + and − with strokes thinner than those of the digits beside them, so on
+   a screen of normal pixel density they looked grey and blurred; × and ÷ go with them so that the four
+   operator keys look alike (their labels in formula-keyboard-presets.config.ts). Only these characters
+   are in the family (`unicode-range` in mathlive-fonts.css); all others come from KaTeX_Main. The keys
+   only: a formula in a field or in a text keeps the regular signs, so that the two look alike. The
+   selector outweighs MathLive's `.ML__cmr`. */
+.MLK__keycap .ML__cmr {
+  font-family: AspectBoldSigns, KaTeX_Main;
+}

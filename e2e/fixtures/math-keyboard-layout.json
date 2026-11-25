@@ -1,0 +1,19 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "math-field",
+              "id": "math-field_keyboard",
+              "alias": "math-field_keyboard"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

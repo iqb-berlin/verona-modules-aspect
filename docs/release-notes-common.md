@@ -14,6 +14,15 @@ Allgemein
   - Alle Zeilen haben denselben Zeilenabstand wie ein Eingabebereich, auch die erste. Bisher war die erste Zeile für eine Formel um 28 px höher, auch wenn keine Formel darin stand. Eine Zeile mit Formel wird um die Formel höher und hält oben und unten 4 px Abstand zu den Nachbarzeilen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - Jede Zeile beginnt 8 px vom linken Rand, auch die erste und eine, die mit einer Formel beginnt. Bisher war die erste Textzeile um 14 px weiter eingerückt als die übrigen und eine Formel am Anfang um 28 px. Ein Klick in den Streifen vor der ersten Formel setzt den Cursor davor, statt ans Ende des Textes ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
 
+### Fehlerbehebungen
+- **Formelfeld, Formelbereich**
+  - Wird der Inhalt einer Wurzel, eines Zählers oder eines Nenners ganz gelöscht, erscheint dort wieder das leere Kästchen wie nach dem Einfügen. Bisher rutschte das Wurzelzeichen dabei um etwa 5 px nach unten, und ein geleerter Zähler ließ sich nicht mehr löschen. Ein so geleerter Teil wird wie ein nie ausgefüllter mit Kästchen gespeichert: eine Wurzel als `\sqrt{\placeholder{}}` statt `\sqrt{}`, ein Zähler als `\frac{\placeholder{}}{4}` statt `\frac{}{4}`, ein Nenner entsprechend ([#760](https://github.com/iqb-berlin/verona-modules-aspect/issues/760))
+  - Was auf einer physischen Tastatur getippt wird, bleibt stehen, wie es getippt wurde, wie bei der Formeltastatur. Bisher wandelte die Formeleingabe Buchstaben- und Zeichenfolgen um, etwa nn in ∩, mm in die Einheit Millimeter, sin in die Funktion, pi in π und <= in ≤. Nur * wird weiterhin zum Malpunkt · wie auf der ×-Taste ([#760](https://github.com/iqb-berlin/verona-modules-aspect/issues/760))
+  - Tastatur der Formeleingabe
+    - Die Beschriftung der Bruch-Taste und der Taste für das Integral mit Grenzen passt auf die Taste, auch auf den niedrigeren Tasten in Fenstern bis 768 px Höhe und auf einer schmalen Tastatur wie beim iPad im Hochformat. Bisher ragte der Bruch dort oben und unten über die Taste hinaus, war abgeschnitten und überdeckte beim Drücken die Taste darunter ([#760](https://github.com/iqb-berlin/verona-modules-aspect/issues/760))
+    - Die Umschalt-Beschriftungen in der Ecke der Tasten sind kleiner und überdecken die Beschriftung von sin, cos, tan und log nicht mehr ([#760](https://github.com/iqb-berlin/verona-modules-aspect/issues/760))
+    - \+, −, × und ÷ auf den Tasten werden fett gezeichnet, alle anderen Beschriftungen wie bisher. Bisher wirkten + und − auf Bildschirmen mit normaler Pixeldichte grau und unscharf neben den schwarzen Ziffern, × und ÷ standen in der Systemschrift und waren deutlich kleiner als + und −. In der Formel selbst bleiben die Zeichen wie bisher, damit eine Formel im Eingabefeld und im Aufgabentext gleich aussieht ([#760](https://github.com/iqb-berlin/verona-modules-aspect/issues/760))
+
 ## editor/3.1.2+player/3.1.2
 ### Änderungen
 - **Formelfeld, Formelbereich**

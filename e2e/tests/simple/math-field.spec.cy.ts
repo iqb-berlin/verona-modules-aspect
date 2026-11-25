@@ -1,5 +1,6 @@
 import {
-  addElementHover, addNewSection, setPreferencesElement, setCheckbox
+  addElementHover, addNewSection, keycapWith, pressKeycap, setPreferencesElement, setCheckbox,
+  VISIBLE_KEYBOARD_LAYER
 } from '../util';
 
 describe('Math-field element', { testIsolation: false }, () => {
@@ -138,6 +139,79 @@ describe('Math-field element', { testIsolation: false }, () => {
             expect(field.getValue()).to.equal('\\displaylines{abc\\\\ d}');
           });
         });
+      cy.clickOutside();
+    });
+
+    /* Emptied, the root used to lose its box and to drop by about 5px, as MathLive lays out an empty part
+       lower than one with a box in it (#760). */
+    it('keeps the root sign where it was when the content of the root is deleted (#760)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
+        .then($mathField => {
+          const field = $mathField[0] as HTMLElement & { getValue(): string; setValue(value: string): void };
+          field.setValue('');
+          cy.wrap($mathField).shadow().find('.ML__content').click();
+          pressKeycap(keycapWith('the root key', definition => definition.latex === '\\sqrt{#0}'));
+          // From the top of the field, so that a scroll of the page between the readings does not count
+          const signFromFieldTop = (fieldElement: HTMLElement): number => {
+            const sign = fieldElement.shadowRoot?.querySelector('.ML__sqrt-sign') as HTMLElement;
+            return sign.getBoundingClientRect().top - fieldElement.getBoundingClientRect().top;
+          };
+          cy.wrap($mathField).shadow().find('.ML__sqrt-sign').then(() => {
+            const freshTop = signFromFieldTop($mathField[0]);
+            pressKeycap(keycapWith('the key 2', definition => definition.latex === '2'));
+            cy.wrap($mathField).should($el => {
+              expect(($el[0] as typeof field).getValue()).to.equal('\\sqrt2');
+            });
+            pressKeycap(keycapWith('the backspace key', ({ command }) => String(command).includes('deleteBackward')));
+            cy.wrap($mathField).should($el => {
+              expect(($el[0] as typeof field).getValue()).to.equal('\\sqrt{\\placeholder{}}');
+              expect(signFromFieldTop($el[0]), 'top of the root sign').to.be.closeTo(freshTop, 0.5);
+            });
+          });
+        });
+      cy.clickOutside();
+    });
+
+    it('keeps letters and signs typed on a physical keyboard as they were typed (#760)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
+        .then($mathField => {
+          const field = $mathField[0] as HTMLElement & { getValue(): string; setValue(value: string): void };
+          field.setValue('');
+          cy.wrap($mathField).shadow().find('.ML__content').click()
+            .type('nn5mm<=3*4');
+          cy.wrap($mathField).should($el => {
+            expect(($el[0] as typeof field).getValue()).to.equal('nn5mm<=3\\cdot4');
+          });
+        });
+      cy.clickOutside();
+    });
+
+    /* The regular font draws + and − with thinner strokes than the digits, so on a screen of normal pixel
+       density the two keys looked grey and blurred beside the black digit keys. × and ÷ came in the system
+       font, far smaller than + and − (#760). */
+    it('draws +, −, × and ÷ on the formula keys from the bold font and the digits from the regular one (#760)', () => {
+      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
+        .shadow().find('.ML__content').click();
+      // Both weights loaded, so that a canvas measures a character in the font it names
+      cy.document().then(doc => Promise.all(['400', '700']
+        .map(weight => doc.fonts.load(`${weight} 20px KaTeX_Main`, '+−×÷1'))));
+      cy.get<HTMLElement>(`${VISIBLE_KEYBOARD_LAYER} .MLK__keycap .ML__cmr`).should($glyphs => {
+        const doc = $glyphs[0].ownerDocument;
+        const glyph = (character: string): HTMLElement => Array.from($glyphs)
+          .find(span => span.textContent === character) as HTMLElement;
+        const context = doc.createElement('canvas').getContext('2d') as CanvasRenderingContext2D;
+        // The width of a character in KaTeX_Main of the given weight, at the size the key draws it
+        const advance = (character: string, weight: string): number => {
+          const size = (doc.defaultView as Window).getComputedStyle(glyph(character)).fontSize;
+          context.font = `${weight} ${size} KaTeX_Main`;
+          return context.measureText(character).width;
+        };
+        ['+', '−', '×', '÷'].forEach(sign => {
+          expect(glyph(sign), `${sign} typeset like the digits`).to.not.equal(undefined);
+          expect(glyph(sign).getBoundingClientRect().width, sign).to.be.closeTo(advance(sign, '700'), 0.1);
+        });
+        expect(glyph('1').getBoundingClientRect().width, '1').to.be.closeTo(advance('1', '400'), 0.1);
+      });
       cy.clickOutside();
     });
   });

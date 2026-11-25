@@ -208,3 +208,14 @@ blockquote > p:empty:last-child:after {
 .MLK__rows > .MLK__row > .MLK__keycap.small.tall-label {
   font-size: calc(var(--_keycap-height) * 0.32);
 }
+
+/* +, −, × and ÷ on the formula keys from the bold KaTeX font, every other character of a key as before
+   (#760). The regular font draws + and − with strokes thinner than those of the digits beside them, so on
+   a screen of normal pixel density they looked grey and blurred; × and ÷ go with them so that the four
+   operator keys look alike (their labels in formula-keyboard-presets.config.ts). Only these characters
+   are in the family (`unicode-range` in mathlive-fonts.css); all others come from KaTeX_Main. The keys
+   only: a formula in a field or in a text keeps the regular signs, so that the two look alike. The
+   selector outweighs MathLive's `.ML__cmr`. */
+.MLK__keycap .ML__cmr {
+  font-family: AspectBoldSigns, KaTeX_Main;
+}

@@ -1,5 +1,6 @@
 import {
-  addElementHover, addNewSection, keycapWith, pressKeycap, setPreferencesElement, setCheckbox
+  addElementHover, addNewSection, keycapWith, pressKeycap, setPreferencesElement, setCheckbox,
+  VISIBLE_KEYBOARD_LAYER
 } from '../util';
 
 describe('Math-field element', { testIsolation: false }, () => {
@@ -185,31 +186,33 @@ describe('Math-field element', { testIsolation: false }, () => {
       cy.clickOutside();
     });
 
-    it('draws + and − of a formula from the bold font and the digits from the regular one (#760)', () => {
+    /* The regular font draws + and − with thinner strokes than the digits, so on a screen of normal pixel
+       density the two keys looked grey and blurred beside the black digit keys. × and ÷ came in the system
+       font, far smaller than + and − (#760). */
+    it('draws +, −, × and ÷ on the formula keys from the bold font and the digits from the regular one (#760)', () => {
       cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
-        .then($mathField => {
-          ($mathField[0] as HTMLElement & { setValue(value: string): void }).setValue('1+1-1');
-        });
+        .shadow().find('.ML__content').click();
       // Both weights loaded, so that a canvas measures a character in the font it names
       cy.document().then(doc => Promise.all(['400', '700']
-        .map(weight => doc.fonts.load(`${weight} 20px KaTeX_Main`, '+−1'))));
-      cy.contains('aspect-element-group-selection', 'Standard Formel Feld').find('math-field')
-        .should($mathField => {
-          const doc = $mathField[0].ownerDocument;
-          const glyph = (character: string): HTMLElement => Array.from(
-            ($mathField[0].shadowRoot as ShadowRoot).querySelectorAll<HTMLElement>('.ML__cmr')
-          ).find(span => span.textContent === character) as HTMLElement;
-          const context = doc.createElement('canvas').getContext('2d') as CanvasRenderingContext2D;
-          // The width of a character in KaTeX_Main of the given weight, at the size the field draws it
-          const advance = (character: string, weight: string): number => {
-            const size = (doc.defaultView as Window).getComputedStyle(glyph(character)).fontSize;
-            context.font = `${weight} ${size} KaTeX_Main`;
-            return context.measureText(character).width;
-          };
-          expect(glyph('+').getBoundingClientRect().width, '+').to.be.closeTo(advance('+', '700'), 0.1);
-          expect(glyph('−').getBoundingClientRect().width, '−').to.be.closeTo(advance('−', '700'), 0.1);
-          expect(glyph('1').getBoundingClientRect().width, '1').to.be.closeTo(advance('1', '400'), 0.1);
+        .map(weight => doc.fonts.load(`${weight} 20px KaTeX_Main`, '+−×÷1'))));
+      cy.get<HTMLElement>(`${VISIBLE_KEYBOARD_LAYER} .MLK__keycap .ML__cmr`).should($glyphs => {
+        const doc = $glyphs[0].ownerDocument;
+        const glyph = (character: string): HTMLElement => Array.from($glyphs)
+          .find(span => span.textContent === character) as HTMLElement;
+        const context = doc.createElement('canvas').getContext('2d') as CanvasRenderingContext2D;
+        // The width of a character in KaTeX_Main of the given weight, at the size the key draws it
+        const advance = (character: string, weight: string): number => {
+          const size = (doc.defaultView as Window).getComputedStyle(glyph(character)).fontSize;
+          context.font = `${weight} ${size} KaTeX_Main`;
+          return context.measureText(character).width;
+        };
+        ['+', '−', '×', '÷'].forEach(sign => {
+          expect(glyph(sign), `${sign} typeset like the digits`).to.not.equal(undefined);
+          expect(glyph(sign).getBoundingClientRect().width, sign).to.be.closeTo(advance(sign, '700'), 0.1);
         });
+        expect(glyph('1').getBoundingClientRect().width, '1').to.be.closeTo(advance('1', '400'), 0.1);
+      });
+      cy.clickOutside();
     });
   });
 });

@@ -1,0 +1,13 @@
+.mode-switch-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.mode-switch-warning-icon {
+  flex-shrink: 0;
+  color: var(--mat-sys-error, #ba1a1a);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}

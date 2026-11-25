@@ -1,9 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import {
+  MathKeyboardPresetsIncompletePipe
+} from 'editor/src/app/modules/properties-panel/pipes/math-keyboard-presets-incomplete.pipe';
 import {
   MathKeyboardPropertiesComponent
 } from './math-keyboard-properties.component';
@@ -17,8 +21,8 @@ describe('MathKeyboardPropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MathKeyboardPropertiesComponent],
-      imports: [MatFormFieldModule, MatSelectModule, TranslateModule.forRoot()],
+      declarations: [MathKeyboardPropertiesComponent, MathKeyboardPresetsIncompletePipe],
+      imports: [MatFormFieldModule, MatSelectModule, MatIconModule, TranslateModule.forRoot()],
       providers: [{ provide: UnitService, useValue: unitServiceMock }]
     }).compileComponents();
 
@@ -60,5 +64,26 @@ describe('MathKeyboardPropertiesComponent', () => {
     fixture.detectChanges();
 
     expect(select()).not.toBeNull();
+  });
+
+  describe('in a math field whose input mode can be switched (#1692)', () => {
+    const disabledPresets = (): string[] => (select().componentInstance as MatSelect).options
+      .filter(option => option.disabled)
+      .map(option => option.value);
+
+    it('should warn when the Latin letters are missing, and leave every preset free', () => {
+      component.combinedProperties = { mathKeyboardPresets: ['math', 'greek'], enableModeSwitch: true };
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).toContain('formulaPreset.modeSwitchHint');
+      expect(disabledPresets()).toEqual([]);
+    });
+
+    it('should not warn when the presets of both modes are selected', () => {
+      component.combinedProperties = { mathKeyboardPresets: ['math', 'latin'], enableModeSwitch: true };
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).not.toContain('formulaPreset.modeSwitchHint');
+    });
   });
 });

@@ -79,6 +79,7 @@ import {
 import { LikertRowLabelPipe } from './pipes/likert-row-label.pipe';
 import { LimitEnabledStatePipe } from './pipes/limit-enabled-state.pipe';
 import { ExclusiveOptionLockedPipe } from './pipes/exclusive-option-locked.pipe';
+import { MathKeyboardPresetsIncompletePipe } from './pipes/math-keyboard-presets-incomplete.pipe';
 import { GeoGebraImageToolPipe } from './pipes/geogebra-image-tool.pipe';
 import {
   MarkingPanelPropertiesComponent
@@ -213,6 +214,7 @@ import {
     LikertRowLabelPipe,
     LimitEnabledStatePipe,
     ExclusiveOptionLockedPipe,
+    MathKeyboardPresetsIncompletePipe,
     GeoGebraImageToolPipe,
     PresetOptionTextPipe,
     PropertyDivergesPipe,

@@ -8,16 +8,18 @@ import {
 export type MathKeyboardRuntime = VirtualKeyboardInterface & EventTarget & {
   shiftPressCount: 0 | 1 | 2;
   currentLayer: string;
+  normalizedLayouts: { layers: { id: string }[] }[];
 };
 
 /**
  * What aspect needs of MathLive's formula keyboard and the unchanged library does not do by itself.
  * Until #1648 a fork of MathLive (`@iqb/mathlive`) did all of this by changing the library.
  *
- * Three of the members -- `open`, `onPointerDown` and `onMouseUp` -- rest on MathLive internals: the
- * untyped `shiftPressCount` and `currentLayer`, the classes of the keyboard's markup and the window
- * listener that resets Shift. That is why `mathlive` is pinned to an exact version in package.json;
- * the spec runs against the real keyboard and fails when an update moves one of them.
+ * Four of the members -- `open`, `showLayout`, `onPointerDown` and `onMouseUp` -- rest on MathLive
+ * internals: the untyped `shiftPressCount`, `currentLayer` and `normalizedLayouts`, the classes of the
+ * keyboard's markup and the window listener that resets Shift. That is why `mathlive` is pinned to an
+ * exact version in package.json; the spec runs against the real keyboard and fails when an update
+ * moves one of them.
  */
 export class MathKeyboardAdapter {
   private static readonly KEYBOARD = '.ML__keyboard';
@@ -83,18 +85,31 @@ export class MathKeyboardAdapter {
   }
 
   /**
-   * Shows the keyboard; when it was closed, on its first layer and without Shift. Only then: on the
-   * iPad every key tap sends the focus back into the field (#1600), and a reset on each of those would
-   * undo a tapped Shift before the next key.
+   * Shows the keyboard; when it was closed, on the layout at `layoutIndex` among its layouts and without
+   * Shift. Only then: on the iPad every key tap sends the focus back into the field (#1600), and a reset
+   * on each of those would undo a tapped Shift or a chosen tab before the next key.
    */
-  static open(): void {
+  static open(layoutIndex = 0): void {
     const keyboard = MathKeyboardAdapter.keyboard;
     if (!keyboard.visible) {
-      // While hidden the keyboard only stores the layer, and an empty one makes show() pick the first.
-      keyboard.currentLayer = '';
+      // While hidden the keyboard only stores the layer, and show() picks it up.
+      keyboard.currentLayer = MathKeyboardAdapter.firstLayerOf(layoutIndex);
       keyboard.shiftPressCount = 0;
     }
     keyboard.show();
+  }
+
+  /** Turns the keyboard to the layout at `layoutIndex` among its layouts, as a press on its tab does. */
+  static showLayout(layoutIndex: number): void {
+    const keyboard = MathKeyboardAdapter.keyboard;
+    keyboard.currentLayer = MathKeyboardAdapter.firstLayerOf(layoutIndex);
+    keyboard.shiftPressCount = 0;
+  }
+
+  /** The ID of the first layer of a layout. MathLive gives the layers IDs of its own each time layouts
+      are assigned, unless a layout names them; an empty ID makes it pick its first layer. */
+  private static firstLayerOf(layoutIndex: number): string {
+    return MathKeyboardAdapter.keyboard.normalizedLayouts[layoutIndex]?.layers[0]?.id ?? '';
   }
 
   /**

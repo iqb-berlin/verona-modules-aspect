@@ -1,4 +1,5 @@
-import { MathfieldElement } from 'mathlive';
+import { MathfieldElement, VirtualKeyboardLayout } from 'mathlive';
+import { FORMULA_KEYBOARD_PRESETS } from 'common/modules/math-editor/configs/formula-keyboard-presets.config';
 import { MathKeyboardAdapter, MathKeyboardRuntime } from './math-keyboard-adapter';
 
 /* Run against the real MathLive keyboard, not a stand-in: half of what the adapter does rests on
@@ -130,6 +131,44 @@ describe('MathKeyboardAdapter', () => {
       MathKeyboardAdapter.open();
       expect(keyboard.shiftPressCount).toBe(1);
       expect(keyboard.currentLayer).toBe(secondLayer);
+    });
+  });
+
+  /* The layouts of the formula keyboard, as the math input assigns them. MathLive gives their layers IDs of
+     its own, so a layout is told by the label of its tab. */
+  describe('with layouts of several tabs (#1692)', () => {
+    const { iqbNumeric, iqbText, iqbGreek } = FORMULA_KEYBOARD_PRESETS;
+    const openTab = (): string | undefined => document
+      .querySelector('.ML__keyboard .MLK__layer.is-visible .MLK__toolbar .selected')?.textContent?.trim();
+    let layoutsBefore: VirtualKeyboardLayout[];
+
+    beforeEach(() => {
+      layoutsBefore = [...keyboard.layouts] as VirtualKeyboardLayout[];
+      keyboard.layouts = [iqbNumeric, iqbText, iqbGreek];
+    });
+
+    afterEach(() => {
+      keyboard.hide();
+      keyboard.layouts = layoutsBefore;
+    });
+
+    it('should open a closed keyboard on the layout asked for', () => {
+      MathKeyboardAdapter.open(1);
+      expect(openTab()).toBe('abc');
+    });
+
+    it('should leave an open keyboard on its tab', () => {
+      MathKeyboardAdapter.open(2);
+      MathKeyboardAdapter.open(1);
+      expect(openTab()).toBe('αβγ');
+    });
+
+    it('should turn an open keyboard to another layout, without Shift', () => {
+      MathKeyboardAdapter.open(0);
+      keyboard.shiftPressCount = 1;
+      MathKeyboardAdapter.showLayout(1);
+      expect(openTab()).toBe('abc');
+      expect(keyboard.shiftPressCount).toBe(0);
     });
   });
 

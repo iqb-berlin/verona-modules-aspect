@@ -373,6 +373,7 @@ export const VISIBLE_KEYBOARD_LAYER = '.math-keyboard-container .MLK__layer.is-v
 
 /** What mathlive keeps of a key's definition, as far as the tests ask for it. */
 export interface KeycapDefinition {
+  label?: string;
   latex?: string;
   insert?: string;
   command?: unknown;

@@ -464,7 +464,8 @@
     "symbols": "Mathematische Symbole",
     "physics": "Physik",
     "latin": "Lateinische Buchstaben",
-    "greek": "Griechische Buchstaben"
+    "greek": "Griechische Buchstaben",
+    "modeSwitchHint": "Bei änderbarem Eingabemodus sollte mindestens ein Formellayout (Mathematik, Mathematische Symbole, Physik, Griechische Buchstaben) und Lateinische Buchstaben ausgewählt sein."
   },
   "hotspot": {
     "top": "Abstand von oben",

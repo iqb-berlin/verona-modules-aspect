@@ -1,5 +1,5 @@
 import {
-  ComponentFixture, fakeAsync, TestBed, tick
+  ComponentFixture, fakeAsync, flush, TestBed, tick
 } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
 import { MathfieldElement } from 'mathlive';
@@ -435,6 +435,111 @@ describe('MathInputComponent', () => {
     component.mathKeyboardPresets = ['math'];
     component.onFocusIn();
     expect(window.mathVirtualKeyboard.layouts.length).toBe(1);
+  });
+
+  describe('the input mode and the keyboard (#1692)', () => {
+    // On the formula keyboard, the tabs read 123, abc and αβγ. Tests above leave the keyboard open.
+    beforeEach(() => {
+      component.mathKeyboardPresets = ['math', 'latin', 'greek'];
+      window.mathVirtualKeyboard.hide();
+    });
+
+    // The tests focus the field, which opens the page-wide keyboard; it would stay open into the next.
+    afterEach(() => {
+      (document.activeElement as HTMLElement | null)?.blur();
+      window.mathVirtualKeyboard.hide();
+    });
+
+    // MathLive gives the field the browser's focus, and with it the focusin, only 60 ms after focus().
+    const focusField = (): void => {
+      component.mathFieldElement.focus();
+      tick(60);
+      component.mathFieldElement.executeCommand('moveToMathfieldEnd');
+    };
+
+    const openTab = (): string | undefined => document
+      .querySelector('.ML__keyboard .MLK__layer.is-visible .MLK__toolbar .selected')?.textContent?.trim();
+
+    const pressTab = (label: string): void => {
+      Array.from(document.querySelectorAll('.ML__keyboard .MLK__layer.is-visible [data-layer]'))
+        .find(tab => tab.textContent?.trim() === label)
+        ?.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }));
+    };
+
+    // What a key of the Greek layout does: MathLive inserts its formula in formula mode.
+    const pressGreekAlpha = (): void => {
+      component.mathFieldElement.executeCommand(['insert', '\\alpha', { mode: 'math', format: 'latex' }]);
+    };
+
+    it('should open the keyboard on the letters when the switch is set to text', fakeAsync(() => {
+      component.enableModeSwitch = true;
+      component.setParseMode(createParseModeChange('text'));
+      tick(60);
+      expect(openTab()).toBe('abc');
+      flush();
+    }));
+
+    // Safari leaves the focus in the field when the switch is pressed, and the keyboard stays open.
+    it('should turn an open keyboard to the tab of the mode the switch is set to', fakeAsync(() => {
+      component.enableModeSwitch = true;
+      focusField();
+      expect(openTab()).toBe('123');
+      component.setParseMode(createParseModeChange('text'));
+      expect(openTab()).toBe('abc');
+      component.setParseMode(createParseModeChange('math'));
+      expect(openTab()).toBe('123');
+      flush();
+    }));
+
+    it('should stay in text mode and on the chosen tab when a Greek letter is typed in text', fakeAsync(() => {
+      component.enableModeSwitch = true;
+      focusField();
+      component.setParseMode(createParseModeChange('text'));
+      component.mathFieldElement.executeCommand(['typedText', 'a']);
+      pressTab('αβγ');
+      pressGreekAlpha();
+      expect(component.mathFieldElement.mode).toBe('text');
+      expect(openTab()).toBe('αβγ');
+      component.mathFieldElement.executeCommand(['typedText', 'b']);
+      expect(component.mathFieldElement.getValue()).toMatch(/\\alpha\\text\{b\}$/);
+      flush();
+    }));
+
+    /* A deletion takes the field into formula mode where it ends in a formula, as before: the box an
+       emptied fraction gets back is a formula's, not the text \\placeholder{}. */
+    it('should give an emptied fraction its box back after a deletion in text mode', fakeAsync(() => {
+      const field = component.mathFieldElement;
+      component.enableModeSwitch = true;
+      field.setValue('');
+      field.mode = 'text';
+      field.executeCommand(['insert', '\\frac{#@}{#?}', { mode: 'math', format: 'latex' }]);
+      field.executeCommand(['typedText', '3']);
+      tick();
+      field.executeCommand('deleteBackward');
+      // MathLive announces the change one turn of the event loop later
+      tick();
+      expect(field.getValue()).toBe('\\frac{\\placeholder{}}{\\placeholder{}}');
+    }));
+
+    // Only the change of mode a typed sign brings is called off, not the one of the next cursor move.
+    it('should let the cursor moved right after a sign typed in text take the field into a formula', fakeAsync(() => {
+      component.enableModeSwitch = true;
+      focusField();
+      component.setParseMode(createParseModeChange('text'));
+      component.mathFieldElement.executeCommand(['typedText', 'a']);
+      component.mathFieldElement.executeCommand('moveToMathfieldStart');
+      expect(component.mathFieldElement.mode).toBe('math');
+      flush();
+    }));
+
+    it('should let a formula take the field out of text mode when the mode cannot be switched', fakeAsync(() => {
+      focusField();
+      component.mathFieldElement.mode = 'text';
+      component.mathFieldElement.executeCommand(['typedText', 'a']);
+      pressGreekAlpha();
+      expect(component.mathFieldElement.mode).toBe('math');
+      flush();
+    }));
   });
 
   it('should emit focusOut and hide the virtual keyboard at once when the focus moves to another element', () => {

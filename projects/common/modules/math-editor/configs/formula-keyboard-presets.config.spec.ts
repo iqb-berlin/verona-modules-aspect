@@ -192,4 +192,24 @@ describe('FORMULA_KEYBOARD_PRESETS', () => {
         .toEqual([10, 10, 10, 10]);
     });
   });
+
+  /* MathLive types a key without `latex`, `insert` or `command` as if typed on a physical keyboard, in
+     the mode the field is in; any of the three inserts as a formula (executeKeycapCommand), as does a
+     shift written as a string. A full stop typed on the letters in text mode put the field into formula
+     mode that way (#1692). */
+  it('lets the letters type their punctuation in the mode of the field', () => {
+    const punctuation = keycapsOf('iqbText')
+      .filter(keycap => [',', '.'].includes((keycap as { label?: string }).label ?? ''))
+      .flatMap(withShift)
+      .map(layer => ({
+        label: (layer as { label?: string }).label,
+        insertsAsFormula: layer.latex !== undefined || layer.insert !== undefined || layer.command !== undefined
+      }));
+    expect(punctuation).toEqual([
+      { label: ',', insertsAsFormula: false },
+      { label: ';', insertsAsFormula: false },
+      { label: '.', insertsAsFormula: false },
+      { label: ':', insertsAsFormula: false }
+    ]);
+  });
 });

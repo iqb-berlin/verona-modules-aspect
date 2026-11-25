@@ -1,5 +1,8 @@
 @if (unitService.expertMode && combinedProperties.mathKeyboardPresets !== undefined) {
-  <mat-form-field class="wide-form-field">
+  @let incomplete = combinedProperties.mathKeyboardPresets
+                    | mathKeyboardPresetsIncomplete : combinedProperties.enableModeSwitch;
+  <!-- The warning runs over several lines; a fixed subscript would let it run into the next field. -->
+  <mat-form-field class="wide-form-field" [subscriptSizing]="incomplete ? 'dynamic' : 'fixed'">
     <mat-label>{{'formulaPreset.title' | translate}}</mat-label>
     <mat-select multiple
                 [value]="combinedProperties.mathKeyboardPresets"
@@ -10,6 +13,12 @@
     </mat-select>
     @if (combinedProperties.mathKeyboardPresets === null) {
       <aspect-merged-marker matSuffix></aspect-merged-marker>
+    }
+    @if (incomplete) {
+      <mat-hint class="mode-switch-warning">
+        <mat-icon class="mode-switch-warning-icon">warning</mat-icon>
+        {{'formulaPreset.modeSwitchHint' | translate}}
+      </mat-hint>
     }
   </mat-form-field>
 }

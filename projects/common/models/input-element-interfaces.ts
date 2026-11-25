@@ -55,6 +55,11 @@ export type InputAssistanceCustomStyle = typeof INPUT_ASSISTANCE_CUSTOM_STYLES[n
 export const MATH_KEYBOARD_PRESETS = ['math', 'symbols', 'physics', 'latin', 'greek'] as const;
 export type MathKeyboardPreset = typeof MATH_KEYBOARD_PRESETS[number];
 
+/** The presets of text in a math field whose input mode can be switched (#1692); all others, the Greek
+    letters as well, are presets of formulas, as their keys insert formulas. The keyboard opens text mode on
+    the first of them, and the editor warns while the mode can be switched and either group is missing. */
+export const TEXT_MATH_KEYBOARD_PRESETS: readonly MathKeyboardPreset[] = ['latin'];
+
 export interface KeyInputElementProperties {
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';

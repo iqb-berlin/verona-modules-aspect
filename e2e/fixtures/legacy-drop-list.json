@@ -1,0 +1,28 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.2.0",
+  "pages": [{
+    "sections": [{
+      "dynamicPositioning": false,
+      "height": 300,
+      "elements": [
+        {
+          "type": "drop-list", "id": "source", "connectedTo": ["target"],
+          "value": [{ "id": "value_1", "text": "Karte A" }],
+          "position": { "xPosition": 0, "yPosition": 0 },
+          "dimensions": { "width": 180, "height": 80 }
+        },
+        {
+          "type": "drop-list", "id": "target", "connectedTo": ["source"], "value": [],
+          "position": { "xPosition": 220, "yPosition": 0 },
+          "dimensions": { "width": 180, "height": 80 }
+        },
+        {
+          "type": "text-field", "id": "name",
+          "position": { "xPosition": 0, "yPosition": 120 },
+          "dimensions": { "width": 180, "height": 60 }
+        }
+      ]
+    }]
+  }]
+}

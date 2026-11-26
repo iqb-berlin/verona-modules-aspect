@@ -506,12 +506,14 @@ describe('MathInputComponent', () => {
     }));
 
     /* A deletion takes the field into formula mode where it ends in a formula, as before: the box an
-       emptied fraction gets back is a formula's, not the text \\placeholder{}. */
+       emptied fraction gets back is a formula's, not the text \\placeholder{}. The start of a numerator is
+       no start of a line. */
     it('should give an emptied fraction its box back after a deletion in text mode', fakeAsync(() => {
       const field = component.mathFieldElement;
       component.enableModeSwitch = true;
       field.setValue('');
-      field.mode = 'text';
+      component.setParseMode(createParseModeChange('text'));
+      tick(60);
       field.executeCommand(['insert', '\\frac{#@}{#?}', { mode: 'math', format: 'latex' }]);
       field.executeCommand(['typedText', '3']);
       tick();
@@ -519,7 +521,182 @@ describe('MathInputComponent', () => {
       // MathLive announces the change one turn of the event loop later
       tick();
       expect(field.getValue()).toBe('\\frac{\\placeholder{}}{\\placeholder{}}');
+      flush();
     }));
+
+    /* Where nothing stands left of the cursor, MathLive falls back to formula mode. Multi-line, as in the
+       Formelfeld. */
+    describe('at the start of a line, with the switch showing text', () => {
+      let formulaField: MathInputComponent;
+      const switchTo = (mode: 'math' | 'text'): void => formulaField.setParseMode(createParseModeChange(mode));
+      const createFormulaField = (): MathfieldElement => {
+        const formulaFixture = TestBed.createComponent(MathInputComponent);
+        formulaField = formulaFixture.componentInstance;
+        formulaField.enableModeSwitch = true;
+        formulaField.multiline = true;
+        formulaFixture.detectChanges();
+        return formulaField.mathFieldElement;
+      };
+      const typeInTextMode = (): MathfieldElement => {
+        const field = createFormulaField();
+        switchTo('text');
+        tick(60);
+        field.executeCommand(['typedText', 'ab']);
+        return field;
+      };
+
+      // MathLive listens on its own input element in the shadow root, not on the host.
+      const pressKey = (field: MathfieldElement, key: string): void => {
+        field.shadowRoot?.querySelector('[part=keyboard-sink]')?.dispatchEvent(new KeyboardEvent('keydown', {
+          key, code: key, bubbles: true, composed: true
+        }));
+      };
+      const pressEnter = (field: MathfieldElement): void => pressKey(field, 'Enter');
+
+      // The switch shows text wherever the cursor stands after text, without being pressed.
+      it('should stay in text mode when text the cursor was placed after is deleted', fakeAsync(() => {
+        const field = createFormulaField();
+        formulaField.ngOnChanges({ value: new SimpleChange('', '\\text{Die Lösung}', false) });
+        field.focus();
+        tick(60);
+        field.executeCommand('moveToMathfieldEnd');
+        expect(field.mode).toBe('text');
+        field.executeCommand('selectAll');
+        field.executeCommand('deleteBackward');
+        expect(field.mode).toBe('text');
+        flush();
+      }));
+
+      /* As an answer that is resumed. The switch is shown only afterwards: its first check would find the
+         mode changed under it, which Angular reports in development mode. */
+      it('should stay in text mode when an answer in text the field starts with is deleted', fakeAsync(() => {
+        const answerFixture = TestBed.createComponent(MathInputComponent);
+        formulaField = answerFixture.componentInstance;
+        formulaField.value = '\\text{Die Lösung}';
+        formulaField.multiline = true;
+        answerFixture.detectChanges();
+        formulaField.enableModeSwitch = true;
+        const field = formulaField.mathFieldElement;
+        field.focus();
+        tick(60);
+        expect(field.mode).toBe('text');
+        field.executeCommand('selectAll');
+        field.executeCommand('deleteBackward');
+        expect(field.mode).toBe('text');
+        flush();
+      }));
+
+      // Escape opens a LaTeX command, and a second one closes it again.
+      it('should let a LaTeX command opened at the start of a line be closed again', fakeAsync(() => {
+        const field = typeInTextMode();
+        field.executeCommand('selectAll');
+        field.executeCommand('deleteBackward');
+        pressKey(field, 'Escape');
+        expect(field.mode).toBe('latex');
+        pressKey(field, 'Escape');
+        expect(field.mode).not.toBe('latex');
+        flush();
+      }));
+
+      it('should go into formula mode at the start of a line once the switch is turned off', fakeAsync(() => {
+        const field = typeInTextMode();
+        formulaField.enableModeSwitch = false;
+        field.executeCommand('selectAll');
+        field.executeCommand('deleteBackward');
+        expect(field.mode).toBe('math');
+        flush();
+      }));
+
+      // Only text deleted at once leaves empty lines behind that nobody made.
+      it('should keep empty lines made on purpose when a character after them is deleted', fakeAsync(() => {
+        const field = createFormulaField();
+        switchTo('text');
+        tick(60);
+        pressEnter(field);
+        pressEnter(field);
+        field.executeCommand(['typedText', 'x']);
+        field.executeCommand('deleteBackward');
+        // MathLive announces the change one turn of the event loop later
+        tick();
+        expect(field.getValue()).toBe('\\displaylines{\\\\ \\\\ }');
+        flush();
+      }));
+
+      it('should stay in text mode when what was typed is deleted again', fakeAsync(() => {
+        const field = typeInTextMode();
+        field.executeCommand('deleteBackward');
+        field.executeCommand('deleteBackward');
+        expect(field.getValue()).toBe('');
+        expect(field.mode).toBe('text');
+        field.executeCommand(['typedText', 'c']);
+        expect(field.getValue()).toBe('\\text{c}');
+        flush();
+      }));
+
+      it('should stay in text mode when everything is selected and deleted', fakeAsync(() => {
+        const field = typeInTextMode();
+        field.executeCommand('selectAll');
+        field.executeCommand('deleteBackward');
+        expect(field.getValue()).toBe('');
+        expect(field.mode).toBe('text');
+        flush();
+      }));
+
+      // MathLive would keep the lines, empty, and the field their height.
+      it('should go back to one empty line when text on several lines is selected and deleted', fakeAsync(() => {
+        const field = typeInTextMode();
+        pressEnter(field);
+        field.executeCommand(['typedText', 'cd']);
+        pressEnter(field);
+        field.executeCommand(['typedText', 'ef']);
+        const emitSpy = vi.spyOn(formulaField.valueChange, 'emit');
+        field.executeCommand('selectAll');
+        field.executeCommand('deleteBackward');
+        // MathLive announces the change one turn of the event loop later
+        tick();
+        expect(field.getValue()).toBe('');
+        expect(emitSpy).toHaveBeenLastCalledWith('');
+        expect(field.mode).toBe('text');
+        field.executeCommand(['typedText', 'g']);
+        expect(field.getValue()).toBe('\\text{g}');
+        flush();
+      }));
+
+      it('should stay in text mode when a line below text is emptied', fakeAsync(() => {
+        const field = typeInTextMode();
+        pressEnter(field);
+        field.executeCommand(['typedText', 'cd']);
+        field.executeCommand('deleteBackward');
+        field.executeCommand('deleteBackward');
+        // MathLive announces the change one turn of the event loop later; the line above keeps the field.
+        tick();
+        expect(field.getValue()).toBe('\\displaylines{\\text{ab}\\\\ }');
+        expect(field.mode).toBe('text');
+        field.executeCommand(['typedText', 'e']);
+        expect(field.getValue()).toBe('\\displaylines{\\text{ab}\\\\ \\text{e}}');
+        flush();
+      }));
+
+      // As after a click into the space empty lines leave in the field.
+      it('should stay in text mode on an empty line the cursor is moved onto', fakeAsync(() => {
+        const field = typeInTextMode();
+        pressEnter(field);
+        field.executeCommand('moveUp');
+        field.executeCommand('moveDown');
+        expect(field.getValue()).toBe('\\displaylines{\\text{ab}\\\\ }');
+        expect(field.mode).toBe('text');
+        flush();
+      }));
+
+      it('should go into formula mode at the start of a line when the switch is set to it', fakeAsync(() => {
+        const field = typeInTextMode();
+        field.executeCommand('selectAll');
+        field.executeCommand('deleteBackward');
+        switchTo('math');
+        expect(field.mode).toBe('math');
+        flush();
+      }));
+    });
 
     // Only the change of mode a typed sign brings is called off, not the one of the next cursor move.
     it('should let the cursor moved right after a sign typed in text take the field into a formula', fakeAsync(() => {
@@ -527,7 +704,7 @@ describe('MathInputComponent', () => {
       focusField();
       component.setParseMode(createParseModeChange('text'));
       component.mathFieldElement.executeCommand(['typedText', 'a']);
-      component.mathFieldElement.executeCommand('moveToMathfieldStart');
+      component.mathFieldElement.executeCommand('moveToPreviousChar');
       expect(component.mathFieldElement.mode).toBe('math');
       flush();
     }));

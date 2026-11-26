@@ -86,6 +86,12 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   /** Whether a change made in text mode is under way, see `onModeChange`. */
   private textInputUnderway = false;
 
+  /** The mode the switch shows: the last one the field went into, see `onModeChange`. */
+  private modeShown: ParseMode = 'math';
+
+  /** Whether the deletion under way removes a selection, see `removeEmptyLines`. */
+  private selectionDeleted = false;
+
   /** Held so that the two focusout events of one blur -- the browser's and mathlive's own -- are acted on once. */
   private focusOutTimeout?: ReturnType<typeof setTimeout>;
 
@@ -114,6 +120,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       });
     }
     this.mathFieldElement.setValue(this.toFieldValue(this.value), { format: 'latex' });
+    // A value that ends in text, as an answer that is resumed, puts the field into text mode before the
+    // listener below hears of it.
+    this.modeShown = this.mathFieldElement.mode;
     this.mathFieldElement.addEventListener('pointerdown', this.onFramePointerDown);
     this.mathFieldElement.addEventListener('mode-change', this.onModeChange);
     this.mathFieldElement.addEventListener('selection-change', this.endTextInput);
@@ -124,10 +133,33 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       put the field into formula mode, so that after an α the switch showed Formel and further letters
       became variables. MathLive announces a change before it makes it (`beforeinput`, see `onBeforeInput`)
       and lets a change of mode be called off. The cursor moved into a formula makes no change, and its
-      change of mode goes through. */
+      change of mode goes through.
+
+      MathLive takes the mode from what stands left of the cursor. At the start of a line nothing does, and
+      MathLive falls back to formula mode: in a field that was emptied, on a line that was emptied, on an
+      empty line the cursor was moved or clicked onto. Where the switch shows text, the field stays in text
+      mode there instead, whether the switch was pressed or the cursor was placed after text, as in an answer
+      that is resumed. Only the change from text is called off: a LaTeX command closed at the start of a line
+      goes into formula mode, as MathLive has it. A deletion that ends in a formula still takes the field into
+      formula mode, and the box an emptied root or fraction gets back is a formula's (`onInput`). During the
+      event, `mode` is the mode MathLive changes to. */
   private readonly onModeChange = (event: Event): void => {
-    if (this.textInputUnderway) event.preventDefault();
+    const fallbackAtLineStart = this.enableModeSwitch && this.modeShown === 'text' &&
+      this.mathFieldElement.mode === 'math' && this.isAtLineStart();
+    if (this.textInputUnderway || fallbackAtLineStart) {
+      event.preventDefault();
+    } else {
+      this.modeShown = this.mathFieldElement.mode;
+    }
   };
+
+  /** Whether the cursor stands at the start of a line: of the field, or of a line of a multi-line field.
+      MathLive names a place by the atom left of it; at the start of a line, that is the line's own empty
+      first atom, at the top of the tree. The start of a numerator or of a radicand lies deeper. */
+  private isAtLineStart(): boolean {
+    const atom = this.mathFieldElement.getElementInfo(this.mathFieldElement.position);
+    return atom?.depth === 0 && atom.latex === '';
+  }
 
   /** MathLive announces the selection of a change last, after the change of mode it brings. */
   private readonly endTextInput = (): void => {
@@ -219,6 +251,8 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   /** The keyboard turns to the tab of the new mode (#1692) here, not on the focus: Safari leaves the focus
       in the field when the switch is pressed, so no focusin follows. A closed keyboard opens on it. */
   setParseMode(event: MatButtonToggleChange) {
+    // Before the mode is set: while the switch shows text, formula mode at the start of a line is called off.
+    this.modeShown = event.value;
     this.mathFieldElement.mode = event.value;
     this.mathFieldElement.focus();
     if (event.value === 'math') {
@@ -235,6 +269,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       before, and the box a root or fraction gets back after it is a formula's (`onInput`). */
   onBeforeInput(event: Event) {
     this.boxesBeforeInput = EmptyBoxRestorer.countBoxes(this.mathFieldElement);
+    this.selectionDeleted = MathInputComponent.isDeletion(event) && !this.mathFieldElement.selectionIsCollapsed;
     this.textInputUnderway = this.enableModeSwitch && this.mathFieldElement.mode === 'text' &&
       !MathInputComponent.isDeletion(event);
     if (this.textInputUnderway) {
@@ -243,12 +278,25 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   /** After a deletion, a root or fraction that was emptied gets its box back before the value goes out
-      (#760). */
+      (#760), and a field left with nothing but empty lines is emptied (#1692). */
   onInput(event: Event) {
     if (MathInputComponent.isDeletion(event)) {
       EmptyBoxRestorer.restore(this.mathFieldElement, this.boxesBeforeInput);
+      this.removeEmptyLines();
     }
     this.valueChange.emit(this.mathFieldElement.getValue());
+  }
+
+  /** Text deleted across several lines at once, as when all of it is selected, leaves the lines behind,
+      empty: `\displaylines{\\ }` for two. The field kept their height, and the value went out as an answer.
+      The field is set back to its empty value instead, a single line. Only a deleted selection does this:
+      lines deleted one by one go with their characters, and empty lines left after a single character are
+      ones the student made. The reset is silent, so the field keeps its mode, and the value goes out from
+      `onInput`. `setValue` adds a step to the undo history: undo brings the text back, and the step before
+      that is the copy of it MathLive takes before every deletion, so the next undo seems to do nothing. */
+  private removeEmptyLines(): void {
+    if (!this.selectionDeleted || !/^\\displaylines\{(\\\\\s*)+\}$/.test(this.mathFieldElement.getValue())) return;
+    this.mathFieldElement.setValue(this.toFieldValue(''), { format: 'latex', silenceNotifications: true });
   }
 
   /** Whether MathLive's `beforeinput` or `input` is of a deletion. Safari strips `inputType` from the event,

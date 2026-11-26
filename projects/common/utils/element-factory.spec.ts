@@ -71,6 +71,19 @@ describe('ElementFactory', () => {
     expect(dropList.dimensions?.width).toBe(240);
   });
 
+  it('should keep option identifiers stable when a normalized drop-list is loaded again', () => {
+    const list = ElementFactory.createElement({
+      type: 'drop-list',
+      id: 'source',
+      value: [{ id: 'value_1' }, { id: 'internal_1', alias: 'public_A' }]
+    } as unknown as UIElementProperties) as DropListElement;
+    const reloaded = ElementFactory.createElement(JSON.parse(JSON.stringify(list))) as DropListElement;
+
+    expect(reloaded.value.map(({ id, alias }) => [id, alias])).toEqual([
+      ['value_1', 'value_1'], ['internal_1', 'public_A']
+    ]);
+  });
+
   it('should preserve blueprint dimensions on TableElement', () => {
     const table = ElementFactory.createElement({
       type: 'table',

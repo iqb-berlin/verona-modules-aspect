@@ -58,7 +58,8 @@ export class DropListElement extends InputElement implements DropListProperties 
           imgFileName: value.imgFileName,
           imgPosition: value.imgPosition,
           id: value.id ?? this.idService?.getAndRegisterNewID('value') as string,
-          alias: value.alias ?? this.idService?.getAndRegisterNewID('value', true) as string,
+          // Before aliases, the player stored the option's ID in the response.
+          alias: value.alias ?? (value.id || this.idService?.getAndRegisterNewID('value', true) as string),
           originListID: this.id,
           originListIndex: index,
           audioSrc: value.audioSrc,

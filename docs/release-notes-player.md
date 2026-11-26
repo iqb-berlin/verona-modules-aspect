@@ -6,6 +6,8 @@ Player
   - Ein Abschnitt kann davon abhängen, ob ein Element beantwortet ist oder ob es bearbeitet wurde, ohne dass man dafür einen Wert kennen muss: „ist beantwortet“, „ist nicht beantwortet“, „wurde bearbeitet“ und „wurde nicht bearbeitet“ ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
 
 ### Änderungen
+- **Formelfeld**
+  - Ist der Eingabemodus änderbar, öffnet die Tastatur auf dem Reiter des Modus und springt beim Drücken von Formel oder Text dorthin: bei Formel auf das erste Formellayout, bei Text auf „abc“. Bisher öffnete sie in beiden Modi auf dem ersten Reiter ([#1692](https://github.com/iqb-berlin/verona-modules-aspect/issues/1692))
 - **GeoGebra**
   - Die Antwort enthält nur noch die Konstruktion, nicht mehr die ganze GeoGebra-Datei. Bilder, Einstellungen und Skript kommen beim Wiederherstellen aus der Aufgabe; eine Antwort eines früheren Players bringt sie weiter selbst mit. Jede Zustandsmeldung an die Testumgebung wird dadurch kleiner, bei einer Datei mit einem Bild von 1,4 MB von 1,9 MB auf wenige KB. Eine in coding-box heruntergeladene `.ggb`-Datei der Antwort enthält dadurch nur die Konstruktion, ohne die Bilder der Aufgabe ([#1650](https://github.com/iqb-berlin/verona-modules-aspect/issues/1650))
   - Das Werkzeug „Bild“ wird nicht mehr angeboten, auch nicht in der Standard-Werkzeugleiste, und ein Bild lässt sich nicht mehr in die Zeichnung ziehen oder einfügen. So gelangen keine Dateien vom Gerät und keine Kamerafotos in die Aufgabe ([#1700](https://github.com/iqb-berlin/verona-modules-aspect/issues/1700))
@@ -22,6 +24,8 @@ Player
   - Return auf der Bildschirmtastatur beginnt die neue Zeile sofort, und der Cursor steht darin; bisher erschien die Zeile erst mit der nächsten Taste ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - In Firefox steht der Cursor nach Enter in der neuen Zeile statt am Ende der vorigen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - Die Rücktaste am Anfang einer weiteren Zeile in einem Text hinter einer Formel löscht nicht mehr auch die Formel ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+- **Formelfeld**
+  - Im Modus Text bleibt das Feld im Modus Text, auch nach einem Zeichen der Formeltastatur wie α, nach dem Punkt der Buchstabentastatur und wenn alles gelöscht wird. Bisher sprang es nach α und nach dem Punkt auf Formel, und weitere Buchstaben wurden zu Variablen ([#1692](https://github.com/iqb-berlin/verona-modules-aspect/issues/1692))
 - **Rechenkästchen**
   - Eine gelöschte Eingabe wird sofort an die Testumgebung gemeldet, auch beim Löschen über die Bildschirmtastatur; bisher erschien sie beim erneuten Öffnen der Aufgabe wieder, wenn danach nichts mehr eingegeben wurde ([#1712](https://github.com/iqb-berlin/verona-modules-aspect/pull/1712))
 

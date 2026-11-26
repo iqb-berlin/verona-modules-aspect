@@ -465,7 +465,7 @@
     "physics": "Physik",
     "latin": "Lateinische Buchstaben",
     "greek": "Griechische Buchstaben",
-    "modeSwitchHint": "Bei änderbarem Eingabemodus sollte mindestens ein Formellayout (Mathematik, Mathematische Symbole, Physik, Griechische Buchstaben) und Lateinische Buchstaben ausgewählt sein."
+    "modeSwitchHint": "Bei änderbarem Eingabemodus sollten „Lateinische Buchstaben“ und mindestens ein Formellayout (Mathematik, Mathematische Symbole, Physik oder Griechische Buchstaben) ausgewählt sein."
   },
   "hotspot": {
     "top": "Abstand von oben",

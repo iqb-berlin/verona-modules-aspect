@@ -44,6 +44,20 @@ describe('MathFieldPropsComponent', () => {
     expect(input.checked).toBe(true);
   });
 
+  // Without the switch the field is always in formula mode, where no new line starts (#1696).
+  it('should let Mehrzeilig be chosen only while the input mode can be switched (#1696)', () => {
+    const multilineInput = (): HTMLInputElement | null | undefined => (
+      Array.from(fixture.nativeElement.querySelectorAll('mat-checkbox') as NodeListOf<HTMLElement>)
+        .find(checkbox => checkbox.textContent?.includes('propertiesPanel.multiline'))
+        ?.querySelector('input'));
+    expect(multilineInput()?.disabled).toBe(true);
+
+    component.combinedProperties = { enableModeSwitch: true };
+    fixture.detectChanges();
+
+    expect(multilineInput()?.disabled).toBe(false);
+  });
+
   it('should emit updateModel when the checkbox is toggled', () => {
     const input = fixture.nativeElement.querySelector('mat-checkbox input') as HTMLInputElement;
     input.click();

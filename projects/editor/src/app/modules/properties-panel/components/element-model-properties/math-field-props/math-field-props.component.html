@@ -3,6 +3,7 @@
   {{'propertiesPanel.enableModeSwitch' | translate }}
 </aspect-merged-checkbox>
 <aspect-merged-checkbox [value]="combinedProperties.multiline"
+                        [disabled]="!combinedProperties.enableModeSwitch"
                         (valueChange)="updateModel.emit({ property: 'multiline', value: $event })">
   {{'propertiesPanel.multiline' | translate }}
 </aspect-merged-checkbox>

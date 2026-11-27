@@ -1341,7 +1341,7 @@ checkbox "propertiesPanel.requiredField" = false
 input[text] "propertiesPanel.requiredWarnMessage" = Eingabe erforderlich (disabled)
 button "code"
 checkbox "propertiesPanel.enableModeSwitch" = false
-checkbox "propertiesPanel.multiline" = false
+checkbox "propertiesPanel.multiline" = false (disabled)
 select "formulaPreset.title" = [math, symbols, latin, greek]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = true
 
@@ -1379,7 +1379,7 @@ checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
 button "code"
 checkbox "propertiesPanel.enableModeSwitch" = indeterminate
-checkbox "propertiesPanel.multiline" = indeterminate
+checkbox "propertiesPanel.multiline" = indeterminate (disabled)
 select "formulaPreset.title" = [math, symbols, latin, greek]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
 
@@ -1419,7 +1419,7 @@ textarea "propertiesPanel.label" =  [merged]
 checkbox "propertiesPanel.readOnly" = indeterminate
 button "code"
 checkbox "propertiesPanel.enableModeSwitch" = indeterminate
-checkbox "propertiesPanel.multiline" = indeterminate
+checkbox "propertiesPanel.multiline" = indeterminate (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 
@@ -1435,7 +1435,7 @@ textarea "propertiesPanel.label" =
 checkbox "propertiesPanel.readOnly" = false
 button "code"
 checkbox "propertiesPanel.enableModeSwitch" = false
-checkbox "propertiesPanel.multiline" = false
+checkbox "propertiesPanel.multiline" = false (disabled)
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)
 

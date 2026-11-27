@@ -7,7 +7,7 @@ Editor
   - Ein ?-Knopf im Dialog öffnet eine Hilfe: was bei jedem Element verglichen wird, welche Vergleiche es gibt, Beispiele und was ODER, UND und die Verzögerung bewirken. Unter jeder Bedingung steht in einer Zeile, womit verglichen wird ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
 - **Formelfeld**
   - Ist der Eingabemodus änderbar, weist im erweiterten Modus ein Hinweis bei den Formeleingabelayouts darauf hin, wenn „Lateinische Buchstaben“ oder alle Formellayouts fehlen; die Auswahl bleibt frei ([#1692](https://github.com/iqb-berlin/verona-modules-aspect/issues/1692))
-  - Neue Option „Mehrzeilig“, Standard aus. Bestehende Formelfelder bleiben einzeilig ([#1696](https://github.com/iqb-berlin/verona-modules-aspect/issues/1696))
+  - Neue Option „Mehrzeilig“, Standard aus, wählbar bei änderbarem Eingabemodus. Bestehende Formelfelder bleiben einzeilig ([#1696](https://github.com/iqb-berlin/verona-modules-aspect/issues/1696))
 - **Studio**
   - Der Editor meldet dem Studio, welche Pakete und Widgets eine Aufgabe braucht: GeoGebra für das Geometrie-Element (zum Abspielen und zum Bearbeiten), das Periodensystem und den Moleküleditor (zum Abspielen). Bei bestehenden Aufgaben geschieht das mit der nächsten Änderung ([#1709](https://github.com/iqb-berlin/verona-modules-aspect/issues/1709))
 

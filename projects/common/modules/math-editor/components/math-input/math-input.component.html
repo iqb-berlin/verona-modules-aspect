@@ -6,7 +6,7 @@
   </mat-button-toggle-group>
 }
 <div #inputRef
-     (beforeinput)="onBeforeInput()"
+     (beforeinput)="onBeforeInput($event)"
      (input)="onInput($event)"
      [class.full-width]="fullWidth"
      [class.inline-block]="!fullWidth"

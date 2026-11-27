@@ -666,15 +666,18 @@ export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
             }
           ],
           [
+            /* The punctuation keys of the letters, and their shifts, carry a label only: MathLive types such
+               a key as if typed on a physical keyboard, in the mode the field is in. Written as `shift: ';'`
+               or with `insertDecimalSeparator`, MathLive inserted them as a formula, and a full stop in
+               text mode put the field into formula mode (#1692). */
             {
               label: ',',
-              shift: ';'
+              shift: { label: ';' }
             },
             {
-              command: 'performWithFeedback(insertDecimalSeparator)',
-              shift: ':',
-              class: 'big-op',
-              label: '.'
+              label: '.',
+              shift: { label: ':' },
+              class: 'big-op'
             },
             {
               label: ' ',

@@ -1,0 +1,31 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "math-field",
+              "id": "math-field_mode",
+              "alias": "math-field_mode",
+              "enableModeSwitch": true,
+              "mathKeyboardPresets": ["math", "symbols", "latin", "greek"]
+            }
+          ]
+        },
+        {
+          "elements": [
+            {
+              "type": "math-field",
+              "id": "math-field_fixed",
+              "alias": "math-field_fixed",
+              "mathKeyboardPresets": ["latin", "greek"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
